@@ -1,0 +1,277 @@
+URL: http://onlineethics.org/essays/shuttle/pre-dis.html
+
+<h>Ethical Decisions - Morton Thiokol and the Space Shuttle Challenger Disaster
+
+   <h>Roger M. Boisjoly, Former Morton Thiokol Engineer, Willard, Utah
+     _________________________________________________________________
+
+<h>Pre-Disaster Background
+
+   <p>The significance of starting with January, 1985, results from my
+   observations made during the post flight inspection of hardware from
+   Flight 51C which was launched on January 14, 1985. I found that hot
+   combustion gases had blown by the primary seals on two field joints
+   and had produced large arc lengths of blackened grease between the
+   primary and secondary seals. Subsequent to reporting my findings, I
+   was ordered to MSFC to present a preliminary report prior to formal
+   FRR meetings.
+
+   <p>I participated in the formal FRR's for flight 51E which was scheduled
+   for an April launch. The presentations were given at MSFC in February
+   at three successively higher level review boards with exclusions and
+   refinements in content made at each board level. I spoke about my
+   belief that the low ambient temperature prior to launch was
+   responsible for such a large witness of hot gas (approximately 5500 °F
+   [3040 °C]) blow-by but NASA Program Management insisted on that
+   position being softened for higher and final review board
+   presentations. The ambient temperature was 18 to 22 °F (-8 to -6 °C)
+   several days prior to launch and in the 60 - 65 °F (16 to 18 °C) range
+   at launch time and resulted in a seal temperature of 53 °F ( 12 °C)
+   -which was calculated after the damage was found.
+
+   <p>Accordingly, the final FRR assessment chart read as follows:
+
+   <h>Evaluation Summary
+          <p>STS-51C primary 0-ring erosion on two field joints
+          STS-51C soot between primary and secondary 0-rings on both
+          field joints predicted after STS-11 observation, first time
+          observed
+          Evidence of heat affect on secondary O-ring of A68 (right hand)
+          center field joint but no erosion --first time heat affect on
+          secondary O-ring has been observed
+
+   <h>Conclusion
+          <p>STS-51C consistent with erosion data base
+          Low temperature enhanced probability of blowby -- STS-51C
+          experienced worst case temperature change in Florida history
+          STS-51E could exhibit some behavior
+          Condition is acceptable
+          STS-51E field joints are acceptable for flight
+
+   <p>These conclusions were accepted and the boosters were certified for
+   launch.
+
+   <p>I returned to MTI in Utah and met with Arnie Thompson, who was the
+   Supervisor of Structural Design and Analysis for the SRM case
+   segments, to discuss the hot gas blow-by scenario and the affects of
+   cold temperature on O-ring resiliency, which we defined as the ability
+   of the seal to restore itself to a round cross sectional shape after
+   the squeeze on the seal is removed. The preliminary resiliency
+   testing, which was requested by Arnie Thompson, was performed in March
+   and showed that a low temperature of 50 °F (10 °C) was a problem, as
+   the seal material could not follow the rate of gap opening and lost
+   contact with its mating surface. The significance of this data was
+   that the seal erosion and blow-by problem was known to occur within
+   0.60 seconds during the motor ignition transient. The data was
+   discussed with MTI Engineering Management, but was thought to be too
+   sensitive by them to release to anyone.
+
+   <p>Another post flight inspection was performed in June, 1985, at MTI
+   facilities in Utah on a nozzle joint from Flight 51B (SRM 16A) which
+   was launched on April 29, 1985. The nozzle joint configuration is
+   shown in Figure 2 with all dimensions in inches. The bore (radial)
+   seal is the primary seal and the face seal is the secondary seal in
+   this joint.
+   <h>Inches  Millimeters Inches Millimeters
+   <l>103.512               
+   <l>103.508 <l>2629.15     <l>0.275  <l>6.99
+   <l>103.492                    <l>0.2075    
+   <l>103.480 <l>2628.54     <l>0.190  <l>5.05
+   <l>103.090             <l>0.024  <l>0.61
+   <l>103.067 <l>2618.45     <l>0.015  <l>0.38
+   <l>0.380                 
+   <l>0.375   <l>9.59        <l>0.012  <l>0.30
+
+<h>Figure 2. SRM Nozzel Joint
+
+   <p>This joint was found to have the primary seal eroded through in three
+   places as shown in Figure 3.
+   <h>Inches Millimeters Inches Millimeters
+   <l>0.17   <l>4.32        <l>0.111  <l>2.82
+   <l>0.23   <l>5.84        <l>0.155  <l>3.94
+   <l>0.35   <l>8.89        <l>0.104  <l>2.64
+   <l>0.089  <l>2.03        <l>0.50   <l>12.70
+   <l>0.186  <l>4.57        <l>0.275  <l>6.98
+
+<h>Figure 3. SRM-16A Nozzel Joint Primary O-Ring
+
+   <p>The darkened areas represent the remaining seal material after the hot
+   gas blow-by occurred. The secondary seal in the same joint was eroded
+   to a depth of 0.032 inches (0.81 mm) but sealed as expected. It was
+   postulated from the evidence that the primary seal had not sealed
+   during the full two minutes of booster flight.
+
+   <p>My former concerns about seal erosion and blow-by now escalated
+   because if the same scenario should occur in a field joint, the
+   secondary seal could also be compromised because it was a bore seal
+   instead of the very safe face seal in the nozzle joint. This
+   heightened concern was especially true for a low temperature launch
+   because of the preliminary test results on seal resiliency at 50 °F
+   (10 °C).
+
+   <p>An FRR was held at MSFC on July 1, 1985 for flight 51F which was
+   scheduled for launch on July 29, 1985, with an additional presentation
+   given on July 2nd which covered the overall problem status with all
+   the booster seals. The preliminary test results on O-ring resiliency
+   that were obtained in March and kept secret were presented to NASA for
+   the first time at this meeting.
+
+   <p>The preliminary test configuration placed an O-ring seal into a flight
+   size groove in a flat plate and compressed the seal 0.040 inches (1.02
+   mm) with another flat plate. After temperature conditioning of the
+   assembly, the plates were separated 0.030 inches (0.76 mm) at a 2.0
+   inch (5.08 cm) per minute rate to simulate a flight rate of
+   approximately 3.2 inches (8.13 cm) per minute (slightly
+   unconservative).
+
+   <p>The test results showed no loss of seal contact at 100 °F (38 °C);
+   loss of seal contact for 2.4 seconds at 75 °F (24 °C) and loss of seal
+   contact for in excess of 10 minutes at 50 °F (10 °C). The testing also
+   showed that a larger diameter seal (0.295 in - 7.49 mm) lost contact
+   for 2 to 3 seconds at 50 °F (10 °C). This showed that the larger
+   diameter seal performed at 50 °F (10 °C) similar to the operational
+   flight seal (0.280 in - 7.11 mm) at 75 °F (24 °C), which was why the
+   larger seal was being considered for a short-term fix.
+
+   <p>Everyone on the program, working with the joint seal problems, was now
+   aware of the influence of low temperature on the field joint seals.
+
+   <p>Again, my concern about the joints increased due to the lack of
+   attention being given to this problem by MTI. My notebook entry on
+   August 15,1985 reads as follows: "An attempt to form the team (I was
+   referring to the SIRM Seal Erosion Task Team) was made on 19 July
+   1985. This attempt virtually failed and resulted in my writing memo
+   2870:FY86:073. This memo finally got some response and a team was
+   formed officially. The first meeting was held on August 15, 1985 at
+   2:30 p.m." The memo I referred to is the one I wrote to the Vice
+   President of Engineering at MTI on July 31, 1985. The memo was stamped
+   COMPANY PRIVATE by my boss and had a very limited distribution until I
+   read it to the Presidential Commission on February 25, 1986. The memo
+   reads as follows:
+
+   <p>"Subject: SRM O-Ring Erosion/Potential Failure Criticality. This
+   letter is written to insure that management is fully aware of the
+   seriousness of the current O-ring erosion problem in the SRM joints
+   from an engineering standpoint. The mistakenly accepted position on
+   the joint problem was to fly without fear of failure and to run a
+   series of design evaluations which would ultimately lead to a solution
+   or at least a significant reduction of the erosion problem. This
+   position is now drastically changed as a result of the SRM 16A nozzle
+   joint erosion which eroded a secondary O-ring with the primary O-ring
+   never sealing."
+
+   <p>"If the same scenario should occur in a field joint (and it could),
+   then it is a jump ball as to the success or failure of the joint
+   because the secondary O-ring cannot respond to the clevis opening rate
+   and may not be capable of pressurization. The result would be a
+   catastrophe of the highest order--loss of human life."
+
+   <p>"An unofficial team (a memo defining the team and its purpose was
+   never published) with leader was formed on 19 July 1985 and was tasked
+   with solving the problem for both the short and long term. This
+   unofficial team is essentially nonexistent at this time. In my
+   opinion, the team must be officially given the responsibility and the
+   authority to execute the work that needs to be done on a
+   noninterference basis (full-time assignment until completed)."
+
+   <p>"It is my honest and very real fear that if we do not take immediate
+   action to dedicate a team to solve the problem, with the field joint
+   having the number one priority, then we stand in jeopardy of losing a
+   flight along with all the launch pad facilities."
+
+   <p>The memo was signed by R. M. Boisjoly and concurred to by J. R. Kopp,
+   Manager, Applied Mechanics, who was my boss.
+
+   <p>During the July-August time period, NASA headquarters in Washington,
+   D. C. asked MTI to prepare and present a summary of problems with all
+   the booster seals on August 19, 1985. This was done and that is why I
+   find it so incredible that top NASA management denies knowing anything
+   about the problems with the joint seals, when questioned by the
+   Presidential Commission.
+
+   <p>MTI was then asked by NASA MSFC in September to send a representative
+   to the SAE Conference in October to discuss the joint seal designs and
+   solicit help from the technical experts in attendance. However, I was
+   given strict instructions, which come from MSFC, not to express the
+   critical urgency of fixing the joints but to only emphasize the joint
+   improvement aspect during my presentation. I prepared and presented
+   seven Viewgraphs to approximately 130 technical experts at the
+   conference.
+
+   <p>I then asked for help in the form of design improvement suggestions
+   and stated that we were not asking for free advice but were willing to
+   contract for work, but no one said a word. So Bob Ebeling and I spent
+   the remainder of the convention time meeting with seal vendors whom we
+   had previously contacted for help. In retrospect, I'm not surprised
+   that no one responded to my pleas for help when I showed them the
+   parameters of the joints. What they saw and heard were joint gap
+   configurations (both static and dynamic) that were approximately an
+   order of magnitude worse than anything they had previously
+   encountered. I don't blame them for avoiding any comments and
+   suggestions when asked.
+
+   <p>The seal erosion task team was frustrated right from the start due to
+   lack of management support to provide manpower and material resources
+   necessary for us to accomplish the task of fixing the joints.
+   Accordingly, I wrote a series of very damning activity reports in
+   which I left no room for error about my feelings due to the lack of
+   management support. The last such report written was on October 4,
+   1985 and reads as follows:
+
+   <p>"SRM Seal Problem Task Team Status. The team generally has been
+   experiencing trouble from the business-as-usual attitude from
+   supporting organizations. Part of this is due to lack of understanding
+   of how important this task team activity is and the rest is due to
+   pure operating procedure inertia which prevents timely results to a
+   specific request.
+
+   <p>The team met with Joe Kilminster on October 3, 1985 to discuss this
+   problem. He wanted specific examples which he was given and he simply
+   concluded that it was every team member's responsibility to flog
+   problems that occurred to organizational supervision and work to
+   remove the road block by getting the required support to solve the
+   problem. The problem was further explained to require almost full-time
+   nursing of each task to insure it is taken to completion by a support
+   group. Joe simply agreed and said we should then nurse every task we
+   have.
+
+   <p>He plain doesn't understand that there are not enough people to do
+   that kind of nursing of each task, but he doesn't seem to mind
+   directing that the task nevertheless gets done. For example, the team
+   just found out that when we submit a request to purchase an item, that
+   it goes through approximately six to eight people before a purchase
+   order is written and the item actually ordered.
+
+   <p>The vendors we are working with on seals and spacer rings have
+   responded to our requests in a timely manner, yet, we (MTI) cannot get
+   a purchase order to them in a timely manner. Our lab has been waiting
+   for a function generator since September 15, 1985. The paperwork
+   authorizing the purchase was finished by Engineering on September 24,
+   1985 and placed into the system. We have yet to receive the requested
+   item. This type of example is typical and results in lost resources
+   that had been planned to do test work for us in a timely manner.
+
+   <p>I for one resent working at full capacity all week long and then being
+   required to support activity on the weekend that could have been
+   accomplished during the week. I might add that even NASA perceives
+   that the team is being blocked in its engineering efforts to
+   accomplish its task. NASA is sending an engineering representative to
+   stay with us starting October 14th. We feel that this is the direct
+   result of their feelings that we (MTI) are not responding quickly
+   enough on the seal problem. I should add that several of the team
+   members requested that we be given a specific manufacturing engineer,
+   quality engineer, safety engineer and four to six technicians to allow
+   us to do our tests on a noninterference basis with the rest of the
+   system. This request was deemed not necessary when Joe decided that
+   the nursing of the task approach was directed.
+
+   <p>Finally, the basic problem boils down to the fact that all MTI
+   problems have #1 priority and that upper management apparently feels
+   that the SRM program is ours for sure and the customer be damned."
+
+   <p>The Activity Report was signed by Roger M. Boisjoly on October 4, 1985
+   and given to my boss's secretary. Unfortunately, I never received any
+   comments back and I never knew if the contents of my activity reports
+   were incorporated into the reports up through the management
+   organization to the top.
+   

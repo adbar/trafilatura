@@ -1,0 +1,811 @@
+<text id="http://www.stsc.hill.af.mil/crosstalk/2004/11/0411Hunt.html" title="STSC CrossTalk - Three Essential Tools for Stable Development© - Nov 2004" encoding="iso-8859-1">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<META name="description" content="Three basic practices make the difference between a software project that succeeds and one that fails. These practices support
+and reinforce each other; when done properly, they form an interlocking safety net to help ensure success and prevent common
+project disasters. However, few development teams in the United States use these proven techniques, and even fewer use them
+correctly.">
+<title>STSC CrossTalk - Three Essential Tools for Stable Development© - Nov 2004</title>
+<link rel="stylesheet" type="text/css" href="/stsc.css">
+<script language="JavaScript" type="text/javascript">
+var root = "/";
+var menuRoot = "/menus";
+var imageRoot = "/images";
+</script>
+<script language="JavaScript1.2" type="text/javascript" src="/menus/drop_down_menu_defns.js"></script>
+<script language="JavaScript" src="/rollovers.js" type="text/javascript"></script>
+<script language="JavaScript" src="/crosstalk/left_nav.js" type="text/javascript"></script>
+<script language="JavaScript" src="/disclaim.js" type="text/javascript"></script>
+</head>
+<body bgcolor="#FFFFFF" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<table border="0" cellspacing="0" cellpadding="0" summary="Header">
+	<tr>
+		<td rowspan="2"><a href="/index.html"><img src="/images/logo_stsc.gif" width="140" height="71" alt="STSC Logo" border="0"></a></td>
+		<td>
+		
+<img src="/images/nav_top_spacer.gif" width="11" height="16" alt="" border="0">
+		
+<a href="/about/index.html" onmouseover="imgon('img01'); popUp( 'HM_Menu1',event )" onmouseout="imgoff('img01');popDown('HM_Menu1')">
+
+<img src="/images/nav_top_about_off.gif" name="img01" width="58" height="16" alt="About Us" border="0"></a>
+
+<img src="/images/nav_top_spacer.gif" width="15" height="16" alt="" border="0">
+
+<a href="/consulting/" onmouseover="imgon('img02'); popUp( 'HM_Menu2',event )" onmouseout="imgoff('img02'); popDown( 'HM_Menu2',event )"><img src="/images/nav_top_consulting_off.gif" name="img02" width="110" height="16" alt="Consulting Services" border="0"></a>
+
+<img src="/images/nav_top_spacer.gif" width="14" height="16" alt="" border="0">
+
+<a href="/crosstalk/about.html" onmouseover="imgon('img03'); popUp( 'HM_Menu3',event )" onmouseout="imgoff('img03'); popDown( 'HM_Menu3',event )"><img src="/images/nav_top_crosstalk_off.gif" alt="CrossTalk" name="img03" id="img03" width="58" height="16" border="0"></a>
+
+<img src="/images/nav_top_spacer.gif" width="15" height="16" alt="" border="0">
+
+<a href="/conference/" onmouseover="imgon('img04'); popUp( 'HM_Menu4',event )" onmouseout="imgoff('img04'); popDown( 'HM_Menu4',event )"><img src="/images/nav_top_conference_off.gif" name="img04" width="67" height="16" alt="STC Conference" border="0"></a>
+
+<img src="/images/nav_top_spacer.gif" width="15" height="16" alt="" border="0">
+
+<a href="/resources/" onmouseover="imgon('img05'); popUp( 'HM_Menu5',event )" onmouseout="imgoff('img05'); popDown( 'HM_Menu5',event )"><img src="/images/nav_top_resources_off.gif" name="img05" width="60" height="16" alt="Resources" border="0"></a>
+
+<img src="/images/bnr_top_right.gif" width="56" height="16" alt="" border="0"></td>
+
+
+		<form name="searchForm" action="/scripts/search.idq" method="post">
+		<td rowspan="2" valign="top"><label for="search"><img src="/images/title_search.gif" width="46" height="16" alt="Search" border="0"></label><br>
+		<input class="searchBox" type="text" id="search" name="CiRestriction" size="9" maxlength="100"><input type="image" src="/images/btn_search.gif" width="22" height="19" name="search" alt="GO" border="0"><br>
+		<select class="searchSelect" id="scope" name="CiScope">
+			<option value="/" selected>Entire Site</option>
+			<option value="/crosstalk/">CrossTalk Only</option>
+		</select><label for="scope"> </label>
+		<input type="hidden" name="CiMaxRecordsPerPage" value="20">
+		<input type="hidden" name="TemplateName" value="search">
+		<input type="hidden" name="CiSort" value="rank[d],write[d]">
+		</td>
+		</form>
+	</tr>
+	<tr>
+		<td valign="top"><img src="/images/bnr_top_secondary.jpg" alt="Software Technology Support Center" width="478" height="55" border="0"></td>
+	</tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="0" summary="Left Navigation and Content">
+	<tr>
+		<td valign="top" class="leftNav"><img src="/images/nav_left_spacer.gif" width="131" height="30" alt="" border="0"><br>
+			<script language="JavaScript" type="text/javascript">
+		document.searchForm.CiScope.selectedIndex=1;
+	</script><table border="0" cellspacing="0" cellpadding="0" summary="Left Navigation">
+<tr>
+<td valign="top" class="leftSubnav"><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/about.html" onmouseover="imgon('img09')" onmouseout="imgoff('img09')"><img src="/images/nav_left_aboutCT_off.gif" name="img09" width="131" height="21" alt="About CrossTalk" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br>
+						  - <a href="/crosstalk/about.html#mission">Mission</a><br>
+						  - <a href="/crosstalk/about.html#staff">Staff</a><br>
+						  - <a href="/crosstalk/about.html#contact">Contact Us</a><br><img src="/images/clear.gif" width="131" height="5" alt="" border="0"><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/" onmouseover="imgon('img14')" onmouseout="imgoff('img14')"><img src="/images/nav_left_current_off.gif" name="img14" width="131" height="21" alt="About Us" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/subscribe.html" onmouseover="imgon('img10')" onmouseout="imgoff('img10')"><img src="/images/nav_left_subscription_off.gif" name="img10" width="131" height="21" alt="Subscription" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br>
+						  - <a href="/crosstalk/subscribe.asp?subscribe">Subscribe Now</a><br>
+						  - <a href="/crosstalk/subscribe.asp?update">Update</a><br>
+						  - <a href="/crosstalk/subscribe.asp?cancel">Cancel</a><br>
+						  - <a href="/crosstalk/CrossTalk.rss"><img border="0" src="/images/rss20.gif" width="47" height="15" align="bottom"></a><br><img src="/images/clear.gif" width="131" height="5" alt="" border="0"><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/theme.html" onmouseover="imgon('img11')" onmouseout="imgoff('img11')"><img src="/images/nav_left_theme_off.gif" name="img11" width="131" height="21" alt="Themes Calendar" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/author.html" onmouseover="imgon('img12')" onmouseout="imgoff('img12')"><img src="/images/nav_left_author_off.gif" name="img12" width="131" height="21" alt="Author Guidelines" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/back_issues.asp" onmouseover="imgon('img13')" onmouseout="imgoff('img13')"><img src="/images/nav_left_back_off.gif" name="img13" width="131" height="21" alt="Back Issues" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/articles.asp" onmouseover="imgon('img15')" onmouseout="imgoff('img15')"><img src="/images/nav_left_article_off.gif" alt="Article Index" name="img15" width="131" height="21" border="0"></a><br><img src="/images/spacer.gif" width="131" height="1" alt="" border="0"><br><a href="/crosstalk/comments.html" onmouseover="imgon('img16')" onmouseout="imgoff('img16')"><img src="/images/nav_left_your_off.gif" alt="Your Comments" name="img16" width="131" height="21" border="0"></a><br></td>
+</tr>
+</table>
+		</td>
+		<td valign="top"><img src="/images/clear.gif" width="18" height="100" alt="" border="0"></td>
+		<td valign="top"> 
+        
+        <span class="breadCrumb"><a href="/index.html">Home</a> &gt; <a href="index.html">CrossTalk Nov 2004</a> &gt; Article</span><br>
+        <table border="0" cellpadding="0" cellspacing="0" width="525">
+<tr>
+<td valign="bottom"><span class="titleSpace"><br></span><img src="/images/title_ct_secondary.gif" alt="CrossTalk - The Journal of Defense Software Engineering" width="424" height="55" border="0"></td>
+<td align="right" valign="top" class="ctArticleGroup">Nov 2004 Issue</td>
+</tr>
+<tr>
+<td colspan="2"><br><span class="ctArticleTitle">Three Essential Tools for Stable Development©</span><br><span class="ctAuthor">Andy Hunt, The Pragmatic Programmers, LLC<br>Dave Thomas, The Pragmatic Programmers, LLC<br></span><br><span class="ctAbstract">Three basic practices make the difference between a software project that succeeds and one that fails. These practices support
+and reinforce each other; when done properly, they form an interlocking safety net to help ensure success and prevent common
+project disasters. However, few development teams in the United States use these proven techniques, and even fewer use them
+correctly.</span><hr>
+<p>Many software projects that fail seem
+to fail for very similar reasons. After
+observing — and helping — many of these
+ailing projects over the past couple of
+decades, it seems clear to us that a majority
+of common problems can be traced
+back to a lack of three very basic practices.
+Fortunately, these three practices are easy
+and relatively inexpensive to adopt. It does
+not require a large-scale, expensive, or
+bureaucratic effort; with just these practices
+in place, your team can work at top
+speed with increased parallelism. You will
+never lose precious work, and you will
+know immediately when the development
+starts to veer off-track in time to correct it,
+cheaply and easily.</p>
+<p>The three basic practices that we have
+identified as being the most crucial are <i>version
+control, unit testing,</i> and <i>automation.</i>
+Version control is an obvious best practice,
+yet nearly 40 percent of software projects
+in the United States do not use any form
+of version control for their source code
+files [1]. The motto of these shops seems
+to be <i>last one in wins</i>. That is, they will use a
+shared drive of some sort and hope that
+no one overwrites their changes as the
+software evolves. Hope is a pretty poor
+methodology, and these teams regularly
+lose precious work. Developers begin to
+fear making any changes at all, in case they
+accidentally make the system worse. Of
+course, this fear becomes a self-fulfilling
+prophecy as necessary changes are neglected
+and the system begins to degrade.</p>
+<p>Unit testing is a coding technique for
+programmers so they can verify that the
+code they just wrote actually does something
+akin to their intent. It may or may
+not fulfill the requirements, but that is a
+separate question: If the code does not do
+what the programmer thought it did, then
+any further testing or validation is both
+meaningless and a large waste of time and
+money (two items that are in short supply
+to begin with). Developer-centric unit
+testing is a great way to introduce basic
+regression testing, create more modularized
+code that is easier to maintain, and
+ensure that new work does not break
+existing work. Despite the effectiveness of
+this technique in both improving design
+and identifying and preventing defects
+(aka bugs), 76 percent of companies in the
+United States do not even try it [2].</p>
+<p>Automation is a catchall category that
+includes regular, unattended project builds,
+including regression tests and push-button
+convenience for day-to-day activities.
+Regular builds ensure that the product can
+be built to catch simple mistakes early and
+easily, when fixing them is the cheapest.
+When implemented properly, it is as if you
+have an ever-vigilant guardian looking over
+your shoulder, warning you as soon as
+there is a problem. Incredibly, some 70
+percent of projects in the United States do
+not have any sort of daily build [2]. By the
+time they discover a problem, it has metastasized
+into a much larger and potentially
+fatal problem.</p>
+<p>We will briefly examine each of these
+areas, with an in-depth look at unit testing
+in particular. We will outline the important
+ideas, synergies, and caveats for each of
+these practices so your team can either
+begin using them or improve your current
+use of them.</p><span class="ctSectionTitle">Version Control</span><br><p>Everyone can agree that version control is
+a best practice but even with it in place, is
+it being used effectively? Ask yourself
+these questions: Can you re-create your
+software exactly as it existed on January 8?
+When a bug is found that affects multiple
+versions of your released software, can
+your team fix it just once, and then apply
+that fix to the different versions automatically?
+Can a developer quickly back out of
+a bad piece of code?</p>
+<p>There is more to version control than
+just keeping track of files. But before we
+proceed, we need to define some simple
+terminology: We use <i>check-in</i> to mean that
+a programmer has submitted his or her
+changes to the version control system. We
+use <i>checkout</i> to refer to getting a personal
+version of code from the version control
+system into a local working area.</p>
+<p>When a programmer checks in code, it
+is now potentially available to the rest of
+the team. As such, it is only polite to
+ensure that this new code actually compiles
+successfully; it should be accompanied by
+unit tests (more on this later), and those
+tests should pass. All the other passing
+tests in the system should continue to pass
+as well — if they suddenly fail, then you can
+easily trace the failure to the new code that
+was introduced.</p>
+<p>It is far easier to track down these sort
+of problems right at the point of creation
+instead of days, weeks, or even months
+later. To exploit this effect, you must allow
+and encourage frequent check-ins of code
+multiple times per day. It is not unusual to
+see team members check-in code 10-20
+times a day. It <i>is</i> unusual — and very dangerous
+— to allow a programmer to go a
+few days or a week or more without checking
+in code.</p>
+<p>Because check-ins occur so frequently,
+these and other day-to-day operations
+must be very fast and low ceremony. A
+check-in or checkout of code should not
+take more than five to 15 seconds in general.
+If it takes an hour, people will not do
+it, and you have lost the advantage.</p>
+<p>Now some people get a little nervous
+when they read this part. They fret that all
+of this code is being dumped into the system
+without being reviewed, tested by QA,
+audited, or whatever else their methodology
+or environment demands. They are
+rightfully concerned that this code is not
+yet ready to be part of a release.
+Nonetheless, it must still be in the version
+control system so that it is protected.</p>
+<p>Most version control systems provide a
+mechanism to differentiate ongoing development
+changes from official release candidates.
+Some feature explicit <i>promotion</i>
+commands to allow this. You can accomplish
+the same thing in other systems by
+using tags (or version labels) to identify
+stable release versions of source code as
+opposed to code that is in progress.</p>
+<p>Regardless of the mechanism, it must
+be an easy operation to promote development
+changes to an official release status.
+On the other side of the coin, you need to
+be able to back out changes and any disastrous
+new code when needed.</p>
+<p>Finally, you need to be able to re-create
+any product built at any previous point
+in time. This ability to go back in time is
+crucial for effective debugging and problem
+solving (just think of any developer
+who starts a discussion with, "Well, it used
+to work").</p>
+<p>Commercial and freely available version
+control systems vary in complexity,
+features, and ease of administration. But
+one feature in particular is worth examining:
+whether it supports strict locking or
+optimistic locking. In systems under strict
+locking, only one person can edit a file at
+a time. While that sounds like a good idea,
+it turns out to be unduly restrictive in
+practice. We favor the Concurrent
+Version System <a href="http://www.cvshome.org" target="_blank" onclick="disclaim()">www.cvshome.org</a>
+described in [3].</p>
+<p>You may find you can increase parallelism
+and efficiency in your team by using
+a system that features optimistic locking.
+In these systems, multiple people can edit
+the same source code file simultaneously.
+The system uses conflict-resolution algorithms
+to merge the disparate changes
+together in a sensible manner. Ninety-nine
+percent of the time it works perfectly without
+intervention. Occasionally, however,
+there is a conflict that must be addressed
+manually. At no point is anyone's work in
+danger of being lost, and it ends up being
+much more efficient to coordinate just
+these few conflicts by hand instead of having
+everyone coordinate every change with
+the rest of the team.</p><span class="ctSectionTitle">Unit Testing</span><br><p>When a developer makes a change to the
+code on your project, what feedback is
+available? Does the developer have any
+way of knowing if the new code broke
+anything else? Better still, how do <i>you</i> know
+if any developer has broken anything
+today? A system of automated unit tests
+will give you this information in real-time.</p>
+<p>Programming languages are notorious
+for doing exactly what programmers say,
+not what they mean. Like a petulant child
+that takes your expressions completely literally,
+the computer follows our instructions
+to the letter, with no regard at all to
+our intent. Technology has yet to produce
+the compiler that implements with <i>do what
+I mean, not what I say.</i></p>
+<p>So in keeping with the idea of finding
+and fixing problems as soon as they occur,
+you want programmers to use unit tests (or
+checked examples) to verify the computer's
+literal interpretation of their commands. It
+is really no different from following
+through with a subordinate to verify that a
+delegated task was performed — except
+that instead of just checking once, automated
+unit tests will check and recheck
+every time any code is changed.</p>
+<p>There are some requirements to using
+this style of development, however:
+<ul>
+<li>The code base must be decoupled
+enough to allow testing. When code is
+tightly coupled, it is very difficult to
+test individual pieces in isolation, and
+harder to devise unit tests that exercise
+specific areas of functionality. Wellwritten
+code, on the other hand, is easy
+to test. If your team finds that the code
+is difficult to test, then take that as a
+warning sign that the code is in serious
+trouble to begin with.</li>
+<li>Only check-in tested code. As we mentioned
+above, checking-in foists a programmer's
+code onto the rest of the
+team. Once it is available to everyone,
+then the whole team will begin to rely
+on it. Because of this reliance, all code
+that is checked in must pass its own
+tests.</li>
+<li>In addition to passing its own tests, the
+programmer checking in the code must
+ensure nothing else breaks, either. This
+simple regression helps prevent that
+frustrating feeling of <i>one step forward, two
+steps back </i>that becomes commonplace
+when code fixes cause collateral damage
+to other parts of the code base.
+Usually these bugs then require fixes,
+which in turn cause more damage, and
+so on. The discipline of keeping all the
+tests running all the time prevents that
+particular death-spiral.</li>
+<li>There should be at least as much test
+code as production code. You might
+think that is excessive, but it is really
+just a question of where the value of
+the system resides. We firmly believe
+the code that implements the system is
+not where the value of your intellectual
+property lies. Code can be rewritten
+and replaced, and the new code (even
+an entirely new system) can be verified
+against the existing tests. Now the
+most precise specification of the system
+is in executable form — the unit
+tests. The learning and experience that
+goes into creating the unit tests is
+invaluable, and the tests themselves are
+the best expression we have of that
+knowledge.</li>
+</ul>
+</p>
+<p>We will look at implementing unit tests
+(aka checked examples) in much greater
+detail later in this article.</p><span class="ctSectionTitle">Automation</span><br><p>An old saying goes the <i>cobbler's children have
+no shoes</i>. This saying is particularly appropriate
+for our use of software tools during
+software development. We see teams routinely
+waste time using manual procedures
+that could easily be automated.</p>
+<p>Everyone clamors for software development
+to be more defined and repeatable.
+Well, the <i>design</i> and implementation of
+software probably cannot be made repeatable
+any more than you could make the
+process of making hit movies repeatable.
+But the <i>production</i> of software is another
+matter entirely.</p>
+<p>The process of taking source code
+files, bits of eXtensible Markup Language,
+libraries, and other resources and producing
+an executable for the end user should
+be precisely repeatable. Given the same
+inputs, you want the same outputs, every
+time, without excuses. In combination
+with version control, you want to be able
+to go back in time and reproduce that
+same pile of bits that you would have produced
+on January 8 just as easily. That
+comes in very handy should the
+Department of Justice ask for it politely, or
+a frustrated customer asks for it somewhat
+less politely to work around some outstanding
+bug.</p>
+<p>The rule we try to adopt is that any
+manual process that is repeated twice is
+likely to be repeated a third time — or more
+— so it needs to be encapsulated within a
+shell script, batch file, piece of Java code,
+Job Control Language, or whatever.</p>
+<p>Unit tests, as well as functional and
+acceptance tests, should be run automatically
+as well as be part of the build process.
+You will probably want to run the unit
+tests (which should execute very quickly)
+with every build; automatic functional and
+acceptance tests might take longer and you
+may only want to run those once a week,
+or when convenient.</p>
+<p>You see, not only does automation
+make developer's lives easier by providing
+push-button convenience, it helps keep the
+feedback coming by constantly checking
+the state of the software. Automated
+builds are constantly asking two questions:
+Does the software build correctly? Do all
+the tests still pass a basic regression? With
+the computer performing these checks
+regularly, developers do not have to.
+Problems can be identified as soon as they
+happen, and the appropriate developer or
+team lead can be notified immediately of
+the problem [4]. Problems can be fixed
+quickly, before they have a chance to cause
+any additional damage. That is the benefit
+we want from automation.</p>
+<p>Finally, consider how the build communicates
+to the development team and its
+management. Does the team lead look at
+the latest results in some log file and then
+report status to management? Does not
+that constitute a manual process? It is relatively
+easy to set up visual display devices,
+ranging from liquid crystal display screens
+to bubbling lava-style lamps to the new
+and popular Ambient Orb [4].</p><span class="ctSectionTitle">Synergy</span><br><p>These three practices interlock to provide a
+genuine safety net for developers. Version
+control is the foundation. Unit tests and
+scripts for automation are under version
+control, but version control needs automation
+to be effective. Unit testing needs both
+version control and automation.</p>
+<p>With the combination, developers can
+better afford to take chances, experiment,
+and find the best solutions. The Rule of
+Three says that if you have not proposed
+at least three solutions to a problem then
+you have not thought about it hard
+enough. With this set of practices in place,
+developers can realistically try out a number
+of different solutions to a problem:
+Version control will keep them separate,
+and unit testing will help confirm the viability
+of each solution. All this with plenty
+of automated support, including continuous,
+ongoing checks ensures that the team
+does not wander too far off into the
+woods. This is how modern, successful
+software development is done.</p><span class="ctSectionTitle">Unit Testing With Your
+Right-BICEP</span><br><p>You can strengthen your organization's
+testing skills by looking at six specific areas
+of code that may need unit tests. These
+areas are remembered easily using the
+mnemonic Right-BICEP [5]:</p>
+<p><strong>Right</strong> — Are the results <i>right?</i><br>
+<strong>B</strong> — Are all the <i>boundary</i> conditions correct?<br>
+<strong>I </strong>— Can you check <i>inverse</i> relationships?<br>
+<strong>C</strong> — Can you <i>cross-check</i> results using
+other means?<br>
+<strong>E</strong> — Can you force <i>error</i> conditions to
+happen?<br>
+<strong>P</strong> — Are <i>performance</i> characteristics
+within bounds?</p><span class="ctSubsectionTitle">Are the Results Right?</span><br><p>The first and most obvious area to test is
+simply to see if the expected results are
+right — to validate the results. These are
+usually the easy tests, as they represent the
+answer to the key question: If the code ran
+correctly, how would I know? Here is an
+example of how being forced to think
+about testing helps developers code better:
+If this question cannot be answered satisfactorily,
+then writing the code — or the test
+— may be a complete waste of time.</p>
+<p>"But wait," you cry out, "that does not
+sound very agile! What if the requirements
+are vague or incomplete? Does that mean
+we can't write code until all the requirements
+are firm?" No, it does not at all. If
+the requirements are truly not yet known,
+or not yet complete, you can always make
+some assumptions as a stake in the ground.
+They may not be correct from the user's
+point of view (or anyone else on the planet),
+but they let the team continue to develop.
+And, because you have written a test
+based on your assumption, you have now
+documented it — nothing is implicit.</p>
+<p>Of course, you must then arrange for
+feedback with users or sponsors to finetune
+your assumptions. The definition of
+<i>correct</i> may change over the lifetime of the
+code in question, but at any point, you
+should be able to prove that it is doing
+what you think it ought.</p><span class="ctSubsectionTitle">Boundary Conditions</span><br><p>Identifying boundary conditions is one of
+the most valuable parts of unit testing
+because this is where most bugs generally
+live — at the edges. Some conditions you
+might want to think about include the following:
+<ul>
+<li>Totally bogus or inconsistent input values
+such as a file <br>name of
+!*W:X\\{\Gi/w$$g/h\#WQ@.</li>
+<li>Badly formatted data such as an e-mail
+address without a top-level domain
+fred@foobar.</li>
+<li>Empty or missing values such as 0, 0.0,
+"", or null.</li>
+<li>Values far in excess of reasonable
+expectations such as a person's age of
+10,000 years.</li>
+<li>Duplicates in lists that should not have
+duplicates.</li>
+<li>Ordered lists that are not in order and
+vice-versa. Try handing a pre-sorted list
+to a sort algorithm, for instance, or
+even a reverse-sorted list.</li>
+<li>Things that arrive out of order, or happen
+out of expected order such as trying
+to print a document before logging
+in, for instance.</li>
+</ul>
+</p>
+<p>An easy way to think of possible
+boundary conditions is to remember the
+acronym CORRECT. For each of these
+items, consider whether or not similar conditions
+may exist in your method that you
+want to test, and what might happen if
+these conditions were violated [4]:
+<ul>
+<li><strong>Conformance.</strong> Does the value conform
+to an expected format?</li>
+<li><strong>Ordering.</strong> Is the set of values ordered
+or unordered as appropriate?</li>
+<li><strong>Range.</strong> Is the value within reasonable
+minimum and maximum values?</li>
+<li><strong>Reference.</strong> Does the code reference
+anything external that is not under
+direct control of the code itself ?</li>
+<li><strong>Existence.</strong> Does the value exist (e.g., is
+non-null, non-zero, present in a set,
+etc.)?</li>
+<li><strong>Cardinality.</strong> Are there exactly enough
+values?</li>
+<li><strong>Time (absolute and relative).</strong> Is
+everything happening in order? At the
+right time? In time?</li>
+</ul>
+</p><span class="ctSubsectionTitle">Check Inverse Relationships</span><br><p>Some methods can be checked by applying
+their logical inverse. For instance developers
+might check a method that calculates a
+square root by squaring the result, and testing
+that it is tolerably close to the original
+number. They might also check that some
+data was successfully inserted into a database
+by then searching for it, and so on.</p>
+<p>Be cautious when the same person has
+written both the original routine and its
+inverse, as some bugs might be masked by
+a common error in both routines. Where
+possible, use a different source for the
+inverse test. In the square root example,
+we might use regular multiplication to test
+our method. For the database search, we
+will probably use a vendor-provided search
+routine to test our insertion.</p><span class="ctSubsectionTitle">Cross-Check Using Other Means</span><br><p>Developers might also be able to crosscheck
+results of their method using different
+means. Usually there is more than one
+way to calculate some quantity; we might
+pick one algorithm over the others because
+it performs better or has other desirable
+characteristics. That is the one we will use
+in production, but we can use one of the
+other versions to cross-check our results in
+the test system. This technique is especially
+helpful when there is a proven, known
+way of accomplishing the task that happens
+to be too slow or too inflexible to use
+in production code.</p>
+<p>Another way of looking at this is to use
+different pieces of data from the code
+itself to make sure they all <i>add up</i>. For
+instance, suppose you had some sort of
+system that automated a lending library. In
+this system, the number of copies of a
+particular book should always balance.
+That is, the number of copies that are
+checked out plus the number of copies sitting
+on the shelves should always equal the
+total number of copies in the collection.
+These are separate pieces of data, and may
+even be managed by different pieces of
+code, but they still have to agree and so can
+be used to cross-check one another.</p><span class="ctSubsectionTitle">Force Error Conditions</span><br><p>In the real world, errors happen. Disks fill
+up, network lines drop, e-mail goes into a
+black hole, and programs crash. You
+should be able to test that code handles all
+of these real-world problems by forcing
+errors to occur.</p>
+<p>That is easy enough to do with invalid
+parameters and the like, but to simulate
+specific network errors — without unplugging
+any cables — takes some special techniques,
+including using mock objects.</p>
+<p>In movie and television production,
+crews will often use <i>stand-ins</i>, or doubles,
+for the real actors. In particular, while the
+crews are setting up the lights and camera
+angles, they will use <i>lighting doubles</i>: inexpensive,
+unimportant people who are
+about the same height and complexion as
+the very expensive, important actors who
+remain safely lounging in their luxurious
+trailers.</p>
+<p>The crew then tests their setup with
+the lighting doubles, measuring the distance
+from the camera to the stand-in's
+nose, adjusting the lighting until there are
+no unwanted shadows, and so on, while
+the obedient stand-in just stands there and
+does not whine or complain about <i>lacking
+motivation</i> for their character in this scene.</p>
+<p>What you can do in unit testing is similar
+to the use of lighting doubles in the
+movies: Use a cheap stand-in that is kind
+of close to the real thing, at least superficially,
+but that will be easier to work with
+for your purposes.</p><span class="ctSubsectionTitle">Performance Characteristics</span><br><p>One area that might prove beneficial to
+examine is performance characteristics —
+not performance itself, but trends as input
+sizes grow, as problems become more
+complex, and so on. Why? We have all
+experienced applications that work fine for
+a year or so, but suddenly and inexplicably
+slow to a crawl. Often, this is the result of
+a silly error or oversight: A database
+administrator changed the indexing structure
+in the database, or a developer typed
+an extra zero into a loop counter.</p>
+<p>What we would like to achieve is a
+quick regression test of performance
+characteristics. We want to do this regularly,
+every day at least, so that if we have
+inadvertently introduced a performance
+problem we will know about it sooner
+rather than later (because the nearer in
+time you are to the change that introduced
+the problem, the easier it is to work
+through the list of things that may have
+caused that problem).</p>
+<p>So, to avoid shipping software with
+unsuspected performance problems,
+teams should consider writing some rough
+tests just to make sure that the performance
+curve remains stable. For instance,
+suppose the team is working on a component
+that lets users browse the Web from
+within their application. Part of the
+requirement is to filter out access to Web
+sites that we wish to block. The code
+works fine with a few dozen sample sites,
+but will it work as well with 10,000?
+100,000? We can write a unit test to find
+out.</p>
+<p>This gives us some assurance that we
+are still meeting performance targets. But
+because this one test takes six to seven
+seconds to run, we may not want to run it
+every time. As long as we run it (say)
+nightly, we will quickly be alerted to any
+problems we may introduce while there is
+still time to fix them.</p><span class="ctSectionTitle">Getting Started</span><br><p>All of the software tools mentioned in this
+article are freely available on the Web. To
+get started using these practices effectively,
+we recommend following this sequence:
+<ol>
+<li>Get everything into version control.</li>
+<li>Arrange for automatic, daily builds.
+Increase these to multiple times per day
+or continuously as soon as the process
+begins to work smoothly.</li>
+<li>Start writing unit tests for new code.
+Where needed, add some unit tests to
+existing code (but be pragmatic about
+it; only add tests if they will really help,
+not just for the sake of completeness).</li>
+<li>Add the unit tests to the scheduled
+builds.</li>
+</ol>
+</p>
+<p>You can begin right away. Fire up that
+Web browser and start downloading some
+software if you do not already have it.
+These ideas will not fix all the problems
+on your project, of course, but they will
+provide your project with a firm footing
+so you can concentrate on the truly difficult
+problems.</p><span class="ctSectionTitle">References</span><br><p>
+<ol>
+<li>Zeichick, Alan. "Debuggers, Source
+Control Keys to Quality." <i>Software
+Development Times</i> 1 Mar. 2002.</li>
+<li>Cusumano, Michael, et al. "A Global
+Survey of Software Development
+Practices." Paper 178. MIT Sloan
+School of Management, June 2003.</li>
+<li>Thomas, Dave, and Andy Hunt.
+<i>Pragmatic Version Control With CVS</i>.
+Raleigh, NC: Pragmatic Bookshelf,
+2003 <a href="http://www.PragmaticBookshelf.com" target="_blank" onclick="disclaim()">www.PragmaticBookshelf.com</a>.</li>
+<li>Clark, Mike. <i>Pragmatic Project
+Automation.</i> Raleigh, NC: Pragmatic
+Bookshelf, 2004 <a href="http://www.PragmaticBookshelf.com" target="_blank" onclick="disclaim()">www.PragmaticBookshelf.com</a>.</li>
+<li>Hunt, Andy, and Dave Thomas.
+<i>Pragmatic Unit Testing in Java With
+JUnit.</i> Raleigh, NC: Pragmatic
+Bookshelf, 2003. (Also available in a
+C# version) <a href="http://www.PragmaticBookshelf.com" target="_blank" onclick="disclaim()">www.PragmaticBookshelf.com</a>.</li>
+</ol>
+</p>
+<hr><span class="ctSectionTitle">About the Authors</span><br><img src="0411Hunt.jpg" alt="Andy Hunt" width="143" height="176" border="0" align="center"><p><b>Andy Hunt</b> is an avid
+woodworker and musician,
+but curiously, he is
+more in demand as a
+consultant. He has worked
+in telecommunications,
+banking, financial services, and
+utilities, as well as more exotic fields such
+as medical imaging and graphic arts.
+Hunt is author of many articles,
+columns and books, and co-author of
+"The Pragmatic Programmer."
+The Pragmatic Programmers,LLC<br><br>9650 Strickland RD<br>STE 103-255<br>Raleigh, NC 27615<br>
+		                	Phone: (800) 699-7764<br>
+		                	E-mail: <a href="mailto:andy@pragmaticprogrammer.com">andy@pragmaticprogrammer.com</a><br></p><br clear="all"><hr><img src="0411Thomas.jpg" alt="Dave Thomas" width="143" height="176" border="0" align="center"><p><b>Dave Thomas</b> likes to
+fly single-engine airplanes
+and pays for his
+habit by finding elegant
+solutions to difficult
+problems, consulting in
+areas as diverse as aerospace, banking,
+financial services, telecommunications,
+travel and transport, and the Internet.
+Thomas is author of many articles,
+columns and books, and co-author of
+"The Pragmatic Programmer."
+The Pragmatic Programmers,LLC<br><br>P.O. Box 293325<br>Lewisville,TX 75029<br>
+		                	Phone: (972) 539-7832<br>
+		                	E-mail: <a href="mailto:dave@pragmaticprogrammer.com">dave@pragmaticprogrammer.com</a><br></p><br clear="all"><hr>©  2004 The Pragmatic Programmers, LLC. Portions of
+this article adapted from "Pragmatic Unit Testing in Java
+With JUnit," by Andy Hunt and Dave Thomas (Volume
+II of the Pragmatic Starter Kit), published by the
+Pragmatic Bookshelf and Copyright © 2003, 2004 The
+Pragmatic Programmers, LLC. Reprinted with permission.</td>
+</tr>
+</table>
+		
+		</td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" summary="Footer">
+	<tr> 
+		<td rowspan="4" class="leftNav"><br><img src="/images/nav_left_logo_usaf.gif" alt="USAF Logo" width="131" height="95" border="0"></td>
+		<td align="right"><br><img src="/images/vert_line.gif" width="1" height="26" hspace="11" alt="" border="0"></td>
+		<td><br><a href="/about/privacysecurity.html">Privacy and Security Notice</a>  ·  <a href="/about/disclaimer.html">External Links Disclaimer</a>  ·  <a href="/about/sitemap.html">Site Map</a>  ·  <a href="/about/info.html">Contact Us</a></td>
+	</tr>
+	<tr>
+		<td class="rule"><img src="/images/spacer.gif" width="18" height="1" alt="" border="0"></td>
+		<td class="rule"><img src="/images/clear.gif" width="200" height="1" alt="" border="0"></td>
+	</tr>
+	<tr>
+		<td><img src="/images/clear.gif" width="30" height="1" alt="" border="0"></td>
+		<td class="footer"><img src="/images/clear.gif" width="18" height="10" alt="" border="0"><br>
+
+
+		Please <a href="http://www.stsc.hill.af.mil/emailstsc.html" target="_blank">E-mail</a> or call 801-775-5555 (DSN 775-5555) if you have any questions regarding your <a href="/crosstalk/subscribe.html">CrossTalk subscription</a> or for additional STSC information.<br><br>
+		<strong>Webmaster:</strong> 517th SMXS/MDEA, 801-777-0857 (DSN 777-0857), <a href="http://www.stsc.hill.af.mil/emailstsc.html" target="_blank">E-mail</a><br><br>
+      	<strong>STSC Parent Organizations: </strong> <a href="http://www.309smxg.hill.af.mil/" target="_blank">309SMXG</a> <a href="http://www.hill.af.mil/" target="_blank">Ogden Air Logistics Center, Hill AFB</a>
+
+
+</td>
+	</tr>
+</table>
+<br>
+<br>
+
+
+</body>
+</html>
+
+</text>

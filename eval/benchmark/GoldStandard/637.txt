@@ -1,0 +1,208 @@
+
+
+
+            <h>His Big Mistake
+            by Peter Tyson   
+
+      <p>For most of his adult life, from about the age of 30 until his death at 78 
+      in the year 1642, Galileo propounded his theory of how the tides work. Yet 
+      a lengthy summary of our understanding of the tides that the British 
+      physicist Lord Kelvin published in 1882 mentions Galileo only in passing. 
+      <p>Why the cursory treatment? Because Galileo's theory of the tides, while 
+      extremely well thought out and eminently reasonable considering the state 
+      of scientific knowledge at the time, was wrong. Indeed, it was the most 
+      significant stumble in an otherwise brilliant scientific career. A look 
+      back at Galileo's big mistake offers clues to how and why such a great 
+      thinker could have made it, and what lessons it can offer us today. 
+
+
+       <h>A planet like a barge  
+      <p>It was in 1595 when Galileo, just shy of his 30th birthday, first came up 
+      with his explanation for the tides. The idea occurred to him while 
+      traveling on a barge that was ferrying freshwater to Venice. (Galileo 
+      lived in nearby Padua and often visited Venice.) He noticed that whenever 
+      the barge's speed or direction altered, the freshwater inside sloshed 
+      around accordingly. If the vessel suddenly ground to a halt on a sandbar, 
+      for instance, the water pushed up towards the bow then bounced back toward 
+      the stern, doing this several times with ever decreasing agitation until 
+      it returned to a level state. 
+      <p>Galileo realized that the Earth's dual motion—its daily one around its 
+      axis and its annual one around the sun—might have the same effect on 
+      oceans and other great bodies of water as the barge had on its freshwater 
+      cargo. The key, as Galileo saw it, was that even though we don't sense it, 
+      different parts of our planet move at different speeds depending on the 
+      time of day. It's as if the Earth were a barge, which sped up, slowed 
+      down, and periodically changed direction. 
+      <p>In his "Treatise on the Tides," a paper he wrote in 1616, Galileo used a 
+      diagram to explain why he thought this was true (see animated version at 
+      right above). In this animation, the Earth revolves in a counterclockwise 
+      direction both on its axis and around the sun. 
+      <p>Galileo demonstrated that the combination of the two motions—the so-called 
+      "absolute motion"—is always fastest on the part of the circle near A, 
+      because that part is moving in the same direction for both the daily and 
+      annual movements. And it is always slowest on the part of the circle near 
+      B, because that part is moving in opposite directions for the daily and 
+      annual movements. He determined that because the two absolute motions are 
+      additive on one side of the globe and subtractive on the other, the 
+      extreme ends of any sufficiently large basin of water, such as the 
+      Mediterranean Sea, would be moving at different speeds. The daily 
+      acceleration and deceleration of that body of water, he reasoned, effects 
+      a sloshing within it—the tides. 
+      <p>The chief objection to Galileo's argument was that his model should have 
+      called for only one high tide a day, whereas there are roughly two. 
+      Galileo explained this away by stating that many other factors play a role 
+      in creating a specific tidal situation. These include the length of a 
+      basin, its orientation, its depth, the shape of its coasts, the effect of 
+      winds, and so forth. 
+
+
+       <h>A sensible theory  
+      <p>Galileo thought he had discovered the correct explanation for the tides, 
+      one that would sink the other leading hypothesis of the day—namely, that 
+      the moon triggered the tides. In 1609, the German mathematician Johannes 
+      Kepler had written, "The sphere of influence of the attraction which is in 
+      the moon extends as far as the Earth, and incites the waters up from the 
+      torrid zone...." But because Kepler and other proponents of the moon 
+      theory could offer no scientific explanation for such influence, Galileo, 
+      who worked strictly on the basis of what he could see with his own eyes, 
+      found it impossible to believe; the theory smacked of the occult, he 
+      declared. (It wasn't until Sir Isaac Newton published his law of universal 
+      gravitation in 1687 that Kepler's "attraction" gained a firm scientific 
+      footing. Today, of course, most schoolchildren know that Kepler was right: 
+      the moon's gravitational tug gives rise to the tides.) 
+      <p>Galileo also thought his tidal theory provided powerful support for the 
+      notion that the Earth revolved around the sun (and not the other way 
+      around, as virtually everyone in the world then believed). This notion was 
+      first advanced in the mid-16th century by the Polish astronomer Nicolaus 
+      Copernicus, who maintained that our planet's rotation and revolution 
+      around the sun accounted for the apparent movement of the heavenly bodies. 
+      Galileo believed in the Copernican rather the Ptolemaic system, which had 
+      held sway ever since Aristotle and his successor Ptolemy. The Ptolemaic 
+      view, that the Earth was the center of the universe and all heavenly 
+      bodies revolved around it, was insinuated by Catholic teachings to be 
+      supported by the Bible and was therefore upheld by the Vatican. 
+      <p>Even as he published his tidal theory in 1616, however, Galileo may have 
+      had some lingering doubts about it. At the end of the "Treatise," he says 
+      he hopes his idea "does not turn out to be delusive, like a dream which 
+      gives a brief image of truth followed by an immediate certainty of 
+      falsity. This I submit to the judgment of intelligent investigators." Such 
+      scientific investigators would not appear for some time, and then, alas, 
+      they would judge him wrong. 
+
+
+       <h>In deep water  
+      <p>In the meantime, Galileo had to face investigators of a different stripe: 
+      inquisitors. Within two months, the Inquisition placed Copernicus's book 
+      on the Index of Prohibited Books. Called before the Pope's theological 
+      adviser, Roberto Cardinal Bellarmino, Galileo was forced to agree not to 
+      defend or hold Copernicus's doctrine. 
+      <p>For years, Galileo kept his thoughts on the matter close to his chest, but 
+      eventually he could contain himself no longer. He fervently believed 
+      Copernicus was right, and he would tell the world. In 1632, Galileo 
+      published his Dialogue Concerning the Two Chief World Systems. During the 
+      six years he had labored on it, Galileo's working title for the book had 
+      been On the Flux and Reflux of the Sea, and indeed, he reprised his 1616 
+      argument in the last of the book's four sections. 
+      <p>All the old arguments were there. At one point, for example, one of the 
+      book's three main characters, Salviati, who is a thinly disguised stand-in 
+      for Galileo, says, "Among all the famous men who have philosophized [about 
+      the tides], I wonder more at Kepler than any of the rest. Though he is a 
+      free and acute genius, he has lent his assent to the moon's dominance over 
+      the oceans and to other occult happenings and other such trifles." 
+      <p>In a dramatic way, Galileo also broke his promise to obey the Church's 
+      mandate not to espouse the Copernican system. The Dialogue represents, as 
+      another superior thinker, Albert Einstein, put it in a foreword to a 1953 
+      edition of the book, "a downright roguish attempt to comply with this 
+      order in appearance and yet in fact to disregard it. Unfortunately, it 
+      turned out that the Holy Inquisition was unable to appreciate adequately 
+      such subtle humor." Galileo was placed under house arrest and the Dialogue 
+      banned. 
+
+
+       <h>A strenuous quest  
+      <p>Einstein had keen insights on why Galileo acted so rashly. First of all, 
+      it was Galileo's longing to find a mechanical proof of the Earth's motion, 
+      Einstein felt, that misled him into not only formulating but clinging so 
+      tenaciously to his flawed theory on the tides. The planet's motion 
+      accounts for the tides, Galileo posited, and the tides account for the 
+      planet's motion—it was all so neat. Moreover, all Galileo's astronomical 
+      observations convinced him that Copernicus was correct, and he wanted 
+      desperately to prove that fact scientifically. As Einstein put it, "His 
+      aim was to substitute for a petrified and barren system of ideas the 
+      unbiased and strenuous quest for a deeper and more consistent 
+      comprehension of the physical and astronomical facts." 
+      <p>Even Galileo's greatest blunder reveals his greatest strength as a 
+      scientist. Referring to the tidal theory, Stillman Drake, a leading 
+      Galileo scholar, once wrote, "The prime source of Galileo's effectiveness 
+      was his bringing together of mathematics, astronomy, and physics in an 
+      inseparable relationship. Hence even a questionable example of such a 
+      relationship given by him was still capable of revealing to others what 
+      sort of thing should be sought after in constructing a scientific 
+      explanation." For another view of Galileo's contribution, see His Place in 
+      Science.) 
+      <p>That is, even though Galileo was wrong in this instance, he was right 
+      about the direction of science (and showed it by example): away from a 
+      more speculative, deductive approach and towards a more empirical, 
+      experimental method. Galileo didn't make it into Lord Kelvin's seminal 
+      paper on the tides. But for all his work, including his tidal theory, he 
+      secured a place in history as the first modern scientist.  
+        
+             
+                  <p>Galileo thought the tides occurred because of the Earth's 
+                  daily rotation around its axis and its yearly circuit around 
+                  the sun. For his reasoning, and an explanation of this 
+                  animation, see main text at left. 
+
+
+
+
+             <p>Galileo appears before the Inquisition, circa 1632, in a 
+                  19th-century painting by Joseph-Nicolas Robert-Fleury. 
+
+
+
+
+             <p>In the only mention of Galileo in his classic 1882 treatise 
+                  on the tides, Lord Kelvin wrote that the Italian astronomer 
+                  found the idea that the moon caused the tides "a lamentable 
+                  piece of mysticism...." 
+
+
+
+
+             <p>"Galileo's Discourse on the Tides," by Galileo Galilei. In 
+                  The Galileo Affair: A Documentary History, edited by Maurice 
+                  A. Finocchiaro (Berkeley, Calif: University of California 
+                  Press, 1989).
+
+                  <p>Dialogue Concerning the Two Chief World Systems: Ptolemaic and 
+                  Copernican, by Galileo Galilei (New York: The Modern Library, 
+                  2001).
+
+                  <p>"The Tides" [Evening Lecture to the British Association at the 
+                  Southhampton Meeting, Friday, August 25th, 1882], by Sir 
+                  William Thomson (Lord Kelvin). See www.bartleby.com/ 
+                  30/16.html 
+
+
+
+
+             
+
+                  <p>An illustrated chronology of Galileo's life. 
+
+                  <p>Why Galileo is the father of modern science. 
+
+                  <p>On Galileo's refractor and Newton's reflector. 
+				  
+                  <p>How and why Galileo got it wrong about the tides. 
+
+                  <p>Falling objects, inclined planes, and more. 
+
+
+
+      <p>Peter Tyson is editor in chief of NOVA online. 
+
+
+
+

@@ -69,6 +69,7 @@ MANUALLY_STRIPPED = [
     'abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn',
     'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody',
     'tfoot', 'thead',
+    # Added:
 ]
 # 'center', 'rb', 'wbr'
 

@@ -1,0 +1,70 @@
+URL: http://mednewsarchive.wustl.edu/medadmin/PAnews.nsf/0/B6ADE8FC84A7CAF086256B1E00792CDE
+
+                       
+<h>NEWS
+
+<h>   Contact: Barbra Rodriguez
+            (314) 286-0122  
+
+<h>   $1.1 Million Grant To Study Factors Controlling Cell Division
+
+<p>   St. Louis, May 19, 1999 - Helen Piwnica-Worms, Ph.D., professor of
+   cell biology and physiology at Washington University School of
+   Medicine in St. Louis, has received a four-year $1.1 million grant
+   from the National Institute of General Medical Sciences. Piwnica-Worms
+   will analyze the molecular factors that regulate a cell's decision to
+   divide into two daughter cells. When regulation goes astray, cells
+   divide unrestrainedly into tumors.
+
+ <p>  In some ways, a cell resembles a new-fangled car that won't move until
+   the driver is buckled in.
+
+<p>   A cell divides only if molecular sensors detect that its genetic
+   material, DNA, is ready. Having undamaged DNA is crucial prior to
+   division because DNA provides the molecular blueprint daughter cells
+   need to survive.
+
+<p>   Piwnica-Worms will clarify how the two major DNA sensors help cells
+   make the division decision. These sensors, which are similar in yeast
+   cells and human cells, check for damage to DNA and check whether the
+   DNA has been faithfully duplicated.
+
+<p>   Piwnica-Worms will study how two factors regulate a component of the
+   DNA damage sensor, a protein called cell division cycle molecule 25C
+   (Cdc25C). When DNA is in good shape, Cdc25C activates another protein
+   that switches on cell division.
+
+<p>   Her laboratory previously helped identify proteins called Chk1 and
+   Cds1 in human and yeast cells that prevent Cdc25C from activating the
+   switch if a cell's DNA is damaged or not faithfully replicated.
+   Piwnica-Worms will study how Chk1 and Cds1 interact with Cdc25C.
+
+<p>   The molecular switch, Cdc2, also is regulated by other proteins.
+   Piwnica-Worms will determine whether a regulator called Wee1 in human
+   and yeast cells keeps the switch from working when division is
+   inappropriate.
+
+<p>   The Wee1 protein is found in the nucleus, where sensors are thought to
+   evaluate DNA's readiness for cell division. But a regulator found
+   outside the nucleus in cells of humans and other many-celled organisms
+   might inhibit Cdc2 activity early on. Piwnica-Worms hopes to discover
+   which regulator plays this role and whether the regulators act on
+   other proteins.
+
+<p>   She also will study mutated forms of the second regulator to determine
+   how it interacts with targets. This work could reveal a way to keep
+   Cdc2 outside the nucleus, preventing it from triggering cell division.
+
+<p>   "If you could keep Cdc2 out of the nucleus," Piwnica-Worms says,
+   "cells such as cancer cells would never divide."
+
+<p>   The research also might suggest other ways to kill cancer cells. For
+   example, it might suggest ways to disable the DNA damage sensor to
+   make cancer cells divide when they can't survive. Piwnica-Worms notes
+   that a drug that acts in this way is currently in early clinical
+   trials.
+
+<p>   In other work, she also will study interactions between the sensor
+   components that evaluate DNA duplication and those that detect DNA
+   damage. Piwnica-Worms already helped identify an inhibitor of Cdc25C
+   that is important at both checkpoints.

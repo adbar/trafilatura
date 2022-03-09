@@ -1,0 +1,984 @@
+<text id="http://oval.mitre.org/community/board/minutes/2004-09-21.html" encoding="iso-8859-1">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+	<meta http-equiv="content-type" content="text/html;charset=ISO-8859-1" />
+	<meta name="description" content="OVAL is the language to determine the presence of vulnerabilities and configuration issues on computer systems using Community Forum-developed XML schemas and definitions." />
+	<meta name="keywords" content="OVAL, Open Vulnerability and Assessment Language, OVAL Community Forum, OVAL Developer's List, OVAL Board, OVAL Working Group, OVAL definitions, vulnerability definitions, compliance definitions, patch definitions, OVAL Schema, OVAL Definition Schema, OVAL System Characteristics Schema, OVAL Results Schema, OVAL-Compatible, OVAL Compatibility, OVAL Declarations, XML, OVAL Definition Interpreter, reference definition interpreter, network assessment, vulnerability assessment, vulnerability, vulnerabilities, computer vulnerability, computer vulnerabilities, network vulnerability, network vulnerabilities, computer configuration, computer security policy, network security, information security, information security standards, network security standards, information security tools and services, network tool, scanning tool, scanning service, security web site, vulnerability database, security advisory, security alert, vendor advisory, vendor alert, vulnerability scanners, host-based vulnerability scanners, Windows, Linux, Solaris, CVE, Common Vulnerabilities and Exposures, CVE entry, CVE ID, CVE name, CAN, CVE Candidate, US-CERT, DHS, Department of Homeland Security, MITRE, MITRE Corporation." />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<title>OVAL
+
+- Discussion Archives
+
+</title>
+	<link href="/oval.css" rel="stylesheet" media="screen" />
+</head>
+<body bgcolor="#ffffff">
+<a name="top" id="top"></a>
+<script language="javascript" type="text/javascript">
+var ContentPane = parseInt(document.body.clientWidth) - 300;
+</script>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		
+    <td bgcolor="#ffffff"><img src="/images/ovalbanner-top.gif" width="700" height="12" /></td>
+	</tr>
+	<tr> 
+		
+    <td bgcolor="#000000"><a href="/index.html"><img src="/images/ovalbanner-mid.gif" width="700" height="65" border="0" usemap="#Map" /></a></td>
+	</tr>
+	<tr> 
+		
+    <td width="94%"><img src="/images/ovalbanner-bot.gif" width="700" height="25" /></td>
+	</tr>
+	<tr>
+		<td height="5" nowrap="nowrap"></td>
+	</tr>
+</table>
+
+<map name="Map" id="Map">
+  <area shape="rect" coords="0,0,155,75" href="/index.html" alt="link to OVAL home page" />
+</map>
+
+<div id="GreenHeaderBar">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr> 
+		<td width="25%"><a href="mailto:oval@mitre.org"><b>Contact Us</b></a></td>
+		<td width="25%"><a href="/oval/index.html"><b>Downloads</b></a></td>
+		<td width="25%"><b>News</b> &#151; <a href="/news/index.html"><b>
+		 December 21, 2006
+		</b></a></td>
+		<td width="25%"><a href="/find/"><b>Search</b></a></td>
+	</tr>
+</table>
+</div>
+
+<div id="center_body">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td colspan="3" width="100%" height="28" nowrap="nowrap">
+
+
+	<div class="breadcrumbs">&nbsp;<a href="/community/" >Community Participation</a>  &gt;  <a href="/community/archives/" >Discussion Archives</a>  </div>
+
+
+
+	</td>
+
+  </tr>
+
+  <tr>
+
+    <td valign="top">
+
+<!-- begin left side menu -->
+
+<div id="LeftSideBar">
+
+<table width="150" border="0" align="left" cellpadding="0" cellspacing="0">
+
+	<tr> 
+
+		<td class="head">
+
+		  <a href="/index.html">OVAL</a>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td valign="top"> 
+
+			<p><a href="/oval/about/index.html">About</a></p>
+
+			<p><a href="/oval/about/documents.html">Documents</a></p>
+
+			<p><a href="/oval/about/faqs.html">FAQs</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td class="subhead">
+
+			<b><a href="/news/index.html">News &amp; Events</a>&nbsp;<a href="/news/rss/ovalnews.feed.xml"><img src="/images/feed-icon-12x12.gif" alt="OVAL News RSS Feed" width="12" height="12" border="0"/></a></b>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td>
+
+			<p><a href="/news/calendar.html">Calendar</a></p>
+
+			<p><a href="/news/newsletters.html">Newsletter</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td class="subhead" nowrap="nowrap">
+
+			<b><a href="/community/index.html">Community Participation</a></b>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td valign="top" class="bottom">
+
+			<p><a title="Board Members" href="/community/board/index.html">OVAL Board</a></p>
+
+			<p><a href="/community/registration.html">Discussion Lists</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		  <td class="head"> <a href="/language/index.html">OVAL Language</a> </td>
+
+	</tr>
+
+	<tr> 
+
+		<td valign="top"> 
+
+			<p><a href="/language/about/index.html">About</a></p>
+
+			<p><a href="/language/about/definition.html">Definition Tutorial</a></p>
+
+			<p><a href="/language/download/schema/index.html">Releases</a></p>
+
+			<p><a href="/language/download/interpreter/index.html">OVAL Interpreter</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td class="head">
+
+		  <a href="/repository/index.html">OVAL Repository</a>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td valign="top" class="bottom">
+
+			<p><a href="/repository/about/index.html">About</a></p>
+
+			<p><a href="/repository/data/Update.update">Latest Updates</a>&nbsp;<a href="/repository/rss/ovalrepository.feed.xml"><img src="/images/feed-icon-12x12.gif" alt="OVAL Repository Latest Updates RSS Feed" width="12" height="12" border="0"/></a></p>
+
+			<p><a href="/repository/data/AdvancedSearch.jsp">Advanced Search</a></p>
+
+			<p><a href="/repository/data/OvalStatistics.stats">Statistics</a></p>
+
+			<p><a href="/repository/download/index.html">Downloads</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td class="head">
+
+			<b><a href="/compatible/index.html">OVAL Compatibility</a></b>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		<td>
+
+			<p><a href="/compatible/about/index.html">About</a></p>
+
+			<p><a href="/compatible/about/program.html">Program</a></p>
+
+			<p><a href="/compatible/about/requirements.html">Requirements</a></p>
+
+			<p><a href="/compatible/compatible.html">Compatible Products</a></p>
+
+			<p><a href="/compatible/about/make_a_declaration.html">Make a Declaration</a></p>
+
+		</td>
+
+	</tr>
+
+	<tr> 
+
+		  <td class="head"> <a href="/rss.html">RSS Feeds</a> </td>
+
+	</tr>
+
+</table>
+
+</div>
+
+<!-- end left side menu -->
+
+	</td>
+
+
+
+<!-- begin content pane -->
+
+    <td valign="top" width="100%" id="Contentpane">
+
+	
+
+
+
+
+
+<!--begin Main Content-->
+
+
+
+	  <h2>Discussion Archives</h2>
+
+
+
+	<!-- begin page TOC -->
+
+	    <div id="PageContents"><a href="/community/archives/index.html#discussion_list">Community Forum Email List</a> |
+
+		<a href="/community/archives/index.html#developer_list">Developer's Email List</a> |
+
+		<!--<a href="/community/archives/index.html#working_groups">Working Groups</a> |-->
+
+		<a href="/community/archives/index.html#board_list">Board Email List</a> 
+
+        <!--  | <a href="/community/archives/index.html#board_meeting"> Board Meetings</a>-->
+
+		</div>
+
+        <!-- end page TOC -->
+
+        <h3><a name="discussion_list"></a>Community Forum Email List</h3>
+
+
+
+        <p>Archives of the discussions on the <a href="/community/registration.html">OVAL 
+
+          Community Forum</a> are made available to the public for review and 
+
+          comment. The archives are available in two formats.</p>
+
+		<div id="TableWithRules" class="ListTable">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr> 
+              <th width="25%" valign="top">January 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">February 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">March 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">April 2006 </th>
+            </tr>
+            <tr> 
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldiscussion/2006-01/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-01/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldiscussion/2006-02/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-02/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldiscussion/2006-03/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-03/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-04/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-04/threads.html">by 
+                Thread </a></td>
+            </tr>
+            <tr> 
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+            </tr>
+            <tr> 
+              <th width="25%" valign="top">May 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">June 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">July 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">August 2006 </th>
+            </tr>
+            <tr> 
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-05/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-05/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-06/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldiscussion/2006-06/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-07/index.html">by 
+                Date</a><br />
+                <a href="/community/archives/ovaldiscussion/2006-07/threads.html">by 
+                Thread </a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-08/index.html">by Date</a><br />
+                <a href="/community/archives/ovaldiscussion/2006-08/threads.html">by Thread</a></td>
+            </tr>
+            <tr> 
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+            </tr>
+            <tr> 
+              <th width="25%" valign="top">September 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">October 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">November 2006</th>
+              <td class="spacer" nowrap="nowrap"></td>
+              <th width="25%" valign="top">December 2006 </th>
+            </tr>
+            <tr> 
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-09/index.html">by Date</a><br />
+                <a href="/community/archives/ovaldiscussion/2006-09/threads.html">by Thread</a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldiscussion/2006-10/index.html">by Date</a><br />
+                <a href="/community/archives/ovaldiscussion/2006-10/threads.html">by Thread</a></td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldiscussion/2006-11/index.html">by 
+                Date</a><br />
+                <a href="/community/archives/ovaldiscussion/2006-11/threads.html">by 
+                Thread</a> </td>
+              <td class="spacer" nowrap="nowrap"></td>
+              <td width="25%" valign="top" class="indent"> by Date<br />
+                by Thread </td>
+            </tr>
+          </table>
+
+</div>
+
+<div align="right" style="margin:5px 0px 5px 0px; clear:right"><a class="backtop" href="#top">Back to top</a></div>
+
+
+        <h3><a name="developer_list"></a>Developer's Email 
+
+          List</h3>
+
+
+
+        <p>Archives of the discussions on the <a href="/community/registration.html">OVAL
+
+             Developer's List </a> are made available to the public for review
+
+             and comment. The archives are available in two formats.</p>
+
+        <div id="TableWithRules" class="ListTable">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+            <tr>
+
+              <th width="25%" valign="top">January 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">February 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">March 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">April 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-01/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovaldeveloper/2006-01/threads.html">by
+
+                        Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-03/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovaldeveloper/2006-03/threads.html">by
+
+                        Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldeveloper/2006-04/index.html">by
+
+                  Date</a><br />
+
+                    <a href="/community/archives/ovaldeveloper/2006-04/threads.html">by
+
+              Thread </a></td>
+
+            </tr>
+
+            <tr>
+
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+
+            </tr>
+
+            <tr>
+
+              <th width="25%" valign="top">May 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">June 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">July 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">August 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldeveloper/2006-05/index.html">by
+
+                  Date</a><br />
+
+                    <a href="/community/archives/ovaldeveloper/2006-05/threads.html">by
+
+              Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-06/index.html">by 
+                Date</a><br /> <a href="/community/archives/ovaldeveloper/2006-06/threads.html">by 
+                Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-07/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovaldeveloper/2006-07/threads.html">by
+
+              Thread</a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-08/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovaldeveloper/2006-08/threads.html">by
+
+              Thread</a></td>
+
+            </tr>
+
+            <tr>
+
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+
+            </tr>
+
+            <tr>
+
+              <th width="25%" valign="top">September 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">October 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">November 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">December 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-09/index.html">by 
+                Date</a><br />
+                <a href="/community/archives/ovaldeveloper/2006-09/threads.html">by 
+                Thread</a> </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovaldeveloper/2006-10/index.html">by
+
+                  Date</a><br />
+
+                    <a href="/community/archives/ovaldeveloper/2006-10/threads.html">by
+
+              Thread</a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovaldeveloper/2006-11/index.html">by 
+                Date</a><br />
+                <a href="/community/archives/ovaldeveloper/2006-11/threads.html">by 
+                Thread</a> </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent">by
+
+                  Date<br />
+
+                  by
+
+              Thread </td>
+
+            </tr>
+
+          </table>
+
+        </div>
+
+
+
+
+<div align="right" style="margin:5px 0px 5px 0px; clear:right"><a class="backtop" href="#top">Back to top</a></div>
+
+
+
+
+        <h3><a name="board_list"></a>Board Email List</h3>
+
+
+
+        <p>The <a href="/community/board/index.html">OVAL Board</a> has made a commitment 
+
+          to make its discussions available to the public. The archives of these 
+
+          discussions are available in two formats.</p>
+
+<div id="TableWithRules" class="ListTable">
+
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+            <tr>
+
+              <th width="25%" valign="top">January 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">February 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">March 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">April 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovalboard/2006-01/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovalboard/2006-01/threads.html">by
+
+                        Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovalboard/2006-02/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovalboard/2006-02/threads.html">by
+
+                        Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> <a href="/community/archives/ovalboard/2006-03/index.html">by
+
+                  Date</a><br />
+
+                        <a href="/community/archives/ovalboard/2006-03/threads.html">by
+
+                        Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovalboard/2006-04/index.html">by
+
+                  Date</a><br />
+
+                    <a href="/community/archives/ovalboard/2006-04/threads.html">by
+
+                    Thread </a></td>
+
+            </tr>
+
+            <tr>
+
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+
+            </tr>
+
+            <tr>
+
+              <th width="25%" valign="top">May 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">June 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">July 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">August 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"><a href="/community/archives/ovalboard/2006-05/index.html">by
+
+                  Date</a><br />
+
+                    <a href="/community/archives/ovalboard/2006-05/threads.html">by
+
+              Thread </a></td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+            </tr>
+
+            <tr>
+
+              <td colspan="7" valign="top" height="5" class="spacer"></td>
+
+            </tr>
+
+            <tr>
+
+              <th width="25%" valign="top">September 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">October 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">November 2006</th>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <th width="25%" valign="top">December 2006 </th>
+
+            </tr>
+
+            <tr>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                    by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent"> by
+
+                  Date<br />
+
+                        by
+
+              Thread </td>
+
+              <td class="spacer" nowrap="nowrap"></td>
+
+              <td width="25%" valign="top" class="indent">by
+
+                  Date<br />
+
+                    by
+
+              Thread </td>
+
+            </tr>
+
+          </table>
+
+</div>
+
+
+
+<div align="right" style="margin:5px 0px 5px 0px; clear:right"><a class="backtop" href="#top">Back to top</a></div>
+
+
+        <h3><a name="board_meeting"></a>Board Meetings</h3>
+
+        <p>The <a href="/community/board/index.html">OVAL Board</a> periodically 
+
+          holds teleconferences and face-to-face meetings. Below are summaries 
+
+          of the Board meetings, as recorded in the OVAL Board mailing list archives.</p>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" id="TableWithOutRules" class="small">
+          <tr class="ltgreybackground"> 
+            <td valign="top" nowrap="nowrap">May 5, 2006</td>
+            <td width="100%" valign="top"><a href="/community/archives/boardminutes/20060505.html">Teleconference</a></td>
+          </tr>
+          <tr class="ltgreybackground">
+            <td valign="top" nowrap="nowrap">August 31, 2006 </td>
+            <td valign="top"><a href="/community/archives/boardminutes/20060831.html">Teleconference</a></td>
+          </tr>
+        </table>
+
+<br />
+
+<div align="right" style="margin:5px 0px 5px 0px; clear:right"><a class="backtop" href="#top">Back to top</a></div>
+
+
+
+
+
+
+<!--end Main Content-->
+
+
+
+	<p class="smaller"><b>Page Last Updated:</b> December 14, 2006</p>
+
+	</td>
+	<!-- begin right column -->
+	<td valign="top" align="center">
+
+
+<!-- Begin /includes/rightsidemenu_community.html -->
+<div id="RightSideContents">
+	
+  <table border="0" cellpadding="0" cellspacing="0" width="175" id="RightSideBar">
+    <tr> 
+      <th>Section Contents</th>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/index.html">Community Participation</a></td>
+    </tr>
+    <tr> 
+      <td class="indent"><a href="/community/contributors.html">Major Contributors</a></td>
+    </tr>
+    <tr> 
+      <td class="indent"><a href="/repository/about/submission.html">Submit a Definition</a></td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/board/index.html">OVAL Board</a></td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/registration.html">Discussion Lists Sign-Up</a></td>
+    </tr>
+    <tr> 
+      <td class="indent"><a href="/community/archives/index.html">Discussion Archives</a></td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/sponsor.html">OVAL Sponsor</a></td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/sr_advisory_council.html">Sr. Advisory Council</a></td>
+    </tr>
+    <tr> 
+      <td class="head">Other Items of Interest</td>
+    </tr>
+    <tr> 
+      <td class="indent"><a href="/oval/about/faqs.html#e">Community FAQs</a></td>
+    </tr>
+    <tr> 
+      <td class="indent"><a href="/oval/about/privacy_policy.html">Privacy Policy</a></td>
+    </tr>
+  </table>
+</div>
+<!-- End /includes/rightsidemenu_community.html -->
+
+<!-- Begin /includes/archive_mailinglist.html -->
+<div id="RightSideContents">
+  <table border="0" cellpadding="0" cellspacing="0" width="175" id="RightSideBar_archive">
+    <tr> 
+      <th>Email List  Archive</th>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/archives/index.html#discussion_list"> Community
+      Forum List</a></td>
+    </tr>
+    <tr> 
+      <td class="indent">
+	  <a href="/community/archives/2005.html#discussion_list">2005</a> |
+	  <a href="/community/archives/2004.html#discussion_list">2004</a> |
+	  <a href="/community/archives/2003.html#discussion_list">2003</a> |
+	  <a href="/community/archives/2002.html#discussion_list">2002</a>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/archives/index.html#developer_list"> Developer
+      List</a></td>
+    </tr>
+    <tr> 
+      <td class="indent">
+	  <a href="/community/archives/2005.html#developer_list">2005</a> |
+	  <a href="/community/archives/2004.html#developer_list">2004</a>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/archives/index.html#working_groups">Working Groups</a></td>
+    </tr>
+    <tr> 
+      <td class="indent">
+	  <a href="/community/archives/2005.html#working_groups">2005</a> |
+	  <a href="/community/archives/2004.html#working_groups">2004</a>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/archives/index.html#board_list"> Board
+      List</a></td>
+    </tr>
+    <tr> 
+      <td class="indent">
+	  <a href="/community/archives/2005.html#board_list">2005</a> |
+	  <a href="/community/archives/2004.html#board_list">2004</a> |
+	  <a href="/community/archives/2003.html#board_list">2003</a> |
+	  <a href="/community/archives/2002.html#board_list">2002</a>
+	  </td>
+    </tr>
+    <tr> 
+      <td class="head"><a href="/community/archives/index.html#board_meeting"> Board
+      Meetings</a></td>
+    </tr>
+    <tr> 
+      <td class="indent">
+	  <a href="/community/archives/2005.html#board_meeting">2005</a> |
+	  <a href="/community/archives/2004.html#board_meeting">2004</a> |
+	  <a href="/community/archives/2003.html#board_meeting">2003</a>
+	  </td>
+    </tr>
+  </table>
+</div>
+<!-- End /includes/archive_mailinglist.html -->
+
+	</td>
+	<!-- end right column -->
+  </tr>
+</table>
+</div>
+
+<hr style="width:100%; color:000000;" size="1" />
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr> 
+		<td width="150" valign="top" nowrap="nowrap" align="center"> <img src="/images/dohs.jpg" alt="Department of Homeland Security" /> 
+		</td>
+		<td valign="top" width="100%" id="Contentpane">
+		<p class="footer">OVAL is sponsored by the <a href="http://www.us-cert.gov/" target="_blank">US-CERT</a> at the U.S. Department of Homeland Security. See our <a href="/community/sponsor.html">sponsor page</a>.</p>
+		<p class="footer">This Web site is hosted by <a href="http://www.mitre.org" target="_blank">The MITRE Corporation</a>. Copyright 
+		2006, The MITRE Corporation. OVAL and the OVAL logo are trademarks of The MITRE Corporation.</p>
+		<p class="footer"><u><b>NOTICE:</b></u> This software (or technical data) was produced for the U. S. Government under contract 0706H300-OV, and is subject to the Rights in Data-General Clause 52.227-14 (JUNE 1987)</p>
+		<p class="footer">Contact <a title="Contact OVAL" href="mailto:oval@mitre.org">oval@mitre.org</a> for more information.</p>
+		</td>
+		
+		<td valign="top" nowrap="nowrap" class="footer"> <a href="/oval/about/privacy_policy.html">Privacy 
+		policy</a><br />
+		<a href="/oval/about/termsofuse.html">Terms of use</a><br />
+		<a href="mailto:oval@mitre.org">Contact us</a>
+		</td>
+		<td valign="top" nowrap="nowrap" class="footer" width="200" align="center">
+		<div align="center"> 
+		<img src="/images/side_uscert_logo.gif" border="1" />
+		</div>
+		</td>
+	</tr>
+</table>
+</body>
+</html>
+
+</text>

@@ -1,0 +1,498 @@
+
+<h> Technological Excuses: A Rant
+
+<h> May 03, 2005
+
+<h> "Can't Never Did Anything."
+
+<p> That was something my Mom used to say to me when I was little. And
+   it's true. There were times in my young life where I had a decidedly
+   "can't do" attitude. I'd come up with all sorts of reasons why I just
+   couldn't do something. Of course my mother, with her motherly wisdom
+   and years of experience, knew all too well that I could do these
+   things.
+
+<p> I was either lazy, or scared or intimidated or just plain didn't want
+   to do. This is an attitude I see quite often from Web professionals
+   and I can't help buy wonder why.
+
+<h> Technological scapegoat
+
+<p> Now that I'm older I can better recognize the "can't do" when it pops
+   up, in myself and in others. And frankly it pisses me off more often
+   than not. Sure there are times when you really can't do something and
+   there are legitimate times when you simply don't want to do something
+   for whatever reason. But more often than not it seems to be laziness,
+   fear or lack of know-how.
+
+<p> I don't know how many times I've heard someone say something like,
+   "the CMS won't allow us to do such-and-such." Or, "our FlexGUI won't
+   allow for easy implementation of a liquid layout."
+
+<p> (That last one is true. Totally hilarious, but true.)
+
+<p> I've been guilty of this and to be honest, I'm really working on never
+   again blaming a bit of technology on anything unless it's really the
+   reason why something can't be done and I've got no hope of trying
+   another technology or getting around it in some way.
+
+<p> Most often it doesn't even come to that. I sit down and think about it
+   and usually I'll come up with a solution. Nowadays if I honestly think
+   something can't be done, I say I'll try and sort it out and at least
+   give myself a chance to solve the problem before thinking of another
+   way.
+
+<p> I had a Web developer the other day tell me we couldn't recreate a
+   simple roll-over effect with CSS. Maybe he couldn't get that working
+   right that second, but it definitely could be done.
+
+<h> Technology shouldn't make business decisions
+
+<p> In many cases I'm seeing that the technology (or, more accurately, the
+   people using the technology) is driving business decisions. This, to
+   me anyway, is totally backwards. A classic cart before the horse
+   situation. It reminds me of a "dot-bomb" experience I had awhile back.
+   I worked for a company who would let their testing department dictate
+   the release schedule. Sure this was great for the geeks who felt they
+   always needed more time, and simply "couldn't conform to marketing's
+   aggressive schedule." But it drove the rest of the company crazy.
+
+<p> I always thought this was bullshit. I mean, shouldn't business people
+   make business decisions? If you can't handle the workload, hire more
+   people. If you're technology isn't flexible enough to handle the
+   requirements laid out by your designers, get a new technology.
+   Technology should help you solve problems, not create more.
+
+<h> It's a people problem
+
+<p> 99% of the time I hear someone crow about not being able to do
+   something it sure as heck can be done. Sadly oftentimes instead of
+   actually getting done it gets half-assed or compromised in someway and
+   this more often than not causes failure for the project. You can
+   usually chalk that up to poor decision-making or ego.
+
+<p> And why to companies insist on riding a technology until the bitter
+   end? I mean if it's really a hinderance and you know it's going to
+   fail, wouldn't it make sense to kill it and go a new direction sooner
+   rather than later? I've seen millions (yes, millions) wasted on a poor
+   choice of technology.
+
+<p> I think this is usually an attitude problem, cultivated by having to
+   deal with poorly developed technology. There are a few ways around
+   this. First, take a positive, problem solving attitude and second, get
+   better (more flexible, more standard, more appropriate, etc.)
+   technology.
+
+<h> Prepare. Then take a can do, problem solving attitude.
+
+<p> A truly successful business will take a decidedly can do attitude and
+   back that up with solid research, helping to insure the technologies
+   they go with won't provide any opportunity for a can't do mentality to
+   rear it's ugly head.
+
+<p> As well, successful leaders know when to put their ego on ice and pull
+   the plug on something that is destined for failure. A sure sign of
+   successful leadership is how they deal with bad decisions and crisis.
+
+<p> Sounds pretty simple to me.
+
+
+<h> Comments
+
+<h> 1. Dave P said:
+
+<p> Technology shouldn't make business decisions
+
+<p> Nothing more true has ever been uttered. I'm still shocked at how
+   seemingly adept business leaders allow themselves to be pushed around
+   by know-it-all IT types.
+
+<p> I suppose in a round about way, it comes back to being their own fault
+   though. Decision makers have heard the call to "listen to your tech
+   staff". Problem is, their own ignorance causes them to do so even when
+   they really shouldn't.
+
+<p> In my short career, I've learned that techies that can focus on
+   business goals are like diamonds in the rough - although a lot more
+   rare.
+
+<h> Posted on May 3, 2005 10:25 AM | #
+
+<h> 2. Rimantas said:
+
+<p> If you can't handle the workload, hire more people.
+
+<p> What have happened to the Brooks law?
+
+<p> And yes, you end up using not what you need, but what your managers
+   want to buy.
+
+<h> Posted on May 3, 2005 10:34 AM | #
+
+<h> 3. Keith said:
+
+<p> Rimantas - Good point. However the idea behind what I'm saying is true
+   and in that case I'm not talking about programming. Ideally you'd have
+   the resources before you begin. I guess it could say "work harder" as
+   well. The bottom line is that something like a testing cycle should
+   never, ever, dictate the release date of a product.
+
+<h> Posted on May 3, 2005 10:46 AM | #
+
+<h> 4. Dave P said:
+
+<p> It's called "crashing the project", and is common in most Project
+   Managment methodologies.
+
+<p> Just because most software projects seem to have a tough time doing it
+   doesn't mean it can't be done - and done successfully.
+
+<p> Wasn't that the whole point of the post? :-)
+
+<h> Posted on May 3, 2005 10:55 AM | #
+
+<h> 5. web said:
+
+<p> Will the "Can do" attiude put flash in an email for me?
+
+<p> This has been tested and failed several times .. but clients keep
+   asking for it?
+
+<p> It's hard to keep up the can do attiude when you know the results of
+   something.
+
+<h> Posted on May 3, 2005 11:02 AM | #
+
+<h> 6. Kevin said:
+
+<p> I've seen this in a number of large IT organizations that I've worked
+   with and I'm equally appalled by the "can't do" attitude of many of
+   the people I encountered. They can't get it to work, they can't meet
+   the schedule, they can't imagine being flexible or adapting to
+   changing business needs. Drives me nuts.
+
+<p> Rimantas is dead on about Brooks' Law. It's not about getting more
+   people, it's about getting better people. Ones who can factor in
+   business needs and user needs when they work. Ones who understand that
+   programming and design almost never bring us truly unsolvable
+   problems. It's usually a lack of imagination and ingenuity that leads
+   people to say "it can't be done".
+
+<h> Posted on May 3, 2005 11:08 AM | #
+
+<h> 7. Dave P said:
+
+<p> Flash in an email
+
+<p> Looks doable to me.
+
+<h> Posted on May 3, 2005 11:10 AM | #
+
+<h> 8. Ipswitch said:
+
+<p> web (#5) I think you're missing the point. Or maybe you're just
+   kidding? Of course there are things that can't be done, or more like
+   it, shouldn't be done even if they can. But this isn't the point, I
+   don't think, of the post.
+
+<p> The point is that people use technological limitations and lack of
+   creativity and know-how to get out of getting things done.
+
+<h> Posted on May 3, 2005 11:11 AM | #
+
+<h> 9. Keith said:
+
+<p> Web - I think that can be done. However, should you do that? I don't
+   think so. But really that's not the point. It's using Flash, or any
+   other tool, as an excuse to not do something. I see this all the time.
+
+<p> Kevin - Exactly. It's a people problem usually.
+
+<h> Posted on May 3, 2005 11:13 AM | #
+
+<h> 10. Gabe said:
+
+<p> Great post. Reminds me of the quote that goes something like "Things
+   that are impossible just take longer", which is usually pretty
+   applicable.
+
+<h> Posted on May 3, 2005 11:24 AM | #
+
+<h> 11. Kevin Tamura said:
+
+<p> Jenel, my girlfriend, was complaining about this last night. Her IT
+   department refuses to network the design department's Macs. So any of
+   the packaging die-lines she get from vendors need to be posted to an
+   FTP server so the design people (10 feet away) can pull it down and
+   work on them. With a little reading and tinkering the macs could be up
+   and running on the network.
+
+<p> Personally I take the attitude (well try to) of adapt and overcome. It
+   makes life so much easier.
+
+<h> Posted on May 3, 2005 01:17 PM | #
+
+<h> 12. Mike D. said:
+
+<p> What I always do to get around that sort of attitude is by asking
+   hypothetical questions like:
+
+<p> "If our president came up here and told you this had to be done or the
+   company would go under, how quickly could it possibly be done?"
+
+<p> or
+
+<p> "If the fate of the world rested on you completing this task, how long
+   would it take you to complete?"
+
+<p> Questions like that force people to throw out the "it's not worth the
+   effort" side of their argument, which is generally the *only* side of
+   their argument. At that point, they are forced to think of the real
+   work involved and not just what their opinion of the task is.
+
+<h> Posted on May 3, 2005 01:30 PM | #
+
+<h> 13. Justin said:
+
+<h> Quote from the first hit from Dave P's link:
+<p> "Would you like to have a signature file on your emails that instantly
+   tells recipients you are a good designer?"
+
+<p> Flash != "Good Designer"
+
+<p> Since this post is a rant, I'll take this opportunity to mini-rant as
+   well. I'm SICK and TIRED of all of these mindless `tech-savvy' lusers
+   that think [Word/Publisher/Excel/Insert sh*t program here] is the best
+   thing to happen to the computing world since Al Gore invented the
+   Internet. JUST BECAUSE YOU CAN INSERT A CUTE WIDDLE PUDDY TAT IN YOUR
+   QUARTERLY REPORT DOES NOT MEAN YOU ARE A `GOOD DESIGNER' (whatever
+   that means) Please STOP sending me e-mails with a damned blue flowered
+   background and more use of the <marquee> than Madison Square Garden.
+
+<p> This flash-in-your-email thing, if it takes off, is going to make me
+   have an aneurysm.
+
+<l> Regards,
+<l> Justin (OMGWTFLOLLERSKATES ITS A MARKEEEEE!!!!)
+
+<h> Posted on May 3, 2005 01:37 PM | #
+
+<h> 14. Dave P said:
+
+<p> Justin: I'm actually on your side... and I've set my email to text
+   only on purpose... I was mearly countering the opinion that it
+   couldn't be done.
+
+<p> By no means do I think it *should* be done. At all.
+
+<p> Btw, I'm an IT guy speaking here, so some of us do in fact see the
+   light! :-)
+
+<h> Posted on May 3, 2005 02:36 PM | #
+
+<h> 15. aaron said:
+
+<p> "Things that are impossible just take longer"
+
+<p> As in, invest as much of your personal time as you like, but we're
+   clinging to the rough budget estimate you pulled out of your ass in
+   the introductory meeting 2 months ago while the spec was still fluid.
+   Oh, and did we mention we need it tomorrow?
+
+<p> I would love to tinker until I could make a lot neat tech tricks work,
+   reality just keeps getting in my way.
+
+<h> Posted on May 3, 2005 03:31 PM | #
+
+<h> 16. JPrime said:
+
+<p> >> And why to companies insist on riding a technology until the bitter
+   end?
+
+<p> This is something I've had personal experience with lately. Our CMS
+   truly limits the type of content we can place on a page (horizontal
+   rule anyone? sorry, no can do ...) but it is proving very difficult to
+   break the momentum this product has gathered.
+
+<p> Management don't want to `waste' the money we've already spent, even
+   though it would seem to have been wasted already and continues to
+   waste more.
+
+<p> It's almost like you're not allowed to make accept taht mistakes can
+   be made when purchasing technology.
+
+<h> Posted on May 3, 2005 06:50 PM | #
+
+<h> 17. David said:
+
+<p> > I don't know how many times I've heard someone say
+   > something like, "the CMS won't allow us to do such-and-such."
+
+<p> That might actually be true. CMS are complex things. With good ones,
+   you can do anything you want. With bad ones, you can't. If the system
+   has architectural flaws, there will be more than one thing (and also
+   more than a dozen things) you cannot do. Stupid hacks to emulate the
+   wanted behavior are not a solution, as they consume too much time and
+   in the end won't work as intended anyway.
+   CMS are also expensive. You cannot go ahead and just switch to another
+   one which solves your problem. Okay, you can. It's nowhere close to
+   impossible, it just takes a huge amount of money and manpower. The
+   problem is: somewhere along you'll stumble across something called
+   cost-value-ratio. And there's no point in implementing whatever
+   feature for, say, a web site that would make the customer... uh huh,
+   you're spot on, some dumb feature the customer won't even notice. It's
+   time for a workaround here, time to sit down and decide to take
+   another approach to the problem instead of wasting money and time just
+   because some technology, be it from earth or outer space, can do it.
+
+<h> Posted on May 4, 2005 01:32 AM | #
+
+<h> 18. Tomas Jogin said:
+
+<p> "Can't do" is often -not always- short for "can't do given these set
+   circumstances", where those circumstances are usually "the set
+   timeframe" or "the set budget".
+
+<p> Also, since most clients don't have an infinite amount of money, one
+   often uses a reusable component to save money and/or time.
+
+<p> Building your project on a reusable component will 1) save you
+   money/time and 2) restrict your project to what that component was
+   designed to do. Sure the reusable component can be extended to do
+   whatever it is you want it to be able to do, be it a CMS or some
+   framework or whatever, but not without breaking set circumstances
+   (license, budget, time).
+
+<p> I don't see how a "can do attitude" will somehow magically remove the
+   fact that doing things takes time. And time costs money. And usually
+   both money and time is limited, sometimes severely so.
+
+<h> Posted on May 4, 2005 01:35 AM | #
+
+<h> 19. Ste Grainer said:
+
+<p> Okay, I confess. I've used the technology excuse not out of laziness,
+   but out of having to explain why something *shouldn't* be done. Quite
+   a few people (mostly the older ones) don't want to be bothered with
+   long-winded (or even short-breezed) explanations of why something
+   shouldn't be done. Instead, I find myself on occasion saying that
+   something just isn't technically feasible, even when I know it is. I
+   know that client education is an important issue, and I do want to
+   help these people understand why some of their suggestions just aren't
+   a good idea. But if they don't want to hear it, what other option is
+   there?
+
+<h> Posted on May 4, 2005 06:36 AM | #
+
+<h> 20. Keith said:
+
+<p> david - you've touched on exactly what I'm talking about. Of course
+   there are hundreds of CMS systems out there that literally can't do
+   many things. I've argued many times in the past that most CMS
+   solutions aren't worth jack. Still, this is where proper planning
+   comes in, and I'm telling you that sometimes, most times, it's better
+   to cut your CMS losses early rather than deal with failure. We did
+   that at my last job (Children's Hosptial) and in the long run saved a
+   bunch of money and ended up with something that met its goals and that
+   we could be proud of.
+
+<p> Thomas - I disagree, in part, with your last point. Sometimes all you
+   need to get something done is to do it. Excuses get you nowhere.
+
+<p> Ste - Well, I don't think I can argue with that. If you've got a
+   client that just won't listen, I know how easy it can be to not bother
+   wasting your breath. Too bad though.
+
+<h> Posted on May 4, 2005 08:42 AM | #
+
+<h> 21. Garrett Dimon said:
+
+<p> Not to get all inspirational on you, but this seems to fall right in
+   line with one of my favorite quotes.
+
+<p> Those who say it can't be done are being passed by those doing it.
+
+<p> Don't know who said it, but I love it.
+
+<h> Posted on May 4, 2005 08:43 PM | #
+
+<h> 22. Ray said:
+
+<p> Yup. That was a rant. Good read though ; )
+
+<h> Posted on May 5, 2005 06:44 AM | #
+
+<h> 23. Jeff said:
+
+<p> Nice article Keith. I do think that you may have missed a crucial
+   point however. DISCLAIMER: I am speaking from my experienc in IT at my
+   company, I don't want to sound as if this applies to everyone or every
+   company, etc.
+
+<p> Everyday single day, I tell internal customers that something can not
+   be done, and I am not being lazy, trying to sidestep a stupid request,
+   etc. It really is that it can't be done. No, really. And, it is the
+   fault of the business people who did not trust IT in the first place
+   during technology review, requiremetns definition, etc. The culture
+   here at my job is FUBAR. Problem is, the business people chose the
+   technology to begin with, without a full understanding of the
+   consequences of their decision. This is due to a lot of factors: not
+   trusting IT, rushing projects, etc.
+
+<p> Now Keith will come back and say "then get a new technology". And he
+   is right. BUT, "easier said than done", in a culture such as mine
+   couldn't be more appropriate.
+
+<p> I could go on and on about the circumstances, reasons, etc. But the
+   fact remains, in my company, IT didn't push back enough against the
+   business people, we let them make the decisions to begin with -
+   "business needs drive technology selection, not the other way around".
+   In my companies' case, it didn't exactly work out. I know this is an
+   exception, but thought I'd share.
+
+<h> Posted on May 5, 2005 10:10 AM | #
+
+<h> 24. Keith said:
+
+<p> Jeff - Then get a new technology! Heh, just kidding. I feel for you,
+   and I can see what you mean. But, again, it comes down to a people
+   problem in the end, doesn't it? Sounds like you're IT people have a
+   bit of a communication issue with the business people.
+
+<p> You're situation is probably pretty common, but a whole other issue. I
+   think ideally the business people would make business decisions and IT
+   would take those decisons and make the the appropraite technological
+   desisions. Seems like you've got a culture that's a bit backwards in
+   that regard.
+
+<h> Posted on May 5, 2005 10:28 AM | #
+
+<h> 25. Sam said:
+
+<p> Tomas - totally agree with what you say in #18. Particularly about
+   deadlines.
+
+<p> If there's one thing I've learned, it's NEVER tell someone that their
+   estimated timeline is wrong, except to say that it's too short. If
+   you're unlucky, you'll scare them into saying that it can be done
+   quicker.
+
+<p> The other thing I've learned is, on the other side, never back down
+   your time estimates. At worst, you'll be hailed as a miracle worker
+   ;-)
+
+<p> I've seen many situations where people saying "look, it just needs to
+   be done, so do it" leads to:
+
+<l> * The people building the project (or whatever it is) get really
+   stressed out.
+<l> * The project's rushed and isn't done properly
+<l> * It's inevitably late, and the people who refused to take "can't" for
+   an answer haven't prepared for it.
+
+<p> It's not about technology dictating business decisions. It's about
+   business decisions being made in the light of unavoidable constraints.
+
+<p> It's called reality, and you have to deal with it.
+
+<h> Posted on May 12, 2005 05:21 AM | #

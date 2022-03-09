@@ -1,0 +1,642 @@
+URL: http://www.epinet.org/content.cfm/briefingpapers_comp
+
+
+
+  <p> April 2003 | EPI Briefing Paper #135
+
+  <p> For a summary of EPI's recent work on overtime issues, click here.
+
+  <h> Comp time bills off target
+  <h> Existing labor law already allows the flexibility that employers say
+   they want for their workers
+
+   <h>by Lonnie Golden
+
+   <p>The Fair Labor Standards Act of 1938 is the principal federal law that
+   regulates work hours and limits the expansion of the work week. By
+   requiring employers to pay a 50% wage premium for work beyond 40 hours
+   in a week, the act successfully made a 40-hour work week the norm,
+   both legally and culturally. It is, in fact, the original and maybe
+   the most important family-friendly law enacted by the federal
+   government, since it established the principle that employees should
+   have a normal work week short enough to leave ample time for leisure,
+   rest, and family.
+
+   <p>Yet employer organizations, which generally opposed enactment of the
+   FLSA and have sought to limit or weaken it for more than 60 years, now
+   allege that the law itself is somehow an impediment to family-friendly
+   work schedules. Since 1995, legislation has been introduced in the
+   U.S. Congress to modernize the FLSA by changing the standard work
+   week, overtime pay rules, and classifications of exemptions, on the
+   presumption that the FLSA has become outdated (Finegold 1998; Abbott
+   1999; Wilson 2001; Bird 2000). In particular, bills have been
+   introduced (S. 317, the Working Families Flexibility Act, and H.R.
+   1119, the Family Time Flexibility Act) that would legalize the
+   substitution of compensatory time off for overtime pay in the private
+   sector. The Senate bill also proposes establishing an 80-hour standard
+   over a two-week work period.
+
+   <p>If the true aim is to benefit working families, such legislation is
+   inadequate, poorly targeted, and likely to prove counterproductive.
+   Options already exist within the time-honored FLSA that permit
+   employees the kind of flexibility in schedules they increasingly
+   needflextime, other time-banking schemes such as the compressed work
+   week, and the use of comp time within the weekwithout having to first
+   put in long, overtime hours. Truly family-friendly amendments to the
+   FLSA would bring more workers under its protection, reduce hours of
+   work, expand minimum paid-leave times, and limit if not ban mandatory
+   overtime.
+
+   <p>Reducing the daily, weekly, and annual hours of those workers who
+   prefer shorter working times should be the focus of public policy,
+   including FLSA reform. But legalizing compensatory time in lieu of pay
+   is more likely to heighten the incidence and severity of
+   overemployment, for three reasons. First, such a system intensifies
+   the economic incentives for employers to lengthen the number of
+   overtime hours scheduled per week (Golden 1997, 1998). By paying no
+   cash at all for employees overtime work, and being legally permitted
+   to deny use of comp time for a year or more, employers will lower the
+   marginal cost of scheduling overtime. Cheapening overtime work
+   guarantees that there will be more demandedto the detriment of those
+   workers agreeing to the substitution of comp time for pay. Employers
+   would effectively receive an interest-free loan from their employees,
+   while workers who gave up premium pay would get shortchanged by
+   devalued banked comp time (Leibig 2002). Second, if some fraction
+   (one-third or more) of the employees banked comp time hours earned are
+   either unused or unusable, the employees are likely to wind up working
+   longer annual hours than they would have without a comp time program.
+   Third, workers schedules will become more volatile and less
+   predictable as they work more overtime without gaining additional
+   control over their time off.
+
+   <h>The problems of overemployment and inflexible hours in America
+   <p>The continuing rise of family work hours and dual-income households
+   (Mishel, Bernstein, and Boushey 2003) intensifies the need for more
+   family-friendly work schedules. Unfortunately, however, the spread of
+   flexible work schedules and voluntary work-at-home arrangements has
+   recently stalled (Appelbaum and Golden 2002). And increasingly, the
+   work day is spilling over into evenings and weekends (Hamermesh 2000).
+   Much of this is uncompensated or unclaimed overtime work (Employment
+   Law Alliance 2002).
+
+   <p>A small but growing proportion of workers in the U.S. consistently
+   expresses in polls a need for more time for their personal and family
+   needs, that is, less time at work. Estimates of the rate of
+   overemployment (i.e., working longer hours than the employee desires)
+   in the U.S. labor force are scarce and imprecise, but an upward trend
+   is discernible from snapshots provided by periodic surveys asking
+   people if they are willing to reduce proportionately both their work
+   hours and income. The rate of overemployment appears to have risen
+   from the levels of 6-9% observed in the 1980s (Shank 1986; Lang and
+   Kahn 2001). A Work-in-America Institute (2002) poll found that as many
+   as 22% of nonunion (16% of union) workers would accept 90% of their
+   current pay for 10% fewer hours. The most credible indicator of change
+   comes from the federal governments General Social Survey, which found
+   that the percentage preferring fewer hours, even though earning less
+   money, rose from 5.7% in the 1988-91 period to 10.3% in 1998. All of
+   the estimates cited above might be exaggerations: when push comes to
+   shove, an expressed preference for reduced hours might not be acted
+   upon once the opportunity arrives, when the reality of a reduction in
+   income sinks in. But despite the elusiveness in measurement, the
+   salient point is that a significant share of workers lacks the
+   flexibility to shorten its work hours.
+
+   <p>The reasons these workers increasingly feel overworked no doubt
+   include the fact that Americans, on average, are working longer hours
+   both as individuals and, especially, as families. Total weeks worked
+   annually by two-income, married-couples have increased from 78 in 1979
+   to 98 in 1999. On average, wives in prime-age, married-couple families
+   with children worked almost 400 hours more per year in 2000 than they
+   did in 1979. One contributor to these longer hours is the increasing
+   number of workers who are excluded from the FLSAs overtime
+   protections. The share of the workforce exempt from the overtime
+   provisions of the FLSA has risen from about 32% in 1978 to 40% in the
+   late 1990s (Hamermesh 2000). According to the Department of Labor, 74
+   million workers were covered by the FLSAs overtime provisions in the
+   year 2000, leaving about 50 million uncovered and unprotected. Only
+   20% of covered workers exceed 40 hours a week, while 44% of exempt
+   workers work more than 40 hours a week (U.S. GAO 1999). As employers
+   succeed in exempting more and more of their employees, average work
+   hours and the resulting time pressures on workers and their families
+   can be expected to increase even further. Such exemptions promise only
+   to widen under the Department of Labors recent recommendations to
+   change the longstanding part 541 regulations, which will make it
+   easier for employers to exempt as administrative, executive, or
+   professional various employees currently covered by FLSA overtime
+   requirements.
+
+   <p>In many industries, including transportation, agriculture,
+   communications, and mining, more than a quarter of all workers work
+   more than 40 hours a week, and they generally work very long hours. In
+   10 industries, the average work hours are greater than 40 hours a
+   week, even accounting for part-time workers. In all industries, the
+   workers who do work overtime tend to work excessive amounts, averaging
+   more than 11 hours of overtime a week. In effect those workers, about
+   20% of the workforce, work six-and-a-half days a week, leaving little
+   free time for themselves or their families.
+
+   <p>When these long hours of work are added to the problems of longer and
+   longer commutes to and from work, the time squeeze becomes even
+   tighter. From 1990 to 2000, the average commute time to and from work
+   increased more than 13% and now exceeds 50 minutes a day.
+
+   <p>The most extreme case of overemployment is that of working mandatory
+   (forced, compulsory) overtime. A significant number of U.S. workers
+   cannot refuse overtime work, often required with little or no advance
+   notice, without facing some sort of reprisal, such as disciplinary
+   action, demotion, or even discharge. Estimates of its incidence are
+   wide-ranging and sensitive to survey wording. The best available
+   recent estimate is that about 18% of the workforce performs
+   involuntary overtime work, since a third of the 60% of overtime
+   workers in a representative survey reported being compelled by their
+   supervisor to work more overtime than they preferred (Cornell
+   University Institute of Workplace Studies 1999). Workers employed in
+   transportation and emergency health services face more employer
+   pressure than others. Another recent survey found that 45% of workers
+   reported having to work overtime on little or no notice (Heldrich
+   Center for Workforce Development 1999). In the late 1970s, about 16%
+   of workers reported that overtime was mainly up to their employer and
+   that they would suffer a penalty if they refused it. Involuntary
+   overtime was found to be relatively higher among men, blue-collar and
+   non-union workers, and workers with medical or pension plans
+   (Ehrenberg and Schumann 1984). Finally, a small but non-negligible
+   1.4% of the workforce is involuntarily working full time, usually
+   employed part-time but actually working a full-time work week. Such
+   workers are more likely to be women or college students, and working
+   in non-managerial, sales, service, or laborer occupations (Golden
+   2002).
+
+   <h>Comp time is not designed to reduce hours worked
+   <p>If employers want to reduce their employees work hours, they can do so
+   now, without changes in the law, by hiring more employees and
+   spreading the work or by better managing the flow of work and getting
+   greater productivity from their workers within a 40-hour week. But
+   employers have instead been lengthening their employees hours of work
+   over the past decades, even while more and more women have entered the
+   workforce and productivity has risen dramatically. This process has
+   occurred in government, where various forms of comp time are
+   permitted, just as surely as it has in the private sector. In fact,
+   despite the comp time option, the average employee worked 40.3 hours
+   per week in public administration in 2000, longer than the 39.1-hour
+   average for all employment.
+
+   <p>The motivating force for these longer hours is that it is generally
+   cheaper to require overtime workeven with a 50% premiumthan it is to
+   add new employees. The FLSA overtime premium is calculated on the
+   employees wage alone, rather than on the total cost of compensation.
+   Since social insurance taxes, health benefits, pension and 401(k)
+   costs, and other compensation expenses are such a major part of total
+   compensation today, the 50% wage premium is much less potent than it
+   was in 1938.
+
+   <p>The only sure way to reduce hours would be to set a legal maximum,
+   such as 45 hours a week, and enforce it. Another, less-certain
+   solution to long overtime hours would be to increase the overtime
+   premium and reduce the number of exempt workers. Finally, giving
+   workers the right to refuse to work unwanted overtime would reduce its
+   prevalence and lead to better compensation of workers who choose to
+   accept overtime work.
+
+   <h>Comp time as provided in S. 317 and H.R. 1119 does none of these
+   things; it would also do little or nothing to reduce overtime work and
+   could actually increase it. The fundamental problem with comp time as
+   provided for in the congressional bills is that it requires employees
+   to work overtime first in order to have any chance of earning comp
+   time off. Moreover, rather than discouraging employers from assigning
+   overtime by penalizing it with the overtime premium, the bills
+   encourage overtime work by making it free.
+
+   <h>If comp time proposals became lawalternative scenarios
+   <p>The best way to understand the ramifications of changing the FLSA is
+   to compare likely scenarios under the current and proposed systems of
+   overtime regulation in terms of their ultimate impact on both worker
+   time off (in number of hours) and worker income. Suppose an employee
+   works an extra two hours past his or her regular shift times both on
+   Monday and Wednesday, thus putting in 44 hours per week, with four
+   hours of overtime:
+
+   <h>Extra hours under current FLSA
+   <p>A conscientious employer could pay the overtime that week and then, to
+   reward the employee for giving up personal time, could schedule future
+   unpaid leave time off, perhaps during slow times. Result: total annual
+   hours worked and income received could be the same as under the
+   proposed bills, but employees would not have to wait indefinitely to
+   be paid for the overtime hours (when they do, they in effect are
+   making an interest-free loan to the employer). This arrangement can be
+   offered today, with no new rights, duties, paperwork, recordkeeping,
+   causes of action, or oversight.
+
+   <p>Alternatively, to avoid having to pay overtime at all, the employer
+   could limit the employees hours to 40 for the week by giving the
+   employee the afternoon off on Friday.
+
+   <h>Extra hours under congressionally proposed FLSA reforms
+   <p>The worker sacrifices premium pay, and the net change in hours worked
+   over the year is ambiguousit could go down or up. Indeed, longer hours
+   are more likely. Take the case of an employee who works the four hours
+   of overtime on a weekly basis. On an annual basis (with two weeks paid
+   vacation standard) the employee will work 200 hours of overtime (OT).
+   This means that he or she will bank up to 300 hours of comp time (CT)
+   over the course of the year. If at the end of the year, half of these
+   hours (150) are actually taken in time off (TO) and the other half
+   remain in the leave bank, the employee will have worked 50 more hours
+   than if he or she were not assigned overtime at all. For an employee
+   to actually work fewer hours net, the ratio TO[t] / OT[t] must be
+   greater than 1.0, or, put differently, TO must be greater than 2/3 CT.
+
+   <p>Any employee who has an unused comp time balance in excess of
+   one-third of their total comp time credits actually gains no
+   additional time off in the year under the proposed comp time program.
+   Even without reliable, systematic records of comp time banks,
+   anecdotal evidence suggests that, among public sector non-exempts or
+   private sector exempts, average annual balances among employees often
+   exceed one-third of the comp time allotment. In the public sector
+   experience, it is precisely the large comp time accruals that lead so
+   many government employers to push the use of comp time in order to
+   avoid end-of-the-year cash payments for overtime.
+
+   <p>Because overtime work would become both a deferred compensation
+   program and an underfunded liability, the deterrent effect of the
+   immediate premium payment for overtime would surely be weakened.
+   Employers will become more apt to schedule overtime work generally,
+   postponing new hiring. Moreover, those workers who opt for comp time
+   are precisely the ones who would be the most attractive to place on
+   overtime, in particular for short-term-minded employers who are
+   looking to restrain costs and boost profits in the current quarter.
+   Furthermore, without the current pay premium the supply inducement
+   would be weakened, undercutting the willingness of many workers to put
+   in overtime. Thus, allowing substitution of comp time for overtime
+   threatens to make overtime work both longer and more involuntary.
+
+   <h>Comp time for overtime pay in state and local government
+   <p>Proponents of comp time in lieu of overtime pay argue that this
+   practice is an employee benefit enjoyed by public sector employees but
+   denied to private sector employees. Unfortunately, a lack of data,
+   recordkeeping, documentation, or surveys regarding the use of and
+   experience with comp time in state and local governments precludes
+   verification of the alleged advantages. The purpose of the FLSA
+   amendments in 1986 that permitted the public sector to substitute comp
+   time for overtime pay (following the Supreme Courts decision in Garcia
+   v. San Antonio Metropolitan Transit Authority) was largely to protect
+   public sector budgets and, ultimately, taxpayers from large overtime
+   pay obligations. Indeed, the court, in AFSCME vs. State of Louisiana
+   (1998) declared that the purpose of the comp time option was to
+   alleviate the financial burden of owing overtime pay.
+
+   <p>Public employers large cash liabilities, when comp time credits build
+   up for various state, county, or municipal employees, have led to
+   pressures on employees to use or lose their comp time. Court decisions
+   have swung back and forth regarding the legality of employers forcing
+   employees to use accumulated comp time. In Heaton v. Moore (1994), a
+   court struck down the Missouri Department of Corrections policy
+   compelling comp time use, deciding that the FLSA amendment implies
+   that time off must be consumable by the worker on the workers terms,
+   unless an employees use of requested compensatory time would disrupt
+   the employers operations.
+
+   <p>In Collins v. Lobdell (1999), however, a California court ruled that
+   the FLSA did not prohibit a public employer, again for budgetary
+   reasons, from requiring employees to use accrued comp time, even
+   though the Spokane Valley firefighters did not want to use it. The
+   right of employers to compel their employees to use their comp time
+   accruals, even without the employees approval, was solidified by the
+   Supreme Courts reasoning in Christensen (originally, Moreau) v. Harris
+   County, Texas (2000) (Barnes 2001). Sheriffs deputies complained that
+   they had been denied use of their accumulated compensatory time when
+   they requested it, forced to use it when they did not request it, and
+   suffered retaliation. As the deputies accumulated ever more comp time
+   by being scheduled for overtime, the county feared the mounting fiscal
+   obligation both to employees who worked overtime after reaching the
+   statutory cap on compensatory time accrual and to those with sizable
+   reserves of accrued time. The county adopted a policy requiring all
+   employees who had accrued a large bank of comp time to schedule time
+   off. Justice Clarence Thomas, writing for the majority, saw nothing in
+   the FLSA that explicitly prohibits employers from scheduling and
+   compelling the use of comp time.
+
+   <h>Problems with exporting public sector comp time to the private sector
+   <p>Neither the House nor the Senate bill provides any guarantee that the
+   worker who chooses comp time will ever be able to take it. But the
+   many differences between the private sector and public sector make
+   comp time riskier for private sector employees. First, there is the
+   real danger of losing comp time accruals in the event of a business
+   failure. The U.S. Small Business Administration reports that even in
+   the business boom year of 2000, 550,000 employer businesses closed,
+   and more than 200,000 were business failures. Employees will have a
+   hard time finding lawyers to bring suits against closed businesses;
+   they will find it impossible to recover anything from failed
+   businesses. Employees will also risk the loss of accrued comp time in
+   the event of their employers merger, fraud, or bankruptcy,
+   particularly in the case of small and thinly capitalized enterprises.
+
+   <p>Second, because enforcement of the FLSA is so sporadic, the relative
+   absence of unions in the private sector leaves employees vulnerable to
+   employer abuse. Fewer than 1,000 wage-and-hour inspectors are
+   responsible for enforcing the FLSA and a score of other statutes in
+   more than 7 million workplaces across the entire nation. To make
+   matters worse, there is substantial non-compliance with the existing
+   FLSA overtime rules and regulations. In 2001, the Department of Labor
+   investigated 31,772 cases of alleged employer violations and ordered
+   $134 million in back wages paid to 219,195 employees who had worked
+   uncompensated overtime (Bigler 2002). Violations are highest in
+   sectors such as construction and nursing homes and residential
+   facilities. The third factor making comp time riskier for private
+   sector employees is the fact that private sector employers are not
+   required by law to provide any paid leave for vacations or sick days.
+   Nothing would prevent an employer from reducing or eliminating the
+   paid leave it provides now and substituting comp time in its place. To
+   earn paid leave, an employee could first be required to work overtime.
+   At a Senate hearing in 1997, an employer testifying on behalf of the
+   U.S. Chamber of Commerce admitted that he assigns overtime to
+   employees on weekends and, if they refuse, forces them to use their
+   vacation leave. Fourth, with no civil service protection, private
+   employees will be unable to challenge employer denials of comp time
+   use on grounds of undue disruption, an employer defense that will be
+   far more common in the private sector where work loads are more
+   volatile. Fifth, private employers will inevitably be tempted to try
+   to increase profits by implementing a comp time system. They will
+   discriminate in the assignment of overtime, favoring employees who are
+   willing to forego their right to premium pay. Public employers, by
+   contrast, have no profit motive to game the system or pressure
+   employees to accept comp time.
+
+  <h> Existing comp time in the private sector
+   <p>Some private sector organizations already make comp time available for
+   some of their exempt staff. The arrangement is instituted largely as
+   an employee benefit and reward for going above and beyond the
+   understood, albeit informally defined, work week norm for a particular
+   job. For example, an employer may have a policy that an employee
+   required to return to the workplace or work offsite an extra day on
+   the weekend may qualify for a future day off with pay, provided that a
+   supervisor determines that such time worked was beyond the normal job
+   function. As such, it is at the discretion of the employer to
+   determine how many hours employees must work in a work week before
+   they are eligible to earn comp time, whether to cap the total amount
+   of comp time that an employee can accrue, and whether unused comp time
+   will expire after some time limit (such as six months or a year).
+   Notably, most such comp time plans do not permit use or cashout of
+   comp time credits upon severing of the employment relationship or even
+   transfer, so unused comp time is uncompensated. Indeed, South Carolina
+   law actually prohibits cash payments to exempt employees for comp time
+   earned, and this rule led to problems for one university implementing
+   a comp time program. For employees who resigned having accrued
+   compensatory time, supervisors had to delay filling vacancies until
+   after comp time credits were used up. For terminated employees, unused
+   comp time credits were not granted at all. Eventually, the university
+   abandoned its formal comp time program (Inside Clemson 1997).
+
+  <h> Conclusions
+   <p>The overtime provisions of the FLSA were designed, it is widely
+   agreed, to prevent the tendency toward overwork and to spread job
+   opportunities by promoting an eight-hour day, five-day work week for a
+   traditional household breadwinner. However, the disappearance of the
+   breadwinner model, the rise of dual-income households, more diverse
+   preferences regarding work weeks, and crumbling boundaries between the
+   workplace and other aspects of life suggest the need to re-evaluate
+   the FLSA overtime regulations.
+
+   <p>Creating a truly more family-friendly FLSA means pursuing reforms that
+   will unambiguously promote a net reduction in worker hours, not just
+   an employer-friendly shift in the timing of work with family and
+   flexibility on the label. By this measure, the congressional comp time
+   bills, S. 317 and H.R. 1119, are not family friendly and will not
+   yield more flextime, flexible scheduling, paid time off, or worker
+   control of work schedules, despite proponents attempts to market them
+   as such (Furtchgott-Roth 1998; Finegold 1998; Abbott 1999; Bird 2000).
+   Critics have pointed out that the current bills requirements and
+   remedies are far too weak to provide employees any real protection
+   from employer coercion, from being forced to take comp time in lieu of
+   overtime pay, from discrimination in the allocation of overtime toward
+   those who select the comp time option and away from those who prefer
+   payand from preferential hiring of those applicants who prefer comp
+   time over those who prefer overtime pay (Clark 1996; Golden 1997;
+   Walsh 1999; Henke 1999; Linder 2002; Vance 2002; Conti 2002; Leibig
+   2002). Given recent court interpretations, the bills inadequately
+   protect the right of employees to use the comp time they have earned
+   when they need to, since employers are given the right to refuse comp
+   time use if the employer deems it an undue disruption of business or
+   operations.
+
+  <p> The Senates proposed legislation does create opportunities for
+   employers to more closely match employee hours with the annual flow of
+   work volume. This may be a worthy objective, but promoting a more
+   unstable work week, which allows greater escape from overtime
+   compensation, merely reinforces the cost incentive for employers to
+   schedule overtime and further erodes the deterrent effect of overtime
+   pay.
+
+  <p> Finally, the FLSA comp time bills are not only too one-sided to
+   deliver a more family-friendly work week or workplace, they are also
+   poorly targeted. Working longer-than-standard hours is concentrated
+   among white-collar workers (U.S. GAO 1999) and non-traditional shift
+   workers, 72% of whom work at least 100 hours of overtime per year and
+   27% of whom work at least 300 hours (Circadian Learning 2002).
+
+  <p> Without pilot programs and empirically gained knowledge of how well
+   such a new system might work in terms of delivering shorter average
+   hours to workers risking a comp time option, the current system is
+   better left alone. A more comprehensive and effective way of
+   delivering a truly more family-friendly FLSA would be to incorporate
+   or adopt:
+     <p>* a protected right to refuse assignment of overtime (see Golden and
+       Jorgensen 2002), with a minimum advance notice time for requested
+       overtime work;
+     <p>* extension of the pay premium regulation to work day length,
+       evening/night/weekend work, and annual hours (Hamermesh 2002);
+     <p>* coverage extending to those currently exempted, such as certain
+       managers and professionals (Jacobs and Gerson 1998; Schor 1994);
+     <p>* annual hours limits for salaried non-exempts;
+    <p> * creative work-sharing and work-spreading practices (see Appelbaum
+       et al. 2001);
+     <p>* incentives for employers to offer and workers to accept various
+       reduced-hours options (see Bailyn, Drago, and Kochan 2001);
+     <p>* prorated benefits by hours worked and reduced bias toward longer
+       hours per employee (Golden 1998; Jacobs and Gerson 1998);
+     <p>* coverage of currently exempt vehicle drivers, covered at present
+       only by Department of Transportation hours-of-service regulations
+       that set a maximum of 60 hours per week (and that are widely
+       considered to be commonly disregarded);
+     <p>* rights to a shorter standard work week, such as 35 hours, for
+       workers claiming younger dependents, with a daily overtime premium
+       after seven hours.
+
+                                                              <p> April 2003
+     _________________________________________________________________
+
+  <h> References
+  <l> Abbott, Natalie Slavens. 1999. To Pay or Not to Pay: Modernizing the
+   Overtime Provisions of the Fair Labor Standards Act. University of
+   Pennsylvania, Journal of Labor and Employment Law 1:253.
+
+   <l>Appelbaum, Eileen, Thomas Bailey, Peter Berg, and Arne Kalleberg.
+   2001. Shared Work-Valued Care: New Norms for Organizing Market Work
+   and Unpaid Care Work. Washington, D.C.: Economic Policy Institute.
+
+   <l>Appelbaum, Eileen, and Lonnie Golden. 2002. The Standard Workday or
+   the Highway. Indicators 2(1).
+
+   <l>Babbar, S., and D. J. Aspelin. 1998. The Overtime Rebellion: Symptom
+   of a Bigger Problem? Academy of Management Executive 12(1): 68-76.
+
+   <l>Bailyn, Lotte, Robert Drago, and Thomas Kochan. 2001. Integrating Work
+   and Family Life: A Holistic Approach. Sloan Work-Family Network.
+   Cambridge, Mass.: MIT.
+
+   <l>Barnes, Todd. 2001. The U.S. Supreme Court Excuses Public Employers
+   From The Fair Standards Of Overtime Compensation. Temple Political &
+   Civil Rights Law Review, Fall, 11, 279.
+
+   <l>Bigler, Ron. 2002. Workers Rights Unions Give Workers the Power to
+   Fight Forced Overtime. Labor Research Association.
+
+   <l>Bird, R. 2000. The True Story Behind Overtime Hours. Issue
+   Backgrounder. Washington, D.C.: Employment Policy Foundation.
+
+   <l>Clark, Nicholas. 1996. Fair Labor Standards Act ReformIts Not Broke So
+   Dont Fix It. Journal of Labor Law 343.
+
+   <l>Conti, Judith. 2002. Does the FLSA Accommodate Todays Workers?
+   Testimony to U.S. House of Representatives, May 15.
+
+   <l>Ehrenberg, Ronald, and Paul Schumann. 1984. Compensating Wage
+   Differentials for Mandatory Overtime. Economic Inquiry 22(4): 460-78.
+
+   <l>Employment Law Alliance. 2002. New U.S. Poll Shows More Americans
+   Taking Their Work Home, June.
+
+   <l>Feather, Peter, and Douglass Shaw. 2000. The Demand for Leisure Time
+   in the Presence of Constrained Work Hours. Economic Inquiry 38(4):
+   651-62.
+
+   <l>Finegold, David. 1998. Is the Fair Labor Standards Act Fair to Welfare
+   Recipients? Journal of Labor Research 19(2): 245-60.
+
+   <l>Furtchgott-Roth, Diana. 1998. Comp Time: Giving Hourly Workers What
+   Money Cant Buy. Brief Analysis No. 260.
+
+   <l>Golden, Lonnie. 2002. Overemployment Among Part-Timers: Empirical
+   Determinants. Draft presented to Midwest Economic Association
+   conference, Chicago, Ill. March.
+
+   <l>Golden, Lonnie. 1998. Working Time Policy, Regulatory Reforms, and the
+   Labor Market in the U.S. and European Union. International Review of
+   Comparative Public Policy 10: 51-75.
+
+   <l>Golden, Lonnie. 1997. Family Friend or Foe? Working Time, Flexibility,
+   and the Fair Labor Standards Act. Briefing Paper. Washington D.C.:
+   Economic Policy Institute.
+
+   <l>Golden, Lonnie, and Morris Altman. 2002. Over-Supply of Labor:
+   Behavioral Economic Roots of Labor Supply and Overwork. Global
+   Business & Economics Review-Anthology.
+
+   <l>Golden, Lonnie, and Deborah Figart. 2000. Doing Something About Long
+   Hours. Challenge 43(6): 15-37.
+
+   <l>Golden, Lonnie, and Helene Jorgensen. 2002. Time After Time: Mandatory
+   Overtime in the U.S. Economy. Issue Brief. Washington D.C.: Economic
+   Policy Institute.
+
+   <l>Hamermesh, Daniel. 2002. Overtime Laws and the Margins of Work Timing.
+   Paper prepared for the Conference on Work Intensification, Paris, Nov.
+   21-22.
+
+   <l>Hamermesh, Daniel. 2000. 12 Million Salaried Workers Are Missing.
+   Industrial and Labor Relations Review 55:649-75.
+
+   <l>Hanecke, Kerstin, Tiedemann Silke, Nachreiner Friedhelm, and
+   Grzech-Sukalo Hiltraud. 1998. Accident Risk as a Function of Hour at
+   Work and Time of Day as Determined From Accident Data and Exposure
+   Models for the German Working Population. Scandinavian Journal of Work
+   Environment Health 24(Suppl. 3): 43-8.
+
+   <l>Heldrich Center for Workforce Development. 1999. Work Trends: Americas
+   Attitudes About Work, Employers and Government. Heldrich Center.
+
+   <l>Henke, Lawrence. 1999. Comment: Is the Fair Labor Standards Act Really
+   Fair? Government Abuse or Financial Necessity: An Analysis of the Fair
+   Labor Standards Act 1974 Amendment the Section 207(k) Exemption. SMU
+   Law Review 52:1847-77.
+
+   <l>Inside Clemson. 1997. University Abolishes Comp Time Policy For Exempt
+   Employees. Inside Clemson 6(17).
+
+   <l>Jacobs, Jerry, and Kathleen Gerson. 1998. Toward a Family-Friendly,
+   Gender-Equitable Work Week. University of Pennsylvania, Journal of
+   Labor and Employment Law 1: 457-72.
+
+   <l>Jacobs, Jerry, and Kathleen Gerson. 1998. Who Are the Overworked
+   Americans? Review of Social Economy 56(4): 442-59.
+
+   <l>Lang, Kevin, and Shulamit Kahn. 2001. Hours Constraints: Theory,
+   Evidence, and Policy Implications. In G. Wong and G. Picot, eds.,
+   Working Time in a Comparative Perspective. Volume 1. Kalamazoo, Mich.:
+   Upjohn Institute for Employment Research.
+
+   <l>Leibig, Michael. 2002. The Importance of Time Off: Valuing Restricted
+   vs. Unrestricted Comp Time. South Dakota Law Review, Fall.
+
+   <l>Linder, Marc. 2002. The Autocratically Flexible Workplace: A History
+   of Overtime Regulation in the United States.
+
+   <l>Miller, Scott. 2001. Revitalizing the FLSA. Hofstra Labor & Employment
+   Law Journal, Fall, 19, L.J. 1.
+
+   <l>Mishel, Lawrence, Jared Bernstein, and Heather Boushey. 2003. The
+   State of Working America 2002-2003. Ithaca, N.Y. Cornell University
+   Press.
+
+   <l>Monthly Labor Review. 1999. Compensatory Time and Overtime. Monthly
+   Labor Review, October, 34-35.
+
+   <l>Rosa, Roger. 1995. Extended Workshifts and Excessive Fatigue. Journal
+   of Sleep Research 4(Suppl. 2): 51-6.
+
+   <l>Schor, Juliet. 1999. The Overspent American: Upscaling, Downshifting,
+   and the New Consumer. New York, N.Y.: Basic Books.
+
+   <l>Schor, Juliet. 1994. Worktime in a Contemporary Context: Amending the
+   FLSA. Chicago-Kent Law 70(1): 157-72.
+
+   <l>Shank, Susan. 1986. Preferred Hours of Work and Corresponding
+   Earnings. Monthly Labor Review, November, 40-4.
+
+   <l>Shields, Margo. 1999. Long Working Hours and Health. Health Reports
+   (11):22-48.
+
+   <l>Slocumb, Dennis. 2002. FLSA Comp Time in Law Enforcement: A Dozen
+   Years Experience. Testimony to U.S. House of Representatives, May 15.
+
+   <l>Smith, Michael. 1996. Mandatory Overtime and Quality of Life in the
+   1990s. Journal of Corporate Law 21:599-600.
+
+   <l>Sparks, K., C. Cooper, Y. Fried, and A. Shirom. 1997. The Effects of
+   Hours of Work on Health: A Meta-Analytic Review. Journal of
+   Occupational and Organizational Psychology 70(Part 4): 391-408.
+
+   <l>Spurgeon, Anne, J. M. Harrington, and C. Cooper. 1997. Health and
+   Safety Problems Associated With Long Working Hours: A Review of the
+   Current Position. Occupational Environment Medicine 54: 367-75.
+
+   <l>U.S. General Accounting Office (GAO). 1999. Fair Labor Standards Act:
+   White Collar Exemptions in the Modern Work Place. GAO/HEHS- 99-164.
+   Report to the Subcommittee on Workforce Protections, U.S. House
+   Committee on Education and the Workforce.
+
+   <l>Vance, Shawn. 2002. Trying to Give Private Sector Employees a Break:
+   Congresss Efforts to Amend the FLSA. Hofstra Labor and Employment Law
+   Journal 19(Spring): 311-49.
+
+   <l>Walsh, David. 1999. The FLSA Comp Time Controversy: Fostering
+   Flexibility or Diminishing Worker Rights? Berkeley Journal of
+   Employment and Labor Law 20(1): 74.
+
+   <l>Wilson, D. Mark. 2001. Modernizing the Fair Labor Standards Act for
+   the 21st Century. Backgrounder #1457. Washington, D.C.: Thomas A. Roe
+   Institute for Economic Policy Studies, Heritage Foundation.
+
+   <l>Workforce 2000. Public Employers Can Push Comp Time Usage. Workforce
+   2000 79(6): 30-2.
+     _________________________________________________________________
+
+  

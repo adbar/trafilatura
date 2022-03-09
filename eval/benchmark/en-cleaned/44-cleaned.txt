@@ -1,0 +1,242 @@
+URL: http://devicelink.com/mx/archive/04/11/kerr.html
+
+
+   <h>INFORMATION TECHNOLOGIES
+   <h>IT in the Hands of Field Sales Reps
+
+   <p>A sales force equipped with mobile tools for interconnection to
+   corporate resources can preserve a manufacturer's competitive
+   advantage.
+
+   <p>David Kerr
+
+   <p>The increasing complexity of today's healthcare equipment procurement
+   environment has presented some new challenges for medical device
+   manufacturing companies and their sales representatives. To gain a
+   competitive edge in influencing product selection may require
+   struggle. The emergence of intricate purchasing plans, contract-buying
+   trends, and shifting pricing options constitute one set of challenges.
+   Another relates to the growing complexity of medical technology
+   itself, particularly its incorporation of information technology (IT)
+   capabilities.
+
+   <p>Medical device manufacturers and their field reps are discovering
+   several healthcare industry procurement hurdles that need to be
+   overcome. Group purchasing organizations (GPOs), contractual buying
+   arrangements, on-line ordering, and face-to-face selling are each
+   scenarios that present a distinct challenge for pricing and
+   relationship building. A tool that can be of value in each of these
+   situations is mobile sales force automation (SFA) technology.
+
+   <p>Face-to-face selling is made easier by the development of personal
+   relationships with physicians and surgeons in situations where they
+   play an important role in purchasing. When doctors demand considerable
+   technical data, product training, and manufacturer support, those
+   sales reps armed with real-time data and interactive presentation
+   tools will be the ones most likely to close a sale.
+
+   <p>In an effort to foster better relationships with, and
+   provide more value to, physicians--and to the healthcare industry
+   generally--some medtech companies are investing in integrated sales,
+   marketing, and supply-chain management systems that are known as
+   customer relationship management (CRM) systems. Mobile SFA is a
+   primary tool driving this initiative to meet, on demand and in the
+   field, ever-growing customer needs (see sidebar).
+
+   <p>According to a recent report by market analysts Frost & Sullivan (San
+   Antonio, TX), CRM license revenue from mobile SFA applications, for
+   both wired and wireless devices, is expected to grow from a predicted
+   $169 million in 2004 to $293 million by 2008. The fastest-growing
+   segment, wireless SFA, is projected to grow from $20 million to $115
+   million over that period.^1
+
+   <p>This article examines ways that mobile SFA can make medtech companies'
+   field-based sales forces more effective in a procurement environment
+   trending toward consolidated purchasing and automatic ordering while
+   also serving the interests of institutional purchasers.
+
+   <h>Sales Approaches by Product Category
+
+   <p>Three major categories of medical devices--disposable goods,
+   high-margin devices, and capital goods--call for different sales
+   approaches. Handheld sales technology plays a different role in each.
+
+   <p>In the hospital environment, purchasing departments and GPOs tend to
+   control vendor selection, product pricing, and the awarding of
+   contracts. This holds true especially with commodity-based products
+   such as disposables (surgical gloves, swabs, and so on) where price is
+   the primary differentiator and organizations are reordering more often
+   than making first-time purchases. Rather than buying directly from a
+   sales rep, these purchasing groups use electronic purchasing
+   technology such as electronic data interchange (EDI) to maximize
+   ordering efficiency and optimize savings.
+
+   <p>Since the decisionmaking process and the sales cycle for disposable
+   products are both very short, new purchasing and inventory
+   replenishment tend to be conducted on-line. Here, manufacturers need
+   to distinguish their products from competitors' while offering the
+   lowest price and an efficient ordering process. Despite stringent
+   pricing constraints prevalent in this category, sales reps with
+   real-time mobile access to pricing models, product specifications,
+   inventory information, and delivery schedules during the sales call
+   gain advantage for their employers in terms of better CRM
+   functionality, more-efficient document management, and electronic
+   order submission and tracking. Mobile technology gives reps the
+   ability to capture, store, and view account history during the sales
+   call, and to present new products immediately at launch.
+
+   <p>At the other end of the medical device spectrum are capital
+   goods--heavy, expensive, highly sophisticated medical equipment. In
+   this complex segment, product lines are narrow, sales cycles are very
+   long, and purchasing decisions are made by committee.
+
+
+   <p>Reps typically do not stock such inventory in the field, nor can they
+   demonstrate equipment for each prospect. What is imperative for them
+   is keeping a variety of technical specifications and a detailed
+   account history on hand. They can, of course, benefit from mobile SFA
+   functions that aid in selling, such as interactive presentations,
+   video product demonstrations, side-by-side product comparisons, and
+   display of technical documentation and complex pricing configurations.
+   But the handheld technology enables them also to review and update the
+   account history, check the field service and equipment maintenance
+   history, and manage customer contact information relating to every
+   member of the committee.
+
+   <h>Selling Complex, High-Margin Devices
+
+   <p>In between commodity disposables and capital goods falls the realm of
+   high-margin implantable and diagnostic medical devices. These
+   electromedical products have become increasingly sophisticated as they
+   have incorporated miniaturized electronics and then embedded
+   microprocessors. New IT-based devices in this category now contribute
+   heavily to the ability of physicians to make reliable therapeutic
+   decisions by means of the vital data they gather and record.
+
+   <p>Owing to the complexity of these products, the surgeon or physician
+   who uses them typically makes or strongly influences the purchasing
+   decision. New product sales (rather than repeat sales) are common in
+   this category because physicians focus on meeting the requirements of
+   individual patients. GPOs are more price driven, but physicians
+   purchasing highly complex devices base their decisions on specific
+   patient needs, insurance reimbursements, product performance, and
+   manufacturer support.
+
+   <p>In this situation, a close, trusting relationship between sales rep
+   and physician is critical. Physicians need to be confident of the
+   rep's recommendations, the product's reliability, and the
+   manufacturer's training support. Mobile SFA tools in the hands of
+   sales reps enable device manufacturers to satisfy these buying
+   criteria. They can help physicians make an educated decision by
+   providing:
+     <l>* Details of product features, specifications, and benefits.
+     <l>* Critical data regarding product reliability and accuracy, such as
+       clinical trial results.
+     <l>* Side-by-side comparisons of competitive products.
+     <l>* Interactive presentations and video surgical demonstrations.
+     <l>* Downloadable educational material from the manufacturer.
+     <l>* Reimbursement guidelines.
+
+   <p>The mobile technology provides efficiency benefits for the wider
+   institutional healthcare system as well (see sidebar).
+
+   <p>Mobile SFA technology facilitates relationship building by providing
+   sales reps with all the information and resources they need at the
+   point of purchase, which might be the physician's office, operating
+   room, or surgeon's lounge. Physicians are often challenged to sift
+   through and process a great deal of technical and clinical information
+   in order to make qualified decisions. Real-time access to corporate
+   systems via mobile technology enables the sales rep to anticipate and
+   respond quickly to technical questions about product performance and
+   customization options, as well as refute competitive claims, track
+   inventory, and fulfill orders on the spot. Well-prepared,
+   well-educated reps armed with a complete set of easily accessible
+   resources during the sales call are likely to be considered more
+   credible by physicians and surgeons than those who are not.
+
+   <p>In addition, SFA technology gives sales reps the tools for introducing
+   new products to customers sooner than traditional methods would allow.
+   They can make a professional and information-rich presentation to
+   educate physicians about each new device immediately upon rollout.
+
+   <h>Collateral Benefits
+
+   <p>Mobile technology empowers sales reps and makes them more efficient
+   (see sidebar). But by implementing handheld SFA solutions the medical
+   device manufacturing companies that employ them gain in other ways.
+   These benefits include CRM economy, easy field deployment, greater
+   sales force productivity, and enhanced supply-chain visibility.
+
+   <p>Alternative to Traditional CRM. Integrated CRM systems are no longer
+   restricted by high cost to enterprises with large sales teams.
+   Advances in system security and data integrity protocols allow
+   companies of all sizes to outsource the SFA function of their CRM
+   system with confidence. Also, the evolution of the application service
+   provider (ASP) model--a hosted, pay-as-you-go arrangement--makes
+   customized sales solutions affordable for smaller organizations.
+   Depending on the functionality and support level required, the cost
+   per user of hosted SFA services is comparable to that of telephone
+   service.
+
+   <p>Ease of Deployment. Smaller medical device companies with fewer than
+   50 sales reps can field-deploy such new technologies as mobile SFA
+   quite rapidly. For reasons of economy, they tend to favor
+   subscription-based services, which can be implemented immediately and
+   independently of legacy systems. And because the IT resources they
+   employ are generally not very extensive, requirements for
+   customization and integration into back-office systems are very
+   manageable.
+
+   <p>Larger organizations--those with, say, 500 reps or more--may require
+   more time to deploy SFA technology effectively because of the need to
+   take into account highly complex legacy systems when implementing
+   integrated field solutions. Also, decisionmaking is naturally a slower
+   process, and large internal IT departments have to take time to learn
+   the new technologies before they are prepared to support the mobile
+   sales force. An SFA pilot program involving the rollout of one
+   business unit at a time is one way for a larger enterprise to
+   accelerate deployment.
+
+   <p>Sales Staff Productivity. Such administrative tasks as handling order
+   paperwork and entering call notes for management review can occupy a
+   substantial portion of a sales rep's workday. Medtech organizations
+   seeking ways to minimize these burdens so reps can focus on
+   revenue-generating activities such as prospecting, physician visits,
+   and relationship building may find mobile SFA technology helpful in
+   this regard. A secondary benefit is a clearer window into sales
+   activities.
+
+   <p>Supply Chain Visibility. Most supply chain technology is focused on
+   the movement and storage of assets in the back office. By contrast,
+   mobile SFA illuminates every facet of the dynamic supply chain: in the
+   warehouse, on order, and in the field. This approach to supply-chain
+   tracking--which makes trunk inventory, consignment inventory, expired
+   products, and rep-to-rep inventory transfers completely
+   visible--enables medtech organizations to be more responsive to
+   customers' needs and to be more accountable for their own assets in
+   this era of Sarbanes-Oxley. With their sales reps using handheld
+   tracking technology to report on the movement of their personal
+   inventory in the field, corporations can maintain accurate
+   supply-chain data in real time.
+
+   <h>Conclusion
+
+   <p>Mobile SFA technology promotes streamlined management of the technical
+   and administrative aspects of medical technology sales and provides an
+   attractive vehicle for delivering presentations. Medical device sales
+   reps can use the technology to personalize and automate the sales
+   process for enhanced effectiveness in a progressively competitive
+   market. No matter how complex the environment, the reps have the
+   flexibility to close the sale.
+
+   <p>Relationship- and education-driven sales and those for which
+   profitability depends on efficient, automated ordering are the two
+   poles of modern healthcare equipment procurement. In each scenario,
+   SFA technology arms field reps with detailed, real-time data to
+   satisfy the buyer and organizational tools to function effectively
+   throughout the entire sales process and deliver the competitive edge
+   their employers seek.
+ 
+   <p>David Kerr is vice president of Everypath Inc. (Santa Clara, CA), a
+   provider of Web-based handheld applications designed specifically for
+   the medical device and pharmaceutical field sales environment.

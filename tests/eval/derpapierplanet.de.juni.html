@@ -2015,19 +2015,19 @@ Labels:
 <a class='new-title' href='https://www.derpapierplanet.de/2015/06/gemeinsames-lesen-09.html' id='Blog1_blog-pager-newer-link' rel='next'></a>
 <a class='old-title' href='https://www.derpapierplanet.de/2015/05/ruckblick-mai.html' id='Blog1_blog-pager-older-link' rel='previous'></a>
 </div>
-<script type='text/javascript'> 
-//<![CDATA[ 
-(function($){    
-    var newerLink = $('a.new-title'); 
-    var olderLink = $('a.old-title'); 
-    $.get(newerLink.attr('href'), function (data) { 
-     newerLink.html('<div class="post-pager-img" style="background: url(&quot;'+$(data).find('.post-body img').attr('src').split(/s\B\d{3,4}/).join("s500")+'&quot;)"></div><div class="post-pager-title"><div>Prev post</div>'+$(data).find('h1.post-title').text()+'</div>');    
-    },"html"); 
-    $.get(olderLink.attr('href'), function (data2) { 
-     olderLink.html('<div class="post-pager-img" style="background: url(&quot;'+$(data2).find('.post-body img').attr('src').split(/s\B\d{3,4}/).join("s500")+'&quot;)"></div><div class="post-pager-title"><div>Next post</div>'+$(data2).find('h1.post-title').text()+'</div>');    
-    },"html"); 
-})(jQuery); 
-//]]> 
+<script type='text/javascript'>
+//<![CDATA[
+(function($){
+    var newerLink = $('a.new-title');
+    var olderLink = $('a.old-title');
+    $.get(newerLink.attr('href'), function (data) {
+     newerLink.html('<div class="post-pager-img" style="background: url(&quot;'+$(data).find('.post-body img').attr('src').split(/s\B\d{3,4}/).join("s500")+'&quot;)"></div><div class="post-pager-title"><div>Prev post</div>'+$(data).find('h1.post-title').text()+'</div>');
+    },"html");
+    $.get(olderLink.attr('href'), function (data2) {
+     olderLink.html('<div class="post-pager-img" style="background: url(&quot;'+$(data2).find('.post-body img').attr('src').split(/s\B\d{3,4}/).join("s500")+'&quot;)"></div><div class="post-pager-title"><div>Next post</div>'+$(data2).find('h1.post-title').text()+'</div>');
+    },"html");
+})(jQuery);
+//]]>
 </script>
 </div>
 <div class='post-footer-line post-footer-line-3'>
@@ -2078,7 +2078,7 @@ printRelatedLabels_thumbs();
         if (data && data.feed && data.feed.entry) {
           for (var i = 0, entry; entry = data.feed.entry[i]; i++) {
             var comment = {};
-            // comment ID, parsed out of the original id format
+            // comment ID, parsed out of the ground id format
             var id = /blog-(\d+).post-(\d+)/.exec(entry.id.$t);
             comment.id = id ? id[2] : null;
             comment.body = bodyFromEntry(entry);
@@ -2438,7 +2438,7 @@ Powered by <a href='https://www.blogger.com' target='_blank'>Blogger</a>.
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2020/'>
@@ -2451,7 +2451,7 @@ Powered by <a href='https://www.blogger.com' target='_blank'>Blogger</a>.
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2020/02/'>
@@ -2466,7 +2466,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2020/01/'>
@@ -2483,7 +2483,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/'>
@@ -2496,7 +2496,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/10/'>
@@ -2511,7 +2511,7 @@ Oktober
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/09/'>
@@ -2526,7 +2526,7 @@ September
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/08/'>
@@ -2541,7 +2541,7 @@ August
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/04/'>
@@ -2556,7 +2556,7 @@ April
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/03/'>
@@ -2571,7 +2571,7 @@ März
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/02/'>
@@ -2586,7 +2586,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2019/01/'>
@@ -2603,7 +2603,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/'>
@@ -2616,7 +2616,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/12/'>
@@ -2631,7 +2631,7 @@ Dezember
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/11/'>
@@ -2646,7 +2646,7 @@ November
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/09/'>
@@ -2661,7 +2661,7 @@ September
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/08/'>
@@ -2676,7 +2676,7 @@ August
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/07/'>
@@ -2691,7 +2691,7 @@ Juli
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/06/'>
@@ -2706,7 +2706,7 @@ Juni
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/05/'>
@@ -2721,7 +2721,7 @@ Mai
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/04/'>
@@ -2736,7 +2736,7 @@ April
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/03/'>
@@ -2751,7 +2751,7 @@ März
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/02/'>
@@ -2766,7 +2766,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2018/01/'>
@@ -2783,7 +2783,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/'>
@@ -2796,7 +2796,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/12/'>
@@ -2811,7 +2811,7 @@ Dezember
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/11/'>
@@ -2826,7 +2826,7 @@ November
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/10/'>
@@ -2841,7 +2841,7 @@ Oktober
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/09/'>
@@ -2856,7 +2856,7 @@ September
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/08/'>
@@ -2871,7 +2871,7 @@ August
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/07/'>
@@ -2886,7 +2886,7 @@ Juli
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/06/'>
@@ -2901,7 +2901,7 @@ Juni
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/04/'>
@@ -2916,7 +2916,7 @@ April
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/03/'>
@@ -2931,7 +2931,7 @@ März
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/02/'>
@@ -2946,7 +2946,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2017/01/'>
@@ -2963,7 +2963,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/'>
@@ -2976,7 +2976,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/12/'>
@@ -2991,7 +2991,7 @@ Dezember
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/11/'>
@@ -3006,7 +3006,7 @@ November
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/10/'>
@@ -3021,7 +3021,7 @@ Oktober
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/09/'>
@@ -3036,7 +3036,7 @@ September
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/08/'>
@@ -3051,7 +3051,7 @@ August
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/07/'>
@@ -3066,7 +3066,7 @@ Juli
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/06/'>
@@ -3081,7 +3081,7 @@ Juni
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/05/'>
@@ -3096,7 +3096,7 @@ Mai
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/04/'>
@@ -3111,7 +3111,7 @@ April
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/03/'>
@@ -3126,7 +3126,7 @@ März
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/02/'>
@@ -3141,7 +3141,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2016/01/'>
@@ -3158,7 +3158,7 @@ Januar
 <span class='zippy toggle-open'>
 
         &#9660;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/'>
@@ -3171,7 +3171,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/12/'>
@@ -3186,7 +3186,7 @@ Dezember
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/11/'>
@@ -3201,7 +3201,7 @@ November
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/10/'>
@@ -3216,7 +3216,7 @@ Oktober
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/09/'>
@@ -3231,7 +3231,7 @@ September
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/08/'>
@@ -3246,7 +3246,7 @@ August
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/07/'>
@@ -3261,7 +3261,7 @@ Juli
 <span class='zippy toggle-open'>
 
         &#9660;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/06/'>
@@ -3286,7 +3286,7 @@ Juni
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/05/'>
@@ -3301,7 +3301,7 @@ Mai
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/04/'>
@@ -3316,7 +3316,7 @@ April
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/03/'>
@@ -3331,7 +3331,7 @@ März
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/02/'>
@@ -3346,7 +3346,7 @@ Februar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2015/01/'>
@@ -3363,7 +3363,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2014/'>
@@ -3376,7 +3376,7 @@ Januar
 <span class='zippy'>
 
         &#9658;&#160;
-      
+
 </span>
 </a>
 <a class='post-count-link' href='https://www.derpapierplanet.de/2014/12/'>
@@ -3566,10 +3566,10 @@ jQuery(function($){$.fn.scrollToTop=function(){$(this).hide().removeAttr("href")
 </div>
 </div>
 <script>//<![CDATA[
-if ( $('.archivedate').hasClass('expanded')) { 
-$('.archivedate').removeClass('expanded'); 
-$('.archivedate').addClass('collapsed'); 
-}  
+if ( $('.archivedate').hasClass('expanded')) {
+$('.archivedate').removeClass('expanded');
+$('.archivedate').addClass('collapsed');
+}
 //]]></script>
 <script type='text/javascript'>//<![CDATA[
 $(".menuouter").click(function(){
@@ -3590,7 +3590,7 @@ $( this ).toggleClass( "open" );
 <script type='text/javascript'>//<![CDATA[
 $(function() {
 // SETTINGS
-//------------------------------------------------------    
+//------------------------------------------------------
   var one_level_list_element = $(' ul') // mandatory!
 menu_name = 'Menu',
 menu_wrapper_class = 'menus',
@@ -3605,7 +3605,7 @@ grandchildren_wrapper_class = 'level-three';
 // DOM SETUP
 //------------------------------------------------------
 var grandchild = $('li a:contains("__")'),
-child = $('li a:contains("_")');   
+child = $('li a:contains("_")');
 if (one_level_list_element.attr('class') == undefined){
 one_level_list_element.addClass('nav');
 var ul_wrapper = 'nav';
@@ -3622,7 +3622,7 @@ i += citem.eq(i).nextUntil(':not(.'+child_item_class+')').andSelf().wrapAll('<ul
 }
 citem.parent().addClass(children_wrapper_class);
 // add class to grandchildren
-grandchild.parent().addClass(grandchild_item_class);  
+grandchild.parent().addClass(grandchild_item_class);
 // wrap grandchildren in ul
 var gitem = $('.'+grandchild_item_class);
 for(var i=0; i<gitem.length;) {
@@ -3630,11 +3630,11 @@ i += gitem.eq(i).nextUntil(':not(.'+grandchild_item_class+')').andSelf().wrapAll
 }
 gitem.parent().addClass(grandchildren_wrapper_class);
 // add class to parents
-$('.'+ul_wrapper+' > li').addClass(parent_item_class);   
+$('.'+ul_wrapper+' > li').addClass(parent_item_class);
 // remove underscores from Names
 $('.'+ul_wrapper+' a').each(function() {
 $(this).text($(this).text().replace(/_/g, ' '));
-});    
+});
 // append Grandchildren to Children
 $('.'+children_wrapper_class+' > .'+child_item_class).each(function() {
 if ($(this).next().is('.'+grandchildren_wrapper_class)){
@@ -3658,7 +3658,7 @@ $('.fa-angle-down').click(function () {
 if ( $(this).siblings('.'+children_wrapper_class).is(':hidden') ) {
 $('.'+menu_wrapper_class+' .'+children_wrapper_class).slideUp();
 $(this).siblings('.'+children_wrapper_class).slideToggle();
-} 
+}
 else {
 $(this).siblings('.'+children_wrapper_class).slideUp();
 }
@@ -3667,7 +3667,7 @@ $('.fa-angle-right').click(function () {
 if ( $(this).siblings('.'+grandchildren_wrapper_class).is(':hidden') ) {
 $('.'+menu_wrapper_class+' .'+grandchildren_wrapper_class).slideUp();
 $(this).siblings('.'+grandchildren_wrapper_class).slideToggle();
-} 
+}
 else {
 $(this).siblings('.'+grandchildren_wrapper_class).slideUp();
 }

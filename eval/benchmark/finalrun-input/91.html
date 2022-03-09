@@ -1,0 +1,1700 @@
+<text id="http://jodi.ecs.soton.ac.uk/Articles/v01/i08/Hunter/" title="MetaNet - A Metadata Term Thesaurus to Enable Semantic Interoperability Between Metadata Domains" encoding="utf8">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.7 [en] (Win98; U) [Netscape]">
+   <title>MetaNet - A Metadata Term Thesaurus to Enable Semantic Interoperability Between Metadata Domains</title>
+
+<style  type="text/css">
+<!--
+
+p.navigation {
+  font: 10pt Sans-serif,Helvetica,Arial;
+}
+
+a.navigation {
+  text-decoration: none;
+  color: #2222EE;
+}
+// -->
+
+</style>
+</head>
+<body background="/images/goldbackground.gif" bgcolor="#FFFFFF" text="#000000">
+<a name="top"></A>
+<a href="http://jodi.tamu.edu/"><IMG border=0 src="/images/sm-jodi.gif" alt="JoDI"></A><A href="http://jodi.tamu.edu/?vol=new"><IMG border=0 align=top src="/images/New_papers.gif" alt="New papers"></A><A href="http://jodi.tamu.edu/?vol=all&papers=no"><IMG border=0 align=top src="/images/Past_issues.gif" alt="Past issues"></A><A href="http://jodi.tamu.edu/?vol=all"><IMG border=0 align=top src="/images/Index_of_papers.gif" alt="Index of papers"></A><IMG align=top src="/images/end.gif" alt="">
+<table>
+<tr>
+<td width="40"><IMG src="/images/spacer.gif" alt=""></td>
+<td width="100%">
+
+<P class="navigation"><A class="navigation" href="http://jodi.tamu.edu/">Journal of Digital Information</A>, <A class="navigation" href="http://jodi.tamu.edu/?vol=1&iss=8">Volume 1 Issue 8</A><br>Article No. 42, 2001-02-08<br>
+To cite this paper please include the details above in the full reference
+<BR>Themes: <A class="navigation" href="http://jodi.tamu.edu/?theme=a">Digital libraries</A>, <A class="navigation" href="http://jodi.tamu.edu/?theme=d">Information discovery</A><BR>
+<br><b>Peer reviewed paper</b></P><p class="navigation"><a class="navigation" href="?printable=1">Printable version</a> available.</p>
+
+<center>
+<h1>
+MetaNet - A Metadata Term Thesaurus to Enable&nbsp;<br>
+Semantic Interoperability Between Metadata Domains</h1></center>
+
+<center><font size=+1>Jane Hunter</font>
+<br>DSTC Pty Ltd, University of Queensland, Qld, 4072, Australia
+<br>Email: <a href="mailto:jane@dstc.edu.au">jane@dstc.edu.au</a> Web: <a href="http://archive.dstc.edu.au/RDU/staff/jane-hunter.html">home page</a>
+<br><b>Key features</b> <a href="#References">References</a>; Figures <a href="#Fig1">1</a>,
+<a href="#Fig2">2</a>, <a href="#Fig3">3</a>, <a href="#Fig4">4</a>; Tables
+<a href="#Table1">1</a>, <a href="#Table 2">2</a>, <a href="#Table3">3</a>,
+<a href="#Table4">4</a></center>
+
+<table ALIGN=RIGHT BORDER=0 CELLSPACING=10 CELLPADDING=2 WIDTH="30%" BGCOLOR="#EEEEEE" >
+<tr>
+<td>
+<h3>
+Contents</h3>
+
+<ul>
+<li>
+<font size=-1>1 <a href="#Introduction">Introduction</a></font></li>
+
+<li>
+<font size=-1>2 <a href="#Definitions">Definitions of Terms</a></font></li>
+
+<li>
+<font size=-1>3 <a href="#Related">Related Work</a></font></li>
+
+<li>
+<font size=-1>4 <a href="#Overview">Overview of the ABC Underlying Metadata
+Model</a></font></li>
+
+<li>
+<font size=-1>5 <a href="#Simple">A Simple Example</a></font></li>
+
+<ul>
+<li>
+<font size=-1><a href="#Rules">Structural Mapping Rules</a></font></li>
+</ul>
+
+<li>
+<font size=-1>6 <a href="#Evaluation">An Evaluation of XSLT for Metadata
+Mappings</a></font></li>
+
+<li>
+<font size=-1>7 <a href="#Mapping">Semantic Mapping via a Mapping Matrix</a></font></li>
+
+<li>
+<font size=-1>8 <a href="#MetaNet">Development of MetaNet, a Metadata Term
+Thesaurus</a></font></li>
+
+<ul>
+<li>
+<font size=-1><a href="#Intrathesaurus">Intrathesaurus and Interthesaurus
+Relations</a></font></li>
+
+<li>
+<font size=-1><a href="#Description">Description of MetaNet</a></font></li>
+</ul>
+
+<li>
+<font size=-1>9 <a href="#Linking">Linking MetaNet to XSLT</a></font></li>
+
+<li>
+<font size=-1>10 <a href="#Conclusions">Conclusions, Limitations and Future
+Work</a></font></li>
+
+<li>
+<font size=-1><a href="#Acknowledgements">Acknowledgements</a></font></li>
+
+<li>
+<font size=-1><a href="#AppendixA">Appendix A</a></font></li>
+
+<ul>
+<li>
+<font size=-1><a href="#A1">ABC Description of Example Resource</a></font></li>
+
+<li>
+<font size=-1><a href="#A2">Simple Resource-centric Description of Example
+Resource</a></font></li>
+
+<li>
+<font size=-1><a href="#A3">Dublin Core Description of Simple Example</a></font></li>
+
+<li>
+<font size=-1><a href="#A4">MPEG-7 Description</a></font></li>
+
+<li>
+<font size=-1><a href="#A5">ID3 Description</a></font></li>
+</ul>
+
+<li>
+<font size=-1><a href="#Appendix B">Appendix B</a></font></li>
+
+<ul>
+<li>
+<font size=-1><a href="#B1">XSL for Transforming from ABC to DC</a></font></li>
+
+<li>
+<font size=-1><a href="#B2">XSL for Transforming from ABC to ID3</a></font></li>
+
+<li>
+<font size=-1><a href="#B3">XSL for Transforming ABC to MPEG-7</a></font></li>
+</ul>
+</ul>
+</td>
+</tr>
+</table>
+
+<h3>
+Abstract</h3>
+<font size=-1>Metadata interoperability is a fundamental requirement for
+access to information within networked knowledge organization systems.
+The Harmony international digital library project <a href="#1">[1]</a>
+has developed a common underlying data model (the ABC model) to enable
+the scalable mapping of metadata descriptions across domains and media
+types. The ABC model <a href="#2">[2]</a> provides a set of basic building
+blocks for metadata modeling and recognizes the importance of 'events'
+to describe unambiguously metadata for objects with a complex history.
+To test and evaluate the interoperability capabilities of this model, we
+applied it to some real multimedia examples and analysed the results of
+mapping from the ABC model to various different metadata domains using
+XSLT <a href="#3">[3]</a>. This work revealed serious limitations in the
+ability of XSLT to support flexible dynamic semantic mapping. To overcome
+this, we developed MetaNet <a href="#4">[4]</a>, a metadata term thesaurus
+which provides the additional semantic knowledge that is non-existent within
+declarative XML-encoded metadata descriptions. This paper describes MetaNet,
+its RDF Schema <a href="#5">[5]</a> representation and a hybrid mapping
+approach which combines the structural and syntactic mapping capabilities
+of XSLT with the semantic knowledge of MetaNet, to enable flexible and
+dynamic mapping among metadata standards.</font>
+<br>&nbsp;
+<h2>
+<a NAME="Introduction"></a>1 Introduction</h2>
+Networked knowledge organisation systems typically contain objects of mixed
+media types which are described using a multitude of diverse metadata schemas.
+Hence machine understanding of metadata descriptions which conform to schemas
+from different domains is a fundamental requirement for access to information
+within networked knowledge organization systems. In particular, there are
+three main scenarios in which interoperability among metadata descriptions
+is required:
+<ul>
+<li>
+To enable a single search interface across heterogeneous metadata descriptions;</li>
+
+<li>
+To enable the integration or merging of descriptions which are based on
+complementary but possibly overlapping metadata schemas or standards;</li>
+
+<li>
+To enable different views of the one underlying and complete metadata description,
+depending on the user's particular interest, perpective or requirements.</li>
+</ul>
+Metadata descriptions from different domains are not semantically distinct
+but overlap and relate to each other in complex ways. Achieving interoperability
+between such metadata descriptions via manually-generated one-to-one crosswalks
+<a href="#6">[6]</a>
+is useful, but this approach does not scale to the many metadata vocabularies
+that will develop. A more scalable and cost-effective approach is to exploit
+the fact that many entities and relationships - for example, people, places,
+creations, organisations, events, etc. - occur across all of the domains.
+The Harmony project <a href="#1">[1]</a> has been investigating this more
+general approach towards metadata interoperability and in the process has
+developed the ABC model and vocabulary <a href="#2">[2]</a>.
+<p>The hypothesis is that such an approach will lead to more efficient,
+scalable machine-translations between heterogeneous metadata descriptions.
+To test this hypothesis and to evaluate the interoperability capabilities
+of the ABC model, we applied it to some real multimedia examples and analysed
+the results of mapping from the ABC model to various different metadata
+domains using XSLT <a href="#3">[3]</a>. This work revealed serious limitations
+in XSLT's ability to support flexible dynamic semantic mapping. To overcome
+this, we developed MetaNet <a href="#4">[4]</a>, a metadata term thesaurus
+which provides the additional semantic knowledge that is non-existent within
+declarative XML-encoded metadata descriptions.
+<p>This paper describes the optimum metadata mapping approach determined
+from applying the ABC model to a small test set of multimedia examples.
+This approach combines:
+<ul>
+<li>
+the ABC event-aware metadata model, developed within the Harmony project,
+as the underlying model for scalable generic mappings between domain-specific
+vocabularies, with;</li>
+
+<li>
+XSLT for parsing XML descriptions and performing structural and syntactic
+mapping, and;</li>
+
+<li>
+MetaNet, a metadata term thesaurus, to provide the semantic knowledge required
+to enable semantic mapping between metadata terms from different domains
+or standards.</li>
+</ul>
+
+<h2>
+<a NAME="Definitions"></a>2 Definitions of Terms</h2>
+This section defines the key terms used throughout the remainder of the
+paper:
+<ul>
+<li>
+<i>Metadata</i> - data about data - or more commonly "descriptive information
+about Web resources". The use of standardized descriptive metadata can
+substantially improve the discovery and retrieval of relevant networked
+resources. Different communities or domains have developed their own standardized
+metadata vocaularies to meet their specific needs.</li>
+
+<li>
+<i>Vocabularies</i> - shared terminologies with commonly agreed-upon semantics
+for a domain. Common vocabularies enable search engines, agents, authors
+and users to communicate within a domain.</li>
+
+<li>
+<i>Schemas</i> - provide a standard way of defining standard domain-specific
+vocabularies by defining a common set of elements, their semantics and
+the relationships between the elements.</li>
+
+<li>
+<i>Ontology</i> - a formal description of the concepts, roles and relationships
+that exist for an agent or community of agents. Ontologies provide a shared
+and common understanding of a domain that can be communicated across people
+and applications, and play a major role in supporting information exchange
+and discovery.</li>
+
+<li>
+<i>Thesaurus</i> - the vocabulary of a controlled indexing language, formally
+organized so that the <i>a priori</i> relationships between concepts (for
+example "broader" and "narrower") are made explicit. <a href="#7">[7]</a></li>
+
+<li>
+<i>Metadata Thesaurus</i> - a thesaurus (defined according to ISO 2788
+standard for monolingual thesauri <a href="#7">[7]</a>) which defines the
+relationships between metadata terms from different domain vocabularies.</li>
+</ul>
+
+<h2>
+<a NAME="Related"></a>3 Related Work</h2>
+Thesauri have been used to improve the precision and recall of information
+retrieval systems for over 30 years. The introduction of automated information
+retrieval has caused a dramatic increase in the demand for vocabulary control,
+particularly in the last decade. Examples of well known thesauri used to
+provide authority control over the terms used for indexing documents in
+the bibliographic, medical and cultural domains respectively are: the Library
+of Congress Subject Headings (LCSH) <a href="#9">[9]</a>, the Medical Subject
+Headings (MeSH) <a href="#10">[10]</a> and the Art and Architecture Thesaurus
+(AAT). <a href="#11">[11]</a> In addition, thesauri have been used within
+information retrieval systems to improve retrieval effectiveness by providing
+semantic roadmaps. <a href="#12">[12]</a>, <a href="#13">[13]</a>, <a href="#14">[14]</a>
+<p>Since the emergence of the Internet, a great deal of effort has been
+invested in the development of metadata vocabularies to enable the exchange
+and discovery of information across different applications and domains.
+Metadata vocabularies such as Dublin Core <a href="#15">[15]</a>, USMARC
+<a href="#16">[16]</a>,
+INDECS <a href="#17">[17]</a>, MPEG-7 <a href="#18">[18]</a>, FGDC <a href="#19">[19]</a>,
+IEEE LOM <a href="#20">[20]</a> and CIDOC CRM <a href="#21">[21]</a> provide
+standardized sets of descriptive elements to enable the exchange of resources
+for specific applications or domains. Although these standards enable interoperability
+within domains, they introduce the problem of incompatibility between disparate
+and heterogeneous metadata descriptions or schemas across domains.
+<p>A literature survey reveals many different proposals for improving interoperability
+between domain-specific vocabularies, thesauri and ontologies in the context
+of information retrieval and exchange. These range from database schema
+integration <a href="#22">[22]</a>, to the use of ontologies in organizing
+and integrating networked information systems (e.g. OBSERVER <a href="#23">[23]</a>,
+InfoSleuth <a href="#24">[24]</a>, OntoSeek <a href="#25">[25]</a>) to
+the merging of monolingual <a href="#26">[26]</a> and multilingual thesauri.
+<a href="#8">[8]</a>
+Two of the major research issues have been categorizing the complex kinds
+of interthesaurus semantic relationships which exist
+<a href="#27">[27]</a>
+and automating the detection of these relationships during the merging
+process. <a href="#28">[28]</a>
+<p>More recently the approach to merging thesauri has been to represent
+them formally using RDF Schemas <a href="#29">[29]</a> and to use inference
+engines to automate the merging - such as has been proposed in the Ontology
+Inference Layer (OIL). <a href="#30">[30]</a>
+<p>In this paper we are not so much concerned with the specific process
+by which MetaNet is generated or with expressing the complete set of possible
+term relations (as described in ISO 2788) in MetaNet. Our primary objective
+is to generate a thesaurus which specifies (an albeit simplified) set of
+semantic relationships between metadata terms from a number of different
+domain schemas relative to the ABC underlying vocabulary (the preferred
+terms) and hence also to each other. Our goal is then to demonstrate how
+this semantic knowledge can be represented in a machine-readable format
+(RDF Schema) and extracted and combined with the syntactic and structural
+mapping capabilities of XSLT to enable the implementation of flexible dynamic
+mappings between metadata descriptions from different domains.
+
+<h2>
+<a NAME="Overview"></a>4 Overview of the ABC Underlying Metadata Model</h2>
+The Harmony Project <a href="#1">[1]</a> is investigating a generic approach
+to metadata interoperability through the development of an event-aware
+metadata model. The ABC model <a href="#2">[2]</a> defines a set of fundamental
+classes which provide the building blocks for expression (through sub-classing)
+of application-specific or domain-specific metadata vocabularies. The base
+classes, shown below, were determined by analysing commonalities between
+different communities' metadata models (including: Dublin Core <a href="#15">[15]</a>;
+INDECS <a href="#17">[17]</a>; MPEG-7 <a href="#18">[18]</a>; CIDOC CRM
+<a href="#21">[21]</a>;
+IFLA <a href="#31">[31]</a>.)
+<ul>
+<li>
+Resources</li>
+
+<li>
+Events</li>
+
+<li>
+Inputs and Outputs</li>
+
+<li>
+Acts</li>
+
+<ul>
+<li>
+Agents</li>
+
+<li>
+Roles</li>
+</ul>
+
+<li>
+Context</li>
+
+<ul>
+<li>
+Time</li>
+
+<li>
+Place</li>
+</ul>
+
+<li>
+Event Relations</li>
+</ul>
+ABC adopts an event-aware view for modeling the relationship between the
+various manifestations of a creation. This event-aware view provides semantically
+clear attachment points for the association of properties among the various
+manifestations, events and contributors (agents) involved in a resource's
+lifecycle. In addition, ABC provides a multiple views philosophy for metadata
+modeling and recipes for inter-conversion between those views. If life-cycle
+information is required, the event model can be used. When single resource
+metadata is needed, a resource-centric state model is used. Figure 1 shows
+the UML representation for the ABC metadata model.
+<p><a NAME="Fig1"></a>
+<center><img SRC="uml_model2.gif" >
+<br>Figure 1. UML representation of the ABC metadata model</center>
+
+<p><br>
+<h2>
+<a NAME="Simple"></a>5 A Simple Example</h2>
+To test the ABC model and evaluate XSLT for metadata mapping, we considered
+the following simple illustrative example:
+<blockquote>"A resource which is a 130 min audio (MP3) recording of a 'Live
+at Lincoln Center' performance. The Orchestra is the New York Philharmonic.
+The performance was on April 7, 1998 at 8 pm Eastern Time. The musical
+score performed is 'Concerto for Violin'. Copyright for the entire performance
+is held by Lincoln Center for the Performing Arts."</blockquote>
+First we describe this resource using the ABC model. We then attempt to
+map from the ABC description to Dublin Core, MPEG-7 and ID3 <a href="#32">[32]</a>
+descriptions respectively, using XSLT. Figure 2 illustrates the two steps
+involved in mapping from the ABC metadata model to resource-centric models
+such as Dublin Core, MPEG-7 and ID3:
+<ol>
+<li>
+The structural mapping step involves transferring event properties to the
+output resource and creating a relationship between the output and input
+resources associated with the event.</li>
+
+<li>
+The semantic mapping step involves mapping the properties attached to the
+output resource to semantically-equivalent properties in the output domain.</li>
+</ol>
+<a href="#AppendixA">Appendix A</a> contains the corresponding ABC, Resource-centric,
+Dublin Core, ID3 and MPEG-7 descriptions.
+<center><a NAME="Fig2"></a>
+<br><img SRC="audio_mappings.gif" BORDER=1 >
+<p>Figure 2. Transformation from the ABC event-aware model to three different
+resource-centric models</center>
+
+<h3>
+<a NAME="Rules"></a>5.1 Structural Mapping Rules</h3>
+For events which generate an output resource from an input resource, the
+transformation from an event-aware metadata model to a simple resource-centric
+metadata model consists of the following steps:
+<ol>
+<li>
+The Date, Time and Place properties within the Event's Context node can
+be qualified using the Event Type and transferred to the target output
+resource, e.g. Date.Performance, Time.Performance, Place.Performance;</li>
+
+<li>
+The Role property of each Act associated with an event becomes a qualifier
+on the Agent property which is attached to the target output resource and
+its value is the Act's Agent Name, e.g. the Agent.Orchestra property has
+value "New York Philharmonic";</li>
+
+<li>
+A Relation property arc is generated from the event type (e.g. Performance
+-> Relation.isPerformanceOf) and is attached to the target output resource.
+The value of this property is the patient input resource of the event (e.g.
+"comp523").</li>
+
+<li>
+All other existing properties of the input and output resource remain the
+same.</li>
+</ol>
+Other inheritance and metadata derivation rules may be possible but these
+require further investigation.
+<br>For example, a Description property for the output resource can be
+generated from the Event Type and the input resource's Title e.g. "Performance
+of 'Concerto for Violin'". Or in many cases, the <i>Title</i> property
+can be inherited by the output resource directly from the Title property
+of either the input resource or the event.
+
+<h2>
+<a NAME="Evaluation"></a>6 An Evaluation of XSLT for Metadata Mappings</h2>
+The Extensible Style Language (XSL) <a href="#3">[3]</a> consists of a
+transformation language (XSLT) and a formatting language. The transformation
+language XSLT (which acts independently of the formatting language) provides
+elements that define rules for how one XML document is transformed into
+another XML document. The transformed XML document may use the markup and
+DTD of the original document or it may use a completely different set of
+tags. The ability of XSLT to transform data from one XML representation
+to another makes it appear to be ideal for metadata interchange applications.
+<p>An XSL document contains a list of templates and rules. A template rule
+has a pattern specifying the trees it applies to and a template to be output
+when the pattern is matched. When an XSL processor formats an XML document
+using an XSL style sheet, it scans the XML document tree looking through
+each sub-tree in turn. As each tree in the XML document is read, the processor
+compares it with the pattern of each template rule in the style sheet.
+When the processor finds a tree that matches a template rule's pattern,
+it outputs the rule's template. This template generally includes some markup,
+some new data and some data copied out of the tree from the original XML
+document.
+<p>Using XSLT and the Xalan <a href="#33">[33]</a> XSLT processor we developed
+XSL programs for transforming the ABC description above to DC, ID3 and
+MPEG-7 descriptions, respectively. <a href="#Appendix B">Appendix B</a>
+shows the resulting XSL files.
+<p>The mapping implementations in <a href="#Appendix B">Appendix B</a> revealed
+that although XSLT works well for the structural mapping from an event
+model to a resource-centric model based on the set of rules described in
+Section 3.1, it is inadequate for implementing flexible dynamic semantic
+mappings between metadata vocabularies. This is due to:
+<ul>
+<li>
+XSLT's limited capabilities for handling variable input descriptions based
+on schemas which are not tightly constrained;</li>
+
+<li>
+The non-existence of machine-understandable semantic information in declarative
+XML-encoded metadata descriptions;</li>
+
+<li>
+Processor-dependent handling of input parameters and procedural code extensions;</li>
+
+<li>
+Limited string manipulation and comparison functions, e.g. it is not possible
+to perform case-insensitive string comparisons within XSLT.</li>
+</ul>
+The mappings revealed that if the input XML descriptions are relatively
+fixed and tightly constrained, then the semantic mappings can be hardwired
+and XSLT is adequate. But if the input descriptions are at all variable
+or unpredictable (e.g. undefined domain specific sub-classing and attributes)
+then XSL simply cannot cope. Cawsey investigated the use of XSLT for customizing
+RDF descriptions, reaching similar conclusions.
+<a href="#34">[34]</a>
+<p>Below are listed a number of possible approaches to handling the semantic
+mapping problem. The approach chosen is a balance between simplicity on
+the one hand, and flexibility or scalability on the other. The wider the
+targeted scope of interoperability, the more difficult it is to achieve
+accurate, precise mappings. Below is a list of mapping approaches in increasing
+order of both scope and difficulty:
+<ol>
+<li>
+Hardwire crosswalks between metadata terms from specific metadata domains
+(easy, but only works for fixed input);</li>
+
+<li>
+Extract mappings from a pre-defined multiple-domain mapping matrix;</li>
+
+<li>
+Determine the semantic mappings from a metadata term ontology;</li>
+
+<li>
+Determine the semantic mappings from a generic ontology such as WordNet;</li>
+
+<li>
+Determine the semantic mappings from a dynamically generated ontology created
+by using inferencing to merge multiple domain-specific ontologies.</li>
+</ol>
+By reducing the scope of the problem to interoperability between existing
+metadata standards, then the fully generic approaches (e.g., 4 and 5 above)
+become unnecessarily complex. Hence in the remainder of this paper we investigate
+the less complex but still moderately flexible approaches (2 and 3) based
+on a mapping matrix and a metadata term ontology, respectively.
+
+<h2>
+<a NAME="Mapping"></a>7 Semantic Mapping via a Mapping Matrix</h2>
+The second approach in the list above involves linking a mapping matrix
+to the XSLT processor. The mapping matrix explicitly defines the semantic
+mappings between a fixed set of metadata vocabularies from a number of
+different domains. Figure 3 illustrates such a mapping matrix. If XPath
+<a href="#35">[35]</a>
+is used to specify the elements, then to some extent both the structural
+and semantic mappings can be defined.
+<p><a NAME="Table1"></a>
+<table BORDER >
+<caption>Table 1. Metadata mapping matrix</caption>
+
+<tr>
+<th>ABC Element</th>
+
+<th>DC Element</th>
+
+<th>ID3 Element</th>
+
+<th>MPEG-7 Path</th>
+</tr>
+
+<tr>
+<td>Resource/Title</td>
+
+<td>Title</td>
+
+<td>TIT2</td>
+
+<td>CreationMetaInformation/Creation/Title/TitleText (@TitleType="original")</td>
+</tr>
+
+<tr>
+<td ROWSPAN="3">Event/Act/Agent</td>
+
+<td>Creator</td>
+
+<td>TPE1</td>
+
+<td>CreationMetaInformation/Creation/Creator (@role="creator")</td>
+</tr>
+
+<tr>
+<td>Publisher</td>
+
+<td>TPUB</td>
+
+<td>UsageMetaInformation/Publication/Publisher</td>
+</tr>
+
+<tr>
+<td>Contributor</td>
+
+<td>IPLS(involved People List),
+<br>TCOM(Composer),
+<br>TENC(Encoder),
+<br>TEXT(Lyricist),
+<br>TOLY(OriginalLyricist),
+<br>TOPE(Original Artist),
+<br>TPE2(Band, Orchestra, Accompaniment),
+<br>TPE3(Conductor),
+<br>TPE4 (Interpreter, Remixer, Modifier)</td>
+
+<td>CreationMetaInformation/Creation/Creator (@role)</td>
+</tr>
+
+<tr>
+<td>Resource/Subject</td>
+
+<td>Subject</td>
+
+<td>TIT1</td>
+
+<td>CreationMetaInformation/Creation/Classification/PackagedType</td>
+</tr>
+
+<tr>
+<td>Resource/Description</td>
+
+<td>Description</td>
+
+<td>TIT3</td>
+
+<td>CreationMetaInformation/Creation/CreationDescription</td>
+</tr>
+
+<tr>
+<td ROWSPAN="3">Event/Context/Date</td>
+
+<td>Date.Creation</td>
+
+<td>-</td>
+
+<td>CreationMetaInformation/Creation/CreationDate</td>
+</tr>
+
+<tr>
+<td>Date.Publication</td>
+
+<td>-</td>
+
+<td>UsageMetaInformation/Publication/PublicationDate</td>
+</tr>
+
+<tr>
+<td>Date.Recording</td>
+
+<td>TRDA</td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>Resource/Type</td>
+
+<td>Type</td>
+
+<td>TCON</td>
+
+<td>CreationMetaInformation/Classification/Genre</td>
+</tr>
+
+<tr>
+<td ROWSPAN="3">Resource/Format</td>
+
+<td>Format</td>
+
+<td>TFLT</td>
+
+<td>MediaInformation.MediaProfile/MediaFormat/FileFormat</td>
+</tr>
+
+<tr>
+<td>Format.length</td>
+
+<td>TLEN</td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>Format.size</td>
+
+<td>TSIZ</td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>Resource/Identifier</td>
+
+<td>Identifier</td>
+
+<td>UFID</td>
+
+<td>MediaInformation/MediaIdentification/Identifier</td>
+</tr>
+
+<tr>
+<td>Event/Input</td>
+
+<td>Source</td>
+
+<td>TOAL (Title of original recording or source)</td>
+
+<td>-</td>
+</tr>
+
+<tr>
+<td>Event/Context/Place</td>
+
+<td>Coverage.Place</td>
+
+<td>-</td>
+
+<td>-</td>
+</tr>
+</table>
+
+<p>This approach has certain debilitating limitations, however. A matrix
+is only capable of specifying mappings which involve fairly simple one-to-one
+mappings, and a two-dimensional matrix will only work if the mappings are
+symmetrical in both directions across all the domains. If the mappings
+are asymetrical then the matrix becomes highly complex and multi-dimensional.
+However, the primary limitation of this approach is that it simply does
+not scale - as the number of domains grows and the mappings become asymmetrical,
+then the matrix becomes excessively complex and unwieldy.
+
+<h2>
+<a NAME="MetaNet"></a>8 Development of MetaNet, a Metadata Term Thesaurus</h2>
+Rather than limiting the semantic mapping to a fixed number of domains/vocabularies
+(i.e. the number of columns in the mapping matrix), a more generic approach
+is to extract the mapping dynamically from a thesaurus of metadata terms,
+generated by formally defining relationships between metadata terms from
+a number of different domains' standardized vocabularies.
+
+<h3>
+<a NAME="Intrathesaurus"></a>8.1 Intrathesaurus and Interthesaurus Relations</h3>
+The ISO2788 standard for the identification and documentation of monolingual
+thesauri <a href="#7">[7]</a> identifies the following types of intrathesaurus
+relations:
+<ul>
+<li>
+hierarchical</li>
+
+<li>
+associative</li>
+
+<li>
+equivalence</li>
+</ul>
+The hierarchical relation occurs between concepts having "broader/narrower"
+meanings. This can be further specialized into the generic (BTG/NTG), whole-part
+(BTP/NTP) and instance (BT/NT) relations. For the sake of simplicity, we
+have chosen only to model the BTG/NTG relation (a common practice among
+thesauri developers) and the equivalence relation, and not to include associative
+relations within MetaNet.
+<p>The ISO5964 standard for the documentation and establishment of multilingual
+thesauri <a href="#8">[8]</a> identifies the following types of interthesaurus
+relations:
+<ul>
+<li>
+exact equivalence</li>
+
+<li>
+partial equivalence</li>
+
+<li>
+single to multiple equivalence</li>
+
+<li>
+inexact equivalence.</li>
+</ul>
+These relations indicate that the semantic relations between terms from
+different metadata vocabularies are likely to be much more complex than
+one-to-one exact equivalence and that even "exact equivalence" will be
+an approximation. However, because the scope of our problem is limited
+to relations between terms in a number of standardized English metadata
+vocabularies, then we can expect the frequency of more complex mappings
+to be less than for general natural language thesauri. For the first draft
+of MetaNet, we decided only to consider exact and partial equivalence relations
+and to combine them in the ET relation which defines equivalent/overlapping
+terms. If two different domains use two different metadata terms which
+are ETs in our thesaurus then we make the assumption that the domains are
+referring to semantically equivalent concepts.
+<p>Consequently the metadata term thesaurus which we have developed, <i>MetaNet
+</i><a href="#4">[4]</a>,
+contains only preferred terms (the ABC core vocabulary), equivalent/overlapping
+terms (ET), narrower terms (NT) and broader terms (BT), and attempts to
+encompass terms from the most significant and widely-used metadata vocabularies
+(Dublin Core, IFLA, IEEE LOM, INDECS).
+
+<h3>
+<a NAME="Description"></a>8.2 Description of MetaNet</h3>
+The objective of the <i>MetaNet</i> thesaurus is to provide the semantic
+knowledge required to enable machine understanding of equivalence and hierarchical
+(subtyping) relationships between metadata terms from different domains.
+The scope of this thesaurus is limited to the most significant metadata
+models/vocabularies used for describing attributes and events associated
+with resources and their life cycles. This encompasses metadata vocabularies
+from the bibliographic, museum, archival, record keeping and rights management
+communities. It has been developed by performing WordNet <a href="#36">[36]</a>
+searches using the core terms from the ABC vocabulary, and extracting those
+synonyms and hyponyms which could conceivably be used in a metadata scheme
+to represent the original core term. In addition, the results have been
+compared with the vocabularies of the DC, INDECS, IFLA, IMS and CIDOC CRM
+vocabularies to check that the majority of the terms used in these metadata
+dictionaries have been incorporated into the thesaurus.
+<p>A machine-readable RDF Schema representation of this thesaurus has been
+developed. <a href="#37">[37]</a> The RDF and RDF Schema elements, <i>Class</i>,
+<i>subClassOf</i>,
+<i>property</i>,
+<i>subPropertyOf</i> are used to define the hierarchical/subtyping and
+entity/attribute relationships between metadata elements. The RDFS
+<i>label</i>
+element is used to specify semantically equivalent terms which may be used.
+The ABC core vocabulary is used as the top-level set of preferred terms.
+Although this thesaurus has been generated manually, it could conceivably
+be generated automatically by using inferencing mechanisms to merge RDF
+Schemas from different domains, as has been proposed in the Ontology Inference
+Layer (OIL). <a href="#30">[30]</a>
+<p>For example, consider "Agent", which is a core term of the ABC vocabulary
+and hence a preferred term in the MetaNet thesaurus. Semantically equivalent
+terms for "Agent", commonly used within other metadata vocabularies, include:
+<br><i>actor, contributor, creator, player, doer, worker, performer</i>
+<p>Possible narrower terms or <i>hyponyms</i> for "Agent" include:
+<br><i>author, composer, artist, musician, . . etc.</i>
+<p>Table 2 is an excerpt from the RDF Schema which illustrates the representation
+for the "Agent" metadata term as well as its equivalent terms and a partial
+hierarchy of its narrower terms.
+
+<p><a NAME="Table 2"></a>
+<center>
+<table BORDER CELLPADDING=5 WIDTH="60%" BGCOLOR="#80FFFF" >
+<caption>
+Table 2. Excerpt from the RDF Schema
+</caption>
+
+<tr>
+<td>
+<pre><tt>&lt;?xml version="1.0"?>
+&lt;rdf:RDF xml:lang="en"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+&lt;rdfs:Class rdf:ID="Agent">
+
+&nbsp;&nbsp;&nbsp; &lt;rdfs:comment&nbsp; xml:lang="en">The resources which contribute to or act
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; in an event. Typically agents are people, groups of people,&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; organisations or instruments.&lt;/rdfs:comment>
+
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Actor&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Contributor&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Creator&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Player&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Doer&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Worker&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Performer&lt;/rdfs:label>
+
+&nbsp;&nbsp;&nbsp; &lt;rdfs:subClassOf
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+
+&lt;/rdfs:Class>
+
+&lt;rdfs:Class rdf:ID="Author">
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Writer&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Wordsmith&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:subClassOf
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdf:resource="#Agent"/>
+&lt;/rdfs:Class>
+
+&lt;rdfs:Class rdf:ID="Journalist">
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Columnist&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:label xml:lang="en">Reporter&lt;/rdfs:label>
+&nbsp;&nbsp;&nbsp; &lt;rdfs:subClassOf
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; rdf:resource="#Author"/>
+&lt;/rdfs:Class>
+
+&lt;/rdf:RDF></tt></pre>
+</td>
+</tr>
+</table>
+</center>
+
+<p>A Web search and browse interface to MetaNet has also been developed.
+<a href="#4">[4]</a>
+Users can search on any common metadata term and retrieve a list of equivalent
+terms, broader terms and narrower terms. Figure 3 shows the results of
+a search on the term "author".
+<center><a NAME="Fig3"></a>
+<br><img SRC="search_results.gif" BORDER=1 >
+<p>Figure 3. Results of MetaNet search</center>
+
+<h2>
+<a NAME="Linking"></a>9 Linking MetaNet to XSLT</h2>
+Using XSLT it is possible to parse an input XML description and for each
+element encountered call a Java procedural code extension which determines
+the equivalent term in the output domain from the semantic realtionships
+specified in the MetaNet thesaurus.
+<p>For example, suppose the Java program, Mapping.java, contains an extension
+function <i>readMetaNet</i>. For each element encountered during parsing
+of the input metadata description, the input element name (e.g. abc:Agent)
+and the output domain schema definition (e.g. the Dublin Core schema) are
+passed to the <i>readMetaNet</i> function. This function searches the MetaNet
+RDF Schema file for an element in the output schema definition that is
+equivalent to the input element name (e.g. dc:contributor), and returns
+this value. XSL creates a new output element with this name in the output
+description. Figure 4 illustrates the program flowchart.
+<center><a NAME="Fig4"></a>
+<br><img SRC="metanet_program2.gif" >
+<p>Figure 4. Program flow for metadata description mappings</center>
+
+<p>The XSL code in Table 3 illustrates how to call a Java extension function,
+<i>readMetaNet</i>,
+from the main XSL file.
+<p><a NAME="Table3"></a>
+<center>
+<table BORDER CELLPADDING=5 WIDTH="60%" BGCOLOR="#80FFFF" >
+<caption>Table 3. XSL code to call a Java extension function,
+<i>readMetaNet,
+</i>from the main XSL file</caption>
+
+<tr>
+<td>
+<pre><tt>&lt;?xml version="1.0"?>&nbsp;
+&lt;xsl:stylesheet version="1.0"&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:dc ="http://purl.org/dc/elements/1.1/">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:lxslt="http://xml.apache.org/xslt"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:mapping="Mapping"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; extension-element-prefixes="mapping"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; version="1.0">
+
+&nbsp;&nbsp; &lt;lxslt:component prefix="mapping" elements="*" functions="readMetaNet">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;lxslt:script lang="javaclass" src="Mapping"/>
+&nbsp;&nbsp; &lt;/lxslt:component>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="ABC">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates />
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="*">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="mapping:readMetaNet(., 'dc')"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&lt;/xsl:stylesheet></tt></pre>
+</td>
+</tr>
+</table>
+</center>
+
+<p>Below is a high-level, simplistic algorithm describing the mapping process
+that is performed within the readMetaNet Java function in Figure 4.
+
+<center>
+<p><a NAME="Table4"></a>
+<table BORDER CELLPADDING=5 WIDTH="60%" >
+<caption>Table 4. Algorithm describing the mapping process within the <i>readMetaNet</i>
+Java function in Figure 4</caption>
+
+<tr>
+<td>
+<pre><tt>For each element in the input description
+{
+&nbsp;&nbsp;&nbsp; Search for the input element name in the output domain schema;
+&nbsp;&nbsp;&nbsp; if (found) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Map the input element to the equivalent output domain element;
+&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Extract the Equivalent Terms (ETs) for the input element from MetaNet;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search the output domain schema for each of the ETs;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (an ET is found)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Map the input element to the equivalent output domain element;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Extract the broader terms (BTs) for the input element from MetaNet;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search for each BT in the output domain namespace;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (a BT is found)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Map the input element to the broader output domain element;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Extract the narrower terms (NTs) for the input element from MetaNet;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Search for each NT in the output domain namespace;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (a NT is found)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Map the input element to the narrower output domain element;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;&nbsp;&nbsp; }
+} endFor</tt></pre>
+</td>
+</tr>
+</table>
+</center>
+
+<h2>
+<a NAME="Conclusions"></a>10 Conclusions, Limitations and Future Work</h2>
+
+<h3>
+10.1 Conclusions and Limitations</h3>
+Our evaluation of XSLT for mapping between metadata descriptions from different
+domains revealed that although XSLT is good for syntactical and structural
+mapping, semantic mappings need to be hardwired into the code. Flexible
+semantic mapping is only possible with the assistance of semantic knowledge
+bases provided by ontologies or thesauruses such as the MetaNet thesaurus
+described above.
+<p>The MetaNet thesaurus described here is a first draft English version,
+based on the vocabulary of the ABC model. Although it has only been applied
+to a relatively small sample set, some of the limitations of this thesaurus
+are already evident. These include its inability to support metadata vocabularies
+which use:
+<ul>
+<li>
+Tokens, e.g. ID3 tags such as TPE2, which are semantically meaningless.
+This limitation can be overcome by either explicitly including such tags
+in the thesaurus or searching the definitions (rather than element names)
+in the output namespace for the input element name or its semantically
+equivalent terms;</li>
+
+<li>
+Abbreviations, e.g. acc.no.;</li>
+
+<li>
+Qualifers or hybrid words joined by a variety of connectors, e.g. UserClass,
+Assistant Editor, Art_Director, Time-span. This problem can be solved to
+some extent by including "associated terms" in the thesaurus and by ignoring
+typical "connectors".</li>
+</ul>
+In addition, the inherently ambiguous nature of language leads to the following
+problems:
+<ul>
+<li>
+Metadata terms with multiple possible meanings, e.g."condition" - this
+could be the current state of an object or it could be a restriction on
+the permissable use of a resource. This can be overcome by the use of unambiguous
+metadata terms by schema designers.</li>
+
+<li>
+Multiple possible spellings for the same word, e.g. artefact/artifact,
+colour/color.</li>
+
+<li>
+This thesaurus is based on nouns, e.g. "creator", "publisher", and does
+not search for related verbs, adverbs, adjectives in various tenses which
+could be used to express the same semantics, e.g. "created_by", "published_by".
+This problem could, to some extent, be overcome through the use of stemming.</li>
+</ul>
+Currently only English is supported. However, we believe that this thesaurus
+could be extended to provide equivalent or overlapping terms for the ABC
+vocabulary in other languages by following the recommendations specified
+in ISO5964. <a href="#8">[8]</a>
+<h3>
+10.2 Future Work</h3>
+So far the ABC model has only been tested on a relatively small sample
+set. We intend carrying out more extensive evaluation of both the ABC model
+and the hybrid mapping approach, by applying them to metadata tranformations
+between large sets of sample records provided by a number of different
+CIMI <a href="#38">[38]</a> member organisations. The plan is to build
+a testbed using multimedia museum resources and metadata descriptions provided
+by CIMI members and to use this testbed to implement and evaluate metadata
+interoperability between different museums' descriptions.
+<p>The Harmony ABC model exhibits many similarities with the CIDOC Conceptual
+Reference Model (CRM) <a href="#21">[21]</a>, a domain ontology developed
+by the CIDOC Committee of the International Council of Museums. In the
+near future we plan to investigate the possible merging of the Harmony
+model and the CIDOC CRM model into a single ontology. We plan to use the
+CIMI testbed described above to evaluate the "super" ontology resulting
+from harmonization of these two models.
+<p>The mapping implementations above have all involved mapping from an
+event-aware metadata model to a resource-centric metadata model. We are
+also interested in the rules and mechanisms required for machine translations
+between metadata descriptions based on different event-aware metadata models,
+e.g. from ABC to INDECS or CIDOC CRM.
+<p>We would also like to investigate mapping between "application profiles"
+or schemas which mix metadata elements imported from multiple different
+namespaces. The test examples considered so far only present the problem
+of mapping from a single domain's metadata description to another single
+domain's metadata description, e.g. pure DC to pure MPEG-7. A situation
+that will become increasingly common in the future is the need to map from
+a schema which imports elements from multiple namespaces to another schema
+which imports a different set of elements from multiple namespaces. In
+addition, each schema may impose its own local
+<ul>
+<li>
+structural constraints, e.g. parent/child relationships</li>
+
+<li>
+cardinality/occurrence constraints</li>
+
+<li>
+datatyping, enumeration and formatting constraints on the element values.</li>
+</ul>
+We believe the approach proposed in this paper will support mapping between
+mixed-domain "application profiles", but need to test this through further
+research involving machine translations between metadata descriptions which
+conform with both complex local usage constraints, (defined by XML Schemas
+<a href="#39">[39]</a>),
+as well as namespace-specific semantic definitions (defined by RDF Schemas).
+<br>&nbsp;
+<h2>
+<a NAME="Acknowledgements"></a>Acknowledgements</h2>
+The author acknowledges the valuable contributions which discussions with
+Dan Brickley, Carl Lagoze, Martin Doerr and Sigge Lundberg have made to
+this work.
+<p>The work reported in this paper has been funded by the Cooperative Research
+Centre for Enterprise Distributed Systems Technology (DSTC) through the
+Australian Federal Government's CRC Programme (Department of Industry,
+Science and Resources).
+<br>&nbsp;
+<h2>
+<a NAME="References"></a>References</h2>
+[<a NAME="1"></a>1]The Harmony Project Home Page <a href="http://www.ilrt.bris.ac.uk/discovery/harmony/">http://www.ilrt.bris.ac.uk/discovery/harmony/</a>
+<p>[<a NAME="2"></a>2] C. Lagoze, J. Hunter and D. Brickley (2000) "An
+Event-Aware Model for Metadata Interoperability". <i>ECDL 2000</i>, Lisbon,
+September
+<p>[<a NAME="3"></a>3] XSL Transformations (XSLT) Version 1.0 (1999) W3C
+Recommendation, 16 November <a href="http://www.w3.org/TR/xslt.html">http://www.w3.org/TR/xslt.html</a>
+<p>[<a NAME="4"></a>4] MetaNet Search Page <a href="http://sunspot.dstc.edu.au:8888/Metanet/Top.html#">http://sunspot.dstc.edu.au:8888/Metanet/Top.html</a>
+<p>[<a NAME="5"></a>5] RDF
+Schema Specification 1.0 (2000) W3C Candidate Recommendation, 27 March
+<a href="http://www.w3.org/TR/rdf-schema/">http://www.w3.org/TR/rdf-schema/</a>
+<p>[<a NAME="6"></a>6] Dublin Core/MARC/GILS Crosswalk (1999) November
+<a href="http://lcweb.loc.gov/marc/dccross.html">http://lcweb.loc.gov/marc/dccross.html</a>
+<p>[<a NAME="7"></a>7] ISO 2788 (1986) Documentation -- Guidelines for
+the Development and Establishment of Monolingual Thesauri
+<p>[<a NAME="8"></a>8] ISO 5964 (1985) Documentation -- Guidelines for
+the Development and Establishment of Multilingual Thesauri
+<p>[<a NAME="9"></a>9] Library of Congress Subject Headings, Cataloging
+Distribution Service, Library of Congress <a href="http://lcweb.loc.gov/cds/lcsh.html">http://lcweb.loc.gov/cds/lcsh.html</a>
+<p>[<a NAME="10"></a>10] Medical Subject Headings home page <a href="http://www.nlm.nih.gov/mesh/meshhome.html">http://www.nlm.nih.gov/mesh/meshhome.html</a>
+<p>[<a NAME="11"></a>11] Art and Architecture Thesaurus Browser, Getty
+Research Institute <a href="http://shiva.pub.getty.edu/aat_browser/">http://shiva.pub.getty.edu/aat_browser/</a>
+<p>[<a NAME="12"></a>12] C. Paice (1991) "A Thesaural Model of Information
+Retrieval". <i>Information Processing and Management</i>, 27(5):433-447
+<p>[<a NAME="13"></a>13] A.R. Aronson (1994) "Exploiting a Large Thesaurus
+for Information Retrieval". RIAO 94, New York, October
+<p>[<a NAME="14"></a>14] W. Bruce Croft and J. Yufeng (1994) "An Association
+Thesaurus for Information Retrieval". RIAO 94, New York, October
+<p>[<a NAME="15"></a>15] Dublin Core Metadata Initiative <a href="http://purl.org/dc/">http://purl.org/dc/</a>
+<p>[<a NAME="16"></a>16] MARC Standards, Library of Congress Network Development
+and MARC Standards Office <a href="http://lcweb.loc.gov/marc/marc.html">http://lcweb.loc.gov/marc/marc.html</a>
+<p>[<a NAME="17"></a>17] G. Rust and M. Bide (1999) "The indecs Metadata
+Schema Building Blocks". Indecs Metadata Model, November <a href="http://www.indecs.org/pdf/schema.pdf">http://www.indecs.org/pdf/schema.pdf</a>
+<p>[<a NAME="18"></a>18] MPEG-7 Home Page <a href="http://www.darmstadt.gmd.de/mobile/MPEG7/index.html/">http://www.darmstadt.gmd.de/mobile/MPEG7/index.html/</a>
+<p>[<a NAME="19"></a>19] Content Standard for Digital Geospatial Metadata
+(CSDGM) <a href="http://www.fgdc.gov/metadata/contstan.html">http://www.fgdc.gov/metadata/contstan.html</a>
+<p>[<a NAME="20"></a>20] IEEE Learning Technology Standards Committee's
+Learning Object Meta-data Working Group, Approved Working Draft WD5 Learning
+Object Meta-data Scheme <a href="http://ltsc.ieee.org/wg12/">http://ltsc.ieee.org/wg12/</a>
+<p>[<a NAME="21"></a>21] ICOM/CIDOC Documentation Standards Group (1999)
+Revised Definition of the CIDOC Conceptual Reference Model, September <a href="http://www.geneva-city.ch:80/musinfo/cidoc/oomodel">http://www.geneva-city.ch:80/musinfo/cidoc/oomodel</a>
+<p>[<a NAME="22"></a>22] C. Batini, M. Lenzerini and S.B. Navathe (1986)
+"A comparative analysis of methodologies for database schema integration".
+<i>ACM Computing Surveys</i>, 18(4):323-364, December
+<p>[<a NAME="23"></a>23] E. Mena, V. Kashyap, A. Sheth and A. Illarramendi
+(1996) "OBSERVER: An Approach for Query Processing in Global Information
+Systems based on Interoperation across Pre-existing Ontologies". <i>Proceedings
+of the 1st IFCIS International Conference on Cooperative Information Systems</i>
+(CoopIS'96), Brussels, Belgium, June (IEEE Computer Society Press)
+<p>[<a NAME="24"></a>24] R. Bayardo, <i>et al.</i> (1997) "InfoSleuth:
+Agent-based Semantic Integration of Information in Open and Dynamic Environments".
+<i>Proceedings of ACM SIGMOD Conference on Management of Data</i>, Tucson,
+Arizona, May, pp. 195-206
+<p>[<a NAME="25"></a>25] N. Guarino, C. Masolo and G. Vetere (1999) "Ontoseek:
+Content-based Access to the Web". <i>IEEE Intelligent Systems</i>, Vol.
+14, No. 3, May/June, 70-80
+<p>[<a NAME="26"></a>26] H. Mili and R. Rada (1988) "Merging Thesauri:
+Principles and Evalauation". <i>IEEE Transactions on Pattern Analysis and
+Machine Intelligence</i>, 10(2):204-220
+<p>[<a NAME="27"></a>27] M. Doerr and I. Fundulaki (1998) "A proposal on
+extended interthesaurus links semantics". Technical Report TR-215, Institute
+of Computer Science-FORTH, March
+<p>[<a NAME="28"></a>28] M. Sintichakis and P. Constantopoulos (1997) "A
+Method for Monolingual Thesauri Merging". <i>Proceedings of the 20th ACM
+International Conference on Research and Development in Information Retrieval</i>
+(ACM SIGIR), Philadeplphia, PA, USA, July
+<p>[<a NAME="29"></a>29] B. Amann and I. Fundulaki (1999) "Integrating
+Ontologies and Thesauri to Build RDF Schemas". In ECDL'99: Research and
+Advanced Technologies for Digital Libraries, Paris, France, September,
+Lecture Notes in Computer Science (Springer-Verlag), pp. 234-253
+<p>[<a NAME="30"></a>30] Ontology Inference Layer <a href="http://www.ontoknowledge.org/oil/">http://www.ontoknowledge.org/oil/</a>
+<p>[<a NAME="31"></a>31] International Federation of Library Associations
+and Institutions (IFLA) (1998) Functional Requirements for Bibliographic
+Records, March <a href="http://www.ifla.org/VII/s13/frbr/frbr.pdf">http://www.ifla.org/VII/s13/frbr/frbr.pdf</a>
+<p>[<a NAME="32"></a>32] ID3 Tag Version 2.3.0 <a href="http://www.id3.org/id3v2.3.0.html">http://www.id3.org/id3v2.3.0.html</a>
+<p>[<a NAME="33"></a>33] Xalan-Java Overview <a href="http://xml.apache.org/xalan/overview.html">http://xml.apache.org/xalan/overview.html</a>
+<p>[<a NAME="34"></a>34] A. Cawsey (2000) "Presenting tailored resource
+descriptions: Will XSLT do the job?". <i>WWW9 conference</i>, Amsterdam,
+May <a href="http://www.cee.hw.ac.uk/~alison/www9/paper.html">http://www.cee.hw.ac.uk/~alison/www9/paper.html</a>
+<p>[<a NAME="35"></a>35] XML Path Language (XPath) Version 1.0 (1999) November
+<a href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a>
+<p>[<a NAME="36"></a>36] WordNet - a Lexical Database for English <a href="http://www.cogsci.princeton.edu/~wn/online/">http://www.cogsci.princeton.edu/~wn/online/</a>
+<p>[<a NAME="37"></a>37] RDF Schema Representation of the MetaNet Thesaurus
+(2000) October <a href="http://archive.dstc.edu.au/maenad/metanet.rdf">http://archive.dstc.edu.au/maenad/metanet.rdf</a>
+<p>[<a NAME="38"></a>38] CIMI Consortium for Interchange of Museum Information
+<a href="http://www.cimi.org/">http://www.cimi.org/</a>
+<p>[<a NAME="39"></a>39] XML Schema Language <a href="http://www.w3.org/XML/Schema">http://www.w3.org/XML/Schema</a>
+
+<hr>
+<h2>
+<a NAME="AppendixA"></a>Appendix A</h2>
+
+<h3>
+<a NAME="A1"></a>A.1 ABC Description of Example Resource</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&lt;ABC>
+
+&nbsp; &lt;Event id="E1" Type="Performance">
+&nbsp;&nbsp;&nbsp; &lt;Title>Live At the Lincoln Centre&lt;/Title>
+&nbsp;&nbsp;&nbsp; &lt;Context>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Date>7/4/98&lt;/Date>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Time>20:00&lt;/Time>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Place>Lincoln Centre&lt;/Place>
+&nbsp;&nbsp;&nbsp; &lt;/Context>
+&nbsp;&nbsp;&nbsp; &lt;Act id="Act1">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Agent>New York Philharmonic&lt;/Agent>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Role>Orchestra&lt;/Role>
+&nbsp;&nbsp;&nbsp; &lt;/Act>
+&nbsp;&nbsp;&nbsp; &lt;Input id="comp523"/>
+&nbsp;&nbsp;&nbsp; &lt;Output id="audio821"/>
+&nbsp;&nbsp;&nbsp; &lt;Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lincoln Center for Performing Arts
+&nbsp;&nbsp;&nbsp; &lt;/Rights>
+&nbsp; &lt;/Event>
+
+&nbsp; &lt;Resource id="comp523">
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;Type>Musical Score&lt;/Type>
+&nbsp;&nbsp;&nbsp;&nbsp; &lt;Title>Concerto for Violin&lt;/Title>
+&nbsp; &lt;/Resource>
+
+&nbsp; &lt;Resource id="audio821">
+&nbsp;&nbsp;&nbsp; &lt;Type>audio&lt;/Type>
+&nbsp;&nbsp;&nbsp; &lt;Format>MP3&lt;/Format>
+&nbsp;&nbsp;&nbsp; &lt;Length units="mins">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 130
+&nbsp;&nbsp;&nbsp; &lt;/Length>
+&nbsp; &lt;/Resource>
+
+&lt;ABC></font></pre>
+
+<hr>
+<h3>
+<a NAME="A2"></a>A.2 Simple Resource-centric Description of Example Resource</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&nbsp;&nbsp; &lt;Resource id="audio821">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Title>Live At Lincoln Center&lt;/Title>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Date.Performance>1998-07-04&lt;/Date.Performance>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Time.Performance>20:00&lt;/Time.Performance>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Place.Performance>Lincoln Centre&lt;/Place.Performance>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Agent.Orchestra>New York Philharmonic&lt;/Agent.Orchestra>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Relation.isPerformanceOf>comp523&lt;/Relation.isPerformanceOf>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Description>Performance of 'Concerto for Violin'&lt;/Description>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lincoln Center for Performing Arts
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Type>audio&lt;/Type>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Format>MP3&lt;/Format>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Length units="mins">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 130
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Length>
+&nbsp;&nbsp; &lt;/Resource></font>
+
+</pre>
+
+<hr>
+<h3>
+<a NAME="A3"></a>A.3 Dublin Core Description of Simple Example</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&lt;!DOCTYPE rdf:RDF SYSTEM "http://purl.org/dc/schemas/dcmes-xml-20000714.dtd">
+&lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:dc="http://purl.org/dc/elements/1.1/">
+&nbsp;&nbsp; &lt;rdf:Description about="audio821">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Title>Live At Lincoln Center&lt;/dc:Title>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Date.Performance>1998-07-04T20:00-05:00&lt;/dc:Date.Performance>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Coverage>Lincoln Centre&lt;/dc:Coverage>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Contributor.Orchestra>New York Philharmonic&lt;/dc:Contributor.Orchestra>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Relation.isPerformanceOf>comp523&lt;/dc:Relation.isPerformanceOf>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Description>Performance of 'Concerto for Violin'&lt;/dc:Description.Performance>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Lincoln Center for Performing Arts
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/dc:Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Type>audio&lt;/dc:Type>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;dc:Format>MP3&lt;/dc:Format>
+&nbsp;&nbsp; &lt;/rdf:Description>
+&lt;rdf:RDF></font></pre>
+
+<hr>
+<h3>
+<a NAME="A4"></a>A.4 MPEG-7 Description</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&lt;MPEG-7 id="audio821">
+&nbsp; &lt;CreationMetaInformation>
+&nbsp;&nbsp;&nbsp; &lt;Creation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Title>Live at Lincoln Center&lt;/Title>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Creator>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Role>Orchestra&lt;/role>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Name>New York Philharmonic&lt;/Name>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Creator>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;CreationDate>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;day>7&lt;/day>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;month>4&lt;/month>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;year>1998&lt;/year>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/CreationDate>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Location>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;PlaceName>Lincoln Center&lt;/PlaceName>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Location>
+&nbsp;&nbsp;&nbsp; &lt;/Creation>
+&nbsp;&nbsp;&nbsp; &lt;Classification>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Genre>Performance&lt;/Genre>
+&nbsp;&nbsp;&nbsp; &lt;/Classification>
+&nbsp; &lt;/CreationMetaInformation>
+&nbsp; &lt;MediaInformation>
+&nbsp;&nbsp;&nbsp; &lt;MediaProfile>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;MediaFormat>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Medium>MP3&lt;/Medium>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Length>&lt;m>130&lt;/m>&lt;/Length>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/MediaFormat>
+&nbsp;&nbsp;&nbsp; &lt;/MediaProfile>
+&nbsp; &lt;/MediaInformation>
+&nbsp; &lt;UsageMetaInformation>
+&nbsp;&nbsp;&nbsp; &lt;Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;RightsId IdOrganization='Lincoln Center'/>
+&nbsp;&nbsp;&nbsp; &lt;/Rights>
+&nbsp; &lt;/UsageMetaInformation>
+&lt;/MPEG-7></font></pre>
+
+<hr>
+<h3>
+<a NAME="A5"></a>A.5 ID3 Description</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&lt;ID3>
+&lt;!-- Unique Identifier -->
+&nbsp; &lt;UFID>audio821&lt;/UFID>&nbsp;
+&nbsp;&nbsp;
+&lt;!-- Title -->
+&nbsp; &lt;TIT2>Live At Lincoln Center&lt;/TIT2>
+
+&lt;!-- Orchestra -->
+&nbsp; &lt;TPE2>New York Philharmonic&lt;/TPE2>
+
+&lt;!-- Type or Genre -->
+&nbsp; &lt;TCON>Performance&lt;/TCON>
+
+&lt;!-- Media Type sound originated from-->
+&nbsp; &lt;TMED>Audio/MP3&lt;/TMED>
+
+&lt;!-- Date Recorded -->
+&nbsp; &lt;TDAT>7/4/98&lt;/TDAT>
+
+&lt;!-- Time Recorded -->
+&nbsp; &lt;TIME>2100&lt;/TIME>
+
+&lt;!-- Length in millisecs-->
+&nbsp; &lt;TLEN>7800000&lt;/TLEN>
+
+&lt;!-- Original recording or source -->
+&nbsp; &lt;TOAL>comp523&lt;/TOAL>
+
+&lt;!-- Copyright Message -->
+&nbsp; &lt;TCOP>Lincoln Center of Performing Arts&lt;/TCOP>
+&lt;/ID3></font></pre>
+
+<hr>
+<h2>
+<a NAME="Appendix B"></a>Appendix B</h2>
+
+<h3>
+<a NAME="B1"></a>B.1 XSL for Transforming from ABC to DC</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>&nbsp;
+&lt;xsl:stylesheet version="1.0"&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+&nbsp;&nbsp;&nbsp;&nbsp; xmlns:dc ="http://purl.org/dc/elements/1.1/">
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:output method="xml" indent="yes"/>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="ABC">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xmlns:dc ="http://purl.org/dc/elements/1.1/">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;rdf:Description>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Event"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Resource"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/rdf:Description>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/rdf:RDF>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Event">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Output"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Context"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Act"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Input"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Title"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Rights"/>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Output">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:attribute name="about">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@id"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:attribute>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:copy-of select="*"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Context">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Date"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Place"/>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Date">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Date.{../../@Type}">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Place">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Coverage">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='.'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Act">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Contributor.{Role}">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='Agent'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Input">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Relation.is{../@Type}Of">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@id"/>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Title">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Title">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Rights">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Rights">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Resource">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:if test="@id=../Event/Output/@id">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Type"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Format"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:if>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:if test="@id=../Event/Input/@id">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Description">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="../Event/@Type"/> of&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:text>"&lt;/xsl:text>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="Title"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:text>"&lt;/xsl:text>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:if>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Type">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Type">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Format">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="dc:Format">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&lt;/xsl:stylesheet></font></pre>
+
+<hr>
+<h3>
+<a NAME="B2"></a>B.2 XSL for Transforming from ABC to ID3</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>&nbsp;
+&lt;xsl:stylesheet version="1.0"&nbsp;
+&nbsp;&nbsp;&nbsp; xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+&nbsp;&nbsp;&nbsp; xmlns:id3 ="http://www.id3.org/id3v2.3.0">
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:output method="xml" indent="yes"/>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="ABC">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id3:ID3 xmlns:id3="http://www.id3.org/id3v2.3.0">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Event"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Resource"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id3:ID3>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Event">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates/>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Output">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:UFID">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@id"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Context">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id3:TDAT>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="Date"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id3:TDAT>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;id3:TIME>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="Time"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/id3:TIME>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Act">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TPE2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='Agent'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Input">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TOAL">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@id"/>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Title">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TIT2">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Rights">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TCOP">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Resource">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:if test="@id=../Event/Output/@id">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Format"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Length"/>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:if>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Format">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TMED">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>/&lt;xsl:value-of select="../Type"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Length">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="id3:TLEN">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select=".*60*1000"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&lt;/xsl:stylesheet></font></pre>
+
+<hr>
+<h3>
+<a NAME="B3"></a>B.3 XSL for Transforming ABC to MPEG-7</h3>
+
+<pre><font size=-1>&lt;?xml version="1.0"?>
+&lt;xsl:stylesheet version="1.0"&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp; xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+&nbsp;&nbsp;&nbsp;&nbsp; xmlns:mpeg7 ="http://www.mpeg7.org/2000/MPEG7_schema/">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;xsl:output method="xml" indent="yes"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="ABC">&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;MPEG-7>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Event"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Resource"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/MPEG-7>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Event">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Output"/>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;CreationMetaInformation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Creation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Title"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Act"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Context"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Input"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Creation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Classification>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="Genre">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@Type"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Classification>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/CreationMetaInformation>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Rights"/>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Output">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:attribute name="id">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="@id"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:attribute>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Title">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="Title">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Act">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Creator>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="Role">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='Role'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="Name">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='Agent'/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Creator>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Context">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;CreationDate>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:variable name="date" select='Date'/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:variable name="my" select="substring-after($date,'/')"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="day">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="substring-before($date,'/')"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="month">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="substring-before($my,'/')"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="year">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="substring-after($my,'/')"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/CreationDate>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Location>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="PlaceName">&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select='Place'/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Location>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Input">
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Rights">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;UsageMetaInformation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="RightsId">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Rights>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/UsageMetaInformation>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Resource">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:if test="@id=../Event/Output/@id">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;MediaInformation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;MediaProfile>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;MediaFormat>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Format"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:apply-templates select="Length"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/MediaFormat>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/MediaProfile>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/MediaInformation>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:if>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>&nbsp;&nbsp;&nbsp;
+
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Format">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="Medium">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;xsl:template match="Length">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Length>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:if test="@units='mins'">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:element name="m">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;xsl:value-of select="."/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:element>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/xsl:if>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Length>&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &lt;/xsl:template>
+&nbsp;&nbsp;&nbsp;&nbsp;
+&lt;/xsl:stylesheet></font></pre>
+
+</TD>
+</TR>
+</TABLE>
+<P>
+<A href="#top"><IMG border=0 src="/images/Top_of_page.gif" alt="Top of page"></A><A href="http://jodi.tamu.edu/?vol=new"><IMG border=0 align=top src="/images/New_papers.gif" alt="New papers"></A><A href="http://jodi.tamu.edu/?vol=all&papers=no"><IMG border=0 align=top src="/images/Past_issues.gif" alt="Past issues"></A><A href="http://jodi.tamu.edu/?vol=all"><IMG border=0 align=top src="/images/Index_of_papers.gif" alt="Index of papers"></A><IMG align=top src="/images/end.gif" alt="">
+</BODY>
+
+</html>
+
+</text>

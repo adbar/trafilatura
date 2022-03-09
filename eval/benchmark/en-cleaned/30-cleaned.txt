@@ -1,0 +1,1448 @@
+URL: http://ceep.crc.uiuc.edu/poptopics/gradeconfig.html
+
+   <h>Clearinghouse on Early Education and Parenting
+
+
+   <p>Early Childhood Research & Practice (ECRP) is a bilingual Internet
+   journal on the development, care, and education of young children.
+
+   <p>The Clearinghouse on Early Education and Parenting (CEEP) is part of
+   the the Early Childhood and Parenting (ECAP) Collaborative at the
+   University of Illinois at Urbana-Champaign. CEEP provides publications
+   and information to the worldwide early childhood and parenting
+   communities.
+
+   <h>Grade Configuration in K-12 Schools
+   <h>Nancy McEntire
+   <h>2002 (Last updated May 2005)
+   <p>Many educators and communities are searching for evidence on the best
+   way to provide a high-quality education for their children and to make
+   the best use of their education funds. One area that is of perennial
+   interest is how to best configure the grades in local schools. Public
+   education in the United States provides for kindergarten through grade
+   12 in a variety of grade arrangements, from the K-12 school to
+   separate schools for single grades. Unfortunately, as Paglin and Fager
+   (1997) point out: "Research has not provided definitive answers to the
+   myriad possible questions about grade span, but the questions have
+   never gone away. They are questions which arise whenever school
+   reform, increasing or declining enrollment, or financial
+   considerations bring about a reorganization of existing schools, the
+   building of new schools, or consolidation of districts" (p. 2). Much
+   of the research available has been done on rural or middle schools.
+   The research on the "best" grade configuration is inconclusive. At
+   best, it indicates factors to be considered in deciding on a school's
+   grade span or a community's configuration of grades within its
+   elementary and secondary school system.
+
+   <h>Contents
+
+     <l>* How do schools differ in grade configuration?
+     <l>* Single-grade-level configurations
+     <l>* Other grade-level configurations: Middle schools, K-12
+     <l>* How do grade configurations affect transitions?
+     <l>* What factors do school districts consider when deciding on grade
+       configuration?
+     <l>* References
+     <l>* Web Resources
+     <l>* ERIC Resources
+
+<h>How do schools differ in grade configuration?
+
+   <p>Schools in the United States are organized in different ways: some
+   schools include K-3, K-4, K-5, K-6, K-8, K-9, or K-12; others are
+   organized as middle schools, junior high schools, and senior high
+   schools; and still others consist of students in just one grade, such
+   as a kindergarten center or a ninth-grade center. Some schools include
+   pre-kindergarten. The U.S. Department of Education's National Center
+   for Education Statistics (2002) provides data on the number of regular
+   public school districts providing instruction and the percentage of
+   students in membership, by grade span and by state, for the school
+   year 2000-2001.
+
+<h>Single-grade-level configurations
+
+   <p>The literature suggests that some school districts have found
+   advantages to schools that contain students at one grade level,
+   although these advantages are not necessarily supported by research
+   (Reents, 2002):
+     <l>* A single-grade center, such as a school only for ninth-graders,
+       can develop programs specific to the needs of that age group.
+     <l>* Siphoning off students from several schools can relieve
+       overcrowding at those schools.
+     <l>* Students may be able to participate on an equal level in more
+       activities and be less influenced by older students.
+     <l>* The greater number of students in single-grade centers may enable
+       the school to increase course offerings.
+
+   <p>The literature also suggests some possible disadvantages to separate
+   single-grade configurations (Hopkins, 1997):
+     <l>* The cost and length of student travel increases, particularly in a
+       school district that covers a large area.
+     <l>* Parent involvement may decrease, possibly affected by the distance
+       to the school and the number of schools a family's children
+       attend.
+     <l>* Students are required to make an increased number of school
+       transitions.
+     <l>* Fewer opportunities are provided for interaction between age
+       groups.
+
+   <p>Hopkins (1997) also suggests some additional factors for school
+   districts to consider:
+     <l>* Combining schools into separate grade centers may affect whether
+       neighborhood schools close or remain open.
+     <l>* Current buildings may have a design more suitable for several
+       grade levels.
+     <l>* School population may increase or decrease substantially as
+       configurations change.
+
+<h>Other grade-level configurations: Middle schools, K-12
+
+   <p>"Much of what has happened with regards to school grade structure can
+   be attributed to the development of the middle school" (Franklin &
+   Glascock, 1996, p. 4). The separation of students in grades 5 or 6 to
+   7 or 8 in middle schools is justified by some school districts because
+   districts believe that middle schools better meet the developmental
+   needs of preadolescents. As Howley (2002) points out, the
+   developmental needs of young adolescents differ from those of
+   elementary school children and older teenagers. "Developmentally
+   responsive middle schools must take into account all that is known
+   about young adolescents and the cultural context in which they live"
+   (Lounsbury, 1996). The number of middle schools increased by 35% from
+   1967 to 2000.
+
+   <p>In the past decade, researchers also have demonstrated renewed
+   interest in schools that include grades kindergarten through 12. A
+   study of rural schools that examined the relationship between grade
+   configuration and student achievement in Louisiana found that students
+   in K-12 rural schools did as well or better on achievement tests as
+   students in separate elementary, middle, or high schools. Students in
+   high poverty areas also did better in the K-12 schools (Franklin &
+   Glascock, 1996). A similar study in Texas analyzed data from a study
+   of 1001 Texas high schools, including 116 K-12 schools. This study
+   produced similar results (Bickel, Howley, Williams, & Glascock, 2000).
+
+<h>How do grade configurations affect transitions?
+
+   <p>The division of elementary schools into configurations that include
+   fewer grades requires that students make several transitions from one
+   school to another. Researchers note that transitions can be stressful
+   for students:
+     <l>* Alspaugh (1999) found a significant achievement loss during each
+       transition year. He also found that some students regain what is
+       lost in the following year, but it would seem that students who
+       make fewer transitions need fewer years to make up for achievement
+       losses caused by transitions.
+     <l>* Another study found that each time students switched schools,
+       their feelings of anonymity increased. Researchers who found that
+       sixth-grade students in both elementary and combination K-12
+       schools outperformed students in middle schools or junior high
+       schools considered the number of transitions a significant factor.
+       This study considered 8 schools with 7 different grade spans with
+       student populations of 82 to 1,200. The schools were located in
+       both urban and rural settings in 5 northwest states. The number of
+       grades in the schools ranged from 1 to 11 (Paglin & Fager, 1997).
+     <l>* Another research study found that girls in early adolescence
+       suffered from a drop in self-esteem, extracurricular
+       participation, and leadership behaviors when they made the
+       transition into middle school or junior high, but not if they
+       remained in an elementary school setting. This study found that
+       the effects of this transition lingered throughout the school
+       years. For boys, the study found similar negative effects in
+       extracurricular participation and grades, but not in self-esteem,
+       when they made the transition into middle school or junior high.
+       The authors concluded that the relatively protected elementary
+       school setting made the entry into adolescence less stressful for
+       both boys and girls. The students who had not had the stress of
+       the earlier transition seemed to cope better with the transition
+       into high school than did other students (Simmons & Blyth, 1987).
+     <l>* Franklin and Glascock (1996) found that sixth-grade boys
+       experienced more suspensions in middle schools or junior high
+       schools than in elementary schools, possibly related to the
+       effects of the transition, the school organization, or school
+       size. This study was based on information gathered from all
+       Louisiana public schools during the 1992-1993 school year.
+
+<h>What factors do school districts consider when deciding on grade
+configuration?
+
+   <p>Researchers at the Northwest Regional Educational Laboratory looked at
+   eight schools with seven different grade spans. They examined the
+   history of each school's decision on grade configuration along with
+   observed advantages and disadvantages of each configuration and
+   principals' comments on the success of their programs (Paglin & Fager,
+   1997). Based on this research, Paglin and Fager compiled a list of
+   nine factors that school districts might want to consider when making
+   decisions about grade configurations of individual schools:
+     <l>* the cost and length of student travel, particularly in a school
+       district that covers a large area
+     <l>* a possible increase or decrease in parent involvement, possibly
+       affected by the distance to the school and the number of schools a
+       family's children attend
+     <l>* the number of students at each grade level, which may affect class
+       groupings and courses offered
+     <l>* the effect of school setting on achievement, particularly for
+       grades 6-9
+     <l>* effect on whether the neighborhood schools close or remain open
+     <l>* the number of school transitions for students
+     <l>* the opportunities for interaction between age groups
+     <l>* the influence of older students on younger students
+     <l>* the building design-is it suitable for only a few or for several
+       grade levels?
+
+   <p>Paglin and Fager concluded that designing a school system to use a
+   particular span of grades in individual schools will not in itself
+   guarantee that students will learn well and be well adjusted.
+
+<h>References
+
+   <p>Alspaugh, John W. (1999). The interaction effect of transition grade
+   to high school with gender and grade level upon dropout rates.
+   Montreal: American Educational Research Association. (ERIC Document
+   No.ED431066)
+
+   <p>Bickel, Robert; Howley, Craig; Williams, Tony; & Glascock, Catherine.
+   (2000, November). Will the real "Texas miracle in education" please
+   stand up? Grade span configuration, achievement, and expenditure per
+   pupil. Randolph, VT: Rural School and Community Trust. (ERIC Document
+   No. ED447995)
+
+   <p>Franklin, Bobby J., & Glascock, Catherine H. (1996, October). The
+   relationship between grade configuration and student performance in
+   rural schools. Paper presented at the Annual Conference of the
+   National Rural Education Association, San Antonio, TX. (ERIC Document
+   No. ED403083)
+
+   <p>Hopkins, Gary. (1997, September 8). Grade configuration: Who goes
+   where? Education World [Online]. Available:
+
+   <p>Howley, Craig. (2002, March). Grade-span configurations. American
+   Association of School Administrators [Online]. Available:
+
+   <p>Lounsbury, John H. (1996). Key characteristics of middle level schools
+   [Online]. ERIC Digest. Champaign, IL: ERIC Clearinghouse on Elementary
+   and Early Childhood Education. (ERIC Document No. ED401050).
+   Available:
+
+   <p>National Center for Education Statistics. (2002). Directory of public
+   elementary and secondary education agencies, 2000-2001 [Online].
+   Available:
+
+   <p>Paglin, Catherine, & Fager, Jennifer. (1997, July). Grade
+   configuration: Who goes where [Online]. Available:
+   http://www.nwrel.org/request/july97/index.html.
+   Reents, Jennifer Newton. (2002, March). Isolating 9th graders. School
+   Administrator [Online]. Available:
+
+   <p>Simmons, Roberta G., & Blyth, Dale A. (1987). Moving into adolescence:
+   The impact of pubertal change and school context. Hawthorne, NY: de
+   Gruyter.
+
+<h>Web Resources
+
+   <p>The Academic Effectiveness of Small-Scale Schooling (An Update)
+
+   <p>Age Appropriate Schools
+
+   <p>The Case for the Elemiddle School
+
+   <p>Elementary Grade Configuration Report, Frost and McCoy Elementary
+   Schools
+   This report contains research and recommendations on the grade
+   configuration of two elementary schools. Key points of considerations
+   include: transportation costs, parent involvement, staffing, special
+   programs, educational equity and diversity, assessment of existing
+   facilities, and budget implications.
+
+   <p>Elementary School Grade Span Configuration: New Evidence on Student
+   Achievement, Achievement Equity, and Cost Efficiency
+
+   <p>Grade Configuration
+
+   <p>Grade Configuration: Who Goes Where? (Education World)
+
+   <p>Grade Configuration-Who Goes Where (full-text report from the
+   Northwest Regional Educational Laboratory)
+
+   <p>Grade Configuration Study Committee Final Report (Hopkinton, MA)
+
+   <p>Grade-Level Configurations
+
+   <p>Grade Span (ERIC Clearinghouse on Educational Management)
+
+   <p>Grade Span Configurations
+
+   <p>Grade Span Configurations and Reconfigurations: With Rural Dilemmas in
+   Mind
+
+   <p>High School Size, Achievement Equity, and Cost: Robust Interaction
+   Effects and Tentative Results
+
+   <p>The Hobbit Effect: Why Small Works in Public Schools
+
+   <p>In the Middle: Characteristics of Public Schools with a Focus on
+   Middle Schools
+
+   <p>K-8 Schools: An Idea for the New Millenium?
+
+   <p>The (Limited) Evidence Regarding Effects of Grade-Span Configurations
+   on Academic Achievement: What Rural Educators Should Know. ERIC
+   Digest.
+
+   <p>Middle School Goes the Way of Junior High
+
+   <p>Motivation and Middle School Students
+
+   <p>NMSA (National Middle School Association) Research Summary #1: Grade
+   Configuration
+
+   <p>NMSA (National Middle School Association) Research Summary #8: Grade 5
+   in the Middle School
+
+   <p>Number of Regular Public School Districts Providing instruction and
+   Percentage of Students in Membership, by Grade Span and by state:
+   School year 2000-01
+
+   <p>Public Elementary Schools, by Grade Span and Average School Size, by
+   State: 2000-2001 Table 3 (To view this table, click on Table 3 under
+   Summary Tables.)
+
+   <p>The Relationship Between Middle Level Grade Span Configuration,
+   Professional Development, and Student Achievement
+
+   <p>Research about School Size and School Performance in Impoverished
+   Communities. ERIC Digest
+
+   <p>Research Summary on Grade Level Configurations
+
+   <p>Revival of the K-8 School
+
+   <p>The Rise of the `Elemiddle' School
+
+   <p>Schools by Type: State of California, 2002-03 Schools vary in their
+   grade-level configuration. Most elementary schools encompass K-5,
+   middle schools 6-8, junior high 7-9, and high schools 9-12
+
+   <p>The Transition to Middle School
+
+   <p>Education World: Where Does Sixth Grade Belong?
+
+<h>ERIC Resources
+
+   <p>How to Obtain ERIC Documents and Journal Articles:
+   References identified with an ED (ERIC document), EJ (ERIC journal),
+   or PS number are cited in the ERIC database. ERIC Documents (citations
+   identified by an ED number) may be available full text from ERIC at no
+   cost at the ERIC web site:. Journal articles
+   are available from the original journal, interlibrary loan services,
+   or article reproduction clearinghouses.
+
+   <p>ERIC Search using identifier "Grade Span Configuration," or
+   descriptors "Instructional Program Divisions" or "School
+   Organization." Various grade levels, such as K-2 or 3-5 or 6-8 or
+   9-12, can be used as keywords in combination with the identifier or
+   descriptors.
+
+   <p>If you would like to conduct your own free ERIC database searches via
+   the Internet, please go to 
+http://www.eric.ed.gov/ERICWebPortal/Home.portal?_
+nfpb=true&_pageLabel=ERIC_Search.
+
+<h>Grade Configuration
+
+   <p>ERIC database search through 05/2005
+
+   <h>ED479332 TM035136
+   <h>Title: The Effect of Grade Span Configuration and School-to-School
+   Transition on Student Achievement.
+   <h>Author(s): Wren, Stephanie D.
+   <h>Pages: 18
+   <h>Publication Date: 2003
+   <h>Available from: EDRS Price MF01/PC01 Plus Postage.
+   <h>Language: English
+   <h>Document Type: Reports--Research (143)
+   <h>Geographic Source: U.S.; Michigan
+   <h>Journal Announcement: RIEAPR2004
+
+   <p>The effect of grade span configuration (grouping of grades in schools)
+   and school-to-school transition on student achievement was
+   investigated. The Michigan Education Assessment Program test was used
+   to collect data on the passing rate of students in 232 schools in a
+   large urban inner city school district in the midwest. The results
+   indicate that grade span configuration and school-to-school transition
+   had significant positive and negative effects on student achievement
+   respectively. The paper discusses implications for school districts.
+   (Author)
+
+   <p>Descriptors: *Academic Achievement; Elementary Secondary Education;
+   *Grade Span Configuration; *Instructional Program Divisions; State
+   Programs; Testing Programs; Transfer Students; Urban Schools
+   Identifiers: Michigan Educational Assessment Program; *Transition Time
+                    ___________________________________
+
+   <h>EJ640942 EA539336
+   <h>Title: Revival of the K-8 School.
+   <h>Author(s): Pardini, Priscilla
+   <h>Source: School Administrator, v59 n3 p6-12 Mar 2002
+   <h>Publication Date: 2002
+   <h>ISSN: 00036-6439
+   <h>Language: English
+   <h>Document Type: Journal articles (080); Reports--General (140);
+   Reports-- Descriptive (141)
+   <h>Journal Announcement: CIJJUL2002
+
+   <p>Describes the reasons for renewed interest in the K-8 school model,
+   including dissatisfaction with middle schools, research linking
+   improved academic achievement with K-8 grade configuration, and parent
+   support. Includes examples of districts that have converted middle
+   schools to K-8 schools. Identifies the challenges districts face in
+   moving to K-8 schools. (PKP)
+
+   <p>Descriptors: Educational Research; Elementary Education; *Elementary
+   Schools; Middle Schools; *School Restructuring
+                    ___________________________________
+
+   <h>ED473710 PS031086
+   <h>Title: Update on the Relationship between Elementary Grade Span and 
+Student Achievement: Identification of Human Interactions and
+   Behaviors in a Kindergarten-2nd Grade Configured Young Primary
+   Elementary Which Resulted in Superior Student Achievement Observed in
+   the 4th and 5th Grade.
+   <h>Author(s): Norwood, H. S.
+   <h>Publication Date: December 15, 2002
+   <h>Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Language: English
+   <h>Document Type: Reports--Research (143)
+   <h>Geographic Source: U.S.; Alaska
+   <h>Journal Announcement: RIEOCT2003
+
+   <p>This cross-sectional study used primarily quantitative methods to
+   investigate the superior achievement of 4th- and 5th-grade students at
+   Alaska's Kenai Peninsula Borough School District who as young
+   elementary students had attended K-2 primary school, compared to peers
+   who had attended a K-6, K-8, or K-12 configured school. Since this
+   study was limited to a single school district that included all four
+   elementary school configurations in communities that were found to be
+   similar, variables that historically confuse the application of
+   results to conclusions were systematically eliminated as causal
+   factors. To study the effect of the remaining variables on student
+   outcome, educational instructors that had experience teaching in both
+   a K-2 and other configurations within the district were surveyed. The
+   survey findings revealed the magnitude of the variance between causal
+   agents known to affect future student success that exists in the K-2
+   versus other configuration elementary schools. In order of decreasing
+   magnitude, the following variables are more prevalent in the K-2
+   environment than in other configurations, and their increased presence
+   related to superior student achievement in later years: Resources,
+   Parental Involvement, Collaboration (among administrators, teachers,
+   and special services personnel), Foundation (ability to establish
+   social and emotional competence, language, cognition, teaching
+   strategies that lead to next levels of accomplishment), Relevant
+   Teacher Training, Teacher Efficacy (with regard to aligning primary
+   students' interests and abilities), High Expectations, Principal's
+   Leadership, Teacher's Stability, and School Climate. (A copy of the
+   survey is included. Contains 14 references.)
+
+   <p>Descriptors: *Academic Achievement; Educational Environment;
+   Elementary Education; *Institutional Characteristics; Outcomes of
+   Education; *Performance Factors; *Primary Education; School Districts;
+   *School Organization
+   Identifiers: Alaska
+                 __________________________________________
+
+   <h>ED472649 EA032306
+   <h>Title: Directory of Public Elementary and Secondary Education
+   Agencies, 2000-2001.
+   <h>Author(s) McDowell, Lena M.; Sietsema, John P.
+   <h>Author Affiliation: National Center for Education Statistics (ED),
+   Washington, DC.(EDD00004)
+   <h>Pages: 410
+   <h>Publication Date: November 2002
+   <h>Notes: For the 1999-2000 Directory, see ED 464 396.
+   <h>Report No: NCES-2003-310
+   <h>Available from: EDRS Price MF01/PC17 Plus Postage.
+   <h>Availability: ED Pubs, P.O. Box 1398, Jessup, MD 20794-1398. Tel:
+   877-433-7827 (Toll Free). For full text:
+   <h>Language: English
+   <h>Document Type: Numerical/Quantitative Data (110); Reference
+   materials--Directories/Catalogs (132)
+   <h>Geographic Source: U.S.; District of Columbia
+   <h>Journal Announcement: RIESEP2003
+   <h>Government Level: Federal
+
+   <p>This directory lists all public elementary and secondary education
+   agencies in the 50 states, the District of Columbia, five outlying
+   areas, the Bureau of Indian Affairs, and the Department of Defense, as
+   reported from the National Center for Education Statistics (NCES)
+   Common Core of Data (CCD) Local Education Agency Universe data
+   collection of spring 2001. In the introduction, several tables
+   summarizing the file contents are provided. The seven types of
+   agencies listed include regular school districts, supervisory union
+   components, supervisory union administrative centers, regional
+   educational service agencies, state-operated agencies, federally
+   operated agencies, and other agencies that cannot be appropriately
+   classified using another CCD designation. The directory provides up to
+   12 items of information for each public elementary and secondary
+   agency listed: state, name of agency, mailing address, telephone
+   number, name of county, metropolitan status code, grade span, total
+   student membership, number of regular high school graduates for the
+   1999-2000 school year, number of students with an individualized
+   education program (IEP), number of teachers, and number of schools. An
+   appendix provides state education agency addresses. (RT)
+
+   <p>Descriptors: Elementary Secondary Education; Enrollment; Government
+   Publications; *Public Agencies; *Public Schools; *School Districts;
+   School Personnel; School Statistics; State Departments of Education
+   Identifiers: Grade Span Configuration
+                 __________________________________________
+
+   <h>EJ648686 EA539683
+   <h>Title: An Examination of K-5, 6-8 versus K-8 Grade Configurations.
+   <h>Author(s) Connolly, Faith; Yakimowski-Srebnick, Mary E.; Russo, Carmen
+   V.
+   <h>Source: ERS Spectrum, v20 n2 p28-37 Spr 2002
+   <h>Publication Date: 2002
+   <h>ISSN: 0740-7874
+   <h>Language: English
+   <h>Document Type: Journal articles (080); Reports--Research (143)
+   <h>Journal Announcement: CIJNOV2002
+
+   <p>Examines differences in certain factors such as student achievement
+   and student attendance in K-8 versus K-5 and 6-8 grade configurations
+   in Baltimore City Public Schools. Finds, for example, that students in
+   K-8 schools had significantly higher reading, language arts, and
+   mathematics scores than did students in K-5 or 6-8 schools. (Contains
+   20 references.) (PKP)
+
+   <p>Descriptors: Academic Achievement; Attendance; Educational History;
+   Grade 5; Grade 6; Grade 7; *Grade 8; *Instructional Program Divisions;
+   *Kindergarten; Middle Schools; Parents; Principals; Student
+   Characteristics
+   Identifiers: Baltimore City Public Schools MD
+                 __________________________________________
+
+   <h>EJ650573 EF502951
+   <h>Title: How Should Schools Be Organized?
+   <h>Author(s) DeJong, William S.; Craig, Joyce
+   <h>Source: School Planning & Management, v41 n6 p26-32 Jun 2002
+   <h>Publication Date: 2002
+   <h>ISSN: 1086-4628
+   <h>Language: English
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141)
+   <h>Journal Announcement: CIJDEC2002
+
+   <p>Explores the impact of grade configuration decisions on the number and
+   size of elementary, middle, and high schools needed. Discusses various
+   trends regarding placement of sixth grade, ninth grade, and preschool
+   classes and the resurgence of K-8 and K-12 models. (EV)
+
+   <p>Descriptors: Educational Facilities Planning; Grade 6; Grade 9;
+   Instructional Program Divisions; Middle Schools; Preschool Education;
+   *School Organization
+   Identifiers: *Grade Span Configuration
+                 __________________________________________
+
+   <h>EJ640946 EA539340
+   <h>Title: Middle Schools Still Matter.
+   <h>Author(s): Ecker, Marc; Dietz, Michael J.; Carlile, Susan
+   <h>Source: School Administrator, v59 n3 p30-33 Mar 2002
+   <h>Publication Date: 2002
+   <h>ISSN: 0036-6439
+   <h>Language: English
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141)
+
+   <p>Three public school administrators (a superintendent, a middle school
+   principal, and a central-office administrator) discuss why educators
+   and parents should continue to support the middle-school grade
+   configuration. (PKP)
+
+   <p>Descriptors: *Early Adolescents; Middle School Students; Middle School
+   Teachers; *Middle Schools; Transitional Programs
+   Identifiers: *Grade Span Configuration
+                 __________________________________________
+
+   <h>EJ640945 EA539339
+   <h>Title: Grade-Span Configurations.
+   <h>Author(s): Howley, Craig B.
+   <h>Source: School Administrator, v59 n3 p24-29 Mar 2002
+   <h>Publication Date: 2002
+   <h>ISSN: 0036-6439
+   <h>Language: English
+   <h>Document Type: Journal articles (080); Reports--Research (143)
+
+   <p>Discusses debate surrounding the advantages and disadvantages of
+   various grade-span configurations. Offers several provocative
+   "hunches" concerning the implications of grade-span-configuration
+   research for practice. Includes list of additional resources on
+   grade-span configurations. (PKP)
+
+   <p>Descriptors: *Academic Achievement; Elementary Secondary Education;
+   *Grade 6; *Grade 7; *Instructional Program Divisions; *Rural Schools
+   Identifiers: *Grade Span Configuration
+                 __________________________________________
+
+   <h>EJ630006 PS531911
+   <h>Title: The Efficacy of Philadelphia's K-to-8 Schools Compared to
+   Middle Grades Schools.
+   <h>Author(s): Offenberg, Robert M.
+   <h>Source: Middle School Journal, v32 n4 p23-29 Mar 2001
+   <h>Publication Date: 2001
+   <h>ISSN: 0094-0771
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141);
+   Speeches/meeting papers (150)
+
+   <p>Natural experiments explored the effects of attending public
+   Philadelphia K-to-8 schools or public middle schools on eighth- and
+   ninth-grade achievement. Found that students attending K-8 schools had
+   higher reading, mathematics, and science achievement than students
+   attending middle schools serving similar communities. Suggested that
+   number of students in a grade rather than school size contributed to
+   the difference. (KB)
+
+   <p>Descriptors: *Academic Achievement; Comparative Analysis; *Elementary
+   Schools; Mathematics Achievement; Middle School Students; *Middle
+   Schools; Outcomes of Education; Program Effectiveness; Reading
+   Achievement; *School Organization; *School Size; Science Achievement;
+   Social Differences
+   Identifiers: Pennsylvania (Philadelphia)
+                 __________________________________________
+
+   <h>ED447995 RC022706
+   <h>Title: Will the Real "Texas Miracle in Education" Please Stand Up?
+   Grade Span Configuration, Achievement, and Expenditure per Pupil.
+   <h>Author(s): Bickel, Robert; Howley, Craig; Williams, Tony; Glascock,
+   Catherine
+   <h>Pages: 48
+   <h>Publication Date: November 2000
+   <h>Sponsoring Agency: Rural School and Community Trust, Randolph, VT.
+   (BBB35873)
+   <h>Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Document Type: Reports--Research (143)
+   <h>Geographic Source: U.S.; Ohio
+
+   <p>Research across seven very different states has shown that as schools
+   get larger, the average achievement among economically disadvantaged
+   students declines. A traditionally strong argument against smaller
+   schools, however, is that they are too expensive. Large consolidated
+   schools with narrowly specialized grade spans are typically offered as
+   necessary to save money and to meet the needs of different age groups.
+   This paper examines whether the size-by-socioeconomic status
+   interaction effect proves robust across alternative regression model
+   specifications, as it did across different states. It also explores
+   whether the equity gains associated with smaller schools are
+   incompatible with the need to save money. Analysis with four different
+   regression model specifications consistently found that increased
+   school size was related to increases in achievement-test-score costs
+   associated with economically disadvantaged students. School size was
+   negatively related to expenditure per pupil, but this relationship
+   became increasingly tenuous as size increased, and eventually savings
+   became negligible. In addition, organizational factors, especially as
+   manifest in the distinctive components of the single-unit school, were
+   related to cost reduction. For those interested in balancing
+   expenditure per pupil with achievement-based equity, the best
+   grade-span configuration seems to be a small single-unit school.
+   (Contains 76 references.) (SV)
+
+   <p>Descriptors: *Academic Achievement; *Expenditure per Student; *High
+   Schools; Regression (Statistics); *School Size; Small Schools;
+   *Socioeconomic Status
+   Identifiers: *Grade Span Configuration; *Texas; Unit Schools
+                 __________________________________________
+
+   <h>ED450991 RC022836
+   <h>Title: High School Size, Achievement Equity, and Cost: Robust
+   Interaction Effects and Tentative Results.
+   <h>Author(s): Bickel, Robert; Howley, Craig; Williams, Tony; Glascock,
+   Catherine
+   <h>Pages: 49
+   <h>Publication Date: 2000
+   <h>Sponsoring Agency: Rural School and Community Trust, Washington, DC.
+   (BBB35927)
+   <h>Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Document Type: Reports--Research (143)
+   <h>Geographic Source: U.S.; West Virginia
+
+   <p>Research has revealed interactive effects of school size and
+   socioeconomic status--as school size increases, the mean measured
+   achievement of schools with disadvantaged students declines. The
+   larger the number of less advantaged students attending a school, the
+   greater the decline. This study also examined the claim that large
+   schools with a narrow range of grades necessarily save money by
+   achieving economies of scale. Results indicate that school size was
+   negatively related to costs, but this relationship became increasingly
+   tenuous as school size increased, with savings eventually becoming
+   negligible. In addition, analysis of organizational factors distinct
+   to the single-unit school indicates that if schools are designed
+   solely to minimize expenditure per pupil, the best configuration may
+   be a large single-unit school. However, if expenditure per pupil is
+   balanced with achievement-based equity, the best configuration seems
+   to be one small single-unit school per district. While decreased size
+   would increase costs, the fact that there is only one school with
+   13-15 grade levels would substantially diminish costs. (Contains 69
+   references.) (TD)
+
+   <p>Descriptors: *Academic Achievement; *Consolidated Schools;
+   Disadvantaged; Elementary Secondary Education; Equal Education;
+   *Expenditure per Student; High Schools; Interaction; Outcomes of
+   Education; *School Size; *Socioeconomic Status
+   Identifiers: *Economies of Scale; Grade Span Configuration; Texas;
+   *Unit Schools
+                 __________________________________________
+
+   <h>ED440471 EA030387
+   <h>Title: Grade Span.
+   <h>Author(s): Renchler, Ron
+   <h>Author Affiliation: National Association of Elementary School
+   Principals, Alexandria, VA.(BBB23667); ERIC Clearinghouse on
+   Educational Management, Eugene, OR.(SJJ69850)
+   <h>Source: Research Roundup, v16 n3 Spr 2000 Pages: 5
+   <h>Publication Date: 2000
+   <h>Sponsoring Agency: Office of Educational Research and Improvement
+   (ED), Washington, DC. (EDD00036)
+   <h>Contract No: ED-99-CO-0011
+   <h>Available from: EDRS Price MF01/PC01 Plus Postage.
+   <h>Availability: National Association of Elementary School Principals,
+   1615 Duke Street, Alexandria, VA 22314-3483 ($2.50 prepaid; quantity
+   discounts).
+   <h>Document Type: Collected works--Serials (022); ERIC product (071)
+   <h>Geographic Source: U.S.; Oregon
+
+   <p>This issue reviews grade span, or grade configuration. Catherine
+   Paglin and Jennifer Fager's "Grade Configuration: Who Goes Where?"
+   provides an overview of issues and concerns related to grade spans and
+   supplies profiles of eight Northwest schools with varying grade spans.
+   David F. Wihry, Theodore Coladarci, and Curtis Meadow's "Grade Span
+   and Eighth-Grade Academic Achievement: Evidence from a Predominantly
+   Rural State" reports on the influence of grade span on the academic
+   achievement of eight-grade students in Maine. David L. Hough's "The
+   Elemiddle School: A Model for Middle Grades Reform" surveys the
+   history of grade configuration and cites research indicating that
+   "elemiddle" schools (schools with both elementary and middle-school
+   grades) may be most appropriate for meeting educational and social
+   needs. Charlene G. Tucker and Gilbert N. Andrada's "Accountability
+   Works: Analysis of Performance by Grade Span of School" presents
+   results from a study measuring sixth-grade students' academic
+   performance on the "Connecticut Mastery Test" in relation to student
+   enrollment in schools having K-5 or K-6 configurations. John W.
+   Alspaugh's "The Interaction Effect of Transition Grade to High School
+   with Gender and Grade Level upon Dropout Rates" looks at the influence
+   of grade span and related factors on dropout rates in high school.
+   (DFR)
+
+   <p>Descriptors: *Academic Achievement; Dropout Rate; Elementary Secondary
+   Education; *Instructional Program Divisions
+   Identifiers: *Connecticut Mastery Testing Program; ERIC; *Grade Span
+   Configuration
+                 __________________________________________
+
+   <h>EJ584549 RC513199
+   <h>Title: The Relationship between Grade Configuration and Student
+   <h>Performance in Rural Schools.
+   <h>Author(s): Franklin, Bobby J.; Glascock, Catherine H.
+   <h>Source: Journal of Research in Rural Education, v14 n3 p149-53 Win
+   1998
+   <h>Publication Date: 1998
+   <h>ISSN: 8756-0534
+   <h>Document Type: Journal articles (080); Reports--Research (143)
+
+   <p>Examines the relationship between grade configuration in rural schools
+   and student attendance, suspension, and academic achievement for
+   grades 6, 7, 10, and 11. In a large random sample of rural Louisiana
+   schools, students in elementary schools (K-
+   6/7) and unit schools (K-12) outperformed their middle and secondary
+   school peers. Contains 25 references. (Author/CDS)
+
+   <p>Descriptors: *Academic Achievement; Attendance; *Educational
+   Environment; Elementary Secondary Education; Instructional Program
+   Divisions; Rural Education; *Rural Schools; Student Needs; Suspension
+   Identifiers: *Grade Span Configuration; *Louisiana
+                 __________________________________________
+
+   <h>ED432033 EA029887
+   <h>Title: Grade Configuration: Who Goes Where? By Request Series.
+   <h>Author(s): Paglin, Catherine; Fager, Jennifer
+   <h>Author Affiliation: Northwest Regional Educational Lab., Portland,
+   OR.(RIK65325)
+   <h>Pages: 48
+   <h>Publication Date: July 1997
+   <h>Sponsoring Agency: Office of Educational Research and Improvement
+   (ED), Washington, DC. (EDD00036)
+   <h>Contract No: RJ96006501
+   Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Document Type: Reports--Descriptive (141)
+   <h>Geographic Source: U.S.; Oregon
+
+   <p>This booklet is the fourth in a series of "hot topic" reports, that
+   address current educational concerns. The booklet examines questions
+   relating to grade configurations, its purpose being to increase
+   awareness and understanding of the issues surrounding grade span. It
+   explores the ways that schools have addressed concerns associated with
+   particular grade spans and suggests avenues for further inquiry. The
+   text focuses on historical trends in grade configuration and the
+   various contexts of grade spans, such as whether a school is in a
+   rural or an urban area. Most research on grade span focuses on the
+   middle grades and addresses such questions as: Which grades should be
+   grouped together in one school? How many grades should be in one
+   school? and How many school transitions will students make during the
+   K-12 years? Some tips for starting a school with a grade span new to a
+   school system are offered, followed by an overview of grade-span
+   considerations. The bulk of the volume describes eight schools'
+   experiences with grade spans, discussing such issues as how the grade
+   span came about and how the schools were structured to meet the needs
+   of the particular grades it contains. (RJM)
+
+   <p>Descriptors: Elementary Secondary Education; *Instructional Program
+   Divisions; Program Descriptions; *School Organization; School
+   Restructuring
+   Identifiers: *Grade Span Configuration; United States (Northwest)
+                 __________________________________________
+
+   <h>ED411278 TM027261
+   <h>Title: Accountability Works: Analysis of Performance by Grade Span of
+   School.
+   <h>Author(s): Tucker, Charlene G.; Andrada, Gilbert N.
+   Pages: 23
+   <h>Publication Date: March 1997
+   <h>Notes: Paper presented at the Annual Meeting of the American
+   Educational Research Association (Chicago, IL, March 24-28, 1997).
+   <h>Available from: EDRS Price MF01/PC01 Plus Postage.
+   Document Type: Reports--Evaluative (142); Speeches/meeting papers
+   (150)
+   <h>Geographic Source: U.S.; Connecticut
+
+   <p>For the past decade in Connecticut, public school students have been
+   tested in the fall of grades 4, 6, and 8, and results have been
+   attributed to the school in which students are tested. Some
+   Connecticut elementary schools end at grade 5 (Type I) and some
+   continue to grade 6 or 8 (Type II). Consistent results showed that
+   schools that expected to be accountable for sixth-grade results (Type
+   II) produced better performing sixth graders. Implications for
+   designing and developing accountability systems are discussed.
+   (Contains six tables and four references.) (Author/SLD)
+
+   <p>Descriptors: *Academic Achievement; *Accountability; Elementary
+   Education; *Expectation; *Instructional Program Divisions;
+   Multivariate Analysis; Public Schools; *School Organization
+   Identifiers: *Connecticut; Grade Span Configuration
+                 __________________________________________
+
+   <h>ED401058 RC020738
+   <h>Title: K-12 Unit Schooling in Rural America: A First Description.
+   <h>Author(s) Howley, Craig; Harmon, Hobart
+   <h>Author Affiliation: Appalachia Educational Lab., Charleston,
+   WV.(AWT03075)
+   <h>Pages: 34
+   <h>Publication Date: October 14, 1996
+   <h>Notes: Paper presented at the Annual Meeting of the National Rural
+   Education Association (San Antonio, TX, October 14, 1996).
+   <h>Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Language: English
+   <h>Document Type: Reports--Research (143); Speeches/meeting papers (150)
+   <h>Geographic Source: U.S.; West Virginia
+   <h>Journal Announcement: RIEMAR1997
+
+   <p>This report presents selected results of a national study of school
+   districts operating at least one K-12 unit school. Of the 706
+   districts operating unit schools, 157 districts in 27 states responded
+   to the survey. The majority of respondents (106) were superintendents
+   of one-school districts, that is, districts in which the K-12 unit
+   school was the only school. Of the 53 multischool districts, about
+   half operated just one K-12 unit school. Data reveal that K-12 unit
+   schools were usually located in an agricultural region where
+   socioeconomic status was lower than the national average; the average
+   unit school enrollment was 414; most unit schools in multischool
+   districts were comparatively remote from key resources such as
+   hospitals, interstate highways, and cities; superintendents of
+   single-school districts reported higher rates of above-average test
+   scores, postsecondary attendance, and high school completion than did
+   superintendents of multischool districts; satellite and Internet
+   systems were the most prevalent forms of distance learning
+   technologies in use; community attitudes toward single-school
+   districts were moderately and positively related to the sustainability
+   of the school; single-school districts spent almost 50 percent more
+   per pupil than multischool districts; and single-school districts more
+   often than multischool districts employed cooperative strategies for
+   maximizing resources such as joining regional service agencies or
+   cooperating with other districts. Includes data tables and
+   recommendations for research and practice. Contains 24 references.
+   (LP)
+
+   <p>Descriptors: Administrator Attitudes; *Community Attitudes; Distance
+   Education; Educational Practices; Elementary Secondary Education;
+   Expenditure per Student; Geographic Isolation; Institutional Survival;
+   National Surveys; *Outcomes of Education; *Rural Schools; School
+   Demography; *School Districts; *School Surveys; Small Schools;
+   Superintendents
+   Identifiers: Grade Span Configuration; Small School Districts;
+   *Sustainability; *Unit Schools
+                 __________________________________________
+
+   <h>ED403083 RC020794
+   <h>Title: The Relationship between Grade Configuration and Student
+   Performance in Rural Schools.
+   <h>Author(s): Franklin, Bobby J.; Glascock, Catherine H.
+   <h>Pages: 56
+   <h>Publication Date: October 1996
+   <h>Notes: Paper presented at the Annual Conference of the National Rural
+   Education Association (San Antonio, TX, October 11-14, 1996).
+   <h>Available from: EDRS Price MF01/PC03 Plus Postage.
+   <h>Document Type: Reports--Research (143); Speeches/meeting papers (150)
+   <h>Geographic Source: U.S.; Louisiana
+
+   <p>This paper examines the relationship between a school's grade
+   configuration and student performance in Louisiana. Results indicate
+   that sixth- and seventh-grade students performed better in elementary
+   and K-12 schools than in middle or secondary schools, in terms of both
+   achievement and persistence. Students in K-12 schools performed as
+   well as those in elementary schools overall and performed better in
+   some cases (grade 6 and high poverty). For grades 9-12, the K-12
+   school was more beneficial to students than the traditional secondary
+   school, particularly in the area of student persistence or conduct.
+   With regard to academic achievement, secondary schools did not differ
+   significantly from K-12 schools regardless of school size or SES.
+   School size did appear to impact 11th- and 12th-grade student
+   persistence more within the secondary school environment than that of
+   the K-12 school. Contains 34 references and 29 data tables and
+   figures. (Author/SV)
+
+   <p>Descriptors: *Academic Achievement; Academic Persistence; *Educational
+   Environment; Elementary Schools; Instructional Program Divisions;
+   Intermediate Grades; Middle Schools; *Rural Education; *School Holding
+   Power; *School Organization; School Size; Secondary Education;
+   Secondary Schools; Socioeconomic Status
+   Identifiers: *Grade Span Configuration; *Louisiana; Unit Schools
+                 __________________________________________
+
+   <h>ED389501 RC020367
+   <h>Title: A Comparison of Four Enrollment Groups of K-8 and K-12 Missouri
+   Rural School Districts.
+   <h>Author(s): Alspaugh, John W.
+   <h>Pages: 8
+   <h>Publication Date: October 1995
+   <h>Notes: Paper presented at the Annual Conference of the National Rural
+   Education Association (Salt Lake City, UT, October 1995).
+   <h>Available from: EDRS Price MF01/PC01 Plus Postage.
+   <h>Document Type: Numerical/Quantitative Data (110); Reports--Research
+   (143); Speeches/meeting papers (150)
+   <h>Geographic Source: U.S.; Missouri
+
+   <p>This paper compares school district characteristics for rural Missouri
+   K-8 and K-12 districts in four categories of enrollment size. A random
+   sample of 56 K-8 and 56 K-12 districts yielded 4 equal categories of
+   K-8 enrollment: 51-100, 101-150, 151-200, and more than 200 students.
+   Data are presented in graphic form for assessed valuation per pupil;
+   operating tax levy; expenditure per pupil; administrative cost per
+   pupil; teacher salaries; student-teacher ratio; and achievement scores
+   on the Missouri Mastery and Achievement Test (MMAT) for grades 3, 6,
+   and 8. Two final graphs present data from 428 Missouri districts
+   showing that the high school dropout rate was positively related to
+   school size and negatively related to the high school grade span. (SV)
+
+   <p>Descriptors: *Academic Achievement; *Dropout Rate; Elementary
+   Secondary Education; *Expenditure per Student; *Rural Schools; *School
+   District Size; School District Wealth; *School Districts; School Size;
+   Teacher Salaries; Teacher Student Ratio
+   Identifiers: Grade Span Configuration; *Missouri
+                 __________________________________________
+
+   <h>EJ505828 SP524248
+   <h>Title: Transition Effects of School Grade-Level Organization on
+   Student Achievement.
+   <h>Author(s): Alspaugh, John W.; Harting, Roger D.
+   <h>Source: Journal of Research and Development in Education, v28 n3
+   p145-49 Spr 1995
+   <h>Publication Date: 1995
+   <h>ISSN: 0022-426X
+   <h>Document Type: Journal articles (080); Reports--Research (143)
+
+   <p>Reports on a study of the transition effects of grade-level
+   organization on student achievement as schools transitioned from
+   self-contained to departmentalized classes. Reading, math, and social
+   studies achievement scores of five equated rural school districts with
+   K-4 through K-8 organization were compared. Results noted a decline in
+   achievement during the transition year. (SM)
+
+   <p>Descriptors: *Academic Achievement; *Achievement Gains; Departments;
+   Elementary Education; Elementary School Students; *Instructional
+   Program Divisions; Rural Schools; *School Organization; *Self
+   Contained Classrooms; *Transitional Schools
+   Identifiers: Transitional Activities
+                 __________________________________________
+
+   <h>EJ496194 EA530201
+   <h>Title: The Elemiddle School: A Model for Middle Grades Reform.
+   <h>Author(s): Hough, David L.
+   <h>Source: Principal, v74 n3 p6-9 Jan 1995
+   <h>Publication Date: 1995
+   <h>ISSN: 0271-6062
+   <h>Document Type: Journal articles (080); Reports--Evaluative (142)
+
+   <p>"Elemiddle" schools serve the needs of young adolescents, aged 10 to
+   14, in any combination of grades 5 through 8, as part of an
+   organizational structure that includes lower grades. Research has
+   shown that middle schools with 6-8 grade spans and K-8 schools are
+   most likely to implement child-centered programs, practices, and
+   policies than schools with 7-9 or 7-12 grade spans. (MLH)
+
+   <p>Descriptors: *Early Adolescents; *Educational Benefits; Educational
+   Change; Elementary Education; *Grouping (Instructional Purposes);
+   *Instructional Program Divisions; Intermediate Grades; Junior High
+   Schools; Middle Schools; *School Organization; *Student Centered
+   Curriculum; Student Needs
+                 __________________________________________
+
+   <h>ED380245 RC019950
+   <h>Title: An Examination of the Non-K12 School District Organizational
+   Form in New York State.
+   <h>Author(s): Monk, David H.
+   <h>Pages: 52
+   <h>Publication Date: November 1994
+   <h>Sponsoring Agency: New York State Education Dept., Albany. (QPX62775)
+   <h>Available from: EDRS Price MF01/PC03 Plus Postage.
+   <h>Document Type: Reports--Research (143); Test/questionnaires (160)
+   <h>Geographic Source: U.S.; New York
+
+   <p>This paper reports on a study assessing the viability of the non-K-12
+   organizational form as currently practiced in New York State.
+   Impediments to success with the non-K-12 form included inadequate
+   transportation, the abruptness of the transition, inopportune grade
+   levels of transition, calendar inconsistencies, inadequate
+   communication, parental disenfranchisement, curricular
+   inconsistencies, narrowness of choice, and inherent bias toward
+   resident students. Recommendations to deal with all impediments are
+   included. Appendices include the high school and parent survey
+   instruments. (RAH)
+
+   <p>Descriptors: *Academic Achievement; Elementary Secondary Education;
+   Feeder Patterns; High School Students; *Instructional Program
+   Divisions; *Interdistrict Policies; Organizational Change; *Parent
+   Attitudes; Public Schools; School District Reorganization; School
+   District Size; *School Districts; *Transfer Students
+   Identifiers: *New York
+                 __________________________________________
+
+   <h>ED372883 RC019686
+   <h>Title: The Cultural Contradictions of Middle Schooling for Rural
+   Community Survival.
+   <h>Author(s): DeYoung, Alan J.; And Others
+   <h>Pages: 39
+   <h>Publication Date: July 1994
+   <h>Available from: EDRS Price MF01/PC02 Plus Postage.
+   <h>Document Type: Information Analysis (070)
+   <h>Geographic Source: U.S.; Kentucky
+
+   <p>During 1968-91, middle schools were the only school type to grow in
+   number, increasing by over 400 percent. Middle school advocates focus
+   on early adolescents' need for developmentally appropriate
+   institutions, but show only a weak historical understanding of the
+   emergence and status of middle schools. Critical factors in early
+   support for the middle school movement included urban interests in
+   countering de facto school segregation without use of busing, urban
+   overcrowding of elementary and high schools, and a "bandwagon
+   effect"--the desire to appear modern and reform oriented. The
+   emergence of rural middle schools under the cloak of psychological
+   progress can be destructive to both the declining sense of community
+   in America, and to the actual persistence of many rural communities
+   still organized around K-8 or K-6 public elementary schools.
+   Examination of the National Center for Education Statistics's Common
+   Core of Data indicates that the construction of rural middle schools
+   has led to the closing and consolidation of rural elementary schools.
+   During the school years 1987/88-1991/92 the proportion of schools that
+   were middle schools increased 20 percent in rural areas, was unchanged
+   in suburban areas, and decreased 6 percent in urban areas. At the same
+   time, the proportion of rural schools that were K-8 declined
+   precipitously. Emerging school reform agendas that provide
+   alternatives to the "inevitability" of consolidation include efforts
+   to restructure schools as caring communities (requiring active parent
+   and community participation), and the development of rural schools as
+   centers for integrated social services. Contains 52 references. (SV)
+
+   <p>Descriptors: Early Adolescents; *Educational Change; Educational
+   Philosophy; *Instructional Program Divisions; Intermediate Grades;
+   Junior High Schools; *Middle Schools; *Rural Schools; School Closing;
+   *School Community Relationship; *School Organization
+   Identifiers: *Community Viability
+                 __________________________________________
+
+   <h>EJ464589 RC509333
+   <h>Title: Grade Span and Eighth-Grade Academic Achievement: Evidence from
+   a Predominantly Rural State.
+   <h>Author(s): Wihry, David F.; And Others
+   <h>Source: Journal of Research in Rural Education, v8 n2 p58-70 Sum 1992
+   <h>Publication Date: 1992
+   <h>ISSN: 8756-0534
+   <h>Document Type: Journal articles (080); Reports--Research (143)
+
+   <p>In 163 Maine schools, the performance of eighth-grade students on
+   standardized tests, especially reading achievement, was highest in
+   elementary settings (K-8, K-9, 3-8) and lowest in junior-senior high
+   school settings (6-12, 7-12, 8-12), when socioeconomic status and
+   teacher experience were controlled. (SV)
+
+   <p>Descriptors: *Academic Achievement; *Educational Environment;
+   Elementary Schools; Elementary Secondary Education; *Grade 8;
+   *Instructional Program Divisions; Middle Schools; Rural Schools;
+   *School Organization; Secondary Schools; Student School Relationship
+   Identifiers: *Maine
+                 __________________________________________
+
+   <h>EJ454389 EA527376
+   <h>Title: Grade-Level Reorganization in a Small School District: Making
+   and Implementing the Decision.
+   <h>Author(s): Vann, Allan S.
+   <h>Source: ERS Spectrum, v10 n4 p10-17 Fall 1992
+   <h>Publication Date: 1992
+   <h>ISSN: 0740-7874
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141)
+
+   <p>A New York school district was forced to consider a grade-level
+   reorganization or possible school closing, primarily resulting from
+   severe economic pressures. Describes the advantages and disadvantages
+   of reorganizing 2 K-5 elementary schools into a K-2 primary school and
+   a 3-5 intermediate school. Cites four basic reasons frequently offered
+   to support district reorganization. (MLF)
+
+   <p>Descriptors: *Administrator Role; Economic Factors; Elementary
+   Education; *Instructional Program Divisions; *Intermediate Grades;
+   *Primary Education; Public Schools; *School District Reorganization;
+   School District Size; *Transitional Programs
+   Identifiers: *Elwood Union Free School District NY
+                 __________________________________________
+
+   <h>ED327000 EA022588
+   <h>Title: Schools in the Middle: Progress 1968-1988. Schools in the
+   Middle: A Report on Trends and Practices.
+   <h>Author(s): Alexander, William M.; McEwin, C. Kenneth
+   <h>Author Affiliation: National Association of Secondary School
+   Principals, Reston, VA.(FGK56325)
+   <h>Pages: 9
+   <h>Publication Date: September 1989
+   <h>Notes: Colored print in section headings, on gray paper, may not film
+   adequately. For related documents, see EA 022 586-587.
+   <h>ISSN: 0276-4482
+   <h>Available from: EDRS Price MF01 Plus Postage. PC Not Available from
+   EDRS.
+   <h>Availability: Publications, National Association of Secondary School
+   Principals, 1904 Association Drive, Reston, VA 22091 ($1.50; quantity
+   discounts).
+   <h>Document Type: Collected works--Serials (022)
+   <h>Geographic Source: U.S.; Virginia
+   <h>Target Audience: Practitioners; Policymakers
+
+   <p>Designed as an overview of the progress of middle schools in the last
+   two decades, this document compares results from a 1968 survey that
+   sampled 10 percent of middle schools with at least three, and not more
+   than five grades, and including grades 6 and 7, with those of a
+   similar 1988 survey. Following a brief summary of the origins of the
+   middle school is a discussion of survey results regarding changes in
+   rationale and specific preparation undertaken for introducing middle
+   school organization and problems perceived in teacher education.
+   Finally, conclusions are presented regarding the differences between
+   schools containing grades 5-8 or 6-8 and those with grades 7 and 8 or
+   7-9. Included are four tables and five graphs. (8 references) (CLA)
+
+   <p>Descriptors: *Educational Development; Graphs; *Instructional Program
+   Divisions; Intermediate Grades; Junior High Schools; *Middle Schools;
+   School Surveys; Tables (Data)
+                 __________________________________________
+
+   <h>ED315897 EA021645
+   <h>Title: Middle Level Education in California: A Survey of Programs and
+   Organization.
+   <h>Author(s): Hough, David L.
+   <h>Author Affiliation: California Educational Research Cooperative,
+   Riverside.(BBB27382)
+   <h>Pages: 53
+   <h>Publication Date: February 1989
+   <h>Available from: EDRS Price MF01/PC03 Plus Postage.
+   <h>Document Type: Reports--Evaluative (142)
+   <h>Geographic Source: U.S.; California
+
+   <p>The second in a four-phase research project, this report presents data
+   from a stratified random sample of California middle schools using
+   four grade span configurations (K-8, 6-8, 7-8, and 7-9). This phase, a
+   pilot study, is designing a methodology to help researchers
+   discriminate among the number, percentage, and types of programs
+   offered by the various organizational patterns. The research is
+   intended to assist policymakers confronted with implementation
+   decisions regarding middle level programs. Future research should
+   focus on program effectiveness relative to "transescents'" needs and
+   to goals established by the individual school. Policymakers should
+   explore various alternative programs and practice modifications,
+   regardless of the grade spans adopted. (Eight references) (MLH)
+
+   <p>Descriptors: *Curriculum; *Extracurricular Activities; *Grouping
+   (Instructional Purposes); Hidden Curriculum; *Instructional Program
+   Divisions; Junior High Schools; *Middle Schools; *Pilot Projects
+   Identifiers: *California
+                 __________________________________________
+
+   <h>ED315896 EA021644
+   <h>Title: Vertical Articulation for the Middle Grades.
+   <h>Author(s): Hough, David
+   <h>Author Affiliation: California Educational Research Cooperative,
+   Riverside.(BBB27382)
+   <h>Pages: 61
+   <h>Publication Date: 1989
+   <h>Available from: EDRS Price MF01/PC03 Plus Postage.
+   <h>Document Type: Reports--Descriptive (141)
+   <h>Geographic Source: U.S.; California
+
+   <p>The junior high school, typically grades 7-8 or 7-9, offers a program
+   that is "not-
+   quite-yet-but-trying-to-be" a high school. The organization of the
+   middle school (commonly the grades 6-8), however, is based on a
+   philosophy of education that was specifically designed to meet the
+   special needs of a preadolescent learner; middle schools incorporate
+   unique curricula to better effect the transition between elementary
+   and high school programs, rather than attempt to approximate one or
+   the other. Many educators, perceiving junior highs as a "failed"
+   promise, have turned to the middle school philosophy as an affirmation
+   of a higher level of commitment. Indeed, since 1964, the number of new
+   middle schools replacing traditional junior highs has progressively
+   increased. A review of research on middle-level education indicates
+   that: (1) although primarily an administrative concern driven by
+   attendance boundaries, grade level organization had little impact on
+   middle-level students' academic achievement; and (2) the terms "junior
+   high school" and "middle school" do not define a school's program.
+   Additionally, the effective schools research has given rise to
+   discriminant analyses of effective middle school variables and allowed
+   researchers to identify those characteristics most commonly found
+   within "exemplary" middle schools. (159 references) (KM)
+
+   <p>Descriptors: Age Grade Placement; Classes (Groups of Students);
+   Curriculum Enrichment; Educational Development; Educational
+   Environment; Grade 6; Grade 7; Grade 8; Grouping (Instructional
+   Purposes); Instructional Program Divisions; Junior High Schools;
+   *Middle Schools; *Preadolescents; *School Organization; *Transitional
+   Programs
+                 __________________________________________
+
+   <h>EJ466872 EA528302
+   <h>Title: When Your K-5 School Changes to 3-5.
+   <h>Author(s): Vann, Allan S.
+   <h>Source: Principal, v73 n1 p20-22 Sep 1993
+   <h>Publication Date: 1993
+   <h>ISSN: 0271-6062
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141)
+
+   <p>Describes a district's reorganization of 2 K-5 schools into 1 for all
+   K-2 grades and 1 for all 3-5 grades for economic reasons. The
+   principal of the 3-5 facility views better focus and certain
+   innovative initiatives (involving coverage of special topics, a
+   whole-language reading program, and a sequential-research-skills
+   approach) as advantages. (MLH)
+
+   <p>Descriptors: Elementary Education; *Guidelines; *Instructional
+   Innovation; *Principals; *Program Implementation; *School Organization
+   Identifiers: *Elwood School District NY
+                 __________________________________________
+
+   <h>EJ466851 EA528251
+   <h>Title: Elementary School Reorganization: Looking Back One Year Later.
+   <h>Author(s): Vann, Allan S.
+   <h>Source: ERS Spectrum, v11 n3 p32-37 Sum 1993
+   <h>Publication Date: 1993
+   <h>ISSN: 0740-7874
+   <h>Document Type: Journal articles (080); Reports--Descriptive (141)
+
+   <p>Evaluates a small New York school district's efforts to reorganize its
+   two K-5 elementary schools into one K-2 primary grade school and one
+   3-5 intermediate school, focusing on student, staff, and parent
+   reactions. Although the new arrangement created more focused schools,
+   the intermediate principal misses the energy deriving from the
+   Kindergarten Thanksgiving feast and various primary-grade activities.
+   (MLH)
+
+   <p>Descriptors: Elementary Education; *Parent Attitudes; *Principals;
+   *Program Evaluation; Program Implementation; *School Organization;
+   *Student Reaction; *Teacher Response
+   Identifiers: *Elwood Union Free School District NY
+                 __________________________________________
+
+   <h>ED340604 SE052546
+   <h>Title: The Impact of Transition from Junior Highs to Middle Schools on
+   Science Programs.
+   <h>Author(s): Jones, M. Gail
+   <h>Pages: 20
+   <h>Publication Date: April 1991
+   <h>Notes: Paper presented at the Annual Meeting of the National
+   Association for Research in Science Teaching (Lake Geneva, WI, April
+   7-10, 1991).
+   <h>Available from: EDRS Price MF01/PC01 Plus Postage.
+   <h>Document Type: Speeches/meeting papers (150)
+   <h>Geographic Source: U.S.; North Carolina
+
+   <p>Nationally many middle-level schools are changing from a traditional
+   junior high school structure (grades 7-9) to middle schools (grades
+   6-8). A case study examined the impact of middle school organizational
+   changes that occurred as a large North Carolina school system
+   converted from junior high schools to middle schools on science
+   teachers and science instruction. The study found: that science
+   instruction was enhanced under the new organizational structure;
+   teachers had more instructional time; and teachers were supportive
+   about the middle school organization. (KR)
+
+   <p>Descriptors: *Case Studies; Elementary School Science; Inservice
+   Teacher Education; Interdisciplinary Approach; Intermediate Grades;
+   *Junior High Schools; Laboratory Equipment; *Middle Schools;
+   Preservice Teacher Education; Program Descriptions; Qualitative
+   Research; *School Organization; Science Education; *Secondary School
+   Science
+                 __________________________________________
+
+   <h>ED331157 EA022910
+   <h>Title: Middle Level Organization--A Curriculum Policy Analysis.
+   <h>Author(s): Hough, David L.
+   <h>Pages: 63
+   <h>Publication Date: March 1991
+   <h>Notes: Paper presented at the Annual Meeting of the National
+   Association of Secondary School Principals (Orlando, FL, March 1991).
+   <h>Available from: EDRS Price MF01/PC03 Plus Postage.
+   <h>Document Type: Reports--Research (143); Speeches/meeting papers (150)
+   <h>Geographic Source: U.S.; California
+
+   <p>Significant differences among school grade-span types regarding the
+   level of program implementation are influenced by the level of
+   philosophical commitment; as school grade spans include
+   lower-lower-grade levels, the level of commitment to the program
+   increases. A conceptual model of latent variables that impact the
+   middle-level writing curriculum--teacher characteristics,
+   philosophical commitment, writing curriculum, policy, and school
+   grade-span organization--is developed. Sixteen tables and six figures
+   are included. (53 references) (LMI)
+
+   <p>Descriptors: Educational Philosophy; *Elementary School Curriculum;
+   *English Curriculum; Intermediate Grades; Junior High Schools;
+   *Language Arts; *Middle Schools; Organizational Climate; *School
+   Organization; Teacher Attitudes; Teacher Characteristics; *Writing
+   Instruction
+                 __________________________________________
+
+   <h>ED301313 PS017585
+   <h>Title: Life in the Three Sixth Grades.
+   <h>Author(s): Lounsbury, John H.; Johnston, J. Howard
+   <h>Author Affiliation: National Association of Secondary School
+   Principals, Reston, Va.
+   <h>Publication Date: 1988
+   <h>Pages: 143p.
+   <h>Notes: Report No: ISBN-0-88210-212-5
+   <h>Available From: National Association of Secondary School Principals,
+   1904 Association Drive, Reston, VA 22091 ($9.00).
+   EDRS Price - MF01 Plus Postage. PC Not Available from EDRS.
+   <h>Document Type: RESEARCH REPORT (143); BOOK (010)
+   <h>Geographic Source: U.S.; Virginia
+
+   <p>In its six chapters, this report assesses the status of the sixth
+   grade. The shadow study technique was employed to address three
+   specific questions: (1) What is a sixth grader's day in school really
+   like? (2) In what ways do the programs provided for sixth graders
+   differ, depending on where the grade is located in the school system?
+   and (3) How does knowledge of the nature and needs of sixth graders
+   match up with the program actually provided? Sixth grades studied were
+   initial, middle, or terminal grades. Conclusions and recommendations
+   make up chapter 6. In appendices, related research is cited,
+   methodology is described, and listings of observers, schools, and
+   analysts are provided. (RH)
+
+   <p>Descriptors: Comparative Analysis; *Educational Experience;
+   *Elementary School Students; *Grade 6; *Instructional Program
+   Divisions; Intermediate Grades; Profiles
+   Identifiers: *Program Characteristics; *Shadow Studies
+                 __________________________________________
+
+   <h>ED297417 EA019797
+   <h>Title: The Effects of Various Middle-Grade Configurations.
+   <h>Author(s): Sailor, Perry
+   <h>Author Affiliation: Austin Independent School District, Tex. 1986
+   <h>Pages: 15p.
+   <h>Notes: Report No: AISD-85-20
+   EDRS Price - MF01/PC01 Plus Postage.
+   <h>Document Type: REVIEW LITERATURE (070)
+   <h>Geographic Source: U.S.; Texas
+
+   <p>This paper summarizes research relevant to the Austin Independent
+   School District's proposal to move sixth graders from an elementary
+   school (K-6 or K,4-6) to a middle school (6-8) grade grouping. A
+   summary of the evolution of middle-grade education is presented. Three
+   areas affected by grade organization are discussed: academic
+   achievement, nonacademic outcomes (self-concept and anxiety), and
+   homogeneous grade groups. The grade organization studies of various
+   middle grade configurations did not show any consistent effects one
+   way or the other. References to 36 studies are included. (SI)
+
+   <p>Descriptors: Academic Achievement; Behavior Change; Elementary School
+   Students; *Grade 6; *Instructional Program Divisions; Intermediate
+   Grades; *Middle Schools
+   Identifiers: *Austin Independent School District TX
+                 __________________________________________
+
+   <h>ED270404 SP027606
+   <h>Title: Grade Organization in Secondary Schools, with Particular
+   Reference to the Junior-Senior High School Model (Grades 7-12 or
+   6-12).
+   <h>Author(s): Lake, Sara
+   <h>Author Affiliation: San Mateo County Office of Education, Redwood
+   City, CA. SMERC Information Center. Jun 1985
+   <h>Pages: 22p.
+   EDRS Price - MF01/PC01 Plus Postage.
+   <h>Document Type: REVIEW LITERATURE (070)
+   <h>Geographic Source: U.S.; California
+
+   <p>In the United States, a "two-tiered" school system--elementary and
+   secondary education--is often spoken of, yet throughout this century
+   the trend has been toward a "three tiered" system--elementary, junior
+   high/intermediate/middle school, and high school. This paper reviews
+   literature and research regarding these trends, the advantages and
+   disadvantages of both systems, and the effects of grade organization
+   patterns on students. Particular emphasis is given to the
+   middle/junior high school system. The paper concludes with suggestions
+   for changing grade organization patterns. Appendixes include
+   references, a chart showing secondary grade organization patterns, and
+   an outline of advantages and disadvantages in the systems. (CB)
+
+   <p>Descriptors: Educational Trends; *Elementary Secondary Education;
+   *Instructional Program Divisions; Junior High Schools; Middle Schools;
+   *School Organization; *Secondary Schools
+                 __________________________________________
+
+   <h>ED252928 EA017415
+   <h>Title: Primary and Intermediate Grade Configurations: A Review of the
+   Literature.
+   <h>Author(s): Raze, Nasus
+   <h>Author Affiliation: San Mateo County Office of Education, Redwood
+   City, CA. SMERC Information Center. Jan 1985
+   <h>Pages: 9p.
+   EDRS Price - MF01/PC01 Plus Postage.
+   <h>Document Type: REVIEW LITERATURE (070); EVALUATIVE REPORT (142)
+   <h>Geographic Source: U.S.; California
+   <h>Target Audience: Researchers
+
+   <p>This literature review concerns the concept of alternative grade
+   configurations at the elementary level, in which elementary schools
+   are subdivided into primary (K-2) and intermediate (3-5) units.
+   Because of the paucity of literature on this concept, the major part
+   of the report focuses on the reorganization of the elementary schools
+   of the South Allegheny (Pennsylvania) school district. Although the
+   K-2, 3-5 structure is often implemented in response to declining
+   enrollment, other educational benefits cited may include better
+   concentration on the educational and psychological needs of children
+   in the two age groups, though one research study showed no significant
+   differences in student achievement, attitude toward school,
+   extracurricular participation, or career aspiration. The goals of the
+   South Allegheny reorganization (in response to declining enrollment)
+   were to equalize class sizes to facilitate multilevel instruction in
+   reading and math, and to make better use of staff, school buildings,
+   and instructional resources. Each of these objectives is described in
+   detail, along with perceived disadvantages. An evaluative report
+   revealed that the new grade structure saved money and resulted in
+   improved discipline, student attitudes, and student interaction.
+   Finally, literature on the implementation process is briefly reviewed,
+   emphasizing the need for clear articulation between grade levels.
+   Notes and references are included. (TE)
+
+   <p>Descriptors: Age Grade Placement; *Class Organization; Developmental
+   Stages; Educational Environment; Elementary Education; *Grouping
+   (Instructional Purposes); *Homogeneous Grouping; *Instructional
+   Program Divisions; *School Organization; Student Placement
+   Identifiers: *South Allegheny School District PA
+

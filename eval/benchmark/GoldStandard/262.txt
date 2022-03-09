@@ -1,0 +1,16 @@
+URL: http://www.bbc.co.uk/commissioning/contacts/index.shtml?genre=L&category=EB&template=contacts.tmpl&data=contacts.dat
+
+<p>This Contact Database allows you to find the editorial and business
+   contact points for independent production companies in each area.
+<p>Editorial contacts are your point of contact for the submission and
+   development of programme ideas and Business contacts are responsible
+   for all financial, rights, legal and commissioning approval issues.
+<p>Select the appropriate genre/area and type of contact:
+
+<p>Independent producers have the choice of whether to offer ideas to
+   Network via the Genre Controller/ Commissioning Editor or via the
+   contact in individual Nations.
+<p>Production Executives in charge of individual genres can be contacted
+   via me.
+<p>Member of the public with programme ideas can get information on
+   submitting ideas here 

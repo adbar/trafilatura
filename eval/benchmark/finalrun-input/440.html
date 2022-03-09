@@ -1,0 +1,190 @@
+<text id="http://www.freeswan.org/freeswan_trees/freeswan-1.99/doc/quickstart-firewall.html" encoding="iso-8859-1">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<HTML>
+<HEAD>
+<TITLE>Introduction to FreeS/WAN</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=iso-8859-1">
+<STYLE TYPE="text/css"><!--
+BODY { font-family: serif }
+H1 { font-family: sans-serif }
+H2 { font-family: sans-serif }
+H3 { font-family: sans-serif }
+H4 { font-family: sans-serif }
+H5 { font-family: sans-serif }
+H6 { font-family: sans-serif }
+SUB { font-size: smaller }
+SUP { font-size: smaller }
+PRE { font-family: monospace }
+--></STYLE>
+</HEAD>
+<BODY>
+<A HREF="toc.html">Contents</A>
+<A HREF="quickstart.html">Previous</A>
+<A HREF="quickstart-configs.html">Next</A>
+<HR>
+<H1><A name="quick_firewall">FreeS/WAN quick start on firewalling</A></H1>
+<P>This firewalling information supplements our<A HREF="quickstart.html#quick_guide">
+ quickstart guide.</A></P>
+<P>It includes tips for firewalling:</P>
+<UL>
+<LI><A HREF="#firewall.standalone">a standalone system with
+ initiator-only opportunism</A></LI>
+<LI><A HREF="#incoming.opp.firewall">incoming opportunistic connections</A>
+</LI>
+<LI><A HREF="#opp.gate.firewall">an opportunistic gateway</A></LI>
+</UL>
+<P>and a list of helpful<A HREF="#resources"> resources</A>.</P>
+<H2><A name="firewall.standalone">Firewalling a standalone system</A></H2>
+<P>Firewall rules on a standalone system doing IPsec can be very simple.</P>
+<P>The first step is to allow IPsec packets (IKE on UDP port 500 plus
+ ESP, protocol 50) in and out of your gateway. A script to set up
+ iptables(8) rules for this is:</P>
+<PRE># edit this line to match the interface you use as default route
+# ppp0 is correct for many modem, DSL or cable connections
+# but perhaps not for you
+world=ppp0
+#
+# allow IPsec
+#
+# IKE negotiations
+iptables -A INPUT  -p udp -i $world --sport 500 --dport 500 -j ACCEPT
+iptables -A OUTPUT -p udp -o $world --sport 500 --dport 500 -j ACCEPT
+# ESP encryption and authentication
+iptables -A INPUT  -p 50 -i $world -j ACCEPT
+iptables -A OUTPUT -p 50 -o $world -j ACCEPT</PRE>
+<P>Optionally, you could restrict this, allowing these packets only to
+ and from a list of known gateways.</P>
+<P>A second firewalling step -- access controls built into the IPsec
+ protocols -- is automatically applied:</P>
+<DL>
+<DT><A href="glossary.html#Pluto">Pluto</A> -- the FreeS/WAN keying
+ daemon -- deals with the IKE packets.</DT>
+<DD>Pluto authenticates its partners during the IKE negotiation, and
+ drops negotiation if authentication fails.</DD>
+<DT><A href="glossary.html#KLIPS">KLIPS</A> -- the FreeS/WAN kernel
+ component -- handles the ESP packets.</DT>
+<DD>
+<DL>
+<DT>KLIPS drops outgoing packets</DT>
+<DD>if they are routed to IPsec, but no tunnel has been negotiated for
+ them</DD>
+<DT>KLIPS drops incoming unencrypted packets</DT>
+<DD>if source and destination addresses match a tunnel; the packets
+ should have been encrypted</DD>
+<DT>KLIPS drops incoming encrypted packets</DT>
+<DD>if source and destination address do not match the negotiated
+ parameters of the tunnel that delivers them</DD>
+<DD>if packet-level authentication fails</DD>
+</DL>
+</DD>
+</DL>
+<P>These errors are logged. See our<A href="trouble.html">
+ troubleshooting</A> document for details.</P>
+<P>As an optional third step, you may wish to filter packets emerging
+ from your opportunistic tunnels. These packets arrive on an interface
+ such as<VAR> ipsec0</VAR>, rather than<VAR> eth0</VAR>,<VAR> ppp0</VAR>
+ or whatever. For example, in an iptables(8) rule set, you would use:</P>
+<DL>
+<DT><VAR>-i ipsec+</VAR></DT>
+<DD>to specify packets arriving on any ipsec device</DD>
+<DT><VAR>-o ipsec+</VAR></DT>
+<DD>to specify packets leaving via any ipsec device</DD>
+</DL>
+<P>In this way, you can apply whatever additional filtering you like to
+ these packets.</P>
+<P>The packets emerging on<VAR> ipsec0</VAR> are likely to be things
+ that a client application on your machine requested: web pages, e-mail,
+ file transfers and so on. However, any time you initiate an
+ opportunistic connection, you open a two-way connection to another
+ machine (or network). It is conceivable that a Bad Guy there could take
+ advantage of your link.</P>
+<P>For more information, read the next section.</P>
+<H2><A name="incoming.opp.firewall">Firewalling incoming opportunistic
+ connections</A></H2>
+<P>The basic firewalling for IPsec does not change when you support
+ incoming connections as well as connections you initiate. You must
+ still allow IKE (UDP port 500) and ESP (protocol 50) packets to and
+ from your machine, as in the rules given<A href="#firewall.standalone">
+ above</A>.</P>
+<P>However, there is an additional security concern when you allow
+ incoming opportunistic connections. Incoming opportunistic packets
+ enter your machine via an IPSec tunnel. That is, they all appear as ESP
+ (protocol 50) packets, concealing whatever port and protocol
+ characteristics the packet within the tunnel has. Contained in the
+ tunnel as they pass through<VAR> ppp0</VAR> or<VAR> eth0</VAR>, these
+ packets can bypass your usual firewall rules on these interfaces.</P>
+<P>Consequently, you will want to firewall your<VAR> ipsec</VAR>
+ interfaces the way you would any publicly accessible interface.</P>
+<P>A simple way to do this is to create one iptables(8) table with all
+ your filtering rules for incoming packets, and apply the entire table
+ to all public interfaces, including<VAR> ipsec</VAR> interfaces.</P>
+<H2><A name="opp.gate.firewall">Firewalling for opportunistic gateways</A>
+</H2>
+<P>On a gateway, the IPsec-related firewall rules applied for input and
+ output on the Internet side are exactly as shown<A HREF="#firewall.standalone">
+ above</A>. A gateway exchanges exactly the same things -- UDP 500
+ packets and IPsec packets -- with other gateways that a standalone
+ system does, so it can use exactly the same firewall rules as a
+ standalone system would.</P>
+<P>However, on a gateway there are additional things to do:</P>
+<UL>
+<LI>you have other interfaces and need rules for them</LI>
+<LI>packets emerging from ipsec processing must be correctly forwarded</LI>
+</UL>
+<P>You need additional rules to handle these things. For example, adding
+ some rules to the set shown above we get:</P>
+<PRE># edit this line to match the interface you use as default route
+# ppp0 is correct for many modem, DSL or cable connections
+# but perhaps not for you
+world=ppp0
+#
+# edit these lines to describe your internal subnet and interface
+localnet=42.42.42.0/24
+internal=eth1
+#
+# allow IPsec
+#
+# IKE negotiations
+iptables -A INPUT  -p udp -i $world --sport 500 --dport 500 -j ACCEPT
+iptables -A OUTPUT -p udp -o $world --sport 500 --dport 500 -j ACCEPT
+# ESP encryption and authentication
+iptables -A INPUT  -p 50 -i $world -j ACCEPT
+iptables -A OUTPUT -p 50 -o $world -j ACCEPT
+#
+# packet forwarding for an IPsec gateway
+# simplest possible rules
+$ forward everything, with no attempt to filter
+#
+# handle packets emerging from IPsec
+# ipsec+ means any of ipsec0, ipsec1, ...
+iptables -A FORWARD -d $localnet -i ipsec+ -j ACCEPT
+# simple rule for outbound packets
+# let local net send anything
+# IPsec will encrypt some of it
+iptables -A FORWARD -s $localnet -i $internal -j ACCEPT </PRE>
+<P>On a production gateway, you would no doubt need tighter rules than
+ the above.</P>
+<H2><A NAME="resources">Firewall resources</A></H2>
+<P>For more information, see these handy resources:</P>
+<UL>
+<LI><A href="http://www.netfilter.org/documentation/">netfilter
+ documentation</A></LI>
+<LI>books such as:
+<UL>
+<LI>Cheswick and Bellovin,<A href="biblio.html#firewall.book"> Firewalls
+ and Internet Security</A></LI>
+<LI>Zeigler,<A href="biblio.html#Zeigler"> Linux Firewalls</A>,</LI>
+</UL>
+</LI>
+<LI><A href="firewall.html#firewall">our firewalls document</A></LI>
+<LI><A href="web.html#firewall.web">our firewall links</A></LI>
+</UL>
+<A HREF="quickstart.html#quick.firewall"> Back to our quickstart guide.</A>
+<HR>
+<A HREF="toc.html">Contents</A>
+<A HREF="quickstart.html">Previous</A>
+<A HREF="quickstart-configs.html">Next</A>
+</BODY>
+</HTML>
+
+</text>

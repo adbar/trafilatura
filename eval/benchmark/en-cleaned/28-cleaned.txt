@@ -1,0 +1,626 @@
+URL: 
+http://cas.bellarmine.edu/tietjen/Research/wooly_monkey_behavior_and_vocali.htm
+
+   <h>Wooly Monkey Behavior and Vocalizations 
+_________________________________________________________________
+
+<p>View the PowerPoint Presentation
+
+
+           <h>Vocalizations & Displays in the Common Woolly Monkey
+
+                          <h>(Lagothrix lagothricha)
+
+                               <h>Lindsey Hughes
+
+
+
+   <h>Abstract
+
+             <p>Two troops of captive woolly monkeys were observed with the
+   aid of an 8 mm video camera and a proprietary Palm Pilot program.  My
+   research up to the present will be continued, but with modifications
+   in equipment and methods of data.  The two troops differ since Troop I
+   consists of a family group with four members; the breeding male Corey,
+   his son Tomas and daughter Sara, and a non-breeding female named Sissi
+   who is the Coreys sister.  The mother of Tomas and Sara died while
+   giving birth to Sara.  Troop II consists of three unrelated males,
+   with two more unrelated males who are currently in isolation to be
+   introduced in the near future.  Troop I is one of only two captive
+   family troops of woolly monkeys in the world; the other is located in
+   London, England.
+
+               <p>The video recordings were analyzed frame-by-frame using a
+   proprietary video digitization program.  The vocalizations were
+   recorded by the video camera as well and analyzed using Sound Forge to
+   make sound spectrographs, or sonograms.  A programmed Palm Pilot was
+   used to record the movement and behavior of both troops in order to
+   make ethograms to display patterns of behavior and vocalization.
+
+               <p>The following was anticipated:
+			   <l>1. vocalizations would be
+   correlated with visual displays;
+   <l>2. display function would be
+   identified through context;
+   <l>3 individuals would be identified through
+   harmonics in the sonograms;
+   <l>4. the behavior and vocalizations of the
+   two troops would differ; and
+   <l>5. the behavioral analysis would be
+   useful for maintaining and breeding captive troops.
+
+
+
+   <h>Introduction
+
+               <p>The common woolly monkey (Lagothrix lagothricha), also
+   known as Humboldt's woolly monkey, is found only in South America in
+   the Amazon River Basin of Brazil, Colombia, Ecuador, Peru, and
+   Venezuela.  They range in all canopy levels of primary rainforest as
+   well as gallery forests, and have been found in mountainous areas and
+   cloud forests up to 3,000 meters.  The classification of the common
+   woolly monkey is as follows:
+
+   <h>Taxon
+
+                              <h>Classification
+
+   <l>Kingdom
+
+   <l>Animalia
+
+   <l>Phylum
+
+   <l>Chordata
+
+   <l>Class
+
+   <l>Mammalia
+
+   <l>Order
+
+   <l>Primates
+
+   <l>Suborder
+
+   <l>Haplorrhini
+
+   <l>Family
+
+   <l>Cebidae
+
+   <l>Subfamily
+
+   <l>Atelinae
+
+   <l>Genus
+
+   <l>Lagothrix
+
+   <l>Species
+
+   <l>lagothricha
+
+
+               <p>The morphology of the common woolly monkey is similar to
+   that of other monkeys in the Atelinae subfamily.  The woolly monkey is
+   the largest monkey in South America, with the female weight averaging
+   11 pounds and the male weight averaging 15 pounds.  They have a
+   prehensile tail that can support their full weight and is used for
+   feeding and locomotion.  Woolly monkeys can have dark brown, pale
+   brown, dark gray, pale gray, reddish-brown, or black fur.  The limbs,
+   tail, and head are usually darker than the back, with the face being
+   black and the palms of the hands and feet being pink.  Slight sexual
+   dimorphism exists including the canines, body, and head in the males
+   being longer than females.  However, the female's tail is longer than
+   the male's and the female's clitoris is longer than the males' penis,
+   which sometimes makes it difficult to determine the sex in the wild.
+
+               <p>Humboldt's woolly monkey is primarily frugivorous, but
+   they also feed on leaves, seeds, flowers, and some invertebrates and
+   small mammals.  In captivity they have been known to prey upon birds
+   that fly into their cages.  The group size for woolly monkeys averages
+   10-12 group members, but much larger groups are known to exist.
+   Subgroups sometimes form and travel independently from the larger
+   group.  Woolly monkeys are not territorial and allow group ranges to
+   overlap and have been known to forage alongside each other as well as
+   other species in their family.  The woolly monkey travels through the
+   forest quadrupedally using its tail as a fifth arm.  They rarely come
+   down to the ground and, therefore, are known to be almost totally
+   arboreal.  They even sleep 150 feet above the ground in the canopy.
+   When on the ground, which is especially rare in the wild, they walk
+   bipedally, using their arms and tail to balance.  The tail is
+   extremely important and is always anchored to something; it is used to
+   pick up objects and sometimes even allows the monkeys to rest by
+   hanging from just the tail.
+
+               <p>The social structure of the common woolly monkey is a
+   multi-male-multi-female group in which a hierarchy exists between the
+   males in the group.  The dominance hierarchy is determined by
+   play-fighting and age.  The species' mating system is polygamous
+   because each receptive female mates with every male in the group, with
+   the most dominant males receiving the most copulations.  Because of
+   this, the male that succeeds in passing on his genes is the one that
+   releases more and better-fit sperm per session, with multiple sessions
+   increasing the likelihood.  Therefore, every male mates with every
+   female, but only one female is copulated with at any given time.  In
+   addition to receiving the most copulations, the most dominant males
+   also receive the most social grooming and are known to protect mothers
+   and their infants from others in the group.  In general, adult and
+   subadult males are dominant over all other members in the group.
+
+               <p>Male woolly monkeys are philopatric, which means that the
+   males stay in the group in which they were born, known as their natal
+   group, while the females leave their natal group.  Female dispersion
+   usually occurs between the ages of five and a half years to six years,
+   the same ages that females begin to mate.  Although females begin to
+   mate between those ages, they remain sterile and do not conceive until
+   one to three years after they leave their natal groups.  The gestation
+   period averages seven and a half months, or about 223 days, and the
+   female gives birth to one young about every two to three years during
+   the birthing season, which occurs between the months of August and
+   December.  After birth, the infants nurse from sixteen to twenty
+   months, traveling independently by six months.
+
+               <p>Little research on woolly monkeys exists, with the
+   majority of the research focused on ecology, morphology, location,
+   social structure, and so on.  Research on the behavior and
+   vocalizations of the common woolly monkey is almost completely
+   nonexistent.  The research on woolly monkey behavior and vocalization
+   that has been done was performed by M. Ramirez and published through
+   the World Wildlife Fund in 1988.  His research was made into a
+   "dictionary" that explained the behavior or reason behind each
+   vocalization, which he spelled out using human phonetics.  He also
+   explained some of the woolly monkeys' visual communication.  Although
+   thorough in some respects, his research did not investigate sequences
+   of behavior and vocalization or analyze each individual separately
+   with respect to behavior and vocalization sequences.
+
+   <h>Methods
+
+               <p>My research on the common woolly monkey was conducted at
+   the Louisville Zoo, one of only two places in the world that have a
+   captive family troop.  After being formally introduced to the monkeys
+   by the head veterinarian, I was able to begin collecting data.  Before
+   starting the data collection process, I decided to spend a few weeks
+   observing the two troops in order to become acquainted with the
+   individuals.  During the three weeks of strict observation, I took
+   notice of each behavior and began compiling a list of the observed
+   behaviors.  This list is located in the results and discussion
+   section.  I also realized that not only could I tell the monkeys apart
+   visually, but vocally as well.  After becoming familiar with the
+   behaviors (displays) and vocalizations of the monkeys, I began
+   collecting data.
+
+               <p>The data collection consisted of a variety of methods
+   including the use of an 8 mm video camera to record behaviors, a mini
+   disk recorder to record the vocalizations, and a proprietary Palm
+   Pilot program to record the movement and behavior of each individual
+   in the two troops as well as the overall behavior of each troop.  At
+   first, I videotaped the woolly monkeys individually.  This method was
+   not effective because the behavior of the other woolly monkeys could
+   not be seen and the monkeys move extremely fast and it is difficult to
+   follow them around the cage.  I then tried to videotape sections of
+   the cage, but that did not work well either because I could not
+   differentiate between the monkeys because of the cameras bad
+   resolution.  After four hours of recording over one month, I realized
+   that I needed a much better video camera in order to continue with the
+   research.  For my future research I will have a video camera with
+   superior resolution.  The video recordings that I had were used to
+   learn and practice the digitization process.  The recordings were
+   digitized and transferred to compact disk for later analysis.  The
+   digitized version of the video recordings could be analyzed at 1/10 of
+   a second, with the potential advantages including the ability to
+   record the behavior at set intervals, allowing the viewer to record
+   the behavior of all the monkeys in view.
+
+               <p>The mini disk recorder was used in conjunction with the
+   video camera.  I experienced multiple difficulties and problems with
+   the mini disk recorder that eventually led me to discontinue using it
+   in this project.  This will be discussed further in the results and
+   discussion section.  Because I did not have any vocalizations
+   recorded, I decided to use the sound from the video recordings for my
+   vocalization analysis.  Sound Forge, a computer program used for the
+   sound analysis, enabled me to make sound spectrographs, or sonograms,
+   on the woolly monkey vocalizations.  In order to analyze just the
+   woolly monkey vocalizations and not all of the background noise,
+   adjustment was required. With Sound Forge, I was able to delete all of
+   the outside and background noise that included crickets, birds,
+   trains, human voices, and so on.
+
+               <p>The proprietary Palm Pilot program used for recording the
+   behaviors was called Pen Recorder and the program used to analyze the
+   recordings was called Pen Reviewer.  Below are diagrams of Pen
+   Recorder, Pen Reviewer, and View Data.
+
+   <p>When using Pen Recorder, I had to designate letters of the alphabet to
+   the observed behaviors.  Once I started Pen Recorder, I wrote the
+   letter of every behavior that I observed an individual doing until
+   they went inside or went to sleep.  This method was difficult because
+   it was impossible to keep up with the behaviors while having to
+   remember which letter went with which behavior as well as write the
+   letter and then keep going.  The collected data was viewed in Pen
+   Reviewer under View Data, displayed above, and then analyzed in the
+   form of a graph, time line, and matrix, displayed below.
+
+   <p>After using this technique for a while, I decided to change my method
+   of recording because of the above stated reason as well as the fact
+   that certain monkeys were more active than the others and I had to
+   start and stop recording for the different individuals, which does not
+   heed good results for analysis.  For my further research, I will be
+   using a new method of recording behaviors.  Instead of using the
+   proprietary Palm Pilot program, I will be using a tablet PC with a
+   voice recognition program so I can just speak each behavior as it
+   occurs.
+
+   <h>Results & Discussion
+
+               <p>The individual woolly monkeys of Troop I each have
+   extremely different personalities, rank, age, relationships, etc.  The
+   family troop consists of four related individuals:
+
+
+   <h>Name
+
+                                <h>Birth Date
+
+                                    <h>Age
+
+   <l>Corey
+
+   <l>11/13/91
+
+   <l>11 years
+
+   <l>Sissi
+
+   <l>09/29/95
+
+   <l>7 years & 2 months
+
+   <l>Tomas
+
+   <l>12/01/98
+
+   <l>3 years & 11 months
+
+   <l>Sara
+
+   <l>12/07/00
+
+   <l>1 year & 11 months
+
+          <h>Corey                              <h>Sissi
+        <h>Sara                           <h>Tomas
+
+
+               <p>Corey is the dominant breeding male and is father to both
+   Sara and Tomas.  Sissi is Corey's sister and is the dominant
+   non-breeding female.  Sissi has never had any offspring and is
+   considered sterile.  The position of the second most dominant member
+   of the troop is currently being fought over between Sissi and Tomas.
+   Because Tomas is a subadult male and Sissi is an adult female, he and
+   Sissi fight over everything, from food to where to sleep.  Thomas and
+   Sara are siblings and fight and play in ways similar to human
+   siblings, but still show affection quite often, grooming each other
+   and resting next to each other.
+
+               <p>Tomas and his father Corey appear to have the closest
+   relationship within the group.  Tomas follows Corey around, mimicking
+   certain behaviors.  When Tomas and Sara are resting together or
+   grooming each other, Corey generally joins them.  Strange to human
+   viewers, the family troop members are sexual with each other,
+   especially Corey and Tomas and Corey and Sara.  Sexuality between
+   family members is surprisingly common in the primate world.  According
+   to primate research, it is quite normal for a father and son to feel
+   on each other's genitals and have erections when around one another.
+   These behaviors are considered greetings and are meant to establish
+   friendly contact, usually occurring between adult males and juveniles
+   of both sexes.  During my observations, I noticed that Corey and Sissi
+   rarely interact, while the same is true for Sara and Sissi.
+
+               <p>The monkeys in the family troop have differing
+   personalities, with Corey as the alpha male.  He is the largest
+   monkey, with huge canines and constant eye movement that indicates a
+   neurological disorder, though not apparent in any other way.  Corey
+   never plays and is always pacing the cage, eating, grooming himself or
+   others, staring at outside disturbances, or resting.  Only after about
+   a month of observation Corey appeared not to consider me an outside
+   threat anymore, showing behaviors indicating a friendly greeting and
+   then calming down other group members through appeasement behaviors.
+   This meant that I could now observe their behavior undisturbed by
+   outsiders.  Tomas is more of a loner for the majority of the time; shy
+   toward outsiders, he never makes eye contact with me, which is unlike
+   all the others in the group.  When not off by himself, Tomas is
+   playing or play fighting with Sara, fighting with Sissi, or grooming
+   or resting with Corey and/or Sara.
+
+    <h>Corey staring      <h>Tomas hiding    <h>Sissi & Tomas    <h>Sissi
+   walking         <h>Sara eating
+
+                                                                 <h>fighting
+
+
+               <p>Sissi is the most unsocial member of the group, only
+   interacting with the others when fighting with Tomas.  She is,
+   however, active toward me, cage shaking, which is a sign that she
+   feels threatened, and intense staring sessions at me, most likely
+   indicating that she does not approve of my presence.  When not
+   interacting with Tomas or me, Sissi rests high up in the top of the
+   cage, far away from everything and everyone else.  Sara on the other
+   hand is the most active and social member of the group.  Sara is
+   always doing something, whether watching me, playing with Tomas,
+   resting with Corey and/or Tomas, eating, playing by herself with toys,
+   or just running around bipedally on the cage floor.  The youngest,
+   most curious and loving of the group, she is the one that has tried to
+   make contact with me the most and is the most affectionate toward
+   others.
+
+               <p>Below is a table listing the observed behaviors, their
+   description, and the individuals in which the behaviors were observed.
+
+   <h>Behavior
+
+                                <h>Description
+
+              <h>Individuals In Which The Behavior Was Observed
+
+   <l>Eat
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Play
+
+   <l>Self explanatory; includes biting, running, climbing, rolling around,
+   etc.
+
+   <l>Sara, Tomas
+
+   <l>Chestrub
+
+   <l>Rub object against chest to scent mark; usually only done by males
+
+   <l>Corey, Tomas, Sara
+
+   <l>Swing
+
+   <l>Self explanatory; on ropes or around the cage
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Walk Quadrapedally
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Fight
+
+   <l>Self explanatory
+
+   <l>Sissi, Sara, Tomas
+
+   <l>Groom
+
+   <l>Each other or themselves
+
+   <l>Corey, Sara, Tomas
+
+   <l>Walk Bipedally
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Teeth Chatter
+
+   <l>Dominant male moves jaws up and down rapidly, chattering his teeth;
+   threat display or sexual arousal display
+
+   <l>Corey
+
+   <l>Jump
+
+   <l>Self explanatory; on floor, up to cage or rope, etc.
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Climb cage
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Climb Rope
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Cage Shake
+
+   <l>Use all four limbs to shake the cage; threat display
+
+   <l>Corey, Sissi, Sara
+
+   <l>Rub
+
+   <l>Use hands to rub on each others bodies; brings appeasement and
+   strengthens close relationships
+
+   <l>Corey, Sara, Tomas
+
+   <l>Bite
+
+   <l>Self explanatory
+
+   <l>Sissi, Sara, Tomas
+
+   <l>Grasp With Tail
+
+   <l>Use 5^th limb to hold on to objects or pick up objects
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Stare
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara
+
+   <l>Hump
+
+   <l>Self explanatory
+
+   <l>Corey, Tomas
+
+   <l>Copulation Attempt
+
+   <l>Attempt to copulate with another individual; practice for actual
+   copulation; occurs between males and females and between males
+
+   <l>Corey, Tomas, Sara
+
+   <l>Run
+
+   <l>Self explanatory
+
+   <l>Sissi, Sara, Tomas
+
+   <l>Yawn
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Lick
+
+   <l>Themselves, each other, or various objects including the floor and the
+   cage
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Masturbate
+
+   <l>Self explanatory
+
+   <l>Corey, Tomas
+
+   <l>Feel On Genitals
+
+   <l>Feel on own or another individuals genitals; display of friendship and
+   is thought to bring appeasement
+
+   <l>Corey, Tomas
+
+   <l>Reach For Me
+
+   <l>Self explanatory; reach out of cage to try to touch me
+
+   <l>Corey, Sara
+
+   <l>Rest
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Sneeze
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Drink
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Scratch
+
+   <l>Self explanatory; usually themselves
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Hang
+
+   <l>Upside-down with tail grasping object and supporting entire body
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Reach Out Of Cage
+
+   <l>Self explanatory; usually to get leaves, sticks, or other food dropped
+   outside of the cage
+
+   <l>Corey, Sissi, Sara, Tomas
+
+   <l>Sit
+
+   <l>Self explanatory
+
+   <l>Corey, Sissi, Sara, Tomas
+
+
+   <p>In addition to using the video recording of the woolly monkeys for
+   behavioral analysis, it was also used for sound analysis.  I used a
+   computer program called Sound Forge, which enabled me to make sound
+   spectrographs, or sonograms, of the woolly monkey vocalizations. In
+   order to analyze just the woolly monkey vocalizations and not all of
+   the background noise, adjustment was required.  Using Sound Forge
+   enabled me to delete all of the outside and background noise including
+   crickets, birds, trains, human voices, and so on.  I was able to
+   produce several sonograms from the data collected by listening to the
+   sounds while watching the screen and marking where I heard common
+   sounds of the woolly monkey.  These common sounds included shrieks,
+   squeaks, and grunts.
+
+   <p>I then performed a spectrum analysis, an option in Sound Forge, in
+   order to view the vocalizations in the form of a sound spectrograph.
+   Although this analysis is not yet complete, it will be continued in
+   the future.  After more spectrographs are made and analyzed, I will be
+   able to differentiate between individuals just by looking at their
+   sonograms because it is my hypothesis that each individual produces
+   different sound spectrographs although they make the same
+   vocalizations.  The human ear might not be able to differentiate
+   between individuals when they are making the same sounds as others so
+   this data will be useful in further vocalization research in woolly
+   monkey populations.
+
+   <p>The sound spectrograph below is of a squeak.
+
+
+
+
+   <p>The next sound spectrograph is of a screech.
+
+
+
+               <p>The last sound spectrograph is of a grunt.
+
+
+
+
+   <p>For my further research, I will be using a new method to record
+   behaviors.  Instead of using the proprietary Palm Pilot program, I
+   will be using a tablet PC with a voice recognition program so I can
+   just speak each behavior as it occurs.  The program is called Dragon
+   records what I say and analyzes the data in a similar manner to that
+   of the proprietary Palm Pilot program.  I will also be using an Elura
+   40 digital video camcorder, which has superior resolution and sound
+   quality combined with the ability to take digital photographs.  The
+   camera also has a steadier that eliminates most of the shakiness from
+   holding the camera.
+
+   <p>The observation of Troop II will begin when the two new unrelated male
+   monkeys are introduced to Monkey Island.  I will continue recording
+   more vocalizations and perform more in depth analysis using Sound
+   Forge.  This research will be helpful in teaching zoo personnel and
+   others interested in woolly monkeys about their behaviors and
+   vocalizations, as well as being useful for maintaining and breeding
+   captive troops.
+     _________________________________________________________________
+

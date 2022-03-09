@@ -1,0 +1,439 @@
+URL: http://www.pvrblog.com/pvr/2005/01/tivo_walked_awa.html
+
+<h>TiVo walked away from Comcast
+
+<p>This writeup from Engadget sums up my feelings about a story in the
+   New York Times:
+
+<p>Ok, now we understand why TiVo CEO Michael Ramsay was "promoted"out
+     of his job last week. You know how people have been telling TiVohow
+     the only way theyâre going to survive would be to convince some
+     acable company to license their digital video recorder software for
+     useon set-top boxes? Yeah, well according to the New York Times
+     lastsummer they were about to score a big deal with Comcast to do
+     preciselythis, that is until Ramsay pulled the plug at the last
+     moment becausehe was convinced TiVo wasnât getting paid enough
+     money or given enoughcontrol over the service.
+
+<p>Remember how DirecTV accounts for 2,000,000 of TiVo's
+   3,000,000customers and TiVo lost that relationship?  TiVo was
+   negotiating withComcast last summer and offered less than the $1/month
+   that they getfrom DirecTV, so Michael Ramsay decided to walk away.
+
+<p>Now it's easy to play Monday morning quarterback in situations
+   likethis, but hasn't a big cable company deal been the dream all
+   along? And in spite of sub-dollar monthly fees, couldn't the Tahiti
+   strategy be an alternate revenue source for those customers?
+
+<p>To be fair, if the Comcast deal had been inked and then TiVo
+   wasprevented from introducing innovative products because of their
+   threatto the cable companies we'd all be screaming bloody murder.
+   It'spossible (note that word, this is pure speculation) that there was
+   anon-negotiable clause that said something like "Non-Comcast video
+   willnot be available on the TiVo" which would have nixed any of the
+   futureplans like partnering with content providers.
+
+<p>When the story of TiVo is written, this Comcast negotiation could be
+   the point when the company's outcome was decided.
+
+<h>Comments
+
+<p>Wow, if this is true, it is rather upsetting. Once you walk away from
+   an opportunity like that they generally are gone for good. Even if
+   they would've gotten very little from the deal, it would've put 'TiVo'
+   into many homes, and kept some *other* solution *out*. Which is
+   perhaps more important.
+
+<p>TiVo has said they can survive without DirecTV because the overall
+   financial benefit of the deal isn't really that large a part of their
+   income, but it is still income and my understanding is it is still a
+   profitable business. So it is upside.
+
+<h>Posted by: MegaZone at Jan 17, 2005 3:24:17 PM
+
+<p>Tivo fatally believed that its product was hard to deliver.
+
+<h>Posted by: pb at Jan 17, 2005 5:29:26 PM
+
+<p>Market penatration is always a good thing. TiVo has done an excellent
+   job at penatrating minds with the DVR concept, but when people see
+   other solutions available it lessens the overall value of the TiVo DVR
+   brand while improving the value of TiVo concept.
+
+<h>Posted by: Dan at Jan 17, 2005 5:39:50 PM
+
+<p>Agreed they walked away from a deal. But Comcast probably gave the
+   lowball offer in a attempt to work from the bottom up on price. Tivo
+   not offering a counter offer was plain stupid. However the Comcast
+   deal is not said and done. Comcast would likely buy Tivo once they're
+   down and out.
+
+<p>FYI Tivo's directtv dominance is being eroded by a soon to be released
+   PVR that does not include tivo tech.
+
+<h>Posted by: Corey at Jan 17, 2005 5:43:12 PM
+
+<p>Sorry, I do't understand the comment "the Comcast deal is not said and
+   done." I already have a wonderful Comcast DVR already, why would
+   Comcast throw it away and use Tivo instead?
+
+<h>Posted by: Thomas at Jan 17, 2005 6:06:18 PM
+
+<p>With the Comcast in-house development team increasing with the
+   purchase of Liberate Technology assets, TIVO will have to beg to get
+   back into Comcast good books again. They gave up a chance to be in 40
+   million homes in the US. Comcast now is in control of their own iTV
+   platform, I say they don't need TIVO at all.
+
+<h>Posted by: Jack at Jan 17, 2005 6:11:59 PM
+
+<p>Looking at the other PVRs out there, especially Comcast's, they are
+   the clunkiest pieces of junk out there. The Tivo interface is so much
+   better looking. Tivo's features are better. Sorry, but you will never
+   be able to pry my Tivo from my hands. Not even after I'm dead. The
+   best possible solution? Comcast inks a deal with Tivo. Once you use
+   Tivo, I think you will feel the same way I do.
+
+<h>Posted by: Will Maitner at Jan 17, 2005 6:57:26 PM
+
+<p>Thomas, I own a Tivo (have owned a few) AND a Comcast dual tuner DVR.
+   Guess which I prefer to use, is easier to use, has more features, etc
+   etc etc?
+
+<p>Tivo is lightyears (and many many development years) ahead of
+   Comcast's stuff.
+
+<p>If I could junk the Comcast tomorrow, and get a Tivo branded PVR that
+   directly decoded cable (ie the reason I use the Comcast - no cable box
+   issues, dual tuners, etc), I'd do it in a heart beat. Tivo is the gold
+   standard in my view. Nothing else is even second place right now.
+
+<h>Posted by: Seth at Jan 17, 2005 7:03:51 PM
+
+<p>Here is what i am worried about, I am a loyal directivo customer and
+   well if tivo goes under what happens to all these units.....you think
+   the people at tivo would be nice enough to activate a lifetime sub on
+   the box before they drown....I dont think I could live without my tivo
+
+<h>Posted by: Atomis at Jan 17, 2005 7:26:13 PM
+
+<p>I could name a few other firms (Digital Equipment is a historical one,
+   there are many current ones) where the founder should have stepped
+   aside, because the 'parenthood' sentiment just destroys the judgment
+   needed to do the right thing. Ramsay' TiVo was a great idea, but not
+   doing the comcast deal was suicidal.
+
+<h>Posted by: Monday Evening QB at Jan 17, 2005 7:45:47 PM
+
+<p>Why does everyone assume Comcast was interested in Tivo in order to
+   deploy Tivo boxes? Comcast is very wedded to its Motorola platform,
+   and now with Liberate has its own PVR development well underway. Tivo
+   is a totally different architecture and hardware/OS platform. Me
+   thinks this was just Comcast looking to license some patents and
+   ideas, not actual products.
+
+<h>Posted by: Friend at Jan 17, 2005 8:14:56 PM
+
+<p>Having a problem with my Comcast box. Certain show will not fast
+   forward. This week's episode of 24 on Fox...no pause of ff
+
+<h>Posted by: Amb34 at Jan 17, 2005 8:33:48 PM
+
+<p>While TiVo has made many mistakes strategically (Thomas does a good
+   job outlining them on his site), as much as it pains me to say, I dont
+   think walking away from Comcast was one of them.
+
+<p>DirecTV's decision not to support HMO / TTG, etc. provides a good
+   indication of what a Comcast relationship would have been like -
+   restrictive, half-fast and ultimately detrimental to the TiVo brand.
+
+<p>Starting in 2006, the landscape is going to be reset - TiVo will be
+   able to offer a single solution which supports native digital signal
+   capture (via CableCard), dual tuners (at least), and HD.
+
+<p>TiVo will probably always be the higher-cost provider given the
+   service providers deeper pockets, ability to bundle and better
+   marketing / distribution economics, but TiVo should be able to get
+   creative and discount based on the consumer signing a long-term deal,
+   etc.
+
+<p>TiVo being forced to go direct might be best not only for the company,
+   but the for the consumer.
+
+<p>TiVo is going to have to out innovate, and out-develop its competitors
+   in the form of more functionality, etc. to compete.
+
+<p>Apple has manage to do this in the computer market, and its a > $25BN
+   thriving company - which is only a failure when measured relative to
+   Microsofts > $250 BN market cap.
+
+<h>Posted by: New York at Jan 17, 2005 8:56:10 PM
+
+<p>Personally, I've caused the placement of 4 tivos into others homes,
+   severely influenced another 2. Only 1 of them was directv.
+
+<p>DirecTV WILL have HMO, the current R10 boxes have the screens, there
+   are many posts on tivocommunity.
+
+<p>A co-worker just received a plasma hdtv, signed up for comcast HD, got
+   their new HD box. He absolutely hates it, (the comcast box), he
+   complains _every day_ it locks, up, doesn't record his shows, is hard
+   to use. He sums it up as "it's not TIVO".
+
+<p>Another coworker received TIVO for xmas, just installed it this
+   weekend. His biggest complaint was setup. If it wasn't from his
+   daughter and a wireless modem jack investment, it would have gone back
+   he said. He missed antenna vs cable in the setup and misunderstood he
+   needed to wipe the box and start over.
+
+<p>After 1 day he was digging the pause, replay and rewind. Will see if
+   he watched the news in 7 minutes tomorrow.
+
+<p>Less than a $1.00 a viewer, TIVO makes 12 times that now with
+   individual boxes, I think their sales were higher than expected for
+   the holidays. Tivo was number # 11 top selling merchandise on Amazon a
+   couple of times.
+
+<p>TIVO needs to go on QVC once a month, they'd sell 10,000 units in an
+   hour.
+
+<p>I believe their losses are the research on HD unit, the cable card
+   unit, the development of the TIVOtoGO. The comparison to Apple is
+   sound, how will TIVO be with 500,000 stand along subscribers at the
+   end of this year? likely double next year. Every celebrity has a TIVO,
+   Oprah gives them away, Ellen gives them away.
+
+<p>Stock is cheap tomorrow I bet.
+
+<h>Posted by: alan w at Jan 17, 2005 10:24:04 PM
+
+<p>Atomis - with regards to directivo's, I just called DirecTV support
+   and spoke with a tech. He's gotten a ton of calls, and escalated up to
+   his manager's manager, and no one inside of the direcTV tech support
+   department knows anything about them cancelling support. He says they
+   will always support it.
+
+<p>He also claimed to have a personal stake in it, because he loves his
+   TiVo. :)
+
+<p>So, don't worry about DirecTiVos becoming obsolete -- you've probably
+   got until at least the end of 2007 to continue using it, and by then
+   you'll probably need to upgrade anyway in order to be in compliance
+   with the government's latest 'anti-piracy' flag that they'll be adding
+   to broadcast streams.
+
+<h>Posted by: opiate at Jan 17, 2005 10:50:37 PM
+
+<p>ComCast now came out with OnDemand, which is actually really neat,
+   though the selection isn't great.
+
+<p>Yet another hard blow for TiVo.
+
+<p>More tech talk at http://loudboard.com/d/zid/80.htm
+
+<h>Posted by: Lexor at Jan 18, 2005 12:37:39 AM
+
+<p>The main problem for Tivo as a company is that they have never
+   recognized that they are a software company, not a hardware company.
+   They make zero revenue on hardware, and the value to us as
+   Tivo/DirecTivo customers is the software and interface.
+
+<p>Tivo software should be running on most DVRs, DirecTVs, Comcasts, Time
+   Warner's, HP's, etc....even NDS. The software business model is far
+   more sustainable, and supports continued development of added software
+   and services to gain additional revenue from installed hardware.
+
+<p>Too bad they have been so misdirected.....especially sad, as I am a
+   long time Tivo customer and evangelist.
+
+<h>Posted by: bobca at Jan 18, 2005 4:56:22 AM
+
+<p>I thought Microsoft made a billion dollar investment in Comcast to get
+   Microsoft code into Comcast cable boxes. Now I use a Comcast/Motorola
+   6412 cable box that has Microsoft software "inside". So maybe
+   Microsoft is buying market share through the use of low ball license
+   fees to beat TiVo?
+
+<h>Posted by: rene 'atlanta' at Jan 18, 2005 5:59:48 AM
+
+<p>"The main problem for Tivo as a company is that they have never
+   recognized that they are a software company, not a hardware company."
+
+<p>Bob: TiVo has *always* seen itself as a software company, and was
+   pulled into the hardware business kicking and screaming. If Philips
+   hadn't bailed, I doubt we would have ever seen a TiVo-branded box
+   anywhere outside a trade show.
+
+<h>Posted by: Roger Benningfield at Jan 18, 2005 6:16:53 AM
+
+<p>I have no doubt the Comcast deal *did* have all kinds of constraints
+   against competition. You can bet that Tahiti was one thing that was
+   prohibited. The cable providers are extremely jealous of their
+   subscribers, and they protect them like nobody's business. Tahiti is a
+   direct threat to their business model.
+
+<p>There aren't any simple answers to Tivo's problems. The fact of the
+   matter is that cable providers are in the drivers seat when it comes
+   to interactive TV, and they're very good at ensuring they remain so.
+   As the NYT article notes, look at who has fallen by the wayside
+   (Liberate, OpenTV). There is just no way a cable company is going to
+   lose control of their business, or be beholden to a technology
+   partner. If that means crappy service (and it does), or glacial
+   innovation (and it does), so be it. They have no problem stonewalling
+   and just watching ITV companies wither and die.
+
+<h>Posted by: Dave at Jan 18, 2005 7:23:10 AM
+
+<p>"Once you use Tivo, I think you will feel the same way I do."
+
+<p>The problem is, with low-cost and sufficing (if not ideal) DVRs
+   available through other sources (e.g., Comcast), at a fraction of the
+   price and at higher convenience, the number of folks who will actually
+   *try* a TiVo will stay small.
+
+<p>That's the real cost of walking away from the Comcast deal.
+
+<h>Posted by: *** Dave at Jan 18, 2005 9:26:45 AM
+
+<p>Count me in as a 'lost sale' for TiVO. I got Comcast 6412 box and am
+   quite happy with it.
+
+<p>What pulled me in:
+
+<l>single box
+<l>no need for phone wire
+<l>dual tuner
+<l>HD capabilities (don't have one now, but may be later..)
+<l>no upfront cost and cheaper monthly fee
+
+<p>I haven't encountered any major problems yet.
+
+<p>What I don't like:
+<l>remote is not very ergonomical
+<l>interface is OK, but nothing to rave about.
+
+<p>Look, I'm sure TiVo is a better product (if you ignore dual tuner and
+   HD) but 6412 box is good enough for me and has room to grow, one
+   hopes. In the end, being able to watch as much TV as possible is not a
+   worthy goal in itself.
+
+<p>You mileage can vary, of course.
+
+<h>Posted by: PG at Jan 18, 2005 3:27:08 PM
+
+<h>Motorola Acquires Ucentric Systems, Extending the Seamless Mobility of
+   Digital Video Entertainment through the Home
+
+<p>HORSHAM, Pa. - 18 January 2005 â Motorola, Inc. (NYSE: MOT) today
+   announced that the company has acquired privately-held Ucentric
+   Systems, Inc., a leading provider of home media networking software
+   for the connected home.
+
+<p>This strategic acquisition enables Motorola to actively market
+   connected home software solutions to third party service providers and
+   consumer electronics manufacturers. A leader in end-to-end broadband
+   technologies, Motorola will leverage its global brand presence and
+   worldwide resources to grow Ucentric's existing customer base.
+
+<p>The Ucentric software solution provides seamless access to stored
+   digital entertainment - such as high-definition video on a DVR, music
+   on a computer hard drive, or pictures on a laptop - from any connected
+   device in the home. The software is designed to operate with
+   electronic program guides from multiple vendors, and service providers
+   can customize the interface with applications that personalize the
+   subscriber experience.
+
+<p>Additionally, Motorola will make the software available as part of its
+   Home Media Architecture solution for the company's advanced and basic
+   digital set-top platforms.
+
+<p>"Motorola is committed to bringing relevant seamless mobility
+   solutions to the connected home marketplace, and the acquisition of
+   Ucentric's suite provides us with a robust software platform for
+   delivering the next generation of broadband services. Customers can
+   leverage these new tools in our portfolio to deliver new levels of
+   personalized entertainment and communication to devices in and around
+   the home," said John Burke, Motorola corporate vice president and
+   general manager, consumer entertainment solutions.
+
+<p>Ucentric announced a licensing agreement with DIRECTV, Inc. at CES
+   2005, the nation's leading and fastest growing digital television
+   service provider, to deploy its Home Media Center software platform.
+   The new DIRECTV Home Media Center will be comprised of a main unit,
+   with smaller units located at each additional TV networked throughout
+   the house, to provide DIRECTV customers with digital video recorder
+   (DVR) service on all television sets.
+
+<h>Posted by: New York at Jan 18, 2005 5:18:44 PM
+
+<p>I don't know which is sadder, the fact that TiVo missed the boat here
+   or that Comcast is such a gorilla, a simple deal gone bad can
+   potentially break a company.
+
+<p>You could say that Comcast doesn't need TiVo... No one chooses their
+   television service based on the beauty of interface design or how they
+   access their programs. However, moving forward, it's all about keeping
+   up with and/or copying the things that TiVo has introduced to make
+   watching TV that much more of a pleasure. Combined with the fact that
+   as a traditional cable company, Comcast, and others, are behind the
+   eight ball in how they develop and deploy new technology, compared to
+   a traditional consumer electronics company. So in that regard, they do
+   need TiVo... and I guess it's just a matter of time until they take
+   that over as well.
+
+<h>Posted by: sally at Jan 18, 2005 5:21:02 PM
+
+<p>As a tivo user since its release to the market, I have to say that
+   they have the best PVR software by far. However their not doing
+   anything that couldnt be done by anyone one else. Result: Tivo either
+   needs to step up and make a deal or pretty soon im going to be without
+   service.
+
+<h>Posted by: Steven at Jan 19, 2005 7:06:48 AM
+
+<p>None of us know ANYTHING about the terms of this so-called Comcast
+   deal.
+
+<p>Perhaps Comcast wouldn't deal unless they get hold of all of TiVo's
+   IP?
+
+<p>Where is the proof of this 1$ a month figure that was offered? Maybe
+   it was closer to 10c. Or maybe it was a one-time fee.
+
+<p>All of us act like we know so much and could have done a better job.
+   But we have no clue what the truth is.
+
+<p>I think this NYT article is full of it.
+
+<h>Posted by: Johanes at Jan 19, 2005 1:36:01 PM
+
+<p>I bought a ReplayTV 3 years ago and dearly love it, as does my wife.
+   Not quite a TiVo like I recommended to my brother-in-law, but it was
+   cheap at the time and we love the auto-commercial skip.
+
+<p>But, when our old TV finally went belly up we bought a Phillips CRT
+   HDTV at CostCo, thinking we need to be ready for the future.
+
+<p>Then, of course, to get value out of it we ordered HD service with the
+   DVR from Comcast, figuring to pay Comcast the $9.95/month we were
+   paying ReplayTV -- a wash. Of course the HD service was $5, and... to
+   get ESPN HD and TNT HD we needed to upgrade to digital cable as well.
+   So my cable bill goes up $30/month and my Replay bill goes down $10.
+
+<p>The DVR is Scientific Atlanta 8300 HD, and it amazes me how inferior
+   the interface is compared to a 3-year old box from the second best DVR
+   company. My wife begged for her ReplayTV back, and even started
+   watching tennis in the back room on my crappy 19" set, which has the
+   ReplayTV for the moment.
+
+<p>That is, until we watched the US Open Tennis final on the comcast DVR
+   in 16:9 HD. Beautiful, we just had to do a lot of (rather slow) fast
+   forwarding.
+
+<p>If and when TiVo comes out with the dual tuner HD cablecard machine
+   discussed here, and if it can replace what comcast gave me I will
+   seriously consider it -- but I doubt the new users of the comcast box
+   will, because if the SA 8300 HD is all you have ever seen it will
+   probably seem good enough.
+
+<h>Posted by: Richard-in-Florida at Sep 12, 2005 1:09:55 PM

@@ -1,0 +1,253 @@
+
+
+
+   <l>Click here to download the monthly PHP Magazine PDF 
+      Issue     
+        <h>Company:      
+
+
+
+
+
+
+      <l>Write for the PHP Magazine
+
+
+
+
+
+      <l>Advertise with the
+      PHP Magazine
+
+            <p>Issue: 06.2004
+            Guru Speak
+            <h>How To Avoid "Page Has Expired" Warnings
+            by Chris Shiflett
+            <p>Welcome to the first edition of Guru Speak, a new column that I'll 
+            be bringing to you every other month right here in PHP Magazine. The 
+            topics that I'll be writing about will vary, but one recurring topic 
+            that I want to focus on is that of providing thorough answers to 
+            frequently asked questions. This is a topic that is appropriate for 
+            PHP developers of all skill levels, and while some questions are not 
+            likely to concern experienced developers, the answers will hopefully 
+            lend new insight and provide a deeper understanding to everyone.
+            <p>As one of the most active contributors to the PHP-General mailing 
+            list for the last few years, I have answered many questions, and it 
+            is pretty easy to determine which topics trouble developers the 
+            most. While part of the reason for the frequency with which some 
+            questions are asked is that people don't search the archives or the 
+            Web prior, there are also some questions for which there is no 
+            sufficiently complete answer available, because no one feels the 
+            need to provide one. In other cases, there are so many RTFM 
+            responses that search results become very diluted, making the real 
+            answers hard to find.
+
+            <p>It is my sincere hope that this column can begin to address these 
+            types of problems, and I would like to thank the fine folks at PHP 
+            Magazine for agreeing to make my answers freely available on the 
+            Web. I am very interested in feedback, so please feel free to leave 
+            some on our forums anytime (link provided in the Links & Literature 
+            section) - perhaps you have new insight to add to one of my answers, 
+            a correction to make, a suggestion for the column, or a question of 
+            your own.
+
+            <p>I hope you enjoy Guru Speak. 
+            <h>How Can I Avoid "Page Has Expired" Warnings?
+            <p>One problem with organizing questions and answers, and in fact a big 
+            reason why searching the archives can be difficult for a beginner, 
+            is that the same question can be posed in so many different ways. 
+            This is especially true when the same problem arises under different 
+            circumstances, or when differences in browser behaviour can cause 
+            the same error to be reported in numerous ways.
+
+            <p>A good example of this is the warning message declaring that a page 
+            has expired. Not only are there two different causes for this 
+            warning, but the warning message itself also varies from browser to 
+            browser, even under the same circumstances.
+
+            <p>The warning is a result of the user utilizing the browser's history 
+            mechanism to access a previously viewed page, usually by clicking 
+            the back button or refreshing. One cause of the warning is that the 
+            page has expired from the browser's cache, so it wants to inform the 
+            user that it must request the page again, just in case this is not 
+            something the user wants.
+
+            <p>Luckily, you have some control over what a browser caches. In fact, 
+            as long as you don't forbid it, each page that the user visits is 
+            cached locally by the browser. There are exceptions to this, such as 
+            when the user specifically configures the browser to prevent 
+            caching, or when the user sets the maximum cache size too small. 
+            These exceptions aren't a big concern, because the user probably 
+            does this intentionally and understands the consequences, or the 
+            user will have an adverse experience on any site and likely realize 
+            that the problem is a local one.
+
+            <p>PHP, by default, does not forbid caching. When you request a simple 
+            PHP script, no caching headers are returned, so no Web agent's 
+            caching behaviour is modified. You can test this by using the 
+            LiveHTTPHeaders extension for Firefox and requesting a script such 
+            as the following: 
+            <p><?php
+            echo '<p>Guru Speak!</p>';
+            ?>
+            <p>Of course, no PHP application has scripts quite this simplistic. In 
+            fact, most PHP applications use sessions, and this is where caching 
+            becomes a problem. Add session_start() to the previous example, so 
+            that it becomes the following: 
+            <p><?php
+            session_start();
+            echo '<p>Guru Speak!</p>';
+            ?>
+            <p>When requesting this new script, three new HTTP headers are included 
+            in the response: 
+            <p>Expires: Thu, 19 Nov 1981 08:52:00 GMT
+            Cache-Control: no-store, no-cache, must-revalidate, post-check=0, 
+            pre-check=0
+            Pragma: no-cache
+            <p>These new headers eliminate caching, and this is how a stateful PHP 
+            application can so easily encounter "Page Has Expired" warnings.
+
+            <p>What can be done? Before you ask this question, it is good to 
+            consider the reasoning behind this behaviour. When you use sessions, 
+            it is possible that you customize each page, and these customized 
+            pages might contain sensitive information. If an intermediary caches 
+            this sensitive information, it might be returned to the wrong user. 
+            Consider the series of events illustrated in Figure 1. 
+
+            <p>Fig. 1: Caching can potentially cause problems.
+
+
+            <p>This is obviously unwanted. Luckily, the Cache-Control header gives 
+            us a way to distinguish between public caches (such as an 
+            intermediary) and private caches (such as the browser). The 
+            following header allows caching only in private caches: 
+            <p>Cache-Control: private
+            <p>You can use header() to set this yourself, but a better approach is 
+            to change the session.cache_limiter PHP configuration directive, 
+            because this also eliminates the Pragma header. If you don't have 
+            access to php.ini, you can set this in your scripts with the 
+            following: 
+            <p>ini_set('session.cache_limiter', 'private');
+            <p>By default, session.cache_limiter is set to nocache. With it set to 
+            private, the following Cache-Control header is sent: 
+            <p>Cache-Control: private, max-age=10800,<br></br> pre-check=10800
+            <p>The max-age and pre-check directives are given in seconds, and these 
+            can be used to limit the amount of time a page is cached. The 
+            session.cache_expire PHP configuration directive, given in minutes, 
+            controls these values. The default is 180 minutes (10800 seconds).
+
+            <p>Now that you can allow your pages to be cached, there is still one 
+            other scenario that can cause a "Page Has Expired" warning. When a 
+            page in history (including the current page) is requested with the 
+            POST request method, the browser will warn the user before 
+            requesting the page again, because a POST request might perform some 
+            action. Most browsers explain this in the warning, and Firefox's 
+            warning is displayed in Figure 2. Internet Explorer still gives a 
+            "Page Has Expired" warning but goes on to explain the situation 
+            further:
+
+            <p>"The page you requested was created using information you submitted 
+            in a form. This page is no longer available. As a security 
+            precaution, Internet Explorer does not automatically resubmit your 
+            information for you."
+
+
+            <p>Fig. 2: Firefox warns the user before resubmitting a POST request.
+
+
+            <h>Note
+            <p>As a PHP developer, you might be thinking that the request method 
+            doesn't really matter to you. You can still perform the exact same 
+            actions; the only difference is that you use $_GET instead of $_POST 
+            in your programming logic. While this is true, it violates the HTTP 
+            specification. Section 9.1.1 of RFC 2616 has the following to say:
+            <p>"In particular, the convention has been established that the GET and 
+            HEAD methods SHOULD NOT have the significance of taking an action 
+            other than retrieval. These methods ought to be considered "safe". 
+            This allows user agents to represent other methods, such as POST, 
+            PUT and DELETE, in a special way, so that the user is made aware of 
+            the fact that a possibly unsafe action is being requested."
+            <p>This is exactly why browsers treat responses to POST requests 
+            differently than responses to GET requests.
+
+            <p>Luckily, there is an elegant solution to this problem. You can still 
+            use the POST request method in your forms, but you hide the target 
+            page from the browser's history mechanism. The trick is to have the 
+            target page (that processes the form) send a Location header, which 
+            changes the response code from 200 to 302 and transparently 
+            redirects the user to another page. To illustrate this, consider 
+            three PHP scripts: form.php, process.php and end.php, shown in 
+            Listings 1, 2, and 3, respectively.
+
+            <h>Listing 1: form.php 
+            <p><form action="process.php" method="post">
+            <!-- Rest of form here -->
+            </form>
+
+            <h>Listing 2: process.php: 
+            <p><?php
+            header('Location: http://example.org/end.php');
+            /* Form processing here */
+            ?>
+
+            <h>Listing 3: end.php 
+            <p><p>Thanks!</p>
+
+            <p>When a user submits the form, the browser requests process.php using 
+            a POST request, and all of the form data is included. The response 
+            it receives is a 302 response, and the Location header indicates the 
+            URL it needs to request to get the page it seeks. After making the 
+            request for end.php, a message of thanks is displayed in the 
+            browser. If the user clicks the back button, the original form is 
+            displayed; the intermediate processing script is hidden from the 
+            browser's history. 
+            <h>Note
+            <p>The HTTP specification requires that the Location header indicate an 
+            absolute URL (such as http://example.org/script.php). See section 
+            14.30 of RFC 2616 for more information. 
+            <h>Recap
+            <p>To avoid "Page Has Expired" warnings, set session.cache_limiter to 
+            private, and make sure that any form using the POST method submits 
+            to an intermediate processing page that redirects the user to a 
+            different URL.
+
+            <p>I hope you can now avoid these unwanted warnings, and I also hope 
+            that I have helped clear up some of the mystery surrounding them. 
+            That's all for Guru Speak. See you next time.
+
+            <p>Chris Shiflett (http://shiflett.org/) is a frequent contributor to 
+            the PHP community and one of the leading security experts in the 
+            field. His solutions to security problems are often used as points 
+            of reference, and these solutions are showcased in his talks at 
+            conferences such as ApacheCon and the O'Reilly Open Source 
+            Convention, and his articles in publications such as PHP Magazine 
+            and php|architect.
+            <p>Chris is the author of the HTTP Developer's Handbook (Sams), a 
+            coauthor of the Zend PHP Certification Study Guide (Sams), and is 
+            currently writing PHP Security (O'Reilly). As a member of the Zend 
+            PHP Education Advisory Board, he is also one of the authors of the 
+            Zend PHP Certification. In his spare time, he is leading an effort 
+            to create a PHP community site at PHPCommunity.org. You can contact 
+            him at shiflett@php.net or visit his Web site at 
+            http://shiflett.org/.
+
+            <h>Links and Literature
+
+            <p>PHP Magazine Forums: 
+            LiveHTTPHeaders Extension for Firefox: 
+            Michael Radwin's Caching Talk: 
+
+
+      <h>The Results of the
+      Reader's Survey
+
+
+      <p>Other shops will
+      follow soon. 
+
+
+
+      <h>-- Advertisement -- 
+	  <p>Kelkoo price comparison in Germany
+
+

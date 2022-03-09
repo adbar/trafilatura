@@ -1,0 +1,2276 @@
+URL: http://www.emcit.com/emcit113.shtml
+
+                        <h> Issue #113 - January 2005
+
+  <h> Introduction
+
+  <p> The start of a new year is traditionally a time to try new things, and
+   those of you who follow the Emerald City blog will have noticed that
+   it has a rather different look to it than the rest of the site. I
+   spent the holidays playing with software techniques such as CSS, XML
+   and PHP. I am painfully aware that technically speaking the Emerald
+   City site is still somewhere in the Dark Ages. The new look of the
+   blog is a first step in moving it away from that embarrassing state.
+
+  <p> This will take time. There are real problems with compatibility in web
+   programming, and the flagrant disregard for supposed agreed standards
+   by Internet Explorer is just flabbergasting. I dont want to release
+   stuff and then have people not able to view the site. But at the same
+   time a little programming is going to make it much easier to maintain
+   and use.
+
+  <p> The other real problem I have is that my skills in graphic design are
+   so far off the scale at the negative end that it isnt funny. Theres
+   not much I can do about this. Ive never had any artistic talent. If
+   anyone wants to offer suggestions I would be very grateful.
+
+  <p> Meanwhile, back with New Year traditions, this issue sees my review of
+   the year in SF&F. It has been a very good one, I think. Heres hoping
+   that 2005 is even better.
+   _________________________________________________________________
+
+  <h> In this issue
+
+  
+
+  <h> Best of 2004
+
+  <p> Id like to start by drawing a distinction between my Best of the Year
+   List and my Hugo nominees. The Hugos have specific rules that allow
+   books to be eligible more than once, depending on how they were
+   published. Consequently two of my favorite books of all time, Light
+   and The Course of the Heart, both by M. John Harrison, are
+   Hugo-eligible this year. That rather constrains my nominations.
+   (Though I am, of course, delighted for Harrison and very much hope
+   that he gets on the ballot.)
+
+  <p> Emerald City, on the other hand, attempts to cover the
+   English-speaking world. And therefore I try to limit my Best of the
+   Year selections to books that are getting their first English
+   publication in the year in question. So, M. John Harrison books aside,
+   here we go on the best of 2004. Within categories books are listed in
+   alphabetical order by title.
+          ________________________________________________________
+
+  <h> Science Fiction
+
+  <p> Air Geoff Rymans wonderful tale about how we humans adjust to
+   information technology is one of those books I thought would probably
+   be too good to get the recognition it deserves. Really clever and
+   subtle books often leave many readers going "doh?" and the more
+   cynical ones saying, "this isnt commercial enough." Plus being about
+   the inhabitants of a small village in Central Asia is not likely to
+   endear the book to a mass market. So Im delighted to see Rymans book
+   on the Philip K. Dick Award short list.
+
+  <p> Banner of Souls Liz Williams keeps being on the brink of writing an
+   utterly brilliant novel. This one came very close. It certainly boasts
+   the most lyrical and atmospheric prose we have seen from her to date.
+   Heres hoping that she keeps on getting better. Williams is a regular
+   feature on the Philip K. Dick Award short list, and this book is no
+   exception.
+
+  <p> City of Pearl Karen Travisss debut novel was quite outstanding. It is
+   a fairly fast paced and very political piece of SF that is both in the
+   thick of the genre and fresh and interesting at the same time. Another
+   Philip K. Dick Award nominee.
+
+  <p> Cloud Atlas I dont think than an SF book has ever been the hot
+   favorite to win the Booker Prize before, and it may be several
+   millennia before one is again. If it happens again in our lifetime,
+   David Mitchell will be the man to achieve that honor. Hes the darling
+   of the mainstream literature set, but at the same time you tell from
+   reading Cloud Atlas that he is familiar with SF classics and is pretty
+   competent at writing SF. Im really looking forward to his next book.
+
+  <p> Iron Sunrise Charlie Stross is about as hot as it gets in the SF world
+   right now. His cutting-edge cyber-driven space operas are quite
+   possibly incomprehensible to anyone without a background in SF and
+   computers, but if you know what Stross is talking about then you
+   quickly become in awe of his command of the jargon. All of the crazy,
+   far-future technology he makes up sounds utterly plausible.
+
+  <p> Newtons Wake Ken MacLeod does comedy. Really he does. And what is more
+   he manages to do comedy about politics. The scene where his heroine
+   steps through a wormhole, falls onto a beach, and looks up to find a
+   statue of Karl Marx towering over her will stay with me for a very
+   long time. This being MacLeod, there is a lot of serious speculation
+   about economics and politics in Newtons Wake, but it is a hugely
+   entertaining book as well.
+
+  <p> River of Gods Ian MacDonald has never been afraid to do something
+   different with his novels. But taking on the task of writing the
+   quintessential Indian SF novel is probably the bravest thing he has
+   done yet. AIs and nanotech explode across a landscape imbued with
+   Hinduism, regional rivalries, caste politics and some interesting
+   speculations about gender, or rather lack of it. Besides, how can I
+   not love an SF novel that features a cricket match?
+
+  <p> Stamping Butterflies North Africa still runs strongly through Jon
+   Courtenay Grimwoods fiction, but his latest novel is worlds away from
+   El Iskandria. Although parts of the book are firmly rooted in Morocco,
+   other sections drift dreamily through a massive, artificial world
+   light years away and centuries into the future. The strands are
+   connected through the political decisions of a present-day US present.
+   Truly, the flapping of a butterflys wings can cause a storm on the far
+   side of the galaxy.
+
+ <p>  The Fourth Circle If there is one book in this list that is going to
+   get panned as un-commercial by most reviewers, this is it. Zoran
+   ivkovic pulls no punches in this delightfully strange and experimental
+   story. And somehow it still manages to sound wonderful even after
+   having been translated into English from Serbian.
+
+  <p> White Devils Move over Michael Crichton and Margaret Atwood, this is
+   how a real science fiction writer does a biotech disaster thriller.
+   Sure the book has a bunch of cartoon thriller villains, sure lots of
+   people die in inventively nasty ways. Thats what thrillers are all
+   about. But along the way Paul McAuley manages a much more
+   sophisticated and adult approach to both the science and the politics
+   than Crichton or Atwood seem capable of managing.
+          ________________________________________________________
+
+  <h> Fantasy
+
+  <p> Iron Council I still have my reservations about the central third of
+   China Miévilles latest Bas-Lag story, but there is no doubting the
+   continued fabulous inventiveness of his writing and world creation. It
+   was also a delight to see Miéville introduce an actual political
+   revolution to New Crobuzon and not have it turn out happily ever
+   after. As for the way in which he elevated Torro from being a
+   memorable character walk-on from Perdido Street Station to a central
+   part of Iron Council, well, love it!
+
+  <p> in the night room mainstream reviewers have been talking endlessly
+   about the cleverness of the structure of David Mitchells Cloud Atlas.
+   They should also take a look at Peter Straubs wonderful new novel that
+   mixes up writers and characters until the reader is hard-pressed to
+   tell the difference. A lot of horror fiction is so bad and formulaic
+   that even us SF folks look down on it with disdain, but Peter Straub
+   is an author who can hold his own in any company.
+
+ <p>  Jonathan Strange & Mr. Norrell I dont think that Susanna Clarkes debut
+   novel conquered the world in quite the way that Bloomsbury expected it
+   to, but it certainly made a very big splash. It was also highly
+   entertaining for most of its 800 or so pages, and this from someone
+   who loathes Jane Austen. I guess it must have been the footnotes. Or
+   the portrayal of Faerie. Or the Raven King. Or the brilliantly
+   obnoxious Yorkshireness of Gilbert Norrell. England hasnt read so well
+   in a long time.
+
+  <p> Mortal Love In the interview I did with Elizabeth Hand for Strange
+   Horizons she talks about the edginess that a writer obtains by setting
+   fantasy novels in the present day. Anyone can make magic believable in
+   a pseudo-medieval, cookie-cutter fantasy world. It isnt hard to make
+   it believable in the 18^th Century. But to make people believe that
+   magic happens in present day Camden Town, without the aid of any
+   chemical supplements at all, is not only very difficult but profoundly
+   disturbing as well. Elizabeth Hand can really make us believe that the
+   world we know can be turned upside down in an instant, and that our
+   lives will never be the same again.
+
+  <p> Olympic Games OK, so it was kind of cheesy for Leslie What to release
+   a novel about Greek Gods in New York in a year in which the Olympics
+   returned to Athens. But hey, everything else about the book was
+   wonderfully inventive, not to mention very funny. Zeus and Hera are
+   the archetypes of the sex war, and What used them to their full
+   potential, while managing to have some very real human characters as
+   well. A very promising debut.
+
+  <p> Perfect Circle Ah, class. With this book Sean Stewart has produced a
+   perfect little ghost story. Several of the books in this list were
+   published by small presses, but this is the only one of them where I
+   was absolutely amazed that no major publisher had picked it up. The
+   mainstream press should be raving about this book.
+
+  <p> Shadowmarch Im a little disappointed that such a traditional fantasy
+   book should follow the brilliant War of the Flowers, but having been
+   part of the Shadowmarch online community for several years I well know
+   that Shadowmarch the book was written first. Besides, traditional
+   fantasy is something that Tad Williams does very well indeed. There is
+   a huge market for it, and if people are going to buy books with elves
+   and dwarves in them (or at least near facsimiles thereof) then I want
+   them to be buying Tad Williams because nobody does it better.
+
+  <p> The Last Light of the Sun I try very hard to fit as many newly
+   released books into each issue of Emerald City as I can. That means I
+   have little or no time to catch up on books I should have read years
+   ago. Which is frustrating, because sat on my bookshelves are several
+   unread Guy Gavriel Kay books. I know that they will be very good. His
+   Sarantium series was excellent, and his latest book is even better.
+   Besides, how can I not love a book with such wonderfully Welsh
+   characters in it?
+
+  <p> The Wizard Knight Everyone agrees that Gene Wolfe is a genius. Many
+   reviewers, however, dont quite know what to make of The Wizard Knight,
+   because it appears to be less obscure and puzzle-filled than the
+   New-Long-Short Sun series, but at the same time is more opaque. Just
+   what is Wolfe getting at? Why the Norse gods, when Wolfe makes it
+   clear that a single creator God exists above them and an archangel
+   makes an appearance in the book? Well, because Wolfe is talking about
+   layers of power and responsibility. Wolfe is making a case for the
+   world being more than the stark Protestant division of Us and God, of
+   Saved and Not-Saved. We all have free will, and we need to learn to
+   use it responsibly.
+
+  <p> The Year of Our War Wow, three debut novels in the fantasy top ten.
+   The world is indeed turned upside down. And perhaps nowhere more so
+   than in Steph Swainstons wonderfully imagined The Year of Our War. Any
+   book will contain echoes of other works that the author has read and
+   admired, but I dont think I have read anything else quite as strange
+   and unusual as Swainstons book all year. I do hope that she can keep
+   up this level of creativity.
+          ________________________________________________________
+
+  <h> Collections and Anthologies
+
+  <p> All Star Zeppelin Adventure Stories This anthology was a little
+   patchy, but nearly all of the stories were really good fun. Zeppelins
+   are cool what can I say?
+
+   <p>A New Universal History of Infamy Rhys Hughes at his bizarre and
+   hilarious best. Do you need another excuse to laugh at Margaret
+   Thatcher? Of course you do.
+
+  <p> Novelties & Souvenirs I dont spend enough time reading John Crowley. I
+   should do, it would be good for me. There are some wonderful stories
+   in this book. Is it New Wave Fabulism? Who cares, just read it.
+
+   <p>Secret Life I guess that compared to City of Saints and Madmen this
+   collection of more or less conventional and largely unconnected
+   stories by Jeff Vandermeer will seem quite ordinary. But it isnt.
+   There are many very good stories indeed in this collection. Highly
+   recommended.
+
+  <p> So Long Been Dreaming Another patchy anthology, mainly because too
+   many of the authors let their anger or desire to make political points
+   run away with their stories. But there are some very good stories in
+   there as well, in particular Vandana Singhs excellent "Delhi".
+
+ <p>  Stagestruck Vampires Suzy McKee Charnas does vampires as only she can.
+   Plus some very interesting background on the Motherlines series.
+
+  <p> Stable Strategies Eileen Gunn takes a very long time to write stories,
+   but seems to come out with good ones whenever she does. Tachyon padded
+   a little to get a book out of them, but it is well worth a look.
+
+  <p> The Atrocity Archives So you didnt know that the British government
+   has a special spy network specifically dedicated to protecting the
+   country from slimy, tentacled monsters from beyond the stars?
+   Thankfully Charlie Stross did.
+
+  <p> And look, every single one of these books comes from a small press
+   publisher.
+          ________________________________________________________
+
+  <h> Short Fiction
+
+  <p> Quite a few very good books of novella length, or just within the
+   stretch limits of novella length according to the Hugo rules, have
+   been published in 2004. I confess that I am much more likely to read
+   and enjoy such things than short stories.
+
+  <p> Not Before Sundown Johanna Sinisalos wonderful tale of a photographer
+   finding a baby troll in his yard deserves a place on everyones
+   bookshelf.
+
+  <p> The Healthy Dead Steven Erikson might be the king of big, fat fantasy
+   novels in the UK, but it is the novellas he writes for PS publishing
+   that I love best. They are seriously funny.
+
+  <p> The Labyrinth Quite the most startling book of 2004, though possibly
+   way too poetic for everyones taste, is Catherynne M. Valentes
+   wonderful tale inspired by Greek myths.
+
+  <p> Viator Some of the things that Lucius Shepard does to create books are
+   quite mad, but they always result in something wonderful. Viator also
+   has the benefit that writing very long sentences is much less
+   dangerous to Luciuss precious existence than living amongst Hobos on
+   the railroad.
+
+  <p> "tourism" OK, I have to have some short stories, and how could I
+   ignore the little tale from the Light universe that M. John Harrison
+   produced for Amazon.
+
+  <p> "The Annals of Eelin-Ok" I suspect that the anthology this story comes
+   from will join my list as soon as I get to read it, but in the
+   meantime I continue to marvel at the brilliance of Jeffrey Ford.
+          ________________________________________________________
+
+  <h> Other Stuff
+
+  <p> There are a few other things that I want to mention about 2004 that
+   were particularly good.
+
+  <p> A Serious Life This "biography" of one of the UKs oldest and most
+   notorious small presses was my non-fiction find of 2004.
+
+  <p> Lyda Morehouse doesnt quite get into my SF top 10 on the strength of
+   Apocalypse Array alone, but I loved the series of which it formed the
+   final volume.
+
+  <p> Being there to witness Bibliomancy winning Best Collection at the
+   World Fantasy Awards was definitely a highlight of my year.
+
+   <p>The Concrete Castle Gig I got to see Billy Bragg in concert, from a
+   distance of about 3 feet. Magic.
+
+ <p>  And of course Winning a Hugo
+
+   
+
+  <h> Suffer a Witch
+
+  <p> The new Graham Joyce novel, The Limits of Enchantment, is to some
+   extent a follow-on from The Facts of Life. In that book there is
+   mention of how, in the middle of the 20^th Century, professional
+   midwives with years of experience but no professional qualifications
+   were being hounded out of work by the new, official, government health
+   service. In modern, technological Britain, old witch women were no
+   longer to be allowed to practice their arts. Especially when those
+   arts also included abortion advice. It was, after all, well known that
+   young women who became pregnant outside wedlock were mentally
+   disturbed and should be put in asylums, not given abortions.
+
+  <p> So, enter old Mammy Cullen, resident wise woman of a small village
+   near Leicester. Mammy has successfully delivered well over 100 babies,
+   including some that looked quite dead on their arrival into this
+   world. The women of the village mostly think she is wonderful. The men
+   regard her with some suspicion but are cautious because it is known
+   that whenever a girl comes to Mammy to get an abortion part of the
+   price is the name of the man responsible. Mammy cant write, but she
+   has a very good memory.
+
+  <p> The local authorities have already outlawed amateur midwifery. If
+   Mammy is caught helping deliver a baby then she can be put in jail.
+   But she doesnt mind over much. She is old, and will doubtless not be
+   long for this world. It is her adopted daughter, Fern, that is the
+   problem. Fern certainly has the talent to be a good midwife. She has
+   assisted at many births. And she has Sight. But she doesnt altogether
+   believe in the Old Ways. Her main interest in the Moon is that
+   President Kennedy said he was going to send men there, not in its
+   magical powers. Ah well, at least she isnt going stupid over
+   mop-topped pop stars and wearing mini skirts like the rest of the
+   village girls.
+          ________________________________________________________
+
+  <p> I stared hard at these words on my notepad and I couldnt see any extra
+   value in them. Any at all. Vertex presentation? We say: head first. I
+   counted the syllables. Thats three times as long to say the same
+   thing. Why had I come to college to learn words that added no more
+   than a lot of extra noise to the sum of my knowledge?
+          ________________________________________________________
+
+  <p> Unfortunately Mammy waits too long. An unfortunate incident in the
+   village leaves her in hospital, an institution dominated by her
+   enemies: doctors and freemasons. It is a prison from which Mammy will
+   not escape. Fern is left to cope on her own. Her only allies are her
+   worldly friend, Judith, the hippies who live on the farm up the road,
+   and a village lad called Arthur whose main interest in Fern appears to
+   be getting her into bed.
+
+  <p> Compared to The Facts of Life, The Limits of Enchantment is a much
+   less edgy book. It is hard to beat the Second World War for dramatic
+   horror. But The Limits of Enchantment is rather more angry. There are
+   times which it descends into situation comedy, which is very British
+   of it, but for much of its length it rails against the injustice
+   imposed on well-meaning, ordinary people by those in authority: the
+   nobility, the medical establishment, social workers, the police and so
+   on. In many ways it is a book that is just as applicable today, except
+   you could use gays instead of independent women and Blacks or Muslims
+   in place of pagans and hippies.
+          ________________________________________________________
+
+ <p>  The hare told me that we had moved into the time of Man and that was
+   not a good thing, even for men and women. It complained bitterly of
+   the leverets killed in the blades of combine harvesters. It asked me
+   if I knew how many combine harvesters there were in the country, and
+   when I shook my head it specified an exact figure. The corn bleeds, it
+   said pointedly, we bleed.
+          ________________________________________________________
+
+  <p> Gollancz clearly think a lot of this book. My review copy has the now
+   famous Isabelle Allende blurb for The Facts of Life on the cover. On
+   the back cover it proudly says, "The Limits of Enchantment will be
+   submitted for the Booker Prize." And you know I think it might get
+   somewhere. To start with Graham Joyce is a wonderful author and this
+   is a very readable and entertaining book. Also it doesnt read like a
+   fantasy. Most of the "magic" that happens can be rationalized if you
+   work hard enough at it and are pig-headed enough to not want any of it
+   to be "true".
+
+ <p>  But it is fantasy nonetheless. Like The Lord of the Rings it is an
+   elegy for a lost time in which life was simpler and closer to nature
+   than it is now. Unlike The Lord of the Rings, Joyce accepts that time
+   moves on, and that magic can be found in other ways and in other
+   places. Fern does not fade and go into the West. She picks herself up,
+   adapts, and gets on with doing what needs to be done. In her own way
+   she will become part of the nascent Feminist movement. And when she is
+   old like Mammy she will doubtless shake her head at Grrl Power and
+   wonder what the youth of today is coming to. But along the way the
+   Moon will have traveled with her, for all that it has been trampled on
+   by male feet. And while much of the Green and Pleasant Land has been
+   overrun by the pressures of over-population, there are still places
+   where the hares box in the dawn light of March. The Goddess is not
+   dead yet, and Graham Joyce is doing his bit to keep Her memory alive.
+
+  <p> The Limits of Enchantment Graham Joyce Gollancz publishers proof
+   For information about buying through Emerald City please click here.
+
+  
+     _________________________________________________________________
+
+ <h>  Music of the Spheres
+
+  <p> So, the Revelation Space series is ended, and Al Reynolds has to come
+   up with a new setting for a story. What, we might well ask, will he
+   do?
+
+  <p> Wendell Floyd is an American in Paris. He is in Paris because he has
+   been told that it is the best place in the world to make it as a jazz
+   musician. Paris does, after all, have that café culture. The French
+   seem to like American jazz musicians. Unfortunately for Floyd, he isnt
+   a very good jazz musician, so he has to have a day job. Which is where
+   the private investigator gig comes in. Only right now Floyd seems to
+   be making more money as a poor jazz musician than as an OK private
+   eye. What he needs is a nice, mysterious murder to solve.
+
+   <p>So, Century Rain is a hard-boiled detective novel.
+
+  <p> Of course, one of the problems with being a private detective in Paris
+   in 1959 is that the authorities are getting a little full of
+   themselves. Adolf Hitler might be languishing in jail after the
+   botched invasion of 1940 and subsequent coup in Germany, but that
+   doesnt mean that Fascism is dead. Indeed, the French seem to be rather
+   taking to the idea. Which makes the position of any independent
+   investigator especially a foreign independent investigator who happens
+   to play decadent Negro music rather precarious.
+
+  <p> Ah, beg pardon, Century Rain is an alternate history.
+
+  <p> Which just leaves us with Verity Auger. She is in Paris too. But shes
+   not playing jazz. Auger is an archaeologist; one of those brave people
+   whose job it is to dig into the ruins of Earth to try to find out what
+   life was like on the planet before the Nanocaust.
+
+  <p> Human society of the 23^rd Century is divided into two main political
+   factions. The Slashers (short, I believe for Slash-Dotters) think that
+   only further accelerated technological progress, particularly in the
+   realm of nanotechnology, can save human civilization. In contrast the
+   Threshers (short for Thresholders) believe that there are limits
+   beyond which technology should not go (and beyond which it has already
+   gone). Auger is a Thresher, which is why she is obsessed with the lost
+   past.
+
+  <p> The Slashers, of course, are merrily exploring space. They have found
+   a network of wormholes left behind by a vanished civilization. At the
+   far end of many of those wormholes they have found what they call
+   Anomalous Large Objects (ALS) solar-sized manufactured hollow spheres.
+   Inside each of those spheres is a planet, and on the inner surface of
+   the spheres a whole fake sky: sun, stars, galaxies, the lot. It is
+   just as if the old mediaeval idea of cosmology was true after all. And
+   on a planet inside one ALS
+
+  <p> Yes, youve got it, Century Rain is a delightful piece of genre
+   blending.
+
+  <p> A few things come to mind about the book. The first is that Reynolds
+   clearly has a deep interest in jazz and that the book will mean more
+   if you know the characters he talks about. The second is that Reynolds
+   also has a keen appreciation of the difficulties of having to hold
+   down a day job that isnt really what you want to do in order to be
+   able to keep a roof over your head while you do the thing that you
+   really love. Heres hoping that Reynolds is having rather more success
+   than poor Floyd.
+
+  <p> Of course with this being Reynolds there is also the physics to bear
+   in mind. I rather like the idea of wormholes being made of
+   "pathological matter" (and I have a sneaking suspicion that is a real
+   physics term). Theres no FTL in the book with wormholes you dont need
+   it. But some of the Slasher ships have something called a Bleed Drive
+   which, if I have understood things aright, bleeds energy out of the
+   zero point field (or maybe from the vast reservoir of vacuum energy,
+   or they may be the same thing) to power the ship. And then there are
+   the spheres. Not the ALS spheres, the little solid ones. I was so
+   pleased with myself when I found that I had figured out what they were
+   for correctly. It is all good stuff.
+
+  <p> In the end, however, a story like this stands and falls on the quality
+   of the plotting. Mysteries and thrillers require things to make sense.
+   And Century Rain had rather too many points at which the authorial
+   hand showed through and could be seen moving the puppets around. Thats
+   sad, because Century Rain is a very entertaining, highly readable
+   book. It might be 500 pages, but I read it very quickly. Unfortunately
+   it was clear that what I was reading was an artifact and not a real
+   story.
+
+   
+
+  <h> Business Unusual
+
+  <p> Imagine for a moment that you have fallen into one of those classic
+   parallel world fantasy scenarios. By some arcane means you are able to
+   travel freely between our world and a parallel version of Earth that
+   is still stuck in the Middle Ages and is full of kings and earls and
+   knights and damsels. What do you do?
+
+  <p> Quite correct, you set up an import/export business. Miraculous items
+   can be brought from our world and sold at a huge profit in theirs.
+   Important goods can be transported via our world in a fraction of the
+   time it takes the medievals to get the job done. And certain sensitive
+   goods that might have difficult being shipped through customs posts in
+   our world can be safely stuck on the back of a mule in the other one.
+   You could clean up.
+
+  <p> All of this assumes, however, that you are not an ordinary fantasy
+   reader, or indeed a fantasy writer. Instead you are Charlie Stross,
+   king of hard-boiled, cutting-edge SF, writing a fantasy novel. You are
+   the sort of person who, given a classic fantasy scenario, wants to do
+   something very weird with it. Hence The Family Trade, in which Strosss
+   heroine, Miriam Beckstein, discovers that she is actually a long-lost
+   countess from a mediaeval society in a parallel world and her folks
+   got rich by running the biggest, most successful drug-smuggling ring
+   in the USA. Oh dear.
+
+   <p>All of this depends on the ability to travel between worlds. Only
+   Miriams family has the DNA that allows them to do it. And that is why
+   the business is a family affair. It also explains why a long-lost pure
+   blood member of the family (hereinafter called The Clan) turning up
+   30+ years after she was presumed dead causes a big stir amongst The
+   Clan. There are shifts in inheritance patterns to be calculated and,
+   this being a mediaeval society, a marriage to be arranged. The Clan
+   might bring a lot of interesting things back from our world, but
+   Womens Lib is one thing they want firmly left where it is. This is not
+   the sort of thing calculated to appeal to an independent-minded
+   investigative journalist from Boston.
+
+  <p> Then again, The Clan do tend to make the Mafia looks like a bunch of
+   kind-hearted amateurs, so our Miriam is not going to have too many
+   choices. "Do as you are told" and "dead" seem to be the limits of her
+   options. Except that some Clan members are not very interested in the
+   former.
+
+  <p> So, what we are left with is the usual, fast-paced, rollicking,
+   intrigue-filled Stross adventure with a plucky heroine, her dumb but
+   SNAGy boyfriend, and more assassins that any girl really needs when
+   she has just become a fantasy princess and needs to look her best at
+   Court. Thank goodness for New York winters and a muff in which one can
+   conceal a pistol. This isnt serious, Dorothy Dunnett style intrigue,
+   it is much more popular thriller level stuff, but my goodness Mr.
+   Stross has had fun here.
+
+  <p> I suspect you will too. But you might want to be warned that Tor have
+   done their by now usual trick of serializing the novel. The Family
+   Trade is merely part I the first 300 pages of what will presumably be
+   a 600-page novel and ending thoroughly in media res. Having spent a
+   long time talking to David Hartwell about this, I understand the
+   commercial reasons for doing it. But please Tor, if you are going to
+   do this, can we have both halves of the book published in the same
+   year so that we can put them back together for awards purposes?
+
+  <p> The Family Trade Charles Stross Tor - hardcover
+   For information about buying through Emerald City please click here.
+
+   
+
+ <h> The Long Game
+
+   <p>Ive said this before and Ill say it again. Probably many times. In the
+   field of science fiction, no one thinks bigger than Robert Reed. There
+   is opera, there is space opera, and there is Reed. Compared to Reed,
+   Wagners Ring looks like a small rubber washer. The paltry concerns of
+   Norse Gods seem quite trivial on a galactic stage.
+          ________________________________________________________
+
+  <p> I was swimming through the Milky Way at one-third the velocity of
+   unencumbered light. My engines were as big as moons, and I was bigger
+   than most of my patrons home worlds: twenty Earth masses, and fifty
+   thousand kilometers in diameter, with a hull whose surface area was
+   nearly eight billion square kilometers.
+          ________________________________________________________
+
+  <p> When last we saw the Great Ship, in Marrow, the great war between the
+   Captains and the Waywards resulted in some unexpected course changes.
+   A near collision with a large black hole has sent the vessel careering
+   off on a trajectory that will eventually take it out of the galaxy.
+   You dont turn something like the Great Ship easily, at least not
+   without the help of a big gravity field, nor when it is desperately in
+   need of major repairs. So for the next few centuries it will have to
+   follow pretty much the course it currently has. The new novel, The
+   Well of Stars, tells that story.
+
+  <p> Up ahead is a great black nebula known as the Inkwell. There are many
+   dangers to the inter-stellar traveler. Black holes and asteroid fields
+   are nasty, but small and easily avoided. Nebulae, on the other hand,
+   might not be very dense, but they are huge. And a collision with even
+   the smallest dust particle wont do you much good at one-third
+   lightspeed. Well, unless your hull happens to be covered in the finest
+   grades of hyperfiber and covered in batteries of lasers. Then again,
+   nebulae contain billions upon billions of dust particles.
+
+  <p> But if collision is not a major consideration for the Great Ship, what
+   about the inhabitants of the Inkwell? Surveys show that there are
+   definite signs of technological activity within that great cloud. Very
+   sophisticated technological activity. And the inhabitants of the solar
+   systems close to the nebula insist that it is inhabited. They are all
+   scared stiff of whatever dwells within the cloud. The Great Ship has
+   no choice but to trespass on the territory of some mighty and as yet
+   unknown alien species. This causes the Master Captain some little
+   concern.
+          ________________________________________________________
+
+  <p> "Were running out of time," she muttered.
+
+ <p>  Eyes focused on the barren alien rock, she reminded everyone, "Weve
+   got less than a hundred years to get ready and we still dont have any
+   clear idea what for"
+          ________________________________________________________
+
+  <p> Less than a hundred years? Oops, better get on with some serious hard
+   work then. Who knows what kind of life might have evolved in the
+   black, starless skies of the Inkwell, and how mad it might be.
+
+  <p> Well, as you might expect, battle ensues. And it is the sort of battle
+   that makes the mere tossing around of black holes that you get in Wil
+   McCarthy novels seem like a childs game of bows and arrows.
+
+  <p> There are many ways in which I could attack Reeds novel. His cast of
+   super-competent and immortal engineers and scientists are quite dull.
+   The plot is, to a large extent, driven by the requirement to top each
+   technological marvel with something even more awesome. Vast energies
+   are expended on destruction; millions of sentient creatures die with
+   barely a sentence to mark their passing.
+
+  <p> Yet the novel is not entirely inhuman. At its core is the question of
+   how small thinking creatures that have evolved sufficiently to give
+   themselves enormous powers and seemingly endless lifetimes cope with
+   the far greater vastness of the universe. In space you can be very,
+   very alone. For all their manifest cleverness, few SF authors manage
+   to convey just how big and awesome the universe really is. Robert Reed
+   does.
+
+  <p> I am reminded of a blog entry I made last week. Astronomers have
+   discovered what they describe as the biggest explosion in the
+   universe. It is driven by a black hole the size of a billion suns, and
+   it has been burning for 100 million years. Robert Reed hasnt done
+   anything quite that big yet. (Well, perhaps he did in Sister Alice I
+   should check.) But I think we will. After all, bigger bangs have
+   happened in the universe.
+          ________________________________________________________
+
+  <p> "I dont know these equations as well as I might. But from what I have
+   heard and what little Ive read they claim that if you are one of the
+   shadows, and if you happen to find where the Creation was halted where
+   the little ball lies and if you can give that stubborn ball a good
+   shove in just the right direction"
+
+  <p> With a toe, he kicked a tiny lump of iron.
+
+  <p> Quietly, almost inaudibly, Locke said, "Boom."
+          ________________________________________________________
+
+ <p>  Ah yes, Mere. The interesting character that Reed introduced in the
+   novelette from Golden Gryphon plays a major part in The Well of Stars.
+   You dont need to have read that story, but it does help. Someone who
+   spent her first few thousand years trapped in an autodoc in a damaged
+   spacecraft, unable to do anything except watch the stars outside her
+   window, is just the sort of character that a Robert Reed novel needs.
+
+  <p> The Well of Stars Robert Reed Orbit mass market paperback
+   For information about buying through Emerald City please click here.
+
+  
+
+  <h> Fantasy Politics
+
+  <p> The tradition of small press companies publishing interesting new
+   novels is continued by Prime with a debut novel from Welsh author,
+   Bryn Llewellyn (whom I have never heard of before Wales isnt that
+   small). The Rat and the Serpent continues the current fad for fantasy
+   novels set in dark and mysterious cities. But on closer examination it
+   has more in common with traditional fantasy than with China Miéville
+   or K.J. Bishop. Allow me to explain.
+
+  <p> The book is set in the city of Mavrosopolis, although it is known by
+   many other names by different strata of society. Our hero, Ugli, is a
+   "Nogoth", a homeless beggar with no civil rights. Although a cripple,
+   he is possessed of considerable self-confidence, the powers of a rat
+   shaman, and the guiding hand of the mysterious sage, Zveratu. Ugli
+   decides that he will attempt to take the test to become a
+   "citidenizen" so that he can have a home and a job. Thus begins his
+   ascent through the social structure of the city, and our discovery of
+   its true nature.
+
+   <p>The best thing about the book is the city itself. I loved the idea of
+   an ancient metropolis, covered in soot, whose rulers employ teams of
+   people to scour it for water, wind and ice so as to prevent any of its
+   structure being eroded. On the other hand, I have to say that words
+   like Mavrosopolis and citidenizen do not exactly trip off the tongue.
+   Unlike the last Prime book I reviewed, Catherynne M. Valentes The
+   Labyrinth, which positively sits up and begs to be read aloud, The Rat
+   and the Serpent skulks in the shadows where it hopes no one will speak
+   it.
+
+  <p> More generally Im not sure that Llewellyn ever got a handle on whether
+   he was writing an allegory or an alternate world fantasy. With a lead
+   character who is a beggar called Ugli the reader automatically expects
+   an allegory. In addition the descriptions of Mavrosopolis are
+   sometimes so cartoon-like in their portrayal of evil that the book
+   feels more like Pilgrims Progress than a fantasy novel. But the book
+   has many of the elements of traditional mythic fantasy, so presumably
+   the world is supposed to be taken seriously.
+
+  <p> It is the mythic fantasy angle that worries me most about the book. As
+   you will have noticed from the plot summary above, the book is a
+   classic "Lost Prince" tale. Ugli is clearly fated to take on the moral
+   failings of Mavrosopolis and win. And so he does, very easily. This is
+   not a book like Perdido Street Station that attempts to teach lessons
+   about real world politics in a fantastical setting. It is more like
+   The Book of the New Sun with most of the convoluted Wolfe puzzles and
+   obfuscations removed and a wizardly guru added to help Severian out of
+   any trouble he might get into on his way to becoming Autarch as the
+   plot requires it.
+
+  <p> That in itself is not necessarily a bad thing. Mythic fantasy has a
+   long and honorable tradition. What worries me about The Rat and the
+   Serpent is that the "wrongness" in the world that Ugli seeks to
+   redress is nothing to do with the divine right of kings, the health of
+   the Land, or any of the usual things that mythic fantasy addresses.
+   Rather Ugli is fighting very real problems such as social injustice
+   and corruption.
+
+   <p>I am reminded of the two different approaches to alchemy during the
+   Renaissance. Some alchemists were happy to see their craft purely as a
+   spiritual journey; with the various chemical transformations they
+   performed being an allegory for the development of the soul. Others
+   genuinely believed that they could turn base metals into gold, and it
+   was those alchemists who ended up getting executed by disappointed
+   kings and emperors.
+
+  <p> Mythic fantasy clearly has a place in literature, and there are things
+   that it does very well. But it would be foolish of us to believe that
+   the rightness of our cause can cure all of the ills of the real world.
+   You wont find China Miéville introducing a Lost Prince who will save
+   New Crobuzon from Evil. Indeed, much of the point of Iron Council was
+   to say that such romanticism is hopelessly naïve. So although
+   Llewellyn has his heart very much in the right place, the message he
+   sends is nothing more than a comforting fantasy. It has no bearing on
+   practical politics.
+
+  <p> Here again I have gone off at one of those tangents where a
+   philosophical aspect of a book has caught my interest. Doubtless this
+   will once again have been hugely annoying to those people who believe
+   that fiction is fiction and not supposed to "mean" anything. But Im
+   rather more concerned about Bryn Llewellyn because The Rat and the
+   Serpent is a better book than I have probably made it sound in this
+   review. It has some interesting ideas, a new take on the cityscape,
+   and some lovely imagery. And any book that causes me to think so much
+   about its intentions has to be worth a read.
+
+  <p> The Rat and the Serpent Bryn Llewellyn Prime - hardcover
+   For information about buying through Emerald City please click here.
+
+   
+
+ <h>  In the Blood
+
+  <p> Sometimes you find genre-bending in the most unexpected places. Stel
+   Pavlou certainly isnt a name I was familiar with as an SF writer, and
+   when Simon & Schuster sent me his new book, Gene, it clearly wasnt
+   packaged as SF. Theres no hint of genre marketing on the cover, and
+   Pavlous previous novel, Decipher, is described as a thriller. There
+   are quotes from reviews in three national newspapers, including the
+   Mail on Sunday, so it cant have any of that awful geek stuff in it,
+   right?
+
+  <p> Well I dont know about Decipher, but Gene, while certainly
+   recognizably a thriller, has SF that Greg Bear might have written, a
+   hefty lump of police procedural, a fair dose of history, and a small
+   but essential hint of fantasy.
+          ________________________________________________________
+
+  <p> "A mans blood is dark and mortal," I pleaded. "Once it meets the
+   earth, what song can it sing back? None. Yet I have sprung back from
+   wormed torment? I should be dead!"
+
+  <p> "Death is a skill you will find elusive." The Oracle washed her hands
+   in the mixing bowl as if to wash her hands of me.
+          ________________________________________________________
+
+  <p> Genetic memory is a dodgy business. Just how much is hard-wired into
+   our genes, and how much more might be? A lion cub learns to hunt by
+   watching its mother, but an antelope knows how to run from the moment
+   of birth? Do baby birds examine their nests to learn how to build one?
+   They never see their parents actually build the thing. So much of what
+   we are, it seems, comes packaged in that double helix at birth. And
+   one piece of encoded information is much like another.
+
+  <p> A woman is born fully equipped with every egg she will ever produce.
+   Men, on the other hand, make new sperm on a regular basis. They do,
+   after all, use them up at a frightening rate. What might they secrete
+   away in those dynamic little packages of life? What part of themselves
+   can they pass on to their sons?
+
+  <p> In ancient Babylon the magus, Athanatos, discovers that a preparation
+   of certain elixirs will cause a boy to remember things that happened
+   to his father. Enough of the elixir, delivered at a young enough age,
+   will cause those memories to flood and suppress the boys own
+   personality. Athanatos has not quite discovered immortality, but he
+   has made substantially more of the traditional male wish of
+   immortality through your sons.
+
+  <p> All goes well with his long, if punctuated, life, until the rise of
+   the Greeks. Athanatos is in Crete, acting as a spy for Trojan raiders.
+   It is the raid by Paris on Sparta that plunges the Eastern
+   Mediterranean into a 10-year war, but it is an ordinary Cretan warrior
+   called Cyclades whom the Greek gods choose to wreak their vengeance on
+   the magus.
+
+  <p> The cover of Gene shows the head of a bull, a typical piece of Minoan
+   iconography. Its horns are twisted in a spiral reminiscent of the
+   helical structure of DNA, and perhaps of two lives intertwined down
+   the millennia. The bull, of course, is also a prime symbol of male
+   power and aggression.
+          ________________________________________________________
+
+  <p> But let us not forget that Gene is first and foremost a thriller.
+   Therefore we cannot start with any of these biological speculations,
+   and certainly not with the machinations of Greek gods. We have to
+   start with guns and car chases. Let us therefore repair to present day
+   New York where NYPD detective James North has been called out to a
+   hostage situation at Metropolitan Museum of Art. Some loony who seems
+   to think he is an ancient Greek warrior has been terrorizing visitors
+   with an old Bronze Age sword, and he seems to be remarkably adept at
+   using it.
+
+  <p> So the first fifty pages are spent in furious action and a chase
+   around New York. The perp gets away, and much of the rest of the book
+   is filled with Detective Norths efforts to track him down. Except that
+   during their struggles the perp manages to inject North with a strange
+   serum that turns out to be full of odd herbs and drugs. And from then
+   on the Detective starts to suffer some very strange nightmares.
+
+  <p> Pavlou carefully cuts the present day action with flashbacks through
+   the centuries, charting the conflict between Athanatos and Cyclades
+   backwards down the centuries. We visit the court of the alchemist
+   emperor Rudolph in Prague, the lush palaces of Byzantium, the decadent
+   court of Nero, and eventually the plains of Ilium themselves. There is
+   much name-dropping of historical characters that might embarrass an
+   experienced SF writer whose audience knows all these things already,
+   but is doubtless fresh and new to thriller readers.
+
+  <p> At the same time Palvou introduces the SF elements of the story. He
+   talks of genetics and retroviruses. He does that classic novice SF
+   author thing of writing a paragraph in which the characters talk about
+   technical stuff and following it with a paragraph explaining what they
+   were talking about. (This is probably essential for thriller readers,
+   and as I recall Michael Crichton does it a lot.) Very quickly it
+   becomes clear that a showdown is in the offing because at long last
+   civilization has progressed to the point whereby Athanatos can both
+   understand how his own elixir works, and discover how Cyclades keeps
+   coming back to haunt him without any medical intervention.
+
+  <p> I worried about the book for a long time, because there was something
+   missing. Hollywood might think you can expunge the supernatural from
+   the Trojan War, but no reputable author would attempt to do so.
+   Thankfully Pavlou got there in the end, and it is this final addition
+   to the mix that makes the ending crackle furiously.
+
+  <p> It took me quite a while to get into this book. There is a lot of
+   stuff there purely for the benefit of the thriller audience and an
+   experienced SF&F reader will find some of it tiresome. But by the end
+   I started to get quite impressed, because I dont think Pavlou was just
+   writing a thriller, he was trying to say something about men.
+
+  <p> Of course you dont expect much in the way of strong women characters
+   in thrillers. But Gene is particularly notable for viewing its women
+   through testosterone-tinted spectacles. Sure they are there, but they
+   are all objects. Women are weak and unreliable, they are devious and
+   treacherous, they cheat on their husbands, they are whores, they are
+   hot, they are desirable, they are irresistible.
+
+  <p> Cyclades himself is a complete shit. He spends ten years at war
+   against Troy to win back his stolen wife, but it is very clear that he
+   would have killed her in an instant had he thought that she had
+   "betrayed" him by "allowing" a Trojan to have sex with her. Thankfully
+   both his wifes ghost and Helen get to whisper in his ear, though that
+   is entirely for our benefit and does him no good at all.
+
+  <p> And let us not forget that the entire book is about the male wish for
+   immortality through siring sons. Women are mere vessels in that
+   process, and Im rather surprised that Pavlou didnt bring cloning into
+   the equation to further emphasize the point. There are elements too
+   that suggest that Cyclades, and maybe Athanatos as well, are deeply
+   disturbed by the idea of androgyny. It is no accident that the goddess
+   who sets Cyclades on his journey is Cybele. Presumably the whole role
+   of women in the process of conception, all that combining of
+   pernicious female DNA with the pure male strand, is deeply repugnant
+   to them.
+
+   <p>Overall, therefore, a very interesting book. A basic SF premise, some
+   well-used fantasy elements, and in addition the way in which Detective
+   North and his colleagues track down their perp is a nice piece of
+   slow, painstaking police procedural. You might not find this book in
+   the SF ghetto at bookstores, but it is worth looking out all the same.
+
+  
+
+  <h> Moving Shadows
+
+  <p> When I started out on Shadowgod, the second volume of Michael Cobleys
+   Shadowkings series, I was expecting more of the bleak and brutal tale
+   that we had in the first volume. It is, after all, only the second
+   volume, and if it were to follow the fantasy trilogy formula closely
+   then book two should end with everything looking completely hopeless
+   and the bad guys about the triumph. I wasnt alone either. Some of
+   Cobleys characters had the same suspicions as to what was about to
+   happen to them.
+          ________________________________________________________
+
+  <p> she and Gilly and Medwin were due to leave by ship for Sejeend and
+   from there overland to Scallow in Dalbar. "An undertaking of some
+   importance" Bardow had called it, which probably meant they would
+   encounter trials of unsurpassing horror and peril.
+          ________________________________________________________
+
+  <p> Keren of course was right. Cobley does seem to save some his most
+   horrible fates for the poor girl. But overall Shadowgod is much
+   lighter in tone than its predecessor and, without giving too much
+   away, it doesnt follow the formula that closely at all.
+
+  <p> That is a good thing. It is always nice to see a writer of epic
+   fantasy trying to do something different. But in other ways Cobley
+   falls foul of some of the classic traps of the sub-genre. The most
+   obvious one is runaway escalation of magic. As soon as you start
+   involving demons and demigods and gods in the plot you very quickly
+   get to the point where your ordinary human characters can have very
+   little influence on the outcome of events. OK, so this is fantasy, so
+   we know that Good is going to triumph in the end. But it is nice to
+   think that the heroes had some active part in this, rather than simply
+   being brave and loyal vessels through which the Good Gods express
+   their powers.
+
+  <p> The other issue that I have with the book is excessive wolf-crying.
+   If, as an author, you bring a major character back from the dead very
+   quickly, then no reader is going to believe you when you kill off
+   other characters. Especially if you bring them back from the dead as
+   well.
+
+   <p>Other elements of the book are a lot more to my taste. Cobleys world
+   is rather more real than those of many fantasy books. There are
+   merchants and farmers and peasants as well as nobility. Some of his
+   characters spend a lot of time worrying about how the royal treasury
+   is going to raise enough money to pay the troops when the country is
+   ravaged by war. And I particularly like the fact that some of the
+   problems his heroes face include greedy merchants trying to make a
+   profit out of the war effort and racist violence between the various
+   elements of the anti-Evil coalition.
+
+  <p> I should also note that Cobley writes just the sort of battle scenes
+   that Peter Jackson would love. Tolkien did his best to make his
+   battles come over as believable medieval warfare. Very little magic
+   was involved. But you could see from the movies that what Jackson
+   wanted to film was a succession of ever more over the top special
+   effects as one great spell topped the next. Cobley has just the stuff
+   for him. There are fortresses that grow themselves out of the ground,
+   magical war machines that can demolish mighty city walls in a single
+   blow, and vast regiments of creatures that can only be rendered with
+   sophisticated CGI. Jackson would love it.
+
+  <p> Im certainly looking forward to reading the final volume in the series
+   because, having seen what Cobley has done in book two, I have no idea
+   what he is going to do next (well, other than bring back a bunch of
+   characters we are supposed to think are dead). But at the same time I
+   am just enough divorced from the book world to compare it two the real
+   one. Cobleys world has humanity uniting to face the menace of an Evil
+   God who wants to destroy the world. In a fantasy novel that can be
+   true. But in Iraq right now we have two groups of humans beating the
+   hell out of each other because fanatics on both sides believe that the
+   other side is working for an Evil God who wants to destroy them.
+   Sometimes I think we are better off without fantasies.
+
+  
+
+  <h> Writers of the Future?
+
+  <p> Anthologies can be very difficult things to review. Take this one for
+   example. Australia has produced a lot of very good SF&F novelists over
+   the past few years. Consequently many people want to follow in their
+   footsteps. They now have their own Clarion workshop. So Maxine
+   McArthur and Donna Maree Hanson of the Canberra Speculative Fiction
+   Group have put together an anthology, Encounters. Im proud to have
+   promoted a lot of good Australian writers in Emerald City, and I guess
+   Im an obvious person to send the book too. Except that it is an
+   anthology.
+
+  <p> What does that mean for me? Well, there are 22 hopeful young writers
+   in Encounters. All of them want to make it big as SF&F writers. How
+   many of those are going to be the next K.J. Bishop? Very probably none
+   of them. How many might be the next Sean McMullen, Sara Douglass or
+   Cecilia Dart Thornton? One or two if they work at it. Those are the
+   hard facts of life in the writing business. Not everyone will make it.
+   It is brutal but it is true.
+
+  <p> So I sit down to read and review this book, or any number like it, and
+   what do I have facing me? That rather depends on how I look at it. If
+   I were to put myself in the place of, say, Jonathan Strahan or David
+   Hartwell trying to pick a "best of the year" anthology then certainly
+   it would be none of them. If I put myself in the place of Ellen Datlow
+   or Gordon van Gelder choosing stories for Sci Fiction or F&SF I might
+   still choose none of them. But I know that Maxine McArthur and Donna
+   Maree Hanson did choose these stories, and they will be the best of
+   what was submitted.
+
+  <p> I think it is easier with novels. There are far more opportunities to
+   find something to praise. Theres plot development, theres world
+   building, there are philosophical issues to be worked through. But
+   short stories either work or they dont. There doesnt seem to be much
+   middle ground, at least as far as I am concerned. And that makes
+   anthologies (and fiction magazines) hard to review. Inevitably there
+   will be a lot of material that I find uninspiring.
+
+  <p> After all that I hope you will have come to the conclusion that anyone
+   whose story in Encounters that I actually liked must be pretty damn
+   good. Well, maybe not in Ted Chaing or Jeffrey Ford territory, but
+   here are a few names to look out for. Lee Battersby is one of the most
+   experienced authors in the anthology and his "Vortle" makes an
+   excellent leadoff story. His aliens are both well drawn and amusing.
+
+  <p> Dirk Flintharts "The Flatmate from Hell" is also amusing and has a
+   serious point to make. Again the characters are good. You could tell
+   from an isolated line if it was the vampire speaking. And I like the
+   fact that his viewpoint character is drawn flawed, feeling herself
+   cast into the Buffy role because her flatmates wont take on evil and
+   then learning a lesson about the true nature of evil. Trent Jamiesons
+   "Dont Got No Wings" is impressive for sustaining the dialect narration
+   throughout. Michael Barry and Cat Sparks also produced stories that
+   got me to take notice. As for the rest, and in addition to Maxine and
+   Donna, I am very sorry; this was just not my sort of book.
+
+  <p> For those of you who do like short fiction, the book isnt available
+   from Amazon, but you can order it from the CSFG web site.
+
+  
+
+  <h> Look Forward in Hope
+
+   <p>Pamela Sargent is one of those writers whom I have heard a lot about,
+   keep meaning to read, and never quite get round to. There are a
+   depressingly large number of people in that category. But thanks to
+   Golden Gryphon, Sargent has been elevated from that position and has
+   instead joined my "must read some of her other books" list. Im sorry
+   if that doesnt sound a great step forward, but hey, there are just so
+   many books.
+
+  <p> The excuse for this change in status is Thumbprints. Sargent has had
+   three other short story collections published. The last one, The
+   Mountain Cage & Other Stories, came out in 2002. There doesnt appear
+   to be any overlap between those two, and the previous collection was
+   published in 1987 so clearly Sargent has a lot of material deemed
+   collectable. Reading Thumbprints confirms the quality of her short
+   fiction.
+
+   <p>What readers may find slightly jarring about Thumbprints is that it
+   contains a range of different types of story. There are two set in
+   ancient Mongolia at the time of Genghis Khan. Two are what Sargent
+   accurately describes in her afterword as "Twilight Zone" style
+   stories. One is a straightforward ghost story used as a vehicle for
+   exploring family relationships. The story "Thumbprints" is a crime
+   story all about the villainous things that literary agents might get
+   up to in order to make money out of authors whose careers are fading.
+   And there are several straight SF stories. To my mind this simply
+   highlights the breadth of Sargents talent, but I can see it would
+   disturb those who prefer to only read certain types of story.
+
+   <p>Then again, maybe it says a lot about me that it is the SF that
+   interested me most. These are, after all, the stories that have most
+   of a point to make. "Originals", for example, is a new take on the
+   idea of a post-scarcity society. Most SF writers tackling this idea
+   (e.g. see Ken MacLeods Newtons Wake) assume that once we have Drexler
+   machines that can make any goods we want then people will naturally
+   seek out that which cannot be duplicated, for which read human
+   creativity. But Sargent agues that this will not automatically be the
+   case. Most people, she argues, will be so overwhelmed, and so spoiled,
+   by living in a world of plenty that they will be too lazy too seek out
+   excellence unless they are actively sold on the idea. It is a rather
+   depressing view, but I suspect that she may be right.
+
+   <p>"Venus Flowers at Night" is essentially a prequel to Sargents Venus of
+   Dreams trilogy, which is about a terraformed Venus and the first two
+   volumes of which pre-date Kim Stanley Robinsons Mars trilogy. I want
+   to read these books. But the story is not about the actual work, it is
+   about the dream. It is set in a world beset by climate disaster in
+   which a much-cowed USA is ruled from afar by a conservative Muslim
+   empire. One of the Muslim lords, however, shares the American
+   propensity to dream big. Sargent, it seems, worries that her country
+   has lost the ability to dream.
+
+   <p>My favorite story from the collection, "Utmost Bones", is also about
+   dreaming. It is set at the far end of human time. A woman whose body
+   is more machine than animal wakes from her latest resurrection to find
+   herself alone in a tent in the wilderness. Slowly she discovers why
+   she died, and what prompted her to wipe her memories before doing so.
+   It is a depressing story, and echoes the themes from "Originals" and
+   "Venus Flowers at Night" that humankind has become too lazy, or
+   perhaps too fond of "safety" to dream about the future. And ultimately
+   that will be the end of us. Sargent, I think, intends this as a
+   much-needed wake-up call. Im with her.
+
+  
+
+  <h> Mouth Parts Watering
+
+  <p> If you are looking for a way to get your book reviewed in Emerald
+   City, here is a cunning plan you might like to try. Tell me that it is
+   about food. The moment I heard about Jason Erik Lundbergs anthology,
+   Scattered, Covered, Smothered, I knew that it was a book I had to
+   read. It is, after all, subtitled "An anthology of food & fiction".
+   And yes, it does contain actual recipes contributed by some of the
+   writers (including Nalo Hopkinson whom I suspect is a very good cook).
+
+  <p> I should start by praising the production of the book. Janet Chuis
+   cover painting of a woman trying to cram a giant green octopus into a
+   casserole dish is a perfect complement to certain parts of the fare on
+   offer. And the book is produced spiral bound so that it can be laid
+   open flat in the kitchen just like a real cookbook. Neat.
+          ________________________________________________________
+
+  <p> Subsequent encounters with other patrons suggest that the combination
+   of ambiance and food in the Café had a profound effect.
+
+  <p> "There shall gelatinous be our fate and the roilsome seas, and we
+   shall take to it blissfully," one individual said.
+          ________________________________________________________
+
+  <p> Of course one of the things about an anthology about food is that it
+   tends to get authors thinking in terms of kitchens, of hearths, and of
+   families. This tends to lead inevitably to character-driven stories
+   about family relationships: often mother-daughter or
+   grandmother-granddaughter. There are stories in the anthology that you
+   wont even recognize as speculative fiction, let alone SF for fantasy.
+   Still, they are perfectly readable, if occasionally lacking in any
+   obvious purpose.
+
+  <p> The other obvious tack for a story about food is to talk about the
+   relationship between recipes and spells, between cooking and alchemy,
+   and in a more modern setting cooking and chemistry. These stories too
+   permeate the book, and are of rather more interest to the SF reader.
+
+   <p>There are also a series of Rhys Hughes poems about curry, which serve
+   to reinforce just how delightfully disturbed Hughes can be. "You are
+   as fickle as a Rogan Josh!" he writes to a sweetheart. Goodness, I
+   hope not. Dump her, Rhys, shes trouble.
+          ________________________________________________________
+
+  <p> Deep Fried Ones For the truly hungry, a stick to the ribs meal of
+   glistening fried meat, fibrous yet gelid, served with old fashioned
+   barbecue sauce or twenty-year-old balsamic vinaigrette. A side of
+   squid larvae is highly recommended as the perfect complement to this
+   dish.
+          ________________________________________________________
+
+  <p> But the star contribution to the anthology, without a shadow of a
+   doubt, is "The Strange Case of the Lovecraft Café" by M.F. Korn, Des
+   Lewis and Jeff Vandermeer. As you may just have guessed, all of the
+   quotations above are taken from that story, and there are lots more
+   where they came from. Pan-Tossed Nemonymi From Yuggoth anyone? Flaming
+   Whole Giant Penguin, delivered fresh from the Mountains of Madness?
+   Darioles of Nethermost Blight in Black Being Sauce? I havent laughed
+   so much in a long time. The book may well be worth the cover price for
+   this story alone.
+          ________________________________________________________
+
+  <p> I must warn you not to peruse the menu items for very long at one
+   sitting. Otherwise you may, as have I, feel the compulsion to create
+   these dishes, and down that path, I fear, lies our complete and utter
+   ruination.
+          ________________________________________________________
+
+   <p>Quite.
+
+  <p> I cant find the book on Amazon. It is available direct from Lundbergs
+   web site, but I hear rumors that the first print run may be sold out.
+
+   
+
+  <h> An Artist at Work
+
+  <p> I dont normally review art books in Emerald City, and with good
+   reason. I got chucked out of art lessons in school as soon as the
+   curriculum regulations permitted my teachers to do so. If anything my
+   drawing is actually worse than my singing, which will give some of you
+   an inkling as to just how bad it is. Then again, there are people out
+   there who think that I have no place reviewing fiction either, and
+   Alan Clark was very encouraging when I expressed doubts about my
+   suitability to comment on his work. He seems very happy for anyone to
+   approach his work, regardless of artistic talent.
+
+  <p> That becomes obvious very quickly from looking at the book. The Paint
+   in My Blood is a retrospective of Clarks work and contains a wealth of
+   images produced by him over the years. But it also contains short
+   written sections by Clark in which he talks about his philosophy of
+   art and explains some of the techniques he uses. He talks openly about
+   the difficulties of working to spec when producing a book cover. And
+   the hardcover edition even includes a CD with short films of Clark at
+   work explaining what he does.
+
+  <p> Being an illustrator of fiction, Clark is acutely aware of the
+   potential for storytelling in art, and some of his opening comments
+   struck an immediate chord with me. In parallel to the old writerly
+   maxim, "show, dont tell", Clark adds a maxim for artists: "suggest,
+   dont define." He adds, "If I provide only three out of five elements
+   of a story, my audience is compelled to fill in the rest. This can
+   make their viewing memorable and personally meaningful as they bring
+   their own emotional experiences to the process."
+
+  <p> This makes a lot of sense to me, and probably explains why I find
+   Constable paintings incredibly dull but have a fascination for
+   Salvador Dalì. It also explains my love of Richard Dadds wonderful
+   "The Fairy Fellers Master Stroke". Im not terribly interested in art
+   that is merely a perfect rendition of what the artist is looking at. I
+   like pictures that tell a story, and that is exactly the sort of
+   picture that Alan Clark likes to paint.
+
+  <p> The passion that Clark has for involving his audience in his artwork
+   is nowhere more starkly demonstrated than in the "Deadwood" series of
+   paintings that is included in The Paint in My Blood. Clark says, "With
+   the Deadwood pieces I want the viewer first to believe he is looking
+   at corpses, then realize these shapes are composed of merely sticks,
+   leaves, rocks, and so forth. Finally after careful study, he may find
+   evidence of a real corpse, but hopefully only after he has reassured
+   himself that there are no actual dead bodies in the piece."
+
+  <p> I should note here that Clarks work is mainly within the horror genre,
+   and while he is clearly very talented I dont think I would sleep well
+   at night if I had too many Alan Clark pictures on my walls. Then
+   again, sometimes he is so good I would buy works anyway if I could
+   afford them. I particularly like his fish (possibly an echo of too
+   much time spent watching Stingray as a kid). The paintings, "City
+   Fishing" and "Between the Devil & the Deep Blue Sea" are particularly
+   wonderful.
+
+  <p> Clark has done SF work, however, and has a much cleaner, brighter
+   style for it. He has this wonderful knack of taking everyday objects
+   with a streamlined appearance and using them as the basis for images
+   of starships. "Fishing Reel Ships" is a favorite of mine.
+
+  <p> Im sure that people with more artistic skill than I possess will get a
+   lot more out of Clarks book that I did. In particular they will have
+   intelligent things to say about Clarks discussions of technique. But I
+   can tell you that The Paint in my Blood is not just a book of
+   beautiful (and often deeply disturbing) pictures. It is a book by
+   someone who very much wants to reach out to his audience, whoever they
+   might be.
+
+  <p> Yet another book that you need to go to the publishers web site to
+   order. Here.
+
+  <p> The Paint in My Blood - Alan Clark IFD Publications large format
+   paperback
+
+  
+
+  <h> Interview: Immanion Press
+
+  <p> One of the most active small press companies in the UK is part owned
+   by a very successful fantasy writer, Storm Constantine. She and her
+   business partner, Gabriel Strange, started Immanion Press (IP) (named
+   after the capital city in Constantines famous Wraeththu books) in
+   2003. The company already has 17 books in print, with a further 20
+   titles planned for this year. I spoke to Constantine and Strange about
+   how all this came about.
+
+  <p> CHERYL: Lets begin by putting something to rest. When people see an
+   author start a publishing company they might be tempted to think,
+   vanity publishing, but Storm is still a very successful writer. The
+   new Wraeththu series is being published in hardback by Tor, who are
+   probably the biggest SF publisher in the world, correct?
+
+  <p> GABRIEL: Technically the company is a partnership, between us both. I
+   would say this discounts it being a vanity press, because we have the
+   two of us and we tend to pull each other in if we go too far. Also, we
+   are concentrating on other authors and bringing new authors into the
+   fold. Anyway I think Storm has more to say on this.
+
+  <p> STORM: The reason Gabriel and I started Immanion Press initially was
+   to republish my out of print back catalogue novels. Unless youre one
+   of the very few big name authors, you cant expect to see your work
+   staying in print for long, which is annoying for both writers and
+   their loyal readers. At the beginning, I think both Gabriel and I just
+   regarded IP as an extension of other services that we offer fans, but
+   then other author friends began to get in touch with us, asking, "will
+   you do my back catalogue too?" and then a few new authors sent us
+   great manuscripts that we couldnt bear not to publish! So we had to
+   think again, and decided to press ahead as a bona fide small
+   publisher.
+
+  <p> STORM: Personally, I dont really care if some people regard me
+   bringing out my own work as vanity publishing. It sells, and my work
+   (and that of other established writers we publish) keeps the company
+   going, allowing "unknowns" to be published. We get so much amazing
+   writing to look at, and sometimes Im astounded that major publishers
+   have turned it down. Were very glad to be able to give these writers a
+   chance. Once theyve had something out through us, it might be easier
+   for them to sell to a major, for more money, next time.
+
+  <p> CHERYL: On the Immanion web site you talk about books "having the
+   shelf life of a magazine" these days. This is something you obviously
+   feel strongly about.
+
+  <p> GABRIEL: Yes we both do. Think what place we would be in now if great
+   authors like Tolkien and Shakespeare had had a shelf life of a month.
+   Personally its not a world I would like to be in. With the rapid
+   recycling of books, classics are not made because they endure the test
+   of time; they are made on the whims of fashion and intensive
+   marketing.
+
+ <p>  GABRIEL: One example of the way the current publishing industry is
+   working is China Miévilles latest book, Iron Council, which was
+   released mid September 2004. It has now been remaindered and sold off
+   by his publisher to discount stores. And its now only January 2005.
+   Thats three months of shelf life for that book before it was pulled
+   out and basically dumped. Other books, and popular ones at that, have
+   a shelf life of one month, before being remaindered or pulped. Im not
+   sure what book turnover in the US is like but in the UK it really does
+   seem that some magazines last longer than a novel now.
+
+  <p> STORM: I agree totally with Gabriel on this one. Sadly, the advent of
+   the personal computer means thousands more people now write novels,
+   because its much less of a chore than it used to be. I wrote my first
+   two novels in longhand and then on a cranky old typewriter, with
+   multiple revisions and drafts. Now, that was work! There are so many
+   more authors nowadays, the market is absolutely flooded, and
+   unfortunately not all of what comes out is that good.
+
+  <p> STORM: It especially galls me that good writers get shunted to the
+   side, because their work is challenging or cross-genre, and typically
+   the lesser talented writer is more vocal, pushy and confident than the
+   highly talented one, who is often loath to blow her own trumpet. (A
+   sad but true fact noted from editing experience with magazines over
+   the last 15 years or so.) Publishers want to publish new writers
+   constantly, flinging wads of them at the wall in the hope that some
+   will stick (i.e. sell). Most of them are one novel wonders, who you
+   never hear of again, because they dont get the long term back up from
+   their publisher that they need.
+
+  <p> STORM: There was one author in particular, a young lad, who got a
+   six-figure advance for a fantasy novel that was hailed as the Next Big
+   Thing. It sank, and he is now forgotten. It would be virtually
+   impossible for him to sell another book, because of his reputation.
+   Its better to start small and grow naturally. Youre more likely to
+   endure. Big publishers dont support that, but small presses like IP
+   do. We look on every book we bring out as special. We want every one
+   of them to sell well. Sometimes, this might take time, but because the
+   books have a longer shelf life we can keep promoting them and their
+   authors, and hope that a following will build up from word of mouth
+   and so on.
+
+  <p> CHERYL: Although you have a US publisher for the books, Immanion is
+   doing the British versions of the new Wraeththu series. Is the UK
+   market harder to crack, less diverse in its tastes, or what?
+
+  <p> GABRIEL: I would say the UK is harder to crack, as the number of shops
+   being controlled by big corporate bosses makes it hard to sell a book
+   which may only sell 1,000 units a year. It seems publishing is about
+   fast turn over and high profits at the moment and with a market like
+   that the larger publishers are looking for some angle to spin a new
+   author from.
+
+  <p> STORM: I couldnt place the new Wraeththu trilogy with a UK publisher,
+   even though Tor in the States had snapped it up within a week of my
+   agent sending it them, so we started doing some of my new novels in
+   the UK too. This is now also the case with Ian Watson and Brian
+   Stableford. Weve purchased both of their new novels here in the UK.
+   Its a sad state of affairs, but more and more established authors in
+   this country, who have big followings, can no longer get published
+   here. But the good side of it is that more independent publishers like
+   us are springing up to fill the gap. I believe David Langford and
+   Christopher Priest have started a company, and I know that friends of
+   Tanith Lee have set up Egerton Press to publish some of her work I
+   hope they bring out some of her back catalogue again too. Tanith has
+   written some classics that should definitely be still available.
+
+  <p> CHERYL: I see you are listing your edition of The Wraiths of Will and
+   Pleasure as a "UK revised edition". Can we assume that is an authors
+   preferred version, and how different is it to the Tor version?
+
+  <p> GABRIEL: This is the main advantage of DIY publishing. Editors might
+   cut content based on the current political climate and social values.
+   However, we believe a book is for life not just for Christmas, so the
+   current world state should not affect what is still classified as an
+   art form. So we add the cut content back in, as well as bonus material
+   for the fans. At the end of the day, if people are prompted to think
+   about what is written in a book all the better. I hate it when a book
+   I read has nothing memorable about it and nothing to think about
+   afterwards. I think Storm can add more specifics about the book
+   itself.
+
+  <p> STORM: There are several reasons why theres an authors preferred
+   version. First, there were little bits I thought about once the
+   manuscript had been delivered to the American publishers, and there
+   were mistakes that needed correcting. One reader spotted that a
+   particular character had the wrong name through an entire scene,
+   (which appeared in the US edition), and I cant tell you how many times
+   Id read it, or editors had read it. There were a few areas I wanted to
+   expand, to fit in with later ideas. As for specific content, which
+   Gabriel mentioned, its more to do with me than any requirements of my
+   publisher in the States. I know things have got a lot more
+   conservative recently, so I trimmed some of the more erotic scenes in
+   the last volume, The Ghosts of Blood and Innocence, for the US
+   edition, which are there in their full glory in the IP edition. I must
+   point out I wasnt asked to do this; it was just what I felt I wanted
+   to do. In the past, Ive been asked to cut scenes simply from a page
+   length point of view, but so far (knocks wood) I havent been overtly
+   censored.
+
+ <p>  STORM: Also, from a marketing point of view, we want to make the UK
+   editions special. We cant compete with a big publisher, but we thought
+   we should produce editions that fans would want to collect, including
+   various appendices, expanded scenes, etc.
+
+  <p> CHERYL: You also list 2003 editions of the original Wraeththu series.
+   Again, are they very different?
+
+  <p> GABRIEL: Yes they have been completely revised and updated to remove
+   any inconsistencies and bring them in line with the new trilogy. They
+   are what we call a collectors edition, which will soon be removed from
+   print and distributed as an omnibus collection without the appendices,
+   and again over to Storm to give more details.
+
+  <p> STORM: The first Wraeththu books are really what set IP off. I had
+   sent the proposal for the new trilogy out to publishers in the States
+   and UK, and had pulled the original books down off my shelves to
+   reacquaint myself with the details of the Wraeththu world. I thought
+   the books should come out again in the UK, since theyd been out of
+   print for a long time. (The US edition is still in print.) The first
+   thing that struck me was how bad the grammar was in book one, and how
+   many plot holes there were or rather the plot was extremely wobbly. I
+   was itching to re-edit the books, using my experience as an editor of
+   other writers work over the past ten years. My editor head just
+   couldnt bear the thought of these books coming out again in such bad
+   shape! Anyway, to cut a long story short, once I realized I wasnt
+   going to get a UK publisher to look at Wraeththu stuff, of any kind,
+   and Gabriel and I had decided to produce the first trilogy again
+   ourselves, I got to work on them. Tor werent interested in the new
+   editions, mainly I think because theyd just reprinted the Omnibus
+   edition they have, and had a lot of them to sell.
+
+  <p> STORM: The books are groomed, but not essentially different in that I
+   took care to preserve the tone and style of the original writing.
+   There is also a lot more background material included to give the plot
+   a backbone. I moved scenes around, and added more to give coherence
+   and depth. For example, the end of book one was originally simply a
+   newspaper report, outlining what had happened to Pellaz and Caeru in
+   Immanion (the city in the books, not our press!). I thought, no, that
+   wont do, and rewrote the lot from Pells perspective. It added a couple
+   more chapters to the end, but I think made the book a lot stronger. I
+   dont know why my original editor let me get away with a throwaway
+   ending like that. I certainly wouldnt allow one of my authors to do
+   it!
+
+  <p> CHERYL: Immanion also publishes books by a range of other authors.
+   Some are newcomers and others are well-respected British authors that
+   have been prematurely discarded by publishers. Ian Watson is an
+   obvious example of the latter. How did you come to have him in your
+   stable?
+
+   <p>GABRIEL: Well we do advertise ourselves wherever we can, and many of
+   these authors have come to us. Recently we have signed up Tom Arden,
+   Brian Stableford and Michael Moorcock (back catalogue work). I think
+   over the next year we will probably get more established authors who
+   want to see their work back in print. Oh, and talking of advertising
+   everywhere we can, the submission guidelines are on our web site and
+   submissions can be sent to editorial@immanionpress.wox.org.
+
+  <p> STORM: I cant really add anything to that. Ian heard about us and
+   contacted us, and we were delighted to take him on. His work is
+   amazing and its ridiculous it hasnt stayed in print.
+
+  <p> CHERYL: Ians Mockymen was one of my top ten SF books of 2003, so Im
+   delighted you are doing a UK edition. What attracted Immanion to the
+   book?
+
+  <p> GABRIEL: Well to be honest, it was available, and when you get offered
+   a recent book which is so highly praised you have to take it. I think
+   this was one of the books we did not have to read to know that we
+   would take it. I know the major publishers turned the book down in the
+   UK. This would mean a great book like this would be sold only on
+   import or through specialist bookstores.
+
+  <p> STORM: This is true. I copy edited Mockymen and really loved it.
+   Again, its ridiculous the majors turned it down.
+
+  <p> CHERYL: I took a look at the submissions area of your web site and I
+   very much like your guidelines as to what you dont want. Is there
+   anything you would like to add to the guidelines on the site?
+
+  <p> GABRIEL: Not that I can think of, Storm might want to.
+
+  <p> STORM: Whenever I get a submission, I see it from both sides: the
+   writer who has probably sweated blood and tears to create their baby
+   and the editor who has to assess it. I hate having to reject work, but
+   I really cant take anything thats derivative or has been done a
+   thousand times before. Also, I like solid, character driven stories,
+   which are credible. I read so many where the characters behave in a
+   totally unbelievable fashion, which jerks me out of the story and then
+   the writer has lost me as a reader. I go for a strong, confident
+   style, in which the author has a definite individual voice that shines
+   out from the first line of the book. Voice, thinking about it, is
+   perhaps the most important thing. You can tell a familiar tale, that
+   many authors have told, but if you do so in your own strong voice, it
+   makes it different to any other.
+
+  <p> STORM: Im also amazed how many writers just sling out novels with
+   virtually no grasp of English language. Sometimes we get a fantastic
+   idea but the execution is tortuous! Occasionally, you see a good
+   writer struggling to get out, and then I or one of our other editors
+   will spend a lot of time coaching them. But unfortunately, we dont
+   have enough spare time to hand hold every one that comes along. If I
+   have one piece of advice, its please brush up your grammar, syntax and
+   punctuation before sending books off to publishers. If its difficult
+   for an editor to read your work, youll have far less chance of placing
+   the book.
+
+  <p> CHERYL: Have you got a lot of writers and artists through Storms
+   existing network of fans, or do people generally come to you cold?
+
+   <p>GABRIEL: Yes we do get quite a few cold submissions, and a lot of fan
+   submissions. We try to pick the best of both, as its amazing the
+   untapped talent you get in many fan communities.
+
+  <p> STORM: We get submissions from all over. From the fan base, weve
+   picked up a few Wraeththu fanfic authors, whose work were publishing
+   as Wraeththu Mythos novels. The first of these was Breeding Discontent
+   by Wendy Darling and Brigitte Parker. (Wendy is also one of our
+   editors, and she edits all my work.) The next one to appear will be
+   Victoria Copuss Terzahs Sons, which we plan to bring out in July.
+   After that, I think it will be Kris Dottos Rosa Mundi I believe shes
+   nearly finished it, although Wendy will be editing that one.
+
+  <p> STORM: I do just want to say a bit about submissions in general
+   though. The worst ones are from people who havent bothered at all to
+   check us out and discover what kind of work we publish. Theyll send us
+   religious tracts or cheesy soft porn. Its kind of insulting when
+   someone does that. We also get manuscripts from people that are really
+   dire and when we let them down gently, they write back to us
+   furiously, telling us that we must be mad to reject them and that if
+   we have any sense at all, and are not complete charlatans, well
+   reconsider. Well quite. (In the bin with it!) The best writers are
+   always, ironically, the most humble ones, who are full of doubts; the
+   worst are just full of themselves!
+
+  <p> CHERYL: It is hard to believe that Michael Moorcock has back catalogue
+   works that are out of print, but I guess he has been very productive.
+   I know that Savoy have some of his very early work. What do you have?
+
+   <p>GABRIEL: For now I can say we are doing a combined volume of the two
+   Jerry Cornell books; these were The Chinese Agent and The Russian
+   Intelligence. They are combined into one book now called Jerry
+   Cornells Comic Capers, due out later this year. We cannot say if well
+   have access to other books of his yet.
+
+  <p> STORM: To be fair, I think its the more obscure and stand-alone novels
+   that Mike doesnt have in print at the moment. I do hope hell let us do
+   more, but as most of them are tenuously connected with his Multiverse,
+   and there will soon be an Elric movie, I wouldnt be surprised if a
+   major publisher wants to republish some of his back catalogue in the
+   near future. Well, if they have any sense they will do, anyway!
+
+  <p> CHERYL: Tom Arden is another favorite author of mine. Looking at the
+   cover, I would guess that The Translation of Bastian Test is set in
+   Victorian times. Is it some sort of H.G. Wells style adventure?
+
+  <p> GABRIEL: Yep Bastian Test is just that. I cannot say much about the
+   plot without giving it away. Storm will probably tell you more as she
+   edited the book.
+
+  <p> STORM: I edited Bastian and thoroughly enjoyed doing so. It has a
+   style and flavor all of its own and the characters are great. It might
+   have a slight dusting of Wells (in its central idea), but is
+   essentially Toms own creation and somewhat cross-genre. Its a
+   scientific romance/fantasy/slipstream novel. Difficult to categorize.
+
+  <p> STORM: Bastian is the son of a famous and eccentric artist who dies in
+   a mysterious fire. Left alone in the world, he discovers he has a
+   bizarre heritage and a new guardian who lives in a crumbling old
+   castle in Scotland. His guardian is something of a mad scientist,
+   engaged in arcane experiments. He lives with what can only be
+   described as a menagerie of unusual people. Bastian finds himself in
+   the middle of a sinister plot, and is also bewitched by a pair of
+   seductive twins, who are staying nearby. Its a testament to Toms skill
+   as a writer that he can create a character as attractive as the twin,
+   Fleance, even though he goes into somewhat grim detail about the boys
+   acne! By the time this interview appears, the book should have been
+   released.
+
+  <p> CHERYL: Brian Stableford is another wonderful British author who is
+   being sadly neglected by the big publishers at the moment. You
+   mentioned that you will be publishing some of his work.
+
+  <p> GABRIEL: Yes, Curse of the Coral Bride and Sheena and other Gothic
+   Tales. Both of these books were either turned down or could not be
+   published by other small presses. Both are excellent books and have
+   never been published before, so I hope his fans are eager to get their
+   hands on them. However, on a side note, we have experienced some
+   technical difficulties with the first books cover but we are back on
+   track now.
+
+  <p> STORM: Yeah, Curse of the Coral Bride had to be delayed, due to
+   problems the cover artist had. Hes Ade Daniel, who did the cover for
+   Ians Whores of Babylon. Hes a wonderful artist, so we know itll be
+   worth the wait.
+
+  <p> CHERYL: There are also many names on your author list that I am not
+   familiar with. Are there any new writers you have signed up that you
+   particularly want to highlight?
+
+  <p> GABRIEL: I will pick one and Ill let Storm pick one. I would say
+   Digging up Donald by Steven Pirie is one of my favorites. I think my
+   words to Storm after reading the first line were "We have to take this
+   book." Its basically a dark British comedy, which blends the humor of
+   League of Gentlemen with the brain of Victoria Wood; to be honest, my
+   words cannot do this book justice. So go out and buy it, you will
+   laugh, cry and maybe even have a life changing experience
+
+  <p> STORM: Donald is one my favorites too. Its so well written. Another
+   marvelous novel is Oliphan Oracus by Neil Robinson. It too has a wry
+   humorous style, but as Donald does it tweaks every emotion. Very
+   powerful writing. It deserves to win an award, I think. Oliphan is
+   more SF than horror, and is set in a future world. Of those Ive edited
+   recently, but are not yet in print, I loved Necromantra by Philip
+   Emery, which is a dark Gothic tale set in an alternative world, a sort
+   of 1930s Potteries. The Potteries is an industrial area in England
+   where well pottery is made. Necromantra is delightfully atmospheric,
+   heaving with smog and phantoms and arcane terms for machinery and
+   mining and a host of debilitating conditions and diseases! You really
+   feel like youre there when youre reading it; perfect virtual reality.
+   I absolutely love it.
+
+  <p> CHERYL: There are two questions I ask every small press I interview.
+   The first is about Print on Demand: are you for, against, or agnostic?
+
+  <p> GABRIEL: Well, Print on Demand is the revolution of the future. We
+   would be lost without it, as it offers us convenience and quality
+   control in one package. We dont have to worry about warehousing or
+   storage and a book will never go out of print.
+
+  <p> STORM: POD has had a lot of bad press, which the most reputable
+   companies are striving hard to overcome. Its regarded by some as
+   vanity publishing again, but the company we work with will only take
+   accounts from genuine publishers, not from wannabe writers who have no
+   editor and so on. Although the unit costs are higher than with
+   traditional publishing, there are the benefits that Gabriel described,
+   where you have minimal overheads. As well as the storage aspect, you
+   dont have to shell out for a huge initial print run (which can cost at
+   least £10,000) since the books are printed literally as theyre
+   demanded, i.e. ordered. It has certainly put publishing within the
+   reach of many more small presses. Weve been really pleased with the
+   quality of the books weve had printed.
+
+  <p> CHERYL: The other standard question is about distribution. A lot of
+   American small presses seem to manage to get their books into
+   bookstores. I get the impression that it is much more difficult in the
+   UK. Is that correct?
+
+   <p>GABRIEL: Yes, the major UK stores are controlled from the head office;
+   the stores themselves have little or no autonomy. This makes it hard
+   to sell a local author, as that author will get good sales in their
+   hometown but in the bigger picture they wont hold up. It also means a
+   book has to sell X number of units to be viable for the big stores to
+   take it.
+
+  <p>STORM: This is definitely the case. Some chains, such as Ottakars,
+   support small presses, but on the whole bookstores demand such huge
+   discounts that it makes it unviable for us to sell to them.
+
+   <p>CHERYL: Back with the product line, I see you are publishing a
+   Wraeththu role-playing game. It is ages since I played one, but I
+   guess there must still be a demand for such things.
+
+  <p> GABRIEL: Yes there is a demand for role-playing. However, the sales
+   base has not significantly increased over the past 5 years. Also, in
+   my honest opinion, there has been nothing new in the industry for the
+   past 10 years. I have role-played for over 20 years now and in my
+   maturity as a role-player I want more than a sword wielding fighter or
+   a gun-toting nut. This made me wonder how many other people out there
+   are like me. Wraeththu offers a setting which is truly unique and
+   styles around a more mature level of role-playing. At the end of the
+   day, role-playing is a great pastime for people of any age. Some
+   people find escapism in soap operas, but there is a bigger world out
+   there and the infinite worlds of the mind, all of which can be
+   explored through role-playing. Not to mention that role-playing in
+   general can be used as a fun educational tool; this is ignored by many
+   people. There is more information about the Wraeththu RPG on our web
+   site.
+
+  <p> STORM: This is Gabriels area. I know nothing about role-playing but
+   had immense fun working on the game book, thinking up lots of fine
+   detail for the world of Wraeththu.
+
+   <p>CHERYL: I confess to being a role-playing rules geek. Is there
+   anything new and innovative in your game system that you are
+   particularly proud of?
+
+   <p>GABRIEL: Yes, the fact that we have not tried to come up with the next
+   big rule or dice mechanic. Out of the thousands of rules systems on
+   the planet, everything has been done, and the best mechanics have
+   stood the test of time. So we adopt and adapt the best ideas and add a
+   few of our own. The biggest differences to mainstream rules systems
+   are the combat and magic. The combat is deadly, and based around the
+   characters physical abilities, skill and type of weapon, as the
+   concept of you hit, I hit is a bit annoying. So in combat the
+   characters that do best are the ones who think and use their abilities
+   to their best advantage. For magic, I took a different approach. I did
+   not want to have hundreds of spells; I wanted to have a system where
+   you can do anything, providing you can describe how it works. We have
+   explained in the book how magic functions in the world and what the
+   characters cannot do. To that we have added a set of building blocks
+   and the rest is down to how you play it.
+
+  <p> CHERYL: Hmm, that sounds just like my sort of game. I tried for ages
+   to come up with that sort of magic system but could never manage it.
+   But then I dont have Storms in-depth knowledge of magic.
+
+  <p> CHERYL: Talking of which, another non-fiction line that you have is
+   books about magic. Serious theoretical books. It is clear to me from
+   reading your novels, Storm, that this is something you know a lot
+   about. But I guess other people may find it a strange thing for a
+   fantasy writer to do: a bit like an SF writer talking about UFOs.
+
+  <p> STORM: To me, my magic and my writing have always gone hand in hand,
+   throughout my life. I teach witchcraft, Egyptian magic and Reiki to
+   augment my writing career. It amuses me really when I read stuff in
+   some fantasy novels that is supposed to be magic. To me, its like
+   someone who has never worked on an oilrig trying to describe the
+   minutiae of day-to-day events in such an environment. I can see the
+   gaps and the holes and the misunderstandings. Real magic is not about
+   special effects, or wizards zapping each other with spells. Its a meld
+   of quantum mechanics, probability theory and psychology with the odd X
+   factor thrown in that you really cant explain.
+
+  <p> STORM: One thing that both Gabriel and I felt that we wanted to do
+   when we started IP was to eventually have a separate esoteric
+   non-fiction list. Weve only got a few titles so far, so it doesnt
+   warrant a separate imprint, but hopefully that will come in the
+   future. As with the fiction, were looking for different, cutting-edge
+   and challenging works. So no fluffy, watered down paganism or anything
+   to do with teen witches. Im not against teenagers being into magic,
+   but I hate that whole cozy, hip teen witch thing, as if its an
+   accessory for Barbie or something! I.E. "how cool are your spells?"
+   and "make sure you wear the right make up for ritual". Oh, please!
+   (Sorry, a rant was brewing.)
+
+  <p> CHERYL: Can you tell me a bit about the Grimoire Dehara: Kaimana that
+   you have on your forthcoming books list?
+
+  <p> STORM: One thing that was missing from the original Wraeththu books
+   was a fully worked out system of magic. This was more to do with the
+   fact that I was still a novice myself at the time, working with
+   various teachers to learn more. I wasnt equipped then to create the
+   system. However, nearly 20 years on, I am, so I spent a lot of time
+   working everything out. It occurred to me that, from a Chaos Magic
+   perspective, Id created a system that was viable, and as workable as
+   any other model. At one time, every magical system on Earth was new,
+   and just because something is new doesnt mean it isnt valid. Wicca is
+   a prime example of that. From the evidence Ive read, Im convinced
+   Gerald Gardner made it all up in the 1950s, with help from others,
+   cobbling together bits and pieces from other systems to create his
+   own. This is not a criticism; the system was elegant and it worked. It
+   still does. Also, even though H P Lovecraft was not into magic
+   himself, several different systems have evolved based entirely on his
+   fictional mythos and they work too. With these inspirations in mind, I
+   set to work.
+
+  <p> STORM: For Dehara, I got together a group of people, mainly those into
+   magic from the fandom, and created an online group to work on the
+   rituals, experiment, and see what came out. Grimoire Dehara: Kaimana
+   is the result of that work. Some people had more input than others,
+   and they get full credit for what they did. Were still working on it.
+   The Wraeththu system consists of three tiers of three levels each, and
+   the first book represents the first three tiers Kaimana. As Gardner
+   did, weve called upon systems and practices that we already know and
+   have adapted and added to them to create something different. So, to
+   anyone who reads it, I hope it will be both familiar and fresh at the
+   same time.
+
+  <p> CHERYL: Some of the small presses I have talked to attend a lot of
+   conventions, but you guys actually run a convention: Grissecon. I
+   guess this is a result of starting with an established fan base for
+   Storms work.
+
+  <p> GABRIEL: Yep, Grissecon actually started before Immanion Press. Storm
+   is best telling you the history. However, currently we have a track at
+   Lunacon in NYC next March. Then in July weve got a track at Feencon in
+   Bonn, in Germany. The concept of Grissecon is to offer the
+   unconventional at a convention. We try to come up with panel ideas
+   which blend topics and concepts and offer different points of view.
+   Also, we dont stick to a rigid set of guidelines for the questions. We
+   tend to throw things open to the audience so they can put people on
+   the spot. This offers a much more organic and exciting panel.
+
+  <p> STORM: Grissecon began life in the Stone Inn chat room, which is an
+   online meeting place for people into Wraeththu. I drop in there
+   occasionally, and one night was talking to a few women and we thought
+   it might be a nice idea to have a social weekend some time, when we
+   could perhaps meet up in a hotel and talk about our interests. Some of
+   them had known each other for years, but had never met in the flesh,
+   as it were. As England was pretty central to where everyone lived, I
+   said Id try and find a venue. Then more people got to hear about it
+   and eventually I realized Id have to organize a proper event. It all
+   went very well, considering our inexperience as con-runners, but we
+   learned a lot very quickly. We had to!
+
+  <p> STORM: On the strength of the first Grissecon, we were asked to run a
+   track at the massive Dragon*Con in Atlanta last September. It was
+   called Gothic Journeys, and included events associated solely with my
+   work as well as more general Gothicly inclined subjects. It was a
+   fabulous success, but it costs too much to get us all over there, and
+   it doesnt look like the committee wants to pay for my team to go out
+   there again. Theyre still running the Gothic Journeys track, I hear,
+   but I dont know who theyll get to be in charge of it. I cant help
+   thinking, smugly, that it wont be as good as when we did it!
+
+   <p>STORM: Well carry on moving Grissecon around, as the fans are spread
+   out all over the place. As Gabriel said, this year well have tracks at
+   Lunacon and Feencon. Possibly, in 2006, well do another independent
+   Grissecon thats not part of another convention. The main problem with
+   that is having the time to organize it. Hitching a lift on someone
+   elses con saves a lot of time and worry.
+
+   <p>CHERYL: How did the relationship with Lunacon come about?
+
+  <p> GABRIEL: Well its a bit of a tale Well not quite. In 2004 Storm was
+   invited as GoH at Lunacon. She asked if two of her staff could come,
+   who were Lydia and I. I think it was a combination of our open and
+   friendly attitude to people and that we would help out where we could,
+   and that we connected with the staff of Lunacon straight away. Anyway,
+   at the end we all said we wished there was a way we could come back
+   next year. So one of the Lunacon staff talked with the 2005 chairman
+   and got us some funding and a room allocated, so we could do our track
+   with them. As far as Im aware we are the first track to be accepted at
+   Lunacon and we will be back again in 2006. We hope to bring a new
+   younger audience to the convention and get a whole new generation of
+   convention goers. For more information on Grissecon and where we will
+   be next visit see here.
+
+   <p>STORM: Cant add to that really!
+
+  <p> CHERYL: Will your fans be able to see you at the Worldcon in Glasgow
+   this year?
+
+  <p> GABRIEL: Due to the cost of getting there, having a stall, and paying
+   for accommodation, we have had to neglect Glasgow. I think its a
+   matter of timing and financial viability. At the end of the day, we
+   cannot go to a convention and make a loss. Its a case of taking a risk
+   on a convention where we have no track record versus a convention
+   where we know we can cover our costs. We would love to go, but we do
+   need to survive.
+
+  <p> STORM: This is true, unfortunately. Were hoping to go to Novacon in
+   England next year, which we know will be a good event, and there is a
+   limit to how many conventions we can attend.
+
+ 
+
+  <h> Fantasy Masterwork
+
+  <p> Whatever else we might hope for out of the publishing industry, there
+   seems little doubt that literary criticism is not going to sell in
+   huge quantities. Occasionally there is a potential best seller, and
+   when Michael Moorcock decided to write a book about epic fantasy back
+   in the 1980s his name was big enough for Gollancz to pick up the
+   title. Yet even that book, Wizardry & Wild Romance, has been out of
+   print for years. Which, as China Miéville says in his introduction to
+   the new MonkeyBrain Books edition, is scandalous.
+
+  <p> MonkeyBrain have done three very good things with their edition. Most
+   importantly they have rescued a very good book from obscurity.
+   Secondly they have given it an absolutely stunning John Picacio cover.
+   And finally they have persuaded Moorcock to update the contents. Not
+   that his conclusions needed any significant modification, but it has
+   allowed him to include the younger generation of fantasy writers
+   (Bishop, Ford, Miéville, Vandermeer, etc.) in his considerations. Also
+   the book now includes a number of additional reviews and essays by
+   Moorcock that he has produced since the original publication. And
+   there is an introduction by China Miéville and an afterword by Jeff
+   Vandermeer. All in all there is about 25-30% new material.
+
+  <p> However, as I said, Moorcocks views have not needed much updating. The
+   scourges of formula fantasy and comfort reading that he railed against
+   back in the 80s have, if anything, got worse since that time. There
+   must be an audience for this stuff, but that audience (and the writers
+   that serve them) are not exactly well thought of by Moorcock.
+          ________________________________________________________
+
+   <p>It is probably no coincidence that the majority of writers best known
+   as fantasists, at least until the present couple of generations, were
+   introverted, reclusive, misanthropic, or that a strong vein of
+   misogynism built itself into the conventions of the genre over the
+   years, so that women were unbelievably beautiful goddesses,
+   treacherous jades, or silly slave girls. Much fantasy was
+   characteristically bachelor-fiction written and read by that section
+   of the community.
+          ________________________________________________________
+
+   <p>And if you think that is rude, you should see what he has to say about
+   John Norman. (Although actually the short section out of a Gor book
+   that he quotes condemns Norman far more effectively that anything any
+   critic might say.)
+
+   <p>Although he is famous for writing sword & sorcery novels, Moorcock has
+   always tried to undermine the genre, and has little time for those who
+   glory in its violence.
+          ________________________________________________________
+
+  <p> Some years ago, as a guest of a fantasy convention, I appeared on a
+   panel with a group of sword-and-sorcery writers who told the audience
+   that the reason they wrote such fantasy was because they (and, they
+   implied, the audience) felt inadequate to cope with the complexities
+   of modern life. "Where today?" asked one, "can you put an arm hold
+   around a mans throat and slip a knife into him between the third and
+   fourth ribs and get away with it?" The answer was, of course, that the
+   Marines were still looking for recruits. Bu maybe he meant, "Where can
+   you do that and not have someone retaliate?" If thats the main appeal
+   of such stories it probably explains why most people over the age of
+   eighteen stop reading them.
+          ________________________________________________________
+
+  <p> Yet while he might come down heavily on the misogyny and violence of
+   the sword and sorcery end of the genre, Moorcock is equally
+   contemptuous of works that seek to provide comfort and cuteness. Be ye
+   seated, good people, and listen awhile, while ye good sage Michael
+   doth make merry with ye olde fashion for High Fantasy.
+          ________________________________________________________
+
+  <p> Most of the current attempts at this sort of "high" English are pretty
+   pathetic, reminiscent of children trying to write historical stories
+   by peppering the text with phrases like "shiver me timbers." They
+   borrow largely from Tolkien as usual and produce from his original
+   porridge a gruel increasingly thin and lumpy. [] They are moulded from
+   the basest of metals. They are like mass-produced ikons. They are the
+   literary equivalents of the painted plaster saints and statuettes of
+   Christ found in any Lourdes supermarket, or like those toys produced
+   in their thousands in China and Russia. They are actually made by
+   individuals, but there is virtually no evidence for this.
+          ________________________________________________________
+
+  <p> As for Tolkien himself, I think that Moorcock is being a little unfair
+   when he says that The Lord of the Rings is entirely without humor.
+   (Either that or Peter Jackson & Co did a much better job with the text
+   than I had thought.) But there is no doubt that Moorcock has some
+   cogent criticisms of Tolkiens work.
+          ________________________________________________________
+
+  <p> It is moderation which ruins Tolkiens fantasy and causes it to fail as
+   a genuine romance. The little hills and woods of that Surrey of the
+   mind, the Shire, are "safe", but the wild landscapes everywhere beyond
+   the Shire are "dangerous." Experience of life itself is dangerous. The
+   Lord of the Rings is a pernicious confirmation of the values of a
+   morally bankrupt middle class. The Lord of the Rings is much more
+   deeply rooted in its infantilism than a good many of the more
+   obviously juvenile books it influenced. It is Winnie-the-Pooh posing
+   as an epic.
+          ________________________________________________________
+
+  <p> Ouch! I know what he means, but I can just see people sharpening their
+   word processors already. Being rude about Tolkien is not exactly a
+   safe practice these days. But if there is anyone with the authority to
+   do it and get away with it then it is Moorcock. And to a large extent
+   he is right. LotR is very much a product of the English middle classes
+   as they existed 100 years or so ago. This comment, I think, makes the
+   point rather better.
+          ________________________________________________________
+
+  <p> If the bulk of American sf could be said to be written by robots,
+   about robots, for robots, then the bulk of English fantasy seems to be
+   written by rabbits, about rabbits, for rabbits.
+          ________________________________________________________
+
+  <p> I wish I had written that. Then again, I wish I had written a lot of
+   what Moorcock writes in Wizardry & Wild Romance. I also wish I had
+   read even half as much as Moorcock has read of the genre, and knew
+   half as much as he knows. (Although someone really should have told
+   him that Magic: The Gathering is not, by any stretch of the
+   imagination, a role-playing game.)
+
+  <p> Here I have concentrated on the parts of the book in which Moorcock
+   takes entertaining digs at parts of the genre he doesnt like. But
+   there are huge swathes of the book that are simply a fascinating tour
+   through the history of epic fantasy that will leave you wanting to go
+   out and buy the books he talks about.
+
+  <p> So, three cheers once again for MonkeyBrain for giving this book a new
+   lease of life. Anyone who wants to write cogently about fantasy, or
+   even just read it intelligently, should have a copy of Wizardry & Wild
+   Romance.
+
+ 
+
+ <h>  Short Stuff
+   
+  <h> Faerie Magic
+
+  <p> From my point of view, one of the best things about running the Hugo
+   Recommendation List is that I get to find out which short stories are
+   likely to get nominated without having to wade through the vast
+   quantity of short fiction out there. A story that has been getting a
+   lot of attention is Jeffrey Fords "The Annals of Eelin-Ok", from a YA
+   collection called The Faery Reel. Ellen Datlow and Terri Windling are
+   the editors, Sharyn November is the editor at Viking responsible for
+   the book, and Charles Vess did the cover. There are stories by,
+   amongst others, Kelly Link, Patricia McKillip, Greg Frost, Gregory
+   Maguire, Delia Sherman, Charles De Lint, Emma Bull need I go on?
+
+  <p> Utterly shamelessly, I emailed Jeff, and he sent me a copy of the
+   story. "The Annals of Eelin-Ok" is a beautiful novelette about the
+   Twilmish, a species of Faery that lives and dies solely for the
+   purpose of inhabiting sandcastles. OK, so it is very soppy. But it is
+   also very wonderful. If enough people get to read it Im sure this one
+   will be on the final ballot.
+
+  <p> Sharyn is kindly sending me a copy of the book. Expect a review of the
+   whole thing next issue.
+          ________________________________________________________
+
+  <h> Rum in Ruritania
+
+  <p> Kim Newman has a Sherlock Holmes story on the BBC Cult web site. Well
+   actually it is a Moriarty story. Holmes doesnt feature. Various
+   persons from Ruritania do. And one from New Jersey. Very funny.
+
+   <p>The web site has several other Holmes stories by different writers.
+   One is by Jon Courtenay Grimwood and is perhaps is little
+   controversial.
+
+  
+
+  <h> Out of Synch
+
+  <p> Somewhat to my surprise, Del Rey has picked up The Meq by Steve Cash
+   (Emcit #93), originally a Pan Macmillan book. Good luck to you, Mr.
+   Cash.
+
+  <p> Tor is releasing the second of Steven Eriksons Malazan Empire books,
+   Deadhouse Gates, on the unsuspecting American public. Still, hopefully
+   lots of them will have read Gardens of the Moon by now and will have
+   some idea what to expect. Hopefully Ill get a copy of Deadhouse Gates
+   in time for the next issue.
+
+  <p> But the star event of February in the US has to be the release of
+   Steph Swainstons The Year of Our War (Emcit #103). Congratulations to
+   HarperCollins for having the sense to snap it up for the US market. As
+   you may have noticed, it is one of my top ten fantasy books of 2004.
+   Go buy.
+
+ 
+
+
+ <h>  Miscellany
+
+ <h>  SFWA Preliminary Ballot
+
+  <p> Best Novel: Paladin of Souls, Lois McMaster Bujold (Eos); Down and Out
+   in the Magic Kingdom, Cory Doctorow (Tor); Omega, Jack McDevitt (Ace);
+   Perfect Circle, Sean Stewart (Small Beer Press); Conquistador, S.M.
+   Stirling (Roc); The Knight, Gene Wolfe (Tor).
+
+  <p> Best Novella: "Walk in Silence", Catherine Asaro (Analog, Apr 2003);
+   "Off on a Starship", William Barton (Asimovs, Sep 2003); "Time
+   Ablaze", Michael A. Burstein (Analog, Jun 2004); "The Tangled Strings
+   of the Marionettes", Adam-Troy Castro (F&SF, Jul 2003); "Sergeant
+   Chip", Bradley Denton (F&SF, Sep 2004); "Arabian Wine", Gregory Feeley
+   (Asimovs, Apr/May 2004); "The Cookie Monster", Vernor Vinge (Analog,
+   Oct 2003); "The Green Leopard Plague" Walter Jon Williams (Asimovs,
+   Oct/Nov 2003); "Just Like the Ones We Used to Know", Connie Willis
+   (Asimovs, Dec 2003).
+
+  <p> Best Novelette: "Zora and the Zombie", Andy Duncan (Sci Fiction,
+   February 4, 2004); "Paying It Forward", Michael A. Burstein (Analog,
+   Sep 2003); "Basement Magic", Ellen Klages (F&SF, May 2003); "The
+   Voluntary State", Christopher Rowe (Sci Fiction, May 2004); "Dry
+   Bones", William Sanders (Asimovs, May 2003); "The Gladiator's War, A
+   Dialogue", Lois Tilton (Asimovs, Jun 2004).
+
+  <p> Best Short Story: "The Strange Redemption of Sister Mary Anne", Mike
+   Moscoe (Analog, Nov 2004); "Travels With my Cats", Mike Resnick
+   (Asimovs, Feb 2004); "Embracing-The-New", Benjamin Rosenbaum (Asimovs,
+   Jan 2004); "Shed Skin", Robert J. Sawyer (Analog, Jan/Feb 2004); "In
+   the Late December", Greg van Eekhout (Strange Horizons, Dec. 22,
+   2003); "Aloha", Ken Wharton (Analog, Jun 2003).
+
+ <p>  Best Script: The Incredibles, Brad Bird (Pixar); Eternal Sunshine of
+   the Spotless Mind, Charlie Kaufman & Michel Gondry (Anonymus
+   Content/Focus Features); The Lord of the Rings: The Return of the
+   King, Fran Walsh & Philippa Boyens & Peter Jackson, based on the novel
+   by J.R.R. Tolkien (New Line Cinema, Dec 2003).
+
+  <p> Note that this is the preliminary ballot. SFWA members will vote to
+   whittle down the categories to no more than five nominees before the
+   final ballot. (Best Script, having only three nominees, will go
+   forward as stands).
+          ________________________________________________________
+
+  <h> Indian SF Conference
+
+  <p> The 2004 conference of the Indian Association for Science Fiction
+   Studies took place in Pondicherry University on the 18^th and 19^th of
+   December. Dr Srinarahari, the General Secretary, has sent me a report
+   of proceedings, which Ill summarize here.
+
+  <p> Firstly I am pleased to note that several other Western magazines and
+   organizations have taken an interest in Indian SF besides Locus and
+   Emerald City. A pat on the back is due to Jonathan Cowie at
+   Concatenation, to Infinite Matrix, and to Andy Sawyer at Liverpool
+   University.
+
+  <p> In recognition of our interest, the folks in India are making an
+   effort to make their work available to us. One of the announcements at
+   the conference was of a 500-rupee prize for the best English
+   translation of a Tamil language novel, Alexandarum Oru Koppai
+   Theenirum (Alexander over a cup of tea) by M.G. Suresh. The idea was
+   so warmly received that contributions from delegates raised the prize
+   to 2,500 rupees.
+
+  <p> The academic sessions at the conference covered a wide range of
+   topics, including AI and Robotics, the relationship of SF to
+   mainstream fiction, Magic Realism, and nanotechnology. This was also
+   the first year in which there was sufficient interest for the
+   conference to cover fantasy as well as SF.
+
+  <p> Some kind person encouraged delegates to attend Interaction. I dont
+   know who it was, but we are very grateful. We would love to see more
+   Indian visitors to Worldcon.
+
+  <p> But we also have to come down to Earth occasionally. I dont know how
+   many of you know where in India Pondicherry is located, but the
+   mention of stories in Tamil might have given you a clue that it is
+   somewhere in the state of Tamilnadu and therefore close to another
+   famous home of Tamil people, Sri Lanka.
+
+  <p> Exactly a week after the conference took place, the guesthouse where
+   the delegates stayed was flatted by a certain tsunami. Thankfully all
+   of the attendees were home safe by that time. The world SF community
+   has been very lucky.
+
+  <p> Next years conference is in Mysore on December 9-11. I very much doubt
+   that I will be able to attend, but I do hope that someone from the
+   West will go.
+          ________________________________________________________
+
+  <h> Phil Dick Award Nominees
+
+  <p> This years list of nominees for the Philip K. Dick Award has been
+   announced. The lucky books are as follows:
+
+  <p> The Coyote Kings of the Space-Age Bachelor Pad, Minister Faust (Del
+   Rey); Stable Strategies and Others, Eileen Gunn (Tachyon
+   Publications); Life, Gwyneth Jones (Aqueduct Press); Apocalypse Array,
+   Lyda Morehouse (Roc); Air, Geoff Ryman (St. Martins Griffin); City of
+   Pearl, Karen Traviss (Eos); Banner of Souls, Liz Williams (Bantam
+   Spectra).
+
+  <p> This is an incredibly strong list. As you will see, I have reviewed
+   all but one of them, and I liked them all. Four of them have made my
+   Best of 2004 list in one way or another, and the other two were very
+   close. If I were a judge I think I would want to give the award to
+   Geoff Ryman, but I foresee some very robust discussion amongst the
+   judging panel because these are all very deserving works.
+
+  <p> Must get a copy of the Minister Faust book. Ive just looked it up on
+   Amazon and it sounds very, very strange indeed.
+
+  <p> As usual the winner will be announced at Norwescon, which takes place
+   in Seattle over the Easter weekend.
+          ________________________________________________________
+
+  <h> Fannish Reading Survey
+
+   <p>Farah Mendlesohn is conducting a survey of fannish reading habits when
+   we were young. The questionnaire is here. Please take a look. The more
+   people who fill it in the better the results will be.
+          ________________________________________________________
+
+  <h> Interaction Programme Participants
+
+  <p> It has become clear to me in doing PR for Interaction that many people
+   in UK fandom have no idea what Worldcons are like. I have lost count
+   of the number of times that people have said or written, "Ive never
+   heard of any of their guests, so there is no point in going." First of
+   all it is hugely depressing that there are people out there who have
+   never heard of Chris Priest, Robert Sheckley and Jane Yolen. They need
+   to go just to find out. But the important point is that this is not
+   some tiny local convention where the only authors present are the
+   guests. This is Worldcon. Authors are everywhere.
+
+  <p> So one of the things we are doing is making a point of announcing all
+   of the authors who have agreed to be on panel (or at least do a
+   signing). Well be making regular press releases about this. Probably
+   one a month. Here is the first batch.
+
+  <p> Brian Aldiss, Ellen Asher, Stephen Baxter, Jonathan Clements, John
+   Clute, Jon Courtenay Grimwood, Ellen Datlow, Cory Doctorow, Scott
+   Edelman, Esther Friesner, David Gerrold, Joe Haldeman, Peter Hamilton,
+   Elizabeth Hand, David A. Hardy, Harry Harrison, John-Henri Holmberg,
+   Geoffrey Landis, Miller Lau, Rebecca Moesta, Larry Niven, Sharyn
+   November, Jody Lynn Nye, Terry Pratchett, Mike Resnick, Kim Stanley
+   Robinson, Justina Robson, Frank Roger, Stanley Schmidt, Robert
+   Silverberg, Charles Stross, Karen Traviss, Gordon Van Gelder, Liz
+   Williams.
+
+  <p> Now tell me, what other UK convention (other than previous Worldcons)
+   has ever had a guest list like that? And that is only the start. There
+   will be lots more.
+          ________________________________________________________
+
+  <h> BSFA Short Lists
+
+  <p> Arriving just in time as I was converting this issue to HTML, the
+   shortlists for this year's British Science Fiction Association Awards
+   are as follows:
+
+  <p> Best Novel: Century Rain, Alastair Reynolds (Gollancz SF); Forty Signs
+   of Rain, Kim Stanley Robinson (HarperCollins); Jonathan Strange and Mr
+   Norrell, Susanna Clarke (Bloomsbury); Newton's Wake, Ken MacLeod
+   (Orbit); River of Gods, Ian McDonald (Simon & Schuster); Stamping
+   Butterflies, Jon Courtenay Grimwood (Gollancz SF).
+
+   <p>(There are six novels on the shortlist this year because there was a
+   tie for fifth place.)
+
+  <p> Best Short Fiction: "Delhi", Vandana Singh (from So Long Been
+   Dreaming: Postcolonial Visions of the Future, Nalo Hopkinson and
+   Uppinder Mehan, eds. Arsenal Pulp Press); Mayflower II by Stephen
+   Baxter (PS Publishing); "Point of No Return", Jon Courtenay Grimwood
+   (New Scientist, Christmas/New Year issue); "The Faery Handbag", Kelly
+   Link (from The Faery Reel: Tales from the Twilight Realm, Ellen Datlow
+   and Terri Windling, eds. Viking Books); "The Wolf-man of Alcatraz",
+   Howard Waldrop (Sci Fiction).
+
+ <p>  Best Artwork: "Iguana" (photograph), Sebastiao Salgado (The Guardian);
+   "Millau Bridge" (photograph), Eric Cabanis (The Guardian); Cover of
+   Newton's Wake, Stephan Martiniere (novel by Ken MacLeod; US edition
+   published by Tor); Cover of The Algebraist (novel by Iain M Banks;
+   published by Orbit); Cover of The Year of Our War by Edward Miller
+   (novel by Steph Swainston; published by Gollancz SF).
+
+  
+
+  <h> Footnote
+
+  <p> Coming up next issue we have novels from Ian R. MacLeod, Richard
+   Morgan, Steven Erikson and Glenda Larke. We have the Leviathan #4
+   anthology and The Faery Reel. Sunday Times science columnist Bryan
+   Appleyard explains why people are so keen to believe in aliens. And I
+   will try to comment sensibly about Hugo nominations.
+
+  <p> And in amongst all that I get to go to Glasgow for an Interaction
+   staff meeting, go back to California, and make a business trip to
+   Korea. Life is not dull.
+
+  <p> Ciao,
+
+  <p> Love n hugs,
+
+  <p> Cheryl
+
+  

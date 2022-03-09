@@ -1,0 +1,134 @@
+URL: http://www.inlandrevenue.gov.uk/manuals/cismanual/html/cis6300/34_0018_CIS6358.htm
+
+
+
+<h>Construction Industry Scheme - CIS6358
+
+<h>Vouchers: cessations and surrender: cancel returned CIS24 vouchers on CIS
+system (A)
+
+
+
+<h>CANCEL RETURNED CIS24 VOUCHERS ON CIS SYSTEM
+
+   <p>This action guide explains the steps you should take to record CIS24
+   vouchers surrendered to the Revenue as cancelled on the CIS system.
+
+<h>CAUTION
+
+   <p>Remember that changing the status of the returned vouchers from
+   'Valid' will mean that they are treated by the CIS System as having
+   been 'used'. As a result, subject to the 'Minimum Stock Level' being
+   reached, this action may trigger the replenishment process and a
+   further issue of vouchers. Because of this you should always bear in
+   mind the reason for voucher cancellation and amend the subcontractor's
+   details or Voucher Profile Band in order to prevent the automatic
+   issue of further vouchers either in error or bearing incorrect
+   details.
+   <p>The action guide is presented in two parts as follows
+     * <l>To cancel individual vouchers, follow the steps at A below
+
+     * <l>To cancel a range of vouchers, follow the steps at B below
+
+   <p>For physical cancellation of the vouchers, see the action guide listed
+   in the menu.
+   <p>A. CANCEL INDIVIDUAL VOUCHERS
+   <p>1) Select `File' from the CIS Main Menu.
+   <p>2) Select `Manage Vouchers' from the File Menu
+   <p>3) Select `Single voucher' from the Manage Vouchers menu
+
+     <p>You should now be at the `Voucher Serial Number' window.
+
+   <p>4) Key in the voucher serial number for the voucher you want to cancel
+   and click on the [OK] button
+
+     <p>You should now be at the `View Voucher Details' window.
+
+  <p> 5) Click on the [Cancel Voucher] button.
+
+     <p>This should take you to the `Voucher Cancellation' window.
+
+   <p>6) Click on the 'Status' field to reveal a list of three possible
+   statuses to change to
+     * <l>lost
+
+     * <l>stolen
+
+     * <l>spoilt
+
+   <p>7) Click on 'Spoilt' (or other option). It should then appear alone in
+   the box.
+   <p>8) Click on the `Effective From' box and key in the date of receipt of
+   the voucher.
+   <p>9) Select the 'Reason for Cancellation' from the list provided. This
+   action will enable the [Save] button.
+   <p>10) Click on the [Save] button to store the change.
+   <p>11) This action will result in the display of a final warning message
+   confirming that the change of status is irreversible
+     * <l>Click on [Yes] to receive the message 'This change has been saved
+       and the voucher will be cancelled overnight'.
+
+   <p>The overnight batch process will update all the voucher and stock on
+   hand records. This will have the effect of reducing the minimum stock
+   level of vouchers held by the contractor and, unless there is a system
+   stop on voucher issue, trigger automatic replenishment.
+
+   <p>B. CANCEL A RANGE OF VOUCHERS
+   <p>1) Select `File' from the CIS Main Menu.
+   <p>2) Select `Manage Vouchers' from the File Menu.
+   <p>3) Select `Range of Vouchers' from the Manage Vouchers menu
+   <p>The `Taxpayer UTR/NINO' window should now be displayed.
+   <p>4) For a sole trader or cardholder for a concern, enter the NINO or
+   UTR. For a concern, enter the UTR of the concern.
+   <p>5) Click on [OK]
+   <p>If the subcontractor also acts as a contractor, you should be at the
+   `Contractor/subcontractor Selection' window. Click on the
+   [Subcontractor] button.
+   <p>If the subcontractor is a concern with more than one cardholder, you
+   will be presented with the `Cardholder Selection' window. Click on the
+   cardholder to whom the vouchers were issued and click on the [OK]
+   button.
+
+     <p>You should now be at the `Voucher selection criteria' window.
+
+   <p>6) Click on the CIS24 box in the `Select Voucher Type' area of the
+   window and select the 'Y' by clicking on it.
+   <p>7) Click on the [View Vouchers] button
+
+     <p>You should now see the `List Voucher Ranges' window containing a
+     list of ranges of vouchers issued to the subcontractor.
+
+   <p>8) Click on the entry in the list for the vouchers you want to cancel
+   and click on the [Cancel Range] button.
+
+     <p>This should take you to the `Voucher Cancellation' window.
+
+   <p>9) Click on the 'Status' field to reveal a list of three possible
+   statuses to change to
+     * <l>lost
+
+     * <l>stolen
+
+     * <l>spoilt
+
+   <p>10) Click on 'Spoilt' (or other option). It should then appear alone
+   in the box.
+   <p>11) Click on the `Effective From' box and key in the date on which you
+   received the vouchers.
+   <p>12) Select the 'Reason for Cancellation' from the list provided. This
+   action will enable the [Save] button.
+   <p>13) Click on the [Save] button to store the change.
+   <p>14. This action will result in the display of a final warning message
+   confirming that the change of status is irreversible
+     * <l>Click on [Yes] to receive the message 'This change has been saved
+       and the vouchers will be cancelled overnight'.
+
+   <p>The overnight batch process will update all the voucher and stock on
+   hand records. This will have the effect of reducing the minimum stock
+   level of vouchers held by the subcontractor and, unless there is a
+   system stop on voucher issue, trigger automatic replenishment.
+
+   Quick links index- CIS0100
+
+
+

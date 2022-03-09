@@ -1,0 +1,124 @@
+﻿URL: http://www.msnbc.msn.com/id/6595798/site/newsweek/
+
+   <h>Medicine's Next Level
+   <p>With new insight into the mechanisms that help keep your brain sharp,
+   neurological researchers move closer to improving your recall with a
+   'memory pill'
+  
+   <h>Phillip Toledano for Newsweek
+   <h>Beautiful snail: The aplysia californicus is a smart slug that may
+   unlock the secrets of memory
+   <h>By By Mary Carmichael
+   <h>Newsweek
+
+   <p>Dec. 6, 2004 issue - To say that Aplysia Californicus is one of
+   nature's least glamorous beasts would be too kind. A hermaphroditic
+   marine snail with mottled purple skin, it keeps to itself, responding
+   to disturbances by emitting a murky fluid that stains the water around
+   it. Its "brain," if you can call it that, is stunningly simple, with
+   only a few thousand oversize neurons. It is not, in short, a likely
+   candidate for glory in the animal kingdom. But a few years from now,
+   much of the baby-boom generation may be greatly indebted to this
+   unprepossessing little creature. Aplysia may look homely, but to
+   scientists hoping to develop memory-enhancing medicine, it is a thing
+   of beauty.
+
+   <p>Thanks to the neurological research of Nobel laureate Eric Kandel and
+   others, Aplysia's minimal nervous system is helping scientists to make
+   sense of how memory works on the biochemical level. The molecules of
+   memory in sea slugs, it turns out, aren't that different from some of
+   those in humans. They are now one of the many inspirations for drugs
+   that may someday ward off the forgetfulness that plagues so many
+   people as they grow older. As Americans' average age creeps upward,
+   the search for medicines that will keep them sharp is accelerating.
+   "We're all very, very avidly grinding up cells trying to get at the
+   molecules," says Dr. Scott Small of Columbia University Medical
+   Center.
+
+   <p>No pill to improve memory, aside from alternative remedies of dubious
+   effectiveness, is currently on the market. But several small biotech
+   companies are launching drugs grounded in the latest research, with a
+   few already in the early stages of clinical trials that could be
+   finished in as little as "two years, if we're lucky," says Kandel, who
+   is now at CUMC and the Howard Hughes Medical Institute. Some of the
+   most promising candidates have their roots in Aplysia studies. Others
+   take their cues from even more improbable sources like the molecular
+   consequences of smoking, focusing on some of the same receptors that
+   nicotine targets. (Who knew it had benefits?) "These are very exciting
+   times for treating memory loss," says Steven Siegelbaum, a
+   neuroscientist at CUMC and HHMI. And with trials soon to yield
+   results, they're about to get even more exciting.
+
+   <p>It has been a long, hard slog to reach this point. Scientists now know
+   that the brain-relying on chemical cascades kicked off by
+   neurotransmitters-first stores short-term information in the
+   prefrontal cortex and then transforms selected bits into long-term
+   memories via the hippocampus, a sea-horse-shaped region tucked deep in
+   the folds of the temporal lobe above the ear. Even such fundamental
+   knowledge was unthinkable some 30 years ago. The concept of memory is
+   so complex that many midcentury researchers shied away from studying
+   it, claiming any attempt would be an example of futile reductionism.
+   Little progress was made before 1953, when one of medicine's more
+   famous patients arrived on the scene. An epileptic, H.M. suffered
+   intractable, frequent seizures until he had both of his temporal lobes
+   removed. Now deprived of his hippocampus, H.M., like the protagonists
+   of the movies "Memento" and "50 First Dates," was unable to form new
+   memories of people, places or things.
+
+   <p>The unfortunate patient's case clearly signaled that the hippocampus
+   played a central role in memory formation. But two more decades would
+   go by before researchers figured out why or how. "The biology of
+   memory storage was really a black hole," says Kandel. "We knew very
+   little about it 25 years ago." Kandel's idea-to use a deceptively
+   simple organism to solve a complex problem-met with skepticism. No
+   wonder, says Siegelbaum, a longtime collaborator of Kandel's: "Most
+   people were working on very basic problems. It was sort of an
+   audacious goal at the time."
+
+   <p>But audacious goals often drive equally audacious science, and Kandel,
+   working with his sea snails, was on to something. Because the snails
+   had such large neurons, and so few of them, Kandel was able to
+   identify the individual nerve cells responsible for specific
+   behaviors. Those nerve cells appeared to rely on some of the same
+   biochemical processes that power the brains of more-advanced animals.
+   Aplysia californicus turned out to be a good model for molecular
+   memory processes in humans. Both species rely on the neural messenger
+   cyclic AMP, which modulates a protein called CREB that can turn genes
+   on or off. CREB is the brain's sculptor: it forms memories by
+   reshaping the synapses, or spaces between neurons. So changes in
+   cyclic AMP levels-and corresponding changes in CREB levels-affect the
+   brain's ability to remodel its synapses. Less CREB equals less
+   memory-making ability.
+
+   <p>The practical results of this work, as well as extensive follow-up
+   tests in mice and rats, are several new drugs now in early development
+   at Memory Pharmaceuticals, founded in part by Kandel in 1998. MEM1414
+   is the inheritor of the Aplysia findings. Cyclic AMP, the
+   neurotransmitter that dictates CREB levels, is normally degraded in
+   the brain by enzymes called phosphodiesterases. By inhibiting those
+   enzymes' activity, MEM14 appears to boost CREB levels and enhance the
+   brain's long-term memory functions; researchers hope it will enhance
+   long-term memory in patients with age-related forgetfulness and even
+   ward off the early stages of Alzheimer's disease, even though the two
+   ailments are not related. There's also MEM1917, a drug similar to
+   1414; MEM1003, which protects neurons from damaging overloads of
+   calcium, and MEM3454, a schizophrenia treatment that targets a
+   receptor also known to respond to nicotine. Researchers think that
+   some schizophrenics ease their symptoms, including loss of memory
+   function, by self-medicating with cigarettes.
+
+   <p>Other companies are also in the hunt. Helicon has a phosphodiesterase
+   inhibitor of its own. Sention, cofounded by Mark Bear of the Picower
+   Center for Learning and Memory at MIT, has gone chemically "upstream"
+   of cyclic AMP and CREB, modulating the neurotransmitters that direct
+   the synthesis of proteins the brain uses as the basic building blocks
+   of memory. Its intriguing new drug, C105 (which is largely under wraps
+   for now), is in phase II trials. Cortex Pharmaceuticals, one of the
+   oldest memory-booster firms, is focusing elsewhere, on molecules
+   called ampakines, which modulate "AMPA receptors" in the brain that
+   can strengthen the synapses. The company already has one drug, CX516,
+   through phase II trials, although it is too weak to be a practical
+   prescription option. A revved-up version, CX717, is in the works, and
+   several other companies are also developing their own ampakines.
+
+  

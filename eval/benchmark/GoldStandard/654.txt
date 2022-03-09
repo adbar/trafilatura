@@ -1,0 +1,79 @@
+INTERNET and Web Resources for SAS Programmers and Statisticians  
+       <p>Proc Help address = www.prochelp.com
+      FindAnswer; Run;
+       <p>INTERNET and Web Resources for SAS® Programmers and Statisticians
+       <p>If you get a favorite site for SAS programmers or statisticians, please 
+      let us know by email at info@prochelp.com.
+       <p>If you'd like to receive SAS tips and news, please sign up our newsletter 
+      by email at newsletter@prochelp.com
+      with the word "subscribe" in the subject line.
+      <h>Prochelp News
+       <p>If you are looking for SAS programmers or statisticians, or if you are 
+      looking for job opportunities,
+      or you have some SAS related events to announce, please send them to 
+      news@prochelp.com.
+
+       <h>Updated: April 11, 2006 Search for a position in statistics
+       <p>A candidate respectively earned a Master's degree in Pure Mathematics, a 
+      Master's degree in Applied Mathematics with a concentration in Statistics 
+      at the University of North Florida, and a Ph.D. degree in Statistics at 
+      the University of South Florida. For more than seven years he has been 
+      conducting research in statistics. For resume, please contact 
+      news@prochelp.com 
+       <p>Source -- news@prochelp.com
+      <h>Updated: March 23, 2006 Job Opportunity
+       <p>Judge Technical Services seeks two (2) Senior SAS Clinical Programmers 
+      (10+ years experience) with knowledge of Web Interfaces and experience 
+      with SAS Integrated Technologies (v9.13). Will assist with developing web 
+      interfaces and reports using SAS; also responsible for collecting data, 
+      developing and modifying reports based on the Statistical Development 
+      Plan. Must have experience creating table listings and creating macros 
+      from scratch. 
+       <p>Required: Strong understanding of protocol development, SAS programming 
+      for Clinical Trials, Validation, 21CFR Part 11 
+      Location: Pearl River, NY (Rockland County) 
+      Applicants interested in this and other positions should contact: Eden 
+      Blum 732.497.4256 eblum@judge.com 
+      Eden J. Blum 
+      Technical Recruiter 
+      Judge Technical Staffing 
+      office: 732-497-4256 
+      888-228-7165 x4256 
+      fax: 732-346-9101 
+      www.judge.com 
+      eblum@judge.com 
+       <p>Source -- Eden J. Blum (eblum@judge.com)
+      <h>Updated: February 16, 2006 Book Review: Sharpening Your SAS Skills by 
+      Sunil Gupta and Curt Edmonds
+       <p>Book Review: Sharpening Your SAS Skills by Sunil Gupta and Curt Edmonds
+      Chapman & Hall/CRC Press: ISBN: 1584885017
+      This book is worth reading by all levels of SAS programmers but especially 
+      for the Beginner up to the Intermediate Levels. You should have some 
+      experience using the SAS software before picking up this book. It provides 
+      concise explanations, helpful examples and a nice summary section at the 
+      end of all six chapters with the added benefit of some comprehensive 
+      questions with answers provided at the end of the book.
+      Another added feature of this book for those who have not used SAS V9 or 
+      V8, is a section on the enhancements to these two SAS versions which 
+      should be helpful to those who have not had much experience with the new 
+      enhancements.
+       <p>In reading this book, I uncovered a few new features of SAS that I was 
+      unaware of and immediately thought of where I could utilize these new 
+      features and began employing them in my new code. This book is NOT 
+      intended to be a reference manual but the 273 pages can easily be read 
+      over several days and is helpful as a refresher course to reinforce your 
+      basic knowledge of SAS. It also provides a great presentation and 
+      explanation on the PDV which I have not found in other books by SAS users. 
+      This is a book worth having in your SAS library to share with the rest of 
+      your staff who use the SAS Software.
+      Charles Patridge
+      Sr. Data Engineer
+      Full Capture Solutions.
+       <p>Source -- GuptaProgramming@cs.com
+
+       <p>SAS is a registered trademark or trademark of SAS Institute Inc. in the 
+      USA and other countries.
+       <p>Last updated: Apr 11, 2006
+
+
+  

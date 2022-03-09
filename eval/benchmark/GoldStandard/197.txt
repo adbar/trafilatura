@@ -1,0 +1,396 @@
+
+<h> Chapter 22
+<h> Complex Numbers - Basic Ideas
+
+<p> Here is a geometric story which describes the complex numbers, or
+     what mathematicians since Gauss in the 1840's have regarded as the
+     complex numbers. This geometric story provides a confirmation of
+     the law of signs for real numbers. This first part of the story
+     could be explain to someone familiar with arithmetic and the
+     measurement of coordinates, rectangular and polar in the plane. The
+     second part of this story is an exercise in trig. The second part
+     appears in the next chapter.
+
+<p> This applet (online only) illustrates the ideas in this chapter.
+
+<p> This first half assumes you have some familiarity with the measurement
+   ofdistances and angles, with the addition of real numbers and points
+   in the plane,and finally with multiplication of nonnegative (that is
+   zero and positive) realnumbers.
+
+<p> 1. The immediate motivation for this approach (in this chapter)
+     stems from three successive 1976 McGill University public lectures
+     of the late Richard Feynman. He simply described physics as the
+     addition and multiplication of arrows in the plane. He defined
+     their multiplication as follows: add their angles and multiply
+     their lengths. In terms of the polar coordinate [r[1],q[1]] and
+     [r[2],q[2]] for the factors, the polar coordinates of the product
+     is [r,q] = [r[1]r[2],q[1]+q[2]] .)
+
+<p> All this was effectively presented to a general audience with no
+     mention of vectors nor the Gauss-Argand representation of complex
+     numbers. See the foreword.
+
+<p> 2. In Morris Kline's three-volume work Mathematical Thought from
+     Ancient to Modern Times, see in volume 2, Chapter 27, the third
+     section called The Geometrical Representation of Complex Numbers.
+     This section briefly describes the approach of Caspar Wessel
+     (1745-1818). Part of Wessel's work (translated into English) is
+     reproduced in David Eugene Smith's 1929 work A Source Book in
+     Mathematics, Dover 1959 Reprint.
+
+
+<h> Points in the Plane
+
+<h> Addition
+
+<p> The sum of two points with the rectangular coordinates (a,b)and (c,d)
+   is given by (a+c,b+d). Wetherefore write
+
+<p> (a,b)+(b,d) = (a+c,c+d)
+
+<p> For example (2,5)+(6,2) = (8,7).
+
+<p> In words, the addition rule is simple add the rectangular coordinates
+   ofthe summands to get the rectangular coordinates of the sum. With
+   this inmind, the following question is easy: What are the rectangular
+   coordinates ofthe sum of (1,14) and (2,8)? Answer: (1,14)+(2,8) =
+   (1+2,14+8) = (3,22). Thechapter Arrow Addition discusses the addition
+   of points or arrows inthe plane further.
+
+<h> Multiplication
+
+<p> Next we define using polar coordinates the product of two points in
+   theplane. Each point or factor is located by means of angular
+   displacement orrotation from the positive real axis, and also a
+   nonnegative distance from theorigin. The product of two points is
+   given by a third point. Its angulardisplacement is the sum of the
+   angular displacement of the factors. Its distanceto the origin is the
+   product of the distances of the factors. This is the addthe angles and
+   multiply the lengths rule. In polar coordinate notation,
+   themultiplication rule and definition is indicated by
+
+<p> [r[1],q[1]]Â·[r[2],q[2]] = [r[1]r[2],q[1]+q[2]]
+
+<p> (As in the previous chapter, square brackets are used to indicate
+   polarcoordinates while round brackets indicate rectangular
+   coordinates.)
+
+<p> Example. Two arrows are to be multiplied. One has length 1.3 and
+   angle22.62^Â°; the other factor has length 1.026and angle 46.97^Â°; and
+   so their producthas length 1.3338 = 1.3Â·1.026 and angle 69.69^Â°=
+   22.62^Â°+46.97^Â°;and that is it. 
+
+<p> Another Example. The product of the two points [3,80^Â°]and [4, 60^Â°]
+   is [(3)(4), 80^Â°+60^Â°] = [12,140^Â°]
+
+<h> Stop For a Summary
+
+<p> The addition of points in the plane is given by means of their
+   rectangularcoordinates while multiplication is given in terms of polar
+   coordinates. It isan exercise in trig to obtain expressions for the
+   rectangular coordinates of aproduct in terms of the rectangular
+   coordinates of the factors. See the nextchapter. (Note that while your
+   reading of this chapter requires a mastery of thealgebraic way of
+   writing and thinking, you could explain with diagrams andexamples
+   only, the ideas in this chapter to someone without this mastery. It
+   isthe on-paper communication which requires the mastery.)
+
+<h> Introducing the Complex Numbers
+
+<p> Points in the plane with the operations of addition and multiplication
+   justgiven are called the complex numbers. The plane with these two
+   operations on itspoints is called the complex numbers plane, or more
+   briefly the complex numbers.
+
+<p> We will now change to a more standard notation for them. We may and
+   oftenwill write the rectangular coordinates z = (a,b) as z= a+ib, We
+   will further call the abscissa a, the real partof the complex number z
+   = a+ib. We will also call theordinate b, the imaginary part of the
+   complex number z = a+ib.
+
+<p> We will say that the complex number z = a+ib is purelyimaginary when
+   its real part a = 0. The angle of a purely imaginarycomplex number z =
+   a+ib = 0+ib = (0,b) is 90degrees or 270 degrees (modulo
+
+<h> FOOTNOTE: Two quantities x and y are equal modulo a third quantity
+     c, if and only if their difference x-y = kc for some whole number
+     or integer k.
+
+<p> 360 degrees), depending on the sign of the imaginary part b. When b>
+   0, the angle is 90 degrees (modulo 360 degrees). When b < 0, theangle
+   is 270 degrees (modulo 360 degrees).
+
+<p> We will also say that z = a+ib is (purely) real when itsimaginary part
+   b is zero. The angle of a (purely) real complex number z= a+ib = a+i0
+   = (a,0) is 0 degrees or 180degrees (modulo 360 degrees), depending on
+   the sign of the real part a.If a > 0, this angle is 0 degrees (modulo
+   360 degrees) while if a> 0, this angle is 180 degrees (modulo 360
+   degrees).
+
+<h> Real Numbers as Complex Numbers
+
+<p> Each complex number z = a+i0 with imaginary part zerogives and is
+   given by a real number a. We will write z = ain this situation, and
+   say that the complex number z is also a real number.
+
+<p> With this practice, the real numbers can be regarded as a subset of
+   thecomplex numbers; and the real number line can be identified with
+   the horizontalaxis of the plane.
+
+<h> Confirmation of The Law of Signs
+
+<p> We identify the real number line with the horizontal axis of the
+   plane. Withthis identification, observe that positive numbers have
+   angular displacementzero, modulo 360 degrees. Also observe that
+   negative numbers have angulardisplacement 180 degrees, modulo 360
+   degrees. The magnitude of a real number isits distance to the origin.
+
+<p> Suppose z = a+i0 and w = c+i0. Wewant to compute the product zw with
+   the multiply the lengths, add theangles rule. Each factor has length
+   |a|or |c|. Each factorhas angle 0 or 180 degrees (modulo 360 degrees).
+   The relationships
+<l> * 0^Â° = 0^Â°+0^Â°
+<l> * 180^Â° = 0^Â°+180^Â° = 180^Â°+0^Â°
+<l> * 360^Â° = 180^Â°+180^Â° = 0^Â° (modulo 360^Â°)
+
+<p> imply the add the angles, multiply the lengths rule for
+   themultiplication of complex numbers agrees with the ordinary method
+   formultiplying real numbers and the law of signs. The relationship in
+   particularimply
+<l> * (+1) = (+1)(+1) as 0^Â° = 0^Â°+0^Â°
+<l> * (-1) = (+1)(-1) = (-1)(+1) as 180^Â° = 0^Â°+180^Â° = 180^Â°+0^Â°
+<l> * (-1)(-1) = (+1) as 360^Â° = 180^Â°+180^Â°
+
+<p> Examples and then some further comments may reinforce these ideas. For
+   the firstexample, the number 4 is now identified with the point (4,0)
+   = [4,0^Â°]= [4,360^Â°]. This number or point hasdistance 4 to the origin
+   and angle of 0^Â°,modulo 360 degrees, with the horizontal axis:
+
+<p> For the second example, the number -2is identified with the point
+   (-2,0) = [2,180^Â°].
+
+<p> Now multiplying the point [2,180^Â°]by itself leads to the product
+   [2,180^Â°]^2= [2^2,180^Â°+180^Â°]= [4,360^Â°] = [4,0^Â°].Thus the point on
+   the horizontal axis identified with -2when squared gives the point
+   identified with +4 indicated above. The 360 degreesin the diagram for
+   the number or point 4 = (4,0) represents the doubling of theangle 180
+   degrees.
+
+<p> For an example or exercise, compute the pairwise products of 3=3+0i,
+   4=4+0i,-3=-3+i0 and -4=-4+0i using the add the angles, multiply the
+   lengths rule.
+
+<p> Remark. The add the angles, multiply the length rule could beused to
+   define the product of real numbers to people/students who know (a)
+   aboutthe addition of real numbers or coordinates and (b) about the
+   multiplication ofnon-negative numbers. They would not need to have any
+   previous knowledge of thelaw of signs.
+
+<h> FOOTNOTE: The add the angles, multiple the lengths rule for the
+     multiplication of complex numbers thus yields a rule for the
+     multiplication of real numbers once the multiplication of positive
+     numbers with themselves or zero is understood/defined.
+
+<p> More Exercises. Compute the following using the multiply the
+   lengths,add the angles rule:
+
+<l> 1. A = (1.5)Â·(2).
+<l> 2. B = (1.5)Â·(-2).
+<l> 3. C = (-1.5)Â·(-2).
+<l> 4. D = (1.5)Â·(-2).
+<l> 5. E = [10,45^Â°] Â·[[1/20],15^Â°].
+
+<p> Note each factor gives a point or arrow in the coordinate plane.
+
+<p> Stop For A Summary. The polar coordinate definition
+
+<p> [r[1],q[1]]Â·[r[2],q[2]] = [r[1]r[2],q[1]+q[2]]
+
+<p> of the product of two point in the plane, involves the multiplication
+   of lengths(= distances to the origin) and the addition of angles. For
+   points on thehorizontal axis, the angles of the factors are zero or
+   180^Â°(modulo 360^Â°). Computing the angle of theproduct will involve
+   one of the following expressions:
+<l> 0^Â°+0^Â°
+   =
+   0^Â°
+<l> 0^Â°+180^Â°
+   =
+   180^Â°
+<l> 180^Â°+0^Â°
+   =
+   180^Â°
+<l> 180^Â°+180^Â°
+   =
+   360^Â°
+   
+<p> Since the angle 180 degrees is associated with -1, and the angles 0
+   and 360degrees are both associated with the number +1, the polar
+   coordinate definitionof multiplication of points in the plane agrees
+   with (or yields) the law ofsigns for the multiplication of positive
+   and negative numbers.
+
+<h> Square Root of -1
+
+<p> The real number -1 = -1+0i= [1,180^Â°] has angle 180 degrees (mod
+   360degrees) and length 1. The purely imaginary number (0,1) = 0+i1 =
+   [1,90^Â°]has angle 90 degrees and length 1. Multiplying this point or
+   number by itself,that is, squaring it, gives the point with length 1
+   Ã—1 = 1 and angle 90^Â°+90^Â°= 180^Â°. So the product equals -1+0i= -1. We
+   call i = the principal square root of-1.
+
+<p> A second square root of -1 is obtained as follows. The imaginary
+   number (0,-1)= 0+i(-1) = [1,-90^Â°]has angle -90 degrees and length 1.
+   Multiplying thispoint or number by itself, that is squaring it, gives
+   the point with length 1times 1 =1 and angle (-90^Â°)+(-90^Â°)= -180^Â° =
+   180^Â°(mod 360^Â°). So this product equals -1+0i= -1 as well.
+
+<p> This provides two square roots of -1 as both [1,+90^Â°]^2= [1,+180^Â°] =
+   -1and [1,-90^Â°]^2= [1,-180^Â°] = -1.
+
+<h> Square Roots of Other Complex Numbers
+
+<p> The square root of a positive number or zero are real nonnegative
+   numbers. Iassume in the following that you know how to compute these
+   square roots. Thesquare roots of negative numbers and of other arrows
+   or points in the coordinateplane depend on this ability.
+
+<p> Observe that squaring points in the plane doubles their angular
+   displacementsand squares their magnitudes (distance to the origin).
+   That is, the add theangles, multiple the lengths rule gives
+
+<l> [r^Â½, 1
+     _________________________________________________________________
+
+<l> 2
+<l> q]Â·[r^Â½, 1
+     _________________________________________________________________
+
+<l> 2 q] = [r ,q]
+
+<p> Therefore the arrow [r^Â½,[1/2]q] whensquared (meaning multiplied by
+   itself) yields [r,q]. So it is called a square root of the arrow
+   [r,q].Another square root is located by the polar coordinates
+   [r^Â½,[1/2]q+180^Â°]since [r,q] = [r,q+360^Â°]both locate the same point
+   in the plane. You should consider the special case ofpositive numbers
+   z = a+i0 = [a,0^Â°]where the angle q = 0 degrees.
+
+<h> Exercises.
+
+<l> 1. Find all the square roots of 4 and -4 and plot them.
+<l> 2. Find the cube roots of 27 and -27 and plot them in the plane.
+<l> 3. Find the square roots of \cis(45^Â°) = cos(45^Â°)+isin(45^Â°) =
+       [1,45^Â°].
+
+<h> Complex Conjugates
+
+<p> The complex conjugate of a complex number z = a+b iwith polar
+   coordinates r = Ã–[(a^2+b^2)]and q is the complex number [`(z)]= a-b i
+   with polar coordinates rand -q.
+
+<p> *   Exercise. Show multiplying a complex number a+bi by its conjugate
+   a-b igives the nonnegative number r^2 = a^2+b^2.
+
+<h> Conjugates and Reciprocals
+
+<p> Observe that p = [(a)/(r^2)]-i[(b)/(r^2)]= [1/(r^2)][`(z)] has angle
+   -qand length [1/(r)]. Here p = [1/(r^2)][r,-q]= [[1/(r)],-q].)
+   Multiplying number p =[[1/(r)],-q] by z = [r,q]gives the complex
+   number [1,0] with length 1 and angle 0, that is, the realnumber 1. And
+   multiplication of any point (c,d) by 1 = [1,0^Â°]yields back the point
+   (c,d)
+
+<p> The reciprocal (or multiplicative inverse) of the complex number z =
+   a+bi with length r > 0 and angle q isthe complex number p with length
+   1/r and angle -q.
+
+<p> Observe that if r > 1 then the length of the reciprocal [1/(r)]< 1 <
+   r, that is, the length of the reciprocal is less than 1 andthe length
+   of the original number. In contrast, if 0 < r < 1 then[1/(r)] > 1 > r.
+   Question: Which of these two cases isrepresented in the above diagram?
+   What happens in the case r = 1?
+
+<h> Two Algebraic Properties
+
+<p> Observe
+
+<p> [r[1],0]Â·([1,q]Â·[r[2],q[2]]) = [r[1],q[1]]Â·[r[2],q[2]]
+
+<p> since [r[1],0]Â·([1,q]Â·[r[2],q[2]])= [r[1],0]Â·[r[2],q[1]+q[2]]=
+   [r[1]r[2],q[1]+q[2]]. Similarly
+
+<p> [1,q]Â·([r[1],0]Â·[r[2],q[2]]) = [r[1],q[1]]Â·[r[2],q[2]]
+
+<h> Real Multiples of Arrows
+
+<p> We said earlier (in the last section of the chapter Arrow Addition)
+   forreal numbers a, b and c that cÂ·(a,b)= (ca,cb) without any reference
+   to or use of the add theangles, multiply the lengths arrow
+   multiplication rule. But c = c+i0= (c,0) gives a point in the plane.
+   So we can multiple c = c+i0= (c,0) and (a,b) = [r,q]using the add the
+   angles, multiply the lengths rule. Two cases, moreprecisely
+   possibilities, will be examined.
+
+<p> Case 1: c Â³ 0 Observe for c> 0 that c = c+i0 = [c,0] has angle 0
+   degrees andlength c = |c|.Thus the add the angles, multiply the
+   lengths multiplication ruleyields
+
+<p> cÂ·(a,b) = [c,0]Â·[r,q] = [cr,0+q] = [cr,q] = (ca,cb)
+
+<p> as before.
+
+<p> Case 2: c < 0 Now c = -d< 0. But d > 0 implies
+
+<p> (d,0)Â·(a,b) = [d,0]Â·[r,q] = [dr,q] = (da,db)
+
+<p> Therefore
+
+<l> (c,0)Â·(a,b)
+
+<l> =
+
+<l> (-1)Â·[d,0]Â·(a,b) = (-1)Â·[dr,q]
+
+<l> =
+
+<l> [dr,q+180^Â°] = (-da,-db)
+
+<l> =
+
+<l> (ca,cb)
+
+<p> again.
+
+   Conclusion. Multiplication of a point (a,b) by a realnumber c = c+i0
+   with and without the add the angles,multiple the lengths rule gives
+   (ca,cb).
+
+<h> Some Vocabulary.
+
+<p> For each point or complex number z = a+b i = (a,b)= [r,q] in this
+   plane, we say that a isthe real part of z; that b is the imaginary
+   part of z;that r = |z|= Ã–[(a^2+b^2)] isthe magnitude, modulus or
+   absolute value of z (differenttexts prefer different terms); and that
+   q is theangle or argument of z.
+
+<p> Remark. The use of round brackets () in the notation forrectangular
+   coordinates (a,b) stems from the conventionin many algebra texts
+   written before this one. The use of square bracket [] inthe notation
+   for polar coordinates [r,q]here was chosen simply because the square
+   brackets were available. Inretrospect, cosmetic appearance alone would
+   suggest the employment ofround-brackets for polar coordinates and
+   square brackets for rectangularcoordinates. The development of
+   notation is not always cosmetically optimal.
+
+<h> Three Problems.
+
+<l> 1. Locate in the plane the complex conjugate and reciprocals of the
+       complex three numbers s = 3+4i, t = 12+(-5)i, and z = cos(120^Â°)
+       +isin(120^Â°).
+<l> 2.  Locate the three complex cube roots of 1 (unity) .Hint: divide
+       the unit circle into three arcs each spanning an angle of 360/3
+       =120 degrees. The required roots are at the ends of each arc (if
+       two arcs share the endpoint 1 = 1+i0.
+<l> 3. Locate the fourth, fifth and sixth roots of unity. What is the
+       general pattern for n-th roots of unity (where n = 2, 3, 4, Â¼).?

@@ -1,0 +1,389 @@
+URL: http://www.epic.co.uk/content/resources/email_newsletter/December2004.htm
+
+
+
+<h>SANTA'S SACK
+
+   <p>In the tradition of heaving stockings, bulging packages and stuffed
+   stomachs the contents of this year's Epic Christmas newsletter are
+   overflowing. We have added a couple of features including an
+   e-learning diary showing the most important dates in the first half of
+   2005. Epic will be exhibiting at a number of locations during the
+   year, the first of which will be the Learning Technologies show
+   starting on January 26th in Olympia, London. Epic will be on stand 62
+   - if you would like an invitation to the show please contact us.
+   Following on from last month's iPod learning White Paper, this month's
+   jamboree publication features a review of downloadable audio files by
+   Steve Rayson and Donald Clark has summarised the year's e-learning
+   events. As usual, we welcome your comments and suggestions and I would
+   like to extend personal thanks for your continued support throughout
+   this year. Have a very Merry Christmas and a Happy New Year - see you
+   in 2005.
+
+   <p>Editor
+
+                               
+
+<h>INTRODUCTION
+
+   <p>1. A short round-up of the year by Donald Clark, Epic
+
+   <p>2004 was the year of the monkey and, true to form, there was a great
+   deal of monkey business going on.
+
+   <p>In January we had the now infamous Towards a Unified e-Learning
+   Strategy. It was a sort of educational tract/DfES deapartmental plan,
+   completely missing the commercial sector. End of January was the
+   deadline for responses to the Government's Consultation Document. We
+   are still waiting on the results! Someone mentioned February 2005. In
+   the meantime, things have moved with informal learning and a dozen
+   other market shifts.
+
+   <p>Throughout the year some consolidation was seen in the US, notably the
+   Docent and click2learn merger in March. In June Blackboard had hugely
+   successful float on NASDAQ, but their competitors such as eCollege,
+   Corinthian Colleges and DeVry continue to suffer. In the corporate
+   sector we're still waiting on Sumtotal to sort out the merger.
+   Skillsoft have stabilised, however poor product perceptions continue.
+
+   <p>In the UK KnowledgePool and ACT went into receivership while the UkeU
+   collapsed with a Select Committee grilling the Chair and Chief
+   Executive of HEFCE, especially the bonuses for 30 of the 70 staff.
+   November saw the NHSU merge down into a new NHS Institute.
+
+   <p>Merry Xmas
+
+                               
+
+                              
+
+<h>WHITE PAPER
+
+   <p>2. Informal Learning
+
+   <p>Informal, casual, instant, spot, embedded or workflow learning is now
+   recognised as perhaps the most important form of adult learning,
+   quantifiably more important than formal learning interventions. We all
+   know that over a lifetime, most of what we learn is not within the
+   context of a college, classroom or course. We develop daily through
+   natural exploration, exposure and encounters with knowledge and
+   people. It has even been described as learning that `takes place at
+   subconscious levels' Rusaw (1995).
+
+  
+
+<h>RESEARCH
+
+   <p>3a. A practical guide to accessible e-learning
+
+   <p>Providing accessible e-learning is becoming ever more critical in
+   today's marketplace. It is not just a legal requirement, but can
+   confer a competitive advantage on the organisations who make the
+   effort to ensure that their e-learning is accessible.
+
+   <p>A new report commissioned by the CIPD from Epic depicts the current
+   state of play, and provides practical recommendations on how
+   organisations should approach this thorny issue. Case studies
+   illustrate how some other organisations are going about providing
+   accessible e-learning without losing any interactivity or engagement.
+
+   <p>The full report will be available in the next few days for free
+   download via the CIPD website (www.cipd.co.uk).
+
+   <p>3b. Workflow Research
+
+   <p>Want to learn? Then stop trying.
+
+   <p>Research released in November 2004 suggests that, in some
+   circumstances, we learn best when we are not thinking about something
+   too much. Dr Paul Fletcher published his findings in Cerebral Cortex.
+
+   <p>The experiment was very clever involving the pressing of buttons in
+   response to screen information. What the learners did not know, was
+   that there were hidden sequences. Bizarrely those who simply went on
+   to push the buttons did well, even denying that there were any
+   sequences. When people were actively looking for the sequence, they
+   did not show any evidence of getting faster or better. In fact, it
+   appears that explicitly trying to learn obliterates implicit learning.
+
+   <p>What's going on here?
+
+   <p>Their results indicated that the frontal lobes were most active during
+   explicit learning, which was when they were looking for the sequence
+   but showed least improvement in performance. It was also the case
+   that, under this condition, the frontal lobes showed a very different
+   relationship with other key brain regions and interacting with them in
+   a different way than under circumstances in which subjects were
+   performing the task optimally.
+
+   <p>As Dr Fletcher said, 'This study shows that our frontal lobes,
+   although thought to be the seat of higher human psychological
+   function, may, under certain circumstances, be more of a hindrance
+   than a help. That is, as many sportspeople have already discovered for
+   themselves, there are certain circumstances under which we should stop
+   deliberating and just act.'
+
+   <p>This is an interesting finding and, in a small way supports the idea
+   of embedded or workflow learning, as opposed to separate learning
+   interventions.
+
+                                                                      top
+
+   <p>3c. E-learning research - University of Sussex
+
+   <p>An interesting source of research in e-learning is the
+   www.reveel.sussex.ac.uk site. This provides access and links to good
+   research with the research methodology. This is an attempt to separate
+   out the significant studies from those that have poor methodologies.
+
+   <p>Several studies on learning effectiveness are of interest including:
+
+   <l>Allen et al (2004)
+
+   <l>Guerandel et a (2003)
+
+   <l>Kekkonen-Moneta (2002)
+
+   <p>On community and connectivity:
+
+   <l>Uschi (2002)
+
+   <l>De Laat & Lally (2004)
+
+   <l>Rovai (2001)
+
+   <l>Kreijns et al (2003)
+
+   <p>There's also a warning about the so-called `grey literature', where
+   the research is perhaps serving specific interests.
+
+   <p>On the whole this is a credible site that holds lots of promise.
+
+   <p>3d. ASTD State of the industry
+
+   <p>Research: ASTD State of the Industry Report
+
+   <p>Just released this month, the annual 2004 report has a wealth of data
+   on the training industry based on data from 344 US organisations.
+
+   <p>The headlines are:
+
+   <l>1. Learning increasingly linked to performance
+   <l>2. E-learning up from 15.4% to 23.6%
+   <l>3. Annual training expenditure per employee steady at $820
+   <l>4. Time steady at 26 hours per employee
+
+   
+
+<h>INTERVIEW
+
+   <p>4. Given the chance, Epic loves to hear the opinions and experiences
+   of influential figures within the learning industry. You may remember
+   we ran an interview with John Brown of Ufi Ltd. back in October. This
+   month, Lee Maxey, Chief Learning Officer at Pathlore, has generously
+   answered our e-learning questionnaire. The questionnaire aims to get
+   personal views, rather than general thoughts on the state of the
+   market and the questions have been designed acccordingly.
+
+   <h>Introduction by Donald Clark, Epic
+
+   <p>Lee Maxey has been a constant source of inspiration for me. We have
+   bumped into each other at many conferences in many cities and I'm
+   always amazed at the freshness of his thoughts. One of his most
+   endearing habits is his ability to change his mind. Having promoted
+   the idea of LCMSs, he now sees them as red herrings. As an American
+   who spent his early years in Europe, he can also see things from both
+   sides of the pond. His sheer enthusiasm for learning and the internet
+   comes through in this interview.
+
+   <p>Q What's your INTEREST in learning/online learning?
+
+   <p>I LOVE learning. My view is that if one is not learning, then one is
+   not really living. As a student, competitive athlete, teacher, coach,
+   and now as a parent, I continue to be amazed at how different learning
+   can be depending on one's perspective. Online learning is not the
+   issue as much as one's view of learning as a whole. Having the
+   understanding and appreciation of how learning can change one's world
+   is far more important than the delivery vehicle for learning.
+
+   <p>Q What interactive technology do you use and have at HOME?
+
+   <p>We have a wireless DSL connection to the internet and a basic TV. We
+   don't watch much TV. Our use of the internet ranges from email, to
+   shopping, to searches for needed information, to finding kids
+   resources.
+
+   <p>Q What stands out as your MOST EFFECTIVE learning experience?
+
+   <p>Wood Badge training for Boy Scout Leaders and flight school training
+   to be a pilot were both powerful learning experiences. They both were
+   totally immersive, and continue to impact how I think about learning
+   today. One was a team-based collaborative experience that involved a
+   lot of behavioural and a "soft skill" focus. The other was an intense
+   solitary activity with high degrees of precision and procedure.
+
+   
+
+<h>ARTICLE
+
+   <p>5a. Audio Review: Will Wright - Simulation Design
+
+   <p>At Epic we have all been excited recently by the potential of audio
+   files and iPods as learning devices. Thus when I came across an audio
+   file by Will Wright on www.itconversations.com I downloaded it to my
+   iPod and began listening. Will Wright, for those that don't know, was
+   the founder of Maxis, the company that created the world's best
+   selling PC game The Sims. This is a game that my daughter spends many
+   hours playing and hence I was also interested to understand the way
+   the game was designed.
+
+   <p>Will is also a very amusing speaker and interesting individual. He
+   explained that when he gets a new game the first thing he does is work
+   out what you have to do and then do the complete opposite i.e. drive
+   the wrong way on a racing game. He also likes his children to
+   experiment in the same way and added "do you know that Barbie's hair
+   is flammable?" I personally liked his style which made me listen on.
+
+   
+
+   <p>5b.Audio downloads and Podcasting
+
+   <p>www.itconversations.com offers free download audio files of
+   conversations with leading people in the IT industry and is just one
+   of many sites offering free audio downloads. You might also be
+   interested in Podcasting. Podcasting is like subscribing to a set of
+   news feeds except that rather than read them on screen you can listen
+   at your PC or on an iPod. There are many podcasting feeds you can
+   subscribe to at www.ipodder.org. These include regular podcasts from
+   US Universities on education and technology. Even the BBC is getting
+   in on the act. You can now sign up to the "In our Time" podcast where
+   Melvyn Bragg and three guests investigate the history of ideas and
+   debate their application in modern life. Just go to
+   http://www.bbc.co.uk/radio4/history/inourtime/mp3_podcast.shtml. This
+   automatically delivers a new audio file to your PC whenever the BBC
+   updates it. Alternatively if you just want to download the file
+   manually go to
+   http://www.bbc.co.uk/radio4/history/inourtime/mp3.shtml.
+
+   <p>Happy listening!
+
+  
+
+<h>SHOW REPORT
+
+   <p>6. Online Educa Berlin 2004
+
+   <p>Epic's Donald Clark recently spoke at the Online Educa international
+   conference in Berlin. Here is his report of the show.
+
+   <p>Online Educa is 10 years old this year and remains the leading
+   European e-learning conference with:
+
+     <l>* 1700 registered participants from 60 countries
+     <l>* attendees from 63 countries
+     <l>* 344 speakers from 43 countries
+     <l>* 71 themed sessions
+
+   <p>It's an eclectic mix of researchers, educationalists, corporates and
+   policy makers. Note that this doesn't mean any real interaction
+   between them. Indeed there were some fractious sessions and more than
+   the odd culture clash (more of this later). In many ways this is what
+   makes this an interesting event.
+
+   <p>A strong feature of the conference is the short speaker slots. Three
+   or four speakers per session means they're limited to about 20 mins
+   each. This lowers the odds on boredom, and as the speakers still have
+   to pay to attend the quality can be variable. In fact, this year,
+   there was some disgruntlement around `presentation skills'.
+
+   
+<h>NEWS
+
+   <p>7a. Useful e-learning source
+
+   <p>Schmoller news
+
+   <p>Seb Schmoller has been working away in e-learning for years. His ALT
+   organisation is now a large and credible body, but it is his useful
+   mailing that I'd like to turn your attention to. If you want useful UK
+   news stories and links in e-learning, Seb keeps his eye on the
+   e-learning ball. I have personally found this a useful source of
+   market and academic information.
+
+   <p>He also reviews our White Papers (fairly and objectively). I should
+   add that our decision to make some available without registration was
+   his idea.
+
+   <h>HIGHLY RECOMMENDED
+
+   <p>7b. Healthcare and e-learning in the US
+
+   <p>Healthcare in the US has surprisingly low levels of training spend
+   with many hospitals facing shrinking budgets, an unsophisticated
+   infrastructure but a highly technical and diverse audience and 24/7
+   operations. However, they have lots of external training requirements
+   - especially in health and safety.
+
+   <p>Joint Commission for Accreditation of Healthcare Organisations
+   (JCAHO), an accreditation body that requires documented annual
+   training. Then there's the Office of Inspector General (OIG) where
+   compliance is backed up with huge penalties on fraud and abuse
+   allegations. Hospitals therefore need compliance plans and need to
+   adhere to National standards. Clinical professionals also need annual
+   training. It is imperative that they receive annual training. The Risk
+   Management Issues are enormous, especially around professional
+   liability and malpractice issues.
+
+  
+
+<h>JOBS!
+
+   <p>8. Job vacancies
+
+   <p>Epic is currently looking for e-learning designers and project
+   managers.
+
+   
+
+<h>BLENDED LEARNING COURSE - BOOK NOW
+
+   <p>Develop an Effective Blended Learning Programme. This unique course
+   from Epic, centred around a practical, hands-on workshop, gives a
+   step-by step methodology for designing effective blended programmes,
+   and tools to help with the decision-making process.
+
+   
+
+<h>9. DIARY FOR 2005 - JANUARY TO JUNE
+
+   
+
+<h>HOUSEKEEPING
+
+   <p>Fed up with your colleagues reading this newsletter over your
+   shoulder? Tell them to get their own...
+
+   <p>To subscribe click here putting 'subscribe' in the subject field
+
+   <p>To unsubscribe click here putting 'unsubscribe' in the subject field
+
+   <p>Epic provides a full range of services and facilities from consultancy
+   to delivery of e-learning and e-government solutions. EpiCentre, part
+   of Epic provides a dedicated testing and localisation service.
+
+   <p>To order our 12-page corporate brochure email click here
+   and put 'brochure' in the subject line
+
+                               
+
+<h>CONFIDENTIALITY
+
+   <p>This email and any attachments are private and confidential and may
+   also be subject to legal privilege. If you are not the named
+   recipient, please notify the sender immediately and do not disclose
+   the contents to another person, use it for any purpose, or store or
+   copy the information in any medium. Internet communications are not
+   secure and Epic is not responsible for their misuse by third parties,
+   or for any possible alteration or data corruption in transmission. You
+   should not rely solely on the contents that should be checked against
+   hard copy.

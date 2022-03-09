@@ -1,0 +1,364 @@
+URL: http://www.bris.ac.uk/Depts/History/Postgrads/pgdissertations.htm
+
+<h>Department of Historical Studies
+
+<h>Postgraduates
+
+<h>Dissertation Conventions
+
+<p>This style-sheet contains advice about recommended conventions bearing
+   on how to set out the dissertation and to refer to material in notes
+   and the bibliography. These conventions must also be followed in your
+   assessed essays, which you should use, inter alia, to practise
+   presentational skills. Presentation and accuracy are important for
+   more than stylistic reasons. Examiners will be concerned to scrutinise
+   text layout, notes and bibliography in order to form an impression of
+   your research technique.
+
+<p>This cannot be a comprehensive guide. If you identify omissions or
+   areas which need clarification, please report them to Robert Bickers
+   so that they may be incorporated into later versions of this booklet.
+   Your comments and suggestions will be very much appreciated.
+
+<p>It is important to note that there is no universally accepted series
+   of conventions. Most British academic presses (for example Oxford
+   University Press (OUP), Cambridge University Press (CUP) and
+   Blackwell) have their own idiosyncratic rules which cannot always be
+   reconciled (and which they do not always manage to follow consistently
+   from book to book). North American presses are generally more
+   consistent in their conventions, but their annotation tends to be
+   elaborate by British standards: for example, it is necessary to give
+   the publisher of a book as well as the place of publication, and the
+   authors' first names are given in full. So it is best not to follow
+   American usage simply because it increases the amount of information
+   which needs to be recorded and checked. Among the British presses,
+   Blackwell stands out for the clarity and consistency of its annotation
+   system. The recommendations below are substantially based on its
+   practice. The point to emphasise is that you have some latitude in the
+   choice of conventions: internal consistency within the dissertation is
+   what matters above all else.
+
+<h>Books
+
+<p>In the bibliography books should be cited by their full title
+   (including subtitle, if there is one, after a colon) together with
+   place of publication and date. Thus:
+
+<p>N.B. Underlined text may be used instead of italics, provided of
+   course that your usage is wholly consistent. If you are able to use
+   italics, they do look more professional.
+
+<p>In the notes the first reference to a book should give its full title,
+   place of publication and date, just as it appears in the Bibliography.
+   Note, however, that the initials or given name now come before the
+   surname. Thus:
+
+<p>How does one establish what the title actually is? It sometimes
+   happens that there are slightly different versions of the title in
+   various parts of the book. Disregard the dust-jacket (if there is one,
+   of course) and go by the internal title page. This is not the very
+   first page, which usually has just the title on it, but the page which
+   is overleaf. (It will usually have the author's name and the name of
+   the press on it as well.) Follow what this title page says; the only
+   addition which need be made routinely is supplying a colon to separate
+   the title and the subtitle. Look out for minor variations. For
+   example, there is sometimes a comma before the dates at the end of a
+   title, sometimes not.
+<l>Volumes with multiple authors:
+
+<l>Edited volumes:
+
+<p>After the first reference the title should be abbreviated. A good rule
+   of thumb is that when abbreviating you should:
+<l>Drop the definite or indefinite article if this is the first word
+       of the title.
+<l>Retain all the words up to and including the first noun.
+
+<p>It is not uncommon that an author has produced several works with
+   similar titles. If this is the case, expand the abbreviated reference
+   until you reach the first noun which makes the title you mean
+   unambiguous.
+
+<p>Short titles are much better than using op. cit. ('the work
+   mentioned'). This can be very confusing because it obliges the reader
+   to trawl back through the earlier notes.
+
+<p>Similarly, you should be very sparing in the use of ibid. ('the same
+   work') when you find yourself having to refer to the same title in
+   consecutive notes. Only do this when only one title is mentioned in
+   both notes, so that there is no uncertainty about what the 'same work'
+   refers to. If in doubt, do not use ibid. at all; simply repeat
+   shortened titles.
+
+<p>Avoid id./ead. ('the same male/female author'). Repeat the name.
+
+<p>If a book is part of a series it is up to you whether to cite this.
+   Generally speaking, it is not necessary to give series titles if they
+   are not numbered: e.g. Oxford Historical Monographs. If the series is
+   numbered, it can be an awkward decision where to include it without
+   making the whole reference rather cumbersome. One technique is to tuck
+   the series, not italicised, inside the brackets and separated from the
+   place and date by means of a semicolon. Thus:
+
+<p>When referring to a multi-volume single work, it is a good idea to
+   give the volume number as a lower-case roman numeral. This prevents
+   any confusion with page references. Thus:
+
+<p>Note two things about this reference:
+<l>the use of the semicolon to separate page numbers in the different
+       volumes
+<l>the use of a full point rather than a comma between the volume
+       number and the first page extent - this looks better when there is
+       a juxtaposition of lower-case roman numerals and arabic numerals.
+
+<p>When abbreviating book titles, use acronym-type abbreviations very
+   sparingly. Only do so if the title is referred to very often.
+
+<p>To discover the place of publication of a book, use the internal title
+   page and the page which gives details of, inter alia, the ISBN number.
+   The place of publication is not necessarily the same as the place
+   where the book was set and/or printed. If two or more places of
+   publication are given, confine your reference to the first place
+   mentioned: this applies even if one of the other places is in the UK.
+   So, University of Chicago Press = Chicago and London = for our
+   purposes Chicago. To avoid confusing Cambridge (USA), home of Harvard
+   University Press, and Cambridge (UK), home of Cambridge University
+   Press, the state in which Cambridge (USA) is located is added to the
+   place of publication. Thus:
+
+<h>The Harvard System
+
+<p>There is another convention for bibliographies and notes which is
+   sometimes known as the Harvard System. Here the title in the
+   bibliography is listed in the form:  Hennessy, Peter. 1992. Never
+   Again: Britain, 1946-51. London.  All references in the notes,
+   including the first, then become: Hennessy 1992, 23-7.  If an author
+   has produced more than one item in the same year, the works are
+   distinguished by lower-case letters immediately after the date, with
+   no spacing. Thus: Hennessy 1992a, 27.  It is also possible to insert
+   Harvard System references into the body of the text, where you might
+   otherwise use a footnote, placing the citation in brackets. For
+   example:  ...Its flaws have become familiar (Bose 1990a, 36-8; Cooper
+   et al. 1990, 1-9)... The advantage of the Harvard System is that it is
+   very neat. The disadvantage is that it makes footnotes look rather
+   bleak, or else it breaks up the text, and it obliges the reader to
+   refer constantly to the bibliography, whereas with the normal method
+   one tells the reader what the full title is and then provides constant
+   reminders by means of abbreviated titles.
+
+<h>Articles
+
+<p>In the case of articles, it is the title of the journal which must be
+   italicised/underlined. Thus in the notes:
+
+<p>Note the position of the commas and the use of single inverted commas.
+   Double inverted commas are reserved for quotation marks within the
+   title: e.g.:
+
+<p>Like book references the order of author surname/given name in the
+   citation is different in bibliographies. The entry in the bibliography
+   will read:
+
+<p>When the title of a journal starts with the definite article, this is
+   not reproduced. So English Historical Review, not The English
+   Historical Review.
+
+<p>For articles in edited collections:
+
+<p>Abbreviated as:
+
+<p>If there are two or more editors use (eds.).
+
+<p>Some journals list the titles of their articles with no upper-case
+   letters other than the beginning of the first word and, of course,
+   proper nouns. Here you have a choice. Either scrupulously follow the
+   conventions of each particular journal or standardise by having
+   capital letters throughout. On balance, the second method is
+   preferable because otherwise the notes can appear uneven.
+
+<p>It is impossible to provide unambiguous rules about the use of
+   capitals in titles. The general rule is that important words take a
+   capital. You will not go far wrong if you use a capital for the
+   following: nouns, adjectives, adverbs and most verbs.  The following
+   do not take a capital:  conjunctions, prepositions, verbs expressing a
+   state (esp. 'to be'), modal verbs (e.g. 'might', 'should', 'could'),
+   pronouns, and the (in)definite article.  The first letter of the first
+   word of a title is always a capital.
+
+<h>Abbreviations
+
+<p>Works referred to frequently may conveniently be cited by an
+   abbreviation, provided a List of Abbreviations is included at the
+   beginning of the dissertation. Thus:
+
+<p>You will become familiar with the journals and series that crop up
+   regularly in your chosen subject area: look at the List of
+   Abbreviations in the books you use.
+
+<p>Be fairly sparing with abbreviations. A good rule of thumb is that a
+   journal may be abbreviated if you have references to three or more
+   different articles appearing in it.
+
+<p>One- or two-word journal titles should not be abbreviated. So,
+   Contemporary History does not become CH, nor Albion A.
+
+<p>You may also conveniently cite abbreviations for organisations
+   referred to frequently in the text, provided that they are included in
+   the List of Abbreviations. It is customary and helpful to name the
+   organisation in full the first time it is referred to, and indicate
+   the abbreviation to be used.
+
+<p>'The Shanghai Municipal Council (SMC) had had a police force since
+     1854, and as over the years it had arrogated to itself more powers,
+     and more land, so the Shanghai Municipal Police (SMP) had become a
+     more and more important instrument of control.'
+
+<h>Manuscripts and Archival Records
+
+<p>Here conventions vary because of the wide variety of documentation
+   preserved in many different places. Most archives will have guidelines
+   available indicating the conventions they prefer, or will be able to
+   tell you when you ask. You should also consult your supervisor about
+   the most suitable conventions for the particular material you are
+   studying.
+
+<p>The general rule is that manuscript material is cited by city and
+   location, with no underlining. Thus:
+
+<p>The full description of the depository need only be given once, and a
+   short title used thereafter:
+
+<p>Where applicable, manuscripts are cited by folio number + r (for
+   recto, the front - equivalent to an odd-numbered page in a book) or v
+   (for verso, the back - equivalent to an even-numbered page). Thus:
+
+<p>Interviews if conducted by the author are cited by name of
+   interviewee, place and date of interview. Thus:
+
+<p>Oral history references taken from existing collections are usually
+   treated as manuscript material and may be cited according:
+
+<h>World Wide Web
+
+<p>Pages are cited thus:
+
+<p>A comprehensive guide to such conventions can be found at:  Melvin E.
+   Page, 'A brief citation guide for internet sources in history and the
+   humanities' prepared for H-AFRICA Humanities On-Line, and History
+   Department, East Tennessee State University. (Version 2.1) 20 February
+   1996.
+
+<h>Page Extents
+
+<p>It is not necessary to preface page references with 'p.' or 'pp.',
+   though you may do so. But when material is not conventionally
+   paginated, you should draw attention to this by means of, for example,
+   'col.'/'cols.' for column(s).
+
+<p>Be precise in giving page extents. Avoid passim ('throughout the
+   work'/'everywhere') because it looks lazy and leads the examiner to
+   wonder whether you have read the work carefully. Similarly, avoid et
+   seq. ('and what follows'). Equally unsatisfactory are 'f.' ('and the
+   next few pages') and 'ff.' ('and the following pages') after a page
+   reference.
+
+<p>You should take care to provide meaningful page extents in your notes.
+   One sometimes reads a sentence advancing a broad proposition which is
+   supported by a reference to only one or two pages of secondary work.
+   This is inadequate. You should refer to the whole run of pages where
+   the point you are making is discussed. And you should try to refer to
+   more than one work: important points made on the back of just one book
+   or article look rather thin.
+
+<p>When giving page extents some contraction is preferable. (But see
+   below about roman numerals.) The general rule is that one counts from
+   the units up through the tens, hundreds etc. until there is no
+   repetition. Thus:
+
+<p>There is one slight exception to this rule: page extents involving
+   teens keep the tens figure.  Thus:
+
+<p>This is easy to remember because page extents are written virtually as
+   they are pronounced, and 'one hundred and thirteen-to-seven' is
+   ridiculous.
+
+<p>When referring to roman-numeral page extents (for example in an
+   introduction or preface), use lower case: e.g. xxii-xxiv. Note that
+   the arabic equivalent 22-24 should be expressed as 22-4 whereas roman
+   numerals cannot be shortened; xxii-iv is impossible.
+
+<h>Arrangement of the Bibliography
+
+<p>The Bibliography should be split into either two or three parts
+   depending on the types of primary material you have used:
+<l>Primary Manuscript Sources
+<l>Primary Printed Sources
+<l>Secondary Works (note that the term 'Secondary Sources' is a
+       solecism)
+
+<p>Or:
+<l>Primary Sources
+<l>Secondary Works
+
+<p>Primary sources are listed alphabetically by location.  Printed
+   sources are also listed alphabetically.  The listing of secondary
+   works is quite straightforward. Go alphabetically by author.
+
+<p>When listing several works by one author, you should list them by
+   date, starting with the first to be published.
+
+<p>If a work is anonymous, or if one is dealing with a collection of
+   sources where there is no imputed authorship (e.g. a collection of
+   documents), it is listed alphabetically by the title. Ignore
+   definite/indefinite articles. Thus Documents on British Foreign Policy
+   would be listed under the letter D. And The Yi Ho Tuan Movement of
+   1900 under the letter Y.
+
+<h>Quotations
+
+<p>Long quotations (two sentences or more) should be rendered as a block
+   of text indented on both the left- and right-hand margins.
+
+<p>The normal way to preface an indented quotation is with a colon.  No
+   punctuation is used, however, if the quotation runs grammatically from
+   the immediately preceding portion of text.
+
+<p>Inverted commas are not used around indented quotations.
+
+<p>With shorter quotations use SINGLE inverted commas. Double inverted
+   commas are only used when a quotation appears within another. Thus:
+
+<p>He first wrote, 'I heard the minister say "What!"'.
+
+<h>Miscellaneous Points
+
+<p>Different works are separated in notes by a semicolon.
+   Romance-language (French, Spanish, Italian) titles seldom use capitals
+   other than for the first word and proper nouns. If capitals are not
+   used, they should not be supplied. Note that this advice is contrary
+   to the conventions of the CUP and OUP, which insist that Romance
+   titles take capitals up to and including the first noun; this system
+   makes notes look lop-sided and should be avoided.  For spelling
+   conventions (e.g. ise or ize, erred or ered) as well as for much else,
+   you should consult The Oxford Writers' Dictionary, comp. R. E. Allen,
+   which is widely available in paperback (Oxford Reference). This is an
+   invaluable book. See also Fowler's Modern English Usage, ed. R. W.
+   Burfield, another paperback in the Oxford Reference series.  Hart's
+   Rules for Compositors and Readers at the University Press Oxford (39th
+   edn.) is very useful too, but be warned that it uses OUP conventions
+   which sometimes depart from what is recommended here.
+<l>Be alert to the fact that some American university names are not
+       the place of publication. Thus Yale = New Haven; Harvard =
+       Cambridge, Mass.; Cornell = Ithaca, NY. But Princeton =
+       Princeton.
+<l>Do not rely solely on the spellcheck facility of your software. It
+       can mangle proper nouns and more often than not uses American
+       spellings. Beware also the auto-correct function: in the first
+       draft of these guidelines EHR was routinely corrected to HER. 
+<l>The superscript numbers of notes appear after the punctuation.
+       Thus .1 ;2 ,3 and so on.
+<l>Translations of foreign terms should be give in the text in
+       brackets after their first appearance.
+
+<p>These guidelines are adapted, with thanks, from those compiled by
+   Marcus Bull for use in the MA in Medieval Studies

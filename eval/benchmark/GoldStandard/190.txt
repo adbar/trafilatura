@@ -1,0 +1,127 @@
+
+<h> Optical radiation safety considerations
+
+<p> This document outlines the basic principles underlying the proper
+   useof the optical radiation safety calculator. It is designed for
+   assessingsituations in which the eye is illuminated, either to provide
+   a stimulusor to illuminate it for photography, videography or direct
+   observation.The optical radiation safety calculator performs
+   calculations for radiationat visible wavelengths (400-700 nm), and
+   near infrared (700-1400 nm).
+
+<l> 1. Radiometry basics
+<l> 2. Types of ocular exposure
+<l> 3. Using the program
+<l> 4. Glossary
+<l> 5. References
+
+<h> 1. Radiometry basics
+
+<p> The basic principles of radiometry can be found elsewhere (link to
+   W&Sref), but will be presented here in brief. Measurements can be made
+   eitherin terms of radiometric units, which correspond to raw energy or
+   power,or photometric units, which are corrected for visibility. When
+   dealingwith safety issues, we are primarily concerned with radiometric
+   measures;the same principles apply to photometric measurements,
+   however, so whenwe use a radiometric term, the corresponding
+   photometric term will be listedin parentheses.
+
+<p> The basic radiometric (photometric) measurements are irradiance
+   (illuminance)and radiance (luminance). Irradiance describes the total
+   power fallingon a surface (such as the surface of a detector, or a
+   tissue surface inthe eye). The units of irradiance are expressed in
+   power per unit area,typically Watts per centimeter squared (W/cmÂ²).
+
+<p> When a surface is irradiated with a certain amount of power, the
+   energycomes from a source. Most sources are distributed in space, that
+   is, theyhave some finite size. (This size approaches zero for a
+   perfectly collimatedbeam, such as might be emitted by a laser.) The
+   radiance of a source issimply the irradiance it produces, divided by
+   the size of the source, wherethe size is expressed as the solid angle
+   (in steradians) subtended by thesource from the point at which the
+   measurement is made. A little reflectionshould make it clear that the
+   radiance of a source is independent of thedistance at which the
+   measurement is made: if we double the distance fromthe source, the
+   irradiance will decrease by a factor of 4 (inverse squarelaw); but the
+   apparent size of the source will also decrease by a factorof 4, and
+   the two factors cancel out.
+
+<h> 2. Types of ocular exposure
+
+<p> For considerations of eye safety, there are two principle areas of
+   concern:the first is corneal irradiance. When optical radiation
+   (particularly infrared)strikes the cornea, it can heat and dry it,
+   causing damage to the tissue.(Infrared radiation can also cause damage
+   to soft contact lenses at levelsthat are considered safe for eye
+   exposure, but to my knowledge there isno published data on this!)
+
+<p> The second area of concern is retinal irradiation. Damage to the
+   retinacan cause areas of local blindness ("scotomas"). The calculation
+   of retinalirradiance is fairly straightforward: the total amount of
+   power enteringthe eye can be calculated as the product of the corneal
+   irradiance timesthe effective pupil area. The illuminated area
+   ofretina will be an image of the source, subtending the same angle
+   from theposterior nodal point as the source does from the anterior
+   nodal point.Therefore, the retinal area is simply the product of the
+   solid angle subtendedby the source (in steradians) and the posterior
+   nodal distance of the eye.
+
+<p> To convert retinal irradiance to radiance, we need to divide by
+   thesource solid angle; but at the retina, the apparent source is the
+   exitpupil of the eye, so this is the relevant measure. It can be shown
+   by alittle algebra that this is identically equal to the original
+   source radiance!
+
+<p> For the calculations we assume that the source is uniform. This
+   assumptionmay be violated for real sources; for example, a lamp
+   filament will have"hot spots" where the local radiance is higher than
+   the average radiance.In these situations, it is best to use a diffuser
+   to homogenize the sourceimage. Diffractive optical elements capable of
+   diffusing a beam withina narrow angular range (such as those
+   manufactured by Physical Optics Corporation)are ideal for this
+   application.
+
+<h> 3. Using the program
+
+<h> Detector diameter.
+<p> A circular detector area is assumed. For a circular detector,
+   simplyenter the diameter in millimeters of the active surface. For a
+   non-circulardetector, calculate the area (in mmÂ²), then divide by pi
+   (3.14159), takethe square root of the result and multiply by 2 to
+   obtain the equivalentdiameter.
+
+<h> Wavelength
+<p> A monochromatic or narrow band source is assumed. For a broadband
+   infraredsource, the value here is not too critical, because the
+   calculations arenot too wavelength dependent. To be conservative, use
+   a value of xxx nm.Broadband visible sources are more problematic,
+   because the "blue lighthazard" function has a sharp peak at 4xx nm.
+
+<h> Source dimensions at pupil
+<p> These parameters are most relevant for setups (such as Maxwellian
+   viewoptical systems) where the source is imaged in the pupil by a
+   system ofone or more lenses. In the case where the source image is
+   smaller thanthe natural pupil (assumed to be 7 mm), the source area is
+   used for theeffective pupil area. For cases where the entireeye/face
+   is illuminated directly by a source, the values here do not
+   reallymatter, as long as they are larger than 7mm.
+
+<h> Apparent size and distance of the source
+<p> For free viewing of a source, simply enter the actual size and
+   distance(in millimeters). For Maxwellian view, where the final lens
+   appears uniformlyfilled with light, use the diameter and distance of
+   the lens.
+
+<h> Detector power
+<p> Enter the power measurement in microwatts.
+
+<h> 4. Glossary
+
+<p> Effective pupil area: The area of the pupilthrough which light passes.
+   Under free viewing conditions, this is usuallyjust the area of the
+   natural pupil. It can be smaller than the naturalpupil under special
+   conditions, such as viewing through a small artificialpupil, or when
+   using an instrument with a small exit pupil such as a Maxwellianview
+   optical system.
+
+<h> 5. References

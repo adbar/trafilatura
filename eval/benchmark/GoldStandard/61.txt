@@ -1,0 +1,142 @@
+URL: http://flyawaysimulation.com/posts4492-0.html
+
+<h>             Fly Away Simulation, Flight Simulator #1 Forums
+
+
+<h>   Wot R ur specs?
+
+
+<h>   Post Posted: Wed Feb 02, 2005 10:08 pm   
+     _________________________________________________________________
+
+<p>   I want to know what graphics cards, ram and processor everyone is
+   using and how well fs2004 performs. I currently have:
+<l>   512mb ram
+<l>   2.8 ghz
+<l>   intel extreme graphics card 2
+   
+ 
+<h>   Post Posted: Wed Feb 02, 2005 10:59 pm    
+     _________________________________________________________________
+
+<l>   512 RAM
+<l>   2.66 Ghz CPU
+<l>   Nvidia 5200
+<p>   Its ok for now, FPS gets quite low sometimes, but I'm going to upgrade
+   soon anyway. Probably going to get another 512 RAM to have a gig, and
+   then a new Radeon 6800 graphics card.
+   _________________
+
+<h>   Post Posted: Wed Feb 02, 2005 11:16 pm    
+   _______________________
+
+<l>   2GB RAM
+<l>   2.8Ghz
+<l>   ATI RADEON X800XT Platinum Edition 256MB
+ 
+<h>    Post Posted: Wed Feb 02, 2005 11:24 pm    
+     _________________________________________________________________
+
+<l>   512mb
+<l>   3.4Gh P4
+<l>   NVidia GeForce 6610XL
+   
+<h>      Post Posted: Wed Feb 02, 2005 11:32 pm    
+     _________________________________________________________________
+
+<l>   P4C 2.4 gig running at 2.66 gigs.
+<l>   1024 mb PC3200
+<l>   GForce Ti 4800 se.
+   
+<p>   It runs very well, no problems at all.
+   It will fly big jets into busy airports day or night with lots of AI
+   and keep up well over 20 fps (2X Anti aliasing) which is more that
+   adequate for smooth operation.
+   
+<p>   I would really like a better video card though as this one is a bit
+   weak when it comes to ground detail...
+   
+<h>   Post Posted: Thu Feb 03, 2005 12:38 am    
+     _________________________________________________________________
+
+<l>   Athlon XP2800
+<l>   1.5 gig DDR ram
+<l>   Nvidia5900 Golden Sample
+<l>   WinXP pro
+   
+   _________________
+  
+<h>   Post Posted: Thu Feb 03, 2005 3:41 am    
+     _________________________________________________________________
+
+<l>   P-4-1.5 gig
+<l>   512mb-Rambus
+<l>   ATI Radeon 9800 Pro 128
+<l>   2 extra exhaust fans-1 rear-1 PCI
+<l>   22"Mitsubishi Monitor 20" viewable
+<l>   XP-Home
+<p>   An entirely new home built super system just before the new sim comes
+   out.
+   
+<h>   Post Posted: Thu Feb 03, 2005 4:31 am    
+     _________________________________________________________________
+
+<l>   512MB
+<l>   1.39GHz
+<l>   Nvdia GeForce 4000
+   
+<h>   Post Posted: Thu Feb 03, 2005 5:45 am    
+     _________________________________________________________________
+
+<l>   AMD Athlon64- 3500+
+<l>  2048 mb. ram GeIL Ultra 2-2-2-5 DDR400
+<l>  Gainward 6800 Ultra extreme(Golden sample) 256mb Gfx card
+   
+<h>   Post Posted: Thu Feb 03, 2005 8:13 am    
+     _________________________________________________________________
+
+<p>   Thanks
+<p>  how much did 2gig cost u
+   
+<h>   Post Posted: Thu Feb 03, 2005 9:33 am    
+     _________________________________________________________________
+
+<p>   AMD Athlon 3.6 gig mhx, 512 ram win xp home, Nvidia Gforce 128,
+<p>   I am going to add another 512 ram and another card. A Nvidia or Radeon
+   256. 
+   
+<h>   Post Posted: Thu Feb 03, 2005 3:15 pm    
+     _________________________________________________________________
+
+<p>   My system, as you can see is a few years old, but can still handle FS9
+   very nicely. I will most likely buy a new system for FS2006. 
+<p>   Computer Specs: 
+<l>		Falcon Northwest Mach V
+<l>   Processor: AMD Athlon 2100+
+<l>   Memory: 1024 PC2100 DDR 266MHz
+<l>   Hard Drive: 120 Gigs in RAID Stripe
+<l>   Media: Plextor PX-712A
+<l>   Graphics Card: NVidia GeForce4 Ti 4600 w/128 MB
+<l>   Monitor: ViewSonic VG175 LCD
+   
+<h>   Post Posted: Thu Feb 03, 2005 4:50 pm    
+     _________________________________________________________________
+
+<l>   AMD 64 3400+ 2.4 ghz
+<l>   1 gb
+<l>   nvidia fx5500
+<l>   1600 fsb
+   
+<p>   runs smooth but when i added ultimate traffic it kinda slows down with
+   ultra high settings around 15 to 20 to 30 fps depends on traffic.
+   
+<h>   Post Posted: Fri Feb 04, 2005 12:16 am    
+     _________________________________________________________________
+
+<p>   In flight or at an airport? Even with my beast of a machine i get like
+   18FPS at heathrow and such, with 100% traffic.
+   
+<h>   Post Posted: Fri Feb 04, 2005 12:55 am    
+     _________________________________________________________________
+
+<p>      airport lax 100% traffic amd 64 is ment for games.

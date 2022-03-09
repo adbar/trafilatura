@@ -1,0 +1,148 @@
+
+
+ 
+<h>Search for Animation
+Schools by Location:
+ 
+<h>Search for Graphic Design
+Schools by Location:
+
+  <l>Graphic Design Schools By Location 
+<h>Featured School:
+
+ 
+
+
+<h>Visit These Other Sites:
+
+
+<h>King Camera used Toon Boom Animation Software for Ad Spot
+<p>(Montreal, September 9, 2004) - King Camera has just completed, "A Life", a 
+stunning 60-second animated commercial, currently airing on United Airlines 
+flights. It was directed by prominent, Oscar Winning Director of "Father and 
+Daughter", Michael Dudok de Wit in HD and Toon Boom's USAnimation software was 
+used to create the animation effects. "A Life" is part of a series of animated 
+commercials for United Airlines produced by Acme Filmworks for the agency 
+Fallon/Worldwide of Minneapolis; including "Light Bulb" by Joanna Quinn and 
+"Interview" by Wendy Tilby and Amanda Forbis.
+<p>"The men from King Camera were experienced, professional, perfectionists and 
+they understood the animator's mind. I wanted to rely on their skills totally 
+and I could. Wonderful. And on top of that we got on really well." Stated 
+Michael Dudok de Wit, Director.
+<p>With the objective of recapturing the Oscar, BAFTA, Grand Prix & Prix du Public 
+award-winning style of "Father and Daughter", Michael Dudok de Wit decided to 
+approach King Camera. System Administrator, Chris King, and creative Senior 
+Digital Artist & Compositor, Tim Barter brought the production together. Michael 
+initially created colour models in Photoshop while King Camera created special 
+purpose built modules to emulate the various Photoshop blending modes used in 
+the models. As with Michael's previous work, textures were required, not only 
+for the backgrounds but also for all the characters, with some scenes requiring 
+the application of over 70 textures at a time. USAnimation's(r) new Opus 
+upgrade, coupled with Michael's inimitable line quality with it's subtle 
+greyscale variations, achieved the desired effects.
+<p>King Camera's full HD capability, teamed with Toon Boom's USAnimations'(r) Opus 
+resolution independent software, enabled the output of two versions 
+simultaneously; in High Definition (HD) at 24 Frames per second and NTSC formats 
+at 30 Frames per second. Tim Barter confirms: "In all we had an extensive use of 
+over 1200 textures across the 60 second commercial. So with the additional need 
+to perfectly retain Michael's outstanding line quality and output to both Hi Def 
+and NTSC within an extremely tight deadline, USAnimation(r) once again proved 
+itself to be an ideal tool." Additionally, King Camera's Chris King made use of 
+Houdini from Side Effects to create snowfall for the commercial and composite 
+NTSC field rendered output from USAnimation's(r) Opus.
+<p>The production was highly complex and work intensive, challenged by a deadline 
+that was moved forward by two weeks and resulted in Michael creating artwork 
+through to the very last days of production. With this in mind, King Camera's 
+Senior Digital Artist and Compositor, Tim Barter, decided to structure the 
+compositing of the production so that most of the important textures and colour 
+models could arrive later without impacting on the deadline. To this effect, 
+highly complex compositing modules were created that enabled any characters or 
+textures to be plugged into them. Michael's storyboard was then extrapolated to 
+create proxy characters that would later be scanned in as the real thing. In the 
+process, approximately 1200 proxy textures were created and plugged in, to be 
+replaced as and when the correct textures arrived. This meant that the entire 
+job could be 'composited' long before the actual artwork arrived, with only 
+minor changes to follow.
+<p>"The King Camera work ethic is that with proper organisation, communication and 
+pre-visualisation, no production should be stressful or over-run beyond the 
+normal hours in the day! Wishful thinking perhaps, but for the above reasons, 
+working with Michael was an absolute pleasure. Despite Michael's overwhelming 
+workload, he was incredibly organised, which made it possible for me to work 
+from his storyboards, ensuring that neither of us became dependent on the other 
+for material. Michael also had such pre conceived ideas of what he wanted to 
+achieve, that I was able to confidently work in unison with him with the 
+knowledge that our work wouldn't all become redundant as changes were made 
+further down the line. Consequently, despite a curtailed delivery period, a 
+massive workload for Michael and the need to work towards both High Definition 
+and NTSC outputs, the production was wonderfully stress free." Tim Barter from 
+King Camera stated.
+<h>CREDITS: 
+<p>King Camera: Chris King, System Administrator at King Camera; Tim 
+Barter, Senior Digital Artist & Compositor at King Camera, Acme Filmworks: 
+Michael Dudok de Wit, Director for Acme Filmworks, Ron Diamond, Executive 
+Producer for Acme Filmworks, Holly Stone, Producer for Acmefilmworks Client: 
+United Airlines. Fallon/Worldwide of Minneapolis Advertising Agency: Senior 
+Producer: Kate Talbott Producer: Sofia Akinyele-Trokey and Holly Stone Executive 
+Creative Director: David Lubars Group Creative Director/Copywriter: Stuart 
+D'Rozario Creative Director: Bruce Bildsten Art Director: Bob Barrie
+<h>About King Camera.......
+<p>Based in Soho, London, King Camera is a facility for TV 
+production, commercials and animation. Retooled in the mid nineties, as a 
+digital Ink and Paint bureau for broadcast video and motion picture film, King 
+Camera has gone from strength to strength, working on a plethora of high 
+profile, award-winning productions. Whether it is scanning, digital colouring, 
+compositing or rendering, King Camera has brought its formidable talents to a 
+vast array of productions. King Camera also provides rostrum camera facilities 
+for TV, production alongside title design and graphics. King Camera prides 
+itself on being a high quality, fast, competitively priced facility for getting 
+your productions to the edit on time and on budget. View King Camera's website 
+at www.kingcamera.co.uk
+<h>About Toon Boom Animation Inc.....
+<p>Building on a decade of great successes, 
+Toon Boom has entered a new era. Designated as Toon Boom Animation Inc., the 
+company carries several leading animation products, including USAnimation OPUS 
+and Toon Boom Studio. Toon Boom also offers consulting and training services 
+dedicated to increasing animation production efficiency and quality. Concerto, a 
+new solution designed to meet digital and paperless animation production needs, 
+is implemented in prestigious animation studios worldwide.
+<p>With these great offerings, Toon Boom Animation is well poised, as the 
+world-leading supplier of animation solutions, to continue delivering quality, 
+efficiency and reliability to the animation community - for all animation styles 
+and formats. Toon Boom's client base ranges from major studios creating 
+Hollywood-blockbuster animated films to individual animators creating their 
+first masterpieces. Market-leading studios using Toon Boom's products include 
+Nelvana, Klasky Csupo, Warner Bros., DreamWorks, Paramount Pictures, Universal, 
+Mercury Filmworks, Wild Brain, King Camera, Cromosoma and Lanterna Magica, to 
+name a few. For additional information, visit Toon Boom on the Web at 
+www.toonboom.com.
+<p>Concerto(tm), OPUS(tm) and USAnimation(r) are trademarks of Toon Boom Animation 
+Inc. Other company and product names may be trademarks of their respective 
+owners.
+<p>For more information, contact: Toon Boom Animation Inc. Karina Bessoudo (514) 
+278-8666, extension 248 karina@toonboom.com
+<p>Posted on September 11, 2004 at 3:01 PM
+<p>Previous: Toon Boom Studio for Teaching
+<p>Next: Paul McCartney DVD Uses Toon Boom Animation Software
+
+<p>Have an animation news item or link to suggest? 
+
+<p>Get your animation training online and take classes that fit around your 
+schedule. Learn more about The Art Institute Online's animation and design 
+programs.
+<h>Recent Articles:
+  <l>Hot Jobs in Computer Animation 
+  <l>Flash Animation: From Cell Phones to Romance 
+  <l>Female Animation Pioneer held Numerous Animation Jobs 
+  <l>2D Animation Versus 3D Animation: A Tutorial 
+  <l>Higher Standards of 3D Animation in Video Game Design 
+
+
+
+<h>Feeds:
+
+
+
+<h>Animation Resources:
+
+  <l>Choosing an Animation School 
+

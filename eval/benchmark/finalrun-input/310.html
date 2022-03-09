@@ -1,0 +1,1414 @@
+<text id="http://www.carmel.ac.uk/pages/english/art_courses.html" title="Art and Design overview" encoding="iso-8859-1">
+<html><!-- #BeginTemplate "/Templates/carmel.dwt" --><!-- DW6 -->
+<head>
+<!-- #BeginEditable "doctitle" --> 
+<title>Art and Design overview</title>
+<!-- #EndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" href="../../style_sheets/search_field.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/bodytext.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/right_side_text.css" type="text/css">
+<script>
+function getCookieVal(offset) 
+{
+	var endstr = document.cookie.indexOf (";", offset);
+	if (endstr == -1)
+	endstr = document.cookie.length;
+	return unescape(document.cookie.substring(offset, endstr));
+}
+
+function GetCookie(name) 
+{
+	var arg = name + "=";
+	var alen = arg.length;
+	var clen = document.cookie.length;
+	var i = 0;
+	
+	while (i < clen) 
+	{
+		var j = i + alen;
+		if (document.cookie.substring(i, j) == arg)
+		return getCookieVal(j);
+		i = document.cookie.indexOf(" ", i) + 1;
+		if (i == 0) break; 
+	}
+	
+	return null;
+}
+function generate(x, y) 
+{
+	var range = y-x+1;
+ 	var l = ("" + range).length;
+ 	var num = (Math.floor(Math.random() * Math.pow(10,l)) % range) + parseInt(x);
+ 	return num;
+} 
+
+//alert (GetCookie("SurveyAccenture"))
+
+if (document.layers) {
+	document.write('<link rel="stylesheet" type="text/css" href="/css/english_nn.css"/>'); }
+else {
+	document.write('<link rel="stylesheet" type="text/css" href="/css/english.css"/>'); }
+	
+
+function DrawLink(linkData) 
+{
+	if (linkData != null) 
+	{
+		var tLoc = linkData.indexOf("~") ;
+		var pTitle = linkData.substring(0, tLoc);
+		var pURL = linkData.substring(tLoc + 1, linkData.length);
+		
+		do {
+			pURL = pURL .replace("}", "=");
+		} while (pURL .search("}") > 1)
+	
+		document.write("/&nbsp;<a href='" + pURL + "' class='lastpagelink'>" + pTitle + "</a>&nbsp;");
+	}
+}
+var tmpURL = document.location.toString();
+		
+do {
+tmpURL = tmpURL.replace("=", "}");
+} while (tmpURL.search("=") > 0)
+
+var thisCookie = GetCookie("rva");
+var flag = 1;
+var i = 1;
+var intmatch = 0;
+var cookie_array = new Array();
+var cookie_string = "";
+var title_url =  escape(document.title) + "~" + tmpURL;
+var noSpaceURL = document.title + "~" + tmpURL;
+
+if (thisCookie != null)
+{
+	cookie_array = thisCookie.split("!");
+	for (i=0; i < 4; i++)
+	{	 
+			if (noSpaceURL == cookie_array[i]) 
+			{	
+				 flag = 2;
+				 intmatch = i; 
+			}
+	}
+}
+else 
+{ 	
+	document.cookie = "rva=" + title_url; 
+} 
+
+if (flag == 1)
+{
+	for (i = 0; i < cookie_array.length ; i++)
+	{
+		if (i < 3)
+		{
+			cookie_string = cookie_string + cookie_array[i] + "!" ;
+		}
+	}
+	
+		document.cookie = "rva=" + title_url +"!"+escape(cookie_string.slice(0, -1));
+}	
+
+if (flag == 2)
+{
+	for (j = 0; j < cookie_array.length; j++)
+	{
+		if (j != intmatch)
+		{	
+			if (j < 4)
+			{
+				cookie_string = cookie_string + cookie_array[j] + "!" ;
+			}
+		}
+	}
+	
+	document.cookie = "rva=" + title_url +"!"+escape(cookie_string.slice(0, -1)); 
+}
+</script><script>
+function bodload() {
+if (document.layers) {
+window.location.reload(); }
+}
+</script><script language="javascript">
+function changeimages() 
+{
+for (var i=0; i<arguments.length; i+=2) {
+	document[arguments[i]].src = arguments[i+1];
+	}
+}
+
+function popWindow(childURL,height,width,type)
+{
+var re, urlstr,menu;
+re = /\^/g;
+urlstr = childURL.replace(re,"\\");
+while (urlstr.indexOf(" ") > -1) {
+	urlstr = urlstr.replace(" ","%20");
+}
+if (height == ''){height = "465"};
+if (width== ''){width= "620"};
+if (type== 'with_menu'){menu= "1"};
+if (type== 'without_menu'){menu= "0"};
+myRemote = window.open(urlstr, "myRemote", "height=" +height + ",width=" +width + ",ScreenX = 5,ScreenY = 5,alwaysRaised,hotkeys,menubar=" +menu+ ",resizable,,scrollbars,titlebar,z-lock");
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function P7_autoLayers() { //v1.2 by PVII
+ var g,b,k,f,args=P7_autoLayers.arguments;
+ var a = parseInt(args[0]);if(isNaN(a))a=0;
+ if(!document.p7setc) {p7c=new Array();document.p7setc=true;
+  for (var u=0;u<10;u++) {p7c[u] = new Array();}}
+ for(k=0; k<p7c[a].length; k++) {
+  if((g=MM_findObj(p7c[a][k]))!=null) {
+   b=(document.layers)?g:g.style;b.visibility="hidden";}}
+ for(k=1; k<args.length; k++) {
+  if((g=MM_findObj(args[k])) != null) {
+   b=(document.layers)?g:g.style;b.visibility="visible";f=false;
+   for(j=0;j<p7c[a].length;j++) {
+    if(args[k]==p7c[a][j]) {f=true;}}
+  if(!f) {p7c[a][p7c[a].length++]=args[k];}}}
+}
+
+function pviiStyle(obj, new_style) {
+    obj.className = new_style;
+}
+
+function P7_N4hideIt(e) { //v1.2 by PVII
+ var b=e.target;
+ if(b.p7N4hide==true) {b.visibility="hidden";}
+}
+
+function P7_N4autoHide() { //v1.2 by PVII
+ if(!document.layers)return;
+ var args=P7_N4autoHide.arguments;
+ p7N4 = new Array();
+ for (var k=0;k<(args.length);k++) {
+   if ((g=MM_findObj(args[k]))!=null) {
+    g.captureEvents(Event.MOUSEOUT);
+    g.onmouseout = P7_N4hideIt;
+    g.p7N4hide=true;}}
+}		
+
+
+
+
+function gotoit(arg) {
+x = arg.substr(2,3);
+y = arg.substr(0,2);
+z = arg.substr((arg.length-4),4);
+place = document.location.href;
+place2 = place.indexOf('xd=');
+place3 = place.split('xd=');
+
+if (x == 'xxx') {
+	place3a = place3[0].substr(0,(place3[0].length-6));
+	place4 = place3a+y+'Web&'
+	}
+else {
+	place4 = place3[0]; 
+	}
+//place3 = place.substr((place2+3),(place.length - place2));
+//place4 = place.substr(0,(place.length-place2));
+
+if (arg != '#') {
+	if (x=='xxx') {
+	arg = arg.substr(5,arg.length); }
+
+	if (x == 'tp:') {
+		if (arg == "http://www.accenture.fr")
+		{
+			location = arg; }
+		else {
+			winx = window.open();
+			winx.location = arg; }
+		
+
+		}
+
+
+
+	else if ((z == "html") || (z == ".htm")) {
+	document.location = arg; }
+
+	else {
+	document.location=place4+'xd='+arg; }
+	
+	}
+
+if (arg == '#')
+	{
+	alert('Before clicking "Go," please left-click\n' +
+	      'on the down arrow to see a list of options\n' +
+              'and left-click to highlight your selection\n' +
+	      'from that list.');
+	}
+}
+
+
+function doBookmark(url)
+{
+	location = url;
+}
+
+function setShortTitle()
+{
+	// If there are 3 options, short_title is included in the search bar
+	if (document.search.searchby.length  == 3)
+	{
+		if (document.search.searchby.selectedIndex == 2)
+		{
+			document.search.hdnShortFlag.value = 'true';
+		}
+	}
+}
+
+
+
+
+</script>
+<script language="JavaScript">
+<!--
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+// -->
+
+function MM_findObj(n, d) { //v4.0
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && document.getElementById) x=document.getElementById(n); return x;
+}
+
+function MM_showHideLayers() { //v3.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function MM_jumpMenu(targ,selObj,restore){ //v3.0
+  eval(targ+".location='"+selObj.options[selObj.selectedIndex].value+"'");
+  if (restore) selObj.selectedIndex=0;
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+<link rel="stylesheet" href="../../style_sheets/quick_search.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/left_side_links.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/drop_down_menus.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/page_headings.css" type="text/css">
+<link rel="stylesheet" href="../../style_sheets/right_tables.css" type="text/css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF" onLoad="MM_preloadImages('../../common_graphics/backtotop2.gif')">
+<div id="courses" style="position:absolute; left:236px; top:64px; width:438px; height:370px; z-index:3; visibility: hidden; overflow: visible"> 
+  <table width="286" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="108" valign="top"> 
+        <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="98">
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../post16_studies.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','show','business','','hide','foundationdegree','','hide')">Post 
+              16 Studies</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="122" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../foundation_degree.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','hide','business','','hide','foundationdegree','','show')">Foundation 
+              Degree</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="122" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../art_foundation.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','hide','business','','hide','foundationdegree','','hide')">Art 
+              Foundation</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="122" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" height="15"><a href="#" class="dropdownmenus" onClick="MM_openBrWindow('../adult_ed.html','eveningcourses','toolbar=yes,location=yes,status=yes,menubar=yes,scrollbars=yes,resizable=yes,width=780,height=600')">Evening 
+              Courses <br>
+              <img src="../../common_graphics/transparent.gif" width="98" height="4" name="spacer" border="0"> 
+              </a></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="top" height="15">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td width="178" valign="top">
+        <div align="right"><a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','business','','hide','english','','hide','science','','hide','humanities','','hide','foundationdegree','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/transparent.gif" width="370" height="39" border="0"></a></div>
+      </td>
+    </tr>
+  </table>
+  <a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','business','','hide','english','','hide','science','','hide','humanities','','hide','foundationdegree','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><br>
+  <img src="../../common_graphics/transparent.gif" width="520" height="317" border="0"></a> 
+  <div id="post16study" style="position:absolute; left:135px; top:0px; width:108px; height:75px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="114">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" width="101" valign="bottom"><span class="drop_down_menus"><a href="../business/main_business.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('business','','show','english','','hide','science','','hide','humanities','','hide')">Business 
+          I.C.T. Vocational<br>
+          &nbsp;and Education</a><br>
+          </span> <img src="../../common_graphics/menus_red_line.gif" width="158" height="4"></td>
+        <td background="../../common_graphics/menus_dark_red.gif" width="19" valign="bottom"><br>
+          <img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+          <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" width="101" valign="bottom"><span class="drop_down_menus"><a href="main_english.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('business','','hide','english','','show','science','','hide','humanities','','hide')">English 
+          and Creative Arts</a><br>
+          </span> <img src="../../common_graphics/menus_red_line.gif" width="158" height="4"></td>
+        <td background="../../common_graphics/menus_dark_red.gif" width="19" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+          <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" width="101" valign="bottom"><span class="drop_down_menus"><a href="../science/main_science_maths.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('business','','hide','english','','hide','science','','show','humanities','','hide')">Science 
+          and Mathematics</a></span><img src="../../common_graphics/menus_red_line.gif" width="158" height="4"></td>
+        <td background="../../common_graphics/menus_dark_red.gif" width="19" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="101" height="15"><a href="../humanities/main_humanities.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('business','','hide','english','','hide','science','','hide','humanities','','show')">Humanities<br>
+          <img src="../../common_graphics/transparent.gif" width="106" height="4" name="spacer" border="0"> 
+          </a></td>
+        <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="19" height="15"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"></td>
+      </tr>
+    </table>
+    <div id="business" style="position:absolute; left:171px; top:0px; width:210px; height:81px; z-index:6; visibility: hidden"> 
+      <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="165" height="236">
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../business/accounting.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','show')">Accounting</a><br>
+            </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../business/business_studies.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Business 
+            Studies </a><br>
+            </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../business/info_com_tech.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Information 
+            Communication<br>
+            &nbsp; Technology</a></span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/computing.html" class="dropdownmenus">Computing</a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/voc_cert_ed.html" class="dropdownmenus">Advanced 
+            Vocational Certificate<br>
+            &nbsp; of Education (AVCE)</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/info_comm_tech2.html" class="dropdownmenus">AVCE 
+            Information and<br>
+            &nbsp; Communication Technology<br>
+            &nbsp; (Double Award)</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/gnvq_info_tech.html" class="dropdownmenus">Intermediate 
+            GNVQ in Information<br>
+            &nbsp; Communication technology</a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/travel_single.html" class="dropdownmenus">AVCE 
+            Travel and Tourism<br>
+            &nbsp; (Single Award)</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/travel_double.html" class="dropdownmenus">AVCE 
+            Travel and Tourism<br>
+            &nbsp; (Double Award)</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/leisure.html" class="dropdownmenus">AVCE 
+            Leisure and Recreation<br>
+            &nbsp;(Single Award)</a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/avce_business.html" class="dropdownmenus">AVCE 
+            Business (Double Award)</a><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../business/avce_health.html" class="dropdownmenus">AVCE 
+            Health and Social Care<br>
+            &nbsp;(Double Award)</a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="180"><a href="../business/gnvq_health.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Intermediate 
+            GNVQ in <br>
+            &nbsp;Health and Social Care<br>
+            <img src="../../common_graphics/transparent.gif" width="75" height="4" name="spacer" border="0"> 
+            </a></td>
+        </tr>
+      </table>
+    </div>
+    <div id="english" style="position:absolute; left:171px; top:33px; width:210px; height:81px; z-index:6; visibility: hidden"> 
+      <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="165">
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="art_courses.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','show')">Art 
+            courses </a><br>
+            </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"> 
+            <p><span class="drop_down_menus"><a href="design_tech.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Design 
+              and Technology<br>
+              &nbsp; </a></span><span class="drop_down_menus"><a href="#" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">(Product 
+              Design)</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></p>
+          </td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="music.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Music</a></span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="music_tech.html" class="dropdownmenus">Music 
+            Technology </a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="performance_studies.html" class="dropdownmenus">Performance 
+            Studies </a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="media_studies.html" class="dropdownmenus">Media 
+            Studies </a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="english_lang.html" class="dropdownmenus">English 
+            Language </a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="english_lit.html" class="dropdownmenus">English 
+            Literature </a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="180"><a href="english_comb.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">English 
+            Combined <br>
+            <img src="../../common_graphics/transparent.gif" width="75" height="4" name="spacer" border="0"> 
+            </a></td>
+        </tr>
+      </table>
+    </div>
+    <div id="science" style="position:absolute; left:171px; top:49px; width:210px; height:81px; z-index:6; visibility: hidden"> 
+      <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="165">
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../science/biology.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','show')">Biology</a><br>
+            </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"> 
+            <p><span class="drop_down_menus"><a href="../science/physics.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Physics</a></span><span class="drop_down_menus"><a href="#" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')"></a><br>
+              </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></p>
+          </td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../science/chemistry.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Chemistry</a><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../science/avce_science.html" class="dropdownmenus">AVCE 
+            Science<br>
+            </a><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../science/physical_ed.html" class="dropdownmenus">Physical 
+            Education </a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../science/mathematics.html" class="dropdownmenus">Mathematics</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../science/further_maths.html" class="dropdownmenus">Further 
+            Mathematics </a><br>
+            <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="180"><a href="../science/statistics.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Statistics<br>
+            <img src="../../common_graphics/transparent.gif" width="75" height="4" name="spacer" border="0"> 
+            </a></td>
+        </tr>
+      </table>
+    </div>
+    <div id="humanities" style="position:absolute; left:171px; top:65px; width:210px; height:81px; z-index:6; visibility: hidden"> 
+      <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="165">
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../humanities/geography.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','show')">Geography</a><br>
+            </span> <img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"> 
+            <p><span class="drop_down_menus"><a href="../humanities/history.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">History</a></span><span class="drop_down_menus"><a href="#" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')"></a><br>
+              </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></p>
+          </td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><span class="drop_down_menus"><a href="../humanities/languages.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Modern 
+            Languages<br>
+            &nbsp;French/Spanish/German </a><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../humanities/psychology.html" class="dropdownmenus">Psychology<br>
+            </a><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../humanities/religious.html" class="dropdownmenus">Religious 
+            Studies </a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" width="180" valign="bottom"><a href="../humanities/sociology.html" class="dropdownmenus">Sociology</a><span class="dropdownmenus"><br>
+            </span><img src="../../common_graphics/menus_red_line.gif" width="200" height="4"></td>
+        </tr>
+        <tr> 
+          <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle" width="180"><a href="../humanities/law.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courseinfo','','hide')">Law<br>
+            <img src="../../common_graphics/transparent.gif" width="75" height="4" name="spacer" border="0"> 
+            </a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div id="foundationdegree" style="position:absolute; left:135px; top:16px; width:138px; height:103px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../liverpool_uni.html" class="dropdownmenus">The 
+          University of Liverpool</a><br>
+          </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../about_liverpool.html" class="dropdownmenus">Liverpool 
+          is...</a><br>
+          </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../whatwe_offer.html" class="dropdownmenus">We 
+          offer you ...</a><br>
+          </span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../degree_courses.html" class="dropdownmenus">Courses</a><br>
+          </span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../accomodation.html" class="dropdownmenus">Accommodation</a><br>
+          </span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../student_insights.html" class="dropdownmenus">Student 
+          Insights</a><br>
+          </span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" class="drop_down_menus" valign="middle"><a href="../degree_applications.html" class="dropdownmenus">Applications<br>
+          <img src="../../common_graphics/transparent.gif" width="99" height="4" name="spacer" border="0"> 
+          </a></td>
+      </tr>
+    </table>
+  </div>
+  
+</div>
+<div id="studentsupport" style="position:absolute; left:304px; top:64px; width:239px; height:182px; z-index:3; visibility: hidden"> 
+  <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td valign="top"> 
+        <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" height="72">
+          <tr> 
+            <td valign="bottom" background="../../common_graphics/menus_dark_red.gif" width="136"><a href="../learning_mentors.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('studentsuport','','hide')">Learning 
+              Mentors</a><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"> 
+            </td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="18"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td valign="bottom" background="../../common_graphics/menus_dark_red.gif" width="136"><span class="drop_down_menus"><a href="../group_tutor_prog.html" class="dropdownmenus">Group 
+              Tutor Programme</a></span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="18"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr>
+            <td valign="bottom" background="../../common_graphics/menus_dark_red.gif" width="136"><span class="drop_down_menus"><a href="../reviews.html" class="dropdownmenus">Reviews</a></span><img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="18"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="136"><span class="drop_down_menus"><a href="../advice_guidance.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsuport','','hide')">Advice 
+              &amp; Guidance</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="18"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="136"><span class="drop_down_menus"><a href="../learning_difficulties.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsuport','','hide')">Learning 
+              Difficulties</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom" width="18"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="136"><a href="../exam_results.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsuport','','show')">Exam Results<br>
+              <img src="../../common_graphics/transparent.gif" width="80" height="4" name="spacer" border="0"> 
+              </a></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="18"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"></td>
+          </tr>
+        </table>
+      </td>
+      <td valign="top"><a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/transparent.gif" width="142" height="72" border="0"></a></td>
+    </tr>
+  </table>
+  <a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><br>
+  <img src="../../common_graphics/transparent.gif" width="303" height="83" border="0"></a> 
+  <div id="studentsuport" style="position:absolute; left:163px; top:80px; width:126px; height:6px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="100">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus">Former 
+          Students </a></span> </td>
+      </tr>
+      <tr>
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="120" height="4" name="spacer" border="0"></a></span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="lifeatcarmel" style="position:absolute; left:370px; top:64px; width:224px; height:141px; z-index:3; visibility: hidden"> 
+  <table width="222" border="0" cellspacing="0" cellpadding="0" height="77">
+    <tr>
+      <td width="102" valign="top"> 
+        <table border="0" cellspacing="0" cellpadding="0" name="courselinks1">
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><a href="../enrichment.html" class="dropdownmenus">Enrichment<br>
+              </a><img src="../../common_graphics/menus_red_line.gif" width="145" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><a href="../work_experience.html" class="dropdownmenus">Work 
+              Experience <br>
+              </a><img src="../../common_graphics/menus_red_line.gif" width="145" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><a href="../helpincommunity.html" class="dropdownmenus">Help 
+              in the Community<br>
+              </a><img src="../../common_graphics/menus_red_line.gif" width="145" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><a href="../chaplaincy.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','hide','foundationdegree','','hide','adulteducation','','hide','sport','','hide')">Religion 
+              &amp; Spirituality<br>
+              </a><img src="../../common_graphics/menus_red_line.gif" width="145" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><a href="../sport_rec.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('post16study','','hide','foundationdegree','','hide','adulteducation','','hide','sport','','show')">Sport 
+              &amp; Recreation</a><a href="../enrichment.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('whichcourse','','hide','post16study','','hide','subjectareas','','hide','foundationdegree','','hide','adulteducation','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide')"><img src="../../common_graphics/transparent.gif" width="105" height="4" name="spacer" border="0"></a> 
+            </td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="top"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"></td>
+          </tr>
+        </table>
+      </td>
+      <td width="120" valign="top"><a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/transparent.gif" width="135" height="56" border="0"></a></td>
+    </tr>
+  </table>
+  <a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><br>
+  <img src="../../common_graphics/transparent.gif" width="292" height="64" border="0"></a> 
+  <div id="sport" style="position:absolute; left:158px; top:64px; width:125px; height:15px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="100">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="../sports_fixtures.html" class="dropdownmenus">Sports 
+          Fixtures </a></span> </td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="120" height="4" name="spacer" border="0"></a></span></td>
+      </tr>
+    </table>
+  </div>
+  
+</div>
+<div id="applying" style="position:absolute; left:436px; top:64px; width:253px; height:86px; z-index:3; visibility: hidden"> 
+  <table width="230" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="136" valign="top"> 
+        <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="110">
+          <tr>
+            <td background="../../common_graphics/menus_dark_red.gif" width="102" valign="bottom"><span class="drop_down_menus"><a href="../app_procedure.html" class="dropdownmenus">Application 
+              Process</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="125" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="18" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="102" valign="bottom"><span class="drop_down_menus"><a href="#" class="dropdownmenus" onClick="MM_openBrWindow('../fulltime_appform.asp','carmel','menubar=yes,scrollbars=yes,resizable=yes,width=700,height=500')">Application 
+              Form </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="125" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="18" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="102"><a href="../request_prospectus.asp" class="dropdownmenus">Request 
+              a Prospectus<br>
+              <img src="../../common_graphics/transparent.gif" width="99" height="4" name="spacer" border="0"> 
+              </a></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="18">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td width="94" valign="top"><a href="#"><img src="../../common_graphics/transparent.gif" width="126" height="50" border="0"></a></td>
+    </tr>
+  </table>
+  <a href="#"><img src="../../common_graphics/transparent.gif" width="262" height="51" border="0"></a> 
+</div>
+<div id="environment" style="position:absolute; left:502px; top:64px; width:223px; height:202px; z-index:3; visibility: hidden"> 
+  <table width="306" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="155" valign="top"> 
+        <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="110">
+          <tr>
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../learning_centre.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Study Centre </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../chapel.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Chapel</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../refectory.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','show','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Student 
+              Recreation Area</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../computer_suites.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','show','sports','','hide','drama','','hide','artstudio','','hide')">Computer 
+              Suites </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../sports_suite.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','show','drama','','hide','artstudio','','hide')">Sports/Fitness 
+              Suite</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../science_labs.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Science 
+              Labs </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97"><span class="drop_down_menus"><a href="../media_centre.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Media 
+              Centre </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../music_studios.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide')">Music 
+              Studios </a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" width="97" valign="bottom"><span class="drop_down_menus"><a href="../drama.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','show','artstudio','','hide')">Dalton Theatre</a><br>
+              </span> <img src="../../common_graphics/menus_red_line.gif" width="150" height="4"></td>
+            <td background="../../common_graphics/menus_dark_red.gif" width="23" valign="bottom"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"><br>
+              <img src="../../common_graphics/menus_red_line.gif" width="12" height="4"></td>
+          </tr>
+          <tr> 
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="97"><a href="../art_studios.html" class="dropdownmenus" onMouseOver="MM_showHideLayers('learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','show')">Art 
+              Studios <br>
+              <img src="../../common_graphics/transparent.gif" width="99" height="4" name="spacer" border="0"> 
+              </a></td>
+            <td background="../../common_graphics/menus_dark_red.gif" valign="middle" width="23"><img src="../../common_graphics/menu_arrow.gif" width="9" height="12"></td>
+          </tr>
+        </table>
+      </td>
+      <td width="151" valign="top"> 
+        <div align="right"><a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/transparent.gif" width="139" height="22" border="0"></a></div>
+      </td>
+    </tr>
+  </table>
+  <a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><br>
+  <img src="../../common_graphics/transparent.gif" width="322" height="152" border="0"></a> 
+  <div id="refectory" style="position:absolute; left:163px; top:31px; width:113px; height:32px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="100">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="../refectory.html" class="dropdownmenus">Price 
+          Lists/Menus </a></span> </td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="120" height="4" name="spacer" border="0"></a></span></td>
+      </tr>
+    </table>
+  </div>
+  
+  <div id="sports" style="position:absolute; left:163px; top:64px; width:111px; height:19px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="118" height="27">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../sports_suite.html" class="dropdownmenus">Fitness 
+          Suite </a><br>
+          </span> <img src="../../common_graphics/menus_red_line.gif" width="119" height="4"></td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="bottom"><span class="drop_down_menus"><a href="../sports_suite.html" class="dropdownmenus">Equipment 
+          List </a><br>
+          <a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="114" height="4" name="spacer" border="0"></a> 
+          </span></td>
+      </tr>
+    </table>
+  </div>
+  <div id="drama" style="position:absolute; left:163px; top:127px; width:122px; height:13px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="100">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="../drama.html" class="dropdownmenus">Dates 
+          &amp; Shows</a></span> </td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="120" height="4" name="spacer" border="0"></a></span></td>
+      </tr>
+    </table>
+  </div>
+  <div id="artstudio" style="position:absolute; left:163px; top:144px; width:131px; height:9px; z-index:5; visibility: hidden"> 
+    <table border="0" cellspacing="0" cellpadding="0" name="courselinks1" width="100">
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="../art_studios.html" class="dropdownmenus">Equipment 
+          List </a></span> </td>
+      </tr>
+      <tr> 
+        <td background="../../common_graphics/menus_dark_red.gif" valign="middle"><span class="drop_down_menus"><a href="#" class="dropdownmenus"><img src="../../common_graphics/transparent.gif" width="120" height="4" name="spacer" border="0"></a></span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="hideallLayers" style="position:absolute; left:11px; top:86px; width:215px; height:204px; z-index:1; visibility: hidden"><a href="#" onMouseOver="MM_showHideLayers('courses','','hide','post16study','','hide','foundationdegree','','hide','studentsupport','','hide','studentsuport','','hide','lifeatcarmel','','hide','sport','','hide','applying','','hide','environment','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/transparent.gif" width="520" height="355" border="0"></a></div>
+<a name="top"></a> 
+<table border="0" cellspacing="0" cellpadding="0" height="100%" width="100%">
+  <tr> 
+    <td valign="top" align="left"> 
+      <table border="0" cellspacing="0" cellpadding="0" height="27">
+        <tr> 
+          <td rowspan="2"><a href="../../home.asp"><img src="../../common_graphics/logo.gif" width="141" height="48" name="logo" border="0"></a></td>
+          <td><a href="javascript:;" onMouseOver="MM_showHideLayers('courses','','hide','whichcourse','','hide','post16study','','hide','subjectareas','','hide','courseinfo','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','collegecharter','','hide','achievement','','hide','religion','','hide','studentsuport','','hide','lifeatcarmel','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide','applying','','hide','admissions','','hide','eprospectus','','hide','environment','','hide','learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','hide')"><img src="../../common_graphics/top_bar.gif" width="439" height="19" name="topbar" border="0"></a></td>
+          <td><a href="#"><img src="../../common_graphics/a_z1.gif" width="86" height="19" name="a_z_link" border="0"></a></td>
+          <td><a href="../find_us.html"><img src="../../common_graphics/findus1.gif" width="84" height="19" name="findus_link" border="0"></a></td>
+        </tr>
+        <tr> 
+          <td colspan="3"> 
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td><img src="../../common_graphics/topside.gif" width="82" height="29" name="topfill"></td>
+                <td><a href="../courses.html" onMouseOver="MM_showHideLayers('courses','','show','whichcourse','','hide','studentsupport','','hide','collegecharter','','hide','achievement','','hide','studentsuport','','hide','lifeatcarmel','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide','chaplaincy','','hide','applying','','hide','admissions','','hide','eprospectus','','hide','environment','','hide','learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','show')"><img src="../../common_graphics/courses1.gif" width="67" height="29" name="courses_link" border="0"></a></td>
+                <td><a href="../studying.html" onMouseOver="MM_showHideLayers('courses','','hide','whichcourse','','hide','post16study','','hide','subjectareas','','hide','courseinfo','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','show','lifeatcarmel','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide','chaplaincy','','hide','applying','','hide','admissions','','hide','eprospectus','','hide','environment','','hide','learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','show')"><img src="../../common_graphics/support1.gif" width="67" height="29" name="suppport_link" border="0"></a></td>
+                <td><a href="../student_life.html" onMouseOver="MM_showHideLayers('courses','','hide','whichcourse','','hide','post16study','','hide','subjectareas','','hide','courseinfo','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','collegecharter','','hide','achievement','','hide','studentsuport','','hide','lifeatcarmel','','show','applying','','hide','admissions','','hide','eprospectus','','hide','environment','','hide','learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','show')"><img src="../../common_graphics/life1.gif" width="66" height="29" name="life_link" border="0"></a></td>
+                <td><a href="../applying.html" onMouseOver="MM_showHideLayers('courses','','hide','whichcourse','','hide','post16study','','hide','subjectareas','','hide','courseinfo','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','collegecharter','','hide','achievement','','hide','studentsuport','','hide','lifeatcarmel','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide','chaplaincy','','hide','applying','','show','environment','','hide','learningcentre','','hide','refectory','','hide','computorsuits','','hide','sports','','hide','drama','','hide','artstudio','','hide','hideallLayers','','show')"><img src="../../common_graphics/applying1.gif" width="67" height="29" name="applying_link" border="0"></a></td>
+                <td><a href="../environment.html" onMouseOver="MM_showHideLayers('courses','','hide','whichcourse','','hide','post16study','','hide','subjectareas','','hide','foundationdegree','','hide','adulteducation','','hide','studentsupport','','hide','collegecharter','','hide','achievement','','hide','studentsuport','','hide','lifeatcarmel','','hide','studentcouncil','','hide','sport','','hide','workexp','','hide','chaplaincy','','hide','applying','','hide','admissions','','hide','eprospectus','','hide','environment','','show','hideallLayers','','show')"><img src="../../common_graphics/environment1.gif" width="82" height="29" name="environment_link" border="0"></a></td>
+                <td><img src="../../common_graphics/quicklinksfill.gif" width="8" height="29" name="search_fill"></td>
+                <td background="../../common_graphics/menu_fill.gif"> 
+                  <select name="Quick Links" onChange="MM_jumpMenu('parent',this,0)" class="quicksearch">
+                    <option selected>Quick Links</option>
+                    <option value="../app_procedure.html">Application Process</option>
+                    <option value="../courses.html">Which Course?</option>
+                    <option value="../post16_studies.html">Post 16 Study</option>
+                    <option value="../foundation_degree.html">Foundation
+                    Degree</option>
+                    <option value="../art_foundation.html">Art Foundation</option>
+                    <option value="../adult_ed.html">Adult Education</option>
+                    <option value="../exam_results.html">Exam Results</option>
+                    <option value="../find_us.html">How To Find Us</option>
+                    <option value="../calendar.html">College Calendar</option>
+                    <option value="../choose_carmel.html">10 Reasons to
+                    Choose Carmel</option>
+                    <option value="../advice_guidance.html">Advice &amp; Guidance</option>
+                    <option value="../former_students.html">Former Students</option>
+                    <option value="../sport_rec.html">Sport &amp; Recreation</option>
+                    <option value="../jobs.asp">Vacancies</option>
+                  </select>
+                </td>
+                <td background="../../common_graphics/menu_fill.gif"><img src="../../common_graphics/transparent.gif" width="51" height="8" name="spacer"></td>
+                <td background="../../common_graphics/menu_fill.gif">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <table width="723" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <td width="223" valign="top"> <!-- #BeginEditable "leftside" --> 
+            <table border="0" cellspacing="0" cellpadding="0" name="left_menus" width="153">
+              <tr> 
+                <td valign="top"> 
+                  <table border="0" cellspacing="0" cellpadding="0" bgcolor="#E4E8EA">
+                    <tr> 
+                      <td> 
+                        <table border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td> 
+                              <table border="0" cellspacing="0" cellpadding="0" height="14">
+                                <tr> 
+                                  <td><img src="../../common_graphics/this_section.gif" alt="In this section" name="inthis_section" width="223" height="32"></td>
+                                </tr>
+                              </table>
+                              <table border="0" cellspacing="0" cellpadding="0" width="223">
+                                <tr> 
+                                  <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="courses.html"><span class="leftsidelinks">&nbsp;POST 
+                                    16 STUDIES</span></a><br>
+                                  </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                                </tr>
+                              </table>
+                              <table border="0" cellspacing="0" cellpadding="0" width="223">
+                                <tr> 
+                                  <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../foundation_degree.html"><span class="leftsidelinks">&nbsp;FOUNDATION 
+                                    DEGREES</span></a><br>
+                                  </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                                </tr>
+                              </table>
+                              <table border="0" cellspacing="0" cellpadding="0" width="223">
+                                <tr> 
+                                  <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../art_foundation.html"><span class="leftsidelinks">&nbsp;ART 
+                                    FOUNDATION DIPLOMA </span></a><br>
+                                  </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                                </tr>
+                              </table>
+                              
+                            </td>
+                          </tr>
+                        </table>
+                        <img src="../../common_graphics/transparent.gif" width="223" height="4" name="white_fill"> 
+                        <table border="0" cellspacing="0" cellpadding="0" height="14">
+                          <tr> 
+                            <td><img src="../../common_graphics/other_sections.gif" alt="Other related sections" name="other_sections" width="223" height="32"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../advice_guidance.html"><span class="leftsidelinks">&nbsp;CAREERS GUIDANCE</span></a><br>
+                            </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="app_procedure.html"><span class="leftsidelinks">&nbsp;APPLICATION 
+                              PROCESS </span></a><br>
+                              </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false;MM_openBrWindow('fulltime_appform.asp','applicationform','menubar=yes,width=700,height=500')" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="#"><span class="leftsidelinks" onClick="MM_openBrWindow('../fulltime_appform.asp','applicationform','menubar=yes,scrollbars=yes,resizable=yes,width=700,height=600')">&nbsp;APPLICATION 
+                              FORM </span></a><br>
+                              </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../request_prospectus.asp"><span class="leftsidelinks">&nbsp;REQUEST 
+                              A PROSPECTUS</span></a><br>
+                              </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../choose_carmel.html"><span class="leftsidelinks">&nbsp;WHY CHOOSE CARMEL</span></a>?<br>
+                              </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                        <table border="0" cellspacing="0" cellpadding="0" width="223">
+                          <tr> 
+                            <td bgcolor="#E4E8EA" onMouseOver="this.style.backgroundColor='#EDF0F1';return false" onMouseOut="this.style.backgroundColor='#E4E8EA'">&nbsp;&nbsp;&nbsp;&nbsp;<span class="leftsidelinks"><a href="../exam_results.html"><span class="leftsidelinks">&nbsp;EXAMINATION 
+                              RESULTS</span></a><br>
+                              </span><img src="../../common_graphics/left_links_dots.gif" width="223" height="2" name="white_lines"></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="#E4E8EA" height="1271">
+                    <tr> 
+                      <td height="893">&nbsp;</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+            <!-- #EndEditable --><br>
+          </td>
+          <td width="346" valign="top"> <!-- #BeginEditable "centre_table" --> 
+            <table border="0" cellspacing="0" cellpadding="0" name="centre_table" height="1689">
+              <tr> 
+                <td><img src="../../common_graphics/white_fill.gif" width="12" height="10" name="spacer"></td>
+                <td><img src="../../common_graphics/white_fill.gif" width="322" height="10" name="spacer"></td>
+                <td><img src="../../common_graphics/white_fill.gif" width="12" height="10" name="spacer"></td>
+              </tr>
+              <tr> 
+                <td>&nbsp;</td>
+                <td class="lastpagelink" valign="top"><b>GO BACK:</b>&nbsp;<script>
+					if (thisCookie != null) 
+					{ 	
+							for (i=0; i < 4; i++)
+							{	 
+								DrawLink(cookie_array[i]);
+								if (noSpaceURL == cookie_array[i]) 
+								{	
+									 flag = 2;
+									 intmatch = i; 
+								}
+							}
+					} 
+					//else 
+					//{ 	
+						//document.cookie = "rva=" + title_url; 
+						
+					//} 
+					
+					thisCookie = ""; 
+					flag = 0;
+					i = 0;
+					intmatch = 0;
+					cookie_array = "";
+					cookie_string = "";
+					title_url =  "";
+					quick = "";
+				</script></td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr> 
+                <td>&nbsp;</td>
+                <td valign="top"><img src="../../headings/art_and_design.gif" alt="Art and Design" width="322" height="49"><br>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="16%"><img src="../../common_graphics/progarea.gif" alt="Programme Area" width="76" height="15"></td>
+                      <td width="50%"><a href="main_english.html"><img src="../../common_graphics/topbar_english1.gif" alt="English and Creative Arts" name="top_link" width="151" height="15" border="0" onMouseOver="MM_swapImage('top_link','','../../common_graphics/topbar_english2.gif',1)"></a></td>
+                      <td width="34%"><img src="../../common_graphics/topbar_end3.gif" width="95" height="15"></td>
+                    </tr>
+                  </table>
+                  <br>
+                  <span class="bodytextbold">PLEASE VIEW THE INDIVIDUAL ART SUBJECT YOU ARE INTERESTED IN FOR SPECIFIC DETAILS </span>
+                  <p class="bodytextbold">Why Choose Art and Design at Carmel?<br>
+                    <span class="black_text_light">                    In our everyday life we are surrounded by visual imagery, which shapes our experiences and thinking, ranging from advertising and film to music, architecture and fashion. By studying one or two specialist areas in the department, you can make a valuable contribution to the visual world.<br>
+                    <br>
+                    We offer a wide variety of specialist AS and A2 levels, where it is possible to explore media and techniques in an imaginative and exciting way.  You have the opportunity to be taught by specialist and well-qualified tutors, with enviable pass rates, who will support you through your time at the college.<br>
+                    <br>
+                    Although examinations are important, and hard work and commitment are essential to achieving your artistic aims, a great sense of satisfaction, enjoyment and fulfilment can be achieved by expressing your ideas confidently in the scale or medium you choose.  We, as tutors, are concerned with working with individual students to maximise their potential.                    </span></p>
+                  <table border="0" cellspacing="0" cellpadding="0" height="8" class="backtotop_tables" width="322">
+                    <tr> 
+                      <td><img src="../../common_graphics/bottom_lines.gif" width="322" height="2"></td>
+                    </tr>
+                  </table>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <span class="bodytext"><br>
+                  <br>
+                </span></td>
+                <td>&nbsp;</td>
+              </tr>
+            </table>
+            <!-- #EndEditable --></td>
+          <td width="154" valign="top"> 
+            <table border="0" cellspacing="0" cellpadding="0" background="../../common_graphics/searchmenufill.gif" name="search_menu" width="144">
+              <tr> 
+                <td valign="top" width="13"><img src="../../common_graphics/transparent.gif" width="13" height="10" name="spacer"></td>
+                <td valign="top" width="131"> 
+                  <FORM method=GET action=http://www.google.com/custom>
+                     <INPUT type=hidden name=cof VALUE="LW:529;L:http://www.carmel.ac.uk/sqlogo.gif;LH:28;AH:center;S:http://www.carmel.ac.uk;AWFID:6b9d0b45181873a4;">
+                     <input type=hidden name=domains value="carmel.ac.uk">
+                    <table width="94%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td><img src="../../common_graphics/transparent.gif" width="140" height="8" name="spacer"></td>
+                      </tr>
+                      <tr>
+                        <td><img src="../../common_graphics/search.gif" width="39" height="16"></td>
+                      </tr>
+                    </table>
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                      <tr> 
+                        <td> 
+                          <input type="text" name="q" maxlength="255"  size="10" class="search">
+						<input type=hidden name=sitesearch value="carmel.ac.uk">	
+                        </td>
+                        <td>&nbsp;</td>
+                        <td><input type="image" src="../../common_graphics/go_button.gif" width="20" height="15" border="0" name="go_button"></td>
+                      </tr>
+                    </table>
+                    <br class="sidemenulinks">
+                  </form>
+                </td>
+                <td valign="top" width="41"><img src="../../common_graphics/transparent.gif" width="25" height="10" name="spacer"></td>
+              </tr>
+            </table>
+            <!-- #BeginEditable "rightside" --> 
+            <table border="0" cellspacing="0" cellpadding="0">
+              <tr> 
+                <td><img src="../../common_graphics/side_lines.gif" width="179" height="20" name="latest_news"></td>
+              </tr>
+            </table>
+            <table width="179" border="0" cellspacing="0" cellpadding="0" name="rightsidemenus" background="../../common_graphics/side_fill.gif">
+              <tr> 
+                <td valign="top"> 
+                  <table width="178" border="0" cellspacing="0" cellpadding="0" name="rightsidemenus" background="../../common_graphics/side_fill.gif">
+                    <tr> 
+                      <td valign="top"><img src="../../common_graphics/arrow_background.gif" width="14" height="42"> 
+                      </td>
+                    </tr>
+                    <tr> 
+                      <td valign="top"> 
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr> 
+                            <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                            <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                            <td width="88%"><a href="../subject_list.html" class="red_text_light">A-Z 
+                              Subject List</a><br>
+                              <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                            </td>
+                          </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                          <tr> 
+                            <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                            <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                            <td width="88%" height="2"><a href="../business/main_business.html" class="red_text_light">Business, 
+                              ICT and Vocational</a><br>
+                              <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                            </td>
+                          </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                          <tr> 
+                            <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                            <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                            <td width="88%" height="2"><a href="main_english.html" class="red_text_light">English 
+                              and Creative Arts</a><br>
+                              <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                            </td>
+                          </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                          <tr> 
+                            <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                            <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                            <td width="88%" height="2"><a href="../science/main_science_maths.html" class="red_text_light">Science 
+                              and Mathematics</a><br>
+                              <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                            </td>
+                          </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                          <tr> 
+                            <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                            <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                            <td width="88%" height="2"><a href="../humanities/main_humanities.html" class="red_text_light">Humanities</a><br>
+                              <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                            </td>
+                          </tr>
+                        </table>
+                        <img src="../../common_graphics/arrow_background.gif" width="14" height="12"></td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/arrow_background.gif" width="14" height="42"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" valign="bottom"><span class="bodytextboldblack">Subjects 
+                        in this area</span><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"><br>
+                        <img src="../../common_graphics/transparent.gif" width="154" height="6" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                    <tr> 
+                      <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" height="2"><a href="art_courses.html" class="red_text_light">Art 
+                        and Design</a><br>
+                      <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"></td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td class="red_text_light"><a href="art_fine_art.html" class="red_text_light">Fine Art </a></td>
+                    </tr>
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td class="red_text_light"><a href="art_graphic_design.html" class="red_text_light">Graphic Design </a></td>
+                    </tr>
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td class="red_text_light"><a href="art_photography.html" class="red_text_light">Photography</a></td>
+                    </tr>
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td class="red_text_light"><a href="art_textiles_fashion.html" class="red_text_light">Textiles/Fashion</a></td>
+                    </tr>
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td><p class="red_text_light"><a href="art_three_dimensional.html" class="red_text_light">Three-Dimensional Design </a></p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td background="../../common_graphics/arrow_background.gif">&nbsp;</td>
+                      <td>&nbsp;</td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="design_tech.html" class="red_text_light">Design 
+                        and Technology (Product Design)</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="dance.html" class="red_text_light">Dance</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="english_comb.html" class="red_text_light">English Combined</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="english_lang.html" class="red_text_light">English Language</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="english_lit.html" class="red_text_light">English Literature</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+				  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                    <tr> 
+                      <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" height="2"><a href="film_studies.html" class="offsite_links"><span class="red_text_light">Film 
+                        Studies </span></a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                    <tr> 
+                      <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" height="2"><a href="media_studies.html" class="offsite_links"><span class="red_text_light">Media 
+                        Studies </span></a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%"><a href="music.html" class="red_text_light">Music</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="8">
+                    <tr> 
+                      <td width="7%" height="2" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%" height="2"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" height="2"><a href="music_tech.html" class="red_text_light">Music Technology</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td width="7%" background="../../common_graphics/arrow_background.gif"><img src="../../common_graphics/side_arrow.gif" width="14" height="17"></td>
+                      <td width="5%"><img src="../../common_graphics/transparent.gif" width="10" height="10"></td>
+                      <td width="88%" valign="top"><a href="performance_studies.html" class="red_text_light">Performance Studies</a><br>
+                        <img src="../../common_graphics/arrow_background.gif" width="154" height="1" border="0"> 
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr> 
+                <td valign="top"><img src="../../common_graphics/arrow_background.gif" width="14" height="17"></td>
+              </tr>
+            </table>
+            <table width="179" border="0" cellspacing="0" cellpadding="0" background="../../common_graphics/side_fill.gif">
+              <tr> 
+                <td valign="bottom"><a href="#top"><img src="../../common_graphics/back_top.gif" width="15" height="57" border="0"></a></td>
+              </tr>
+            </table>
+            <!-- #EndEditable --></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+<!-- #EndTemplate --></html>
+
+</text>

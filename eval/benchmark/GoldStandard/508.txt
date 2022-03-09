@@ -1,0 +1,72 @@
+URL: http://www.infoplease.com/ipa/A0781456.html
+
+
+   <h>Plurality and Majority
+
+   <p>In order to win a plurality, a candidate must receive a greater number
+   of votes than anyone running against him. If he receives 50 votes, for
+   example, and two other candidates receive 49 and 2, he will have a
+   plurality of one vote over his closest opponent.
+
+   <p>However, a candidate does not have a majority unless he receives more
+   than 50% of the total votes cast. In the example above, the candidate
+   does not have a majority, because his 50 votes are 50% or less than
+   the 101 votes cast.
+   <h>Presidents Elected Without a Majority
+
+   <p>Fifteen candidates (three of them twice) have become president of the
+   United States with a popular vote less than 50% of the total cast. It
+   should be noted, however, that in elections before 1872, presidential
+   electors were not chosen by popular vote in all states. Adams's
+   election in 1824 was by the House of Representatives, which chose him
+   over Jackson, who had a plurality of both electoral and popular votes,
+   but not a majority in the electoral college.
+
+   <p>Besides Jackson in 1824, only three other candidates receiving the
+   largest popular vote have failed to gain a majority in the electoral
+   college--Samuel J. Tilden (D) in 1876, Grover Cleveland (D) in 1888,
+   and Al Gore (D) in 2000.
+
+   <p>The "minority" presidents are listed below.
+   <h<Year
+   <h>President Electoral
+   <h>percent Popular
+   <h>percent
+
+   <l>1824
+   <l>John Q. Adams 31.8%29.8%
+   <l>1844
+   <l>James K. Polk (D) 61.8 49.3
+   <l>1848
+   <l>Zachary Taylor (W) 56.2 47.3
+   <l>1856
+   <l>James Buchanan (D) 58.7 45.3
+   <l>1860
+   <l>Abraham Lincoln (R) 59.4 39.9
+   <l>1876
+   <l>Rutherford B. Hayes (R) 50.1 47.9
+   <l>1880
+   <l>James A. Garfield (R) 57.9 48.3
+   <l>1884
+   <l>Grover Cleveland (D) 54.6 48.8
+   <l>1888
+   <l>Benjamin Harrison (R) 58.1 47.8
+   <l>1892
+   <l>Grover Cleveland (D) 62.4%46.0%
+   <l>1912
+   <l>Woodrow Wilson (D) 81.9 41.8
+   <l>1916
+   <l>Woodrow Wilson (D) 52.1 49.3
+   <l>1948
+   <l>Harry S. Truman (D) 57.1 49.5
+   <l>1960
+   <l>John F. Kennedy (D) 56.4 49.7
+   <l>1968
+   <l>Richard M. Nixon (R) 56.1 43.4
+   <l>1992
+   <l>William J. Clinton (D) 68.8 43.0
+   <l>1996
+   <l>William J. Clinton (D) 70.4 49.0
+   <l>2000
+   <l>George W. Bush (R)50.347.8
+   

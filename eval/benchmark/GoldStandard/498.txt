@@ -1,0 +1,479 @@
+URL: http://www.iccweb.com/industry/industry.asp?pageid=17
+
+   <h>Internet Career Connection
+   <h>Industry Profiles
+
+   <h>STEEL MANUFACTURING
+
+   <h>SIGNIFICANT POINTS
+     * <l>Employment is expected to continue to decline.
+     * <l>Much steel production has shifted to the electric arc furnace,
+       changing many jobs and enhancing opportunities for individuals
+       with technical skills and training.
+
+   <h>NATURE OF THE INDUSTRY
+
+   <p>Few industries in the United States have changed as rapidly in recent
+   years as the steel industry. As a result of new investment in
+   equipment and worker training, this industry has gone from a seemingly
+   moribund one, to one that leads the world in worker productivity and
+   is the low cost producer for some types of steel. The U.S. steel
+   industry still faces stiff competition, and employment is expected to
+   continue to decline; but it is now in a more promising position to
+   meet these challenges.
+
+   <p>With new investments have come fundamental changes in the nature of
+   this industry. The most significant change in the American steel
+   industry is the development of the electric arc furnace (EAF),
+   sometimes called the "minimill", which converts scrap metal from many
+   sources-such as bridges, refrigerators, and automobiles-to steel. The
+   term "minimill" originated from the relatively smaller size of these
+   mills when they first appeared, compared with traditional integrated
+   mills. Today, many EAF's or minimills are actually larger than
+   integrated mills producing steel from raw materials. The smaller
+   capital outlay required to start and operate an EAF has helped drive
+   its growth. Moreover, scrap metal is found in all parts of the
+   country, so EAF's are not tied as closely to raw material deposits as
+   integrated mills and can locate closer to consumers. EAF's now
+   comprise almost half of American steel production and their share is
+   expected to continue to grow in coming years.
+
+   <p>The growth of EAF's comes partly at the expense of integrated mills.
+   Integrated mills produce iron in blast furnaces, from coal, iron ore,
+   and limestone. The iron is then refined into steel, most commonly in
+   basic oxygen furnaces. The steel produced by integrated mills
+   generally is considered to be of higher quality than steel from EAF's,
+   but because more steps are involved in the production process, it also
+   is more costly. The initial step in the integrated mill process is to
+   prepare coal for use in a blast furnace by converting it to coke. Coal
+   is heated in coke ovens to remove impurities and to reduce it to
+   nearly pure carbon. Because coke production is considered to be one of
+   the dirtiest steps in production, many firms are looking for
+   substitutes for coke in steelmaking.
+
+   <p>At the other end of the steel manufacturing process, semifinished
+   steel from either EAF's or integrated mills is converted into finished
+   products. Some of the goods produced in finishing mills are steel
+   wire, pipe, bars, rods, and sheets. Products also may be coated with
+   chemicals, paints, or other metals that give the steel desired
+   characteristics for various industries and consumers. Also involved in
+   steel manufacturing are firms that produce alloys, by adding materials
+   like silicon and manganese to the steel. Varying the amounts of carbon
+   and other elements contained in the final product can produce
+   thousands of different types of steel, each with specific properties
+   suited for a particular use.
+
+   <p>Increasing competition from abroad and in the domestic market has
+   caused integrated and EAF producers to modernize. For workers, this
+   often has meant learning new skills to operate sophisticated
+   equipment. Competition also has resulted in increasing specialization
+   of steel production, as various producers attempt to capture different
+   niches in the market. With these changes has come a growing emphasis
+   on flexibility and adaptability for both workers and equipment. As
+   international and domestic competition mounts for U.S. steel
+   producers, the nature of the industry is expected to continue to
+   change in these directions.
+
+   <h>WORKING CONDITIONS
+
+   <p>Steel mills evoke images of strenuous, hot, and potentially dangerous
+   work. While many dangerous and difficult jobs remain in the steel
+   industry, modern equipment and facilities have helped to change this.
+   The most strenuous tasks were among the first to be automated. For
+   example, computer-controlled machinery helps to monitor and move iron
+   and steel through the production processes, reducing the need for
+   heavy labor. In some cases, workers now monitor and control the
+   equipment from air-conditioned rooms.
+
+   <p>Nevertheless, large machinery and molten metal can be hazardous,
+   unless safety procedures are observed. Hard hats, safety shoes,
+   protective glasses, ear plugs, and protective clothing are required in
+   most production areas.
+
+   <p>The expense of plant and machinery and significant production startup
+   costs force most mills to operate around the clock. Workers averaged
+   44.6 hours per week in 1998, and only about 1.7 percent of workers are
+   employed part time. Night and weekend shifts are common, as is
+   overtime work during peak production periods. In 1998, 33.7 percent of
+   all steel workers put in overtime.
+
+   <p>Cases of occupational injury and illness in the industry were 12.0 per
+   100 full-time workers in 1997, significantly higher than the 7.1 cases
+   per 100 workers for the entire private sector and also higher than the
+   10.3 cases per 100 for all manufacturing. The highest injury rate in
+   the steel industry-16.3-was found in steel pipes and tubes.
+
+   <h>EMPLOYMENT
+
+   <p>Employment in the steel industry declined to about 232,000 wage and
+   salary jobs in 1998, less than half its 1980 level. The rate of
+   decline, however, has slowed in recent years. The steel industry
+   traditionally has been located in the eastern and Midwestern regions
+   of the country, where iron ore, coal, or one of the other natural
+   resources required for steel are found. Even today, about 50 percent
+   of all steelworkers are employed in Pennsylvania, Ohio, and Indiana.
+   The growth of EAF's, though, has allowed steel-making to spread to
+   virtually all parts of the country. Large firms employ most workers in
+   the steel industry. Over 9 out of 10 work in establishments employing
+   at least 50 workers, and almost half work in establishments employing
+   1,000 or more persons (chart 1).
+
+
+
+   <h>OCCUPATIONS IN THE INDUSTRY
+
+   <p>Opportunities exist in a variety of occupations, but the majority of
+   workers-79 percent-are employed in operator, fabricator, and laborer
+   and precision production, craft, and repair occupations (table 1).
+   About 17 percent work in managerial, professional, and administrative
+   support occupations.
+
+   <h>Table 1. Employment of wage and salary workers in steel manufacturing
+   by occupation, 1998 and projected change, 1998-2008
+   <h>(Employment in thousands)
+   <h>Occupation 1998 Employment 1998-2008 Percent change
+   Number Percent
+   <l>All occupations 232 100.0 -23.7
+   <l>Operators, fabricators, and laborers 112 48.6 -21.2
+
+   <l>Machine tool cutting and forming setters, operators, and tenders,
+   metal and plastic
+   24 10.4 -13.8
+
+   <l>Helpers, laborers, and material movers, hand
+   18 7.8 -26.8
+
+   <l>Other machine setters, operators, and tenders
+   11 4.8 -20.8
+
+   <l>Crane and tower operators
+   10 4.3 -23.6
+
+   <l>All other assemblers, fabricators, and hand workers
+   9 4.0 -23.6
+
+   <l>All other metal and plastic machine setters, operators and related
+   workers
+   8 3.2 -23.6
+
+   <l>Furnace operators and tenders
+   6 2.4 -16.0
+
+   <l>Industrial truck and tractor operators
+   5 2.1 -23.6
+
+   <l>Welders and cutters
+   4 1.6 -31.3
+
+   <l>Heat treating machine operators and tenders
+   3 1.5 -23.6
+
+   <l>Metal fabricating machine operators
+   3 1.2 -20.9
+   <l>Precision production, craft, and repair 70 30.0 -26.6
+
+   <l>Blue collar worker supervisors
+   16 7.0 -23.6
+
+   <l>Industrial machinery mechanics
+   11 4.9 -21.4
+
+   <l>Inspectors, testers, and graders, precision
+   6 2.7 -33.8
+
+   <l>Electricians
+   9 3.7 -23.6
+
+   <l>Millwrights
+   5 2.1 -51.5
+
+   <l>Maintenance repairers, general utility
+   3 1.5 -30.6
+
+   <l>Machinists
+   3 1.3 -23.6
+   <l>Administrative support, including clerical 16 6.9 -30.4
+
+   <l>Other clerical and administrative support workers
+   3 1.5 -25.3
+
+   <l>Shipping, receiving, and traffic clerks
+   2 1.0 -29.8
+
+   <l>Financial records processing occupations
+   2 0.9 -36.6
+   Executive, administrative, and managerial 15 6.3 -24.9
+
+   <l>Management support occupations
+   5 2.1 -24.9
+
+   <l>Industrial production managers
+   3 1.2 -25.8
+
+   <l>General managers and top executives
+   2 1.0 -25.9
+   Professional specialty 9 3.7 -13.8
+
+   <l>Engineers
+   5 2.3 -19.2
+   <l>Technicians and related support 3 1.4 -29.0
+
+   <l>Engineering and science technicians and technologists
+   3 1.2 -27.9
+   <l>Marketing and sales 4 1.9 -23.6
+   <l>Service 3 1.2 -29.5
+
+   <p>At an integrated steel mill, production begins when material moving
+   equipment operators load iron ore, coke, and limestone into the top of
+   a blast furnace. As the materials are heated, a chemical reaction
+   frees the iron from other elements in the ore. Blowers direct the
+   overall operation of the blast furnace. Blowers are responsible for
+   the quality and quantity of the iron produced and for supervising
+   keepers and their helpers. Keepers operate the equipment used to tap
+   the liquid iron and to remove impurities from the furnace. The molten
+   iron then is ready to be transformed into steel.
+
+   <p>Generally, either a basic oxygen or an electric arc furnace is used to
+   make steel. Although the steel making procedure varies with the type
+   of furnace used, the jobs associated with the various processes are
+   similar. Melters supervise furnace operators and their assistants who
+   control the furnace. Melters gather information on the characteristics
+   of the raw materials they will use and the type and quality of steel
+   they are expected to produce. They direct the loading of the furnace
+   with raw materials and supervise the taking of samples, to insure that
+   the steel has the desired qualities. Melters also coordinate the
+   loading and melting of raw materials with the steel molding or casting
+   operation to avoid delays in production.
+
+   <p>Furnace operators use controls to tilt the furnace to receive the raw
+   materials. Once they have righted the furnace, furnace operators use
+   levers and buttons to control the flow of oxygen and other materials
+   into the furnace. During the production process, assistants routinely
+   take samples to be analyzed. Based on this analysis, operators
+   determine how much longer they must process the steel or what
+   materials they must add to meet specifications. Operators also pay
+   close attention to conditions within the furnace and correct any
+   problems that arise during the production process.
+
+   <p>Traditionally, liquid steel was moved from the furnaces into a ladle
+   from which it was poured into ingots. Steel producers now use a
+   process known as "continuous casting" almost exclusively. Continuous
+   casting allows firms to produce steel ready for the next step in
+   processing directly from liquid steel, thus eliminating many of the
+   steps involved in pouring and rolling ingots. Molding and casting
+   machine operators tend machines that release the molten steel from the
+   ladle into water-cooled molds at a controlled rate. Molded steel is
+   then cut to desired lengths, as it emerges from the rolls. During this
+   process, operators monitor the flow of raw steel and the supply of
+   water to the mold.
+
+   <p>The "rolling" method shapes most steel processed in steel mills. In
+   this method, hot steel is squeezed between two cylinders or "rollers,"
+   which flatten or shape the steel. Heaters monitor equipment that tells
+   when the ingot is uniformly heated to the required temperature.
+   Rollers operate equipment that rolls the steel ingots into
+   semifinished product; the quality of the product and the speed at
+   which the ingot is rolled depend on the roller's skills. Manipulator
+   operators tend the machinery, which controls the position of the ingot
+   on the roller. Placing the ingot and positioning the rollers are very
+   important, for they control the product's final shape. Improperly
+   adjusted equipment may damage the rollers or gears.
+
+   <p>Millwrights are employed to install and maintain much of the
+   sophisticated machinery in steel mills. As the technology becomes more
+   advanced, they work more closely with electricians, who help repair
+   and install electrical equipment like computer controls for machine
+   tools.
+
+   <p>With more sophisticated technology and demands for specialized
+   products, scientists, engineers, and technicians have a significant
+   role in the steel industry. For example, engineers test batches of
+   steel before they are cast, to check for the desired composition. They
+   also may develop new specialized metals as well as new equipment. As
+   in other industries, there also are many managerial and administrative
+   support jobs.
+
+   <h>TRAINING AND ADVANCEMENT
+
+   <p>As machinery becomes more complex, employers increasingly prefer to
+   hire college graduates for highly skilled operating positions. For
+   some production positions, vocational or community college training
+   may be required.
+
+   <p>Once production workers are hired, they receive training on the job.
+   New workers entering the production process as lower-skilled laborers
+   generally assist more experienced workers, beginning with relatively
+   simple tasks. As workers acquire experience, they specialize in a
+   particular process and acquire greater skill in that area. They may
+   progress from second helper to first helper, and then to a skilled
+   position, such as melter or roller. The time required to become a
+   skilled worker depends upon individual abilities, acquired skills, and
+   available job openings. It generally takes at least 4 or 5 years, and
+   sometimes much longer, to advance to a skilled position. At times,
+   workers change their specialization to increase their opportunities
+   for advancement. Especially in EAF's, workers are trained to perform a
+   variety of tasks and provide more flexibility to the firm, as company
+   needs change.
+
+   <p>Computers have become important, as companies have modernized. Workers
+   must learn to operate computers and other advanced equipment. Although
+   much of the specific training is done on the job, employers prefer to
+   hire applicants who have completed formal classroom training in a
+   technical school or college.
+
+   <p>To work as an engineer, scientist, or in some other technical
+   occupation in the steel industry, a college education is necessary.
+   Many workers in administrative and managerial occupations have degrees
+   in business or possess a combination of technical and business
+   degrees. A master's degree may give an applicant an advantage in
+   getting hired or help an employee advance.
+
+   <h>EARNINGS
+
+   <p>Earnings in the steel industry vary by occupation and experience but
+   are higher than average earnings in private industry. Average weekly
+   earnings of nonsupervisory production workers in 1998 were $822 in the
+   steel industry, compared to $563 in all manufacturing and $442
+   throughout private industry. Weekly earnings in blast furnaces and
+   steel mills, at $907, were significantly higher than those in steel
+   pipes and tubes, at $626. Earnings in selected occupations in steel
+   manufacturing appear in table 2.
+
+   <h>Table 2. Median hourly earnings of the largest occupations in steel
+   manufacturing, 1997
+   <h>Occupation Steel
+   manufacturing All industries
+   <l>First line supervisors and managers/ supervisors-production and
+   operating workers $20.05 $16.62
+   <l>Electricians 17.42 16.54
+   <l>Machinery maintenance mechanics 17.16 14.72
+   <l>Millwrights 15.88 16.99
+   <l>Crane and tower operators 14.89 14.04
+   <l>Furnace operators and tenders 14.89 11.88
+   <l>Rolling machine setters and set-up operators, metal and plastic 14.35
+   12.52
+   <l>Industrial truck and tractor operators 13.73 10.99
+   <l>Production inspectors, testers, graders, sorters, samplers, and
+   weighers 12.60 10.15
+   <l>Machine forming operators and tenders, metal and plastic 11.69 9.55
+
+   <p>Union membership, geographic location, and plant size affect earnings
+   and benefits of workers. In some firms, earnings or bonuses are linked
+   to output. Workers receive standard benefits, including health
+   insurance, paid vacation, and pension plans.
+
+   <p>The iron and steel industry traditionally has been highly unionized.
+   In 1998, 44.3 percent of steel workers were covered by union
+   contracts, compared with 16.8 percent in all of manufacturing and 15.4
+   percent in all industries. In some instances, companies are closed
+   shops; that is, workers must belong to the union, in order to work
+   there. EAF's, though, typically are nonunion. The overall decline of
+   employment in traditional integrated steel mills and the growth of
+   EAF's, together, have caused union membership to decline in recent
+   years.
+
+   <h>OUTLOOK
+
+   <p>Employment in the steel industry is expected to decline by about 24
+   percent over the 1998-2008 period. This decline can mostly be
+   attributed to increased use of labor-saving technologies and
+   machinery. Other factors affecting employment in the industry include
+   foreign trade, overall economic conditions, the growth of EAF's, and
+   environmental regulations. Despite the continuing decline in
+   employment, qualified workers still will be needed to replace workers
+   who retire or leave the industry. Opportunities will be best for
+   individuals with the technical skills and training to handle
+   technologically advanced machinery.
+
+   <p>Employment levels in coming years will be greatly affected by the
+   ability of steel makers located in the United States to compete with
+   imports from abroad. Worker productivity has increased in U.S. firms
+   in recent years, leaving the domestic steel industry better able to
+   compete with imports. Many American steel producers, however, complain
+   that they face unfair competition from abroad and that foreign
+   producers, subsidized by their governments, are "dumping" steel in the
+   U.S. market. Efforts currently are underway to improve trade relations
+   in steel. If these efforts are successful, increasing trade would
+   almost certainly result, which would foster growth in the most
+   efficient American firms as they take advantages of growing export
+   opportunities. It also would hasten the demise of inefficient plants
+   trying to compete with low-priced imports.
+
+   <p>Employment in the steel industry varies with overall economic
+   conditions and the demand for goods produced with steel. For example,
+   as the automotive industry produces more cars and light trucks, it
+   will purchase more steel. In this way, much of the demand for steel is
+   derived from the demand for other products. Other industries that are
+   significant users of steel include structural metal products, motor
+   vehicle parts and equipment, and household appliances. As many of
+   these goods require a large outlay, consumers are more likely to
+   purchase them in good economic times.
+
+   <p>Steel companies, like most businesses, have entered the era of
+   sophisticated technology. Taking several forms, this technology has
+   improved both product quality and worker productivity. Computers are
+   essential to most technological advances in steel production, from
+   production scheduling and machine control, to metallurgical analysis.
+   Computerized systems change the nature of many jobs, while they
+   eliminate or reduce the demand for others. For example, computers
+   allow one worker to perform duties that previously took the efforts of
+   several workers. However, computer-controlled equipment often requires
+   operators to have greater skills. Hence, workers who are comfortable
+   with computers and other high-tech equipment-as well as those willing
+   and able to learn-will be more widely sought after by employers. This
+   automation will contribute to better opportunities for engineers and
+   other professional specialty occupations, while causing significant
+   declines for lower-skilled machine operators and inspectors.
+
+   <p>Environmental issues also have affected the steel industry. Past
+   decades have seen technological changes spurred by environmental
+   emission regulations. Emission standards, under the present Clean Air
+   Act, will likely result in costly modifications or shutdowns in many
+   coal-processing facilities that employ a dirty, heavily polluting
+   process. Necessary furnace modifications will require major
+   investments and increase the overall cost of production for
+   coke-producing plants. These modifications are, therefore, likely to
+   raise costs in integrated mills that use coke to produce steel.
+
+   <p>The emergence of EAF's is perhaps the most important factor in
+   transforming the steel industry. This trend will continue in the
+   foreseeable future, as EAF's dominate the new capacity expected to
+   begin operation in the next few years. Integrated mills are expected
+   to maintain a major share of the market in higher grade steel and are
+   also entering areas like residential construction; but EAF's will
+   continue to account for a larger share of the international steel
+   market. Growth of EAF's is driven by many factors, including
+   relatively low startup costs, flexibility, and the ability to locate
+   close to the consumer. This is especially important in the
+   construction industry. Because the scrap steel they need to operate is
+   widely available, EAF's have provided job opportunities in the steel
+   industry in additional geographic areas. However, since they generally
+   have higher worker productivity, as EAF's capture more of the domestic
+   steel market, fewer workers will be employed to meet the existing
+   demand for steel products.
+
+   <h>SOURCES OF ADDITIONAL INFORMATION
+
+   <p>For additional information about careers and training in the steel
+   industry, contact:
+
+   * <p>American Iron and Steel Institute, 1101 17th St. NW, Suite 1300,
+   Washington, DC 20036-4700.
+
+   * <p>Steel Manufacturers Association, 1730 Rhode Island Ave. NW, Suite
+   907, Washington, DC 20036-3101.
+
+   <p>Information on the following occupations may be found in the 2000-01
+   Occupational Outlook Handbook:
+     * <l>Blue-collar worker supervisors
+     * <l>Electricians
+     * <l>Engineers
+     * <l>Industrial machinery repairers
+     * <l>Inspectors, testers, and graders
+     * <l>Machinists and numerical tool and process control programmers
+     * <l>Material moving equipment operators
+     * <l>Metalworking and plastics-working machine operators
+     * <l>Millwrights
+
+
+

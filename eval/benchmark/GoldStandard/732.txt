@@ -1,0 +1,146 @@
+URL: http://www.subclub.org/darkroom/splitter.htm
+
+
+<h>SPLITTING FILM
+   ______________________________________________________________________
+
+   <p>Since many film types were only available from the film manufacturers
+   in35mm stock, several submini camera manufacturers designed film
+   splittersto allow cutting a smaller strip of film from 35mm stock.
+   With a film slitter,you can get some amazing film into your submini,
+   such as 2475 recording film,B&W or color infrared film, Tech pan,
+   Agfapan 25 and Ektar 25. Sometimes called film slitters -- and NOT to
+   be confused with filmSPLICERS -- these devices came in various styles
+   to cut different size strips.Some cut a 35mm strip in half to produce
+   two 17.5mm strips for cameras thatused that size film. Others would
+   cut 16mm strips, 9.5mm strips and even8mm strips. Some of the
+   companies that made these slitters were GaMi, Minolta,Yashica, Ricoh,
+   Mikroma, Microtec, Acmel, and Varitype. There are undoubtedlymore.
+   They basically work the same way. Using razor blades, of some
+   type,they cut out smaller strips of film from 35mm film. These items
+   are no longerbeing made and are very difficult to find.
+
+   <p>If you want a ready-made slitter, we suggest you check out:
+    
+   <p>If you prefer an older model, check out theSWAPMEET section of the
+   SUBCLUB.
+
+   <p>If you are handy or determined, you might even want to built your own
+   slitter.All you need are a few small pieces of wood, a couple of razor
+   blades, somebasic tools, a little ingenuity and time.  Here are some
+   pictures ofa completed splitter. With this slitter, you place a bulk
+   roll of 35mm filmon the part that looks like a black handle. The film
+   is pressed down ontothe cutting block and a removeable pressure plate
+   is screwed on top. Thenthe film is pulled through the slitter and
+   rolled up on the other side. Twopieces of felt on either side of the
+   film keep it from getting scratched.
+
+   
+
+   <p>You can use various materials in the construction of your slitter.
+   Thedecision on material is up to you.  Wood is normally easier to
+   workwith if you just have standard tools, but other materials may
+   offer advantages,if you are familiar with them and have the necessary
+   tools.  In buildingyour own slitter, one big problem you will come
+   across is that the film ismeasured in millimeters, but American
+   building materials are normally cutin inches. To complicate matters
+   even more, when you add in the razor bladesinbetween the wood blocks,
+   the width is increased very slighly, but it canbe enough to through
+   off careful measurements. Here are some helpfulmeasurements:
+     <l>* 3/8" wood = .375 inches = 9.525mm -- A piece of wood this thick
+       will need to be sanded down somewhat to produce the size of the
+       Minox film (9.2mm).
+     <l>* 5/8" wood = .625 inches = 15.875mm -- A piece of wood this thick
+       (plus the added thickness of the razor blade) should be just right
+       for 16mm film.
+     <l>* 11/16" wood = .6875 inches = 17.4625mm -- A piece of wood this
+       thick (plus the added thickness of the razor blade) should be just
+       right for 17.5mm film.
+     <l>* 1 3/8" wood = 1.375 inches = 34.925mm -- Pieces of wood that total
+       to this thickness (plus the added thicknesses of the razor blades)
+       should be just right for the total width of the 35mm film.
+       <p>If you need just a little extra spacing, pieces of construction
+       paper will probably work fine.  If you need a little less spacing,
+       sand down the wood with fine sand paper, measuring as you go.
+     _________________________________________________________________
+
+   <p>Here are a few diagrams to use depending on the type and size of film
+   youplan to slit.  The diagrams are NOT to scale.
+   <p>If you are using 35mm unperforatedfilm.
+   <p>If you are using standard 35mm perforatedfilm.
+   <p>If you are using 16mm film, regardless ofthe perforations.
+   <p>You can see from these diagrams is that if you only use one size of
+   filmto slit from (ex. 35mm) and one size of film to slit to (ex. 16mm)
+   your jobwill be easier.  If you plan on slitting from different film
+   sizes (ex.35mm AND 16mm), or slit to different film sizes (ex. 16mm
+   AND 9.5mm) yourwork is more involved.  You will need to make different
+   film slittersor make a slitter with different slitting block pieces.
+   It's up toyou to decide which is the best route to take.
+     _________________________________________________________________
+
+   <p>Before you get started, here are few points to ponder.
+
+   <p>Making a slitter takes time even if you are familiar with hand tools.
+    Themeasurements must be precise and the pieces of material are small,
+   makingcutting difficult.  It also makes it easy to cut yourself, so
+   watchout!
+
+   <p>The more planning you do up front the better your results will be and
+   theeasier the job will be.  The plans outlined here are generic plans
+   andneed to be modified depending on the type of film you plan to slit,
+   the typeof film you want to produce, the type of materials you plan to
+   use and thefeatures you want to built into the slitter.  You will
+   first need tospend time designing your slitter using these diagrams as
+   a starting point. If you have trouble designing your slitter, it's
+   best not to buildone yourself.
+
+   <p>The amount of wood used in the project is very small.  Becasue of
+   thisyou can probably afford to move up from a soft wood, like pine, to
+   a harderwood, like oak.  Your slitter will last longer, but your saws
+   and drillbits won't.  Harder woods are trickier to work with.
+
+   <p>The SUBCLUB can assume no responsibility for the success of your
+   splitter,nor for any damage you do to yourself or your camera during
+   its constructionor use.   In other words, you're on your own.  If you
+   have theslightest doubt about building a slitter, you probably
+   shouldn't built one.
+     _________________________________________________________________
+
+   <p>If you are working with wood, the tools you will need are:
+     <l>* electric drill and bits
+     <l>* screwdriver
+     <l>* hammer
+     <l>* sander and sandpaper
+     <l>* wood glue
+     <l>* C-clamps
+     <l>* saw
+     <l>* pliers
+     <l>* ruler
+     <l>* pencil
+
+   <p>The materials you will need will vary depending on size of the slitter
+   youmake and the design and features you build into it.
+     <l>* wood (see diagram to design and measure your own pieces)
+     <l>* screws (flat head will probably work best)
+     <l>* bolts (there are several kinds available)
+     <l>* wing nuts (to go with the bolts)
+     <l>* washers (to go under the wing nuts)
+     <l>* felt (available at any fabric store)
+     <l>* dowels (depending on your plans)
+     <l>* razor blades (many types are available)
+     _________________________________________________________________
+
+   <p>If your are a Minox user, you can see somegreat planson this site.
+
+   <p>And here's another sitewith some super ideas for a slitter.
+
+   <p>Whether or not you are a Minox user, here are somegeneric plans with
+   instructions and diagrams forthe slitter in the pictures at the top of
+   this page.
+
+   <p>This guy has figured out how toturn a cheap35mm camera into a film
+   slitter.
+   ______________________________________________________________________
+
+   <p>If you have any ideas, suggestions or comments about these pages,
+   pleasecontact the Sub Club at the FRONTDESK.

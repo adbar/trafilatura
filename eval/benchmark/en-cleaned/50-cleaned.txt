@@ -1,0 +1,88 @@
+URL: http://effectmeasure.blogspot.com/2005/04/h7-in-north-korea.html
+
+<p>Effect Measure 
+
+   <p>Effect Measure is a forum for progressive public health discussion and
+   argument as well as a source of public health information from around
+   the web that interests the Editor(s)
+
+<h>H7 in North Korea
+
+   <p>Reports from Pyongyang, North Korea today seem to indicate that the
+   unidentified bird flu strain afflicting North Korean poultry is of the
+   H7, not H5, sub-type. AP says this has been confirmed by FAO, but New
+   Scientist says evidence is "indirect" (according to a different FAO
+   source), where "indirect" means the North Koreans prepared a vaccine
+   from the sick birds and the vaccinated birds showed antibodies to H7.
+   
+   <p>If the infection is with H7 subtype this would seem to be good news as
+   human cases with H7 have not been particularly severe. H7N2 has been
+   reported in poultry in the US (Delaware) and H7N7 caused a large
+   outbreak in poultry in 2003 in The Netherlands which jumped to humans.
+   Most cases manifested as conjunctivitis ("pink eye") and a small
+   number (3) showed typical influenza-like symptoms (cough, fever,
+   muscle aches). The only serious case involved a veterinarian who
+   visited one of the farms and developed fatal respiratory distress
+   syndrome.
+   
+   <p>Relatively mild disease, yes. But the fly in the ointment is that this
+   avian virus also showed itself to be quite transmissible to and among
+   people. Eighty-three cases were reported initially among poultry
+   workers with three possible subsequent transmissions to family
+   members. A follow-up blood study with 500 farmers, their families and
+   workers involved in the massive cull initially showed no antibodies to
+   H7, even in those with confirmed infection. It turned out the
+   hemagglutination assay (to see if a subject's blood serum made red
+   blood cells clump together, a standard test for prior infection)
+   worked with horse red blood cells, not the standard turkey rbcs. Even
+   using horse rbcs, only about 50% of the previously infected patients
+   showed agglutination, still not very sensitive. Using the modified
+   assay, Dutch investigators estimated that at least 1000 and perhaps as
+   many as 2000 people may have been infected. More importantly, close
+   family contacts of poultry workers had a 59% seroprevalence of H7
+   antibodies, suggesting person to person transmission on large scale.
+   Some other pertinent technical results:
+
+     <p>. . . having measurable antibodies was associated with having
+     conjunctivitis (RR 1.72; 95% CI 0.99-2.99), and a lower proportion
+     of the exposed persons who took prophylactic antiviral medication
+     developed antibodies (corrected OR 0.48; 95% CI 0.25-0.89).
+     
+	 <p>Neither poultry farmers nor those engaged in controlling the
+     epidemic complied satisfactorily with preventive measures. Only 6%
+     of farmers reported consistent use of facial masks and 1% reported
+     consistent use of goggles while working with infected poultry. In
+     cullers, compliance was only slightly better: 25% consistently used
+     facial masks and 13% used goggles. The results of the
+     epidemiological study suggest that oseltamivir protected against
+     conjunctivitis (corrected OR=0.14; 95% CI=0.08C0.27) as well as
+     against infection without specific symptoms. No protective effect
+     was demonstrable for safety goggles or mouth-nose masks.
+
+   <p>Meanwhile, the North Koreans are declaring the outbreak over (Right.
+   Maybe they want to sell me a bridge over the Yalu?). Even if true,
+   questions remain, as New Scientist notes:
+
+     <p>But this is a mystery, as an outbreak of H7 has never been recorded
+     in east Asia before. âThe North Koreans say they have destroyed all
+     the sick chickens, and the outbreak is now over,â says [the FAO
+     scientist]. âThatâs good for the Koreans. But weâd like a sample of
+     tissue from the infected birds so we can isolate the virus.â
+     A genetic sequence might help trace the strainâs origins, and
+     whether it has mixed with other Asian strains.
+
+   <p>So the evidence has been destroyed? I'll bet it's still there. The
+   problem will be getting it before it migrates elsewhere.
+
+   
+   <p>In epidemiology an effect is the endpoint of a causal mechanism. An
+       effect measure is anestimate of the influence of a particular
+       factor on a population's health. The Editors of Effect Measure are
+       seniorpublic health scientists and practitioners. Their names
+       wouldbe immediately recognizable to many in the public health
+       community.They prefer to keep their online and public lives
+       separate to allow maximum freedom of expression. Paul Revere was a
+       member of the first local Board of Health in the United States
+       (Boston, 1799). The Editors signtheir posts "Revere" to recognize
+       the public service of aprofessional forerunner better known for
+       other things.

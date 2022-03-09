@@ -1,0 +1,32 @@
+
+<h> Indiana State University 
+
+
+<h> Welcome
+
+<p> The Center for Instruction, Research, and Technology explores,
+   develops, promotes, and supports effective teaching and research
+   practices to advance knowledge and active learning at Indiana State
+   University. CIRT endeavors to have a measurable impact on the academic
+   community by building the reputation of Indiana State for innovative
+   instruction and technology-enhanced research.
+
+<p> The Center is under the domain of the Associate Vice President for
+   Academic Affairs and Chief Information Officer and has strong ties to
+   the Provost's and is guided by a faculty advisory committee.
+
+
+<h> Mailing Address:
+   
+<l> Normal Hall 301
+<l> Indiana State University
+<l> Terre Haute, IN 47809
+
+<l> Phone: 812-237-2676
+<l> Fax: 812-237-8446
+
+<l> cirt@indstate.edu
+
+<h> Office Hours:
+<l> Monday-Friday
+<l> 8:00AM-4:30PM

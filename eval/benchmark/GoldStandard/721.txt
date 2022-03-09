@@ -1,0 +1,184 @@
+URL: http://www.srim.org/
+
+
+
+                     <h>PARTICLE INTERACTIONS WITH MATTER
+
+           <p>Click on a topic below for a summary of this website.
+
+              <h>SRIM - The Stopping and Range of Ions in Matter
+
+                    <h> SER - Electronic Soft Error Rates
+
+                          <h>IBA - Ion Beam Analysis
+
+                               
+
+                                      
+
+                  <h>The Stopping and Range of Ions in Matter
+
+
+                 <h> The Stopping and Range of Ions in Matter
+
+<h>Software -
+
+   <p>SRIM is a collection of software packages which calculate many
+   features of the transport of ions in matter. Typical applications
+   include:
+     <p>* Ion Stopping and Range in Targets: Most aspects of the energy loss
+       of ions in matter are calculated in SRIM,  the Stopping and Range
+       of Ions in Matter. SRIM includes quick calculations which produce
+       tables of stopping powers, range and straggling distributions for
+       any ion at any energy in any elemental target. More elaborate
+       calculations include targets with complex multi-layer
+       configurations.
+     <p>* Ion Implantation: Ion beams are used to modify samples by
+       injecting atoms to change the target chemical and electronic
+       properties. The ion beam also causes damage to solid targets by
+       atom displacement. Most of the kinetic effect s associated with
+       the physics of this kind of interactions are found in the SRIM
+       package.
+     <p>* Sputtering: The ion beam may knock out target atoms, a process
+       called ion sputtering. The calculation of sputtering, by any ion
+       at any energy, is included in the SRIM package.
+     <p>* Ion Transmission: Ion beams can be followed through mixed
+       gas/solid target layers, such as occurs in ionization chambers or
+       in energy degrader blocks used to reduce ion beam energies.
+     <p>* Ion Beam Therapy: Ion beams are widely used in medical therapy,
+       especially in radiation oncology. Typical applications are
+       included.
+
+<h>Science -
+
+   <p>The science of ion beams goes back almost a century to the earliest
+   explanations of radioactive particles transiting thin films (1904).
+   The field is so rich that it is difficult for a non-expert to
+   understand any of the current papers in the field. But basically,  the
+   stopping of ions in matter can not be calculated from first
+   principles. Hidden in stopping theories are parameters which normalize
+   calculated stopping powers to existing data. The "Science" section of
+   SRIM will review the basic theories of the stopping of ions in matter.
+   Then some of the major parameters are reviewed and it will be shown
+   how they are derived from experimental data. Examples are shell
+   corrections, mean ionization potentials, the effective charge of ions
+   and the Fermi velocity of solids.
+
+
+   <p>Over 2000 papers have been published in the experimental stopping of
+   ions in solids. Experimental measurements of stopping powers is a
+   difficult task, and there is wide variation in the results.. Plots
+   will show how existing stopping calculations compare to experimental
+   data from these papers.  Since the stopping calculations are based in
+   great part on theory, the interpolation of stopping powers between
+   various ions and targets is often more accurate than individual
+   measurements, especially for difficult targets.
+
+   
+
+                               
+
+                <h>Soft Errors in Electronics from Cosmic Rays
+
+                              
+
+                          <h>Electronic Reliability -
+
+                     <h>Effects of Terrestrial Cosmic Rays
+
+
+
+   <p>Although this subject is more about the effects of energetic hadrons
+   on terrestrial electronics than about ion beams, it is scientifically
+   in a similar field (hadrons = protons, neutrons and pions, i.e.
+   particles which respond to the nuclear force / strong interaction).
+   The science and technology about cosmic ray induced soft fails was
+   considered proprietary by IBM for more than 15 years. In 1996, a
+   complete issue of the IBM Journal of Research and Development was
+   devoted to reviewing this work. A summary of the issue, and the
+   complete first article (the 15 year history of the development of the
+   IBM scientific understanding of soft fails from radiation) is given at
+   <p>IBM J. R.& D.
+
+
+   <p>The scientific history of  this field is reviewed in detail. The field
+   is not static because the technology of integrated circuits is still
+   rapidly changing and the effects of cosmic rays on integrated circuits
+   (ICs) show trends which are not well understood. The trends in the
+   sensitivity of ICs to cosmic rays are reviewed for SRAMs, DRAMs and
+   logic over the last 15 years.
+
+
+   <p>Fundamental to any estimates of the fail rate of ICs is an
+   understanding of the ambient flux of cosmic rays in the environment.
+   As this flux has been investigated over the last 15 years, it has
+   become fuzzier rather than more precise. Previous measurements of the
+   ambient flux which were considered reliable have been shown to be
+   suspect. New measurements rarely agree with past measurements. Recent
+   reports of the flux of sea level cosmic ray hadrons vary by more than
+   10x, even though they were performed by highly competent scientists.
+   The problem will probably be resolved by understanding that the
+   immediate materials nearby an experiment can have significant effect
+   on the measured flux. The field of the terrestrial flux of cosmic rays
+   will be reviewed.
+
+   
+
+                               
+
+                          <h>Ion Beam Analysis (IBA) 
+
+   <p>This package contains programs for the analysis of data from ion
+   scattering experiments (called Rutherford Backscattering Spectroscopy,
+   RBS), and analysis of data from target sputtering experiments (called
+   Elastic Recoil Detection, ERD). In general, the package is applicable
+   to any ion, at any energy in any target material. It is written in a
+   windows-based environment with a full graphics user interface (GUI)
+   for analysis of complex spectra using mouse-based input. The software
+   contains a full 32-bit instruction set to minimize computer delay in
+   calculating simulations.
+
+   <p>The software is written in a language called APL, which is a
+   multi-window GUI application language particularly forgiving of
+   mistakes. Since IBA analysis is so complex, and covers any ion at any
+   energy for any target, it is particularly difficult to ma ke a program
+   which will not get confused by user requests. APL allows the user to
+   immediately recover with just two key strokes, without reloading any
+   code or data, and continue executing the analysis from the point of
+   error. The required APL compiler is available for both Win-95 and OS/2
+   systems (see the Installation Manual for details). For details on the
+   APL environment for scientific programming, see the website:
+   http://www.software.ibm.com/ad/apl/apl2.html. The APL compiler is
+   normally very expensive (about $1500) but it is available with
+   "educational discounts" from IBM sales. The software requires the full
+   APL package and will not work with any of the stripped down versions
+   of APL.
+
+
+   <p>The package has been used by many groups and is relatively bug-free.
+   However, this software is no longer supported by the author.
+
+
+   <p>Below are links to (a) an Introduction to the IBA software, (b)
+   Installation requirements for the software, and (c) Samples of IBA
+   applications. The sample IBA figures show some of the capabilities of
+   the IBA package. These figures come from the IBA Tutorial Manual.
+
+   
+
+
+   <p>To obtain the IBA software package, you must download and print out
+   the Installation Manual (in MS-WORD format) for your system, and then
+   the Application Package, which is one ZIP file which contains both the
+   Win-95 and OS/2 programs (the differences are minor). The application
+   package also contains the Tutorial Manual which you will print out as
+   part of the installation process.
+
+
+   <p>Once you have installed the system, the Tutorial Manual introduces you
+   to the Analysis software, and it can be used for later reference for
+   menus for more complex operations such as introducing ion implanted
+   distributions into complex layered targets.
+
+
+   

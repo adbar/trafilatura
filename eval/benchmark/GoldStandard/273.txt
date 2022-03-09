@@ -1,0 +1,559 @@
+URL: http://www.belairfinishing.com/practical_guide_to_mass_finishing.htm
+
+<h>THE PRACTICAL GUIDE TO MASS FINISHING OF PRECIOUS AND COSTUME JEWELRY:
+METHODS AND MYTHS
+
+<h>Steven R. Alviti, Bel Air Finishing Supply Inc.
+<h>CONTENTS
+
+<h>ABSTRACT
+
+<p>A microscopic and technical view of mass finishing presented in
+   layman's terms. Understanding of mass finishing must start at the very
+   basic level of what happens microscopically to the surface of various
+   materials. All the variables will be discussed, such as the media,
+   compounds and the effect of various types of machinery on the
+   finishing process. Practical techniques and the associated costs will
+   be presented for pre-finishing of precious metal jewelry as well as
+   costume or imitation jewelry
+
+<h>INTRODUCTION
+
+<p>This article is an explanation of Mass Finishing from a practical
+   standpoint. The views discussed here are a result of 30 years of
+   experience in manufacturing jewelry, job shop processing for many
+   diverse manufacturing industries as well as experience in designing
+   and manufacturing of finishing equipment. Historically, the mass
+   finishing department of many companies have not received the attention
+   or understanding required to serve the best interests of the
+   manufacturer's finished product. Typically, manufacturers migrate to
+   opposite ends of the spectrum with regards to their finishing
+   department. It is either in the remotest location of their facility
+   and the attitude is "well that's the way we have always done it" or
+   they have instituted a sophisticated system without the proper
+   understanding of the economics or the reality of everyday jewelry
+   manufacturing. There is no best way of finishing a product. Before any
+   changes are made to a finishing department, the manufacturer must
+   address the importance of several aspects before making a decision.
+   Most Important Semi Important Least Important Processing Time Quality
+   of Finish Cost of Finishing Training Employees Maintenance Cost of
+   Equipment Loss of Material from Product
+
+<h>III MEDIA - COMPOUNDS
+
+<h>A. DEFINITION
+
+<p>The word media is used to describe the material that is used in mass
+   finishing to actually do the work on the surface of the part that is
+   being finished. The compound refers to the different types of
+   chemicals used during wet mass finishing operations.
+
+<h>B. FUNCTION OF MEDIA
+
+<p>The functions of media are varied and range from rough cutting to
+   polishing. ROUGH CUTTING of the raw product is to remove all possible
+   surface imperfections. Depending upon the manufacturing process, some
+   hand work may be necessary prior to this mass finishing step. Raw gold
+   casting must have the sprue cut off and ground down to the surface. In
+   the case of a white metal rubber molded piece, usually no hand
+   operation is necessary. However, each case depends on the
+   manufacturing process. The rough cut is to remove the surface
+   imperfections of the material due to its fabrication technique. (i.e.
+   casting, rolling, forming, etc.) This is the stage where mass
+   finishing plays its biggest role in labor savings. Typically, mass
+   finishing can save 50 - 75% of the hand labor used to finish a piece
+   of jewelry. FIG. 1-3
+
+<p>The rough cut is almost always done as a wet operation with media,
+   water and compound. The labor savings is most obvious for cast
+   materials due to the inherent roughness of the "as cast" surface.
+   PRE-FINISHING is the term used for the operation following the rough
+   cut stage. The pre-finishing step is usually done prior to machine
+   polishing, hand polishing or electroplating. The purpose is to
+   increase the smoothness of the "rough cut" surface so as to make the
+   polishing or electroplating procedure more effective. In order for a
+   product to be machine polished or a combination of machine and hand
+   polished, this step is most necessary. If the product is going to be
+   hand polished or electroplated, this step may or may not be necessary.
+   This would depend upon whether the labor saving is worth the time
+   investment. A question quality versus cost must also be taken into
+   consideration. The pre-finishing operation is almost always done as a
+   wet operation with media, water and a compound. MACHINE POLISHING is
+   very economical where applicable. It can save up to 95% of hand
+   finishing labor costs; however, many facto must be considered for this
+   step to be viable. This is usually a dry procedure using a natural
+   carrier and a powdered compound without water. Fig. 4 BURNISHING is
+   used to render the surface of a product bright by J means of rolling
+   over a surface with a non-abrasive media such as steel or porcelain.
+   This method physically peens the surface in order to increase light
+   reflectivity which, in turn, will make the surface appear bright. This
+   media is the heaviest available and is used with water and compound.
+
+<h>C. MEDIA TYPES
+
+<p>There are a variety of different media for different applications:
+
+<p>Normally, there are two components of CUTTING MEDIA:
+<l>abrasive grains and
+<l>carrier or bonding agents
+
+<p>Abrasive grains for cutting media can be any of the following:
+<l>Silicone carbide - most aggressive
+<l>Aluminum oxide - moderately aggressive
+<l>Silica- least aggressive
+
+<p>Bonding materials can be (FIG 8 ):
+<l>Ceramic - hard
+<l>Plastic - soft
+<l>Natural - range soft to hard
+
+<p>PRE-POLISHING MEDIA is much the same as cutting media with exception
+   of the size of the grain that is bound into the media. Pre-finishing
+   media is also used to perform a cutting operation; however, much more
+   gentle and finer than the rough cut media.
+
+<p>BURNISHING MEDIA has no abrasive grain. This media is used simply to
+   roll over or hammer away at the surface with the sole purpose of
+   making it bright. This media is typically made from either very heavy
+   lain or solid steel.
+
+<p>POLISHING MEDIA is generally made of a natural base material as wood,
+   shell or corn cob. Polishing compounds, very similar to used in hand
+   polishing bars, are bound to the natural base by means wax or oil
+   based product.
+
+<h>D. MEDIA SIZES AND SHAPES.
+
+<p>The various types of media are available in many shapes and sizes.
+   When choosing sizes and shapes, one must consider the geometry of the
+   being processed and choose the largest media possible that will
+   fulfill the following criteria: 1. The shape chosen will best be able
+   to touch every part of the surface of the work pieces. 2. The size
+   will facilitate easy separation (i.e. either the media or the piece
+   can be sifted through an existing separating screen).
+
+<h>E. FINISHING COMPOUNDS
+
+<p>Finishing compounds are either liquid or powder and are as additives
+   to the water being used during any of the mass finishing operations
+   There are three purposes for compounds (1) The compound is form of
+   soap used to suspend the solids being removed from the surface the
+   product (much like dishwashing soap). (2) The prevention of oxidation
+   or discoloration of the metals being processed. (3) The addition
+   lubricity to the process. The proper compounds form a cushion between
+   the media and the work piece, which allows a sliding action which in
+   turn, reduces impingement of the abrasive. Compounds are used both
+   types of processing. The first is called a batch operation where a
+   prescribed amount of media, water and compound are placed in a sealed
+   process chamber. The second is called a flow-thru operation where a
+   prescribed amount of water and compound continuously flow in and out
+   of open processing chamber of media. Theoretically, compounds are most
+   likely to be changed for a particular metal being processed as well as
+   for a particular step (i.e. rough cut, pre-finish etc.) In reality;
+   however, this is less likely to be specifically matched to the
+   purpose. Most manufacturers settle on one "all purpose compound" best
+   suited for their needs.
+
+<h>TETRAHEDRON
+<h>TRIANGLE
+<h>CONE
+<h>ANGLE CUT TRIANGLE
+<h>CYLINDER WEDGE
+<h>TRI-STARS
+<h>WEDGES
+<h>ANGLE CUT CYLINDERS
+
+<h>F. HOW MEDIA AND COMPOUNDS WORK
+
+<p>Mass finishing media works basically in the same manner as the
+   materials used in hand finishing. FIG 10 a-d
+<p>The main difference is that a machine is used to apply the force
+   through the tool to the work piece. The other difference is that a
+   mass of pieces are being processed rather than one piece at a time.
+   Hence, the name Mass Finishing. FIG 11
+<p>In order to perform the CUTTING OPERATION, we must choose the best
+   combination of abrasive grain, bonding material, size, shape and the
+   proper compound to use during the process. The cutting media works in
+   the same manner as a grinding wheel. A force is required to rub the
+   media across the surface of the work piece. FIG 12
+<p>At the point of contact of media and the work piece, abrasive grains
+   are exposed at the surface of the media and rubbed across the work
+   piece, microscopically cutting material from its surface. As material
+   is being cut away from the work piece, the abrasive grains are
+   becoming dull as they do their job. FIG 13a,b
+<p>Meanwhile, the bonding material is wearing away so as to rid the media
+   of these dull abrasive grains and to expose new sharp grains to
+   continue the cutting process. The water and compound are used to
+   cushion this effect as well as to remove all of the waste (used
+   abrasive grains, bonding material, work piece surface material) from
+   the operation. Economics now come into play when choosing the proper
+   cutting media.
+<p>The faster a media cuts, the faster it normally wears which equates to
+   dollars per finishing operation. If the bonding agent of the media
+   does not wear fast enough, the abrasive grains may not perform as
+   effective as they should. There is an optimal wear ratio between the
+   bond and the grain. If this ratio is not correct, the media is less
+   cost effective. Regardless of these microscopic costs, the overall
+   economic scale of labor saving, material loss and overall time savings
+   make mass finishing a sure bet.
+
+<p>THE PRE-POLISHING OPERATION is practically the same as the cutting
+   media except the bonding material is usually harder and the abrasive
+   grain size is smaller. In some cases, the abrasive grain is in the
+   form of slender finer shape. By rubbing over the surface with a
+   greater low of water and a compound that lubricates more effectively,
+   a gentle honing action occurs. The purpose is to reduce the surface to
+   a finer/smoother finish. Typically, the wear of pre-polishing media is
+   much less than that of cutting media. We are less interested in
+   removing metal, than we are in reducing the surface finish.
+<p>The POLISHING OPERATION is normally done as a dry process, the media
+   in this case is either of several natural products like wood round up
+   corn cob or nut shells. In this case, there is no water flow and, the
+   compound is dry and bonded to the carrier. Some typical compounds are
+   alumina and tin oxide, which are the same compounds used for hand
+   polishing In this case, the rubbing action of the media is meant to
+   -plicate the action of a polishing wheel rubbing polishing compound
+   over the surface of the work piece. As long as the surface has
+   previously been rendered smooth and flat, this process will now
+   produce a high luster to the surface. This operation usually takes a
+   much longer time than the rough cut and pre-polish. The finish that is
+   achieved with this method is very good; however, it will never be
+   equal to that of a hand polished finish No mass finishing machine has
+   been able to duplicate the force and action necessary to compare to
+   hand polishing. Hand polishing actually over the surface of the work
+   piece by dragging metal whereas machine polishing only glosses the
+   existing surface. During this operation, due tog the fact that it is a
+   dry process, heat is generated by the friction of the in moving This
+   heat is beneficial to the process because it helps activate it
+   polishing compound itself; therefore, it is helpful to retain as much
+   of the .at generated by covering the process. Unlike cutting and
+   pre-polishing' media, the polishing media has a life span, after which
+   it is no longer effective This is due to the fact that the polishing
+   compound is only bonded to the surface of the media as opposed to the
+   abrasive grain being 81 bound throughout the whole composition.
+   However, once this media has been expended, it can be re-charged for
+   several more cycles before being discarded.
+<p>BURNISHING MEDIA is typified by the lack of abrasives and a hard and
+   extremely smooth surface. The purpose of burnishing is to brighten the
+   surface of a material by means of peening the surface. The correlation
+   that we use to explain this is if one took a plain dull piece of brass
+   and a ball peen hammer. After repeatedly hammering the surface, it
+   will then take on brightness imparted by the surface of the ball peen
+   will hammer.
+
+<p>Steel or stainless shot as well as porcelain balls are the typical
+   media of choice for burnishing. These are usually the heaviest
+   materials available and they are processed to have a microscopically
+   smooth and shiny surface finish.
+
+<h>IV MACHINES 
+
+<p>The media is what actually performs the surface finishing. The
+   compound allows this work to be done efficiently but it is the machine
+   that provides the energy to do all the work. There are several
+   different types of mass finishing machines, all of which have a
+   different method of transferring energy from an electric motor to the
+   media to the work piece.
+<p>The TUMBLING MACHINE is the oldest form of mass finishing equipment. A
+   motor is attached to the gear box by means of a pulley and belt. The
+   gear box rotates an octagonal finishing chamber which is either
+   submerged in water or contains water in its chamber. The chamber
+   should be loaded with between 50% and 60% of the total chamber volume.
+   About 15% to 25% of the total mass should be work pieces In this
+   equipment, the pieces are only being worked on as the media and pieces
+   tumble down the incline of the rotating barrel. Meanwhile, as the mass
+   rotates up to the top of the incline, there is no movement of media
+   with respect to workpiece; therefore, no work is (D 83 being done.
+   This type of operation is still effective for limited applications
+   with longer time cycles and a low quality finish.
+
+<h>Efficiencies of Tumblers:
+
+<p>Good for low cost, low quality finishes Good for cutting & de-burring
+   flat stackable work pieces Good for low cost, low quality burnishing
+   Deficiencies of Tumblers: Labor intense for volume processing Not
+   effective for polishing Not effective to pre-polishing Flow-through
+   compound system not available More apt to get part on part impingement
+   Will not finish parts with deep recesses
+
+<p>THE VIBRATORY TUB MACHINE was the next generation of mass finishing
+   equipment. It took the same basic idea of the tumbling machine but
+   created a new and more efficient means of transferring energy from the
+   motor to the tub. The chamber is "U" shaped and suspended on springs.
+   The shaft with eccentric weights is attached to the chamber and is
+   rotated by means of a belt and pulley attached to the motor. There are
+   still some of the same inherent problems in this process as in
+   tumbling but now we have incorporated a flow-through compound system
+   and vibratory action for more efficiency.
+
+<p>The VIBRATORY BOWL machine was the next generation of mass finishing
+   and remains the most popular and most effective to date. The
+   processing chamber is the shape of a hollowed doughnut laying on its
+   side. A motor is attached to a shaft with eccentric weights which is
+   fixed to the bowl shaped chamber which is suspended on springs. The
+   ensuing action causes the mass to travel in a three dimensional
+   toroidal motion.
+
+<p>This type of action allows for the most efficient processing of work
+   pieces. The work chamber can almost be filled to capacity as well as
+   allowing the high concentration of work pieces in relationship to the
+   mass.
+
+<p>Efficiencies of Vibratory Bowl:
+<l>Highest quality finish
+<l>Low maintenance
+<l>Allows flow-through operation
+<l>Low labor cost for operating
+<l>Minimizes processing load
+
+
+<p>HIGH ENERGY BARREL MACHINES operate basically the same as tumbling
+   barrels with one major difference - centrifugal energy is added to the
+   process to dramatically reduce the processing time. This is
+   accomplished by mounting several barrels in a ferris wheel type
+   arrangement and spinning the complete apparatus as each barrel is
+   rotating.
+
+<p>Except for the extra force applied to the media and work piece, all
+   the draw-backs of tumbling are still inherent. An additional drawback
+   is that the equipment now becomes very expensive as well. Processing
+   time is one positive feature of the apparatus.
+
+<p>The HIGH ENERGY DISC finishing machines have been developed to take
+   advantage of the three dimensional action of a vibratory bowl and the
+   reduced processing time of centrifugal force machines. The energy is
+   transferred from a motor to a gear box in order to rotate a central
+   disc at the bottom of a round stationary chamber. Centrifugal force
+   and the rotating action sends the mass outward towards the stationary
+   wall. The mass then slows down and returns to the center to complete
+   the cycle.
+
+<p>This method incorporates the ability to have flow-through processing
+   and high energy. The major drawback to this equipment lies in the disc
+   seal. This is the machine part that lies between the stationary bowl
+   and rotating center. A precision opening must be maintained so as to
+   allow the flow-through water and debris to escape. The inherent
+   problem is that abrasives are constantly flowing through a moving
+   seal. This makes for a maintenance nightmare besides the high initial
+   expense of the equipment. Process time reduction is the benefit
+   derived from this equipment. The latest development in mass finishing
+   equipment is a machine designed for the specific purpose of
+   burnishing.
+
+<p>The ROLL BURNISHING machine is a completely new drive mechanism for
+   the oldest of techniques, burnishing.
+
+<p>This new machine is a form of high energy ball burnishing. It operates
+   by rotating a belt in a tub shape configuration while submerged in a
+   rectangular tub of water and compound. Not only does this facilitate a
+   much faster cycle, there is also the point of impingement on all tubs,
+   which has been eliminated because of the roll under effect created by
+   the belt This is also the only tub style burnisher that allows the
+   possibility of a flow-through compound system. Beyond this, the system
+   has a unique unload system that is incredibly labor saving. A
+   specially made sieving basket is emerged into the mass and removed
+   with just the work pieces. No media has to ever be handled by the
+   operator. It takes less than one minute to completely unload work
+   pieces.
+
+<p>The MAGNETIC PIN FINISHER has been developed to burnish the nooks and
+   crannies and far reaches of jewelry products. The machine uses a motor
+   to spin a magnet beneath a flat table. The finishing chamber contains
+   very fine steel needles or pins with the water and compound mix. The
+   work pieces are placed in the chamber and covered. The cylindrical
+   chamber is placed on top of the table. The magnets are rotated in a
+   circular path that matches the bottom of the chamber. This causes the
+   steel pins to stand up and rotate. The collision of the magnet driven
+   pins with the work piece causes the mass to rotate at the same time as
+   the pins hammer the surface of the work piece.
+
+<h>V. MACHINE EFFECTIVENESS / COST RELATIONSHIP
+
+<h>A. MACHINE COST EFFECTIVENESS
+
+<p>The main purpose of mass finishing is to economize the finishing
+   operation of all jewelry products. Other reasons vary according to the
+   situation. In Italy and the U.S., hand finishing labor is very costly.
+   In China, the labor is cheap. The worker training and consistency are
+   the issues . In some other countries, the main issue is the loss of
+   gold from the raw casting to the finished product. The type of mass
+   finishing is determined by these and other parameters:
+
+<h>B. COMMON FINISHING MYTHS
+
+<h>1. Many customers purchase plastic media based on lowest cost
+
+<p>Plastic media is made of two parts, a polyester resin bonding agent
+   and abrasive grain. The most expensive part of the media is the resin
+   bonding agent. In order to decrease the cost of selling plastic media,
+   an increase percentage of abrasive can be mixed into the media. The
+   problem is - the more grain, the faster the media wears, which
+   actually makes it more expensive to operate. Another way to decrease
+   the cost of selling plastic media is to use a less expensive bonding
+   agent. Urea Formaldehyde has been used as a less expensive bonding
+   agent, which again increases the wear rate and hence is more expensive
+   to operate with this media.
+
+<h>2. Urea Formaldehyde bonded plastic media is cheaper to use and easier
+   to settle out in your waste water system
+
+<p>Urea Formaldehyde or UF media was developed to fight the increased
+   cost of using the standard polyester based resin bonding agents.
+   Because it obviously wears out faster, some other benefit must have to
+   be touted to over-ride this defect. Actually its initial cost is less.
+   It does not make waste treatment any easier and it is more expensive
+   to operate.
+
+<h>3. Ceramic cutting media costs less and wears longer
+
+<p>This is a true statement. We see this approach quite often in the Far
+   East. The fact is that, because the media is harder and does not wear
+   out, it does not cut the surface. If you are dealing with soft metals,
+   as we often do for jewelry products, ceramic media for cutting is not
+   practical because the surface of the media "loads up" with metal
+   before it can wear to the next level of cutting. Therefore, the media
+   only works in a manner of burnishing the surface.
+
+<h>4. High energy disc finishers give a better finish than Vibratory
+
+<p>The action of both a disc finisher and a vibratory finisher is
+   basically the same with respect of the mass traveling in a three
+   dimensional motion. Assuming the media and compound are the same, the
+   only difference is t some added centrifugal force is being used in the
+   operation. That alone cannot produce a better finish. Faster - yes,
+   but not better. The simple fact that a particular grit media is rubbed
+   over a work piece surface is what defines the degree of smoothness
+   achieved. An example would be rubbing a 200 grit sand paper on a
+   surface. No matter how hard or how t it was rubbed, it still remains a
+   fact that you could not get better than 00 grit finish.
+
+<h>5. "After casting, put your piece in a pin machine and it is finished"
+
+<p>I heard this absurd statement from finished goods manufacturers coming
+   out a seminar at a trade show. The statement may be true for the
+   purpose of cleaning a raw casting; however, it actually deteriorates
+   any broad surface t needs polishing. A pin machine is strictly for
+   pronged and recessed as or the lowest quality bright finish. This is
+   used to finish these hard to reach areas in conjunction with other
+   mass finishing or hand finishing.
+
+<h>6. The European technique saves time
+
+<p>This technique is to use a plain media with no abrasive as a carrier
+   and then to add abrasive grit for .ting. This is done in a batch
+   operation as a slurry. Once the first cycle complete, it is then
+   flushed. The batch is then run with a finer grit led and flushed
+   again. This system saves an unloading operation; however, it
+   sacrifices results. Finishing by this method would be as if one took a
+   piece of paper and a sprinkle of sand and started to rub a piece as
+   posed to using a piece of sandpaper. Although the unloading between
+   finishing steps has been eliminated, the operation itself is very
+   inefficient.
+
+<h>7. The machine does not work
+
+<p>Many times, after a manufacturer has purchased a machine and has
+   embarked on mass finishing, they call and say "the machine does not
+   work". My response is to ask several questions: a. Did you plug the
+   machine in? b. Did you turn the machine on? c. Does the machine shake?
+   or spin? If they answer yes to all of these questions, my response is
+   "the machine works". The problem is that the technique the
+   manufacturer is using is not producing what the manufacturer expected.
+   He may have been misinformed, uninformed or misdirected. It is
+   important to remember, although mass finishing is relatively
+   straightforward once a process has been established, there are many
+   variables to consider. The technology is the most important thing to
+   consider when making a purchase. Just as in making a decision to
+   purchase jewelry software, you should be dealing with a supplier who
+   concentrates in the industry and is always updating their technology.
+
+<h>8. Internal separation in a vibratory machine saves time
+
+<p>Some vibratory finishing machines have a built in dam that, when
+   closed, allows the mass to rise and pass over a screen which allows
+   the media to return into the bowl and the work pieces shake across the
+   screen and out of the bowl. The idea seems efficient; however, in
+   reality, there is so much variation in jewelry components that it
+   becomes a laborer's nightmare to change screens and find missing parts
+   that never rise over the screen. internal separation is never 100%
+   effective. It reduces the capacity of the machine and it causes longer
+   down time for the unload cycle. An operator should be able to unload
+   and reload a vibratory bowl up to 3 cubic feet in less than 10 minutes
+   using an external separator.
+
+<h>VI CONSUMER EXPECTATIONS DICTATE TECHNIQUES
+
+<p>Ther is no best way to mass finish. The consumer who will eventually
+   purchase the finished jewelry product is the one who actually dictates
+   the finishing technique to be used by the manufacturer. For instance,
+   let's manufacture a pair of gold earrings set with diamonds. The
+   estimated retail value will be $2000 US dollars and it will be sold in
+   an upscale jewelry store. The gold castings would probably be run in
+   some type of mass finishing cutting cycle and then hand polished with
+   several steps: the settings may be hand burnished and then the stones
+   would be hand set and, finally, hand glossed again. Now let's use that
+   same wax model and make a $ 100 US dollar pair of gold earrings with a
+   cast in CZ that will be sold to Wal-Mart Stores. We would probably run
+   that same gold casting through a three step mass finishing process
+   that would give us a "near" polished finish. The final operation may
+   be a quick hand gloss with a polishing wheel. Next, let's take the
+   same wax model and make a pair of gold earrings to sell one of the
+   world's latest consumers, a Mainland Chinese laborer. First, we will
+   move the stone and now have a target retail of $40.00 US dollars. The
+   manufacturer now may only have to do a simple burnishing operation to
+   bring up the shine and color of the gold. Each one of the above
+   consumer has a different level of expectation with regards to the
+   product resulting in each product being processed by a different mass
+   finishing technique. The end result is that each consumer is equally
+   pleased with his or her purchase. The same scenario is true for
+   costume jewelry. There is no best way. ere are many techniques
+   developed for varying degrees of quality and economy Whether the
+   product has been stamped, cast, machined or molded be it made from
+   precious metal, base metal, plastic or wood, there are many machines
+   and media available for mass finishing. The most effective to date
+   remains the Vibratory Bowl Finisher.
+
+<h>NEW DEVELOPMENTS IN WASTE WATER TREATMENTS
+
+<p>New developments in treating effluent have progressed nicely from the
+   set of jewelry mass finishing. In the early days, environmental
+   restrictions were tremendous hurdles to overcome for many
+   manufacturers. In most recent years, systems have been developed that
+   make it a lot easier for manufacturers to efficiently process their
+   vibratory me. The following are some methods currently used in many
+   systems.
+
+<l>Polymer Flocculation
+
+<l>Filter Presses
+
+<l>Ultra Filtration
+
+<l>Resin Columns
+
+<h>Recycling Methods
+<p>The current technology now allows for the effluent to RECYCLE thru
+   vibratory system. This eliminated the need to discharge water while
+   saving in compound cost at the same time. In some parts of the world,
+   the laws are not strict enough to make this necessary but we would
+   hope that manufacturers will be environmentally responsible. Once the
+   effluent has been treated, costume jewelry manufacturers now must deal
+   with the disposal of sludge waste that has been extracted from the
+   water. This sludge has typically been defined as hazardous waste and
+   trucked away at about $200 per drum.
+<p>The latest development in WATER TREATMENT CHEMISTRY now encapsulates
+   up to 99% of the soluble and insoluble metals from the effluent. The
+   sludge, after air drying, now transforms into cement like material. In
+   most cases, this allows the waste to be classified as non hazardous
+   which allows dumping in land fills. For precious jewelry
+   manufacturers, this simple 15 minute procedure allows them to recover
+   the most gold or platinum ever attainable without waiting for days of
+   natural settling or messy evaporation techniques.
+
+<h>VIII FUTURE ARTICLES 
+
+<l>Costume Jewelry Finishing Techniques 
+
+<l>Precious Jewelry Finishing Techniques 
+
+<l>New Developments in Waste Water Treatment Technology

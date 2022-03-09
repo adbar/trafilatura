@@ -1,0 +1,216 @@
+URL: http://hcrenewal.blogspot.com/2005/05/troubling-study-of-contracts-between.html
+
+
+<h>Health Care Renewal 
+
+<h>Thursday, May 26, 2005
+
+<h>A Troubling Study of the Contracts Between Medical Schools and Corporate
+Research Sponsors
+
+ <p>  The NEJM article about contracts for clinical trials between academic
+   health centers (AHCs) and pharmaceutical companies mentioned in an
+   earlier post deserves further attention. (The study is available here,
+   and its citation is Mello MM, Clarridge BR, Studdert DM. Academic
+   medical centers' standards for clinical-trial agreements with
+   industry. N Engl J Med 2005; 352: 21.)
+   
+<p>   First, let me summarze the study's design. The authors sent a survey
+   to senior administrators in the offices of sponsored research in 122
+   medical schools. They received responses from 107, for 91% response
+   rate, excluding four schools that did no clinical research. They asked
+   the administrators questions about provisions they would usually allow
+   in contracts between their medical schools and corporate sponsors. The
+   proportions who would allow some particular research practices follow:
+    
+<l> The sponsor will own the data produced by the research - 80%
+<l> The sponsor will store the data and release portions to the
+       investigator - 35%
+<l> The investigators (whether at your site or any other site) are not
+       permitted to alter the study design after the agreement is
+       executed - 68%
+<l>The sponsor is permitted to alter the study design after the
+       agreement is executed - 62%
+<l> The sponsor may prohibit individual site investigators from
+       publishing manuscripts independently of the sponsor or group - 15%
+<l> The sponsor may include its own statistical analysis in
+       manuscripts - 24%
+<l> The sponsor will write up the results for publication and the
+       investigators may review the manuscript and suggest revisions -
+       50%
+<l> While the trial is going on, the investigators may not discuss
+       research results (including presentations at scientific meetings)
+       with people not involved in the trial - 66%
+<l> After the trial is over, the investigators may not discuss
+       research results (including presentations at scientific meetings)
+       until the sponsor consents to dissemination - 21%
+<l> The terms of the clinical-trial agreement are confidential - 62%
+<l> After the trial is over, the industry sponsor may prohibit
+       investigators from sharing raw research data with third parties -
+       41%
+
+ <p>  In summary, this study suggests that some medical schools will
+   acquiesce to contracts that prevent their faculty from having
+   meaningful control over research projects for which they are the
+   ostensible investigators. Some medical schools will allow corporate
+   research sponsors to manipulate the design, analysis, and
+   interpretation of results to increase the likelihood of getting the
+   results the sponsor wants. For example, 50% of medical schools would
+   allow the corporate sponsor to write manuscripts reporting on study
+   results, and only allow faculty to "suggest revisions." Thus, many
+   medical schools acquiesce to contracts that could allow corporate
+   sponsors to ghost-write articles. Furthermore, more than half of the
+   medical schools acquiesce to contracts that are kept confidential,
+   preventing easy discovery of manipulation of the conduct and
+   dissemination of the research by the corporate sponsor.
+
+ <p>  (To see specific techniques that corporate sponsors may use to
+   increase the likelihood that research produces the results they want,
+   see our earlier post about the article entitled "Medical Journals Are
+   an Extension of the Marketing Arm of Pharmaceutical Companies" by
+   Richard Smith.)
+
+ <p>  To underline the context, in my experience, to do clinical research,
+   most medical school faculty are strongly pressured by their
+   institutions to obtain external funding to support this work. Those
+   who cannot obtain funding within a few years of unemployment often
+   have to find something else to do other than research. However,
+   although faculty are expected to find sources of funding, it is
+   generally the medical schools or academic medical centers, not the
+   researchers, who negotiate research agreements, and although such
+   agreements may bind faculty members, the money paid under their
+   auspices generally goes directly to the faculty member's employer.
+   Thus, individual researchers are under considerable pressure to find
+   grant and contract funding, and to keep their financial sponsors
+   happy, but must work under whatever contract provisions their
+   employers negotiate.
+
+ <p>  The New England Journal of Medicine article clearly suggests that some
+   medical schools allow researchers to be bound by agreements that allow
+   the study's sponsor to manipulate study design, analysis, and
+   interpretation to make it more likely that the results will be to the
+   sponsor's liking. Since clinical trials enroll real human beings as
+   subjects with the promise that the data they contribute, and the risks
+   they run, will lead to valid scientific results, allowing such
+   manipulation appears to not only likely to produce biased results, but
+   also to be allow unethical exploitation of human subjects, and thus is
+   in conflict with the medical school's scientific and humanitarian
+   mission.
+
+ <p>  This is yet another illustration of leaders of powerful health care
+   organizations acting in conflict with physicians' and medical
+   researchers' core values.
+
+ <p>  One can only hope that publicizing such practices will lead to more
+   ethical research, and less exploitation of human subjects.
+
+<p>   By the way, I do not in any sense mean to blame the research
+   administrators who must try to negotiate these contracts. Note that
+   69% of the administrators "perceived that competition for research
+   funds created pressure on administrators to compromise on the language
+   of the contract." 24% described the pressure as "great." I do blame
+   the higher leadership of the medical schools for fostering a climate
+   in which money is more important than doing valid, ethical research.
+   This raises several important questions:
+    
+ <l> Why don't some medical school leaders enforce clearer ethical
+       standards for clinical research sponsored by industry?
+ <l>  Are they so worried about getting the money, and so worried that
+       they will lose contracts if they insist on ethical standards?
+ <l>  Are they so steeped in the exteme relativism of the post-modernist
+       university that they don't believe in such standards?
+ <l>  Are they so used to violating their own mission to support
+       political causes, as is documented again and again on the FIRE
+       web-site, that they aren't troubled by violating their mission for
+       economic reasons?
+
+ <p>    Maybe it's time we start trying to address such questions.
+
+<p>   posted by Roy M. Poses MD 
+
+<h>3 Comments:
+
+ <p>    * This study builds on our 2002 work. Multicenter clinical trial
+       research is governed by standard agreements at all sites
+       participating in a study-there really is little variablity within
+       a study, only some varaibility across studies. The final result is
+       that when patients are randomized, the institution has not
+       assuance that the sponsor will publish the overall trial results,
+       not that there will be an independent process to assess whether in
+       fact the trial is publishable. Since the definition of research is
+       the creation of generalizable knowledge, site investigators at
+       academic medical centers are in fact deceiving patients when they
+       recruit them to multicenter clinical trials if they ask them to
+       participate in a research study under current agreements. Even
+       with the 2001 guidelines, the 2002 paper and now this paper, there
+       looks to be little pressure to change practices. Further, we need
+       a single ethical standard for research-otherwise trials will move
+       to non-academic sites in the US or off-shore.
+
+       
+ <p>    * To people with experience in the area, these recent revelations
+       will not be a surprise. The new interest is in getting firm
+       information on the scale of it.
+       
+ <p>      Nevertheless, one should be cautions about interpreting some of
+       these things at face value. For example, the 50% of cases where
+       "The sponsor will write up the results for publication and the
+       investigators may review the manuscript and suggest revisions" may
+       seem a bit scandalous, in view of the opportuinity for distortion
+       which it provides.
+       
+ <p>      But one can also consider that a sponsor contracts the
+       investigation to an academic research team because they have the
+       clinical/laboratory/library facilities, and the technical
+       expertise, to perform a good investigation; while the sponsor has
+       expertise in trial design, trial monitoring, regulatory
+       requirements, and statistics. That sponsor may do a thoroughly
+       ethical job.
+      
+ <p>     I'm sure we're all aware of cases where a sponsor would be unwise
+       to keave trial design and statistics to a particular clinical
+       research team!
+      
+<p>      On the other hand, the sponsor may not do an ethical job (that
+       door is after all open).
+      
+ <p>     So, in interpreting (e.g.) that 50%, one would like to know what
+       proporion of it led to an ethically good outcome, and what
+       proportion led to distortion of the results.
+      
+ <p>     On occasion, individual researchers vlow the whistle. Often, they
+       may be reluctant.
+      
+<p>      On the context of what the terms of research contracts should be,
+       perhaps they should spell out not only who does what, but also why
+       (e.g. the clinical team do not have experience in trial design).
+      
+ <p>     Ultimately, it would be desirable that all participants should be
+       independent of the sponsor and responsible for the integrity of
+       the operation. But perhaps that is utopian.
+      
+<p>      ted Harding.
+      
+ <p>     By Ted Harding
+      
+<p>     * There are a lot of bright people paying attention to clinical
+       trials: sponsor, clinical physicians, FDA, editors, referees, and
+       readers. All have interests and different levels of power. The FDA
+       examines raw data sets. It is not easy to imagine that the
+       situation is all that bad. On the other hand, physicians have to
+       evaluate journal articles from non-randomized studies. These are
+       the Wild, Wild West. Hundreds of questions can be asked and a few,
+       most likely false positive, results are reported. No one can check
+       anything as near as I can tell. Ask for study details like the SAS
+       code used for the analysis or the raw data and most likely you
+       will get stonewalled. Most of this research is government funded.
+       The vast majority of epidemiology studies do not replicate and
+       epidemiologists don't appear to care.
+  
+_______________________________________________________
+
+<h>About
+
+ <p>  Addressing threats to health care's core values, especially those
+   stemming from concentration and abuse of power.
+

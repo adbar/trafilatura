@@ -1,0 +1,713 @@
+URL: http://www.ibiblio.org/cisco/tracy-article.html
+
+          <h<The Internet and Schools: A Survey of Networking Activities
+
+
+   <h>Manager, Education Market Development, Cisco Systems
+   tparker@cisco.com
+   <h>(Presented at the Internet Society's INET '94 Conference in Prague)
+
+   <h>Abstract
+
+   <p>This paper presents a survey of some of the major groups and
+   activities that are shaping the future of the Internet's role in
+   education. It also covers some projects that benefit administrative,
+   instructional, professional development and community outreach
+   projects and applications, and some exciting current initiatives
+   around the U.S. Finally, it discusses some of the barriers that face
+   schools in getting connected to the Internet. The paper was written
+   with a U.S.perspective.
+
+   <h>I. Introduction
+
+   <p>The school community (commonly referred to as K-12 in the U.S.,
+   meaning kindergarten through 12th grade) is starting to focus its
+   attention on the Internet.Most school networking activity has occurred
+   in the U.S., however, there are projects being initiated in Canada,
+   Japan, the UK and other countries. The Internet is being used for all
+   aspects of education, including administrative, educational,
+   professional development, and community building.
+
+   <p>A recent informal census conducted via voluntary reportings over the
+   Internet estimates the number of teachers and students (individual and
+   classroom accounts) in the U.S. using the Internet, either directly or
+   indirectly, at almost 250,000. The number of educational resources,
+   databases, mailing lists, and archives is also growing rapidly -- so
+   much so that one educator recently lamented on an education mailing
+   list there was too much available, that the sheer number of
+   distributed services was large enough to overwhelm the novice teacher
+   embarking for the first time on a digital professional development
+   trip. (This problem is being addressed with the appearance of user
+   friendly search and retrieval tools that present a simple, organized
+   face of the Internet, such as Gopher and the WorldWideWeb.)
+
+   <p>The state of educational networking is being shaped by many groups,
+   networking initiatives, pilot projects and new challenges. Some of
+   these are outlined below.
+
+   <h>II. International Groups and Projects
+
+   <p>Some of the international direction and evangelism for K12 networking
+   is being headed by the Internet Society's K-12 Committee.
+
+   <p>The Internet Society (ISOC) is a professional organization that is
+   chartered to facilitate and support the technical evolution of the
+   Internet as a research and education infrastructure, and to educate
+   the members on its technology, uses and applications. The ISOC's K-12
+   committee was formed about 2 years ago to promote the use of
+   networking in the classroom, discuss issues related to teachers and
+   children accessing the Internet and to propose concrete and useful
+   solutions to barriers facing educators and students.
+
+   <h>II.A. IETF Involvement
+
+   <p>Among the many projects its members are working on, the Internet
+   Engineering Task Force (IETF) is working on school-related efforts.
+
+   <p>For example, the IETF's Internet School Networking (ISN) Working Group
+   recently wrote a Request for Comments (RFC) For Your Information (FYI)
+   document (RFC1578) called "FYI on Questions and Answers - Answers to
+   Commonly Asked Primary and Secondary School Internet User." The
+   various sections answer questions about obtaining an Internet
+   connection, technical implementation and technical options, security
+   and ethics, educational collaboration, projects and resources.
+
+   <p>This working group is creating other useful documents. One of
+   these"K-12 Internetworking Guidelines" explains what schools need to
+   know for future networking plans.
+
+   <h>II. B. U.S. Groups and Networks
+
+   <p>In the U.S., there is the well known National Research and Education
+   Network (NREN) part of the High Performance Computing and
+   Communications Act of 1991. The more recent National Information
+   Infrastructure (NII) initiative, which is much broader in scale, is
+   intended to benefit K-12 education in terms of ubiquitous connectivity
+   to all schools. Indeed, the Clinton/Gore Administration recently
+   issued an ambitious challenge calling for all schools and libraries to
+   be connected to the NII by the year 2000. Many businesses have
+   responded with pledges to make this a reality.
+
+   <h>II.C. The Consortium for School Networking
+
+   <p>The Consortium for School Networking (COSN) is a membership
+   organization of institutions, companies and individuals charged with
+   promoting the use of computer network technology in K-12 education
+   within the United States. Services COSN provides to its members
+   include regular newsletters on networking topics of interest, an
+   extensive on-line gopher server of education networks, projects and
+   resources. COSN has also testified to Congress on behalf of K-12
+   networking interests.
+
+   <p>One of the latest efforts from COSN was a project funded by the
+   National Science Foundation and being conducted in cooperation with
+   the Federation of American Research Networks (FARNET).
+
+   <p>The project, called "Building Consensus and Models," brought together
+   representatives from industry, national, state and local levels. Five
+   groups formed, each charged with laying out the key requirements and
+   proposed models for a certain topic.The topics and models included
+   educational reform and restructuring for a technology-intensive
+   society; connectivity and access; technical and user support;
+   financial; and curriculum and content. (See the COSN Gopher for more
+   information.)
+
+   <h>II. D. U.S. State Projects
+
+   <p>In the U.S., state-level discussion are underway for a mix of
+   connectivity and content solutions.
+
+   <p>Many states have decided not to reinvent the wheel and are
+   recommending schools and districts connect to existing midlevel and
+   commercial networks, while providing a multi-phase approach to giving
+   teachers and administrators Internet connectivity.
+
+   <p>One example of state-based education networking is the Texas Education
+   Network, also known as TENET.TENET has received lots of attention
+   because of its success in leveraging an existing network, the Texas
+   Higher Education Network (THEnet) as a backbone networking
+   infrastructure. THEnet is a statewide Internet-connected network that
+   provides services to over 100 education and research organizations in
+   Texas.It is operated and maintained by the University of Texas System
+   Office of Telecommunication Services in Austin, Texas.
+
+   <p>The requirements for access are minimal; an educator can dial into 1
+   of 18 local points of presence (Cisco CommServers and modem pools
+   connected to THEnet member universities) using existing equipment in
+   his home or classroom: a computer (PC or Macintosh), a modem and a
+   phone line. (An 800 number serves those not located in a local calling
+   area.)The costs for access are low; teachers can currently get an
+   account on the TENET computers for $5/year.
+
+   <p>The success of this project is obvious: after a little over 2 years of
+   operation, 30,000 educators are using TENET. The Internet and TENET
+   have been demonstrated enthusiastically in every school district and
+   the benefits and uses are now obvious to many people. As a result,
+   many school districts are planning for direct connections to the Texas
+   Higher Education Network. Additionally, all 20 Texas Education Service
+   Centers (ESCs) have recently connected to THEnet.
+
+   <p>Other states have had similar successes to TENET's. Virginia's Public
+   Education Network (VAPEN) and Florida's Information Resource Network
+   (FIRN) are also dial-up networks servicing thousands and thousands of
+   teachers. The state of California offers dial-up Internet access to
+   teachers through the California State University (CSU) network; this
+   K-12 network is called California On-line Resources for Education
+   (CORE) and is operated both by the California State University system
+   and the California Department of Education. Oregon announced in
+   September 1993 their ambitious OPEN initiative (Oregon Public
+   Education Network) to connect all school districts, giving Internet
+   access to 500,000 educators and students. Hawaii is investigating
+   interconnecting all of its public schools to a statewide cable system.
+   And other states have announced or are working on statewide
+   initiatives.
+
+   <h>III. Benefits of Using the Internet for Education
+
+   <p>In order for the Internet to successfully be integrated into schools,
+   benefits must be shown for all aspects of education: instructional,
+   administrative, professional development and community involvement.
+   The Internet is already proving itself in these areas as evidenced by
+   some major initiatives.Some of these projects are described here.
+
+   <h>III. A. Administrative Uses
+
+   <p>There is quite a big business in US education for administrative
+   applications, systems that provide everything from student record
+   creation and maintenance, class scheduling, to food services and
+   accounting. For the most part, these systems are accessible to local
+   district or regions only and are not networked into larger systems.
+
+   <p>This is unfortunate as there is much need for the ability to transfer
+   administrative information between schools and districts. The US
+   student population is very mobile. According to "A Study of the
+   Feasibility of Implementing a Statewide Process for Electronically
+   Sharing Student Information" (a collaborative effort by the California
+   Department of Education, Far West Laboratory for Educational Research
+   and Development and the California Educational Data Processing
+   Association, published October 1992), it is estimated in California
+   alone that as many as 20% of the student population change schools
+   annually.
+
+   <p>Furthermore, according to the study, the current method for exchanging
+   student records and reporting to state and federal agencies costs
+   California a staggering $50 million each year. It's not only
+   expensive, it's time consuming; the average time spent transferring a
+   record using the current system is 24 days. [1]
+
+   <p>Clearly what is needed are standards for the exchange of this
+   information across a common network, such as the Internet. Using
+   Electronic Document Interexchange (EDI), student records could be
+   transferred across the Internet to other schools, as well as
+   universities and community colleges. The time could be cut from weeks
+   to seconds and the cost savings estimated are considerable; according
+   to the above California study, the cost drops from the current average
+   $15 per transferred record to $4. (And some people think that $4 is
+   too high, that the cost could be mere pennies per record.) Indeed,
+   with savings like these, a business case can certainly be made for
+   installing a network infrastructure and a link to the Internet.
+
+   <p>A project called SPEEDE/ExPRESS, the Standardization of Postsecondary
+   Education Electronic Data Exchange/Exchange of Permanent Records
+   Electronically for Students and Schools, is taking the lead in
+   defining standard record formats, and is also working with schools,
+   universities and states to implement pilot projects. The University of
+   Texas is currently exchanging records in this fashion with the Austin
+   Independent School District and is planning on adding other
+   universities and schools. There are similar pilots in Arizona, Florida
+   and California.
+
+   <p>It will take some time before standards exist for a ubiquitous
+   networked student record transfer system.But the Internet is serving
+   in other administrative capacities. The Texas Education Agency
+   (TEA)currently makes many documents available on-line on TENET,
+   including calendars, legislative summaries, directories, forms and
+   spreadsheets. The hard copy versions are also mailed to schools, but
+   an increasing number of people are realizing they can receive the
+   information much faster by downloading it from the network. TEA could
+   save millions of dollars in duplication and postage by making these
+   documents solely available via the network. Indeed, the State of Texas
+   has estimated annual savings of $1.4 million based solely on access to
+   TENET.
+
+   <h>III. B. Professional Development
+
+   <p>Many teachers are using the Internet for professional development.
+   Consider the plight of specialized instructors, such as journalism or
+   physics teachers. Many schools or school districts only employ one
+   such teacher. As a result, the librarian or woodworking instructor
+   often feels isolated and must become very self sufficient in areas
+   such as curriculum and professional development. With a network such
+   as the Internet, these teachers now have support groups; "places" a
+   teacher can go to share ideas with and ask questions of others in
+   their discipline, as well as download resources for use in the
+   classroom.
+
+   <p>For example, Pat Gathright, the journalism teacher at MacArthur High
+   School in San Antonio, Texas, is a true believer in the benefits of
+   networking and using the Internet. Ms. Gathright has a TENET account
+   and uses it to collaborate with other Internet-connected journalism
+   teachers across Texas and the US.
+
+   <p>"I have the sole responsibility on my campus for the yearbook,
+   newspaper, Journalism I, and Photojournalism," she says. "Few of my
+   fellow teachers can come close to understanding what my job is like or
+   help me with some of the problems I face each day. But know that I can
+   log onto the Internet and share with my journalism friends across the
+   state a desktop publishing trick that I learned at a workshop, a place
+   to find information on a story my students are working on, or just
+   news about my day." [2]
+
+   <p>Before TENET existed, journalism teachers like Ms. Gathright met once
+   a year at their annual conference in Austin. Now many TENET-connected
+   teachers meet online 24 hours a day, 365 days a year.
+
+   <p>Many teachers are using the Internet to coordinate projects with
+   classrooms in other countries. For example, Helen Bell, the school
+   librarian at Lincoln Junior High School in El Paso, Texas, has been
+   corresponding with Taichi Kameyama, a professor at Gifu University in
+   Japan who has assisted in coordinating projects between a local
+   Japanese high school and Lincoln. Juliette Avots from Wellesley High
+   School in Massachusetts also works with teachers in France to develop
+   structured language projects.
+
+   <p>In addition to collaborating with colleagues and developing joint
+   projects, teachers can also engage in dialogues with field experts.
+   Using the Internet, teachers can connect to NASA's Spacelink (operated
+   by the Marshall Space Flight Center in Huntsville Alabama) and send
+   questions to space experts, including space shuttle astronauts.
+
+   <p>Another project provided by the Educational Resources Information
+   Center (ERIC), a US national information system, provides an
+   Internet-based question-answering service for teachers, library media
+   specialists, and administrators who have questions about K- 12
+   education, learning, teaching, information technology and educational
+   administration. Anyone involved with K-12 education can send an e-mail
+   message to AskERIC and receive an answer within 48 working hours.
+
+   <p>Teachers can also download useful information, guides and images for
+   use in the classroom. Many are taking advantage of on-line Associated
+   Press (AP) and Reuters newsfeeds, the daily CNN (Cable News Network)
+   Newsroom curriculum guide, NASA space images, and regularly updated
+   weather reports; all of these are easily accessible and available on
+   the Internet.
+
+   <h>III.C. Benefits for Students
+
+   <p>One of the best publicized uses of the Internet is for instructional
+   purposes. Children love computers and computer networks and there are
+   lots of distance learning projects being conducted, ranging from
+   electronic penpals to collaborative/comparison studies.One such
+   project involved students from different countries comparing prices,
+   packaging and contents of various products, integrating math, social
+   studies, language and geography. (Most of the students were not even
+   aware they were learning!) Other readily available information
+   services are providing students with the latest in current events.
+   Some of these include US White House press releases and briefings;
+   Radio Free Europe reports; and UN News.
+
+   <p>Rachel Weston, a 7th Grader at Georgetown Day School in Washington DC,
+   wrote in a recent essay how the Internet has changed her life. "As I
+   flipped through my e-mail messages one morning I suddenly received a
+   new one entitled 'The Sydney Bush fires.' The mail was from my
+   Australian keypal, and he was telling me and some of his other keypals
+   what it was like to be experiencing the bush fires that were burning
+   all round Sydney." [6]
+
+   <p>Rachel goes on to describe the communication that took place between
+   her friend and herself on Internet Relay Chat, his stories of the
+   fires and how close they got to his house. In addition to the live
+   reports, she clipped relevant newspaper articles. "However, all week
+   long the information about the Sydney fires that I brought to current
+   events in my social studies class was more up to date than anything in
+   the newspapers,"she said.
+
+   <p>This is a powerful demonstration of how the Internet creates global
+   and cultural awareness, augments current events classes, and motivates
+   students to write. However, keypal activities by themselves are not
+   always effective and usually fizzle unless they are given more
+   structure than just assuming students will be motivated to carry on a
+   dialogue. Students need a theme for their communication with other
+   keypals.
+
+   <h>The Global Schoolhouse
+
+   <p>Perhaps one of the most interesting uses of the Internet recently for
+   education is the Global Schoolhouse Project. This project is one
+   example of how the Internet can be used to transmit video for
+   educational uses. Sponsored by the US National Science Foundation, the
+   Global Schoolhouse was demonstrated during the US National Science and
+   Technology Week in April 1993.
+
+   <p>The participants in this "school without walls"
+
+   were children ages 10 through 13 from four geographically distant
+   schools -- Jefferson Junior High School in Oceanside, California;
+   Cedar Bluff Middle School in Knoxville, Tennessee; Longbranch
+   Elementary School in Arlington, Virginia; and Oldfield House School in
+   Hampton, United Kingdom.
+
+   <p>As part of their studies, the students spent six weeks prior to the
+   event studying watershed pollution in their local areas. The
+   curriculum was created by the FrEdMail Foundation (FrEdMail stands for
+   Free Educational Mail Network), a non-profit organization devoted to
+   creating and fostering meaningful distance-based projects using
+   computer networks.
+
+   <p>The students had an ambitious goal; to read Earth in the Balance by US
+   Vice President Al Gore and then conduct ground-water pollution studies
+   in their communities. Beginning three weeks before the demonstration,
+   the students met in two weekly videoconference rehearsals over the
+   Internet to give progress reports and show video clips of their
+   research.
+
+   <p>During the videoconferences, each group of students could see, in real
+   time, all of the other groups and themselves on a quartered computer
+   screen. For the demonstration event in April, US government officials
+   in Washington, DC joined in the discussion, listening to the students'
+   reports and asking questions.The students continued to meet in weekly
+   videoconferences after the demonstration until the end of the school
+   year; more meetings have been planned for the future.
+
+   <p>During the Global Schoolhouse videoconference, a Sun Microsystems
+   SPARCstation acted as a reflector, taking the video data from one site
+   and reflecting it to the other three sites. A second reflector,
+   located at Cornell University in Ithaca, New York, sent copies of the
+   video data to a viewing site in Vienna, Virginia, where guests could
+   monitor the videoconference. The second reflector also sent the video
+   data out over the Multicast Backbone, a collection of sites around the
+   world that cooperate in global video and audio conferencing for
+   various events.
+
+   <p>During the videoconference, each desktop computer had a video camera
+   and a projector connected to the monitor. The video camera fed the
+   live action to the computer. Audio was provided by a traditional audio
+   conference bridge. Cisco routers provided the main gateway between the
+   LANs and the Internet and T1 or Switched Multimegabit Data Service
+   (SMDS) lines provided access to the WAN.
+
+   <p>The videoconferencing software, CU-SeeMe, is freely available on the
+   Internet and is still currently being developed by Cornell
+   University's Information Technology Organization (CIT). It allows
+   one-to-one, one-to-many, or many-to-many connections. A user can be
+   either a receiver, or a sender and receiver. To receive, one only
+   needs an Internet-connected Macintosh capable of displaying 16 grays.
+   Sending requires the same plus a SuperMac VideoSpigot board, a camera,
+   Quicktime and Spigot VDIG extensions added to the system.
+
+   <p>Until recently, most participants in Global Schoolhouse projects used
+   the message scrawl feature of CU-SeeMe or audio-conference bridges.
+   Real-time audioconferencing software was released for the Macintosh in
+   March 1994 and is publicly available over the Internet. (Please see
+   the resources section at the end of this paper.)
+
+   <h>III.D. Community Outreach
+
+   <p>In addition to the administrative and educational benefits achieved by
+   access to the Internet, there are advantages to providing community
+   access to school resources. Some schools and network projects are
+   encouraging parents to become involved and have offered access via
+   dialup accounts to school systems.Homework assignment archives,
+   schedules, calendars, lunch menus, etc. are just some of the things
+   that can be made publicly available. Additionally, teachers are more
+   accessible via electronic mail for parent/teacher conferences.
+
+   <p>While community access is not as well defined or publicized yet, it is
+   a crucial part of the educational and community building use of the
+   Internet. Several schools are experimenting with providing low-cost
+   accounts (to help pay for their networking costs) to parents and
+   members of the surrounding community to provide access to local school
+   information and the Internet.
+
+   <h>IV. Barriers and Solutions
+
+   <p>There's no question that the Internet is augmenting traditional
+   classes with live data from distant lands and cultural exchange
+   between children. Unfortunately, there are quite a few barriers
+   preventing teachers and schools from making the connection.
+
+   <h>IV.A. Internetworking Expertise
+
+   <p>For one, there is a lack of internetworking technical expertise and
+   vision. Frankly, it's hard enough for anyone these days to make heads
+   or tails of the bewildering number of choices, and so it's
+   understandable that schools are having problems figuring out which way
+   to go. There's concern that committing to one distance learning
+   solution will prohibit upgrading to future technologies.
+
+   <p>There's also the confusion of how to establish a wide area connection.
+   It's going to take awhile for us to fully understand how the
+   convergence of the broadcast, telephone and computer industries is
+   going to play out and who the players will be. In the US, both
+   telephone and cable companies are promising connections and reduced
+   rates in hopes of capturing the educational market.
+
+   <p>There are many open system solutions, many standards and many vendors
+   promising the "only"solutions. One organization called the National
+   Center for Technology Planning (NCTP) is trying to help. Located at
+   Mississippi State University, NCTP is providing network planning and
+   direction to many schools and archiving technology plans on the
+   Internet.
+
+   <p>Other projects and studies provide some direction.For example, the
+   state of California is drafting a Strategic Plan for Information
+   Technology, which outlines a vision for the use of computer and
+   communications systems in California schools. Part of this plan
+   includes a Technical Model for School Networks guide. Another research
+   study conducted by Bolt Beranek and Newman provided several current
+   and future models for schools. The Internet Engineering Task Force
+   Internet School Working Group is drafting a K-12 Internetworking
+   Guidelines document, intended to provide technical guidance to the
+   educational community on school networking and connections to the
+   Internet. All of these documents are listed in the resources section
+   of this paper.
+
+   <h>IV. B. Existing Network Infrastructure
+
+   <p>Perhaps the confusing technology and large number of choices is partly
+   responsible for the next barrier:the lack of existing network
+   infrastructure. A significant percentage of schools don't have local
+   area networks in the computer labs. Therefore access to the Internet
+   for the time being is limited to stand- alone machines with modems.
+
+   <p>Unfortunately, because of the current practice of most states in the
+   US permitting phone companies to charge business rates for telephones
+   in schools, there are very few phone lines in the classrooms. It is
+   necessary to educate the state public utility commissions (PUCs) about
+   the benefits of access to the Internet via a phone in the classroom;
+   indeed, there have already been several success stories in some states
+   where regulation was introduced to lower costs for phone lines in
+   schools.
+
+   <p>But it's important to educate the school and district technology
+   planners on the importance of scaling their networking solutions
+   effectively. One phone line in a computer lab is a great start to
+   demonstrate the benefits of the Internet. However, the computer/phone
+   line/modem model doesn't scale well -- the cost of adding phone lines
+   and modems increases significantly, but the bandwidth and increased
+   access to resources do not. Dialup access is an easier solution to
+   understand and implement initially, but ultimately harder for the
+   end-user to learn, and more expensive to scale.Schools need to be
+   educated on the internetworking model, that is, connecting networks to
+   networks.Building a good local area network foundation is crucial.
+
+   <p>In addition to a scalable local area network, schools will need to
+   address the issue of administrating email accounts, newsfeeds, local
+   information servers and other network-related configuration duties. A
+   server that makes these tasks considerably easier, and integrates
+   educational software in a distributed networked environment is the
+   Copernicus system, developed by Bolt, Beranek and Newman in Cambridge,
+   Massachusetts. There are a number of pilot sites which are using this
+   server very successfully.One of these is the Ralph Bunche Elementary
+   School in New York, NY. Paul Reese the Computer & Technology
+   Coordinator, says, "We support some 350 e-mail accounts, a school
+   Gopher, private and public newsgroups and are developing other
+   services. The server sits on a LAN with approximately 70 Mac
+   workstations. A recently installed 56 Kbps line now connects a
+   neighboring middle school allowing them to use the server and share
+   general network access."
+
+   <h>IV.C. Funding
+
+   <p>Another barrier is one of the oldest problems schools have faced; that
+   is, funding for just about anything that is needed. This will continue
+   to cause a problem until schools and districts establish visions and
+   plans. Business cases can and are being made for administrative uses.
+   Savings on educational tools such as textbooks will be realized as
+   more and more on-line books are distributed electronically. Once
+   differences are resolved and standards made for the transfer of such
+   useful information, such as student records and books, it will be
+   easier to allocate funds for network connectivity and access.
+
+   <p>In the meantime, there are a number of sources for funds in the U.S..
+   The National Science Foundation has an Internet Connections Program to
+   which schools and organizations can apply for grants. The National
+   Telecommunications and Information Administration (NTIA) recently
+   announced a grant program to fund planning and demonstration projects
+   that (among other things) promote the goals of development and
+   widespread availability of advanced telecommunications technologies
+   and support the advancement of an advanced nationwide
+   telecommunications and information infrastructure. Both the NSF and
+   NTIA programs benefit other organizations, as well as universities and
+   schools.
+
+   <h>IV. D. User Applications
+
+   <p>In addition to the bewildering amount of information and resources
+   available on the Internet, there's also the perceived notion that the
+   Internet is deliberately user hostile.
+
+   <p>The Internet is growing up somewhat in this area with the wider
+   availability of information discovery and retrieval applications, such
+   as archie, gopher, Wide Area Information Servers (WAIS) and the World
+   Wide Web (WWW). Most Internet-connected education networks offer at
+   least a simple menu interface to the Internet. A graphical program
+   called "Graphical Interface to Network Access" or GINA (formerly known
+   as "The Guide") is currently under development by the California
+   Technology Project and reviews of it are confirming its promise to be
+   one of the easiest to use graphical interfaces to the Internet yet.
+
+   <h>IV. E. Information Age Projects
+
+   <p>And finally, another barrier to using the Internet in the classroom is
+   motivating teachers to throw away the out-dated, incorrect textbooks
+   and instead engage students interactively, exploring the Web for
+   current events, real examples and the latest data.
+
+   <p>True, the Internet has a little way to go before it can reliably serve
+   as the sole digital lab or classroom, but there are plenty of useful
+   projects going on right now where students are encouraged to use their
+   creativity and common sense. The problem is that teachers need help in
+   learning how to use this technology and how to apply it to teaching.
+
+   <p>What is needed are more Internet evangelists, people that can simplify
+   the technology and demonstrate the benefits. Currie Morrison, a
+   Technology Coordinator at Nathan Hale High School in Seattle
+   Washington is such an evangelist and has seen enormous benefits from
+   her promotional efforts.She noted in a recent message sent to the COSN
+   email discussion list, "My anecdotal experience has seen a large
+   number of people impacted by what I have passed on to colleagues and
+   students alike. Too numerous to mention."
+
+   <p>Just as school technology coordinators and directors plan for networks
+   and scalability, so must teachers plan for the use of technology in
+   their classrooms.Too many advanced instructional learning systems are
+   sitting gathering dust because of lack of planning in this area. More
+   emphasis must be made by all network planners (administrative and
+   technical)involved on training and motivation.
+
+   <p>The Port Neches-Groves School District in southeast Texas has started
+   an interesting project designed to motivate and assist teachers with
+   transitioning to planning and developing classroom curriculum projects
+   in an online world. Kay Abernathy, the technology coordinator, is
+   pairing each teacher involved in the project with an online mentor who
+   is located outside of Texas. Mentors will offer encouragement and
+   assistance via electonic mail over the Internet to teachers who are
+   just getting started in using the technology. The Port Neches-Groves
+   teachers will keep journals which chronicle their progress and
+   problems.
+
+   <h>V. Conclusion
+
+   <p>Despite barriers and challenges, the K-12 community is moving ahead.
+   The K-12 community is considered one of the fastest growing groups
+   involved in the Internet. This market is treading on the edges of
+   technology and telecommunications; some schools have adopted
+   technology for the classroom and distance learning projects with open
+   arms, while others are just now starting to think about long range
+   technology visions and plans.
+
+   <p>The Internet promises more equitable access to resources for teachers
+   and students, as well as saving time and money for administrative
+   applications. We will continue to see growth and use of educational
+   resources, increased coordination at all levels, and more
+   user-friendly applications being developed.
+
+   <p>It must be stressed that the Internet by itself is not a panacea for
+   educational reform. The Internet can enhance classroom activities and
+   professional development by creating global awareness, providing
+   access to the latest information and enabling communication on a large
+   scale, but you cannot just "throw" the Internet into a school and
+   expect projects to magically occur. Most successful projects are
+   carefully planned, and many of them occur mostly outside of the
+   Internet. The Internet provides a motivational, enabling and
+   empowering tool for education.
+
+   <h>VI. Resources
+
+   <p>The following resources were mentioned throughout this paper.
+
+   <h>VI. A. Organizations
+
+<l>AskERICERIC Clearinghouse on Information Resources030 Huntington HallSyracuse U
+niversitySyracuse, New York 13244-2340Internet: askeric@ericir.syr.eduVoice: (3
+15) 443-9114Fax:   (315) 443-5448 <l>Consortium for School Networking (COSN)
+1112 Sixteenth Street, NW Suite 600Washington, DC 200361-202-872-4200FAX: 202-8
+72-4318Email: cosn@bitnic.bitnetGopher: <l>The Global SchoolNet Fou
+ndation (GSN)
+7040 Avenida Encinas 104-281Carlsbad, CA  92009619 931-5934Email: andresyv@cerf
+.net <l>Internet Society (ISOC)12020 Sunrise Valley Drive, Suite 270Reston, VA 2209
+11-703-648-9888FAX: 1-703-648-9887Email: isoc@nri.reston.va.usGopher:The National Center for Technology Planning (NCTP):  ftp://Ra.MsState.Edu
+/pub/archives/nctp.
+<l>The National Science Foundation4201 Wilson Blvd.Arlington, VA  22230  USA+1 703
+ 306-1949 <l>National Telecommunications and Information A
+dministration (NTIA)U.S. Department of CommerceH-4889Washington, D.C. 20230+1 2
+02 482-2048+1 202 482-2156Email: tiiap@ntia.doc.govGopher:
+
+   <h>VI. B. Software
+
+
+
+
+   <p>Graphical Interface for Network Access (GINA): Send email to:
+   kvogt@eis.calstate.edu.
+
+   <h>VI. C. Connectivity Guides
+
+   <p>All of these guides are available via anonymous FTP in PostScript
+   format only.
+
+   <l>K-12 Internetworking Guidelines (an Internet-Draft)
+
+
+   <l>Local Infrastructures for School Networking: Current Models and
+
+
+   <l>A Technical Model for School Networks
+
+
+   <h>VI. D. Newsletter
+NetTEACH NewsFor subscriptions queries, contactKathleen M. Rutkowski13102 Weath
+er Vane WayHerndon, VA  22071  USAinfo@netteach.chaos.com
+
+   <h>VII. References
+
+   <l>[1]California Department of Education, Far West Laboratory for
+   Educational Research and Development, California Education and Data
+   Processing Association, "California Student Information System: A
+   Study of the Feasibility of Implementing a Statewide Process for
+   Electronically Sharing Student Information,"Sacramento, CA.:
+   California Department of Education, October 1992.
+
+   <l>[2] LaQuey, Tracy and Connie Stout, "High Tech Highway," America's
+   Agenda: Schools for the 21st Century, pp. 26-30. New York, NY.:
+   Scholastic, Spring 1993.
+
+   <l>[3] LaQuey, Tracy, with Jeanne C. Ryer, The Internet Companion.
+   Reading, MA: Addison-Wesley, 1993.
+
+   <l>[4] Parker, Tracy LaQuey, "Cisco Routers Contribute to the Global
+   Schoolhouse Project," The Packet, pp.22-24. Mountain View, CA.: Cisco
+   Systems, Inc., Fall 1993.
+
+   <l>[5] Parker, Tracy LaQuey, "The Internet - K12 Connection: How Students
+   and Teachers Are Using The Internet," ConneXions: The Interoperability
+   Report. Foster City, CA.: Interop, Inc. April 1994.
+
+   <l>[6] Weston, Rachel, "Networks: Where Have You Been All My Life?,"
+   Proceedings, Connecting with the Future Today.: NASA and the Center
+   for Educational Statistics, February 1994.
+
+   <h>Author Information
+
+   <p>Tracy LaQuey Parker received a degree in Computer Science from the
+   University of Texas at Austin and currently works for Cisco Systems,
+   Inc. as the Manager of Education Market Development. Before coming to
+   Cisco, she worked at The University of Texas System Office of
+   Telecommunication Services in Austin as a Network Information
+   Specialist where she represented the Texas Higher Education Network
+   (THEnet) in various national networking groups and was part of the
+   Texas Education Network (TENET, a statewide K-12 network) Development
+   Team. A pioneer individual member of the Internet Society, she
+   represents Cisco Systems on the Internet Society's Advisory Board. She
+   also participates in the Federation of American Research Networks
+   (FARNET), and the Consortium on School Networking (COSN). She is the
+   author of two books:The User's Directory of Computer Networks,
+   published by Digital Press and the best selling The Internet
+   Companion: A Beginner's Guide to Global Networking published by
+   Addison-Wesley.
+
+   --------------------------------------------
+
+     _________________________________________________________________
+

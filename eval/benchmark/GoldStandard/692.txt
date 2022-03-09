@@ -1,0 +1,104 @@
+URL: http://www.sas.com/success/bcbsfla_abm.html
+
+
+
+<h>A Healthy Prognosis
+
+<h>Blue Cross and Blue Shield of Florida ensures adequate product pricing with
+SASÂ® Activity-Based Management
+
+
+   <p>From retirees and recent immigrants to typical working-class Americans
+   and their dependents, Florida boasts one of the most diverse
+   populations in the United States, ranking No. 4 in population among
+   the 50 states. No matter their demographic differences, the 16 million
+   residents of Florida have one thing in common: the need for
+   affordable, reliable health insurance.
+
+   <p>With such a large population base and variety of employers, the field
+   of insurers vying for their business is as bustling as the Sunshine
+   State itself. However, the diversity of the population also reflects
+   the diversity of the employer groups being underwritten. To stay ahead
+   of the competition, Blue Cross and Blue Shield of Florida (BCBSF) uses
+   SAS Activity-Based ManagementÂ to measure the detailed costs of doing
+   business in order to balance pricing products competitively with
+   adequately funding the risk and ensuring a fair profit margin. SAS
+   facilitates product profitability reporting, providing a detailed
+   analysis of product profitability by customer and customer
+   profitability by product.
+
+   <p>"In the mid-1990s, we knew we must understand the cost of our products
+   to help us determine pricing as well as analyze profitability,"
+   explains Lee Boardman, director of accounting for BCBSF's Diversified
+   Business Sector. "We also wanted to gain efficiencies and, in general,
+   get a better handle on our costs. With SAS, we're accomplishing that."
+
+   <p>The Diversified Business Sector offers ancillary products that
+   complement health insurance â such as life insurance, disability
+   insurance, dental insurance, workers' compensation and long-term care.
+   Some are sold at fixed prices, although benefits may be paid far
+   beyond the date sold. So having access to precise cost information is
+   crucial to ensuring that products are priced accurately.
+
+   <p>"Our challenge was to maintain product profitability and support
+   effective product management in a highly competitive market," he
+   explains. "Therefore, we needed a good understanding of the activity
+   cost of providing our products and services."
+
+   <h>Claims Processed 90 Percent Faster
+   <p>In one instance, Boardman's group used SAS to help show a profit with
+   a disability product that had previously reported high administrative
+   costs. BCBSF performs third-party administrator services for
+   self-funded disability plans. Using SAS, BCBSF discovered that the
+   administrative fee it was charging did not cover the internal cost of
+   administering the claims process.
+
+   <p>"As a separate project, we identified manual processes â such as
+   weekly check-writing, claim-payment reporting, and tax-withholding and
+   payment processing â that could be automated to save time and money,"
+   Boardman says. "By using SAS to identify inefficiencies, we were able
+   to reduce the time required to process disability claims by 90
+   percent. The cost per claim has decreased from more than $80 to $20.
+   SAS helped make this disability product profitable."
+
+   <p>Profitability reporting enhances the expense management process.
+   Departmental expense analyses by product helps managers see costs in
+   terms of activities. Managers can see unit costs to improve efficiency
+   and direct work efforts appropriately. "Product-level cost information
+   is developed for business and operational planning and decision
+   making," Boardman says. "Actual expenses by product are captured and
+   compared with planning assumptions to monitor variances from the
+   profit plan and to troubleshoot problems."
+
+   <p>Discovering the true costs of offering a product can sometimes lead to
+   rate increases for customers. But customers don't seem to mind as long
+   as they understand why BCBSF is asking them to pay more. BCBSF does
+   this by documenting and reporting to the customer the group's actual
+   costs in comparison to rates paid. "We've had three customers for whom
+   we've had to triple rates, and they've stayed with us," Boardman says.
+   "Their only other option was to get canceled, and they chose to stay.
+   SAS is helping us show our customers the value of doing business with
+   us."
+
+   <p>Other uses of SAS Activity-Based Management at BCBSF include:
+     <l> Determining inter-company service costs and supporting product
+     <l> Building and analyzing trend data to support profitability
+       management.
+     <l> Forecasting costs for future business opportunities.
+
+   <p>"We've gained a lot more from it than we originally expected,
+   especially in terms of assisting with forecasting and planning,"
+   Boardman says. "For example, when we were working on our mid-year
+   assessment, everything we had â profitability reports by customer,
+   detailed cost versus budget information â came from SAS Activity-Based
+   Management. It helped us to see where we'll be by the end of the year,
+   so it's a tremendous solution."
+
+   <p>By incorporating activity costs and budget figures by month, BCBSF
+   managers can compare budget to actual and drill into activities to
+   find out more detailed information about costs to uncover
+   inefficiencies.
+
+   <p>"SAS Activity-Based Management has proven to have a significant value
+   as both a pricing and management tool," Boardman says.
+

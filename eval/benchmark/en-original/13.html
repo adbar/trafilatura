@@ -1,0 +1,283 @@
+<text id="http://aseigo.blogspot.com/2004/11/ah-but-start-up-times.html" title="aseigo: ... ah, but the start up times!" encoding="utf8">
+<!-- --><div id="flagi" style="visibility:hidden; position:absolute;" onmouseover="showDrop()" onmouseout="hideDrop()"><div id="flagtop"></div><div id="top-filler"></div><div id="flagi-body">Notify Blogger about objectionable content.<br /><a href="http://help.blogger.com/bin/answer.py?answer=1200"> What does this mean? </a> </div></div><div id="b-navbar"><a href="http://www.blogger.com/" id="b-logo" title="Go to Blogger.com"><img src="http://www.blogger.com/img/navbar/4/logobar.gif" alt="Blogger" width="80" height="24" /></a><form id="b-search" name="b-search" action="http://search.blogger.com/"><div id="b-more"><a href="http://www.blogger.com/" id="b-getorpost"><img src="http://www.blogger.com/img/navbar/4/btn_getblog.gif" alt="Get your own blog" width="112" height="15" /></a><a id="flagButton" style="display:none;" href="javascript:toggleFlag();" onmouseover="showDrop()" onmouseout="hideDrop()"><img src="http://www.blogger.com/img/navbar/4/flag.gif" name="flag" alt="Flag Blog" width="55" height="15" /></a><a href="http://www.blogger.com/redirect/next_blog.pyra?navBar=true" id="b-next"><img src="http://www.blogger.com/img/navbar/4/btn_nextblog.gif" alt="Next blog" width="72" height="15" /></a></div><div id="b-this"><input type="text" id="b-query" name="as_q" /><input type="hidden" name="ie" value="UTF-8" /><input type="hidden" name="ui" value="blg" /><input type="hidden" name="bl_url" value="aseigo.blogspot.com" /><input type="image" src="http://www.blogger.com/img/navbar/4/btn_search_this.gif" alt="Search This Blog" id="b-searchbtn" title="Search this blog with Google Blog Search" onclick="document.forms['b-search'].bl_url.value='aseigo.blogspot.com'" /><input type="image" src="http://www.blogger.com/img/navbar/4/btn_search_all.gif" alt="Search All Blogs" value="Search" id="b-searchallbtn" title="Search all blogs with Google Blog Search" onclick="document.forms['b-search'].bl_url.value=''" /><a href="javascript:BlogThis();" id="b-blogthis">BlogThis!</a></div></form></div><script type="text/javascript"><!--
+
+var ID = 7615673;var HATE_INTERSTITIAL_COOKIE_NAME = 'dismissedInterstitial';var FLAG_COOKIE_NAME = 'flaggedBlog';var FLAG_BLOG_URL = 'http://www.blogger.com/flag-blog.g?nav=4&toFlag=' + ID;var UNFLAG_BLOG_URL = 'http://www.blogger.com/unflag-blog.g?nav=4&toFlag=' + ID;var FLAG_IMAGE_URL = 'http://www.blogger.com/img/navbar/4/flag.gif';var UNFLAG_IMAGE_URL = 'http://www.blogger.com/img/navbar/4/unflag.gif';var ncHasFlagged = false;var servletTarget = new Image();
+
+function BlogThis() {Q='';x=document;y=window;if(x.selection) {Q=x.selection.createRange().text;} else if (y.getSelection) { Q=y.getSelection();} else if (x.getSelection) { Q=x.getSelection();}popw = y.open('http://www.blogger.com/blog_this.pyra?t=' + escape(Q) + '&u=' + escape(location.href) + '&n=' + escape(document.title),'bloggerForm','scrollbars=no,width=475,height=300,top=175,left=75,status=yes,resizable=yes');void(0);}
+
+function blogspotInit() {initFlag();}
+
+function hasFlagged() {return getCookie(FLAG_COOKIE_NAME) || ncHasFlagged;}
+
+function toggleFlag() {var date = new Date();var id = 7615673;if (hasFlagged()) {removeCookie(FLAG_COOKIE_NAME);servletTarget.src = UNFLAG_BLOG_URL + '&d=' + date.getTime();document.images['flag'].src = FLAG_IMAGE_URL;ncHasFlagged = false;} else { setBlogspotCookie(FLAG_COOKIE_NAME, 'true');servletTarget.src = FLAG_BLOG_URL + '&d=' + date.getTime();document.images['flag'].src = UNFLAG_IMAGE_URL;ncHasFlagged = true;}}
+
+function initFlag() {document.getElementById('flagButton').style.display = 'inline';if (hasFlagged()) {document.images['flag'].src = UNFLAG_IMAGE_URL;} else {document.images['flag'].src = FLAG_IMAGE_URL;}}
+
+function showDrop() {if (!hasFlagged()) {document.getElementById('flagi').style.visibility = 'visible';}}
+
+function hideDrop() {document.getElementById('flagi').style.visibility = 'hidden';}
+
+function setBlogspotCookie(name, val) {var expire = new Date((new Date()).getTime() + 5 * 24 * 60 * 60 * 1000);var path = '/';setCookie(name, val, null, expire, path, null);}
+
+function removeCookie(name){var expire = new Date((new Date()).getTime() - 1000); setCookie(name,'',null,expire,'/',null);}
+
+ --></script><script type="text/javascript">  blogspotInit();</script><div id="space-for-ie"></div>
+
+<div id="wrap"> <!-- #wrap - for centering -->
+
+<!-- Blog Header -->
+<div id="blog-header">
+  <h1>
+    <a href="http://aseigo.blogspot.com">
+	aseigo
+	</a>
+  </h1>
+</div>
+
+
+<div id="content"> <!-- #content wrapper -->
+
+<!-- Begin #main-content -->
+<div id="main-content">
+
+
+
+    
+  <h2 class="date-header">Monday, November 01, 2004</h2>
+  
+  
+     
+  <!-- Begin .post -->
+  <div class="post"><a name="109934057268032714"></a>
+     
+    
+    <h3 class="post-title">
+	 
+	 ... ah, but the start up times!
+	 
+    </h3>
+    
+     
+    <div class="post-body">
+    
+      <p><div style="clear:both;"></div>in a <a href="http://msquadrat.de/archive/04/11/01/01">responseblog</a>, <a href="http://msquadrat.de/">Malte S. Stretz</a> (who's a pretty cool guy, i might add) noted that while Konsole may be more efficient in certain workloads, that there is room for improvement in places like start up time.<br /><br />he's right. KDE has lots of room for improvement. we do a lot of things quite well right now, however. and we'll get more things Right(tm) with future development. but it's being able to hold both the idea that we Rock and the idea that we have room for improvement in our heads at the same time that's important.<br /><br />anyways, on to Malte's numbers! he notes that `xterm -e bash -c exit` takes 0.363s while 'konsole -e bash -c exit' takes 2.148s. holy crap! over 6 times as long! ah... but there's a catch. a small one, but still a catch...<br /><br />on my system, with both xterm and konsole in cache so as to remove the affects of disk i/o as much as possible, `xterm -e bash -c exit` takes ~0.165s and 'konsole -e bash -c exit' takes ~.9s, <b>but</b> 'kstart konsole -e bash -c exit' takes ~0.5s. the kstart hack brings konsole start up times down from being ~5.5x slower to being ~3x slower. that's much better, but more importantly, that multiplier works out to just one third of a second longer to launch konsole.<br /><br />now stop for a moment and consider that: a third of a second. for all those features, for all that KDE goodness. 300 milliseconds.<br /><br />let's also consider that terminals are really a Worst Case Scenario. xterm and friends don't do a lot, and they aren't very interesting. because of this they start up fast and are slim like that Olsen twin. and still KDE apps compete reasonably in this space.<br /><br />this bodes very well for KDE applications in more complex venues such as word processors, web browsers and so on.<br /><br />yes, we have a LOT of optimization possibilities ahead of us. yes, our software can and should be faster, including starting up. yes, we have a lot of development ahead of us to do because KDE isn't perfect yet.<br /><br />we're only <a href="http://www.sillyone.com/movies/princess_bride/princess_bride_261.jpg">mostly perfect</a>. ;-)<div style="clear:both; padding-bottom: 0.25em;"></div></p>
+    
+    </div>
+    
+    <p class="post-footer">posted by Aaron J. Seigo at 
+      <a href="http://aseigo.blogspot.com/2004/11/ah-but-start-up-times.html" title="permanent link">1:02 PM</a> 
+       <span class="item-action"><a href="http://www.blogger.com/email-post.g?blogID=7615673&amp;postID=109934057268032714" title="Email Post"><span class="email-post-icon">&nbsp;</span></a></span><span class="item-control admin-72405597 pid-1962344579"><a style="border:none;" href="http://www.blogger.com/post-edit.g?blogID=7615673&amp;postID=109934057268032714&amp;quickEdit=true" title="Edit Post"><span class="quick-edit-icon">&nbsp;</span></a></span></p>
+  
+  </div>
+  <!-- End .post -->
+  
+  
+   <!-- Begin #comments -->
+ 
+
+  <div id="comments">
+
+	<a name="comments"></a>
+    
+    <h4>15 Comments:</h4>
+    
+    <ul>
+      
+      <li id="c109934239304823775"><a name="c109934239304823775"></a>
+        <div class="comment-body">
+         <p>(1) that pic you linked says 'Forbidden' ;(<br />(2) Before I prelinked everything, KWrite took something like 3 seconds to start (after, it's more like one). Compare to Notepad under Windows, which starts *instantly*. A more comparable/advanced editor called EditPad Pro still starts up in ~half a second. MS Word 97 also starts up damn fast, well under a second, iirc (though I haven't tried in a while). The situation is similar with other KDE apps (or Linux apps in general? no idea, haven't tried GNOME).<br />Not bashing or anything; KDE rocks. But the first step to fixing a problem is recognizing that it exists. And this one most definitely does.<br /><br />-Illissius</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109934239304823775" title="comment permalink">1:53 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934239304823775" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934328806258268"><a name="c109934328806258268"></a>
+        <div class="comment-body">
+         <p>I don't clock much difference between using kstart<br />or not; 1.9s without, 1.27 with. Xterm on the other hand is 0.5s. But I've just noticed that using KDE on the same machine but with Debian feels faster than using KDE with SuSE, and these are the SuSE numbers.</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109934328806258268" title="comment permalink">2:08 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934328806258268" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934494257378482"><a name="c109934494257378482"></a>
+        <div class="comment-body">
+         <p>@Illissius<br /><br />please re-read the blog entry. i think you missed three important things:<br /><br />1) i note that KDE can and should be made faster, including start up. so i'm not sure what you're going on about.<br /><br />2) this is about konsole on X11/Unix, not kwrite and not notepad on win32. i know the similarity between konsole and kwrite or xterm and notepad can lead to confusion (he says, firmly tongue in cheek) but today's blog was about konsole. on X11. on Unix type platforms.<br /><br />3) moreover, the whole point of the blog was to show that Malte's numbers weren't as good as they could be. you demonstrate that yourself with KWrite dropping from ~3s to ~1s with prelink, which means instead of being 6 times slower to start than your win32 app it's only 2 times slower to start. and that doubling in time equates to half a second!<br /><br />in summary: i completely agree that we can and should do better in the start up category. but we don't nearly deserve the rap we have at the moment.<br /><br />you'd think we were molasses on a winter day given how people yam on about it. the way it's commonly talked about, you'd think KDE apps take dozens of seconds or even minutes to start up! that KDE requires half a gig of RAM! etc, etc...<br /><br />all i'm looking for is some accurate and factual representations out there, because KDE and the Linux desktop in general is getting hurt by the mythconceptions that continue to float about.</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/3912230">Aaron J. Seigo</a>, at <a href="#c109934494257378482" title="comment permalink">2:35 PM</a>
+	  <span class="item-control admin-72405597 pid-1962344579"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934494257378482" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934515879848326"><a name="c109934515879848326"></a>
+        <div class="comment-body">
+         <p>@Anonymous:<br /><br />1.9 - 1.27 = 0.63<br />0.63 / 1.9 = 0.33<br /><br />33% is significant from an optimization standpoint.<br /><br />it also drops the "Xterm differential" from ~4x to ~2.5x. and it means an extra 0.77s of wait.<br /><br />yep, still too long (because it isn't perfect ;) but not the drudgery that so many claim it to be.</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/3912230">Aaron J. Seigo</a>, at <a href="#c109934515879848326" title="comment permalink">2:39 PM</a>
+	  <span class="item-control admin-72405597 pid-1962344579"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934515879848326" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934709470019589"><a name="c109934709470019589"></a>
+        <div class="comment-body">
+         <p>@aseigo: I was essentially agreeing with you. Startup times aren't only relevent for Konsole, which is why I generalized it, and KWrite was the first example I could think of. 3 seconds (with the default setup) isn't completely horrible, but it can be painful when you just want to quickly edit some text, especially compared to something like Notepad which starts instantly.<br />As for prelinking... is it a viable option to do this by default? From what I remember there was something about the prelink going away if either the binary or the library linked to is changed, meaning startup times would gradually deteriorate over time... which isn't good. Or is there a better way to achieve the same effect?<br />Anyways, as I said, I'm agreeing with you completely; just adding my own observations.<br /><br />-Illissius</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109934709470019589" title="comment permalink">3:11 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934709470019589" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934719812422589"><a name="c109934719812422589"></a>
+        <div class="comment-body">
+         <p>Hi Aaron,<br /><br />to konsole: konsole has become quite bloated. It links to the huge kio lib just to have bookmarks. I never used these bookmarks. Does anybody else ? <br />I measured startup time, it must be already 3 years ago on my old K6/200. Originally it was 2.7 seconds. After one week of work I got it down to 1.8 seconds. This was achieved by delaying everything what could be delayed (which resulted in not so easy to understand code).<br />At least two times since then this delayed construction of stuff was broken and I fixed it again. I didn't look at it since some time now, so I don't know if it currently works. As I mentioned, it was 1.8 seconds on a K6/200, KDE 2.x.<br />I already thought about writing a slim konsole, with less features (or basically without kio)<br /><br />Bye<br />Alex<br />neundorf at kde dot org</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109934719812422589" title="comment permalink">3:13 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934719812422589" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109934763823261588"><a name="c109934763823261588"></a>
+        <div class="comment-body">
+         <p>@Illissius<br /><br />to prelink or not to prelink is something that's up to the individual OS vendors/projects. AFAIK, a lot of the benefits from the early prelink hack has been moved into the newer glibc's and ld's so these benefits should trickle on out to the world en masse with time.<br /><br />@Alex<br /><br />yeah, i remember your work on konsole start up times and vastly appreciated it when it happened (and then happened again ;). i'm not sure if it's been broken since, i surely hope not.<br /><br />as for the bookmarks and linking in libkio for that, i agree that it was a questionable feature add. of course, if we remove it now some small army of users will rise up in arms. ;-) i'll have to blog someday about the dangers of adding features just to add features. not like that hasn't be blog'd to death, but hey.... ;-)</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/3912230">Aaron J. Seigo</a>, at <a href="#c109934763823261588" title="comment permalink">3:20 PM</a>
+	  <span class="item-control admin-72405597 pid-1962344579"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109934763823261588" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109935267000652770"><a name="c109935267000652770"></a>
+        <div class="comment-body">
+         <p>Aaron, first, thanks for the coolness factor -- I hope you don't mind that I uppercased your first I :)<br /><br />I never intended my "benchmark" to be represantative, it was just something I, ummm..., hacked into a one shot Konsole I opened for that reason :P  And actually, Kwrite, which Illissius mentioned, is another candidate which I use in that way.<br /><br />Whatever the kstart kluge you mentioned gave me a 33% speedup, too.  What's the difference with that? <br /><br />If it doesn't hve too much drawbacks, maybe instead of me having to prefix all the commands in KDE's .desktop files, something like that should become the default?  Or at least an option in KDE .desktop files to start apps like that? (Please don't ask me for code :)<br /><br />Cheers,<br />Malte</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109935267000652770" title="comment permalink">4:44 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109935267000652770" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109935470453173817"><a name="c109935470453173817"></a>
+        <div class="comment-body">
+         <p>I just tried, kstart doesn't change anything for me here.<br />You can try kdeinit_wrapper konsole , this starts konsole vioa kdeinit (you probably already guessed). Now this is something nobody will type all the time. OTOH who starts konsole by typing konsole into a terminal ? AFAIK minicli also uses kdeinit to start kde apps. <br />(maybe a bunch of aliases like<br /> alias Konsole = kdeinit_wrapper konsole<br />wouldn't be too bad)<br /><br />Alex<br /><br /><br />Alex</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109935470453173817" title="comment permalink">5:18 PM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109935470453173817" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109938766908081988"><a name="c109938766908081988"></a>
+        <div class="comment-body">
+         <p>Don't we have a better place to discuss optimizations? Like, a certain mailing list? Anyway...<br /><br />The kstart vs no-kstart "benchmark" is flawed. Adding kstart to "time konsole -e bash -c exit" changes only two things:<br />- makes the startup longer<br />- makes 'time' measure the startup time of kstart (only) - I can even see the output from 'time' here before konsole shows up<br /><br />For Alex, about kdeinit_wrapper:<br />You can do 'ln -s /opt/kde3/bin/kdeinit_wrapper konsole' somewhere, and if you have that first in your $PATH, just doing 'konsole' will launch konsole using kdeinit (the same works with kshell and kwrapper - see kdelibs/kinit/README.wrapper).<br /><br />Lubos Lunak</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109938766908081988" title="comment permalink">2:27 AM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109938766908081988" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c109940395981414261"><a name="c109940395981414261"></a>
+        <div class="comment-body">
+         <p>isnt it strange if kstart and/or kde-init can make apps startup faster, they aren't normally used? is there some dis-advantage at stake, or should the distributions do it, or???</p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c109940395981414261" title="comment permalink">6:59 AM</a>
+	  <span class="item-control admin-72405597 pid-875139531"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=109940395981414261" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c110538495541583581"><a name="c110538495541583581"></a>
+        <div class="comment-body">
+         <p><span class="deleted-comment">This post has been removed by a blog administrator.</span></p>
+        </div>
+        <p class="comment-data">By Anonymous, at <a href="#c110538495541583581" title="comment permalink">12:22 PM</a>
+	  <span class="item-control admin-72405597 "><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=110538495541583581" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c112816937423331505"><a name="c112816937423331505"></a>
+        <div class="comment-body">
+         <p>This blog is awesome!  If you get a chance you may want to visit this <A HREF="http://www.freesoftwarewebsite.com" REL="nofollow">mlm software</A> site, it's pretty awesome too!</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/11839549">tweedledeetweedledum</a>, at <a href="#c112816937423331505" title="comment permalink">6:22 AM</a>
+	  <span class="item-control admin-72405597 pid-1199847253"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=112816937423331505" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c112819249378997093"><a name="c112819249378997093"></a>
+        <div class="comment-body">
+         <p>Hi, you have a great blog here! I'm definitely going to bookmark you!<BR/>I have a <A HREF="http://www.domaincity.ws" REL="nofollow">double opt in mlm lead</A> site. It pretty much covers double opt in mlm lead related stuff. Check it out if you get time :-)</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/12285022">Don</a>, at <a href="#c112819249378997093" title="comment permalink">12:48 PM</a>
+	  <span class="item-control admin-72405597 pid-1901913509"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=112819249378997093" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+      <li id="c112822840178386275"><a name="c112822840178386275"></a>
+        <div class="comment-body">
+         <p>Your Blog is Great! I'm definitely going to bookmark you! I have a  <A HREF="http://www.domaincity.ws/learnandearn.htm" REL="nofollow">medical billing work at home<BR/></A> site. It pretty much covers medical billing work at home<BR/> related stuff.<BR/><BR/>Come and check it out if you get time :-)</p>
+        </div>
+        <p class="comment-data">By <a href="http://www.blogger.com/profile/6234809">Don</a>, at <a href="#c112822840178386275" title="comment permalink">10:46 PM</a>
+	  <span class="item-control admin-72405597 pid-1902553889"><a style="border:none;" href="http://www.blogger.com/delete-comment.g?blogID=7615673&amp;postID=112822840178386275" title="Delete Comment" ><span class="delete-comment-icon">&nbsp;</span></a></span></p>
+      </li>
+      
+    </ul>
+	
+	<p class="comment-data">
+    <a class="comment-link" href="http://www.blogger.com/comment.g?blogID=7615673&amp;postID=109934057268032714">Post a Comment</a>
+    <br /><br />
+
+	
+
+	<a href="http://aseigo.blogspot.com">&lt;&lt; Home</a>
+    </p>
+    </div>
+  
+
+  <!-- End #comments -->
+
+
+
+  <hr />
+</div><!-- End #main-content -->
+</div><!-- End #content -->
+
+
+
+<!-- Begin #sidebar -->
+<div id="sidebar">
+
+  <h2 class="sidebar-title">About</h2>
+  
+  <p>the triumphs and travails of a shift-key-challenged KDE hacker</p>
+  
+   <!-- Begin #profile-container -->
+   
+            <div id="profile-container"> <h2 class="sidebar-title">About Me</h2> <dl class="profile-datablock">   <dt class="profile-img"> <a href="http://www.blogger.com/profile/3912230"> <img width="63" alt="My Photo" height="80" src="http://aseigo.bddf.ca/images/ajs.jpg">   </a> </dt>   <dd class="profile-data"> <strong>Name:</strong>Aaron J. Seigo </dd>  <dd class="profile-data"> <strong>Location:</strong>Calgary, Alberta, Canada </dd>  </dl>  <p class="profile-link"> <a href="http://www.blogger.com/profile/3912230">View my complete profile</a> </p> </div>  
+   
+  <!-- End #profile -->
+  
+  <h2 class="sidebar-title">Previous</h2>
+  
+  <ul id="recently">
+    
+        <li><a href="http://aseigo.blogspot.com/2004/10/konsole-vs-xterm-or-proof-that-kde-is.html">konsole vs xterm, or proof that KDE is not bloated</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/double-digits.html">double digits</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/insomniac.html">insomniac</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/minutes-of-your-life-well-wasted.html">minutes of your life well wasted</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/ui-reviews-new-weekly-column-i-disturb.html">UI Reviews; a new weekly column; i disturb the peace (again?!)</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/zoomers-and-menubars-answering.html">zoomers and menubars: answering the questions</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/hello-kicker-helpers-bye-bye-icon.html">hello kicker helpers! bye-bye icon zooming?</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/importance-of-beig-earnest.html">the importance of beig earnest</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/so-you-want-to-be-bug-reporter.html">so you want to be a bug reporter...</a></li>
+     
+        <li><a href="http://aseigo.blogspot.com/2004/10/kicker-and-women.html">kicker and women</a></li>
+     
+  </ul>
+  
+  
+
+</div>
+<!-- End #sidebar -->
+
+<div class="clear">&nbsp;</div>
+
+<div id="footer">
+   <p><!-- If you'd like, you could place footer information here. -->&nbsp;</p>
+</div>
+
+</div> <!-- end #wrap -->
+
+<!-- c(~) -->
+
+</text>

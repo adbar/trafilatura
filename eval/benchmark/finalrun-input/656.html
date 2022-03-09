@@ -1,0 +1,430 @@
+<text id="http://www.programmersheaven.com/2/Whats-New-in-C-Sharp2-Misc-New-Feature" title="Whats-New-in-C-Sharp2-Misc-New-Feature at Programmers Heaven" encoding="utf8">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<!-- START HEADER -->
+
+<title>Whats-New-in-C-Sharp2-Misc-New-Feature at Programmers Heaven</title>
+<meta name="description" content="Free programming files, links, articles, tutorials, source codes, utilities, ASP, .NET, C/C++, .NET, C#, ASP.NET, XML, Visual Basic, Delphi, Java, Pascal, Assembler and other tools for programmers.">
+<meta name="keywords" content=".NET, ASP, ASP.NET, Java, C, C++, c#, JavaScript, Basic, SourceCode, Programming, applet, JSP, XML, SQL, developer, compiler, Delphi, Kylix, Ruby, Linux, Python, VB, VB.NET">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta content="general" name="rating">
+<meta content="all" name="Robots">
+<meta content="Synchron Data" name="author">
+<meta content="TRUE" name="MSSmartTagsPreventParsing">
+<link rel="meta" href="http://www.programmersheaven.com/labels.xml" type="application/rdf+xml" title="ICRA labels" />
+<link rel="alternate" type="application/rss+xml" title="Programmers Heaven latest news" href="http://www.programmersheaven.com/app/rss/Rss.aspx?Feed=News&amp;Version=092"> 
+<link rel="alternate" type="application/rss+xml" title="Programmers Heaven latest files and products" href="http://www.programmersheaven.com/app/rss/Rss.aspx?Feed=LF&amp;Version=092" />
+<link rel="alternate" type="application/rss+xml" title="Programmers Heaven latest articles and tutorials" href="http://www.programmersheaven.com/app/rss/Rss.aspx?Feed=LA&amp;Version=092" />
+<link rel="alternate" type="application/rss+xml" title="Programmers Heaven latest links" href="http://www.programmersheaven.com/app/rss/Rss.aspx?Feed=LL&amp;Version=092" />
+
+<style media="screen" type="text/css"><!--@import url(/include/css/programstyle.css);--></style>
+<link href="/include/css/programprint.css" media="print" rel="stylesheet" type="text/css">
+<style type="text/css">
+<!-- .sourcecode {
+	padding-right: 5pt; padding-left: 5pt; padding-bottom: 5pt; font: 9pt "courier new", 
+	courier, monospace; width: 100%; padding-top: 5pt; white-space: pre; color: #000000; background-color: #efefff }
+	
+-->
+</style>
+
+
+
+
+
+<!-- END HEADER -->
+
+<!-- PAGE SPECIFIC STYLE SHEETS -->
+
+<!-- END PAGE SPECIFIC STYLE SHEETS -->
+
+<!-- PAGE SPECIFIC STYLES -->
+
+<!-- END PAGE SPECIFIC STYLES -->
+
+<!-- PAGE SPECIFIC JAVASCRIPT -->
+
+<!-- END PAGE SPECIFIC JAVASCRIPT -->
+</head>
+
+<body bgcolor="#ffffff" >
+
+<div id="body">
+
+<!-- START BANNER -->
+<!-- 728x90 header -->
+<div id="header"><a href="/"><img width="781" height="40" src="http://68.142.114.67/images/logothin.gif" alt="Programmers Heaven logo" class="logo" /></a><div id="ad">
+
+<a href="/aspnet/common/webcounter.aspx"><img border="0" alt="" src="/images/spacer.gif" width="1" height="1"></a></div>
+</div>
+<!-- 728x90 header end -->
+
+
+
+
+
+
+<!-- END BANNER -->
+
+<!-- START Middle column -->
+
+<div id="content"> 
+<div id="margin-left-right"> 
+
+<!-- START CENTER CONTENT -->
+
+<!-- google_ad_section_start -->    
+
+	
+	<br>
+	<font face="Verdana, Arial, Helvetica, sans-serif" size="2">
+		
+		
+		
+		<h2>What’s New – C# 2.0 Series</h2>
+<p>
+In this C# what’s new series, we will introduce and discuss the new editions in C# 2.0 programming language. We will explain the new features like generics, partial classes, object oriented and other language enhancements and demonstrate it with sample source code. The series is most suitable for people who have worked with C# in Visual Studio.Net o r Visual Studio.Net 2003. However, people coming from different background like VB.Net, C++ and Java will also find it useful if they are planning to learn or move to C# in near future.
+<p>
+<h3>Miscellaneous Features</h3> 
+<p>
+In this article about the new features of C# 2.0 programming language we will discuss features like Fixed sized buffers, Friend assemblies, extern keyword, #pragma warnings and :: operator (global keyword).
+<p>
+<h3>Fixed Sized Buffers</h3>
+<p>
+In C# 1.x, when we declare an array, it is merely a reference (or pointer) that points to a sequence of elements. For example if we declare a structure like this:
+<p>
+<pre class="sourcecode">
+    struct Test
+    {
+        char[] letters;
+    }
+</pre>
+<p>
+It will only take 4 bytes in memory because what it contains is a reference (or pointer) which is of int type. Several times with legacy code written in C/C++ programming language we need to pass data structures which accepts the fixed sized buffers and not only the pointer of the buffer. C# 2.0 provides this feature with its ‘fixed sized buffers’ declared with the keyword ‘fixed’
+<p>
+<pre class="sourcecode">
+    struct Test
+    {
+        fixed char letters[10];
+    }
+</pre>
+<p>
+Now the structure will take up 20 bytes (a Unicode character takes 2 bytes) in memory. But there are few important points and restrictions for using fixed sized buffers:
+<p>
+<ul>
+<li>Fixed sized buffers can only be contained in unsafe code
+<li>They can only exist as instance members and not the local members of a method
+<li>We must have to declare the size of the fixed sized buffer when we declare them. It is an error to write fixed char letters[]
+<li>They can only be one dimensional. Multi-dimensional fixed sized buffers are not allowed
+</ul>
+
+<p>
+<h3>Friend Assemblies</h3>
+<p>
+In C# 2.0, you can designate an assembly as a friend of yours assembly. A friend assembly can access all the non-public types of your assembly. You can declare an assembly as a friend of your assembly using the assembly: InternalsVisibleTo() attribute defined in the System.Runtime.CompilerServices namespace which takes the name of assembly and its public key token
+<p>
+<pre class="sourcecode">
+[assembly: InternalsVisibleTo("AssemblyB, PublicKeyToken=32ab4ba45e0a69a1")]
+</pre>
+<p>
+You may require this in some project where you need one assembly to access types defined in your assembly and you separated the two assemblies for logical or deployment reasons. There are few important points to remember here:
+<p>
+<ul>
+<li>You must know not only the name of assembly to be marked as friend but also its public key token
+<li>Friendship achieved by friend assemblies is not symmetric, that is, if an assembly B is defined as a friend of an assembly A then it does not mean that A is also a friend of B. In easier word, in the example above, AssemblyB can access all the non-public types in our assembly but it does not mean that our assembly can also access all the non-public types of AssemblyB
+<li>Also the friendship thus achieved is not transitive, that is, if A defines B as its friend and B defines C as its friend then it does not mean that C is also a friend of A extern Keyword
+</ul>
+
+<p>
+The ‘extern’ keyword can either be used with a method or for assembly alias. When used with methods it specifies that the method body is externally defined in some unmanaged code (mostly specified with DllImport()). The following code demonstrates the extern method
+<p>
+<pre class="sourcecode">
+   [DllImport("User32.dll")]
+   public static extern int MessageBox(int h, string m, string c, int type);
+</pre>
+<p>
+Here we specified that the method MessageBox() is defined in an external unmanaged DLL (user32.dll). Note that the method declaration ends with semicolon as it is body is not defined here. The method can later be used in the program just like any other method.
+<p>
+The extern keyword can also be used as assembly alias. It is useful when we want to use different versions of an assembly at the same time in a single assembly. You can look for its description in MSDN
+<p>
+<h3>#pragma Warnings</h3>
+<p>
+Sometimes you like to tell your compiler not to display certain warnings; you can do this by #pragma keyword which is used to enable or disable specified warnings. You need to know the number of warning you want to enable or disable
+<p>
+<pre class="sourcecode">
+#pragma warning disable 414, 3021
+</pre>
+<p>
+The above code will disable warnings number 414 and 3021. Similarly you can enable warnings like:
+<p>
+</pre>
+#pragma warning enable 3021
+</pre>
+<p>
+<h3>:: Operator and global keyword</h3>
+<p>
+Suppose you have defined your own class with name ‘System’ and inside it you want to use the Console class of the .Net System namespace, what will you do? 
+<p>
+<pre class="sourcecode">
+namespace MyNameSpace
+{
+    class System
+    {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Hello, world");
+            System.Console.ReadLine();
+        }
+    }
+}
+</pre>
+<p>
+With C# 2.0, you can use the :: operator with global keyword to achieve this. It allows you to access members in the global namespace. 
+<p>
+<pre class="sourcecode">
+namespace MyNameSpace
+{
+    class System
+    {
+        static void Main(string[] args)
+        {
+           global:: System.Console.WriteLine("Hello, world");
+           global:: System.Console.ReadLine();
+        }
+    }
+}
+</pre>
+<p>
+It tells the compiler to search for the global namespace named ‘System’.
+<p>
+<h3>About the Author</h3>
+<p>
+Faraz Rasheed is the Masters Research student at Kyung Hee University, South Korea and a professional technical writer of Programmers Heaven. He graduated from the University of Karachi, Pakistan. He has a keen interest in the design and development of software systems. He has worked in .Net and Java application development platforms. Currently, he is working for the Ubiquitous Computing Research Project at Real Time &amp; Multimedia Lab of Kyung Hee University (<a href="http://oslab.khu.ac.kr" target="_blank" title="External Link">http://oslab.khu.ac.kr</a>). He can be accessed via <a href="mailto:faraz@oslab.khu.ac.kr">faraz@oslab.khu.ac.kr</a> or <a href="mailto:frazrasheed@yahoo.com">frazrasheed@yahoo.com</a> 
+<p>
+<a href="/2/Whats-New-in-C-Sharp2-Covariance-Contravariance">Back</a>
+
+
+
+<!--Rendering time: 0 -->
+
+
+		
+
+<!-- Total Rendering time: 0.03125 -->
+
+
+		<br />
+	</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+		
+	</font>
+	<br />
+	
+	&nbsp;
+	<br /><a href="/phwiki/printer.aspx?w=2&amp;p=Whats-New-in-C-Sharp2-Misc-New-Feature"><img alt="Printer friendly version of the Whats-New-in-C-Sharp2-Misc-New-Feature page" border="0" src="/images/print1.jpg" width="135" height="33"></a><br />
+
+
+<!-- google_ad_section_end -->
+
+<!-- END CENTER CONTENT -->
+
+<!-- START LINKS CONTROL -->
+
+<!-- Sponsored links -->
+
+<br>
+
+<!-- new partners box -->
+<div class="blue"><h2>Partners</h2></div>
+<div class="smaller">
+<div class="bg"><strong>Partners</strong>
+<a href="http://www.aspalliance.com/" target="_blank">ASP Alliance</a>
+<a href="http://www.codeproject.com/" target="_blank">Code Project</a>
+<a href="http://www.developersdex.com/" target="_blank">Developers Dex</a>
+<a href="http://www.developerfusion.co.uk/" target="_blank">Developer Fusion</a>
+<a href="http://www.devguru.com/" target="_blank">DevGuru</a>
+<a href="http://www.planet-source-code.com/" target="_blank">Planet Source Code</a>
+<a href="http://www.tek-tips.com/" target="_blank">Tek-Tips Forums</a>
+</div>
+<div class="bg2"><strong>More Partners</strong><br>
+<a href="http://www.otel.com/hotels/cairo.htm" target="_blank">Cairo hotels</a>
+<a href="http://www.dooyoo.co.uk/" target="_blank">Price Comparison</a>
+<a href="http://www.codecomments.com" target="_blank">Programming discussions</a>
+<a href="http://www.iwantapropertyinspain.uk.com/developments/dona-julia/vinas-del-golf.php" target="_blank">Costa Del Sol Property</a>
+<a href="/2/MorePartners" target="_blank">More Partners</a>
+</div>
+<div class="bg"><strong>Web site services</strong><br>
+<a href="http://www.123domainnames.co.uk/" target="_blank">Domain Names UK</a>
+<a href="http://www.net2.co.uk/" target="_blank">UK Domain Registration</a>
+<br></div><br></div>
+<!-- end new partners box -->
+
+<!-- END LINKS CONTROL -->
+</div> 
+
+<!-- END MIDDLE COLUMN -->
+
+<!-- START RIGHT COL -->
+
+
+<!-- Right column -->
+<div id="right-col">
+
+
+<!-- Right column banner -->
+<h2 class="black">Advertisement</h2>
+<div class="right-box">
+
+</div>
+
+<br /><br />
+
+<h2 class="black">Free Magazine</h2>
+
+<div class="right-box">
+<img alt="Free Magazines" width="80" src="/images/magazines/ewc2.gif" class="mag"><br />
+eWeek The essential technology information source for builders of e-business....
+<a href="http://programmersheaven.tradepub.com/free/ew/" target="_blank">subscribe now</a>
+</div>
+
+</div>
+
+<!-- Right column end -->
+
+
+
+
+
+<!-- END RIGHT CONTROL -->
+</div> 
+
+<!-- START LEFT CONTROL -->
+
+
+<!-- Left Column -->
+
+<div id="left-col">
+
+<!-- Login -->
+<div class="left2"><div class="top2"><div class="bot2"><div class="right2"><div class="left-top2"><div class="right-top2"><div class="left-bot2"><div class="right-bot2"><div class="pad2">
+
+<p class="nomargin"><img src="http://68.142.114.67/images/Rub_Members.gif" width="132" height="22" class="members" alt="Members"></p>
+
+<!-- Not logged in box start -->
+<form method="post" action="/c/login/login.asp">
+<label for="user">Username</label><br />
+<input type="hidden" name="thisURL" value="/phwiki/display.aspx?w=2&amp;p=Whats-New-in-C-Sharp2-Misc-New-Feature">
+<input type="text" name="username" id="user" size="12" maxlength="99">
+<br />
+<label for="pass">Password</label><br />
+<input type="password" name="password" id="pass" size="12" maxlength="32"><br />
+<input type="checkbox" id="autologin" name="autologin" value="on"> <a href="/c/login/auto_login_info.htm"><label for="autologin">Auto-login</label></a><br />
+<input type="image" class="login" name="Login" src="/images/loginbutton.gif" alt="Login">
+</form>
+
+<a href="/c/login/register_agreement.asp">Register</a><br />
+<a href="/c/login/registerwhy.htm">Why register?</a><br />
+<a href="/c/login/forgot_pwd_form.htm">Forgot Password?</a><br /><br />
+<!-- Not logged in box end -->
+
+
+</div></div></div></div></div></div></div></div></div>
+
+
+<!-- Links -->
+
+<div class="left2"><div class="top2"><div class="bot2"><div class="right2"><div class="left-top2"><div class="right-top2"><div class="left-bot2"><div class="right-bot2"><div class="pad2">
+
+<p>
+<a href="/jobs/">Jobs</a>&nbsp;<img alt="new Job section" src="/images/new.gif" width="28" height="11"><br>
+<a href="/webtools/default.aspx">Webtools</a><br />
+<a href="/c/MsgBoard/grouplist.asp">Message Boards</a><br />
+<a href="/2/FAQ">FAQ</a><br />
+<a href="http://www.codepedia.com">CodePedia</a><br />
+<a href="http://programmersheaven.tradepub.com/" target="_blank">Free Magazines</a><br />
+<a href="/other/BookSamples/index.htm">Sample Chapters</a><br />
+<a href="/c/usersearch/usersearch.asp">User search</a><br />
+<a href="/other/LatestFiles.htm">What's New</a><br />
+<a href="/other/topfiles.htm">Top lists</a><br />
+<a href="/app/rss/rssfeeds.aspx">RSS Feeds</a> <a href="/app/rss/rssfeeds.aspx"><img align="middle" alt="RSS Feeds" width="36" height="14" src="/images/rssfeed_icon.gif" class="rss"></a></p>
+
+<form method="post" action="/app/search/searchall.aspx">
+<label for="searchtxt"><input type="text" size="10" value="" id="searchtxt" name="SearchTxt"></label><br />
+<input type="image" class="login" name="Search" src="/images/searchbutton.gif" alt="Search the site"><br />
+<a href="/app/search/AdvSearch.aspx">Advanced Search</a><br />
+</form><br />
+
+</div></div></div></div></div></div></div></div></div>
+	
+
+<!-- Left column banner -->
+
+
+<!-- Newsletter -->
+
+<div class="left2"><div class="top2"><div class="bot2"><div class="right2"><div class="left-top2"><div class="right-top2"><div class="left-bot2"><div class="right-bot2"><div class="pad2">
+
+<p class="nomargin"><img src="http://68.142.114.67/images/Rub_Newsletter.gif" width="132" height="22" class="members" alt="Newsletter"></p>
+
+<form method="post" action="/app/newsletter/newsletter.aspx">
+<label for="email">Email</label><br />
+<input type="text" name="theEmail" id="email" size="12"><br />
+<input type="image" class="subscribe" name="Subscribe" src="http://68.142.114.67/images/subscribebutton.gif" alt="Subscribe"><br />
+<a href="/app/newsletter/newsletter.aspx">More information</a>
+</form>
+<br />
+
+</div></div></div></div></div></div></div></div></div>
+
+
+
+</div>
+
+<!-- END LEFT CONTROL -->
+
+<!-- START FOOTER -->
+
+
+<div class="left"><div class="top"><div class="bot"><div class="right"><div class="left-top"><div class="right-top"><div class="left-bot"><div class="right-bot"><div class="pad">
+
+<div class="xtra-div">
+<a href="/other/newsletterpage.htm">Newsletter</a> |
+<a href="/other/submission.htm" class="pad-left">Submit Content</a> |
+<a href="/other/about.htm" class="pad-left">About</a> |
+<a href="/other/advertise.htm" class="pad-left">Advertising</a> |
+<a href="/other/awards.htm" class="pad-left">Awards</a> |
+<a href="/other/contact_us.htm" class="pad-left">Contact Us</a> |
+<a href="/other/linktous.htm" class="pad-left">Link to us</a> |
+<script language="javascript" type="text/javascript">
+<!-- if ((navigator.appName == "Microsoft Internet Explorer") && (parseInt(navigator.appVersion) >= 4)) 
+{
+	var url="http://www.programmersheaven.com";
+	var title="Programmers Heaven";
+	document.write('<a href="javascript:window.external.AddFavorite(url,title);" class="pad-left" title="Add us to Your Favorites!">Add bookmark<\/a>');
+}
+--></script>
+<img width="111" height="6" src="/images/spacer.gif" class="skip" alt="">
+</div>
+
+<div id="smallprint">
+<strong>&#169; 1996-2006 <a href="/other/about.htm" target="_blank">128K-Communications Ltd.</a> All rights reserved.</strong> Reproduction in whole or in part, in any form or medium without express written permission is prohibited. Violators of this policy may be subject to legal action. Please read <strong><a href="/other/disclaimer.htm">Terms Of Use</a></strong> and <strong><a href="/other/privacy.htm">Privacy Statement</a></strong> for more information. Development by <a href="http://www.synchrondata.com" target="_blank"><strong>Synchron Data</strong></a>.</div><br />
+</div></div></div></div></div></div></div></div></div>
+<br /><br />
+
+
+
+<!-- END FOOTER -->
+</div>
+
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-260649-1";
+urchinTracker();
+</script>
+
+</body>
+</html>
+
+
+</text>

@@ -1,0 +1,105 @@
+﻿URL: http://www.findarticles.com/p/articles/mi_qa3977/is_200409/ai_n9449884
+
+   
+<h>Retrospective Analysis of Negative Pressure Wound Therapy in Open Foot
+Wounds with Significant Soft Tissue Defects
+
+   <h>Advances in Skin & Wound Care, Sep 2004 by Page, Jeffrey
+   C, Newswander, Brad, Schwenke, Dawn C, Hansen, Myron, Ferguson, John
+
+   <h>ABSTRACT
+
+   <p>OBJECTIVE: To compare treatment outcomes of open foot wounds with
+   significant soft tissue defects using either negative pressure wound
+   therapy (NPWT) or standard wet-to-moist saline-soaked gauze dressings.
+
+   <p>SUBJECTS: Forty-seven subjects with open wounds with significant soft
+   tissue defects.
+
+   <p>DESJGN: A retrospective analysis of sequentially selected records of
+   patients treated with NPWT or standard wetto-moist dressings.
+
+   <p>RESULTS: Risk of complications, subsequent foot surgeries, and
+   hospital readmissions (secondary outcomes) were all reduced by 70% or
+   more for the patients treated with NPWT. Length of stay during
+   readmissions tended to be shorter; rates of wound cavity filling and
+   wound healing (primary outcomes) tended to be greater with NPWT,
+   although the differences were not statistically significant.
+
+   <p>CONCLUSION: Patients included in the study treated with NPWT had fewer
+   foot-related complications, less additional foot surgery, and fewer
+   readmissions for the study foot than did patients treated with
+   standard therapy. Further research using randomized clinical trials is
+   needed to confirm the findings of the current study's data.
+   
+
+   <p>CLINICAL RELEVANCE: Wound cavity filling time and time to complete
+   closure were similar in both study groups, despite the fact that
+   patients receiving NPWT were older, had larger wounds, and had poorer
+   nutrition. NPWT may be an effective modality for the healing of open
+   wounds with significant defects and for reducing subsequent care.
+
+   <p>ADV SKIN WOUND CARE 2004;17:354,356,358-60,362-64.
+
+   <p>More than 2.8 million patients in the United States suffer from
+   chronic wounds, costing billions of dollars annually. ' Prevalence of
+   chronic ulcers has been estimated to be 120 per 100,000 patients
+   between the ages of 45 and 64 years; prevalence increases to more than
+   800 per 100,000 patients over age 75.2 Patients with diabetes have a
+   15% lifetime risk of developing a foot ulcer and up to a 40-fold
+   greater risk of lower-extremity amputation than do their counterparts
+   without diabetes.3 Approximately 82,000 hospital discharges for
+   diabetes-related nontraumatic amputations occurred in the United
+   States in 2001, the last year for which published statistics are
+   available.4 The 5-year survival rate following amputation of a
+   diabetic limb is less than 50%.s/h
+
+   <p>The causes of chronic wounds include nonhcaling diabetic, pressure, or
+   vascular ulcers; cellulitis or osteomyelitis; wound dehiscencc; and
+   trauma. Complicated ulcers often require aggressive debridcmcnt and/or
+   open amputation, which can result in large soft tissue defects. These
+   defects, in turn, may produce large, deep wounds with exposed bone,
+   tendon, capsule, and muscle that are difficult and costly to heal.
+   Often, these wounds are associated with further complications and the
+   need for other surgical procedures.
+
+   <p>As a consequence of the extreme morbidity, mortality, and cost of
+   managing lower-extremity ulcérations and their complications, many
+   modalities have been developed to improve wound closure. Among the
+   newer technologies recently used to promote closure of such wounds is
+   negative pressure wound therapy (NPWT; Vacuum Assisted Closure
+   [V.A.C.] Advanced Therapy System; KCI, San Antonio, TX). Developed in
+   the 1990s by researchers at Wake Forest University, NPWT has been used
+   successfully to treat a variety of wounds, including surgical
+   wounds,7-14 grafts15-19 diabetic foot ulccrs,20-23 and pressure
+   ulcers,24-26 with the aim of increasing the rate of wound closure,
+   increasing patient comfort, decreasing length of hospitalization, and
+   reducing the cost of care.27-36 The persistence of senescent, chronic
+   cells and protease-containing wound fluid at the wound interface is
+   deleterious to wound healing.37-38 Therefore, it is theorized that
+   NPWT aids in wound healing by removing excess interstitial fluids,
+   increasing vascularity, decreasing bacterial colonization, and
+   mechanically stimulating the surrounding tissues.39-41
+
+   <p>NPWT has been used regularly since early 2000 by the Podiatry section
+   at the CarlT. HaydenVA Medical Center (VA), Phoenix, AZ, for the
+   management of open foot wounds with significant soft tissue defects.
+   Initial impressions of its efficacy were favorable. The podiatry team
+   desired to confirm or refute these impressions through a retrospective
+   analysis of selected outcomes in patients treated with either NPWT or
+   standard wet to moist dressings.
+
+   <h>OBJECTIVES
+
+   <p>The purpose of this study was to compare specific outcomes in groups
+   of patients treated either with NPWT or with standard wet-to-moist,
+   saline-soaked dressings for open foot wounds with significant soft
+   tissue defects. The primary outcomes to be assessed were wound cavity
+   filling time and total time to complete closure of the wound (Table
+   1). secondary outcomes considered were other surgical procedures
+   performed on the study foot, complications of the study foot, and
+   number and length of readmissions for subsequent problems in the study
+   foot. All secondary outcomes were assessed during the year following
+   the definitive surgical procedure, which was performed just prior to
+   initiation of NPWT or wet-to-moist gauze dressings.
+   

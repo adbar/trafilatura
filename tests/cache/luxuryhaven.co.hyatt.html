@@ -331,7 +331,7 @@ h2.date-header{display:none;}
 					type	: {
 						mode		: 'disperse', 	// use def | fade | seqfade | updown | sequpdown | showhide | disperse | rows
 						speed		: 500,			// for fade, seqfade, updown, sequpdown, showhide, disperse, rows
-						easing		: '',			// for fade, seqfade, updown, sequpdown, showhide, disperse, rows	
+						easing		: '',			// for fade, seqfade, updown, sequpdown, showhide, disperse, rows
 						factor		: '',			// for seqfade, sequpdown, rows
 						reverse		: ''			// for sequpdown
 					}
@@ -352,21 +352,21 @@ h2.date-header{display:none;}
 summary_noimg = 370;
 summary_img = 200;
 
-function removeHtmlTag(strx,chop){ 
+function removeHtmlTag(strx,chop){
 	if(strx.indexOf("<")!=-1)
 	{
-		var s = strx.split("<"); 
-		for(var i=0;i<s.length;i++){ 
-			if(s[i].indexOf(">")!=-1){ 
-				s[i] = s[i].substring(s[i].indexOf(">")+1,s[i].length); 
-			} 
-		} 
-		strx =  s.join(""); 
+		var s = strx.split("<");
+		for(var i=0;i<s.length;i++){
+			if(s[i].indexOf(">")!=-1){
+				s[i] = s[i].substring(s[i].indexOf(">")+1,s[i].length);
+			}
+		}
+		strx =  s.join("");
 	}
-	chop = (chop < strx.length-1) ? chop : strx.length-2; 
-	while(strx.charAt(chop-1)!=' ' && strx.indexOf(' ',chop)!=-1) chop++; 
-	strx = strx.substring(0,chop-1); 
-	return strx+'...'; 
+	chop = (chop < strx.length-1) ? chop : strx.length-2;
+	while(strx.charAt(chop-1)!=' ' && strx.indexOf(' ',chop)!=-1) chop++;
+	strx = strx.substring(0,chop-1);
+	return strx+'...';
 }
 
 function createSummaryAndThumb(pID){
@@ -374,11 +374,11 @@ function createSummaryAndThumb(pID){
 	var imgtag = "";
 	var img = div.getElementsByTagName("img");
 	var summ = summary_noimg;
-	if(img.length>=1) {	
+	if(img.length>=1) {
 		imgtag = '<div class="btntimg-cont"><img class="btntimg" src="'+img[0].src+'"/></div>';
 		summ = summary_img;
 	}
-	
+
 	var summary = imgtag + '<div class="entrysum">' + removeHtmlTag(div.innerHTML,summ) + '</div>';
 	div.innerHTML = summary;
 }
@@ -681,7 +681,7 @@ Current hotel properties include Hotel SOFIA Barcelona in Barcelona, Spain; Roya
 <div class='post-meta'>
 <span class='post-labels'>
 
-Labels : 
+Labels :
 <a href='https://www.luxuryhaven.co/search/label/Hotel%20Reviews%20%2F%20Staycation' rel='tag'>Hotel Reviews / Staycation</a>,
 <a href='https://www.luxuryhaven.co/search/label/Luxury%20Indulgence' rel='tag'>Luxury Indulgence</a>,
 <a href='https://www.luxuryhaven.co/search/label/Travel' rel='tag'>Travel</a>
@@ -732,7 +732,7 @@ Labels :
         if (data && data.feed && data.feed.entry) {
           for (var i = 0, entry; entry = data.feed.entry[i]; i++) {
             var comment = {};
-            // comment ID, parsed out of the original id format
+            // comment ID, parsed out of the ground id format
             var id = /blog-(\d+).post-(\d+)/.exec(entry.id.$t);
             comment.id = id ? id[2] : null;
             comment.body = bodyFromEntry(entry);
@@ -1517,9 +1517,9 @@ Labels :
 <script type="text/javascript">
         nuffnang_bid = "8f30afec1e8011f73aced44d9eeb2131";
         document.write( "<div id='nuffnang_ss'></div>" );
-        (function() {	
-                var nn = document.createElement('script'); nn.type = 'text/javascript';    
-                nn.src = '//synad3.nuffnang.com.sg/ss.js';    
+        (function() {
+                var nn = document.createElement('script'); nn.type = 'text/javascript';
+                nn.src = '//synad3.nuffnang.com.sg/ss.js';
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(nn, s.nextSibling);
         })();
 </script>
@@ -1694,9 +1694,9 @@ Long haul flight leaves you dehydrated and weary, regardless of you flying the E
 <script type="text/javascript">
 nuffnang_bid = "8f30afec1e8011f73aced44d9eeb2131";
 document.write( "<div id='nuffnang_lb'></div>" );
-(function() {	
-var nn = document.createElement('script'); nn.type = 'text/javascript';    
-nn.src = 'http://synad2.nuffnang.com.sg/lb.js';    
+(function() {
+var nn = document.createElement('script'); nn.type = 'text/javascript';
+nn.src = 'http://synad2.nuffnang.com.sg/lb.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(nn, s.nextSibling);
 })();
 </script>
@@ -1896,13 +1896,13 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(nn
 </div><div class='widget LinkList' data-version='2' id='LinkList70'>
 
           <style type='text/css'>
-          
 
-                #outer-wrapper{max-width:none} 
-              
+
+                #outer-wrapper{max-width:none}
+
 
           </style>
-        
+
 </div>
 </div>
 <div class='footer section' id='footer1'><div class='widget HTML' data-version='1' id='HTML5'>

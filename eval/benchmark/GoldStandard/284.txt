@@ -1,0 +1,53 @@
+URL: http://www.bis.org/publ/cpss68.htm
+
+<h>Central bank oversight of payment and settlement systems
+
+<h>Foreword
+
+<p>Central banks have always had a close interest in the safety and
+   efficiency of payment and settlement systems. One of the principal
+   functions of central banks is to be the guardian of public confidence
+   in money, and this confidence depends crucially on the ability of
+   economic agents to transmit money and financial instruments smoothly
+   and securely through payment and settlement systems. The systems must
+   therefore be strong and reliable, available even when the markets
+   around them are in crisis and never themselves the source of such
+   crisis.
+
+<p>Central banks have traditionally influenced payment and settlement
+   systems primarily by being banks which provide a variety of payment
+   and settlement services to other banks. As such, central banks provide
+   a safe settlement asset and in most cases they operate systems which
+   allow for the transfer of that settlement asset. It is only relatively
+   recently that oversight has become a function that is more formal and
+   systematic - namely a function whereby the objectives of safety and
+   efficiency are promoted by monitoring existing and planned systems,
+   assessing them against these objectives and, where necessary, inducing
+   change. However, although recent, this development in the nature of
+   oversight has been rapid and the function has now come to be generally
+   recognised as a core responsibility of central banks.
+
+<p>Given this importance, and the experience that has been gained over
+   the years, the Committee on Payment and Settlement Systems felt it
+   would be useful to set out publicly what has been learned about
+   effective oversight. Most of this report is descriptive and
+   analytical, explaining why and how central banks oversee payment and
+   settlement systems. It looks at the need for oversight, the source of
+   central banks' responsibilities for oversight, the scope of oversight
+   and the activities that oversight involves. In addition it looks at
+   cooperative oversight, where more than one central bank or other
+   authority has responsibilities for a system. However, as well as this
+   description and analysis, the report also includes 10 principles for
+   effective oversight, each with explanatory text. Five of the
+   principles are generally applicable to oversight arrangements while
+   the other five are specifically for cooperative oversight
+   arrangements. All the principles are consistent with, and indeed
+   largely drawn from, the previous work on payment and settlement
+   systems published by the Committee and earlier groups reporting to the
+   G10 Governors.
+
+<p>The Committee set up a Working Group on Oversight of Payment and
+   Settlement Systems to help it produce this report. The CPSS is very
+   grateful to the members of the working group, its chairman, Martin
+   Andersson of Sveriges Riksbank, and the CPSS secretariat at the BIS
+   for their excellent work in preparing this report.

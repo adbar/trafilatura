@@ -1,0 +1,448 @@
+<text id="http://cn.bbs.yahoo.com/message/read_being_998_0.html" title="从原子弹爆炸原理想开去 - 奇闻异事 - 雅虎社区" encoding="gb2312">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<link href="http://cn.yimg.com/i/cn06/hd/ycomm.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="http://cn.yimg.com/i/cn06/hd/pstru.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="http://cn.yimg.com/i/css/bbs/ybbs.css" rel="stylesheet" type="text/css" media="screen" />
+<title>从原子弹爆炸原理想开去 - 奇闻异事 - 雅虎社区</title>
+<script language=javascript>
+function URLEncode(plaintext )
+{
+ var SAFECHARS = "0123456789" + // Numeric
+ "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + // Alphabetic
+ "abcdefghijklmnopqrstuvwxyz" +
+ "-_.!~*'()"; // RFC2396 Mark characters
+ var HEX = "0123456789ABCDEF";
+ var encoded = "";
+ for (var i = 0; i < plaintext.length; i++ ) {
+ var ch = plaintext.charAt(i);
+ if (ch == " ") {
+ encoded += "+"; // x-www-urlencoded, rather than %20
+ } else if (SAFECHARS.indexOf(ch) != -1) {
+ encoded += ch;
+ } else {
+ var charCode = ch.charCodeAt(0);
+ if (charCode > 255) {
+ encoded += "+";
+ } else {
+ encoded += "%";
+ encoded += HEX.charAt((charCode >> 4) & 0xF);
+ encoded += HEX.charAt(charCode & 0xF);
+ }
+ }
+ } // for
+ return encoded;
+};
+function rd_clk(path,ur) {
+ var newurl;
+ var newurl;
+ if (document.images){
+ ur = URLEncode(ur);
+ newurl="http://cn.rd.yahoo.com/home/portal/hp/"+ path + 'url='+ur+"/" + "*" + "http://cn.yimg.com/search/yisou/clk.gif";
+ (new Image()).src=newurl;
+ }
+ return true;
+}
+</SCRIPT>
+<script>
+ function submit_frm(selItem){
+	      var p = selItem.parentNode; 
+		       if(!p) return;
+		       while(p.tagName.toLowerCase() !== 'form'){
+				            p = p.parentNode;
+							     }
+     var ac = p.elements['select'].value;
+     var srhurl = ac.substring(0,ac.indexOf(".cn")+3);
+	      if(p.elements['p'].value.replace(/^\s+$/,'') == ""){
+			          if(srhurl == ""){
+						              p.action = "http://www.yahoo.com.cn";               
+									          }else{
+												              p.action = srhurl;
+															          }
+        this.method = "post";
+    }else{
+		         p.action = ac;
+				     }
+    p.submit();
+ }
+ </script>
+
+<script  type=text/javascript>
+function jtrim(str)
+{     while (str.charAt(0)==" ")
+{str=str.substr(1);}      
+while (str.charAt(str.length-1)==" ")
+{str=str.substr(0,str.length-1);}
+return(str);
+}
+function CheckForm(theForm) {
+	theForm.title.value = jtrim(theForm.title.value);
+	theForm.contents.value = jtrim(theForm.contents.value);
+	if (theForm.title.value.length < 1) {
+		alert('请认真输入主题');
+		return false;
+	}
+	if (theForm.contents.value.length < 2) {
+		alert('请认真输入帖子的内容');
+		return false;
+	}
+	if(theForm.title.value.length > 30)
+	{
+		alert('标题不得超过30个字!');
+		return false;
+	}
+	if(theForm.img_type[0].checked)
+		var img_url= theForm.pic_file[0].value;
+	else	
+		var img_url= theForm.pic_file[1].value;
+	img_url = jtrim(img_url);
+	if(img_url.length > 0)
+	{ 
+		pattern = /.(jpg|gif|jpeg)$/i;
+		flag = img_url.match(pattern);
+		if(flag==null) { alert('只能上传jpg/gif/jpeg格式的图片');  theForm.pic_file.value=""; return false; }
+	}
+	return true;
+}
+function PasteImage(theForm){  
+	var str = prompt("输入图片的超链接(例如http://images.sohu.com/soh1.gif):","http:\/\/");
+	if ((str != null) && (str != "http"))
+		theForm.pic_file.value =str;  
+	else 
+		theForm.pic_file.value ="";
+	return false;
+}
+</script>
+<script language="javascript" src="http://bbs.cn.yimg.com/i/newbbsui/script/ymenu.js"></script>
+<script language="javascript" src="http://bbs.cn.yimg.com/i/newbbsui/script/yediter.js"></script> 
+<script language="javascript" src="http://cn.yimg.com/i/js/bbs/ybbs.js"></script><body class="curContent">
+<img src="http://rd.bbs.vip.cnb.yahoo.com/threadview/icon?q=&t=奇闻异事&r=1053218515" width="1" height="1"> <div id="phd">
+<!--logo -->
+<div class="lg"><a href="http://cn.bbs.yahoo.com" target="_top"><img src="http://cn.yimg.com/i/cn/comm/logo_ycomm.gif" alt="雅虎社区" border="0" /></a></div>
+<!--//logo -->
+<div class="wo">
+<!--login status -->
+<a href="http://edit.bjs.yahoo.com/config/login?.intl=cn&.done=http%3A%2F%2Fcn.bbs.yahoo.com%2Fmessage%2Fread_being_998.html" target="_top"><strong>登入</strong></a> 
+<span class="black">新用户？</span>
+<a href="https://reg.cn.yahoo.com/cnreg/cnreg_first?.intl=cn&.src=ym&new=1&id=78042&.done=http%3A%2F%2Fcn.bbs.yahoo.com%2Fmessage%2Fread_being_998.html" target="_top">[注册]</a>
+<!--//login status -->
+<br /><a href="http://mail.yahoo.com.cn/" target="_top" class="n1">邮箱</a> | <a href="http://cn.zs.yahoo.com/"  target="_top" class="n1">助手</a> | <a href="http://cn.photo.yahoo.com/"  target="_top" class="n1" >相册</a>| <a href="http://cn.messenger.yahoo.com/"  target="_top" class="n1">雅虎通</a></div>
+<div class="r">
+<div class="n2">
+<a href="http://www.yahoo.com.cn/" target="_top" >首页</a> <a href="http://news.yahoo.com.cn/" target="_top" >资讯</a> <a href="http://ks.cn.yahoo.com/" target="_top" >知识</a> <a href="http://music.yahoo.com.cn/" target="_top" >音乐</a> <a href="http://image.yahoo.com.cn/" target="_top" >图片</a> <a href="http://cn.bbs.yahoo.com/search/index.html" target="_top" >酷贴</a> <a href="http://site.yahoo.com.cn/" target="_top" >网址</a>  <a href="http://misc.yahoo.com.cn/searchmore.html" target="_top" >更多...</a></div>
+<!--sch form -->
+<div class="psch">
+<form xmlns="" action="http://www.yahoo.com.cn/search" target="_blank">
+  <span style="margin:0">
+  <input name="p" type="text" class="i1" />
+  </span><span style="margin:0">
+  <select name="select">
+    <option selected="selected" value="http://www.yahoo.com.cn/search">网页</option>
+    <option value="http://news.yahoo.com.cn/search.html">资讯</option>
+    <option value="http://ks.yahoo.com.cn/search/search_result2">知识</option>
+    <option value="http://music.yahoo.com.cn/search">音乐</option>
+    <option value="http://image.yahoo.com.cn/search">图片</option>
+    <option value="http://misc.yahoo.com.cn/psearch.html">酷贴</option>
+  </select>
+  </span>
+  <input type="hidden" name="source" value="ycont_news_web_result"> <input type="button" onclick="submit_frm(this);" value="搜索" />
+</form>
+</div>
+<!--//sch form -->
+</div>
+</div>
+ 
+<div class="hack"></div>
+<!--body -->
+<div id="bd">
+<div id="bd2r">
+<div id="bd2rc">
+<!--search topic --> 
+<div id="st">
+<div class="l"><img src="http://bbs.cn.yimg.com/i/sch_box_l.gif" /></div>
+<script language="javascript">
+function checkSearch(){
+	var stForm = document.getElementById('stForm');
+    var p = document.getElementById('stp');
+    var st1 = document.getElementById('st1');
+    if( st1.checked == true){
+    		stForm.action= 'http://cn.bbs.yahoo.com/forumview?p=' + p.value;    		
+    }
+    var st3 = document.getElementById('st3');
+    if( st3.checked == true){
+    		stForm.action= 'http://cn.bbs.yahoo.com/inner_search/search_r.php?p=' + p.value + '&st=' + st3.value;
+    }
+    var st4 = document.getElementById('st4');
+    if( st4.checked == true){
+    		stForm.action= 'http://cn.bbs.yahoo.com/inner_search/search_r.php?p=' + p.value + '&st=' + st4.value;
+	}
+	window.top.location = stForm.action;
+	return false;
+}
+</script>
+<div class="l2">
+<form id="stForm" action="http://cn.bbs.yahoo.com/forumview" method="get" onSubmit="return checkSearch()">
+<div class="st_box">
+  <input id="stp" name="p" type="text" size="45" value=""/>
+	<input name="Submit" type="submit" class="btn_st" value="搜 索"  />
+	&nbsp;<a href="http://help.cn.yahoo.com/answerpage.html?product=bbs" class="black" target="_blank">帮助</a>
+				  &nbsp;<a href="http://cn.bbs.yahoo.com/bbsmap/index.html" class="black" target="_blank">社区地图</a></div>
+				  <div class="st_type">
+					<input name="st" type="radio" id="st1" value="board" checked="checked" />
+					  <label for="st1">进入社区</label>&nbsp;
+					<!--
+					 <input type="radio" name="radiobutton" value="radiobutton" id="st2" />
+					  <label for="st2">搜索社区名</label>&nbsp;
+					-->
+					<input type="radio" name="st" value="message" id="st3" />
+					<label for="st3">搜索帖子内容</label>&nbsp;
+					<input type="radio" name="st" value="image" id="st4" />
+					<label for="st4">搜带图帖</label>
+</div>
+</form>
+</div>
+<div class="r"><img src="http://bbs.cn.yimg.com/i/sch_box_r.gif" /></div>
+</div>
+<!--//search topic -->
+	<script language="javascript" src="http://us.js1.yimg.com/us.yimg.com/lib/msg/js/msgr_detect_200509081601.js"></script></span><script language="javascript">  //modified by wangshan for passport v1.0
+function checkMesger(yid)
+{
+	var obj = messenger.detect();
+	if (obj.installed)
+		location.href= "ymsgr:im?to="+yid;
+	else
+		location.href= "http://cn.insider.messenger.yahoo.com/showdownload.html";
+}
+</script>
+
+	<!-- board static  -->
+	<div class="bbs_list" style="margin-top:5px"> 
+	<iframe src="http://cn.bbs.yahoo.com/bbs_frame_threadview_061113.html" width="100%" height="85" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe>
+	</div>
+	<div class="board">
+		<div class="l"><a href="http://cn.rd.yahoo.com/home/bbs/detail/path/*http://cn.bbs.yahoo.com">社区首页</a> &gt; <a href="http://cn.rd.yahoo.com/home/bbs/detail/path/*http://cn.bbs.yahoo.com/category/read_13.html">社会探索</a> &gt <a href="http://cn.rd.yahoo.com/home/bbs/detail/path/*http://cn.bbs.yahoo.com/forum/read_being.html">奇闻异事</a>
+		</div>
+	</div>
+	<!--// board static -->
+<div class="hack"></div>
+<!--bbs -->
+<div class="hack"></div>
+<!--bbs list -->
+<div class="bbs_list">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0"	class="cnt_tb">
+		<tr valign="top">
+			<td width="140" class="cnt_td1">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="29" background="http://cn.yimg.com/i/cn/comm/members/banner.gif" align="left">&nbsp;<a href="javascript:checkMesger('cjy52191')" class="yge" ><img src="http://opi.yahoo.com/online?u=cjy52191" align="absmiddle" />&nbsp;<a href="http://cn.bbs.yahoo.com/people?u=cjy52191%23bl&source=community_passport_nickname" target=_blank><b>cjy52191</b></a></td>
+  </tr>
+  <tr>
+  <td align="center" ><a href="http://cn.bbs.yahoo.com/people?u=cjy52191%23bl&source=community_passport_photo" target=_blank><img src="http://cn.yimg.com/i/cn/bbs/pic/icon/male.gif" style="border:4px solid #F3F2FF;margin-top:5px;margin-bottom:5px" onload="javascript: if(this.width>120) this.width=120; if(this.height>120) this.height=120;"/></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="http://cn.bbs.yahoo.com/friends?yid=cjy52191&invite&source=community_passport_friends" target=_blank><img src="http://cn.yimg.com/i/cn/comm/members/b1.gif" width="64" height="20" border="0" /></a><a href="http://cn.bbs.yahoo.com/message?a=sd&to=cjy52191%23bl&source=community_passport_message" target=_blank><img src="http://cn.yimg.com/i/cn/comm/members/b2.gif" width="64" height="20" border="0" /></a></td>
+  </tr>
+  <tr>
+    <td align="left" style="padding-top:5px">&nbsp;<span style="font-size:12px;font-color:#232323;line-height:18px">级别：入学了</span></td>
+  </tr>
+<tr>
+    <td align="left" style="padding-top:5px">&nbsp;<span style="font-size:12px;font-color:#232323;line-height:18px">积分：235</span></td>
+  </tr>
+    </tr>
+  <tr>
+    <td align="left">&nbsp;<a href="http://cn.bbs.yahoo.com/people?u=cjy52191%23bl&source=community_passport_placards#post" class="mlinka" target=_blank>看我还写了啥？</a></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="http://cn.yimg.com/i/cn/comm/members/line1.gif" style="margin:3px 0px 3px 0px" /></td>
+  </tr>
+  <tr>
+    <td align="left">&nbsp;<span style="font-size:12px;font-color:#232323;line-height:18px">我收藏的：</span><a href="http://gallery.photos.cn.yahoo.com/site/user_index.php?yuid=cjy52191&source=community_passport_gallery" class="mlinka" target=_blank>图片</a> <a href="http://mybox.cn.yahoo.com/mylist.html?ui=cjy52191%23bl&source=mo_bbs_mbox" class="mlinka" target=_blank>音乐</a></td><!--zongli-->
+  </tr>
+</table>
+			</td>
+			
+			<td>
+				<table width="100%" cellpadding="0" cellspacing="0" height="30" class="bg_tit">
+					<tr>
+						<td class="cnt_td2">从原子弹爆炸原理想开去</td>
+						<td align="right" class="pdr10"><span class="cnt_date">2005-09-11 18:04:42</span> &nbsp;
+						<span class="black">楼主</span></td>
+					</tr>
+				</table>
+				<table width="96%" border="0" align="center" cellpadding="0" cellspacing="8">
+					<tr>
+						<td class="cnt_td3" id="img" >
+							一个中子撞击铀原子时，铀原子变成了两三个中子，连锁反应发生了，这些获得动能的中子不停的分裂撞击铀原子，最后巨大的能量产生了。物质就是能量，但前提是必须施加外力，原子弹不可能自己转化成能量，毕竟需要撞击时候的先前力。于是很小的力就可以变成巨大的力，变成横扫大地的力，这也是有条件的，那就是物质本身的存在。不过宇宙中的能量又是从哪里来的？似乎宇宙本身就是物质和能量的转化过程的混合体。宇宙的开端可能是能量场，不用奇怪那些量子为何那么不稳定，也不用纳闷中微子是如何穿过你身体的，因为在你一出生就看到了物质世界，能量渐渐“冷却”而变成的物质，虽然这样，热力学原理还是告诉我们熵在增加，为什么呢？也许物质最终还是会把能量消耗至尽。呈现物质的分界线是光，在光以下是纯物质世界，在光以上是纯形式能量，光的二象性显示了它的分界特性，作为物质来说光速的确是最快的，因此“运动”这个概念只是对物质来说的，而对非物质来说，光速只是和冲击波和力产生前的效果，原子核便最终加速到产生了光，最后才有了质的变化，物质不见了，它们超越光速的瞬间变为了能量。E=M（C的平方）也只是光速运动的顶端，也就是说物质在以光速“运动时”，也是变成“能量时”，物质消失，能量无中升有了，要想把某物质加速到光速必定需要巨大的力量，这些力量是首先借助于物质与力（物体具有能量不代表本身就是能量），当达到光速最后连带物质也变为了能量，当然这仅仅是物理现象。 <br />
+<br />
+　　我们都知道力是可以传递的，但却不知道力是从哪里来，要想物质具有能量就必须要有力，力使物质运动，物质在运动中会具备能量，如果间发生碰撞，就会把突然停下物质的能量以力的方式施加于另一方，使另一物质吸收前物质的能量，以此类推，这种碰撞不仅是能量的传递，也是力的传递，物质在运动中带能量，停下就带力。不过恒力的产生必须要有能量源，这样的解释可以用在太阳系和黑洞中。如果你的手打以某速度打向某一物体，这个物体阻碍了你手部运动的路线并且不能再前进时，你就感到力的存在。而万有引力告诉我们物质的存在是为了吸引其他物质，太阳的存在使地球具有了能量，而地球的存在使月球具有了能量，不过这是反作用力的效果，因为促使星球运动的是吸引力，这就象黑洞的能量维持必须依靠物质和产生吸引力来“吞食”物质，于是黑洞的能量和吸力就越强。也许黑洞里早已经不存在物质，而是能量源，但和原子弹不同，它从不发射力。物质都跑哪里去了？不用担心，因为它们总能无中生有，也许可以解释为大爆炸（奇点），是物质的诞生而不是终结。这才有了物质和能量的循环，我们不禁想问，宇宙有起点吗或宇宙有终点吗？但这些问题毫无意义，因为世界本身就一直处在循环中。平衡的折损与完整的打破就会被循环来代替，阴阳图也恰好说明了这点，阴代表能量，阳代表物质。这是宇宙平衡被打破的表现，它们似乎对立，又似乎是统一，当对立时就会有冲突和无序产生，当统一时则相容又和谐。不过，能量和物质最初从未发生过结合，它们是各自的独立体，表现为具体和抽象，但有没有具体与抽象同在的东西，没有任何东西可被代替，这是因为在宇宙中只有生命才有这一特性，也是唯一具有这一特性的物质。 <br />
+<br />
+　　在纯物质世界中，除了量子世界表现的非线性特性外，宏观物质都是线性的，因此宏观物质是可预料的，如果按照牛顿的理论来解释这个世界，那么一切都可以用公式计算推倒出来，未来就可以被预知。不过量子幽灵却给牛顿带来了难题，我们无论如何也测不准它，那么我们如何能够预知呢？这给我们带来了一个陈旧的哲学问题，偶然与必然的问题，我们可以预料大体，但却不能预料突发事件，因此有些事不得不动用概率来解决，这又从某种角度体现了非线性的存在。因此科学对一些事物不可测，或者说不可证。量子力学没有特定的定律，因此物理定律只不过适合用于宏观物质上。 <br />
+<br />
+　　新事物的诞生是困难的，这犹如百里挑一，犹如生命的产生，因为新事物刚出生就可能大部分被强大的旧事物扼灭了，这时事物一表常态，也十分稳定，几亿精子被卵子拒之门外。只有一只有幸进入。这时新生命诞生了，创造似乎是一种偶然的成功，因为它伴随着不稳定性，但新事物成功后便又会进入稳定状态。如何看待生命的偶然性，生命的出现是两种状态的结晶，对宇宙普遍原则来说，这是一种必然性，生命迟早会出现，但什么时候出现却不得而知。无数化学元素被创生，只等到太阳、氧气、水、大气连同月亮与雷电同时出现时才有了有机态，在漫长的岁月中不断与外界发生反应，几十亿年后才形成真正意义上的生命，在我看来能量找到了与物质的切入点，这是一件不容易的事情，庞大的生命群体开始了进化与膨胀，当然这种奇妙的现象背后不是使物质以裂变形式爆炸的力，而是复制。于是物质不再是原子或亚原子式能量的连锁反应，而是复杂性与多样性的组合进化反应。 <br />
+<br />
+　　物理学是自然科学的主干，但物理学家大多没有把传统物质与生命物质区分对待，因此想要了解生命现象并非易事，这又象现代医学，研究医学的人都知道，并非所有疾病都能治好，而且没有一种根病源的方法（一般来说），常常用带有负效应的药物缓解，这务必引起其他功能的损害，有的甚至用移植或代替维持生命机体（对机体来说再生功能的损害是最危险的）。有时，当我们发现和祛除一种病源时，新的病种又会出现。但中国传统医学却以阴阳学来指导医学治疗，这使我们对生命的了解更深入，生命的机理与宇宙的造就有着不可忽略的联系，因此具有宇宙机理有着相似处，我们完全可以去预防疾病不生病。可能你不用去了解生命，生命没有公式，或许存在另一种规律，不过我们了解到普遍规律时，生命现象还是可以被解释的。生命现象也是将物质变为能量的过程，和核裂变不同的是生命过程是将能量有序化的过程，这就是进化。我们是能量和物质的共同体，当肉体死亡时，能量是否还能有序？但一点可以肯定，肉体是媒介。 <br />
+<br />
+　　深入了解自然才能深入了解生命。光为何是柔和的，是因为电子随机运动的结果；激光雷电为何是坚硬的，是因为电子都向着同一个方向。虽然它们都统称为光。科学可以捕捉利用自然现象却不能改变它。我们应尊重一切存在的自然规律，因为在自然面前科学很无能，生命是一条曲折的连锁反应，是DNA连接着这条生物大链子，生命科学是否能结合现代物理学？到时候必将会有一门新兴的科学诞生。
+							</p>
+                            
+						</td>
+					</tr>
+					<tr>
+						<td>
+							
+						</td>
+					</tr>
+				</table>
+			</td>
+	</tr>
+	<tr valign="top">
+		<td class="cnt_td1">&nbsp;</td>
+		<td height="25" align="right">
+		
+		
+		
+		<strong>		<a onclick="window.open('http://myweb.cn.yahoo.com/popadd.html?url='+encodeURIComponent(document.location.href)+'&title='+encodeURIComponent(document.title), 'Yahoo','scrollbars=yes,width=780,height=455,left=80,top=80,status=yes,resizable=yes');" href="#">收藏此帖</a></strong>
+		<strong>					<a href='javascript: 
+						document.getElementById("parent_id").value="998"; 
+						document.getElementById("title").value="re:从原子弹爆炸原理想开去"; 
+						document.getElementById("cntarea").value="";
+						document.getElementById("title_a").value="标题";
+						document.getElementById("cntarea").focus();' 
+						onclick="return true;">回复此帖</a> </strong>
+		<strong>					<a href='javascript:
+						 document.getElementById("parent_id").value="998";
+						 document.getElementById("title").value="re:从原子弹爆炸原理想开去";
+						 document.getElementById("cntarea").value="\n\n    [quote]一个中子撞击铀原子时，铀原子变成了两三个中子，连锁反应发生了，这些获得动能的中子不停的分裂撞击铀原子，最后巨大的能量产生了。物质就是能量，但前提是必须施加外力，原子弹不可能自己转化成能量，毕竟需要撞击[/quote]";
+						 document.getElementById("title_a").value="标题";
+						 document.getElementById("cntarea").focus();'
+						 onclick="return true;">引用此帖</a></strong>&nbsp;&nbsp;</td>
+	</tr>
+ </table>
+<script language="javascript">
+function resizeImg(img_src){
+	maxWidth = document.body.clientWidth - 200
+	if(img_src.width > maxWidth  ){
+		img_src.width = maxWidth;	
+	}
+}
+function set_reffe_contents(ref_contents){
+	document.getElementById('cntarea').value='';
+}
+	</script><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	<td height="45">共有帖子数<strong>1</strong>个</td>
+	<td align="right" class="page">&lt;&nbsp;第一页&nbsp;|上一页| <b>1</b> | 下一页&nbsp;|&nbsp;最末页&gt;</td>
+  </tr>
+</table></div>
+<!-- // bbs list -->
+<!-- bbs reply-->
+	<script  type=text/javascript>
+function jtrim(str)
+{     while (str.charAt(0)==" ")
+{str=str.substr(1);}      
+while (str.charAt(str.length-1)==" ")
+{str=str.substr(0,str.length-1);}
+return(str);
+}
+function CheckForm(theForm) {
+    theForm.title.value = jtrim(theForm.title.value);
+    theForm.contents.value = jtrim(theForm.contents.value);
+    if (theForm.title.value.length < 1) {
+        alert('请认真输入主题');
+        return false;
+    }
+    if (theForm.contents.value.length < 2) {
+        alert('请认真输入帖子的内容,不得少于1个字');
+        return false;
+    }
+    if(theForm.title.value.length > 30)
+    {
+        alert('标题不得超过30个字!');
+        return false;
+    }
+    return true;
+}
+function PasteImage(theForm){  
+    var str = prompt("输入图片的超链接(例如http://images.sohu.com/soh1.gif):","http:\/\/");
+    if ((str != null) && (str != "http"))
+        theForm.pic_file.value =str;  
+    else 
+        theForm.pic_file.value ="";
+    return false;
+}
+</script>
+<script language="javascript" src="http://cn.yimg.com/i/js/bbs/2/yedtfun.js"></script>
+<!--<script language="javascript" src="http://bbs.cn.yimg.com/i/newbbsui/script/yedtfun.js"></script>--> 
+		<a name="replyarea"></a>
+	<div>
+	<div class="reply">
+	<form name="reply"  action="http://cn.bbs.yahoo.com/reply" method="post" onSubmit="return CheckForm(this);">
+	<table border="0" cellpadding="3" cellspacing="5" class="reply_tb">
+    	<tr>
+		<td width="75" align="right"><strong>用户名：</strong></td>
+		<td align="left"><span class="red">匿名</span>
+			 <a href="http://edit.bjs.yahoo.com/config/login?.intl=cn&.done=http%3A%2F%2Fcn.bbs.yahoo.com%2Fmessage%2Fread_being_998_1.html" target="_top"><b>登录</b></a> | 
+			 <a href="https://reg.cn.yahoo.com/cnreg/cnreg_first?.intl=cn&.src=ym&new=1&id=78044&.done=http%3A%2F%2Fcn.bbs.yahoo.com%2Fmessage%2Fread_being_998_1.html" target="_top"><b>注册</b></a>|
+			 <a href="http://edit.bjs.yahoo.com/config/eval_forgot_pw?new=1&.done=http://cn.bbs.yahoo.com&.src=ym&.intl=cn&pkg=&stepid=&.last=" target="_top"><b>忘记密码</b></a>
+		</td>
+	</tr>
+    
+	<tr>
+		<td width="75" align="right"><strong>标题：</strong></td>
+		<td align="left"><input id="title"  name="title" type="text" class="input1" value="" /></td>
+	</tr>
+	<tr>
+		<td align="right" valign="top"><strong>内容：</strong></td>
+		<td align="left">
+		<div class="editerarea"><textarea id="cntarea"  name="contents" rows="8"
+			class="textarea" ></textarea></div>
+		</td>
+	</tr>
+	
+	<tr>
+		<td align="right">&nbsp;</td>
+		<td align="left"><span class="st_box"> <input name="Submit2"
+			type="submit" class="btn_reply" value="发 表"  /> 
+			&nbsp;<span class="red"></span>
+			注意：请阅读我们的[<a href="http://misc.yahoo.com.cn/copyright.html" target="_blank" class="black">服务条款</a>]</span></td>
+	</tr>
+</table>
+<input name="_sdata" type="hidden" value="">
+<input type="hidden" id="bn" name="bn" value="being">
+<input type="hidden" id="_crumb" name="_crumb" value="">
+<input type="hidden" id="title_a" name="title_a" value="标题">
+<input type="hidden" id="parent_id" name="parent_id" value="998">
+<input type="hidden" id="author" name="author" value="guest">
+<input type="hidden" id="thread_id" name="thread_id" value="998">
+<input type="hidden" id="act" name="act" value="R">
+</form>
+</div>
+</div><!--// bbs reply-->
+<!--//bbs --> 
+<!-- foot -->
+<div class="mt10"></div>
+<div id="foot"><a href="http://cn.about.yahoo.com/" target="_blank">关于雅虎</a> | <a href="http://misc.yahoo.com.cn/copyright.html" target="_blank">使用须知</a> | <a href="http://cn.career.yahoo.com/yahoo/hr/1/" target="_blank">诚聘英才</a> | <a href="http://cn.promo.yahoo.com/docs/sales/" target="_blank">广告服务</a> | <a href="http://p4p.cn.yahoo.com/" target="_blank">搜索竞价</a> | <a href="http://realname.alibaba.com.cn/" target="_blank">网络实名</a> |<a href="http://www.3721.com/" target="_blank"> 中文上网</a> &nbsp;&nbsp;[<a href="http://misc.yahoo.com.cn/allservice.html" target="_blank">更多</a>] <br />
+ <span class="y_center y_kl"><a href="http://misc.yahoo.com.cn/copyright.html" class="copy" target="_blank">Yahoo.com.cn &nbsp;&copy; 2006</a> &nbsp;&nbsp;版权所有 不得转载 &nbsp;&nbsp;<a href="http://www.miibeian.gov.cn/" class="copy" target="_blank">京ICP证000022号</a>&nbsp;&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=0102000121100054" target="_blank"><img src="http://search.cn.yimg.com/i/cn/sea/hp/gs.gif" hspace="6" border="0" align="absmiddle" /></a><a href="http://net.china.cn/chinese/index.htm" target="_blank"><img src="http://search.cn.yimg.com/search/yisou/cen_19_19.gif" border="0" hspace="2" align="absmiddle" alt="不良信息举报中心" /></a>&nbsp;</span><br />
+ 全球阿里巴巴： <a href="http://china.alibaba.com/" target="_blank" class="small">中国站</a> | <a href="http://www.alibaba.com/" target="_blank" class="small">国际站</a> | <a href="http://japan.alibaba.com/" target="_blank" class="small">日文站</a> | <a href="http://www.taobao.com/" target="_blank" class="small">淘宝站</a> | <a href="http://www.alipay.com/" target="_blank" class="small">支付宝</a> | <a href="http://www.yahoo.com.cn/" target="_blank" class="small">雅虎中国</a><br />
+</div>
+
+<!-- //foot -->
+</div>
+</div>
+
+<div id="bd2l">
+<!-- content right -->
+<!-- SpaceID=97512214 loc=Z noad -->
+	<iframe src="http://cn.bbs.yahoo.com/bbs_frame_20060606.html" width="180" height="1000" marginwidth="0" marginheight="0" 
+		hspace="0" vspace="0" frameborder="0" scrolling="no"></iframe><!-- //content right -->
+</div>
+</div>
+<!--//body -->
+<IFRAME width=0 height=0 src="http://cnsmin.3721.com/_3721/cnsminex_empty.htm?sc=11"></IFRAME>
+</body>
+</html>
+<!-- w20.bbs.cnb.yahoo.com uncompressed/chunked Thu Dec 28 00:09:35 CST 2006 -->
+
+</text>

@@ -1,0 +1,175 @@
+ <p>ANS President Dr. Gail H. Marcus's written testimony on nuclear transportation
+
+
+
+
+
+            <h>Public Information
+
+
+
+
+
+            <h>Resources
+
+
+
+
+            <h>Teachers and Students
+
+
+
+
+
+            <h>Media
+
+
+                  <l>News Updates for Journalists
+
+
+
+
+            <h>Nuclear Professionals
+
+
+
+
+            <h>May 23, 2002
+
+
+            <p>ANS President Dr. Gail H. Marcus's written testimony on nuclear 
+            transportation
+
+            <p>Submitted to the Senate Committee on Energy and Natural Resources.
+
+            <p>Mr. Chairman, as President of the American Nuclear Society, I 
+            appreciate the opportunity to provide a written statement on behalf 
+            of ANS regarding transportation issues related to the nuclear waste 
+            repository at Yucca Mountain for the committee's hearing.
+
+            <p>ANS' confidence in the safety of high-level waste (HLW) 
+            transportation arises from the robustness of the cask design, the 
+            demonstrated safety record of HLW transportation and safeguards in 
+            the transportation process.  I would like to elaborate on each of 
+            these factors.
+
+
+            <h>Robustness of the Cask Design
+
+            <p>Casks used for shipping spent nuclear fuel are designed to protect 
+            against radiation exposure to the public under both normal and 
+            accident conditions.  The casks are designed and tested in 
+            accordance with requirements established by the Nuclear Regulatory 
+            Commission and the Department of Transportation and documented in 
+            volumes 10 and 49 of the U.S. Code of Federal Regulations.
+
+            <p>The casks are about 15 times thicker than a gasoline tank truck 
+            shell and they include three inches of stainless steel with thick 
+            lead radiation shields.  Typically, for every ton of spent nuclear 
+            fuel, there are more than three tons of protective packaging and 
+            shielding.
+
+            <p>Casks are designed and tested to withstand crashes, fire, water 
+            immersion and puncture.  To be certified, a cask design must 
+            withstand a sequence of four tests that measure its performance in 
+            specified crash and fire accident conditions.  This means the casks 
+            are designed to contain its contents in the event an accident 
+occurs.
+
+
+            <h>Safety Record of Transportation
+
+            <p>Over the past 40 years, about 3,000 shipments of spent nuclear fuel 
+            have navigated more than 1.7 million miles of U.S. roads and 
+            railways.  Since the early days of HLW transportation, 90 spent fuel 
+            casks have been involved in accidents.  None of these accidents 
+            resulted in any release of radioactive material.
+
+            <p>It should be noted that the impact tests required by Federal 
+            Regulation exert forces on the casks that are greater than the 
+            impact forces (g forces) in the worst recorded accidents.  
+            Temperatures produced in the casks by the regulatory fire tests are 
+            higher than those in any recorded fire accident.
+
+            <p>In addition, Sandia National Laboratories has conducted three 
+            extra-regulatory types of tests:
+
+              <l>A 20-ton truck cask struck by a 120-ton diesel locomotive 
+              traveling at 81 mph
+
+              <l>A 22-ton cask on a flatbed crashed into a 690-ton concrete block 
+              at 84 mph
+
+              <l>A propane tank car exploding next to a cask in a pool fire, 
+              throwing the cask 33 feet.
+
+            <p>The casks emerged from these tests with only minor damage, and in 
+            none of the tests did the casks fail to hold their contents.
+
+            <p>While there would be more shipments of nuclear waste in the coming 
+            years as a result of the opening of Yucca Mountain, the probability 
+            of radiation exposure to the public from an accident would remain 
+            low because casks of the same design would be used and the same 
+            safety procedures would be followed.
+
+            <p>Recently, concerns have been raised about the potential impacts of 
+            terrorist attacks during the transport of HLW.  While there are many 
+            dimensions to the issue of terrorism that we, as a nation, are only 
+            beginning to understand, we can say that the same features that 
+            render casks highly resistant to highway and rail accidents tend to 
+            make them difficult targets for such attacks.  By comparison, many 
+            hazardous chemical and other substances are shipped by truck and 
+            rail in less robust containers, and are more apt, if successfully 
+            attacked, to result in immediate casualties.
+
+
+            <h>Safeguards in the Transportation Process
+
+            <p>Public routes used for the transport of nuclear materials must meet 
+            strict safety requirements before nuclear fuel is transported.  
+            Department of Transportation regulations require carriers of certain 
+            controlled radioactive materials, such as spent fuel, to use the 
+            safest routes available.  Risk assessments of the transportation of 
+            radioactive materials evaluate factors such as accident rate, 
+            transit time, population density, other vehicles sharing the route 
+            and time of day.
+
+            <p>The DOT identifies "preferred routes," which consist primarily of 
+            interstate highways and bypass routes around cities, where such 
+            bypass routes exist, or an alternative route selected by a state 
+            routing authority.  If the routing authority selects an alternate 
+            route, it must demonstrate by a routing analysis that using the 
+            alternate route does not increase overall risk.  Alternate route 
+            selections must be preceded by consultations between DOT and 
+            affected state and local authorities before such designations can go 
+            into effect.
+
+            <p>Most materials being transported are monitored by global satellites 
+            and are monitored at all times during the transportation process.  
+            Specialized trucking companies handle spent nuclear fuel shipments 
+            in the United States.  These experienced, specially licensed 
+            companies haul all kinds of hazardous materials more than 50 million 
+            miles annually.  Vehicles are state of the art, equipped with 
+            computers that provide an instantaneous update on the truck's 
+            location and convey messages between driver and dispatcher through a 
+            satellite communications network.  Drivers receive extensive 
+            training and must be certified by the federal government.
+
+
+            <h>In Summary
+
+            <p>The regulatory requirements on casks and transportation security, 
+            and the industry's high level of performance, have produced a safety 
+            record that would be difficult to match.  This performance record 
+            gives us strong confidence that the transport of spent nuclear fuel 
+            to Yucca Mountain can and will be conducted without harm to the 
+            public.
+
+            <p>Mr. Chairman, we sincerely appreciate the opportunities to share our 
+            views and facts concerning the safety of transporting nuclear fuel.
+
+            <p>The American Nuclear Society is a professional society devoted to 
+            advancing nuclear science and technology.
+
+
+

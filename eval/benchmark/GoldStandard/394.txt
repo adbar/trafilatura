@@ -1,0 +1,742 @@
+URL: http://www.eia.doe.gov/oiaf/issues/wind_supply.html
+
+
+
+
+   <p>Renewable energy sources, including wind power, are increasingly seen
+   as a way of meeting the Nation's energy requirements while also
+   contributing to carbon emissions reductions, promoting fossil fuel
+   conservation, and reducing other harmful pollutants such as sulfur
+   dioxide and nitrogen oxide. However, renewables can also be more
+   expensive, and by their nature some are not always available to meet
+   baseload electricity demands. This paper describes the methodology
+   used in the National Energy Modeling System (NEMS) for representing
+   electricity generation from wind power, one of the more mature and
+   lower cost renewable energy technologies, and one that has been
+   prominently mentioned as a means of helping to meet the Kyoto
+   Protocol's carbon reduction targets for the United States.
+
+                               <h> Introduction
+
+  <p> Existing wind power capacity in the United States today is
+   approximately 2,000 megawatts--about 0.2 percent of all U.S.
+   grid-connected electricity generating capacity--and accounts for about
+   0.1 percent of generation.^1 As a carbon-free technology, however,
+   wind power is increasingly discussed for its potential in meeting U.S.
+   and global carbon reduction targets, such as those proposed in the
+   1998 Kyoto accords. Wind technology does not have fuel requirements as
+   do coal, gas, and petroleum generating technologies; however, both the
+   equipment costs and the costs of accommodating special characteristics
+   such as intermittence, resource variability, competing demands for
+   land use, and transmission and distribution availability can add to
+   the costs of generating electricity from wind.
+
+ <p>  The purpose of this paper is to describe how the Energy Information
+   Administration (EIA) addresses in the National Energy Modeling System
+   (NEMS) the natural resource, transmission and distribution, and market
+   factors that affect the cost of U.S. electricity generation from wind
+   resources. This introduction summarizes general electricity modeling
+   in NEMS. The second section, "Representing Wind Generating
+   Technology," outlines the overall NEMS representation of wind,
+   including identification of the cost adjustment factors. The third and
+   fourth sections, "Basis for Wind Cost Adjustment Factors" and "Cost
+   Adjustment Factors for U.S. Wind Supply, "provide EIA's justification
+   for and derivation of the cost adjustment factors. The sections show
+   applications of the factors in recent EIA forecasts for wind power,
+   identify key issues for further examination, and conclude by
+   summarizing the importance of the issue of cost.
+
+  <p> NEMS is an integrated computer model of the U.S. energy economy. It
+   includes modules representing all the major supply and demand sectors
+   that produce and consume energy. Within NEMS, the selection of new
+   generating capacity, including wind, is based on the relative costs of
+   competing technologies. Electricity generating technologies compete
+   based on capital, fuel, and operations and maintenance (O&M) costs for
+   providing U.S. regional baseload, intermediate, and peaking electric
+   power supply. Intermittent technologies such as wind also compete on
+   their ability to meet electricity demand at the time winds are
+   available.
+
+  <p> Capital costs for all generating technologies are affected by a number
+   of characteristics. Using information from the Department of Energy,
+   the Electric Power Research Institute, published reports, meetings
+   with industry and technology representatives, and others, EIA
+   estimates the initial capital cost for each technology.^2 Capital
+   costs decrease as experience with the technology increases
+   (learning-by-doing effects), and as domestic and international
+   capacity penetrate electric power markets.^3
+   At high rates of growth, however, capital costs may temporarily
+   increase in response to short-term bottlenecks.
+
+  <p> Fuel costs also affect technology competition. For fossil fuels, fuel
+   costs are projected separately in NEMS in the individual fuel supply
+   modules, providing inputs for subsequent choices among generating
+   technologies. In contrast, the availability and cost of wind energy--
+   essentially its "fuel" cost--are represented in two ways. First, wind
+   turbine capacity factors used in NEMS vary by geographic region, time
+   of day and season, and by the estimated energy content of available
+   winds (wind class). Second, experience indicates that the energy
+   availability of wind turbines is also affected by other factors in
+   addition to region, time, and wind class. EIA expresses these
+   additional factors along with others by adjusting wind technology
+   capital costs. The derivation of the adjustments is the primary focus
+   of this paper.
+
+                  <h>Representing Wind Generating Technology
+
+  <p> The methodology for projecting electricity generation from wind power
+   consists of a series of data inputs, capacity and dispatch algorithms,
+   and specific components for characterizing wind energy supply. Each is
+   discussed below.
+
+  <h> Data Inputs
+
+  <p> The primary data inputs are existing wind generating capacity, future
+   capacity planned by electricity producers, wind technology cost and
+   performance characteristics, wind capacity factors, and cost
+   adjustment factors. EIA collects information on existing capacity and
+   that planned for the future from electric utilities and nonutilities,
+   including independent power producers and small power producers.
+   Planned capacity commitments include capacity under construction,
+   under contract, mandated by law or regulation, or under commitment by
+   an electricity producer.
+
+  <p> Mandated new wind capacity in Minnesota and Iowa, as well as estimates
+   of new wind capacity to be installed under State renewable portfolio
+   standards, are included as planned capacity. In 1999, for example,
+   more than 600 megawatts of new wind generating capacity are planned,
+   scheduled to take advantage of the Federal renewable energy production
+   incentive before its expiration on July 1, 1999. Proposals or goals
+   for new capacity that have not yet resulted in firm commitments are
+   not included as "planned."
+
+  <p> Capital costs for new generating technologies are assumed to decline
+   as more units enter service and experience increases. EIA derives
+   estimates for the key cost and performance values for wind power from
+   a variety of sources, including the Electric Power Research Institute,
+   the Department of Energy, other industry participants, and current
+   market data.^4
+
+   <h>Capacity and Dispatch Methodologies
+
+  <p> In order to meet projected growth in the demand for electricity and to
+   replace retiring generating units, new capacity is added over and
+   above existing and known plans for new capacity. The essential steps
+   in the methodology are to determine future capacity needs based on
+   peak demands, subtract current (net of retirements) capacity from
+   those needs, and project the types of capacity that must be built to
+   reach the target. The technology choice is based primarily on total
+   costs over a 30-year horizon, including capital, O&M, and fuel costs.
+   Technology choice is also affected by subsidies and taxes, such as
+   those associated with meeting environmental requirements. Intermittent
+   technologies-- mainly wind and solar--are special cases, because they
+   are not always available and thus have a reduced ability to meet
+   demands. This problem is resolved by segmenting annual electricity
+   demand into a number of "slices," defined by season and time of day.
+   Wind and solar compete directly for new capacity to serve those parts
+   of the load for which they are most suited, and they are not penalized
+   by considering overall annual demands only, for which they would be
+   too expensive. However, because they are not always available, their
+   credited contribution to meet the peak demand is reduced, because
+   their inclusion reduces the overall reliability of the system. The
+   impact of this reduction is that more fossil-fuel-fired capacity may
+   be built to meet the reliability requirements when wind is chosen as
+   the most economical technology.
+
+   <p>Unlike fossil fuel technologies that can be dispatched at varying
+   capacity factors depending on demand and marginal cost, wind power is
+   dispatched in NEMS at specified capacity factors derived by EIA and
+   differing by hour of the day, season, region, and wind class. Wind
+   capacity factors are based in part on the performance of actual units
+   and in part on the maximum performance suggested by research on
+   characteristics of new technologies. In addition, some improvement in
+   wind capacity factors over time is assumed as new capacity is used and
+   electricity producers learn how to operate their units more
+   efficiently.
+
+  <h> Wind Energy Characterization
+
+  <p> Wind energy is the "fuel" for wind technologies. Because wind's fuel
+   value is partly incorporated in capital costs and is not separately
+   priced, EIA modifies capital costs for wind projects on the basis of
+   three key characteristics: wind class, costs of building new
+   transmission interconnection with the existing transmission and
+   distribution network, and cost adjustment factors. The cost adjustment
+   factors account for variations in natural resource quality, costs of
+   upgrading the existing network, and effects of alternative uses for
+   lands with wind resources. For wind resources to be useful for
+   electricity generation, the site must (1) have sufficiently powerful
+   winds, (2) be located near existing transmission networks, and (3) be
+   economically accessible considering additional natural resource,
+   transmission network, and market factors.
+
+  <p> Wind technology opportunities are first identified by regional
+   estimates of available wind energy. The foundation of EIA's wind
+   supply characterizations is the adaptation of standard wind supply
+   maps provided by the Pacific Northwest Laboratory (PNL).^5 The PNL
+   wind data are first expressed in square kilometers of land, shown by
+   electricity market region and by wind energy class. Wind energy values
+   are grouped among seven wind-speed classes, with higher numbers
+   indicating greater energy resources (Table 1). The few class 7 wind
+   resources are included with class 6 (designated in Table 1 as "6+"),
+   and winds below class 4 are generally regarded as not economically
+   useful. Recognizing that some lands will not be made available for
+   wind power use, EIA has adopted PNL's "moderate" wind resource
+   exclusion scenario (Table 2).^6 Applying these criteria, EIA
+   determines U.S. wind resources by region (Table 3).
+
+  <p> Table 1. Wind Classes for Wind Energy Characterization
+
+  <p> Table 2. Percentages of Lands Excluded from Wind Energy
+   Characterization in the Pacific Northwest Laboratory Moderate
+   Exclusion Scenario
+
+  <p>Table 3. U.S. Wind Resources for Electricity Generation, by Wind Class
+   and NEMS Region
+
+  <p> As shown in Table 3, the United States has ample wind resources.
+   Figure 1 shows the potential U.S. wind supply for wind power stations
+   at different capital costs (excluding learning effects, improving
+   capacity factors, and cost adjustment factors).^7 Although wind
+   technologies are not comparable to baseload or other generating
+   capacity, total U.S. wind resources equal about three times total U.S.
+   generating capacity and could produce roughly twice the nation's
+   current electric power generation, if costs were not an issue.^8
+   However, U.S. wind resources are heavily concentrated in a few regions
+   (the NEMS electricity regions are shown in Figure 2). Nearly 60
+   percent of all U.S. wind resources are in the MAPP region, and no
+   economically useful wind resources are recorded in FL and MAIN.
+   Further, nearly 90 percent of U.S. wind resources are in the least
+   valuable class, class 4. Thus, while plentiful overall, the best U.S.
+   wind resources are not necessarily near either population
+   concentrations or electricity demand centers.
+
+  <p> Figure 1. U.S. Wind Supply 
+
+  <p> Figure 2. Electricity Market Model Regions 
+
+  <p> The second step in the characterization limits usable wind energy
+   resources to those sufficiently close to existing 115- to 230-kilovolt
+   transmission lines. They fall within three distance zones (Table 4).
+   All new generating capacity, regardless of technology type, has an
+   associated standard transmission interconnection fee, which varies by
+   region but averages about $225 per kilowatt. This fee represents the
+   average cost of building a new line interconnecting the new generating
+   plant with the existing network. In addition, extra costs averaging $5
+   per kilowatt per additional mile are added to account for the greater
+   distance of wind sites from existing transmission networks (Table 4).
+
+  <p> Table 4. Distance Zones, Miles From Wind Resources to Existing
+   Transmission Lines
+
+  <p> Finally, composite cost adjustment factors (Table 5) account for
+   expected additional costs confronting actual U.S. wind development.
+   All new wind generating capacity in every region is subject to one of
+   five capital cost adjustment factors (steps). Capacity in the
+   least-cost steps (steps 1 and 2) corresponds to the definition of
+   economically accessible energy reserves. Capacity in steps 1 through 4
+   encompasses technically accessible resources (at current prices). All
+   capacity (steps 1 through 5) encompasses the total wind resource
+   base.^9
+
+  <p> Table 5. U.S. Wind Resources by Region and Cost Adjustment Factor
+
+  <p> The cost adjustment factors reapportion each region's total wind
+   resources shown in Table 3. They allow an initial portion of regional
+   wind resources to be built at no increase in capital costs, with
+   increasing proportions constructed at capital cost increases of 20,
+   50, 100, and 200 percent above the base cost.^10 In the NWP region,
+   for example, 7.7 gigawatts of wind resources are available at the base
+   cost (itself affected by overall learning, capacity factor change,
+   etc.), an additional 13.2 gigawatts are available at 20 percent above
+   base cost, 8.6 gigawatts at 50 percent above, and 1.5 gigawatts at
+   double the base cost. All remaining resources of the PNL allocation
+   for NWP (275.2 gigawatts) are relegated to the most expensive step,
+   step 5, with a 200-percent cost increase.
+
+  <p> Learning-by-doing also affects wind technology capital costs. A
+   region's resulting wind technology capital cost depends both on the
+   overall nationwide increase in wind capacity, which lowers capital
+   costs through learning-by-doing effects, and on the proportion of the
+   region's wind resources already used, which increases costs of further
+   penetration.
+
+  <p> Cost adjustment factors are superimposed on the existing regional
+   totals shown in Table 3. As a result, the cost-increasing effects of
+   the cost adjustment factors are not evenly distributed within wind
+   classes, but first apply to class 6 wind resources until either the
+   resource or the weighted proportion is exhausted. Extending the NWP
+   example, the subtotal of all 31 gigawatts of wind resources for the
+   region, shown in steps 1-4 of Table 5, are obtained from the 70.3
+   gigawatts of class 6+ resources shown in Table 3.
+
+ <p>  The effect of the cost adjustment factors is to redistribute available
+   U.S. wind supplies. Figure 3 shows the redistribution at the National
+   level. Figure 4--at a much reduced scale--shows the redistribution for
+   the Northwest (NWP).^11 Clearly the effect of reallocation is to
+   markedly reduce the quantities of wind available at all but the
+   highest costs. Whereas wind supplies under class 6 designation alone
+   (Table 3) offer nearly 102 gigawatts of least-cost wind supply, the
+   effect of imposing cost adjustment factors is that only 28 gigawatts
+   are in the least-cost step and 41 gigawatts in the next, together
+   equaling only two-thirds of the best wind resources in the PNL-based
+   allocation.
+
+  <p> Figure 3. Comparing U.S. Wind Supply Estimates 
+
+  <p> Figure 4. Electricity Market Model Regions 
+
+                  <h> Basis for Wind Cost Adjustment Factors
+
+  <h> Evidence From Experience
+
+  <p> Separate from issues of turbine manufacturing cost, the supposition of
+   plentiful U.S. wind supplies suggests relatively trouble-free siting
+   of wind plants in the early years of commercial wind power
+   development. However, actual U.S. plants proposed or entering service
+   in the 1990s are confronting significant additional project costs,
+   suggesting that unencumbered U.S. wind resources are not necessarily
+   as plentiful as characterized in general cost estimates.^12
+
+  <p> First, natural phenomena can impose additional costs on new wind
+   sites. Too strong or off-peak winds, storms, freezing, lightning,
+   hail, vegetation, erosion, bird and animal habitat requirements, or
+   other natural characteristics raise costs, reduce output, or reduce
+   wind's market value. New wind plants in Minnesota, Iowa, Vermont, and
+   Wyoming require reinforcement to cope with winter storms and heating
+   equipment to remove ice, which degrades performance and forces
+   occasional shutdowns. Texas wind plants confront additional costs--
+   both in original installation and in unanticipated replacements and
+   repairs--from violent wind storms, tornadoes, hail, and lightning. In
+   the West and Midwest, late winter and spring peak winds miss the
+   summer electricity peaking demands. In the Northwest, winds tend to be
+   unpredictable. Terrain slope and variation also raise costs and
+   preclude developing large portions of otherwise attractive new wind
+   sites in Minnesota and Wyoming. Steep, heavily vegetated, and
+   difficult terrain eliminate many parts of New England and Northwest
+   lands because of both higher installation costs for turbines, lines,
+   roads, etc., and higher maintenance costs. Finally, coping with
+   insects, birds, and local animals can raise costs or preclude current
+   use of otherwise attractive wind areas. Insects coat Midwestern wind
+   turbine blades, degrading performance and necessitating more frequent
+   blade cleaning, thereby reducing output while increasing costs.
+   Lessons learned from bird kills in 1980s California projects has
+   accelerated 1990s avoidance of less expensive lattice towers, addition
+   of special coatings and markings on turbines, measures to discourage
+   nesting, and in some cases, avoidance of attractive windy areas used
+   by migrating birds.
+
+  <p> Second, although EIA accounts for costs of interconnecting new wind
+   plants to the existing transmission network, the already loaded
+   network is often unable to accommodate additional wind resources in
+   important wind areas, thereby raising costs and reducing least-cost
+   wind development opportunities. Northern States Power, ostensibly
+   awash in wind resources relatively near transmission lines (Table 3),
+   finds the existing in-state transmission network loaded and unable to
+   accommodate more than 425 megawatts of wind capacity from the
+   supposedly ample Buffalo Ridge wind area.^13 New wind projects in
+   Wyoming and in Oregon faced significant cost hurdles in upgrades and
+   power transmission charges. Major expansion of western wind power
+   requires significant upgrades over a very long transmission corridor,
+   and plentiful West Texas and panhandle winds face additional costs for
+   wheeling power to major electric power markets in central Texas.
+
+  <p> Finally, additional market preferences for alternative land use
+   increase wind project costs and preclude otherwise excellent wind
+   power projects, such as in Columbia Hills and Rattlesnake Hills
+   (Washington), Burlington (Vermont), and Cape Cod (Massachusetts). In
+   the West and Northwest, environmental, scenic, cultural, and religious
+   values effectively restrict or preclude wind power development.
+   Protection of birds, of Native American cultural and religious values,
+   and of scenic vistas plays prominently in the elimination of seemingly
+   excellent wind sites.
+
+  <p> Lack of detailed information precludes separate representation of each
+   additional cost in NEMS. However, observation of their effects on new
+   U.S. wind plants-- along with noticeably higher than expected capital
+   costs--leads EIA to conclude that the additional factors need to be
+   represented in the wind cost methodology. Literature reviews and
+   contacts with industry professionals show that every large wind
+   facility installed in the United States in the 1990s has been subject
+   to at least some of the forces underlying the factors. Moreover,
+   whereas EPRI-DOE estimates indicate that actual installed costs for
+   new wind plants should average below $900 per kilowatt by 1999, costs
+   for recent large installations appear to exceed $1,200 per kilowatt.
+   For example, the 34-megawatt Big Spring project in Texas, reported at
+   $40 million, averages $1,176 per kilowatt; a reported $235 million for
+   the 193-megawatt wind facility at Alta, Iowa, yields an average cost
+   of $1,220 per kilowatt; two new Northern Alternative Energy projects
+   at Buffalo Ridge in Minnesota totaling 23.1 megawatts and $32 million
+   average $1,380 per kilowatt; and the $60 million 41.4-megawatt Foote
+   Creek Project in Wyoming yields a cost of $1,450 per kilowatt.^14
+   While these values may include some components not usually included in
+   overnight capital cost definitions, EIA is not aware of any recent
+   wind project completed at less than $1,000 per kilowatt.
+
+  <h> Evidence From Regional Supply Evaluations
+
+  <p> Three specific regional wind resource reviews--in Minnesota,
+   California, and by the Northwest Power Planning Council
+   (NWPPC)--indicate that economically accessible wind resources are less
+   plentiful than indicated by wind speed and distance from transmission
+   networks alone. The studies range from qualitative (Minnesota) to
+   quantitative (California) to fairly detailed (NWPPC).
+
+  <p> In 1996, Minnesota's "Appel Report" to the Minnesota Legislative
+   Electric Task Force concluded with respect to wind resource areas that
+   ". . . massive development of wind and biomass generation systems in
+   Minnesota will require additions to the transmission system . . .
+   [because] much of the renewable resource area lacks transmission
+   capability . . . ."^15 The Appel Report-- along with Northern States
+   Power`s difficulty in siting more than 425 megawatts--is the basis for
+   sharply restricting least-cost wind supplies in MAPP and other
+   similarly well-endowed wind resource regions.
+
+  <p> The 1991 California Energy Commission (CEC) report, Technical
+   Potential of Alternative Technologies, provides some quantitative
+   information, essentially providing a technical upper bound of
+   "reasonable" wind potential for that State.^16 While acknowledging a
+   much larger PNL estimate of 37,000 megawatts as "gross technical
+   potential," the CEC assessment of individual sites concludes that a
+   reasonable technical potential for California is 4,460 megawatts under
+   existing transmission constraints.^17 Loosening the transmission
+   constraints somewhat increases the total technical potential to 5,385
+   megawatts.^18 In either case, the CEC estimates stand in sharp
+   contrast to the 20.1 gigawatts shown in Table 3.
+
+  <p> The 1996 NWPPC study, Northwest Power in Transition, provides one
+   fairly detailed study relating wind technology costs and
+   quantities.^19 The NWPPC study covers only the states of Idaho,
+   Montana, Oregon, and Washington. Nevertheless, it provides a useful
+   exposition of the general shape of a likely wind supply function.
+   Figure 4 includes a representation of the NWPPC values (converted by
+   EIA to capital costs), with NWPPC wind generating capacities doubled
+   to account for the larger NWP region represented in NEMS.
+
+  <p> The NWPPC wind supply function identifies 10,700 megawatts of
+   potential wind power available in the four States at a range of costs
+   below 20 cents per kilowatthour. Further, the report acknowledges that
+   private developers have likely identified other cost-effective sites,
+   and that still other sites probably exist, though they are likely
+   small and best suited for local loads.
+
+ <p>  The NWPPC supply also illustrates limits to accessibility for wind
+   power. Of the total 10,700 megawatts, NWPPC estimates that less than
+   2,000 megawatts could be developed at 6 cents per kilowatthour or less
+   (1995 dollars) in the absence of a new transmission intertie to
+   Montana. Moreover, the low costs would be achieved only if enough wind
+   development occurred to distribute the high fixed costs of the
+   necessary transmission upgrades. (Because of typically low capacity
+   factors for wind projects, the cost of amortizing an increment of new
+   transmission capacity is assigned to far fewer kilowatthours for a
+   wind project than for typical fossil-fueled projects, again raising
+   costs for wind-generated power.) Finally, although transmission
+   remains the most important limiting factor, site viability is also
+   limited by wind characteristics, topography, weather, environmental
+   and habitat concerns, and land use conflicts.
+
+  <p> The Minnesota, CEC, and NWPPC studies provide useful information for
+   U.S. wind supply estimation. First, they begin to recognize economic
+   constraints on some of the most important wind resources in the
+   Nation. Second, they both quantify opportunities and identify general
+   reasons for limitations in accessing wind resources. As such, they
+   form a valuable base for EIA's representation of U.S. wind power. The
+   three assessments have limitations, however, for wider application.
+   The NWPPC study characterizes only part of the NEMS NWP region.
+   Moreover, California and the Northwest--featuring great distances,
+   large mountains, forests, and significant scenic, cultural, and
+   environmental challenges--may not be representative of important
+   Midwestern and Southwestern wind regions for which detailed
+   information is not available.
+
+              <h>  Cost Adjustment Factors for U.S. Wind Supply
+
+  <p> The five cost adjustment factors are broad applications of rates of
+   cost increase and proportions of wind supplies derived from the
+   Minnesota, CEC, and NWPPC wind resource information. In general, EIA
+   makes the following assumptions:
+     <p>* Regional estimates developed by EIA will not exceed estimates made
+       by authoritative studies prepared by individual regions.
+       Therefore, the CEC and NWPPC results set upper bounds on
+       quantities and costs of economically accessible wind resources for
+       those regions. EIA relaxes this assumption somewhat in the
+       Northwest, to accommodate both NWPPC acknowledgment of additional
+       "undiscovered" resources and adjustments for the larger NEMS
+       region.
+
+     <p>* There are fewer economically accessible winds (reserves) than
+       technically accessible ones. The U.S. Department of Energy
+       indicates that less than 1 percent of all technically accessible
+       wind resources are economically accessible reserves, although
+       technologies have improved since those estimates were made.^20 EIA
+       takes into account that published wind resource estimates already
+       exclude some land for economic reasons and assumes a much less
+       severe reduction.
+
+     <p>* Least-cost wind resources in every region are assumed to be
+       sufficient to meet future wind capacity requirements in the EIA
+       reference case.
+
+     <p>* Wind resource distributions for small regions (those with fewer
+       wind resources) are assumed to resemble the CEC distribution; wind
+       distributions in large regions are assumed to resemble the
+       distribution of the NWPPC study.
+
+   <p>Examining Table 3 or Table 5 shows two broad regional groups, "small"
+   wind regions with relatively few wind resources (less than 25,000
+   megawatts) and "large" wind regions with extensive wind resources
+   (more than 175,000 megawatts). Given that CNV falls in the "small"
+   category and NWP in the "large," EIA first established distributions
+   for CNV and NWP and then broadly applied those distributions to other
+   regions. As a result, ECAR, MAAC, NY, NE, and STV follow the CNV
+   example, while MAPP, SPP, and RA follow the NWP distribution. Because
+   its winds are considered generally accessible, ERCOT is treated as a
+   special case of a small wind region, with higher proportions of its
+   winds in lower cost categories.
+
+  <p> EIA employs five discrete cost steps. Steps 1 and 2 represent two cost
+   levels for wind reserves, either economically accessible now or in the
+   very near future. Reserves plus higher cost steps 3 and 4 yield
+   technically accessible resources, those which could reasonably become
+   reserves by 2020. Step 5 represents that part of wind resources which
+   EIA does not consider economically accessible by 2020 under any normal
+   circumstances. The technical potential of 4,460 megawatts set by CEC,
+   for example, becomes the control total for steps 1 through 4 in the
+   EIA distribution.
+
+   <p>EIA derives steps 2, 3, and 4 from two sources. First, to be useful,
+   each of the cost steps needs to show meaningful cost increases;
+   therefore, EIA chose each step to clearly differentiate major cost
+   classes. Second, particularly for the initial steps, EIA very broadly
+   applied cost breaks exhibited in the NWPPC supply. Finally, EIA chose
+   the 200-percent increase (step 5) to separate resources determined
+   extraordinarily unlikely to be economically accessible. All PNL wind
+   resources in California and the Northwest in excess of the NWPPC and
+   CEC estimates (as adjusted by EIA) are assigned the 200-percent
+   increase; similar proportions are then applied to the PNL estimates
+   for other regions.
+
+   <h>Small Regions: Adapting CEC Information to ECAR, MAAC, NY, NE, and
+   SERC
+
+   <p>Using the CEC total as an approximate upper bound for California's
+   technically accessible resources, EIA assigns 4,522 megawatts as the
+   total of steps 1-4 and the remaining 15,585 megawatts to step 5. Of
+   the 4, 522 megawatts, 1,710 megawatts representing already installed
+   wind generating capacity are assigned to step 1 (reserves). In order
+   to provide opportunities for least-cost growth and expansion in the
+   other cost categories--but with no information available for the
+   distribution--EIA allocates the remaining 2,812 megawatts equally
+   across the 4 technically accessible resource steps. In effect, the CEC
+   allocation places about 10 percent of wind resources in the lowest
+   cost step and about 80 percent in step 5.
+
+   <p>Other "small" wind resource regions are similar but not identical to
+   CNV. The CNV allocation is unusual because of the large already-built
+   component and the independently determined CEC bound. Therefore, for
+   other small regions, a slightly lower proportion of total wind
+   resources is assigned to step 1 and higher proportions are assigned to
+   steps 2-4. Further, recognizing that U.S. Department of Energy and
+   other energy resource characterizations show increasing resource
+   proportions at higher costs, EIA generally increases the wind resource
+   proportions for small regions as costs increase.^21 Finally, for all
+   small regions except CNV, EIA increases the four lower cost step
+   shares to offset the use of average rather than marginal costs (see
+   below).
+
+  <h> Large Regions: Adapting the NWPPC Estimates
+
+  <p> Before applying the NWPPC results to other regions, EIA first adapts
+   them to the larger NWP geographic region and then adjusts them to
+   reflect the use of average cost steps rather than a continuous cost
+   function. First, EIA doubled the NWPPC wind supply estimate for each
+   supply step. The NWP region in NEMS is roughly twice the geographic
+   size of the NWPPC region (Figure 2). Although the additional States in
+   NWP (Nevada, Utah, and the western half of Wyoming) are less well
+   endowed with wind resources than the NWPPC region, nevertheless, the
+   NWPPC believes its region also contains additional undiscovered wind
+   resources not included in its published wind supply. Therefore, to
+   avoid underestimating total wind resources in the NWP region, EIA
+   doubled the NWPPC wind supply estimates--from over 10,000 megawatts to
+   nearly 21,000 megawatts--as an estimate of all economically accessible
+   wind in NWP steps 1-4.
+
+  <p> Second, for both small and large wind resource regions, EIA increases
+   the lower cost supplies to offset consequences of employing average
+   costs in the defined steps. A drawback of step functions employing
+   average costs is to overstate the marginal costs of the first units
+   within each range. Overstating marginal costs for new technologies
+   could have the effect of preventing initial purchases and thereby
+   precluding the entire path of investment, learning, lower costs, and
+   additional investment. To compensate for such overpricing, EIA
+   reallocates portions of capacity from higher cost steps to lower cost
+   ones, including some supply from step 5 into step 4, and thereby
+   increases total wind supply in steps 1-4 to nearly 31,000 megawatts.
+
+  <p> The effect of both EIA adjustments to NWPPC wind resources is to
+   greatly increase lower cost wind supplies in NWP relative to the NWPPC
+   estimates. Whereas NWPPC has less than 2,000 megawatts of least-cost
+   wind supplies (including some winds in the Blackfoot Wind Resource
+   area), EIA assigns 7,653 megawatts to step 1 for the NWP region.
+   Whereas the NWPPC estimates yield less than 11,000 megawatts for all
+   NWPPC wind resources, EIA includes nearly 21,000 megawatts for NWP
+   reserves and nearly 31,000 megawatts for all NWP technically
+   accessible resources in steps 1-4.
+
+  <p> The NWPPC allocation is applied to the wind-rich MAPP, SPP, and RA
+   regions, although steps 2-4 are assigned increasing quantities at
+   higher costs to reflect the normal shape of supply functions. Step 1
+   is also reduced to reflect the scale of limitations on transmission
+   access demonstrated by the Northern States Power experience at Buffalo
+   Ridge. In effect, the NWPPC allocation places less than 3 percent of
+   wind resources in the lowest cost step and more than 80 percent in
+   step 5.
+
+  <h> The ERCOT Special Case
+
+  <p> ERCOT, covering major portions of Texas, is handled separately. The
+   electrically integrated ERCOT region excludes most of the excellent
+   winds in the western and panhandle areas of Texas. As a result, ERCOT
+   becomes a small wind resource region, with less than 10,000 megawatts
+   of wind resources in total. On the other hand, both ERCOT terrain and
+   market conditions appear excellent for wind development. Therefore,
+   EIA has assigned ERCOT a unique wind supply function offering moderate
+   wind volumes at low costs (15 percent in step 1) and growing shares at
+   intermediate higher costs, but with only 7 percent in the highest cost
+   step 5.
+
+                              <h>Wind Projections
+
+  <p> Recent EIA forecasts illustrate application of the wind cost
+   adjustment factors. Table 6 shows EIA projections for U.S. wind
+   generating capacity in 2020, by region, from the reference and high
+   renewables cases of the Annual Energy Outlook 1999 (AEO99) and in a
+   case taken from Impacts of the Kyoto Protocol on U.S. Energy Markets
+   and Economic Activity (Kyoto Protocol).^22
+
+  <p> Table 6. U.S. Regional Wind Generating Capacity in Various Cases, 2020
+
+  <p> The cost adjustment factors have no effect on wind generating capacity
+   builds in the reference case in AEO99. In most regions, wind capacity
+   though 2020 remains well below the limits of step 1, the first level
+   of reserves, especially in regions where wind development is most
+   likely (the Midwest, most of the West, and Texas). California, also a
+   likely wind development area, approaches first-step reserves limits by
+   2020.
+
+  <p> The AEO99 high renewables case, in which EIA assumes that renewable
+   energy technologies have lower costs than in the reference case,
+   illustrates the effect of the cost adjustment factors on wind
+   penetration.^23 In this case the cost adjustment factors appear to
+   have no effect on most regions, including the Midwest, Northwest, and
+   ERCOT. However, in California (CNV) and in RA, wind capacity is
+   projected to be built despite the 20 percent higher costs imposed by
+   the cost adjustment factors. In California wind capacity growth stops
+   at the end of defined reserves (step 2), indicating that the higher
+   costs assumed for step 3 prevent additional wind capacity growth in
+   the CNV region.
+
+   <p>The Kyoto Protocol 1990-7% case, in which electricity producers choose
+   large volumes of biomass and wind renewables in order to meet major
+   U.S. carbon reduction requirements, can be seen as an "extreme" case.
+   Results of the case show that the cost adjustment factors can have
+   important effects in cases of high demand for renewables, both
+   limiting wind power development and also contributing to higher
+   electricity prices. Results suggest that very large increases in
+   demand for wind power could exhaust economically accessible wind
+   resources in some regions. Despite the technology cost reductions from
+   expansion of wind power nationwide, resource constraints in some
+   regions (ECAR, MAAC, and STV) result in installed wind costs
+   approaching $1,800 per kilowatt by 2020. In California, all
+   technically accessible resources (steps 1-4) are used and some step 5
+   resources are selected. In most regions, all least-cost reserves are
+   exhausted. Nevertheless, even in this very demanding case, regions
+   with large wind resources appear capable of complying without large
+   cost increases. For such regions, the net result of learning effects
+   and cost adjustment factors is to lower wind power costs.
+
+           <h>  Issues in EIA Wind Capital Cost Adjustment Factors
+
+  <p> Given the limited information available, EIA's wind capital cost
+   adjustment factors appear to yield plausible portrayals of increased
+   costs with very large increases in wind power demand. However, they
+   also have important limitations, particularly when analyses involve
+   major growth of wind power. Although EIA is confident that installed
+   costs increase as wind resources are consumed, there is considerable
+   uncertainty about the rate of cost increases, the extent of cost
+   increases, and interregional differences in wind technology costs. The
+   most serious issue affecting the wind capital cost adjustment factors
+   is the lack of basic data about the magnitude of wind technology cost
+   change as wind resources are used. Lack of basic cost information
+   challenges every stage of wind capacity forecasting, including both
+   reference case projections with relatively small capacity increases
+   and cases of high renewable energy demand. Much more information is
+   needed on the components of wind technology cost increases,
+   distinguishing natural resource issues from transmission and
+   distribution and from market issues. Features and costs of
+   transmission and distribution networks, for example, may be
+   particularly important and may be usefully distinguishable from other
+   forces.
+
+  <p> Wind resource estimates for ERCOT and California are particularly
+   problematic, especially because these regions are significant
+   participants in wind energy markets. The challenge with ERCOT is in
+   determining whether its vast wind supplies are really available in
+   large quantities at constant costs, or whether and at what points
+   limiting factors--such as transmission and distribution--exist. The
+   challenge in California is in reconciling CEC resource estimates with
+   amounts of already developed capacity, while retaining opportunities
+   for additional wind power growth. EIA is working with analysts in both
+   regions to determine improved factors.
+
+  <p> EIA's current approach superimposes the cost adjustment factors onto
+   the existing wind class and distance methodology in NEMS. In effect,
+   EIA assumes that the best and closest winds are also those exempt from
+   or least affected by natural resource, transmission access, and market
+   forces. The higher costs are assigned to lower class, more distant,
+   and less likely selected wind regimes. For example, in California, all
+   4.5 gigawatts in steps 1-4 (Table 5) are from the State's class 6 wind
+   resource base (Table 3). In reality, the factors undoubtedly affect
+   all wind classes at all distances. The result of this practice is to
+   understate the costs of developing some portions of U.S. wind
+   resources. EIA is considering measures to ameliorate these effects.
+
+                                <h> Conclusion
+
+  <p> The issue of wind power opportunity is likely to become increasingly
+   important in determining future U.S. electricity supply. Understanding
+   wind prospects is important in expected "normal" energy futures as
+   well as for possible exceptional ones. As wind turbine costs decline
+   and their performance improves, the extent to which wind resources,
+   transmission and distribution networks, and market forces complement
+   or offset these improvements becomes all the more pertinent for near
+   and mid-term electricity supply. If these additional factors have
+   little influence, then improved wind technologies may enjoy fairly
+   rapid penetration in normal U.S. electricity markets. To the extent
+   that economically accessible wind resources are soon exhausted,
+   networks are full, or markets are resistant, however, wind power may
+   find itself still a marginal source of electric power supply.
+
+  <p> Understanding actual wind prospects becomes all the more important in
+   assessing proposed changes in national policy that could dramatically
+   increase the demand for wind power. Relatively generous wind resource
+   supplies could make policy choices that favor renewable energy
+   technologies more attractive and less costly. Restricted wind resource
+   supplies, in contrast, could portend much higher electricity prices,
+   greater demands and impacts on consumers, and greater impacts on
+   overall U.S. economic growth.
+
+  <p> EIA's use of wind cost adjustment factors formally recognizes the
+   existence and importance of additional forces specific to wind
+   technology in assessing U.S. wind energy supplies. Moreover, they
+   appear to account in rough fashion for the scale of effects of such
+   factors on U.S. wind power cost. Nevertheless, the importance of wind
+   resource effects on overall U.S. electricity supply highlights the
+   need for improved information about them.
+
+
+  <p> If you would like to received any information relating to any of our
+   reports via e-mail, click on the link labeled "Projections ListServ"
+   to Join by entering your e-mail address.
+
+                   

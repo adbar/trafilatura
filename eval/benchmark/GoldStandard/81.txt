@@ -1,0 +1,145 @@
+URL: http://ils.pennnet.com/Articles/Article_Display.cfm?Section=Articles&Subsection=Display&ARTICLE_ID=229568
+
+                    
+
+ <h>   Industrial Laser Solutions
+
+  <h>  Going with the FLO
+
+  <h>  CO2 welding with flexible laser optic technology presents a viable
+   alternative to resistance spot welding
+   
+  <h>  Stefan Heinemann
+
+ <p>   Visotek Inc. (Plymouth, MI), Fraunhofer USA Center for Laser
+   Technology (Plymouth, MI), and Bender Shipbuilding & Repair Co.
+   (Mobile, AL) teamed up to develop the first autogenous laser welding
+   application in a U.S. shipyard in a program sponsored by the Office of
+   Naval Research through its Small Business Innovation Research program.
+   The goal was to develop and qualify laser welding as a cost-effective
+   method for producing tab-and-slot sandwich panels. It was also
+   required to use Bender's existing large laser cutting gantry, and the
+   time for converting from cutting to welding should be less than 30
+   minutes.
+
+  <p>  Tab-and-slot sandwich panels use the laser to cut the stiffeners with
+   twist tabs and to cut the mating slots in the face sheets. In a second
+   operation the stiffeners are assembled with the faceplates and the
+   twist tabs are turned to hold the assembly together. In another
+   operation laser welding is performed through the faceplates into the
+   stiffener. This concept allows fixtureless manufacturing of large
+   sandwich panels, representing dramatic cost savings. It also enables
+   sandwich panels where the thickness and location of the stiffener can
+   be designed for optimum load bearing and load distribution. A
+   well-known analogy in automotive industry is (non-linear) tailored
+   blanks. Three-dimensional tailored blanks are also possible through
+   cutting curved stiffeners and rolling the faceplate to the form of the
+   stiffeners. The process, weld cross section, and product are shown in
+   Figure 1.
+
+                      
+
+  <p>    The laser beam is scanned across the thickness of the stiffener to
+     achieve full fusion at the interface between the stiffener and the
+    faceplate. The resulting weld nugget shows no porosity and a convex
+     shape in the edges, which indicates high strength and high fatigue
+   life. Single path laser welding was also investigated, but much higher
+   porosity and incomplete fusion at the interface were found. To achieve
+      full fusion the individual single path weld lines had to overlap
+    significantly resulting in increased weld time compared to the weave
+                                   weld.
+
+ <p>   In the spring of this year, a Flexible Laser Optic (FLO) was installed
+    on Bender's Tanaka 6kW CO2 laser cutter. Cutting accuracies of 0.001
+     in. are achieved over the entire 20-ft. width and 160-ft. length.
+   Changing to this optic allowed Bender to become the first shipyard in
+      the United States to successfully laser weld a structural steel
+   sandwich panel on the shipyard's production equipment. Sandwich panels
+    were welded, using 6 kW of power, with a speed of 30 ipm for 1/8 in.
+              and 15 ipm for 3/8 in. thickness (see Figure 2).
+                        
+
+   <p>   Through further development and higher laser power, the FLO system
+     will be used for welding up to Â½-in. thick sandwich panels. Future
+     work includes additional process development for materials such as
+        aluminum and high strength and stainless steel to enable the
+    fabrication of panels for lightweight ship construction. Integration
+   of seam tracking and weld monitoring will also be pursued to meet the
+     100 percent weld inspection that is now required for all new naval
+   construction. The technology has opened the door for cost effectively
+        manufacturing a wide variety of sandwich panels with complex
+    geometries using the tab-and-slot design together with laser welding
+                 of the stiffeners through the face sheets.
+                              
+ <h>			      Remote welding
+
+ <p>   In parallel, Visotek and Fraunhofer have been pursuing robotic remote
+     welding with the FLO system. The first remote welding systems used
+   fast scanning mirrors instead of gantries or robots to move the laser
+    beam quickly from one weld line to the next, a benefit, if multiple
+    short welds have to be performed on different locations of the work
+    piece, such as welding reinforcements in place. The scanning mirrors
+   can move the laser beam quickly, in a matter of tens of milliseconds,
+   across the working envelope, while conventional motion systems require
+    seconds for repositioning. Dramatic increases in productivity, up to
+   ten times higher, and a laser on-time of more than 95 percent result.
+   State-of-the-art systems use a high beam quality CO2 laser with up to
+    6kW output power and a stationary scanning system, limiting the part
+     geometry to two dimensions in one plane. The working envelope of a
+     single scanner system with fixed optic is mainly determined by the
+       beam quality of the laser, limiting the maximum laser power to
+       currently 6 kW and thus the maximum welding speed and material
+                                 thickness.
+
+  <p>   Three-dimensional remote welding was recently introduced by putting
+   the scanner on the arm of a robot. This combines the capabilities and
+         cost effectiveness of robotics with the fast beam steering
+     capabilities of the scanner. The robotic path can be planned with
+    minimum accelerations and large radii, while the scanner compensates
+    for kinked or sharply curved weld lines. Multiple weld patterns are
+    possible, such as a spot with about 10 mm diameter in analogy to the
+     size of a resistance spot weld, staples, or straight stitches. The
+        actual weld pattern is tailored to the strength and fatigue
+   requirements of the part. Nd:YAG or fiber lasers with up to 4 kW power
+     and good beam quality, typically delivered through a 0.2mm optical
+      cable, are used in combination with special high-power scanning
+      systems. About 50 robotic remote welding systems are now used in
+        production at various automotive plants and their suppliers.
+
+  <p>    CO2 lasers represent a much more cost effective laser system than
+   Nd:YAG or fiber lasers, however, their long wavelength does not allow
+     the use of dielectric, lightweight mirrors as they are deployed in
+     conventional high-speed scanners. The FLO optic with water-cooled
+    mirrors and proprietary drives is mounted at the end of a robot. The
+   beam from a 6kW PRC laser is delivered through an articulated arm. The
+   motion of the scanner is synchronized with the motion of the robot to
+   produce a circular weld line with 8mm diameter. Test coupons with 1mm
+   thickness of the upper sheet and 2mm thickness of the lower sheet were
+      used for the initial welding trials. At a robot speed of about 6
+        m/min, 240 spots per minute could be welded (see Figure 3).
+                       
+
+   <p>    Clear heat marks were visible at the bottom side of the coupons,
+    indicating the potential for even higher welding speeds. The coupons
+       were arranged in a different level (see Figure 3) to prove the
+      functionality and response time of the integrated autofocus. No
+   difference in weld quality and penetration depth could be detected in
+    the two spots next to the step. The system is currently benchmarked
+        against a conventional remote welding system, an automotive
+              application, welding reinforcements to a fender.
+
+  <p>     The use of cost-effective CO2 lasers and the high power handling
+    capabilities of FLO optics can increase productivity through higher
+     welding speeds or welding of thicker materials. Because it can be
+   easily retrofit to conventional laser systems and robots found in many
+    manufacturing facilities, the system offers a viable alternative to
+        resistance spot welding at minimum capital equipment costs.
+
+ <p>    Stefan Heinemann is executive director of Fraunhofer USA Center for
+     Laser Technology (Plymouth, MI). He can be contacted by e-mail at
+                       sheinemann@clt.fraunhofer.com.
+                   
+ <p>		   Industrial Laser Solutions June, 2005
+                      
+ <p>		      Author(s) :   Stefan Heinemann
+        ___________________________________________________________

@@ -1,0 +1,151 @@
+URL: http://www.eurofighter-typhoon.co.uk/Eurofighter/tech.html
+
+
+       <p>The Eurofighter Typhoon benefits from a number of advances in
+      technology and engineering. The aircraft makes extensive use of
+     composites in the airframe with only 15% of the surface comprising
+       metal. The newly developed EJ200 powerplants combined with the
+   aircraft's aerodynamics allow it to cruise supersonically without the
+   use of reheat for extended periods of time even with a normal weapons
+     load. The advanced flight control system and pitch unstable design
+    impart great manoeuvrability at high and low speeds. These, combined
+     with; cutting edge automated defences, advanced active and passive
+        sensors, leading cockpit ergonomics and a reduced RCS instil
+     Eurofighter with more than an even chance of success against most
+                            competing aircraft.
+
+    <p>Beyond present and near-future threats a key feature of Eurofighter
+    development has been a committment to future enhancement of all its
+    systems, the so called Capability Enhancement Programme. Most of the
+    aircrafts systems are specifically designed to be easily swapped out
+   and replaced in future years. This should enable the Typhoon to remain
+   competitive as improvements in technology and reductions in cost allow
+   the fitting of more advanced equipment. Many of these potential system
+                     upgrades are covered on this site.
+
+                         <h> OpEval
+
+      <p>The Eurofighter project has been subject to several operational
+      evaluations. These have been carried out, independently from the
+      Eurofighter consortium, primarily by Britain's DERA, the Defence
+     Evaluation and Research Agency (now split into QinetiQ and DSTL).
+    Unlike many previous theoretical operational capability studies, the
+     Eurofighter analysis utilised a true simulation approach. This was
+    achieved through a number of networked battle simulation computers,
+         termed JOUST, each of which can be flown by human pilots.
+
+   <h>BVR Combat Rating
+   <l>F-22 Raptor rating : 91% [1.61kB] 91%
+   <l>Typhoon rating : 82% [1.4kB] 82%
+   <l>Rafale rating : 50% [1.32kB] 50%
+   <l>F-15C rating : 43% [1.23kB] 43%
+   <l>F-18+ rating : 25% [1.15kB] 25%
+   <l>F-18C rating : 21% [1.2kB] 21%
+   <l>F-16C rating : 21% [1.21kB] 21%
+
+      <p>This system was used to comprehensively evaluate the BVR (Beyond
+      Visual Range) performance of the Eurofighter and other aircraft
+      against an upgraded Su-27 Flanker (comparable to an Su-35 Super
+   Flanker and its equivalents). The studies investigated all aspect best
+      performances from the major systems on each aircraft; avionics,
+     structure (including RCS data), engine performance (including fuel
+   usage), defences and man-machine interfaces. In these tests the French
+    Rafale utilised the Matra-BAe MICA air to air missile (which is the
+     primary AA weapon of the French airforce) while the other aircraft
+                      used the Raytheon-Hughes AMRAAM.
+
+    <p>These simulations concluded that Eurofighter has a win rating of 82%
+     (100% equals always win, 0% equals always lose, 50% equals parity)
+    against the target aircraft. A more typical way to present this data
+    is as a combat exchange ratio, for the Typhoon this equals 4.5:1. In
+   other words statistically one Eurofighter would be lost for every 4.5
+    Su-35 fighters shot down. This compares extremely favourably to the
+    other aircraft (see also the BVR Combat Rating table); F-16C Falcon
+    (0.3:1), F-15C Eagle (0.8:1), F-18C Hornet (0.3:1), F-18+ (0.4:1, NB
+      this is not the current F-18E/F which is apparently a downgraded
+    version of the F-18+ used in the studies) and Dassault Rafale (1:1).
+   Only the LM/Boeing F-22 Raptor bettered the Eurofighter's performance
+                  with a combat exchange ratio of 10.1:1.
+
+    <p>In addition to these overall combat performance results a number of
+        individual comparisons have been made available. Of enormous
+   importance for BVR combat is acceleration at medium altitudes and here
+   the Eurofighter's acceleration at Mach 0.9 and 22,000ft equals that of
+       the F-22. At supersonic velocities (Mach 1.6 and 36,000ft) the
+   sustained turn rate of the Eurofighter betters all but the F-22, while
+   its instantaneous turn rate is superior to the F-22. At low altitudes,
+       Eurofighter can accelerate from 200kts to Mach 1.0 in under 30
+       seconds. In a similar vain to its supersonic performance, the
+   sustained and instantaneous subsonic turn rates of the Eurofighter are
+   bettered only by the F-22. Only the Rafale comes close to the matching
+            the Eurofighter's capabilities in these comparisons.
+
+    <p>An important point to keep in mind when examining this data is that
+    full details on the simulations have not been released. Without this
+      information it is not possible to determine whether Eurofighter
+    optimal profiles were examined at the expense of more varied combat
+     missions. However these studies do give some indication as to the
+                         potential of the Typhoon.
+
+    <h> National Evaluation
+
+    <p>When selecting a fighter aircraft national airforces have to compare
+       and contrast numerous criteria; technological, operational and
+   political. This section gives you some idea of how changing the basic
+   requirements of a fighter can effect the selection process. Of course
+   in practice a fighter is chosen on more than some simple estimation of
+    performance of a few key indicators. The recent South Korean process
+   is a good example of how other factors can override any decision based
+               purely on technical and compatibility grounds.
+
+     <p>Please note the method of defining each aircrafts capability for a
+     given criteria is purely empirical, being manually estimated from
+    available data, reports and other factors. We bear no responsbility
+      should a national airforce use this application to select their
+                             fighter aircraft!
+              <h>Criteria       <h>Percent        <h>Criteria        <h>Percent
+             <l>Twin Seat         ___      <l>Thrust to Weight      ___
+            <l>Twin Engines       ___    <l>Air to Ground Combat    ___
+              <l>Stealth          ___     <l>Air to Air Combat      ___
+               <l>Range           ___          <l>Agility           ___
+         <l>Electronic Warfare    ___      <l>STOL capability       ___
+                <l>Cost           ___        <l>Maintanence         ___
+          <l>Weapon selection     ___        <l>Supercruise         ___
+                              
+
+   <p>As you can see, even a simple analysis can result in some significant
+   differences in the selection depending on which criteria are important
+   in a given situation. This also shows that while the Typhoon does not
+    typically dominate in any one area it does compare well when looking
+   at swing role operations, i.e. combinations of both air to air and air
+     to ground operations. This is particularly true when cost is also
+                                considered.
+
+                      <h> Basic Data
+
+     <p>The following tables detail some basic performance data. It should
+       however be remembered that all of these figures are drawn from
+        anticipated/expected performances as required by contractual
+      obligations. At this time much of this data has been verified or
+      indeed surpassed. The range data in particular though should be
+                 considered approximate rather than final.
+                        <h>Performance Specifications
+                    <l>Max Level Speed                <l> Mach 2.0 @ 11,000m
+     <l>Time to 35,000ft / mach 1.5 from runway alert <l>2 minutes 30 seconds
+             <l>Air Combat take-off distance             <l>300 metre run
+               <l>Air Combat take-off time                <l> 7 seconds
+                    <l>Service Ceiling                 <l> 18300m (60000ft)
+               <h>Combat radii (with appropriate weapons loads)
+                  <l>Ground attack : lo-lo-lo<l> 325 nm (601 km)
+                 <l>Ground attack : hi-lo-hi <l>750 nm (1389 km)
+          <l>Air combat : 10 minute loiter at dest.<l> 750 nm (1389 km)
+                  <l>Air combat : 3 hour CAP<l> 100 nm (185 km)
+              <l>Ferry range (2 External Tanks) <l>2000 nm (3706 km)
+
+                                <h> Sources :
+
+                       <l>[1] : BAE Systems, Warton, UK
+                 <l>[2] : The Air League, No. 7 December 1997
+         <l>[3] : Eurofighter 2000, Hugh Harkins, Key Publishing, 1997
+              <l>[4] : Defence Evaluation and Research Agency, UK
+   

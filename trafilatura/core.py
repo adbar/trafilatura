@@ -9,7 +9,7 @@ Module bundling all functions needed to extract the text in a webpage.
 
 # standard
 import logging
-import re # import regex as re
+import re  # import regex as re
 import warnings
 
 from copy import deepcopy
@@ -19,7 +19,7 @@ from lxml import etree, html
 # own
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
-                     language_filter, text_chars_test)
+                      language_filter, text_chars_test)
 from .htmlprocessing import (convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
@@ -30,8 +30,7 @@ from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
                      ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
-
+                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH, LINKS_XPATH, AUTHOR_XPATH)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +42,6 @@ TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 HEADINGS = {'fw', 'head'}
-
 
 
 def handle_titles(element, dedupbool, config):
@@ -143,7 +141,8 @@ def handle_lists(element, dedupbool, config):
                     if processed_subchild is not None:
                         newchildelem.append(processed_subchild)
                 else:
-                    processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool, config=config)
+                    processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool,
+                                                         config=config)
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
@@ -165,7 +164,7 @@ def handle_quotes(element, dedupbool, config):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter('*'):
-        processed_child = process_node(child, dedupbool, config) # handle_textnode(child, comments_fix=True)
+        processed_child = process_node(child, dedupbool, config)  # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
@@ -218,11 +217,13 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             continue
         # spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
-        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
+        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True,
+                                          config=config)
         if processed_child is not None:
             # todo: needing attention!
             if processed_child.tag == 'p':
-                LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text, processed_child.tail)
+                LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text,
+                             processed_child.tail)
                 if processed_element.text:
                     processed_element.text += ' ' + processed_child.text
                 else:
@@ -268,8 +269,8 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     if len(processed_element) > 0:
         # clean trailing lb-elements
         if (
-            processed_element[-1].tag == 'lb'
-            and processed_element[-1].tail is None
+                processed_element[-1].tag == 'lb'
+                and processed_element[-1].tail is None
         ):
             processed_element[-1].getparent().remove(processed_element[-1])
         return processed_element
@@ -277,7 +278,6 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         return processed_element
     LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
     return None
-
 
 
 def define_cell_type(element):
@@ -319,7 +319,8 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
                         if child.tag in TABLE_ELEMS:
                             # subcell_elem = define_cell_type(subelement)
                             child.tag = 'cell'
-                        processed_subchild = handle_textnode(child, preserve_spaces=True, comments_fix=True, deduplicate=dedupbool, config=config)
+                        processed_subchild = handle_textnode(child, preserve_spaces=True, comments_fix=True,
+                                                             deduplicate=dedupbool, config=config)
                     # todo: lists in table cells
                     else:
                         # subcell_elem = etree.Element(child.tag)
@@ -373,7 +374,8 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
+def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG,
+                      deduplicate=True, config=None):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
@@ -393,8 +395,9 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     else:
         etree.strip_tags(search_tree, 'span')
     result_body.extend(e for e in
-                        [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
-                        if e is not None)
+                       [handle_textelem(element, potential_tags, deduplicate, config) for element in
+                        search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
+                       if e is not None)
     return result_body
 
 
@@ -417,7 +420,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
                 new_element = etree.Element('p')
                 new_element.text = element.tail
     elif element.tag in FORMATTING:
-        new_element = handle_formatting(element, dedupbool, config) # process_node(element, dedupbool, config)
+        new_element = handle_formatting(element, dedupbool, config)  # process_node(element, dedupbool, config)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element, potential_tags, dedupbool, config)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
@@ -455,7 +458,8 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
-def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
+def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False,
+                    include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -511,8 +515,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         # extract content
         # list(filter(None.__ne__, processed_elems))
         result_body.extend(e for e in
-                            [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
-                            if e is not None)
+                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
+                           if e is not None)
         # remove trailing titles
         # and result_body[-1].tail is None ?
         while len(result_body) > 0 and (result_body[-1].tag in HEADINGS or result_body[-1].tag == 'ref'):
@@ -527,7 +531,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         if favor_recall is True:
             potential_tags.add('div')
-        result_body = recover_wild_text(tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_text(tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall,
+                                        potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     else:
         sure_thing = True
@@ -544,7 +549,7 @@ def process_comments_node(elem, potential_tags, dedupbool, config):
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, comments_fix=True, deduplicate=dedupbool, config=config)
         # test length and remove
-        if processed_element is not None: # and processed_element.text not in COMMENTS_BLACKLIST:
+        if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
             # if textfilter(elem) is True: # ^Pingback
             #    return None
@@ -573,7 +578,8 @@ def extract_comments(tree, dedupbool, config):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in subtree.xpath('.//*'))
+        processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
+                           subtree.xpath('.//*'))
         comments_body.extend(elem for elem in processed_elems if elem is not None)
         # control
         if len(comments_body) > 0:  # if it has children
@@ -586,11 +592,71 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config):
+# A more precise function for extract info -
+def extract_info(cleaned_tree):
+    # TODO: Construct a dataset for all names
+    info = {}
+    # Extract with author tag
+    for expr in AUTHOR_XPATH:
+        subtree = cleaned_tree.xpath(expr)
+        for ele in subtree:
+            print(ele.text)
+    return cleaned_tree, info
+
+
+# Remove navigation bars from observation - With Tag Ratios
+def remove_nav(cleaned_tree):
+    # TODO: Marking for implementation - Nearly? Wait for check.
+    # print([i.text for i in cleaned_tree.iter('a')])
+    # print(type(cleaned_tree))
+    # print(cleaned_tree.find('a'))
+    removal = {}
+    for expr in LINKS_XPATH:
+        subtree = cleaned_tree.xpath(expr)
+        if not subtree:
+            continue
+        # for ele in subtree:
+        #     # Replaced Algorithm - Abandoned?
+        #     # while ele.getparent().tag == 'item':
+        #     # TODO: Iterate Child
+        #     if ele.getparent().tag == 'item':
+        #         parent = ele.getparent().getparent()
+        #         ref_count = len([i for i in parent.iter('ref')])
+        #         print(ref_count)
+                # if ele.getparent().getparent() not in removal.keys():
+                #     removal[ele.getparent().getparent()] = 1
+                # else:
+                #     removal[ele.getparent().getparent()] += 1
+                # print(ele.getparent().getparent(), ele.text)
+        for ele in subtree:
+            refs = [i for i in ele.iter('ref')]
+            paras = [i for i in ele.iter('p', 'head', 'quote')]
+            refs_count = len(refs)
+            paras_chars_count = len([(len(i.text) if i.text is not None else 0) for i in paras])
+            # print(paras_chars_count, refs_count)
+            if refs_count == 0:
+                refs_count = 1
+            ratio = paras_chars_count / refs_count
+            if ratio > 0.5:
+                ele.drop_tree()
+            print(ratio)
+    # print(removal)
+
+    # for k, v in removal.items():
+    #     if v > 3:
+    #         try:
+    #             k.drop_tree()  # faster when applicable
+    #         except AttributeError:
+    #             k.getparent().remove(k)
+    return cleaned_tree
+
+
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall,
+                       include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall
-    if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
+    if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
     # try with readability
@@ -612,7 +678,8 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
             algo_flag = True
-        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT',
+                                                                                              'MIN_EXTRACTED_SIZE') * 2:
             algo_flag = True
         else:
             LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -805,7 +872,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             if only_with_metadata is True and any(
                     x is None for x in
                     [docmeta['date'], docmeta['title'], docmeta['url']]
-                ):
+            ):
                 LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
         else:
@@ -817,24 +884,38 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
 
+        # Remove navigation bars
+        cleaned_tree = remove_nav(cleaned_tree)
+
+        # Extract authors (Modified_
+        cleaned_tree, info = extract_info(cleaned_tree)
+
         # comments first, then remove
         if include_comments is True:
-            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
+            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate,
+                                                                                       config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
             if favor_precision is True:
                 cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
-        # extract content
-        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
+
+        # extract content - Place to modify
+        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, favor_precision, favor_recall,
+                                                                    include_tables, include_images, include_links,
+                                                                    deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text,
+                                                               target_language, favor_precision, favor_recall,
+                                                               include_formatting, include_links, include_images,
+                                                               include_tables, config)
             # add baseline as additional fallback
             if len(postbody) == 0:
                 postbody, temp_text, len_text = baseline(filecontent)
-        # rescue: try to use original/dirty tree
+
+        # rescue: try to use ground/dirty tree
         elif sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
             postbody, temp_text, len_text = baseline(filecontent)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
@@ -852,7 +933,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         # size checks
         if len_comments < config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
             LOGGER.info('not enough comments %s', url)
-        if len_text < config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and len_comments < config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE'):
+        if len_text < config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and len_comments < config.getint('DEFAULT',
+                                                                                                   'MIN_OUTPUT_COMM_SIZE'):
             LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
             raise ValueError
 

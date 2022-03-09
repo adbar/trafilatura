@@ -1,0 +1,729 @@
+URL: http://www.corante.com/importance/archives/cat_induce_act.php
+
+
+   <p>June 07, 2005
+
+<h>CDT's 'Balanced Framework' for Copyright Completely Unbalanced 
+
+   <p>The Center for Democracy and Technology has released a report today
+   arguing on behalf of a balanced approach to copyright enforcement, a
+   carrot and stick (CDT Proposes Balanced Framework for Online Copyright
+   Protection). via Constitutional Code, which has many worthwhile
+   comments
+
+   <p>Read the 14-page report: Protecting Copyright and Internet Values: A
+   Balanced Path Forward: Version 1.0 Spring 2005 [PDF].
+
+   <p>Note: I've long favored the carrot and stick approach. See this
+   interview with GrepLaw in September, 2003 (Ernest Miller on DRM,
+   Privacy and Hemingway). (You know, I think my answers stand up to the
+   test of time pretty well.)
+
+   <p>However, I think the CDT report favors the stick a bit much, treats
+   citizen/creators as mere consumers, doesn't consider structural reform
+   of copyright law, and doesn't provide much in the way of a carrot,
+   among other flaws.
+
+   <p>Read on for a more detailed take on the report...
+
+ 
+   <p>May 25, 2005
+
+<h>Senate Judiciary IP Subcommitee Hearing On Int'l Copyright Infringement
+
+   <p>Well, I listened to the nearly two hours of generally dull testimony
+   for today's Senate hearing on intellectual property (Notice of
+   Subcommitee Hearing: Piracy of Intellectual Property). I suffered so
+   that you didn't have to.
+
+   <p>The hearing was chaired by Sen. Orrin Hatch (R-UT), who heads the
+   Intellectual Property Subcommitee of the Senate Judiciary Committee.
+   Sen. Patrick Leahy (D-VT) also attended most of the hearing.
+
+   <p>The focus of the meeting was on international copyright infringement,
+   particularly in China and Russia. Flash! There is lots of infringement
+   in these two countries and something must be done about it, such as
+   keeping Russia out of the WTO. And we're really going to get upset
+   with China pretty darn soon. Any minute now, in fact. Just you wait,
+   we'll do something major to China, you'll see.
+
+   <p>Read on ...
+
+   
+   <p>April 06, 2005
+
+<h>C|Net on Possible Judicial Inducement Test
+
+   <p>C|Net News' John Borland has a brief article on the possibility that
+   the Supreme Court may craft some sort of inducement test in the
+   Grokster case (Supreme Court mulls file-swap 'pushers').
+   Unfortunately, the article doesn't really provide any context as to
+   the distinctions between the IEEE's active inducement test and the
+   RIAA's presumptive inducement test. 
+   
+   <p>March 15, 2005
+
+<h>Slate Induces Copyright Violations
+
+   <p>Slate has published another good article by tech journalist Paul
+   Boutin, who advocates HTML annotation software for bloggers
+   (Newsmashing: The new technique that will change blogging forever).
+   Basically, you would be able to copy a webpage, then annotate directly
+   on top of it, highlighting passages, writing notes, adding links, etc.
+   Such is possible today, of course, but a software package that made it
+   easy (just as blogging tools made publishing easy), could be a
+   significant change, allowing anyone who can blog to create such
+   annotations.
+
+   <p>Being a long time fan of annotation, I think this would be great.
+
+   <p>Of course, there is the little issue of copyright violation.
+   Certainly, if I hosted the complete original work with annotations,
+   that could very clearly lead to a copyright claim. Under the INDUCE
+   Act theories, the company that made the software to allow this would
+   also be liable. After all, if you are authorized to annotate, then you
+   can manipulate the underlying file without need for annotation
+   software. Clearly, the intent and purpose of annotation software would
+   be to encourage the creation of derivative works and reproductions
+   that people are unauthorized to make.
+
+   <p>One possible solution would be to be able to create the annotations as
+   a separate file and then layer them over the original copyrighted
+   work. If one wanted to see the annotation, they would click a special
+   browser link that would go to the original HTML of the work that is
+   annotated (no copyright violation there) and then display the
+   annotation over it (potential copyright violation). There is a
+   drawback in that the underlying work could easily be changed to throw
+   off the annotation, but that is a problem with linking in general.
+
+   <p>Of course, all the people who were upset with Google for changing the
+   presentation of their work would be just as upset with all the
+   annotators. Would this be a copyright violation? Would a software
+   company that provided this service be guilty of inducing infringement?
+
+   <p>Currently, it is unclear how such a case would come out. I would like
+   to think that annotation of this sort is clearly not a copyright
+   violation inherently, but my views are not necessary shared by
+   copyright owners and the courts.
+
+   <p>UPDATE 1410 PT
+
+   <p>Apparently Paul Boutin wanted to have an actual newsmashing contest,
+   but lawyers shut him down! (Newsmashing!):
+
+     <p>We were going to have a newsmashing contest, but the lawyers shot
+     it down. Damn you, copyright law!
+
+   <p>Heh.
+   
+
+<h>Final INDUCE Act (IICA) Draft From Copyright Interests - INDUCE Dead for Now
+
+   <p>It would appear that the Inducing Infringement of Copyrights Act of
+   2004 is dead. Newsday runs an AP wirestory on the death of INDUCE
+   (Senate Talks Fail on File-Sharing Software). via Copyfight
+
+   <p>For the record, according to an anonymous source, this draft version
+   of the INDUCE Act from the copyright industries is the one that
+   finally convinced consumer and technology groups that compromise
+   wouldn't be reached: INDUCE Act - Copyright Owners' Tentative Proposal
+   - 05 Oct 2004 [PDF]
+
+   <p>This draft is most similar to the one pointed to by Ed Felton here:
+   Recent Induce Act Draft.
+
+   <p>Of course, we should all be wary of the mischief Congress accomplishes
+   during lame duck sessions, as well as a revived INDUCE Act next term.
+
+   <p>Might I suggest that the copyright industries spend more time and
+   money developing new business plans rather than legislation-drafting
+   lawyers?
+
+
+<h>No INDUCE Act (IICA) Markup Tomorrow? 
+
+   <p>Good news.
+
+   <p>A source familiar with the ongoing Inducing Infringement of Copyrights
+   Act (IICA aka INDUCE Act) drafting process informs me that the
+   Judiciary Committee will not markup the INDUCE Act tomorrow,
+   ostensibly in order to deal with homeland security issues.
+
+   <p>Of course, if true, this is only a postponement. Expect the INDUCE Act
+   to rear its ugly head once again, either during the lame duck session
+   or next term.
+
+   <p>October 06, 2004
+
+<h>Sen. Hatch Pushing INDUCE Act (IICA) Forward Despite No Consensus? Plus, CDT
+Speaks Out 
+
+   <p>It is looking more and more likely that Sen. Orrin Hatch (R-UT) is
+   going to try to get something passed tomorrow despite heavy opposition
+   from technology and consumer groups.
+
+   <p>Will the Judiciary Committee cravenly accept such an attack on
+   innovation and the future, or will they reject Hollywood's efforts to
+   determine how the internet will develop?
+
+   <p>The Center for Democracy and Technology has also sent a letter asking
+   the Senate to not be foolish: CDT, Letter to Sen. Hatch and Leahy, RE:
+   S. 2560, Inducing Infringement of Copyrights Act of 2004, 06 Oct 2004
+   [PDF]
+
+     <p>We understand that S.2560 is still scheduled for markup by the
+     Judiciary Committee this week. Despite the progress being made,
+     current drafts would chill the development of legitimate consumer
+     technologies, and we urge you not to pass S.2560 out of Committee
+     at this time.
+     <p>CDT remains committed to working with you and with the Committee to
+     craft a bill narrowly targeted at bad behavior by a small set of
+     actors. In the meantime, however, we urge you not to move forward
+     with S.2560 because of the real risks it presents to communication
+     and innovation on the Internet.
+
+ 
+<h>Technology and Consumer Groups Oppose INDUCE Act (IICA) Markup
+
+   <p>As I noted earlier, the Inducing Infringement of Copyrights Act (IICA
+   aka INDUCE Act) negotations have failed (Secret INDUCE Act (IICA)
+   Negotiations Fail!). Now, two letters have been sent to the Senate
+   asking that there be no markup as there was no consenus. Hopefully,
+   the Senate will recognize that marking up a seriously flawed bill is
+   quite a bit worse than utterly foolish.
+
+   <p>From a coalition of consumer groups, including American Library
+   Association, EFF, and Public Knowledge: American Association of Law
+   Libraries, et. al., Letter to Sen. Hatch and Leahy, RE: S. 2560,
+   Inducing Infringement of Copyrights Act of 2004, 06 Oct 2004 [PDF]
+
+     <p>Moreover, every one of the half-dozen drafts proposed would make
+     fundamental changes to copyright law, with potentially enormous
+     impact on the innovation, creativity, and competition. At this
+     point, we are very concerned that staff may present at tomorrows
+     executive business meeting complex legislation: 1) on which there
+     is no consensus; 2) that would do great harm to future
+     technological innovation; and 3) that would not meet the goals that
+     you and Senator Leahy have set out.
+
+     <p>Every major change to the Copyright Act in the last century has
+     taken several years to draft and fine tune before it was passed.
+     Even the controversial Digital Millennium Copyright Act (DMCA)
+     resulted from numerous hearings and conference reports over a
+     three-year period. Given the short period over which S. 2560 has
+     been discussed, the absence of hearings on the new language, and
+     the overall lack of opportunity for the public to comment, we
+     believe it would be in the best interests of all parties to allow a
+     more orderly process to go forward, and to have a hearing with
+     expert testimony on whatever draft results from this process. We
+     can see no other way to achieve true consensus and ensure that the
+     public interest and future technological innovations are protected.
+     We hope you will agree.
+
+   <p>Technology groups have also sent a letter, including Consumer
+   Electronics Association, IEEE-USA, and NetCoalition: Consumer
+   Electronics Assoc., Letter to Sen. Hatch and Leahy, RE: S. 2560,
+   Inducing Infringement of Copyrights Act of 2004, 06 Oct 2004 [PDF]
+
+     <p>At the July 22 hearing, we committed to working with you to craft a
+     legislative alternative to S. 2560. At Chairman Hatch's direction,
+     we have been working virtually around the clock for almost a week
+     in an effort to reach consensus with the copyright community.
+     Notwithstanding everyone's hard work and good intentions, we find
+     ourselves farther apart now than at the outset of this process.
+     Because we are attempting to write legislation dealing with complex
+     and evolving technology, this has proven to be an exceptionally
+     difficult process.
+
+     <p>Unfortunately, the recording industry continues to propose language
+     that would not solve the piracy problems in the manner you
+     identified, but instead would effectively put at risk all consumer
+     electronics, information technology products, and Internet products
+     and services that aren't designed to the industry's liking. In
+     fact, the most recent draft put forward by the recording industry
+     at 1:00 am this morning is a large step backwards from previous
+     drafts in that it would jeopardize more legitimate products and
+     would create a flood of litigation, and thus would hurt vital
+     sectors of the U.S. economy. In short, the draft is unacceptable.
+
+   <p>Hopefully, the Senate will take these group's advice and forget about
+   INDUCE for now.
+   
+Secret INDUCE Act (IICA) Negotiations Fail! 
+
+   <p>Reports are that no final compromise was reached on the Inducing
+   Infringement of Copyrights Act (IICA aka INDUCE Act). Apparently,
+   negotiations broke down on codifying the Betamax decision as well as
+   copyright holders arguing for broader language.
+
+   <p>Whether this means that Sen. Orrin Hatch (R - UT) will produce a bill
+   for markup tomorrow is anyone's guess. I'm guessing yes. Why should a
+   little thing like an unbalanced, dangerous bill stop him?
+   
+   <p>October 04, 2004
+
+<h>Rumors Continue to Fly Around New INDUCE Act (IICA) Draft 
+
+   <p>According to anonymous reports, our betters continue to develop
+   internet innovation policy behind closed doors. Apparently, the open
+   transparent processes that led to the development of the internet are
+   not appropriate to the development of innovation policy.
+
+   <p>Supposedly, the revised bill will be completed by close of business
+   today for markup in the Senate tomorrow. No hearings. No public
+   debate. Nada, nothing, zilch.
+
+   <p>Also, if what I've been hearing is true, there is a liklihood of some
+   really terrible additional provisions being added to the basic
+   framework of the INDUCE Act (IICA), such as a requirement for file
+   sharing filtering being built into filesharing applications.
+
+   <p>Of course, it would be nice not to have to report on rumors. If our
+   elected representatives had any trust in democratic processes, they
+   would make the various language being batted about and the various
+   draft bills public. They certainly wouldn't require a vow of silence
+   from the participants in the process.
+   
+<h>Is There a New INDUCE Act (IICA) Draft? 
+
+   <p>Rumor is that there is a new INDUCE Act (IICA) draft available, but
+   the participants have been sworn to keep it quiet while they show it
+   to their clients.
+
+   <p>Of course, the clients of the US Senate, aka the people of the United
+   States, get no such courtesy from their elected representatives.
+
+   <p>Ain't democracy great?
+ 
+   <p>October 01, 2004
+
+<h>Burning the Midnight Oil to Create a New INDUCE Act (IICA)
+
+   <p>Well, no version of the INDUCE Act (IICA) has come out of Sen. Orrin
+   Hatch's patent-pending throw some of the interested parties in a room
+   and not let them out until there is a compromise innovation policy
+   development process. The drafting may continue throughout the weekend.
+
+   <p>Reports that observers should watch for black or white smoke from
+   Senate offices are mistaken; Sen. Hatch did not insist on following
+   medieval precedents in their entirety.
+
+     <p>September 30, 2004
+
+<h>"All-Star" Drafting Team to Create New INDUCE Act (IICA) by Close of
+Business Tomorrow
+
+   <p>According to Public Knowledge:
+
+     <p>An all-star game of private sector legislative drafters will start
+     at 10:30 tomorrow. There will be representatives from consumer
+     electronics, Verizon, CDT, and others on our team and from the
+     usual suspects on the other team. They are supposed to produce a
+     draft by 4 p.m. That draft will then be, probably revised, to see
+     if it can be marked up next week.
+
+   <p>Why on God's green earth does Sen. Orrin Hatch (R-UT) think this is a
+   reasonable way to set internet innovation policy? There will
+   apparently be no significant reflection or debate, just a rush job at
+   the end of the session.
+
+   <p>Unbelievable.
+
+<h>Report from the INDUCE Act (IICA) "Negotiations" 
+
+   <p>Apparently, Sen. Orrin Hatch's staff believes that the Senate
+   Judiciary Committee would be criticized if forwarded a copyright bill
+   and criticized if it didn't. Criticized by who? The citizens of Utah?
+   Are the people of Utah pushing ths bill? Will Sen. Hatch be voted out
+   of office if the INDUCE Act isn't passed?
+
+   <p>Sen. Hatch himself was quoted as saying that he wanted the people in
+   the room to write the "doggone" bill and that if they didn't he would.
+   He also was quoted as saying, "if the bill isnt done this year, it
+   will be done next year."
+
+   <p>Great.
+
+<h>Content Industries Meet with Sen Hatch Prior to INDUCE Act (IICA)
+"Negotiation"  
+
+   <p>Yesterday I noted that instead of a regular bill "markup" there was
+   going to be a massive negotiation among some of the stakeholders
+   regarding the INDUCE Act (IICA) (INDUCE Act (IICA) Massive Negotiation
+   Session Tomorrow).
+
+   <p>Today, an anonymous source familiar with the process has told me that
+   before the main meeting, which is taking place as I post, there was a
+   separate meeting between Sen. Orrin Hatch (R - UT) and the content
+   industries alone. Have to put together a united front, I suppose.
+   
+   <p>September 29, 2004
+
+<h>INDUCE Act (IICA) Massive Negotiation Session Tomorrow 
+
+   <p>Word is that there will be no markup of the INDUCE Act (IICA) tomorrow
+   as had been previously promised. "Instead, the Hatch staff has invited
+   a bunch of people, most of them content people, to a massive
+   negotiation session at 1 p.m. in Dirksen 226. This is not a public
+   meeting, but could be staked out. MPAA, RIAA, BSA, AOL-Time Warner
+   were invited. Consumer Electronics, CDT, Verizon among others."
+
+   <p>At what point will our representatives in Washington figure out that
+   this is probably not an intelligent way to determine internet
+   innovation policy for the nation?
+   
+<h>INDUCE Act (IICA) Continues to Threaten 
+
+   <p>Concentrate on some other things for a few days and you fall
+   hopelessly behind. I'm also feeling very frustrated that a handful of
+   Senators are still trying to push through the innovation-crippling,
+   free speech-threatening INDUCE Act on behalf of an industry with
+   disproportionate lobbying efforts and profile. It is very sad,
+   especially when I consider the pernicious effect it will have on our
+   political culture for many years to come (the subject of another
+   post). Anyway, simply to catch up, here are some more links:
+
+   <p>Copyfight:
+     <l> PDEA + Induce = Very Bad Law
+     <l> A Tax on Innovators
+     <l> Yet Another Way to Say No
+
+   <p>INDUCE Act Blog:
+     <l> The Register on the new IICA draft
+     <l> WIRED on the new INDUCE Act draft
+     <l> American Conservative Union's Anti-INDUCE-Act Ad
+
+   <p>One final point. Copyfight pointed to an email sent by the group
+   behind the Grammy's encouraging artists to support the INDUCE Act
+   (Induce Boosters Send Email to Grammy Members). If artists think that
+   it is in their interest to significantly increase the power of the
+   publishers as against all others, they are sadly mistaken. When
+   copyright law becomes even further unbalanced, it becomes a burden on
+   artists just as much, if not more than, consumers.
+ 
+   <p>September 24, 2004
+
+<h>Staff Draft of INDUCE 2.0 
+
+   <p>The Senate will likely be doing a markup of the Inducing Infringement
+   of Copyrights Act of 2004 (IICA, née INDUCE Act), next Thursday,
+   September 30th. The draft they will be working off has just been
+   released. It is much closer to the original version of the bill than
+   the version produced by the Copyright Office a couple of weeks ago.
+
+   <p>Read the 4-page staff draft of INDUCE 2.0: Staff Draft S. 2560 -
+   Inducing Infringement of Copyrights Act of 2004 [PDF].
+
+   <p>The bill is much more narrowly drafted with carve outs for everything
+   that EFF had in their original mock iPod complaint: iPod, the maker of
+   the hard drives and C|Net for reviewing it are also presumably
+   protected (Prelude to a Fake Complaint).
+
+   <p>However, the bill retains many of the provisions, including the
+   incredibly vague "reasonable person" standard, as well as other
+   issues.
+
+   <p>In any case, this is not the final draft, but only something that will
+   be futher changed at the markup next Thursday and there may be other
+   drafts released between now and then.
+
+   <p>More later...
+   
+   <p>September 23, 2004
+
+<h>The Importance of ... Law and IT: The INDUCE Act 2.0 
+
+   <p>The fourth episode of my audio series, The Importance Of ... Law and
+   IT, is up on IT Conversations.
+
+   <p>This show focuses on the Inducing Infringement of Copyrights Act of
+   2004 (IICA, née INDUCE Act), with some emphasis on the recent draft
+   from the Copyright Office.
+
+   <p>Get the show here: The INDUCE Act 2.0.
+
+   <p>There was really not too much I had to do in this show except let two
+   excellent experts and advocates explain what is going on with the
+   INDUCE Act:
+     <l> Andrew Greenberg is an attorney with Carlton Fields and
+       Vice-Chairman of
+       the Intellectual Property Committee for the Institute of
+       Electrical
+       and Electronics Engineers.
+     <l> Joshua Wattles is past president of the Los Angeles Copyright
+       Society
+       and the former acting general counsel of Paramount Pictures
+       Corporation.
+
+   <p>Many thanks to both of them for an excellent show.
+
+   <p>During the show, Greenberg noted that there are also several other
+   alternatives to the INDUCE Act. You can find out more about them here:
+   'Don't Induce Act' - an Alternative to the INDUCE Act (IICA) and Other
+   News.
+
+   <p>Read on for the letter Wattles sent to key Senators regarding the bill
+   just days after the show...
+
+   <p>Continue reading "The Importance of ... Law and IT: The INDUCE Act
+   2.0"
+  
+   <p>September 17, 2004
+
+<h>Broad Coalition of Organizations Calls for More INDUCE Act (IICA) Hearings
+
+   <p>A broad collection of technology companies, civil liberties groups and
+   other organizations have just released a letter calling for further
+   hearings on the Inducing Infringement of Copyrights Act of 2004 before
+   the bill enters markup. The letter is a response to the new version of
+   the INDUCE Act (IICA) proposed by the Copyright Office (which I
+   haven't yet written about, but is most definitely on my "to do" list).
+   Clearly, Congress should take this letter's advice.
+
+   <p>Read the two page letter: Letter to Senators Hatch and Leahy, Re: S.
+   2560, Inducing Infringement of Copyrights Act of 2004, Sep. 17, 2004
+   [PDF].
+
+   <p>Text of the letter below:
+
+     <p>Dear Senators Hatch and Leahy:
+
+     <p>The undersigned entities are writing to express their concerns with
+     the Copyright Office's September 9, 2004 recommended statutory
+     language for a new form of secondary liability for copyright
+     infringement. We commend the Copyright Office for its efforts to
+     meet with the many different stakeholders and to fashion a
+     recommendation that attempts to address the competing interests.
+     Notwithstanding the Copyright Office's hard work and creativity,
+     the September 9 draft is not ready for mark-up by the Senate
+     Judiciary Committee. The draft raises a host of new issues and
+     would create an unprecedented new form of liability of uncertain,
+     but potentially unlimited, reach.
+
+     <p>The Copyright Office's most recent approach would create a new form
+     of strict copyright liability for a large class of providers of
+     hardware, software and services used in conjunction with the
+     electronic or physical dissemination of goods, services, and
+     information. These companies and institutions could be found liable
+     without regard to their knowledge, intent, or relationship to the
+     infringer, simply for providing a product, service, facility or
+     financing. All it takes to be found liable is to meet one of the
+     three vague criteria proposed by the Copyright Office, which are to
+     be applied to some undefined subset of a defendant's products or
+     services. As a result, anyone involved in the development or
+     operation of electronic, or even physical, communication,
+     distribution, or dissemination technologies could be strictly
+     liable when it unknowingly derives revenue that may be small in
+     relation to its own provision of goods and services. Perhaps most
+     troubling, entities that participate in the Internet and other
+     electronic space would have no way of structuring their activities
+     to anticipate and avoid -- or even minimize -- these risks.
+
+     <p>The Copyright Office's new draft fails to codify the Supreme
+     Court's Betamax decision, which, despite having fostered twenty
+     years of explosive growth in technology, is now under unrelenting
+     attack. Moreover, the Betamax doctrine will provide no defense
+     against the Copyright Office's proposed new form of liability. Nor
+     would it be availing to present any defense based on lack of
+     knowledge, intent, or affiliation with any infringer. Thus,
+     legitimate enterprises may have no effective means of preventing
+     the substantial litigation cost of virtually every infringement
+     case going to trial. The September 9 draft also explicitly opens
+     the door to secondary liability -- posing yet another challenge and
+     obstacle -- to those who finance new ventures or "incubate" new
+     technologies. Thus, it may sweep up far more than bad actors who
+     build business models based in infringement.
+
+     <p>While the decision to embark on a new approach shows that the
+     Copyright Office has been willing to listen to criticism of
+     previous approaches and to explore new directions, the very novelty
+     of this approach suggests that further analysis and review are in
+     order. Indeed, each major alternative that has been presented to
+     your staff (including those emanating from the private sector) has
+     revealed an attempt to avoid the pitfalls of S. 2560 as introduced,
+     yet has differed dramatically from other serious proposals. No
+     private or public sector consensus has yet formed as to theoretical
+     framework and practical impact.
+     <p>In the first hearing on S.2560, the Committee called on interested
+     parties to propose legislative alternatives. The resulting process
+     has led to a number of significant alternatives, which differ
+     greatly from the original and from each other. However, each would
+     work a fundamental change in copyright law, with potentially
+     enormous impact on the competitiveness and economic growth of this
+     nation. Before any approach becomes law, it should, at minimum, be
+     subjected to careful scrutiny in a public hearing at which novel
+     elements in these approaches can be compared, and discussed as to
+     their full implications. The process thus far has been
+     constructive, but has not resulted in either the consensus or the
+     confidence in a legislative framework that ought to underlie a
+     major and consequential revision to the Copyright Act.
+
+     <p>We continue to appreciate the seriousness and cordiality with which
+     your staffs have approached this issue, and look forward to
+     continuing to work with you and with them.
+
+     <p>Sincerely,
+
+     <p>[Numerous technology companies, civil liberties groups and other
+     organizations]
+
+   <p>Want to know more about the INDUCE Act?
+   <p>Please see LawMeme's well-organized index to everything I've written
+   on the topic: The LawMeme Reader's Guide to Ernie Miller's Guide to
+   the INDUCE Act.
+  
+   <p>September 14, 2004
+
+<h>SAVE BETAMAX 
+
+   <p>Let Congress know today, with a phonecall, that you oppose the INDUCE
+   Act.
+
+   <p>Or use EFF's Action Center: Induce Act Update: Turning Up the Heat.
+
+   <p>If you don't know why you should care, you can pick a few articles at
+   random from an index of more than 100 of my postings on the INDUCE
+   Act. See, LawMeme (The LawMeme Reader's Guide to Ernie Miller's Guide
+   to the INDUCE Act).
+
+   <p>For those wondering where I've been ... well, I apologize. I'll be
+   back with a vengeance soon, putting on my pajamas and doing an indepth
+   on INDUCE 2.0 and more. Hatch's Hit List is on a slight hiatus ... but
+   don't worry, it'll be back too.
+   
+   <p>September 10, 2004
+
+<h>Copyright Office Report on INDUCE Act (IICA) Complete But Not Yet Public
+
+   <p>Yesterday afternoon, the Copyright Office was to provide a report to
+   the Senate Judiciary Committee on the Inducing Infringement of
+   Copyrights Act (IICA, née INDUCE Act). See, Senators Put Copyright
+   Office in Charge of Finding INDUCE Act (IICA) "Consensus" by Sep 7 and
+   Copyright Office Produces 'Discussion Draft' Alternative to INDUCE Act
+   (IICA).
+
+   <p>Two sources have confirmed that the report has been submitted to the
+   Senate, but the report will not be released publicly until Senate
+   staffers have had a chance to review it.
+
+   <p>Of course, I wonder why the delay in making the report public? Is it
+   going to change between now and when the Senate deigns to release it?
+   Why is this an appropriate way of dealing with a public report?
+
+   <p>Anyway, I've got some other things to do today. Hopefully, I'll be
+   able to take a look at it as soon as someone decides the report is fit
+   for the people who paid for it.
+
+   
+<h>Hatch's Hit List #45 - MIT's I/O Brush 
+
+   <p>What is Hatch's Hit List? Sen. Orrin Hatch (R-UT) has introduced the
+   Inducing Infringement of Copyrights Act (IICA, née INDUCE Act) in the
+   Senate. The bill would make it illegal to "intentionally induce"
+   copyright infringement, but is worded so broadly that it would have
+   all sorts of unintended consequences, one of which is to severely
+   limit, cripple or kill innovation in many different fields. Hatch's
+   Hit List is a daily exploration of some of the technologies and fields
+   that the bill would likely affect. See also, Introducing Hatch's Hit
+   List and the Hatch's Hit List Archives. Send list suggestions to
+   ernest.miller 8T aya.yale.edu.
+
+   <p>Today on Hatch's Hit List: MIT's I/O Brush
+
+   <p>MIT's infamous Media Lab, from which many inducing technologies have
+   found their way into the world, has produced a device whose sole and
+   only purpose appears to be copyright infringement. Furthermore, it is
+   designed to be used by children, training them from an early age to
+   engage in copyright crimes! Who knows how many innocents will be
+   corrupted by the Fagins and Child Catchers of MIT?
+
+   <p>What is this criminal device? The I/O Brush:
+
+     <p>I/O Brush is a new drawing tool aimed at young children, ages four
+     and up, to explore colors, textures, and movements found in
+     everyday materials by "picking up" and drawing with them. I/O Brush
+     looks like a regular physical paintbrush but has a small video
+     camera with lights and touch sensors embedded inside. Outside of
+     the drawing canvas, the brush can pick up color, texture, and
+     movement of a brushed surface. On the canvas, children can draw
+     with the special "ink" they just picked up from their immediate
+     environment.
+
+   <p>This is explicitly training children to violate the rights of
+   reproduction and derivative works. Unbelievable! Shocking!
+
+   <p>And just what does MIT expect the children to do with their infringing
+   works? Undoubtedly, because they are in digital format, share them
+   with people! Perhaps they expect that they will be shared via the
+   internet! Thus, violating the right of public distribution! A few more
+   exclamation points for no apparent reason!!!!!!
+
+
+   <p>September 09, 2004
+
+<h>Hatch's Hit List #44 - Broadcatching
+
+   <p>What is Hatch's Hit List? Sen. Orrin Hatch (R-UT) has introduced the
+   Inducing Infringement of Copyrights Act (IICA, née INDUCE Act) in the
+   Senate. The bill would make it illegal to "intentionally induce"
+   copyright infringement, but is worded so broadly that it would have
+   all sorts of unintended consequences, one of which is to severely
+   limit, cripple or kill innovation in many different fields. Hatch's
+   Hit List is a daily exploration of some of the technologies and fields
+   that the bill would likely affect. See also, Introducing Hatch's Hit
+   List and the Hatch's Hit List Archives. Send list suggestions to
+   ernest.miller 8T aya.yale.edu.
+
+   <p>Today on Hatch's Hit List: Broadcatching
+
+   <p>Combine RSS (w/enclosures) with BitTorrent and you get what I call
+   "broadcatching." It is, in my view, a revolutionary method for
+   multimedia publishing and distribution without gatekeepers.
+
+   <p>Problem is, like email and http and ftp and p2p, anyone can post any
+   sort of content in the enclosures and easily distribute it. In fact,
+   undoubtedly, broadcatching will be used by many for infringement.
+   People will share their favorite (and copyrighted) television programs
+   and movies with others. And, if the RSS is private (aka a "darknet"),
+   how will the RIAA or MPAA be able to find and punish the infringers?
+
+   <p>The tools for using broadcatching will undoubtedly encourage people to
+   use them for illicit purposes, such as with instructions that "any
+   large file could be put into an enclosure" or something similar.
+
+   <p>Clearly, the whole broadcatching thing is going to have to be strictly
+   regulated. Perhaps we can require that all RSS feeds be registered, so
+   that they can be monitored? Broadcatching software will definitely
+   need dialog boxes that ask if the user is sure they want to add
+   content to an enclosure, as it might be copyrighted. Newsreaders will
+   need dialog boxes that ask subscribers whether they want to download
+   the enclosures (they might be copyrighted).
+
+   <p>Because broadcatching is a direct and immediate threat to the business
+   models of Hollywood, it will certainly be a prime target for any
+   lawsuits Hollywood can throw against it.
+  
+   <p>September 08, 2004
+
+<h>Call Congress on Sep. 14 - SaveBetamax.org 
+
+   <p>On September 14th Downhill Battle wants you to call Congress to let
+   your representatives know your views on the Inducing Infringement of
+   Copyrights Act (IICA, née INDUCE Act): SaveBetamax.org:
+
+     <p>The Betamax ruling is the only thing that protects your right to
+     own a VCR, tape recorder, CD-burner, DVD-burner, iPod, or TiVo.
+     It's that important. But new legislation that's being pushed
+     through the Senate by lobbyists for the music and movie industries
+     would override the Betamax decision and create a huge liability for
+     any business that makes products which can copy sound or video.
+     This legislation (formerly known as the INDUCE Act) would
+     essentially give Hollywood veto power over a huge range of new
+     technologies. And if they get this power, they'll definitely use
+     it: just as they tried to stomp out the VCR in the 70's and 80's,
+     the music and movie industries want to force all content to go
+     through their own restricted channels.
+
+   <p>Go ahead, register.
+
+   

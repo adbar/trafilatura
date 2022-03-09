@@ -1,0 +1,778 @@
+
+<h> Alcator C-Mod Shot Information for shot 1010719014
+
+<h> Miniproposals
+<l> Miniproposal:   137b
+<l> Date Filed:     1/14/1999
+<l> Title:          Local Edge Threshold for H-Mode (Rev. 2)
+<l> First Author:   Amanda Hubbard
+<l> Session Leader: Amanda Hubbard (shots 1-22)
+<l> Miniproposal:   289a
+<l> Date Filed:     5/2/2001
+<l> Title:          Investigations of Double Transport Barrier Plasmas
+<l> First Author:   John Rice
+<l> Session Leader: John Rice (shots 1-22)
+
+<h> Operators
+<l> Session leader(s):       Amanda Hubbard,John Rice
+<l> Physics operator(s):     Ian Hutchinson
+<l> Engineering operator(s): Gary Dekow,Bill Parkin
+
+<h> Logbook entries for this shot
+
+<h> Topic
+<h> Entered
+<h> Author
+<h> Text
+
+<l> SESSION_LEADER
+<l> Jul 19 2001 01:21PM
+<l> Amanda Hubbard
+<l> Got 2.3 MW, only a
+   few minor trips. This time we had a series of more ELM-free H-modes,
+   with
+   accumulating impurities and radiation. Not a pretty sight. H/D is up
+   to 0.18!
+<l> Next shot, lower Ip to 0.9 MW in an attempt to get EDA conditions.
+
+<l> PHYSICS_OPERATOR
+<l> Jul 19 2001 01:31PM
+<l> Ian Hutchinson
+<l> Plasma. Similar to
+   previous. Disruption in ramp down. Horrid
+   ragged H-modes.
+<l> Ip to .9MA.
+
+<l> RF
+<l> Jul 19 2001 07:44AM
+<l> JV1/JV3 Phase balance detector setpoint changed
+   from .5V to 0V, or from +/-65deg. to +/-90deg. Voltage ref. caps on
+   phase reference
+   and power threshold inputs to comparators were changed from .005 to
+   1uf.
+<l> Same was done on JV2/JV4 phase balance detector.
+
+<l> RF
+<l> Jul 19 2001 01:24PM
+<l> Paul Bonoli
+<l> BT = 5.3T, Ip~ 1.0 MA, nl_04~0.76x10^20 m^-2
+<l> Request:
+<l> D: 1.0 MW [0.6,1.5] sec
+<l> E: 1.3 MW [0.6,1.5] sec
+<l> J: Off
+<l> Result: Plasma - H-mode
+<l> D: Ran
+<l> E: Ran
+<l> J:
+<l> Note:
+<l. Next Shot: Reduce current to 900 kA
+
+<h> Logbook entries for this run
+
+<h> Topic
+<h> Entered
+<h> Author
+<h> Text
+   
+<l> SESSION_LEADER
+<l> Jul 19 2001 04:14PM
+<l> Amanda Hubbard
+<l> Physics Run plan for
+   1010719, MP 287 Asdex H-mode similarity experiment
+   
+<p> Goal: To make high density, high power EDA H-modes in a shape
+   identical to
+   that in ASDEX-Upgrade 'Type II ELM' discharges. This regime,
+   which was only recently obtained on AUG, appears rather similar to
+   that
+   obtained on C-Mod when power is increased into EDA H-modes. At reduced
+   powers,
+   AUG sometimes sees a 'quasi-coherent' mode. We would like to see if
+   the same
+   behaviour is observed on the two machines with the same dimensionless
+   parameters. We will obtain edge profiles both at threshold and in the
+   steady
+   H-mode period. AUG will then try to match the
+   dimensionless parameters (nu*,beta, rho*) of these discharges.
+   
+<h> Plan:
+   
+<l> 1) Obtain suitable shape, plasma parameters. Start with shape from
+   shot
+   1010605016. Raise Ip to 1.0 MA, keep Bt at 5.3 T. L-mode nel=1.1e20
+   m-2.
+   Once plasma is obtained, adjust shape to get a better match to AUG
+   pulse 14265.
+   This will involve increasing the inner gap and the radius of the
+   x-point.
+   RF should use these shots (3-4?) to tune and condition;
+   For the last shot we would like a power ramp up to >~2 MW to get the
+   threshold power, and both L and H-mode tunes.
+   
+<l> 2) High power EDAs. Use square wave RF pulse at Ptot=2.5 MW using D
+   and E at
+   80 MHz (more if we can get it). Measure pedestals, and fluctuations.
+   Tune J-port at low power on these.
+   
+<l> 3) Add power from J-port (70 MHz), at maximum available power. This
+   will be
+   off-axis, which is non-optimal, but should help to raise pedestal
+   temperature.
+   
+<l> 4) Increase density. A dimensionless match to the best AUG 'grassy
+   ELM' shots
+   would correspond to a line integrated density of 4.7e20, higher than
+   our usual
+   range. Increase starting density, and probably puff gas into EDA, to
+   see how
+   high we can get and still maintain a decent, steady H-mode (and couple
+   enough
+   power). ECE will probably be cut off, so good ETS data are essential.
+   Again, use max available power without and with J-port.
+   
+<l> 4) Once the 'high density' H-mode has been characterized, use a slow
+   power
+   ramp to determine the corresponding threshold power and edge
+   parameters.
+   
+<l> PHYSICS_OPERATOR
+<l> Jul 19 2001 08:36AM
+<l> Ian Hutchinson
+<l> MP 287 AUG Similarity
+
+<l> Cold start.
+<l> Start PCS.
+<l> Import segment 2 from USER10:[WOLFE.MDS.SHOTS.HYBRID.PCS]PCS_1010706000
+<l> Load.
+
+<l> SL_SUMMARY
+<l> Jul 07 2004 03:49PM
+<l> To Be Determined
+
+<l> #41 of 43 OPS
+<l> Date: 20-JUL-2001 15:03 Expires: 3-AUG-2001 15:03
+<l> From: AMAZON::HUBBARD
+<l> Subj: Run Summary 1010719 (ASDEX Upgrade Similarity)
+
+<l> Physics Run Summary for 1010719, MP 287 Asdex H-mode similarity
+   experiment
+   
+<l> Session Leader: Amanda Hubbard
+<l> Physics Operator: Ian Hutchinson
+<l> RF Operators: S. Wukitch, Y. Lin
+
+<p> Goal: To make high density, high power EDA H-modes in a shape
+   identical to
+   that in ASDEX-Upgrade 'Type II ELM' discharges. This regime,
+   which was only recently obtained on AUG, appears rather similar to
+   that
+   obtained on C-Mod when power is increased into EDA H-modes. At reduced
+   powers,
+   AUG sometimes sees a 'quasi-coherent' mode. We would like to see if
+   the same
+   behaviour is observed on the two machines with the same dimensionless
+   parameters. We will obtain edge profiles both at threshold and in the
+   steady
+   H-mode period. AUG will then try to match the
+   dimensionless parameters (nu*,beta, rho*) of these discharges.
+   
+<h> Plan:
+
+<l> 1) Obtain suitable shape, plasma parameters. Start with shape from
+   shot
+   1010605016. Raise Ip to 1.0 MA, keep Bt at 5.3 T. L-mode nel=1.1e20
+   m-2.
+   
+<p> Once plasma is obtained, adjust shape to get a better match to AUG
+   pulse 14265.
+   This will involve increasing the inner gap and the radius of the
+   x-point.
+   RF should use these shots (3-4?) to tune and condition;
+   For the last shot we would like a power ramp up to >~2 MW to get the
+   threshold power, and both L and H-mode tunes.
+   
+<l> 2) High power EDAs. Use square wave RF pulse at Ptot=2.5 MW using D
+   and E at
+   80 MHz (more if we can get it). Measure pedestals, and fluctuations.
+   Tune J-port at low power on these.
+   
+<l> 3) Add power from J-port (70 MHz), at maximum available power. This
+   will be
+   off-axis, which is non-optimal, but should help to raise pedestal
+   temperature.
+   
+<l> 4) Increase density. A dimensionless match to the best AUG 'grassy
+   ELM' shots
+   would correspond to a line integrated density of 4.7e20, higher than
+   our usual
+   range. Increase starting density, and probably puff gas into EDA, to
+   see how
+   high we can get and still maintain a decent, steady H-mode (and couple
+   enough
+   power). ECE will probably be cut off, so good ETS data are essential.
+   Again, use max available power without and with J-port.
+   
+<l> 4) Once the 'high density' H-mode has been characterized, use a slow
+   power
+   ramp to determine the corresponding threshold power and edge
+   parameters.
+   
+<h> Results:
+   
+<p> We had limited success with this run, primarily due to poor machine
+   conditions.
+   This was probably a result of the recent vent, combined with the fact
+   that we
+   were running non-standard shapes, and thus putting power on different
+   vessel
+   surfaces. This led to impurity injections and, most critically, to a
+   high
+   hydrogen fraction (up to 20%) which limited the RF power absorption;
+   H/D
+   typically increases during each discharge, with Pabs decreasing.
+   
+<p> The shape development part of the run went quite smoothly, and we
+   did get shots which were a very close match to ASDEX Upgrade shapes
+   (see
+   physics operator summary for details of changes made). These had
+   elongation
+   close to our vertical stability limits (k~1.73), and were close to
+   double null,
+   which may have caused some interaction with upper vessel surfaces, and
+   possibly
+   also increased H-mode thresholds. The last AUG shaped shot,
+   1010719020, is a
+   good example (Delta_u=0.34, delta_l= 0.47)
+   
+<p> J-port was not available for the run after all, so we ran with
+   typically 2.3
+   MW at 80 MHz from D and E port antennas. However, the low absorption
+   means
+   that the effective power was actually much lower, especially late in
+   the pulse.
+   We were unable to get any H-modes which had a steady, EDA character.
+   Many were
+   ELM-free, with strongly increasing impurities. (eg. shot 2, 14).
+   Others, with
+   lower power and higher radiation, had periodic behaviour typical of
+   Type III
+   ELMs; the pedestal was very cold (eg. shots 5,13). On shots 9 and 11
+   we ramped
+   the RF up slowly to get threshold data, and found it was over the 2.3
+   MW
+   injected); this is very high for these C-Mod conditions. Making the
+   discharge
+   more 'single null' had little effect (shot 12). Lowering the target
+   density
+   from nel= 0.9 to 0.7e20 m-2, while it had minimal effect on nebar at
+   the RF
+   onset (1.35-1.4e20m-3 in both cases), resulted in much lower neutral
+   pressure
+   anda threshold of Prf=1.13 MW (shot 13). This may be a good point for
+   threshold
+   comparison, though it was rather early in the ramp. Shot 14 had full
+   RF power
+   at this density, and resulted in ELM-free H-modes.
+   
+<p> In an attempts to favour the EDA regime, Ip was lowered from 1.0 to
+   0.9 MA from
+   shot 15 on. This raised q95 to 4.2. The rates of density rise did
+   decrease
+   slightly, though not an obvious EDA regime. Shot 16 had hints of a
+   weak
+   quasi-coherent
+   mode on PCI. Shot 17 was colder and more ELMy. From shot 19 Bt was
+   raised
+   from 5.3 T to 5.6 T, raising q95 still further and a better match to
+   the AUG
+   target. This proved more difficult for the RF to match, for reasons
+   not well
+   understood at least by me, and power was not as steady as the rest of
+   the day.
+   The density did appear to be getting more steady, and QC modes
+   characteristic
+   of EDA were seen on PCI. Shot 21, about 0.75-0.8 secs, may be a good
+   time for
+   pedestal analysis. For shot 22, we went back to a standard shape, 800
+   kA shot
+   to check we could get EDA there. We did, but it quickly cooled and
+   reverted to
+   Type III ELMs as H/D rose.
+   
+<p> In summary, as expected, it was more difficult to get steady H-modes
+   in the
+   lower triangularity ASDEX-Upgrade shape. However, the poor machine
+   conditions
+   and low absorbed power undoubtedly were a major impediment, and there
+   were
+   indications we were getting close. There was insufficient power to try
+   raising
+   the density. Since the discharge development has been successfully
+   completed,
+   we would very much like to revisit this experiment on a day with
+   better vessel
+   conditions and all three RF antennas available.
+   
+<h> Shot Details:
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719001 hubbard SESSION_LEADER Jul 19 2001 8:54:52:166AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> First shot had 5.6 T, 2 MW RF with several trips. 3 H-modes, very
+   ELM-free.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719002 hubbard SESSION_LEADER Jul 19 2001 9:13:07:103AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Bt= 5.35 T, 2 MW RF. 3 H-modes, very ELM-free. 3 H-modes, ended by big
+   injections.
+   
+<p> Disrupts 1.3 secs.
+   
+<p> H/D getting to 10%, and second half of flat-top is L-mode, indicating
+   poor
+   heating and/or high radiation.
+<p> For next shot, increase outer gap.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719005 hubbard SESSION_LEADER Jul 19 2001 10:35:02:120AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Better; makes it to 1.47 secs. Three H-modes, and the third is quite
+   steady.
+<p> However, H/D at this point is 20%, radiation is high and net power
+   therefore
+   presumably very low.
+   
+<p> Pedestal Te ~ 200 eV; may be in an intermittent ELMy/EDA regime.
+   
+<p> For next shot, try to increase RF power. Asked Stu Zweben to delay D2
+   puffing
+   to 1.4 secs.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719006 hubbard SESSION_LEADER Jul 19 2001 10:36:52:666AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Disrupted 0.82 seconds. Two H-modes, not EDA. Both end due to rapid
+   increase
+   of Prad.
+   
+<p> H/D still very high, though core heating seems OK in this early
+   period.
+   
+<p> Next shot: ramp RF power slowly to get threshold point, and also see
+   if
+   injections are related to
+   Prf.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719008 hubbard SESSION_LEADER Jul 19 2001 11:01:57:353AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Disrupted 0.92 seconds; vertical instability, no big injections.
+   
+<p> RF ramp got to 1.2 MW, stayed in L-mode. H/D~8%.
+
+<p> Will increase outer gap a bit to try to improve stability, try ramp
+   again.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719009 hubbard SESSION_LEADER Jul 19 2001 11:49:21:743AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Made it all the way to rampdown, but with a huge injection 0.75 secs.
+   RF ramps
+   to 2.3 MW, but
+   stays in L-mode. Why??
+   
+<p> ECE valve was closed.
+   
+<p> Nice shape match, esp earlier in flat-top
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719011 hubbard SESSION_LEADER Jul 19 2001 12:20:25:196PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Made it to 1.4 seconds. RF ramps 1.0 to 2.3 MW, as requested. Plasma
+   STILL
+   stays in L-mode. Why??
+<p> Got good central heating, Te0 1.3-2.6 keV.
+   
+<p> Possibly we are too close to double-null; will change upper x-pt for
+   next shot
+   and repeat.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719012 hubbard SESSION_LEADER Jul 19 2001 12:45:39:916PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> VERY similar to shot 11.
+<p> Made it to 1.4 seconds. RF ramps 1.0 to 2.3 MW, as requested. Plasma
+   STILL
+   stays in L-mode. Why??
+   
+<p> Try backing off on density, replace ~200 kW of D-port power by E-port
+   in case
+   it is contributing to the
+   injection.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719013 hubbard SESSION_LEADER Jul 19 2001 1:09:58:650PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Lowering density got us into H-mode, at 0.665 secs, 1.13 MW. H-mode
+   was very
+   ELMy; low pedestal
+   temperatures. RF ramped up slowly as requested, H/D ramped up to 0.2
+   (as NOT
+   requested).
+   
+<p> Next shot try full RF power right away.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719014 hubbard SESSION_LEADER Jul 19 2001 1:21:51:980PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Got 2.3 MW, only a few minor trips. This time we had a series of more
+   ELM-free
+   H-modes, with
+   accumulating impurities and radiation. Not a pretty sight. H/D is up
+   to 0.18!
+   
+<p> Next shot, lower Ip to 0.9 MW in an attempt to get EDA conditions.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719015 hubbard SESSION_LEADER Jul 19 2001 2:08:46:020PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Reducing Ip to 900 kA increased q95 to ~4.2. Got a somewhat longer,
+   steadier
+   H-mode;
+   not quite EDA I think. A few RF trips; retune and repeat.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719016 hubbard SESSION_LEADER Jul 19 2001 2:16:33:593PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Steady RF on this one, 2.2 MW. For some reason H-modes are shorter,
+   accumulate
+   more ne and
+   impurities. Next shot, increase nel ~ 10%.
+<p> Nel was 0.75-1.84x10^20 m-2 on this one.
+
+<p> Appears to be a weak quasicoherent mode partway through these H-modes
+   (as seen
+   on PCI).
+<p> Frequency is lower than usual.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719017 hubbard SESSION_LEADER Jul 19 2001 2:38:33:220PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> At slightly higher nel 0.87-1.9x10^20 m-2, got into a series of ELMy
+   periods.
+<p> Temperatures, edge and
+   core, drop dramatically through RF pulse, presumably due to high H/D.
+   
+<p> For the next shot, raise Bt to 5.6 T, as in the original run plan,
+   thus raising
+   q95.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719019 hubbard SESSION_LEADER Jul 19 2001 3:09:55:533PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Bt 5.6, q95=4.3. two H-modes, but really not at all EDAish. ne, Prad
+   rise
+   and erode Tedge.
+<p> RF had some trips; will retune for the new field and try again.
+   
+<p> Also increasing outer gap slightly.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719020 hubbard SESSION_LEADER Jul 19 2001 3:43:27:930PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Rather similar. RF finds big loading changes ~0.8-0.9. Retune, lower
+   power
+   and try again.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719021 hubbard SESSION_LEADER Jul 19 2001 3:52:12:270PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> Still a lot of RF trips. Two H-modes. The first has a steadier
+   density,
+   though conditions never get
+   quite stationary. Period 0.75-0.8 secs is fairly steady, may be good
+   to look
+   at pedestal parameters.
+<p> QC mode appears during this window too (on PCI)
+
+<p> nel1.6e20 m-2, nebar=2.8e20 m-3, TE,ped 340 ev(Thomson) (also Te7,
+   ECE), te_95
+   =400 eV,
+   ne_95 1.8e20.
+   
+<p> All profiles, parameters need checking!
+   
+<p> For next shot, load a standard C-Mod shape from 1010716004, 780 kA,
+   5.36 T, to
+   see if we get back
+   a good EDA.
+   ----------------------------------------------------------------------
+   -------
+<h> 1010719022 hubbard SESSION_LEADER Jul 19 2001 4:10:21:470PM
+   . . . . . . . . . . . . . . . . . . . .
+<p> reload of 1010716004 (780 kA, standard shape) does give EDA, at least
+   to ~0.8
+   seconds. Edge and core
+   temps then decrease, presumably due to H/D increase (8-12 %), and
+   discharge
+   gets ELMy.
+<p> PCI sees 'classic QC mode'
+   
+<p> ~1.9 MW RF, better loading.
+   -
+   
+<l> PO_SUMMARY
+<l> Jul 07 2004 04:37PM
+<l> To Be Determined
+<l> Physop Summary for 19 Jul 2001
+
+<l> MP 287 AUG Similarity.
+   
+<l> PO Hutch
+<l> SL Hubbard.
+   
+<h> Summary
+   _______
+<p> Shapes that are an excellent match to the scaled AUG shape were
+   obtained (e.g. 21) and many were run. A comparison plot is in
+   user10:[hutch.ps]aug_match.ps. They are close to double null;
+   although a range of three sseps was run without obvious effect on the
+   plasma character. No solid EDA H-modes were obtained. The H/D was high
+   and rose strongly with RF in the early part of the day. Later on, the
+   rises seemed less significant, but in all cases the H/D was above 10%
+   during much of the RF pulse. Heating was clearly inefficient in many
+   cases. In some others heating was ok even at high H/D.
+   
+<p> The early part of the day was plagued with injections. Many appeared
+   to be caused by visible sparks on the upper left corner of D-antenna.
+   Some others were not RF induced. As the day wore on, these problems
+   were less severe, and the plasma ran reasonably reliably.
+   
+<p> These shapes are fairly close to stability limits. One or two VDEs
+   were
+   experienced. The chopper V was set to 150 to 200 instead of the usual
+   0
+   to lower the operating average current to a position closer to the
+   center
+   of its range. This adjustment seemed to be a significant improvement
+   in
+   that it allowed operation with an elongation that gave rise to noisy
+   chopper
+   behaviour without leading to saturations and subsequent VDE.
+   
+<p> A manual gas puff during the RF did not significantly improve the
+   operation, but also did not seem to give much impact on the RF
+   coupling
+   despite a x2 rise in main chamber neutral pressure.
+   
+<p> It appears to be confirmed that the lower triangularity that is needed
+   to
+   match AUG makes it harder to get into EDA. The high H level was also
+   definitely a handicap.
+   
+<h> Scorecard.
+   __________
+<h> Shot,Duration(s),Ipmax(MA) Shot,Duration(s),Ipmax
+<l> 1 1.910 1.005 2 1.322 1.059
+<l> 3 0.745 1.012 4 0.934 1.002
+<l> 5 1.533 0.992 6 0.816 0.999
+<l> 7 0.000 0.031 8 0.939 1.062
+<l> 9 1.889 0.992 10 0.000 0.034
+<l> 11 1.443 1.012 12 1.456 1.023
+<l> 13 1.925 0.999 14 1.671 1.005
+<l> 15 1.905 0.911 16 1.912 0.909
+<l> 17 1.895 0.908 18 0.000 0.024
+<l> 19 1.920 0.914 20 1.905 0.914
+<l> 21 1.928 0.914 22 1.921 0.810
+
+<h> Finished summary for 1010719 Total of 22 shots.
+<l> 22 shots. 19 plasmas. 1 fizzles. 2 PS duds.
+
+<h> Details
+   _______
+<h> 1010719xxx hutch PHYSICS_OPERATOR Jul 19 2001 8:36:56:150AM
+   . . . . . . . . . . . . . . . . . . . .
+<p> MP 287 AUG Similarity
+
+<l> Cold start.
+<l> Start PCS.
+<l. Import segment 2 from USER10:[WOLFE.MDS.SHOTS.HYBRID.PCS]PCS_1010706000
+<l> Load.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719001 hutch PHYSICS_OPERATOR Jul 19 2001 8:56:17:993AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. 3 ELM-free H-modes and a ramp-down. RF a ragged 2MW max.
+   
+<l> zxu to 0 from +2cm
+<l> Bt to 5.4T (150kA)
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719002 hutch PHYSICS_OPERATOR Jul 19 2001 9:13:21:963AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma disrupts at 1.3s seems to be an injection.
+<l> RF antenna injections earlier in the shot cause H-mode drop outs.
+   
+<l> Move rcur in 2-3mm. Lower clearin 0-1mm.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719003 hutch PHYSICS_OPERATOR Jul 19 2001 9:34:30:933AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma disrupts at 0.73s. Big injection. Appears on wide angle at D.
+   
+<l> Take 1 ms off the fill puff to compensate for the DNB.
+<l> Add 2mm to rxl.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719004 hutch PHYSICS_OPERATOR Jul 19 2001 9:55:15:370AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma disrupts at 0.92s.
+<l> Multiple injections starting at 0.56s. Which is before the
+   RF turns on.
+   
+<l> Install a ramp in rxl to try to avoid the injections.
+<l> Raise nl04 at 0.2ms to try to keep puff on.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719005 hutch PHYSICS_OPERATOR Jul 19 2001 10:20:30:026AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Disrupts at 1.52s. H to D ratio is high.
+   
+<l> Repeat
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719006 hutch PHYSICS_OPERATOR Jul 19 2001 10:38:06:526AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Disrupts at .62s.
+   
+<l> Remove the big rxl jerk in ramp-down.
+<l> Also ramp to the lower triangularity quicker. By .9s.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719007 hutch PHYSICS_OPERATOR Jul 19 2001 10:49:54:806AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> No TF. Dud.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719008 hutch PHYSICS_OPERATOR Jul 19 2001 11:25:21:853AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Disrupts at 0.93s. VDE. Chopper working hard.
+   
+<l> Reduce clearin by 2mm.
+<l> Put chopper V to +150V during shot to change offset
+   and try to give us more headroom on vertical control.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719009 hutch PHYSICS_OPERATOR Jul 19 2001 11:47:15:823AM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Survived to ramp-down.
+   
+<l> Chopper average current was lowered as anticipated and this seems
+   to be a better place to run.
+<l> RF stayed on. No H-mode.
+   
+<l> Repeat
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719010 hutch PHYSICS_OPERATOR Jul 19 2001 12:05:42:963PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Fizzle.
+   
+<l> Take 0.5ms off the gas fill puff.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719011 hutch PHYSICS_OPERATOR Jul 19 2001 12:28:12:823PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma disrupts at 1.4s. Injection. No H-mode.
+   
+<l> zxu to .01 from 0, to back away from double null and
+   see if we can get H-mode back
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719012 hutch PHYSICS_OPERATOR Jul 19 2001 12:48:03:806PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Disrupts at 1.45s. These injections seem to occur at D
+   antenna.
+   
+<l> nl04 to 0.9 from 1.1
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719013 hutch PHYSICS_OPERATOR Jul 19 2001 1:10:14:790PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. H-modes. No disruption.
+ 
+<l> Repeat.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719014 hutch PHYSICS_OPERATOR Jul 19 2001 1:31:57:056PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Similar to previous. Disruption in ramp down. Horrid
+   ragged H-modes.
+   
+<l> Ip to .9MA.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719015 hutch PHYSICS_OPERATOR Jul 19 2001 1:55:33:776PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. H/D peaks at 17%.
+   
+<l> Chopper V ramps to 200 at 1.3s
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719016 hutch PHYSICS_OPERATOR Jul 19 2001 2:23:02:633PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Similar to previous.
+   
+<l> Raise early nl04 and target to .95.
+<l> Put a V gas 3 puff of 50V at .75 to .85s.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719017 hutch PHYSICS_OPERATOR Jul 19 2001 2:38:23:720PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. Radiative L/H sustained phase.
+   
+<l> TF current to 156kA.
+<l> Back off slightly on nl04 during .5s.
+<l> Manual V pulse to 100V.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719018 hutch PHYSICS_OPERATOR Jul 19 2001 2:53:27:166PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Dud. No EF4.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719019 hutch PHYSICS_OPERATOR Jul 19 2001 3:16:23:890PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma.
+   
+<l> Move in Rcur by 2mm.
+<l> Turn off nl04 gain at .6s.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719020 hutch PHYSICS_OPERATOR Jul 19 2001 3:38:09:733PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. 3 H-modes. RF tripping. Survives the narrower shape.
+   
+<l> RF reports a big drop in load during the time the neutral pressure
+   is rising. Hence remove the gas puff.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719021 hutch PHYSICS_OPERATOR Jul 19 2001 4:03:49:336PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma.
+
+<l> Import segment 2 from 1010716004 a standard EDA shot at .8MA.
+<l> The ramp in antenna loading is still strong, apparently. Hence
+   we can probably rule out the gas puff as the cause.
+   ----------------------------------------------------------------------
+   ------
+<h> 1010719022 hutch PHYSICS_OPERATOR Jul 19 2001 4:04:45:336PM
+   . . . . . . . . . . . . . . . . . . . .
+<l> Plasma. EDA just. But not pretty.
+
+<l> TCI
+<l> Jul 19 2001 07:55AM
+<l> Rick Murray
+<l> TCI signal levels look good this
+    morning.

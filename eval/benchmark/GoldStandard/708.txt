@@ -1,0 +1,254 @@
+URL: http://www.skoool.ie/skoool/examcentre_sc.asp?id=1707
+
+
+
+   <h>Household technology and textiles
+
+   <h>Choosing electrical appliances
+
+   <p>The following factors need to be considered when choosing electrical
+   appliances:
+     <l> Buy the best you can afford. Establish this by comparing prices in
+       several outlets.
+     <l> Buy from a reliable dealer, preferably one who has been in
+       business several years.
+     <l> Buy a brand that you are familiar with (or someone else has
+       recommended to you).
+     <l> Check for quality marks, i.e., BEAB (British Electrical Approvals
+       Board).
+     <l> Ensure the appliance is big enough to suit your individual and
+       family needs.
+     <l> Check that the appliance has a guarantee and even an after-sales
+       service.
+     <l> Compare several different appliances and consult 'Consumer Choice'
+       magazine for an unbiased report on the appliance.
+     <l> The appliance should carry an 'Energy Efficiency' label. This
+       should be on top or in front of the model on display in the shop.
+       The scale goes from A to G with A being the most energy efficient
+       (sometimes up to 55% better than the G rating).
+     <l> The appliance should be well-designed, with no sharp edges or
+       difficult handles.
+
+   <h>Small Appliances
+
+   <p>Small electrical appliances involve the use of heating elements or a
+   small electric motor.
+
+   <p>Element appliances include the following household items:
+     <l> Toaster
+     <l> Kettle
+     <l> Iron
+     <l> Electric frying pan
+     <l> Deep fat fryer
+     <l> Coffee maker
+
+   <h>Working principal of these appliances
+   <p>The element is heated by electricity which is attached to the base or
+   side of the appliance.
+
+   <p>A thermostat based on a bi-metallic strip bends as it is heated and
+   causes the circuit to be broken when it reaches a predetermined
+   temperature. As the appliance cools, the bi-metallic strip straightens
+   up and makes contact again thereby reconnecting the circuit and the
+   appliance is automatically heat controlled.
+
+   <p>Motor appliances include the following household items:
+     <l> Food processor
+     <l> Mixer
+     <l> Liquidizer
+     <l> Carving knife
+
+   <h>Working principle of these appliances
+   <p>A motor, concealed in the appliance, is driven by electricity.
+   <p>Air must be allowed to circulate freely in order to prevent
+   overheating.
+   <p>Attachments are fitted directly to the motor which drives them.
+
+   <h>Use of small appliances
+     <l> Do not handle with wet hands
+     <l> Do not allow the element to dry up
+     <l> Speed settings should be set for each specific task
+     <l> Do not overload the motor
+     <l> Follow manufacturers instructions
+     <l> Ensure the appliance is set up correctly.
+
+   <h>Care and cleaning
+     <l> Do not immerse the appliance in water
+     <l> Attachments should be removed and washed separately
+     <l> Air vents should be cleaned out regularly
+     <l> Hard water causes a build up of limescale on kettle elements. This
+       should be removed with vinegar or any commercial product designed
+       for the purpose.
+     <l> Wipe all appliances with a damp cloth after use and store in a
+       cupboard with air circulating freely.
+
+   <h>Large Appliances
+
+   <h>A. Refrigerator
+   <h>The working principle of a refrigerator
+   <p>Heat is removed from food and the surrounding area, thereby creating
+   an environment which retards the activity of microorganisms.
+   <p>Temperature is usually about 5°C.
+   <p>A refrigerant is used to remove the heat, i.e., a highly sensitive
+   liquid which converts easily into a gas and back again into a liquid,
+   e.g., freon12 or ammonia.
+   <p>The refrigerant is carried in tubes at the back of the appliance and
+   around the icebox.
+
+   <p>The electric motor activates the compressor in the appliance which
+   forces a gaseous refrigerant in the compressor into the condenser. In
+   the condenser the refrigerant changes into a liquid, heat from the
+   food in the refrigerator is absorbed by the liquid refrigerant and
+   converts it back into a gas, ready for the cycle to begin again. In so
+   doing, the food is cooled.
+   <p>The refrigerator is thermostatically controlled to ensure an even
+   temperature.
+
+   <h>Construction of a refrigerator
+   <p>The outer case is made of enameled steel and the lining is made of
+   plastic, with layers of insulation between them. The door is
+   magnetically sealed.
+   <p>The star marking rating is on the icebox and this refers to the
+   temperature in the icebox and the length of time pre-frozen food can
+   be stored in it.
+   <p>*    -6°C  Food stored for one week
+   <p>**   -12°C Food stored for one month
+   <p>***  -18°C Food stored for three months
+   <p>**** -24°C Fresh food can be frozen at this temperature
+
+   <h>Care and cleaning
+     <l> Do not open the door too often or put hot food in the refrigerator
+     <l> Do not over pack or leave food uncovered
+     <l> Defrost regularly if no automatic defrost function exists
+     <l> Wash inside with warm water and a little bread soda
+     <l> Wash outside with hot soapy water, rinse and dry with dry cloth (a
+       little furniture polish can be used on the outside).
+
+   <h>B. Washing machine
+   <p>There are many different types of washing machine available, the most
+   popular being the fully automatic top or front loader.
+   <p>The wash programme can be controlled to suit different fabrics and
+   degrees of soiling. A range of programmes exists, from normal wash,
+   rinse and spin to soak, economy and half-load.
+   <p>The machines are usually plumbed in, i.e., permanently connected to a
+   water and electrical supply.
+
+   <h>Working principle of washing machines
+   <p>Low foam detergents lower the surface tension of water and allow the
+   clothes to become wet. The hydrophobic part of the detergent attaches
+   itself to the dirt and the hydrophylic part of the detergent attaches
+   itself to the water.
+   <p>A motor causes the drum to rotate in half revolutions, causing the
+   clothes to be tossed from side to side.
+   <p>A thermostat heats the water to a temperature suitable for the fabric
+   and the degree of soiling, i.e., 40°C for normal washing and 90°C for
+   heavy soiled cotton.
+   <p>The soiled water is drained out of the machine through the perforated
+   drum and empties into the waste pipe. The drum is filled again with
+   cold water and the clothes are rinsed (usually two or three rinses).
+   The machine is emptied and begins to revolve at high speed, exerting
+   centrifugal force on the contents (the clothes are forced against the
+   perforated drum and water is squeezed out of them).
+
+   <h>Construction of a washing machine:
+   <p>The outer casing is made of enameled pressed steel. There is a glass
+   door with a rubber ring to make it waterproof and a safety lock to
+   prevent it being opened when the machine is in operation.
+   <p>Inside is a perforated stainless steel drum. A motor rotates the drum
+   and a thermostat heats the water. A pump controls the water input and
+   output.
+   <p>Typically, a washing machine can accommodate three or four kilograms
+   of dry clothes and measures 60cm X 60cm X 80cm.
+
+   <h>Care and cleaning
+     <l> Sort out the items for washing into whites and coloured items,
+       dirty and not so dirty items
+     <l> Use the correct detergent and amount as recommended by the
+       manufacturer
+     <l> Select the appropriate programme according to the care label on
+       the clothes
+     <l> Check the pockets of clothes for items
+     <l> Do not overload the machine
+     <l> Clean the filters regularly
+     <l> Wash out the soap dispenser regularly
+     <l> Leave the door open when not in use
+     <l> Clean the outside of machine with hot soapy water. Rinse and dry
+       with a dry cloth (a little furniture polish can be used to protect
+       the casing).
+
+   <h>Cleaning and the organization of work
+
+   <p>Cleaning within the house can be very tiring but good organisation can
+   remove some of the problems associated with this chore.
+
+   <h>Cleaning can be divided into three main areas:
+     <l> Jobs which need to be done daily
+     <l> Jobs which need to be done weekly
+     <l> Jobs which need to be done occasionally.
+
+     <l> Place all the daily jobs in a logical order, e.g., do upstairs
+       together and downstairs together
+     <l> Try to fit in some weekly jobs each day and occasional jobs can be
+       fitted in when time and occasion allow
+     <l> Keep equipment where it is needed
+     <l> Collect everything that will be needed before starting
+     <l> Make full use of all labour-saving appliances
+     <l> A good routine involving all members of the family will help to
+       keep the home clean and safe.
+
+   <h>Textiles
+
+   <p>Clothing is just one of the uses of textiles in the home. Others
+   include bed linen, soft furnishings, towels and tea cloths.
+
+    <p>The desirable properties of textiles are:
+   <l> absorbent
+   <l> cool
+   <l> durable (wears well)
+   <l> insulating (keeps in the heat and the cold out)
+   <l> resilient (creases fall out easily)
+   <l> soft
+   <l> stain and water resistant
+   <l> mildew resistant
+   <l> colour does not bleed
+   <l> hard -wearing
+
+    <p>The undesirable properties of textiles are:
+   <l> easily creased
+   <l> irritates the skin
+   <l> becomes bally or pills
+   <l> shrinks
+   <l> stains easily
+   <l> flammable
+
+   <p>A wide variety of care symbols are printed on labels of textile
+   articles to assist the consumer in how to care for them. These symbols
+   are used on laundry detergents as well.
+
+   <p>Fibres can be divided into two groups.
+   <p>A. Natural fibres include:
+   <l> Wool -- when wet, it absorbs 30% of its own moisture and needs to be
+   dried flat. It needs to be washed gently to avoid shrinkage.
+   <l> Silk -- it needs great care when washing as it becomes weak with
+   water.
+   <l> Cotton -- it can tolerate high temperatures, is strong when wet and
+   washes well in the washing machine. It is absorbent and wears very
+   well, making it suitable for work wear and soft furnishings.
+   <l> Linen -- it is very strong when wet but creases easily.
+   
+   <p>B. Man-made fibres include:
+   <l> Nylon -- it wears well and creases fall out easily. It dries quickly
+   but is not absorbent.
+   <l> Polyester -- it wears well and creases fall out easily.
+   <l> Acrylic -- this fabric washes well and does not shrink. It wears
+   well and is very light.
+
+   <p>By law, children's clothes and upholstery fabric must be given a
+   flame-retardant finish such as Proban.
+
+   <p>The Fire Safety (Domestic Furniture) Order 1988 regulates the type of
+   filling and the textiles to be used in the covering of home
+   furnishings. Products must carry two labels, one free-hanging and the
+   other permanently attached.
+
+   

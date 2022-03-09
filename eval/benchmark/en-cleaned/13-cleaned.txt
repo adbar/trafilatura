@@ -1,0 +1,228 @@
+URL: http://aseigo.blogspot.com/2004/11/ah-but-start-up-times.html
+
+ <h>aseigo 
+
+<h>Monday, November 01, 2004
+
+<h>... ah, but the start up times!
+
+  <p> in a responseblog, Malte S. Stretz (who's a pretty cool guy, i might
+   add) noted that while Konsole may be more efficient in certain
+   workloads, that there is room for improvement in places like start up
+   time.
+   <p>he's right. KDE has lots of room for improvement. we do a lot of
+   things quite well right now, however. and we'll get more things
+   Right(tm) with future development. but it's being able to hold both
+   the idea that we Rock and the idea that we have room for improvement
+   in our heads at the same time that's important.
+   <p>anyways, on to Malte's numbers! he notes that `xterm -e bash -c exit`
+   takes 0.363s while 'konsole -e bash -c exit' takes 2.148s. holy crap!
+   over 6 times as long! ah... but there's a catch. a small one, but
+   still a catch...
+   <p>on my system, with both xterm and konsole in cache so as to remove the
+   affects of disk i/o as much as possible, `xterm -e bash -c exit` takes
+   ~0.165s and 'konsole -e bash -c exit' takes ~.9s, but 'kstart konsole
+   -e bash -c exit' takes ~0.5s. the kstart hack brings konsole start up
+   times down from being ~5.5x slower to being ~3x slower. that's much
+   better, but more importantly, that multiplier works out to just one
+   third of a second longer to launch konsole.
+   <p>now stop for a moment and consider that: a third of a second. for all
+   those features, for all that KDE goodness. 300 milliseconds.
+   <p>let's also consider that terminals are really a Worst Case Scenario.
+   xterm and friends don't do a lot, and they aren't very interesting.
+   because of this they start up fast and are slim like that Olsen twin.
+   and still KDE apps compete reasonably in this space.
+  <p> this bodes very well for KDE applications in more complex venues such
+   as word processors, web browsers and so on.
+   <p>yes, we have a LOT of optimization possibilities ahead of us. yes, our
+   software can and should be faster, including starting up. yes, we have
+   a lot of development ahead of us to do because KDE isn't perfect yet.
+   <p>we're only mostly perfect. ;-)
+
+   <p>posted by Aaron J. Seigo at 1:02 PM   
+
+<h>15 Comments:
+
+     <l> that pic you linked says 'Forbidden' ;(
+     <l> Before I prelinked everything, KWrite took something like 3
+       seconds to start (after, it's more like one). Compare to Notepad
+       under Windows, which starts *instantly*. A more
+       comparable/advanced editor called EditPad Pro still starts up in
+       ~half a second. MS Word 97 also starts up damn fast, well under a
+       second, iirc (though I haven't tried in a while). The situation is
+       similar with other KDE apps (or Linux apps in general? no idea,
+       haven't tried GNOME).
+       Not bashing or anything; KDE rocks. But the first step to fixing a
+       problem is recognizing that it exists. And this one most
+       definitely does.
+       -Illissius
+       <p>By Anonymous, at 1:53 PM  
+     <l>I don't clock much difference between using kstart
+       or not; 1.9s without, 1.27 with. Xterm on the other hand is 0.5s.
+       But I've just noticed that using KDE on the same machine but with
+       Debian feels faster than using KDE with SuSE, and these are the
+       SuSE numbers.
+       <p>By Anonymous, at 2:08 PM  
+    <p>@Illissius
+       <p>please re-read the blog entry. i think you missed three important
+       things:
+       <l>i note that KDE can and should be made faster, including start
+       up. so i'm not sure what you're going on about.
+       <l>this is about konsole on X11/Unix, not kwrite and not notepad
+       on win32. i know the similarity between konsole and kwrite or
+       xterm and notepad can lead to confusion (he says, firmly tongue in
+       cheek) but today's blog was about konsole. on X11. on Unix type
+       platforms.
+       <l>moreover, the whole point of the blog was to show that Malte's
+       numbers weren't as good as they could be. you demonstrate that
+       yourself with KWrite dropping from ~3s to ~1s with prelink, which
+       means instead of being 6 times slower to start than your win32 app
+       it's only 2 times slower to start. and that doubling in time
+       equates to half a second!
+       <p>in summary: i completely agree that we can and should do better in
+       the start up category. but we don't nearly deserve the rap we have
+       at the moment.
+       <p>you'd think we were molasses on a winter day given how people yam
+       on about it. the way it's commonly talked about, you'd think KDE
+       apps take dozens of seconds or even minutes to start up! that KDE
+       requires half a gig of RAM! etc, etc...
+       <p>all i'm looking for is some accurate and factual representations
+       out there, because KDE and the Linux desktop in general is getting
+       hurt by the mythconceptions that continue to float about.
+      <p> By Aaron J. Seigo, at 2:35 PM  
+     <p>@Anonymous:
+       <p>1.9 - 1.27 = 0.63
+       0.63 / 1.9 = 0.33
+       <p>33% is significant from an optimization standpoint.
+       <p>it also drops the "Xterm differential" from ~4x to ~2.5x. and it
+       means an extra 0.77s of wait.
+       <p>yep, still too long (because it isn't perfect ;) but not the
+       drudgery that so many claim it to be.
+      <p> By Aaron J. Seigo, at 2:39 PM  
+     <p>@aseigo: I was essentially agreeing with you. Startup times aren't
+       only relevent for Konsole, which is why I generalized it, and
+       KWrite was the first example I could think of. 3 seconds (with the
+       default setup) isn't completely horrible, but it can be painful
+       when you just want to quickly edit some text, especially compared
+       to something like Notepad which starts instantly.
+       As for prelinking... is it a viable option to do this by default?
+       From what I remember there was something about the prelink going
+       away if either the binary or the library linked to is changed,
+       meaning startup times would gradually deteriorate over time...
+       which isn't good. Or is there a better way to achieve the same
+       effect?
+       <p>Anyways, as I said, I'm agreeing with you completely; just adding
+       my own observations.
+       <p>-Illissius
+       <p>By Anonymous, at 3:11 PM  
+     <p>Hi Aaron,
+       <p>to konsole: konsole has become quite bloated. It links to the huge
+       kio lib just to have bookmarks. I never used these bookmarks. Does
+       anybody else ?
+       <p>I measured startup time, it must be already 3 years ago on my old
+       K6/200. Originally it was 2.7 seconds. After one week of work I
+       got it down to 1.8 seconds. This was achieved by delaying
+       everything what could be delayed (which resulted in not so easy to
+       understand code).
+       <p>At least two times since then this delayed construction of stuff
+       was broken and I fixed it again. I didn't look at it since some
+       time now, so I don't know if it currently works. As I mentioned,
+       it was 1.8 seconds on a K6/200, KDE 2.x.
+       <p>I already thought about writing a slim konsole, with less features
+       (or basically without kio)
+       <p>Bye
+       <p>Alex
+       <p>neundorf at kde dot org
+       <p>By Anonymous, at 3:13 PM  
+     <p>@Illissius
+       <p>to prelink or not to prelink is something that's up to the
+       individual OS vendors/projects. AFAIK, a lot of the benefits from
+       the early prelink hack has been moved into the newer glibc's and
+       ld's so these benefits should trickle on out to the world en masse
+       with time.
+       <p>@Alex
+       <p>yeah, i remember your work on konsole start up times and vastly
+       appreciated it when it happened (and then happened again ;). i'm
+       not sure if it's been broken since, i surely hope not.
+       <p>as for the bookmarks and linking in libkio for that, i agree that
+       it was a questionable feature add. of course, if we remove it now
+       some small army of users will rise up in arms. ;-) i'll have to
+       blog someday about the dangers of adding features just to add
+       features. not like that hasn't be blog'd to death, but hey.... ;-)
+       <p>By Aaron J. Seigo, at 3:20 PM  
+     <p> Aaron, first, thanks for the coolness factor -- I hope you don't
+       mind that I uppercased your first I :)
+      <p> I never intended my "benchmark" to be represantative, it was just
+       something I, ummm..., hacked into a one shot Konsole I opened for
+       that reason :P And actually, Kwrite, which Illissius mentioned, is
+       another candidate which I use in that way.
+      <p> Whatever the kstart kluge you mentioned gave me a 33% speedup,
+       too. What's the difference with that?
+      <p> If it doesn't hve too much drawbacks, maybe instead of me having
+       to prefix all the commands in KDE's .desktop files, something like
+       that should become the default? Or at least an option in KDE
+       .desktop files to start apps like that? (Please don't ask me for
+       code :)
+       <p>Cheers,
+      <p> Malte
+      <p> By Anonymous, at 4:44 PM  
+     <p> I just tried, kstart doesn't change anything for me here.
+      <p> You can try kdeinit_wrapper konsole , this starts konsole vioa
+       kdeinit (you probably already guessed). Now this is something
+       nobody will type all the time. OTOH who starts konsole by typing
+       konsole into a terminal ? AFAIK minicli also uses kdeinit to start
+       kde apps.
+       (maybe a bunch of aliases like
+       alias Konsole = kdeinit_wrapper konsole
+       wouldn't be too bad)
+     <p>  Alex
+     <p>  Alex
+      <p> By Anonymous, at 5:18 PM  
+     <p> Don't we have a better place to discuss optimizations? Like, a
+       certain mailing list? Anyway...
+      <p> The kstart vs no-kstart "benchmark" is flawed. Adding kstart to
+       "time konsole -e bash -c exit" changes only two things:
+       <l> makes the startup longer
+       <l> makes 'time' measure the startup time of kstart (only) - I can
+       even see the output from 'time' here before konsole shows up
+      <p> For Alex, about kdeinit_wrapper:
+      <p> You can do 'ln -s /opt/kde3/bin/kdeinit_wrapper konsole'
+       somewhere, and if you have that first in your $PATH, just doing
+       'konsole' will launch konsole using kdeinit (the same works with
+       kshell and kwrapper - see kdelibs/kinit/README.wrapper).
+      <p> Lubos Lunak
+      <p> By Anonymous, at 2:27 AM  
+     <p> isnt it strange if kstart and/or kde-init can make apps startup
+       faster, they aren't normally used? is there some dis-advantage at
+       stake, or should the distributions do it, or???
+       By Anonymous, at 6:59 AM  
+     <p> This post has been removed by a blog administrator.
+      <p> By Anonymous, at 12:22 PM  
+     <p> This blog is awesome! If you get a chance you may want to visit
+       this mlm software site, it's pretty awesome too!
+      <p> By tweedledeetweedledum, at 6:22 AM  
+     <p> Hi, you have a great blog here! I'm definitely going to bookmark
+       you!
+       I have a double opt in mlm lead site. It pretty much covers double
+       opt in mlm lead related stuff. Check it out if you get time :-)
+      <p> By Don, at 12:48 PM  
+     <p> Your Blog is Great! I'm definitely going to bookmark you! I have a
+       medical billing work at home
+       site. It pretty much covers medical billing work at home
+       related stuff.
+      <p> Come and check it out if you get time :-)
+      <p> By Don, at 10:46 PM  
+
+  _________________________________________________________________
+
+<h>About
+
+   <p>the triumphs and travails of a shift-key-challenged KDE hacker
+
+<h>About Me
+ 
+          <p>Name:Aaron J. Seigo
+          <p>Location:Calgary, Alberta, Canada
+
+<h>Previous
+

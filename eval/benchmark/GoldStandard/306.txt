@@ -1,0 +1,419 @@
+URL: http://www.canadapost.ca/textonly/tools/pg/manual/b03-E.asp
+
+<h>Canada Postal Guide
+
+<h>Addressing
+
+<h>Table of Contents
+
+<h>Overview
+
+<p>Canada Posts computerized systems can decipher a wide range of
+   addressing styles - from handwritten notation to typed and printed
+   labels, but studies show that a consistent approach to mail addressing
+   leads to more efficient handling. For Canada Posts Customers, large
+   and small, this translates into better service and lower costs.
+   Consistent and accurate addressing eliminates the need for extra
+   handling or redelivery by Canada Post. Standardized addressing ensures
+   that mail is consistently delivered on time, the first time, every
+   time.
+
+<p>The guidelines in this chapter promote the most technologically
+   efficient formats for addressing. It does not limit mailers to any one
+   format. In some cases, because of individual preference or other
+   considerations, mailers may not be able to follow the formats that
+   this Guide presents.
+
+<p>For more technical information on the physical characteristics
+   necessary for effective processing by Canada Posts automated systems,
+   Go to Canadian Postal Standards.
+
+<h>General Information
+
+<h>Addressing Guidelines
+<p>Addresses should be written in upper case; however, mailers may
+       wish to use lower case due to individual preference or other
+       considerations.
+<p>Postal codes should be printed in upper case with the first three
+       elements separated from the last three by one space (no hyphens).
+       If the postal code is not formatted in this manner, the mail may
+       be delayed.
+<p>The municipality, province or territory, and postal code should
+       always appear on the same line. There should be one space between
+       the municipality, province or territory and two spaces between the
+       province or territory and postal code.
+<p>Characters in the address block should not be underlined.
+<p>Punctuation should not be used unless it is part of a proper name,
+       (ST. JOHN'S). However, mailers may wish to use punctuation due to
+       individual preference or other considerations.
+<p>Accents may be used as they are an integral part of language but
+       they are not considered to be punctuation.
+<p>The # symbol should never be used, nor the French equivalent no as
+       part of the address.
+<p>All lines of an address should be formatted with a uniform left
+       margin and should be less than 40 characters per line, excluding
+       spaces.
+<p>Space between address lines should be at least 0.5 mm but no more
+       than one blank line between lines of addressing.
+<p>All characters should be larger than 2 mm and smaller than 5 mm
+       from the top to bottom (10 to 12-point). Return addresses may use
+       smaller characters and should not be larger than the destination
+       address.
+<p>Only non-proportional fonts (characters which occupy the same
+       width) should be used. The following are examples of acceptable
+       fonts: OCR B, Letter Gothic, Elite, Lotus Line-Draw, MS Line Draw,
+       Courier, Courier New, Pica and Copy Pica.
+<p>Return addresses should be formatted in the same fashion as the
+       destination address, and located in the top-left corner of the
+       mail piece, clearly separated from the destination address, or on
+       the back of the mail piece at the top. The return address is
+       mandatory on Priority Courier, Xpresspost, Expedited Parcel and
+       Regular Parcel items.
+
+<h>Illustrations
+
+<p>The following examples illustrate Canada Post's recommended addressing
+   guidelines.
+
+<h>Civic Addresses (Street Addresses)
+
+<p>Additional delivery information is optional data that a mailer
+       wishes to include. (title, floor, etc.) It is always placed above
+       the civic address.
+<p>A unit number is placed before the civic number with a hyphen
+       between, OR after the street type, using an acceptable unit
+       identifier (ex. APT 10). Please see Unit Designators for a list.
+       The unit information may be placed on the line above the street
+       information if space is an issue.
+<p>The civic number is the official number assigned to an address by
+       the municipality.
+<p>When a civic number suffix is present, there is no space when it
+       is alpha (123A), and there is one space when it is a fraction (123
+       1/2).
+<p>The street name is the official name recognized by each
+       municipality and should not be translated. (Ex.: Main is not
+       Principale.) There is no space between a numerical street name
+       with an ordinal or an alphanumeric character. (Ex.: 2ND ST or 36A
+       ST). When the street name is numeric, there is only one space (no
+       hyphen) between the civic number and the street name. (Ex.: 123
+       22ND AVE).
+<p>The street type is provided by the municipality. Common
+       abbreviations should be used. Please see Street Types below for a
+       complete list. In some instances, the street type is also the
+       street name (THE PARKWAY). The only street types that may be
+       translated are:
+<p>A French street type is placed before the street name, unless it
+       is an ordinal number (1re, 2e, PREMIÈRE, DEUXIÈME, etc.)
+<p>The street direction uses the common one- or two-letter
+       abbreviation. Please see Street Directions for a complete list.
+<p>The official municipality name, as provided to Canada Post, the
+       official abbreviation of the municipality, or an official
+       alternate name, should be used and should not be translated. (Ex.:
+       TROIS-RIVIÈRES is not THREE RIVERS.)
+<p>The province should always be presented using the recognized
+       two-letter symbol. Please see Province and Territory Symbols below
+       for a complete listing. Mailers may wish to have the province
+       written in full and placed in brackets. Ex.: (Québec)
+<p>The postal code should be in upper case and placed two spaces to
+       the right of the province with one space between the first three
+       and last three characters.
+
+<h>Post Office Box Addresses
+
+<p>Additional delivery information is optional data that a mailer
+       wishes to include. (title, floor, municipal address, etc.) It is
+       always placed above the post office box address.
+<p>The post office box number should always be placed on the line
+       just above the municipality, province and postal code. The #
+       symbol should not be used, nor the French equivalent n^ o.
+       Punctuation should not be used.
+<p>Station information should be present to direct mail to the proper
+       postal installation when there is more than one installation
+       within a municipality.
+<p>The official municipality name, as provided to Canada Post, the
+       official abbreviation of the municipality, or an official
+       alternate name, must should be used and cannot should not be
+       translated. (Ex.: TROIS-RIVIÈRES is not THREE RIVERS.)
+<p>The province should always be presented using the recognized
+       two-letter symbol. Please see Province and Territory Symbols below
+       for a complete listing. Mailers may wish to have the province
+       written in full and placed in brackets. Ex.: (Québec)
+<p>The postal code should be in upper case and placed two spaces to
+       the right of the province with one space between the first three
+       and last three characters.
+
+<h>Rural Route Addresses
+
+<p>Many rural areas now have civic addresses. Civic addresses may be
+       added above the rural route. In some locations, the rural route
+       (RR) designator is no longer required.
+<p>Additional address information is often required for delivery to
+       this type of address. Some examples include: SITE/ COMPARTMENT,
+       LOT/CONCESSION, civic address, attention line, title, floor. The
+       word BOX should not be used in place of COMPARTMENT.
+<p>The rural route identifier should use the two-letter symbol (RR,
+       SS, MR), followed by the number, one space to the right. The #
+       symbol should not be used, nor the French equivalent, n^ o.
+       Punctuation should not be used in RR, SS, or MR.
+<p>Station information should be present to direct mail to the proper
+       postal installation when there is more than one installation
+       within a municipality.
+
+                           Station              = STN
+                           Retail Postal Outlet = RPO
+<p>The official municipality name, as provided to Canada Post, the
+       official abbreviation of the municipality, or an official
+       alternate name, should be used and should not be translated. (Ex.:
+       TROIS-RIVIÈRES is not THREE RIVERS.)
+<p>The province should always be presented using the recognized
+       two-letter symbol. Please see Province and Territory Symbols below
+       for a complete listing. Mailers may wish to have the province
+       written in full and placed in brackets. Ex.: (Québec)
+<p>The postal code should be in upper case and placed two spaces to
+       the right of the province with one space between the first three
+       and last three characters.
+
+<h>General Delivery Addresses
+
+<p>The General Delivery indicator should be the two-letter
+       abbreviation "GD." Punctuation should not be used.
+<p>Station information should be present to direct mail to the proper
+       postal installation when there is more than one installation
+       within a municipality.
+
+                           Station              = STN
+                           Retail Postal Outlet = RPO
+<p>The official municipality name, as provided to Canada Post, the
+       official abbreviation of the municipality, or an official
+       alternate name, should be used and should not be translated. (Ex.:
+       TROIS-RIVIÈRES is not THREE RIVERS.)
+<p>The province should always be presented using the recognized
+       two-letter symbol. Please see Province and Territory Symbols below
+       for a complete listing. Mailers may wish to have the province
+       written in full and placed in brackets. Ex.: (Québec)
+<p>The postal code should be in upper case and placed two spaces to
+       the right of the province with one space between the first three
+       and last three characters.
+
+<h>Bilingual Addresses
+
+<l>A solid black line must be placed between the two addresses. It
+       must be a minimum of 0.7 mm thick.
+<p>There must be a clear space on each side of the black line. This
+       clear space should be approximately 10 mm.
+
+<h>Military Addresses
+
+<p>Military addressing is defined as mail sent to or by the Department of
+   National Defense, Canadian Forces personnel, their dependents and
+   civilians attached to Canadian Forces served through Canadian Forces
+   Post Offices and Fleet Mail Offices. Go to Section E - Chapter 12,
+   Canadian Forces Mail.
+
+<h>United States of America Addresses
+
+<p>Addressing elements required by the United States Postal Service
+   should be prepared according to the United States postal standards.
+
+<l>All U.S.A. mail items must be addressed to a specific individual,
+       organization or company name.
+<l>The full municipality name should be used and should appear as the
+       first component in the second last line of the address block.
+<l>The two-letter state symbol is preferred over the full state name.
+       The state symbol should appear on the second last line of the
+       address following the municipality, separated by one space. Please
+       see United States of America - States, Territories and Possessions
+       below for a complete listing.
+<l>The ZIP code must be separated from the state symbol by two
+       spaces. It may be either five or nine digits. If the nine-digit
+       format is used, a hyphen will be used to separate the fifth and
+       sixth digits.
+<l>The country name should appear alone on the last line of the
+       address block.
+
+<h>International Addresses
+
+<p>All international mail items must be addressed to a specific
+   individual, organization or company name. Also, to ensure proper
+   processing, the country name should be spelled correctly and in full.
+   (Ex.: UAE is not acceptable for UNITED ARAB EMIRATES. Go to Section H,
+   International Destination Listing, for a complete listing and correct
+   spelling of countries.
+
+<p>The name of the country should be the last entry on the address. It is
+   placed at the bottom, below the municipality/city name and any postal
+   code/zip code information.)
+<p>Canada Post encourages all mailers to respect the wishes of Customers
+   in matters of format. These guidelines have taken care to accommodate
+   the requirements of the English and French languages by recognizing
+   and accepting the use of upper- and lower- case characters, including
+   accents, as well as the full spelling of and punctuation between
+   addressing elements.
+
+<h>International Destination Names
+
+<h>Symbols and Abbreviations Recognized by Canada Post  to top of page
+
+<h>Street Types
+
+<h>Street Directions
+
+<h>Unit Designators
+
+<p>The following are the most technologically efficient unit designators.
+   In some cases, because of individual preference or other
+   considerations, a mailer may use other unit designators.
+
+<h>Canadian Provinces and Territories
+
+<h>States, Territories and Possessions - United States of America
+
+<h>Postal Code
+
+<p>The postal code is an integral part of every postal address in Canada.
+   The postal code was designed to aid in sorting mail by both mechanized
+   and manual methods. It also enables the Customer to presort mail,
+   thereby bypassing a number of sorting processes within Canada Post and
+   reducing costs.
+
+<h>The Structure of the Postal Code
+
+<p>The postal code is a six-character uniformly structured, alphanumeric
+   code in the form ANA NAN where A represents an alphabetic character
+   and N represents a numeric character. A postal code is made up of two
+   segments: forward sortation area and local delivery unit.
+
+<p>The forward sortation area is a combination of three characters
+   (alpha-numeric-alpha). It identifies a major geographic area in an
+   urban or a rural location.
+
+<p>The local delivery unit is a combination of three characters
+   (numeric-alpha-numeric). It identifies the smallest delivery unit
+   within a forward sortation area.
+
+<h>Forward Sortation Area - The First Segment of the Postal Code
+
+<p>The forward sortation area or FSA represents a specific area within a
+   major geographic region or province. The forward sortation area
+   provides the basis for the primary sorting of forward mail.
+
+<p>The first character of the forward sortation area segment identifies
+   one of the 18 major geographic areas, provinces or districts:
+
+<p>The second character of the forward sortation area is an important
+   component of mail preparation as it identifies either:
+<l>an urban postal code: numerals 1 to 9 (E2J). Urban postal codes
+       are generally serviced by Letter Carrier or community mailboxes;
+       or
+<l>a rural postal code: numeral 0 (zero) (A0A). Rural postal codes
+       are serviced by rural route drivers and/or postal outlets.
+
+<p>The third character of the forward sortation area segment (E2J) in
+   conjunction with the first two characters, describes an exact area of
+   a city or town or other geographic area.
+
+<h>Local Delivery Unit - The Second Segment of the Postal Code
+
+<p>The local delivery unit or LDU, identified by the last three
+   characters of the postal code, allows for a more final sort within a
+   forward sortation area.
+
+<p>In urban areas, the last three characters may indicate a specific city
+   block (one side of a street between two intersecting streets), a
+   single building or, in some cases, a large-volume mail receiver.
+
+<p>In rural areas, the last three characters, together with the forward
+   sortation area, identify a specific rural community.
+
+<h>Postal Code Address Data
+
+<p>Canada Posts postal code address data is used to determine or verify
+   the correct postal code for an address anywhere in Canada or identify
+   the complete range of addresses that correspond to any one postal
+   code. The data is available by download from a secured Canada Post FTP
+   site, on CD-ROM or IBM cartridge, and is updated and distributed
+   monthly.
+
+<p>Delivery Mode data, Householder and Householder-Plus data are also
+   available. Additional information on postal code data is available at
+   : www.canadapost.ca/offerings/address_management/can/other_data-e.asp.
+
+<h>Canadian Postal Code Searching Tools
+
+<p>The Canadian Postal Code Directory© contains postal code information
+   for all addresses in Canada. It facilitates postal code lookup and
+   verification.
+
+<p>The Canadian Postal Code Directory can be purchased in hard copy
+   through the National Philatelic Centre at 1-800-565-4362, or at
+   selected postal outlets.
+
+<p>Free postal code lookup is available to Customers through Canada Posts
+   website at: « www.canadapost.ca/tools/pcl/bin/advanced-e.asp ».
+
+<p>Postal codes can also be obtained by calling 1-900-565-2633 for
+   service in English or 1-900-565-2634 for service in French.
+
+<h>Address Accuracy Program
+
+<p>Address Accuracy is a program designed to improve delivery by
+   encouraging Customers to accurately address mail. Every item must be
+   addressed to a specific individual or company. In the case of
+   Addressed Admail and Catalogue Mail, items may also be addressed to a
+   non-personalized descriptor, such as "Occupant" or similar wording.
+   Every item must display a complete mailing address including any
+   required suite or unit information as well as the valid postal code
+   for that address. If the mailing address is not complete, the mail may
+   be delayed or returned.
+
+<p>Consistent and accurate addressing eliminates the need for extra
+   handling and/or redelivery. For Customers, this translates into a more
+   efficient service and lower costs. Accurate addressing helps ensure
+   the mail is delivered on time, every time.
+
+<p>Participation in the Address Accuracy Program is mandatory for all
+   Machineable, Letter Carrier Presort (LCP), and NDG Presort mailings
+   greater than 5,000 items.
+
+<p>The standard for Address Accuracy is 95%. This means that 95% of the
+   addresses on the Customer's database are determined to be valid. This
+   is done by using a Canada Post recognized address validation and/or
+   address validation and correction software. If the percentage on the
+   Statement of Accuracy (SOA) produced by the software is less than 95%,
+   an adjustment will be applied to the mailing.
+
+<p>Customers must record their Address Accuracy percentage and expiry
+   date obtained from their Statement of Accuracy (SOA) on their Order
+   (Statement of Mailing). Failure to record the Address Accuracy
+   percentage and expiry date on the Order (Statement of Mailing) will
+   result in the application of a surcharge.
+
+<p>Customers are requested to keep a valid copy of the Statement of
+   Accuracy (SOA) on file in the event that Canada Post requests a copy.
+
+<p>In the case of Incentive Lettermail, Address Accuracy applies to Low
+   Density Presort and Machineable mailings greater than 5,000 items, as
+   well as to High Density Presort mailings greater than 500 items
+   deposited in a Letter Carrier office. Customers who deposit Short and
+   Long (S/L) High Density Presort mail in non-letter carrier offices
+   (not serviced by letter carriers) for delivery within that same
+   office, are exempt from the Address Accuracy requirements. All other
+   requirements to access the High Density Presort service option must be
+   adhered to.
+
+<p>More information on the Address Accuracy Program can be found in the
+   Address Accuracy Program Customer Guide, on the Canada Post website at
+   www.canadapost.ca/address_management or from a Canada Post
+   Representative.
+
+<h>Address Validation, Address Correction and Postal Code Look-Up
+
+<p>Canada Post recognizes several software packages that provide mailers
+   with automated means to perform address validation, address correction
+   and postal code lookup.
+
+<h>Recognized Addressing Software
+
+<p>For a list of recognized addressing software, visit Software
+   Evaulation and Recognition Program at:
+   www.canadapost.ca/offerings/address_management/pdf/serp-e.pdf

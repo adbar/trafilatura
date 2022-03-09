@@ -1,0 +1,287 @@
+URL: http://www.geocities.com/chessdp/ttchsrules.htm
+
+   <h>Time
+   Travel
+   Institute of
+   Columbia
+
+                             <h>Time Traveler's Chess
+
+   <p>Time traveler's chess is played exactly like standard chess except
+   that chessmen can travel backwards in time. As an introductory remark
+   we might say that in science fiction there are various notions about
+   what time travel is or could be. One species of time travel, for
+   instance, involves the idea that there are many universes, a manifold
+   of universes, in fact, capable of containing branching time lines and
+   alternative histories. The conception of time travel in time
+   traveler's chess is different from the "many universe" conception and
+   different from a large number of other interesting conceptions.
+
+<h>The Concept
+
+   <p>In time traveler's chess, there is only one world, and time travel is
+   always continuous. If a chessman begins to move backwards in time at
+   move 30 and travels all the way back to move 20, then the time
+   traveling chessman will be on the board, moving backwards in time, at
+   move 29, at move 28, at move 27, and so forth. There will be at least
+   two versions of the chessman on the board from move 20 to move 29,
+   since in the "personal history" of this chessman, the chessman first
+   moved forward in time to get to move 30 and then began to move
+   backwards in time. So there will be a forward moving version and a
+   backwards moving version. To make matters even more confusing, at move
+   20 in our example, when the time traveling chessman begins to move
+   forward again in time, a second forward moving version of the chessman
+   appears on the board. Then, so long as this second forward moving
+   version survives there will actually be three versions of the chessman
+   on the board through move 29!
+
+   <p>A time traveler's chess set, then, has three varieties of chessmen. In
+   the starting position - the same starting position as for standard
+   chess - all chessmen are "untraveled" in time. For each of these
+   chessmen there should be on hand, in case need arises, a corresponding
+   "traveling" chessman. When a traveling chessman appears on the board,
+   that chessman should be understood to be currently traveling backwards
+   in time. (If we could be such a chessman, stationed in a safe spot on
+   the chessboard, we would see astounding sights. We would see pawns
+   move backwards. We would see chessmen occasionally spring into
+   existence on squares being vacated by other chessmen. Gazing beyond
+   the perimeters of the board, we could observe chess clocks running
+   backwards, pens leaping into players' hands, doughnuts miraculously
+   forming whole, unbite by unbite, from the mouths of humans.) For each
+   traveling chessman there must be be a "traveled" chessman. Traveled
+   chessmen are grizzled veterans; they have moved backwards in time and
+   are again moving forward in time.
+
+   <p>The three versions - untraveled, traveling, traveled - are three
+   stages in a personal history. Each such personal history is folded
+   back through time in such a way that all three stages play out
+   simultaneously on the board.
+
+   <p>A time traveler's chess set can easily be fabricated from three
+   standard sets and some modeler's paint. Untraveled chessmen might look
+   pristine, traveling chessmen strange, traveled chessmen experienced.
+
+<h>The Rules
+
+   <p>Again, in time traveler's chess there are three versions of each
+   chessman: the untraveled version, the traveling version, and the
+   traveled version. In the initial setup - identical to the initial
+   setup for standard chess - all chessmen are untraveled. Untraveled
+   chessmen move exactly like chessmen in standard chess, except in the
+   case of "annihilation", explained below.
+
+   <p>Traveling chessmen are the Cageian musicians of chess, sitting quietly
+   for the entire duration of their incarnations. They appear in
+   "explosions" and disappear either in annihilations or by capture, the
+   latter case ending the game in defeat for their armies.
+
+   <p>Each traveled chessman appears on the chessboard simultaneously with a
+   traveling chessman of the same piece type, in an explosion. In the
+   very first move of a traveled chessman's appearance, the move that is
+   part of an explosion, the traveled chessman has a restriction upon his
+   ability to capture, but for every move thereafter the traveled
+   chessman moves exactly like a chessman of standard chess.
+
+   <p>There are three types of moves: the explosion, the normal move, and
+   the annihilation. The player to move makes one move of one of these
+   types. A player's move only directly affects chessmen of the player's
+   assigned color except when the move is a normal move that captures an
+   enemy piece or an explosion that captures an enemy piece.
+
+  <h>The Explosion
+
+   <p>An explosion requires an "explosion square". An explosion square is an
+   empty square reachable in no more than three moves by a friendly
+   untraveled chessman of the piece-type of interest. Such an untraveled
+   piece is called an "explosion support", and there is an additional
+   requirement that after each explosion a player causes, there must be
+   at least one way to pair past explosions with associated explosion
+   supports such that no two explosions are paired with the same
+   explosion support. For instance, if the player to move wishes to cause
+   a "rook explosion" at a given square, the given square must be empty
+   and the player must have at least one untraveled rook (or pawn that
+   could promote to rook) on the board which, in the hypothetical
+   circumstance that the player were allowed to make moves in succession,
+   could reach the given square, as untraveled rook, in no more than
+   three total moves. (These hypothetical moves could include captures of
+   enemy chessmen. Some of the moves also could be of friendly chessmen
+   other than the rook, in order to free lines for the rook.) Further, at
+   least one of these explosion supports must not have been required to
+   justify an earlier explosion.
+
+   <p>There is one final requirement for a square to serve as an explosion
+   square. This requirement introduces the term "resonator". A resonator
+   is any untraveled chessman which could possibly annihilate with an
+   existing traveling chessman. (See the discussion of annihilation
+   below.) The requirement is that a traveled chessman of the piece-type
+   of interest can move from the explosion square without capturing an
+   enemy traveling chessman or a resonator.
+
+   <p>The player to move causes an explosion by placing traveling and
+   traveled chessmen of the same piece-type on a qualified explosion
+   square and then making a legal move with the traveled chessman without
+   capturing a traveling chessman or a resonator. When the explosion has
+   been accomplished two new, friendly chessmen are on the board. A
+   traveling chessman has appeared on the explosion square. A traveled
+   chessman of the same piece-type has appeared one legal move from the
+   explosion square. The traveled chessman may or may not have captured
+   an enemy chessman but certainly has not captured either a traveling
+   chessman or a resonator. For the new traveling chessman there will be
+   at least one friendly resonator of the same piece type no more than
+   three moves distant.
+
+  <h>The Normal Move
+
+   <p>Traveling chessmen may not move, but untraveled and traveled chessmen
+   make normal moves exactly like their counterparts in standard chess.
+   Untraveled, traveling, and traveled chessmen may all be captured as in
+   standard chess. In normal moves, traveled chessmen are not restricted
+   from capturing enemy traveling chessmen or resonators. That
+   restriction only applies during an explosion.
+
+  <h>The Annihilation
+
+   <p>In standard chess, chessmen are blocked by friendly chessmen; a
+   chessman may replace an enemy but not a friend. This rule largely
+   obtains in time traveler's chess also, but there is a single, very
+   major exception. In time traveler's chess a traveling chessman does
+   not block a friendly resonator of the same piece-type. A resonator one
+   move away from an traveling chessman of the same piece-type may move
+   onto the square occupied by the traveling chessman. When that happens,
+   both chessmen vanish; both leave the board permanently. This event is
+   an annihilation.
+
+   <p>We can now round out our exposition of the rules of time traveler's
+   chess by discussing grammatical correctness, checkmate, winning, and
+   odds and ends.
+
+  <h>Grammatical Correctness
+
+   <p>The grammatical rules reflect the fact that traveling chessmen are
+   supposed to be annihilated, that the player undertaking an explosion
+   is obliged to make this happen. At any time the position of a player's
+   pieces is either grammatically correct or grammatically incorrect. If
+   a player has caused no explosions, his position automatically is
+   grammatically correct. If a player has lost a traveling chessman to
+   enemy capture, his position automatically is grammatically incorrect.
+   If a player has caused one or more explosions but has not lost a
+   traveling chessman, his position is grammatically correct if and only
+   if there is a theoretical possibility that each of his traveling
+   chessmen on the board can be annihilated. It is illegal for a player
+   to make a move that leaves his position grammatically incorrect.
+   Otherwise it is legal - and very desirable - for the player to force
+   his opponent's position into grammatical incorrectness.
+
+  <h>Checkmate
+
+   <p>A player with one or more traveling chessmen is said to have an
+   "unresolved" position. A player to move is in check if and only if he
+   is under one-move threat of having no king (or else of having both an
+   untraveled king and a traveling King but no traveled king) at the same
+   time that his opponent has a resolved position. If this one-move
+   threat is unanswerable, the player also is in checkmate.
+
+   <p>Thus, a player might lose his king without ever being placed in check!
+   And he can play on, kingless, so long as he can prevent resolution by
+   his opponent!
+
+  <h>Winning
+
+   <p>A player wins by checkmate or by forcing his opponent into grammatical
+   incorrectness.
+
+  <h>Odds and Ends
+
+   <p>Castling is legal in time traveler's chess as in standard chess and
+   under the same strictures, but with check being defined as above. The
+   rook and king must be untraveled, of course.
+
+   <p>En passant capture is legal in time traveler's chess as in standard
+   chess and under the same strictures. Since an annihilation is always
+   initiated by a move of an untraveled chessman, an en passant capture
+   can on occasion "undo" an annihilation.
+
+   <p>An advanced untraveled pawn can be the explosion support of a
+   traveling chessman of piece-type other than pawn by virtue of
+   promotion.
+
+   <p>An untraveled pawn promotes to an untraveled piece. A traveled pawn
+   promotes to a traveled piece.
+
+   <p>As in standard chess, the game is drawn by stalemate if the player to
+   move has a grammatically correct position and is not in check but can
+   make no move without placing himself in check (as defined above).
+
+   <p>A traveling chessmen, despite its weirdness is a real piece. No piece
+   of either color can move through it as if it were not there.
+
+<h>Notation
+
+   <p>A simple extension of the algebraic notation of standard chess is
+   sufficient to record time traveler's chess games. Double slashes mean
+   annihilation. Thus an annihilation involving squares d2 and d4 would
+   be expressed as "d2//d4". A single slash indicates an explosion. The
+   format is piece-type followed by explosion square followed by slash
+   followed by other square. The move "Qd4/g7" is a queen explosion with
+   explosion square d4. A White, noncapturing pawn explosion on h3 goes
+   "h3/h4".
+
+<h>Illustrative Games
+
+  <h>Game 1
+
+   <p>1.Nf6/e8 This move is legal. The explosion square f6 was empty as
+   required, and f6 has an appropriate explosion support, the knight on
+   b1. The knight on b1 is an explosion support because it can reach f6
+   in three moves. It is also true that the movement of the traveled
+   knight from f6 to e8 met the requirement of not capturing a traveling
+   piece or a resonator. So, the move is legal. Legal but bad. 1...gf 0-1
+   White's position is now grammatically incorrect, so White loses.
+   Notice, by the way, that Black lost his king but was never in check.
+   He was not in check because it would have taken more than one move for
+   White to achieve a resolved position.
+
+  <h>Game 2
+
+   <p>1.e4 d6 Pirc alert: the Pirc doesn't work. 2.Bb5/e8+ Check, because
+   White has captured Black's King and now threatens to resolve in one
+   move. 2...d4/d3 There is no meaningful defense for Black. 3.Bxd3+
+   Again check. Now Black can delay mate for exactly one move more, by
+   intervening on c4. Quiz: How many different chessmen can Black now
+   place on c4? 3...Qe6/c4 Answer: Four: Q,QB,QN,QBP. 4.Bxc4++ 1-0 It's
+   checkmate because Black is kingless and cannot prevent the resolving
+   annihilation on White's next move. Remember, the resonator on c4 and
+   the traveling chessman on b5 are immune to immediate capture by an
+   exploding traveled piece. The game is over, but let's now contemplate
+   what has happened from the noumenal point of view. To facilitate this
+   contemplation, let's pretend that White has made that forbidden final,
+   fifth move and has thus reified the royal murder. What has happened?
+   Okay, the WKB sat on his original square until move three. On move
+   three he sprang to the square d3, capturing a pawn. On move four he
+   captured a queen on c4. On move five he leapt to b5 and immediately
+   began to time travel. He time traveled (in place, of course, since
+   traveling pieces do not move) back to move four, then to move three,
+   then to move two. On move two he turned forward again in time and
+   immediately rushed to e8, capturing the Black monarch.
+
+  <h>Game 3
+
+   <p>1.e4 e5 2.d4/e5 White, trying to use time travel to obtain a
+   dominating center, counts on a quick annihilation to avoid grammatical
+   problems. 2...c5! But this counterattack places White in grave danger.
+   If now 3.d2//d4 then 3...Qa5/e1 leads to a quick checkmate. White is
+   now forced to capture on c5 via time travel, but his grammatical
+   difficulties naturally snowball. 3.b4/c5 Nc6 Attacking two traveling
+   chessmen. If either is captured the game is over. 4.Bb5/c6 dxc Black
+   now attacks two traveling chessmen with two different pieces. It's
+   hopeless. 5.Qh5/f7 This desperate move does not help in the least.
+   Black is not in check because White is not resolved. Qxd4 0-1 White
+   has lost grammatical correctness.
+
+  <h>Game 4
+
+   <p>1.e4 e5 2.Nf3/e5 Nc6/e5 3.d4/e5 b8//c6 4.d2//d4 White has set a trap,
+   into which Black now falls. 4...Bb4/e1 5.Qd6! cxd6 6.a3 dxe5 7.axb4
+   1-0
+
+   

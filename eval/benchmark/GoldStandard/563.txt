@@ -1,0 +1,725 @@
+URL: http://www.math.columbia.edu/~woit/blog/archives/000031.html
+
+<h>Not Even Wrong
+
+<h>More Landscape Stream of Consciousness
+
+   <p>It looks like particle theory has now degenerated to the point where
+   its leading figures can't think of anything better to do than to write
+   rambling articles with virtually no equations that reach no real
+   conclusions. Last week was Lenny Susskind, tonight there's a new
+   article by Michael Douglas.
+
+   <p>His conclusion, such as it is, goes like this:
+
+   <p>"If I had to bet at the moment, I would still bet that string theory
+   favors the low scale, for the reasons outlined above, but it is not at
+   all obvious that this is what will come out in the end.... We should
+   keep in mind that `favoring' one type of vacuum or mechanism over
+   another is not a strong result, if both types of vacuums exist..."
+
+   <p>So, maybe string theory "favors" a low supersymmetry-breaking scale,
+   maybe not. As usual, not only can't it predict anything, it can't even
+   predict the scale at which it can't predict anything. I really cannot
+   understand why anyone thinks this kind of thing is science.
+
+   <h>This entry was posted on Monday, May 31st, 2004 at 8:40 pm and is
+   filed under Uncategorized. You can follow any responses to this entry
+   through the RSS 2.0 feed. Both comments and pings are currently
+   closed.
+
+<h>35 Responses to "More Landscape Stream of Consciousness"
+
+    <h>1. JC Says:
+       <h>May 31st, 2004 at 11:37 pm
+       <p>Any bets on what string theory folks will be working on, if string
+       theory falls out of favor and into hibernation like it did in the
+       late 70's and early 80's? Any bets that somebody like Edward
+       Witten would abdicate from string theory, and/or John Schwarz
+       would continue slogging on with string theory to the day he dies?
+       <p>Any bets on what the SUSY crowd will be working on, if SUSY falls
+       out of favor too?
+       <p>Apart from my very limited knowledge of particle physics history,
+       I don't even have any clue as to what I could be working on if I
+       was still doing particle theory, outside of SUSY and/or string
+       theory. If I was a young naive grad student today, I would be
+       tempted to go into something like astroparticle theory or possibly
+       do an MBA or law school instead.
+    <h>2. Peter Says:
+       <h>June 1st, 2004 at 12:04 am
+       <p>A lot of people are already abandoning particle theory for
+       astrophysics, Steven Weinberg would be one prominent example. Many
+       string theorists have moved into cosmology, often hoping there is
+       something to be done there with string theory, my colleague Brian
+       Greene is an example.
+       <p>I hear my advisor (Curt Callan at Princeton) is mostly doing
+       biology these days. A few people have moved into mathematics.
+       <p>Presumably John Schwarz would be one of the last to give up on
+       string theory. Witten certainly seems to continue to believe in
+       string theory, something which mystifies me. He hasn't gone in for
+       the anthropic nonsense, or for "string cosmology" or "string
+       phenomenology". I'd bet he's well aware that the present state of
+       string theory is such that progress can't be made in those areas.
+       <p>I suspect the SUSY people will hang in there until data from the
+       LHC comes in. If something interesting that isn't SUSY turns up
+       there, they'll all jump on it.
+       <p>Unfortunately the thing that seems to me the most sensible idea in
+       the present circumstance, that of going back and trying to really
+       understand the things one doesn't understand about gauge theories
+       and the standard model, doesn't seem to have any takers. People
+       have convinced themselves that there's nothing new to be found
+       that way.
+    <h>3. JC Says:
+       <h>June 1st, 2004 at 12:38 am
+       <p>How popular is it for physics or math folks to go to Wall St.
+       these days?
+       <p>I knew many particle theory and some string folks that went the
+       Wall St. route through the 1990's. Main drawback I've heard from
+       old friends and colleagues is that there's a very high burnout
+       rate on Wall St. with a half-life of around 6-7 years for many
+       physics and math types.
+       <p>Only other major "competitive" route I was aware of that many math
+       and physics folks went to, was management consulting. Last I heard
+       from friends and colleagues that went into consulting, many
+       consulting firms (ie. Accenture, McKinsey, etc ...) were laying
+       off folks like crazy in periodic "purges" over the last few years.
+    <h>4. D R Lunsford Says:
+       <h>June 1st, 2004 at 1:21 am
+       <p>Weinberg in astrophysics - how nice.
+       <p>I heard a talk a UMd on early string theory (the 26-dim weaving of
+       it) by Gell-Mann. He opened his talk with a comment about the
+       "half-asstrophysicists" in the audience. I wanted to punch him
+       out. Instead I asked him an impromptu group theory question he
+       could not answer extemporare, which was almost better.
+    <h>5. Chris Oakley Says:
+       <h>June 1st, 2004 at 3:49 am
+       <p>Speaking as one who "sold out" and left particle physics to to
+       work in Wall Street (the City of London, actually) - I feel it my
+       duty to correct the bleak picture painted earlier of this career
+       path. First off, if you choose to go into trading as did former
+       string theorists Kelly Kirklin and Paul Miron then you can make a
+       lot of money. I don't know the exact score with these two, but my
+       guess is that they both have enough to retire. Kelly is now a
+       post-doc at Cambridge. Whether he is paying for himself, or
+       denying some much more deserving youngster by holding this post I
+       do not know, but the point is that with plenty of money in the
+       bank, he is now able to do what he wants, which is physics - a bit
+       like the "gentleman scientists" of old, like Lord Rayleigh.
+       Personally, I never went into trading, mainly because I find
+       software far more interesting, but having said that, although I
+       have not done nearly as well as these two, I nonetheless was able
+       to pay off my mortgage about two years ago.
+       <p>Some basic points that all physicists thinking of making this
+       transition ought to be aware of:
+       <p>= There is a lot of interesting mathematical work to be done in
+       the Finance world.
+       <p>= The route from science PhD to quantitative analyst in an
+       investment bank is well-trodden & you will not have to explain or
+       justify yourself. Mathematical skills are valued.
+    <h>6. JC Says:
+       <h>June 1st, 2004 at 10:46 am
+       <p>Chris,
+       <p>Perhaps it was the folks I was speaking with over the years. These
+       old colleagues in particular ended up quitting Wall St. after 6 or
+       7 years, after getting sick and tired of trading or writing
+       computer code that priced derivatives securities. I never asked
+       them specifically what they defined as "burnout" in their line of
+       work. My trading friends were always complaining about their work
+       related stress, such as their telephone ringing every 30 seconds
+       and having to keep track of information simultaneously on 5 or 6
+       computer screens all day. The friends who did the computer
+       derivatives calculations stuff had less complaints, other than
+       many of them finding their work boring and/or not very interesting
+       after awhile. In some ways I got the sense they felt their work
+       started to become "routine" or a "chore" to them, and the initial
+       "excitement" was gone for the most part.
+       <p>Whether these folks chose the "wrong" profession to go into, I
+       don't know for sure. Some thought the money would keep them happy,
+       but in the longer term it didn't. Others I suspect saw the money
+       as a "means to an end", where they were able to make a large
+       enough fortune to "retire" and do whatever they wanted afterwards
+       with the rest of their life.
+       <p>Certainly none of them had any complaints about the money they
+       were making. Every one of them were able to pay off all their
+       student loan debts, as well as a large portion of their mortgages
+       if they lived outside of Manhattan.
+       <p>I have not kept contact with any of these old friends and
+       colleagues over the last few years. So I don't know what they're
+       thinking these days, or if they changed their minds about what
+       they regard as "burnout". A few folks I'm aware of went back to
+       writing particle and/or string papers while others literally
+       "disappeared" without a trace.
+    <h>7. erinj Says:
+       <h>June 1st, 2004 at 2:53 pm
+       <p>Hello Chris,
+       <p>I made two serious attempts to gain employment in the City (of
+       London, banking and finance sector), about two years apart, and
+       came up against a brick wall on both occasions - once as a new
+       theoretical physics PhD, and once as a recent high energy physics
+       post-doc. Despite advice to the contrary, I found it impossible to
+       gain work as a junior `quant' (quantitative analyst).
+       <p>I contacted many banks and finance firms, got advice from an
+       economics university lecturer who was a former `quant' team
+       member, and read up on as much financial mathematics and economics
+       as I could. I couldn't even secure an interview! My CV was listed
+       on quite a few specialist finance employment agencies, and I could
+       get nothing. I was, and still am, baffled by the lack of interest
+       my skills, which I assumed were valued by the finance sector,
+       brought me.
+       <p>After asking for feedback about this, I was told by employment
+       agencies - who relayed what quant team leaders told me about my
+       applications - that the reasons I was never shortlisted were: lack
+       of experience in the financial world, too many other PhDs
+       applications, and that my programming skills were not as extensive
+       as other applicants. Well, if they wanted computer programmers,
+       why did they give the impression that they wanted theoretical
+       physicists - people who can work with and solve mathematical and
+       modelling problems?
+       <p>I think that there are, and have been, too many applicants for
+       finance sector jobs who don't have enough programming skills, like
+       myself, and who have also been misled about how much computer
+       programming is required in these jobs. The aforementioned former
+       quant told me that it would be about 75% of the time - is this
+       true in your experience, Chris?
+       <p>My impression (and I've seen job ads asking for candidates in this
+       direction) is that, in the post-9/11 era, combined with the
+       economic down-turn, economics and financial mathematics PhDs are
+       the candidates more likely to be successful, as well as graduates
+       who have worked as part of summer programmes with banks
+       (internships/work experience), and even computer science PhDs.
+       <p>So now I'll never get to see the `front office' or the trader's
+       floors, nor be paid the fabled big salaries and bonuses of the
+       City.
+    <h>8. Chris Oakley Says:
+       <h>June 1st, 2004 at 3:16 pm
+       <p>Hello erinj,
+       <p>If there is less tolerance now for quants who don't program in the
+       City, then I accept part of the blame. I have always argued that
+       they should. The problem is that if bringing the model into
+       production means involving a team of programmers to turn the model
+       into something that can work in a production environment then the
+       process will take too long, and as I probably do not need to tell
+       you, traders are not patient people. The system we have at Nomura
+       just involves deriving a (C++/COM) class from one called "Trade"
+       and overriding some virtual functions. That way our quants can
+       have a new trade type in the system on the same day (there is a
+       bit more to it than that, but that is the basic idea).
+       <p>We are now getting way off topic. Drop me an e-mail with your CV
+       to chris.oakley@uk.nomura.com and I will see if I can come up with
+       some suggestions.
+    <h>9. Peter Says:
+       <h>June 1st, 2004 at 3:29 pm
+       <p>I don't have a lot of information about what is happening to
+       current particle theory PhDs, but a large fraction of the ones
+       from my era (early-mid 80s) ended up working in the computer or
+       finance industries (about equal numbers in each).
+       <p>Over the last ten-fifteen years I've seen a lot of young math grad
+       students and faculty leave academia, mostly for finance. Ten years
+       ago the academic job market was terrible and it wasn't so hard to
+       get a finance job. More recently the academic job market has
+       improved, but finance jobs seem to take a lot more effort for
+       people to get. One reason is that there are now a lot of financial
+       math master's degree programs (we have a very successful one here
+       in our department). So there are a lot of students coming out with
+       some training and good credentials in financial math. It is harder
+       for straight math PhDs without any experience in finance to
+       compete with them.
+   <h>10. D R Lunsford Says:
+      <h> June 1st, 2004 at 7:58 pm
+       <p>One thing that is true of anti-bangers (and perhaps bangers) - one
+       makes up his mind early, and tends to stick to that decision. e.g.
+       I have always found the BB hateful, even before inflation which
+       only made it much worse. There is too much "play" in GR for
+       comfort, so the extrapolation to cosmic time scales is very
+       suspect, the moreso since the entire idea of energy is on shaky
+       ground - and so also time. Time is all balled up in GR no matter
+       how you cut it. The following thought experiment illustrates - you
+       can never "watch a movie" of the formation of a black hole - since
+       you can't see anything beyond the horizon, that stuff can never
+       have been "out here", from my perspective, and therefore a black
+       hole cannot form in finite local time, and must have always
+       existed, from my perspective. Now the problem here is not the
+       horizon, but time itself - and it's just the other side of the
+       energy problem. I cannot think of any counter-argument that allows
+       a Big Bang. Time is more than duration, it's "persistence". GR is
+       only complete when the substance - persistence - comes
+       automatically out of the basic idea of curvature. That is, by its
+       nature GR is a vacuum theory, and in fact the only part of it that
+       is well-tested is Rmn = 0.
+   <h>11. Chris Oakley Says:
+       <h>June 2nd, 2004 at 9:30 am
+       <p>I'm keeping out of the Cosmology discussion (although, if pressed,
+       am prepared to vociferously defend my beliefs about the Great
+       Green Arkleseizure) ...
+       <p>My comment is on Peter's remark below:
+       <p>Unfortunately the thing that seems to me the most sensible idea in
+       the present circumstance, that of going back and trying to really
+       understand the things one doesn't understand about gauge theories
+       and the standard model, doesn't seem to have any takers. People
+       have convinced themselves that there's nothing new to be found
+       that way.
+       <p>There are a handful of takers, but, being focused on
+       irrelevancies, they never got anywhere.
+   <h>12. JC Says:
+      <h> June 2nd, 2004 at 9:51 am
+       <p>Peter,
+       <p>How common is it for math or physics PhDs to go into computers
+       ever since the dotcom bubble bursted a few years ago?
+       <p>Almost everybody I know who still has a paying job in
+       computer/hi-tech and even the defense sectors are paranoid of
+       being laid off, especially with many jobs being "outsourced" to
+       places like India or China. This seems to be almost universal from
+       the folks who do data entry all the way up to PhDs who do the
+       cutting edge research & development work, who are not in upper
+       management. On the surface it sounds "suicidal" for a company to
+       be firing many of their research and development folks just to
+       save a few bucks in costs, or "outsourcing" their research and
+       development work to countries which don't have much in terms of
+       intellectual property laws and enforcement.
+   <h>13. Peter Says:
+      <h> June 2nd, 2004 at 9:59 am
+       <p>Since the bubble burst I don't know anyone who has gone into the
+       computer industry. All the people I can think of who have left
+       academia recently have gone into finance. Part of this may just be
+       because I'm in New York, where there are lots of finance jobs and
+       few computer ones. Maybe the experience of people on the West
+       Coast is different.
+   <h>14. JC Says:
+       <h>June 2nd, 2004 at 10:02 pm
+       <p>Peter,
+       What reasons do math/physics people have for leaving grad school
+       or academia these days?
+       <p>The main reasons I've heard of over the years from old friends and
+       colleagues (excluding political or gross misconduct reasons), were
+       involuntary ones like
+       <l>- a grad student couldn't get a postdoc
+       <l>- a postdoc couldn't get another postdoc and/or couldn't get an
+       assistant professor job
+       <l>- an untenured faculty member was denied tenure or couldn't get a
+       tenured faculty job
+       <l>- an untenured faculty member lost most of their grant funding
+       (especially in the case of an experimentalist)
+       <p>while voluntary reasons were ones like
+       <l>- a grad student didn't like graduate school and didn't feel like
+       it was worth the effort to finish their PhD research work
+       <l>- a grad student got bored or sick of their field and quit after
+       getting their PhD
+       <l>- an untenured person got sick and tired of their field, and had a
+       hard time getting any funding when they tried changing into
+       another field (in some cases not even getting any funding at all
+       in their new field)
+       <l>- a postdoc felt they had no chance in hell of getting a faculty
+       job, and subsequently quit
+       <l>- a postdoc got bored or sick and tired of their field, and
+       subsequently quit
+       <l>- a tenured faculty member got sick and tired of cranking out
+       meaningless "resume padding" type of papers just to maintain their
+       research grant money; ended up quitting to find more greener
+       pastures outside of academia
+       <l>- a postdoc got sick and tired of cranking out tons of meaningless
+       "resume padding" type of papers, with no end in sight (ie. the
+       "permanent postdoc" types who are on their 4th, 5th, or higher
+       postdoc); ended up quitting out of discouragement
+   <h>15. Peter Says:
+      <h> June 2nd, 2004 at 10:59 pm
+       <p>I mainly know what happens these days with grad-students and young
+       faculty in math. Very few grad students leave without getting a
+       degree. When they graduate, some don't even try and get an
+       academic job, instead going directly into finance jobs, computer
+       jobs, or maybe doing something like working for the NSA.
+       <p>Of those who get a first academic job, many leave academia after a
+       couple of years or so.
+       <p>For both categories of people, the situation is similar. Getting a
+       postdoc at a good place is hard, and getting a tenure-track job at
+       a good institution that will support your research is harder. So
+       people find that the jobs they can get are either in places they
+       really don't want to live, or at primarily teaching institutions.
+       Many people find they really don't enjoy not being paid very well
+       to do a lot of very low-level teaching. A well-paid job in New
+       York doing financial math looks a lot more attractive in many
+       ways.
+       <p>Once people get to the point of having a tenure-track job in math
+       and do it long enough to know they want to stick with it, most end
+       up getting tenure, either at the place they start or somewhere
+       else.
+       <p>The job situation is particle theory is much worse than in math,
+       but I haven't been following the careers of more than a few young
+       grad students and postdocs in it, so don't have much data about
+       what is happening to them right now.
+   <h>16. JC Says:
+       <h>June 3rd, 2004 at 12:18 am
+       <p>Peter,
+       <p>How common is it for math or physics folks to take up independent
+       research outside of the formal academic system, such as Grigori
+       Perelman working on a proof of the Thurston geometrization
+       conjecture in relative isolation for many years in St. Petersburg?
+       <p>Arguably there's no pressure to publish any "resume padding" type
+       of papers, or for that matter publishing anything, when one isn't
+       a part of the formal academia system.
+       <p>At times I wonder how many folks would be working independently
+       (ie. outside of the formal academic system) on things like SUSY
+       and/or string theory, if there were no tenured faculty nor any
+       untenured faculty or postdocs working on it. I always wondered if
+       John Schwarz would have worked on string theory during 1970's and
+       early 1980's if Murray Gell-Mann had never kept him around as a
+       "permanent postdoc" when string was in hibernation, and possibly
+       would have had to take a day job in the private sector outside of
+       academia.
+   <h>17. Peter Says:
+       <h>June 3rd, 2004 at 9:43 am
+       <p>It's pretty unusual for people to be able to do much research
+       outside of the standard academic system these days. Perelman is an
+       interesting special case, I actually don't know to what extent he
+       really was cut off from the math community in Russia while he was
+       doing his research, or whether he did have colleagues to talk to.
+       One funny thing about him is that he's in line for a million
+       dollars from the Clay foundation, but seems to have no interest in
+       the money. Definitely an unusual character, very devoted to a pure
+       approach to abstract research.
+       <p>One problem with being outside academia is getting the necessary
+       blocks of time to devote to thinking about research. It also is
+       much harder to make progress on one's work if one doesn't have
+       people to talk to about it, or continuing stimulation of new ideas
+       to think about. I've always thought the Institute in Princeton
+       wasn't such a great idea, because by isolating people from having
+       to teach classes and deal with students, it can keep them from
+       having to think about anything other than the one approach to
+       their research they are pursuing. It can be quite helpful to be
+       forced to think about different topics, and may give one ideas
+       about new ways to think about one's research.
+   <h>18. JC Says:
+       <h>June 3rd, 2004 at 10:12 am
+       <p>Peter,
+       <p>Do you think the IAS was a cause or symptom for folks like
+       Einstein, Goedel, Oppenheimer, etc ... in producing nothing of
+       significance for the rest of their lives, and/or producing garbage
+       research bordering on crackpottery?
+       <p>I remember reading something in a short biography of Kurt Goedel,
+       where his wife thought that the IAS wasn't much more than the
+       equivalent of a "retirement home" for famous academics who are
+       long past their prime.
+   <h>19. erinj Says:
+       <h>June 3rd, 2004 at 11:45 am
+       <p>I agree with your comments, Peter, on independent research, but
+       surely there are examples of successful independent research which
+       has taken place outside of academia, although some degree of
+       intellectual stimulation may have been present? An obvious example
+       would be Einstein, working as a patent clerk in Berne and having
+       meetings with others as part of the `Olympia Academy'. Einstein
+       must have had, or found, the time to dedicate to his three 1905
+       papers. Newton's `miracle year' (1665/6?) was one were he was, as
+       far as I've read, isolated on his mother's farm, Cambridge having
+       closed due to the plague. Also, people like Hawking and John Nash
+       appear to have drifted through their PhDs, waiting until the last
+       year or months before finally focussing on a problem (and then
+       solving it). Hey, and didn't Louis de Broglie, wealthy aristocrat
+       that he was, do physics research for fun?
+       <p>Having been a postdoc, I often wonder whether the time and freedom
+       (and possibly lack of pressure) necessary for `great', or major,
+       works, is more likely to be found outside of academia, and perhaps
+       the really big problems of the past, present and future do require
+       a proportionately large amount of time and thought to solve. No
+       publish or perish rule, no scrabbling or begging for funding -
+       perhaps a menial job in the background to earn enough to live on
+       whilst one concentrates on the `real' work. I admit that this
+       reads as an exceptionally difficult route to acheivement, but
+       perhaps in such conditions the `survival instinct' takes over and
+       intellectual challenges become all-consuming instead of being part
+       of the potentially droll `day job'.
+       <p>This seems to be the approach that many - if not all - major,
+       award-winning and famous novelists, dramatists and poets take, as
+       they are even less likely to be paid to produce work in these
+       areas than scientists. The sheer difficulty of their circumstances
+       perhaps drives them to brilliance and creative heights, but I
+       suppose this requires immense resilience and dedication, perhaps
+       to the detriment of family, friends, health, etc. In fact, the
+       parallel goes further, as I read that Einstein essentially slept
+       for two weeks, exhausted and ill, after arriving at his final
+       formulation of special relativity. Didn't Newton's hair gradually
+       turn white after his `miracle year', as well? Maybe the cliche `no
+       pain, no gain' really does hold.
+       <p>I personally don't believe there is sufficient freedom for
+       risk-taking and novel research in academia as funding bodies and
+       research leaders are very cautious, which is probably to be
+       expected (their jobs being on the line as well, if things go
+       badly...). Then again, string theory research seems to have
+       garnered a very large part of global particle theory research
+       funding over the past ten years or more. I myself believe string
+       theorists gain funding because of links to particle theory rather
+       than any claims about string theory being the "best candidate" for
+       a quantum theory of gravitation. Quantum gravity is a problem that
+       I believe is not going to be readily solved inside academia,
+       unless funding for loop QG and other `alternatives' to string
+       theory QG receive more funding so that they can be explored more
+       fully. The really big and difficult problems just don't receive
+       the funding necessary to resolve them, inside academia: the risk
+       is just too great, and in consequence I wouldn't be surprised that
+       a lot of research becomes "resume padding". Surely we need more of
+       Feynman's "leaps into the wild blue yonder" (I do hope that
+       quotation is correct).
+   <h>20. Chris Oakley Says:
+       <h>June 3rd, 2004 at 1:12 pm
+       <p>Hello erinj,
+       <p>You raise some interesting points.
+       <p>The stories about Einstein and Newton do not surprise me. Anyone
+       who has done real research (as opposed to just CV padding) will be
+       well aware of just how chaotic and haphazard the process is. The
+       organising of the chaos that the academic research establishment
+       tries to do is somewhat reminiscent of Hollywood, where production
+       companies try to turn the successful one-off, off-the-wall idea
+       into a steady revenue stream, forgetting that the very reason why
+       the idea succeeded was because it was different and crazy.
+       <p>It seems to me that the amount of "craziness" (for want of a
+       better word) that is tolerated depends on your status. For Nobel
+       laureates and Fields medallists, any amount of craziness is
+       tolerated - not only that, but many will follow one into the
+       abyss. For tenured academics, ditto, but probably few will follow.
+       For graduate students or post-docs, on the other hand, deviation
+       from the party line is not tolerated at all. Given that in the
+       last century almost every significant idea in theoretical physics
+       was from someone in their 20's, it would seem to me that something
+       is very wrong here.
+   <h>21. JC Says:
+       <h>June 3rd, 2004 at 1:42 pm
+       <p>Chris,
+       <p>Seems like some Nobel laureates went beyond the deep end and never
+       climbed out of the abyss, such as Brian Josephson working on
+       psychic/voodoo type of phenomenon, or Julian Schwinger working on
+       cold fusion in the last years of his life. The only Fields
+       medalist I can think of offhand who turned into an oddball, was
+       Grothendieck disappearing in 1991 without a trace.
+       <p>Anybody know of other oddball cases of Nobel laureates or Fields
+       medalists?
+   <h>22. Peter Says:
+       <h>June 3rd, 2004 at 2:13 pm
+       <p>Hi JC,
+       <p>There certainly are examples of people who never did very much
+       after getting permanent positions at the institute. Hard to tell
+       if it would have been different if they were somewhere else. I
+       always found the atmosphere there a bit weird, the isolation may
+       not be a good thing for many people.
+       <p>It will be interesting to see what happens with Seiberg and
+       Maldacena. I think Witten spends a lot of his time traveling and
+       interacting with people who come to Princeton, so he hasn't become
+       as isolated as some others there in the past. The one thing that
+       he may be missing is the experience of regularly teaching
+       graduate-level courses, something that forces one to regularly
+       rethink one's understanding of the basics of one's subject.
+   <h>23. Peter Says:
+       <h>June 3rd, 2004 at 2:25 pm
+       <p>Hi Erin,
+       <p>While I think it's really hard to do great research outside of
+       academia, you're right that at this point it's also very hard in
+       some subjects like particle theory to do it inside academia also.
+       <p>Two of the greatest achievements in math during the last decade
+       both took about 7-8 years of sustained, very independent work. One
+       was Wiles's proof of Fermat's Last Theorem, he did this from a
+       permanent academic position. The other was Perelman's proof of the
+       Poincare conjecture, which he seems to have done from outside
+       academia. So both are possible, but both required somebody at the
+       height of their powers who was able to devote most of their
+       intellectual energy for 7-8 years to the project. This certainly
+       is not the kind of thing a postdoc is in any position to do, since
+       they need to get a new job every 2-3 years, and no one is going to
+       give them one based on being in the middle of a difficult
+       ambitious project that may not work out.
+   <h>24. JC Says:
+       <h>June 4th, 2004 at 2:29 am
+       <p>Peter,
+       <p>Do you think the IAS resembles the research institutes that were
+       common in Soviet Russia, such as the various Steklov Institutes?
+       Several old Russian friends and colleagues mentioned that in some
+       of those research institutes, there was virtually no teaching
+       duties nor was anyone required to publish anything. Almost
+       everybody was paid something like $200 per month salary,
+       regardless whether they did anything or just sat around doing
+       nothing for the whole time. After the communist Soviet system fell
+       apart, some of the better researchers as well as many younger
+       folks left Russia and took up faculty or postdoc jobs at American
+       universities.
+       <p>Or would these Russian research institute jobs more closely
+       resemble tenured jobs at places like Los Alamos, Argonne,
+       Brookhaven, etc ...?
+   <h>25. Chris Oakley Says:
+       <h>June 4th, 2004 at 9:33 am
+       <p>I'm embarrassed to put a job ad in a physics discussion forum, but
+       we did briefly discuss jobs in Finance ...
+       <p>It so happens that we are looking for a numerate C++ programmer
+       with UNIX experience here at Nomura (in the City of London). The
+       job is mostly programming, but expect to do maths as well. Salary
+       £50K + benefits. If interested, send me a CV
+       (chris.oakley@uk.nomura.com)
+   <h>26. Peter Says:
+       <h>June 4th, 2004 at 2:32 pm
+       <p>Hi Chris,
+       <p>Job advertisements for mathematicians and physicists are
+       encouraged. A huge improvement over the penis enlargement ads that
+       spam the comment section and have to be periodically deleted!
+   <h>27. Peter Says:
+       <h>June 4th, 2004 at 2:40 pm
+       <p>Hi JC,
+       <p>I don't know much about Steklov, but I think the IAS is pretty
+       different. It has only a small number of permanent people, and
+       those jobs are among the hardest to get in the world, so they are
+       held by absolutely the most highly respected physicists around.
+       It's true they have no formal duties, and some end up doing
+       nothing, but in general the level of the people and their activity
+       there is very high.
+       <p>The theory groups at the national labs might be a bit more
+       similar, but again these have only small numbers of permanent
+       people, and I assume there is some sort of evaluation process they
+       are subject to. I don't think the US has ever had anything
+       analogous, i.e. a large institute with a lot of people hired on
+       the old communist system of "we don't really pay them, and they
+       don't really work".
+   <h>28. Alejandro Rivero Says:
+       <h>June 4th, 2004 at 2:54 pm
+       <p>Chris, how many years does a physicist hang in nomura? I am amazed
+       you keep needing people all the time.
+   <h>29. Alejandro Rivero Says:
+       <h>June 4th, 2004 at 2:57 pm
+       <p>As for research outside academia, I find that it is very hard to
+       do calculations when one is alone. But forming a research team of
+       "exiles" sharing a common seems not easy; I do not know any.
+       <p>One could mention solitary snippers, as for instance Barbour, but
+       the research then is very exotic by itself (not to mention, ahem,
+       mine).
+   <h>30. Chris Oakley Says:
+       <h>June 4th, 2004 at 6:55 pm
+       <p>Hi Alejandro,
+       <p>No hires have as yet resulted from that permanent job ad on my CV
+       on my web site, partly because the CVs I have been sent as a
+       result have never quite fitted the vacancies at the time. The most
+       prominent physicist at Nomura - although he is really more a
+       mathematician - was William Shaw, who now runs the Mathematical
+       Finance course at Oxford. We still see him from time to time. He
+       has written a book on solving mathematical finance problems with
+       Mathematica, and has a book on Complex Analysis in preparation. He
+       started out doing Twistors, and still works on this from time to
+       time. He gave a talk recently to the String theorists at
+       Cambridge, showing how one could do Strings in four dimensions
+       without anomalies using Twistors. This talk, he says, "went down
+       like a lead balloon". I guess that they don't want to be deprived
+       of the exciting challenge of explaining what happened to the six
+       they have spare in their formulation.
+       <p>By the way, as for your 2002 "Short Lecture on Divergences" - wash
+       your mouth out! You should be apologising for pathological
+       divergences, not justifying them. What kind of example is this
+       setting to the younger generation?
+   <h>31. JC Says:
+       <h>June 5th, 2004 at 12:38 am
+       <p>Chris,
+       <p>I took a look at William Shaw's www page at Oxford and noticed he
+       had a pdf file of his recent presentation in finding an anomaly
+       free way of doing string theory in 4 dimensions via twistors.
+       <p>Over the years I've always wondered if there's any compelling
+       loopholes in "quantizing" string theory which bypasses the
+       anomalies that locks the number of spacetime dimensions at 10
+       (superstring) or 26 (bosonic string). Some paper a few months ago
+       by Thiemann hep-th/0401172 attempted to "quantize" the bosonic
+       string by loop quantum gravity methods which appears on the
+       surface to bypass the usual string anomaly. From what I could
+       figure out of Thiemann's paper and in the various discussions
+       about it on the string coffee table (at Distler's site) and
+       physicsforums.com (in the string section), it appears on the
+       surface to be a "quantization" which seems to lack a path integral
+       formulation and looks almost "vacuous". So far I haven't seen
+       anybody attempting to do a tree level amplitude type of
+       calculation to see what the classical limit produces. (ie. Do we
+       get back anything that looks like a Veneziano type of formula?)
+       <p>It seems like the anomalies in the conventional quantizations (ie.
+       canonical and path integral) of string theory are very well
+       entrenched in standard treatments of string theory, with so much
+       effort expended over the last 20 years on dealing with the "extra
+       dimensions" compactified on Calabi-Yau manifolds. If there is
+       indeed an "alternative quantization" method which bypasses the
+       anomalies in string theory which lock the number of spacetime
+       dimensions to 10 or 26, it may possibly put into question all that
+       volume of work done on Calabi-Yau compactifications. From a
+       self-serving perspective, I would probably find it difficult to
+       give up on all that compactification stuff in string theory if I
+       was still doing particle/string research today. Less "resume
+       padding" type of papers to work on in string theory, if all that
+       Calabi-Yau stuff turns out to be irrelevent in the end.
+       <p>Sometimes I wonder if the path integral is really the most general
+       way of thinking about quantization. At this point I would be
+       somewhat reluctant to throw it away into history's trash bin,
+       considering how effective it's been in understanding Yang-Mills
+       theory and the Standard Model. Arguably many folks would be hard
+       pressed to think of something else that could possibly replace the
+       path integral.
+   <h>32. Chris Oakley Says:
+       <h>June 5th, 2004 at 5:30 am
+       <p>Hi JC,
+       <p>My detailed knowledge of string theory comes from Peter Woit - the
+       most unbiased source - so I am unable to shed light on issues you
+       raise. I would suggest an e-mail to William - he's busy, but I am
+       sure that he would be happy to discuss these matters.
+       <p>I'm similarly useless on path integrals. I never liked them and
+       they never liked me. I have always suspected sleight of hand here,
+       but have never been able to prove it. A bit like having a
+       dishonest cleaning lady. It just seemed to me that the good old
+       operator-commutator methods were stronger tools, and that if
+       something went wrong that it would be more difficult to weasel
+       out. This way one gets a clearer picture of what is going on.
+   <h>33. JC Says:
+       <h>June 5th, 2004 at 2:27 pm
+       <p>Alejandro,
+       <p>After when I left academia, initially I thought of doing some
+       independent research on my own. It turned out after a year or so I
+       found myself pursuing numerous "dead ends" and drifting around
+       aimlessly, bouncing around from idea to idea and making very
+       little progress. Despite keeping in contact with old colleagues
+       via email, I still found it was difficult to settle down and work
+       on calculations. Whether it's my own lack of self discipline or
+       laziness, I know now from experience that pursuing independent
+       research outside of academia to be a long hard "road less
+       travelled".
+       <p>Despite having long periods of time devoted to thinking and
+       contemplating about math and physics, in between job searches and
+       sleeping, I still found it relatively hard to bring many of my
+       research ideas to fruition while working alone in a solitary
+       manner. At times I wonder how folks like Julian Barbour, Grigori
+       Perelman, or Andrew Wiles worked during their "self imposed
+       exiles" away from mainstream research communities.
+   <h>34. Alejandro Rivero Says:
+       <h>June 5th, 2004 at 3:11 pm
+       <p>Hi Chris, :D DD
+       <p>I am still happily surprised that some minor, unpolished, works
+       (the "Lecture on Divergences" between them) get random attention
+       even if unpublished. In this case, I took care to blame Gabay, the
+       librarian, by indirectly drawing my attention towards such
+       pathologial matters. I know I am setting a bad example for future
+       archeologists (I doubt it will be a younger generation of
+       physicists), but at least now I understand why our elders were not
+       afraid of divergences (btw, baez did some nice postings recently
+       on borel transforms etc). As for the problem of renormalization
+       itself, I am optimistic that it can be tamed, and it will show to
+       be a problem in the concept of derivative. Long long time ago I
+       heard a Field medallist to say that, of course, trivialy, blah
+       blah, the derivative is just the simplest example of controlled
+       substraction of infinities.
+       <p>Let me to do a bit of propaganda for Nomura: hi guys, write
+       Oakley! Imagine, you will be able to pay a flat in Newton street
+       (pretty smail address), to buy your ve/getables at Holborn market,
+       and even to walk straigthly to the work, no need of tube, no need
+       of car!
+       <p>Around the end of 1999 I visited some of these financial
+       industries in London City -I can not say if Nomura itself, but
+       Chris could look in the CV database- and I found them to be very
+       nice places to work. There exist some meetings on econophysics, so
+       you can still train your research sword if you want and meet
+       interesting people around.
+       <p>On other hand, the financial research is interesting because it is
+       a purely artificial system, so it helps you to understand what
+       facts come from physics and which ones come from mathematics.
+   <h>35. Alejandro Rivero Says:
+       <h>June 13th, 2004 at 11:46 am
+       <p>An addendum about Nomura.
+      <p>I had forgotten it, but time ago I had quoted W.T. Shaw in the
+       first page of my essay physics/0001033.
+       <p>"if we are getting discrete data from the market, how can we claim
+       that the derivative is not zero? Should we say that our derivative
+       is almost non zero? What control do we have over the inversion
+       process?"
+     

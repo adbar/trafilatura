@@ -1,0 +1,688 @@
+URL: http://java.sun.com/developer/technicalArticles/javaopensource/plg.html
+
+<h>   Article
+
+<h>Project Looking Glass: Its Architecture and a Sneak Preview of the API
+
+   
+
+ <h>  Hideya Kawahara, November 2004
+
+ <p>  Project Looking Glass (LG3D) exploits Java technology to bring a
+   richer user experience to the desktop and to applications, through 3D
+   windowing and visualization capabilities. This article covers Project
+   Looking Glass' main features and API, its basic organization, and the
+   functionality of important classes. You'll get an understanding of its
+   high level architecture and where further development contributions
+   are needed.
+   
+
+  <p>  Project Looking Glass is an open source development project, so you
+   can decide what areas you would like to dig into. The project supports
+   both unmodified existing applications in a 3D space and APIs for 3D
+   window managers and application development.
+
+  <p>  Because Project Looking Glass is a work in progress, the details
+   specified in this article are subject to change. The APIs are not
+   final but are continuously evolving, improving, and expanding as more
+   developers contribute to this project. Suggestions for improvement are
+   invited via the LG3D discussion forum.
+   
+   
+ <h>  Supported Key Features
+
+  <p>  LG3D breaks past two boundaries in the world of user experience
+   design: the 2D-ness of current desktop environments, and the way in
+   which these desktop environments evolve. At a very high level, the
+   project focuses on providing a solid platform for the exploration of
+   the 3D desktop environment, and exploring creative ideas by developing
+   3D window managers (SceneManagers) and applications on top of the
+   platform.
+
+  <p>  Currently, Sun focuses on providing core functionality to kickstart
+   the 3D exploration and refine the initial platform. The current
+   platform supports the following key features:
+   
+   <l>    * Existing application (X11 client) initial integration
+   <l>     * Client-server scene graph platform
+   <l>    * Server-side animation execution
+   <l>    * Support for generic event systems
+   <l>    * Initial set of core APIs for building 3D widget sets
+   <l>    * Utilities for animated user feedback
+
+<h>   Java Technology-based APIs and Implementation
+
+ <p>   Java technology is the primary development language because of the
+   productivity gains it brings, its language safety features, and the
+   rich set of supporting APIs it provides. These benefits promote more
+   aggressive exploration of the new 3D desktop frontier. In the future,
+   C++ bindings will be provided so that existing native applications can
+   access the features of the LG3D platform.
+
+ <p>   The LG3D API leverages the Java 3D API and provides additional
+   features, including an animation system (to simplify writing rich
+   user-experience applications) and APIs for 3D window manager
+   development and interaction. The Java 3D API provides a set of
+   object-oriented interfaces that support a simple, high-level
+   programming model that can be used to build, render, and control the
+   behavior of 3D objects and visual environments. Because LG3D is built
+   on top of the Java 3D API, the platform leverages all these favorable
+   features.
+
+  <p>  A feature subset of the Java 3D API is exposed to the client side.
+   This enables the future possibility of running the same client
+   application program in a resource-limited environment like a set-top
+   box or car navigation system.
+
+<h>   Client-Server Scene Graphs
+
+  <p>  The client-server Java 3D Scene Graph software allows multiple
+   processes to share the same virtual 3D universe. This technology
+   allows the platform to execute a LG3D-aware 3D application in a
+   separate process (even on a remote machine), while it displays a 3D
+   user interface integrated within the single virtual universe with
+   which the user interacts. Like the X client-server model, this enables
+   clean isolation among applications and the platform.
+
+  <p>  The platform provides an abstraction layer for communication protocol.
+   The first developer's release uses RMI for convenience.
+
+  <p>  Note: Client-server here does not imply client and server machines
+   connected through a network but rather processes typically running on
+   the same machine. A client is an application that issues requests to
+   render its user interface. Typically, the machine runs a single server
+   that receives rendering requests from clients and constructs the
+   screen image.
+
+<h>   Server-side Animation Execution
+
+ <p>   Animation typically operates on a scene graph per frame. A mechanism
+   to execute animation on the server side is provided, so that client
+   and server do not need to communicate per frame. The client specifies
+   types of animation with parameters, such as duration.The platform
+   provides several predefined animations. In addition, animation can be
+   realized by leveraging animation support in model loaders. With those
+   features, the limitations regarding server-side behavior is not
+   considered critical.
+   Existing Application Integration -- The Abstraction Layer
+
+ <p>  The abstraction layer can be roughly divided into two major areas: the
+   Foundation Window System (FWS) module, and the Native Window
+   representation module.
+
+  <p>  The FWS module provides the integration with the underlying window
+   system, including application visual capture and event delivery
+   integration. The module includes a set of interfaces for
+   implementation of different kind of plug-ins for a native window
+   system.
+
+ <p>   Currently there are two implementations, the X11 version and the AWT
+   version. The X Window System (commonly X11 or X) is a windowing system
+   for bitmap displays. It is the standard graphical interface on UNIX
+   and UNIX-like operating systems like Linux, and is available for most
+   modern operating systems. The X11 integration allows X applications to
+   be run and displayed within the LG3D platform. The AWT version allows
+   the platform to run operating systems that support required Java
+   platform and Java 3D extension versions (such as Solaris and Windows),
+   but without support for applications running in the native window
+   system. This module resides under the
+   org.jdesktop.lg3d.displayserver.fws package.
+
+  <p>  The Native Window representation module sits on top of the FWS, and
+   provides abstracted representation of the native window application's
+   visual aspects.
+  
+ <h> High Level Architecture
+
+ <p>   The LG3D platform's high-level architecture is illustrated in Figure
+   2, showing the X11 integration. An unmodified X Client Application
+   communicates with the X Server, which is enhanced with the X Client
+   Capture functionality. This enhanced X Server captures the client's
+   visual representation and sends it to the LG3D Display Server, which
+   manages rendering of the 3D space, using the Java 3D platform. For
+   LG3D-aware 3D application development, the platform provides LG3D Java
+   libraries that expose the Java API. The libraries communicate with the
+   Display Server for constructing 3D visuals and exchanging events.
+
+
+ <p>   The Scene Manager resides in the Display Server process. It
+   communicates with the Display Server control and implements a policy
+   regarding 3D application user interaction and arrangement in the 3D
+   space.
+  
+<h>  The Client-side API
+
+ <p>   The client-side API can be categorized into the following three areas:
+   <l>    * Java 3D-based scene graph classes
+   <l>    * the LG3D 3D component classes
+    <l>   * the LG3D utility classes
+
+  <p>  The following diagram shows the relationships among major classes from
+   the first twocategories, a few from the third, and some of the Scene
+   Manager-relatedclasses.
+
+ 
+
+ <h>  Java 3D-based Scene Graph Classes
+
+ <p>   The Java 3D Scene Graph API is the primary rendering API for
+   developing a LG3D-aware 3D applications and scene managers. It is
+   located under the org.jdesktop.lg3d.sg package, and it exposes a
+   feature subset of the Java 3D API to the client side. The exposed
+   classes are almost the same as those of Java 3D, except that features
+   that complicate implementation, such as SharedGroup node, have been
+   removed. All the methods deal with type double have also been removed
+   or replaced with a float version.
+
+  <p>  This Scene Graph API is the basis for creating 3D visual effects of 3D
+   applications and windowmanagers. In addition, the
+   org.jdesktop.lg3d.utils.shape package provides pre-built utility
+   shapes and appearances for convenience.
+
+ <h>  LG3D Component Classes
+
+  <p>  The 3D Component API resides in the org.jdesktop.lg3d.wg package and
+   provides core functions for developing widgets in the LG3D Glass
+   environment. The design is still in preliminary stages, and will be
+   refined in the near future. The following table shows key classes
+   residing in the package. (These classes are analogous to those of AWT
+   without the tailing "3D.")
+
+  <h> 3D Component Classes
+
+ <h>  Class				   Description
+   
+ <p>  Component3D
+   The top level superclass of all the LG3D widget components. It
+   supports visual rendering by adding scene graph node children created
+   with the Java 3D-based Scene Graph API. Note that a restriction has
+   been implemented not to allow a Component3D object to be added to
+   another Component3D object as a child. Container3D needs to be used as
+   a parent container in such cases. This class is also an event source
+   and implements LgEventSource interface. Details of mouse event
+   handling is described later. This class also includes built-in support
+   for transition animation.
+   
+  <p>  Container3D
+   Extends Component3D. A Container3D object is a component that can hold
+   other components as children, but cannot hold Java 3D-based scene
+   graph objects. Typically, such a raw scene graph object is wrapped by
+   a Component3D once before being added to a Container3D object.This
+   class is typically used together with LayoutManager3D.
+   
+  <p>  Frame3D
+   Extends Container3D. It is analogous to AWT's Frame class: theroot
+   container for an LG3D-aware 3D application. For example, it interacts
+   with a Scene Manager (3DWindow Manager) for positioning.
+   
+ <p>   Cursor3D
+   Extends Component3D and is the root class of all 3D cursors.An
+   application can define its own cursor by extending this class, or by
+   using one of theconstructors that takes a Component3D object as the
+   cursor implementation. It alsoprovides a way to register and retrieve
+   cursors, as well as work with predefined cursors that a SceneManager
+   is required to initialize.
+
+
+
+  <p>  The following code shows a simple example that uses the preceding key
+   LG3D component classes. It displays a colored cube on the screen.
+   
+
+ <h>  Transition Animation Support
+
+  <p>  The Component3D class has two sets of methods for transformational
+   change. One is theset*() method family, and the other is the change*()
+   family:
+
+ <h>  3D Component Class Methods for Change
+
+   <l>  set*() Family	   change*() Family
+   <l>  setTranslation()   changeTranslation()
+   <l>  setRotationAngle()	   changeRotationAngle()
+   <l>  setRotationAngle()	   changeScale()
+  <l>   setVisible()	   changeVisibility()
+
+
+
+   <p> The set*() methods make specified changes immediately, whereas the
+   change*() changes may be delayed. For example, invoking setScale(2.0f)
+   changes the scale to 2.0 immediately, whereas invoking
+   changeScale(2.0f) may take a few second while showingtransition
+   animation. The transition animation is pluggable. The caller invokes
+   either event based on the situation.
+
+   <p> This framework is effective for simplifying the implementation of a
+   component's natural motion shown in LG3D demos.
+
+ <h>  Model Loader
+
+  <p>  Support for model loaders is considered a key feature of LG3D
+   technology, as it brings visual designers into the development loop.
+   The ModelLoader class provides a simple yet powerful mechanism to load
+   a 3D model from a file, and it supports many formats using the Java 3D
+   loader mechanism.
+
+  <p>  The ModelLoader class extends Component3D, and the constructor takes a
+   model file name, a Java 3D model loader class object, and a matrix for
+   static transformation of the model.
+
+ <p>   Event Adapter and Animation Classes
+
+  <p>  These components are located under the org.jdesktop.lg3d.utils package
+   and form a major part of the LG3D utility classes.
+
+ 
+ <h>  Event Adapter
+
+ <p>   Classes under the eventadapter subpackage implement the
+   LgEventListenerinterface and keep at least one reference to an object
+   that implements the Action interface.An Event Adapter object is a
+   receiver of events. It predigests the information provided through
+   events and invokes the performAction method of an associated Action or
+   Action Adapter object.
+
+  <h> Action Adapter
+
+  <p>  Classes under the actionadapter subpackage implement the Action
+   interface and keep at least one reference to an object that implements
+   the Action interface. An Action Adapter object typically converts one
+   kind of input into another by performing some processing against
+   values propagated by performAction invocation. A action adapter class
+   typically acts as a converter among different action types.
+
+<h>   Action
+
+ <p>   Classes under the action subpackage implement the Action interface.
+   These receive predigested information from an Event Adapter or Action
+   Adapter object through a performAction method invocation and perform
+   visual feedback. An Action object typically keeps a reference to an
+   Action Behavior object in order to perform visual feedback based on
+   animation.
+
+ <h>  Action Behavior
+
+  <p>  Classes under the behavior subpackage extend the ActionBehavior
+   abstract class and implement basic animation. An Action Behavior
+   object typically keeps a reference to a Component3D object and a
+   TransitionSmoother, and performs animation using them.
+
+<h>   Transition Smoother
+
+  <p>  Classes under the smoother subpackage provide reusable natural motion
+   for action implementation. These classes implement the
+   TransitionSmoother interface and generate reusable natural motion used
+   in ActionBehavior implementation.
+
+  <p>  The following code fragment uses event adapter and animation
+   components. It rotates the targetComp object by 180 degrees back and
+   forth in 1,000 milliseconds every time the sourceComp object is
+   clicked:
+
+ <p>new MouseClickedEventAdapter(sourceComp  new ToggleAdapter(    new RotateAction
+(targetComp, (float)Math.PI, 1000)));
+
+
+  <p>  MouseClickedEventAdapter is an Event Adapter class, which extends the
+   LgEventLister interface and registers itself to listen to MouseEvent.
+   In the example, the event source to listen to is specified through the
+   argument, which is the sourceComp Component3D object. Whenever it
+   receives a MouseEvent from the object, it invokes the performAction
+   method of an associated Action or Action Adapter object. In the
+   example, a ToggleAdapter object is specified as an argument in the
+   constructor.
+
+  <p>  ToggleAdapter is an Action Adapter. It keeps an internal boolean state
+   that gets toggled whenever the performAction method is invoked. It
+   then invokes the performAction method of an associated object with the
+   boolean state information. In the example, a RotateAction object is
+   specified as an argument in the constructor. RotateAction is an Action
+   class. The performAction method rotates the targetComp object based on
+   the boolean argument. If it is true, it rotates the object by the
+   given angle duration. In this case, the angle is p (pi) in radians,
+   which is 180 degrees, within the given duration, which is 1000
+   milliseconds. If the argument were false, it rotate the object back to
+   the default position, which is 0 degree. By combining this method with
+   the ToggleAdapter object, the flipping back-and-force motion is
+   achieved.
+
+  <p>  The RotateAction object internally creates an instance of the
+   RotationChanger class and actually performs the rotation animation. It
+   also creates an instance of the NaturalFloatSmoother class passing the
+   duration parameter, 1000 milliseconds. This Transition Smoother object
+   is then given the RotationChanger object through the constructor
+   argument for its use to perform a natural flipping motion.
+
+ <p>   The RotationChanger class is one of the predefined behaviors that
+   execute on the server side. The NaturalFloatSmoother class implements
+   the TransitionSmoother interface, which is the key class that
+   implements all of the natural motion you see in the LG3D demo. The
+   implementation algorithm and parameters are defined based on a
+   heuristic approach. The algorithm is a bit expensive ÃƒÂ¢Ã¢Â¬Ã¢ because of
+   its frame-rate conversion. Optimizations can be performed once an area
+   is identified as a hot spot.
+
+  <h> The Scene Manager
+
+  <p>  The Scene Manager takes over the role of window manager for a 3D
+   scene, since typical LG3D-aware 3D application user interfaces have
+   unique shapes not limited to a window shape. The Scene Manager
+   interacts with the user and applications. It implements management
+   policy for applications running in the environment and is responsible
+   for arranging those in the 3D space.
+
+ 
+ 
+ <p>   Scene Manager design is a major area of future exploration. In order
+   to stimulate many ideas, an initial framework for componentized Scene
+   Manager technology has been provided. In the implementation, attention
+   has been paid to two-and-a-half dimension as well as full three
+   dimension experiences under the same abstraction. The following list
+   shows the key Scene Manager components, along with its abstract class
+   or interface name.
+   
+    <l>   * Application Container (AppContainer abstract class)
+    <l>   * Taskbar (Taskbar abstract class)
+    <l>    * Background (Background abstract class)
+    <l>   * Global Light (GlobalLights abstract class)
+     <l>  * Cursor Module (CursorModule interface)
+
+ <p>   These components are located under the ...lg3d.scenemanager.utils
+   package.
+
+  <p>  The following diagram shows the relationships among those Scene
+   Manager components and other related LG3D classes. Note that
+   Application Container is usually invisible.
+
+  
+
+ <h>  SceneManagerBase
+
+ <p>   SceneManagerBase is an implementation of SceneManager that integrates
+    other Scene Manager components. It communicates with
+   DisplayServerControl through the DisplayServerManagerInterface.
+   DisplayServerControl is the main body of the LG3D Display Server
+   module that is responsible for all the rendering that happens in the
+   3D space. The communication includes obtaining display-specific
+   information like the field of view, setting view transform, and
+   specifying the CursorModule. DisplayServerControl in turn communicates
+   with SceneManagerBase through the SceneManager interface. The
+   communication includes adding and removing a Frame3D object.
+
+  <p>  When setActive method of Frame3D is invoked with an argument set to
+   true, DisplayServerControl eventually receives server-side
+   representation of the Frame3D object. The DisplayServerControl then in
+   turn passes the object to the SceneManagerBase object. Note that the
+   native window abstraction layer also provides a Frame3D object as the
+   top level object with which Scene Manager interacts. In this way,
+   there is no difference between an LG3D-aware 3D application and a
+   3D-mapped native window.
+
+<h>   Application Container
+
+  <p>  The Application Container is a key foundation for implementing the
+   user interaction and application navigation capabilities of Scene
+   Manager. It is also useful for achieving two-and-a-half dimension
+   desktop experience. The application container is a subclass of
+   Container3D and is specialized for hosting applications, such as
+   Frame3D objects.
+
+  <p>  An application container usually leverages the 3D layout manager to
+   implement easy-to-access application arrangements in the container. It
+   is key to leveraging the 3D space when arranging the applications.
+   Based on a Scene Manager implementation exercise, the 3D layout
+   manager turned out to be a flexible platform for achieving the goal
+   while allowing implementations to be componentized.
+
+  <p>  A single Scene Manager can host multiple application containers. The
+   Scene Manager implements the concept of the current application
+   container. It receives a Frame3D object when a new LG3D-aware
+   application is activated. The current container can be switched
+   dynamically. This feature is typically used to implement virtual
+   desktop switching.
+
+<h>   The Background
+
+  <p>  In the LG3D 3D desktop environment, the background is more than just a
+   static image behind application windows. It actually defines the 3D
+   environment with which the user can interact and where application
+   containers can be positioned.
+
+  <p>  The Background can comprise any 3D geometry as it is a subclass of
+   Container3D, to which any geometry can be added and any behavior can
+   be integrated.
+
+  <p>  In addition to setting up the geometry to render on the background,
+   the Background object also hosts application containers. The object
+   usually keeps a reference to a SceneManager object that is passed
+   through the initialize method, and invokes the SceneManager object to
+   manage application containers including obtaining and switching
+   current. Since Application Container is just a subclass of
+   Container3D, the background object can place it anywhere in the 3D
+   scene. It also can allow the user to handle multiple application
+   containers by switching the current application container and changing
+   the view so that the current one remains accessible to the user.
+
+ <p>   For more details, you may want to check out the SimpleImageBackground
+   class, which is a simple example implementation of background with
+   comments.
+
+ <h>  Global Lights
+
+ <p>   Light is also componentized. Instead of a static global light that the
+   default implementation provides (StandardGlobalLights), you can
+   develop lights that dynamically change angle and color based on time
+   of the day, for example. Or, a Scene Manager may want to use lighting
+   effects to provide an alert or focus to the user.
+
+<h>   Cursor Module
+
+ <p>   A CursorModule class implements policies on how cursor is displayed.
+   It provides Scene Manager hooks for the addition and removal of
+   Cursor3D objects, and a hook for positioning the current cursor. For
+   example, in the default implementation StandardCursorModule, the
+   maximum distance of the current cursor from the user's point of view
+   is limited to a certain value so that the cursor will appear to the
+   user at a reasonable size. Without this policy, a cursor could be
+   drawn so far away on the surface of the background that the user would
+   have difficulty finding it.
+   Interaction Events Between Frame3D and Scene Manager
+
+  <p>  The generic event system is employed as the main communication method
+   between Frame3D and Scene Manager, to achieve both loosely coupled
+   componentization and the interplay of a rich set of user actions and
+   requests between them.
+
+  <p>  This area needs more investigation. Currently, a few adhoc events have
+   been introduced to achieve the initial demo features.
+
+<h>   Existing 2D Application Integration
+
+ <p>   The 2D application integration framework can be roughly divided into
+   two major areas: the Foundation Window System (FWS) module and the
+   Native Window representation module.
+
+   
+
+  <p>  The FWS module provides the integration with the underlying window
+   system, including application visual capture and event delivery
+   integration. Since these interfaces are not a part of the client API
+   and not visible to client application developers, this document does
+   not cover any details.
+
+ <p>   The Native Window representation module sits on top of the FWS, and
+   provides abstracted representation of native window application's
+   visual aspect. It is in the
+   org.jdesktop.lg3d.displayserver.nativewindow package. Its two primary
+   design goals are to
+   <l>    * Allow a pluggable Look and Feel
+   <l>    * Encapsulate complexity around native window capture and
+       communication
+
+   <p> The classes in this package attempt to abstract and hide all the
+   complexity around the native application visual capture, as well as
+   necessary communication with the application side. Figure 8
+   illustrates the relationships among the major classes. NativeWindow3D
+   is the top level class with which SceneManager interacts. It extends
+   Frame3D and behaves just like another LG3D-aware 3D application. It
+   also implements the methods declared in NativeWindowMonitor, which are
+   used for the native 2D window manager to give notifications about
+   status changes, and so on. The implementation, in turn, uses
+   NativeWindowControl interface to communicate back to the native window
+   manager, so that it can perform actions on the 2D
+   applicationassociated with this object.
+
+  <p>  NativeWindowLookAndFeel defines the native window's appearance and
+   visual texture. At this level, typically, window decoration is
+   constructed. The current implementation includes
+   GlassyNativeWindowLookAndFeel in the
+   lg3d.scenemanager.utils.decoration package as an example.
+
+  <p>  NativeWindowObject and TiledNativeWindowImage exist to hide all the
+   complexity related to native window capture support. Texture is used
+   for presenting captured 2D window surfaces in the 3D space, but it has
+   a size limitation that is sometimes smaller than maximum 2D window
+   size. To deal with large 2D window capture, we use composite multiple
+   textures created from a set of ImageComponent2Ds. The details are
+   hidden under these classes.
+
+ <h>  Window Decoration Customization
+
+ <p>   By subclassing NativeWindowLookAndFeel, you can develop your own
+   window decoration. If you want a native window representation this is
+   not on a simple quad - on a wavy sheet, for example - you will need to
+   implement a version of NativeWindowObject that supports the shape you
+   want.
+
+  <p>  An API to map multiple native window representations on surfaces of a
+   single object is under development, which will be used to put another
+   view on the back side of the window.
+
+ <h>  A Quick Tour of the Project Looking Glass Source Code
+
+  <p>  Now that you've learned the basic architecture of Project Looking
+   Glass and understand its important classes, you are invited to
+   download the code and to begin contributing your programming skills.
+   To work on this project, you need to be a java.net member, which is
+   free upon registration. Then you can download and install a working
+   version of the software and the source code.
+
+  <p>  The Project Looking Glass source code is located in the lg3d-core/src
+   CVS repository. The following table is an overview of the various
+   files in the the repository.
+
+<h>   Repository Files
+
+ <p>  Directory		   Description		  
+   
+  <p>  build/		   The build files are stored in this directory.
+   
+  <p>  build-tools/		   Tools for building Project Looking Glass.
+   
+  <p>  build.xml		   The Ant build control file.
+   
+  <p>  ext/			   Components released with Project Looking Glass: escher (Java bindings
+   to X11) and a stable build of lg3d-x11.
+   ext-unbundled/		   A directory in which you can put components not licensed for
+   distribution with Project Looking Glass (that is, junit, Java3D
+   loaders, and so forth.) You can also install your own build of
+   lg3d-x11 here instead of using $LGX11HOME.
+   
+ <p>   src/		   The root of the lg3d-core source tree.
+   
+  <p>  classes/		   All .java files. Refer to the Javadocs in the binary bundle in
+   docs/javadoc/api for more information.
+   
+  <p>  devscripts/		   Various Project Looking Glass development scripts. These utilize
+   classes in the build/ directory.
+     
+ <p>     HelloUniverse		   Runs the Java3D rotating cube demo in a Project Looking Glass session.
+           
+ <p>	   README
+   Documentation for some scripts in this directory.
+           
+ <p>	   displayserver
+   Runs the Display Server.
+           
+ <p>	   lg3d-dev
+   Runs a Project Looking Glass session in a window (developer or No X
+   mode).
+          
+ <p>	  lg3d-session
+   Runs a Project Looking Glass session in full screen mode, with X11
+   support.
+          
+ <p>	  setup
+   A helper script used by the other scripts.
+       etc/
+   Contains various configuration files.
+           
+ <p>	   jz/
+   An obsolete directory.
+           
+ <p>	   lg3d/
+
+  <p>              README
+   Documentation for the various lgconfig* files.
+               
+ <p>	       lgconfig*
+   Configuration scripts for the various modes in which Project Looking
+   Glass can be run.
+               
+ <p>	       logging.properties
+   Configuration file that controls the verbosity of logging output to
+   the Display Server log file, /var/tmp/lgserver.log
+           
+ <p>	   displayconfig/
+   For the adventurous. Contains files that allow Project Looking Glass
+   to be run in more complex display environments such as multi-screen,
+   stereo, or power walls. The choice of configurations is controlled by
+   the lgconfig.xml
+   WARNING! Alternate display configurations have not been extensively
+   tested yet.
+      
+  <p>     native/org/jdesktop/lg3d/displayserver/fws/x11/
+   The C code for X11 integration.
+       resources/images/
+   Assorted images used by Project Looking Glass.
+      
+ <p>      scripts/
+   Scripts for running the Project Looking Glass release. These utilize
+   classes from the release JAR files.
+           
+ <p>	   displayserver
+   Runs the Display Server (users should not run this directly).
+          
+ <p>	  lg3d-dev
+   Runs a Project Looking Glass session in a window (developer or No X
+   mode).
+          
+ <p>	  lg3d-session
+   Runs a Project Looking Glass session in full screen mode, with X11
+   support.
+           
+ <p>	   setup   A helper script uses by the other scripts. (Users should not run this
+   directly).
+   
+  <p>  tests/   Eventually will hold the test suite for Project Looking Glass.
+   
+   <p> www/   java.net site pages and various documentation.
+
+
+
+<h>   Areas That Require Developer Participation
+
+ <h>   The following areas need developer participation:
+   <l>    * LG3D 3D API refinements, refinements, refinements!
+   <l>    * Exploration of 3D Window Manager UI design, using the following
+       documents as starting points:
+          + Project Looking Glass UI Design Discussions
+          + Related Technologies 
+  <l>     * Exploration of new 3D applications
+  <l>     * C++ client-side API and implementation
+  <l>    * GNOME/KDE compatibility
+
+ <p>   Also check the lg3d-x11 project page for the topics specific to X11
+   integration.
+
+   

@@ -1,0 +1,1684 @@
+URL: http://www.softlookup.com/tutorial/SQL/ch03.asp
+
+   <h>  - Chapter 3 -
+                   <h>Expressions, Conditions, and Operators
+
+<h>Objectives
+
+   <p>On Chapter 2, "Introduction to the Query: The SELECT Statement," you
+   used SELECT and FROM to manipulate data in interesting (and useful)
+   ways. ToChapter you learn more about SELECT and FROM and expand the
+   basic query with some new terms to go with query, table, and row, as
+   well as a new clause and a group of handy items called operators. When
+   the sun sets on Day 3, you will
+     <l>* Know what an expression is and how to use it
+     <l>* Know what a condition is and how to use it
+     <l>* Be familiar with the basic uses of the WHERE clause
+     <l>* Be able to use arithmetic, comparison, character, logical, and set
+       operators
+     <l>* Have a working knowledge of some miscellaneous operators
+       ______________________________________________________________
+
+     <p>NOTE: We used Oracle's Personal Oracle7 to generate today's
+     examples. Other implementations of SQL may differ slightly in the
+     way in which commands are entered or output is displayed, but the
+     results are basically the same for all implementations that conform
+     to the ANSI standard.
+       ______________________________________________________________
+
+<h>Expressions
+
+   <p>The definition of an expression is simple: An expression returns a
+   value. Expression types are very broad, covering different data types
+   such as String, Numeric, and Boolean. In fact, pretty much anything
+   following a clause (SELECT or FROM, for example) is an expression. In
+   the following example amount is an expression that returns the value
+   contained in the amount column.
+<p>SELECT amount FROM checks;
+
+   <p>In the following statement NAME, ADDRESS, PHONE and ADDRESSguide are
+   expressions:
+<p>SELECT NAME, ADDRESS, PHONE
+FROM ADDRESSguide;
+
+   <p>Now, examine the following expression:
+<p>WHERE NAME = 'BROWN'
+
+   <p>It contains a condition, NAME = 'BROWN', which is an example of a
+   Boolean expression. NAME = 'BROWN' will be either TRUE or FALSE,
+   depending on the condition =.
+
+<h>Conditions
+
+   <p>If you ever want to find a particular item or group of items in your
+   database, you need one or more conditions. Conditions are contained in
+   the WHERE clause. In the preceding example, the condition is
+<p>NAME = 'BROWN'
+
+   <p>To find everyone in your organization who worked more than 100 hours
+   last month, your condition would be
+<p>NUMBEROFHOURS > 100
+
+   <p>Conditions enable you to make selective queries. In their most common
+   form, conditions comprise a variable, a constant, and a comparison
+   operator. In the first example the variable is NAME, the constant is
+   'BROWN', and the comparison operator is =. In the second example the
+   variable is NUMBEROFHOURS, the constant is 100, and the comparison
+   operator is >. You need to know about two more elements before you can
+   write conditional queries: the WHERE clause and operators.
+
+<h>The WHERE Clause
+
+   The syntax of the WHERE clause is
+
+<h>SYNTAX:
+
+
+   <p>SELECT, FROM, and WHERE are the three most frequently used clauses in
+   SQL. WHERE simply causes your queries to be more selective. Without
+   the WHERE clause, the most useful thing you could do with a query is
+   display all records in the selected table(s). For example:
+
+<h><h>INPUT:
+
+SQL> SELECT * FROM BIKES;
+
+   <p>lists all rows of data in the table BIKES.
+
+<h>OUTPUT:
+
+<h>NAME           FRAMESIZE COMPOSITION  MILESRIDDEN TYPE
+-------------- --------- ------------ ----------- -------
+<l>TREK 2300           22.5 <l>CARBON FIBER        3500 RACING
+<l>BURLEY                22 <l>STEEL               2000 TANDEM
+<l>GIANT                 19 <l>STEEL               1500 COMMUTER
+<l>FUJI                  20 <l>STEEL                500 TOURING
+<l>SPECIALIZED           16 <l>STEEL                100 MOUNTAIN
+<l>CANNONDALE          22.5 <l>ALUMINUM            3000 RACING
+<p>6 rows selected.
+
+   <p>If you wanted a particular bike, you could type
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+     <p>FROM BIKES
+     <p>WHERE NAME = 'BURLEY';
+
+   <p>which would yield only one record:
+<h>NAME           FRAMESIZE COMPOSITION    MILESRIDDEN TYPE
+-------------- --------- -------------- ----------- -------
+<l>BURLEY                22 <l>STEEL                 2000 TANDEM
+
+<h><h>ANALYSIS:
+
+   <p>This simple example shows how you can place a condition on the data
+   that you want to retrieve.
+
+<h>Operators
+
+   <p>Operators are the elements you use inside an expression to articulate
+   how you want specified conditions to retrieve data. Operators fall
+   into six groups: arithmetic, comparison, character, logical, set, and
+   miscellaneous.
+
+<h>Arithmetic Operators
+
+   <p>The arithmetic operators are plus (+), minus (-), divide (/), multiply
+   (*), and modulo (%). The first four are self-explanatory. Modulo
+   returns the integer remainder of a division. Here are two examples:
+<p>5 % 2 = 1
+<p>6 % 2 = 0
+
+   <p>The modulo operator does not work with data types that have decimals,
+   such as Real or Number.
+
+   <p>If you place several of these arithmetic operators in an expression
+   without any parentheses, the operators are resolved in this order:
+   multiplication, division, modulo, addition, and subtraction. For
+   example, the expression
+<p>2*6+9/3
+
+   <p>equals
+<p>12 + 3 = 15
+
+   <p>However, the expression
+<p>2 * (6 + 9) / 3
+
+   <p>equals
+<p>2 * 15 / 3 = 10
+
+   <p>Watch where you put those parentheses! Sometimes the expression does
+   exactly what you tell it to do, rather than what you want it to do.
+
+   <p>The following sections examine the arithmetic operators in some detail
+   and give you a chance to write some queries.
+
+<h>Plus (+)
+
+   <p>You can use the plus sign in several ways. Type the following
+   statement to display the PRICE table:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+<h>OUTPUT:
+
+<h>ITEM            WHOLESALE
+-------------- ----------
+<l>TOMATOES              .34
+<l>POTATOES              .51
+<l>BANANAS               .67
+<l>TURNIPS               .45
+<l>CHEESE                .89
+<l>APPLES                .23
+<p>6 rows selected.
+
+   <p>Now type:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT ITEM, WHOLESALE, WHOLESALE + 0.15
+    FROM PRICE;
+
+   <p>Here the + adds 15 cents to each price to produce the following:
+<h>ITEM           WHOLESALE WHOLESALE+0.15
+-------------- --------- --------------
+<l>TOMATOES             .34            .49
+<l>POTATOES             .51            .66
+<l>BANANAS              .67            .82
+<l>TURNIPS              .45            .60
+<l>CHEESE               .89           1.04
+<l>APPLES               .23            .38
+<p>6 rows selected.
+
+<h><h>ANALYSIS:
+
+   <p>What is this last column with the unattractive column heading
+   WHOLESALE+0.15? It's not in the original table. (Remember, you used *
+   in the SELECT clause, which causes all the columns to be shown.) SQL
+   allows you to create a virtual or derived column by combining or
+   modifying existing columns.
+
+   <p>Retype the original entry:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+   <p>The following table results:
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+<l>CHEESE               .89
+<l>APPLES               .23
+<h>6 rows selected.
+
+<h><h>ANALYSIS:
+
+   <p>The output confirms that the original data has not been changed and
+   that the column heading WHOLESALE+0.15 is not a permanent part of it.
+   In fact, the column heading is so unattractive that you should do
+   something about it.
+
+   <p>Type the following:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT ITEM, WHOLESALE, (WHOLESALE + 0.15) RETAIL
+    FROM PRICE;
+
+   <p>Here's the result:
+<h>ITEM           WHOLESALE  RETAIL
+-------------- ---------  ------
+<l>TOMATOES             .34     .49
+<l>POTATOES             .51     .66
+<l>BANANAS              .67     .82
+<l>TURNIPS              .45     .60
+<l>CHEESE               .89    1.04
+<l>APPLES               .23     .38
+<p>6 rows selected.
+
+<h><h>ANALYSIS:
+
+   <p>This is wonderful! Not only can you create new columns, but you can
+   also rename them on the fly. You can rename any of the columns using
+   the syntax column_name alias (note the space between column_name and
+   alias).
+
+   <p>For example, the query
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT ITEM PRODUCE, WHOLESALE, WHOLESALE + 0.25 RETAIL
+     FROM PRICE;
+
+   <p>renames the columns as follows:
+<h>PRODUCE        WHOLESALE    RETAIL
+-------------- --------- ---------
+<l>TOMATOES             .34       .59
+<l>POTATOES             .51       .76
+<l>BANANAS              .67       .92
+<l>TURNIPS              .45       .70
+<l>CHEESE               .89      1.14
+<l>APPLES               .23       .48
+       ______________________________________________________________
+
+     <p>NOTE: Some implementations of SQL use the syntax <column name =
+     alias>. The preceding example would be written as follows:
+<p>SQL> SELECT ITEM = PRODUCE,
+     <p>WHOLESALE,
+     <p>WHOLESALE + 0.25 = RETAIL,
+     <p>FROM PRICE;
+
+     <p>Check your implementation for the exact syntax.
+       ______________________________________________________________
+
+   <p>You might be wondering what use aliasing is if you are not using
+   command-line SQL. Fair enough. Have you ever wondered how report
+   builders work? Someday, when you are asked to write a report
+   generator, you'll remember this and not spend weeks reinventing what
+   Dr. Codd and IBM have wrought.
+
+   <p>So far, you have seen two uses of the plus sign. The first instance
+   was the use of the plus sign in the SELECT clause to perform a
+   calculation on the data and display the calculation. The second use of
+   the plus sign is in the WHERE clause. Using operators in the WHERE
+   clause gives you more flexibility when you specify conditions for
+   retrieving data.
+
+   <p>In some implementations of SQL, the plus sign does double duty as a
+   character operator. You'll see that side of the plus a little later
+   today.
+
+<h>Minus (-)
+
+   <p>Minus also has two uses. First, it can change the sign of a number.
+   You can use the table HILOW to demonstrate this function.
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM HILOW;
+
+<h>OUTPUT:
+
+<h>STATE      HIGHTEMP   LOWTEMP
+---------- -------- ---------
+<l>CA              -50       120
+<l>FL               20       110
+<l>LA               15        99
+<l>ND              -70       101
+<l>NE              -60       100
+
+   <p>For example, here's a way to manipulate the data:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT STATE, -HIGHTEMP LOWS, -LOWTEMP HIGHS
+     FROM HILOW;
+
+<h>STATE          LOWS     HIGHS
+---------- -------- ---------
+<l>CA               50      -120
+<l>FL              -20      -110
+<l>LA              -15       -99
+<l>ND               70      -101
+<l>NE               60      -100
+
+   <p>The second (and obvious) use of the minus sign is to subtract one
+   column from another. For example:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT STATE,
+  <l>2  HIGHTEMP LOWS,
+  <l>3  LOWTEMP HIGHS,
+  <l>4  (LOWTEMP - HIGHTEMP) DIFFERENCE
+  <l>5  FROM HILOW;
+
+<h>STATE          LOWS    HIGHS DIFFERENCE
+---------- -------- -------- ----------
+<l>CA              -50      120        170
+<l>FL               20      110         90
+<l>LA               15       99         84
+<l>ND              -70      101        171
+<l>NE              -60      100        160
+
+   <p>Notice the use of aliases to fix the data that was entered
+   incorrectly. This remedy is merely a temporary patch, though, and not
+   a permanent fix. You should see to it that the data is corrected and
+   entered correctly in the future. On Chapter 21, "Common SQL
+   Mistakes/Errors and Resolutions," you'll learn how to correct bad
+   data.
+
+   <p>This query not only fixed (at least visually) the incorrect data but
+   also created a new column containing the difference between the highs
+   and lows of each state.
+
+   <p>If you accidentally use the minus sign on a character field, you get
+   something like this:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT -STATE FROM HILOW;
+
+<p>ERROR:
+<p>ORA-01722: invalid number
+<p>no rows selected
+
+   <p>The exact error message varies with implementation, but the result is
+   the same.
+
+<h>Divide (/)
+
+   <p>The division operator has only the one obvious meaning. Using the
+   table PRICE, type the following:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+<h>OUTPUT:
+
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+<l>CHEESE               .89
+<l>APPLES               .23
+<p>6 rows selected.
+
+   <p>You can show the effects of a two-for-one sale by typing the next
+   statement:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT ITEM, WHOLESALE, (WHOLESALE/2) SALEPRICE
+  2  FROM PRICE;
+
+<h>ITEM           WHOLESALE SALEPRICE
+-------------- --------- ---------
+<l>TOMATOES             .34       .17
+<l>POTATOES             .51      .255
+<l>BANANAS              .67      .335
+<l>TURNIPS              .45      .225
+<l>CHEESE               .89      .445
+<l>APPLES               .23      .115
+<p>6 rows selected.
+
+   <p>The use of division in the preceding SELECT statement is
+   straightforward (except that coming up with half pennies can be
+   tough).
+
+<h>Multiply (*)
+
+   <p>The multiplication operator is also straightforward. Again, using the
+   PRICE table, type the following:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+<h>OUTPUT:
+
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+<l>CHEESE               .89
+<l>APPLES               .23
+<p>6 rows selected.
+
+   <p>This query changes the table to reflect an across-the-board 10 percent
+   discount:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT ITEM, WHOLESALE, WHOLESALE * 0.9 NEWPRICE
+     FROM PRICE;
+
+<h>ITEM           WHOLESALE  NEWPRICE
+-------------- ---------  --------
+<l>TOMATOES             .34      .306
+<l>POTATOES             .51      .459
+<l>BANANAS              .67      .603
+<l>TURNIPS              .45      .405
+<l>CHEESE               .89      .801
+<l>APPLES               .23      .207
+<p>6 rows selected.
+
+   <p>These operators enable you to perform powerful calculations in a
+   SELECT statement.
+
+<h>Modulo (%)
+
+   <p>The modulo operator returns the integer remainder of the division
+   operation. Using the table REMAINS, type the following:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM REMAINS;
+
+<h>OUTPUT:
+
+<h>NUMERATOR  DENOMINATOR
+---------  ------------
+   <l>    10            5
+   <l>     8            3
+   <l>    23            9
+   <l>    40           17
+   <l>  1024           16
+   <l>    85           34
+<p>6 rows selected.
+
+   <p>You can also create a new column, REMAINDER, to hold the values of
+   NUMERATOR % DENOMINATOR:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT NUMERATOR,
+    <p> DENOMINATOR,
+    <p> NUMERATOR%DENOMINATOR REMAINDER
+    <p> FROM REMAINS;
+
+<h>NUMERATOR DENOMINATOR REMAINDER
+--------- ----------- ---------
+   <l>    10           5         0
+   <l>     8           3         2
+   <l>    23           9         5
+   <l>    40          17         6
+   <l>  1024          16         0
+   <l>    85          34        17
+<p>6 rows selected.
+
+   <p>Some implementations of SQL implement modulo as a function called MOD
+   (see Chapter 4, "Functions: Molding the Data You Retrieve"). The
+   following statement produces results that are identical to the results
+   in the preceding statement:
+<p>SQL> SELECT NUMERATOR,
+   <p>  DENOMINATOR,
+   <p>  MOD(NUMERATOR,DENOMINATOR) REMAINDER
+   <p>  FROM REMAINS;
+
+<h>Precedence
+
+   <p>This section examines the use of precedence in a SELECT statement.
+   Using the database PRECEDENCE, type the following:
+<p>SQL> SELECT * FROM PRECEDENCE;
+   <h>    N1        N2        N3        N4
+--------- --------- --------- ---------
+     <l>   1         2         3         4
+     <l>  13        24        35        46
+     <l>   9         3        23         5
+     <l>  63         2        45         3
+     <l>   7         2         1         4
+
+   <p>Use the following code segment to test precedence:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT
+  <l>2  N1+N2*N3/N4,
+  <l>3  (N1+N2)*N3/N4,
+  <l>4  N1+(N2*N3)/N4
+  <l>5  FROM PRECEDENCE;
+
+<h>N1+N2*N3/N4 (N1+N2)*N3/N4 N1+(N2*N3)/N4
+----------- ------------- -------------
+   <l>     2.5          2.25           2.5
+   <l>31.26087     28.152174      31.26087
+   <l>    22.8          55.2          22.8
+   <l>      93           975            93
+   <l>     7.5          2.25           7.5
+
+   <p>Notice that the first and last columns are identical. If you added a
+   fourth column N1+N2* (N3/N4), its values would also be identical to
+   those of the current first and last columns.
+
+<h>Comparison Operators
+
+   <p>True to their name, comparison operators compare expressions and
+   return one of three values: TRUE, FALSE, or Unknown. Wait a minute!
+   Unknown? TRUE and FALSE are self-explanatory, but what is Unknown?
+
+   <p>To understand how you could get an Unknown, you need to know a little
+   about the concept of NULL. In database terms NULL is the absence of
+   data in a field. It does not mean a column has a zero or a blank in
+   it. A zero or a blank is a value. NULL means nothing is in that field.
+   If you make a comparison like Field = 9 and the only value for Field
+   is NULL, the comparison will come back Unknown. Because Unknown is an
+   uncomfortable condition, most flavors of SQL change Unknown to FALSE
+   and provide a special operator, IS NULL, to test for a NULL condition.
+
+   <p>Here's an example of NULL: Suppose an entry in the PRICE table does
+   not contain a value for WHOLESALE. The results of a query might look
+   like this:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+<h>OUTPUT:
+
+<h>ITEM            WHOLESALE
+-------------- ----------
+<l>TOMATOES              .34
+<l>POTATOES              .51
+<l>BANANAS               .67
+<l>TURNIPS               .45
+<l>CHEESE                .89
+<l>APPLES                .23
+<l>ORANGES
+
+   <p>Notice that nothing is printed out in the WHOLESALE field position for
+   oranges. The value for the field WHOLESALE for oranges is NULL. The
+   NULL is noticeable in this case because it is in a numeric column.
+   However, if the NULL appeared in the ITEM column, it would be
+   impossible to tell the difference between NULL and a blank.
+
+   <p>Try to find the NULL:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM PRICE
+  <p>3  WHERE WHOLESALE IS NULL;
+
+<h>ITEM            WHOLESALE
+-------------- ----------
+<l>ORANGES
+
+<h><h>ANALYSIS:
+
+   <p>As you can see by the output, ORANGES is the only item whose value for
+   WHOLESALE is NULL or does not contain a value. What if you use the
+   equal sign (=) instead?
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+     <p>FROM PRICE
+     <p>WHERE WHOLESALE = NULL;
+<p>no rows selected
+
+<h><h>ANALYSIS:
+
+   <p>You didn't find anything because the comparison WHOLESALE = NULL
+   returned a FALSE--the result was unknown. It would be more appropriate
+   to use an IS NULL instead of =, changing the WHERE statement to WHERE
+   WHOLESALE IS NULL. In this case you would get all the rows where a
+   NULL existed.
+
+   <p>This example also illustrates both the use of the most common
+   comparison operator, the equal sign (=), and the playground of all
+   comparison operators, the WHERE clause. You already know about the
+   WHERE clause, so here's a brief look at the equal sign.
+
+<h>Equal (=)
+
+   <p>Earlier toChapter you saw how some implementations of SQL use the
+   equal sign in the SELECT clause to assign an alias. In the WHERE
+   clause, the equal sign is the most commonly used comparison operator.
+   Used alone, the equal sign is a very convenient way of selecting one
+   value out of many. Try this:
+
+<h><h>INPUT:
+
+<p>SQL> SELECT * FROM FRIENDS;
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+   <p>Let's find JD's row. (On a short list this task appears trivial, but
+   you may have more friends than we do--or you may have a list with
+   thousands of records.)
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+     <p>FROM FRIENDS
+     <p>WHERE FIRSTNAME = 'JD';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MAST           JD                   381 555-6767 LA 23456
+
+   <p>We got the result that we expected. Try this:
+
+<h><h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+     <p>FROM FRIENDS
+     <p>WHERE FIRSTNAME = 'AL';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+       ______________________________________________________________
+
+     <p>NOTE: Here you see that = can pull in multiple records. Notice that
+     ZIP is blank on the second record. ZIP is a character field (you
+     learn how to create and populate tables on Chapter 8, "Manipulating
+     Data"), and in this particular record the NULL demonstrates that a
+     NULL in a character field is impossible to differentiate from a
+     blank field.
+       ______________________________________________________________
+
+   <p>Here's another very important lesson concerning case sensitivity:
+
+<h><h>INPUT/OUTPUT:
+
+SQL> SELECT * FROM FRIENDS
+     WHERE FIRSTNAME = 'BUD';
+
+<h>FIRSTNAME
+--------------
+<l>BUD
+<p>1 row selected.
+
+   <p>Now try this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> select * from friends
+     where firstname = 'Bud';
+
+<p>no rows selected.
+
+<h>ANALYSIS:
+
+   <p>Even though SQL syntax is not case sensitive, data is. Most companies
+   prefer to store data in uppercase to provide data consistency. You
+   should always store data either in all uppercase or in all lowercase.
+   Mixing case creates difficulties when you try to retrieve accurate
+   data.
+
+<p>Greater Than (>) and Greater Than or Equal To (>=)
+
+   <p>The greater than operator (>) works like this:
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+   <p>  FROM FRIENDS
+   <p>  WHERE AREACODE > 300;
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+<h>ANALYSIS:
+
+   <p>This example found all the area codes greater than (but not including)
+   300. To include 300, type this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <l>2  FROM FRIENDS
+  <l>3  WHERE AREACODE >= 300;
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+<h>ANALYSIS:
+
+   <p>With this change you get area codes starting at 300 and going up. You
+   could achieve the same results with the statement AREACODE > 299.
+       ______________________________________________________________
+
+     <p>NOTE: Notice that no quotes surround 300 in this SQL statement.
+     Number-defined fieldsnumber-defined fields do not require quotes.
+       ______________________________________________________________
+
+<p>Less Than (<) and Less Than or Equal To (<=)
+
+   <p>As you might expect, these comparison operators work the same way as >
+   and >= work, only in reverse:
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE < 'LA';
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- ------
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+       ______________________________________________________________
+
+     <p>NOTE: How did STATE get changed to ST? Because the column has only
+     two characters, the column name is shortened to two characters in
+     the returned rows. If the column name had been COWS, it would come
+     out CO. The widths of AREACODE and PHONE are wider than their
+     column names, so they are not truncated.
+       ______________________________________________________________
+
+<h>ANALYSIS:
+
+   <p>Wait a minute. Did you just use < on a character field? Of course you
+   did. You can use any of these operators on any data type. The result
+   varies by data type. For example, use lowercase in the following state
+   search:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE < 'la';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+<h>ANALYSIS:
+
+   <p>Uppercase is usually sorted before lowercase; therefore, the uppercase
+   codes returned are less than 'la'. Again, to be safe, check your
+   implementation.
+       ______________________________________________________________
+
+     <p>TIP: To be sure of how these operators will behave, check your
+     language tables. Most PC implementations use the ASCII tables. Some
+     other platforms use EBCDIC.
+       ______________________________________________________________
+
+   <p>To include the state of Louisiana in the original search, type
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE <= 'LA';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+<h>Inequalities (< > or !=)
+
+   <p>When you need to find everything except for certain data, use the
+   inequality symbol, which can be either < > or !=, depending on your
+   SQL implementation. For example, to find everyone who is not AL, type
+   this:
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE FIRSTNAME <> 'AL';
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+
+   <p>To find everyone not living in California, type this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE != 'CA';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+       ______________________________________________________________
+
+     <p>NOTE: Notice that both symbols, <> and !=, can express "not
+     equals."
+       ______________________________________________________________
+
+<h>Character Operators
+
+   <p>You can use character operators to manipulate the way character
+   strings are represented, both in the output of data and in the process
+   of placing conditions on data to be retrieved. This section describes
+   two character operators: the LIKE operator and the || operator, which
+   conveys the concept of character concatenation.
+
+<h>I Want to Be Like LIKE
+
+   <p>What if you wanted to select parts of a database that fit a pattern
+   but weren't quite exact matches? You could use the equal sign and run
+   through all the possible cases, but that process would be boring and
+   time-consuming. Instead, you could use LIKE. Consider the following:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM PARTS;
+
+<h>OUTPUT:
+
+<h>NAME           LOCATION       PARTNUMBER
+-------------- -------------- ----------
+<l>APPENDIX       MID-STOMACH             1
+<l>ADAMS APPLE    THROAT                  2
+<l>HEART          CHEST                   3
+<l>SPINE          BACK                    4
+<l>ANVIL          EAR                     5
+<l>KIDNEY         MID-BACK                6
+
+   <p>How can you find all the parts located in the back? A quick visual
+   inspection of this simple table shows that it has two parts, but
+   unfortunately the locations have slightly different names. Try this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM PARTS
+  <p>3  WHERE LOCATION LIKE '%BACK%';
+
+<h>NAME           LOCATION       PARTNUMBER
+-------------- -------------- ----------
+<l>SPINE          BACK                    4
+<l>KIDNEY         MID-BACK                6
+
+<h>ANALYSIS:
+
+   <p>You can see the use of the percent sign (%) in the statement after
+   LIKE. When used inside a LIKE expression, % is a wildcard. What you
+   asked for was any occurrence of BACK in the column location. If you
+   queried
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+   <p>  FROM PARTS
+   <p>  WHERE LOCATION LIKE 'BACK%';
+
+   <p>you would get any occurrence that started with BACK:
+
+<h>OUTPUT:
+
+<h>NAME           LOCATION       PARTNUMBER
+-------------- -------------- ----------
+<l>SPINE          BACK                    4
+
+   <p>If you queried
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+   <p>  FROM PARTS
+   <p>  WHERE NAME LIKE 'A%';
+
+   <p>you would get any name that starts with A:
+
+<h>OUTPUT:
+
+<h>NAME           LOCATION       PARTNUMBER
+-------------- -------------- ----------
+<l>APPENDIX       MID-STOMACH             1
+<l>ADAMS APPLE    THROAT                  2
+<l>ANVIL          EAR                     5
+
+   <p>Is LIKE case sensitive? Try the next query to find out.
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+   <p>  FROM PARTS
+   <p>  WHERE NAME LIKE 'a%';
+
+<p>no rows selected
+
+<h>ANALYSIS:
+
+   <p>The answer is yes. References to data are always case sensitive.
+
+   <p>What if you want to find data that matches all but one character in a
+   certain pattern? In this case you could use a different type of
+   wildcard: the underscore.
+
+<h>Underscore (_)
+
+   <p>The underscore is the single-character wildcard. Using a modified
+   version of the table FRIENDS, type this:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM FRIENDS;
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>MERRICK        UD                   300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+<l>BOSS           SIR                  204 555-2345 CT 95633
+
+   <p>To find all the records where STATE starts with C, type the following:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE LIKE 'C_';
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+<l>BOSS           SIR                  204 555-2345 CT 95633
+
+   <h>You can use several underscores in a statement:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE PHONE LIKE'555-6_6_';
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+
+   <h>The previous statement could also be written as follows:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE PHONE LIKE '555-6%';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+
+   <p>Notice that the results are identical. These two wildcards can be
+   combined. The next example finds all records with L as the second
+   character:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE FIRSTNAME LIKE '_L%';
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+
+<h>Concatenation (||)
+
+   <p>The || (double pipe) symbol concatenates two strings. Try this:
+
+<h>INPUT:
+
+<p>SQL> SELECT FIRSTNAME || LASTNAME ENTIRENAME
+  <p>2  FROM FRIENDS;
+
+<h>OUTPUT:
+
+<h>ENTIRENAME
+----------------------
+<l>AL             BUNDY
+<l>AL             MEZA
+<l>BUD            MERRICK
+<l>JD             MAST
+<l>FERRIS         BULHER
+<l>ALTON          PERKINS
+<l>SIR            BOSS
+<p>7 rows selected.
+
+<h>ANALYSIS:
+
+   <p>Notice that || is used instead of +. If you use + to try to
+   concatenate the strings, the SQL interpreter used for this example
+   (Personal Oracle7) returns the following error:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT FIRSTNAME + LASTNAME ENTIRENAME
+   <p>  FROM FRIENDS;
+
+<p>ERROR:
+<p>ORA-01722: invalid number
+
+   <p>It is looking for two numbers to add and throws the error invalid
+   number when it doesn't find any.
+       ______________________________________________________________
+
+     <p>NOTE: Some implementations of SQL use the plus sign to concatenate
+     strings. Check your implementation.
+       ______________________________________________________________
+
+   <p>Here's a more practical example using concatenation:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT LASTNAME || ',' || FIRSTNAME NAME
+   <p>  FROM FRIENDS;
+
+<h>NAME
+------------------------------------------------------
+<l>BUNDY    , AL
+<l>MEZA     , AL
+<l>MERRICK  , BUD
+<l>MAST     , JD
+<l>BULHER   , FERRIS
+<l>PERKINS  , ALTON
+<l>BOSS     , SIR
+<p>7 rows selected.
+
+<h>ANALYSIS:
+
+   <p>This statement inserted a comma between the last name and the first
+   name.
+       ______________________________________________________________
+
+     <p>NOTE: Notice the extra spaces between the first name and the last
+     name in these examples. These spaces are actually part of the data.
+     With certain data types, spaces are right-padded to values less
+     than the total length allocated for a field. See your
+     implementation. Data types will be discussed on Chapter 9,
+     "Creating and Maintaining Tables."
+       ______________________________________________________________
+
+   <p>So far you have performed the comparisons one at a time. That method
+   is fine for some problems, but what if you need to find all the people
+   at work with last names starting with P who have less than three days
+   of vacation time?
+
+<h>Logical Operators
+
+   <p>logical operatorsLogical operators separate two or more conditions in
+   the WHERE clause of an SQL statement.
+
+   <p>Vacation time is always a hot topic around the workplace. Say you
+   designed a table called VACATION for the accounting department:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM VACATION;
+
+<h>OUTPUT:
+
+<h>LASTNAME       EMPLOYEENUM    YEARS  LEAVETAKEN
+-------------- ----------- --------- ----------
+<l>ABLE                   101        2           4
+<l>BAKER                  104        5          23
+<l>BLEDSOE                107        8          45
+<l>BOLIVAR                233        4          80
+<l>BOLD                   210       15         100
+<l>COSTALES               211       10          78
+<p>6 rows selected.
+
+   <p>Suppose your company gives each employee 12 days of leave each year.
+   Using what you have learned and a logical operator, find all the
+   employees whose names start with B and who have more than 50 days of
+   leave coming.
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT LASTNAME,
+  <l>2  YEARS * 12 - LEAVETAKEN REMAINING
+  <l>3  FROM VACATION
+  <l>4  WHERE LASTNAME LIKE 'B%'
+  <l>5  AND
+  <l>6  YEARS * 12 - LEAVETAKEN > 50;
+
+<h>LASTNAME       REMAINING
+-------------- ---------
+<l>BLEDSOE               51
+<l>BOLD                  80
+
+<h>ANALYSIS:
+
+   <p>This query is the most complicated you have done so far. The SELECT
+   clause (lines 1 and 2) uses arithmetic operators to determine how many
+   days of leave each employee has remaining. The normal precedence
+   computes YEARS * 12 - LEAVETAKEN. (A clearer approach would be to
+   write (YEARS * 12) - LEAVETAKEN.)
+
+   <p>LIKE is used in line 4 with the wildcard % to find all the B names.
+   Line 6 uses the > to find all occurrences greater than 50.
+
+   <p>The new element is on line 5. You used the logical operator AND to
+   ensure that you found records that met the criteria in lines 4 and 6.
+
+<h>AND
+
+   <p>AND means that the expressions on both sides must be true to return
+   TRUE. If either expression is false, AND returns FALSE. For example,
+   to find out which employees have been with the company for 5 years or
+   less and have taken more than 20 days leave, try this:
+
+<h>INPUT:
+
+<p>SQL> SELECT LASTNAME
+  <p>2  FROM VACATION
+  <p>3  WHERE YEARS <= 5
+  <p>4  AND
+  <p>5  LEAVETAKEN > 20 ;
+
+<h>OUTPUT:
+
+<h>LASTNAME
+--------
+<l>BAKER
+<l>BOLIVAR
+
+   <p>If you want to know which employees have been with the company for 5
+   years or more and have taken less than 50 percent of their leave, you
+   could write:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT LASTNAME WORKAHOLICS
+  <p>2  FROM VACATION
+  <p>3  WHERE YEARS >= 5
+  <p>4  AND
+  <p>5  ((YEARS *12)-LEAVETAKEN)/(YEARS * 12) < 0.50;
+
+<h>WORKAHOLICS
+---------------
+<l>BAKER
+<l>BLEDSOE
+
+   <p>Check these people for burnout. Also check out how we used the AND to
+   combine these two conditions.
+
+<h>OR
+
+   <p>You can also use OR to sum up a series of conditions. If any of the
+   comparisons is true, OR returns TRUE. To illustrate the difference,
+   conditionsrun the last query with OR instead of with AND:
+
+<h>INPUT:
+
+<p>SQL> SELECT LASTNAME WORKAHOLICS
+  <p>2  FROM VACATION
+  <p>3  WHERE YEARS >= 5
+  <p>4  OR
+  <p>5   ((YEARS *12)-LEAVETAKEN)/(YEARS * 12) >= 0.50;
+
+<h>OUTPUT:
+
+<h>WORKAHOLICS
+---------------
+<l>ABLE
+<l>BAKER
+<l>BLEDSOE
+<l>BOLD
+<l>COSTALES
+
+<h>ANALYSIS:
+
+   <p>The original names are still in the list, but you have three new
+   entries (who would probably resent being called workaholics). These
+   three new names made the list because they satisfied one of the
+   conditions. OR requires that only one of the conditions be true in
+   order for data to be returned.
+
+<h>NOT
+
+   <p>NOT means just that. If the condition it applies to evaluates to TRUE,
+   NOT make it FALSE. If the condition after the NOT is FALSE, it becomes
+   TRUE. For example, the following SELECT returns the only two names not
+   beginning with B in the table:
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM VACATION
+  <p>3  WHERE LASTNAME NOT LIKE 'B%';
+
+<h>OUTPUT:
+
+<h>LASTNAME       EMPLOYEENUM    YEARS LEAVETAKEN
+-------------- ----------- -------- ----------
+<l>ABLE                   101        2          4
+<l>COSTALES               211       10         78
+
+   <p>NOT can also be used with the operator IS when applied to NULL. Recall
+   the PRICES table where we put a NULL value in the WHOLESALE column
+   opposite the item ORANGES.
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT * FROM PRICE;
+
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+<l>CHEESE               .89
+<l>APPLES               .23
+<l>ORANGES
+<p>7 rows selected.
+
+   <p>To find the non-NULL items, type this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM PRICE
+  <p>3  WHERE WHOLESALE IS NOT NULL;
+
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+<l>CHEESE               .89
+<l>APPLES               .23
+<p>6 rows selected.
+
+<h>Set Operators
+
+   <p>On Chapter 1, "Introduction to SQL," you learned that SQL is based on
+   the theory of sets. The following sections examine set operators.
+
+<h>UNION and UNION ALL
+
+   <p>UNION returns the results of two queries minus the duplicate rows. The
+   following two tables represent the rosters of teams:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM FOOTBALL;
+
+<h>OUTPUT:
+
+<h>NAME
+--------------------
+<l>ABLE
+<l>BRA1VO
+<l>CHARLIE
+<l>DECON
+<l>EXITOR
+<l>FUBAR
+<l>GOOBER
+<p>7 rows selected.
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM SOFTBALL;
+
+<h>OUTPUT:
+
+<h>NAME
+--------------------
+<l>ABLE
+<l>BAKER
+<l>CHARLIE
+<l>DEAN
+<l>EXITOR
+<l>FALCONER
+<l>GOOBER
+<p>7 rows selected.
+
+   <p>How many different people play on one team or another?
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT NAME FROM SOFTBALL
+  <p>2  UNION
+  <p>3  SELECT NAME FROM FOOTBALL;
+
+<h>NAME
+--------------------
+<l>ABLE
+<l>BAKER
+<l>BRAVO
+<l>CHARLIE
+<l>DEAN
+<l>DECON
+<l>EXITOR
+<l>FALCONER
+<l>FUBAR
+<l>GOOBER
+<p>10 rows selected.
+
+   <p>UNION returns 10 distinct names from the two lists. How many names are
+   on both lists (including duplicates)?
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT NAME FROM SOFTBALL
+  <p>2  UNION ALL
+  <p>3  SELECT NAME FROM FOOTBALL;
+
+<h>NAME
+--------------------
+<l>ABLE
+<l>BAKER
+<l>CHARLIE
+<l>DEAN
+<l>EXITOR
+<l>FALCONER
+<l>GOOBER
+<l>ABLE
+<l>BRAVO
+<l>CHARLIE
+<l>DECON
+<l>EXITOR
+<l>FUBAR
+<l>GOOBER
+<p>14 rows selected.
+
+<h>ANALYSIS:
+
+   <p>The combined list--courtesy of the UNION ALL statement--has 14 names.
+   UNION ALL works just like UNION except it does not eliminate
+   duplicates. Now show me a list of players who are on both teams. You
+   can't do that with UNION--you need to learn INTERSECT.
+
+<h>INTERSECT
+
+   <p>INTERSECT returns only the rows found by both queries. The next SELECT
+   statement shows the list of players who play on both teams:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM FOOTBALL
+  <p>2  INTERSECT
+  <p>3  SELECT * FROM SOFTBALL;
+
+<h>OUTPUT:
+
+<h>NAME
+--------------------
+<l>ABLE
+<l>CHARLIE
+<l>EXITOR
+<l>GOOBER
+
+<h>ANALYSIS:
+
+   <p>In this example INTERSECT finds the short list of players who are on
+   both teams by combining the results of the two SELECT statements.
+
+<h>MINUS (Difference)
+
+   <p>Minus returns the rows from the first query that were not present in
+   the second. For example:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM FOOTBALL
+  <p>2  MINUS
+  <p>3  SELECT * FROM SOFTBALL;
+
+<h>OUTPUT:
+
+<h>NAME
+--------------------
+<l>BRAVO
+<l>DECON
+<l>FUBAR
+
+<h>ANALYSIS:
+
+   <p>The preceding query shows the three football players who are not on
+   the softball team. If you reverse the order, you get the three
+   softball players who aren't on the football team:
+
+<h>INPUT:
+
+<p>SQL> SELECT * FROM SOFTBALL
+  <p>2  MINUS
+  <p>3  SELECT * FROM FOOTBALL;
+
+<h>OUTPUT:
+
+<h>NAME
+--------------------
+<l>BAKER
+<l>DEAN
+<l>FALCONER
+
+<h>Miscellaneous Operators: IN and BETWEEN
+
+   <p>The two operators IN and BETWEEN provide a shorthand for functions you
+   already know how to do. If you wanted to find friends in Colorado,
+   California, and Louisiana, you could type the following:
+
+<h>INPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE= 'CA'
+  <p>4  OR
+  <p>5  STATE ='CO'
+  <p>6  OR
+  <p>7  STATE = 'LA';
+
+<h>OUTPUT:
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+
+   <p>Or you could type this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE IN('CA','CO','LA');
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+
+<h>ANALYSIS:
+
+   <p>The second example is shorter and more readable than the first. You
+   never know when you might have to go back and work on something you
+   wrote months ago. IN also works with numbers. Consider the following,
+   where the column AREACODE is a number:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM FRIENDS
+  <p>3  WHERE AREACODE IN(100,381,204);
+
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BOSS           SIR                  204 555-2345 CT 95633
+
+   <p>If you needed a range of things from the PRICE table, you could write
+   the following:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL>  SELECT *
+  <p>2  FROM PRICE
+  <p>3  WHERE WHOLESALE > 0.25
+  <p>4  AND
+  <p>5  WHOLESALE < 0.75;
+
+<h>ITEM           WHOLESALE
+-------------- ---------
+<l>TOMATOES             .34
+<l>POTATOES             .51
+<l>BANANAS              .67
+<l>TURNIPS              .45
+
+   <p>Or using BETWEEN, you would write this:
+
+<h>INPUT/OUTPUT:
+
+<p>SQL> SELECT *
+  <p>2  FROM PRICE
+  <p>3  WHERE WHOLESALE BETWEEN 0.25 AND 0.75;
+
+<h>ITEM            WHOLESALE
+-------------- ---------
+<l>TOMATOES              .34
+<l>POTATOES              .51
+<l>BANANAS               .67
+<l>TURNIPS               .45
+
+   <p>Again, the second example is a cleaner, more readable solution than
+   the first.
+       ______________________________________________________________
+
+     <p>NOTE: If a WHOLESALE value of 0.25 existed in the PRICE table, that
+     record would have been retrieved also. Parameters used in the
+     BETWEEN operator are inclusive parametersinclusive.
+       ______________________________________________________________
+
+<h>Summary
+
+   <p>At the beginning of Chapter 3, you knew how to use the basic SELECT
+   and FROM clauses. Now you know how to use a host of operators that
+   enable you to fine-tune your requests to the database. You learned how
+   to use arithmetic, comparison, character, logical, and set operators.
+   This powerful set of tools provides the cornerstone of your SQL
+   knowledge.
+
+<h>Q&A
+
+          <p>Q How does all of this information apply to me if I am not
+          using SQL from the command line as depicted in the examples?
+
+          <p>A Whether you use SQL in COBOL as Embedded SQL or in
+          Microsoft's Open Database Connectivity (ODBC), you use the same
+          basic constructions. You will use what you learned toChapter
+          and yesterChapter repeatedly as you work with SQL.
+
+          <p>Q Why are you constantly telling me to check my implementation?
+          I thought there was a standard!
+
+          <p>A There is an ANSI standard (the most recent version is 1992);
+          however, most vendors modify it somewhat to suit their
+          databases. The basics are similar if not identical, and each
+          instance has extensions that other vendors copy and improve. We
+          have chosen to use ANSI as a starting point but point out the
+          differences as we go along.
+
+<h>Workshop
+
+   <p>The Workshop provides quiz questions to help solidify your
+   understanding of the material covered, as well as exercises to provide
+   you with experience in using what you have learned. Try to answer the
+   quiz and exercise questions before checking the answers in Appendix F,
+   "Answers to Quizzes and Exercises."
+
+<h>Quiz
+
+   <p>Use the FRIENDS table to answer the following questions.
+<h>LASTNAME       FIRSTNAME       AREACODE PHONE    ST ZIP
+-------------- -------------- --------- -------- -- -----
+<l>BUNDY          AL                   100 555-1111 IL 22333
+<l>MEZA           AL                   200 555-2222 UK
+<l>MERRICK        BUD                  300 555-6666 CO 80212
+<l>MAST           JD                   381 555-6767 LA 23456
+<l>BULHER         FERRIS               345 555-3223 IL 23332
+<l>PERKINS        ALTON                911 555-3116 CA 95633
+<l>BOSS           SIR                  204 555-2345 CT 95633
+
+          <p>1. Write a query that returns everyone in the database whose
+          last name begins with M.
+
+          <p>2. Write a query that returns everyone who lives in Illinois
+          with a first name of AL.
+
+          <p>3. Given two tables (PART1 and PART2) containing columns named
+          PARTNO, how would you find out which part numbers are in both
+          tables? Write the query.
+
+          <p>4. What shorthand could you use instead of WHERE a >= 10 AND a
+          <=30?
+
+          <p>5. What will this query return?
+
+<p>SELECT FIRSTNAME
+<p>FROM FRIENDS
+<p>WHERE FIRSTNAME = 'AL'
+  <p>AND LASTNAME = 'BULHER';
+
+<h>Exercises
+
+          <p>1. Using the FRIENDS table, write a query that returns the
+          following:
+
+<h>NAME                ST
+------------------- --
+<l>AL             FROM IL
+
+<h>INPUT:
+
+<p>SQL> SELECT (FIRSTNAME || 'FROM') NAME, STATE
+  <p>2  FROM FRIENDS
+  <p>3  WHERE STATE = 'IL'
+  <p>4  AND
+  <p>5  LASTNAME = 'BUNDY';
+
+<h>OUTPUT:
+
+<h>NAME                ST
+------------------- --
+<l>AL             FROM IL
+
+          <p>2. Using the FRIENDS table, write a query that returns the
+          following:
+
+<h>NAME                       PHONE
+-------------------------- -------------
+<l>MERRICK, BUD               300-555-6666
+<l>MAST, JD                   381-555-6767
+<l>BULHER, FERRIS             345-555-3223
+     _________________________________________________________________
+
+  

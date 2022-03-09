@@ -1,0 +1,431 @@
+URL: http://ref.web.cern.ch/ref/CERN/CNL/2001/002/cern-computing/
+
+                   <h>30 Years of Computing at CERN - Part 1
+
+                <h>Paolo Zanella, Former Division Leader of DD
+                           _____________________
+
+<h>Abstract
+
+   <p>This is the first of a three-part series,made out of the original
+   (excellent) paperwritten by Paolo Zanellain 1990. I hope that it can
+   serve future Computoriansto write "IT at CERN: its birth, its life
+   ..."
+   <h>- Miguel Marquina (editor)-
+     _________________________________________________________________
+
+   <h>1. INTRODUCTION
+
+   <p>The origins of computing machinery can be traced back to 3000years ago
+   when the Chinese introduced a primitive form of abacus,or 300 years
+   ago when Schickard, Pascal and Leibniz invented thefirst arithmetic
+   machines. For us at CERN it all started 30 yearsago when one of the
+   first electronic digital computers, a hugeFerranti Mercury, was
+   installed. It was the beginning of a successstory which has changed
+   the way to do physics and, as a matter offact, to do any work at all
+   in the Laboratory.
+
+   <p>The story goes on and the changes brought in by the newinformation
+   technologies continue to affect us at an astonishingrate. Those who
+   witnessed the beginning of the information era wereconscious of the
+   potential impact of those mar marvellous machineson Physics as well as
+   on Society, but they could hardly imaginewhat was to come. In
+   retrospect, we can say that the 30 years whichseparate us from the
+   days of those first generation machines, havebeen years of struggle,
+   of sweat and tea tears, of doubt and ofpainful reappraisal, but also
+   years of discovery, of excitement, ofachievement and of pride to the
+   actors in this uniqueadventure.
+
+   <p>Of those 30 CERN years, I missed only the first three. I did notmiss,
+   however, the joys of programming first generation machines,although in
+   a different environment. Actually, when I joined CERNearly in 1962,
+   the only machines around were still made out ofvacuum tubes. I am,
+   therefore, rather well placed to tell mypersonal account of the what,
+   why and how of the evolutionof automatic computing at CERN.
+
+   <p>I shall not even attempt to be exhaustive, let alone objective.I shall
+   tell the story as I saw it, or rather as I lived it.Instead of
+   compressing 262800 hours into 1, I shall select andreport only those
+   events which, in my opinion, are either realmilestones or make an
+   interesting story, and I shall follow themthrough to their
+   consequences, even if this means breaking thestrict chronological
+   order. The basic features of the largehigh-performance systems which
+   have played a major role in the CERNComputer Center are listed in
+   Appendix1.
+
+   <h>2. THE BIG BANG
+
+   <p>It took six days for God to build the Universe and a little overtwo
+   years for the Ferranti engineers to produce our Mercury,a large
+   assembly of complex circuitry hidden inside a row ofaustere cabinets,
+   making few concessions ons to people's curiosity.At about the same
+   time the PS was built in five years and today onecan build
+   accelerators 1000 times more powerful, always in aboutfive years. The
+   Mercury was 1000 times less powerful (16.6 kHz)than a modern personal
+   computer which is now mass-produced byrobotized assembly lines at the
+   rate of 2 or 3 per minute!
+
+   <p>The purchasing contract was signed on the 25th of May, 1956
+   andstipulated that the machine with 1024 40-bit words of fast [ 120
+   microsec to read/write one word from theaccumulator] core store and a
+   slow [8.75 mseclatency] drum store having a total capacity of
+   16384words of 40 binary digits, would be shipped to CERN in
+   earlyFebruary 1957 and installation shall be completed by 1st
+   May,1957.... The details of the progress of manufacture will
+   besubmitted at intervals of one month. The Mercury had a clockcycle of
+   60 microsec. It took 180 microsec to add and 300 microsecto multiply
+   two long words of 40 bits. It had floating pointarithmetic. Division,
+   however, had to be programmed. It isinteresting to note the absence of
+   the word software fromthe contract, the only relevant mention being:
+   any programs andsub-routines which Ferranti will prepare will be made
+   available toCERN free of charge. Unbundling and licensing were
+   unknownin the 50's.
+
+   <p>The computer actually arrived during the summer of 1958and passed the
+   acceptance tests in October of that year. Followingits successful
+   introduction, a thick file of orders revealed theurgent need for spare
+   valves and of tape bins (a criticaldevice in those days of punched
+   paper tape input/output!).
+
+   <p>At the end of 1958, the availability of a programming languagecalled
+   Autocode, attracted the first users tothe computer centre and marked
+   the beginning of the 30 years ofcomputing covered by this paper. It is
+   interesting to note that thefirst Mercury Autocode compiler was
+   written in 1956(by R. A. Brooker), two years before the appearance of
+   the firstFORTRAN compiler! It had many features which appeared laterin
+   FORTRAN. Due to memory limitations, variable names wererestricted to a
+   single alphabetic character (5-bit Ferranti code).It is worth noting
+   that in the mid 50's the European computerindustry was still
+   competitive. As far as competence, innovativeideas and successful
+   products are concerned, European companieslike Ferranti, English
+   Electric and Elliott in England, Telefunken in Germany andBull in
+   France had little to envy their Americancompetitors (e.g.
+   ERA/Remington Rand, NCR, IBM). Thesize and the drive of the American
+   market were, however, going tomake the difference quite rapidly in the
+   60's.
+
+   <p>The reasons behind the decision to acquire a Mercury weretechnical,
+   political and financial. Technically the Mercury wasdefinitely one of
+   the most advanced machines around. It wasconsidered superior to the
+   Ferranti Pegasus, to the Elliott 404, tothe English Electric 'Deuce',
+   to the Bull 'Gamma 311' and todrum-type machines like the IBM 650.
+   Ferranti was set up to producea dozen units and CERN was going to get
+   serial number 6. The factthat Harwell and Saclay had ordered Mercury's
+   was given a certainweight. CERN had no experience in electronic
+   digital computers andit was better to be part of a club of users. As
+   to the price (onemillion Swiss Francs), it was five times cheaper than
+   equivalentAmerican machines like the ERA 1101.
+
+   <p>Discussions went on for several months at CERN in 1955 and
+   1956.External experts were involved. Fifteen years after Konrad
+   Zuse'srelay-based Z3 considered by many as the first general
+   purposecomputer, ten years after the electronic ENIAC, and six years
+   afterMaurice Wilkes' EDSAC, people were still debating on the virtues
+   ofbinary versus decimal machines, on the importance of floating
+   pointarithmetic, on the size of words (the Z3 had 22-bit and the
+   EDSAC32-bit words; the ENIAC was a decimal machine with 10
+   digitswords. The size of central memory was 64 words for the Z3, 2n
+   forthe ENIAC and 512 for the EDSAQ, and on the best way to input
+   andoutput data (punched film, 5-7-8 channels papertape, or
+   cards).Practical problems had to do with the unreliability of
+   thehardware, the organization of the operations and the recruitment
+   ofexperts. Obsolescence was already a problem.
+
+   <p>CERN decided that the machine should be purely binary, that32-bit
+   words were too short, and that the speed should be as highas possible
+   (in particular multiplication time should be under amillisecond). It
+   also concluded that the speed and size ofmemory were very important
+   (several tens of thousands of binarydigits were a clear necessity),
+   while the availability offloating point hardware was considered a very
+   desirable,although not quite indispensable, feature of a
+   scientificcomputer. But what really makes it worthwhile to have
+   amachine, is the enthusiasm for carrying out the most
+   difficultcomputations, as an American physicist put it in a
+   letterdescribing his experience with a digital computer or 'thecourage
+   to go ahead and solve problems which would have seemed toodifficult to
+   do otherwise.'
+
+   <p>The computers of that time had colorful names like ILLIAC at
+   theUniversity of Illinois, AVIDAC at Argonne, MANIAC, UNIVAC,
+   etc...Most of them were prototypes. Everything was very
+   muchexperimental. The operations arrangements at the ILLIAC
+   weredescribed as follows: 'The user deposits his punched paper tapein
+   a box with instructions or the operator. The operator takesthese
+   tapes, and inserts them in the machine in turn. If the codeis correct,
+   the machine delivers the answers and these may bepicked up by the user
+   the next morning. If there are errors in thecode, the operator carries
+   out the test routines requested and theresults of these tests are
+   deposited so that these may be reviewedby the user the next morning.
+   Thus, the whole operation of themachine becomes a fairly automatic
+   affair'. This was more orless the style adopted for our operations
+   thirty years ago.
+
+   <p>One of the first applications at CERN was the analysis of thepapertape
+   produced by the Instruments for the Evaluation ofPhotographs (IEPs),
+   used to scan and measure bubble chamber film.The first reports convey
+   a certain deception due to the slow taperead/write speed. Since
+   everything had to go through theaccumulator, the CPU was blocked
+   during I/0. It was immediatelyclear that there was a big mismatch
+   between the power of thecomputing engine and its input/output
+   capability.
+
+   <p>After some struggling with faulty tubes, tape bins,
+   machineinstructions and Autocode, people with lots of datadiscovered
+   the existence of an IBM 704 in Paris, which offeredsignificant
+   advantages such as magnetic tape units, cardreaders, line printers and
+   FORTRAN! FORTRAN II allowed6-characters variable names and, most
+   important, it simplified theexchange of programs with Berkeley and
+   Brookhaven. The 1959 CERNAnnual Report indicated already that as the
+   needsincrease, it will be necessary to envisage the replacement of
+   theMercury by a more powerful system. It was also quickly realizedthat
+   these so-called electronic brains required quite a lot ofhuman effort
+   to be effectively exploited. Hence the proposal todouble in 1960 the
+   computer center staff (from 10 to 20).
+
+   <p>So, by the end of the 50's, the fundamental forces, sociologicaland
+   technological, characteristic of every computer service, hadbeen
+   discovered, including the illusion that upgrading theresources would
+   solve all the problems and achieve the ultimategoal, i.e. make the
+   users happy!
+
+   <h>3. THE LESSONS OF THE EARLY 60'S
+
+   <p>The next big news was the arrival of the IBM 709, animproved version
+   of the 704, in January 1961. It was still a clumsyvacuum tube machine
+   but it featured FORTRAN and all those fancyperipherals apt to improve
+   the quality of life.
+
+   <p>The word length was 36 bits, the characters became 6-bit BCD,and the
+   core memory size jumped to 32K. The CPU was 4-5 timesfaster than that
+   of the Mercury. However, to compile a typicalFORTRAN program could
+   take several minutes! Tape bins made wayfor card trays. Magnetic tape
+   units read and wrote at 75 ips on 7tracks and the density was 200 bpi.
+   Peripherals were attached viatheir controllers to data channels. It
+   was a significant advance inthat it allowed as many as six peripheral
+   devices to access corememory buffers while the CPU performed other
+   work. Anotherimportant device which came with the 709 was the
+   so-called DirectData Connection, allowing for direct transmission of
+   data fromexternal equipment to memory via a channel. The speed was
+   notridiculous: in principle up to 1 Megabit/sec. The 709 was
+   alsoequipped with one of the first interrupt systems.
+
+   <p>The bad news was still the poor reliability, although theprogress was
+   already quite substantial. Unscheduled maintenancerepresented 11% of
+   the total time. Scheduled maintenance took awaya time slice of similar
+   size. So the down-time of the 709 comparednot too unfavorably with the
+   up time of the very first electroniccomputers.... The on-line card
+   reader and the printer did, however,slow down the operations
+   considerably. After one year of experienceCERN added a small IBM 1401,
+   in order to speed up the input/output,the job sequencing and the
+   operations. The concept of SPOOLing(Simultaneous Peripheral Operation
+   On-Line) with its 1/0 files(virtual reader/printer) has its origins in
+   those days. Programmingfor the 709 was considered a difficult activity
+   to be left to thespecialists who could understand and keep up-to-date
+   with the newtechniques and the operating conventions. The machine was
+   anexpensive resource which had to be used efficiently. To give anidea,
+   the list price was in the region of ten millions francs(1960 Swiss
+   francs!). In those days a magnetic tape cost 60 $(some 260 SF!). It
+   was at that time that the first inescapablecommittees appeared, e.g.
+   Computer Scheduling Committee,Computer Users Advisory Committee and
+   the Data Handling PolicyGroup.
+
+   <p>The Mercury had still its faithful users but suffered from thechronic
+   lack of modern, fast peripherals. In 1962, as part of alifting
+   operation, it was enhanced by the connection of an Ampextape unit,
+   compatible with IBM specifications and operatingat 3333 characters per
+   second (over 3 times the speed of thefastest paper tape reader and
+   some 20 times faster than a tapepunch). Also, two papertape-to-card
+   converters were installed toease the transfer of data from the Mercury
+   to the 709. By theend of 1962 it was possible to read the paper tape
+   from IEPs intothe Mercury, give it a first processing pass, write the
+   resultson magnetic tape and input it onto the IBM 709 for
+   furtheranalysis. The first application packages appeared at that
+   time,e.g. THRESH and GRIND used for the geometrical reconstruction
+   andkinematic analysis of bubble chamber events. It is amusing to
+   notethat, in spite of the growing workload and the frantic
+   developmentof codes, the machines were normally switched off at
+   weekends. Butthe practice of 24 hours/day, 7-days/week service was
+   around thecorner. It is also in interesting to realize that things
+   like theconnection of the Ampex tape unit to the Mercury were
+   entirelydesigned and implemented on site.
+
+   <p>The next problem was how to use all those Autocodeprograms on the 709.
+   One just wrote an Autocodecompiler for the 709. The difficulties of
+   developing software weresoon to be learned. The first Conference
+   recognizing the existenceof a software crisis was held in Munich in
+   1968. Why is softwarealways late and unreliable? People working today
+   with modern CASE(Computer Assisted Software Engineering) or OOP
+   (Object OrientedProgramming) tools are still trying to solve the
+   problem. But theanswer in those days was: better programming
+   languages.
+
+   <p>CERN FORTRAN was defined to ensure compatibility with
+   otherlaboratories and facilitate portability of codes. It was
+   felt,however, that FORTRAN was used mainly for historical reasonsand
+   new, more powerful languages would be needed to fully exploitthe
+   potential of the electronic computer. As we all know, CERN wasnot
+   affected by, or it missed completely, the language explosionwhich
+   started in the early 60's. ALGOL, Lisp, PL/I, PASCAL, ModulaII, ADA,
+   C, PROLOG, etc... did not raise above the level ofminority cultures.
+   FORTRAN evolved through its versions II, IV, 66,77, 8X, and it still
+   dominates the CERN programming landscape.
+
+   <p>It took some time to saturate the 709, but it was already clearthat
+   young physicists were becoming addicted. It was at that timethat the
+   first embryonic Operating System appeared under the nameof FORTRAN
+   Monitor System. Many other important events occurredin the early 60's,
+   such as the connection of computers on-line tofilm measuring devices
+   including the very fast automatic flyingspot digitizers (HPD, Luciole,
+   etc..) forerunners of the modernimage digitizers and the first
+   attempts to connect computersdirectly to experimental equipment
+   (on-line experiments). The IBM709 was operated on-line to an HPD to
+   measure both bubble and sparkchamber films. In September 1963 the 709
+   was replaced by a 7090, a transistorized version of the same machine,
+   about fourtimes more powerful.
+
+   <p>It was at that time that the investments and the efforts startedto pay
+   off. Over 300 000 frames of spark chamber film wereautomatically
+   scanned and measured in record time using an HPDFlying Spot Digitizer
+   on-line to the 7090. At about the same timecomputers were connected
+   on-line to experiments to monitor theequipment and to collect digital
+   data from the first filmlessdetectors (e.g. sonic spark chambers) onto
+   magnetic tape. The firstsuccessful demonstrations with fully auto
+   automatic digital patternrecognition showed that computers could be
+   programmed to replaceslow human operators in a variety of tasks.
+   Stories about computersdoing things faster, better and more reliably
+   than human beings gotaround producing the usual mixture re of
+   emotional reactions. In1970 the European Physics Society held a
+   Conference at CERN on the'Impact of Computers on Physics' and I
+   remember the reassuringstatement of an eminent physicist that 'so far
+   computers have notsignificantly contributed to any discovery'. It was
+   going to takeanother decade to see the HEP community wholeheartedly
+   acceptingthe computer as a critical component of their research
+   andadmitting it to their current technological foundation trilogy:
+   accelerators, detectors and computers.
+
+   <p>1970 was also the year when the 'CERN Computing and DataHandling
+   School' was launched to educate young physicists andstimulate the
+   sharing of computing experience between high-energyphysicists and
+   computer scientists. It turned out to be anexcellent idea. The School
+   is still alive and well, fulfilling aclear need. As to the
+   cross-fertilization across thephysics/computer science boundary, it
+   has developed into an idealpartnership.
+
+   <p>Actually the two disciplines have influenced each other from thevery
+   beginning. It was the physicist Bruno Rossi who built thefirst logic
+   circuits which then were developed into computerhardware, and
+   physicists have always been among the mostdemanding consumers of
+   computer cycles. Enrico Fermi, when asked inthe early fifties which
+   research project would he recommend to theyoung Italian physicists,
+   told them to design and build a computer.Indeed, physics research
+   could not have become what it is withoutthe computer, and conversely,
+   the development of the computer hasbeen deeply influenced by the needs
+   and vision of basicresearch.
+
+   <p>The study of the fundamental properties of elementary matterinvolves
+   the frontiers of human knowledge and pushes the technologyto the limit
+   of what is possible. Computer scientists have beenplaying with models
+   and formalisms, architectures and languages,inventing tools and
+   methodologies of a rather theoretical natureand they have been
+   sometimes accused of developing generalsolutions in search of specific
+   problems. When a dense problemspace meets a rich solution space some
+   good news can beexpected... Evidence of synergistic effects has been
+   accumulatingever since the beginning of the information era.
+   High-energyphysics and information technology are among those
+   disciplineswhich, in the second half of our century, have shown the
+   mostimpressive advances.
+                           _____________________
+
+                            <h>Appendix 1 (part 1)
+
+   <p>All the major computers having served in the CERN ComputerCentre in
+   the period 1958-1988 are listed in chronological order,together with
+   some configuration details and their characteristicfeatures.
+
+   <h>FERRANTI 'Mercury' [1958-1965]
+
+   <p>First generation vacuum tube machine (60 microsec clockcycle, 2 cycles
+   to load or store, 3 cycles to add and 5 cycles tomultiply 40 bit
+   longwords, no hardware division) with magnetic corestorage (1024
+   40-bit words, 120 microsec access time). Mercury'sprocessor had
+   floating point arithmetic and a B-Register (indexregister). Magnetic
+   drum auxiliary storage (16 Kwords of 40 bits,8.75 msec average
+   latency, 64 longwords transferred perrevolution). Paper tape I/0. Two
+   Ampex magtape units added in 1962.Autocode compiler. At the end of its
+   career it wasconnected on-line to an experiment (Missing Mass
+   Spectrometer). In1966 the Mercury was shipped to Poland as a gift to
+   the Academy ofMining and Metallurgy at Cracow.
+
+   <h>IBM 709 [1961-1963]
+
+   <p>Vacuum tube machine (12 microsec clock cycle, 2 cycles toadd and 15 on
+   average to multiply 36 bit integers, hardwireddivision and floating
+   point arithmetic, index registers) with corestorage (32 Kwords of 36
+   bits, 24 microsec access time). Cardreader (250 cpm) and card punch
+   (100 cpm). Line printer. Magtapeunits (7 tracks, 75 ips, 200 bpi).
+   Introduction of the DataChannel. FORTRAN compiler. FORTRAN Monitor
+   System.
+
+   <h>IBM 7090 [1963-1965]
+
+   <p>Transistorized second-generation machine ( 2.18 microsecclock cycle)
+   with core storage (32 Kwords of 36 bits, 4.36 microsecaccess time).
+   Card 1/0, Tape units (7 tracks, 112.5 ips, 200/556bpi). Eight Data
+   Channels. Interrupt System. FORTRAN compiler.Basic Monitor Operating
+   System (IBSYS). Connected on-line to FlyingSpot Digitizers (HPD and
+   Luciole) to measure bubble and sparkchamber films.
+
+   <h>CDC 6600 [1965-1975]
+
+   <p>Serial Number 3 (pre-production series machine). Transistormachine
+   designed by Seymour Cray and very compact for its time. CPUclock cycle
+   100 nsec. Core memory: 128 Kwords of 60 bits.Memory access 1 microsec,
+   but independent memory banks allowed forup to one access per clock
+   cycle. Instruction prefetch. Tenoverlapping functional units. Ten
+   autonomous peripheral processorunits (PPU's) each with 4K of 12-bit
+   words core memory. Huge disksover one meter in diameter holding 500
+   million bits. Tape Units(half inch tape, 7 tracks, 200, 556 and 800
+   bpi, and one inch tape,14 tracks, 800 bpi). High-speed card reader
+   (1200 cpm).
+
+   <p>First multi-programmed machine in the Computer Centre. However,SIPROS
+   multiprogramming operating system was abandoned by ControlData. Basic
+   SIPROS operating system had to be made at CERN. ThenChippewa OS (COS)
+   was installed. It evolved to SCOPE which waseventually used after
+   adapting it to CERN needs. This resulted in anon-trivial amount of
+   changes, thus deserving the renaming to CERNSCOPE. The 6600 was
+   connected to various FSD systems and to twoon-line computers, the
+   SDS920 and the IBM 1800, via CERN-made datalinks. In terms of
+   processing capacity the 6600 was about threequarters of a CERN unit or
+   ten times the 7090.
+
+   <p>The change-over from the IBM 7090 was planned to take threemonths
+   starting in January 1965. Major engineering overhauls had tobe done
+   instead during the first few years and ended up in atwo-months
+   shut-down in 1968 in order to modify the 6600 toincorporate logic and
+   packaging improvements which had beenintroduced in the production
+   machines. During this long period ofstruggling with hardware
+   instabilities and software development andchanges, computing work was
+   done partly by sending jobs to outsidecomputers and partly by
+   processing data on a CDC 3400, and later ona 3800, temporarily made
+   available at CERN by Control Data.
+
+   <h>CDC 3800 [1966-1968]
+
+   <p>The 3800 was a member of the 3000 series CDC family ofcomputers,
+   incompatible with the 6000 series machines. Moreconventional than the
+   6600, the 3800 had a 48-bit architecture. Thecore memory (64 Kwords)
+   was replaced by a faster one (800 nsec)during its staying at CERN.
+   This machine was eventually acquired bythe State of Geneva and
+   installed at the local University. At CERNit was replaced by a CDC
+   6400. It is worth noting that CERNacquired other machines of the 3000
+   s series, e.g. a 3100 for theFOCUS project offering semi-interactive
+   facilities and quicksampling of experimental data at the central
+   computers, and a 3200for interactive graphics applications.
+   _____________________
+
+   <h>For matters related to this article please contact the author.
+
+
+    <h>Cnl.Editor@cern.ch
+  

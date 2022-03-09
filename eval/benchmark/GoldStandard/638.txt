@@ -1,0 +1,128 @@
+PC World - Create professional interactive multimedia with Director MXUsername   
+
+
+
+
+      First Name
+      Last Name
+      Street Number
+      Street Name
+      Suburb
+      State New South Wales Queensland ACT Northern Territory South Australia 
+        Western Australia Victoria Tasmania 
+      Postcode
+      Email
+        
+<h>Wednesday | 27 Dec 2006 
+ <h>Site Menu
+
+       
+
+   
+    <l>Search for Jobs
+	<l>Build a Resume
+	<h>Sponsored Links
+<h>Reviews
+<h>Create professional interactive multimedia with Director MX
+Jason Whittaker, PC World
+18/08/2003 07:33:26
+<p>Long before Flash and Dream­­weaver, Director was Macromedia’s premiere 
+application for multimedia, providing extensive tools for designing animation 
+and interactive programs that could be distributed on CD-ROM and, later, across 
+the Web. 
+<p>The introduction — and roaring success — of Flash has resulted in something of a 
+decline for Director. As Macromedia moved towards a standard interface across 
+its MX suite (incorporating Flash, Dreamweaver, Freehand and ColdFusion), for a 
+time it appeared that Director was going to be left behind, but the latest 
+version has been integrated into the rest of Macromedia’s range. 
+<p>Unless you use OS X for the Mac, this release will probably seem much less 
+substantial than version 8.5, which introduced a widely adopted 3D engine, 
+although people who regularly use Macromedia products will welcome its 
+improvements to the workspace. 
+<p>Leaving interface changes aside, perhaps the biggest differences in the latest 
+release concentrates on integration with Flash. At a first glance, this brings 
+you up against Director’s main problem — interactivity — particularly across the 
+Web. Flash is ubiquitous, offers small file sizes for downloads and, since the 
+improvements to ActionScript in version 5.0, has moved towards becoming a usable 
+tool for application development rather than just animation — all at a fraction 
+of the cost of Director. 
+<p>Flash is far from perfect, however. The MX release included tools for video, but 
+they are still inferior to those for Director, as is support for bitmap as 
+opposed to vector images. In addition, Macromedia appears to be considering 
+Director as a support for back-end control of advanced features in Flash, 
+providing features such as copies of Flash Communications Server and Flash 
+Remoting MX that are useful for video conferencing, and live control of Flash 
+movies via ColdFusion or Microsoft’s .NET server. 
+<p>Beyond Flash, however, your reasons for upgrade will boil down to two things: do 
+you need to provide multimedia applications on disc for the new Macintosh 
+operating system as well as Windows, and how important are the (considerable) 
+improvements to Director’s interface to bring it in line with other MX programs? 
+If you are using version 8.5 and are not particularly interested in using 
+Director with Flash, or in producing applications for Mac, the changes 
+introduced in the last release will probably be sufficient for your 
+requirements. 
+<p>That said, changes to the interface should not be dismissed if you do a great 
+deal of work with this program (see here for a screenshot). Anyone who uses 
+Director MX is unlikely to wish to return to an earlier release, and 
+Macromedia’s general work on interface design looks set to pay real dividends 
+for multimedia professionals. These are also precisely the sort of people who 
+are likely to use both Director and Flash for different applications, so 
+integration between the two (as well as the rest of the MX range) will be 
+greatly appreciated. 
+<p>Director still remains the best of breed for producing interactive multimedia 
+for distribution on disc (DVD and CD) as well as online, with a price to match. 
+However, the very success of Flash means that anyone seeking to enter into 
+multimedia development will consider the cheaper program first. 
+<p>In brief: Macromedia Director MX
+If you need 3D or expect a lot of video and image work on disc, choose Director 
+— but for everything else, Flash is generally the better option.
+Price: $2699; $899 upgrade from 8.0/8.5
+Vendor: Macromedia
+Phone: 1800 001 014
+URL: www.macromedia.com.au 
+ 
+<p>[ Other stories about Macromedia, Microsoft ] 
+
+
+
+
+
+<h>Sponsored Links 
+<h>Current Edition
+ 
+
+   <h>Books / See all books
+ 
+<h>Upgrade IT: The 10-step guide to a better PC
+ <p>The beginner's guide to a better PC is perfect for anybody who has thought 
+about upgrading but needs some help in taking the first step. It's also great 
+for anybody starting a computer course, or who is just curious about what goes 
+on inside that big box in the corner.
+ 
+
+ <h>GoodGearGuide Product Review 
+<h>Sony Bravia KLV46X2000 (LCD TVs)
+ 
+ 
+  
+<p>Review: Good looks, good audio and excellent connection options do not make up 
+... 
+<p>Technology: Display Brightness: 450 cd/m2, Contrast ratio: 7000:1, Screen size: 
+46.0 in, ...    
+
+ <h>Job seekers
+<l>Post your resume online  
+<h>Advertisers
+ <p>Click here to advertise your jobs to thousands of job seekers monthly. 
+
+ <h>2 Free Issues of PC World with any New Subscription
+ <p>Purchase a new subscription to PC World and you will receive 14 issues for the 
+price of 12. 
+<p>That’s right, two free issues when you subscribe now — for just $66*! 
+<p>Offer expires on the 31st of December 2006 
+  <h>Upgrade IT: The 10-step guide to a better PC
+ <p>The beginner's guide to a better PC is perfect for anybody who 
+has thought about upgrading but needs some help in taking the first step. It's 
+also great for anybody starting a computer course, or who is just curious about 
+what goes on inside that big box in the corner. 
+

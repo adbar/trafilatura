@@ -1,0 +1,119 @@
+URL: http://jade.bioware.com/game_info/labour_of_love_p3.html
+
+
+ 
+    
+
+<h>Animation - Deo Perez, Lead Animator on Jade Empire
+
+<h>Explain the animation process. When does it begin and what is your role?
+
+<p> Deo: I am the lead animator for Jade Empire
+   and am in charge of the all the in-game animations - movements,
+   exploration, dialogue, creature and of course, combat. Basically, I am
+   the first animator on board the game and I'm the last animator to come
+   off the game.
+
+ <p>  I was there in the very beginning of the project, making decisions on
+   the animation pipeline, what animations are needed in the game, how
+   and when they should be played. Since we have a completely different
+   combat system from our past games, I also helped develop this
+   real-time combat system. With the help of the other members of the
+   core group, I plotted out the number of attacks per style, all the
+   different reactions, and the cool combat movements shared by the
+   different characters in the game. I also helped define what the dozens
+   of styles would be after consulting members of the Jade team, looking
+   through different references collected from the internet, books,
+   movies and instructional videos.
+
+<p>   Once we knew what we wanted for combat, the next step was to decide
+   whether to continue the old tradition of hand animating every move in
+   the game like our past games or try something called "motion capture."
+   After the long debate between the 2 processes, we decided on using
+   motion capture since we wanted the moves in the game especially in
+   each martial art styles to look authentic. Besides, it would help us
+   go through 700+ actions quicker. Did I say 700+ actions? With 30
+   fighting styles with around 20 - 40 moves each, add in the different
+   damage reactions, blocks, die cycles, movements and all the
+   exploration animations, it came out to more than 700+ actions. Not
+   every animation in Jade is motion captured. Creatures, animals and
+   monsters were still hand animated.
+
+<p>  Luckily I was not the only animator in the
+   project. As other projects were winding down and Jade's production
+   ramping up, I had the pleasure of leading most of the skilled and
+   talented animators at BioWare at least at one point in the project. My
+   job was to assign them different tasks and made sure that the quality
+   of animations they produced exceeded expectations.
+
+<p>   As we are coming to the end of the production cycle, some of the
+   animators moved to the cinematic department while others moved to new
+   projects. The remaining animators, including myself, are ironing out
+   animation bugs, fixing glitches, and polishing actions. We are also
+   assisting with balancing the styles, and like everyone on the project,
+   making sure that Jade Empire is engaging, fun, and one of the best
+   games ever developed by BioWare!
+
+<h>What challenges does the theme of Jade Empire -- one focused on martial arts
+and Chinese mythology -- bring to animation?
+
+<p>   Deo: Since the game was inspired by Ancient mythical China, it was a
+   challenge to gather specific reference during that time. Not only it
+   was hard to recreate that time period but we had to create the time
+   period if their myths and legends actually came true.
+
+<p>   The bulk of the challenge was developing a completely new combat
+   system, different from the Baldur's Gate series, Neverwinter Nights,
+   and Star Wars: Knights of the Old Republic. We wanted to immerse the
+   player in the combat scenarios, be in control of the character in the
+   midst of battle, and not just be a spectator. We needed a real time
+   combat system. Not only that, we wanted to give the player the ability
+   to learn different martial arts styles as he or she explores the world
+   of Jade Empire. So aside from coming up with a new combat system, we
+   had to come up with more than 30 unique fighting styles-including
+   weapons and magic with the martial arts.
+
+<h>I imagine you're not creating all of these complex martial arts animations
+off the top of your head. What are you using for point of reference?
+
+<p>   Deo: Hmmm... it seems you underestimate me. Just kidding! First of
+   all, I use my memories as one point of reference. I grew up in the
+   Philippines, studying in a Filipino-Chinese school from kindergarten
+   to high school (unfortunately, until now, I cannot speak Mandarin). My
+   friends then were Chinese whose parents came from either China or
+   Taiwan. One of my closest friends came straight from Taiwan. While all
+   of us were struggling learning Mandarin, he was struggling learning
+   English and Tagalog. I tried to recall some if not all their
+   mannerisms, even the way my Chinese teachers taught, how they acted in
+   a given situation and used that as reference in the game. Working on
+   Jade Empire makes me regret doodling during my Chinese classes instead
+   of paying attention to some of the lessons.
+
+<p>   Second, my wife is Thai but of Chinese ethnicity. Both her parents
+   came from China and immigrated to Thailand. I've been to Thailand with
+   her a few times and observed some of her Thai/Chinese/Buddhist
+   traditions. I know Thailand is no China, but like China, its culture
+   was untouched by western civilization. Thanks to my wife and her
+   family's love for Chinese soap operas, I was able to watch a few of
+   them, especially those set in ancient China.
+
+<p>   I have studied Taekwondo, Aikido, Capoiera, and a little kung fu self
+   defense but not enough to be a master of any. These helped create the
+   prototype style dubbed the "Deo" style. Bruce Lee, Jackie Chan, Jet
+   Li, Chow Yun Fat, Donnie Yen, Michelle Yeoh, Zhang Ziyi and other
+   martial arts experts were the greatest points of reference for most of
+   the martial arts styles. Thanks to Jade Empire, BioWare has a DVD and
+   VHS collection of the best martial arts movies and instructional
+   tapes. I also have to give credit to the mocap actors and stunt
+   persons who were gracious enough to lend their talents and expertise
+   to us. They helped us come up with the coolest moves for each style
+   and the best knock downs and die animations ever made for an action
+   RPG.
+
+<h>Is Jade Empire going to have the best animation we've ever seen in an RPG?
+
+<p>   Deo: The proud person in me says it is the best animation among the
+   recently released RPGs. The humble side of me says it's up there with
+   the best RPGs to date.
+
+   

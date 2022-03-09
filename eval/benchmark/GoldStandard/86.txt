@@ -1,0 +1,162 @@
+URL: http://itre.cis.upenn.edu/~myl/languagelog/archives/000844.html
+
+
+
+ <h>May 01, 2004
+
+ <h>The Dan Brown code
+
+ <p>   Approximately three people still haven't read Dan Brown's TheDa Vinci
+   Code:Mark Liberman,David Lupher, and reportedly at least one
+   otherperson (as yet unidentified).*
+
+ <p>   Regrettably, neither Barbara nor I are ableto claim that the third
+   non-reader is one of us. What can I say byway of excuse for this? I
+   found the book was on sale really cheap in CostCo when we were about
+   to leave on a trip to Europe. I bought it for the long, long flights
+   that lay ahead of us, without knowing much about it except that it was
+   supposed to be an intellectual mystery with cryptography and symbology
+   and stuffand the blurbs said it was great. I didn't open it, I just
+   grabbed oneoff a pallet of about 500 copies.Barbara was between
+   mysteries at the time, so she grabbed it from meand rapidly read it
+   over the next couple of daysbefore we even left for the airport. I
+   asked hopefully what it was like. She scowled and said something about
+   the Hardy Boys.My heart sank; I understood her to mean it was pathetic
+   butpossibly of interest to the 11-year-old market. By the time we
+   wereon our plane she had made sure thather flight bag contained a new
+   novel byMenking Hannell, and over southern Oregon she told me it was
+   great asusual. Unfortunately I had no better idea of what to do with
+   my time,so I opened The Da Vinci Code.
+
+  <p>  I am still trying to come up with a fully convincing account of
+   justwhat it was about his very first sentence, indeed the very first
+   word,that told me instantly that I was in for a very bad time
+   stylistically.
+
+ <p>   The Da Vinci Code may well be the only novel ever writtenthat begins
+   with the word renowned. Here is the paragraphwith which the book
+   opens. The scene (says a dateline under thechapter heading,
+   'Prologue') is the Louvre, late at night:
+
+  <p>    Renowned curator Jacques SauniÃ¨re staggered through the vaulted
+     archway of the museum's Grand Gallery. He lunged for the nearest
+     painting he could see, a Caravaggio. Grabbing the gilded frame, the
+     seventy-six-year-oldman heaved the masterpiece toward himself until
+     it tore from the wall and SauniÃ¨re collapsed backward in a heap
+     beneath the canvas.
+
+ <p>   I think what enabled the first word to tip me off that I was about to
+   spenda number of hours in the company of one of the worst prose
+   stylists in thehistory of literature was this. Putting curriculum
+   vitae details into complex modifiers on proper names or definite
+   descriptions is what you do in journalisticstories about deaths; you
+   just don't do it in describing an event in a narrative. So this might
+   be reasonabletext for the opening of a newspaper report the next day:
+
+  <p>    Renowned curator Jacques SauniÃ¨re died last night in the Louvreat
+     the age of 76.
+
+ <p>   But Brown packs such details into the first two words of anaction
+   sequence -- details of not only his protagonist's profession but also
+   his prestige in the field. It doesn't work here.It has the ring of
+   utter ineptitude. The details have no relevance, of course, to what is
+   being narrated (SauniÃ¨re isfleeing an attacker and pulls down the
+   painting to trigger the alarmsystem and the security gates). We could
+   have deduced that he would be fairly well known in the museum trade
+   from the fact that he wascurating at the Louvre.
+
+ <p>   The writing goes on in similar vein, committing style and wordchoice
+   blunders in almost every paragraph (sometimes every line). Look at the
+   phrase "the seventy-six-year-old man".It's a complete let-down: we
+   knew he was a man -- the anaphoric pronoun "he" had just been used to
+   refer to him. (This is perhaps where "curator" could have been slipped
+   in for thefirst time, without "renowned", if the passage were
+   rewritten.)Look at "heaved the masterpiece toward himself until it
+   tore from the wall and SauniÃ¨re collapsed backward in a heap beneath
+   the canvas." We don't need to know it's a masterpiece (it's a
+   Caravaggio hanging in the Louvre, that should be enough in the way of
+   credentials, for heaven's sake). Surely "toward him" feels better than
+   "toward himself" (though I guess both are grammatical here). Surely
+   "tore from the wall" shouldbe "tore away from the wall". Surely a
+   single man can't fall into aheap (there's only him, that's not a
+   heap). And why repeat the name"SauniÃ¨re" here instead of the pronoun
+   "he"? Who else is around? (Caravaggio hasn't been mentioned;
+   "aCaravaggio" uses the name as an attributive modifier with
+   conventionallyelided head noun "painting". That isn't a mention of the
+   man.)
+
+ <p>   Well, actually, there is someone else around, but we only learn
+   thatthree paragraphs down, after "a thundering iron gate" has fallen
+   (by theway, it's the fall that makes a thundering noise: there's no
+   such thingas a thundering gate)."The curator" (his profession is now
+   named a second time in case you missed it) "...crawled out from under
+   the canvas and scanned the cavernous spacefor someplace to hide" (the
+   colloquial American "someplace" seems very odd here as compared with
+   standard "somewhere"). Then:
+
+  <p>    A voice spoke, chillingly close. "Do not move."
+
+   <p>   On his hands and knees, the curator froze, turning his head slowly.
+
+ <p>     Only fifteen feet away, outside the sealed gate, the mountainous
+     silhouette of his attacker stared through the iron bars. He was
+     broad and tall, with ghost-pale skin and thinning white hair. His
+     irises were pink with dark red pupils.
+
+  <p>  Just count the infelicities here.A voice doesn't speak --a person
+   speaks; a voice is what a person speaks with."Chillingly close" would
+   be right in your ear, whereas this voice is fifteen feet away behind
+   the thundering gate. The curator (do we really need to betold his
+   profession a third time?) cannot slowly turn his head if hehas frozen;
+   freezing (as a voluntary human action) means temporarilyceasing all
+   muscular movements. And crucially, a silhouettedoes not stare! A
+   silhouette is a shadow. If SauniÃ¨re can see the man'spale skin,
+   thinning hair, iris color, and red pupils (all at fifteen feet),the
+   man cannot possibly be in silhouette.
+
+ <p>   Brown's writing is not just bad; it is staggeringly,
+   clumsily,thoughtlessly, almost ingeniously bad. In some passages
+   scarcely a word or phrase seems to have been carefully selected or
+   compared withalternatives. I slogged through 454 pages of this
+   syntactic swill, andit never gets much better. Why did I keep reading?
+   Because London Heathrow is a long way from San Francisco
+   International, and airline magazines are thin, and two-month-old
+   Hollywood drivel on a smallscreen hanging two seats in front of my row
+   did not appeal, that's why.And why did I keep the book instead of
+   dropping it into a Heathrowtrash bin? Because it seemed to me to be
+   such a fund of lessonsin how not to write.
+
+ <p>   I don't think I'd want to say these things about a first-time
+   novelist, it would seem a cruel blow to a budding career. But Dan
+   Brown is all over the best-seller lists now. In paperback and
+   hardback, and in manylanguages, he is a phenomenon. He is up there
+   with the Stephen Kingsand the John Grishams and nothing I say can
+   conceivably harm him. He isa huge, blockbuster, worldwide success who
+   can go anywhere he wants andneed never work again. And he writes like
+   the kind of freshman student who makes you want to give up the whole
+   idea of teaching. Never mind the ridiculous plot and the stupid
+   anagrams and puzzle clues as the book proceeds, this is a terrible,
+   terrible example of the thriller-writer's craft.
+
+  <p>  Which brings us to the question of the blurbs. "Dan Brown has to be
+   one of the best, smartest, and most accomplished writers in
+   thecountry," said Nelson DeMille, a bestselling author who has
+   himselfhit the #1 spot in the New York Times list.
+   Unbelievablemendacity.And there are four other similar pieces of
+   praise on the back cover.Together those blurbs convinced me to put
+   this piece of garbageon the CostCo cartalong with the the 72-pack of
+   toiletrolls. Thriller writers must have a code of honor that
+   requiresthat they all praise each other's new novels, a kind of
+   omertathat enjoins them to silence about the fact that some fellow
+   memberof the guild has given evidence oftotal stylistic cluelessness.
+   A fraternal code of silence. We couldcall it... the Da Vinci code; or
+   the Dan Brown code.
+   _____________
+
+ <p>   *The third non-reader was unknown when this post wasfirst drafted, but
+   it has since been edited, and as of today (May 2, 2004)I can confirm
+   that Bill Poser and Danny Yee are both claiming not to haveread The Da
+   Vinci Code. Fair enough. So at least four peoplehave not read it. I
+   just wish one of them was me.
+
+ 

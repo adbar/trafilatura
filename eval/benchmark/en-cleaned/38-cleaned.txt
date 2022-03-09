@@ -1,0 +1,325 @@
+URL: http://cocoadevcentral.com/articles/000057.php
+
+<h>Cocoa Dev Central
+
+<h> Advice on Learning C
+
+<h>by William Moss
+
+<p>When you first start playing around with Interface Builder and
+   prototyping some cool interfaces, it's easy to get excited about
+   Cocoa's potential. If you've ever read an old-school book on Mac
+   programming like Scott Knaster's "How to Write Macintosh Software"
+   you'll appreciate the power and simplicity of just drawing your user
+   interface. (If you haven't played around with these tools yet, check
+   out Erik J. Barzeski's "Two Lines of Code" article for a gentle
+   introduction.)
+
+<p>Cocoa's Interface Builder is even better than other "visual interface"
+   toolkits like HyperCard, FaceSpan, and FileMaker's layout tools
+   because what you create doesn't just try to imitate the feel of a Mac
+   interface, it really is a Mac user interface. There are other toolkits
+   on other platforms which offer this simplicity, but the Mac OS X
+   developer tools will be the first time they have been freely available
+   for all levels of Mac developers to use. In the past, I had tried
+   unsuccessfully to master old-school Mac programming. Interface Builder
+   was what convinced me that perhaps things were changing now and
+   learning to program a Mac was an attainable goal for a scripter like
+   me.
+
+<p>There was a big gap for me though. Apple provides some good
+   documentation for learning Objective-C, but they didn't write anything
+   about learning standard ANSI C. This omission is intentional and
+   understandable. Apple doesn't provide developer documentation to teach
+   you how to touch type, use the mouse, or perform other "basic"
+   pre-requisites. So it looked like I was going to have to start out
+   either learning C or Java before I could get to anything remotely
+   Apple relevent like Cocoa.
+
+
+<h>What About Java?
+
+<p>When I started, I wanted to learn Java. It was a language with a lot
+   of industry "buzz." It had huge class libraries already written. It
+   had a syntax that was more understandable to my Hypercard and
+   AppleScript roots than C did. And I really didn't fancy the idea of
+   having to learn two languages (C and Objective-C) before moving on to
+   what I was really interested in.
+
+<p>I spent a lot of time finding good references on Java. If you want to
+   pursue this route I highly recommend Bruce Eckel's "Thinking In Java"
+   Second Edition. It is one
+   of the most readable and understandable introductions to Java, and
+   ultimately it was why I gave up on the language for the time being.
+   The book's CD-ROM includes a multimedia introduction to the C
+   programming language and encourages the reader learn the basics of C
+   from the tutorial before going very far into Java.
+
+<p>This seemed odd at first, but after moving through the C tutorial it
+   really started to make sense. Learning C is a good foundation for Java
+   (and Objective-C). The C language isn't terribly obscure or complex;
+   it's a concise language that makes writing procedural code
+   straightforward. And in both Objective-C and Java, when you get down
+   to the level "inside" the objects you still must be able to program in
+   a traditional procedural fashion that's vey similar to standard C.
+
+<p>What I discovered after learning some of the basics about C was that
+   Objective-C was a very simple step beyond standard C. Java has some
+   nice features and, one day, I will go back and try to learn it. Java's
+   wide assortment of class libraries, industry-wide acceptance
+   (including WebObjects), and garbage collection scheme make me curious
+   about whether it would be a better language to use. But for my
+   learning purposes, Objective-C was a very simple step forward. If you
+   already know Java, your decision will likely be different, but if you
+   are as new to "real" programming as I am, you may find that
+   Objective-C is the simpler path.
+
+
+<h>What You Need to Know
+
+<p>At first, I resisted even writing this section. C isn't terribly
+   complicated and if you try to learn it on a "need to know" basis you
+   probably won't really be learning it but just checking items off on
+   your list.
+
+<p>To start though, you should learn how to write C, don't try to learn C
+   by reading other people's code. I learned lots of scripting languages
+   by reading samples and scripts of others, but this didn't work well
+   for C. After people get the hang of writing C, they start taking
+   shortcuts to make typing easier. When I was just starting out, I found
+   that I ended up doing more decoding of these examples than actual
+   learning. What was worse was that sometimes my decoding was wrong and
+   I'd end up very confused. You'll be much better off following a
+   tutorial and writing out your own code that is clear and
+   understandable.
+
+<p>As for the topics themselves: You should learn about the different
+   types of variables and how to change one into another when needed. You
+   should learn some of the basic string functions like printf, sscanf
+   and strcopy, but Cocoa includes a lot of great string manipulation so
+   there's not a need to get too in depth about string functions and
+   techniques. You should learn how to read and use the order of
+   operations table but it's probably not necessary to commit it to
+   memory. You should learn about the various types of loops (while, for,
+   and so on). You'll need to learn about some of the more advanced
+   structures like enums and structs. And you will need to learn what a
+   pointer is and how it's used is a good thing, though you probably
+   don't need to learn a great deal of pointer arithmetic or pointer
+   tricks.
+
+<p>One topic that you may not want to get into (that many introductory
+   courses cover) are the bit operations. Twiddling bits isn't something
+   that's you have to do in Cocoa (but you can if you want). But I found
+   the subject really helped me understand C better. Nevertheless, if
+   your goal is strictly Cocoa and calculating in base two makes your
+   head hurt, you're probably safe skipping the subject.
+
+
+<h>References for Learning C
+
+<p>Learning C takes some patience and attention. There are many books on
+   the shelves and there are a number of tutorials on the Web that will
+   help you.
+
+<p>I recommend reading at least one of these books and doing the
+   suggested exercises in it to learn C. Personally, I used all of them
+   (in addition to some others I would not recommend), but that's mainly
+   because I like reading different writing styles and perspectives.
+<l>"The C Programming Language, 2nd Edition"
+       By Brian W. Kernighan and Dennis M. Ritchie (Prentice Hall)
+       ISBN: 0131103628 274 pages, $40.00
+<l>"Practical C Programming, 3rd Edition"
+       By Steve Oualline (O'Reilly Publishing)
+       ISBN: 1-56592-306-5 451 pages, $34.95
+<l>"The Waite Group's C Primer Plus"
+       By Stephen Prata (Sams)
+       ISBN: 1571691618 820 Pages, $29.99
+
+<p>Reviewing these books would be a huge undertaking itself, but here's
+   an unjust summary of their use to me. "The C Programming Language" is
+   the definitive guide to C but it can be a difficult introduction to
+   the language; if I had to get only one book this would be it though.
+   "Practical C Programming" gives some very good advice about C writing
+   style and how to avoid writing "unreadable" programs. And the "The
+   Waite Group's C Primer Plus" is very helpful if you aren't familiar
+   with programming in any form (AppleScript, FileMaker, Basic, etc). I'd
+   also suggest looking at some book review sites (like Amazon) for some
+   opinions of what other readers thought.
+
+<p>I'd strongly recommend buying real books to learn from. There's
+   something about the editing and review process that made them more
+   useful and lucid to me than the tutorials available on the web. But if
+   money is a concern or you just want the convenience of having an
+   online reference, there are some tutorials available on the world wide
+   web.
+<l>Tom Torfs' "An Introduction to C"
+
+<l>Paul Sheer's "Trivial Introduction to C" on Source Forge
+
+<l>Daniel Thomasset's "An instantaneous introduction to C" at the
+       University of Kansas
+
+<l>Marshall Brain's "How C Programming Works" on the How Stuff Works
+       site
+
+<l>Dave Marshall's "Programming in C" on the Cardiff University site
+
+<l>Steve Summit's "C Programming" and "Notes to accompany K and R"
+
+<l>Anand Mehta's "A Crash Course in C"
+
+<l>Remy Saville's "C Tutorial" on the Programmer's Vault site
+
+
+<p>A word of advice though, don't cheat by cutting and pasting code into
+   your practice programs. Just like your fourth grade math teacher
+   prohibited you from using a calculator to learn your multiplication
+   tables, you will learn C better by typing all of your code from
+   scratch for each and every exercise. It's a pain, but the mechanics of
+   the process is just as important as learning the logic. When you start
+   making programs over fifty or a hundred lines long, then you probably
+   will want to start taking typing shortcuts.
+
+
+<h>Differences from Scripting Languages
+
+<p>Coming from the world of Mac scripting, some of the conventions of C
+   were confusing for me. Here's a list of a few of them. They may or may
+   not make sense to you yet, but if at some point you get flustered or
+   confused someone else may have been there too.
+
+<l>Choosing Sizes for Variables
+<p>Some scripting languages make the user choose a type of variable
+       (number, text, date) but few require the user to pick how big to
+       make the variables. In C you must decide whether your variables
+       will hold small or big numbers, lengths of text, and other
+       "sizing" considerations. This can be flustering to a new
+       programmer, but don't overthink yourself when you're getting
+       started. "I need to provide a variable to hold a name, but should
+       it be able to hold Susan O'Donnel or Marguerite Elizabeth
+       Wolverhampton-Morrell?". If in doubt, choose something longer than
+       you need. When you get more adept at the language you can learn
+       how choosing the right size will help speed up your program and
+       not use as much memory. But learning how to optimize C is
+       definitely something you need to learn after learning basic C
+       programming.
+<l>There is no Symbol for Exponentiation
+<p>If you look at a table of the order operations will be performed
+       you will see the upper pointing caret '^' that's commonly used to
+       denote exponentiation. Don't be fooled: the caret really
+       represents a bit shifting operation (a very powerful but "machine
+       level" sort of operation). If you want to use exponents you'll
+       need to use a library such as math.h
+<l>White Space Almost Doesn't Matter
+<p>Some langauges like Python actually pay attention to the way you
+       indent your code. Some tools like FileMaker or Hypercard read your
+       code and put in the indentation that it wants based on what you've
+       written. The C compiler (as you will learn) doesn't care at all
+       about your indentation. Inded one of the things that can mess you
+       up is paying too much attention to the indentation and not enough
+       to what your code is actually saying. But even though the C
+       compiler doesn't care about your indentation, other things do. In
+       particular, the C preprocessor requires that some of it's
+       directives be written in certain places. If your #define macro
+       appears anywhere other than the start of a new line, there will be
+       an error.
+<l>Objects are not All the Same
+<p>Since you probably will only learn C to the extent that you will
+       start using it to learn other object-oriented programing
+       langauges, you might see reference made to objects and get
+       confused. Don't. In ANSI C the term object refers to the machine
+       code that's generated from the compiler just before the linking
+       stage. These files aren't readable by a human and they end in '.o'
+       (dot oh). Additionally, when you start getting into Objective C,
+       C++, and Java you may start reading things about objects that
+       don't fit with each other. You may share programming principles
+       between the different languages. You may even have different
+       "langauge objects" in your project, but they should be treated as
+       ghosts in their own planes of existence. But in general it's good
+       to think of objects seperate to their own context.
+<l>Assignment is Just Another Operator
+<p>Let X = X + 1 or Let Y = Y^Z + LOG (G) * SIN (T). In Applesoft
+       Basic, Excel, Hypercard, FileMaker and many other scripting
+       languages allow you to build very simple or elaborate assignment
+       statements, but the last thing which will always happen is the
+       assignment itself. In C, an assignment is just another operation
+       with a precedence just like addition, division, or parentheses.
+       This gives you the flexibility to do some crazy things with
+       assignments. It lets you put multiple assignments in an
+       expression. It lets you perform an assignment, perform more
+       operations, and then assign things to yet another expression. You
+       can even build a very elaborate set of operations and then forget
+       to actually assign the result to anything. Be careful.
+<l>C Counts from Zero, not One
+<p>The short snippet of text "Wretched" is eight characters long. If
+       you want to take the first character of the string (in this case
+       'W') you would use an expression like =MID(A1,1,1) in Excel or
+       Middle("Wretched",1,1) in FileMaker. In C, a similar expression
+       would get you the character 'r' because C doesn't count things
+       starting with one. In most cases it starts counting with 0. I
+       asked a real C programmer why this was. "Isn't it more intuitive
+       to start counting at 1?" "Why would you want to waste a number?"
+       "Waste a number? isn't it arbitrary where the numbers start?"
+       "Nope. All types, signs, and sizes of variables include zero in
+       their range of acceptable values. If C started counting at one you
+       would loose the use of a whole digit." There may be other reasons
+       beyond what my friend told me, but generally C tries to do as
+       little as possible that would artificially limit the machine even
+       if it makes things a bit more complex for the programmer. That's a
+       very different mentality from scripting languages which go to
+       great ends to simplify the logic for the programmer. In truth,
+       this isn't as big a deal as it seemed it would be when I first
+       discovered this counting scheme, but it did take me a while to get
+       into that mindset. It may take you some time to do so as well.
+
+<p>That about wraps up this topic. Be sure to look at some of the other
+   tutorials for more information. In the meantime, get out there and
+   learn C. Good Luck!
+   Comments
+
+<p>Thank you for the information and guidance your article provides.
+
+<p>C counts from zero rather than one because it's just an offset from
+   the base address of the array. Since the first element of array foo
+   begins at the base address, the offset is zero, so we write foo[0], or
+   *(foo+0), or *foo.
+
+<p>The next element is one away from the base address, so it is
+   referenced as foo[1], or *(foo+1).
+
+<p>Another excellent book on C is "Expert C Programming," by Peter van
+   der Linden.
+
+<p>Incidentally, Mr. van der Linden's "Just Java" book is a nice gentle
+   intro to Java, but it needs to be followed by the already-mentioned
+   "Thinking In Java" from Bruce Eckel, or at least the O'Reilly book
+   "Java In A Nutshell" by David Flanagan.
+
+<p>Java is such a great language (once one understands the whole
+   CLASSPATH thing) because it's so easy to learn and to use (so it's
+   great as a first language), and it's plenty powerful for real-world
+   development.
+
+<p>That said, I use it only for server-side development. I never grokked
+   the GUI side, and the Java GUI apps I've run were both slow and
+   frustrating to use.
+
+<p>I wrote a few C tutorials ("Programming in C" and "Programming in ANSI
+   C") many years ago. Next month (Dec. 2003), my Objective-C tutorial,
+   "Programming in Objective-C" will be released.
+
+<p>I decided to teach the language from the ground up, that is, without
+   having the reader learn C first. I did this so that the programmer can
+   avoid learning procedural programming techniques before establishing a
+   good foundation with object-oriented programming. Just because
+   Objective-C is layered on C, it doesn't mean you have to learn C
+   first!
+
+<p>After learning how to program in Objective-C and use the Foundation
+   classes (which I teach in the book), then I recommend the reader go
+   back and learn more of the details about C (such as arrays, functions,
+   and pointers). These are covered in the book, but you really don't
+   need to learn about them before you start writing Objective-C
+   programs.
+
+<p>I will be curious to get feedback on whether my approach works.

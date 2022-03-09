@@ -1,0 +1,272 @@
+URL: http://www.cavebear.com/icann-board/diary/mar-13-2001.htm
+
+       <p>At-Large Representative for Canada and the United States on the
+                          <p>ICANN Board of Directors
+                               <h>Karl Auerbach
+
+                           <p>Diary - March 13, 2001
+                            <p>Melbourne, Australia
+
+   <p>This is being written on March 30, 2001.  It is being updated on April
+   5, 2001.  I apologize for the delay in getting this posted.
+
+   <p>(An additional one-word revision was made on May 14 to correct a silly
+   typo - nothing substantive.) 
+
+   <p>The preliminary report may be found at
+   http://www.icann.org/minutes/prelim-report-13mar01.htm.
+
+   <p>This was a public board meeting.
+
+   <p>When I left Santa Cruz, California to go to the Melbourne meeting,
+   there was no well-formed agenda.  For the most part the resolutions
+   below were formulated by ICANN "staff" on the night before the March 13
+   meeting.  Indeed the first time I saw the text of these resolutions was
+   when they appeared on the computer monitors before me during
+   the meeting.
+
+   <p>The general sense of these resolutions was discussed in an almost
+   closed meeting of the Board on the evening of March 12.  I say "almost
+   closed" because of the presence and active participation of at least
+   two people (other than ICANN's in-house counsel, who I believe is
+   an appropriate person to invite to a board meeting) who are not members
+   of the ICANN board, one of whom is neither an ICANN officer nor even an
+   ICANN employee.  I do not feel that this is appropriate.  If these
+   people want to act as ICANN board members, then it is my feeling that
+   they ought to stand for election.  Otherwise I feel that as long as the
+   public is excluded then these people ought to be excluded
+   unless explicitly invited for a limited purpose to provide information
+   on a specific matter.
+
+   <p>It is my feeling that since real discussion of matters occurred at this
+   March 12 meeting, that such meeting ought to have been open to
+   the public or at least recorded so that the public could hear what
+   what discussed.  I do not subscribe to the point of view that ICANN
+   that board members require a cloak of secrecy except with respect to
+   personnel matters, litigation, or contract negotiations.
+
+   <p>I must say that I felt rushed.  I felt that "staff" had created a
+   situation in which major policy matters were dumped in the Board's lap
+   with inadequate time for study of for review by the Board or the
+   public.  One point that I dowant to make clear: I have no evidence or
+   indication that this situation was the result of any intent or purpose
+   and I see no reason why anyone should entertain any theory that this
+   situation was the result of any manipulative intention.  That does not
+   mean, however, that we (ICANN) ought to not improve procedures so that
+   this situation does not frequently recur.  (We must recognize that some
+   matters will always be changing right up to the last minute and that
+   sometimes everyone ought to simply accept the situation and give such
+   leeway as is reasonable.)
+
+   <p>As an example of what happens when there is a rush - When the
+   resolution on the report of the so-called Ad Hoc Group (on addressing)
+   was presented it was not clearly pointed out that the report was not
+   approved by the full membership of the Ad Hoc Group.  It was only
+   later, in a chance meeting at an airport, that I found out that at
+   least two members of that group - people whose technical judgment I
+   trust - refused to sign-off on the report.
+
+   <p>It is my belief that no resolution should be voted upon by the ICANN
+   board until the exact text of that resolution has been posted for at
+   least several days.
+
+   <p>There is also a matter of completeness.  ICANN's web site is the
+   primary vehicle by which information is made available to the public
+   and to the board.  Yet that website is sometimes as impenetrable as
+   the Minotaur's maze.  Consequently it is now my belief that every
+   resolution must contain usable references to all materials directly
+   pertaining to that resolution.
+
+   <p>I felt that the ICANN board was engaging in several significant
+   procedural failures, principally the failure to have adequate time for
+   public review and failure to properly delegate matters to the DNSO
+   as required by the ICANN by-laws.
+
+   <p>My primary focus during the meetings in Melbourne was the At-Large
+   study.  I have significant reservations about that study, particularly
+   since it's committee was selected without any input from theat-large
+   community and with the expressed intention to exclude anyone who
+   has indicated that they consider the at-large to be an important and
+   necessary part of ICANN.  I endeavored to find a way to enhance the
+   committee membership but found no way to do so that would have had even
+   a prayer of being adopted by the ICANN board.
+
+   <p>Although it was not a matter for vote, the proposed amendments to the
+   VeriSign agreement did occupy a lot of discussion time.  Personally I
+   was taken aback by the fait accompli "take it or leave it" package that
+   ICANN's "staff" presented to the Board.  Given the gravity of those
+   amendments I considered the process to be an inversion of the
+   proper relationship between the should-be-master policy-making role of
+   the Board and the should-be subservient policy-executing role of
+   "staff".
+
+   <p>Moreover, the VeriSign amendments do represent significant changes of
+   Domain Name policy.  And the ICANN bylaws dictate that such matters be
+   delegated to the DNSO unless the board makes a finding that there
+   are facts to bypass that clearly defined requirement to delegate to the
+   DNSO. The board has not made any such finding with respect to the
+   VeriSign amendments. I recognize the argument that says that the
+   VeriSign amendments were not "policy" changes, but I am not persuaded
+   by them.
+
+   <p>With regard to the DNSO, it is my perception that it is a body that is
+   wracked with internal problems and structural biases.  As such I have a
+   difficult time giving credence to its actions.  This makes it
+   very difficult with regard to the fact that much as it is procedurally
+   critical to delegate matters such as the VeriSign amendments to the
+   DNSO, it is equally difficult to believe that the DNSO would be able to
+   synthesize a decision that could be considered as having been fairly
+   decided by all parts of the Internet community.
+
+   <p>As an example of this lack of credibility of the DNSO, I
+   am particularly concerned how the DNSO's Names Council eviscerated the
+   proposals for structural reform of the DNSO that came out of the DNSO
+   working group focused on those questions.
+
+   <p>Now for the resolutions themselves:
+
+<h>Approval of Minutes
+
+   <p>I voted for this one.  (There's usually not much controversy about
+   approving minutes. ;-)
+
+<h>Recommendations of Reconsideration Committee
+
+   <p>I  voted to accept the two reports.
+
+   <p>The two "Requests For Reconsideration" that were up for approval did
+   not strike me as particularly compelling in and of themselves.  In this
+   case I felt that the Reconsideration Committee came up with the correct
+   result.
+
+   <p>However, I do find that these two requests are indicative of a larger
+   pattern of discontent with the overall TLD selection process.
+
+<h>Ad Hoc Group
+
+   <p>I voted against accepting the Ad Hoc group's report.  I consider the
+   entire Ad Hoc Group to be beyond ICANN's proper scope of authority and
+   hence it would be improper to accept its report no matter what its
+   quality.
+
+   <p>I note, however, that I have subsequently learned that the report that
+   was tendered was not the report of the entire Ad Hoc Group - the report
+   was unable to obtain the approval of at various group members in whom
+   I place a great deal of technical credence.  It is not clear to me that
+   other board members were aware of the report's shaky foundation at the
+   time the vote was made on the resolution.
+
+<h>Membership of At Large Membership Study Committee
+
+   <p>I voted for this one, even though, as I mentioned above, I have major
+   reservations about this At-Large Study Committee, particularly
+   its charter, its membership, and its ability to arrive at a result that
+   will be granted legitimacy by the public.
+
+   <p>I still hold hope that this committee can be expanded to
+   include additional members who have strong at-large credentials.
+
+<h>Budget for At Large Membership Study Committee
+
+   <p>I voted yes.  I see no reason why my reservations about the At-Large
+   Study Committee's composition or charter should prevent it from
+   at least trying to show me wrong.
+
+<h>Proposed Revision to VeriSign Agreements
+
+   <p>Please note that this resolution was not to approve the
+   proposed changes to the VeriSign contract but merely continues the
+   admittedly limited process for public comment.
+
+   <p>As I said during the meeting, my feeling is that proper procedure
+   requires that this matter be passed to the DNSO, although I do
+   have reservations about the ability of the DNSO to render a decision
+   given its internal procedural infirmities.
+
+<h>New TLD Agreements
+
+   <p>I voted for this.  That was a mistake.  I wish I had voted against.
+
+   <p>My affirmative vote was the result of inadequate time to study and to
+   receive public input.  I have since learned various things about these
+   contracts that, had I known at the time, would have made me vote
+   against approval.
+
+   <p>I knee-jerk accepted these contracts based on a desire to move the
+   long-delayed TLD process.  I am now resolved to not let myself
+   be railroaded by last-minute "staff" agendas to accept something that
+   I do not believe has received adequate review by myself or the public.
+
+   <p>Among the matters that I learned about too late were the concern that
+   these contracts may establish what amounts to a "most favored registry"
+   situation in which incumbent registries may be able to use
+   these contracts as a means to prevent experimentation and evolution of
+   new contractual vehicles with respect to subsequent registries.
+
+   <p>Another such matter was the nature of the buy-out situation that may
+   occur when a registry contract comes up for renewal.
+
+   <p>Similarly, I was unaware of the lack of an effective "fullstop"
+   mechanism or other protective means that would, to my way of thinking,
+   be necessary parts of any live experiment or test, such as these
+   new TLDs are purported to be.
+
+<h>DNSO Review
+
+   <p>There was a bit of procedural chaos at this point in the meeting.  We
+   managed to get off onto a short discussion of a DNSO constituency for
+   individual people who own domain names.  I consider that to be
+   something that we very much do want in the DNSO.  However, the
+   matter on the table at that time was the DNSO review and, as I said,
+   there was a bit of confusion caused by the mix of the two issues.
+
+   <p>I wanted to discuss the fact that I believe that the DNSO
+   review process was, simply put, unacceptable.  I do not accept that the
+   report that emanated from the Names Council is an accurate reflection
+   of the infirmities of the DNSO.
+
+<h>Appointment of Auditors
+
+   <p>I voted yes.
+
+<h>Disbursement and Check Signing Authority
+
+   <p>I voted yes.
+
+<h>Handling of DNSO Funds
+
+   <p>This is something that I was very pleased to vote for.  I have been
+   very concerned about the lack of clarity surrounding the funds
+   that ICANN holds on behalf of the DNSO.  There is no reason to suspect
+   that there is any problem; rather I feel that when money is involved,
+   absolute clarity of accounting is important, particularly when there
+   are discussions about alienating that money at some future date to
+   another entity.
+
+<h>Agreements with ccTLD Managers
+
+   <p>I abstained from this vote.  I simply do not have enough knowledge of
+   this matter for me to feel comfortable that I could have made
+   an informed decision.
+
+<h>Internationalized Domain Names
+
+   <p>I voted yes.
+
+   <p>Internationalized domain names are a big and complex issue.  And I
+   believe that the committee that is formed by this resolution will help
+   all of us better understand the issues.
+
+<h>Thanks to Local Hosts and Sponsors
+
+   <p>Of course I voted yes.  The Melbourne hosts and sponsors did a very
+   nice job and deserve much thanks.
+
+<h>Thanks to Lennie and Mike Roberts
+
+   <p>Henry IV, King of France from 1589 through 1610 was reputed to have
+   said to have avoided a battle by making a pragmatic recognition
+   that "Paris is worth a mass".  I believe that the departure of
+   Mike Roberts from ICANN will bring a significant change in the
+   personality of the organization.  I thank him for leaving.
+    

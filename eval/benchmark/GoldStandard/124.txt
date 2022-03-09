@@ -1,0 +1,185 @@
+URL: http://news.com.com/Supreme+Court+rules+against+file+swapping/2100-1030_3-5764135.html
+
+<h>Supreme Court rules against file swapping
+
+   <h>By John Borland
+   <h>Staff Writer, CNET News.com
+   <h>Published: June 27, 2005, 9:04 AM PDT
+   <h>Last modified: June 27, 2005, 2:35 PM PDT
+
+   <h>update 
+   <p>The Supreme Court has handed movie studios and record labels a
+   sweeping victory against file swapping, ruling that peer-to-peer
+   companies such as Grokster could be held responsible for the copyright
+   piracy on their networks. 
+
+   <p>In a unanimous decision issued Monday, the nine justices said
+   companies that build businesses with the active intent of encouraging
+   copyright infringement should be held liable for their customers'
+   illegal actions.
+
+   <p>"We hold that one who distributes a device with the object of
+   promoting its use to infringe copyright, as shown by clear expression
+   or other affirmative steps taken to foster infringement, is liable for
+   the resulting acts of infringement," Justice David Souter wrote in the
+   majority opinion.
+
+   <p>The decision comes as a surprisingly strong victory for copyright
+   companies and stands to reshape an Internet landscape in which file
+   swapping has become commonplace.
+
+   <p>The ruling will give the recording industry and Hollywood immediate
+   ammunition to file lawsuits against other file-trading companies. It
+   could also be a boon for legal music services such as Apple Computer's
+   iTunes, which could see their strongest competitor--freely
+   downloadable songs--driven further underground.
+
+   <p>It won't immediately shut down access to the trading networks,
+   however. The court's ruling sends the case back to the lower courts,
+   which will review the evidence against Grokster and co-defendant
+   StreamCast in the light of Monday's decision.
+
+   <p>Record labels and movie studios immediately hailed the decision as an
+   unambiguous victory.
+
+   <p>"The most important message from today's historic decision is that
+   progress and innovation do not have to come at the expense of
+   recording artists, songwriters and the people who make their living in
+   the entertainment industry," Warner Music Group CEO Edgar Bronfman
+   said in a statement. "This important decision will allow artists and
+   the creative community to prosper side by side with the technology
+   industry."
+
+   <p>The peer-to-peer companies involved warned that the high court had
+   opened the floodgates to litigation against a wide variety of
+   technology companies, but said that they would continue to distribute
+   their software and that they expected to be cleared of any wrongdoing.
+
+   <p>"We are confident that it will be proven that Morpheus does not
+   promote or encourage copyright infringement," said StreamCast Chief
+   Executive Officer Michael Weiss. "We're staying in this for the fight.
+   We're going to continue to innovate and come out with new products."
+
+   <h>Cloud over Silicon Valley?
+   <p>The justices were reviewing a pair of lower-court decisions in which
+   both courts said that file-swapping companies such as Grokster were
+   not liable for the copyright infringement of people using their
+   software. The nation's top court heard oral arguments on the case in
+   late March.
+
+   <p>With the potential to rewrite the Supreme Court's 1984 Sony Betamax
+   ruling that made VCRs--and by extension any technology with
+   "substantial noninfringing use"--legal to sell, the decision has been
+   closely watched across Silicon Valley.
+
+   <p>Technology companies have feared that a new copyright-focused standard
+   aimed at controlling peer-to-peer networks might result in a rise in
+   lawsuits aimed at blocking new products. The Betamax ruling had
+   protected generations of products, ranging from CD burners to Apple's
+   iPod to personal computers.
+   <h>Soaring swapping
+
+   <p>In its majority ruling Monday, the court did not make any detailed
+   changes or clarifications to that 1984 decision. However, Souter did
+   write that the Betamax decision had not been meant as a shield for
+   companies that actively induced or encouraged their customers to
+   infringe copyrights. The peer-to-peer companies appeared to fall into
+   that category, he wrote.
+
+   <p>"There is no evidence that either company (Grokster or StreamCast)
+   made an effort to filter copyrighted material from users' downloads or
+   otherwise impede the sharing of copyrighted files," Souter wrote.
+   "Each company showed itself to be aiming to satisfy a known source of
+   demand for copyright infringement, the market comprising former
+   Napster users."
+
+   <p>Essentially that means the Betamax ruling's protections still will
+   apply in most cases, lawyers said. However, the ruling does dispel the
+   most expansive interpretation of that decision, under which any
+   product with any legal use, no matter how minimal, was viewed as
+   necessarily legal, said Thelen Reid & Priest attorney Michael Elkin.
+
+   <p>"I don't think the Sony Betamax decision ever gave a
+   get-out-of-jail-free pass to anyone," Elkin said.
+
+   <p>Critics of the ruling said that the court provided no clear standard
+   or test to define inducement, aside from noting several instances in
+   which the peer-to-peer companies appeared to cross the line.
+
+   <p>Some in the technology world said the result could lead to more
+   litigation against young companies with new technologies.
+
+   <p>"This is a very dangerous decision for technology and innovation,"
+   said Ed Black, chief executive officer of the Computer and
+   Communications Industry Association. "If you think of the Sony
+   decision as a shield or an umbrella, we're afraid some holes have been
+   punctured in that umbrella."
+
+   <p>Added Michael Petricone, vice president of technology policy for the
+   Consumer Electronics Association: "It is a real concern for the entire
+   industry. We are faced with competitors in China and India who do not
+   face the same litigation burden that companies will with this
+   decision."
+
+   <p>Not everyone in Silicon Valley took a bleak view of the ruling,
+   however. An Intel spokeswoman said the company was still studying the
+   ruling, but noted that the court seemed to have upheld the most
+   important aspects of the Betamax decision.
+
+   <h>Changed landscape for digital content?
+   <p>The decision isn't likely to eliminate file swapping. Many of the most
+   popular services are decentralized enough that they can exist even if
+   a parent company disappears. Many peer-to-peer services also are based
+   outside the United States or have been created by overseas
+   programmers.
+
+   <p>U.S. courts have shown their willingness to reach overseas companies
+   in some cases, however. Already, a Los Angeles court has ruled that
+   Kazaa parent Sharman Networks, based in Australia, maintains enough
+   business connections in the United States to be sued in American
+   courts.
+
+   <p>If the decision--and subsequent lower court actions--pushes
+   file-swapping services further underground, it can only help companies
+   such as Apple that are selling music and movies online, music service
+   executives said.
+
+  <p>"I think the Supreme Court did the right
+   thing, in a lucid way," said Rob Glaser, CEO of RealNetworks. "I think
+   it will make a difference in the long slog to convert the industry
+   over to legitimacy, by not allowing businesses to do this kind of
+   nudge-nudge wink-wink marketing."
+
+   <p>Apple, Napster and other digital music services also hailed the ruling
+   as a vindication of their business models.
+
+   <p>The decision could also be a boost for companies such as Shawn
+   Fanning's Snocap or Audible Magic, which offer technology for
+   filtering copyrighted files out of peer-to-peer swaps, or turning
+   those swaps into transactions. Today that available filtering
+   technology focuses only on music files, but tools are being developed
+   to identify and block movie downloads.
+
+   <p>"To the P2P operators, the LimeWires and the eDonkeys: We want to work
+   with you," said Mitch Bainwol, chief executive officer of the
+   Recording Industry Association of America. "This is time to come
+   forward and start filtering. We can build a better digital age
+   together."
+
+   <p>Although the decision technically leaves the file-swapping companies'
+   fate to the lower court, it could hold the seeds of a quick decision
+   in favor of Hollywood and the record labels. Souter's ruling noted
+   that the original trial judge granted summary judgment to Grokster,
+   but said the lower court should instead immediately reconsider the
+   copyright companies' request for summary judgment.
+
+   <p>Souter was supported unanimously in his decision by all nine justices,
+   a rare level of agreement on controversial cases. Justice Ruth Bader
+   Ginsburg wrote one concurring decision that was joined by Justices
+   Anthony Kennedy and William Rehnquist. Justice Stephen Breyer wrote a
+   second concurrence, joined by Justices John Paul Stevens and Sandra
+   Day O'Connor.
+
+   <h>CNET News.com's Declan McCullagh and Anne Broache contributed to this
+   report.
+  

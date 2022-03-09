@@ -1,0 +1,302 @@
+URL: http://www.greenair.com/interpri.htm
+
+
+<h>Nutrient Solutions
+
+   <p>Check solution level. Sufficient quantity must be available to
+   maintain stable solution properties. A small reservoir will require
+   more frequent amendments to keep the nutrient concentrations and pH
+   within the acceptable range. The two most important of these
+   properties is, ionic strength and acid balance. Respectively, the
+   concentration of soluble salts (nutrient elements) and the pH, which
+   is the acid/ base balance that regulates the interactions and
+   availability of these elements.
+
+<h>Fertilizer Concentration
+
+   <p>Fertilizer concentrations can be easily measured with inexpensive
+   electronic meters. Element concentrations can be measured by their
+   ability to conduct electricity through a solution. Since every element
+   in a multi-element solution has a different conductivity factor, these
+   measurements are only approximate. Pure water will not conduct
+   current, but as you add elemental salts ( mostly metals ) conductivity
+   increases proportionately. Simple electronic meters can measure this
+   value and interpret it as total dissolved solids ( TDS ). Nutrient
+   solution concentrations suitable for plant nourishment generally range
+   between 500 and 2000 parts per million ( ppm ).If the solution
+   concentration is to high, the internal osmotic systems can reverse and
+   actually dehydrate the plant. For general purpose, try to maintain a
+   moderate value of approximately 800 to 1200 ppm. These levels can be
+   effected by plant absorption or by water evaporation. As the plants
+   use the nutrients, the solution weakens, but as the water evaporates
+   from the solution, the salt concentration increases. Adjust values by
+   either adding fertilizer or diluting with water. Use luke warm water
+   and try to maintain a solution temperature between 60 and 80 degrees.
+   Use a complete and soluble high quality hydroponic fertilizer
+   according to recommendations on label.
+
+<h>Nutrient Solution pH
+
+   <p>Solution pH ( potential hydrogen ) is extremely critical and must be
+   checked often to maintain a nearly neutral balance. Variations either
+   way will effect the breakdown and solubility of the nutrient
+   compounds. Acceptable values vary slightly with different plants, grow
+   mediums, and hydroponic systems. Generally desirable readings range
+   from 5.5 ( slightly acid ) to 7.0 ( neutral ). For general purposes,
+   try to maintain a value of 6.5 and make a correction if readings vary
+   +/- a half point. The tolerance range therefore is 6.0 to 7.0 . Use pH
+   up and down adjusters carefully and mix in slowly and completely.
+   Fertilizers, when added will usually lower the solutions pH value.
+   Most of the time, as solutions are used by plants, the pH will raise,
+   and additions of fertilizer, or a pH down adjuster will be needed. It
+   is preferable to adjust water pH before adding fertilizer, once you
+   are familiar with what adjustments will be required. Solution pH can
+   be determined either by a reagent color comparison method or with an
+   electronic test meter.
+
+<h>Solution Maintenance
+
+   <p>Solutions can be topped off and corrected in a casual routine (usually
+   for about 30 days) at which point they should be replenished with a
+   fresh supply. Meanwhile, keep the solution water level constant and
+   use an electronic conductivity meter to determine how much additional
+   fertilizer will need to be provided. Tanks, trays and plumbing should
+   be cleaned and rinsed periodically to remove algae, excess nutrient
+   salts, and possible viral or fungal pathogens. A 5% sodium
+   hypochlorite solution (bleach) should be used to sterilize the system
+   between crops. Monthly leaching ( rinsing ) of substrate (grow medium)
+   by clear watering is advised to reduce accumulation of soluble salts,
+   and avoid a toxic build up of immobile trace elements.
+
+
+<h>Solution pH
+
+   <p>Solution pH (potential hydrogen) controls the availability of ions to
+   be assimilated into the plant. Solution pH is displayed on a scale
+   from 0 to 14 with 7 being neutral. All values less are considered
+   acidic, and all values greater are alkaline. Plant solutions are
+   generally considered desirable between 6.0 and 7.0 pH.
+
+     _________________________________________________________________
+
+                       <h>Nutrient Solution Composition
+
+     <p>The values below provide a guideline of acceptable limits. Values
+      deficient or in excess of those shown could result in poor plant
+                                  health.
+
+<p>Values generally considered desirable for elements in nutrient solutions as
+                                    ppm.
+
+                                  <h>ELEMENT
+
+   <l>Nitrogen
+   <l>Calcium
+   <l>Magnesium
+   <l>Phosphorus
+   <l>Potassium
+   <l>Sulfur
+   <l>Copper
+   <l>Boron
+   <l>Iron
+   <l>Manganese
+   <l>Molybdenum
+   <l>Zinc
+
+                                   <h>LIMITS
+
+                                  <l>150-1000
+                                  <l>100-500
+                                   <l>50-100
+                                   <l>50-100
+                                  <l>100-400
+                                  <l>200-1000
+                                  <l>0.1-0.5
+                                  <l>0.5-5.0
+                                   <l>2.0-10
+                                  <l>0.5-5.0
+                                 <l>0.01-0.05
+                                  <l>0.5-1.0
+
+                                  <h>AVERAGE
+
+                                    <l>250
+                                    <l>200
+                                     <l>75
+                                     <l>80
+                                    <l>300
+                                    <l>400
+                                    <l>.05
+                                    <l>1.0
+                                    <l>5.0
+                                    <l>2.0
+                                    <l>0.02
+                                    <l>0.5
+
+                         <h>Soluble Salts Range Chart
+
+    <p>Electrical conductivity (EC)as millisiemen (mS) and total dissolved
+                  solids (TDS) as parts per million (PPM)
+
+                                   <h>RANGE
+
+   <l>DESIRABLE
+   <l>PERMISSIBLE (with potential for concern)
+   <l>PROBABLE SALT DAMAGE
+
+                                  <h>EC as mS
+
+                                <l>0.75 to 2.0
+                                 <l>2.0 to 3.0
+                                 <l>3.0 and up
+
+                                 <h>TDS as PPM
+
+                                <l>500 to 1300
+                                <l>1300 to 2000
+                                <l>2000 and up
+
+   <p>For nutrient solutions determinations one (1) mS (millisiemen) or one
+      mMho/cm2 is equivalent to approximately 650 ppm total dissolved
+                                  solids.
+     _________________________________________________________________
+
+                         <h>Deficiencies and Toxicity
+
+   <h>Mobile elements
+   <p>Mobile elements are more likely to exibit visual deficiencies in the
+   older leaves, because during demand these elements will be exported to
+   the new growth.
+
+<h>Nitrogen
+
+   <p>Deficiency: Plants will exhibit lack of vigor as older leaves become
+   yellow (chlorotic) from lack of chlorophyll. Chlorosis will eventually
+   spread throughout the plant. Stems, petioles and lower leaf surfaces
+   may turn purple.
+
+   <p>Toxicity:Leaves are often dark green and in the early stages abundant
+   with foliage. If excess is severe, leaves will dry and begin to fall
+   off. Root system will remain under developed or deteriorate after
+   time. Fruit and flower set will be inhibited or deformed.
+
+<h>Phosphorus
+
+   <p>Deficiency:Plants are stunted and older leaves often dark dull green
+   in color. Stems, petioles may turn purple. Plant maturity is often
+   delayed.
+
+   <p>Toxicity:This condition is rare and usually buffered by pH
+   limitations. Excess phosphorus can interfere with the availability of
+   copper and zinc.
+
+<h>Potassium
+
+   <p>Deficiency:Older leaves are initially chlorotic but soon develop dark
+   necrotic lesions (dead tissue). First apparent on the tips and margins
+   of the leaves. Stem and branches may become weak and easily broken.
+
+   <p>Toxicity:Usually not absorbed excessively by plants. Excess potassium
+   can aggravate the uptake of magnesium, manganese, zinc and iron.
+
+<h>Magnesium
+
+   <p>Deficiency:The older leaves will be the first to develop interveinal
+   chlorosis. Starting at leaf margin or tip and progressing inward
+   between the veins.
+
+   <p>Toxicity:Magnesium toxicity is rare and not generally exhibited
+   visibly.
+
+<h>Zinc
+
+   <p>Deficiency:Chlorosis may accompany reduction of leaf size and a
+   shortening between internodes. Leaf margins are often distorted or
+   wrinkled.
+
+   <p>Toxicity:Zinc in excess is extremely toxic and will cause rapid death.
+   Excess zinc interferes with iron causing chlorosis from iron
+   deficiency.
+
+
+   <h>Immobile elements
+   <p>Immobile elements will show their first symptoms on younger leaves and
+   progress to the whole plant.
+
+<h>Sulfur
+
+   <p>Deficiency:The initial symptoms are the yellowing of the entire leaf
+   including veins usually starting with the younger leaves. Leaf tips
+   may yellow and curl downward.
+
+   <p>Toxicity:Leaf size will be reduced and overall growth will be stunted.
+   Leaves yellowing or scorched at edges.
+
+<h>Calcium
+
+   <p>Deficiency:Young leaves are affected first and become small and
+   distorted or chlorotic with irregular margins, spotting or necrotic
+   areas. Bud development is inhibited and root may be under developed or
+   die back. Fruit may be stunted or deformed.
+
+   <p>Toxicity:Difficult to distinguish visually. May precipitate with
+   sulfur in solution and cause clouding or residue in tank.
+
+<h>Iron
+
+   <p>Deficiency:Pronounced interveinal chlorosis similar to that caused by
+   magnesium deficiency but on the younger leaves.
+
+   <p>Toxicity:Excess accumulation is rare but could cause bronzing or tiny
+   brown spots on leaf surface.
+
+<h>Manganese
+
+   <p>Deficiency:Interveinal chlorosis on younger or older leaves followed
+   by necrotic lesions or leaf shedding. Restricted growth and failure to
+   mature normally can also result.
+
+   <p>Toxicity:Chlorosis, or blotchy leaf tissue due to insufficient
+   chlorophyll synthesis. Growth rate will slow and vigor will decline.
+
+<h>Chlorine
+
+   <p>Deficiency:Wilted chlorotic leaves become bronze in color. Roots
+   become stunted and thickened near tips.
+
+   <p>Toxicity:Burning of leaf tip or margins. Bronzing, yellowing and leaf
+   splitting. Reduced leaf size and lower growth rate.
+
+<h>Boron
+
+   <p>Deficiency:Stem and root apical meristems often die. Root tips often
+   become swollen and discolored. Internal tissues may rot and become
+   host to fungal disease. Leaves show various symptoms which include
+   drying, thickening, distorting, wilting, and chlorotic or necrotic
+   spotting.
+
+   <p>Toxicity:Yellowing of leaf tip followed by necrosis of the leaves
+   beginning at tips or margins and progressing inward. Some plants are
+   especially sensitive to boron accumulation.
+
+<h>Copper
+
+   <p>Deficiency:Young leaves often become dark green and twisted. They may
+   die back or just exhibit necrotic spots. Growth and yield will be
+   deficient as well.
+
+   <p>Toxicity:Reduced growth followed by symptoms of iron chlorosis,
+   stunting, reduced branching, abnormal darkening and thickening of
+   roots. This element is essential but extremely toxic in excess.
+
+<h>Molybdenum
+
+   <p>Deficiency:Often interveinal chlorosis which occurs first on older
+   leaves, then progressing to the entire plant. Developing severely
+   twisted younger leaves which eventually die.
+
+   <p>Toxicity:Excess may cause discoloration of leaves depending on plant
+   species. This condition is rare but could occur from accumulation by
+   continuous application. Used by the plant in very small quantities.
+     _________________________________________________________________
+

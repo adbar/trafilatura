@@ -1,0 +1,229 @@
+URL: http://www.utexas.edu/cc/newsletter/jul2000/virus.html
+
+                        <h>Surviving the Next Virus Attack
+
+                               <h>--G. Morgan Watkins, Departmental Services
+
+   <p>Back in the spring of 1988, computer security was largely a matter of
+   "Make sure you lock the computer room door when you're done." Then a
+   few rogue programs called "viruses" began to appear on the West Coast,
+   spreading and replicating undercover from one computer to another and
+   reaching the University several months later. First was the "Pakistani
+   Brain" virus that struck UT Windows computers late that summer. Then
+   the "Scores" virus attacked Macintoshes across campus, leaving many
+   machines unusable for days.
+
+   <p>In these two cases, UT had time to prepare a defense because the
+   Internet highway was still largely under construction, and viruses
+   spread mostly via shared diskettes. But despite early warnings, UT was
+   still hit hard when the outbreak took place: significant service
+   interruptions occurred, it wasn't easy to stop, there were no virus
+   protection packages, and people didn't take the threat seriously.
+
+                                                             [morgan.gif]
+                                 <p>Morgan Watkins and Fantom, his guide dog
+
+   <p>Today, we have campus licenses for antivirus software, but we also
+   have thousands of computer viruses skulking worldwide. Unfortunately,
+   people still don't take the threat seriously enoughand the stakes are
+   much higher. With millions of business-critical computers linked to
+   the Internet, a particularly malignant virus could seriously damage
+   the global economy in a single electronic blitzkrieg.
+
+   <p>The latest major attack came on May 5, when the "Love Bug" infected
+   Microsoft Outlook mail services and mailboxes across the world.
+   Thousands of infected e-mail messages were generated on campus,
+   spreading a potential disaster throughout the UT community.
+
+   <p>Although Asia and Europe had already been struck by the Love Bug
+   during the night, there were no official alerts to warn Americans.
+   Even so, ACITS and many departmental computer administrators reacted
+   immediately. Within minutes, ACITS personnel were phoning
+   administrative and departmental contacts across campus, letting them
+   know of the attack. Since e-mail might be seen only after it was too
+   late, other staff posted signs in buildings and knocked on office
+   doors. Some departments shut down their servers; others isolated their
+   local networks; others braved out the attack but carefully reviewed
+   their e-mail and refused to open any attachments. Throughout the
+   blitz, ACITS' central services remained available while technical
+   staff were busy stopping the influx of contaminated attachments. The
+   Help Desk was on hand to assist, and UT's home page posted a prominent
+   alert, directing people to useful information. Shortly after noon,
+   seminars were given on how to eradicate the Love Bug. A special team
+   remained on campus until late that night to help anyone who needed
+   hands-on assistance. Campus-wide recovery efforts went well. In part
+   it was the skills of dedicated staff across campus; in part it was
+   luck.
+
+   <p>Fortunately, the Love Bug was rather innocuous, its destructive power
+   mostly limited to throwing away multimedia files and leaving droppings
+   throughout system folders. It did not trash hard disks, and it was
+   relatively easy to recognize. The Love Bug was not a terrorist act.
+   But the next strike could well be.
+
+  <h>For IT Managers: Be Prepared
+
+   <p>We hope that computer users are finally aware of how vulnerable their
+   electronic assets really are. In less than 24 hours, a poorly designed
+   and simple piece of code caused $20 billion in damages. We must assume
+   that virus creators are also aware of the destructive power now at
+   their fingertips. To protect the University, we need better
+   communication, organization, and preparation. The comments and
+   suggestions below are directed to IT managers on campus.
+
+   <p>Even careful planning won't give perfect security against attacksthere
+   will always be holes in our defenses. The key to surviving an
+   electronic incursion is to expect it. This includes planning ahead,
+   reacting quickly, notifying the right people, finding solutions, and
+   cleaning up the mess. Afterwards, a post-mortem should be done to
+   learn how to react better the next time.
+
+   <p>Generally, your most precious computer asset is your data, and
+   anything you can do before hand to protect it could save you later.
+   Keep your computers' operating systems and antivirus solutions
+   up-to-date, and, above all, have reliable, daily backups using
+   expertly managed servers. Making users responsible for system updates
+   and backups is a poor solution. Keeping data on servers makes it
+   easier to retrieve data from backups.
+
+  <h>Have a Plan . . .
+
+   <p>Know the location of all your departmental computing resources. If the
+   department has desktop management procedures, that is, specific
+   hardware, operating systems, and application suites that all members
+   of a particular group use, it is much easier to recover from a
+   disaster. If user data is stored on file servers and if standard
+   system images are maintained, the road to normal operations is
+   shorter. And this is true whether the incident is a virus attack, a
+   fire, flood, or theft.
+
+   <p>In the event of a security incident, such as a destructive virus,
+   reaction time is crucial. Before it happens, organize an Emergency
+   Response Team (ERT). You'll need an Incident Response Coordinator
+   (IRC), a Communications Coordinator (CC), and an Incident Technical
+   Leader (ITL). Depending on the size of your organization, you may need
+   others to help make sure all the work gets done. The IRC coordinates
+   the actions of the team and takes responsibility for decisions. The CC
+   spreads the word and becomes the sole point of contact for the press.
+   The ITL gathers necessary technical information, puts together
+   solutions, and makes sure that the problem is cleaned up. Finally,
+   members of the ERT must be trained and must have materials to help
+   them deal with unexpected problems.
+
+  <h>Get in Touch . . .
+
+   <p>An ERT requires a communications plan. Who needs to be contacted if a
+   virus or other attack is detected? The plan should have names, phone
+   numbers, and the reason for calling each person or unit. There will be
+   no time to work through the telephone book trying to hunt down phone
+   numbers. Be sure ACITS is on the list. We can share information with
+   departments and users and help assess the extent of the damage. Also,
+   a current paper inventory listing of hardware and software assets,
+   stored in a prearranged, secure location, could be essential during a
+   severe attack.
+
+   <p>An ERT checklist of steps to be taken and a set of forms to document
+   work is also essential. One or more members of an ERT might not be
+   available when a problem happens, and someone else may need to fill
+   the role. Other items, such as preprinted instructions and signs for
+   hallways should also be created and stored. Periodic disaster drills
+   will keep the procedures fresh. An ERT is of little use if its members
+   cannot be found. Departments should have emergency procedures posted
+   in a central location to make it easy to find responsible parties at
+   any time. Even if someone has agreed to wear a pager, there should be
+   alternate contacts.
+
+  <h>Diagnose the Problem . . .
+
+   <p>Don't try to diagnose a security incident alone. Gather what
+   information you can, but check with the Help Desk and other support
+   sites, as well as within your college, to make sure you have all the
+   facts. If the Internet is still accessible, check the UT home page to
+   see if anything has been posted. Other excellent sites that track
+   these kinds of problems include:
+
+   <p>The National Infrastructure
+
+     <l>Protection Center: www.nipc.gov
+     <l>The SANS Institute: www.sans.org
+     <l>The CERT Coordination Center: www.cert.org
+
+   <p>Also, check private vendors, such as
+
+     <l>Network Associates: www.nai.com
+     <l>Symantec: www.symantec.com
+     <l>Data Fellows: www.datafellows.com
+
+   <p>It may be prudent to disconnect an affected machine from the campus
+   network, but don't turn it off until you know what you're facing. Some
+   viruses cause further damage during the boot process. Obviously, be
+   careful not to trigger a virus on a system connected to the network or
+   one that has useful information on its hard drive. Some viruses can
+   disrupt firmware severely enough to make a system nearly
+   unrecoverable. Moreover, avoid reading e-mail while logged in with a
+   privileged account on a workstation or server. Conceivably, you could
+   take down an entire facility by doing so. Finally, when you know what
+   you've found, share that information with ACITS so that a general
+   alert can be sounded.
+
+  <h>Notify, Isolate, and Protect . . .
+
+   <p>Getting the word out to your user community can be a problem during a
+   cyber attack. Sometimes, sending information by e-mail is ill-advised,
+   and telephone contact allows for immediate interchange. If people
+   can't be reached by phone, knock on doors and post signs in hallways
+   and on office doors. The key is to use all communications paths,
+   depending on the severity of the incident.
+
+   <p>If an attack is still underway, it may be prudent to disconnect your
+   servers from the network, and then to disconnect compromised systems.
+   Keep track of what machines have problems and mark them in some way so
+   that others will know the machine has not been properly restored.
+   Paper signs taped over the monitor screens are obvious indicators and
+   will not fall off or be ignored. Affected machines should not be used
+   until they have been cleaned up.
+
+                              <h>Working Together
+
+       <p>ACITS is organizing a series of symposiums to help departments and
+         colleges coordinate their responses to cyber attacks. To be kept
+   up-to-date on this, subscribe to the UT Technical Support mailing list
+          by sending to listproc@lists.cc.utexas.edu the one-line message
+
+     <p>subscribe vtechsupport
+     firstname lastname
+
+   <p>To learn how ACITS can directly help you plan for, and react to, these
+      kinds of emergencies, or if you want to find out how ACITS can help
+      you manage your current resources, call Morgan Watkins at 475-9341.
+
+  <h>Assess Damage and Research Solutions . . .
+
+   <p>Once you know the scope of the problem, you'll need to begin planning
+   your recovery. Systems that affect several users will almost certainly
+   need a higher priority. Mobilize your Emergency Response Team to
+   handle things methodically. The Incident Technical Leader will need to
+   watch developments and talk with others facing the same problem.
+   Reacting too quickly can actually make things worse or complicate
+   recovery. During the Love Bug incident, several different ways to
+   eradicate the virus were posted around the country, but not all of
+   them were effective. Even the antivirus programs from vendors offered
+   less-than-perfect solutions.
+
+  <h>Clean Up and Do a Post-Mortem . . .
+
+   <p>Keep affected systems offline until you have removed any compromised
+   elements and can verify that the system has returned to normal. You
+   may need to do fresh installs of the operating system and restore
+   files from backup tapes. After that, your final task is to change all
+   of your passwords and advise your network users to change their
+   passwords.
+
+   <p>Carefully review everything done during an incident, shortly after its
+   resolution. Many lessons can be learned by studying the way that
+   things were handled. Watch for announcements from ACITS of a general
+   post-mortem so that others can learn from different approaches.
+     _________________________________________________________________
+
+
+

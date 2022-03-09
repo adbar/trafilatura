@@ -1,0 +1,1469 @@
+URL: http://home.planet.nl/~privacy1/wbp_en_rev.htm
+
+   <h>                       PERSONAL DATA PROTECTION ACT
+
+  <h>                           UNOFFICIAL TRANSLATION
+
+   <h>                   UPPER HOUSE OF THE DUTCH PARLIAMENT
+   <h>                        Session 1999-2000, Nr. 92
+
+   <h>    25 892 - Rules for the protection of personal data (Personal Data
+                              Protection Act)
+
+   <h>          Passed Upper House on July 3rd, 2000. (Stb. 2000, 302)
+
+                     
+
+  <h>   REVISED BILL (as approved by the Lower House on 23 November 1999)
+
+   <p>  We, Beatrix, by the grace of God, Queen of the Netherlands, Princess
+   of Orange-Nassau, etc. etc. etc.
+   To all those who read or hear this, We greet you and hereby proclaim
+   as follows:
+   
+ <p>  Whereas it is necessary to implement Directive 95/46/EC of the
+   European Parliament and of the Council of the European Union of 23
+   November 1995 on the protection of individuals with regard to the
+   processing of personal data and on the free movement of that data (OJ
+   L 28 1);
+   
+ <p>  Having regard to Article 10(2) and (3) of the Constitution;
+   
+ <p>  We, having consulted the State Council, and in joint consultation with
+   Parliament, have approved and understood, as We approve and
+   understand, the following:
+
+ <h>  CHAPTER 1. GENERAL PROVISIONS
+
+ <h>   Article 1
+
+ <p>   For the purposes of this Act and the provisions based upon it:
+  <l>  a. "personal data" shall mean: any information relating to an
+   identified or identifiable natural person;
+   <l>  b. "processing of personal data" shall mean: any operation or any set
+   of operations concerning personal data, including in any case the
+   collection, recording, organization, storage, updating or
+   modification, retrieval, consultation, use, dissemination by means of
+   transmission, distribution or making available in any other form,
+   merging, linking, as well as blocking, erasure or destruction of data;
+  <l>   c. "file" shall mean: any structured set of personal data, regardless
+   of whether or not this data set is centralised or dispersed along
+   functional or geographical lines, that is accessible according to
+   specific criteria and relates to different persons;
+   <l>  d. "responsible party" shall mean: the natural person, legal person,
+   administrative body or any other entity which, alone or in conjunction
+   with others, determines the purpose of and means for processing
+   personal data;
+   <l>  e. "processor" shall mean: the person or body which processes personal
+   data for the responsible party, without coming under the direct
+   authority of that party;
+   <l>  f. "data subject"; shall mean: the person to whom personal data
+   relate;
+   <l>  g. "third party" shall mean: any party other than the data subject,
+   the responsible party, the processor, or any person under the direct
+   authority of the responsible party or the processor, who is authorised
+   to process personal data;
+   <l>  h. "recipient" shall mean: the party to whom the personal data are
+   provided;
+   <l>  i. consent of the data subject: any freely-given, specific and
+   informed expression of will whereby data subjects agree to the
+   processing of personal data relating to them;
+  <l>   j. "Our Minister"; shall mean: Our Minister of Justice;
+  <l>   k. "Data Protection Commission" or "Commission" shall mean: the body
+   referred to in Article 51;
+   <l>  l. "officer" shall mean: the data protection officer referred to in
+   Article 62;
+   <l>  m. "prior investigation" shall mean: an investigation as referred to
+   in Article 31;
+   <l>  n. "provision of personal data" shall mean: the disclosure or making
+   available of personal data;
+  <l>   o. "collection of personal data" shall mean: the obtaining of personal
+   data.
+
+  <h>   Article 2
+
+   <p>  1. This Act applies to the fully or partly automated processing of
+   personal data, and the non-automated processing of personal data
+   entered in a file or intended to be entered therein.
+   <p>  2. This Act does not apply to the processing of personal data:
+   <l>  a. in the course of a purely personal or household activity;
+   <l>  b. by or on behalf of the intelligence or security services referred
+   to in the Intelligence and Security Services Act (Wet op de
+   inlichtingen- en veiligheidsdiensten);
+   <l>  c. for the purposes of implementing the police tasks defined in
+   Article 2 of the Police Act 1993 (Politiewet 1993);
+   <l>  d. governed by or under the Municipal Database (Personal Records) Act
+   (Wet gemeentelijke basisadministratie persoonsgegevens);
+   <l>  e. for the purposes of implementing the Judicial Documentation Act
+   (Wet justitiÃ«le documentatie) and
+   <l>  f. for the purposes of implementing the Electoral Provisions Act
+   (Kieswet).
+   <p>  3. This Act does not apply to the processing of personal data by the
+   armed forces where Our Defence Minister so decides with a view to
+   deploying or making available the armed forces to maintain or promote
+   the international legal order. Such a decision shall be communicated
+   to the Data Protection Commission as quickly as possible.
+
+   <h>  Article 3
+
+  <p>   1. This Act does not apply to the processing of personal data for
+   exclusively journalistic, artistic or literary purposes, except where
+   otherwise provided in this Chapter and in Articles 6 to 11, 13 to 15,
+   25 and 49.
+  <p>  2. The prohibition on processing personal data referred to in Article
+   16 does not apply where this is necessary for the purposes referred to
+   under (1).
+
+  <h>   Article 4
+
+ <p>  1. This Act applies to the processing of personal data carried out in
+   the context of the activities of an establishment of a responsible
+   party in the Netherlands.
+   <p>  2. This Act applies to the processing of personal data by or for
+   responsible parties who are not established in the European Union,
+   whereby use is made of automated or non-automated means situated in
+   the Netherlands, unless these means are used only for forwarding
+   personal data.
+  <p> 3. The responsible parties referred to under (2) are prohibited from
+   processing personal data, unless they designate a person or body in
+   the Netherlands to act on their behalf in accordance with the
+   provisions of this Act. For the purposes of application of this Act
+   and the provisions based upon it, the said person or body shall be
+   deemed to be the responsible party.
+
+   <h>  Article 5
+
+  <p>  1. In the case that the data subjects are minors and have not yet
+   reached the age of sixteen, or have been placed under legal restraint
+   or the care of a mentor, instead of the consent of the data subjects,
+   that of their legal representative is required.
+  <p>  2. The data subjects or their legal representative may withdraw
+   consent at any time.
+
+   <h>  CHAPTER 2. CONDITIONS FOR THE LAWFUL PROCESSING OF PERSONAL DATA
+
+   <h>  Section 1. Processing of personal data in general
+
+   <h>  Article 6
+
+   <p>  Personal data shall be processed in accordance with the law and in a
+   proper and careful manner.
+
+   <h>  Article 7
+
+   <p>  Personal data shall be collected for specific, explicitly defined and
+   legitimate purposes.
+
+  <h>  Article 8
+
+ <p>    Personal data may only be processed where:
+ <l>    a. the data subject has unambiguously given his consent for the
+   processing;
+ <l>   b. the processing is necessary for the performance of a contract to
+   which the data subject is party, or for actions to be carried out at
+   the request of the data subject and which are necessary for the
+   conclusion of a contract;
+ <l>   c. the processing is necessary in order to comply with a legal
+   obligation to which the responsible party is subject;
+ <l>   d. the processing is necessary in order to protect a vital interest of
+   the data subject;
+  <l>  e. the processing is necessary for the proper performance of a public
+   law duty by the administrative body concerned or by the administrative
+   body to which the data are provided, or
+  <l>  f. the processing is necessary for upholding the legitimate interests
+   of the responsible party or of a third party to whom the data are
+   supplied, except where the interests or fundamental rights and
+   freedoms of the data subject, in particular the right to protection of
+   individual privacy, prevail.
+
+  <h>  Article 9
+
+  <p>  1. Personal data shall not be further processed in a way incompatible
+   with the purposes for which they have been obtained.
+  <p>  2. For the purposes of assessing whether processing is incompatible,
+   as referred to under (1), the responsible party shall in any case take
+   account of the following:
+  <l>  a. the relationship between the purpose of the intended processing and
+   the purpose for which the data have been obtained;
+  <l>  b. the nature of the data concerned;
+ <l>   c. the consequences of the intended processing for the data subject;
+  <l>  d. the manner in which the data have been obtained, and
+  <l>  e. the extent to which appropriate guarantees have been put in place
+   with respect to the data subject.
+<p>    3. The further processing of personal data for historical, statistical
+   or scientific purposes shall not be regarded as incompatible where the
+   responsible party has made the necessary arrangements to ensure that
+   the further processing is carried out solely for these specific
+   purposes.
+<p>    4. The processing of personal data shall not take place where this is
+   precluded by an obligation of confidentiality by virtue of office,
+   profession or legal provision.
+
+<h>    Article 10
+
+<p>   1. Personal data shall not be kept in a form which allows the data
+   subject to be identified for any longer than is necessary for
+   achieving the purposes for which they were collected or subsequently
+   processed.
+<p>    2. Personal data may be kept for longer than provided under (1), where
+   this is for historical, statistical or scientific purposes, and where
+   the responsible party has made the necessary arrangements to ensure
+   that the data concerned are used solely for these specific purposes.
+
+ <h>  Article 11
+
+ <p>  1. Personal data shall only be processed where, given the purposes for
+   which they are collected or subsequently processed, they are adequate,
+   relevant and not excessive.
+<p>   2. The responsible party shall take the necessary steps to ensure that
+   personal data, given the purposes for which they are collected or
+   subsequently processed, are correct and accurate.
+
+ <h>  Article 12
+
+<p>   1. Anyone acting under the authority of the responsible party or the
+   processor, as well as the processor himself, where they have access to
+   personal data, shall only process such data on the orders of the
+   responsible party, except where otherwise required by law.
+<p>  2. The persons referred to under (1), who are not subject to an
+   obligation of confidentiality by virtue of office, profession or legal
+   provision, are required to treat as confidential the personal data
+   which comes to their knowledge, except where the communication of such
+   data is required by a legal provision or the proper performance of
+   their duties. Article 272(2) of the Penal Code is not applicable.
+
+ <h>   Article 13
+
+  <p>  The responsible party shall implement appropriate technical and
+   organizational measures to secure personal data against loss or
+   against any form of unlawful processing. These measures shall
+   guarantee an appropriate level of security, taking into account the
+   state of the art and the costs of implementation, and having regard to
+   the risks associated with the processing and the nature of the data to
+   be protected. These measures shall also aim at preventing unnecessary
+   collection and further processing of personal data.
+
+  <h>  Article 14
+
+  <p>  1. Where responsible parties have personal data processed for their
+   purposes by a processor, these responsible parties shall make sure
+   that the processor provides adequate guarantees concerning the
+   technical and organizational security measures for the processing to
+   be carried out. The responsible parties shall make sure that these
+   measures are complied with.
+  <p>  2. The carrying out of processing by a processor shall be governed by
+   an agreement or another legal act whereby an obligation is created
+   between the processor and the responsible party.
+  <p>  3. The responsible party shall make sure that the processor:
+   <l> a. processes the personal data in accordance with Article 12(l) and
+   <l> b. complies with the obligations incumbent upon the responsible party
+   under Article 13.
+  <p>  4. Where the processor is established in another country of the
+   European Union, the responsible party shall make sure that the
+   processor complies with the laws of that other country,
+   notwithstanding the provisions of (3)(b).
+  <p>  5. With a view to the keeping of proof, the parts of the agreement or
+   legal act relating to personal data protection and the security
+   measures referred to in Article 13, shall be set down in writing or in
+   another equivalent form.
+
+  <h>  Article 15
+
+ <p>   The responsible party shall make sure that the obligations referred to
+   in Articles 6 to 12 and 14(2) and (5) of this Chapter are complied
+   with.
+
+  <h>  Section 2. Processing of special personal data
+
+  <h>  Article 16
+
+  <p>  It is prohibited to process personal data concerning a person's
+   religion or philosophy of life, race, political persuasion, health and
+   sexual life, or personal data concerning trade union membership,
+   except as otherwise provided in this Section. This prohibition also
+   applies to personal data concerning a persons criminal behaviour, or
+   unlawful or objectionable conduct connected with a ban imposed with
+   regard to such conduct.
+
+   <h> Article 17
+
+   <p>  1. The prohibition on processing personal data concerning a person's
+   religion or philosophy of life, as referred to in Article 16, does not
+   apply where the processing is carried out by:
+   <l>  a. church associations, independent sections thereof or other
+   associations founded on spiritual principles, provided that the data
+   concerns persons belonging thereto;
+  <l>  b. institutions founded on religious or philosophical principles,
+   provided that this is necessary to the aims of the institutions and
+   for the achievement of their principles, or
+  <l>  c. other institutions provided that this is necessary to the spiritual
+   welfare of the data subjects, unless they have indicated their
+   objection thereto in writing.
+   <p>  2. In the cases referred to under (1)(a), the prohibition also does
+   not apply to personal data concerning the religion or philosophy of
+   life of family members of the data subjects, provided that:
+ <l>   a. the association concerned maintains regular contacts with these
+   family members in connection with its aims, and
+  <l>  b. the family members have not indicated any objection thereto in
+   writing.
+  <p> 3. In the cases referred to under (1) and (2), no personal data may be
+   supplied to third parties without the consent of the data subject.
+
+  <h>  Article 18
+
+ <p> The prohibition on processing personal data concerning a person's
+   race, as referred to in Article 16, does not apply where the
+   processing is carried out:
+ <l>   a. with a view to identifying data subjects and only where this is
+   essential for that purpose;
+  <l>  b. for the purpose of assigning a preferential status to persons from
+   a particular ethnic or cultural minority group with a view to
+   eradicating or reducing actual inequalities, provided that:
+ <p>   1. this is necessary for that purpose;
+<p>  2. the data only relate to the country of birth of the data subjects,
+   their parents or grandparents, or to other criteria laid down by law,
+   allowing an objective determination whether a person belongs to a
+   minority group as referred to under (b), and
+ <p>  3. the data subjects have not indicated any objection thereto in
+   writing.
+
+ <h>  Article 19
+
+ <p>  1. The prohibition on processing personal data concerning a person's
+   political persuasion, as referred to in Article 16, does not apply
+   where the processing is carried out:
+ <l>  a. by institutions founded on political principles with respect to
+   their members or employees or other persons belonging to the
+   institution, provided that this is necessary to the aims of the
+   institutions and for the achievement of their principles, or
+<l>   b. with a view to the requirements concerning political persuasion
+   which can reasonably be applied in connection with the performance of
+   duties in administrative and advisory bodies.
+ <p>  2. In the cases referred to under (1)(a), no personal data may be
+   supplied to third parties without the consent of the data subject.
+
+ <h>  Article 20
+
+ <p>  1. The prohibition on processing personal data concerning a person's
+   trade union membership, as referred to in Article 16, does not apply
+   where the processing is carried out by the trade union concerned or
+   the trade union federation to which this trade union belongs, provided
+   that this is necessary to the aims of the trade union or trade union
+   federation;
+ <p>  2. In the cases referred to under (1), no personal data may be
+   supplied to third parties without the consent of the data subject.
+
+  <h> Article 21
+
+<p>   1. The prohibition on processing personal data concerning a person's
+   health, as referred to in Article 16, does not apply where the
+   processing is carried out by:
+<l>   a. medical professionals, healthcare institutions or facilities or
+   social services, provided that this is necessary for the proper
+   treatment and care of the data subject, or for the administration of
+   the institution or professional practice concerned;
+ <l>  b. insurance companies as referred to in Article 1(1)(h) of the
+   Insurance Supervision Act 1993 (Wet toezicht verzekeringsbedrijf
+   1993), insurance companies as referred to in Article 1(c) of the
+   Funeral Insurance Supervision Act (Wet toezicht
+   natura-uitvaartverzekeringsbedrijf), and intermediaries and sub-agents
+   as referred to in Article 1(b) and (c) of the Insurance Mediation Act
+   (Wet assurantiebemiddelingsbedrijf), provided that this is necessary
+   for:
+ <l>  1. assessing the risk to be insured by the insurance company and the
+   data subject has not indicated any objection thereto, or
+ <l>  2. the performance of the insurance agreement;
+  <l> c. schools, provided that this is necessary with a view to providing
+   special support for pupils or making special arrangements in
+   connection with their state of health;
+  <l> d. institutions for probation, child protection or guardianship,
+   provided that this is necessary for the performance of their legal
+   duties;
+  <l> e. Our Minister of Justice, provided that this is necessary in
+   connection with the implementation of prison sentences or detention
+   measures, or
+ <l>  f. administrative bodies, pension funds, employers or institutions
+   working for them, provided that this is necessary for:
+ <l>  1. the proper implementation of the provisions of laws, pension
+   regulations or collective agreements which create rights dependent on
+   the state of health of the data subject, or
+  <l> 2. the reintegration of or support for workers or persons entitled to
+   benefit in connection with sickness or work incapacity.
+  <p> 2. In the cases referred to under (1), the data may only be processed
+   by persons subject to an obligation of confidentiality by virtue of
+   office, profession or legal provision, or under an agreement. Where
+   responsible parties personally process data and are not already
+   subject to an obligation of confidentiality by virtue of office,
+   profession or legal provision, they are required to treat the data as
+   confidential, except where they are required by law or in connection
+   with their duties to communicate such data to other parties who are
+   authorised to process such data in accordance with (1).
+<p>   3. The prohibition on processing other personal data, as referred to
+   in Article 16, does not apply where this is necessary to supplement
+   the processing of personal data concerning a person's health, as
+   referred to under (1)(a), with a view to the proper treatment or care
+   of the data subject.
+<p>   4. Personal data concerning inherited characteristics may only be
+   processed, where this processing takes place with respect to the data
+   subject from whom the data concerned have been obtained, unless:
+   a. a serious medical interest prevails, or
+   b. the processing is necessary for the purpose of scientific research
+   or statistics.
+   In the case referred to under (b), Article 23(l)(a) and (2) shall
+   likewise be applicable.
+<p>   5. More detailed rules may be issued by general administrative
+   regulation concerning the application of (1)(b) and (f).
+
+  <h> Article 22
+
+ <p>  1. The prohibition on processing personal data concerning a person's
+   criminal behaviour, as referred to in Article 16, does not apply where
+   the processing is carried out by bodies, charged by law with applying
+   criminal law and by responsible parties who have obtained these data
+   in accordance with the Police Registers Act (Wet politieregisters) or
+   the Judicial Documentation Act (Wet justitiÃ«le documentatie).
+ <p>  2. The prohibition does not apply to responsible parties who process
+   these data for their own purposes with a view to:
+<l>   a. assessing an application by data subjects in order to take a
+   decision about them or provide a service to them, or
+<l>   b. protecting their interests, provided that this concerns criminal
+   offences which have been or, as indicated by certain facts and
+   circumstances, can be expected to be committed against them or against
+   persons in their service.
+ <p>  3. The processing of these data concerning personnel in the service of
+   the responsible party shall take place in accordance with the rules
+   established in compliance with the procedure referred to in the Works
+   Councils Act (Wet op de ondernemingsraden).
+<p>   4. The prohibition does not apply where these data are processed for
+   the account of third parties:
+  <l>  a. by responsible parties acting in accordance with a licence issued
+   under the Private Security Organisations and Investigation Bureaus Act
+   (Wet particuliere beveiligingsorganisaties en recherchebureaus);
+  <l>  b. where these third parties are legal persons forming part of the
+   same group, as referred to in Article 2:24(b) of the Civil Code, or
+  <l>  c. where appropriate and specific guarantees have been provided and
+   the procedure referred to in Article 31 has been followed.
+ <p>  5. The prohibition on processing other personal data, as referred to
+   in Article 16, does not apply where this is necessary to supplement
+   the processing of data on criminal behaviour, for the purposes for
+   which these data are being processed.
+ <p>  6. The provisions of (2) to (5) are likewise applicable to personal
+   data relating to a ban imposed by a court concerning unlawful or
+   objectionable conduct.
+ <p>  7. Rules may be issued by general administrative regulation concerning
+   the appropriate and specific guarantees referred to under (4)(c).
+
+ <h>  Article 23
+
+  <p>  1. Without prejudice to Articles 17 to 22, the prohibition on
+   processing personal data referred to in Article 16 does not apply
+   where:
+  <l>  a. this is carried out with the express consent of the data subject;
+  <l>  b. the data have manifestly been made public by the data subject;
+  <l>  c. this is necessary for the establishment, exercise or defence of a
+   right in law;
+  <l>  d. this is necessary to comply with an obligation of international
+   public law, or
+ <l>   e. this is necessary with a view to an important public interest,
+   where appropriate guarantees have been put in place to protect
+   individual privacy and this is provided for by law or else the Data
+   Protection Commission has granted an exemption. When granting an
+   exemption, the Commission can impose rules and restrictions.
+ <p>   2. The prohibition on the processing of personal data referred to in
+   Article 16 for the purpose of scientific research or statistics does
+   not apply where:
+  <l>  a. the research serves a public interest,
+  <l>  b. the processing is necessary for the research or statistics
+   concerned,
+   <l> c. it appears to be impossible or would involve a disproportionate
+   effort to ask for express consent, and
+   <l> d. sufficient guarantees are provided to ensure that the processing
+   does not adversely affect the individual privacy of the data subject
+   to a disproportionate extent.
+  <p>  3. Processing referred to under (1)(e) must be notified to the
+   European Commission. This notification shall be made by Our Minister
+   concerned where the processing is provided for by law. The Data
+   Protection Commission shall make the notification in the case that it
+   has granted an exemption for the processing.
+
+ <h>  Article 24
+
+   <p> 1. A number that is required by law for the purposes of identifying a
+   person may only be used for the processing of personal data in
+   execution of the said law or for purposes stipulated by the law.
+   <p> 2. Cases other than those referred to under (1) can be designated by
+   general administrative regulation in which a number to be indicated in
+   this connection, as referred to under (1), can be used. More detailed
+   rules may be laid down in this connection concerning the use of such a
+   number.
+
+ <h>  CHAPTER 3. CODES OF CONDUCT
+
+ <h>  Article 25
+
+  <p>  1. An organisation or organisations planning to draw up a code of
+   conduct may request the Data Protection Commssion to declare that,
+   given the particular features of the sector or sectors of society in
+   which these organisations are operating, the rules contained in the
+   said code properly implement this Act or other legal provisions on the
+   processing of personal data. Where a code of conduct provides for the
+   arrangement of disputes about its observance, the Commission may only
+   issue a declaration, if guarantees have been provided for its
+   independent character.
+  <p>  2. The provisions of (1) are likewise applicable to amendments or
+   extensions to existing codes of conduct.
+  <p>  3. The Commission shall only consider requests where, in its opinion,
+   the requester or requesters are sufficiently representative and the
+   sector or sectors concerned are sufficiently precisely defined in the
+   code.
+  <p>  4. A decision on a request referred to under (1) shall be deemed to be
+   equivalent to a decision within the meaning of the General
+   Administrative Regulations Act (Algemene wet bestuursrecht). This
+   decision shall be arrived at in accordance with the procedure laid
+   down by Section 3.4 of that Act. The decision must be taken within a
+   reasonable period of time, it being understood that this period must
+   be no longer than thirteen weeks.
+ <p>   5. The declaration shall apply for the duration of the code of
+   conduct, while not exceeding five years from the date on which the
+   declaration is announced. Where a declaration is requested for an
+   amendment to a code of conduct for which a declaration has already
+   been issued previously, the declaration shall apply for the duration
+   of the declaration issued previously.
+  <p>  6. The Commission is responsible for publishing the declaration,
+   together with the associated code, in the Official Gazette
+   (Staatscourant).
+
+<h>   Article 26
+
+  <p>  1. More detailed rules may be issued by general administrative
+   regulation with regard to a particular sector concerning the matters
+   covered in Articles 6 to 11 and 13.
+   <p> 2. The Data Protection Commission shall indicate in its annual report
+   the extent to which, in its opinion, the provisions of (1) should be
+   applied.
+
+<h>   CHAPTER 4. NOTIFICATION AND PRIOR INVESTIGATION
+
+<h>   Section 1. Notification
+
+<h>   Article 27
+
+ <p>   1. The fully or partly automated processing of personal data intended
+   to serve a single purpose or different related purposes, must be
+   notified to the Data Protection Commission or the officer before the
+   processing is started.
+ <p>   2. The non-automated processing of personal data intended to serve a
+   single purpose or different related purposes, must be notified where
+   this is subject to a prior investigation.<
+
+ <h>  Article 28
+
+  <p>  1. The notification shall contain the following particulars:
+ <l>   a. the name and address of the responsible party;
+ <l>   b. the purpose or purposes of the processing;
+  <l>  c. a description of the categories of data subjects and of the data or
+   categories of data relating thereto;
+ <l>   d. the recipients or categories of recipients to whom the data may be
+   supplied;
+ <l>   e. the planned transfers of data to countries outside the European
+   Union;
+ <l>  f. a general description allowing a preliminary assessment of the
+   suitability of the planned measures to guarantee the security of the
+   processing, in application of Articles 13 and 14.
+<p>   2. The notification shall include the purpose or purposes for which
+   the data or categories of data have been or are being collected.
+ <p>  3. Changes in the name or address of the responsible party must be
+   notified within one week. Changes to the notification which concern
+   (1)(b) to (f) shall be notified in each case within one year of the
+   previous notification, where they appear to be of more than incidental
+   importance.
+<p>   4. Any processing which departs from that which has been notified in
+   accordance with the provisions of (1)(b) to (f) shall be recorded and
+   kept for at least three years.
+ <p>  5. More detailed rules can be issued by or under general
+   administrative regulation concerning the procedure for submitting
+   notifications.
+
+ <h>  Article 29
+
+ <p>  1. It may be laid down by general administrative regulation that
+   certain categories of data processing which are unlikely to infringe
+   the fundamental rights and freedoms of the data subject, are exempted
+   from the notification requirement referred to in Article 27.
+<p>   2. In this case, the following particulars shall be stated:
+
+  <l>   the purposes of the processing,
+
+  <l>   the processed data or categories of processed data,
+
+  <l>   the categories of data subjects,
+
+ <l>    the recipients or categories of recipients to whom the data is to be
+   supplied, and
+
+     the period during which the data are to be stored.
+  <p> 3. Where this is necessary in order to detect criminal offences in a
+   particular case, it may be laid down by general administrative
+   regulation that certain categories of processing by responsible
+   parties who are vested with investigating powers by law shall be
+   exempt from notification. Compensatory guarantees to protect personal
+   data can be provided in this connection. The processed data may only
+   be used for the purposes expressly stated in the said general
+   administrative regulation.
+ <p>  4. The notification requirement does not apply to public registers set
+   up by law or to data supplied to an administrative body pursuant to a
+   legal obligation.
+
+  <h> Article 30
+
+<p>   1. Both the Data Protection Commssion and the officer shall maintain
+   an up-to-date register of the data processing notified to them. The
+   register shall contain as a minimum the information provided in
+   accordance with Article 28(l)(a) to (e).
+<p>   2. The register may be consulted by any person free of charge.
+ <p>  3. The responsible party shall provide any person who so requests with
+   the information referred to in Article 28(l)(a) to (e) concerning data
+   processing exempted from the notification requirement.
+<p>   4. The provisions of (3) do not apply to:
+ <l>  a. data processing which is covered by an exemption under Article
+   29(3).
+ <l>  b. public registers set up by law.
+
+ <h>  Section 2. Prior investigation
+
+ <h>  Article 31
+
+ <p>  1. The Data Protection Commission shall initiate an investigation
+   prior to any processing for which responsible parties:
+<l>   a. plan to process a number identifying persons for a purpose other
+   than the one for which the number is specifically intended with the
+   aim of linking the data together with data processed by other
+   responsible parties, unless the number is used for the cases defined
+   in Article 24;
+<l>   b. plan to record data on the basis of their own observations without
+   informing the data subjects thereof, or
+<l>   c. plan to process data on criminal behaviour or on unlawful or
+   objectionable conduct for third parties other than under the terms of
+   a licence issued under the Private Security Organisations and
+   Investigation Bureaus Act.
+ <p>  2. The provisions of (1)(b) do not apply to public registers set up by
+   law.
+ <p>  3. The provisions of (1) may be rendered applicable to other types of
+   data processing by law or general administrative regulation where such
+   processing carries a particular risk for the individual rights and
+   freedoms of the data subject. The Data Protection Commission shall
+   indicate in its annual report the extent to which, in its opinion, the
+   said provisions should be rendered applicable to such data.
+  <p> 4. The Data Protection Commission shall notify processing referred to
+   under (1)(c) to the European Commission.
+
+ <h>  Article 32
+
+ <p>  1. Data processing to which Article 31(1) is applicable shall be
+   notified as such by the responsible party to the Data Protection
+   Commssion.
+ <p>  2. The notification of such data processing requires responsible
+   parties to suspend the processing they are planning to carry out until
+   the Commission has completed its investigation or until they have
+   received notice that a more detailed investigation will not be
+   conducted.
+<p>   3. In the case of the notification of data processing to which Article
+   31(1) is applicable, the Commission shall communicate its decision in
+   writing within four weeks of the notification as to whether or not it
+   will conduct a more detailed investigation.
+ <p>  4. In the event that the Commission decides to conduct a more detailed
+   investigation, it shall indicate the period of time within which it
+   plans to conduct this investigation. This period must not exceed
+   thirteen weeks.
+<p>   5. The more detailed investigation referred to under (4) leads to a
+   statement concerning the lawfulness of the data processing.
+<p>   6. The statement by the Commission is deemed to be equivalent to a
+   decision within the meaning of the General Administrative Regulations
+   Act. This statement shall be prepared in accordance with the procedure
+   laid down by Section 3.4 of that Act.
+
+ <h> CHAPTER 5. INFORMATION PROVIDED TO THE DATA SUBJECT
+
+<h>   Article 33
+
+<p>   1. Where personal data are to be obtained from a data subject, the
+   responsible party shall provide the data subject with the information
+   referred to under (2) and (3) prior to obtaining the said personal
+   data, unless the data subject is already acquainted with this
+   information.
+ <p>  2. The responsible party shall inform the data subject of its identity
+   and the purposes of the processing for which the data are intended.
+ <p>  3. The responsible party shall provide more detailed information,
+   where given the type of data, the circumstances in which they are to
+   be obtained or the use to be made thereof, this is necessary in order
+   to guarantee with respect to the data subject that the processing is
+   carried out in a proper and careful manner.
+
+ <h>  Article 34
+
+ <p>  1. Where personal data are obtained in a manner other than that
+   referred to in Article 33, the responsible party shall provide the
+   data subject with the information referred to under (2) and (3),
+   unless the data subject is already acquainted with this information:
+   a. at the time that the data relating to him is recorded; or
+   b. when it is intended to supply the data to a third party, at the
+   latest on the first occasion that the said data are so supplied.
+<p>   2. The responsible party shall inform the data subject of its identity
+   and the purposes of the processing.
+<p>   3. The responsible party shall provide more detailed information,
+   where given the type of data, the circumstances in which they have
+   been obtained or the use to be made thereof, this is necessary in
+   order to guarantee with respect to the data subject that the
+   processing is carried out in a proper and careful manner.
+ <p>  4. The provisions of (1) do not apply if it appears to be impossible
+   or would involve a disproportionate effort to provide the said
+   information to the data subject. In that case, the responsible party
+   shall record the origin of the data.
+ <p>  5. The provisions of (1) likewise do not apply if the recording or
+   provision of the data is required by or under the law. In that case,
+   the responsible party must inform the data subject, upon his request,
+   about the legal provision which led to the recording or supply of data
+   relating to the data subject.
+
+ <h>  CHAPTER 6. RIGHTS OF THE DATA SUBJECT
+
+ <h>  Article 35
+
+ <p>  1. A data subject has the right, freely and at reasonable intervals,
+   to request the responsible party to inform him as to whether personal
+   data relating to him are being processed. The responsible party shall
+   inform the data subject in writing within four weeks as to whether
+   personal data relating to him are being processed.
+<p>   2. In the event that such data are being processed, the information
+   provided shall contain a full and clear summary thereof, a definition
+   of the purpose or purposes of the processing, the data categories to
+   which the processing relates and the recipients or categories of
+   recipients, as well as the available information about the origin of
+   the data.
+<p>   3. Prior to the providing of information referred to under (1) to
+   which a third party may be expected to object, the responsible party
+   shall give the third party an opportunity to express its views where
+   such information contains data concerning that third party unless this
+   appears to be impossible or would involve a disproportionate effort.
+   4. Upon request, the responsible party shall provide information
+   concerning the underlying logic of the automated processing of data
+   relating to the data subject.
+
+ <h>  Article 36
+
+ <p>  1. A person who has been informed about personal data relating to him
+   in accordance with Article 35 may request the responsible party to
+   correct, supplement, delete or block the said data in the event that
+   it is factually inaccurate, incomplete or irrelevant to the purpose or
+   purposes of the processing, or is being processed in any other way
+   which infringes a legal provision. The request shall contain the
+   modifications to be made.
+ <p>  2. The responsible party shall inform the requester in writing within
+   four weeks of receiving the request as to whether and, if so, to what
+   extent, it is complying therewith. A refusal to do so must be
+   accompanied by the reasons.
+ <p>  3. The responsible party must make sure that a decision to correct,
+   supplement, delete or block data is implemented as quickly as
+   possible.
+ <p>  4. Where personal data have been recorded on a data carrier to which
+   no modifications can be made, the responsible party must take the
+   necessary steps to inform the data user that it is impossible to
+   correct, supplement, delete or block the data, even where there are
+   grounds under this article for modifying the data.
+<p>   5. The provisions of (1) to (4) do not apply to public registers set
+   up by law where this law provides for a special procedure for
+   correcting, supplementing, deleting or blocking data.
+
+ <h>  Article 37
+
+<p>   1. Where an important interest of the requester so requires, the
+   responsible party shall reply to the request referred to in Articles
+   35 and 36 in a form, other than in writing, which takes due account of
+   this interest.
+<p>   2. The responsible party shall make sure that the identity of the
+   requester is properly established.
+<p>   3. In the case of minors who have not yet reached the age of sixteen,
+   and of persons placed under legal restraint, the requests referred to
+   in Articles 35 and 36 shall be made by their legal representatives.
+   The information concerned shall also be provided to the legal
+   representatives.
+
+ <h>  Article 38
+
+<p>   1. The responsible party who has corrected, supplemented, deleted or
+   blocked personal data in response to a request under Article 36, has
+   an obligation as soon as possible to inform third parties to whom the
+   data has previously been supplied about the correction, addition,
+   deletion or blocking, unless this appears to be impossible or would
+   involve a disproportionate effort.
+ <p>  2. Upon request, the responsible party shall notify the requester
+   referred to in Article 36 of those parties to whom it has provided
+   such information.
+
+ <h>  Article 39
+
+ <p>  1. The responsible party may require a payment for expenses incurred
+   in providing the information referred to in Article 35, the amount of
+   which shall be laid down by or under general administrative regulation
+   and may not exceed ten Dutch guilder.
+<p>   2. The payment shall be refunded in the event that the responsible
+   party corrects, supplements, deletes or blockes data at the request of
+   the data subject, on the recommendation of the Data Protection
+   Commission or by order of a court.
+<p>   3. The amount referred to under (1) may be modified in special cases
+   by general administrative regulation.
+
+<h>   Article 40
+
+ <p>  1. Where data are undergoing the processing referred to in Article
+   8(e) and (f), the data subject may at any time register an objection
+   with the responsible party in connection with his particular personal
+   circumstances.
+ <p>  2. The responsible party shall take a decision within four weeks of
+   receiving a notice of objection as to whether the objection is
+   justified. In the event that the objection is justified, the
+   responsible party shall stop the processing with immediate effect.
+ <p>  3. The responsible party may require a payment for expenses incurred
+   in dealing with an objection, which payment may not exceed an amount
+   to be laid down by or under a general administrative regulation. The
+   payment shall be refunded in the event that the objection is found to
+   be justified.
+<p>   4. This article does not apply to public registers set up by law.
+
+<h>   Article 41
+
+ <p>  1. Where data are being processed in connection with the creation or
+   maintenance of a direct relationship between the responsible party or
+   a third party and the data subject with a view to recruitment for
+   commercial or charitable purposes, the data subject may register an
+   objection to such processing with the responsible party at any time
+   and at no cost to himself.
+ <p>  2. In the case of an objection, the responsible party shall take the
+   steps required to stop this form of processing with immediate effect.
+<p>   3. Responsible parties, who are planning to provide personal data to
+   third parties or to use such data at their account for the purposes
+   referred to under (1), shall take appropriate steps to notify the data
+   subjects of the possibility of registering objections. This
+   notification shall be made via one or more newspapers or free-sheets,
+   or in some other suitable way. In the case of regular provision to or
+   use at the account of third parties, the notification shall take place
+   at least once a year.
+<p>   4. Responsible parties processing personal data for the purposes
+   referred to under (1), shall make sure that data subjects are notified
+   of the possibility of registering objections, whenever a direct
+   message is sent to them for the said purposes.
+
+ <h>  Article 42
+
+<p>   1. No one may be subject to a decision to which are attached legal
+   consequences for them, or which affects them to a substantial degree,
+   where this decision has been taken solely on the basis of the
+   automated processing of personal data intended to provide a picture of
+   certain aspects of their personality.
+<p>   2. The provisions of (1) do not apply where the decision referred to
+   therein:
+ <l>  a. has been taken in connection with the conclusion or execution of a
+   contract, and
+ <l>  1. the request of the data subjects has been met, or
+ <l>  2. appropriate measures have been taken to protect their legitimate
+   interests; or
+   b. is based on a law in which measures are laid down for protecting
+   the legitimate interests of data subjects.
+ <p>  3. Appropriate measures, as referred to under (2)(a), shall be
+   considered as taken where the data subjects have been given the
+   opportunity to put forward their views on the decisions as referred to
+   under (1).
+ <p>  4. In the case referred to under (2), the responsible party shall
+   inform the data subjects about the underlying logic of the automated
+   processing of the data relating to them.
+
+<h>  CHAPTER 7. EXCEPTIONS AND RESTRICTIONS
+
+ <h>  Article 43
+
+<p>   Responsible parties are not required to apply Articles 9(1), 30(3),
+   33, 34 and 35, where this is necessary in the interests of:
+<l>   a. State security;
+<l>   b. the prevention, detection and prosecution of criminal offences;
+<l>   c. important economic and financial interests of the State and other
+   public bodies;
+ <l>  d. supervising compliance with legal provisions established in the
+   interests referred to under (b) and (c), or
+ <l> e. protecting the data subject or the rights and freedoms of other
+   persons.
+
+ <h>  Article 44
+
+ <p>  1. Where processing is carried out by institutions or services for the
+   purposes of scientific research or statistics, and the necessary
+   arrangements have been made to ensure that the personal data can only
+   be used for statistical or scientific purposes, the responsible party
+   shall not be required to provide the information referred to in
+   Article 34 and may refuse to comply with the requests referred to in
+   Article 35.
+<p>  2. Where personal data are being processed which form part of archive
+   records transferred to an archive storage place under Articles 12 or
+   13 of the Archives Act 1995 (Archiefwet 1995), the responsible party
+   shall not be required to provide the information referred to in
+   Article 34.
+
+ <h>  CHAPTER 8. LEGAL PROTECTION
+
+ <h>  Article 45
+
+ <p>  A decision taken in response to a request referred to in Articles
+   30(3), 35, 36 and 38(2), and a decision taken in response to the
+   registering of an objection referred to in Articles 40 or 41, shall be
+   equivalent to a decision within the meaning of the General
+   Administrative Regulations Act, where this decision has been taken by
+   an administrative body.
+
+<h>   Article 46
+
+ <p>  1. Where a decision referred to in Article 45 has been taken by a body
+   other than an administrative body, the party concerned can apply to
+   the district court with a written request to order the responsible
+   party to grant or reject a request referred to in Articles 30(3), 35,
+   36 or 38(2), or to recognise or reject an objection referred to in
+   Articles 40 or 41.
+<p>   2. The application must be submitted within six weeks of receiving the
+   reply from the responsible party. In the event that the responsible
+   party does not reply within the time limit, the application must be
+   submitted within six weeks of the expiry of this time limit.
+<p>  3. The court shall find in favour of the request where it is ruled to
+   be well-founded. Before handing down a ruling, the court shall, where
+   necessary, give the parties concerned an opportunity to put forward
+   their views.
+ <p>  4. The twelfth title of the First Book of the Code of Civil Procedure,
+   with the exception of Article 429d(3), applies. Article 345 of the
+   said Code does not apply.
+ <p>  5. The third section of the fifth title of the Second Book of the Code
+   of Civil Procedure is likewise applicable.
+
+ <h>  Article 47
+
+ <p>  1. Within the time limit provided for an appeal based on the General
+   Administrative Regulations Act or referred to in Article 46(2), the
+   party concerned may apply to the Data Protection Commission with a
+   request to mediate or give its opinion in the dispute with the
+   responsible party, or make use of the provisions concerning the
+   arrangement of disputes in a code of conduct which has been the
+   subject of a declaration as referred to in Article 25(1). In that
+   case, notwithstanding Article 6:7 of the General Administrative
+   Regulations Act, the appeal may still be lodged or the court
+   proceedings provided for in Article 46 still initiated after the party
+   concerned has received notice from the Data Protection Commission, or
+   further to the provisions concerning the arrangement of disputes in a
+   code of conduct which has been the subject of a declaration as
+   referred to in Article 25(1), that the case has been dealt with, but
+   at the latest six weeks after that moment.
+<p>   2. During the period when the appeal and the proceedings referred to
+   under (1) are being dealt with, the bodies responsible for dealing
+   with the dispute may obtain the opinion of the Data Protection
+   Commission.
+
+<h>   Article 48
+
+ <p>  The bodies responsible for dealing with the dispute shall send a copy
+   of their verdict to the Data Protection Commission.
+
+ <h>  Article 49
+
+ <p>  1. Where any person suffers harm as a consequence of acts concerning
+   him which infringe the provisions laid down by or under this Act, the
+   following paragraphs shall apply, without prejudice to other legal
+   provisions.
+ <p>  2. For harm that does not comprise damage to property, the injured
+   party has the right to fair compensation.
+ <p>  3. Responsible parties are liable for harm resulting from
+   non-compliance with the provisions referred to under (1). Processors
+   are liable for this harm where this was incurred as a result of their
+   actions.
+ <p>  4. Responsible parties or processors may be exempted wholly or
+   partially from this liability where they can prove that the harm
+   cannot be attributed to them.
+
+<h>   Article 50
+
+ <p>  1. Where responsible parties or processors act in contravention of the
+   provisions laid down by or under this Act and other parties sustain,
+   or may sustain, harm as a consequence thereof, the courts may, at the
+   petition of the other parties, impose a ban on such conduct and order
+   them to take measures to remedy the consequences of that conduct.
+ <p>  2. Processing cannot form the basis for a claim by a legal person
+   referred to in Article 1:2(3) of the General Administrative
+   Regulations Act or Article 3:305a of the Civil Code, where the persons
+   affected by this processing object thereto.
+
+ <h>  CHAPTER 9. SUPERVISION
+
+ <h>  Section 1. The Data Protection Commission
+
+ <h>  Article 51
+
+<p>   1. An Office of the Data Protection Commission has been established
+   with the task to oversee the processing of personal data in accordance
+   with the provisions laid down by and under the Act. The Commission
+   shall also oversee the processing of personal data in the Netherlands,
+   where the processing takes place in accordance with the laws of
+   another country of the European Union.
+ <p>  2. The Commission shall be asked to issue an opinion on bills and
+   draft texts of general administrative regulations relating entirely or
+   substantially to the processing of personal data.
+
+ <h>  Article 52
+
+ <p>  1. The Commission shall perform the other tasks vested in it by law
+   and treaty.
+ <p> 2. The Commission is independent in the performance of its tasks.
+
+<h>   Article 53
+
+ <p>  1. The Commission comprises a chairperson and two other members. In
+   addition, special members may be appointed to the Commission. In the
+   appointment of special members, all efforts shall be made to reflect
+   the various sectors of society.
+<p>   2. The chairperson must fulfil the requirements governing the
+   appointment of district court judges, as laid down in Article 48(l) of
+   the Judicature Act (Wet op de rechterlijke organisatie).
+<p>   3. The chairperson shall be appointed by royal decree, on the proposal
+   of Our Minister, for a six-year term. The other two members and the
+   special members shall be appointed by royal decree, on the proposal of
+   Our Minister, for a four-year term. The members may be reappointed
+   immediately thereafter. At their own request, they are discharged by
+   the Minister of Justice.
+ <p>  4. An advisory board has been established with the task to advise the
+   Commission on general aspects of the protection of personal data. The
+   members shall be drawn from the various sectors of society and shall
+   be appointed by Our Minister, on the proposal of the Commission.
+   The term of office and payment of expenses shall be laid down by
+   general administrative regulation.
+
+<h>   Article 54
+
+ <p>  1. Members shall be discharged by royal decree, on the proposal of Our
+   Minister, with effect from the first month following that in which
+   they reach the age of sixty-five.
+ <p>  2. Article 11, with the exception of (d)(3Âº), and Articles 12, 12a,
+   13, 13a with the exception of (5), and 13b of the Judicature Act are
+   likewise applicable.
+
+<h>   Article 55
+
+ <p>  1. The chairperson and the two other members shall receive
+   remuneration for their work. The special members shall receive a
+   session fee. In all other matters, their legal position shall be
+   governed by general administrative regulation.
+ <p>  2. The chairperson and the two other members may not carry out any
+   other remunerated work where the nature or scale of this work is
+   incompatible with the work for the Commission, without the
+   authorisation of Our Minister.
+
+<h>   Article 56
+
+  <p> 1. The Commission has a secretariat, of which the officials are
+   appointed, suspended and discharged by Our Minister, on the proposal
+   of the chairperson.
+  <p> 2. The chairperson shall direct the work of the Commission and the
+   secretariat.
+ <p>  3. The Commission shall adopt rules of procedure. These rules shall in
+   any case include provisions relating to the financial management and
+   administrative organisation of the Commission, as well as to working
+   methods and procedures with a view to a proper and careful discharge
+   of its various tasks. The rules shall provide guarantees against the
+   mixing of the supervisory, advisory and enforcement tasks of the
+   Commission. They may also give more detailed provisions for the
+   advisory board referred to in Article 53(4).
+ <p>  4. The rules and any modifications thereto shall be sent to Our
+   Minister as quickly as possible and require his or her approval.
+
+<h>   Article 57
+
+<p>   1. The Commission is represented by the chairperson and the two other
+   members or by one of these persons.
+<p>   2. The members shall allocate responsibilities among them and involve
+   the special members therein as much as possible.
+
+<h>   Article 58
+
+ <p>  The Commission shall produce an annual report before September on the
+   activities, policy pursued in general and the effectiveness and
+   efficiency of its mode of operation in particular during the preceding
+   calendar year. The report shall be sent to Our Minister and to the
+   data protection officers referred to in Article 62 and made available
+   to the general public.
+
+<h>   Article 59
+
+  <p> 1. The Commission shall provide to Our Minister, upon request, the
+   information necessary to the performance of his or her duties. Our
+   Minister may require business data and records for inspection, where
+   this is necessary to the performance of his or her duties.
+ <p>  2. The provisions of (1) do not apply where the Commission has
+   obtained the information from third parties on condition that it is
+   kept confidential.
+
+ <h>  Article 60
+
+<p>   1. The Commission, acting in an official capacity or at the request of
+   an interested party, may initiate an investigation into the manner in
+   which the provisions laid down by or under the Act are being applied
+   with respect to the processing of data.
+ <p>  2. The Commission shall present its provisional findings to the
+   responsible party or the group of responsible parties concerned, and
+   allow them to give their views. The Commission shall present these
+   findings also to Our Minister concerned, where they relate to the
+   implementation of any law.
+ <p>  3. In the case of an investigation initiated at the request of an
+   interested party, the Commission shall inform the said party of its
+   findings, unless providing such information would be incompatible with
+   the purpose of the data processing or the nature of the personal data,
+   or unless important interests of parties other than the requester,
+   including the responsible party, would sustain disproportionate harm
+   as a consequence. In the event that the Commission does not inform the
+   interested party of its findings, it shall send the said party such
+   information as it deems appropriate.
+
+<h>   Article 61
+
+ <p> 1. Responsibility for the supervision of compliance referred to in
+   Article 51(1) lies with the members and special members of the
+   Commission, the officials of the Commission secretariat and the
+   persons designated by decision of the Commission.
+ <p>  2. The persons referred to under (1) are authorised to enter a
+   residence without the consent of the resident.
+ <p>  3. The persons referred to under (1) require the express and special
+   authority of the Commission for the purposes of exercising the powers
+   defined under (2), without prejudice to Article 2 of the General Entry
+   Act (Algemene wet op het binnentreden).
+ <p>  4. The Commission is authorised to apply administrative measures of
+   constraint pursuant to Article 5:20(l) of the General Administrative
+   Regulations Act, provided that this concerns the obligation to provide
+   assistance to an official designated by or under (1).
+ <p>  5. No appeal is possible on the grounds of a confidentiality
+   obligation, where information or assistance is required in connection
+   with the involvement of the person concerned in the processing of
+   personal data.
+ <p>  6. Upon request, the Commission shall provide every assistance to the
+   supervisory authorities of the other member states of the European
+   Union, where this is necessary for the performance of their work.
+
+ <h>  Section 2. The data protection officer
+
+ <h>  Article 62
+
+ <p>  A responsible party or an organisation to which responsible parties
+   are affiliated may appoint its own data protection officer, without
+   prejudice to the responsibilities of the Commission under Chapters 9
+   and 10 of this Act.
+
+ <h>  Article 63
+
+ <p>  1. The only persons who may be appointed as officers are natural
+   persons who possess adequate knowledge for performing their duties and
+   can be regarded as sufficiently reliable.
+<p>   2. With respect to the performances of their duties, officers may not
+   receive any instructions from the responsible party or organisation
+   which appointed them. They shall sustain no disadvantage as a
+   consequence of performing their duties. Responsible parties shall give
+   officers the opportunity to perform their duties properly.
+ <p>  3. Officers shall take up their duties only after the responsible
+   party or organisation which appointed them has registered them with
+   the Commission. The Commission shall maintain an up-to-date list of
+   registered officers.
+<p>   4. Officers have an obligation to treat as confidential any
+   information disclosed to them in connection with a complaint or
+   request by data subjects, unless the said data subjects have given
+   their consent thereto.
+ <p>  5. Officers shall produce an annual report on their activities and
+   findings.
+
+ <h>  Article 64
+
+<p>   1. Officers shall supervise the processing of personal data in
+   accordance with the provisions laid down by and under the Act. This
+   supervision shall cover the processing of personal data by the
+   responsible party who has appointed them or by the responsible parties
+   affiliated to the organisation which appointed them.
+<p>   2. Where a code of conduct drawn up under Article 25 applies to the
+   processing, the supervision also covers compliance with this code.
+ <p>  3. The responsible party or organisation referred to under (1) shall
+   make sure that officers have the authority to perform their duties
+   which is equivalent to that provided for in Section 5.2 of the General
+   Administrative Regulations Act.
+<p>   4. Officers may submit recommendations to the responsible party with a
+   view to improving the protection of the data being processed. In case
+   of doubt, they shall consult the Commission.
+
+ <h>  CHAPTER 10. SANCTIONS
+
+ <h>  Section 1. Administrative measures of constraint
+
+ <h>  Article 65
+
+ <p>  The Commission is authorised to apply administrative measures of
+   constraint pursuant to the obligations laid down by or under this Act.
+
+ <h>  Section 2. Administrative fines
+
+ <h>  Article 66
+
+<p>   1. In the event that responsible parties act in contravention of the
+   provisions laid down by or under Article 27 or 28, the Commission may
+   require them to pay an administrative fine of a maximum amount of ten
+   thousand Dutch guilder.
+ <p>  2. The Commission shall not impose a fine where responsible parties
+   give a reasonable explanation as to why they cannot be regarded as
+   responsible for the infringement.
+<p>   3. When deciding the amount of the fine, the Commission shall in any
+   case take into account the seriousness and duration of the
+   infringement.
+ <p>  4. The work carried out pursuant to Articles 69 and 70 shall be
+   performed by persons who were not involved in drafting the report and
+   associated prior investigation referred to in Article 67(l).
+<p>   5. The authority to impose fines lapses in the event that, with
+   respect to the infringement on which basis the fine can be imposed,
+   criminal proceedings have been initiated against the infringing party
+   and the investigation by the court has been commenced or the right to
+   pursue criminal proceedings has lapsed under Article 74 of the Code of
+   Criminal Procedure.
+
+<h>   Article 67
+
+ <p>  1. In the event that the Commission establishes that an infringement
+   referred to in Article 66(1) has been committed and that a fine needs
+   to be imposed for this reason, the Commission shall draw up a report.
+ <p>  2. The report shall in any case state the following particulars:
+ <l>  a. the infringement, with reference to the corresponding legal
+   provision;
+ <l>  b. the designation of the place and time at which the infringement was
+   committed;
+ <l>  c. the facts and circumstances on which basis it was established that
+   an infringement has been committed.
+ <p>  3. A copy of the report shall be sent to the responsible party
+   referred to in Article 66(1).
+ <p>  4. At the request of responsible parties who have not understood this
+   report sufficiently owing to an imperfect knowledge of the Dutch
+   language, the Commission shall make every possible effort to ensure
+   that the content of the report is communicated to the said parties in
+   a language which they understand.
+
+ <h>  Article 68
+
+ <p>  Responsible parties in respect of whom acts have been carried out for
+   which they can reasonably conclude that a fine will be imposed on them
+   for an infringement, shall not be required to make any statement in
+   relation thereto. The responsible parties shall be informed thereof
+   prior to an oral request for information being submitted to them.
+
+ <h>  Article 69
+
+ <p>  1. Notwithstanding Section 4.1.2 of the General Administrative
+   Regulations Act, the Commission shall give the responsible parties
+   referred to in Article 66(l) the opportunity to put forward their
+   views in writing or orally, at their choice, within a reasonable
+   period of time.
+ <p>  2. In the case that responsible parties referred to in Article 66(l)
+   wish to put forward their views and do not have sufficient
+   understanding of the Dutch language, upon the request of the
+   responsible parties, the Commission shall see to it that an
+   interpreter is appointed who can assist the said parties, unless it
+   can reasonably be assumed that this is not necessary.
+
+<h>   Article 70
+
+ <p>  1. Fines shall be imposed by decision of the Commission.
+ <p>  2. The decision shall in all cases state the following:
+<l>   a. the sum of money to be paid;
+ <l>  b. the infringement for which the fine has been imposed, with
+   reference to the corresponding legal provision;
+ <l>  c. the particulars referred to in Article 67(2)(b) and (c).
+<p>   3. At the request of responsible parties who have not understood the
+   decision sufficiently owing to an imperfect knowledge of the Dutch
+   language, the Commission shall make every possible effort to ensure
+   that the content of the decision is communicated to the said parties
+   in a language which they understand.
+
+ <h>  Article 71
+
+<p>   Decisions taken under Article 70 shall be inoperative until the
+   deadline for making objections has expired or, where an objection has
+   been made, until a decision has been taken on the objection.
+
+<h>   Article 72
+
+ <p>  The authority to impose a fine lapses five years after the
+   infringement has been committed.
+
+<h>   Article 73
+
+ <p>  1. A fine shall be payable within six weeks of the decision imposing
+   the fine entering into force.
+ <p>  2. Where fines have not been paid within the time limit stipulated
+   under (1), the parties owing the fines shall be sent notice in writing
+   to pay the amount of the fine, plus the costs of the notice to pay,
+   within two weeks.
+ <p>  3 . Where payment is not made within the time limit stipulated under
+   (2), the Commission can issue an order to pay the fine owing, plus the
+   costs of the notice to pay and order to pay.
+ <p>  4. Orders to pay shall be served by bailiffs writ, at the expense of
+   the persons owing the fines, and shall be enforceable within the
+   meaning of the Second Book of the Code of Civil Procedure.
+  <p> 5. For six weeks following the day on which the writ is served,
+   objections to the order to pay may be made by a writ against the
+   State.
+ <p>  6. The objection has the effect of suspending execution. At the
+   request of the State, the courts may cancel the suspension of
+   execution.
+
+<h>   Article 74
+
+ <p>  Our Minister may decide on policy provisions governing the execution
+   of the powers of the Commission to impose fines.
+
+ <h>  Section 3. Penal sanctions
+
+ <h>  Article 75
+
+<p>   1. Responsible parties who act in contravention of the provisions laid
+   down by or under Articles 4(3), 27, 28 or 78(2)(a), shall be punished
+   with a fine coming under the second category.
+ <p>  2. Responsible parties who deliberately commit an offence referred to
+   under (1) shall be punished with a prison sentence for a maximum of
+   six months or a fine coming under the third category.
+<p>   3. The punishable offences under (1) are petty offences. The
+   punishable offences under (2) are indictable offences.
+<p>   4. Besides the officials designated by or under Article 141 of the
+   Code of Criminal Procedure, the officials from the secretariat of the
+   Commission designated for this purpose by Our Minister are also
+   responsible for detecting the offences defined in this article.
+<p>   5. The right to pursue criminal proceedings lapses where the
+   Commission has already imposed a fine.
+
+   CHAPTER 11. TRANSFER OF DATA TO COUNTRIES OUTSIDE THE EUROPEAN UNION
+
+<h>   Article 76
+
+<p>   1. Personal data which are subject to processing or intended for
+   processing after they have been transferred, shall only be transferred
+   to a country outside the European Union in the case that, without
+   prejudice to compliance with the provisions of this Act, that country
+   guarantees an adequate level of protection.
+ <p>  2. An assessment of the adequacy of the level of protection shall take
+   account of the circumstances affecting a data transfer operation or a
+   category of data tranfer operations. Account shall be taken in
+   particular of the type of data, the purpose or purposes and the
+   duration of the planned processing or processing operations, the
+   country of origin and country of final destination, the general and
+   sectoral legal provisions applying in the non-member country
+   concerned, as well as the rules governing the business sector and
+   security rules applying in these countries.
+
+ <h>  Article 77
+
+ <p>  1 . Notwithstanding Article 76, an operation or category of operations
+   to transfer personal data to a non-member country which does not
+   provide guarantees for an adequate level of protection may take place,
+   provided that:
+  <l> a. the data subjects have unambiguously given their consent thereto,
+  <l> b. the transfer is necessary for the performance of a contract between
+   the data subjects and the responsible parties, or for actions to be
+   carried out at the request of the data subjects and which are
+   necessary for the conclusion of a contract;
+  <l> c. the transfer is necessary for the conclusion or performance of a
+   contract concluded or to be concluded between responsible parties and
+   third parties in the interests of data subjects;
+  <l> d. the transfer is necessary on account of an important public
+   interest, or for the establishment, exercise or defence in law of any
+   right;
+  <l> e. the transfer is necessary to protect a vital interest of data
+   subjects, or
+ <l>  f. the transfer is carried out from a public register set up by law or
+   from a register which can be consulted by anyone or by any persons who
+   can invoke a legitimate interest, provided that in the case concerned
+   the legal requirements for consultation are met.
+ <p>  2. Notwithstanding the provisions under (1), Our Minister, after
+   consulting the Data Protection Commission, may issue a permit for a
+   personal data transfer or category of transfers to a non-member
+   country that does not provide guarantees for an adequate level of
+   protection. Attaching to this permit are the more detailed rules
+   required to protect the individual privacy and fundamental rights and
+   freedoms of persons and to guarantee implementation of the associated
+   rights.
+
+  <h> Article 78
+
+  <p>  1. Our Minister shall notify the Commission of the European
+   Communities of:
+  <l>  a. the cases in which, in his or her opinion, a non-member country
+   does not provide guarantees for an adequate level of protection within
+   the meaning of Article 76(l), and
+ <l>  b. a permit, as referred to in Article 77(2).
+  <p>  2. Where this follows from a decision of the Commission of the
+   European Communities or the Council of the European Union, Our
+   Minister shall lay down by ministerial ruling or by decision that:
+ <l>    * the transfer to a country outside the European Union is
+       prohibited;
+ <l>    * a country outside the Union is considered to guarantee an adequate
+       level of protection, or
+ <l>    * a permit issued under Article 77(2) is withdrawn or modified.
+
+  <p>  3. The notifications referred to under (1)(a) and (b) shall be
+   published in the Official Gazette.
+
+ <h>  CHAPTER 12. TRANSITIONAL AND FINAL PROVISIONS
+
+ <h>  Article 79
+
+  <p>  1. Within one year of the entry into force of this Act, processing
+   which was already taking place at that moment shall be brought into
+   conformity with this Act and shall be notified to the Commission or
+   officer as referred to in Article 27. The time limit referred to in
+   the first sentence may be extended by general administrative
+   regulation to a maximum of three years with respect to the
+   notification requirement.
+  <p>  2. A time limit of three years shall apply to the modification of
+   processing of special data to comply with Section 2 of Chapter 2, it
+   being understood that it is not necessary to make another request for
+   the consent referred to in Article 23(l)(a) with respect to processing
+   which has already taken place and which is necessary for the
+   performance of contracts made prior to the date of entry into force of
+   this Act.
+  <p>  3. Article 32(2) shall not apply to processing referred to in Article
+   31(1) and (3), which was already taking place at the moment of the
+   entry into force of the Act, or as the case may be, of the Act or the
+   general administrative regulation applying to such processing.
+
+ <h>  Article 80
+
+ <p>   Within five years of the entry into force of this Act, Our Ministers
+   of Justice and of the Interior and Kingdom Relations shall send a
+   report to Parliament on the effectiveness and effects of this Act in
+   practice.
+
+<h>   Article 81
+
+  <p>  The Registration of Persons Act (Wet persoonsregistraties) is
+   repealed.
+
+ <h>  Article 82
+
+  <p>   This Act shall enter into force on a date to be laid down by royal
+   decree.
+
+ <h>  Article 83
+
+ <p>  This Act shall be designated: Personal Data Protection Act (Wet
+   bescherming persoonsgegevens).
+
+ <p>   It is hereby ordered that this Act shall be published in the Official
+   Gazette and that all ministries, authorities, bodies and officials
+   whom it may concern shall ensure that it is implemented scrupulously.
+
+ <p>     Done ......................... (date)
+
+  <p>    The Minister of Justice,
+
+ <p>     The Minister for the Major Cities and Integration Policy,
+
+                               

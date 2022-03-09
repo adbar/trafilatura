@@ -1,0 +1,301 @@
+﻿URL: http://episteme.arstechnica.com/eve/ubb.x/a/tpc/f/122097561/m/103003273731
+
+  
+
+   <h>whilden
+
+                          
+
+   
+   <p>anyone else like to run multiple projects, or do you stay focused on
+   one project at a time?
+
+   <h>Calavaro
+
+                       
+
+    
+
+   <p>More than 1 boxen on more than 1 project constitutes an addiction.
+   Buying boxen or seeking out boxen to put a DC client on, would make
+   you crazy in the common mans view.
+   You, whilden, are just wired wrong. Wink
+
+       
+
+   <h>GOD
+
+                       
+
+   
+
+   <p>I'm only running 3 projects - seti classic (still), mousetracker
+   (useless but low cost) and folding @ home (actually useful).
+   I'm only 60% as ill as whilden.
+
+       
+
+   <h>garo
+
+   <l>Prime95
+   <l>OGR
+   <l>Seti Classic
+   <l>DIMES
+   <l>Proth (for generalized Fermat Numbers)
+   <l>SOB Sieve
+<p>These are only my current projects. In the past i've also run
+   <l>G@H
+   <l>RC5-64
+   <l>Distr Folding
+   <l>NSFNet
+   <l>F@H
+   <l>Ubero
+   <l>CPDN (never completed a unit)
+
+        
+
+   <h>whilden
+
+                           
+   <p>I forgot about Dimes, which is like DC on top of DC.
+   <p>/me calls the doc
+
+        
+
+   <h>MarcC
+
+                        
+   <p>hmm let's see at the moment:
+   <l>Folding@home
+   <l>DIMES
+   <l>mousetracker
+   {p}experimenting with
+   <l>fad
+   <l>muon
+   <p>I've been pretty much in all projects ars is associated with at some
+   point with the notable exception of BOINC.
+   <p>of course that's not what makes me certifiable. what does is this
+   propensity I have to collect stats for all these projects and put them
+   occasionally up for public review. if this doesn't constitute insanity
+   I don't know what does.
+   <p>Cheers,
+   <p>Marc
+
+   <h>Animekiksazz
+
+                          
+   <p>CPDN - Main thing I care about
+   <p>DIMES - doesn't use any cpu time (barely)
+   <p>MouseTracker - 'useless'
+   <p>Used to run SETI, and SETI@BOINC.
+
+    
+
+   <h>pizzaking
+
+                               
+
+   <p>Only contributing to a couple of projects these days;
+   <p>F@H - Windows boxes and my main project
+   <p>GIMPS - Mainly FreeBSD boxes, my install and forget project
+   <p>Although over the years I've also contributed to; D2OL, DF phases 1
+   and 2, ECCp-109, ECC2-109, G@H, OGR24 (or it might have been OGR25, I
+   forget) and SETI.
+   <p>and I'm still a statswhore....
+   <p>pk
+
+       
+
+   <h>VJS
+
+                          
+
+   <p>I kind of like to stay focused on one project and one project only at
+   a time.
+   <p>Once entirely exhausted on a project I don't look back. Basically
+   something else has to come around and really spark my interest to
+   change.
+   <p>I believe this is the ultimate illness where one project can consume
+   you entirely.
+
+         
+
+   <h>Rattledagger
+
+                          
+
+   <p>Hmm, have crunched seti for 3 different teams and CPDN for a 4th last
+   month, so...
+   <p>Anyway, past projects in falling order: SETI@home "classic",
+   Genome@home, UD "think", Folding@home, CPDN "classic", Distributed
+   Folding.
+   <p>Current projects, various combinations of: CPDN/BOINC, Einstein@home,
+   Folding@home/BOINC, LHC@home, Predictor@home, SETI@home/BOINC.
+
+ 
+
+   <h>Larry Loen
+
+                             
+
+   <p>In my most active period, I never ran more than two projects at a
+   time.
+   <p>There was turnover, however, in terms of which two it was.
+
+      
+   <h>Loudergood
+
+                            
+
+   <p>I'm running a few, I'm just not at liberty to say what they are at the
+   moment. Big Grin
+
+     
+
+   <h>Jetta
+
+                      
+   <p>Scared
+
+   
+
+   <h>Thomasn
+
+                      
+
+   <p>I think I had FAH as main, with a bottomhugger of rc5 and one
+   bottomhugger of manual ecm tests (when fah was unstable and I lacked
+   FAH wu). That was on the home machine, did Find a drug at work, and
+   ogr at the university.
+   <p>Now I focus on one project at a time, was FAH, which I got to 100000
+   points, now I have switched to rc5, goal is to reach 1M wus, currently
+   35K or so Wink
+   <p>So : you are not ill. I found after a time though that with only 5
+   cpus, you have to focus to gain ranks fast. Yes I am a stats whore
+   Wink
+
+        
+
+   <h>Jamilla
+
+
+   <p>I am currently running SoB and DIMES.
+   <pI just finished up running Seti Classic. I will not be BOINC'ing until
+   the client(s) have all of the bugs worked out.
+   <pIn the past I have run:
+   <l>Seti Classic
+   <l>GAH
+   <l>FAH
+   <l>Ubero
+   <l>ECCp-109
+   <l>ECC2-109
+   <l>Distributed Folding 1 & 2
+   <l>RC5-64
+   <l>UD
+   <l>Seti@Home - BOINC
+   <l>Predictor@Home
+   <l>Einstein@Home
+   <l>LHC@Home
+
+   
+
+   <h>Jamilla
+
+                              
+
+   
+
+
+   <p>Ain't nothing wrong with that!
+
+       
+
+   <h>kb9skw
+
+                        
+   <p>Active...
+   <l>D2OL (thats a given Razz )
+   <l>SoB
+   <l>F@H
+   <l>MouseTracker
+   <p>Past Stuff...
+   <l>SETI@Home
+
+        
+
+   <h>Stratcat
+
+                          
+
+   <p>Ahhh...you're running the new adult movie rendering project, eh???
+   Wink
+   <p>Strat
+
+      
+   <h>Stratcat
+
+                           
+
+   <p>Yeah...but he's wired perfectly for Ars-DCA! Big Green
+   <p>Strat
+   <p>/me goes about tinkering w/my machines & projects
+
+      
+
+   <h>MechWarrior
+
+                          
+
+   <p>Currently active:
+   <l>S@H 1
+   <l>TER
+   <p>Past projects include:
+   <l>SETI BOINC
+   <l>G@H
+   <l>D2OL
+   <l>SOB
+   <l>ECCP-109
+   <l>TFY
+   <l>FAD
+   <l>Distr Folding phase one ( I beleive )
+   <p>I tend to stay with one project at a time but am running two more
+   often now.
+
+      
+
+   <h>Jamilla
+
+                             
+
+   <p>Any particular reason why you move around so much? I know that I have
+   certain teams here that I stay with as I have certain teams elsewhere
+   that I stay with. Can't spread myself too thin so I stay with one
+   group at a time and run their DC projects and vice-versa.
+   <p>Plus everybody should know where their allegiances lie.
+   <p>Jammy
+   <p>EDIT >>>oooo . . .I forgot the last part of the question: Should I
+   seek help? Uh . . .I don't think there is any kind of help available
+   for being a stats whore. I have tried weaning myself away from my
+   computers and can successfully stay away for three hours. i did move
+   one of my boxes into the bedroom because it has a nice 19" flat panel
+   that I can turn around and watch my DVDs on, lol.
+
+       
+   <h>Rattledagger
+
+                           
+   <p>Joined the BBR-forums to answer a bandwith-question from "someone"
+   Frown and like other Anandtech-users made a seti-account there to get
+   the spinning globe. But, instead of only crunching one wu like most of
+   the others, decided on keeping wu-count higher than post-count.
+   <p>Keeping this up in SETI@home/BOINC is mostly for testing-purposes of
+   BOINC client, and 99% of the time is only using one account so an
+   ocassional result for another team shouldn't really be a problem.
+   <p>While my original seti-team didn't really handle the transition to
+   v3.03 very well, when they made a CPDN/BOINC-team decided to crunch a
+   little for them. Since uses CPDN as backup-project, it can be some
+   time between each trickle. Wink
+
+   
+
+     

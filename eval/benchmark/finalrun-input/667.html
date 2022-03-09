@@ -1,0 +1,418 @@
+<text id="http://www.reallysimplesyndication.com/" title="Dave Winer's RSS Weblog" encoding="unset">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head><title>Dave Winer's RSS Weblog</title>
+  <style type="text/css">
+  body  {
+    margin:  0;
+    padding:  0;
+    color:  black;
+    background-color: #FFCC66;
+    font:  .95em/1.5 Verdana, Arial, Helvetica, sans-serif;
+    }
+  td, .dlPostedTitle  {
+    color:  black;
+    font:  .95em/1.5 Verdana, Arial, Helvetica, sans-serif;
+    }
+  h1, h2, h3, h4, h5, h6  {
+    font-family:  Arial, sans-serif;
+    }
+  a  {
+    text-decoration:  none;
+    font-weight: bold;
+    }
+  a:link  {
+    color:  #006699;
+    }
+  a:visited  {
+    color:  purple;
+    }
+  a:active  {
+    color:  red;
+    }
+  #wrapper  {
+    float:  left;
+    width:  75%;
+    border-right: 2px dotted #CC6600;
+    border-bottom:  2px dotted #CC6600;
+    color: black;
+    background-color: white;
+    margin:  0 15px 0 0;
+    }
+  #banner {
+    padding:  5px 10% 25px 15%;
+    }
+  #editorialMenu {
+    font: 9px Verdana, Arial, Helvetica, sans-serif;
+    color: #666666;
+    }
+  #content  {
+    padding:  0 10% 100px 15%;
+    }
+  #footer {
+    margin-top: 5em;
+    font:  9px Verdana, Arial, Helvetica, sans-serif;
+    color: #333333;
+    border-top-width: 1px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-color: #333333;
+    border-style: solid;
+    }
+  #links  {
+    padding:  60px 10px 0px 15px;
+    font:  10px/14px Geneva, arial, helvetica, sans-serif;
+    color:  black;
+    background-color: #FFCC66;
+    min-width: 50px;
+    border-width: 5px;
+    font-weight: bold;
+    line-height: 14px;
+    }
+  #calendar {
+    margin-top: 3em;
+    }
+  .day {
+    color: #CC6600;
+    font-weight: bold;
+    border-bottom-width: 1px;
+    border-top-width: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-style: solid;
+    border-color: #333333;
+    width: 100%;
+    }
+  .linkstitle {
+    font-weight: bold;
+    color: #CC6600;
+    border-bottom-width: 1px;
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-style: solid;
+    border-color: #993300;
+    width: 50%;
+    margin-bottom: 1em;
+    }
+  .tagline {
+    color: #333333;
+    font: 11px Verdana, Arial, Helvetica, sans-serif;
+    }
+  .biglink {
+    font: 30px Georgia, Times, serif;
+    font-weight: bold;
+    }
+  .biglink a, .biglink a:link, .biglink a:visited {
+    color: #006699;
+    }
+  .newsItemHeader {
+    font-weight: bold;
+    }
+  .newsItemFooter {
+    font-size: 9px;
+    color: #666666;
+    }
+  .newsItemFooter a {
+    font-weight: normal;
+    color: #333333;
+    }
+  .hCalendarMonthYearRow, .dCalendarMonthYearRow { 
+    font-size: 9px;font-weight: bold;    } 
+  .hCalendarDayNameRow, .hCalendarDay, .hCalendarDayLinked, .hCalendarDayCurrent, .dCalendarDayNameRow, .dCalendarDay, .dCalendarDayLinked, .dCalendarDayCurrent {
+    font-size: 9px;
+    text-align: center;
+    }
+  .dlSeparatorRow, .dlTopicHeader {
+    background-color: #FFCC66;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-color: #333333;
+    border-style: solid;
+    }
+  .dlRecentTopicsCell, .dlChronologicalLinkCell {
+    font-weight: bold;
+    padding-left: 4px;
+    }
+  .dlChronologicalLinkCell, .dlPostedTitle, .dlCountReadsTitle, .dlCountReads, .dlCountMessages, .dlPosted, .dlReadsTitle, .dlNextTopicCell, .dlTopicTimesCell, .dlMessageTopicsLinkCell, .dlMessageLinkTitle, .dlPostedTitle {
+    text-align: right;
+    padding-right: 4px;
+    }
+  .dlTitleRow td {
+    font-weight: bold;
+    height: 28px;
+    padding-left: 4px;
+    padding-right: 4px;
+    }
+  .dlMessageRow td, .dlMessageRow a {
+    font-weight: normal;
+    height: 20px;
+    padding-left: 4px;
+    padding-right: 4px;
+    }
+  .dlPrevTopicCell, .dlMessageViewDateCell, .dlTopicLinkTitle {
+    text-align: left;
+    padding-left: 4px;
+    }
+  .dlMessageViewDateCell {
+    font-weight: bold;
+    }
+  .dlTopicStatus {
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: #333333;
+    border-style: solid;
+    }
+  .dlTopicMessageTable {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-color: #333333;
+    border-style: solid;
+    }
+  .dlTopicStatusRow {
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-color: #333333;
+    border-style: solid;
+    }
+  </style>
+  
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.reallysimplesyndication.com/xml/rsd.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.reallysimplesyndication.com/xml/rss.xml" />
+<META HTTP-EQUIV="Expires" CONTENT="Mon, 01 Jan 1990 01:00:00 GMT">
+  <script language="JavaScript" type="text">
+  <!-- Begin hiding from older browsers
+
+  //End hiding-->
+  </script>
+  </head>
+  <body bgcolor="#FFFFFF" alink="#FF0000" vlink="#800080" link="#0000FF" text="#000000">
+    <div id="wrapper">
+      <div id="banner"><span id="editorialMenu"><br /></span>
+        <span class="biglink"><a href="http://www.reallysimplesyndication.com/">Really Simple Syndication</a></span><br />
+        <span class="tagline">Everything new about RSS 2.0.</span><br />
+        </div>
+      <div id="content">
+        <h2></h2>
+        <span class="day"><a href="http://www.reallysimplesyndication.com/2005/05/06" title="Permanent link to archive for 5/6/05.."><img alt="Permanent link to archive for 5/6/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Friday, May 6, 2005</span><br /><br />
+<a name="a566"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/05/06#a566">A brief essay about advocacy of XML formats</a></b></p>
+<P>Thankfully there hasn't been much format-bashing going on in the last year or so, but it looks like it might be starting again, so let's do something before it becomes a problem. </P>
+<P>I suggest that the entire XML development community adopt the <A href="http://www.linuxdownloads.org/minihowto/Advocacy.html#s6">Canons of Conduct</A> of the Linux Advocacy mini-HOWTO. Let's consider RSS to be part of Linux as far as advocacy is concerned. They got it right. You can't win by trashing the other guy. You can have a good format without the other guy being incompetent. </P>
+<P>I've been reading a certain mail list, and observing that a certain person is now posting again, after a long hiatus that allowed us to find this relatively peaceful status. </P>
+<P>Let's make it clear that <EM>we like the way things are now,</EM> and won't stand by and say nothing if the level of discourse starts slipping. Thanks for listening.</P><a href="http://www.reallysimplesyndication.com/2005/05/06#a566">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 5/6/05; 7:40:29 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/05/05" title="Permanent link to archive for 5/5/05.."><img alt="Permanent link to archive for 5/5/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Thursday, May 5, 2005</span><br /><br />
+<a name="a553"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/05/05#a553">Notes on my talk later this month at the Syndicate conference</a></b></p>
+<P>I'm speaking at the <A href="http://www.syndicateconference.com/live/38/events/38NYC05A/conference">Syndicate conference</A> in New York on May 17.&nbsp;I plan to talk a little bit about formats that aren't RSS and what they're good for, since it seems everyone has mastered the technology of RSS at this time. I'll happily answer questions, of course. </P>
+<P>But mostly I expect to talk about <A href="http://davenet.scripting.com/2001/02/13/howToMakeMoneyOnTheInternetV20">how to make money on the Internet</A>, how everything is flipped around, and why the level-playing-field of RSS shouldn't be overlooked, or else it'll surprise you later. Sure it can deliver more click-throughs, but it also gives a podium to the sources of journalism, routing around the former ink-barrel purchasters. </P>
+<P>The shifting and moving are still going on. We've reached a happy place, but don't expect the equilibrium to last very long. </P>
+<P><STRONG>Act now -- sponsor a pundit!</STRONG></P>
+<P>Anyway, since one of the hot topics is advertising and sponsorship, and since the conference isn't paying me a fee, or even covering my expenses, I thought I'd offer sponsorship opportunities to people or companies who would like to be talked about, briefly, from my speaking space. I can't guarantee what I'll say about you or your company, but I do promise to mention you, and will thank you for picking up my expenses for the New York trip. </P>
+<P>I also do this to demonstrate that I am not utopian, that I can be a crass commercial whore with the best of them. However, because of who I am, I must be open about it. Which will prove even more lucrative for my sponsor because they'll be out in the open too. <img src="http://static.userland.com/shortcuts/images/qbullets/sidesmiley.gif" width="11" height="11" alt=";->"></P>
+<P>It's an experiment, yes I have the money, I could spend it myself, but unlike the other speakers at the conference, I don't have a company to advertise on stage, I'm just me, and I'd rather not pay for this trip out of my pocket. That part is not an experiment, it's for real. Send me an <A href="http://www.reallysimplesyndication.com/profiles/sendMail?usernum=1&referer=http://www.reallysimplesyndication.com/discuss/msgReader$553?mode=day">email</A> if you're interested in sponsoring my speech at the conference.</P><a href="http://www.reallysimplesyndication.com/2005/05/05#a553">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 5/5/05; 10:45:40 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/30" title="Permanent link to archive for 4/30/05.."><img alt="Permanent link to archive for 4/30/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Saturday, April 30, 2005</span><br /><br />
+<a name="a521"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/30#a521">Jason Calcanis on ads in RSS feeds</a></b></p>
+<P><A href="http://www.reallysimplesyndication.com/discuss/msgReader$520?mode=day">Jason posts</A> here on the Really Simple Syndication weblog:</P>
+<BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+<P>"Very simple question: If you're not willing to have ads in your RSS feed are you going to be willing to pay for the content you get? If not , how will the writers get paid? (and don't give me that nonsense about writers don't need to get paid because for some of us writing is our trade--not scripting). </P>
+<P>"I know Dave's position was that he wouldn't pay for a feed and that he would get if for free somewhere else, but clearly that's not going to happen. The best content out there will be either ad-supported or subscription. 
+<P>"Since the world has voted for ad-supported content over subscriptions you're going to need to one or the other: deal with the ads or click on the paypal button. 
+<P>"There ain't no such thing as a free lunch Dave... RSS was just a temporary free lunch just like the web was in 1994. However, both those parties are over (thank God!) and now we have great free content available to everyone around the world. 
+<P>"You can cry about it all you want, but this train has left the station and you're still at the ticket counter bitching about why you even need a ticket."</P></BLOCKQUOTE>
+<P dir=ltr><STRONG>My response...</STRONG></P>
+<P dir=ltr>Okay, that's kind of rude, but let's look beyond that to see where the disagreement is, if there actually is any. </P>
+<P dir=ltr>How the writers get paid is a problem you created not me. It's not up to me to solve it Jason, that's your job. This is part of what I was saying today about media guys arriving, camping out, and then trying to get us to help them pay for their supposed business model. Go to Congress, see if they'll pass a law requiring us to pay a tax so you can stay in business. Or better yet, think more creatively. </P>
+<P dir=ltr>Most of the feeds I read today don't have ads, so it's hard to see how the train has left the station. I have a ticket, there's an over-supply of feeds, and when I link to one of their stories I send thousands of people to their sites, so I think they should be competing for my attention, not making me think twice about continuing to subscribe. </P>
+<P dir=ltr>I could easily unsub from Engadget. It's most definitely not a must-have feed for me. The only other of your feeds I'm subscribed to is your personal weblog. I don't think you've created nearly as much value as you think you have. Chasing a guy like me away now isn't good business, or so it seems to me. </P>
+<P dir=ltr>BTW, what exactly is wrong with the way the BBC and NY Times do it? They write good one or two sentence summaries and link to the full story from the feed, and the ad is there, not in the feed. Jason, think about it -- RSS <I>itself</I> is an advertising medium, if you use it correctly. </P>
+<P dir=ltr>Also the analogies to 1994 are pretty self-serving, don't you think? Maybe this is 2005 and it's acxtually different from any years that's come before? I tend to think it is. Maybe I'm wrong, but maybe I'm not.</P><a href="http://www.reallysimplesyndication.com/2005/04/30#a521">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/30/05; 10:33:13 PM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/28" title="Permanent link to archive for 4/28/05.."><img alt="Permanent link to archive for 4/28/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Thursday, April 28, 2005</span><br /><br />
+<a name="a487"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/28#a487">It's too early to give up</a></b></p>
+<P>Advertising in RSS is just starting now, for all practical purposes. If we wanted to, as an industry, reject the idea, we could, by asking the people who create the software to add a feature that strips out all ads. Make it default to on. Then, that would force the advertisers, if they want to speak to us, to do so respectfully, by our choice. Create feeds of commercial information that we might be interested in, and if we are, we'll subscribe. If not, we won't. </P>
+<P>Too often we forget to think in our own interest, and only remember the interest of the content developers. Well, this time around we're developing the content too. We didn't need them to create the medium, they're only recent arrivals. The usual RIAA whining about there being no incentive to create doesn't apply here, because we don't have an RIAA here. But let these ads gain a footing then they'll start complaining about their right to make a living off us. Better to shut the door right away before they get in?</P>
+<P>If there isn't any money for them to make, so be it. Or let them find a respectful way to make it. This is the most sensible time to act, and it could be done relatively easily. Your opinions are welcome of course.</P><a href="http://www.reallysimplesyndication.com/2005/04/28#a487">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/28/05; 1:55:37 PM -  --  </p><a name="a483"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/28#a483">Weblogs.Com support for RSS pinging</a></b></p>
+<P>Today we have fully integrated support for RSS pinging in weblogs.com. </P>
+<P>That's the news, the details follow.</P>
+<P><STRONG>What does weblogs.com do?</STRONG></P>
+<P>In 1999, when weblogs were still pretty new, but not so new that you could visit them all in an afternoon, it became useful to have a way to find out which blogs had updated recently. So I wrote a tool that would check the weblogs and when one updated, it would add it to a list of recently updated blogs. </P>
+<P>Eventually there were so many blogs that we couldn't check them, we had to ask them to tell us when they updated, that's when the "pinging" started. Now the pinging process records not only the address of the weblog, but if it's provided, the address of the RSS feed for the weblog.</P>
+<P>Popular services like Technorati, Feedster and Pubsub.com are built on the output of weblogs.com.</P>
+<P><STRONG>Extended pings for RSS</STRONG></P>
+<P><A href="http://newhome.weblogs.com/extendedPing">In December 2004</A>, as an experiment,&nbsp;we implemented an "extended" ping handler that allows a caller to specify the address of an RSS feed in addition to the address of the weblog. This could make it easier for applications that use the output of weblogs.com to do interesting things with RSS. So far there's not been much adoption of the extended ping, but perhaps that will change now that the RSS url is included in a new version of <A href="http://www.weblogs.com/changes.xml">changes.xml</A>. </P>
+<P><STRONG>What's new in changes.xml</STRONG></P>
+<P>1. In the top-level weblogUpdates element, the version attribute changes from 1 to 2. </P>
+<P>2. A weblog element may contain an optional rssUrl attribute containing the address of the feed if the ping was an extended ping. </P>
+<P>3. These features also are present in <A href="http://www.weblogs.com/shortChanges.xml">shortChanges.xml</A>.</P>
+<P><STRONG>What should I do?</STRONG></P>
+<P>It depends on who you are. If you're the developer of a weblog tool, you might adapt your tool to call the "extended" ping handler, since it provides more information to weblogs.com. If you're a user of a weblog tool, you might check with your vendor to see if your tool supports it, and if so, how you can activate it. If you have any questions, please post them here as a comment. Thanks!</P><a href="http://www.reallysimplesyndication.com/2005/04/28#a483">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/28/05; 10:15:16 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/27" title="Permanent link to archive for 4/27/05.."><img alt="Permanent link to archive for 4/27/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Wednesday, April 27, 2005</span><br /><br />
+<a name="a479"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/27#a479">Shimon wants an MIT World podcast (who wouldn't?)</a></b></p>
+<P>Shimon Rura, a regular at the Berkman-Thursday meetings, writes:</P>
+<P>"<A href="http://mitworld.mit.edu/index.php">MIT World</A> is a site that holds free audio and video archives of talks at MIT.&nbsp; Their video <A href="http://mitworld.mit.edu/video_index.php">index</A>&nbsp;shows the latest recordings for all areas - business gurus, Nobel prize winners, politicos - in reverse-chronological order, just like a blog.&nbsp; </P>
+<P>"They have an undocumented <A href="http://mitworld.mit.edu/rss/new.xml">RSS 2.0 feed</A>, but no podcasts!&nbsp; I wrote them an email begging for podcasts, but perhaps you can work some of your magic too.&nbsp; What could be better for a long boring drive than some MIT talks to keep your brain alive?"</P>
+<P><STRONG>To which I respond:</STRONG></P>
+<P>Here's how the magic works...</P>
+<DIV>1. I take this text and post it on one of my blogs, hopefully in&nbsp;a place where people can comment.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>2. I point to it from Scripting News. People feed off your enthusiasm and the word spreads.</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>3. We locate the right geek at MIT (there are so many) who then creates the RSS 2.0 feed with enclosures. (Note, they'll also have to produce MP3 audio from the video, that's not such a small thing.)</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>4. Podcast!</DIV><a href="http://www.reallysimplesyndication.com/2005/04/27#a479">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/27/05; 4:53:32 PM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/26" title="Permanent link to archive for 4/26/05.."><img alt="Permanent link to archive for 4/26/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Tuesday, April 26, 2005</span><br /><br />
+<a name="a470"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/26#a470">I want a little romance!</a></b></p>
+<A href="http://images.scripting.com/archiveScriptingCom/2005/04/26/bigDot.jpg"><IMG height=49 alt="A picture named dorothy.jpg" hspace=15 src="http://images.scripting.com/archiveScriptingCom/2005/04/26/dorothy.jpg" width=45 align=right vspace=5 border=0></A>I don't care for ads in RSS, because, with the right info, I am willing to subscribe to ads that <I>are</I> RSS. I've said this a million times, one more time won't hurt. I willingly use lots of commercial information every day, I seek it out. High quality commercials are worth subscribing to. Here's an <A href="http://www.buy.com/rss/feed.asp?loc=33448&grp=2">example</A>, a feed from Buy.Com, that tells me about new gadgets I can buy, with prices. No need to intrude on my space and time, if you provide me with information I want, I'll welcome you in. Advertisers get a clue. Try seduction, don't break into my life, romance your way in.<a href="http://www.reallysimplesyndication.com/2005/04/26#a470">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/26/05; 9:10:39 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/22" title="Permanent link to archive for 4/22/05.."><img alt="Permanent link to archive for 4/22/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Friday, April 22, 2005</span><br /><br />
+<a name="a466"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/22#a466">Apple adds beaucoup new support feeds</a></b></p>
+<P><A href="http://www.apple.com/support/rss/">Apple adds</A> a bunch of new feeds for product support news.</P><a href="http://www.reallysimplesyndication.com/2005/04/22#a466">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/22/05; 5:21:15 PM -  --  </p><a name="a465"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/22#a465">Audible joins Team RSS</a></b></p>
+<P><A href="http://www.audible.com/rss/">It's good to see them get on board</A>. The feeds are kind of weird, the obfuscated kind, where the content is hidden. Once you do a view-source, there are some strange elements and redirects. But the content is interesting, like the New York Times best sellers list. I don't think the Times itself publishes it.</P><a href="http://www.reallysimplesyndication.com/2005/04/22#a465">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/22/05; 2:36:38 PM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/19" title="Permanent link to archive for 4/19/05.."><img alt="Permanent link to archive for 4/19/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Tuesday, April 19, 2005</span><br /><br />
+<a name="a445"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/19#a445">How to allow subscription but not syndication?</a></b></p>
+<P>From Nikolas 'Atrus' Coukouma via email:</P>
+<BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+<P>"Hi, I've recently been in a major battle over the inclusion of RSS feeds in websites. This is not ordinarily a problem, but the site in question (LiveJournal) has millions of users with different interests and only one codebase. The problem is that most users don't object to syndication and aggregation, but some do object to syndication.</P>
+<P>"After much discussion, we've settled on (offering the option of) syndicating only headlines for these users. This seems unsatisfactory because they don't mind people reading the content in their personal aggregators, but they do mind it being reproduced on other websites and web-based aggregation services. A better solution would be to offer a "no syndication" element of some sort. My personal idea is to add an (optional, one or more may be present) "pragma" tag to handle cases like this, similar to HTML meta tags and HTTP pragma headers.</P>
+<P>"It might also be sensible to link to a license for articles, on a per-channel or per-item basis.</P>
+<P>"There seem to be some very serious issues about what can and can not be done with an RSS feed. I'm hoping you'll think about them and possibly comment on the subject."</P></BLOCKQUOTE>
+<P dir=ltr>My comments:</P>
+<BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+<P>That question comes up all the time, I fully understand the concern, and to some extent, share it. I've pretty much looked the other way when others republish my writing under their advertising, and in some cases in their name. </P>
+<P>Anyway, it gets tricky with centralized aggregators like Bloglines or My Yahoo. What's the difference between their publishing my content (and putting ads on it) and another site doing the same? It's hard to find the line of distinction.</P>
+<P>And of couse this gives me another chance to say that the EFF's black-and-white view that content is evil and technology is cool falls apart somewhere in here. What happens to freedom to speak when anyone can do anything with your writing? It's not just the media industry that has these concerns, so do us amateurs.</P>
+<P>Anyway, it seems likely we'll have an interesting discussion here. That, of course, is why I posted this. <img src="http://static.userland.com/shortcuts/images/qbullets/sidesmiley.gif" width="11" height="11" alt=";->"></P></BLOCKQUOTE><a href="http://www.reallysimplesyndication.com/2005/04/19#a445">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/19/05; 9:17:33 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/15" title="Permanent link to archive for 4/15/05.."><img alt="Permanent link to archive for 4/15/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Friday, April 15, 2005</span><br /><br />
+<a name="a439"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/15#a439">Yahoo, Microsoft and Google in RSS</a></b></p>
+<P>In my mind, the three top Internet application companies are Yahoo, Google and Microsoft, in no special order.</P>
+<P>Of the three Yahoo and Microsoft are&nbsp;aggressively moving forward in deploying RSS, Yahoo more than all three, and Google is doing absolutely nothing, at least nothing that's visible. </P>
+<P><STRONG>Yahoo</STRONG></P>
+<P>Today, ResearchBuzz <A href="http://www.researchbuzz.org/rss_feeds_for_yahoo_shopping.shtml">discovered</A> that Yahoo's shopping site has been <A href="http://shopping.yahoo.com/rss/">completely RSS-ized</A>. This is very cool, and very smart. A few years from now they will likely have a disproportionate share of commercial information flow through RSS because they moved so early, so strongly, and so compatibly. </P>
+<P>Their feeds are plain and obviously useful. There's no doubt that they will work with every reader and aggregator out there today, and five years from now. And when the inevitable RSS discovery networks emerge, Yahoo's feeds will be near the top because they, right now, have no equal.</P>
+<P><STRONG>Where is Google?</STRONG></P>
+<P>Consider this <A href="http://www.google.com/search?hl=en&lr=&safe=off&q=related:www.scripting.com/rss.xml">Google search</A> (<A href="http://images.scripting.com/archiveScriptingCom/2005/04/15/unrecognizedFileFormat.gif">screen shot</A>), and the irony of it. </P>
+<P>To this day Google doesn't do anything interesting with RSS feeds. It can't even display feeds in an intelligent way.&nbsp;Perhaps&nbsp;it's <A href="http://en.wikipedia.org/wiki/Not_Invented_Here">NIH</A> that's keeping them from embracing RSS as their two main competitors have. Whatever it is, Yahoo is dashing in front, with Microsoft close behind. </P>
+<P>Why isn't Google in the race? To me it remains a mystery.</P>
+<P><STRONG>Microsoft</STRONG></P>
+<P>At the end of next week I'm going to Microsoft to meet with teams there working on RSS, to plot strategy, to look for opportunities. They've come a long way since re-inventing <a href="http://www.xmlrpc.com/">XML-RPC</a> to produce <A href="http://www.soapware.org/">SOAP</A> and first compromising with IBM and then Sun and then the W3C to create a protocol that's going absolutely nowhere. Now they're two years into&nbsp; RSS, and haven't reinvented it; or even&nbsp;extended it without first testing the water outside. That's something that Yahoo could do a little more of. </P>
+<P>There's no profit in being incompatible, and in this day you won't gain any lock-in either. That's what I've been preaching to Microsoft and they've been listening, and acting. I have been saying it publicly to Yahoo because there's no private channel, they appear to resent my existence (maybe they fear the rocks that Don Park <A href="http://www.docuverse.com/blog/donpark/EntryViewPage.aspx?guid=81e6c567-fc29-4b97-a1a3-a8a39d0da678">talks</A> about). I really <EM>am</EM> trying to help, believe it or not.</P>
+<P><STRONG>Why RSS is working</STRONG></P>
+<P>Tech companies must understand their place isn't to guide the rest of us, rather to learn what we want and then make systems that help us do that. That's when the tech industry is making a contribution. When it tries to lead, it ends up trying to control, and that never works.</P>
+<P>Microsoft and Yahoo are finally, for the most part, letting the users drive, with outstanding results. Sure it could work better, and it <EM>will</EM> work better. It's a bootstrap and big companies with their vast resources and ability to make the trains go, have an important role to play. </P>
+<P>But it only works when all components are engaged. Software developers have a role to play, but users must dominate if it's going to have a chance of working. To the extent that RSS is working it's because the users are driving the growth.</P><a href="http://www.reallysimplesyndication.com/2005/04/15#a439">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/15/05; 1:13:44 PM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/11" title="Permanent link to archive for 4/11/05.."><img alt="Permanent link to archive for 4/11/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Monday, April 11, 2005</span><br /><br />
+<a name="a421"></a><p><b><a href="http://news.bbc.co.uk/1/hi/technology/4421707.stm">BBC: Turning the web into 'sushi belts' </a></b></p>
+<P>...with extensive quotes from Yours Truly.</P>
+<P>It's a good piece, imho. </P>
+<P>"Automated web surfing." </P>
+<P>It's so cool that they got a picture of the <A href="http://seattlepi.nwsource.com/food/124839_dine04.html">sushi belts</A>&nbsp;along with the <A href="http://www.reallysimplesyndication.com/riverOfNews">River of News</A> style of aggregator.</P><a href="http://www.reallysimplesyndication.com/2005/04/11#a421">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/11/05; 9:20:23 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/08" title="Permanent link to archive for 4/8/05.."><img alt="Permanent link to archive for 4/8/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Friday, April 8, 2005</span><br /><br />
+<a name="a419"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/08#a419">When does it become a standard?</a></b></p>
+<P><A href="http://www.acmqueue.com/modules.php?name=Content&pa=showpage&pid=282&page=3">Turn to page 3</A> of this interview with Tim Bray, one of the eleven designers of XML. Asked why there is no version 27.5 of XML, he gives a common sense answer, that XML is frozen, and isn't going to change. Of course, it couldn't be any other way. He says: </P>
+<BLOCKQUOTE dir=ltr style="MARGIN-RIGHT: 0px">
+<P>"XML was frozen and published in February 1998. As it came toward the end and it became obvious -- well, not obvious, but likely anyhow -- that this was going to get a lot of momentum, we were besieged by requests for extra features of one kind or another. We basically lied and told the world, we would do all that stuff in version 2. You have to shoot the engineers and ship at some point, right? I think there will never be an XML version 2. There is an XML version 1.1, but it’s controversial and not widely supported."</P></BLOCKQUOTE>
+<P>Sounds like what I've been saying about RSS (without the lying part). 
+<P>If XML weren't frozen, it wouldn't have been possible to build XML-RPC, RSS, SOAP or OPML on top of it. 
+<P>You could still add features to XML if there was a strong enough will in the community to do so. But there doesn't seem to be any movement in that direction, and that's okay, because while XML is not perfect, it certainly is good enough. Emphatically, that XML is frozen is a <I>good thing.</I> If it were a moving target nothing would get done. And the same is true of RSS. 
+<P>Today, there's no question that RSS is frozen, done, settled. Yes there are still a small number of people who would like to argue about it, but the deployment speaks so much more strongly. Every time you see so-and-so "supports RSS" on <a href="http://www.scripting.com/">Scripting News</a>, that's an affirmation of the power of a frozen format, and if that goes on long enough, one can justifiably start calling it a standard. With RSS that day is coming soon.</P><a href="http://www.reallysimplesyndication.com/2005/04/08#a419">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/8/05; 11:22:18 AM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/04/01" title="Permanent link to archive for 4/1/05.."><img alt="Permanent link to archive for 4/1/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Friday, April 1, 2005</span><br /><br />
+<a name="a391"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/04/01#a391">An open letter to everyone in the world about everything that matters</a></b></p>
+<P>A couple of years ago a major Internet debate erupted about RSS. Everyone got involved, people who made products that competed with mine, developers who didn't like me, even some people who I thought were my friends. They all said one thing over and over. RSS sucks. Dave sucks. Let's have a rebellion. Dave is an echo. Dave is an outage. He's an incredible control freak. Let's route around him! That'll teach him a lesson.</P>
+<P>I don't know what I was thinking. I guess my ego got in the way. My bad. I should have listened. Why? Because they were right! I do suck. I am an incredible control freak.&nbsp;RSS is a terrible format. It can't possibly work. How could I have been so dense? Obviously Atom is the way to go. Anything would be better than RSS! Oh the time I've wasted. Look at all the work we have to do now.</P>
+<P>How can I possibly make it up to you? I've been a very bad person. </P>
+<P>Yours in shame,</P>
+<P>Dave Winer</P><a href="http://www.reallysimplesyndication.com/2005/04/01#a391">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 4/1/05; 3:53:34 PM -  --  </p><br /><br /><span class="day"><a href="http://www.reallysimplesyndication.com/2005/03/15" title="Permanent link to archive for 3/15/05.."><img alt="Permanent link to archive for 3/15/05." src="http://static.userland.com/misc/snImages/dailyLinkIcon.gif" height="15" width="12" border="0"></a>&nbsp;Tuesday, March 15, 2005</span><br /><br />
+<a name="a379"></a><p><b><a href="http://www.reallysimplesyndication.com/2005/03/15#a379">What is Amazon's OpenSearch?</a></b></p>
+<P>I just heard about <A href="http://opensearch.a9.com/">OpenSearch</A>, which is a new service whose slogan is: </P>
+<P><EM>"We want OpenSearch to do for search what RSS has done for content."</EM></P>
+<P>I think I've kind of figured it out. Basically it's a way for search engines to plug into a user interface, kind of like a portal, like My Yahoo, where each of the modules presents its results with an RSS feed.</P>
+<P>But if that's right, what do we need A9 for? Why wouldn't you just plug the RSS straight into your aggregator? When they re-tooled My.Yahoo for RSS, didn't they obviate the need for something like this?</P>
+<P>I must be missing something. </P>
+<P>Enlighten me. <img src="http://static.userland.com/shortcuts/images/qbullets/sidesmiley.gif" width="11" height="11" alt=";->"></P>
+<P>PS: My guess is this is a project that made sense at one time, but the shipdate slipped, and others filled the gap (search engines offering their results as RSS is not new in Spring 2005). </P>
+<P>PPS: Could someone who's at Etech ask them if they have filed any patents on this.</P><a href="http://www.reallysimplesyndication.com/2005/03/15#a379">#</a> Posted by <a href="http://www.reallysimplesyndication.com/profiles/$1">Dave Winer</a> on 3/15/05; 3:06:17 PM -  --  </p><br /><br /><p>
+
+
+        <div id="footer">
+          Copyright &#169; <a href="http://www.reallysimplesyndication.com/">Really Simple Syndication</a>.<br />
+          Last update: Friday, May 6, 2005 at 7:40:29 AM<br />
+          </div>
+        </div>
+      </div>
+    <div id="links">
+      <span class="linkstitle">Local</span><br />  
+        <span class="linkslist">
+      <strong><span class="navigatorLinkCurrent">Home</span></strong><br /><strong><a href="/about" class="navigatorLink">About</a></strong><br /><strong><a href="/directory/22" class="navigatorLink">Directory</a></strong><br /><strong><a href="/stats/referers" class="navigatorLink">Referers</a></strong><br /><strong><a href="http://www.technorati.com/cosmos/search.html?rank=&amp;url=http%3A%2F%2Fwww.reallysimplesyndication.com" class="navigatorLink">Cosmos</a></strong><br /><strong><a href="http://blogs.law.harvard.edu/tech/rss" class="navigatorLink">Spec</a></strong><br /><br />
+      </span>
+        <span class="linkstitle">Members</span><br />  
+        <span class="linkslist">
+      <a href="http://www.reallysimplesyndication.com/member/signup">Join Now</a><br />
+<a href="http://www.reallysimplesyndication.com/member/login">Login</a><br /><br />
+      </span>
+      <span class="linkstitle">Blogrolling</span><br />
+        <span class="linkslist">
+          My favorite<br />
+          weblogs go<br />
+          here
+          </span>
+      <div id="calendar">
+        <table><tr><td><table class="hCalendarTable" cellspacing="0" border="0">
+	<tr class="hCalendarMonthYearRow"><td colspan="7">May 2005</td></tr>
+	<tr class="hCalendarDayNameRow">
+		<td width="19" height="10">Sun</td>
+		<td width="19" height="10">Mon</td>
+		<td width="19" height="10">Tue</td>
+		<td width="19" height="10">Wed</td>
+		<td width="19" height="10">Thu</td>
+		<td width="19" height="10">Fri</td>
+		<td width="19" height="10">Sat</td>
+		</tr>
+	<tr class="hCalendarDayRow">
+		<td class="hCalendarDay" height="10">1</td>
+		<td class="hCalendarDay">2</td>
+		<td class="hCalendarDay">3</td>
+		<td class="hCalendarDay">4</td>
+		<td class="hCalendarDayLinked"><a href="http://www.reallysimplesyndication.com/2005/05/05">5</a></td>
+		<td class="hCalendarDayCurrent"><b>6</b></td>
+		<td class="hCalendarDay">7</td>
+		</tr>
+	<tr class="hCalendarDayRow">
+		<td class="hCalendarDay" height="10">8</td>
+		<td class="hCalendarDay">9</td>
+		<td class="hCalendarDayLinked"><a href="http://www.reallysimplesyndication.com/2005/05/10">10</a></td>
+		<td class="hCalendarDay">11</td>
+		<td class="hCalendarDay">12</td>
+		<td class="hCalendarDay">13</td>
+		<td class="hCalendarDay">14</td>
+		</tr>
+	<tr class="hCalendarDayRow">
+		<td class="hCalendarDay" height="10">15</td>
+		<td class="hCalendarDay">16</td>
+		<td class="hCalendarDay">17</td>
+		<td class="hCalendarDay">18</td>
+		<td class="hCalendarDay">19</td>
+		<td class="hCalendarDay">20</td>
+		<td class="hCalendarDay">21</td>
+		</tr>
+	<tr class="hCalendarDayRow">
+		<td class="hCalendarDay" height="10">22</td>
+		<td class="hCalendarDay">23</td>
+		<td class="hCalendarDay">24</td>
+		<td class="hCalendarDay">25</td>
+		<td class="hCalendarDay">26</td>
+		<td class="hCalendarDay">27</td>
+		<td class="hCalendarDay">28</td>
+		</tr>
+	<tr class="hCalendarDayRow">
+		<td class="hCalendarDay" height="10">29</td>
+		<td class="hCalendarDay">30</td>
+		<td class="hCalendarDay">31</td>
+		<td colspan="4">&nbsp;</td>
+		</tr>
+	</table>
+<center><font size="-2"><b>
+	<a href="http://www.reallysimplesyndication.com/2005/04/30">Apr</a>
+	&nbsp;
+	Jun
+	</b></font></center>
+</td></tr></table>
+        </div>
+      </div>
+    </body>
+</html>
+</text>

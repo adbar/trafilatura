@@ -1,0 +1,551 @@
+URL: http://linuxdevices.com/articles/AT7441855870.html
+
+  
+ <h>  Articles & white papers about Linux based embedded applications ...
+ 
+
+<h>   Executive Director Interview: Murry Shohat of the Embedded Linux
+   Consortium
+   
+  <h>    (Apr. 21, 2004)
+      
+<h> Foreword -- 
+<p>This interview with Murry Shohat,
+   executive director of the Embedded Linux Consortium (ELC), discusses
+   the work the ELC is doing to promote and standardize embedded Linux.
+   It also discusses embedded Linux marketplace matters, technology, and
+   standards organizations.
+   
+ <p>  This is the fifth in our series of interviews with executives at key
+   embedded Linux companies and organizations (see "Related Stories"
+   section below for a complete list).
+     _________________________________________________________________
+
+ <h>  Q1: Can you provide a brief overview of the Embedded Linux Consortium
+   (ELC): when was it formed, by whom, what has it accomplished, and what
+   is it working towards?
+   
+ <p>  A1: The ELC began in 1999 as a brainstorm in the mind of Rick
+   Lehrbaum, who was in touch with the early embedded Linux leaders as he
+   constructed his now-venerable website, LinuxDevices.com. Rick brought
+   me in early and we worked together to build the structure based on our
+   complementary but separate consortium experiences in the embedded
+   market. A proposal was presented to an assembly of more than 75
+   invited corporate and open source leaders at the Spring Embedded
+   Systems Conference in Chicago in March 2000. The ELC was officially
+   born at that meeting, and I gained the job of Executive Director,
+   tasked to fulfill a charter that was also refined and approved at the
+   meeting.
+      
+<p>Within 120 days, ELC membership swelled to 120 members, most of them
+   corporations ranging from startups to world giants. Our launch charter
+   was to promote embedded Linux and open source software in order to
+   gain traction in the embedded market and further the idea that Linux
+   would provide an effective, secure, and powerful operating system. In
+   those days, our board of directors (called the Formation Committee at
+   the time) consisted of 19 corporations and open source individuals.
+   After a year, we gained some sanity (for me, at least) and changed to
+   a democratic seven-person board achieved through nomination and
+   election. One of our directors is drawn from individual open source
+   developer-members. Some of these members earn free membership through
+   their prior contributions to the Linux code base.
+   
+ <p>  Getting the word out proved to be an effective mission. The ELC
+   accomplished this by exhibiting at trade shows large and small, by
+   proactive media relations where we talked about implementations,
+   tools, startups etc., and by the work of our education committee where
+   we provided speakers for conference programs, colloquia, and
+   controversial panels. In the first 18 months, we were extremely busy.
+   These activities continue today.
+   
+ <p>  A high point for us was "Pavilion 101" at the 2002 Embedded Systems
+   Conference (ESC) in San Francisco. At 120 feet in length, our Pavilion
+   gathered many exhibiting members into a single thematic exhibit space
+   that included a presentation theater. The Pavilion broke ESC's record
+   for booth length. You could not attend the show and miss us and that
+   was a big message to our proprietary competitors.
+   
+  <p> But the real high point at this event was the standards kickoff
+   meeting we held, which attracted a standing room only crowd plus
+   strong media attendance and resulted in an earnest start for
+   construction of what is now called the ELCPS, or Embedded Linux
+   Consortium Platform Specification.
+   
+ <p>  The ELCPS has had in interesting history. In April 2001, the ELC board
+   floated and promoted a proposal to add standards to our mission. Over
+   the next year, the ELC sought and received a great deal of input,
+   culminating in the standards kickoff at ESC2002. Attendees may recall
+   the admonitions of Maddog Hall to remain pure and true to open source
+   principles. From some quarters, the ELC was criticized for moving too
+   fast. From other quarters, we took heat for moving too slow. In
+   hindsight, my opinion is that we should have included standards
+   activities in our original charter.
+   
+ <p>  The ELC board wanted to assemble a platform that offered assurance on
+   the availability of a minimum set of resources that were needed by
+   application software and middleware for any embedded Linux
+   distribution. We listened to Maddog and others in this endeavor. It's
+   important to note that the ELC does not distribute Linux code under
+   our by laws. (Instead, our standards activity looks upon Linux
+   distributions in a transparent fashion applicable to any Linux
+   distribution.) The resulting ELCPS -- which took a year of intense
+   work to build and ratify -- provides a unified open platform for
+   embedded operating systems. As such, it helps developers by
+   substantially decreasing the time and expense needed to construct
+   embedded applications. The ELCPS provides a standard for the API layer
+   that increases the reusability or portability of program code from
+   project to project. The spec can be downloaded from
+   Embedded-Linux.org. It offers resource guidance for applications
+   ranging from small to large in terms of compute footprint.
+   
+ <p>  Today, the ELC continues its promotion activities and is seeking
+   industry partners for the ELCPS. Notably, we are talking with the
+   traffic control industry where the ELCPS could be adopted as a
+   recommended development platform, and with various elements of
+   Government and DoD (Department of Defense), where the ELCPS could help
+   to maximize the benefits of using embedded Linux across DoD programs.
+   Other market spaces are under discussion, but it's too early to say
+   anything.
+   
+   
+<h>   Q2. Can you comment on the relative roles of the ELC and the Consumer
+   Electronics Linux Forum (CELF)? 
+  
+<p>  A2: First and foremost, the ELC applauds the founders of CELF for
+   their vision and energy, which are directed toward validation of Linux
+   as the preferred operating system for consumer electronics. The CELF
+   effort, like the ELC effort, underscores the desire of product
+   developers to NOT be enslaved by any proprietary operating system.
+   Both of our groups agree with and promote the principles and practices
+   of open source software development.
+  
+<p>  The core differentiation is that the ELC does not implement nor
+   distribute Linux, while the CELF is actively constructing and
+   distributing Linux via a source tree that is very specific to consumer
+   electronic devices. Companies that wish to build CE devices that
+   include Linux are motivated to provide engineers to develop the source
+   tree for everyone's benefit. This is exciting and often intensely
+   competitive among the contributing open source developers, but the
+   result is expected to be a robust ecosystem of open source code in
+   this important market space where an increasing number of new products
+   are embedded computers.
+   
+<p>   Historically, a lesson learned from the TRON operating system was
+   rampant fragmentation that prevented the development of interoperable
+   applications for essentially Japanese-developed CE devices. I visited
+   with a number of Japanese executives at a Tokyo embedded technology
+   trade show a few years ago and learned first hand about concerns with
+   TRON. CELF in my view may reduce fragmentation in the embedded
+   operating system market, and this will be good for everyone. At some
+   point -- hopefully sooner rather than later -- value-added
+   after-market applications developed to run, for example, on a
+   Panasonic home theater system will also work on a competing Mitsubishi
+   or Philips system. Thanks to Linux!
+   
+<p>   While CE is a huge global market, it is just one market among many,
+   and others such as telematics, mission critical military, traffic
+   control, and medical instrumentation to name a few, have different
+   needs. The resulting CELF source tree won't necessarily serve these
+   requirements. The ELC hopes that the ELCPS can serve these broader
+   needs by easing application development at the API level. Then, any
+   Linux distribution that complies with the ELCPS can serve the specific
+   needs of these various market spaces. We also hope the ELCPS can serve
+   as a tool for application and middleware software developers to
+   provide a well-known and well-defined target API across distributions
+   packaged by multiple different distributors.
+   
+ <p>  It's clear to ELC management, I think, that some market spaces may
+   need custom-developed Linux distributions. A good example predating
+   CELF is carrier-grade Linux, sponsored by OSDL.
+   
+ <p>  The ELC encourages CELF, OSDL and others to keep their work consistent
+   and compliant with the tenets of open source software development,
+   notably keeping pace with official Linux kernel distributions as they
+   continue their evolution.
+   
+ <p>  The ELC and CELF continue to have informal discussions about possible
+   areas of cooperation.
+   
+   
+ <h>  Q3: How would you characterize the current state of embedded Linux, as
+   a market and as a technology?
+   
+<p>  A3: I characterize the state as Hip Hip Hurray! Linux as an embedded
+   OS has passed through infancy and adolescence in a real hurry, and is
+   now delivering huge value for nearly all embedded applications. The
+   native maturity of Linux under its program of development and
+   distribution by Linus Torvalds and Andrew Morton has reached a point
+   in the 2.6 kernel where embedded developers no longer need to consider
+   home-brew as the most viable solution. Sure, engineering development
+   is needed to handle niche-specific needs, but the core OS now has
+   ample hooks, drivers, and resources to be a viable embedded platform
+   nearly anywhere. Even the most demanding hard real-time applications
+   can benefit. One of the ELC's members, LynuxWorks, is already offering
+   2.6 in the latest distribution of BlueCat Linux.
+   
+   
+ <h>  Q4: What challenges do embedded Linux OS, tools, and services vendors
+   face?
+   
+ <p>  A4: I think the key challenge is education to defeat FUD and more
+   education to unify the landscape so that product developers gain
+   confidence in Linux and open source. Distribution, tools, and services
+   vendors must remain vigilant to stay ahead of FUD, and ELC membership
+   is a good way to do that.
+   
+<p>   On the tools front, there needs to be general recognition that open
+   source compatibility is the Holy Grail, not Linux tool chains per se.
+   Much attention has been focused on Linux-specific tool chains. In my
+   opinion, the attention is misdirected. While tools need to offer
+   cross-development and native development environments, the focus
+   should be on access to the source code. Then, environments like
+   Eclipse will become more attractive. Organizations familiar with
+   Eclipse for development of a non-Linux application will be able to
+   leverage their knowledge and build Linux applications. Different
+   companies can offer powerful vendor-specific tool chains while also
+   offering tool interoperability that benefits the customer. Through
+   source code access, product developers have the best opportunity to
+   achieve highly differentiated and competitive products, regardless of
+   the tool chain. This is much different that the lock-in developers
+   faced in the past, and it opens a new era for the development of
+   tools.
+   
+ <p>  As in any market, if there are customers there will soon be products.
+   I think this is an excellent time to be in the tools business where
+   Linux developments are the target.
+   
+ <p>  By the way, my introduction to Linux came in the tools market for
+   electronic design automation. Roll-your-own tools running on top of
+   Linux back in 1997 were my heads-up as a journalist (it was this
+   experience that put a star by my name on Rick Lehrbaum's Rolodex,
+   leading to the launch of the ELC). The nature of open source made this
+   scenario possible and I'm sure glad Rick called me.
+   
+   
+ <h>  Q5: What market opportunities do you see for Linux in the embedded
+   devices and systems market?
+   
+ <p>  A5: My personal view is that more and more of the products we
+   encounter in life are becoming embedded computers. What a huge
+   opportunity! When you study the moves of the titans in this business,
+   it's clear that the embedded opportunity also connects with both
+   enterprise and desktop computing and this is beyond exciting. This
+   means that the era of "pervasive" computing is upon us, and the Linux
+   OS represents a standardized platform for securely sharing information
+   at home, at work, basically everywhere. It also means broad
+   interoperability for application software and middleware, which will
+   ultimately increase the ease and reduce the cost of computing to
+   everyone. Open source software is rather unique in the manner in which
+   it promises to help computing achieve its destiny as a key and ongoing
+   technological enhancement for everyone's life. This is why we hear
+   open source and embedded-friendly strategies coming from companies
+   like SAP, Oracle, IBM, Sun, HP, and many others. These companies get
+   it.
+   
+ <p>  As an example, buttonhole one of the titans and mention "voice
+   recognition." Leading companies -- those who are able to pay for
+   targeted market research -- know that at some near-future point, they
+   need their technology to be resident as middleware in your lap or on
+   your plasma display and DVR in the family room. They need to enable
+   recognition of your transaction-enabled voice from the microphone
+   embedded in your DVR in order to achieve trustworthy and secure
+   authorization and billing for the digital media stream you just
+   requested while sitting on your sofa.
+   
+ <p>  These companies also want to have their software resident in medical
+   instrumentation (web connected to a vast medical resource), in
+   military ground support equipment, in traffic control -- not just
+   traffic signals but in regional mass transit control, in tele/data
+   communications, in factory automation, in just about any market you
+   can mention where computers are being embedded.
+  
+<p>  This of course trends to a long-term view. The near term opportunity
+   is most visible right now in consumer electronics, so you can
+   understand the rush to unify and defragment now taking place in CE.
+   The titans of CE don't want to become a "suburb of Redmond" with all
+   the taxation that implies, and their steps are instructive and
+   illuminating for the entire embedded market. Let's hope they avoid
+   mis-steps as they adopt Linux into one of the thinnest margin
+   marketplaces on earth.
+  
+ <p> I have always characterized the overall embedded market as a coalition
+   of valleys, canyons, fjords, plains, and vales. On the hardware front,
+   we see the distinctions in many competing form factors, like VME vs.
+   CompactPCI, PC/104 vs. roll-your-own. And now, there are competing
+   high performance serial fabrics -- data highways -- thrown in for
+   forward migration. On the software front, we see proprietary operating
+   systems competing head to head with Linux. My background spans more
+   than 30 years in these markets, and I understand fully the pressures
+   faced by system integrators who attempt to unite standard and custom
+   hardware with too many flavors of operating systems.
+   
+ <p>  Enter Linux into these spaces as a single unified platform. If it can
+   handle the custom needs of the canyons and fjords, and if it can offer
+   ROI to the integrators who solve specific embedded computing problems
+   with their combinations of hard- and software, then Linux stands a
+   good chance to become the market share leader. This is why I wasn't
+   surprised by Wind River's shift toward Linux support. Or Green Hills
+   recent FUD attack against Linux.
+   
+   
+<h>   Q6: What challenges does embedded Linux face as a technology?
+   
+<p>   A6: The key long-term challenge is in the business model, in my
+   opinion -- how to make money with Linux. The short-term challenge is
+   to define real-time. My takeaway from the recent Embedded Systems
+   Conference, where I talked with perhaps 100 developers who stopped by
+   the ELC booth -- is that "real-time" needs to be defined and applied
+   to Linux in order to end confusion over the operating system's
+   capabilities.
+   
+ <p>  When questioned by experienced Linux developers, it turns out that
+   much of the confusion -- certainly more than half -- can be
+   categorized in the soft real-time domain, which the current 2.6
+   distributions handle quite well. ELC members like MontaVista,
+   LynuxWorks, and FSM Labs, among others, address the balance of concern
+   --millisecond and microsecond hard real-time. The ELC needs to do a
+   better job with real-time definitions, and I am pushing this at the
+   board level as something we can do for the benefit of the overall
+   market. Then we can engage in the development of real-time API's as an
+   expansion of the ELCPS.
+   
+ <p>  The long-term challenge -- extracting ROI and profit -- is a function
+   of the free market, in my opinion. Linux is challenged more by its
+   business model than its technology model. The GPL is at the heart of
+   this discussion, and the ELC is motivated to provide GPL education in
+   the open marketplace of ideas. We mounted panel sessions on the topic
+   at this year's CES show, and recently we agreed to do it again. I am
+   now looking for venues where we can bring together leaders who can
+   help audiences learn how to extract profits from open source software.
+   
+<p>   The question of making money on Linux, of course, transcends markets.
+   The GPL is at the center of issues in enterprise and desktop Linux,
+   where groups like OSDL, FSF, LI, LPI, and FSG also engage in open
+   marketplace education. My take is that making a profit is not market
+   specific. What works for enterprise will likely work for embedded.
+   Groups like the ELC can and should play an educational role.
+   
+   
+<h>   Q7: What embedded Linux technology developments do you find exciting?
+   
+ <p>  A7: Please allow me two answers, short term and long term.
+   
+<p>   I'm a tech junkie always looking for near term gratification. So the
+   consumer space has my attention. I want my wireless Centrino laptop to
+   gather media streams -- for example from my Internet connection, my
+   digital camera, camcorder, and mp3 player, and deliver them to TV's
+   and stereos anywhere in my home. When family and guests gather for a
+   holiday celebration, I want to show photos and videos on the family
+   room TV with complete ease (freedom from the need to connect cables,
+   change resolutions, struggle with blank screens or no sound, etc.).
+   
+<p>   When my wife requests that I visit the Internet to gather recipes for
+   Baked Ziti, I no longer want to simply print out some pages for her
+   consideration. Instead, I want her to be able to watch a digital video
+   of Baked Ziti preparation, from the Food Channel or some other stream
+   source, on demand, at the point of need, namely the kitchen.
+   If my grandchildren or even my dog has an illness, I'd like to be able
+   to effortlessly and transparently gain the collective wisdom of others
+   by using the same resources. It's just not that hard anymore to build
+   custom real-time teleconferences with exiting hardware and software in
+   the hands of non-specialists (like our family doctor or vet).
+   
+ <p>  And, I'd like to be able to vote in our local, regional, and national
+   elections this same way.
+   
+ <p>  All of these developments are taking place now, with many more
+   examples of functionality that will benefit all of us in the near
+   term.
+   
+ <p>  Mid-term, I'm aware of interesting developments that promise to
+   improve our lives in even more important ways. For example, sensors
+   attached to an embedded computer that enjoys Internet connectivity can
+   help us cut down doctor and hospital visits. With inexpensive
+   instrumentation that we either own or rent, diagnosis can be achieved
+   without leaving home. It's a new form of real-time house call that
+   will be welcomed everywhere.
+   
+ <p>  One side note of importance. I see more upside for Linux in health
+   care than in most other markets. This is because most of the
+   technological investment in health care focuses on drugs and
+   procedures, not on information technology. There is just a huge
+   opportunity out there for pervasive health care solutions based on
+   open source and Linux.
+   
+<p>   On the automotive front, our developed economies also have the highest
+   reliance on fossil fuels. Embedded and open source software technology
+   is likely to help out more than most people realize. For example, we
+   are quickly entering the period of hybrid vehicles that rely on
+   embedded computers for their efficiency. Linux is playing an important
+   role in these developments. By this time next year, nearly every major
+   automaker will offer one or more hybrids. Around 30 models are in the
+   pipeline. Obviously, OS competitors for this kind of application must
+   demonstrate qualities such as reliability and real-time performance.
+   Linux is well suited, and its low total cost of ownership is likely to
+   win this market and others like it.
+   
+ <p>  Open source software and Linux can also play an important long term
+   unifying role in Government. My resume includes several years in
+   aerospace, where I learned that Government and DoD applications mirror
+   the broader market for all kinds of computers. It sure makes sense to
+   me to promote the ELCPS as a commercial, off-the-shelf unifying
+   platform in this market, contrasted with far too many proprietary
+   solutions that cost taxpayers far too much and by definition rule out
+   interoperability and reusable software. The ELCPS enables program
+   managers to rule things in, not out.
+  
+
+<h>  Q8: Can you share one or two of your organization's most exciting
+   successes?
+  
+<p>  A8: Our most exciting success came at the start, when companies around
+   the globe rallied to join and support our mission. It was a clear and
+   eloquent signal. The era of proprietary operating systems controlling
+   our development destiny had drawn to an end. We could see the source
+   code, and as a result our future based on open source gets brighter
+   every day.
+   
+   
+ <h>  Q9: How about a failure?
+   
+ <p>  A9: Speaking organizationally, I'm annoyed by the way in which many
+   trade associations lost members during the economic downturn we've
+   experienced over the last 3 years, exacerbated as it was by world
+   terrorism. As robust as the ELC was at launch and for our first two
+   years, we now find ourselves rebuilding. There's a lot of road kill
+   out there -- companies who were too weak or poorly financed to
+   survive. But there are a lot of survivors and new starts. We need to
+   get these companies back into membership to get more shoulders behind
+   our missions.
+   
+ <p>  I also think that the overall open source industry has failed to fully
+   communicate the values of open source software. This has become an
+   opportunity to create a virtual "Redmond" for open source software.
+   The world of commerce is used to single point news and information
+   sources. Detroit says "this," Redmond says "that," Washington
+   disagrees, Paris argues, Tokyo waffles. Linux has no political
+   Detroit, Redmond, Washington, Paris or Tokyo.
+   
+<p>   Open source advocates are mostly reactive to news events and FUD,
+   rather than proactive. I'm annoyed by the way in which FUD gains
+   traction in headlines due to the marketing machine owned by a single,
+   deep pocket. I am hopeful that groups like the ELC can shift gears to
+   become proactive as legitimate representatives of constituencies whose
+   collective voice represents equal value. Then we can prevent FUD,
+   rather than spend our valuable time defending against it.
+  
+
+ <h> Q10: What's your vision of the future for embedded Linux? That is, how
+   big will the embedded Linux market get, and when will it start to
+   reach that peak?
+  
+<p>  A10: My own opinion is that we have entered the super exponential
+   phase -- we are at the tipping point in 2004 in all embedded markets.
+   While I'm not equipped to provide estimates with dollar signs,
+   Enterprise Linux already enjoys double-digital share of the deployed
+   market. I feel confident that embedded Linux will achieve double-digit
+   actual share of the deployed market by the end of 2004. Desktop will
+   achieve double-digit in 2005 or 6. By 2010, embedded Linux will enjoy
+   50 percent or more market share and Linux in general will have global
+   mind share in the same range.
+  
+ <p> I'll also stick my neck out and predict that the world's largest
+   software applications company will begin porting to Linux within two
+   years.
+   
+   
+ <h>  Q11: How do you see the 2.6 kernel affecting the embedded Linux
+   market?
+   
+ <p>  A11: Answered above. 2.6 is the best thing to happen for embedded
+   because it brings popular economies of scale as well as
+   embedded-centric features and thus decreases the development cost of
+   embedded apps that use popular technologies like USB.
+  
+
+ <h> Q12: Any comments on the SCO mess?
+  
+ <p> A12: You may be sorry you asked. These are my personal views, not ELC
+   views.
+   
+ <p>  I have always considered SCO "theatre of the absurd." And Groklaw.net
+   is the venue or stage where the best actors play. Sure, there are
+   respected folks who say that real legal matters are being contested.
+   My view is that our treasured way of life is what makes an SCO (or a
+   Green Hills) possible, so let it play out, enjoy it, and learn from
+   it. The system is working even if you get so mad you'd like to toss a
+   figurative punch or two. In the mid-run, open source and Linux will
+   win.
+   
+ <p>  We have dysfunctional families, why not dysfunctional companies as
+   well? My experience says that much of what we see and hear begins as
+   "personal" to someone -- an issue of pride or hurt feelings or
+   arrogance. Individuals and groups like SCO or Green Hills have
+   difficulty getting above their own psychology to look at the bigger
+   picture. They are clouded and conflicted by their feelings, and via PR
+   firms and legal teams willing to accept their money (and equally
+   greedy investors willing to give them money), they rationalize that a
+   jury will agree with them, or the media will promote their agenda.
+   
+ <p>  Now to my real view. I stated it earlier in a different form when I
+   claimed that there is no "Redmond" in open source. Well, SCO has
+   provided a temporary solution. There is no way that any organization
+   -- ELC or otherwise -- could gain as much positive press for open
+   source software in general and Linux in particular as SCO has done.
+   Yeah, I know, positive press for Linux is hardly the intention of SCO.
+   But, positive press is what SCO has achieved, the FUD notwithstanding
+   any earnest examination. Whatever the source of SCO's funding, the
+   open source community could not have purchased better PR at any price.
+   
+ <p>  Why is this? Because of the absurd, that's why. By coming at the open
+   source community as they have, SCO has increased the dynamic range of
+   the volume of the competing messages. In usual situations -- when
+   reason governs argument -- we hear both sides at the same relative
+   decibel level. But SCO has placed unreasonable arguments on the table,
+   getting our attention in the process. They have made our "hearing"
+   super sensitive. Now, when the open source community offers a robust
+   defense, everyone is tuned in because unreasonable (actually,
+   outrageous) arguments got our attention in the first place.
+   
+ <p>  By being unreasonable, SCO has made sure we all have a dog in this
+   fight. And we are cheering for our dog. In the end, I think we'll all
+   grudgingly thank SCO for actually accelerating the acceptance of Linux
+   and open source software by giving it such a wonderful theater to
+   display its clear virtues.
+   
+<p>   There are other legal issues with more impact on open source and
+   Linux. If the open source community wants to pay attention to a real
+   case with real potential impact, take a look at InterTrust. By now,
+   I'm sure you have heard of it. This case deals with digital content
+   piracy. Microsoft just settled with InterTrust by paying $440 million.
+   Titans in consumer electronics own InterTrust and they have a digital
+   rights management patent portfolio dating back more than a decade. As
+   Linux wins designs in consumer electronics, InterTrust stands to reap
+   rewards through IP licensing. I have no doubt that InterTrust will be
+   in the news (and in the pockets of those who plan on distributing
+   digital content) long after SCO fades.
+   
+   
+ <h>  Q13: What do you think about Wind River's recent steps into the
+   embedded Linux market?
+   
+<p>   A13:I think the industry perspective is to celebrate Wind River's new
+   strategy. It clearly benefits everyone to have the engineering prowess
+   of companies like Wind River behind open source software. And, of
+   course, the ELC would welcome them back as a member. Wind River was on
+   our original Formation Committee.
+     _________________________________________________________________
+
+ <p>  About the interviewee -- Together with Rick
+   Lehrbaum, Murry co-founded the ELC as a pro bono effort, instantly
+   becoming Executive Director as a half-time job that evolved rapidly to
+   time-and-a-half. Over the first year, Murry helped drive membership to
+   more than 140 corporations and individuals.
+  
+<p>  A long time Silicon Valley journalist and PR practitioner, Murry's
+   exposure to the embedded computing industry includes the launch of the
+   VMEbus, PC/104 Plus, and other notable interconnect technologies.
+   Murry has worked with many integrated circuit companies, board
+   developers, operating system vendors, and publishers as a manager,
+   consultant, editor, and writer.
+     _________________________________________________________________

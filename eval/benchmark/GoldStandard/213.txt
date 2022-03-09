@@ -1,0 +1,808 @@
+      
+      <h>Australian Bureau of Statistics
+
+       <l>Methods, Classifications, Concepts & Standards 
+
+	  <p>Search the ABS Web Site with      
+
+      <p>6102.0.55.001 - Labour Statistics: Concepts, Sources and Methods, Jun 2005
+      Previous ISSUE Released at 11:30 AM (CANBERRA TIME) 26/08/2004    
+
+
+       <p>SummaryDetailsExplanatory NotesRelated Information 
+       
+ <p>Chapter 4. Employment Measures and 
+      Classifications 
+      <h>INTRODUCTION
+
+      <p>4.1 There are a number of measures and classifications related to 
+      employment. Those discussed in this chapter include: status in employment; 
+      occupation; hours of work; full-time/part-time status; 
+      permanent/temporary/casual status; adult/junior status; 
+      managerial/non-managerial status; employment type; and other measures of 
+      working arrangements including details of shift work, overtime etc.
+
+
+      <h>STATUS IN EMPLOYMENT
+
+      <p>4.2 The status in employment classification is available from most ABS 
+      household surveys producing estimates of employment, including the Labour 
+      Force Survey, the Census of Population and Housing, and most Special 
+      Social Surveys. The status in employment classification is not available 
+      from business surveys producing estimates of employee jobs. However, as 
+      discussed in Chapter 3, estimates of employee jobs from business surveys 
+      are related to, but not the same as, estimates of persons in paid 
+      employment (employees) from household surveys. 
+
+      <p>4.3 The Australian status in employment classification is based on the 
+      ILO's resolution (Fifteenth ICLS 1993) concerning the International 
+      Classification of Status in Employment (ICSE-93). The ICSE classifies job 
+      holders according to the type of economic risk held between the job holder 
+      and other persons or legal organisations. The distinction between paid 
+      employment jobs and self-employment jobs is central to the classification. 
+      Paid employment (employee) jobs are those where remuneration is not 
+      directly dependent on the profits of the unit for which the job holder 
+      works. Self-employment jobs are those jobs where remuneration depends 
+      directly on the profits (or future profits) derived from the goods and 
+      services produced. The ICSE distinguishes five groups: employees (paid 
+      employment jobs) and four types of self employment jobs: employers; own 
+      account workers; contributing family workers; and members of producers' 
+      cooperatives.
+
+      <p>4.4 The Australian status in employment classification classifies job 
+      holders according to their perception of the relationship between 
+      themselves and the enterprise for which they work, together with the legal 
+      status of the enterprise where this can be established. The ICSE group 
+      "members of producers' cooperatives" is excluded from the Australian 
+      classification due to its lack of relevance in the Australian context. The 
+      groups distinguished in the Australian classification are:
+
+        <p>employee - a person who works for a public or private employer and 
+        receives remuneration in wages, salary, a retainer fee from their 
+        employer while working on a commission basis, tips, piece-rates, or 
+        payment in kind; or a person who operates his or her own incorporated 
+        enterprise with or without hiring employees;
+        <p>employer - a person who operates his or her own unincorporated economic 
+        enterprise or engages independently in a profession or trade, and hires 
+        one or more employees;
+        <p>own account worker - a person who operates his or her own unincorporated 
+        economic enterprise or engages independently in a profession or trade, 
+        and hires no employees; and
+        <p>contributing family worker - a person who works without pay in an 
+        economic enterprise operated by a relative. 
+      <p>4.5 The legal status concept is used to classify owner-managers of 
+      incorporated businesses as employees rather than as employers or own 
+      account workers, for consistency with Australian National Accounts 
+      practice. Individuals who work in their own business are queried about the 
+      legal status of the business. Although they may 'own' the business, if it 
+      is incorporated the individual is not held personally liable for the 
+      economic enterprise should it become insolvent. Those individuals who own 
+      an incorporated business, with or without hiring one or more employees, 
+      are therefore classified as employees. If the business is unincorporated 
+      (and hence the owner is liable for the economic enterprise), those who 
+      hire employees are classified as employers and those who do not are 
+      classified as own account workers. 
+
+      <p>4.6 The Australian status in employment classification is illustrated in 
+      diagram 4.1.
+
+
+      <h>4.1 AUSTRALIAN STATUS IN EMPLOYMENT CLASSIFICATION
+
+
+
+
+
+
+
+      <h>OCCUPATION
+
+      <p>4.7 The occupation classification used in ABS surveys is the Australian 
+      Standard Classification of Occupations (ASCO) Second Edition 1996. 
+      Occupation data are available from the Labour Force Survey (quarterly), a 
+      number of supplementary topics to the Labour Force Survey, and most 
+      Special Social Surveys as well as the five-yearly Census of Population and 
+      Housing.
+
+      <p>4.8 ASCO is a skill-based classification of occupations which covers all 
+      jobs in the Australian workforce. Occupation information collected in 
+      surveys and the Census provides a description of a person's job and refers 
+      to the kind of work undertaken by an employed person irrespective of the 
+      industry in which that job is held. Jobs and occupations are fundamental 
+      concepts to the classification. A job is a set of tasks designed to be 
+      performed by one individual. An occupation is a set of jobs with similar 
+      sets of tasks. Occupations are classified according to two criteria - 
+      skill level and skill specialisation. 
+
+      <p>4.9 Skill level is a function of the range and complexity of the set of 
+      tasks involved. The greater the range and complexity of the set of tasks, 
+      the greater the skill level of the occupation. The criteria used in ASCO 
+      Second Edition to measure skill level are the formal education and/or 
+      training and previous experience usually required for entry to the 
+      occupation. 
+
+      <p>4.10 Skill specialisation of an occupation is a function of the field of 
+      knowledge required, tools and equipment used, materials worked on, and 
+      goods or services produced in relation to the tasks performed. Skill 
+      specialisation is used to group occupations according to type, rather than 
+      level of skill.
+
+      <p>4.11 The structure of ASCO Second Edition comprises five hierarchical 
+      levels: Major Groups (the broadest level), Sub-Major Groups, Minor Groups, 
+      Unit Groups and Occupations (the finest level). The Major Groups are 
+      distinguished from each other on the basis of skill level, and, where 
+      necessary, the broad concept of skill specialisation. The nine Major 
+      Groups are:
+
+            <l>Managers and Administrators
+            <l>Professionals
+            <l>Associate Professionals
+            <l>Tradespersons and Related Workers
+            <l>Advanced Clerical and Service Workers
+            <l>Intermediate Clerical, Sales and Service Workers
+            <l>Intermediate Production and Transport Workers
+            <l>Elementary Clerical, Sales and Service Workers
+            <l>Labourers and Related Workers
+
+      <p>4.12 The sub-major group, minor group, unit group and occupation levels 
+      provide increasingly detailed dissections of the broad categories. For 
+      further information on ASCO Second Edition, refer to ASCO: Australian 
+      Standard Classification of Occupation, Second Edition (Cat. no. 1220.0).
+
+
+      <h>HOURS OF WORK 
+
+      <p>4.13 Information on hours of work enables: classification of employed 
+      persons according to the number of hours worked; classification of 
+      employed persons into full-time and part-time status; and the 
+      identification of underemployed persons. The general notion of hours of 
+      work encompasses a number of related concepts: usual hours worked; hours 
+      actually worked; normal hours of work; and hours paid for (including both 
+      normal hours and overtime hours).
+
+
+      <h>USUAL HOURS OF WORK
+
+      <p>4.14 Usual hours of work refers to a typical period rather than to a 
+      specified reference period. The concept of usual hours applies both to 
+      persons at work and to persons temporarily absent from work, and is 
+      defined as the hours worked during a typical week or day. Actual hours 
+      worked (for a specific reference period) may differ from usual hours 
+      worked due to illness, vacation, strike, overtime work, a change of job or 
+      similar reasons.
+
+      <p>4.15 Measures of usual hours of work are available from: the Labour Force 
+      Survey (see Chapter 19); the Labour Force Survey supplementary survey, the 
+      Underemployed Workers Survey (see Chapter 20 Section 14); and from various 
+      Special Social Surveys, including the Survey of Employment Arrangements 
+      and Superannuation (see Chapter 21. Measures of usual hours of work are 
+      not available from ABS business surveys.
+
+
+      <h>ACTUAL HOURS OF WORK
+
+      <p>4.16 International resolutions relating to actual hours worked adopted by 
+      the Tenth ICLS in 1962 refer to wage and salaried employees. There are no 
+      international recommendations relating to actual hours worked for all 
+      categories of employed. However the ILO, in its manual Surveys of 
+      Economically Active Population, Employment, Unemployment and 
+      Underemployment suggests that actual hours worked in a given job should be 
+      defined to cover all types of employment in labour force surveys.
+
+      <p>4.17 According to the international resolution, actual hours of work 
+      refers to a specified reference period and includes:
+
+        <p>hours actually worked during normal periods of work;
+        <p>time spent in addition to hours worked during normal periods of work 
+        (including overtime);
+        <p>time spent at the place of work on activities such as the preparation of 
+        the workplace, repairs and maintenance, preparation and cleaning of 
+        tools, and the preparation of receipts, time sheets and reports; 
+        <p>time spent at the place of work waiting or standing by; and
+        <p>time corresponding to short rest periods.
+
+      <p>Excluded are: 
+
+        <p>hours paid for but not worked such as paid annual leave, public holidays 
+        or paid sick leave;
+        <p>meal breaks; and
+        <p>time spent on travel to and from work.
+
+      <p>4.18 The ILO suggests that for multiple job holders (in the case of labour 
+      force surveys), actual hours worked should equal the hours worked at all 
+      jobs.
+
+      <p>4.19 ABS measures of actual hours of work are consistent with the 
+      international recommendations outlined above except for time spent 
+      travelling to and from work by the self-employed which is sometimes 
+      included in household surveys. 
+
+      <p>4.20 Measures of actual hours of work are available from a number of ABS 
+      household surveys: the Labour Force Survey (see Chapter 19 for more detail 
+      on the content and methodology of this survey); various labour-related 
+      supplementary topics to the Labour Force Survey (see Chapter 20, Sections 
+      1 to 16 for more detail on the content and methodology of labour-related 
+      supplementary surveys); various Special Social Surveys, including the 
+      Survey of Employment Arrangements and Superannuation (see Chapter 21), and 
+      the Survey of Employment and Unemployment Patterns (see Chapter 22); and 
+      the Census of Population and Housing (see Chapter 18). Measures of actual 
+      hours of work are not available from ABS business surveys.
+
+
+      <h>HOURS PAID FOR 
+
+      <p>4.21 Measures of hours paid for are collected in both ABS household 
+      surveys and ABS business surveys including: the Survey of Employee 
+      Earnings and Hours (a business survey - refer to Chapter 28 for more 
+      detail on survey content and methodology); and the Labour Force Survey 
+      supplement, the Employee Earnings, Benefits and Trade Union Membership 
+      Survey (refer to Chapter 20 Section 2 for more detail).
+
+      <p>4.22 Hours paid for are not necessarily the same as number of hours 
+      actually worked (e.g. the quantum of hours reported as 'paid' and as 
+      'worked' would differ for employees on paid leave, or in situations where 
+      employees work more or less hours than their paid hours). While ABS 
+      household surveys collect details of the number of hours paid, ABS 
+      business surveys also collect information on the following components:
+
+        <p>ordinary time hours paid for - defined as the award, standard or agreed 
+        hours of work paid for at the ordinary rate. Ordinary hours paid for 
+        include: stand-by or reporting time hours which are part of standard 
+        hours of work, and hours of paid annual leave, paid sick leave and long 
+        service leave taken during the reference period. Ordinary time hours 
+        paid for at penalty rates (e.g. for shift work) are not converted to 
+        their ordinary time equivalent; and
+        <p>overtime hours paid for - defined as hours paid for in excess of award, 
+        standard or agreed hours of work, at both standard and penalty rates. 
+
+      <p>4.23 Measures of average (mean) and median hours paid for and average 
+      hourly earnings for various categories of employee jobs are produced in 
+      various ABS business surveys. 
+
+
+      <h>NORMAL HOURS OF WORK
+
+      <p>4.24 Normal hours of work were defined in a 1962 ICLS Resolution as "hours 
+      of work fixed by or in pursuance of laws and regulations, collective 
+      agreements or arbitral awards. Where not fixed by or in pursuance of laws 
+      or regulations, collective agreements or arbitral awards, normal hours of 
+      work should be taken as meaning the number of hours per day or week in 
+      excess of which any time worked is remunerated at overtime rates or forms 
+      an exception to the rules or custom of the establishment relating to the 
+      classes of workers concerned". In the ABS, normal hours of work are 
+      defined as those set down in awards or formal agreements or standard hours 
+      of work in the industry or, where these do not exist, 35 hours per week.
+
+      <p>4.25 Measures of normal hours of work are not produced by the ABS. 
+      However, the concept is used in the full-time/part-time status 
+      classification in ABS business surveys.
+
+
+      <h>FULL-TIME/PART-TIME STATUS
+
+      <p>4.26 The notion of what constitutes a standard full-time working week has 
+      required continual re-examination over the last 40 years with the 
+      progressive decline in standard hours of work, accompanied by a 
+      substantial growth in the number of persons employed under part-time 
+      working arrangements.
+
+      <p>4.27 In the absence of any internationally accepted definition of 
+      part-time work, two approaches have been taken in various countries. The 
+      first is objective and is based on the number of hours worked. The second 
+      is more subjective and involves classifying workers as full-time or 
+      part-time based on the self-assessment of the person concerned 
+      irrespective of the number of hours actually worked. The former approach 
+      is relatively simple to apply without requiring the respondent to know 
+      details about their contractual arrangements on hours worked, but provides 
+      no flexibility to accommodate variations in 'normal' hours of work in 
+      different industries and occupations. The self-assessment approach does 
+      accommodate such differences but is subjective, and its accuracy is 
+      dependent on respondents' knowledge of whether they work full-time or 
+      part-time in their activity. Both approaches are used in ABS surveys. 
+
+      <p>4.28 The full-time/part-time status classification differs from, and 
+      should not be confused with, the permanent/casual classification. While 
+      the classification of full-time and part-time work is based on hours 
+      worked, the permanent/casual classifications used in ABS household and 
+      business surveys are not. In ABS business surveys the classification of 
+      employee jobs as permanent, temporary or casual is based on entitlements 
+      to paid leave and the length of employment contracts. Traditionally, ABS 
+      household surveys have classified employees as permanent or casual based 
+      on their entitlements to paid leave. However, more recently an additional 
+      criterion, on whether an employee perceives their job to be casual, has 
+      been used to classify employees as self-identified casuals. The 
+      permanent/casual classifications used in ABS business and household 
+      surveys are discussed later in this chapter.
+
+
+      <h>ABS HOUSEHOLD SURVEYS
+
+      <p>4.29 The approach used in the Labour Force Survey and adopted in many 
+      other ABS household surveys is to define full-time and part-time status in 
+      terms of hours worked. The definition used designates full-time workers as 
+      persons who (a) usually work 35 hours or more per week in all jobs, or (b) 
+      although usually working less than 35 hours a week, actually worked 35 
+      hours or more during the reference week. Part-time workers are those who 
+      usually work less than 35 hours per week, and either did so during the 
+      reference week, or were not at work in the reference week. Under this 
+      definition, persons with more than one job are defined as full-time if 
+      they work more than 35 hours across all of their jobs.
+
+      <p>4.30 A subjective approach based on respondents' perception of their 
+      full-time or part-time status is used in some supplementary topics to the 
+      Labour Force Survey, and in some Special Social Surveys. This approach is 
+      most often used where information is sought about work that is not 
+      currently being undertaken and where recall problems may be encountered 
+      using a more objective approach (e.g. for jobs held 12 months prior to the 
+      survey date). It is also sometimes used to determine the full-time or 
+      part-time status of each job held by multiple job holders. 
+
+      <p>4.31 Full-time/part-time status is available from a number of ABS 
+      household surveys including: the monthly Labour Force Survey (see Chapter 
+      19 for more detail on the content and methodology of this survey); various 
+      labour-related supplementary topics to the monthly Labour Force Survey 
+      (see Chapter 20 Sections 1 to 16 for more detail on the content and 
+      methodology of labour-related supplementary surveys); various Special 
+      Social Surveys including the Survey of Employment Arrangements and 
+      Superannuation (see Chapter 21), and the Survey of Employment and 
+      Unemployment Patterns (see Chapter 22); and the Census of Population and 
+      Housing (see Chapter 18).
+
+      <p>4.32 Persons working part-time hours should not be confused with 
+      underemployed workers (discussed in Chapter 5) even though both may be 
+      working less than 35 hours per week. Part-time workers can be classified 
+      into two groups: fully employed part-time workers who work part-time 
+      voluntarily, and underemployed part-time workers who work part-time on an 
+      involuntary basis (i.e. they want more hours of work) and who may be 
+      seeking and/or available for more work.
+
+
+      <h>ABS BUSINESS SURVEYS
+
+      <p>4.33 In ABS business surveys, the classification of employee jobs as 
+      full-time is based on whether the usual hours worked are equal to, or 
+      greater than, what has been agreed to as being full-time under the 
+      relevant award or agreement (i.e. normal hours). If there are no agreed or 
+      award hours associated with the job, then it is classified as full-time 
+      where the usual hours of work per week are 35 or more. Part-time jobs are 
+      those not defined as full-time.
+
+      <p>4.34 The full-time/part-time status classification is used in the 
+      following ABS business surveys: the Survey of Employment and Earnings (see 
+      Chapter 29); the Survey of Employee Earnings and Hours (see Chapter 28); 
+      and the Survey of Average Weekly Earnings (see Chapter 27).
+
+
+      <h>PERMANENT/CASUAL STATUS 
+
+      <p>4.35 Traditionally, ABS household surveys have classified persons in paid 
+      employment (employees) as permanent or casual according to their paid 
+      leave entitlements. However, more recently an additional criterion, on 
+      whether an employee perceives their job to be casual, has been used to 
+      classify employees as self-identified casual. The classification used in 
+      ABS business surveys is different, classifying employee jobs as either 
+      permanent, temporary or casual. The classifications used in household and 
+      business surveys are discussed further below.
+
+      <p>4.36 The permanent/casual status classification differs from, and should 
+      not be confused with, the full-time/part-time classification which is a 
+      classification of hours worked. The full-time/part-time classification was 
+      discussed earlier in this chapter.
+
+
+      <h>ABS HOUSEHOLD SURVEYS
+
+      <p>4.37 Entitlement to paid holiday leave and paid sick leave has been used 
+      in ABS household surveys to distinguish between permanent and casual 
+      employees. Employees who were entitled to either paid holiday or paid sick 
+      leave (or both) in their main job have been classified as permanent, while 
+      employees who were entitled to neither have been classified as casual. 
+      This method of identifying permanent and casual employees was simple and 
+      objective, and reflected long established definitions of permanent and 
+      casual employees used in Australia's industrial relations systems where, 
+      under the awards system, casuals were paid loadings in lieu of 
+      entitlements to paid holiday leave and paid sick leave. Changes to the 
+      leave entitlements of casuals from the late 1990s, where casuals are 
+      increasingly entitled to various forms of paid leave, have meant that the 
+      classification of permanent and casual employees based solely on paid 
+      leave entitlements is no longer appropriate. From late 2000, the terms 
+      'permanent' and 'casual' will no longer be used in ABS household surveys 
+      to describe employees with and without leave entitlements. The term 
+      'permanent' will be replaced with the term 'with leave entitlements', and 
+      'casual' will be replaced with the term 'without leave entitlements'. 
+
+      <p>4.38 In addition to information on leave entitlements, a small number of 
+      ABS household surveys also collect information from employees on whether 
+      they perceive themselves to be casual. Only those employees who are not 
+      entitled to both paid holiday leave and paid sick leave are asked about 
+      their casual status in these surveys. Information about leave entitlements 
+      is then used together with information on respondents' perception of their 
+      casual status to classify employees (excluding owner managers of 
+      incorporated enterprises) into three groups.
+
+        <p>Employees with any leave entitlements - comprising: employees who are 
+        entitled to both paid holiday leave and paid sick leave; and employees 
+        who are entitled to either paid holiday leave or paid sick leave and who 
+        do not consider their jobs to be casual.
+        <p>Self-identified casuals - comprising: employees who are entitled to 
+        either paid holiday leave or paid sick leave but not both, or who have 
+        no leave entitlements, and who consider their jobs to be casual.
+        <p>Employees without leave entitlements who do not consider their jobs to 
+        be casual. 
+
+      <p>4.39 The relationship between the two classifications used in household 
+      surveys is illustrated in diagram 4.2.
+
+
+      <h>4.2 CLASSIFICATIONS OF PERMANENT AND CASUAL STATUS USED IN ABS HOUSEHOLD 
+      SURVEYS
+
+
+
+
+
+
+      <p>4.40 ABS household surveys for which the 'with leave 
+      entitlements'/'without leave entitlements' classification (previously 
+      known as permanent/casual classification) is available include a number of 
+      supplements to the Labour Force Survey: the Employee Earnings, Benefits 
+      and Trade Union Membership Survey (Chapter 20 Section 2); the Working 
+      Arrangements Survey (Chapter 20 Section 16); and the Work Related Injuries 
+      Survey (Chapter 20 Section 15). Household surveys which also use 
+      information on employees' self-perception of their casual status include: 
+      the Labour Force Survey supplement, the Forms of Employment Survey1 
+      (Chapter 20 Section 3); and the Special Social Survey, the Survey of 
+      Employment Arrangements and Superannuation (Chapter 21). 
+      <p>1. The classification used in the 1998 Forms of Employment Survey differs 
+      slightly from the classification presented. Employees who were entitled to 
+      either paid holiday or sick leave (but not both) and who did not consider 
+      their job to be casual were classified as 'other employed persons'. Also 
+      classified as 'other employed persons' were: employees who were entitled 
+      to neither paid holiday leave nor paid sick leave and who did not consider 
+      their job to be casual; and owner managers of unincorporated enterprises 
+      who did not invoice or bill for own payment and paid Pay As You Earn tax.
+
+
+      <h>ABS BUSINESS SURVEYS
+
+      <p>4.41 The permanent/temporary/casual classification is available from the 
+      Survey of Employee Earnings and Hours (Chapter 28). In the survey, 
+      employee jobs are classified according to respondents' perception of the 
+      permanent, temporary or casual nature of the job. To assist respondents to 
+      classify jobs, some information is provided on the survey questionnaire 
+      about each type of job. Permanent jobs are described as jobs with paid 
+      annual and sick leave entitlements. Temporary jobs are described as jobs 
+      with some leave entitlements but with a short-term employment contract. 
+      Casual jobs are described as jobs with higher rates of pay, to compensate 
+      for lack of permanency and leave entitlements.
+
+
+      <h>ADULT/JUNIOR STATUS
+
+      <p>4.42 The adult/junior classification is only available from ABS 
+      labour-related business surveys. In these surveys, adults are defined as 
+      employees aged 21 years or over, and employees who are paid at the adult 
+      rate regardless of their age (e.g. employees aged under 21 years may be 
+      paid at the full adult rate for their occupation). Juniors are employees 
+      aged under 21 years who are not paid at the adult rate of pay for their 
+      occupation. ABS labour-related business surveys for which the adult/junior 
+      classification is available include the Survey of Employee Earnings and 
+      Hours (Chapter 28). The Survey of Average Weekly Earnings (Chapter 27) 
+      also produces estimates relating to full-time adult jobs.
+
+      <p>4.43 Adult/junior status is not determined in household surveys; however, 
+      details of age are collected.
+
+
+      <h>MANAGERIAL/NON-MANAGERIAL STATUS
+
+      <p>4.44 The managerial/non-managerial classification is only available from 
+      ABS business surveys. Managerial jobs are defined as those involving 
+      responsibility for a significant number of employees, or having 
+      significant responsibilities in the conduct or operations of an 
+      enterprise/organisation. They do not usually have overtime payment 
+      entitlements. Jobs occupied by professionally qualified persons are 
+      defined as managerial only if the occupant primarily performs managerial 
+      tasks. Jobs occupied by working proprietors of incorporated businesses are 
+      considered managerial. Non-managerial occupations include supervisors, 
+      clerical staff, tradespersons, non-managerial professionals, apprentices, 
+      trainees and cadets. Business surveys for which the 
+      managerial/non-managerial classification is available include the Survey 
+      of Employee Earnings and Hours (Chapter 28).
+
+
+      <h>EMPLOYMENT TYPE
+
+      <p>4.45 The number and types of employment groups identified in the status in 
+      employment classification (paragraphs 4.2-4.6) are extended in two 
+      household surveys which examine working relationships in detail: the Forms 
+      of Employment Survey (a supplement to the Labour Force Survey); and the 
+      Survey of Employment Arrangements and Superannuation. Both surveys examine 
+      the nature of employment arrangements of persons whose status in 
+      employment is an employee2, employer or own account worker; and then 
+      reclassify these persons into alternative paid employment and 
+      self-employment groups. 
+      2. Excluding employees who are paid only in kind.
+
+
+      <h>FORMS OF EMPLOYMENT SURVEY
+
+      <p>4.46 The 1998 Forms of Employment Survey (a supplement to the Labour Force 
+      Survey) identified five employment types: employees with leave 
+      entitlements; self identified casuals; other employed; owner managers of 
+      incorporated enterprises; and owner managers of unincorporated 
+      enterprises. These groups are described in more detail below.
+
+        <p>Employees with leave entitlements - persons who were entitled to receive 
+        both paid holiday leave and paid sick leave, and who either:
+            <p>worked in someone else's business; or
+
+            <p>reported that they worked in their own unincorporated business but 
+            did not invoice clients for own payment and paid Pay As You Earn 
+            (PAYE) tax.
+        <p>Self identified casuals - persons who were not entitled to receive both 
+        paid holiday leave and paid sick leave, and considered their job to be 
+        casual, and who either:
+            <p>worked in someone else's business; or
+
+            <p>reported that they worked in their own unincorporated business but 
+            did not invoice clients for own payment and paid PAYE tax.
+        <p>Other employed persons - persons who were not entitled to receive both 
+        paid holiday leave and paid sick leave, and did not consider their job 
+        to be casual, and who either:
+            <p>worked in someone else's business; or
+
+            <p>reported that they worked in their own unincorporated business but 
+            did not invoice clients for own payment and paid PAYE tax.
+        <p>Owner managers of incorporated enterprises - persons who work in their 
+        own incorporated enterprise. This group includes persons who draw a wage 
+        or salary for their work in their own incorporated enterprise.
+        <p>Owner managers of unincorporated enterprises - persons who operate their 
+        own unincorporated enterprise, including those engaged independently in 
+        a trade or profession.
+
+      <p>4.47 The classification used in the 1998 Forms of Employment Survey is 
+      illustrated below. Note that the classification used in the 1998 survey 
+      was experimental, and will be revised for repeats of the survey in 2001 
+      and beyond. The revised classification will be based on the employment 
+      type classification used in the Survey of Employment Arrangements and 
+      Superannuation, which is described below. A comparison of the employment 
+      type classifications used in the 1998 Forms of Employment Survey and the 
+      Survey of Employment Arrangements and Superannuation is also provided 
+      below.
+
+
+      <p>4.3 EMPLOYMENT TYPE CLASSIFICATION - FORMS OF EMPLOYMENT SURVEY, 1998
+
+
+
+
+
+
+
+      <h>SURVEY OF EMPLOYMENT ARRANGEMENTS AND SUPERANNUATION
+
+      <p>4.48 The Survey of Employment Arrangements and Superannuation also 
+      identifies five employment types: employees with any leave entitlements; 
+      self identified casuals; employees without leave entitlements; owner 
+      managers of incorporated enterprises; and owner managers of unincorporated 
+      enterprises. Three of these groups are then further classified as follows: 
+      employees with any leave entitlements as either holding a fixed-term 
+      employment contract or not; and both owner managers of incorporated 
+      enterprises and owner managers of unincorporated enterprises as either 
+      working on a contract basis or not. These groups are described in more 
+      detail below:
+
+        <p>Employees with some leave entitlements - persons who worked in someone 
+        else's business, and were:
+            entitled to both paid holiday leave and sick leave; or
+
+            entitled to either paid holiday leave or sick leave, and did not 
+            consider their job to be casual.
+        <p>Employees with any leave entitlements are further classified as either 
+        working on a fixed-term contract or not.
+        <p>Self-identified casuals - persons who worked in someone else's business, 
+        and were:
+            <p>entitled to either paid holiday leave or sick leave (but not both), 
+            and considered their job to be casual; or
+
+            <p>entitled to neither paid holiday leave nor sick leave, and 
+            considered their job to be casual.
+        <p>Employees without leave entitlements who did not identify as casual - 
+        persons who worked in someone else's business, and were entitled to 
+        neither paid holiday leave nor sick leave, and did not consider their 
+        job to be casual.
+        <p>Owner managers of incorporated enterprises - persons who work in their 
+        own incorporated enterprise. This includes persons who draw a wage or 
+        salary for their work in their own incorporated enterprise. This group 
+        is further classified as working on a contract basis or not.
+        <p>Owner managers of unincorporated enterprises - persons who operate their 
+        own unincorporated enterprise, including those engaged independently in 
+        a trade or profession. This group is also further classified as working 
+        on a contract basis or not.
+
+      <p>4.49 The classification used in the Survey of Employment Arrangements and 
+      Superannuation is illustrated in diagram 4.4.
+
+
+      <h>4.4 EMPLOYMENT TYPE CLASSIFICATION - SURVEY OF EMPLOYMENT ARRANGEMENTS AND 
+      SUPERANNUATION 
+
+
+
+
+
+
+
+
+      <h>COMPARISON OF EMPLOYMENT TYPE CLASSIFICATIONS: THE 1998 FORMS OF 
+      EMPLOYMENT SURVEY AND THE SURVEY OF EMPLOYMENT ARRANGEMENTS AND 
+      SUPERANNUATION
+
+      <p>4.50 There are some important differences in the way in which people are 
+      classified to employment type categories in the 1998 Forms of Employment 
+      Survey and the Survey of Employment Arrangements and Superannuation. These 
+      differences are outlined below.
+
+        <p>Entitled to either paid sick leave or paid holiday leave, but not both, 
+        and did not identify as casual - in the Forms of Employment Survey, this 
+        group formed part of the 'other employed persons' category. In the 
+        Survey of Employment Arrangements and Superannuation, this group was 
+        treated as 'employees with any leave entitlements', i.e. in the same way 
+        as those who were entitled to both forms of paid leave.
+        Working in own unincorporated enterprise, and did not invoice or bill 
+        for own payment, and reported paying PAYE tax - in the Forms of 
+        Employment Survey, this group was treated in a similar manner to 
+        employees excluding owner managers of incorporated enterprises. These 
+        workers were classified to different employment type categories 
+        according to their entitlements to paid leave and whether they 
+        considered their jobs to be casual. Thus these workers may be classified 
+        as 'employees with leave entitlements', 'self-identified casuals' or 
+        'other employed persons'. In the Survey of Employment Arrangements and 
+        Superannuation, these workers were retained in the category 'owner 
+        managers of unincorporated enterprises'. 
+        <p>No paid leave entitlements but did not identify as casual - people 
+        without any paid leave entitlements who did not identify as casual were 
+        classified as 'other employed persons' in the Forms of Employment 
+        Survey, but were separated into a group of their own in the Survey of 
+        Employment Arrangements and Superannuation.
+
+      <p>4.51 All those making up the 'other employed persons' category in the 
+      Forms of Employment Survey were allocated to different categories in the 
+      Survey of Employment Arrangements and Superannuation, and so the category 
+      'other employed persons' is not used in the latter survey.
+
+      <p>4.52 Apart from these differences, there is an extra level of detail in 
+      the employment type categories of the Survey of Employment Arrangements 
+      and Superannuation: employees with some leave entitlements are subdivided 
+      into those working on a fixed-term contract and those not working on a 
+      fixed-term contract; and owner managers of incorporated and unincorporated 
+      enterprises are subdivided according to whether they are working on a 
+      contract basis.
+
+
+      <h>OTHER EMPLOYMENT MEASURES
+
+
+      <h>WORKING ARRANGEMENTS
+
+      <p>4.53 Measures of working arrangements supplement measures of hours of 
+      work, full-time and part-time status, and other classifications of 
+      jobholders (such as status in employment, permanent/casual status etc.) 
+      and are useful in understanding changing workplace employment conditions. 
+      Detailed information about working arrangements is collected in a number 
+      of ABS surveys: the supplements to the Labour Force Survey, namely the 
+      Working Arrangements Survey, the Forms of Employment Survey, the Locations 
+      of Work Survey, and the Employee Earnings, Benefits and Trade Union 
+      Membership Survey; and the Special Social Survey, namely the Survey of 
+      Employment Arrangements and Superannuation.
+
+      <h>Working Arrangements Survey
+
+      <p>4.54 The Working Arrangements Survey (a supplement to the Labour Force 
+      Survey), collects information about: patterns of hours worked, including 
+      flexibility of start and finish times and ability to work extra hours in 
+      order to take time off; entitlement to rostered days off including whether 
+      there is choice in when a rostered day is to be taken off; overtime 
+      including regularity of overtime, whether usually works the same number of 
+      hours each week, number of overtime hours usually worked, methods of 
+      payment and main reason usually works overtime; shift work; part-time work 
+      including reasons for working part-time; job sharing; child-care 
+      arrangements; and recent absences from work including reason for absence, 
+      length of absence and type of leave taken. For further information on the 
+      content and methodology of the Working Arrangements Survey refer to 
+      Chapter 20 Section 16.
+
+      <h>Forms of Employment Survey
+
+      <p>4.55 The Forms of Employment Survey (a supplement to the Labour Force 
+      Survey), collects detailed information on a range of aspects of employment 
+      arrangements including: the temporary nature of work; whether paid by an 
+      employment agency; and whether owner managers pay PAYE tax (or equivalent) 
+      or draw a wage or salary. The survey classified jobholders according to 
+      their working relationship/type of work undertaken (see discussion above) 
+      and collected detailed information about the characteristics of each group 
+      including: occupation, and industry in which they were employed; 
+      continuous duration in current job and expected future duration in current 
+      job; whether earnings vary; hours worked and paid for; and preferences to 
+      change hours. Additional information was collected for various 
+      classifications of work relationships/types of work:
+
+        <p>for employees with leave entitlements - details of leave entitlements 
+        (paid holiday leave, paid sick leave and long service leave), 
+        superannuation coverage, details of the temporary nature of job (whether 
+        has a set employment completion date, whether employed on a fixed term 
+        contract, and whether expects contract to be renewed) and whether paid 
+        by an employment agency;
+        <p>for self-identified casuals - as above plus whether looked for 
+        alternative employment in the last three months, and whether looked for 
+        permanent employment;
+        <p>for other employed persons - details of leave entitlements, 
+        superannuation coverage, details of contract work undertaken (whether 
+        has more than one contract, whether can subcontract, whether can work 
+        for multiple clients under contract, whether has control over working 
+        procedures), details of the temporary nature of job, whether paid by an 
+        employment agency, and whether receives a payslip;
+        <p>owner managers of incorporated enterprises - whether has employees, 
+        details of leave entitlements, superannuation coverage, details of 
+        contract work undertaken, and whether draws a wage or salary from 
+        current business; and
+        <p>owner managers of unincorporated enterprises - whether has employees, 
+        whether invoices for own payment, details of contract work undertaken, 
+        and whether draws a wage or salary from current business.
+
+      <p>4.56 For further information on the content and methodology of the Forms 
+      of Employment Survey refer to Chapter 20 Section 3.
+
+      <h>Survey of Employment Arrangements and Superannuation
+
+      <p>4.57 As discussed previously, the Survey of Employment Arrangements and 
+      Superannuation also classifies jobholders according to their employment 
+      relationships/type of work undertaken and collects detailed information 
+      about jobholders' employment or working arrangements. Included in the 
+      survey are details of: superannuation; casual employment (based on leave 
+      entitlements and self-identification); occupation, industry and sector; 
+      the number and regularity of hours worked, additional hours/overtime, on 
+      call/stand-by, evening and weekend work, time in job/business and shift 
+      work; contract work; leave entitlements; occupational health and safety; 
+      home-based work; preferred working patterns; job duration and expected job 
+      duration; educational attainment; apprenticeships/traineeships; multiple 
+      jobholders; and trade union membership. For further information on the 
+      content and methodology of the Survey of Employment Arrangements and 
+      Superannuation refer to Chapter 21.
+
+      <h>Locations of Work Survey
+
+      <p>4.58 The Locations of Work Survey (a supplement to the Labour Force 
+      Survey), collects information on: where people work, such as their own 
+      home or employer's premises; and the working arrangements of persons who 
+      are working at home such as use of computers, time in job at home and 
+      information on how workers are paid. For further information on the 
+      content and methodology of the Locations of Work Survey refer to Chapter 
+      20 Section 8.
+
+      <h>Employee Earnings, Benefits and Trade Union Membership Survey
+
+      <p>4.59 The Employee Earnings, Benefits and Trade Union Membership Survey (a 
+      supplement to the Labour Force Survey), collects information on: employee 
+      earnings; trade union membership; and employee benefits. Information 
+      collected on employee benefits includes: entitlement to paid holiday 
+      leave, paid sick leave and paid long service leave; and superannuation 
+      coverage. More detailed information on the receipt of a range of other 
+      employee benefits (including transport, telephone, holiday expenses, 
+      medical, low interest finance, housing, goods and services) is collected 
+      on a three yearly basis. For further information on the content and 
+      methodology of the Employee Earnings, Benefits and Trade Union Membership 
+      Survey refer to Chapter 20 Section 2.
+
+       
+
+      <p>This page last updated 8 February 2006
+
+
+
+        <l>Methods, Classifications, Concepts & Standards 
+ 
+
+
+

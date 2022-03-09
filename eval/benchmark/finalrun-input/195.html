@@ -1,0 +1,688 @@
+<text id="http://web.indstate.edu/ctl/tips/tip1_16.html" title="Indiana State University : Center for Instruction, Research, and Technology : Home" encoding="iso-8859-1">
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+
+<html lang="en">
+
+<head>
+<link rel="shortcut icon" href="favicon.ico" >
+<title>Indiana State University : Center for Instruction, Research, and Technology : Home</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="internal.css">
+<style>
+<!--
+ li.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0in; margin-right:0in; margin-top:0in}
+
+
+.spanstyle {
+	position:absolute;
+	visibility:visible;
+	top:-50px;
+	font-size:10pt;
+	font-family:Verdana;
+      font-weight:bold;
+	color:blue;
+	}
+-->
+
+</style>
+
+<script>
+
+var x,y
+var step=20
+var flag=0
+
+
+var message="CIRT "
+message=message.split("")
+
+var xpos=new Array()
+for (i=0;i<=message.length-1;i++) {
+	xpos[i]=-50
+}
+
+var ypos=new Array()
+for (i=0;i<=message.length-1;i++) {
+	ypos[i]=-50
+}
+
+function handlerMM(e){
+	x = (document.layers) ? e.pageX : document.body.scrollLeft+event.clientX
+	y = (document.layers) ? e.pageY : document.body.scrollTop+event.clientY
+	flag=1
+}
+
+function makesnake() {
+	if (flag==1 && document.all) {
+    	for (i=message.length-1; i>=1; i--) {
+   			xpos[i]=xpos[i-1]+step
+			ypos[i]=ypos[i-1]
+    	}
+		xpos[0]=x+step
+		ypos[0]=y
+	
+		for (i=0; i<message.length-1; i++) {
+    		var thisspan = eval("span"+(i)+".style")
+    		thisspan.posLeft=xpos[i]
+			thisspan.posTop=ypos[i]
+    	}
+	}
+	
+	else if (flag==1 && document.layers) {
+    	for (i=message.length-1; i>=1; i--) {
+   			xpos[i]=xpos[i-1]+step
+			ypos[i]=ypos[i-1]
+    	}
+		xpos[0]=x+step
+		ypos[0]=y
+	
+		for (i=0; i<message.length-1; i++) {
+    		var thisspan = eval("document.span"+i)
+    		thisspan.left=xpos[i]
+			thisspan.top=ypos[i]
+    	}
+	}
+		var timer=setTimeout("makesnake()",30)
+}
+
+</script>
+
+</head>
+
+<body marginHeight="0" marginWidth="0" topMargin="0" bottomMargin="0" leftMargin="0" rightMargin="0">
+
+<!-- HEADER -->
+
+<table summary="table used for layout" border="0" cellspacing="0" cellpadding="0" align="left">
+
+  <tr>
+
+    <td width="783" height="104" align="center" valign="top">
+
+    <table summary="table used for layout" border="0" cellspacing="0" cellpadding="0" align="left">
+
+      <tr>
+
+        <td width="235" height="75"><a href="http://www.indstate.edu/">
+
+        <img src="images/logo.gif" border="0" alt="Indiana State University" width="235" height="75"></a><br>
+
+        </td>
+
+        <td width="385" height="75">
+
+        <img src="images/blank.gif" border="0" width="385" height="1" alt=""><br>
+
+        </td>
+
+        <td width="97" height="75" align="left" valign="top">
+
+        <img src="images/blank.gif" border="0" width="1" height="55" alt=""><br>
+
+        <a href="http://www.indstate.edu/contact_us/">
+
+        <img src="images/contactButton.gif" border="0" alt="Contact Us" width="97" height="12"></a><br>
+
+        </td>
+
+      </tr>
+
+      <tr>
+
+        <td height="29" colspan="3">
+
+<table summary="table used for layout" border="0" cellspacing="0" cellpadding="0" align="left">  <tr>    <td width="170" height="29">    <img src="images/blank.gif" border="0" width="170" height="1" alt=""><br>    </td>    <td width="74" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/join_us/">JOIN US</a> </td>    <td width="102" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/visiting/">VISITING ISU</a>    </td>    <td width="103" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/academic/">ACADEMICS</a>    </td>    <td width="90" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/research/">RESEARCH</a> </td>    <td width="95" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/sports/">ATHLETICS</a>    </td>    <td width="91" height="29" align="center" valign="middle">    <img src="images/blank.gif" border="0" width="1" height="4" alt=""><br>    <a class="topDir" href="http://www.indstate.edu/isu_today/">ISU TODAY</a>    </td>  </tr></table>
+
+            <a href="#skipnav">
+
+            <img src="images/blank.gif" alt="Skip navigation" border="0" width="1" height="1"></a> 
+
+          </td>
+
+        </tr>
+
+      </table>
+
+      <!-- END HEADER -->
+
+    </td>
+
+  </tr>
+
+  <tr>
+
+    <td width="783" height="4">
+
+    <img src="images/header_bodyBorder.gif" border="0" alt="" width="783" height="4"><br>
+
+    </td>
+
+  </tr>
+
+  <tr>
+
+    <td width="783" align="left">
+
+       <!-- LEFTHAND NAVIGATION -->
+
+     <table summary="" border=0 cellspacing=0 cellpadding=0>
+
+        <tr> 
+
+          <td width=165 align="left" valign="top" class="blulft" bgcolor="#00267E"> 
+
+            <img src="images/blank.gif" border=0 width=1 height=5 alt=""><br>
+
+            <table summary="" border=0 cellspacing=0 cellpadding=3 height="166" id="table12">
+
+            <tr>
+
+            <td width=165 height=16 align="left" valign="middle">
+
+             <table summary="" border=0 cellspacing=0 cellpadding=0 width="157" id="table13">
+
+             <tr>
+
+             <td align="right" valign="middle" width=12>
+
+             <img src="images/blank.gif" border=0 width=0 height=5 alt=""><br>
+
+            <td><br><a class="leftDir-main" href="http://indstate.edu/cirt">Center 
+			for Instruction, research, and technology</a><br>
+
+            </td>
+
+            </tr>
+
+            </table>
+
+         </td>
+
+         </tr>
+         
+        
+ 			<tr>
+
+            <td width=165 height=16 align="left" valign="middle">
+
+             <table summary="" border=0 cellspacing=0 cellpadding=0 width="157" id="table14">
+
+             <tr>
+
+             <td align="right" valign="middle" width=12>
+
+             <img src="images/blank.gif" border=0 width=0 height=20 alt=""><br>
+
+            <td><br>
+
+            </td>
+
+            </tr>
+
+            </table>
+
+         </td>
+
+         		</tr>
+				<tr>
+
+            <td width=165 height=16 align="left" valign="middle">
+
+             <table summary="" border=0 cellspacing=0 cellpadding=0 width="157" id="table15">
+
+             <tr>
+
+             <tr>
+
+
+
+<td width="165" height="22" align="left" valign="middle">
+
+
+
+           <table summary="" border=0 cellspacing=0 cellpadding=0 id="table10">
+
+                <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b><a class="leftDir-sub" href="http://www.indstate.edu/cirt/research/index.htm">Research Services</a></b>
+
+                 </td></tr></table> 
+
+
+
+             <br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table12">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b><a class="leftDir-sub" href="http://www.indstate.edu/cirt/pd/pdindex.htm">Faculty Development</a></b><br>
+
+                 </td></tr></table>
+
+
+ 			<br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table12">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b><a class="leftDir-sub" href="http://www.indstate.edu/cirt/pd/students.htm">Undergraduate
+				<br>
+				IT Training</a></b><br>
+
+                 </td></tr></table>
+
+
+             <br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table14">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b><a class="leftDir-sub" href="http://www.indstate.edu/cirt/instruction/instructional.htm">Instructional 
+
+				Technologies</a></b><br>
+
+                 </td></tr></table>
+
+             <br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table14">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b>
+				<a class="leftDir-sub" href="http://www.indstate.edu/cirt/imds">Interactive and<br>
+				Multimedia Design<br>
+				Services</a></b><br>
+
+                 </td></tr></table>
+       
+
+             <br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table15">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b><a class="leftDir-sub" href="http://www.indstate.edu/cirt/about/index.htm">About Us</a></b><br>
+
+                 </td></tr></table>
+
+                 
+
+                 
+
+             <br><table summary="" border=0 cellspacing=0 cellpadding=0 id="table15">
+
+               <tr>
+
+                <td width=26>
+
+                 <img src="../notebook/images/blank.gif" border=0 width=26 height=1 alt=""><br>
+
+                </td>
+
+                <td width=139><b>
+
+				<a class="leftDir-sub" href="http://www.indstate.edu/oit/oit_staff.php?primary_dept=CIRT">Staff Directory</a></b><br>
+
+                 </td></tr></table>
+
+            </tr>
+
+            </table>
+
+         </td>
+
+         		</tr>
+
+               <tr>
+
+                <td width=26>
+
+                 &nbsp;</td>
+
+                <td width=139>
+
+                &nbsp;</td>
+
+                 </tr>
+
+               <tr>
+
+                <td width=26>
+
+                 &nbsp;</td>
+
+                <td width=139>
+
+                &nbsp;</td>
+
+                 </tr>
+
+
+             </td>
+
+             </tr>
+
+              <tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/oit/">OFFICE OF INFORMATION<br>
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt="">TECHNOLOGY</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/isu_community/">ISU 
+
+COMMUNITY</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/prospective/">PROSPECTIVE 
+
+STUDENTS</a> <br>
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/alum/">ALUMNI 
+
+&amp; FRIENDS</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/families/">PARENTS 
+
+&amp; FAMILY</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/bus/">BUSINESS 
+
+&amp; COMMUNITY</a><br>
+
+</td>
+
+</tr>
+
+              <tr> 
+
+                <td width=165 height=22 align="left" valign="middle"> <b>
+                <font color="#FFFFFF"> 
+				<img src="images/blank.gif" border=0 width=1 height=22 alt=""></font></b></td>
+
+              </tr>
+
+              <tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/a-to-z/">ISU 
+
+A-Z</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-com" href="http://myisu.indstate.edu/cp/home/loginf">MyISU</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt=""><a class="leftDir-main" href="http://www.indstate.edu/search/">SEARCH</a><br>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td width="165" height="22" align="left" valign="middle">
+
+<img src="images/blank.gif" border="0" width="1" height="100" alt=""><br>
+
+</td>
+
+</tr>
+
+              <!-- //END LEFTHAND NAVIGATION -->        </table>
+
+        <a name="skipnav0"></a></td>
+
+        <td width="16">
+
+<img src="images/blank.gif" border=0 width=16 height=1 alt=""><br>
+
+</td>
+
+        <td width="602" align="left" valign="top">
+
+        <table summary="table used for layout" border="0" cellspacing="0" cellpadding="0" width="592">
+
+          <tr>
+
+            <td width="396" align="left" valign="top" height="325" rowspan="3">
+
+            &nbsp;<p>
+
+            <img border="0" src="images/CIRT_ICON_Web.gif" width="325" height="172"></p>
+
+            <h2>Welcome</h2>
+
+			<p class="MsoNormal" style="text-autospace: none">The Center for 
+			Instruction, Research, and Technology explores, develops, promotes, 
+			and supports effective teaching and research practices to advance 
+			knowledge and active learning at Indiana State University. CIRT 
+			endeavors to have a measurable impact on the academic community by 
+			building the reputation of Indiana State for innovative instruction 
+			and technology-enhanced research.</p>
+			<p class="MsoNormal" style="text-autospace: none">The Center is 
+			under the domain of the Associate Vice President for Academic 
+			Affairs and Chief Information Officer and has strong ties to the 
+			Provost's and is guided by a faculty advisory committee. </td>
+
+            <td align="right" valign="top" width="196" colspan="2">
+
+            <p align="center">
+
+            <img border="0" src="images/Sam_IRTS.jpg" width="180" height="255" alt="Sycamore Sam" align="center"><br>
+			&nbsp;</td>
+
+          </tr>
+
+        	<tr>
+
+            <td align="right" valign="top" width="196">
+            
+            
+ <!-- inserted table to bump contact info to the left to line up with image above per Comm/Mktg. 11/30/04, sjo-->
+            <table id="table16"><tr><td align="right" valign="top" width="230">
+                        <font size="2"><b>
+						<a href="http://www.indstate.edu/oit/cirt/calebmills/">
+						Caleb Mills Award Nomination Form</a></b></font><br>
+						&nbsp;
+            </td>
+            
+            <td width="54">&nbsp;<p>&nbsp;</td>
+            </tr></table>
+
+            <table id="table17"><tr><td align="right" valign="top" width="230">
+                        <a href="speakers/index.htm"><img border="0" src="speakers/images/Designed-to-Learn(all)small_copy(1).png" width="197" height="108"></a><br>
+						&nbsp;
+            </td>
+            
+            <td width="54">&nbsp;</td>
+            </tr></table>
+
+            <table><tr><td align="right" valign="top" width="230">
+                        <p> <b>
+                		<font size="2">Mailing
+                Address:<br>
+						</font>&nbsp;<br>
+                Normal Hall 301<br>
+			Indiana State University <br>
+                Terre Haute, IN 47809</b></p>
+						<p> <b><a href="locations.htm">Office Locations</a></b></p>
+            <p><b>Phone: 812-237-2676 <br>
+                Fax: 812-237-8446</b></p>
+                <p><b><a title="CIRT" href="mailto:cirt@indstate.edu"><font color="#00267E">cirt@indstate.edu</font></a></b></p>
+                <p><b>Office Hours: <br>
+                Monday-Friday <br>
+                8:00<span style="FONT-SIZE: 0.7em">AM</span>-4:30<span style="FONT-SIZE: 0.7em">PM</span></b><p>&nbsp;<p>&nbsp;
+            </td>
+            
+            <td width="54">&nbsp;</td>
+            </tr></table>
+
+</td>
+
+            </tr>
+			<tr>
+
+            <td align="right" valign="top" width="196" colspan="2">
+
+            &nbsp;</td>
+
+          </tr>
+
+        </table>
+
+        </td></tr>
+
+ <tr>
+ 
+ 	<td width="165" class="blulft" bgcolor="#00267E">
+
+	<td width="16">
+
+	</td>
+
+	<td class="footer">
+
+	<img src="images/blank.gif" border="0" width="1" height="30" alt=""><br>
+
+     Last modified:  20-Nov-06&nbsp;&nbsp;&nbsp;&nbsp; Maintained by: <a href="mailto:egruenert@isugw.indstate.edu">egruenert@isugw.indstate.edu</a>
+
+      <!-- FOOTER/COPYRIGHT INFO -->
+
+      <tr>
+
+<td width="165" class="blulft" bgcolor="#00267E">
+
+<img src="images/blank.gif" border="0" width="165" height="1" alt=""></td>
+
+<td width="16">
+
+<img src="images/blank.gif" border="0" width="16" height="1" alt="">
+
+</td>
+
+<td class="footer">
+
+<br>
+
+200 North Seventh Street, Terre Haute, Indiana, USA 47809-9989<br>
+
+<a href="http://www.indstate.edu/copyright/">Copyright</a> 
+
+©
+
+2006 by <a href="http://www.indstate.edu">Indiana State 
+
+University</a>. 1-800-GO-TO-ISU | 1-800-468-6478 </td>
+
+</tr>
+
+<tr>
+
+<td class="blulft" bgcolor="#00267E">&nbsp;</td>
+
+<td colspan="2">&nbsp;</td></tr>
+
+      <!-- END FOOTER/COPYRIGHT INFO -->
+</tr>
+    </table>
+
+    </td>
+
+  </tr>
+
+</table>
+
+</body>
+
+</html>
+</text>

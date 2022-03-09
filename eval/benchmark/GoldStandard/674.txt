@@ -1,0 +1,691 @@
+URL: http://www.resource-allocation.com/content/1/1/1
+
+<h>Abstract
+
+<p>Estimating the costs of health interventions is important to
+   policy-makers for a number of reasons including the fact that the
+   results can be used as a component in the assessment and improvement
+   of their health system performance. Costs can, for example, be used to
+   assess if scarce resources are being used efficiently or whether there
+   is scope to reallocate them in a way that would lead to improvements
+   in population health. As part of its WHO-CHOICE project, WHO has been
+   developing a database on the overall costs of health interventions in
+   different parts of the world as an input to discussions about priority
+   setting.
+
+<p>Programme costs, defined as costs incurred at the administrative
+   levels outside the point of delivery of health care to beneficiaries,
+   may comprise an important component of total costs. Cost-effectiveness
+   analysis has sometimes omitted them if the main focus has been on
+   personal curative interventions or on the costs of making small
+   changes within the existing administrative set-up. However, this is
+   not appropriate for non-personal interventions where programme costs
+   are likely to comprise a substantial proportion of total costs, or for
+   sectoral analysis where questions of how best to reallocate all
+   existing health resources, including administrative resources, are
+   being considered.
+
+<p>This paper presents a first effort to systematically estimate
+   programme costs for many health interventions in different regions of
+   the world. The approach includes the quantification of resource
+   inputs, choice of resource prices, and accounts for different levels
+   of population coverage. By using an ingredients approach, and making
+   tools available on the World Wide Web, analysts can adapt the
+   programme costs reported here to their local settings. We report
+   results for a selected number of health interventions and show that
+   programme costs vary considerably across interventions and across
+   regions, and that they can contribute substantially to the overall
+   costs of interventions.
+
+<h>Introduction
+
+<p>Estimating the costs of health interventions is important to
+   policy-makers for a number of reasons including the fact that the
+   results can be used as a component in the assessment and improvement
+   of the performance of their health systems. As part of its WHO-CHOICE
+   cost-effectiveness work programme (go to
+   http://www.who.int/evidence/cea for more details), WHO has undertaken
+   an effort to assess the overall costs and effects of a wide variety of
+   health interventions [1]. Single global estimates of intervention
+   costs are not relevant to individual countries. On the other hand,
+   very few countries are able to estimate the costs of all possible
+   interventions in their settings. WHO-CHOICE is, therefore, assessing
+   the costs and effects of a range of interventions for 14 epidemiologic
+   sub regions of the world. The provision of sub-regional estimates
+   allows interventions to be classified into broad categories for
+   decision-making that have broad validity across that set of countries
+   - e.g. those that are very cost-effective, those that are
+   cost-effective, and those that are cost-ineffective. Policy-makers can
+   then ask if there are good reasons why very cost-effective
+   interventions are not done in their setting, while at the same time
+   cost-ineffective interventions are being done [2]. The results will be
+   presented in a way that analysts from countries in each region will be
+   able to judge the appropriateness of the findings for their country
+   and adapt them to their own settings. In the future, WHO-CHOICE will
+   provide technical assistance to selected countries interested in
+   applying the tools of generalized cost-effectiveness analyses
+
+<p>Costs can be divided into 'patient costs' and non-patient or
+   'programme costs'. Patient costs refer to all costs at the point of
+   delivery such as outpatient visits, bed days, drugs, or laboratory
+   tests. Programme costs include costs incurred at the administrative
+   levels of the district, provincial or central-levels, i.e. the costs
+   incurred at a level other than the delivery point of an intervention
+   to beneficiaries. The components include such items as administration,
+   training or media campaigns[3]. It is not uncommon for analysts to
+   ignore programme costs when performing CEA. For example, only one [4]
+   out of nine studies examining the cost-effectiveness of tuberculosis
+   treatment strategies clearly showed that programme costs had been
+   incorporated [5]. That study estimated the average cost of different
+   ways of directly observing tuberculosis treatment as a means of
+   improving adherence. For the option of completely ambulatory short
+   course chemotherapy with daily supervision, programme costs accounted
+   for 33%, 16% and 34% of estimated total costs in Mozambique, Malawi
+   and Tanzania in turn. These findings suggest that programme costs can
+   be a substantial proportion of total costs, and that the proportion
+   may well vary across settings. They also mean that using a simple rule
+   of thumb in which programme costs are assumed to be a fixed percentage
+   of patient costs may not always be appropriate - although probably
+   preferable than ignoring this category of cost completely [6,7].
+
+<p>While most CEA guidelines recommend including all relevant costs that
+   vary between programmes, studies may ignore them because they use an
+   "incremental" approach to costing - comparing the introduction of a
+   new technology against an existing intervention [8,9]. These studies
+   are concerned with marginal changes in costs and effects; they assume
+   that overhead items such as programme costs will remain approximately
+   the same for each alternative being compared, and will not affect the
+   choice between the given alternatives [8]. However, this is simply not
+   appropriate when considering non-personal health interventions, such
+   as mass media campaigns to encourage people to exercise more, where
+   virtually the entire intervention consists of programme costs. Nor is
+   it appropriate in many personal health interventions, such as the
+   tuberculosis case described above, or when analysts are interested in
+   answering the question of how best to use existing health resources to
+   improve population health[10].
+
+<p>This paper presents the systematic method for estimating programme
+   costs for health interventions across settings used for WHO-CHOICE.
+   The method and the resulting estimates can be used for different
+   purposes, e.g. cost-effectiveness analysis (CEA) and other types of
+   costing exercises such as estimating the costs of scaling-up
+   interventions as part of the activities of such bodies as the Global
+   Fund to Fight AIDS, Tuberculosis and Malaria. The following section
+   presents the methods for identifying, collecting and calculating
+   programme costs, including consideration of the theoretical basis for
+   calculating programme costs. The third section presents an application
+   of the approach including programme cost estimates for a number of
+   interventions. Conclusions are presented in the final section.
+
+<h>Methods
+
+<p>This section describes the methods used in calculating programme costs
+   as part of WHO-CHOICE. The first part discusses the theoretical
+   approach for defining relevant costs. The second and third parts
+   document the methods used to determine the amount of resource use and
+   their prices. The last part elucidates a means of accounting for
+   different coverage levels of an intervention.
+
+<h>Conceptual Approach
+
+<p>Observed prices or charges do not necessarily reflect economic value.
+   Generally, the economic definition of costs should be used in cost
+   valuation, not the accounting (or financial) definition. This is based
+   on the concept of 'opportunity cost', i.e. the value forgone by not
+   utilizing the same resource in its next best alternative use [11,12].
+   The concept implies that all resources consumed by an intervention
+   should be valued, not just those constituting a budgetary line item.
+
+<p>In collecting costs, several basic issues concerning the costing
+   process arise. The following issues outline the approach used to
+   determine costs.
+
+<h>Joint or overhead costs
+
+<p>Programme cost analysis to inform decisions at the sectoral level
+   requires information on the costs of introducing each intervention
+   singly and also in combination with other related interventions. This
+   requires identifying all resources involved to establish and run each
+   intervention, including the necessary overheads.
+
+<p>The simplest way to identify intervention-specific overhead costs is
+   to identify shared resources used by the different interventions and
+   use joint costing rules or some basis of allocation related to the
+   usage of the overhead item[8]. The percentage of time devoted to each
+   individual intervention was used to allocate personnel costs and the
+   share of equipment used. Similarly with buildings and vehicles, the
+   proportion of intervention-specific utilization to total utilization
+   was used [8,13]. This implies that the resources are divisible, or can
+   be shared across interventions (e.g. it is feasible to use 0.2
+   vehicles for an individual intervention). This is appropriate since
+   most resources can be shared across interventions and programmes, and
+   particular types of personnel, transport, and buildings can be hired
+   in the short term or rented out to other users. In theory, all costs
+   related to a set of evaluated interventions could be allocated.
+   However, WHO-CHOICE excludes two major types of 'ongoing' costs in
+   this context. First, some of the costs of central administration are
+   not included - those that are part of the overall planning and
+   management of the health system that are unrelated to the development
+   and implementation of particular interventions aimed at improving
+   health. Second, the current level of education of health professionals
+   is excluded; if the skills required to deliver an intervention are
+   available in the country under study, training costs to develop those
+   skills are not included in the programme costs since a reallocation of
+   health system resources does not affect these costs.
+
+<h>Capacity utilization
+
+<p>The extent to which capital and labor are used can critically
+   influences unit costs [5,8]. Capacity utilization is defined as the
+   proportion of the total target workload time a resource is actually
+   used; for example, a computer used 5 hours in a 10 hour work day has a
+   capacity utilisation of 50%. In comparing the cost-effectiveness of
+   interventions, it is important to ensure that the observed differences
+   are due to the intrinsic characteristics of the intervention rather
+   than the extent to which capital and labor have been utilized in the
+   environment in which the interventions were evaluated. WHO-CHOICE
+   seeks to inform policy-makers on the optimum mix of interventions if
+   health resources could be reallocated. It is not useful to perform
+   this analysis by analyzing some interventions that are delivered
+   inefficiently and others delivered efficiently. Therefore, for this
+   analysis we report the cost-effectiveness estimates of interventions
+   that are done efficiently, using 80% capacity utilization as the norm.
+   This is consistent with recommendations made in CEA guidelines and
+   ensures the comparability of cost-effectiveness ratios across
+   interventions and settings [8,9].
+
+<h>Ingredients approach
+
+<p>Rather than collecting data on total expenditures, the ingredients
+   approach is used. The cost of any input to a production process is the
+   product of the quantity used and the value (or price) of each unit.
+   The ingredients approach is useful for many reasons, the most
+   important are that it allows analysts and policy-makers to validate
+   the assumptions used; judge whether the estimates presented can be
+   applied to their settings; and, if necessary, change some of the
+   parameters to replicate the analysis for their settings [3,13,14].
+
+<h>Classification of costs
+
+<p>Costs are classified according to three characteristics: phase of
+   implementation of the intervention, organizational level where costs
+   are incurred, and nature of costs. This can be classified in the
+   following three categories, with primary classifications listed first:
+
+<l>Start-up and Post Start-up costs: Programmes incur different types
+   of costs in the start-up and post-implementation phases. The
+   definition of the start-up period is the time between the decision to
+   implement an intervention and starting its delivery to the first
+   beneficiary. Quantities are reported for the total time of the
+   start-up period. If the start-up period is 18 months, the quantities
+   used for the entire time are reported. Post start-up programme costs
+   for the full period of implementation of the intervention were based
+   on an estimate of the annual cost required to run the intervention in
+   a typical post start-up year when the programme is fully implemented.
+
+<l>Central versus Lower Levels costs: Factor inputs are classified
+   according to where in the administrative and organizational level of
+   the health system they are used. In this analysis we collected cost
+   data from three programme-cost levels: central, provincial and
+   district levels, but the data can be easily adapted to the relevant
+   administrative classification in different settings.
+<l>Recurrent versus Capital costs: Factor inputs are further classified
+   into recurrent and capital items. Following standard practice, capital
+   costs are annualized over the useful life of the factor input, i.e.
+   the 'equivalent annual costs' are calculated.
+
+<h>Discounting across time
+
+<p>For country-specific analysis, the local rate of return on long-term
+   government bonds would ideally be used as the social discount rate for
+   costs. For our purposes, to allow comparability across regions, a 3 %
+   discount rate was used as recommended by most guidelines [8].
+
+<p>Total start-up costs of the programme were considered as a capital
+   investment and annualized and discounted over the life of the
+   programme. For country-specific analysis, the choice of the period
+   over which start-up costs should be annualised would be made on a case
+   by case basis, but to allow comparability for the sub regional
+   analysis, 10 years was chosen as the useful life of a start-up period
+   [3]. The sensitivity of the analysis to this assumption was explored
+   in the individual intervention studies.
+
+<h>Data on quantities
+
+<p>In the period 2001-2, WHO-CHOICE invited regional expert teams
+   representing countries from each of the 14 epidemiologic sub regions
+   to gather the quantities of physical inputs (the ingredients) required
+   for approximately 75 interventions using a standard tool (see Endnotes
+   section, Note 1 for details of the data collection tools and
+   procedures). Most of the ingredients were for specific interventions,
+   but some were for generic cost components which could be used in a
+   number of interventions - for example, the cost of training health
+   workers on case management using different combinations of number of
+   days, and number of participants.
+
+<p>The data they provided were compiled and compared to form the basis of
+   a set of costing sheets for the different activities covered by
+   programme costs. Next, a list of required activities and the intensity
+   of each activity was compiled for each intervention. For example,
+   media outreach was classified into four intensities: extensive (daily
+   or more radio and television emissions), moderate (weekly emissions),
+   minimal (monthly emissions or less), and printed material only (for
+   programmes which have some information distribution requirements).
+   Further activities included basic administration, monitoring,
+   evaluation, and supervision, passage of legislation, training, and law
+   enforcement. Other activities relevant only to one or a few programmes
+   were entered separately. Training was divided into the costs involved
+   in setting-up and running a specific training session, and the costs
+   of overseeing and administering a training programme. The former costs
+   are considered to vary with the number of trainees and length of
+   training, while the latter were considered a fixed cost needed to run
+   any training programme, no matter how many trainees or the length of
+   training. The use of this standardized format ensures that different
+   programmes are valued consistently based on the activities needed.
+   This, in turn, ensures comparability of results.
+
+<p>Quantities were divided into fixed and variable costs. Fixed costs
+   include those necessary to set up and run a programme no matter how
+   many people are covered. Some examples of fixed cost include parts of
+   the central administration, passage of legislation, and basic
+   monitoring activities. Some examples of items that vary by the number
+   of people covered include people delivering a service, the amount of
+   storage space and shipment needed, supervision, and the production of
+   printed information materials.
+
+<p>The required quantities of inputs were based on the estimates by the
+   regional expert teams. However, because there was missing data for
+   some interventions in some regions, the quantities for the variable
+   and fixed cost functions were standardized across regions for most
+   interventions (this was done except in cases where difference between
+   regions is clearly justifiable, such as random breath testing of motor
+   vehicle drivers where significantly different traffic patterns across
+   regions would result in very different needs for enforcement). Because
+   of different sizes of countries within the various regions, variable
+   costs obviously varied by region (this builds in economies of scale,
+   where fixed costs are spread over populations of different sizes).
+
+<p>The regional expert teams also estimated details such as the office
+   supplies, equipment, and office space different staff members would
+   consume in a year. Based on these assumptions, the quantities of
+   utilities used and maintenance costs were also estimated (further
+   details can be found at http://www.who.int/evidence/cea). Within the
+   broad categories outlined in the conceptual approach section, inputs
+   were classified in the manner reported in Table 1.
+
+<h>Data on prices
+
+<p>This analysis requires the unit prices used to reflect the economic
+   cost of goods, and allow for inter-country comparison of costs of
+   interventions. For this purpose, the world price level was chosen as
+   the numeraire or price level [11], and a reference currency, i.e., the
+   International Dollar (I$), was chosen for the presentation of the
+   results at the international level. Costs in local country currency
+   units were converted to international dollars using purchasing power
+   parity (PPP) exchange rates. A PPP exchange rate is the number of
+   units of a country's currency required to buy the same amounts of
+   goods and services in the domestic market of a reference country, in
+   this case the United States. An international dollar is, therefore, a
+   hypothetical currency that is used as a means of translating and
+   comparing costs from one country to the other. Because published
+   estimates of PPPs do not cover all 192 countries that are members of
+   WHO, the PPP exchange rates used in this analysis were developed by
+   WHO and are available on the WHO-CHOICE website.
+
+<h>Prices for traded goods
+
+<p>Traded goods are commodities that are available on the international
+   market, and all countries can purchase them at an international market
+   price. Since the international market price reflects the opportunity
+   cost of using a good to the country, it is used as the price for
+   traded goods, adjusted to include cost, insurance and freight (c.i.f.)
+   for imported goods and free on board (f.o.b.) for exported goods.
+
+<p>International prices were derived from price indexes compiled in WHO
+   publications and catalogues of prices from firms and non-governmental
+   organizations operating at an international level that excluded costs
+   of shipment and taxes. These international values were placed in a
+   common currency (year 2000 I$) using World Bank Gross Domestic Product
+   (GDP) deflators, or, when GDP deflators were unavailable, Consumer
+   Price Index deflators [15].
+
+<p>Generally, for small items that can be bought in bulk, the lowest
+   internationally listed price was selected. This assumes the existence
+   of a basic health infrastructure, enabling the purchase of items in
+   bulk. For larger items, a middle level price was selected to represent
+   a "typical" price. In some cases, the price range for a good was too
+   big to justify the use of a mid-level price. For example, a given
+   model of a four-wheel-drive vehicle can range in price from US$15,000
+   to US$25,000. Thus, for vehicle prices, generators, and other large
+   cost items, the regional expert teams were asked to provide the local
+   price of goods excluding taxes and subsidies.
+
+<p>The f.o.b. (free-on-board) price of exports includes the production
+   cost, transport costs, local marketing costs and local port charges of
+   the exporting country [16]. The c.i.f. (cost-insurance-freight) price
+   excludes import duties and subsidies (transfer payments), and includes
+   the selling price of the producing country, freight, insurance, and
+   unloading charges. If a country imports the good, the costs of local
+   transport and distribution (termed 'domestic margin') were added to
+   the c.i.f. price in order to approximate the local opportunity cost
+   [16]. Methods for calculating c.i.f./f.o.b. adjustments are discussed
+   in the section on coverage levels.
+
+<h>Prices for non-traded goods
+
+<p>Prices of non-traded goods like labour vary across regions. The
+   regional expert teams provided local prices for non-traded goods for
+   reference countries in their regions. Where possible, supplementary
+   information from other sources on country-specific prices of
+   non-traded goods, such as the International Labour Organization (ILO)
+   database on occupational salaries, was also used to determine a
+   typical cost for the region as a whole.
+
+<h>Coverage Levels
+
+<p>As coverage expands into remote areas, the marginal costs of providing
+   an intervention to each additional person will generally increase
+   [17-19]. To account for the increasing marginal costs of
+   transportation to more remote areas, the following methods were used
+   to adjust costs for different levels of population coverage.
+   Transportation costs consist of the cost of transporting goods to a
+   country (c.i.f./f.o.b.) and transporting goods within a country (the
+   domestic margin).
+
+<h>Adjusting prices for traded goods
+
+<p>The calculation of the cost of transportation was based on the only
+   available study showing the percentage change in the price of a traded
+   good based on the distance it travels between countries, the
+   transportation infrastructure and the average GDP per capita of a
+   country, and other variables relating to the availability of seaports,
+   neighbouring trade partners, etc. [20]. For purposes of calculating
+   the c.i.f./f.o.b. mark-up of goods, an infrastructure index was
+   calculated and applied using the price elasticity coefficients
+   reported in Limão and Venables [21]. Table 2 illustrates the results
+   of this analysis for selected countries in different regions with the
+   c.i.f./f.o.b. mark-up ranging from 1.16 (16% increase in price) in
+   Denmark to 1.71 in Afghanistan, with a median mark-up of 1.28.
+
+<p>The domestic margin was calculated based on a hexagon shaped regional
+   distribution model [22]. Each hexagon was assumed to cover 80 square
+   kilometres, approximating the area served by one health centre
+   reflecting a circular area with a radius of 5 km [23]. The population
+   of each hexagon was derived from Geographical Information System (GIS)
+   data on the population density of a country. In this model, the
+   population density of the most crowded 80 square kilometres is assumed
+   to be at the centre of the country, with hexagons further from the
+   centre having progressively lower population densities. Thus, in the
+   case of Burkina Faso, 4% of the population is assumed to live in the
+   central hexagon, while only 2% of the population is assumed to live in
+   the adjacent hexagon.
+
+<p>Each country is also divided into provinces and districts based on the
+   number of provinces and districts reported by WHO databases. In cases
+   where the number of secondary or tertiary administrative units was not
+   certain, an average was taken from the available sources. The average
+   size of a province or district was calculated by dividing the total
+   area of a country by the number of provinces or districts, which were
+   then incorporated into the hexagonal grid. A traded good was assumed
+   to travel, on average, half the distance from the central hexagon to
+   the centre of the most peripheral province, and then to the centre of
+   a district. The Limão and Venables price elasticity for distance was
+   then used with this calculated distance to derive the domestic margin.
+   Since, in this model, the central areas are more crowded than outlying
+   areas, a programme covering 50% of the population will have a
+   proportionately lower mark-up than a programme covering 95% of the
+   population. However, as shown in Table 2, the domestic margin is a
+   minor cost compared to the cost of initially transporting a good to
+   the country.
+
+<h>Impact on resource utilization
+
+<p>When an intervention covers a larger part of the population, the
+   resources required to run the intervention also increase. As coverage
+   goes up, certain cost parameter values were increased as follows:
+
+<l>As indicated above, the hexagon shaped regional distribution model
+   assumes a health centre for every 80 square kilometres of space. This
+   implies that health centres may not always run at 80% capacity, since
+   more remote areas may have a very low population density. Since costs
+   of training of health care professionals are independent of population
+   density, these costs - expressed as costs per capita - will increase
+   as coverage levels increase
+
+<l>The number of provinces covered increases as coverage expands. Under
+   the assumptions listed above, one or two provinces may contain 50% or
+   more of the population. Thus, as coverage expands, the number of
+   provinces covered will increase, but each new province covered will
+   have fewer people. Since there are fixed costs associated with running
+   a programme at the province level, this produces diseconomies of
+   scale.
+
+<l>The distance travelled in a supervision visit increases. At the
+   national level, this is calculated as the distance from the centre to
+   the most remote province covered (the average distance would be half
+   the distance from the center to the periphery; however, because
+   supervision visits are assumed to be round trips, the full distance
+   from the center to the periphery is used). The distance travelled for
+   supervision visits within provinces is similarly calculated.
+
+<l>Thus, the number of programme staff involved in supervision
+   activities needs to increase both in proportion to the increased
+   distances covered and to account for the increased number of
+   provinces. Each province was assumed to need an equal number of
+   supervision visits.
+
+<p>It is possible that salaries may be higher in very remote areas to
+   give health personnel extra incentive to relocate to these areas. In
+   the absence of data, this factor was not incorporated.
+
+<h>Organising and using the data
+
+<p>The predicted quantities of resources needed were multiplied by their
+   respective prices to calculate the total programme costs for a
+   ten-year period of implementation. These ten-year costs are calculated
+   in year 2000 international dollars using a standard net present value
+   formula [8].
+
+<h>Validation
+
+<p>Once the data had been collected and analysed, the accuracy of the
+   data was verified. Where possible, previous costing or CE studies
+   which included programme costs were used as a benchmark for
+   comparison, but very few presented programme cost estimates using the
+   ingredients approach (e.g. [24]). In addition, disease and public
+   health experts or programme managers who are familiar with the
+   particular interventions and settings for a number of diseases
+   reviewed the final costing figures. In the cases where the estimates
+   did not have face validity, controls were made to ensure that there
+   had not been mistakes with coding, and discussions were held with the
+   regional costing experts to confirm the basis of their quantity and
+   price estimates.
+
+<h>Results
+ 
+<p>WHO-CHOICE has used the methods described above to produce a set of
+   cost-effectiveness estimates, initially for 14 epidemiologic sub
+   regions [25]. Table 3 reports the average annual programme cost per
+   capita, and as a percentage of total intervention cost per capita, for
+   selected interventions in these regions. Costs are presented in 2000
+   International dollars. The table shows that programme costs vary
+   across interventions and across regions for a given intervention. For
+   example, cost per capita of educating sex workers totals I$ 0.01 in
+   SearB, whereas it amounts to $0.07 in AfrE. For a population of 100
+   million people, this would mean programme costs differ substantially -
+   $1 million in the former and $7 million in the latter sub region.
+   Variations are caused by differences in the number of sex workers and
+   in the number of social workers required to train sex worker peer
+   educators, and to differences in regional price levels of inputs.
+   (Note also that a straight comparison of cost per capita across
+   interventions is misleading in deciding whether an intervention is of
+   low cost or more expensive at a population level, because there is
+   wide variation in the target populations for each of these
+   interventions.)
+
+<p>The importance of programme cost in comparison with patient cost also
+   varies by intervention and by region. Obviously, non-personal
+   interventions such as the introduction of random breath testing for
+   drivers to reduce the burden of motor vehicle accidents consists
+   entirely of programme costs. On the other hand, the provision of brief
+   physician advice to heavy alcohol users consists largely of patient
+   costs, with programme costs ranging from less than 1% of total costs
+   to almost 30%.
+
+<p>The tools used to estimate these results are available on the Internet
+   at http://www.who.int/evidence/cea for use by local analysts. They
+   include:
+
+<l>a database of prices for traded goods,
+
+<l>a database listing the reported useful life of capital goods,
+
+<l>a workbook listing activities used in programme costs together with
+   assumptions of quantities of resources used based on the data
+   collected by WHO, and
+
+<l>a costing tool CostIt^© to calculate and present the final results
+   of the costing exercise.
+
+<l>a tool for uncertainty analysis MCLeague^© to calculate uncertainty
+   regions around cost-effectiveness ratios and present stochastic league
+   tables.
+
+<p>All of the estimates presented could be modified by analysts to suit
+   the particularities of their own setting. In adapting these tools,
+   analysts have to assess if the assumptions outlined in this paper are
+   appropriate for their own setting. The following list highlights some
+   major considerations:
+
+<l>Local analysts may wish to carry out the analysis using a capacity
+   utilization rate other than 80% to better reflect their actual
+   situation. However, one standard rate should be used for the
+   evaluation of all interventions to ensure comparability. The CostIt^©
+   tool allows this to be done automatically.
+
+<l>Local analyst may wish to use local prices rather than international
+   prices as estimated by WHO-CHOICE. Analyst can also vary prices for
+   non-traded goods according to the location within the country where
+   they are incurred; for example, provincial staff may have lower
+   salaries than staff in the capital city, or vice-versa.
+
+<l>The spatial model for scaling-up can be revised to the geography of
+   a particular country. For example, multiple points of entry for traded
+   goods can be considered. Alternatively, local analysts may be able to
+   gather data on the prices of goods in various parts of the country, or
+   the costs of transportation, and thus not need to employ the model as
+   used by WHO-CHOICE. Further, the assumption that the number of
+   provinces expands with increasing population coverage may not
+   accurately reflect how a country implements health interventions, and
+   analysts should adjust their assumptions accordingly. Finally, the
+   coverage area of health centres can be determined locally.
+
+<h>Conclusion
+
+
+<p>Programme costs can constitute a substantial component of costs even
+   for personal health interventions and should not be ignored in the
+   economic evaluation of health interventions. This paper has presented
+   a first effort to systematically analyze programme costs in different
+   sub regions of the world. The use of a standardized methodology
+   ensures comparability of cost estimates across interventions and
+   settings.
+
+<p>In addition, this paper has introduced "ready-to-use" tools and
+   programme cost estimates that are available on the World Wide Web. The
+   programme cost estimates constitute an important part of WHO-CHOICE
+   database on costs and effects of multiple interventions in various
+   regions in the world exploring the question of whether resources are
+   being used to achieve the maximum possible level of population health.
+   Analysts may wish to adapt the regional estimates to their local
+   setting to make the results more relevant for local decision makers.
+   This paper has shown that, in this process, special attention should
+   be paid to issues such as capacity utilization, prices of goods, and
+   increasing marginal costs of delivering interventions into more remote
+   areas.
+
+<p>As with any innovative work, there are some limitations to the
+   approach that has been used, which offers possibilities of further
+   development over time. For example, in the consultation process with
+   regional expert teams to obtain input quantities and prices,
+   considerable efforts were made to standardize reporting approaches.
+   Nevertheless, reported quantities still showed considerable variation
+   beyond that reasonably expected on the basis of regional differences,
+   and it was necessary to return to the experts for clarification and to
+   seek the input of external data sources and expert advice. Analysts
+   wishing to adapt the results to their own settings should be aware
+   that they would need to seek the advice of more than one expert in
+   their own countries before adapting the quantities of inputs and unit
+   prices reported here. WHO-CHOICE incorporates extensive efforts to
+   develop methods for uncertainty analysis, to reflect uncertainty in
+   the final cost and cost-effectiveness estimates. This is designed to
+   help local policy makers decide the extent to which the results of the
+   WHO-CHOICE analysis inform policy in their countries [26,27].
+
+<p>A key element in our approach is the specification of intervention
+   cost functions at various coverage levels. Whereas other studies have
+   estimated costs of scaling-up health services using a linear cost
+   function, the present study includes non-linearities [28]. Economies
+   of scale have been incorporated by allowing some costs to be fixed
+   regardless of the size of the population reached - television
+   broadcasts are a case in point. On the other hand, diseconomies of
+   scale have been included by using higher prices (for transport costs)
+   and higher quantities (for training and supervision) at higher
+   coverage levels. This is an important step for showing the impact of
+   higher coverage on costs and outcomes. However, further work is
+   required to add non-spatial determinants of increasing costs relating
+   to scaling-up.
+
+<h>Conflict of Interest
+
+<p>None.
+
+<h>Authors' contributions
+
+<p>BJ has day-to-day responsibility for the data management of programme
+   costs, participated in the development of the methodology and drafted
+   the manuscript. RB and RH participated in the development and
+   coordination of the methodology. All authors read and approved the
+   final manuscript.
+
+<h>Endnote section
+
+<h>Note 1
+
+<p>WHO-CHOICE instructed the costing experts on data gathering
+   techniques. Each was given a standardised collecting tool and a
+   guideline, and most attended a workshop detailing the methods to be
+   used. The standardized data collection tool involved two Microsoft
+   Excel spreadsheets. The first, the "general information" sheet,
+   documents general health system parameters of a country. This sheet
+   contains five tables, some for use in determining patient costs, some
+   for use in determining programme costs. The second spreadsheet
+   provided a template for recording the quantities of resource inputs
+   for each intervention (see Table 1). A WHO-CHOICE team member made a
+   follow-up visit to each country to determine the adequacy of the
+   experts' techniques, answer questions, and provide further guidance.
+   Responses were checked against those of other experts, as well as the
+   literature, allowing outliers to be identified and the sources of any
+   difference to be explored and corrected if necessary.
+
+<h>Acknowledgements
+
+<p>The authors would like to thank Yunpeng Huang, Nataly Sabharwal, and
+   Steeve Ebener for their work in compiling and processing the data
+   necessary for this exercise; to Osmat Azzam, Richard Catto, Gatien
+   Ekanmian, Ruth Lucio, Benjamin Nganda, Subhash Pokhrel, Elena
+   Potaptchik, Enrique Villarreal Ríos, Mahmoud A.L. Salem, André Soton,
+   and Lu Ye as representatives of their regional expert teams for their
+   efforts to gather data at the country level; and to Taghreed Adam, Dan
+   Chisholm, and Moses Aikins for their input in the development of the
+   methods used. We are grateful to Chris Murray, David Evans, and Tessa
+   Tan Torres for general guidance throughout this project.
+
+<p>The open peer review comments of Dr Guy Hutton (Switzerland) and Dr
+   Frederick Mugisha (Kenya) on an earlier version of this paper are also
+   gratefully acknowledged.
+
+<p>The views expressed are those of the authors and not necessarily those
+   of the organization they represent.
+
+<h>References

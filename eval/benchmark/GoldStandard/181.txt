@@ -1,0 +1,333 @@
+
+<h> Behind The Scenes of Project Looking Glass 
+
+<h> by Will Iverson
+<h> 07/06/2004
+
+<p> I recently had the opportunity to sit down with Hideya Kawahara, lead
+   developer for 3D Project Looking Glass, Sun's 3D desktop technology
+   open source project on java.net.
+
+<p> Before meeting with Hideya, I must confess that I had been operating
+   under the mistaken assumption that Project Looking Glass was intended
+   as a replacement window manager for Linux, a 3D novelty of no more
+   consequence than any of a long list of failed attempts at reinventing
+   the traditional, 2D desktop in a new, 3D world.
+
+<p> Instead, what I found was considerably more interesting. In effect,
+   Project Looking Glass is a rational approach toward using the latest
+   3D hardware advances to provide a state-of-the-art desktop
+   environment, familiar yet far more engaging for a traditional 2D
+   desktop user.
+
+<p> The demonstration Hideya gave me of the system was quite dynamic.
+   Windows spin and zoom, stack, become translucent, flip to reveal
+   additional information on the back, and more. A sample 3D audio CD
+   selector can be dragged around, and the elements move in a manner that
+   conveys an appealing weight and physicality.
+
+<p> The demonstration basically fell into two areas, a theoretical next
+   generation window manager and examples of user interface elements in a
+   3D environment. By providing integration with the X windowing system,
+   the demonstration shows existing 2D applications spinning and flying
+   about, with transparency and video running seamlessly as the windows
+   move. By open sourcing the environment, Hideya hopes that as the
+   platform matures not only will existing 2D applications spin and fly,
+   but that third party developers will be able to use Project Looking
+   Glass to build rich, interactive 3D applications with a whole new
+   suite of interactions.
+
+<p> One additional revelation: Project Looking Glass is actually built
+   using Java 3D as a key foundation technology, and the primary
+   programmatic interface for 3D-aware applications in this release is
+   Java technology. So, conceptually, a write-once-run-anywhere
+   application could be built using Project Looking Glass, providing
+   desktop applications with rich 3D interactivity.
+
+<p> With all of this in mind, Hideya spoke about the past, present and
+   future of Project Looking Glass.
+
+<h> What was the motivation behind Project Looking Glass?
+
+<p> We were interested in breaking boundaries. The boundaries fall into
+   two areas: a 2D vision of a desktop, defined twenty years ago on much
+   more limited hardware, and the relative stagnation of desktop
+   innovation because of, in my humble opinion, a sort of closed fashion
+   of evolution.
+
+<p> Recently, there has been tremendous innovation in the 3D capabilities
+   of the personal computer, driven by innovation in games. The idea is
+   not to throw away the existing research in user interfaces developed
+   for the 2D world, but instead to build on it. 3D is a very challenging
+   problem -- there have been several attempts at trying to solve this
+   over the years. In order to get innovation started in this area, we
+   are open sourcing the research we have done so the broadest possible
+   group of people can work with it. We believe that the open development
+   model works great for the exploration of this new 3D frontier - with
+   vast possibilities.
+
+<h> How is this different from previous attempts at building a 3D
+   interface?
+
+<p> We aren't moving the desktop into a 3D world per se, we are trying to
+   enhance the view of a 2D world by adding 3D functionality where it
+   makes sense. For a user of a traditional 2D environment, at first
+   blush this will simply look like a much, much nicer extension of their
+   existing environment. For example, a 3D application might leverage the
+   "back" of a window, allowing a user to flip a window over to take
+   notes. As a more complex example, consider a modal dialog. As an
+   example, our prototype window manager flips a window over to display a
+   modal dialog on the "back" of the window that owns the dialog.
+
+<h> Doesn't that obscure the window contents?
+
+<p> Well, yes, but that's part of the point of the whole exercise:
+   considering new, innovative user interface elements that are possible
+   based on 3D technology.
+
+<p> One of the more realistic concepts is the way our demonstration window
+   manager slides windows over at an angle. You can rotate a window to
+   put it in the background, so you can still see the window contents in
+   a useful way. At a more basic level, you can make some much more
+   dynamic and interesting desktop backgrounds. That's where things get
+   blurry for some people trying to sort out where the Project Looking
+   Glass platform ends and a real window manager begins.
+
+<h> Are you looking at integration with the popular windows managers, such
+   as GNOME and KDE?
+
+<p> The issues with regard to GNOME/KDE and the profusion of desktop
+   environments are really orthogonal to Project Looking Glass. For
+   example, Mac OS X differentiates between various technology layers --
+   for example, BSD, Aqua, Cocoa, all are different layers in the overall
+   environment. Similarly, Linux needs to evolve into a more complex
+   environment with different layers. To keep Linux competitive, we need
+   to think about how to move forward into the next generation. The goal
+   here is not to introduce a new desktop model, but to provide the
+   underpinnings for the next generation.
+
+<p> By integrating 3D into the window manager, it's an easy way for
+   existing 2D applications to obtain 3D functionality, in a sense, "for
+   free."
+
+<p> We want to be sure that we are aligned with the open source world. We
+   pay attention to the different issues that are going on, and we are
+   working with X.org to develop the proper integration and extensions.
+
+<p> We view the current proof-of-concept's primitive windowing system as a
+   demonstration. For example, we would like to see GNOME move into a
+   world that is more 3D in nature.
+
+<h> What about shipping an app with Project Looking Glass platform bundled
+   in? For example, one of the demos is a mockup of a 3D audio CD player.
+   Could a developer build an application on top of Project Looking Glass
+   platform and ship it for multiple platforms?
+
+<p> It is our vision to allow this sort of usage. We haven't built demos
+   with this in mind, but I don't see anything to prevent this. We do
+   hope that many developers create sample 3D applications that run on
+   the Project Looking Glass platform and have a place in our open source
+   community for those applications on http://lg3d-demo-apps.dev.java.net
+
+<h> Why would I use Project Looking Glass instead of OpenGL?
+
+<p> Project Looking Glass is actually built on top of Java 3D, which in
+   turn supports OpenGL. One way to think about Project Looking Glass is
+   as a 3D application framework focused on building 3D desktop
+   applications and user interfaces.
+
+<p> Project Looking Glass defines a new suite of events and integration.
+   For example, a traditional application might use 3D just as one
+   portion of the functionality, such as depicting the information on a
+   chart in a spreadsheet. Project Looking Glass defines a lot more
+   semantics for how the 3D scene graph is developed and interactions
+   between the objects onscreen.
+
+<p> One way to think about this -- in any 3D application, a key part of
+   the functionality is the manner in which the 3D objects interact. In a
+   typical 3D game, the objects represent elements that run around and do
+   things, such as opening doors and shooting at each other. One of big
+   goals of Project Looking Glass is to define an environment in which
+   the events and object information are suited to the operation of a
+   desktop environment.
+
+<h> Can you explain a bit more about the software that is being made
+   available?
+
+<p> We have been working for several months on cleaning the software up,
+   providing basic features and functionality key to 3D window
+   management. A key focus was looking at the existing 2D desktop apps,
+   ensuring minimal compatibility and performance problems. The next step
+   is to look what else we can do to foster real world 3D interactivity.
+   We decided to open source this at a very early stage to ensure that we
+   got good feedback from the community.
+
+<p> The original proof-of-concept blurred the X client/server model more
+   that we would like. Also, it didn't define any reasonable APIs. Our
+   goal for this release was to refine the architecture and reimplement
+   everything from scratch in order to ensure that the client/server
+   model is preserved. We are also defining clear APIs for 3D apps and
+   desktop development. We leveraged the Java 3D API for this. We want to
+   ensure client isolation remains solid and the platform provides well
+   abstracted API.
+
+<p> Also, we wanted to ensure that the platform is still high performance
+   while at the same time achieving the client isolation. So, we are
+   looking at low level details involved in this. We would like to make
+   sure that moving the client to 3D would still a solid performer, and
+   to ensure that the isolation between the 3D scenegraph server and the
+   client applications is very high, so that the server can be made as
+   stable as possible.
+
+<h> Linux only?
+
+<p> Linux only right now, Solaris operating environment shortly.
+
+<p> Much of the current environment is actually rendered using Java
+   technology. There is no legacy application support for Windows, but
+   you can run the Project Looking Glass environment on Windows, just as
+   you can run any Java 3D application.
+
+<p> We don't want to exclude Windows developers. The compatibility stuff
+   with X, obviously, doesn't work for existing Windows applications. So,
+   if you want to build a 3D application on top of the Project Looking
+   Glass platform, you could still get a write-once, run-anywhere 3D
+   application that also exhibits more sophisticated.
+
+<p> The current version of Project Looking Glass relies on JDK 1.5. We are
+   waiting for JDK 1.5 support on Mac OS X before we can release there.
+
+<h> How does this break down for cross-platform application developers?
+
+<p> We hope a normal application developer can build an application that
+   respects this 3D environment. In conjunction with the Java desktop
+   integration APIs, this could allow a developer to build a 3D app that
+   can integrate with the other 3D apps, regardless of platform.
+
+<p> So, let's say a user has a 3D app that they want to run on Linux, with
+   GNOME support. All of the environment will respect the 3D aspects.
+   That same app eventually should be able to run on Windows, where it
+   will interact properly with the other 3D applications. For example, a
+   3D version of a notepad and the 3D CD player should be able to have
+   interesting, dynamic 3D interactions regardless of the host platform.
+
+<h> Video card support?
+
+<p> We expect this to run on 32MB VRAM video cards and above. We leverage
+   the GPU to help push the performance down into lower layers, keeping
+   the computational hit off the main CPU. Geforce2 and above. In
+   particular, texture support is very important, as the rendering of
+   traditional 2D applications involves that sort of surface. Obviously,
+   support for 2D applications are simpler than what most games require.
+   But we also want to set a baseline for 3D graphics support. For
+   example, many laptops have an integrated video, and we want to support
+   those as well as we can.
+
+<h> My PC laptop (a Dell Inspiron) has a 32MB RADEON Mobility 7500. Will
+   that work?
+
+<p> It should -- that's the same card that's in my development laptop.
+
+<h> Tell me a bit more about how an application developer can work with
+   Project Looking Glass. Are there Java bindings?
+
+<p> This is Java 3D-based. We used the Java 3D scene graph model to help
+   manage the relationship between objects.
+
+<p> The current version, Java 3D 1.3.1, is the product of several years of
+   investment. It is a very high performance, solid, 3D rendering engine
+   for Java technology. So, the 3D demos and even the example desktop
+   itself are actually written in Java. Right now, if you wanted to
+   create a first class, fully 3D app using Project Looking Glass, you
+   would actually write that in Java. We hope to have bindings for C/C++
+   developers in the future -- obviously.
+
+<p> So, Project Looking Glass is actually a very Java-centric technology.
+
+<p> We looked at several different environments, but obviously Java is a
+   very productive language. For us to test out the different ideas, we
+   wanted to be able to work very quickly. If we hadn't used Java
+   technology, Project Looking Glass probably wouldn't exist. To the
+   extent that Project Looking Glass is an exploration of 3D
+   environments, Java technology is very key.
+
+<h> So, the current environment actually provides Java interfaces, not
+   C/C++ bindings? How do you expect C/C++ developers to work with
+   Project Looking Glass?
+
+<p> To be able to support traditional 2D applications, such as OpenOffice,
+   we talked to their engineers and are brainstorming how to approach
+   this. Obviously, we are very interested in supporting native
+   applications. We aren't just paying lip service to this -- it is very
+   important to Sun to be able to do this.
+
+<p> We attended the X Developers conference in April. It was a great place
+   to meet the X server, GNOME, and KDE developers. We got a lot of great
+   feedback, how they would like to see the C++ bindings develop. The
+   slides are posted at the Looking Glass site (pdf). I would highly
+   recommend looking them over, especially if you are an X developer.
+
+<h> I noticed that you are running the demo on the Sun Java Desktop
+   System. Project Looking Glass is very Java technology centric -- is
+   this a step toward deeper support for Java at the desktop environment
+   level?
+
+<p> Yes, exactly. Although we are in an Advanced Software Development
+   group, we also work very closely with the Sun Java Desktop System
+   group. We hope to add more Java interfaces where it makes sense and
+   adds value. For example, we are looking at how this 3D interactivity
+   can best be extended to the semantics of drag-and-drop in a future
+   desktop environment.
+
+<h> For a typical Java developer, classic desktop application development
+   is done with Swing. Any thoughts there, perhaps adding a 3D-enabled
+   look and feel implementation?
+
+<p> Yes, that gives a nice integration story for Swing developers. We can
+   add 3D effects, perhaps as a Swing look-and-feel, for a 3D
+   environment. We aren't there yet, but we are looking at it. This is an
+   extremely interesting and exciting area to explore, we think.
+
+<h> Swing developers have several tools available. What about tools for
+   building a 3D application?
+
+<p> It turns out that tools are very challenging for moving to a 3D world.
+   We are interested in some sort of 3D modeling tool. If you are
+   building a 3D application, you need some sort of system for building
+   the interface elements. For example, the 3D audio CD player
+   demonstrates what a challenge it is for a designer to mock up and
+   prototype this kind of rich desktop application. In the 3D game world,
+   you have tools like Maya. It would be nice to provide a way to
+   incorporate such 3D designer's tool into a tool chain to develop 3D
+   apps and desktop. Also, it would be great to have something on the
+   level of Sun Java Creator or Visual Basic for creating 3D
+   applications, lowering the bar for developers getting started.
+
+<p> Consider motion and animation effects -- again the 3D CD player serves
+   as an excellent example. For a designer to build a prototype of this
+   kind of interactivity is quite a challenge. That's one of the problems
+   for even the latest generation of 2D environments -- for example, even
+   Windows XP doesn't do zooming rectangles when you open a window or
+   folder -- something the original Mac OS had back in 1984. You open a
+   window or dialog on Windows XP, and it just pops to the front, with no
+   connection to where that window or dialog came from.
+
+<p> That's going to be a big challenge and opportunity -- building tools
+   for creating 3D user desktop interfaces.
+
+<h> What is the goal for the open source license?
+
+<p> We are still discussing this -- by the time this article is published,
+   we hope to have those details ironed out. Our current thinking is to
+   release the binaries under a free, business-friendly license, and the
+   source under the GPL or something similar. So, anyone can redistribute
+   released binaries freely.
+
+<p> For more information on the open source Project Looking Glass, see 3D
+   Desktop - Project Looking Glass on java.net and Sun's Project Looking
+   Glass page.
+
+<h> Will Iverson served as Developer Relations Manager for the VisualCaf
+   group at Symantec, as the Java & Runtimes Product Manager at Apple
+   Computer and has led Cascade Technology Group, a private consulting
+   firm, since 1999.

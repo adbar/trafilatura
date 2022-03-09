@@ -1,0 +1,128 @@
+URL: http://www.michaelgreer.com/keep_moving.htm
+
+<h>KEEPING THINGS MOVING:
+<h>A "To Do" List and Items to Help You Execute, Control, and Close Out Your
+Project
+
+   <h>(This is a sample tool from The Project Manager's Partner, by Michael
+   Greer.)
+
+   <h>Instructions: 
+   <p>After your project plan is approved and you are up and
+   running, you can use the checklist below and related items to help you
+   keep things moving according to your plan. Go through this list at
+   least weekly for each project you are managing.
+
+   <h>CHECK YOUR PROJECT'S SCOPE.
+
+   <p>Refresh your memory about your project's goals and boundaries. In
+   particular, make sure you have a clear picture of what the desired
+   results should be at this point relative to deliverables, schedule
+   costs, quality, and so on.
+
+   <p>(See Worksheet: Project Scope Statement* under Action Item: Describe
+   Project Scope if you don't already have a formal scope statement.*)
+
+   <h>CHECK YOUR DELIVERABLES.
+
+   <p>Analyze the status of each project deliverable. Are they evolving as
+   planned? If appropriate:
+
+   <l>1. Locate lists of quality criteria that may be applied to inspect the
+   quality and completeness of the deliverables at this stage of the
+   project.
+
+   <l>2. Check contractors' proposals or contracts to make sure you know
+   what they should be supplying at this point.
+
+   <l>3. Inspect all project deliverables.
+
+   <l>4. Decide whether to accept inspected deliverables or to require
+   rework.
+
+   <p>(See Worksheet: Project Deliverables Status Analyzer.*)
+
+   <h>CHECK YOUR SCHEDULE.
+
+   <p>Examine your milestones, key dates, and critical path. Are you where
+   you need to be?
+
+   <h>ANALYZE VARIANCES (DEVIATIONS FROM PLAN) BY COMPARING "ESTIMATED" TO
+   "ACTUAL."
+
+   <l>1. Are activities taking longer than planned? (Are you exceeding
+   estimates of duration?)
+
+   <l>2. Are you using more resource hours than you planned?
+
+   <l>3. Are your actual costs exceeding your estimated costs?
+
+   <l>4. If minor variances are discovered (variances that can be resolved
+   easily without changing the plan or scope), then resolve them.
+
+   <l>5. If major variances are discovered (variances that change the scope
+   or constitute significant project issues), then handle them as
+   described in the steps below.
+   <p>(See Worksheet: Variance Analyzer.*)
+
+   <h>ADDRESS SCOPE CHANGES.
+
+   <l>1. Identify changes in scope (changes in deliverables, schedule,
+   costs, etc.).
+
+   <l>2. Handle scope changes, if necessary.
+
+   <p>(See Guidelines: Handling Scope Change* and Worksheet: Project Scope
+   Change Order.*)
+
+   <h>LIST, TRACK, AND TRY TO RESOLVE OPEN ISSUES.
+
+   <l>1. Make a list of all the unresolved issues, or
+
+   <l>2. Revisit the list of open issues from the last inspection period and
+   try to resolve them.
+
+   <p>(See Worksheet: Project Issue Tracker.*)
+
+   <h>REVISIT POTENTIAL PROJECT RISKS.
+
+   <l>1. Locate the Risk Management Plan, if one has been created.
+
+   <l>2. Note particularly whether any of the ongoing events or upcoming
+   events are identified in the risk management plan as particularly
+   vulnerable to risk.
+
+   <h>REPORT PROJECT STATUS.
+
+   <l>1. After completing the checks above, if you haven't already done so,
+   talk to your team members and determine their perspective on project
+   status.
+
+   <l>2. Create and circulate a project status report.
+
+   <p>(See Worksheet: The Project Status Report.*)
+
+   <h>DRIVE FOR CLOSE-OUT OF ACTIVITIES AND SIGN-OFF OF DELIVERABLES AS
+   APPROPRIATE.
+
+   <l>1. Ask yourself, "What activities can I close out? Which deliverables
+   can I get formally approved and signed-off?"
+
+   <l>2. Prepare and get signatures on sign-off forms as appropriate.
+
+   <p>(See Worksheet: Sample Project Sign-off Form* under Action Item: Close
+   Out Project Activities.*)
+
+   <h>DECIDE WHETHER IT'S NECESSARY TO KILL THE PROJECT, THEN DO SO IF
+   APPROPRIATE. 
+   <p>(See Appendix E: Guidelines--When to Kill the Project.*)
+
+   <h>CREATE A LIST OF LESSONS LEARNED.
+
+   <p>Create a list of lessons learned that describes the ways subsequent
+   project activities must be modified in order to prevent the
+   difficulties encountered up to this point.
+
+   <h>COMPLETE APPROPRIATE EVALUATION CHECKLISTS.
+   <p>Complete evaluation checklists, if applicable, and file them as part
+   of the official project records.

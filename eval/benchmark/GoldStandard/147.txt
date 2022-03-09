@@ -1,0 +1,343 @@
+URL: http://pubs.usgs.gov/gip/continents/
+
+<h>OUR CHANGING CONTINENT
+
+  <h>By John S. Schlee
+
+    <p>Where were the land areas and oceans of the North American
+   Continent 1 million years ago, compared to their present locations?
+   Was North America always about the same size and shape that it is
+   today?
+
+   <p>To answer these questions, geologists construct maps of the lands and
+   seas as they existed in past ages. This process of reconstructing
+   ancient geography is called paleogeography (from the Greek word
+   "palaios," meaning ancient).
+
+  <h>Clues to the Past
+
+   <p>Like a modern-day sleuth, geologists must interpret the clues they
+   find preserved in the rocks. These clues are of two main kinds: the
+   types of fossils contained in the rocks and the properties of the
+   rocks themselves. When interpreted, these clues can give not only
+   direct knowledge about the distribution of the lands and the seas, but
+   also about the natural environment of the area, such as the climate,
+   the temperature and salinity of the water, and the downhill direction
+   of slopes on the Earth's surface. The last item is very important if
+   we are to infer where the mountains and basins were located in the
+   geologic past.
+
+    <h>Fossils as clues
+
+   <p>The distribution of fossils (skeletons, shells, leaf impressions,
+   footprints, and dinosaur eggs) in rocks of a certain age tells
+   something about the ancient distribution of lands and seas on the
+   Earth's surface. The remains of coral and clamshells found in the very
+   old limestones in parts of Pennsylvania and New York indicate that
+   this region was once covered by a shallow sea. Similarly, the remains
+   of ancestral horses and camels in rocks of South Dakota show that the
+   area was then dry land or that land was nearby.
+
+   <p>A closer look at these fossils will tell even more. Their distribution
+   identifies the ancient areas of land and sea, and also determines the
+   approximate shoreline. The distribution of living forms shows that
+   thick-shelled fossil animals once lived in shallow water close to
+   shore, where their shells were built to withstand the surging and
+   pounding of waves. Thin-shelled, delicate fossil animals probably
+   lived in deeper, calmer water offshore.
+
+   <h>Fossil scallops of Cretaceous age from north-central Texas.
+
+   <h>Living corals on a modern coral reef off Florida (photo by E.A.
+   Shinn).
+
+   <p>In addition to providing a measure of water depth, fossils can also be
+   used to indicate the former temperature of water. In order to survive,
+   certain types of present-day coral must live in warm and shallow
+   tropical saltwaters, such as in the seas around Florida and the
+   Bahamas. When similar types of coral are found in the ancient
+   limestones, they provide a good estimate of the marine environment
+   that must have existed when they were alive.
+
+   <p>All these factors -- depth, temperature, currents, and salinity --
+   that are revealed by fossils are important, for each detail tends to
+   sharpen and clarify the picture of ancient geography.
+
+    <h>Rocks as clues
+
+   <p>The properties of the rocks are also important clues and are used as
+   guides in reconstructing paleogeography. A few examples will show some
+   of the properties of rocks that are used to decipher the past.
+
+   <p>Before the 1830's, geologists were uncertain about the origin of
+   deposits of boulders crudely mixed with sand, silt, and clay which
+   cover large portions of Europe and North America. Associated with
+   these deposits were large, striated boulders (some as large as a
+   house) and scratched and grooved bedrock surfaces. Some naturalists
+   had speculated that these deposits originated from debris laid down
+   during the Biblical Flood, whereas others suggested that they were
+   caused by sediment from melting icebergs.
+
+   <h>Glacial grooves and striations on rocks in Massachusetts.
+   
+   <h>The terminus of the Columbia Glacier, Prince William Sound, Alaska, in
+   1976.
+
+   <p>In 1836 the famous naturalist Louis Agassiz spent a summer in the
+   Swiss Alps, where he had an opportunity to examine the glaciers and
+   glacial deposits of the area. From his observations, Agassiz concluded
+   that this blanket of boulders, sand, and clay had been spread across
+   much of Europe by large continental glaciers during a prehistoric Ice
+   Age.
+
+   <p>Much of what Agassiz saw could be explained only by glacial action.
+   Because a glacier is a solid mass of ice, it moves very slowly, and as
+   it moves, it picks up all sizes of debris, ranging from huge boulders
+   to fine silts and clays. As the ice melts, all the debris is left
+   behind as a layer of poorly sorted material.
+
+   <p>From the nature and distribution of glacial deposits, geologists have
+   formed a picture of what the Earth looked like during a glacial event.
+
+   <p>In the same manner, geologists have recognized rocks that were once
+   ancient beach deposits because most beaches are composed of
+   well-sorted sand. The action of waves along the shores of ancient seas
+   washed out the silt and clay and left behind rounded grains of sand,
+   just as those along present shorelines. Offshore, where the bottom
+   waters are calmer, the finer sediment settles as mud. In a general
+   way, the size of the sediment grains shows the direction of slope on
+   the sea floor, because the sandy sediment will be near the shore and
+   the mud will be offshore. This same principle of sorting also applies
+   to ancient rocks; marine sandstones and conglomerates were formed
+   closer to shore than were the finer textured marine shales and
+   siltstones.
+
+   <p>The same concept of sorting can be used with nonmarine formations,
+   such as river and delta deposits , to determine the direction of
+   paleoslope (ancient slope). Rivers (like waves) sort the rock debris,
+   leaving the coarser materials near the head of the stream and carrying
+   the finer materials downstream toward the coast.
+
+   <h>Fluviatile cross beds in Supai Sandstone, Grand Canyon, Arizona.
+   
+   <h>Sketch showing current directions and downstream dip of cross beds.
+
+   <p>To provide additional information on the direction of flow of ancient
+   streams, geologists study the arrangement of the layers in stream
+   deposits. A close look at many sandstones, for example, shows inclined
+   layers of sand, called cross beds. By determining the direction in
+   which the cross beds are inclined, geologists can tell the direction
+   in which water flowed when the sand grains were deposited. Even today,
+   sands are forming cross beds, particularly in river channels and in
+   shoal areas where ripplelike dunes form across the channel. Like dunes
+   in a desert, these dunes slowly move in a downstream direction. The
+   current carries the sand grains up the gently inclined upstream side
+   of the dunes and deposits them on the steeper sloping downstream side.
+   The inclined layers of sand are deposited on the front of the dune,
+   producing beds with a downstream (downcurrent) dip. Dip measurements
+   from a great many cross beds in rocks of the same age that are exposed
+   over a wide area show a useful pattern of ancient flow direction
+   (paleocurrent). Both sorting and layering of sediments in river
+   deposits are used to determine the location of ancient highlands and
+   lowlands.
+
+    <h>Maps as pictures
+
+   <p>To obtain a picture of ancient geography as it existed during a
+   particular interval of geologic time, geologists plot the distribution
+   of various kinds of rocks for a given geologic age on a map. Then, by
+   noting the location of the delta deposits, the beach deposits, and the
+   stream deposits, geologists can determine the approximate location of
+   an ancient shoreline that separated land from sea.
+
+   <p>Fossils, the size and sorting of grains, and the direction of cross
+   beds in rocks are only a few of many such clues, although they are the
+   most useful, that geologists use to reconstruct paleogeography. By
+   using these data, geologists reconstruct pictures of the geography of
+   the North American Continent during each of the various periods of
+   geologic time, such as the Great Ice Age (Pleistocene Epoch), the Age
+   of Dinosaurs (Cretaceous Period), and the Coal Age (Pennsylvanian
+   Period).
+
+  <h>The Great Ice Age
+
+   <p>The maximum extent of glacial ice in the north polar area during
+   Pleistocene time.
+       During the Great Ice Age, or Pleistocene Epoch, which began about
+   2 million years ago, large portions of Canada and the Northern United
+   States were blanketed by the continental ice sheet, as shown on the
+   map. Much of the rich soil of the Midwest is glacial in origin, and
+   the drainage patterns of the Ohio River and the position of the Great
+   Lakes were influenced by the ice. The effects of the glaciers can be
+   seen in the stony soil of some areas, the hilly land surfaces dotted
+   with lakes, the scratched and grooved bedrock surfaces, and the long,
+   low ridges composed of sand and gravel which formed at the front of
+   the ice sheet.
+
+   <p>Increased rainfall in the area south of the continental ice sheet
+   formed large lakes in Utah, Nevada, and California. Remnants of these
+   ancient lakes still exist today as the Great Salt Lake, Pyramid Lake,
+   Winnemucca, and many others. Ancient shorelines for these old lakes
+   can be found along the sides of mountains, as for example, near Provo,
+   Utah.
+
+   <p>The tremendous size of the ice sheet further influenced paleogeography
+   by lowering sea level about 450 feet below the present level; the
+   water contained in the ice and snow came from the oceans. The
+   continental shelves around our continent, as well as the other
+   continents of the world, were above water and, as a result, some
+   States such as Florida were much larger than they are today. The
+   shoreline deposits and shells at the edge of the Continental Shelf, in
+   waters to 450 feet deep, are evidence of this marked drop in sea level
+   during the Pleistocene.
+
+      <h>Generalized geographic map of North America in Pleistocene time.
+
+  <h>The Age of Dinosaurs
+
+   <p>Eighty million years ago, during the Age of Dinosaurs, the geography
+   of North America was very different from that of today. Mountain
+   ranges have changed considerably since this, the Cretaceous Period.
+   The Appalachian Mountains were probably lower and less conspicuous as
+   a source of sediment than they are today; apparently they supplied
+   appreciable amounts of coarse sediment only in the Southeast
+   (Tennessee, Alabama, Mississippi, and Georgia). The Rocky Mountains,
+   as they are today, did not exist; instead a giant trough in which
+   marine sediment slowly accumulated occupied this part of the West.
+   Shallow, warm inland seas covered large portions of the Southern and
+   Western United States, as shown on the map. Large portions of
+   California were under water, and in eastern California, Nevada,
+   Arizona, Idaho, eastern Oregon, Washington, and Alberta, a belt of the
+   Earth's crust slowly rose to form a new mountain range. Details from
+   this vast highland extended eastward into Utah, Wyoming, Colorado, and
+   New Mexico. Still farther east, Kansas, Nebraska, and adjacent States
+   to the north and south were covered by warm, extensive, but shallow
+   seas in which beds of limestone slowly formed.
+
+     <h>Generalized geographic map of the United States in Late Cretaceous
+                                   time.
+
+   <p>The Cretaceous Period marked the last extensive covering of the North
+   American continent by the sea. Since then, sea level has dropped and
+   the continent has gradually emerged to its present size and shape.
+
+  <h>The Coal Age
+
+   <p>As we move backward in time from the Great Ice Age, to the Age of
+   Dinosaurs, and then to the Coal Age, the contrast in the distribution
+   of land and water from the ancient past to the present becomes more
+   dramatic. The map shows the outline of the United States as it looked
+   during the Pennsylvanian Period some 300 million years ago. It gives
+   the appearance of reversing present-day geography.
+
+   <h>Generalized geographic map of the United States in Middle
+   Pennsylvanian time.
+
+   <p>A highland which lay to the east, south, and north supplied much of
+   the sedimentary debris that was spread over the midwestern part of the
+   United States. The Midwest was mainly a low swampy area in which
+   scouring rushes and fern trees grew in profusion. Sediment was carried
+   into the region from deltas to the east. From time to time, the level
+   of the sea fluctuated -- possibly because of glacial conditions in the
+   Southern Hemisphere. Swamps were flooded, and forests were destroyed.
+   Slowly, layers rich in tree stumps, spores, branches, and leaves were
+   deposited. Later, heat and pressure changed these layers into the coal
+   beds that are so extensive in Illinois, Kentucky, Pennsylvania, West
+   Virginia, and Tennessee. To the west, marine limestones, sandstones,
+   and shales accumulated in shallow seas whose vast expanses were dotted
+   with shoals and islands. Some of the very large islands were formed by
+   the buckling and uplifting of parts of the Earth's crust. 
+
+   <h>Restoration of a coal-swamp forest in Pennsylvanian time (photograph
+   courtesy of the Field Museum of Natural History).
+
+   <p>The maps depicting the Pleistocene Epoch and the Cretaceous and
+   Pennsylvanian Periods give a simplified picture of the changes in the
+   size and shape of the continent. Examinations of older and older rocks
+   show that in the earlier periods, the land areas of the North American
+   Continent were much smaller and were largely confined to central and
+   northern Canada. In fact, during much of geologic time, large parts of
+   the continental United States were covered by shallow seas in which
+   lime, mud, and sand accumulated.
+
+   <p>The maps show that the mountain ranges have buckled the Earth's crust
+   from time to time. Most of these ranges were located along the eastern
+   and western margins of the present continent, and erosion of newly
+   formed highlands contributed sediment toward the center of the
+   continent. Eventually, these ranges were worn down (as in the
+   Appalachian region during the Cretaceous Period). The process of
+   mountain building continued, however, either by renewed uplift and
+   erosion of old mountain ranges such as in the Appalachians, or by
+   building new and youthful mountains such as those that make up the
+   Coast Range of California.
+
+   <p>The appearance of our continent has been continuously changed by this
+   complicated sequence of mountain building, erosion, and deposition of
+   sediment in slowly sinking troughs, followed by more crustal movement.
+
+   <p>These changes are still going on today, although they are so gradual
+   that only occasionally do we become aware of them. One dramatic effect
+   of change is the jolting movement of a portion of the Earth's crust
+   during an earthquake. Another is the fire and devastation associated
+   with the building of a volcano during eruptions, like that of Mount
+   St. Helens in 1980. Such spectacular actions by nature in building
+   continents are combined with the less noticeable processes of erosion
+   and deposition that have gradually shaped and changed the face of the
+   North American Continent and the entire planet throughout geologic
+   time.
+
+   <h>In the early stages of the development of the U.S.
+   Atlantic continental margin, North America moved away from Africa,
+   Europe, and South America.
+
+   <p>Not only has the geography of continents changed slowly over
+   milleniums but so has their position. About 200 million years ago, a
+   supercontinent (called Pangea) linked North and South America, Africa,
+   and Europe. One of the exciting new advances in geology since the
+   early 1960's has been the realization that the continents and
+   substantial parts of the bordering ocean floor have slowly movedwith
+   respect to each other and that the outermost layer of the Earth's
+   crust is made up of lithospheric plates. As these thin plates of
+   oceanic and continental crust move, they change the positions of the
+   continent; the theory that describes their formation, movement, and
+   destruction is called plate tectonics.
+
+   <h>Lithosphere plates of the Earth.
+
+   <p>Scientists of the U.S. Geological Survey, together with all geologists
+   working in the many fields of research, continually add to the fund of
+   information about the Earth -- its origins, its mineral resources, and
+   the processes that change its crustal features. Studies of the
+   physical and chemical properties of rocks are coupled with studies of
+   the development of life in its myriad forms to provide the data which,
+   when fitted together, lead to a better understanding of the successive
+   changes that have occurred on the Earth. These concepts, like the maps
+   shown in this leaflet, are "incomplete" because much information has
+   yet to be discovered. But as geologists' knowledge of the Earth
+   increases, the record of its history has become clearer and more
+   meaningful.
+
+   <p>This publication is one of a series of general interest publications
+   (GIPs) prepared by the U.S. Geological Survey to provide information
+   about the earth sciences, natural resources, and the environment. To
+   obtain a catalog of additional titles in the series "General Interest
+   Publications of the U.S. Geological Survey," write:
+
+   <p>USGS Information Services
+   P.O. Box 25425, Federal Center
+   Denver, CO 80225
+
+   <p>or visit for a list of online GIPs.
+
+   <p>As the Nation's principal conservation agency, the Department of the
+   Interior has responsibility for most of our nationally owned public
+   lands and natural resources. This includes fostering the wisest use of
+   our land and water resources, protecting our fish and wildlife,
+   preserving the environmental and cultural values of our national parks
+   and historical places, and providing for the enjoyment of life through
+   outdoor recreation. The Department assesses our energy and mineral
+   resources and works to assure that their development is in the best
+   interests of all our people. The Department also has a major
+   responsibility for American Indian reservation communities and for
+   people who live in Island Territories under U.S. administration.
+     

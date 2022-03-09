@@ -1,0 +1,969 @@
+<text id="http://java.sun.com/developer/technicalArticles/javaopensource/plg.html" title="Project Looking Glass: Its Architecture and a Sneak Preview of the API" encoding="iso-8859-1">
+
+
+
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script type='text/JavaScript' src='/js/cookie_get.js'></script>
+<title>Project Looking Glass: Its Architecture and a Sneak Preview of the API</title>
+<meta name="collection" content="reference">
+<meta name="description" content="Bring a richer user experience to the desktop and to applications, through 3D windowing and visualization  c capabilities. This article covers Project Looking Glass' main features and API, its basic organization, and the functionality of important classes.">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="date" content="2004-11-30">
+<link rel="stylesheet" href="/css/default_developer.css" />
+<script language="JavaScript" type="text/javascript" src="/js/popUp.js"></script>
+<script language="javascript1.2" type="text/javascript" src="/js/sniff.js"></script>
+<script language="javascript1.2" type="text/javascript" src="/js/menucontent.js"></script>
+<script language="javascript1.2" type="text/javascript" src="/js/menucode.js"></script>
+<script language="javascript1.2" type="text/javascript" src="/js/developer.js"></script>
+</head>
+<!--stopindex-->
+<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" rightmargin="0" bgcolor="#ffffff" onload="prepmenus(); done=true">
+<a name="top"></a>
+<!-- BEGIN GENERIC MASTHEAD -->
+<!-- BEGIN A1 COMPONENT V.0 -->
+<div class="a1 a1r2">
+<div class="a1v0">
+<a href="#skip2content" class="skiplink">Skip to Content</a>
+<span class="toolbarlinks">
+<a href="/global/mh/java/">Java</a>
+<a href="/global/mh/solaris/">Solaris</a>
+<a href="/global/mh/communities/" class="dividelink">Communities</a>
+<a href="http://developers.sun.com/global/my_profile.html">My SDN Account</a>
+<a href="http://developers.sun.com/global/join_sdn.html" class="dividelink">Join SDN</a>
+</span>
+</div>
+</div>
+<!-- END A1 COMPONENT V.0 -->
+<!-- BEGIN A2 COMPONENT V.1 -->
+<div class="a2w0">
+<div class="a2" id="a2v1">
+<div class="a2w1"><div class="a2w2"><div class="a2w3"><div class="a2w4">
+<div class="a2topiclinks">
+<div class="a2search">
+<form action="http://developers.sun.com/search/onesearch/index.jsp" accept-charset="utf-8" method="GET">
+<input type="hidden" name="charset" value="utf-8">
+<input type="hidden" name="col" value="developer-reference">
+<span class="rightarrowwhite">&raquo;</span>&nbsp;<a href="http://developers.sun.com/global/search_tips.html">search tips</a>&nbsp;
+<input class="searchfield" name="qt" class="medium" size="7" onFocus="if( this.value==this.defaultValue ) this.value='';" value="Search">
+<input id="searchbttn" type="image" border="0" src="/im/a2_bttn_search.gif" alt="Submit Search">
+</form>
+</div>
+<a href="http://java.sun.com" title="Home Page" id="sunlogo"><img src="/im/a.gif" alt="Home Page" width="98" height="58" border="0" /></a>
+<a href="http://developers.sun.com" title="Sun Developer Network"><img src="/im/a.gif" id="venuespacer" alt="Sun Developer Network" width="400" height="33" border="0" /></a>
+<ul id="mtopics">
+<li id="mtopic1"><a id="glink1" class="tpclink a2menu" title="See All APIs" href="/global/mh/api/index.html">APIs</a></li>
+<li id="mtopic2"><a id="glink2" class="tpclink a2menu" title="See All Downloads" href="/global/mh/downloads/index.html">Downloads</a></li>
+<li id="mtopic3"><a id="glink3" class="tpclink a2menu" title="See All Technologies &amp; Solutions" href="/global/mh/tech/index.html">Technologies</a></li>
+<li id="mtopic4"><a id="glink4" class="tpclink a2menu" title="See All Products" href="/global/mh/products/index.html">Products</a></li>
+<li id="mtopic5"><a id="glink5" class="tpclink a2menu" title="See All Support" href="/global/mh/support/index.html">Support</a></li>
+<li id="mtopic6"><a id="glink6" class="tpclink a2menu" title="See All Training" href="/global/mh/training/index.html">Training</a></li>
+<li id="mtopic7"><a id="glink7" class="tpclink a2menu" title="See All Sun.com" href="/global/mh/suncom/index.html">Sun.com</a></li>
+</ul>
+</div>
+</div></div></div></div>
+</div></div>
+<!-- END A2 COMPONENT V.1 -->
+<!-- END GENERIC MASTHEAD -->
+<!-- BEGIN BREADCRUMB -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="vatop">
+<tr>
+<td>      
+<div class="breadcrumb">
+<a href="http://developers.sun.com/index.html">Developers Home</a> &gt; <a href="http://developers.sun.com/prodtech/index.html">Products & Technologies</a> &gt; <a href="http://java.sun.com/index.jsp">Java Technology</a> &gt; <a href="http://java.sun.com/reference/index.html">Reference</a> &gt; <a href="http://java.sun.com/reference/techart/index.html">Technical Articles and Tips</a> &gt; <a href="http://java.sun.com/developer/technicalArticles/index.html">Developer Technical Articles & Tips</a> &gt; <a href="http://java.sun.com/developer/technicalArticles/javaopensource/index.html">Java Technology Open-Source Projects</a> &gt;
+</div>
+</td>
+<td align="right" nowrap="nowrap"><div class="breadcrumb">
+</div></td></tr>
+<tr><td colspan="2"><img src="/im/a.gif" width="770" height="1" border="0" alt=" " /></td></tr>
+</table>
+<span class="sp5">&nbsp;</span><br />
+<!-- END BREADCRUMB -->
+<!-- BEGIN PAGETITLE -->
+<div class="pagetitle2">Article</div>
+<div class="smallpagetitle"><h1>Project Looking Glass: Its Architecture and a Sneak Preview of the API</h1></div>
+<!-- END PAGETITLE -->
+<!-- BEGIN WRAPPER TABLE, 2 COLUMN, MAIN/RIGHT -->
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+<tr><td width="100%" valign="top">
+<!-- BEGIN CENTRAL COLUMN COMPONENTS -->
+<!--startindex-->
+<!-- ============ -->
+<!-- MAIN CONTENT -->
+<!-- ============ -->
+<a name="skip2content"></a>
+<!--  BEGIN VCD4 PFV  -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td class="smaller" valign="top"><em></em></td>
+<td width="10">&nbsp;</td>
+<td align="right" valign="bottom"><div class="sitelinks" style="padding:0px;">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="bottom" align="right">&nbsp;</td>
+<td valign="bottom" class="smaller" nowrap="nowrap"><a href="/jsp_utils/PrintPage.jsp" target="printFriendlyView" onclick="openPopup('','printFriendlyView',710,650,'no',1,1,0,0,0,0); return true;"><img src="/im/ic_print.gif" width="14" height="12" alt="Print-friendly Version" border="0" hspace="4" />Print-friendly Version</a><br></td>
+</tr></table></div>
+</td></tr>
+</table>
+<!--  END VCD4 PFV -->
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td class="smaller" valign="top"><em>
+By <a href="/features/authors.html#nourie">Dana Nourie</a>
+<br />
+Hideya Kawahara, November 2004
+</em></td>
+<td width="10">&nbsp;</td>
+<td align="right" valign="bottom">
+<div class="sitelinks" style="padding:0px;">
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+<!--
+<td valign="bottom" align="right"><img src="/im/ic_email.gif" width="14" height="12" border="0" hspace="4" vspace="1" alt=" " /></td>
+<td valign="bottom" class="smaller" nowrap="nowrap"><a href="#{link placeholder}">E-mail</a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="bottom" align="right">&nbsp;</td>
+<td valign="bottom" class="smaller" nowrap="nowrap"><a href="/jsp_utils/PrintPage.jsp" target="printFriendlyView" onclick="openPopup('','printFriendlyView',710,650,'no',1,1,0,0,0,0); return true;"><img src="/im/ic_print.gif" width="14" height="12" alt="Print-friendly Version" border="0" hspace="4" />Print-friendly Version</a></td>
+<td>&nbsp;&nbsp;</td>
+<td valign="bottom" align="right"><img src="/im/ic_download_thin.gif" width="9" height="14" hspace="4" border="0" alt=" " /></td>
+<td valign="bottom" class="smaller" nowrap="nowrap"><a href="#{link placeholder}">Download</a></td>
+-->
+</tr>
+</table>
+</div>
+</td></tr>
+</table>
+<!--  END VCD4 BYLINE AND TOOLS  -->
+<br>
+<p>
+Project Looking Glass (LG3D) exploits Java technology to bring a richer user experience to the desktop and to applications, through 3D windowing and visualization capabilities. This article covers Project Looking Glass' main features and API, its basic organization, and the functionality of important classes. You'll get an understanding of its high level architecture and where further development contributions are needed.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="380">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/applicationsScreenThumb.jpg" width="370" height="269" border="0" alt="Figure 1: An LG3D Desktop" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 1</b>: An LG3D Desktop.</span></div></td>
+</tr>
+</table>
+<span class="sp20">&nbsp;</span><br />
+<p>
+Project Looking Glass is an open source development project, so you can decide what areas you would like to dig into. The project supports both unmodified existing applications in a 3D space and APIs for 3D window managers and application development.
+</p>
+<p>
+Because Project Looking Glass is a work in progress, the details specified in this article are subject to change. The APIs are not final but are continuously evolving, improving, and expanding as more developers contribute to this project. Suggestions for improvement are invited via the <a href="http://www.javadesktop.org/forums/forum.jspa?forumID=56">LG3D discussion forum</a>.
+</p>
+<b>Supported Key Features</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+LG3D breaks past two boundaries in the world of user experience design: the 2D-ness of current desktop environments, and the way in which these desktop environments evolve. At a very high level, the project focuses on providing a solid platform for the exploration of the 3D desktop environment, and exploring creative ideas by developing 3D window managers (SceneManagers) and applications on top of the platform.
+</p>
+<p>
+Currently, Sun focuses on providing core functionality to kickstart the 3D exploration and refine the initial platform. The current platform supports the following key features:
+<ul>
+<li> Existing application (X11 client) initial integration</li>
+<li> Client-server scene graph platform</li>
+<li> Server-side animation execution</li>
+<li> Support for generic event systems</li>
+<li> Initial set of core APIs for building 3D widget sets</li>
+<li> Utilities for animated user feedback</li>
+</ul>
+</p>
+<b>Java Technology-based APIs and Implementation</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+Java technology is the primary development language because of the productivity gains it brings, its language safety features, and the rich set of supporting APIs it provides. These benefits promote more aggressive exploration of the new 3D desktop frontier. In the future, C++ bindings will be provided so that existing native applications can access the features of the LG3D platform.
+</p>
+<p>
+The LG3D API leverages the Java 3D API and provides additional features, including an animation system (to simplify writing rich user-experience applications) and APIs for 3D window manager development and interaction. The Java 3D API provides a set of object-oriented interfaces that support a simple, high-level programming model that can be used to build, render, and control the behavior of 3D objects and visual environments. Because LG3D is built on top of the Java 3D API, the platform leverages all these favorable features.
+</p>
+<p>
+A feature subset of the Java 3D API is exposed to the client side. This enables the future possibility of running the same client application program in a resource-limited environment like a set-top box or car navigation system.
+</p>
+<p>
+<b>Client-Server Scene Graphs</b>
+</p>
+<p>
+The client-server Java 3D Scene Graph software allows multiple processes to share the same virtual 3D universe. This technology allows the platform to execute a LG3D-aware 3D application in a separate process (even on a remote machine), while it displays a 3D user interface integrated within the single virtual universe with which the user interacts. Like the X client-server model, this enables clean isolation among applications and the platform.
+</p>
+<p>
+The platform provides an abstraction layer for communication protocol. The first developer's release uses RMI for convenience.
+</p>
+<p>
+<b>Note:</b> <i>Client-server</i> here does not imply client and server machines connected through a network but rather processes typically running on the same machine. A client is an application that issues requests to render its user interface. Typically, the machine runs a single server that receives rendering requests from clients and constructs the screen image.
+</p>
+<p>
+<b>Server-side Animation Execution</b>
+</p>
+<p>
+Animation typically operates on a scene graph per frame. A mechanism to execute animation on the server side is provided, so that client and server do not need to communicate per frame. The client specifies types of animation with parameters, such as duration.The platform provides several predefined animations. In addition, animation can be realized by leveraging animation support in model loaders. With those features, the limitations regarding server-side behavior is not considered critical.
+</p>
+<b>Existing Application Integration -- The Abstraction Layer</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+The abstraction layer can be roughly divided into two major areas: the Foundation Window System (FWS) module, and the Native Window representation module.
+</p>
+<p>
+The FWS module provides the integration with the underlying window system, including application visual capture and event delivery integration. The module includes a set of interfaces for implementation of different kind of plug-ins for a native window system.
+</p>
+<p>
+Currently there are two implementations, the X11 version and the AWT version. The X Window System (commonly X11 or X) is a windowing system for bitmap displays. It is the standard graphical interface on UNIX and UNIX-like operating systems like Linux, and is available for most modern operating systems. The X11 integration allows X applications to be run and displayed within the LG3D platform. The AWT version allows the platform to run operating systems that support required Java platform and Java 3D extension versions (such as Solaris and Windows), but without support for applications running in the native window system. This module resides under the <code>org.jdesktop.lg3d.displayserver.fws</code> package.
+</p>
+<p>
+The Native Window representation module sits on top of the FWS, and provides abstracted representation of the native window application's visual aspects.
+</p>
+<b>High Level Architecture</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+The LG3D platform's high-level architecture is illustrated in Figure 2, showing the X11 integration. An unmodified X Client Application communicates with the X Server, which is enhanced with the X Client Capture functionality. This enhanced X Server captures the client's visual representation and sends it to the LG3D Display Server, which manages rendering of the 3D space, using the Java 3D platform. For LG3D-aware 3D application development, the platform provides LG3D Java libraries that expose the Java API. The libraries communicate with the Display Server for constructing 3D visuals and exchanging events.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="410">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/client-side.jpg" width="400" height="265" border="0" alt="Figure 2: LDG3 High Level Diagram" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 2</b>: LDG3 High Level Diagram.</span></div></td>
+</tr>
+</table>
+<span class="sp20">&nbsp;</span><br />
+<p>
+The Scene Manager resides in the Display Server process. It communicates with the Display Server control and implements a policy regarding 3D application user interaction and arrangement in the 3D space.
+</p>
+<b>The Client-side API</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+The client-side API can be categorized into the following three areas:
+</p>
+<ul>
+<li> Java 3D-based scene graph classes</li>
+<li> the LG3D 3D component classes</li>
+<li> the LG3D utility classes</li>
+</ul>
+<p>
+The following diagram shows the relationships among major classes from the first two
+categories, a few from the third, and some of the Scene Manager-related
+classes.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="310">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/ClientSideClassesThumb.jpg" width="300" height="204" border="0" alt="Figure 3: Client-Side Classes" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 3</b>: Client-Side Classes.</span></div></td>
+</tr>
+</table>
+<a href="/developer/technicalArticles/javaopensource/images/ClientSideClasses.jpg">Click to enlarge</a><br>
+<span class="sp20">&nbsp;</span><br />
+<p>
+<b>Java 3D-based Scene Graph Classes</b>
+</p>
+<p>
+The Java 3D Scene Graph API is the primary rendering API for developing a LG3D-aware 3D applications and scene managers. It is located under the <code>org.jdesktop.lg3d.sg</code> package, and it exposes a feature subset of the Java 3D API to the client side. The exposed classes are almost the same as those of Java 3D, except that features that complicate implementation, such as <code>SharedGroup node</code>, have been removed. All the methods deal with type <code>double</code> have also been removed or replaced with a float version.
+</p>
+<p>
+This Scene Graph API is the basis for creating 3D visual effects of 3D applications and windowmanagers. In addition, the <code>org.jdesktop.lg3d.utils.shape</code> package provides pre-built utility shapes and appearances for convenience.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<p>
+<b>LG3D Component Classes</b>
+</p>
+<p>
+The 3D Component API resides in the <code>org.jdesktop.lg3d.wg</code> package and provides core functions for developing widgets in the LG3D Glass environment. The design is still in preliminary stages, and will be refined in the near future. The following table shows key classes residing in the package. (These classes are analogous to those of AWT without the tailing "3D.")
+</p>
+<!-- BEGIN VCD8 DATA TABLE COMPONENT  -->
+<div><b class="dkgrey">3D Component Classes</b></div>
+<div class="pad2x0x10x0">
+<table border="0" cellpadding="0" cellspacing="0" width="90%" class="vatop" summary="list of 3D Component Classes">
+<tr>
+<th width="15%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b>Class</b></div></th>
+<th width="85%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b>Description</b></div></th>
+</tr>
+<tr><td colspan="3"><img src="http://developers.sun.com/images/a.gif" width="1" height="2" border="0" alt=" " /></td></tr>
+<tr>
+<td><div class="datacell"><code>Component3D</code></div></td>
+<td><div class="datacell">The top level superclass of all the LG3D widget components. It supports visual rendering by adding scene graph node children created with the Java 3D-based Scene Graph API. Note that a restriction has been implemented not to allow a <code>Component3D</code> object to be added to another <code>Component3D</code> object as a child. <code>Container3D</code> needs to be used as a parent container in such cases. This class is also an event source and implements <code>LgEventSource</code> interface. Details of mouse event handling is described later. This class also includes built-in support for transition animation.</div><br /></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>Container3D</code></div></td>
+<td><div class="datacell">Extends <code>Component3D</code>. A <code>Container3D</code> object is a component that can hold other components as children, but cannot hold Java 3D-based scene graph objects. Typically, such a raw scene graph object is wrapped by a <code>Component3D</code> once before being added to a <code>Container3D</code> object.This class is typically used together with <code>LayoutManager3D</code>.</div><br /></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>Frame3D</code></div><br /></td>
+<td><div class="datacell">Extends <code>Container3D</code>. It is analogous to AWT's Frame class: the
+root container for an LG3D-aware 3D application. For example, it interacts with a Scene Manager (3D
+Window Manager) for positioning.</div><br /></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>Cursor3D</code></div><br /></td>
+<td><div class="datacell">Extends <code>Component3D</code> and is the root class of all 3D cursors.
+An application can define its own cursor by extending this class, or by using one of the
+constructors that takes a <code>Component3D</code> object as the cursor implementation. It also
+provides a way to register and retrieve cursors, as well as work with predefined cursors that a Scene
+Manager is required to initialize.</div><br /></td>
+</tr>
+<!--  FINAL LINE IS OF A DIFFERENT COLOR  -->
+<tr><td colspan="3" class="headerbar6"><img src="http://developers.sun.com/images/a.gif" width="1" height="1" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<span class="sp10">&nbsp;</span><br />
+<!-- END VCD8 DATA TABLE COMPONENT  -->
+<span class="sp10">&nbsp;</span><br />
+<p>
+The following code shows a simple example that uses the preceding key LG3D component classes. It displays a colored cube on the screen. Please refer to the <a href="https://lg3d-core.dev.java.net/">Javadoc API guide</a> for details on each method.
+</p>
+<!-- BEGIN VCD7 CODE SAMPLE COMPONENT  -->
+<div><b></b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<table border="0" cellpadding="10" cellspacing="0" width="100%" class="grey4">
+<tr><td><pre>public class SimpleApp {
+  public SimpleApp() {
+    Frame3D frame3d = new Frame3D();
+    ColorCube cube = new ColorCube(0.05f);
+    Compnent3D comp = new Component3D();
+    comp.addChild(cube);
+    comp.setCursor(Cursor3D.SMALL_CURSOR);
+    frame3d.addChild(comp);
+    frame3d.setCapabilities();
+    frame3d.setActive(true);
+    frame3d.setVisible(true);
+  }
+}</pre></td></tr>
+</table>
+<span class="sp20">&nbsp;</span><br />
+<!-- END VCD7 CODE SAMPLE COMPONENT  -->
+<b>Transition Animation Support</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+The <code>Component3D</code> class has two sets of methods for transformational change. One is the
+<code>set*()</code> method family, and the other is the <code>change*()</code> family:
+</p>
+<!-- BEGIN VCD8 DATA TABLE COMPONENT  -->
+<div><b class="dkgrey">3D Component Class Methods for Change</b></div>
+<div class="pad2x0x10x0">
+<table border="0" cellpadding="0" cellspacing="0" width="40%" class="vatop" summary="list of 3D Component Classes">
+<tr>
+<th width="50%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b><code>set*()</code> Family</b></div></th>
+<th width="50%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b><code>change*()</code> Family</b></div></th>
+</tr>
+<tr><td colspan="3"><img src="http://developers.sun.com/images/a.gif" width="1" height="2" border="0" alt=" " /></td></tr>
+<tr>
+<td><div class="datacell"><code>setTranslation()</code></td></code></div></td>
+<td><div class="datacell"><code>changeTranslation()</code></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>setRotationAngle()</code></div></td>
+<td><div class="datacell"><code>changeRotationAngle()</code></div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>setRotationAngle()</code></div></td>
+<td><div class="datacell"><code>changeScale()</code></div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>setVisible()</code></div></td>
+<td><div class="datacell"><code>changeVisibility()</code></div></td>
+</tr>
+<!--  FINAL LINE IS OF A DIFFERENT COLOR  -->
+<tr><td colspan="3" class="headerbar6"><img src="http://developers.sun.com/images/a.gif" width="1" height="1" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<span class="sp10">&nbsp;</span><br />
+<!-- END VCD8 DATA TABLE COMPONENT  -->
+<span class="sp10">&nbsp;</span><br />
+<p>
+The <code>set*()</code> methods make specified changes immediately, whereas the <code>change*()</code> changes may be delayed. For example, invoking  <code>setScale(2.0f)</code> changes the scale to 2.0 immediately, whereas invoking <code>changeScale(2.0f)</code> may take a few second while showing
+transition animation. The transition animation is pluggable. The <code>caller</code> invokes either event based on the situation.
+</p>
+<p>
+This framework is effective for simplifying the implementation of a component's natural motion shown in LG3D demos.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>Model Loader</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+Support for model loaders is considered a key feature of LG3D technology, as it brings visual designers into the development loop. The <code>ModelLoader</code> class provides a simple yet powerful mechanism to load a 3D model from a file, and it supports many formats using the Java 3D loader mechanism.
+</p>
+<p>
+The <code>ModelLoader</code> class extends <code>Component3D</code>, and the constructor takes a model file name, a Java 3D model loader class object, and a matrix for static transformation of the model.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>Event Adapter and Animation Classes</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+These components are located under the <code>org.jdesktop.lg3d.utils</code> package and form a major part of the LG3D utility classes.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="310">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/EventAdapterThumb.jpg" width="300" height="143" border="0" alt="Figure 5: Mouse Event Propagation" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 5</b>: Mouse Event Propagation.</span></div></td>
+</tr>
+</table>
+<a href="/developer/technicalArticles/javaopensource/images/EventAdapter.jpg">Click to enlarge</a><br>
+<span class="sp20">&nbsp;</span><br />
+<p>
+<b>Event Adapter</b>
+</p>
+<p>
+Classes under the <code>eventadapter</code> subpackage implement the <code>LgEventListener</code>
+interface and keep at least one reference to an object that implements the <code>Action</code> interface.
+An <code>Event Adapter</code> object is a receiver of events. It predigests the information provided through events and invokes the <code>performAction</code> method of an associated <code>Action</code> or <code>Action Adapter</code> object.
+</p>
+<p>
+<b>Action Adapter</b>
+</p>
+<p>
+Classes under the <code>actionadapter</code> subpackage implement the <code>Action</code> interface and keep at least one reference to an object that implements the <code>Action</code> interface. An <code>Action Adapter</code> object typically converts one kind of input into another by performing some processing against values propagated by <code>performAction</code> invocation. A action adapter class typically acts as a converter among different action types.
+</p>
+<p>
+<b>Action</b>
+</p>
+<p>
+Classes under the <code>action</code> subpackage implement the <code>Action</code> interface. These receive predigested information from an <code>Event Adapter</code> or <code>Action Adapter</code> object through a <code>performAction</code> method invocation and perform visual feedback. An <code>Action</code> object typically keeps a reference to an <code>Action Behavior</code> object in order to perform visual feedback based on animation.
+</p>
+<p>
+<b>Action Behavior</b>
+</p>
+<p>
+Classes under the <code>behavior</code> subpackage extend the <code>ActionBehavior</code> abstract class and implement basic animation. An <code>Action Behavior</code> object typically keeps a reference to a <code>Component3D</code> object and a <code>TransitionSmoother</code>, and performs animation using them.
+</p>
+<p>
+<b>Transition Smoother</b>
+</p>
+<p>
+Classes under the <code>smoother</code> subpackage provide reusable natural motion for action implementation. These classes implement the <code>TransitionSmoother</code> interface and generate reusable natural motion used in <code>ActionBehavior</code> implementation.
+</p>
+<p>
+The following code fragment uses event adapter and animation components. It rotates the <code>targetComp</code> object by 180 degrees back and forth in 1,000 milliseconds every time the <code>sourceComp</code> object is clicked:
+</p>
+<!-- BEGIN VCD7 CODE SAMPLE COMPONENT  -->
+<table border="0" cellpadding="10" cellspacing="0" width="100%" class="grey4">
+<tr><td><pre>new MouseClickedEventAdapter(sourceComp
+  new ToggleAdapter(
+    new RotateAction(targetComp, (float)Math.PI, 1000)));</pre></td></tr>
+</table>
+<span class="sp20">&nbsp;</span><br />
+<!-- END VCD7 CODE SAMPLE COMPONENT  -->
+<p>
+<code>MouseClickedEventAdapter</code> is an Event Adapter class, which extends the <code>LgEventLister</code> interface and registers itself to listen to <code>MouseEvent</code>. In the example, the event source to listen to is specified through the argument, which is the <code>sourceComp Component3D</code> object. Whenever it receives a <code>MouseEvent</code> from the object, it invokes the <code>performAction</code> method of an associated <code>Action</code> or <code>Action Adapter</code> object. In the example, a <code>ToggleAdapter</code> object is specified as an argument in the constructor.
+</p>
+<p>
+<code>ToggleAdapter</code> is an <code>Action Adapter</code>. It keeps an internal boolean state that gets toggled whenever the <code>performAction</code> method is invoked. It then invokes the <code>performAction</code> method of an associated object with the boolean state information. In the example, a <code>RotateAction</code> object is specified as an argument in the constructor. <code>RotateAction</code> is an <code>Action</code> class. The <code>performAction</code> method rotates the <code>targetComp</code> object based on the boolean argument. If it is true, it rotates the object by the given angle duration. In this case, the angle is &pi; (pi) in radians, which is 180 degrees, within the given duration, which is 1000 milliseconds. If the argument were false, it rotate the object back to the default position, which is 0 degree. By combining this method with the <code>ToggleAdapter</code> object, the flipping back-and-force motion is achieved.
+</p>
+<p>
+The <code>RotateAction</code> object internally creates an instance of the <code>RotationChanger</code> class and actually performs the rotation animation. It also creates an instance of the <code>NaturalFloatSmoother</code> class passing the duration parameter, 1000 milliseconds. This Transition Smoother object is then given the <code>RotationChanger</code> object through the constructor argument for its use to perform a natural flipping motion.
+</p>
+<p>
+The <code>RotationChanger</code> class is one of the predefined behaviors that execute on the server side. The <code>NaturalFloatSmoother</code> class implements the <code>TransitionSmoother</code> interface, which is the key class that implements all of the natural motion you see in the LG3D demo. The implementation algorithm and parameters are defined based on a heuristic approach. The algorithm is a bit expensive â€“ because of its frame-rate conversion.  Optimizations can be performed once an area is identified as a hot spot.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>The Scene Manager</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+The Scene Manager takes over the role of window manager for a 3D scene, since typical LG3D-aware 3D application user interfaces have unique shapes not limited to a window shape. The Scene Manager interacts with the user and applications. It implements management policy for applications running in the environment and is responsible for arranging those in the 3D space.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="453">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/VisualSetUp.jpg" width="443" height="224" border="0" alt="Figure 6: A Visual Set Up" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 6</b>: A Visual Set Up.</span></div></td>
+</tr>
+</table>
+<span class="sp20">&nbsp;</span><br />
+<p>
+Scene Manager design is a major area of future exploration. In order to stimulate many ideas, an initial framework for componentized Scene Manager technology has been provided. In the implementation, attention has been paid to two-and-a-half dimension as well as full three dimension experiences under the same abstraction. The following list shows the key Scene Manager components, along with its abstract class or interface name.
+</p>
+<ul>
+<li> Application Container (<code>AppContainer</code> abstract class)</li>
+<li> Taskbar (<code>Taskbar</code> abstract class)</li>
+<li> Background (<code>Background</code> abstract class)</li>
+<li> Global Light (<code>GlobalLights</code> abstract class)</li>
+<li> Cursor Module (<code>CursorModule</code> interface)</li>
+</ul>
+<p>
+These components are located under the <code>&#133;lg3d.scenemanager.utils</code> package.
+</p>
+<p>
+The following diagram shows the relationships among those Scene Manager components and other related LG3D classes. Note that Application Container is usually invisible.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="310">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/SceneManagerClassesThumb.jpg" width="300" height="222" border="0" alt="Figure 7: Scene Manager Classes" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 7</b>: Scene Manager Classes.</span></div></td>
+</tr>
+</table>
+<a href="/developer/technicalArticles/javaopensource/images/SceneManagerClasses.jpg">Click to enlarge</a><br>
+<span class="sp20">&nbsp;</span><br />
+<p>
+<b>SceneManagerBase</b></p>
+<p>
+<code>SceneManagerBase</code> is an implementation of <code>SceneManager</code> that integrates other Scene Manager components. It communicates with <code>DisplayServerControl</code> through the <code>DisplayServerManagerInterface</code>. <code>DisplayServerControl</code> is the main body of the LG3D Display Server module that is responsible for all the rendering that happens in the 3D space. The communication includes obtaining display-specific information like the field of view, setting view transform, and specifying the <code>CursorModule</code>. <code>DisplayServerControl</code> in turn communicates with <code>SceneManagerBase</code> through the <code>SceneManager</code> interface. The communication includes adding and removing a <code>Frame3D</code> object.
+</p>
+<p>
+When <code>setActive</code> method of <code>Frame3D</code> is invoked with an argument set to true, <code>DisplayServerControl</code> eventually receives server-side representation of the <code>Frame3D</code> object. The <code>DisplayServerControl</code> then in turn passes the object to the <code>SceneManagerBase</code> object. Note that the native window abstraction layer also provides a <code>Frame3D</code> object as the top level object with which Scene Manager interacts. In this way, there is no difference between an LG3D-aware 3D application and a 3D-mapped native window.
+</p>
+<p>
+<b>Application Container</b>
+</p>
+<p>
+The <code>Application Container</code> is a key foundation for implementing the user interaction and application navigation capabilities of Scene Manager. It is also useful for achieving two-and-a-half dimension desktop experience. The application container is a subclass of <code>Container3D</code> and is specialized for hosting applications, such as <code>Frame3D</code> objects.
+</p>
+<p>
+An application container usually leverages the 3D layout manager to implement easy-to-access application arrangements in the container. It is key to leveraging the 3D space when arranging the applications. Based on a Scene Manager implementation exercise, the 3D layout manager turned out to be a flexible platform for achieving the goal while allowing implementations to be componentized.
+</p>
+<p>
+A single Scene Manager can host multiple application containers. The Scene Manager implements the concept of the current application container. It receives a <code>Frame3D</code> object when a new LG3D-aware application is activated. The current container can be switched dynamically. This feature is typically used to implement virtual desktop switching.
+</p>
+<p>
+<b>The Background</b>
+</p>
+<p>
+In the LG3D 3D desktop environment, the background is more than just a static image behind application windows. It actually defines the 3D environment with which the user can interact and where application containers can be positioned.
+</p>
+<p>
+The Background can comprise any 3D geometry as it is a subclass of <code>Container3D</code>, to which any geometry can be added and any behavior can be integrated.
+</p>
+<p>
+In addition to setting up the geometry to render on the background, the <code>Background</code> object also hosts application containers. The object usually keeps a reference to a <code>SceneManager</code> object that is passed through the <code>initialize</code> method, and invokes the <code>SceneManager</code> object to manage application containers including obtaining and switching current. Since <code>Application Container</code> is just a subclass of <code>Container3D</code>, the background object can place it anywhere in the 3D scene. It also can allow the user to handle multiple application containers by switching the current application container and changing the view so that the current one remains accessible to the user.
+</p>
+<p>
+For more details, you may want to check out the <code>SimpleImageBackground</code> class, which is a simple example implementation of background with comments.
+</p>
+<p>
+<b>Global Lights</b>
+</p>
+<p>
+Light is also componentized. Instead of a static global light that the default implementation provides (StandardGlobalLights), you can develop lights that dynamically change angle and color based on time of the day, for example. Or, a Scene Manager may want to use lighting effects to provide an alert or focus to the user.
+</p>
+<p>
+<b>Cursor Module</b>
+</p>
+<p>
+A <code>CursorModule</code> class implements policies on how cursor is displayed. It provides Scene Manager hooks for the addition and removal of <code>Cursor3D</code> objects, and a hook for positioning the current cursor. For example, in the default implementation <code>StandardCursorModule</code>, the maximum distance of the current cursor from the user's point of view is limited to a certain value so that the cursor will appear to the user at a reasonable size. Without this policy, a cursor could be drawn so far away on the surface of the background that the user would have difficulty finding it.
+</p>
+<b>Interaction Events Between Frame3D and Scene Manager</b>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%"
+class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" "
+/></td></tr>
+</table>
+</div>
+<p>
+The generic event system is employed as the main communication method between <code>Frame3D</code> and Scene Manager, to achieve both loosely coupled componentization and the interplay of a rich set of user actions and requests between them.
+</p>
+<p>
+This area needs more investigation. Currently, a few adhoc events have been introduced to achieve the initial demo features.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>Existing 2D Application Integration</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+The 2D application integration framework can be roughly divided into two major areas: the Foundation Window System (FWS) module and the Native Window representation module.
+</p>
+<table border="0" cellpadding="2" cellspacing="0" width="310">
+<tr>
+<td align="center" class="grey3"><img src="/developer/technicalArticles/javaopensource/images/2DIntegrationClassesThumb.jpg" width="300" height="222" border="0" alt="Figure 8: 2D Integration Classes" />
+<div class="pad3"> <span class="dkcaption1"> <b>Figure 8</b>: 2D Integration Classes.</span></div></td>
+</tr>
+</table>
+<a href="/developer/technicalArticles/javaopensource/images/2DIntegrationClasses.jpg">Click to enlarge</a><br>
+<span class="sp20">&nbsp;</span><br />
+<p>
+The FWS module provides the integration with the underlying window system, including application visual capture and event delivery integration. Since these interfaces are not a part of the client API and not visible to client application developers, this document does not cover any details.
+</p>
+<p>
+The Native Window representation module sits on top of the FWS, and provides abstracted representation of native window application's visual aspect. It is in the <code>org.jdesktop.lg3d.displayserver.nativewindow</code> package. Its two primary design goals are to
+<ul>
+<li> Allow a pluggable Look and Feel</li>
+<li> Encapsulate complexity around native window capture and communication</li>
+</ul>
+<p>
+The classes in this package attempt to abstract and hide all the complexity around the native application visual capture, as well as necessary communication with the application side. Figure 8 illustrates the relationships among the major classes. <code>NativeWindow3D</code> is the top level class with which <code>SceneManager</code> interacts. It extends Frame3D and behaves just like another LG3D-aware 3D application. It also implements the methods declared in <code>NativeWindowMonitor</code>, which are used for the native 2D window manager to give notifications about status changes, and so on. The implementation, in turn, uses <code>NativeWindowControl</code> interface to communicate back to the native window manager, so that it can perform actions on the 2D application
+associated with this object.
+</p>
+<p>
+<code>NativeWindowLookAndFeel</code> defines the native window's appearance and visual texture. At this level, typically, window decoration is constructed. The current implementation includes <code>GlassyNativeWindowLookAndFeel</code> in the <code>lg3d.scenemanager.utils.decoration</code> package as an example.
+</p>
+<p>
+<code>NativeWindowObject</code> and <code>TiledNativeWindowImage</code> exist to hide all the complexity related to native window capture support. Texture is used for presenting captured 2D window surfaces in the 3D space, but it has a size limitation that is sometimes smaller than maximum 2D window size. To deal with large 2D window capture, we use composite multiple textures created from a set of <code>ImageComponent2Ds</code>. The details are hidden under these classes.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>Window Decoration Customization</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+By subclassing <code>NativeWindowLookAndFeel</code>, you can develop your own window decoration. If you want a native window representation this is not on a simple quad &ndash; on a wavy sheet, for example &ndash you will need to implement a version of <code>NativeWindowObject</code> that supports the shape you want.
+</p>
+<p>
+An API to map multiple native window representations on surfaces of a single object is under development, which will be used to put another view on the back side of the window.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>A Quick Tour of the Project Looking Glass Source Code</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+Now that you've learned the basic architecture of Project Looking Glass and understand its important classes, you are invited to download the code and to begin contributing your programming skills. To work on this project, you need to be a <code>java.net</code> member, which is free upon registration. Then you can download and install a working version of the software and the source code.
+</p>
+<p>
+The Project Looking Glass source code is located in the <code>lg3d-core/src</code> CVS repository. The following table is an overview of the various files in the the repository.
+</p>
+<!-- BEGIN VCD8 DATA TABLE COMPONENT  -->
+<div><b class="dkgrey">Repository Files</b></div>
+<div class="pad2x0x10x0">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="vatop" summary="files in the repository">
+<tr>
+<th width="20%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b>Directory</b></div></th>
+<th width="80%" scope="col" align="left" class="headerbar6"><div class="headerpadding2"><b>Description</b></div></th>
+</tr>
+<tr><td colspan="3"><img src="http://developers.sun.com/images/a.gif" width="1" height="2" border="0" alt=" " /></td></tr>
+<tr>
+<td><div class="datacell"><code>build/</code></div></td>
+<td><div class="datacell">The build files are stored in this directory.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>build-tools/</code></div></td>
+<td><div class="datacell">Tools for building Project Looking Glass.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>build.xml</code></div></td>
+<td><div class="datacell">The Ant build control file.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>ext/</code></div></td>
+<td><div class="datacell">Components released with Project Looking Glass: escher (Java bindings to X11) and a stable build of <code>lg3d-x11</code>.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>ext-unbundled/</code></div></td>
+<td><div class="datacell">A directory in which you can put components not licensed for distribution with Project Looking Glass (that is, junit, Java3D loaders, and so forth.) You can also install your own build of <code>lg3d-x11</code> here instead of using <code>$LGX11HOME</code>.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>src/</code></div></td>
+<td><div class="datacell">The root of the <code>lg3d-core</code> source tree.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;classes/</code></div></td>
+<td><div class="datacell">All <code>.java</code> files. Refer to the Javadocs in the binary bundle in <code>docs/javadoc/api</code> for more information.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;devscripts/</code></div></td>
+<td><div class="datacell">Various Project Looking Glass development scripts. These utilize classes in the <code>build/</code> directory.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HelloUniverse</code></div></td>
+<td><div class="datacell">Runs the Java3D rotating cube demo in a Project Looking Glass session.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;README</code></div></td>
+<td><div class="datacell">Documentation for some scripts in this directory.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;displayserver</code></div></td>
+<td><div class="datacell">Runs the Display Server.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lg3d-dev</code></div></td>
+<td><div class="datacell">Runs a Project Looking Glass session in a window (developer or No X mode).</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lg3d-session</code></div></td>
+<td><div class="datacell">Runs a Project Looking Glass session in full screen mode, with X11 support.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setup</code></div></td>
+<td><div class="datacell">A helper script used by the other scripts.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;etc/</code></div></td>
+<td><div class="datacell">Contains various configuration files.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jz/</code></div></td>
+<td><div class="datacell">An obsolete directory.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lg3d/</code></div></td>
+<td><div class="datacell">&nbsp;</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;README</code></div></td>
+<td><div class="datacell">Documentation for the various <code>lgconfig*</code> files.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lgconfig*</code></div></td>
+<td><div class="datacell">Configuration scripts for the various modes in which Project Looking Glass can be run.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging.properties</code></div></td>
+<td><div class="datacell">Configuration file that controls the verbosity of logging output to the Display Server log file, <code>/var/tmp/lgserver.log</code></div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;displayconfig/</code></div></td>
+<td><div class="datacell">For the adventurous. Contains files that allow Project Looking Glass to be run in more complex display environments such as multi-screen, stereo, or power walls. The choice of configurations is controlled by the <code>lgconfig.xml</code><br /><b>WARNING!</b> Alternate display configurations have not been extensively tested yet.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;native/org/jdesktop/lg3d/displayserver/fws/x11/</code></div></td>
+<td><div class="datacell">The C code for X11 integration.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;resources/images/</code></div></td>
+<td><div class="datacell">Assorted images used by Project Looking Glass.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;scripts/</code></div></td>
+<td><div class="datacell">Scripts for running the Project Looking Glass release. These utilize classes from the release JAR files.</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;displayserver</code></div></td>
+<td><div class="datacell">Runs the Display Server (users should not run this directly).</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lg3d-dev</code></div></td>
+<td><div class="datacell">Runs a Project Looking Glass session in a window (developer or No X mode).</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lg3d-session</code></div></td>
+<td><div class="datacell">Runs a Project Looking Glass session in full screen mode, with X11 support.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;setup</code></div></td>
+<td><div class="datacell">A helper script uses by the other scripts. (Users should not run this directly).</div></td>
+</tr>
+<tr>
+<td><div class="datacell"><code>tests/</code></div></td>
+<td><div class="datacell">Eventually will hold the test suite for Project Looking Glass.</div></td>
+</tr>
+<tr class="grey5">
+<td><div class="datacell"><code>www/</code></div></td>
+<td><div class="datacell"><code>java.net</code> site pages and various documentation.</div></td>
+</tr>
+<!--  FINAL LINE IS OF A DIFFERENT COLOR  -->
+<tr><td colspan="3" class="headerbar6"><img src="http://developers.sun.com/images/a.gif" width="1" height="1" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<span class="sp10">&nbsp;</span><br />
+<!-- END VCD8 DATA TABLE COMPONENT  -->
+<span class="sp20">&nbsp;</span><br />
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>Areas That Require Developer Participation</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<p>
+The following areas need developer participation:
+</p>
+<ul>
+<li>LG3D 3D API refinements, refinements, refinements!</li>
+<li>Exploration of 3D Window Manager UI design, using the following documents as starting points:
+<ul>
+<li><a href="https://lg3d-core.dev.java.net/lg3d-ui-design.html"> Project Looking Glass UI Design Discussions</a></li>
+<li><a href="https://lg3d-core.dev.java.net/lg3d-related-technologies.html"> Related Technologies </a></li>
+</ul></li>
+<li>Exploration of new 3D applications</li>
+<li>C++ client-side API and implementation</li>
+<li>GNOME/KDE compatibility</li>
+</ul>
+<p>
+Also check <a href="https://lg3d-x11.dev.java.net/"> the <code>lg3d-x11</code> project page </a> for the topics specific to X11 integration.
+</p>
+<!-- <span class="sp10">&nbsp;</span><br /> -->
+<div><b>For More Information</b></div>
+<div class="contentdivider">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="grey4">
+<tr><td><img src="/im/a.gif" width="1" height="4" border="0" alt=" " /></td></tr>
+</table>
+</div>
+<ul>
+<li><a href="https://lg3d-core.dev.java.net/"> Project Looking Glass</a></li>
+<li><a href="https://lg3d-core.dev.java.net/"> <code>lg3d-core.dev.java.net</code></a></li>
+<li> <a href="https://lg3d-core.dev.java.net/lg3d-faq.html"> FAQ - Frequently Asked Questions </a></li>
+<li> <a href="https://lg3d-core.dev.java.net/lg3d-getting-started.html"> Getting started with Project Looking Glass </a></li>
+<ul>
+<li> <a href="https://lg3d-core.dev.java.net/nvidia-driver-install-tips.html"> NVIDIA Driver Installation Tips </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/dri-driver-install-ati-radeon.html"> DRI Driver installation for ATI Radeon </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/jds-3d-acceleration.html"> 3D Acceleration on a Tadpole Talin JDS Laptop (ATI Radeon M9) </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/dri-driver-install-ati-radeon-nonrpm.html">ATI Binary driver installation instructions for non-RPM-based distributions</a></li>
+</ul>
+<li>Project Looking Glass Tutorials:
+<ul>
+<li><a href="https://lg3d-core.dev.java.net/tutorial/tutorial1.html">Tutorial 1 - An introduction to the LG3D framework</a> - The basics of creating a 3D application within the LG3D framework</li>
+<li><a href="https://lg3d-core.dev.java.net/tutorial/tutorial2.html">Tutorial 2 - Simple manipulations and user interaction</a> - Simple manipulations and user interaction with a 3D application.</li>
+<li><a href="https://lg3d-core.dev.java.net/tutorial/tutorial3.html">Tutorial 3 - Complex manipulations and user interaction</a> - More complex manipulations and user interaction with a 3D application. Create a sphere with the Earth texture and a small handle to move it.</li>
+</ul></li>
+<li> <a href="https://lg3d-core.dev.java.net/lg3d-developers-guide.html"> Project Looking Glass Developer's Guide </a> </li>
+<li> <a href="http://www.javadesktop.org/forums/forum.jspa?forumID=56"><code> javadesktop.org</code> Forum: Project Looking Glass 3D </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/issues/query.cgi"> Issue Tracker Query </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/files/documents/1834/5964/J1-2004-TS1586-final.pdf"> JavaOne 2004 slides (PDF 900KB) </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/files/documents/1834/7596/LG3DAPIOverview-DRAFT.pdf"> DRAFT - LG3D API Design Overview (PDF 330KB) </a> </li>
+<li> <a href="https://lg3d-core.dev.java.net/lg3d-related-technologies.html"> Related Technologies </a></li>
+<li> <a href="https://lg3d-core.dev.java.net/lg3d-ui-design.html"> UI Design Discussions </a> </li>
+<li><a href="http://wiki.java.net/bin/view/Javadesktop/ProjectLookingGlass#KnowledgeBase"> TWiki.Javadesktop.ProjectLookingGlass</a></li>
+<li><a href="http://java.sun.com/developer/community/chat/JavaLive/2004/jl1026.html"> Chat Transcript with Guests Hideya Kawahara, Paul Byrne, and Deron Johnson</a>
+</ul>
+<br>
+<!-- BEGIN RATE AND REVIEW G16 var1 -->
+<script type="text/javascript">
+<!-- Hide script from older browsers
+// Popup window function
+function onRateSubmitHandler()
+{
+var w = window.open("","rr","width=800,height=600,status=no,toolbar=no,scrollbars=yes"); 
+w.setTimeout("window.close();", 30000 );
+return true;
+}
+// End of javascript 
+-->
+</script>
+<form name="form" method="post" action="https://www2.sun.de/dc/servlets/incoming" onSubmit="return onRateSubmitHandler()" target="rr">
+<input type="hidden" name="errcount" value="1" />
+<input type="hidden" name="ref" value="http://www2.sun.de/dc/forms/reg_xh_2610_243.jsp">
+<input type="hidden" name=""  value="">
+<table width="100%" cellspacing="0" cellpadding="1" border="0" class="dkgrey" style="margin-top:7px"><tr><td>
+<table width="100%" cellspacing="0" cellpadding="4" border="0" class="white">
+<tr><td class="dkgrey1"><b>Rate and Review</b></td></tr>
+<tr><td>Tell us what you think of the content of this page.</td></tr>
+<tr><td><b>
+<input type="radio" name="custom_3" value="Excellent"> Excellent&nbsp;&nbsp;
+<input type="radio" name="custom_3" value="Good"> Good&nbsp;&nbsp;
+<input type="radio" name="custom_3" value="Fair"> Fair&nbsp;&nbsp;
+<input type="radio" name="custom_3" value="Poor"> Poor&nbsp;&nbsp;
+</b></td></tr>
+<tr><td>
+<b>Comments:</b><br><textarea name="custom_2" cols="60" rows="3" wrap="virtual"></textarea></td></tr>
+<tr><td>
+<b>Your email address (no reply is possible without an address):</b><br>
+<a href="http://sun.com/privacy/" target="_new">Sun Privacy Policy</a><br>
+<input type="text" name="custom_1" value="" size="35" maxlength="60"> <br>
+Note: We are not able to respond to all submitted comments.</td></tr>
+<tr><td>
+<input type="submit" border="0" class="buttonblue" value="&nbsp;Submit &raquo;&nbsp;" onmouseover="this.style.color='#fbe249';" onmouseout="this.style.color='#FFF';">
+<input type="hidden" name="custom_0" value="Dana Nourie">
+<input type="hidden" name="custom_4" value="Project Looking Glass: Its Architecture and Sneak Preview ">
+<input type="hidden" name="custom_5" value="http://java.sun.com/developer/technicalArticles/javaopensource/plg.html">
+<input type="hidden" name="cf_Form_Name" value="Rate and Review - article feedback" />
+<input type="hidden" name="cf_Form_Location" value="Registrations" />
+<input type="hidden" name="cf_iso2" value="XH" />
+<input type="hidden" name="charset" value="ISO-8859-1">
+</td></tr></table></td></tr>
+</table></form>
+<!-- END RATE AND REVIEW G16 var1-->
+<!-- =================== -->
+<!-- END OF MAIN CONTENT -->
+<!-- =================== -->
+<!--stopindex-->
+<!-- END CENTRAL COLUMN COMPONENTS -->
+</td><td valign="top">
+<!-- BEGIN RIGHT COLUMN COMPONENTS -->
+<!-- END RIGHT COLUMN COMPONENTS -->
+</td></tr>
+<!-- BEGIN SPACER ROW -->
+<tr><td><img src="/im/a.gif" width="560" height="1" border="0" alt=" " /></td><td><img src="/im/a.gif" width="170" height="1" border="0" alt=" " /></td></tr>
+<!-- END SPACER ROW -->
+</table>
+<!-- END WRAPPER TABLE, 2 COLUMN, MAIN/RIGHT -->
+<!-- BEGIN VNV5 FOOTER  -->
+<table border="0" cellpadding="0" cellspacing="10" width="100%">
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="vatop">
+<tr>
+<td colspan="4" valign="top" class="grey3"><img src="/im/a.gif" width="1" height="2" border="0" alt="" /></td></tr>
+<tr>
+<td><img src="/im/a.gif" width="190" height="1" border="0" alt="" /><br />
+<a href="http://www.sun.com"><img src="/im/logo_sun_small_sdn.gif" width="61" height="29" border="0" alt="" vspace="5"/></a></td>
+<td width="100%" valign="top"><img src="/im/a.gif" width="350" height="1" border="0" alt="" /><br />
+<div class="footer">
+<a href="http://developers.sun.com/global/aboutsun.html">About Sun</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/aboutsdn.html">About This Site</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/newsletters.html">Newsletters</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/contact.html">Contact Us</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/employment.html">Employment</a><br />
+<a href="http://developers.sun.com/global/howtobuy.html">How to Buy</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/licensing.html">Licensing</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/termsofuse.html">Terms of Use</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/privacy.html">Privacy</a> &nbsp;|&nbsp;
+<a href="http://developers.sun.com/global/trademarks.html">Trademarks</a>
+<br /><span class="sp10">&nbsp;</span><br />
+<br /><span class="sp10">&nbsp;</span><br />
+Copyright 1994-2006 Sun Microsystems, Inc.
+</div></td>
+<td><img src="/im/a.gif" width="40" height="1" border="0" alt="" /></td>
+<td valign="top"><div class="footer"><b><a href="http://developers.sun.com/global/aboutsdn.html">A Sun Developer Network Site</a></b></div>
+<div class="footer">
+<img src="/im/a.gif" width="170" height="1" border="0" alt="" /><br />
+Unless otherwise licensed, code in all technical manuals herein (including articles, FAQs, samples) is provided under this <a href="http://developers.sun.com/global/berkeley_license.html">License</a>.
+<br /><span class="sp5">&nbsp;</span><br />
+<a href="http://developers.sun.com/global/rss_sdn.html"><img src="/im/button_xml.gif" width="36" height="14" align="top" border="0" alt="XML" /></a>&nbsp;<a href="http://developers.sun.com/global/content_feeds.html">Content Feeds</a>
+</div></td></tr>
+<tr><td colspan="4" valign="top" class="grey3"><img src="/im/a.gif" width="1" height="2" border="0" alt="" /></td></tr>
+</table>
+</td></tr>
+</table>
+<!-- END VNV5 FOOTER -->
+</body>
+<script language="JavaScript" src="/js/omi/jsc/s_code_remote.js"></script></html>
+
+
+
+
+</text>

@@ -1,0 +1,1648 @@
+URL: http://www.fas.org/man/congress/1996/s960315t.htm
+
+    <h>Tactical Aviation Issues in Review of the FY 97 Defense Budget
+    March 15, 1996 - Senate Armed Services AirLand Forces Subcommittee
+
+     <l>* Lt. General Harold Blot, Deputy Chief for Aviation, U.S. Marine
+       Corps
+     <l>* Maj. General David Mccloud, U.S. Air Force
+     <l>* Admiral Dennis Mcginn, Director, Air Warfare Division,Office of
+       Chief of Naval Operations
+     <l>* Craig Steidle, Director, Naval Advanced Strike Technology Program
+     <l>* Brig. General Robert Magnus, Assistant Deputy Chief of Staff,
+       Aviation
+     <l>* Lt. General Ed Eberhart, USAF Deputy Chief of Staff For Plans and
+       Operations,
+
+   <p>WARNER: The Committee will now come to order. We have before us a very
+   distinguishedarray of aviators this morning. And our subcommittee, as
+   the first hearing, leads off with someof the tough challenges. And we
+   welcome you.
+
+   <p>I'm going to put brief remarks in the record, but just sitting here
+   thinking back over a lifetimeof my own if I had to figure out, Senator
+   Levin, one or two disappointments in my lifetime -- thefirst was not
+   achieving Navy gold wings. But unfortunately World War II had ended,
+   and theydidn't need a lot of youngsters in the pipeline anymore and we
+   all went home.
+
+   <p>But, ever since then I've been highly envious of those of you who
+   sought as your professions-- aviation. It's a very challenging,
+   high-risk occupation. I realize, and I think most realize,every day
+   you get in that cockpit there's a certain measure of personal risk. I
+   want to thank each of you and tens of thousands like you, where ever
+   they are today, forhaving made this contribution to our nation's
+   security.
+
+   <p>The work of this Committee, however, is to try and evaluate the
+   various programs broughtforth by the commander-in-chief, the
+   President, to the Secretary of Defense, and the Secretariesof the Air
+   Force and Navy. And therein again, I've had the privilege of having a
+   good deal ofexperience through the years.
+   <p>And it's particularly sad for me to address this morning the F-14
+   program -- a program thatwas brought in while I served in the
+   Department of the Navy, and have spent a good many hoursin the rear
+   seat of that aircraft in the early days. But it's a fine airplane. It
+   has served the countrywell. And I hope that we can put fixes in to
+   allow it to continue to have service to the nation forsuch service
+   life technically as we can get out of it.
+
+   <p>The JAST program -- I was sort of sitting here scratching a note or
+   two -- the challenges hereare almost like going to the moon. And this
+   time it's TAC Air. There's a high technical risk. There's a high
+   financial risk. And there's a high political risk. All three of them
+   are wrappedup in this program.
+
+   <p>And we're very anxious to hear from you this morning on that, General,
+   so I won't takefurther time. We're anxious to hear from the witnesses,
+   but I'd like to hear from mydistinguished colleague.
+
+   <p>LEVIN: We've been together now, we came together some 18 years ago to
+   the United StatesSenate and we've worked side by side. We've traveled
+   the world together with prettychallenging assignments. And who knows,
+   with a little luck, we might be sitting here for awhile longer.
+
+   <p>WARNER: Well, I'm privileged to have you...
+
+   <p>LEVIN: Well, I agree with that too...
+
+   <p>WARNER: ...the ranking member of our subcommittee.
+
+   <p>LEVIN: And I just want to thank you, Senator Warner. It has been
+   indeed a privilege towork with you for these many years, and whether
+   I'm Chairing a subcommittee and you'reranking member, or you're
+   Chairing and I'm ranking member, we're working on so many otherthings,
+   we've always worked together in a spirit of cooperation.
+
+   <p>Some of these people ask me about the U.S. Senate -- it must be
+   difficult to work in the U.S.Senate these days. And I always say, No,
+   you must be thinking of the House of Representatives,because we really
+   work together very well as team in the Senate.
+
+   <p>And we've alternated whose been the majority over this decade-
+   and-a-half and regardless ofwho's in the majority and who's in the
+   minority it's worked out very well. And ours staff haveworked together
+   consistently, so that's going to be the order of the day again. And
+   it'snecessary, because of the challenges we face -- not as challenging
+   as what you folks have facedin the cockpits over the years, but
+   nonetheless, a different kind of challenge,
+
+   <p>And the Chairman's mentioned a number of them, including a JAST
+   program and some ofour other acquisitions. You know, why for instance,
+   are we buying more F-15s and F-16s at thistime?
+
+   <p>That's a question that's very much on my mind as to whether that makes
+   sense for us to dothat. But I agree with the chairman. I think the
+   JAST program is one that we're going to have topay a lot of attention
+   to because of the number of challenges that it presents.
+
+   <p>I'm interested in the digitization issue as to why we're not making as
+   much progress with oursituational awareness in the air as the Army has
+   done with its digitization program on theground, which has given it
+   tremendous situation awareness. That's something that thissubcommittee
+   has been pressing for many years, as well.
+
+   <p>So, Mr. Chairman, I also will put some remarks in the record which are
+   in more detail. But Ijust want to join you in welcoming our witnesses
+   and thanking them for their presence, for their contribution over the
+   years, and again, saying how much I look forward to working with you
+   thisyear again.
+
+   <p>WARNER: Fine. All right, General. Turn up the engine.
+
+   <p>MCGINN: Didn't preflight this very well. Can you hear me, sir?
+
+   <p>WARNER: Yeah, we can hear you great.
+
+   <p>MCGINN: Well, it's an honor to be with you this morning and talk about
+   issues of such...
+
+   <p>WARNER: But you will need to draw that up somewhat...
+
+   <p>MCGINN: OK.
+
+   <p>WARNED: ...somewhat more closely.
+
+   <p>MCGINN: It's an honor to be with you this morning and talk about
+   issues that are soimportant to our great nation, because in my view
+   they're key to joint warfighting, today and toour success in the
+   future. And that's air power.
+
+   <p>With your approval, what I'd like to do is submit my opening remarks
+   for the record ...
+
+   <p>WARNER: No objection. No objection.
+
+   <p>MCGINN: ... and in those remarks, as well as in the other prepared
+   statements that we'vesubmitted to the Committee, we addressed those
+   questions you asked in your letter of invitationto appear before the
+   Committee.
+
+   <p>WARNER: Thank you.
+
+   <p>EBERHART: Mr. Chairman and members of the Committee, it is a privilege
+   and a pleasurefor me to appear before you to present an overview of
+   Naval Aviation's present tacticalcapabilities, and our vision for the
+   future. I would also to abbreviate my time here and openingremarks and
+   submit them for them the record.
+
+   <p>WARNER: No objection.
+
+   <p>EBERHART: I would like to, Senator Warner, make an offer, if you can
+   find the time I'lltalk to Admiral T. Ball Hayden, the chief of our
+   Naval Air Training, and see if we can get you aslot down there in
+   Pensacola to come down.
+
+   <p>WARNER: I hate to tell you. I started in the Yellow Peril, which was
+   the old biplane withcanvas and whatever was in it -- I don't know. I
+   do know those days are gone. Thank you verymuch.
+
+   <p>EBERHART: Yes, sir.
+
+   <p>And I'd like to also recount just briefly that I had a phone
+   conversation this morning withAdmiral Hank Giffen, the commander of
+   the George Washington battle group. He's preparingthat aircraft
+   carrier and his battle group to transit the Suez Canal later on today.
+   They're en routeto the Persian Gulf to work for the CINC Central
+   Command.
+
+   <p>Admiral Lyle Bien and his battle group on the Nimitz is steaming
+   across the Indian Ocean enroute to the vicinity of Taiwan, where they
+   will join Admiral Jim Ellis and the Independence battle group in
+   providing that tremendously capable presence to hopefully stabilize
+   that area.
+
+   <p>With that, sir, I look forward to answering any questions that you and
+   the subcommitteemembers may have.
+
+   <p>WARNER: Admiral.
+
+   <p>STEIDLE: Sir. Good morning, sir. I'm Craig Steidle. I'm the program
+   director for theJAST program.
+
+   <p>Sir, I thank you very much for your invitation to be here to discuss
+   the Joint Advance StrikeTechnology program, a program that has just
+   transitioned to the Joint Strike Fighter program. Because it has been
+   so dynamic, I have a short brief statement. I also have a more
+   detailedlonger version I'll submit, sir.
+
+   <p>WARNER: Well, all statements in their entirety will be admitted to the
+   record, and you mayproceed with your short statement.
+
+   <p>STEIDLE: Yes, sir. Thank you.
+
+   <p>Sir, we have matured from the JAST program and are now converging on
+   an affordablesolution that meets requirements of all three services,
+   plus our allies -- the Navy, Marine Corpsand the Air Force as well as
+   our allies. Specific focus on the program remains affordability
+   --reducing the development costs, production costs, costs of ownership
+   of Joint Strike Fighterfamily of airplanes.
+
+   <p>We've fully merged the advanced research and project agencies, ASTOVL,
+   Advanced ShortTake-Off and Vertical Landing program, into the Joint
+   Strike Fighter program. And additionallythe United Kingdom Royal Navy
+   has joined the program as a collaborative partner. They arecommitting
+   $200 million to the program in accordance with the terms of an MOU
+   that we signedin December of '95.
+
+   <p>Interest has been extremely high in other foreign countries. We've
+   provided several differentbriefings, and I expect the interest to
+   continue at a high level.
+
+   <p>The program focuses on a new approach for weapons systems acquisition.
+   We applied therecommendations of the Packard commission and other
+   experts in acquisition reform. Wecreated an environment that provides
+   early interaction between the warfighters and the technologists in
+   order to be able to make cost and performance trades early. And that's
+   been asignificant part of the program.
+
+   <p>We've done this by utilizing the integrated product development team
+   process. Industry is afull partner in this process, and they welcome
+   this tremendously. They have been very positivein our process and our
+   way of doing business.
+
+   <p>The first formal product that came out of this integrated
+   industry-warfighter technologistsgroup and teaming relationship was
+   our initial requirements document that was signed by allthree services
+   last August, and was submitted, approved and endorsed by the JROC in
+   Augustof last year.
+
+   <p>We continue to be a role model for acquisition reform and streamlining
+   a lot of initiatives incoherence with our industrial partner. We're
+   just completing the concept definition phase.
+
+   <p>We'll finish that phase this summer, and then move on into the concept
+   development phasewhere we will downsize from three teams that we have
+   today to two teams. Each one of theteams will build demonstrators
+   demonstrating commonality, hovering transition, flying qualities, as
+   well as continue with our research and development technology
+   maturationprograms.
+
+   <p>STEIDLE: Each one of the contractors will demonstrate two aircraft,
+   and demonstrate theparticular attributes that I just mentioned. In
+   conclusion, sir, we strongly...
+
+   <p>WARNER: Let's just stop a minute. That's a total of -- what? -- six
+   aircraft?
+
+   <p>STEIDLE: No, sir. That'll be two aircraft. We'll downsize to two
+   concept developmentteams, and each one of those teams will fly two
+   airplanes each.
+
+   <p>WARNER: So that's four?
+
+   <p>STEIDLE: Yes, sir. Four airplanes, yes, sir.
+
+   <p>So, in my concluding remarks, sir, the services stand extremely
+   committed to the program asdoes OSD and industry. And I stand by to
+   answer any of your questions, sir.
+
+   <p>WARNER: One of the questions I will ask -- and I was going to send
+   this up so you couldread it if you haven't. I'm sure you have read the
+   New York Times article.
+
+   <p>STEIDLE: Yes, sir. I have.
+
+   <p>WARNER: And I'm going to ask you momentarily if you would sort of give
+   us a side byside as to -- it appears to me to be very well written and
+   researched. But since it's a significantpiece on this article -- and I
+   commend the paper and the writer -- I want to make sure our
+   recordshows any areas of which you as the manager disagree.
+
+   <p>STEIDLE: Yes, sir.
+
+   <p>WARNER: So you have it there.
+
+   <p>STEIDLE: No, sir. I don't, but I do remember the article.
+
+   <p>WARNER: Well, I'll tell you what I'll do. I'll get it reproduced for
+   you and sent right upthere.
+
+   <p>STEIDLE: Thank you.
+
+   <p>WARNER: General.
+
+   <p>MAGNUS: Mr. Chairman, Senator, good morning. I thank you for the
+   opportunity to appearbefore you to discuss Marine Corps tactical
+   aviation.
+
+   <p>I also have, in addition to the formal statement, I have some short
+   opening remarks which Iwould prefer to submit for the record. And I
+   would like to also add that on behalf of the strongsupport of the
+   Congress and the people of the United States, the Marine Corps has
+   always beenready to be -- whether it's forward deployed or on bases in
+   the United States -- to continue to beAmerica's 911 force.
+
+   <p>In addition to the forward deployed forces that Admiral McGinn has
+   mentioned and, ofcourse, my Air Force wingmen has around the world,
+   today you have Marines and F-18Ds andE-A6Bs poised in Aviano to
+   support American and allied forces in Bosnia. There are Marine forces
+   forward deployed in Okinawa and on the main islands of Japan ready to
+   supportcontingencies there. And as our Commandant has said...
+
+   <p>WARNER: I visited the Marines in Aviano on my last trip there.
+
+   <p>MAGNUS: Yes, Sir.
+
+   <p>And there are Marines embarked on amphibious ships across the globe
+   supporting the carrierbattle forces with our Vietnam-era helicopters
+   prepared to do the nation's bidding.
+
+   <p>All I can say to echo our Commandant is readiness is our business. And
+   we stand by toanswer your questions.
+
+   <p>WARNER: All right, gentlemen. What I would like to do is to start with
+   you, GeneralEberhart. And I presume you've had an opportunity to have
+   reviewed to some extent the recordof this subcommittee as it reviewed
+   the 22 program last year. And our major concern with thesubject of
+   concurrency. Would you start, sort of as a threshold where we left off
+   last year, howthe '96 program has unfolded to date, and what you would
+   hope to do on concurrency issue inthe '97.
+
+   <p>EBERHART: Sir, I have reviewed the concurrency issue. With your
+   permission, I'd like togo back just a little bit further though and
+   talk about -- we were concerned with concurrencyfrom the very
+   beginning to make sure that we were going to get this correct. As
+   such, we lookedat what the Packard Commission said about concurrency.
+
+   <p>EBERHART: We think this program complies with the, what was pointed
+   out in the PackardCommission. Rand looked at the concurrency issue.
+   They commented favorably in terms ofconcurrency in the F-22. And just
+   to make sure that we had it right, as you know, the DefenseScience
+   Board looked at this issue and submitted a report in 1995, which in
+   our view supportsthe fact that it's not too concurrent. There is some
+   concurrency. We think there will beconcurrency in most all programs
+   today. But we're comfortable with that concurrency. Wethink it's under
+   control.
+
+   <p>WARNER: We added to be 70-odd aircraft in operational status before
+   the last milestone iscompleted under -- is it the T&E program?
+
+   <p>EBERHART: Sir, before we go to full-rate production, there'll be
+   70-some-odd airplanes. Asyou know, when we looked at the acquisition
+   reform of '94, they recommended approximately10 percent, which, if had
+   we stayed with the original buy of about 700 and some-odd, 10
+   percentwould have been 70-some-odd. But as we've drawn down the total
+   buy, and also extended theperiod of EMD, we think that's a natural
+   consequence that we will in fact have more airplanes aswe go to
+   full-rate production than this 10 percent guideline talks about.
+
+   <p>But we think the important parts -- and they have been, once again,
+   authenticated by thereports that we talked about -- is first of all,
+   the DT&E, which we think is most important, willbe finished
+   essentially by the time we have four airplanes.
+
+   <p>WARNER: For the record, spell out, I know what DT&E...
+
+   <p>EBERHART: Development Test and Evaluation.
+
+   <p>WARNER: Right.
+   <p>EBERHART: And then the initial operations test and evaluation, the
+   Rand Corporation saidmost problems unfold between the 10 and 20
+   percent point in IOT&E. And we will in fact have27 percent of IOT&E.
+   For these reasons, sir, we believe that concurrency is just about
+   right inthis program. We'll continue to watch it. We're concerned
+   about it just as you are, but we thinkit's on the mark.
+
+   <p>WARNER: Now, each of the us have different views. I think it's,
+   really, one of the highestrates of concurrency that I've experienced.
+   But that, in your judgment -- and General Fogelmanhas testified this
+   week before this committee -- that degree of concurrency is driven by
+   thethreat assessment that has been made by a variety of sources, by
+   traditional sources, such that tohave U.S. air dominance in the
+   theater, in the time frame when this plane is scheduled to come in, it
+   simply has to have that number of aircraft, and that design of
+   aircraft, to meet that threat. Is that a fair summary?
+
+   <p>EBERHART: Sir, we're concerned about air dominance. We're concerned
+   about insuringthat we have air dominance as quickly as possible. And
+   in our view, the F-22 does that for us.But again, when you look at the
+   number of airplanes, the 70-some- odd, by the time we go tofull rate,
+   if we go back to some of the other factors we talked about in terms of
+   an extendedEMD in having a bi-profile that makes sense.
+
+  <p> WARNER: Well, but it's the threat scenario that's driving that quantum
+   of concurrency. Andthat depends on individuals to how you want to
+   quantify it. I mean, you very carefully havequantified it from a
+   technical perspective.
+
+   <p>WARNER: I just quantify it based on past experience. I mean this
+   Committee has gonethrough a number of aircraft programs that have not
+   materialized as originally envisioned. Let'stalk about your fly-away
+   costs for 22. Considering the changes in the program to date --
+   andthere has been a reassessment of weight -- General Fogleman went
+   into that. Did you have anopportunity to be debriefed on what he said
+   on weight?
+
+   <p>EBERHART: Yes, Sir, I did.
+
+   <p>WARNER: To capsule the weight issue, as I recall it, was that he
+   decided he could make adegradation in the envelope, and thereby allow
+   an increase in the weight. And that degradationin his professional
+   judgement would not substantially in any way affect the performance of
+   thisaircraft to meet the threats. Is that correct?
+
+   <p>EBERHART: Yes, Sir. That's essentially correct. There's a little more
+   to it, but that's...
+
+   <p>WARNER: Well, why don't you put that in?
+
+   <p>EBERHART: Yes, Sir. I think that when you look at the weight of the
+   airplane, it's stillabout 2,500 pounds below what we think the max
+   allowable weight would be for this airplane.We did look at -- and I
+   think you know, and you referenced the testimony last year -- that in
+   fact,at that time, we were concerned about the weight growth that we
+   had seen to that time. Andwe've taken very aggressive measures to
+   bring this under control. And we think we have todayto include
+   weighing, to reviewing it every other week, to reporting it to the
+   program manager.
+
+   <p>We have actually had the opportunity now to weigh some of the parts.
+   In fact, we'veweighed about ten percent of the parts -- the actual
+   parts that we've cut -- and we're plus 30pounds out of this whole
+   3,000 pounds that we've weighed. And then when we've look atavionics,
+   we've weighed hundreds of pieces and we're minus ten pounds. So we
+   think we havegood understanding that our model is on track.
+
+   <p>The situation you're talking about is where we looked at the weight
+   that we had at that time,and what it was going to take in terms of
+   thrust to get us the G available at 1.0 on theperformance curve.
+
+   <p>We looked at what that would cost us in terms of dollars to insure a
+   very small change in Gavailable. I'm talking .0 something in terms of
+   Gs. Very negligible. We looked at what thatmeant in terms of
+   operational capability. And we believed that was negligible -- and it
+   wasn'tjust the Air Force, Sir, we vetted this and vetted this through
+   the JROC process with the othervice chiefs, the vice chairman and the
+   chairman and the CINCs to make sure everyone understood what this
+   meant -- negligible in terms of operational capability. I guess the
+   bottomline is we looked at it based on what it would cost us to keep
+   that .0X amount of Gs at this onepoint on the performance curve, and
+   we didn't think the cost was worth it.
+
+   <p>WARNER: Let's return momentarily and then I'll yield to my colleague.
+   About the fly-awaycost, what do you estimate the fly-away cost of 22
+   in the fiscal '96 dollars?
+
+   <p>EBERHART: Sir, I'll -- I get the fly-away costs confused a little bit
+   here, so let me makesure that I understand it. I think it's around $70
+   million, but let me check that for you to makesure I have it right.
+
+   <p>It's $71.2, Sir. For the record, $71.2.
+
+   <p>WARNER: $71.2.
+
+   <p>EBERHART: Yes, Sir.
+
+   <p>WARNER: And that's predicated on 442 units?
+
+   <p>EBERHART: Yes, Sir.
+
+   <p>WARNER: Senator Levin.
+
+   <p>LEVIN: Thank you, Mr. Chairman.
+
+   <p>LEVIN: On the F-22 concurrency issue first. Is there more or less
+   concurrency with thereduced buy?
+
+   <p>EBERHART: Sir, in terms of the reduced buy, coupled with stretching
+   out EMD, there isless concurrency.
+
+   <p>LEVIN: So that even though we're buying a greater percentage -- put it
+   -- no -- even thoughthe full rate production of the F-22 is for a
+   smaller percentage of the total buy, the concurrencyhas actually been
+   reduced.
+
+   <p>EBERHART: Sir, I believe that once you stretch out EMD, and you have
+   longer to workthese issues and the IOC moves right -- the initial
+   operation capability -- and you have moretime to work this test and
+   evaluation phase, that that reduces the concurrency.
+
+   <p>LEVIN: Now you, in answer to the Chairman's question as to whether or
+   not the schedulefor the F-22 is threat driven, answered, as I
+   understand it, that it is in fact not being driven by thethreat. But
+   I'd like you to put that in your own words.
+
+   <p>Are we producing this based on what is a proper, safe, rate of
+   development, or are weproducing this quicker than that in order to
+   meet some kind of a presumed threat that we'regoing to face in the out
+   years?
+
+   <p>EBERHART: Sir, I think that in every case, this is a balance between
+   the threat that weanticipate and what we think is acceptable
+   concurrency, and acceptable and affordable rate ofproduction. So I
+   think we balance those two things, and that's how we decide what the
+   IOC is.
+
+   <p>LEVIN: Has the concurrency rate changed in the last two years for the
+   F-22?
+
+   <p>EBERHART: Sir, I have not addressed a question specifically like that,
+   and I'm not anacquisition expert. I will provide for the record my
+   view that we have stretched out EMD overthe last couple of years.
+   We've moved the IOC right. So to me, as an operator, that means
+   thatthe concurrency -- it's not as concurrent. Now I'll have to ask
+   the acquisition experts if theyagree, if their definition of
+   concurrency is the same as mine.
+
+   <p>LEVIN: OK. So that from your operator's perspective, there's less
+   concurrency now in thisprogram than there was two years ago?
+
+   <p>EBERHART: That would be my view as an operator. Yes, Sir.
+
+   <p>LEVIN: I think it would be useful to give us those charts showing us
+   those timelinescomparing for us the milestones that exist now to what
+   they looked like two years ago. I think itwould be helpful...
+
+   <p>EBERHART: Yes, Sir.
+
+   <p>LEVIN: ... to do that for the record. Now the Science Board found that
+   for the F-22, thatengine development and passive avionics were the
+   highest risk areas in terms of concurrency.
+
+   <p>EBERHART: Yes, Sir.
+
+   <p>LEVIN: Could you comment on that?
+
+   <p>EBELHART: Yes, sir. And, in fact, I had the privilege of going down to
+   Pratt & Whitney atWest Palm a couple of weeks ago and looking at the
+   engine on the stand and receiving extensivebriefings on where they
+   were a year ago -- and where they were two years ago and where
+   theyare.
+
+   <p>It's very impressive, the steps they have taken to make sure that this
+   airplane and the enginewill be ready for a first flight in May of '97.
+   And I'm convinced it will. But the types ofredesign we have done to
+   include the advances with the Howell blade, we're convinced thatthat
+   will in fact work. It has tested so well on the test band, on the test
+   stand, and it's a go forMay of '97 for the maiden flight.
+
+   <p>LEVIN: The science board report indicated that about 20 percent of the
+   avionics testing wasgoing to be completed before the Lot 2 contract
+   award. And as I understand, Lot 2 begins atwhat plane? Give me
+   their...
+
+   <p>EBERHART: Sir, I don't have that in front of me. We'll see if we can
+   get it behind here, ifnot, we will submit that for the record.
+
+   <p>LEVIN: OK. Well, my question doesn't depend on the answer to that. So
+   whatever theplane number is where Lot 2 begins, it was our
+   understanding from the science board report thatthe avionics testing
+   would be 20 percent completed before that point. OK? Now, in terms
+   ofthe engine testing, we did not have a specific number. Do you know
+   what that number is? Inother words, what percentage of the engine
+   testing was to be completed prior to Lot 2 production?
+
+   <p>EBERHART: I do not know, sir. I'll have to submit that for the record.
+
+   <p>LEVIN: OK. That'll be fine. Do you know how much of the testing, the
+   engine testing, isgoing to be actual testing as compared to modeling
+   and simulation? Is that something youwould know off- hand?
+
+   <p>EBERHART: No, sir. I'm sorry. I'll submit that for the record.
+
+   <p>LEVIN: No, there's no problem. That's fine. Just submit that for the
+   record.
+
+   <p>EBERHART: Yes, sir. Again, as an operator -- going down there,
+   visiting at Pratt &Whitney, I was very impressed with what I saw.
+
+   <p>LEVIN: There was a question, Admiral McGinn on concurrency on the F-18
+   E&F and eventhough it is a concurrency question so let me use this
+   moment to ask you about that. I think thatat yesterday's hearing,
+   Senator Warner noted that there would 76 F-22s that would be
+   authorizedand appropriated by Congress when the operational testing on
+   the F-22 is completed. Believethat was the figure that was used.
+
+   <p>Now the F-18 E&F program, it would appear that Congress will have
+   authorized andappropriated funds for 114 E&Fs before operational
+   testing is completed. Now is that not evena greater concurrency issue
+   then on the E&Fs than it would be on the F-22s if those numbersare
+   correct or approximately correct?
+
+   <p>MCGINN: Senator Levin I'd like to turn to my colleague Craig Steidle
+   who was a formerprogram manager for the F/A18-E/F and I think he can
+   give you a more informed answer onthat.
+
+   <p>STEIDLE: Sir, if you don't mind, I'll answer that. When we put that
+   program together it wasa non-concurrent program with demonstrated
+   performance at every milestone. Before we hadapproval to go on with
+   the first LRIP buy, we had first flight. But before we were allowed
+   togo for the second one, we had demonstrated 250 glides and flying of
+   all seven test articles. Before we went on for the third LRIP we had
+   another demonstrated performance. So it was avery non-concurrent
+   program with demonstrated performance.
+
+   <p>The operational testing of that particular aircraft started very early
+   in the simulators withenough assessment, first of all, and there was a
+   long string. The operational testing finisheswhen we have a full suite
+   of aircraft -- full suite of weapons in the inventory, but the
+   airplaneis fielded before that with a list of required weapons suites
+   that the service has provided for us. So -- I'm sorry -- but it is
+   demonstrated performance doing milestones which continues onthroughout
+   the process.
+
+   <p>LEVIN: Has there been any change in those milestones during the level
+   of concurrency on Eand Fs?
+
+   <p>STEIDLE: No, sir. There hasn't. We've been on schedule, on performance
+   all the waythrough. It's worked well.
+
+   <p>WARNER: Let me go back on the 22 concurrency, you're referring to the
+   science boardreport of April, 1995, page 35. Do you have a copy of
+   that with you, General.
+
+   <p>EBERHART: I do now, sir.
+
+   <p>WARNER: Just a rough calculation, the American taxpayers are going to
+   have about a halfbillion dollars invested in airplanes flying during
+   this current cycle. That's a lot of money. Ioccurs to me that we
+   should have some assurance from Congress that if you in the course of
+   thisprogram discover, Jerry our problems. And that's going to
+   exacerbate the concurrency problem. What procedures do we have in
+   place for first, addressing those problems internally and makingsuch
+   adjustments to the program that may be required? And secondly,
+   informing the Congresspromptly of what you intend to do?
+
+   <p>EBERHART: Sir, in terms of specific procedures in place, I don't know.
+   I'll have to submitthat for the record. I can tell you when the issues
+   that you've talked about earlier that referencethat point on the
+   performance curb where we are looking at what that would cost us to
+   stay withit and also when we looked at a range issue, that in both
+   cases, as soon as that was found out,that came forward to Air Force
+   leadership, immediately went into the JROC process and we were over
+   talking to members of your committee and yourself, sir, to discuss
+   those with you.
+
+   <p>EBERHART: I pledge to you that we've learned from other programs,
+   other issues, that thisbad news doesn't get better with age; that we
+   need to go ahead and address the issue. Andeverybody who has a stake
+   in the action needs to know about it and be involved in thecorrective
+   action. In terms of the specific process or procedures that are in
+   place, I'll have to gocheck with the acquisition committee. But
+   watching that first-hand at that time, I was the J onthe Joint Staff
+   and I saw that unfold, which really gave me a good feeling about -- I
+   think it'stied to the new acquisition reform process and those types
+   of things.
+
+   <p>WARNER: Just reading from page 35, quote, If there are significant
+   delays in theaccomplishment of these key events and they're described
+   earlier, or if the performance levelsachieved are unacceptable, the
+   program could be adjusted by staying at the four aircraft per
+   yearproduction rate for an additional year. And you giving the
+   committee the assurance that they're inplace besieged us to make that
+   prompt adjustment. Is that correct? And you will provide forthe
+   record?
+
+   <p>EBERHART: Sir, I believe they're in place. I will provide for the
+   record what they are. Ifthey're not, I'll provide for the record that
+   they're not in place and then what we need to do tosatisfy that
+   requirement.
+
+   <p>WARNER: And I would like just a sentence in the letter that this
+   matter has been reviewedby the secretary of the Air Force. I just
+   think it's very important that a matter of this seriousness,that the
+   secretary give you full support which you're entitled to make that
+   tough decision for thedepartment.
+
+   <p>EBERHART: Sir, I agree, and I'm sure she will.
+
+   <p>WARNER: It's very important representation to the committee. Let's
+   proceed on to anotherissue.
+
+   <p>LEVIN: There's one...
+
+   <p>WARNER: Yes, sure.
+
+   <p>LEVIN: On that one question -- just on this issue, it's a -- we're
+   going to need to be satisfiedon this concurrency issue. I for -- is
+   not particularly satisfied with the answer that you gave tothe
+   chairman about whether or not this was not threat-driven or not. We
+   are not going to takerisks, I hope, to in this program. that are going
+   to be driven by a threat when it seems to me weshould make sure that
+   we do not make mistakes in the building of this plane and I, for
+   one,would rather it be done right in a year or two later than to find
+   that we've got to do a bunch offixes on this plane. So when you were
+   asked whether or not it was threat-driven and then whenyou told me and
+   your answer to that was non-committal when the chairman asked you, and
+   thenwhen I asked you the question about the level of risk and the
+   concurrency and the same issuethat the chairman raised, you talked
+   about a delicate balance between getting there as soon aspossible
+   which was your words.
+
+   <p>LEVIN: I'm a little concerned when you say as soon as possible. I
+   think I would have saidit, I would have put a qualifier before
+   possible, like as soon as reasonably possible or with reasonable
+   degree of certainty, or something in there to give us some assurance
+   on theconcurrency issue. But let me phrase the question this way, and
+   you may not be able to answerthis, General. And if so, that's fine.
+   You can do it for the record -- you don't have to worryabout that. But
+   the science board's findings about the acceptable overlap in the F-22
+   programbetween testing and production depends upon requiring that the
+   development and the testing --excuse me -- must pass certain key
+   events which are identified. And this was what theChairman was
+   referring to.
+
+   <p>In the C-17 program, which was also supposed to be operating on an
+   event-based schedule,the production imperative kept us signing
+   contracts even though the events were slipping. NowAdmiral Steidle, on
+   the F-18 description, said that we must meet key events before
+   releasingprocurement funds. It was a very clear answer on that
+   question. And I think the Chairman'squestion may have been -- I may be
+   duplicating the Chairman's question, but if I am let me putthis in my
+   own words. Is the Air Force committed to sticking to achieving testing
+   events as anecessary prerequisite to signing the F-22 contract?
+
+   <p>EBERHART: Sir, we certainly are.
+
+   <p>LEVIN: Pardon?
+
+   <p>EBERHART: We certainly are, yes. We have to go through those wickets,
+   we have toestablish those goals before DABs and pre-DAB and DRB
+   decisions. So we will have thosemilestones before we can move from one
+   portion of the program to another. And we'recommitted to that. I
+   think...
+
+   <p>LEVIN: And our contracts provide for that? Our existing contracts
+   provide for that?
+
+   <p>EBERHART: Sir, I assume...
+
+   <p>LEVIN: Let us know, let us know that for the record.
+
+   <p>EBERHART: Again, I'll have to provide that for the record.
+
+   <p>LEVIN: We just don't -- we want to be moving here according to testing
+   events having beenmet, not according to a schedule which is set forth
+   in a contract with a contractor. That's thepoint here, and if you can
+   give us that assurance for the record I think that at least helps me
+   outsome. Thank you.
+
+   <p>EBERHART: And back to your original question. I think your choice of
+   words is probablymuch better than mine, but I think the bottom line is
+   that we are comfortable with theconcurrency. We think that the risk is
+   acceptable, that we're not letting the threat drive us to dosomething
+   stupid, something dumb. We're comfortable with that balance. And we're
+   not -- asyou said, as soon as reasonably possible is probably a better
+   choice of words.
+
+   <p>LEVIN: My memory goes back here not just to the C-17 but to the B-1
+   and B-2... Yeah,where we -- you know, we had -- somehow or other there
+   was a window of vulnerability, andwe had to rush the B-1. And we made
+   a mistake, made a lot of mistakes. As a result, it didn't have the
+   capabilities that we wanted it to have. Instead of saying, look, let's
+   build the B-2 and doit right and take, if we have, quote, a little
+   more vulnerability for a few more years, my God,we've got enough
+   capability in that area anyway, let's do it right.
+
+   <p>EBERHART: Yes, sir.
+
+   <p>LEVIN: Instead we, I think -- and I don't want to rehash the whole B-1
+   battle -- but I thinkthe chairman's point is, and I would agree, is
+   that we really want to do the F-22 right, and we donot want a
+   high-level of concurrency. And if that means we get it done a year or
+   two years later,so be it.
+
+   <p>EBERHART: Yes, sir. Sir, those lessons that you referenced are not
+   lost on the Air Forceeither, and we're very concerned about those as
+   we move forward.
+
+   <p>EBERHART: And we're -- bottom line is we're comfortable with the
+   concurrency we see inthis program.
+
+   <p>LEVIN: Well, you know, everybody has his own view. In my view, it's a
+   very high degreeof concurrency associated with a high degree of risk
+   and I've always been under the impressionthat the threat that was
+   driving this not in a stupid area, but just we were at the outer edge
+   of theenvelope, as you say, you fly on the area of risk and
+   concurrency. And that was driven by thesurface-to-air threat. And I
+   seem to have gained that from General Fogleman's testimonybecause it's
+   -- this program is very, very expensive. It's consuming ever larger
+   amount of theoverall budget -- not only Department of the Air Force,
+   of the across-the-board tac air program,and that likewise concerns me.
+
+   <p>WARNER: Let's go to Admiral and the JAST -- have you had a chance to
+   look at the Time'sarticle?
+
+   <p>STEIDLE: Yes, sir.
+
+   <p>WARNER: And are there areas in which you feel that you would like to
+   put information,comments...
+
+   <p>STEIDLE: Yes, sir, I would.
+
+   <p>WARNER: ...otherwise in the record? Fine.
+
+   <p>STEIDLE: Yes, sir, I would.
+
+   <p>WARNER: Because it's an important piece, and I want to make sure that
+   our record reflectsany thoughts you have.
+
+   <p>STEIDLE: Yes, sir. I think Mr. Shannon did an outstanding job on the
+   article in total, sir.
+
+   <p>WARNER: Did he interview you, by any chance?
+
+   <p>STEIDLE: Yes, sir, he did.
+
+   <p>WARNER: Well, that's why it's outstanding then.
+
+   <p>STEIDLE: Yes, sir. There was one area that he linked...
+
+   <p>WARNER: Why don't you teach us politicians how you...
+
+   <p>STEIDLE: Yes, sir. He had linked me to the $750 billion estimate that
+   he had, and I, in fact,went back to him after the session that we had
+   and said, I cannot add my numbers up to get to that particular figure.
+   Mr. Blackwell from Lockheed mentioned a trillion dollar program and
+   aWall Street analyst recommended a $750 billion. They are probably --
+   they have moreexperience in this particular field than I have, but
+   3,000 airplanes at $30 million a copy comesout to $90 billion, and
+   this is an order of magnitude above that. So I told him I had
+   difficultywith that particular figure. Another area was -- in the
+   article here, I just noticed and I'm sorry Ididn't the first time I
+   read this -- airplanes will roll out in 2005. That's true of the test
+   articles. The first operational airplane will be available in 2008.
+   And the third piece that he brings in isthe fact that -- alluding to
+   the fact that perhaps the Navy would possibly in the future notsupport
+   the program as strongly as the other services. I think -- I disagree
+   with that. AdmiralBoorda has told me several times that he fully
+   supports this and needs the aircraft, and the Navyis fully behind it.
+   Other than that, sir, I think it's on target.
+
+   <p>WARNER: All right. Let's address then the funding profile -- $131
+   million in fiscal '96. That was -- excuse me -- that was a cut of $131
+   million off a baseline of what figure?
+
+   <p>STEIDLE: Approximately $331, sir. It brought us down to about $200
+   million in '96.
+
+   <p>WARNER: Those figures -- you're going to stick with them?
+
+   <p>STEIDLE: I'm going to refine them in just a second, sir.
+
+   <p>WARNER: All right.
+
+   <p>STEIDLE: I'll give you the exact figures there within plus or minus
+   two or three million, sir.
+
+   <p>WARNER: You know, while he's getting to the figures, I have to recount
+   when I used totestify as Secretary of the Navy, we would literally
+   have two dolly carts full of records behindus. And now I guess with
+   the modern computer and brighter officers, we're able to to it with
+   ahandful of papers.
+
+   <p>STEIDLE: Or submit a lot for the record. Sir, the exact figures...
+
+   <p>WARNER: All right.
+
+   <p>STEIDLE: I'm sorry, we started out with $345 million and went to $206
+   million.
+
+   <p>WARNER: Before -- OK, tell us what was the impact of that cut, then.
+   Those are somefairly hefty bucks.
+
+   <p>STEIDLE: Yes, sir. If I could just step back for just a second from
+   where the programstarted. It started in the Bottoms-Up Review in '93.
+   At that particular time, the AFX programand the multi-roller fighter
+   airplane were cancelled, were rolled into one in this
+   particularprogram.
+
+   <p>Mr. Deutch in August of that year established a program with a
+   memorandum and laid in awedge at that particular time in '93 for the
+   program. Since that particular time, we've merged theA-STOVL program
+   into it. We've gone from a technology demonstration to an actual
+   strikefighter program and the wedge stayed in the same shape. And
+   that's not appropriate for aDEM-VAL or development program. You need
+   up front funds and the shape of the curveshould be a bell-curve skewed
+   to the left.
+
+   <p>I went forward in August and July of last year with redefining the
+   program as we put somemore substance on it. Went forward and then came
+   on over here to several of the staffs in lateAugust or September time
+   frame, after it had gone past your particular committee with this
+   newfunding profile. I presented a profile that was going to use '96
+   funding to be able to do work in'97. That funding was quickly removed
+   and the statement was put in that that funding should beapplied in
+   '97. That was two year money. We could do that.
+
+   <p>The services came forward with a program decision memorandum in
+   September fully fundingthe program to the new DEM-VAL profile that
+   we're executing today. So, in answer to yourquestion, sir, the bottom
+   line is we reshaped the program and we have the money in the rightyear
+   and the funding profile was correct to execute.
+
+   <p>WARNER: What time sequence was it adjusted?
+
+   <p>STEIDLE: We moved the program four months to the right. I looked at
+   some techmaturation programs that we're doing. We moved those in the
+   out years. We looked forredundancies and shelved a few of those
+   particular programs. Moved the end point out fourmonths. And the total
+   program was then reshaped and moved to the right slightly.
+
+   <p>WARNER: I may return to that program, but I'll have a question for
+   Admiral McGinn andthen refer to my colleague. The old EA-6B -- what a
+   workhorse.
+
+   <p>MCGINN: Yes, sir.
+
+   <p>WARNER: I think the taxpayers got their money's worth out of that
+   plane, wouldn't yousay?
+
+   <p>MCGINN: They continue to get it Senator.
+
+   <p>WARNER: No question about it. The committee has waited for some time
+   for thecompleted studies of Airborne Electronic Warfare Requirements.
+   Despite DOD'sunresponsiveness, last year's Defense authorization bill
+   included generous funding for theelectronic warfare upgrades and
+   modifications. The committee's concerned that delays inmaking
+   substantial upgrades EA-6B will prevent the Navy from capitalizing on
+   prior investingin the advance capability, that's the ADV cap. Is the
+   Navy now ready to move out on thisprogram and make it a substantial
+   commitment to near term EW capability?
+
+   <p>STEIDLE: Yes, sir, we are. We continued to wisely use the funds that
+   Congress providedlast year, the $165 million. We spent 100 million of
+   that dollars -- or we are spending 100million of that dollars in
+   upgrading 20 aircraft to the block 89, the more modern block
+   89configuration. We spent an additional $40 million to get what we
+   call band nine and tenelectronic warfare transmitter pods. And the
+   final $25 million is going for 30 pods forcommunications jamming.
+
+   <p>In addition to that, we have R&D programs that are ongoing to address
+   the idea of a reactivejamming capability, something that you can use
+   against a variety of threats. With theproliferation of First World
+   weapons systems throughout many, many different areas of interestto
+   the United States, we are concerned that we don't get so stabilized
+   and solidified in aparticular threat system that we can't react
+   agilely through additional threat systems that could beput together
+   with money by a nation with interests counter to ours. So the reactive
+   jamming isone answer to help us to be able to fly with confidence into
+   an enemy air defense system in anyuncertain future.
+
+   <p>WARNER: I'm going to ask General Magnus a question on JAST. And mister
+   recorder, canyou put the general's response following Rear Admiral
+   Steidle's JAST comments so we've gotthat one placed in the record.
+
+   <p>General, is your invitation letter -- that is in our invitation -- we
+   asked you about the MarineCorps view of JAST program. How would you
+   describe the relevance of that program to thefuture of the Marine
+   Corps aviation?
+
+   <p>MAGNUS: Mr. Chairman, I'm glad that you asked me that question because
+   I had theopportunity this morning to speak to the commandant, General
+   Krulak, exactly on that topic.
+
+   <p>WARNER: This morning?
+
+   <p>MAGNUS: This morning, sir.
+
+   <p>WARNER: You guys got off to a good, early start over there, didn't
+   you?
+
+   <p>MAGNUS: Yes, sir. As I've said, sir, readiness is your Corps. The
+   Marine Corps has madethe commitment in a real sense...
+
+   <p>WARNER: You got a little sleep along the way, though, I served in the
+   Marines for manyyears without any sleep, and I assure you that it
+   helps.
+
+   <p>MAGNUS: The Marine Corps has made the commitment in a very real way to
+   acceptnear-term risk in our strike fire community, our AV-8B Harriers
+   and our F/A-18s. We're puttingour, literally our investment, our money
+   where our mouth is, and the technology leap that wesee is in the joint
+   strike fighter program.
+
+   <p>We believe that we and the nation, our wingmen in the Air Force as
+   well as our shipmates inthe Navy, urgently need the joint strike
+   fighter, and we believe from our perspective in the Corpsthat now is
+   the time to take the incremental degree of risk, we think, with the
+   forces that wehave, looking at the threats that are in the next
+   decade, to take that leap to 2008 to the joint strikefighter.
+
+   <p>WARNER: OK, so you're still on board.
+
+   <p>MAGNUS: Yes, sir. We're in the lead as far as our IOC requirements,
+   and we joined,welded at the hip with the Air Force and the Navy in the
+   urgent need for this affordable,survivable family of over 2800 joint
+   aircraft.
+
+   <p>WARNER: Thank you. Senator Levin.
+
+   <p>LEVIN: Just one question on the JAST program. Admiral Steidle, the
+   press has reportedrecently there's some problems with the release of
+   proprietary information to competingcontractors by the JAST office.
+   Can you describe what has happened and whether this is a significant
+   problem?
+
+   <p>STEIDLE: Yes, sir. Well, there was, indeed, proprietary information.
+   There was aninadvertent disclosure, unfortunately, at the fax machine.
+   An enclosure to one particular letterwas put into two other letters
+   that went out to the competing contractors.
+
+   <p>So therefore certain pricing and costing information from one
+   contractor went to the othertwo. The two particular contractors saw
+   that immediately, wrapped it up. I sent my securityofficer out there
+   after it. We have statements to that effect, and we are providing
+   information tothe contractor whose information was sent. I hope to
+   have it completely resolved by Wednesdayand the release of our RFP on
+   Thursday of next week.
+
+   <p>WARNER: Would you yield to me?
+
+   <p>LEVIN: Sure.
+
+   <p>WARNER: I -- at an appropriate time, if you're going to continue with
+   JAST.
+
+   <p>LEVIN: No, I'm done with JAST.
+
+   <p>WARNER: I think, Admiral Steidle, you should -- even those this is a
+   purple program thatyou're operating -- what's the Navy's perspective
+   on JAST meeting its requirements in the outyear -- operational
+   requirements?
+
+   <p>STEIDLE: Sir, could I have Admiral McGinn that, sir?
+
+   <p>MCGINN: Just as General Magnus stated, we are firmly onboard with the
+   JAST program,Senator. Our need in terms of timing isn't as urgent as
+   the Marine Corps in the 2007, 2008timeframe. But we have a road map to
+   the future that involves going from where we are todaywith the types
+   of aircraft and our air wings, using the significant increase in
+   capability of theF-18EF and then blending that in a complementary way
+   with JAST when it comes onboardNavy aircraft carriers in about the
+   2010 to 2012 timeframe -- about three to four years after theMarine
+   Corps.
+
+   <p>WARNER: General Eberhart, for the Department of the Air Force...
+
+   <p>EBERHART: Yes, sir.
+
+   <p>WARNER: Is it likewise your...
+
+   <p>EBERHART: Yes, sir. It would sound like a recording. We're completely
+   behind it, and weare. It's key to the Air Force of the future.
+
+   <p>WARNER: And in all, then, this joint program is working out well? As a
+   matter of fact, Ithink your deputy, Admiral Steidle, is a BG selectee?
+
+   <p>STEIDLE: Yes, sir, he is. Yes, sir, the Air Force's newest general,
+   sir.
+
+   <p>WARNER: Good. That's fine.
+
+   <p>STEIDLE: If he doesn't mess up JAST.
+
+   <p>WARNER: So we don't know whether you're really a general for about 10,
+   15 more yearsthen? Only thing I can tell you, colonel, general or
+   whatever the case may be -- I knew GeneralEberhart when he was a
+   major. So somehow he's made it, despite his association with membersof
+   Congress. All right. Excuse me, thank you. Colleague, I'd like to get
+   that one JAST thing inthe record altogether.
+
+   <p>LEVIN: Well, the follow-up on that JAST question would be you say that
+   the competitorwhose proprietary information was inadvertently
+   disclosed has now been informed of that?
+
+   <p>STEIDLE: He has been informed, sir. And I will go down on Wednesday of
+   next week andpresent our investigation to them. That particular
+   contractor issued a agency protest -- rightfullyso, in my mind.
+
+   <p>STEIDLE: I will present all the information to him, and tell him what
+   our investigation inimpact of the disclosure of that material has.
+
+   <p>LEVIN: So, we really don't know yet what the effect is going to be.
+   It's not been resolvedyet?
+
+   <p>STEIDLE: No, sir, it is not. No, sir, it is not. By Wednesday I'll
+   have it finished.
+
+   <p>LEVIN: If you'd let us know the outcome of that for the record, it
+   would be helpful.
+
+   <p>STEIDLE: Wilco. Yes, sir.
+
+   <p>WARNER: Just as a follow-on, Senator. Your program has recently
+   progressed fromconcept exploration into the requirements generation
+   and validation process. What will be thecritical two or three events
+   between now and the award of the EMD to produce test aircraft? What
+   has to go right, what could go wrong?
+
+   <p>STEIDLE: Yes, sir. We're starting...
+
+   <p>WARNER: Great staff question.
+
+   <p>STEIDLE: Yes, sir.
+
+   <p>STEIDLE: We're doing business differently, Senator. We have this group
+   ofcost/performance trades. It's never been done at that level before.
+   Industry is a full partner ofthis. We are trading off the requirements
+   base that each one of the services have allowed us alarge envelope to
+   work in as we pull it down.
+
+   <p>Moving into the development phase, we'll award the two contracts to
+   the two teams. Theywill have to demonstrate their ability to build
+   this airplane with a high level of commonality,which significantly
+   reduces the cost, demonstrate hover in transition, demonstrate
+   carriersuitable flying quality, and continue on with the ground
+   demonstration of technologymaturation. We need to mature the
+   technologies before we go into the EMD program. That'll bedone.
+
+   <p>And our ORD will be completely finished by the year '99. And that's a
+   process in itself thatis being done in the virtual world in modeling
+   and simulation. So it's a significant change fromthe way we have done
+   business in the past.
+
+   <p>LEVIN: Let me get to the data link issue on the fighter aircraft,
+   general. Apparently, gettingtactical data links into the fighters has
+   been a difficult issue for the Air Force for a number of years. Some
+   have the perception that the Air Force has resisted adding that
+   capability, not justbecause of cost but because of cultural barriers.
+   I'm convinced that the added situational aware that sharing the data
+   among various platforms would provide has tremendous potential for us.
+
+   <p>Are there fighter data links included in the com-links that the chief
+   of staff has added to hislist, do you know?
+
+   <p>EBERHART: Yes, sir, there are.
+
+   <p>LEVIN: And is the...
+
+   <p>EBERHART: It's under the guise of sensor shooter, and under that...
+
+   <p>LEVIN: Would you just say that again?
+
+   <p>EBERHART: It's under the title sensor to shooter, and under that are
+   the things that you're soconcerned of and so are we. And you're spot
+   on, it was a cultural problem for a while, and in myview we might have
+   hid behind the money issue. We're committed now, we realize
+   howimportant it is to joint war fighting, and we're moving ahead.
+
+   <p>LEVIN: All right. And General Magnus, is the Marines committed to also
+   adopt thatcapability?
+
+   <p>MAGNUS: Senator, we are. We, of course, field our aircraft in a common
+   long-range planwith the United States Navy and a program that is
+   unique to us, having taken over the AdvancedTechnical Air
+   Reconnaissance System. For example, we have added a data link pod to
+   thatsystem so that when it is fielded it will not only give us the
+   capability to download thereconnaissance when we get to the ground,
+   but will be able to give near real time bursts of thatcritical
+   tactical battlefield information to joint force commanders and forces
+   at sea.
+
+   <p>LEVIN: OK. Admiral McGinn do you want to add anything to that?
+
+   <p>MCGINN: Yes, sir. We are already flying in many of our aircraft
+   including the F-14 D, theJ-TDS, or LINK-16, which we have found
+   provides tremendously increased situationalawareness and it allows
+   aircraft in a particular strike package or fighter sweep to coordinate
+   their efforts in a much better way than we've ever been able to do
+   before.
+
+   <p>I'd like to also say that a Marine program that offers a great deal of
+   promise that has beenfielded and prototyped is a digitalization called
+   Automatic Target Hand-Off System whichallows a Marine on the ground
+   under fire to digitally communicate right into the aircraftweapons
+   system, in this case the AV-8B, but it will -- we're looking to field
+   it in all of ourFA-18s as well. You know, actually put the symbol of
+   the target that the Marine Lance Corporal in the trenches wants to
+   hit, needs to hit, right on the heads-up display of the fighter
+   aircraft orthe AV-8B. And it is a tremendous leap forward in close air
+   support capability for the future. And General Magnus might want to
+   comment further on that, sir.
+
+   <p>MAGNUS: And I appreciate the comments of my shipmate, Admiral McGinn,
+   theAutomatic Target Hand-Off System because exactly right, our forward
+   observers, forward aircontrollers on the ground will be able to take
+   the standard 9 line immediate air support requestand beam it up via
+   data link just as the Admiral said, so the pilot in a strike aircraft
+   that is lineof sight, but out of visual range will be able to stand
+   off from the threat, receive the informationand roll in on the target.
+   Coupling that capability with the emerging 1760 BUS digital
+   capabilityin weapons like JDAM and JSOW, we are literally going to be
+   able to deliver close air supportto troops on the ground at night
+   through the weather in the future with precision, accuracy,because of
+   the capability to pass that information up and then load it down into
+   the weapons.
+
+   <p>LEVIN: Are we funding that program as much as we -- in a robust way,
+   we, in this budget?
+
+   <p>MCGINN: I'd love to get an answer for you for the record Senator on
+   that.
+
+   <p>LEVIN: And General, I take it from your answer that the Air Force is
+   now committed tohaving the same kind of reliance on the tactical data
+   links in it's fighter aircraft as we've justheard described by the
+   Navy and the Marines.
+
+   <p>EBERHART: Yes, sir, to put a little more bluntly but you referenced it
+   earlier. We're overour cultural problem that we had. And then to take
+   it one step further, exactly what they just discussed, this interface
+   between the digitalization of the ground battle and the air battle is
+   key. In the past when we did look at it, we looked at it more of just
+   digitalization of the air, and datalink in the air. And working that
+   together is how we really become efficient. And then, oh, bythe way,
+   reduce fratricide.
+
+   <p>LEVIN: Well, it's good news to hear your testimony this morning, and
+   the budget numberswill be helpful if you'll submit those.
+
+   <p>EBERHART: Yes, sir.
+
+   <p>LEVIN: Because that -- that's an area of top priority for this
+   committee and has been for anumber of years.
+
+   <p>WARNER: General Magnus, would you please pass on to your senior chief
+   of aviation ourbest wishes for a speedy recovery from his operation
+   and so forth?
+
+   <p>MAGNUS: Thank you, Mr. Chairman. General Blot is recovering well. He
+   has hadshoulder surgery, for your information. And the reason why he's
+   not here is obviously he's fairlyuncomfortable -- doing very well but
+   couldn't get into his uniform. So he sent me to speak toyou this
+   morning.
+
+   <p>WARNER: Glad to have you. Let's talk about your CV-22 and the problems
+   that have been expressed by the retiring chief of the U.S. special
+   operations command. What do you have toenlighten us on that? Have you
+   read that article? If not, I'll send it up so you can skim it for
+   aminute.
+
+   <p>MAGNUS: I'm not sure which article to which you're referring --
+   although there have beenseveral that I've read in the last few days.
+
+   <p>WARNER: Well, let's work off the the same baseline, and I'll go to
+   another question.
+
+   <p>MAGNUS: Mr. Chairman, I am familiar with this article.
+
+   <p>WARNER: Well, why don't you go ahead then?
+
+   <p>MAGNUS: The joint V-22 program, I believe, is a success story, and of
+   course like manyother large programs that are in engineering and
+   manufacturing development we're constantlychallenged by constrained
+   fiscal resources.
+
+   <p>When the Department of Defense had a defense acquisition board and a
+   defense resourcesboard in 1994 joining the U.S. Air Force Special
+   Operations Command requirement for a specialoperations force CV-22 to
+   the Marine Corps MV-22, the estimate for the development of theCV-22
+   -- the U.S. Special Operations Command variant -- was $550 million.
+
+   <p>And that estimate came from the United States Air Force, I believe it
+   was AeronauticalSystems Command. Subsequent to that, the Department of
+   the Navy committed, withDepartment of the Navy RDT&E money, to fund
+   that $550 million profile that we believedwould be adequate to provide
+   to take the MV-22 baseline aircraft into a Special Operationsvariant.
+
+   <p>In the succeeding two years, Special Operations Command has defined
+   its configurationmuch more finely than they had in '94. We -- the
+   program office and Naval Air SystemsCommand submitted a request for a
+   proposal for the development effort to the Bell-Boeing jointteam.
+
+   <p>And essentially, the response from the contractors came in at
+   approximately $200 millionover what was allocated in the budget.
+   Clearly, that presented more than a minor challengebecause we did not
+   have, in the Department of the Navy, that additional $200 million.
+
+   <p>And something had to move, and we certainly recognized the Special
+   Operations Commandrequirements as well as their need for a fiscal year
+   2005 IOC.
+
+   <p>There have been a number of meetings between the Assistant Secretary
+   of the Navy forResearch and Development, Mr. Douglas, and the U.S.
+   Special Operations Commandrepresentatives on alternatives in which we
+   believe there are more than one alternative andwhich within the Navy's
+   commitment to the $550 million we can -- with ideas such as preplanned
+   product improvement -- provide exactly the kind of aircraft that
+   Special OperationsCommand and our Air Force wing men need to be able
+   to accomplish their critical mission.
+
+   <p>MAGNUS: There are ongoing discussions between Special Operations
+   Command and theUnited States Navy. OSD has been involved in the
+   overarching team that is watching thisprogram closely. And we have
+   been, of course, in consultation with our Air Force wingmen.We believe
+   there are more than one solution that will allow us to execute to our
+   $550 millioncommitment and provide the Air Force Special Operations
+   Command the aircraft that they needwhen they need it.
+
+   <p>WARNER: That's reassuring and Douglas is a very able man, trained here
+   by thiscommission, and I have a high degree of confidence, as do other
+   members.
+
+   <p>Do you want to take a question or I'll...
+
+   <p>LEVIN: Just on the V-22 issue. There have been some, another press
+   report relating totesting results on the V-22 which indicates some
+   problems, unacceptable level of down draft orprop wash below the
+   aircraft operating, when it operates at hover. Is there going to be
+   anopportunity during the operational testing to determine whether or
+   not that condition is real.
+
+   <p>MAGNUS: Senator, thank you very much for that question. We have been
+   aware -- and Isay we in a personal sense -- have been aware of the
+   down wash effect of tilt rotors, not onlyfrom our experience with high
+   velocity down wash aircraft such as V-stal , but when I was a major I
+   was on the joint NASA-Army-Navy-Air Force and Industry team that went
+   out to NASAAmes and modeled the aircraft that was then being designed
+   call JVX, which has since becomethe V-22 Osprey tilt rotor.
+
+   <p>We were well aware that the velocity and the footprint, if you will,
+   of the air that is movingdown was going to be more than we have in the
+   current medium helicopters, but, quite frankly,comparable to heavy
+   lift helicopters, such as the CH-53 Echo; different, but comparable to
+   it.
+
+   <p>In other words, that we knew that people who were operating in the
+   vicinity underneath theaircraft would have a high velocity down wash.
+   And we anticipated this, so this is not asurprise. As a result of
+   that, during our operational tests we have just completed operation
+   test2B, which focused specifically on this issue. We better understand
+   how ground combat marines,sailors and soldiers will operate under
+   aircraft that are being flown by Air Force, Navy andMarine Corps
+   pilots, and we believe, and I have personally read the comments of
+   marinehelicopter support team members, lance corporals who have worked
+   under these aircraft, whobasically say it is comparable to their CH-53
+   Echo experience.
+
+   <p>What I can tell you is, just like the CH-53 Echo, which went through
+   it op eval in 1979, andthere were words in the report there that
+   described it as dangerous and requiring specialequipment that we
+   didn't have in 1979, we will find tactics, techniques and procedures
+   that willallow us to safely and effectively utilize this aircraft. We
+   have anticipated this problem and weare working with our joint wingmen
+   on this as well as the people who will actually be the realcustomers
+   of the aircraft, and that's the troops that'll be in the back. I'm
+   confident that this willbe resolved.
+
+   <p>LEVIN: Thank you, Mr. Chairman.
+
+   <p>WARNER: This is a question to all three. We'll ask General Eberhart,
+   Admiral McGinn andGeneral Magnus to answer.
+
+   <p>WARNER: Over the years, the committee has taken an active interest in
+   airborne. Part ofthis has been addressed, but the senator and I want
+   to make sure that there is nothing left in this untouched. The
+   committee has taken an active interest in airborne electronic warfare.
+   Aninitiative by the committee a few years ago was encouraged by the
+   Defense Department toconsolidate airborne EW into one program and to
+   adequately fund that program. Today we havean aged EA-6B fleet which
+   -- with much the same capability as in the years past, while the
+   threatexpands and becomes more sophisticated. At the same time, the
+   Air Force plans to retire EF-111. What is the importance of airborne
+   electronic warfare to your tactical aviation program? What near-term
+   capabilities do you have to address that threat, General, to the
+   extent you haven'tcovered it already?
+
+   <p>EBERHART: Yes, sir. Obviously, airborne ECM is very important to our
+   program and thesurvival of our pilots and our effectiveness on the
+   battlefield.
+
+   <p>We support the efforts that are ongoing to build the EA-6B fleet up,
+   make improvements toit, to provide for our joint ECM requirements.
+   We're part of the solution there, and not part ofthe problem. We're
+   committed to it.
+
+   <p>However, at the same time, I have to tell you that we have an
+   insurance policy there in that aswe draw down the EF-111s, we keep
+   them around till the -- the number's classified -- butsometime in '98.
+   We can an increased crew-to-aircraft ratio, and the airplanes that we
+   do retirewe don't take the date as moth them, we leave on the ramp.
+
+   <p>So if there is a hiccough or we have a requirement, then we can fall
+   back on it. But we'recommitted to it. We want it to work. We know it's
+   the right thing to do.
+
+   <p>You know, and the committee knows as well as I do, that we have to
+   approach this problemfrom many different ways. In addition to airborne
+   ECM, if we have better battlespace awarenessin terms of increased
+   intelligence, surveillance, and reconnaissance so we know where
+   thethreats are, we know what the threats can do, we know how to either
+   attack them or avoid them,using Stealth and using PGM.
+
+   <p>We also have the nonlethal part of this, and eventually some day we
+   think there will beinformation warfare ways to get in and help us
+   survive in the battlefield of the future. And wethink it's important
+   to work all of these aspects, and that's what we're committed to.
+
+   <p>WARNER: Admiral McGinn?
+
+   <p>MCGINN: I fully concur with General Eberhart's remarks, Senator, and
+   I'd like to just add afew of my own. The EA-6B is, as mature an
+   airframe and engine combination as it is, still enjoys a great deal of
+   service life that is available to it.
+
+   <p>We have an active and ongoing operational safety improvement program
+   that is closelymonitored by engineers and air crewmen and maintenance
+   personnel in the field as well as at thevarious systems commands. It
+   is a truly joint program in that later this month, the three
+   servicechiefs will sign a memorandum of agreement that will solidify
+   the progress that we have madein making the EA-6B fleet truly the
+   nation's tactical EW force. I received a report from the wingcommander
+   -- the EA-6B wing commander -- two weeks ago as well as one of the
+   EA-6Bsquadron COs who had just returned from deployment over in the
+   Mediterranean. They areabsolutely confident that the program is on
+   track. It is properly resourced in terms of airframes,the equipment
+   upgrades that are going in now and are planned, as well as the air
+   crew upgradesas well. We have Air Force air crews flying in EA-6Bs in
+   training as well as in operations, andthey have also coordinated at
+   the EA-6B wing level with all of the services and all of the
+   unifiedcommanders in chiefs and their staffs to make sure that the
+   global coverage exists in terms offorward presence as well as a very
+   responsive reaction capability should that be required in anytype of a
+   regional contingency.
+
+   <p>WARNER: General.
+
+   <p>MAGNUS: Mr. Chairman, I agree with the remarks of General Eberhart and
+   AdmiralMcGinn. The Marine Corps, as you know, has four squadrons of
+   prowlers in the ICAP-2configuration. We along with the Navy are
+   operating our aircraft to the Block-89 Alphaconfiguration.
+
+   <p>As I told you earlier in the hearing, Marines are on the ground today
+   in Aviano and earlierlast year when there was the need to bring
+   additional tactical aircraft into the theaters to supportstrikes that
+   were needed on the ground, Marine squadrons deployed within 48 hours
+   and wasflying combat missions on the third day from the time that they
+   got the to order from the JointChiefs of Staffs.
+
+   <p>We were integrated with the Navy in carrier deployments as well as
+   basing out of our base atIwakuni, Japan. We will support the United
+   States Navy in fulfilling our importantresponsibilities in the
+   Department of the Navy to provide aircraft not only for our own
+   supportrequirements but to support the United Sates Air Force and our
+   allies.
+
+   <p>Of course, the United States Navy has received a budgetary FYSYP up
+   and some structure totake up the Air Force's EF-111 mission as those
+   aircraft stand down. Nevertheless, andconsistent with the tactical
+   aviation integration memorandum of agreement that the Commandant of
+   the Marine Corps and the Chief of Naval Operations have in general
+   about allof our strike and electronic warfare aircraft, we will
+   support the United States Navy in fulfillingour commitments to the
+   nation.
+
+   <p>WARNER: Senator Levin. Gentlemen, I'm going to have to absent myself
+   and mydistinguished colleague will wrap up the hearing. Thank you very
+   much.
+
+   <p>LEVIN: General, I want to talk to you about F-16s for a minute. We've
+   got a new definitionof service life of the F-16s which is now driving
+   us to purchase some additional F-16s. Andthere's a real question about
+   whether that's the right way to go given our other needs in the
+   AirForce. But let me try to work through this number with you. We have
+   a 20 wing fighter forcenow and I gather the portion of that force that
+   is made of F-16s is somewhat more than half. Doyou know off hand if
+   that's correct?
+
+   <p>EBERHART: Sir, that sounds correct. I'll get the number here as you...
+
+   <p>LEVIN: OK, well, than maybe I better get these numbers for the record.
+
+   <p>EBERHART: Yes, sir.
+
+   <p>LEVIN: Let me tell you what I need, because you may not have them at
+   your fingertips. What I need to know is what was the F-16 requirement
+   when we had a 26-wing force, what wasthe F-16 requirement now, what
+   would it have been had we gone to a 36-wing force, which was the goal
+   during the early '90s?
+
+   <p>Those three items I need and how many F-16s would have made up those
+   three differentforce structures. Then I need you to translate that
+   into both the old definition and the newdefinition of service life in
+   terms of how many available F-16s we got. And that's somethingyou can
+   provide us for the record.
+
+   <p>EBERHART: Yes, sir.
+
+   <p>LEVIN: Do you know in general whether or not the number of F-16
+   fighter wingequivalence has changed over the recent past? Do you know
+   that offhand?
+
+   <p>EBERHART: Sir, it is changed, obviously, as we've drawn down some
+   F-16s, and we canthink of wings like the 474th at Nellis and other
+   wings that have drawn down. And as airplaneshave aged, it's certainly
+   changed, although the other fighter force structure is changed, too.
+
+   <p>So I don't have on the tip of my tongue what the relationship in terms
+   of proportion of forceis in terms of change, but we'd like to show
+   that to you for the record and the proportion of thedifferent blocks,
+   how they've changed...
+
+   <p>LEVIN: All right.
+
+   <p>EBERHART: ...because that's what complicates this issue, as you know.
+
+   <p>LEVIN: Right. That's fine. Are you familiar with the Coalition Force
+   EnhancementProgram? Does that strike a bell?
+
+   <p>EBERHART: I think I...no, sir.
+
+   <p>LEVIN: OK. This was a program that would have given the F-16s some
+   improvedcapability, upgraded them, added some service life. And we can
+   find that in a different way.
+
+   <p>EBERHART: Yes, sir, I am familiar with that program.
+
+   <p>LEVIN: OK. Was it our plan to use that program and sell those upgraded
+   F-16 to our allies?
+
+   <p>EBERHART: Sir, our hope was to do just that and then have a device or
+   a procedure wherethat money is supposed to be returned to the Treasury
+   would be returned to the United States AirForce to buy these attrition
+   reserve airplanes that we've just discussed.
+
+   <p>LEVIN: Do you know the cost of adding 4000 hours of service life to a
+   plane under thatprogram?
+
+   <p>EBERHART: No, sir, I do not know. One of our big problems right now is
+   that as we'velooked around on this and how much we would have to sell
+   those for, I think the brutal facts arethere are no buyers.
+
+   <p>LEVIN: They want to...
+
+   <p>EBERHART: Just as soon have a new airplane.
+
+   <p>LEVIN: All right. Now, are you familiar with the JSTARS budget request
+   in the currentbudget?
+
+   <p>EBERHART: Yes, sir.
+
+   <p>LEVIN: As I understand it, the budget would cut the JSTARS procurement
+   in half duringfiscal years '99, 2000, and 2001, buying one instead of
+   two during those fiscal years?
+
+   <p>EBERHART: Sir, my recollection was that we did, in fact, move one
+   airplane right. I wasn'taware that we moved three right. I thought we
+   moved one right. I'll have to provide that for therecord.
+
+   <p>LEVIN: Can you tell us what the experience with the J-STARS was in the
+   Persian Gulf War,in Bosnia?
+
+   <p>LEVIN: Are the CINCs interested in more JSTARS?
+
+   <p>EBERHART: Sir, the CINCs are very interested in the JSTARS program as
+   it exists todayand the planned improvements as we get on through the
+   production line.
+
+   <p>Obviously, as you know, the bird that we have today and the production
+   birds will be muchmore capable than the bird that we had in the
+   Persian Gulf. And that -- we were all amazed bywhat it was able to do
+   in such short notice.
+
+   <p>I think that in Bosnia today, people are impressed with what it's
+   doing, although it's adifferent situation because of the topography,
+   we don't have a pool table, if you will, like we hadin Desert Storm or
+   like we imagined in the central region of Europe.
+
+   <p>But we have tools where we can go and take this and show the CINC that
+   if you bringJSTARS here and you put it in this orbit, this is what
+   you're going to be able to see aroundSarajevo. This is what you're not
+   going to be able to see. So that the expectations are there andhe
+   fully understands what this tool will bring to him as a CINC. And
+   that's exactly what we didbefore we deployed JSTARS, so it's living up
+   to the expectations, and it's allowing us to use it inways in
+   peacekeeping and peace making that we hadn't envisioned using in a
+   major regionalcontingency. So everybody's very impressed with what
+   they see in terms of JSTARS now. Andfrankly, the move right was an
+   affordability issue to make sure that everything would fit.
+
+   <p>LEVIN: Well, that's what troubles me is that we've got a new
+   technology and a newplatform, which is working extremely well from
+   everything we can learn, and we're moving thatto the right for
+   affordability reasons.
+
+   <p>And then, we're spending money buying F-16s and F-15s for attrition
+   reserves, which areonly created by the changing the program life
+   expectancy of planes. And where planes could beupgrades quite easily,
+   as a matter of fact, if necessary in order to extend that program
+   life.
+
+   <p>I mean, it just seems to me there's a disconnect here where we've got
+   a real need of a newtechnology that is proving itself every day in
+   Bosnia and has proven itself in -- over many, manymonths in the
+   Persian Gulf, and that we're delaying and using money to create a
+   reserve whichreally, it seems to me, is not a realistic need when you
+   consider the fact that we've reduced thenumber quite dramatically of
+   how many F-16s we're going to need because of the reduction infighter
+   wings.
+
+   <p>So, to me, it's a priority which is misplaced, but I'm not asking you
+   to agree or disagree withthat so much as I need from you for the
+   record the history of the F-16s when we had 26 fighterwings. Now that
+   it's down to 20 what would have been had we -- the requirement -- what
+   therequirement would have been had we gone up to 35? The impact on the
+   -- on that requirementwhen we changed the service life expectancy of
+   the F-16 and then we can put all that togetherand reach our own
+   conclusion. But at least that's certainly my tentative conclusion.
+
+   <p>EBERHART: Sir, we'll certainly provide that and the chief shares your
+   concerns there. Maybe not necessarily versus the F-16 but the
+   importance of that JSTARS and we are relookingthat now as we build the
+   '98 to '03 program.
+
+   <p>LEVIN: OK. Thank you. And then my last question, General Magnus, has
+   to do with theC130-J aircraft, and I understand that you'd like to
+   begin buying a tanker version of that aircraft.Is that correct?
+
+   <p>MAGNUS: Senator, our current active force has 37 35 year old KC130-Fs
+   and an additional14 slightly younger KC130-Rs. Based upon what our
+   projection of the service life of thoseaircraft are, unfortunately the
+   bulk of them are going to come due for block service liferetirement
+   just exactly when we need to invest in aircraft like the joint strike
+   fighter and V-22and the Navy's F/A-18EF. We have been monitoring the
+   United States Air Forces C130-J program. We are enormously impressed
+   with the improvements in the cockpits and the avionicsin the
+   performance of the air craft. We believe it would be prudent for us to
+   be able toessentially piggy back on that program. Fiscal resource
+   constraints have not enabled us to dothat at this time.
+
+   <p>LEVIN: Now you just completed, did you not, the modernization of your
+   tactical tankers acouple of years ago?
+
+   <p>MAGNUS: That's correct. We still have some other things that are being
+   modernized interms of radios, global position, satellite com. So,
+   there is a continuing strain, but essentiallythat is correct.
+
+   <p>LEVIN: And despite that recent completion of that modernization
+   program, you want to startbuying some new tankers for reasons that you
+   gave?
+
+   <p>MAGNUS: Well, essentially the modernization that we're talking about,
+   that the Senator isreferring to, is sub-systems. Our concern is
+   service life, fatigue life of the aircraft. Theseaircraft are 35 years
+   old. We would have to spend an enormous amount more money to basically
+   do a service life extension on these aircraft when we have aircraft
+   that are beingproduced for the United States Air Force. They're going
+   to have very low ownership costs, justas ours are spiking.
+
+   <p>So, we believe it prudent not to invest in schlepping old aircraft
+   when in fact they're going tobe very cost effective in terms of life
+   cycle costs and commonality. Very cost effective --C130-Js being
+   produced for our wing men in the United States Air Force. So we look
+   forward tobeing able to take advantage of that program.
+
+   <p>LEVIN: Thank you all. Appreciate your testimony. We will stand
+   adjourned.

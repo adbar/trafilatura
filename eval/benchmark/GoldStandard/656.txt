@@ -1,0 +1,144 @@
+Whats-New-in-C-Sharp2-Misc-New-Feature at Programmers Heaven
+
+
+
+<h>What’s New – C# 2.0 Series
+ <p>In this C# what’s new series, we will introduce and discuss the new editions in 
+C# 2.0 programming language. We will explain the new features like generics, 
+partial classes, object oriented and other language enhancements and demonstrate 
+it with sample source code. The series is most suitable for people who have 
+worked with C# in Visual Studio.Net o r Visual Studio.Net 2003. However, people 
+coming from different background like VB.Net, C++ and Java will also find it 
+useful if they are planning to learn or move to C# in near future. 
+<h>Miscellaneous Features
+ <p>In this article about the new features of C# 2.0 programming language we will 
+discuss features like Fixed sized buffers, Friend assemblies, extern keyword, 
+#pragma warnings and :: operator (global keyword). 
+<h>Fixed Sized Buffers
+ <p>In C# 1.x, when we declare an array, it is merely a reference (or pointer) that 
+points to a sequence of elements. For example if we declare a structure like 
+this: 
+     <p>struct Test
+    {
+        char[] letters;
+    }
+ <p>It will only take 4 bytes in memory because what it contains is a reference (or 
+pointer) which is of int type. Several times with legacy code written in C/C++ 
+programming language we need to pass data structures which accepts the fixed 
+sized buffers and not only the pointer of the buffer. C# 2.0 provides this 
+feature with its ‘fixed sized buffers’ declared with the keyword ‘fixed’ 
+     <p>struct Test
+    {
+        fixed char letters[10];
+    }
+ <p>Now the structure will take up 20 bytes (a Unicode character takes 2 bytes) in 
+memory. But there are few important points and restrictions for using fixed 
+sized buffers: 
+   <p>Fixed sized buffers can only be contained in unsafe code 
+   <p>They can only exist as instance members and not the local members of a method 
+   <p>We must have to declare the size of the fixed sized buffer when we declare 
+  them. It is an error to write fixed char letters[] 
+   <p>They can only be one dimensional. Multi-dimensional fixed sized buffers are 
+  not allowed 
+<h>Friend Assemblies
+ <p>In C# 2.0, you can designate an assembly as a friend of yours assembly. A friend 
+assembly can access all the non-public types of your assembly. You can declare 
+an assembly as a friend of your assembly using the assembly: 
+InternalsVisibleTo() attribute defined in the System.Runtime.CompilerServices 
+namespace which takes the name of assembly and its public key token 
+ <p>[assembly: InternalsVisibleTo("AssemblyB, PublicKeyToken=32ab4ba45e0a69a1")]
+ <p>You may require this in some project where you need one assembly to access types 
+defined in your assembly and you separated the two assemblies for logical or 
+deployment reasons. There are few important points to remember here: 
+   <p>You must know not only the name of assembly to be marked as friend but also 
+  its public key token 
+   <p>Friendship achieved by friend assemblies is not symmetric, that is, if an 
+  assembly B is defined as a friend of an assembly A then it does not mean that 
+  A is also a friend of B. In easier word, in the example above, AssemblyB can 
+  access all the non-public types in our assembly but it does not mean that our 
+  assembly can also access all the non-public types of AssemblyB 
+   <p>Also the friendship thus achieved is not transitive, that is, if A defines B 
+  as its friend and B defines C as its friend then it does not mean that C is 
+  also a friend of A extern Keyword 
+ <p>The ‘extern’ keyword can either be used with a method or for assembly alias. 
+When used with methods it specifies that the method body is externally defined 
+in some unmanaged code (mostly specified with DllImport()). The following code 
+demonstrates the extern method 
+    <p>[DllImport("User32.dll")]
+   public static extern int MessageBox(int h, string m, string c, int type);
+ <p>Here we specified that the method MessageBox() is defined in an external 
+unmanaged DLL (user32.dll). Note that the method declaration ends with semicolon 
+as it is body is not defined here. The method can later be used in the program 
+just like any other method. 
+ <p>The extern keyword can also be used as assembly alias. It is useful when we want 
+to use different versions of an assembly at the same time in a single assembly. 
+You can look for its description in MSDN 
+<h>#pragma Warnings
+ <p>Sometimes you like to tell your compiler not to display certain warnings; you 
+can do this by #pragma keyword which is used to enable or disable specified 
+warnings. You need to know the number of warning you want to enable or disable 
+ <p>#pragma warning disable 414, 3021
+ <p>The above code will disable warnings number 414 and 3021. Similarly you can 
+enable warnings like: 
+ <p>#pragma warning enable 3021 
+<h>:: Operator and global keyword
+ <p>Suppose you have defined your own class with name ‘System’ and inside it you 
+want to use the Console class of the .Net System namespace, what will you do? 
+ <p>namespace MyNameSpace
+{
+    class System
+    {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine("Hello, world");
+            System.Console.ReadLine();
+        }
+    }
+}
+ <p>With C# 2.0, you can use the :: operator with global keyword to achieve this. It 
+allows you to access members in the global namespace. 
+ <p>namespace MyNameSpace
+{
+    class System
+    {
+        static void Main(string[] args)
+        {
+           global:: System.Console.WriteLine("Hello, world");
+           global:: System.Console.ReadLine();
+        }
+    }
+}
+ <p>It tells the compiler to search for the global namespace named ‘System’. 
+<h>About the Author
+ <p>Faraz Rasheed is the Masters Research student at Kyung Hee University, South 
+Korea and a professional technical writer of Programmers Heaven. He graduated 
+from the University of Karachi, Pakistan. He has a keen interest in the design 
+and development of software systems. He has worked in .Net and Java application 
+development platforms. Currently, he is working for the Ubiquitous Computing 
+Research Project at Real Time & Multimedia Lab of Kyung Hee University 
+(http://oslab.khu.ac.kr). He can be accessed via faraz@oslab.khu.ac.kr or 
+frazrasheed@yahoo.com 
+
+
+<h>Partners
+<h>Partners
+<h>More Partners
+
+<h>Web site services
+
+
+
+
+<h>Advertisement
+
+
+
+<h>Free Magazine
+
+ <p>eWeek The essential technology information source for builders of e-business.... 
+subscribe now 
+
+
+
+
+

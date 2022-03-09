@@ -1,0 +1,91 @@
+URL: http://www.brighthand.com/article/Three_Hot_Technologies_Part_4?site=Learn
+
+<h>Three More Hot Technologies That Could Profoundly Change Handhelds
+
+<p>This is another installment in a series of articles covering
+   technologies that are still on the drawing board or in the laboratory
+   but have the potential to have a significant impact on handhelds at
+   some point in the future.
+
+<h>Bacterial Power
+
+<p>Seems like almost everyone is trying to find a replacement for the
+   battery. The reason for this is obvious: while up to now traditional
+   batteries have done a pretty good job of keeping our electronic
+   devices going, just about everyone would prefer a handheld or mobile
+   phone that only has to be recharged every few weeks, instead of every
+   few days.
+
+<p>There are several candidates of battery replacements. The best known
+   is the Fuel Cell, which can turn Methanol into power. Another option
+   is the Micro-engine, a tiny generator that runs on lighter fluid.
+   Recently, a new possibility emerged: bacterial power.
+
+<p>When your bacterially-powered handheld starts to run low on power, you
+   won't plug it into a wall socket. Instead, you'll pour in a bit of
+   sugar. The sugar will be converted by a strain of bacteria called
+   Rhodoferax ferriducens into carbon dioxide and electricity.
+
+<p>This is the invention of Swades Chaudhuri and Derek Lovley, who have a
+   prototype that is an amazing 83% efficient. The two say their
+   invention is cheap to make and can be used in environments as cold as
+   40 degrees and as hot as 86 degrees.
+
+<p>These two are currently working to turn their proof of concept into a
+   real product. They see no reason why a bacterial battery couldn't be
+   as small as a typical household battery today.
+
+<h>Tiny Hard Drives
+
+<p>While a handheld with a measly 128 MB of storage is considered the
+   state of the art, there are plenty of MP3 players on the market with
+   gigabytes of storage capacity. Apple makes a 40 GB iPod -- that's
+   10,000 songs.
+
+<p>The reason MP3 players can store so much is they have a tiny hard
+   drive inside of them, while handhelds depend entirely on memory chips.
+   A handheld or smart phone with a mini hard drive could store hundreds
+   of MP3s, hours of video that has been reduced in size for a handheld's
+   screen, or thousands of pictures.
+
+<p>Toshiba has just announced a new milestone in
+   tiny hard drives. This has a diameter of only .85 inches, making it
+   about the size of a nickel. Nevertheless, it can store between 2 GB
+   and 3 GB of data. Tosbiba believes this would be ideal to store music
+   and other types of files on smart phones and handhelds.
+
+<p>This miniature hard drive is expected to go into production in 2005.
+
+<h>Inductive Pen Sensing
+
+<p>Currently most handhelds use touch screens. While this may be what
+   people are used to, a British company named Wacom Components is urging
+   a switch to inductive pen sensing, the same technology being used in
+   Tablet PCs.
+
+<p>In a touch screen, there is a semi-transparent resistive digitizer
+   placed above the display with an air gap between it and a flexible
+   resistive membrane above. When a stylus or finger compresses the
+   flexible membrane, it touches the lower resistive layer, activating
+   the signal. While this is what handheld users are familar with, it has
+   several drawbacks.
+
+<p>For one, the digitizer is exposed, making it more prone to breakage.
+   For another, the digitizer sits between the user and the display,
+   obscuring it slightly.
+
+<p>With inductive pen sensing, there is a sensor that sits behind the
+   screen and detects a special pen at a distance of up to 14 mm. Because
+   the sensor is behind the screen, the display isn't obscured at all,
+   while the digitizer is better protected. Also, because this sensor
+   doesn't require the multiple layers of a touch screen, devices can be
+   thinner. And inductive pen sensing is more accurate than the current
+   method.
+
+<p>Of course, this means that the screen can only be used with the
+   specially-designed pen. Still, this pen doesn't need a battery or any
+   sort of power running to it.
+
+<p>Wacom Components says it is currently working with Symbian to develop
+   smart phones using inductive pen sensing.
+

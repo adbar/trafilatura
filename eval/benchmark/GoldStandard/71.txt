@@ -1,0 +1,432 @@
+URL: http://hbswk.hbs.edu/item.jhtml?id=4834&t=technology
+
+   
+
+<h>Microsoft vs. Open Source: Who Will Win?
+
+<h>   Q&A with:  Ramon Casadesus-Masanell and Pankaj Ghemawat
+<h>   Published: June 6, 2005
+<h>   Author:    Sean Silverthorne
+
+<h>Executive Summary:
+
+<p>   Using formal economic modelling, professors Pankaj Ghemawat and Ramon
+   Casadesus-Masanell consider the competitive dynamics of the software
+   wars between Microsoft and open source. Read our interview.
+
+
+<h>About Faculty in this Article:
+
+   
+
+<p>  Ramon Casadesus-Masanell is an assistant professor in the Strategy
+   unit at Harvard Business School.
+     
+
+<h>About Faculty in this Article:
+
+   
+ <p>  Pankaj Ghemawat is the Jaime and Josefina Chua Tiampo Professor of
+   Business Administration at Harvard Business School.
+     
+
+<p>   Want to get a heated debate going among technologists? Ask them this
+   question: Can the open source software movement defeat (or severely
+   cripple) Microsoft in the marketplace?
+
+ <p>  With little academic attention focused on this question, Harvard
+   Business School professors Pankaj Ghemawat and Ramon
+   Casadesus-Masanell decided to dive in. Most research to date into the
+   OSS movement has focused on the organization and management issues
+   surrounding OSS. Ghemawat and Casadesus-Masanell chose to explore the
+   fundamental competitive dynamics question: Will OSS ever displace
+   traditional software from its market leadership position?
+
+ <p>  "We believe that there is still a great deal of confusion and
+   puzzlement on how this competitive battle will develop," say the
+   authors of the academic paper Dynamic Mixed Duopoly: A Model Motivated
+   by Linux vs. Windows, which has just been accepted for publication in
+   a special issue of Management Science.
+
+<p>   Ultimately, the authors believe, neither side is likely to be forced
+   from the battlefield--Microsoft has too much market share and OSS
+   offers too many benefits for users. But there are strategies each can
+   use successfully against the other, as they detail in this e-mail
+   interview.
+
+<p>   Sean Silverthorne: Why should OSS ever displace traditional software?
+
+<p>   Ramon Casadesus-Masanell and Pankaj Ghemawat: One main advantage of
+   open source software is that because users can modify the code
+   directly (as they encounter problems or have new ideas on how to
+   improve it), the development cycle is significantly shorter.
+   Proponents of OSS claim that if this demand-side learning (as we call
+   it) is sufficiently strong, OSS will oust traditional software. In
+   addition, software engineers claim that the better architecture of
+   most OSS projects make them a potentially superior product, adding to
+   the probability of success.
+
+ <p>  However, OSS has disadvantages too. Most importantly, it comes from
+   behind in terms of market share (installed base). Because the value of
+   an operating system depends critically on the number of users,
+   traditional software has an advantage. Clearly, a larger installed
+   base implies that there will be stronger direct and indirect network
+   effects, and this will enhance the value of the operating system to
+   current and potential users. In addition, a larger installed base also
+   implies that there will be more feedback on bugs and more suggestions
+   for new features.
+
+ <p>  Our paper introduces a dynamic mixed duopoly model in which a
+   profit-maximizing competitor (Microsoft) interacts with a competitor
+   that prices at zero (Linux), with the installed base affecting their
+   relative values over time. We use a formal model to ask what
+   conditions are needed for Linux to take over Windows. The questions
+   that we address are: Is Linux's superior demand-side learning
+   sufficient to win out? What is the effect of forced procurement by
+   governments and some large corporations on the long-run equilibrium?
+   How do cost asymmetries play out? Can Microsoft use piracy
+   strategically to improve its market position?
+
+ <p>  From a managerial perspective, these are significant questions. If it
+   turns out that OSS will incontestably displace traditional software,
+   software firms need to adapt as quickly as possible to the new
+   competitive landscape by, for example, incorporating some aspects of
+   the open source development model, or else be ready to exit. In fact,
+   the model suggests ways in which the likelihood of OSS winning out can
+   be minimized (see below). If, to the contrary, OSS turns out not to be
+   a threat to the traditional model, firms should not waste time and
+   attention trying to figure out ways to fight this battle.
+
+<p> Could you summarize your results?
+
+<p> First of all, let us make a caveat regarding our approach. Our
+   methodology is formal economic modelling. What this means is that we
+   construct a stylized mathematical model of the relationship. The model
+   captures what we believe are the most important features of the
+   Linux-Windows competitive battle (faster demand-side learning on the
+   part of Linux and an initial installed base advantage for Windows),
+   but makes important assumptions regarding other aspects. Without these
+   simplifications, the model would not be tractable and it would not be
+   possible to obtain results. After having analyzed the base model, we
+   relax some of these assumptions.
+
+ <p>    Harnessing demand-side learning more efficiently is not sufficient
+     for Linux to win the competitive battle against Windows.
+
+ <p>  Our main result is that in the absence of cost asymmetries and as long
+   as Windows has a first-mover advantage (a larger installed base at
+   time zero), Linux never displaces Windows of its leadership position.
+   This result holds true regardless of the strength of Linux's
+   demand-side learning. Furthermore, the result persists regardless of
+   the intrinsically better design and potential differential value of
+   Linux. In other words, harnessing demand-side learning more
+   efficiently is not sufficient for Linux to win the competitive battle
+   against Windows.
+
+<p>   Having obtained this basic result, we investigate the conditions that
+   will warrant that Linux ends up forcing Windows out. We do this by
+   modifying the model in two ways. First of all, we look at the effect
+   of having buyers such as governments and some large corporations
+   committed to deployment of Linux in their organizations. We call such
+   buyers strategic. In addition to cost-related reasons, governments
+   back Linux because having access to the source code allows them to
+   verify that sensitive data is treated securely. Binary code makes it
+   hard to figure out who has access to information flowing in a network.
+   Companies such as IBM, in contrast, back Linux because they see in OSS
+   one way to diminish Microsoft's dominance. We find that the presence
+   of strategic buyers together with Linux's sufficiently strong
+   demand-side learning results in Windows being driven out of the
+   market. This may be one main reason why Microsoft has been providing
+   chunks of Windows' source code to governments.
+
+ <p>  Second, we look at the role of cost asymmetries. In the base model we
+   assume that the cost structures of Windows and Linux for the
+   development, distribution, and support of software coincide. A natural
+   question is then whether the central result that Windows survives in
+   the long-run equilibrium regardless of the speed of Linux's
+   demand-side learning persists if there are cost asymmetries. We find
+   that because OSS implies lower profits for Microsoft, the larger the
+   cost differences are between Linux and Windows, the less able
+   Microsoft is to guarantee the survival of Windows.
+
+ <p>  We also show that it is not all bad news to Microsoft. We analyze the
+   effect of having forward-looking buyers and the presence of piracy,
+   and conclude that both benefit Microsoft.
+
+<p>   We question the effectiveness of influencing forward-looking buyers'
+   perceptions on the value of an operating system. The model suggests
+   that the more forward-looking buyers are, the more advantageous it is
+   to use fear, uncertainty, and doubt (FUD) tactics to drive the
+   competing system out. Consider SCO, a small "vulture" firm that had
+   bought up the intellectual property rights to a particular version of
+   Unix and threatened Linux users with lawsuits over infringement of
+   those rights unless they agree to pay substantial licensing fees. IBM,
+   which was one of the prime corporate sponsors of Linux as well as the
+   target of a lawsuit by SCO that sought $1 billion in damages, alleged
+   in mid-2003 that SCO was in cahoots with Microsoft. Our model
+   indicates that if buyers are sufficiently forward-looking, such
+   actions may jeopardize the ability of Linux to continue as an
+   effective competitor in the operating system space.
+
+ <p>  We also look at the effect of piracy and ask whether piracy can ever
+   be beneficial to Microsoft. This extension was motivated by analyzing
+   data on a cross-section of countries on Linux penetration and piracy
+   rates. We found that in countries where piracy is highest, Linux has
+   the lowest penetration rate. The model shows that Microsoft can use
+   piracy as an effective tool to price discriminate, and that piracy may
+   even result in higher profits to Microsoft!
+
+ <p>  Finally, the paper investigates the societal welfare consequences of
+   OSS availability by comparing different industry structures (monopoly
+   and duopoly). We find that while a monopoly of Linux is always
+   preferable (from the point of view of societal welfare) to a Windows
+   monopoly, it is ambiguous whether a duopoly Linux-Windows is better
+   than a Windows monopoly.
+
+ <p>  The basic trade-off is the following: With a duopoly, more individuals
+   and organizations use PCs because prices are lower, and this raises
+   welfare. However, with a duopoly, no operating system ends up
+   exploiting fully its potential because developers' efforts wind up
+   divided between the two systems. However, with a monopoly, the efforts
+   to develop new software and improve the platform are directed towards
+   one system only and this may turn out to be better from a social
+   welfare perspective.
+
+ <p>  Q: In general, what surprised you about the results? What assumptions
+   did you have going in that didn't hold up?
+
+ <p>  A: When we began the project, we thought that network effects and
+   demand-side learning would result in Linux forcing Windows out. After
+   all, we reasoned, if Windows is sold at a positive price and Linux is
+   free, there will always be Linux users, and if the strength of Linux's
+   network effect is large, the value of Linux to prospective users
+   should eventually become larger than that of Windows.
+
+ <p>  Well... we were wrong (and this illustrates the usefulness of
+   developing a formal model). What we had missed is that Microsoft's
+   initial advantage (larger installed base) together with its pricing
+   power allow the company to price strategically to control Linux's
+   market share going forward. By lowering the price of Windows, the
+   demand for Linux shrinks to the point where Linux is not a threat to
+   the survival of Windows. The model also shows that a "milking
+   strategy" (setting high prices in the short term and leaving the
+   market at some point in the future) is not desirable to Microsoft. The
+   reason is that if Microsoft follows such a strategy, as the last
+   period becomes closer and closer, the relative benefit of abandoning
+   it and lowering prices to survive a few more periods increases
+   dramatically.
+
+ <p>    The model shows that Microsoft can use piracy as an effective tool
+     to price discriminate, and that piracy may even result in higher
+     profits to Microsoft!
+
+ <p>  The "Windows persistence" result turns out to be robust to different
+   specifications of the model. In fact, in the first few months into the
+   project we had developed several alternative models and every one of
+   them yielded this very same finding.
+
+ <p>  In addition to this main result, we were also surprised to find that
+   piracy may end up increasing Microsoft's profits. To understand why,
+   notice that there are two types of pirates: those who would not have
+   bought Windows in the first place because it is too expensive, and
+   those who would have bought Windows but now decide to pirate it. The
+   first category increases Windows' installed base without affecting
+   sales. As a consequence, this group increases the value of Windows.
+   And thanks to these pirates, Microsoft is able to set higher prices in
+   the future (because the value of the system goes up). In addition,
+   having these pirates means that Linux's installed base does not grow
+   as much as it would have if piracy weren't there. The second type of
+   pirates (those who in the absence of piracy would have bought Windows)
+   reduces Windows' sales and profit. Thus, if the proportion of
+   first-type pirates is sufficiently large, Microsoft's profits will
+   increase with piracy.
+
+ <p>  Finally, the social welfare result that a Windows monopoly is not
+   always worse than a Linux-Windows monopoly was also unexpected. This
+   questions the social desirability of policies aimed at guaranteeing
+   Linux's survival.
+
+<p>   Q: You mention in the paper that the model is not to be taken as a
+   literal model of the Linux/Microsoft competition. But can you say
+   anything about why Linux has enjoyed success against Microsoft?
+
+ <p>  A: Linux's success against Microsoft is still relative. In the client
+   space, Windows is the undisputable leader, and in the server space,
+   Linux and Windows have both been gaining positions for the past ten
+   years. The big losers are Novell, Unix, Solaris... everybody except
+   Linux and Windows.
+
+ <p>  Despite this, Microsoft is visibly concerned about Linux's upsurge.
+   The Halloween memos  are an
+   obvious testimony of this concern: "OSS poses a direct, short-term
+   revenue and platform threat to Microsoft, particularly in server
+   space. Additionally, the intrinsic parallelism and free idea exchange
+   in OSS has benefits that are not replicable with our current licensing
+   model and therefore present a long-term developer mindshare threat."
+
+<p>   Microsoft has a great deal to lose if Linux wins the operating systems
+   battle. Microsoft is a software company, and a defeat in operating
+   systems would point to the vulnerability of its entire business
+   portfolio. In addition, the operating systems group is one of
+   Microsoft's biggest revenue generators. Moreover, to a large extent
+   Microsoft's sustained success over time in such a dreadfully rugged
+   landscape has been due to its dominant position in operating systems.
+   It is well known that Microsoft won the browser wars leveraging its
+   dominant position in client operating systems. And the same will
+   happen in the media player space unless the American or European
+   antitrust authorities prevent it. We expect Microsoft to put all its
+   ammunition to fight this battle.
+
+ <p>  Part of the reason why Linux has made significant inroads is the
+   determination of Richard Stallman and the Free Software Foundation to
+   have a free (as in freedom) operating system. According to Stallman,
+   application software will never be truly free unless there is a free
+   operating system that supports it. Thus, since the moment Linus
+   Torvalds and Richard Stallman joined forces, a big chunk of the
+   foundation's efforts have been directed at building a free operating
+   system.
+
+<p>   Then there are some large corporations and governments backing the
+   development of Linux. These players use Linux as a way to curb
+   Microsoft's dominance. This support is important because there are
+   tedious portions of the code that would rarely be developed
+   spontaneously by members of the Linux-developer community.
+
+<p>   Q: From your modelling, what can Microsoft do strategically to remain
+   competitive against a product that is argued to be of better quality,
+   is updated more frequently, and is free?
+
+<p>   A: A few actions that the model suggests Microsoft could do to remain
+   competitive are:
+<p> Increase its own demand-side learning.
+       <l> Listen to the demands of the user community to better exploit
+            the benefits of demand-side learning. Microsoft must
+            facilitate communication between the user base and the
+            company to have prompt feedback on the performance of its
+            products.
+        <l>. Make an effort to incorporate improvements in the code (fix
+            bugs and introduce new features) as soon as possible.
+        <l>. Reward those who propose improvements for the code. At the
+            very least, Microsoft could publicly acknowledge those who
+            proposed new features or discovered bugs.
+ <p> Feed its direct and indirect network effects.
+        <l> Support as much as possible the independent software vendor
+            community so that the quantity and quality of complements is
+            substantially above that of Linux.
+       <l>. Encourage competition between the different ISVs. The lower
+            the prices of applications, the more appealing the Microsoft
+            system will be.
+       <l>   c. Price discriminate. Give Windows and applications away to
+            schools and universities so that users build their file
+            libraries on Microsoft, not Linux.
+    <p> c. Minimize the number of strategic buyers.
+  <l>    a. Let governments access the source code and give guarantees
+            that sensitive data is treated confidentially.
+  <l>    b. Price discriminate. Give binary away to organizations and
+            individuals who are not willing to spend money on Windows but
+            who would be willing to use Linux because it is free.
+ <p>   d. Reduce costs to be able to sustain long periods of time with low
+       prices.
+ <p>   e. Decrease Linux's demand-side learning.
+         a. Because the way to do this involves some questionable (from a
+            legal point of view) actions, we will refrain from suggesting
+            specifics.
+ <p>   f. Lessen Linux's direct and indirect network effects.
+  <l>       a. Make it as hard as possible for Windows applications to work
+            on Linux.
+  <l>       b. Same for MS Office documents.
+   <l>      c. "Promote" Linux's code forking.
+ <p>   g. Infuse fear, uncertainty, and doubt into the Linux user community.
+       For this to work, the statements must be perceived as credible.
+       Credibility requires some past FUD announcements to be realized.
+
+ <p>  Q: Is there a scenario where Linux could be kicked out of the market
+   by Microsoft?
+
+ <p>  A: Strictly speaking, within our model the only way in which Microsoft
+   can get rid of Linux is by setting the price at zero. But, even if
+   Microsoft did that, the company would still be selling MS Office for a
+   positive price. Thus, we conjecture that even in this case, there
+   would be people developing and using Linux.
+
+ <p>  The more important question is: What motivates developers to
+   contribute to open source projects in the first place? As long as the
+   drivers are there, Linux will persist. Given that Linux was born in
+   1992 in an industry already dominated by Microsoft, and given that the
+   financial motive is secondary, it will be very hard for anyone to oust
+   Linux.
+
+ <p>  The organizational stream of research on OSS has identified several
+   drivers of motivation to contribute to open source projects. For
+   Microsoft to have a chance to kick Linux out of the market, it needs
+   to successfully fight them.
+
+ <p>  First, some developers see software as scientific knowledge to be
+   shared "like the sharing of recipes among cooks." In fact, some
+   describe software developers more like artists seeking fun, challenge,
+   and beauty in their work than like calculative, square-minded
+   engineers. Second, some individuals find it fun to go against
+   Microsoft. As the OSS/free software movement gains momentum and
+   developers foresee that victory is within reach, they increase their
+   effort to accomplish this. Third, because most OSS projects have a log
+   file listing all contributors to the code, some developers find it
+   desirable to participate in OSS projects to signal their ability and
+   to enhance their chances of promotion and professional advancement.
+   Finally, user-developers sometimes fix bugs that they find and then
+   release the improved code so that everybody can benefit.
+
+ <p>    It will be very hard for anyone to oust Linux.
+
+<p>   To the motivations of independent developers to contribute to Linux,
+   we have to add the important support that the free operating system
+   receives from companies and governments. As long as the motives that
+   induce these organizations to back Linux persist, Linux will not go
+   away.
+
+<p>   Finally, and as we mentioned above, having a free operating system is
+   central to the mission of the Free Software Foundation, Richard
+   Stallman, and Linus Torvalds. It is thus hard to see how Microsoft can
+   "persuade" Stallman or Torvalds to cave. And even if it did... Linux
+   is no longer Stallman's or Torvalds' property. The project is
+   dispersed and there is no "owner" of the code. Thus, someone else can
+   take the lead.
+
+ <p>  Q: What's next for the both of you for future research projects?
+
+<p>   A: There are several ways in which our work on Linux can be extended.
+   One avenue would be to empirically estimate the difference in
+   demand-side learning between Linux and Windows. This would allow us to
+   make educated guesses on the chances of survival of Windows and make
+   managerial and policy recommendations to OSS advocates, Microsoft, and
+   administrations.
+
+ <p>  In its present form, the paper models the organization of Linux's
+   development in a very stylized way. Having a closer look at issues of
+   effort coordination may help us better understand how to deal with
+   code forking, one of OSS's biggest potential problems.
+
+ <p>  A second organizational issue that could also benefit from formal
+   analysis is that of incentives to contribute to OSS. While most
+   research on this issue has been sociological in nature, the economic
+   approach may shed light on why supposedly rational individuals are
+   willing to spend valuable time and effort without extrinsic, financial
+   incentives.
+
+ <p>  A final question that we believe is of utmost importance but that has
+   not attracted much attention thus far (at least among academics) is:
+   What are the drivers of adoption of OSS? Aside from its empirical
+   relevance for both individuals and organizations, it is an interesting
+   question from a theoretical point of view, too. The presence of
+   network effects and demand-side learning make this a non-trivial
+   problem. We conjecture that there are multiple equilibria and that the
+   use of FUD to mold perceptions about future value becomes crucial.
+
+<h>Related Stories in HBS Working Knowledge
+<h>Topics
+<h>Industries
+<h>Latest on Economics
+<h>Latest on Managing Innovation
+<h>Latest on Computers and Software
+<h>Latest on Technology Adoption
+ <h> Sign Up for Our Newsletter 
+<p>Receive the HBS Working Knowledge e-mail newsletter each week—new business research and ideas delivered to your inbox. 

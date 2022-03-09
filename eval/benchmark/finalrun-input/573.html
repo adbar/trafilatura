@@ -1,0 +1,191 @@
+<text id="http://www.microsoft.com/resources/documentation/WindowsServ/2003/standard/proddocs/en-us/upgrading_a_mixed_domain.asp" encoding="iso-8859-1">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><META name="MS.LOCALE" content="en-us"><title xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10">Upgrades in a domain containing Windows 2000 domain controllers</title><link type="text/css" rel="Stylesheet" href="/WindowsServer/feedbacksupport/feedback.css" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"><link type="text/css" rel="Stylesheet" href="/WindowsServer/mnp_utility.mspx/templatecss?template=%2fwindowsserver%2ftemplates%2fMAML.conceptual&amp;shell=%2fWindowsServer%2fen%2flibrary%2fConfiguration-DeepTree.xml&amp;locale=en-us" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"><script language="JavaScript" type="text/javascript" src="/windowsserver/templates/MAML.conceptual/../common/Base.js" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10"></script>
+<link type='text/css' rel='Stylesheet' href='/library/mnp/2/aspx/css.aspx?locale=en-us&amp;static=Page' />
+<link rel='stylesheet' type='text/css' href='/library/toolbar/3.0/css.aspx?c=/WindowsServer/en/library/Configuration-DeepTree.xml'/><script language='JavaScript'>var doImage=doImage;var TType=TType;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+function footerjs(doc){if(doImage==null){var tt=TType==null?"PV":TType;doc.write('<layer visibility="hide"><div style="display:none"><img src="http://c.microsoft.com/trans_pixel.asp?source=technet2&TYPE=' + tt + '&p=windowsserver_en_library&URI=%2fwindowsserver%2fen%2flibrary%2fA643ABC6-0DB5-4DE7-80E5-269DA200960A1033.mspx&GUID=1F4FC18C-F71E-47FB-8FC9-612F8EE59C61&lc=en-US" width=0 height=0 hspace=0 vspace=0 border=0 alt=""/></div></layer>');}}</script><meta name="WT.sp" content="_windowsserver_" /><script language='JavaScript' src='http://js.microsoft.com/library/svy/broker.js'></script><script>
+				function synctoc()
+				{
+					if (top.MNPMenuFrame)
+					{
+						if (top.MNPMenuFrame.synctoc)
+						{
+							top.MNPMenuFrame.synctoc();
+						}
+					}
+				}
+				</script></head><body bgcolor="#FFFFFF" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" onLoad="synctoc()" dir="LTR"><!--NOINDEX_START--><a name="top"></a><div id="MNP_showtoc" style="height: 23px; font: 11px Verdana; padding-left: 15px; padding-top: 10px; padding-bottom: 15px; display: none"><span style="cursor: hand" onclick="top.MNPSearchFrame.showtoc()"><img src="/library/mnp/2/gif/showtoc.gif" width="16" height="16" align="absmiddle" border="0" style="margin-right: 3px" alt="show toc">show toc</span></div><!--NOINDEX_STOP--><table><tr><td>
+	<script language="Javascript">
+      function GetRelDir()
+      {
+      return 'en/library';
+      }
+
+      function GetApPath()
+      {
+      return '/WindowsServer/';
+      }
+    </script><script language="Javascript" type="text/javascript" src="/WindowsServer/LogScript.aspx"></script><script language="Javascript">
+      loadGif('A', GetRelDir())
+    </script><div class="template" style="padding: 0px 15px 0px 20px"><script language="Javascript">
+      if(typeof(IsPrinterFriendly) != "undefined")
+      {
+      var ss = document.URL.split("?pf=");
+      document.write("<p>Url of the page: [" + ss[0] + "]
+      </p>");
+      }
+    </script><div class="ancestorLinks"><nobr><a href="/WindowsServer/en/library/49960f07-4a4c-4e04-9aef-82ab0e8efc0d1033.mspx" logredir="CTT=Breadcrumb">Windows Server TechCenter</a> > </nobr><nobr><a href="/WindowsServer/en/library/e3d396dd-c141-432b-9e69-50f597061e471033.mspx" logredir="CTT=Breadcrumb">Windows Server 2003 Technical Library</a> > </nobr><nobr><a href="/WindowsServer/en/library/7641eea2-16e8-49b0-8387-e8c67da40ef71033.mspx" logredir="CTT=Breadcrumb">Windows Server 2003: Product Help</a> > </nobr><nobr><a href="/WindowsServer/en/library/2e0186ba-1a09-42b5-81c8-3ecca4ddde5e1033.mspx" logredir="CTT=Breadcrumb">Windows Server 2003 Product Help</a> > </nobr><nobr><a href="/WindowsServer/en/library/eeb9fbbe-d8aa-470c-8f53-c1eee0a6cd1c1033.mspx" logredir="CTT=Breadcrumb">Getting Started</a> > </nobr><nobr><a href="/WindowsServer/en/library/f630f499-6222-4504-83a6-8ea66bce97981033.mspx" logredir="CTT=Breadcrumb">Installing and Upgrading the Operating System</a> > </nobr><nobr><a href="/WindowsServer/en/library/6f3d5461-e2f5-472c-a4f7-226bad3b00dd1033.mspx" logredir="CTT=Breadcrumb">Concepts for installing and upgrading the operating system</a> > </nobr><nobr><a href="/WindowsServer/en/library/0d6fbea6-1e9c-484d-a0e3-cd362c8bdd051033.mspx" logredir="CTT=Breadcrumb">Upgrading or Installing</a></nobr></div><table cellspacing="0" cellpadding="0" border="0" align="right" class="containerLTR"><tr><td><div id="pageControl" style="visibility:visible"></div></td></tr></table><h1 class="title">Upgrades in a domain containing Windows 2000 domain controllers</h1><div class="byline">Updated: January 21, 2005</div><div class="intro"><p>&#8195;</p></div><h2>Upgrades in a domain containing Windows 2000 domain controllers</h2><div class="intro"><p>If you are upgrading servers in a domain containing Windows 2000 domain controllers, there are a few points to keep in mind. The following points are the most important:</p><table cellspacing="0" cellpadding="0" border="0"><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>The first step in planning the upgrade of a particular server is to check the compatibility of the hardware with products in the Windows Server 2003 family. For more information, see <a target="_self" href="/WindowsServer/en/library/3e4d2b67-c2ff-45a1-ac5b-d4266858c9351033.mspx" logredir="CTT=InContent">Hardware compatibility</a><span id="EN"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/3e4d2b67-c2ff-45a1-ac5b-d4266858c9351033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("EN");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script>.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>Before you upgrade the first domain controller in a domain where one or more domain controllers run Windows 2000, or add a domain controller running a product in the Windows Server 2003 family, you must prepare the domain (and the forest in which it is located) using a simple tool on the Setup CD for Windows Server 2003.</p><p>Before preparing the domain (and the forest in which it is located), it is recommended that you apply Service Pack 2 or later to all domain controllers running Windows 2000.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>If you have Internet Information Services (IIS) 5.0 installed on a server, when you upgrade the operating system, IIS is upgraded to IIS 6.0. However, for application compatibility, IIS runs in IIS 5.0 isolation mode after the upgrade. For more information about IIS isolation modes, see the IIS 6.0 Help.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>The Internet Explorer Enhanced Security Configuration is enabled by default when you upgrade. The security settings in this configuration can help make your computer more secure by limiting its exposure to malicious Web sites. Therefore, with this enhanced level of security, you might find that some Web sites do not display correctly in Internet Explorer when you are browsing Internet and intranet Web sites. Also, you might be prompted to enter your credentials when accessing network resources, such as files in Universal Naming Convention (UNC) shared folders. You can easily change the enhanced security settings. For more information, see <a target="_self" href="/WindowsServer/en/library/910d7a79-fd6f-447e-9bb1-bc9e57d54ec41033.mspx" logredir="CTT=InContent">Internet Explorer Enhanced Security Configuration</a><span id="E1"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/910d7a79-fd6f-447e-9bb1-bc9e57d54ec41033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("E1");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script>.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>As you complete domain controller upgrades and reduce the number of different operating system versions running on them, you can adjust the domain and forest functional levels appropriately. For more information about functional levels, see <a target="_self" href="/WindowsServer/en/library/b3674c9b-fab9-4c1e-a8f6-7871264712711033.mspx" logredir="CTT=InContent">Domain and forest functionality</a><span id="ECB"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/b3674c9b-fab9-4c1e-a8f6-7871264712711033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("ECB");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script> and <a target="_self" href="/WindowsServer/en/library/9fae0ea9-d6d0-40fe-b034-8b3cebf6effd1033.mspx" logredir="CTT=InContent">Raising domain and forest functional levels</a><span id="EHB"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/9fae0ea9-d6d0-40fe-b034-8b3cebf6effd1033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("EHB");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script>. For general information about Active Directory, see <a target="_self" href="/WindowsServer/en/library/a9d684f0-90b1-4c67-8dca-7ebf803a003d1033.mspx" logredir="CTT=InContent">Active Directory</a><span id="EMB"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/a9d684f0-90b1-4c67-8dca-7ebf803a003d1033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("EMB");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script>.</p></td></tr></table><p>If you have servers running Windows NT, also review the following points:</p><table cellspacing="0" cellpadding="0" border="0"><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>Before running Setup, it is recommended that you review the file systems and partitions that exist on the server. You must have at least one NTFS partition on domain controllers. It is recommended that you use NTFS on all partitions on all the servers in the domain, because any FAT or FAT32 partition lacks many security features. For example, on FAT or FAT32 partitions, a shared folder can be protected only by the permissions set on the shared folder, not on individual files, and there is no software protection against local access to the partition. For more information, see <a target="_self" href="/WindowsServer/en/library/c032e263-838c-43a9-840c-c8cf260770281033.mspx" logredir="CTT=InContent">Reformatting or converting a partition to use NTFS</a><span id="EXB"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/c032e263-838c-43a9-840c-c8cf260770281033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("EXB");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script> and <a target="_self" href="/WindowsServer/en/library/3ae7b608-6eec-4a97-9760-471a590545e31033.mspx" logredir="CTT=InContent">Convert</a><span id="E3B"></span><script language="Javascript">
+			if(typeof(IsPrinterFriendly) != "undefined")
+			{
+			var l = "/WindowsServer/en/library/3ae7b608-6eec-4a97-9760-471a590545e31033.mspx";
+			var nl;
+			var c = l.charAt(0);
+			var o = document.getElementById("E3B");
+			switch (c){
+			case "/":
+			nl=("&nbsp;[http://" + document.domain + l + "]");
+			break
+			case "#":
+			nl=("");
+			break
+			default:
+			nl="&nbsp;[" + l + "]"
+			}
+			if(o != null) o.innerHTML = nl;
+			}
+		</script>.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>If some of your domain controllers run Windows 2000 and some run Windows NT, it is recommended that you upgrade the Windows NT domain controllers as soon as is practical, to reduce the number of version differences between computers, simplify management and troubleshooting, and strengthen security.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>Before you begin an upgrade from Windows NT 4.0, you must apply Service Pack 5 or later.</p></td></tr><tr><td class="listBullet" valign="top">&#8226;</td><td class="listItem"><p>If you have servers or client computers that run Windows NT 3.51, it is recommended that you install or upgrade to a newer operating system on all these computers, or retire them from operation. If you have more than one domain, you must upgrade domain controllers running Windows NT 3.51 for reliable logon validation. In any case, upgrading or retiring computers running Windows NT 3.51 strengthens security and reduces the number of version differences between computers, simplifying management and troubleshooting.</p></td></tr></table><p>After the domain and forest are prepared, there are two stages in the upgrade of a domain controller. First you run Setup to upgrade the operating system and then, when Setup is complete, you run the Active Directory Installation Wizard (which appears on the screen the first time you log on).</p></div></div><br><br><div id="feedbackControl" style="visibility:visible"></div>
+<TABLE  style="CLEAR: both" WIDTH="100%" CELLPADDING="0" CELLSPACING="0" BORDER="0">
+<TR>
+  <td CLASS="FeedbackControl" >
+    <SCRIPT language="JavaScript" src="/WindowsServer/FeedbackJavascript.aspx?FeedbackTemplate=ar&documentSet=en-US&locale=en-US" type="text/javascript"></SCRIPT>
+    <SCRIPT language="JavaScript" type="text/javascript" />InitWizard("a643abc6-0db5-4de7-80e5-269da200960a1033");</SCRIPT>
+  </td>
+</TR>
+</TABLE>
+
+</td></tr></table><!--NOINDEX_START--><script language="javascript">
+              var framesValid = false;
+              if (window.name == "MNPMainFrame")
+              { var menuFrame = parent.frames["MNPMenuFrame"]; if (menuFrame) { framesValid = true; } }
+              if (!framesValid) location.replace("/WindowsServer/en/library/a643abc6-0db5-4de7-80e5-269da200960a1033.mspx?mfr=true");
+              
+                else document.write('<layer visibility="hide"><div style="display:none"><img alt="" width="0" height="0" border="0" hspace="0" vspace="0" src="http://c.microsoft.com/trans_pixel.asp?source=technet2&amp;TYPE=PV&amp;p=windowsserver_en_library&amp;URI=%2fwindowsserver%2fen%2flibrary%2fA643ABC6-0DB5-4DE7-80E5-269DA200960A1033.mspx&amp;GUID=1F4FC18C-F71E-47FB-8FC9-612F8EE59C61&amp;lc=en-US"></div></layer>');
+              
+              top.document.title = self.document.title;
+            </script><br clear="all" style="line-height: 1px; overflow: hidden"><table id="msviFooter" width="100%" cellpadding="0" cellspacing="0"><tr valign="bottom"><td id="msviFooter2" style="filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr='#FFFFFF', endColorStr='#CDCDCD', gradientType='1')"><div id="msviLocalFooter"><nobr><a href="http://go.microsoft.com/?linkid=317027" target="_top">Manage Your Profile</a> |</nobr><wbr></wbr><nobr><a href="http://www.microsoft.com/technet/contactus.mspx" target="_top">Contact Us</a> |</nobr><wbr></wbr><nobr><a href="http://www.microsoft.com/technet/abouttn/subscriptions/flash_register.mspx" target="_top">Newsletter</a></nobr></div><div id="msviGlobalFooter"><span dir="ltr">&#169; 2006 Microsoft Corporation. All rights reserved.&nbsp;</span><nobr><a href="http://go.microsoft.com/?linkid=4412892" target="_parent">Terms of Use</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=4412893" target="_parent">Trademarks</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=4412894" target="_parent">Privacy Statement</a></nobr></div></td><td bgcolor="#CDCDCD" width="105"><img src="/library/toolbar/3.0/text.aspx?t=TQ%3d%3d&amp;f=FFFFFF&amp;b=CDCDCD&amp;font=Microsoft+Logo+95%2c+13pt&amp;w=105&amp;h=29&amp;a=0&amp;l=0&amp;v=0&amp;c=iinQt7fMWg3Mg2lkh%2frvAxHt9bU%3d" width="105" height="29" alt="Microsoft" title="" border="0" /></td></tr></table><div style="display:none"><script type="text/javascript">var gDomain="m.webtrends.com";var gDcsId="dcsjwb9vb00000c932fd0rjc7_5p3t";var gTrackEvents="1";var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}</script><script src="http://js.microsoft.com/library/mnp/2/wt/js/wt.js" type="text/javascript"></script><noscript><img border="0" name="DCSIMG" width="1" height="1" src="http://m.webtrends.com/dcsjwb9vb00000c932fd0rjc7_5p3t/njs.gif?dcsuri=/nojavascript&WT.js=No"/></noscript></div></body></html>
+</text>

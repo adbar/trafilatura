@@ -1,0 +1,29 @@
+﻿URL: http://www.iabc.com/members/faqmem.htm
+
+
+
+<h>members only
+
+<h>member log in
+
+   <p>The content you have requested is for IABC members only.  Please log
+   in using your IABC Member ID and Password.
+
+   Member ID:
+   ____________________
+
+   Password:
+   ____________________
+
+
+
+
+
+   You are not logged in.
+
+
+
+
+
+
+

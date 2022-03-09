@@ -1,0 +1,291 @@
+
+<h> Thursday at 7.40pm
+<h> with Robyn Williams
+
+<h> 26/05/2005
+
+<h> Richard Passingham
+
+<h> Summary:
+<p> Studies show that reactions of top people in sport are faster than
+   consciousness can register. How can you get to such a lightning
+   reflex? Richard Passingham, Professor of Psychology at Oxford
+   describes some remarkable experiments.
+
+<h> Transcript:
+<p> Robyn Williams: Have you checked the whereabouts of your left leg
+   recently? Does it have a mind of its own like Peter Sellers arm in Dr
+   Strangelove, always trying to give the Nazi salute irrespective of its
+   owners intentions. Intention, thats the word for this evenings
+   conversation. Its with Professor Dick Passingham whos a psychologist
+   at Oxford and who likes to play tricks on us and our limbs, to see how
+   the brain controls them. Or doesnt like when you think your arm or leg
+   belongs to someone else.
+   
+<p> Do you believe for example that you could be tricked into thinking
+   that a dummy arm is actually your own? Its something Professor
+   Passingham does all the time.
+   
+<p> Richard Passingham: Its an illusion that was discovered by a man
+   called Bogunovic in America and he was interested as we are in how we
+   know that our body belongs to ourselves because there are patients who
+   actually with particular lesions in their brain think that the left
+   hand side of their body belongs to somebody else.
+   
+<p> The illusion involves the following. You have your arm, your right
+   arm, under cover and on top of it a rubber arm. Its a prosthetic arm
+   so it looks very like a real arm and normally of course you would know
+   perfectly well that the prosthetic arm doesnt belong to you. And what
+   he discovered is that if you use paint brushes, one to brush your real
+   arm under the cover and one visibly to brush the rubber arm, after
+   about ten seconds or so you get the illusion that the rubber arm
+   belongs to yourself. And its so remarkable that you even think that if
+   you were to move a finger that visible finger of the rubber arm would
+   move.
+   
+<p> Robyn Williams: And do you feel the tickle?
+   
+<p> Richard Passingham: Oh you feel the tickle of course. It really feels
+   as if its on your real arm. The illusion happens because theres a
+   conflict on the one hand you can feel your real arm and you know where
+   it is but on the other hand you see the brush on the rubber arm at the
+   same time as you feel it on your real arm so theres a conflict. And
+   the brain resolves this conflict by actually making you think that the
+   rubber arm belongs to yourself.
+   
+<p> Robyn Williams: So how did you use this illusion as part of your
+   investigation?
+   
+<p> Richard Passingham: Well I was working with Henry Kerson who comes
+   from the Karolinska Institute in Sweden whos now one of the members of
+   my group and as always Im interested in letting young people follow
+   their own course and he wanted to follow up how we have this self
+   concept. Our belief that we know the difference between our arm and
+   somebody elses. So what we did was we used scanners. These may well
+   now be familiar to your listeners using a magnetic resonance scanner
+   we can now image activity in the brain while somebody lies in our
+   scanner. So what we did is we got hold of oh I think about 20 people
+   and we found out how many of them actually felt the illusion strongly.
+   We put them in the scanner and we arranged their heads so that they
+   could see the rubber arm directly, we didnt use a mirror, their head
+   was slightly tilted up so that they could see their arm. And then we
+   carried out the experiment exactly as Bogonovic had, that is we
+   synchronously brushed both the real arm underneath the cover and the
+   rubber arm which the person can see happening.
+   
+<p> Now to do the experiment we made use of the fact that there are two
+   conditions in which you dont feel the illusion. One is if the brush
+   doesnt happen synchronously, if in other words, youre brushing out of
+   synch the real arm and the rubber arm then you dont feel the illusion.
+   And theres another condition in which you dont feel the illusion and
+   thats if you have the rubber arm pointing the wrong way so that its
+   fingers are pointing towards your shoulders. So we could look for
+   where is the activity in the brain when you do feel the illusion
+   compared with these two control conditions.
+   
+<p> Robyn Williams: And what did you find?
+   
+<p> Richard Passingham: Well we found that the area that showed the
+   strongest activity related to the illusion was an area called the
+   pre-motor cortex which is part of your motor system and its an
+   important area because it receives information from all the senses. So
+   it receives both tactile information and about the position of your
+   arm and it also receives visual information. And this area was active
+   only in the condition in which you felt the illusion, only after you
+   began to feel the illusion and remarkably the more strongly you felt
+   the illusion the more strongly this area was active. We got the people
+   to rate the strength of the illusion in various ways and as I say
+   there was very close relation between how strongly they felt the
+   illusion and how active this area was.
+   
+<p> Robyn Williams: And when you were going outside the conventional
+   reaction where you actually have a successful illusion when in fact
+   you had the arm going the other way, what happened in the brain?
+   
+<p> Richard Passingham: Then we found no activity in this area at all,
+   these were controlled conditions in which as you say the subjects felt
+   no illusion and there was no activity in the pre-motor cortex at all.
+   And this is what tells us that the critical area for multi-sensory
+   integration that is for the putting together of sensory information is
+   in fact the pre-motor cortex. And we take it that the way in which you
+   know that your arm belongs to you and not to somebody else is that you
+   get both visual information about your arm and you get tactile or
+   touch information about your arm and normally these are congruent.
+   They tell you the same thing and they tell you that thats your arm.
+   But in this case where theres a conflict then vision dominates.
+   
+<p> Robyn Williams: OK, so bring in the people whove got this misfortune
+   where they cant actually recognise their limb how does your study
+   affect understanding whats going on with them?
+   
+<p> Richard Passingham: Well the demonstration of people who think that
+   their left arm belongs to somebody else has best been done by a method
+   called the sodium amatol method. You inject sodium amatol into the
+   right middle cerebral artery and this is done only in patients who are
+   getting ready for surgery and its done not for experimental purposes
+   but its done to tell you important things about where language is
+   represented in these peoples brains. Now when you inject sodium amatol
+   into the right hemisphere your left arm becomes paralysed and falls
+   from a position as you are asked to hold it upright, it falls down
+   onto the bed covers, youre awake at the time. If you then ask the
+   people if their arm is OK, they say yes, my arms fine. And then if you
+   ask them whose arm is that many of them say its somebody elses which
+   is a quite remarkable finding.
+   
+<p> Now in the sodium amatol case the amatol is injected into the blood
+   supply and infuses through much of the right hemisphere of the brain.
+   So that doesnt tell you anything about the localisation of activity
+   which is why you want to scan because if you scan, you can find out
+   which are the critical areas for any particular phenomenon. Now in our
+   experiments we found two areas in particular, the parietal cortex and
+   the pre-motor cortex. The parietal cortex was more active both when
+   the arm was pointing forwards and also when the brush strokes were
+   synchronised. But the area that was most critical in the sense that it
+   only showed up in the one condition in which you felt the illusion was
+   as I say the pre-motor cortex. So what this adds is strong information
+   about the location of areas, which are critical for the phenomena
+   observed in the clinic.
+   
+<p> Robyn Williams: Having found those locations can it enable you to help
+   the patients so that they can find their limbs again?
+   
+<p> Richard Passingham: We havent yet got anywhere on that. Now there are
+   other examples where illusions have done that. The well-known
+   neuroscientist Ramachandran has been interested in an allusion by
+   which if your arm is cut off, lets say from the elbow lets say due to
+   an accident you may go on feeling your forearm and you may think its
+   there. And this is an illusion because the arm isnt there and theres
+   been a lot of interest in why you feel this illusion. And hes indeed
+   scanned people using a method called magneto encephalography to see
+   whats happening in their brain under this illusion. But then being the
+   ingenious man he is hes gone on to think of ways in which he might
+   treat people and hes done this using mirrors.
+   
+<p> Robyn Williams: And in those experiments Dick Passingham was just
+   referring to Dr Ramachandran showed the patients themselves in a
+   mirror and told them that their real arm, not the amputated arm, was
+   the one that felt the pain and treated them normally and the pain went
+   away. The brain in other words believed the mirror trick and you may
+   have heard Rama as hes know talking to Natasha Mitchell on All in the
+   Mind on ABC Radio National a couple of weeks ago about this.
+   
+<p> Well Professor Richard Passingham is using scanners to help solve
+   another problem, that of intention. Imagine facing Bret Lee bowling
+   super fast and how quickly you need to respond with a cricket bat. In
+   fact its quicker than the brain seems to be able to handle yet it does
+   so how?
+   
+<p> Richard Passingham: Well the interest of the difference between
+   automatic actions and those that we think about is being central to
+   our research. Philosophers have for a long time said that they think
+   voluntary actions are preceded by an intention and the very well known
+   psychologist and philosopher William James early in the century or at
+   the end of the last century in his classic book talked about these as
+   willed actions. The suggestion being that they are preceded by an act
+   of will. Now its been very difficult to do research on that but in a
+   classic experiment carried out in 1983 the neuroscientist Benjamin
+   Libet thought of a way of actually timing when you feel the intention.
+   
+<p> Now he did this using a clock face. So the person is sitting there and
+   in front of them is a clock and a spot is going round the outside of
+   the clock fairly quickly, rotating round. The person is then asked
+   simply to move their forefinger whenever they want. They might do it
+   after 15 seconds, or 9 seconds or 3 seconds its up to them; a typical
+   voluntary action. What he then did was ask the people when they felt
+   the intention to move they should remember where the spot was on the
+   clock face and that tells you when they were first aware of their
+   intention to move. Now his classic finding and the one that puzzled
+   people was that you can record electrical activity from the brain from
+   the scalp using either EEG or electro encephalograph about a second
+   before a voluntary action it can be more. But people normally report
+   the intention to move about 200 milliseconds before they move. So the
+   puzzle is that the brain seems to be getting ready to move really some
+   time before we are aware that we are going to move and that we have
+   the intention.
+   
+<p> So thats the phenomenon that weve made use of in an experiment working
+   in Oxford. What we did was scan people and in our experiment on some
+   trials they timed when they intended to move and on some trials they
+   times when they actually made the movement. So now we can compare
+   activity when the subjects attention is directed to their intention
+   with the activity when they are just attending to the movement itself.
+   And what we found was that there was enhanced activity in an area
+   called the pre-supplementary motor area which lies on the inner
+   surface of the brain, increased activity there when you attended to
+   your intention. Now the interesting thing is that it had been thought
+   that the electrical activity that you can record using the EEG before
+   movement has its origin in this area though that had never been
+   proved. So what weve shown is that indeed your intention occurs in the
+   same area in which the electrical activity occurs about a second
+   before movement.
+   
+<p> What it seems to show is this: Actually the origin of the movement is
+   unconscious, youre not aware of it, its occurring well before the time
+   of which youre aware. Now that you are aware about 200 milliseconds
+   before movement appears to be because the activity is enhanced and
+   there seems to be a rule that if we are to be aware of representations
+   in the brain the activity needs to be enhanced. So it looks as if the
+   original direction for the movement is unconsciously performed by the
+   brain and then we become aware of it and thats the time when we say we
+   intend it. So you might then say well whats the point of awareness?
+   And its been suggested by many that the point might be that theres
+   still time to change the movement or indeed to veto it and that was
+   proposed by Benjamin Libet.
+   
+<p> But what really this is relevant for is the whole issue of how much of
+   our mental activity were aware of? And if you consider for example
+   sportsman, cricketers, a batsman reacting to a bowler or a tennis
+   player reacting to a serve then actually its been shown that the
+   activity that leads to them responding is activity of which they are
+   not aware they dont know how they do it. And we now think that much of
+   our mental activity occurs below the level of consciousness.
+   
+<p> Robyn Williams: Now if you take Viv Richards whos the quickest natural
+   player I can think of to get to that point where your reaction is
+   right, in other words its appropriate, long before you can know enough
+   about where the bowlers going to sling the ball, presumably you fine
+   tune, you practice enables you to have an unconscious reflex if you
+   like in advance so that you get it right more often than you get it
+   wrong?
+   
+<p> Richard Passingham: Well weve been interested in that and what weve
+   done is take the case of piano playing. If you play the piano youre
+   aware that at first when you learn the piece you have to attend very
+   hard and youre aware of what youre doing, you know which fingers youre
+   moving and you are sight reading and it takes a lot of your attention.
+   But after practising for many, many hours you can now play the piece
+   automatically and you can, in fact, play it while holding a
+   conversation; you dont have to attend to what your fingers are doing.
+   So weve actually scanned people again using FMRI and we scanned people
+   while they were learning a sequence of finger movements. And what we
+   found was that at first the prefrontal cortex, which you could regard
+   as the top of the hierarchy of information processing, the prefrontal
+   cortex is very active indeed. But when the task has become automatic
+   and the sequence is under your belt and you dont have to think about
+   it then theres no longer activity in the prefrontal cortex. So that
+   raises the question well what areas are active when the task has
+   become automatic? And one of the areas thats active, though not the
+   only one, is the cerebellum which lies in the hind brain. Now the
+   cerebellum is very enlarged in the human brain and is involved in the
+   learning of skills and motor skills, theres much evidence for that.
+   
+<p> And what we found was that when the task had become very automatic
+   there was activity in the cerebellum and the areas that are connected
+   to it. So I assume that what Viv Richards has done over very, very
+   many years is go from having activity in his prefrontal cortex as he
+   thinks about what hes doing until it becomes automatic and you no
+   longer have to think about it and its then performed by other areas of
+   the brain. And if you think Donald Bradman as I remember as a young
+   man used to throw a cricket ball at a wire and this way by repeated
+   practice he got to be able to throw without thinking and a cricketer
+   can throw at the bails simply without thinking. And in the lab you can
+   show that youre not thinking by asking the person when they are
+   carrying out the task to do another task at the same time. Weve done
+   that and when you learn the motor sequence youre very disturbed in
+   learning it if you have to carry out another task whereas when the
+   task is automatic you can do something else at the same time without
+   interference.
+   
+<p> Robyn Williams: So thats how we do it every day, almost without
+   thinking. Arent we clever. Richard Passisngham is Professor of
+   Cognitive Neuropsychology at Oxford.

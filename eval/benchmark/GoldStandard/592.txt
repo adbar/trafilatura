@@ -1,0 +1,168 @@
+﻿URL: http://www.myeclipseide.com/PNphpBB2+file-viewtopic-t-75.html
+
+   <h>Configuring Oracle and JBoss and My Eclipse overall
+    
+   <h>Author <h>Message
+   <h>wk5657
+   <h>Registered Member
+      <h>Joined: Jun 17, 2003
+   <h>Posts: 88
+   <h>Posted:Jun 19, 2003 - 03:19 PM Reply with quote Back to top 
+     _________________________________________________________________
+
+   <p>First, Overall configuration:
+   If I have 2 workspaces in my environment and then install MyEclipse,
+   one of them is never properly configured (and apparently can't be).
+   The Winddows->Preferences stuff is there, but there is no MyEclipse
+   menu or toolbar entry and there is no launcher button.
+   <p>Next: JBoss and Oracle
+   Creating a web project for standalone Ovacle (OC4J) has an assumed
+   structure that is different from JBoss (at least). The project
+   template from J2EE in Myeclipse should be on the Server level (in my
+   opinion) since the various app servers have such widely varying forms.
+   In addition, since at least JBoss (and probably WebLogic and WebSphere
+   as well) require additional xml files required to deploy to those
+   environments, the templates should include those items in the
+   structure (including empty defaults with appropriate dtd - at least
+   referenced).
+   <p>Next:
+   Shutdown does not work for Oracle. I can do it with admin.jar (so it
+   is not horrible), but it is annoying to have to do it. both userid and
+   password are required to propeerly shutdown using admin.jar from
+   Oracle. The problem is that the hanging server instance for a new user
+   makes the software look amateurish.
+   <p>Finally:
+   Even if this stuff can't get in to the upcoming release, someone
+   should spend a couple of hours writing something beyond the tiny bit
+   that is written here. There is virtually nothing written about Oracle.
+   
+   <h>support-scott
+   <h>Moderator
+<h>Moderator
+   <h>Joined: May 05, 2003
+   <h>Posts: 6266
+   <h>Posted:Jun 19, 2003 - 11:14 PM Reply with quote Back to top 
+     _________________________________________________________________
+
+   <p>If you've already customized the Java perspective, Eclipse won't
+   respect our code's request to add the MyEclipse menu items. You can
+   add them manually by selecting all the MyEclipse options under
+   Window->Customize Perspective->Other->MyEclipse*.
+
+   <p>Actually, the forms don't vary that much. They all support WAR, EJB
+   jar, and EAR formats in either an exploded or archive form. JBoss is
+   odd because it expects that exploded directories are suffixed with a
+   .war or .ear or whatever. However, we have compensated for this in the
+   next release of Enterprise Workbench, which will be available on 6/23.
+   As far as custom descriptors go, we are rapidly moving in the
+   direction of creating basic server-specific descriptors. At present,
+   this would best be handled as an enhancement request since we'll
+   already honor any custom descriptors that you've written.
+
+   <p>True. And the userid of 'admin' and the password you set in the
+   configuration dialog are passed to Oracle for shutdown. This works
+   quite well in the default installation configuration. I assume you set
+   a different administrator account than the default? Would you like to
+   propose an enhancement request that we also allow configuration of the
+   admin account user name?
+
+   <p>We certainly agree. However, since the software is in an Early Adopter
+   release state, the documentation is very incomplete since we've
+   concentrated on features over documentation at this pont.
+   Documentation will be one of the areas of concentration between EA2
+   and GA. By the way, if you'd like to help out and write an Oracle
+   tutorial, we'd be more than happy to incorporate it into the
+   documentation. Our consulting practice doesn't use Oracle 9i/AS that
+   much so a tutorial from an expert would really be useful.
+   <p>--Scott
+   <h>MyEclipse Support
+
+   <h>wk5657
+   <h>Registered Member
+   
+   <h>Joined: Jun 17, 2003
+   <h>Posts: 88
+   <h>Posted:Jun 20, 2003 - 12:17 AM Reply with quote Back to top 
+     _________________________________________________________________
+
+   
+   <p>Actually, I found a post about this and was able to use the post after
+       I submitted this message. If someone could put this stuff in a
+     searchable place, you would not have to answer it multiple times.
+                                                 
+    
+    <p>Oracle wants an application.xml file in a META-INF at the top of the
+    project. It seems that JBoss is quite insistent on its jboss-xxx.xml
+    (Oracle does not have that sort of thing). My real goal is to have a
+    project that I can decide to test and deploy to multiple servers. I
+      think the spec is close to that kind of capability. This kind of
+   capability would put myeclipse head and shoulders above any other J2EE
+         environment. I will put something in enhancement request.
+    
+   <p>I did not change the account from admin. It just did not work. When I
+    could not make it work, I did change the password to something (the
+    default in the Oracle download is "" and so I actually put something
+   there and set it in the server dialog in myecliipse, but to no avail.
+   
+   <p>I certainly do not, by these comments, mean to denigrate the effort
+   you have put in here. I am very pleased and encouraged. This is a fine
+   piece of work that IBM or Oracle or BEA would charge thousands for
+   with much less capability (especially for multiple deployments). Thank
+   you for this effort and for its afforability.
+   <p>Wayne
+   
+   <h>support-scott
+   <h>Moderator
+   <h>Moderator
+   <h>Joined: May 05, 2003
+   <h>Posts: 6266
+   <h>Posted:Jun 20, 2003 - 10:15 AM Reply with quote Back to top 
+     _________________________________________________________________
+
+   <p>Wayne,
+
+   <p>Good to hear you're up and running.
+
+   <p>Acutally, the forums are searchable and there is a link labeled
+   'Search' just stays just above the forum title / or message title,
+   depending on which level you're looking at. In any event, it's below
+   the main "link bar" whenever you're in the Forums area.
+
+   <p>All the application servers, JBoss included, support application.xml
+   and the other required J2EE descriptors. In addition, all of them
+   (including Orion / Oracle 9iAS) have a set of server specific
+   descriptors where you can specify all the stuff that the spec was too
+   naive to include. Little things like what JNDI names you want your
+   EJB's to have, etc. :-) Fortunately, the names for these
+   server-specific files don't seem to collide with each other from
+   vendor to vendor so you can have them all in one project and the
+   server you deploy on will only read the standard descriptors plus the
+   ones for that server. The rest are ignored.
+
+   <p>On my current build, which will be released as EA2 on Monday, it's
+   working well. I did notice a couple bugs that have been logged and
+   fixed against the Oracle connector, but nothing related to shutdown.
+   What I'd like to suggest is that you download EA2 next week and see if
+   the problem persists with the new build. If so, we'll investigate
+   further.
+
+   <p>I quoted this mainly because I liked to read it so I wanted it to show
+   up in two message. ;-) Seriously though, you're welcome and thanks for
+   your interest and improvement suggestions. You'll see that we're very
+   serious about our feature set being customer-driven in the upcoming
+   releases.
+   <p>--Scott
+   <h>MyEclipse Support
+   
+   <h>Guest
+   <h>Posted:Jun 25, 2004 - 09:57 AM Reply with quote Back to top 
+     _________________________________________________________________
+
+   <p>how to configurate websphere, oracle, struts, J2ee. thank you all
+   <h>Guest
+   <h>Posted:Jun 25, 2004 - 09:58 AM Reply with quote Back to top 
+     _________________________________________________________________
+
+   <p>how to configurate websphere, oracle, struts, J2ee. thank you all
+
+     

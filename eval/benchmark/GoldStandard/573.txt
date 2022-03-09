@@ -1,0 +1,98 @@
+URL: http://www.microsoft.com/resources/documentation/WindowsServ/2003/standard/proddocs/en-us/upgrading_a_mixed_domain.asp
+
+<h>Upgrades in a domain containing Windows 2000 domain controllers
+
+   <h>Updated: January 21, 2005
+
+
+<h>Upgrades in a domain containing Windows 2000 domain controllers
+
+   <p>If you are upgrading servers in a domain containing Windows 2000
+   domain controllers, there are a few points to keep in mind. The
+   following points are the most important:
+
+
+   <p>The first step in planning the upgrade of a particular server is to
+   check the compatibility of the hardware with products in the Windows
+   Server 2003 family. For more information, see Hardware compatibility.
+ 
+
+   <p>Before you upgrade the first domain controller in a domain where one
+   or more domain controllers run Windows 2000, or add a domain
+   controller running a product in the Windows Server 2003 family, you
+   must prepare the domain (and the forest in which it is located) using
+   a simple tool on the Setup CD for Windows Server 2003.
+
+   <p>Before preparing the domain (and the forest in which it is located),
+   it is recommended that you apply Service Pack 2 or later to all domain
+   controllers running Windows 2000.
+
+
+   <p>If you have Internet Information Services (IIS) 5.0 installed on a
+   server, when you upgrade the operating system, IIS is upgraded to
+   IIS 6.0. However, for application compatibility, IIS runs in IIS 5.0
+   isolation mode after the upgrade. For more information about IIS
+   isolation modes, see the IIS 6.0 Help.
+ 
+
+   <p>The Internet Explorer Enhanced Security Configuration is enabled by
+   default when you upgrade. The security settings in this configuration
+   can help make your computer more secure by limiting its exposure to
+   malicious Web sites. Therefore, with this enhanced level of security,
+   you might find that some Web sites do not display correctly in
+   Internet Explorer when you are browsing Internet and intranet Web
+   sites. Also, you might be prompted to enter your credentials when
+   accessing network resources, such as files in Universal Naming
+   Convention (UNC) shared folders. You can easily change the enhanced
+   security settings. For more information, see Internet Explorer
+   Enhanced Security Configuration.
+ 
+
+   <p>As you complete domain controller upgrades and reduce the number of
+   different operating system versions running on them, you can adjust
+   the domain and forest functional levels appropriately. For more
+   information about functional levels, see Domain and forest
+   functionality and Raising domain and forest functional levels. For
+   general information about Active Directory, see Active Directory.
+
+   <p>If you have servers running Windows NT, also review the following
+   points:
+ 
+
+   <p>Before running Setup, it is recommended that you review the file
+   systems and partitions that exist on the server. You must have at
+   least one NTFS partition on domain controllers. It is recommended that
+   you use NTFS on all partitions on all the servers in the domain,
+   because any FAT or FAT32 partition lacks many security features. For
+   example, on FAT or FAT32 partitions, a shared folder can be protected
+   only by the permissions set on the shared folder, not on individual
+   files, and there is no software protection against local access to the
+   partition. For more information, see Reformatting or converting a
+   partition to use NTFS and Convert.
+ 
+
+   <p>If some of your domain controllers run Windows 2000 and some run
+   Windows NT, it is recommended that you upgrade the Windows NT domain
+   controllers as soon as is practical, to reduce the number of version
+   differences between computers, simplify management and
+   troubleshooting, and strengthen security.
+  
+
+   <p>Before you begin an upgrade from Windows NT 4.0, you must apply
+   Service Pack 5 or later.
+  
+
+   <p>If you have servers or client computers that run Windows NT 3.51, it
+   is recommended that you install or upgrade to a newer operating system
+   on all these computers, or retire them from operation. If you have
+   more than one domain, you must upgrade domain controllers running
+   Windows NT 3.51 for reliable logon validation. In any case, upgrading
+   or retiring computers running Windows NT 3.51 strengthens security and
+   reduces the number of version differences between computers,
+   simplifying management and troubleshooting.
+
+   <p>After the domain and forest are prepared, there are two stages in the
+   upgrade of a domain controller. First you run Setup to upgrade the
+   operating system and then, when Setup is complete, you run the Active
+   Directory Installation Wizard (which appears on the screen the first
+   time you log on).

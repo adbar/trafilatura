@@ -1,0 +1,89 @@
+URL: http://news.com.com/Sun+open-source+license+could+mean+Solaris-Linux+barrier/2100-7344_3-5475182.html
+
+<h>Sun open-source license could mean Solaris-Linux barrier
+
+   <h>By Stephen Shankland
+   <h>Staff Writer, CNET News.com
+   <h>Published: December 2, 2004, 2:22 PM PST
+
+   <p>Sun Microsystems has quietly begun seeking official open-source status
+   for a new software license that likely will be used to govern its
+   Solaris operating system.
+
+   <p>But the license may inhibit cross-pollination between Solaris and
+   Linux--a sacrifice Sun appears willing to make in its effort to
+   attract developers and revitalize its version of Unix.
+
+   <h>News.context
+   <h>What's new:
+   <p>Sidestepping existing open-source licenses, such as the GPL that
+   governs the heart of Linux, Sun has proposed a new type of license
+   that could cover its open-source release of Solaris.
+
+   <h>Bottom line:
+   <p>Sun hopes an open-source Solaris will attract
+   developers and revitalize the OS. But the proposed license could
+   hamper cross-pollination between Solaris and Linux and, as one
+   commentator has it, add to a list of licenses that create "lots of
+   little lumps of software that can't be combined." Sun, however, calls
+   its license "less burdensome" and seems ready to sacrifice any
+   benefits of Linux intermingling.
+
+   <p>More stories on open-source Solaris
+
+   <p>On Wednesday evening, CNET News.com has learned, Sun submitted a
+   description of its Common Development and Distribution License, or
+   CDDL, to the Open Source Initiative. The nonprofit group reviews
+   licenses and bestows official open-source status on those that meet
+   the Open Source Definition requirements.
+
+   <p>The CDDL lets programmers see, change and distribute source code for
+   any programming project it governs. Unlike some open-source licenses,
+   it requires that modifications be shared as open-source software.
+
+   <p>Sun hopes its open-source move will attract developers to Solaris and
+   reinvigorate the operating system. Solaris waned in popularity with
+   the Internet bubble burst and with the rise of Linux, which works
+   better on widely used servers based on x86 processors such as Intel's
+   Xeon.
+
+   <p>But if Sun chooses to release Solaris under the CDDL--and it hasn't
+   committed to doing so--the choice likely will prevent direct
+   cross-pollination between the Unix variant and its prime competitor,
+   Linux. That sharing is one of the prime advantages of the open-source
+   philosophy; making Solaris open-source raised the possibility that it
+   could benefit from Linux features such as widespread hardware support,
+   and Linux could gain from Solaris features such as multiprocessor
+   abilities.
+
+   <p>Sun's CDDL description addressed the difficulties of intermingling
+   software covered by the CDDL with software covered by the General
+   Public License, or GPL--the license that governs Linux.
+
+   <p>"The CDDL is not expected to be compatible with the GPL, since it
+   contains requirements that are not in the GPL," Claire Giordano of
+   Sun's CDDL team said in its submission. "Thus, it is likely that files
+   released under the CDDL will not be able to be combined with files
+   released under the GPL to create a larger program."
+
+   <p>Open Source Initiative President Eric Raymond declined to comment yet
+   on whether the license meets those criteria. But if the Open Source
+   Initiative approves the license, the CDDL will join a list that
+   already includes dozens of licenses.
+
+   <p>This proliferation of open-source licenses is a problem, said Larry
+   Rosen, an intellectual-property attorney who has advised OSI and who
+   wrote "Open Source Licensing: Software Freedom and Intellectual
+   Property Law."
+
+   <p>"What we end with up is...lots of little lumps of software that can't
+   be combined," Rosen said in an interview. "It is, in fact, a problem
+   creating a commons of software if every company has its own commons."
+
+   <p>Sun wouldn't comment on whether Solaris 10 will be covered by the
+   CDDL. "We're not drawing linkage between that and any of Sun's
+   products," spokesman Russ Castronovo said.
+
+   <p>However, executives have said Sun will seek the blessing of the Open
+   Source Initiative for the license, and the clock is ticking. Sun had
+   

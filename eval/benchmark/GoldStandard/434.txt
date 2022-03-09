@@ -1,0 +1,140 @@
+﻿URL: http://www.foreignaffairs.org/20040301faessay83204-p10/andrei-shleifer-daniel-treisman/a-normal-country.html
+
+
+   <h>A Normal Country
+   Andrei Shleifer and Daniel Treisman
+   From Foreign Affairs, March/April 2004
+
+
+   <p>Summary:  Conventional wisdom in the West says that post-Cold War
+   Russia has been a disastrous failure. The facts say otherwise. Aspects
+   of Russia's performance over the last decade may have been
+   disappointing, but the notion that the country has gone through an
+   economic cataclysm and political relapse is wrong--more a comment on
+   overblown expectations than on Russia's actual experience. Compared to
+   other countries at a similar level of economic and political
+   development, Russia looks more the norm than the exception.
+
+     <p>Andrei Shleifer is Whipple V.N. Jones Professor of Economics at
+   Harvard University. Daniel Treisman is Associate Professor of
+   Political Science at the University of California, Los Angeles. For
+   full references and data sources see
+   http://papers.nber.org/papers/w10057.
+
+
+   <h>DOWN, NOT OUT
+
+   <p>Almost everyone believes that Russia's economy contracted
+   catastrophically in the 1990s. A report prepared for the British House
+   of Commons in 1998, for example, claimed that living standards in
+   Russia had "fallen to levels not experienced since the immediate
+   post-war years." According to Goskomstat, the state-controlled body
+   that publishes Russia's official statistics, Russian GDP per capita
+   fell about 24 percent in real terms between 1991 (when Mikhail
+   Gorbachev left office) and 2001 (one year into Putin's presidency).
+   From 1991 to 1998, before the recovery, it had dropped by 39 percent.
+
+   <p>Yet there are three reasons to think that Russia's economic
+   performance in the 1990s was actually better than these figures
+   suggest. First, much of the Soviet Union's output consisted of
+   military goods, unfinished construction projects, and shoddy consumer
+   products, for which there was little or no demand after 1991. Under a
+   market system, firms no longer had a reason to produce goods they
+   could not sell. Although reducing wasteful production lowered GDP
+   figures in the short run, it improved the overall efficiency of the
+   Russian economy. Under the Soviet system, moreover, managers routinely
+   inflated their production figures to obtain increased bonuses. With
+   the end of central planning, managers wished to underreport output so
+   as to reduce their tax bills. Thus Russia's pre-reform output was
+   probably substantially lower than officially reported, and its
+   subsequent decline correspondingly smaller.
+
+   <p>Second, Russia's unofficial economy grew rapidly in the 1990s.
+   Estimating the scale of unofficial activity is difficult, but (since
+   even underground firms require power) one technique to measure the
+   whole economy's output is to use electricity consumption. The figure
+   below shows the trend in official real GDP between 1990 and 2001 along
+   with figures for electricity consumption. Although official GDP fell
+   29 percent during this period, electricity consumption fell only about
+   19 percent, suggesting that Russia's decline in output was not as
+   sharp as indicated by the official statistics. Since firms are likely
+   to use electricity more sparingly under market conditions, the decline
+   in electricity consumption probably still overstates the real drop in
+   output.
+
+   <p>Third, other statistics suggest that average living standards fell
+   less dramatically, or even improved, during the 1990s. Goskomstat's
+   figures for final household consumption, for example, fell just 4
+   percent (in constant prices) between 1990 and 2001. Retail trade
+   actually rose 4 percent between 1990 and 2001. And average living
+   space per person rose from 16 square meters in 1990 to 19 square
+   meters in 2000. The shares of households with radios, televisions,
+   tape recorders, refrigerators, washing machines, and electric vacuum
+   cleaners all increased between 1991 and 2000. And private ownership of
+   cars doubled, rising from 14 cars per 100 households in 1991 to 27
+   cars per 100 households in 2000. The number of Russians going abroad
+   as tourists rose from 1.6 million in 1993 to 4.3 million in 2000.
+
+   <p>Russia has, without doubt, experienced an increase in inequality, in
+   both income and consumption. But indicators suggest that there has
+   been improvement even at the bottom of the social pyramid. Since 1993
+   (the first year for which comprehensive figures exist), the percentage
+   of Russia's housing with running water has increased from 66 percent
+   to 73 percent; the share with hot water from 51 to 59 percent; and the
+   percentage with central heating from 64 percent to 73 percent. Since
+   1990, the proportion of Russian apartments with telephones has
+   increased from 30 percent to 49 percent.
+
+   <p>A closer look at the figure above also casts doubt on some common
+   arguments about Russia's recession. A popular theory holds that
+   Russia's economic decline was caused by certain misguided government
+   policies pursued in the 1990s. Particularly damaging, so the argument
+   goes, were Yeltsin's privatization program and his "loans for shares"
+   scheme. The privatization program, implemented between 1993 and 1994,
+   transferred shares in most firms from the government to managers,
+   workers, and the public. This meant that by mid-1994, almost 70
+   percent of the Russian economy was in private hands. The loans for
+   shares scheme, inaugurated in 1995, provided for the transfer of
+   shares in a few state-owned natural resource enterprises to major
+   businessmen in exchange for loans to the government. It accelerated
+   the consolidation of a few large financial groups, led by the
+   so-called oligarchs, who subsequently enjoyed great political and
+   economic influence.
+
+  <p> However, as the figure makes clear, the effects of privatization and
+   loans for shares could not have caused Russia's economic contraction.
+   Most of the fall in both official GDP and electricity consumption
+   occurred prior to 1994, before the significant part of the mass
+   privatization program was completed and the loans for shares program
+   was even contemplated. After 1994 -- when the effects of privatization
+   could be felt -- Russia's economic decline actually slowed, with rapid
+   growth starting in 1999.
+
+   <p>Comparing Russia's performance in the 1990s to that of other
+   postcommunist countries further weakens the claim that Russia's
+   economic malaise was exceptional. Officially measured output fell in
+   all the postcommunist economies of eastern Europe and the former
+   Soviet Union. It declined in new democracies, such as Russia and
+   Poland; in continuing dictatorships, such as Belarus and Tajikistan;
+   in rapid reformers, such as the Czech Republic and Hungary; and in
+   very slow reformers, such as Ukraine and Uzbekistan. The universality
+   of the contraction suggests a common cause. One possibility is the
+   decrease in military and economically useless activities that were
+   previously counted as output. A second possibility is the temporary
+   dislocation that all countries experienced as their planning systems
+   disintegrated. Consistent with both these explanations, officially
+   measured output began to recover almost everywhere after a few years.
+
+   <p>The patterns of relative decline in the postcommunist countries
+   challenge another common theory about Russia's output contraction.
+   Some argue that excessively speedy reform exacerbated the decline and
+   compare the "gradualism" of China's economic policies favorably with
+   the "shock therapy" of Russia's. In fact, there is no obvious
+   relationship between speed of reform and change in official output
+   among the east European and former Soviet countries. The group of
+   countries that contracted least, according to the official figures,
+   includes both rapid reformers (such as Estonia, Poland, and the Czech
+   Republic) and slow or nonreformers (such as Belarus and Uzbekistan).
+   Those with the largest declines also include both nonreformers
+   (Tajikistan, Turkmenistan) and some that tried to reform (Moldova).
+   

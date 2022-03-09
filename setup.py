@@ -8,7 +8,6 @@ from pathlib import Path
 from setuptools import setup
 
 
-
 def get_version(package):
     "Return package version as listed in `__version__` in `init.py`"
     # version = Path(package, '__init__.py').read_text() # Python >= 3.5
@@ -21,8 +20,8 @@ def get_long_description():
     "Return the README"
     with open('README.rst', 'r', encoding='utf-8') as filehandle:
         long_description = filehandle.read()
-    #long_description += "\n\n"
-    #with open("CHANGELOG.md", encoding="utf8") as f:
+    # long_description += "\n\n"
+    # with open("CHANGELOG.md", encoding="utf8") as f:
     #    long_description += f.read()
     return long_description
 
@@ -49,8 +48,8 @@ setup(
     classifiers=[
         # As from https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
-        #'Development Status :: 5 - Production/Stable',
-        #'Development Status :: 6 - Mature',
+        # 'Development Status :: 5 - Production/Stable',
+        # 'Development Status :: 6 - Mature',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Education',
@@ -97,7 +96,7 @@ setup(
         'urllib3 >= 1.26, < 2',
     ],
     extras_require=extras,
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'trafilatura=trafilatura.cli:main',
             'trafilatura_gui=trafilatura.gui:main',

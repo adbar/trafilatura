@@ -1,0 +1,1998 @@
+URL: http://freshmeat.net/articles/view/141/
+
+ 
+
+<h>    Linux Security: It's Not Just About Security
+<h>   by Jon Lasser, in Editorials - Sat, Jan 8th 2000 23:59 PDT
+
+<p>   Jon Lasser began the Bastille Linux Project in order to harden the
+   security of Red Hat Linux, the distribution he uses at work. In the
+   process, he began looking at the other distributions to see how they
+   handle security updates, and he was not at all happy with what he
+   found. In today's editorial, he shares his concerns and explains why
+   it matters to you even if you do all your security monitoring for
+   yourself.
+   ______________________________________________________________________
+
+<p>    Copyright notice: All reader-contributed material on freshmeat.net is
+   the property and responsibility of its author; for reprint rights,
+   please contact the author directly.
+   ______________________________________________________________________
+
+<p>    As a professional Unix systems administrator, I'm concerned about
+   system security. Keeping unauthorized users off my systems is simply
+   part of my job; doing this requires vigilance in the form of
+   monitoring performance, reading logs, and keeping patches up-to-date.
+   For me, security is about security; it's about keeping my users'
+   projects safe and keeping them comfortable despite a full-time
+   connection to the Internet.
+
+<p>    As Lead Coordinator of the Bastille Linux Project, a hardening script
+   for Red Hat Linux, I thought my job was to make Linux more secure so
+   beginning users could easily keep their boxes secure. Often, new Linux
+   users have no experience as system administrators or often even any
+   experience with Unix. I thought the best way to tackle the problem was
+   to make it easy to do the right thing.
+
+<p>    Recently, I've been asked lots of questions about Linux system
+   security by reporters. Often, I'm put on the defensive right away:
+   Does Linux have a security problem? Why is Linux less secure than
+   other operating systems? Is open-source software inherently less
+   secure than commercial systems?
+
+<p>    I usually begin by explaining that more holes are reported in
+   open-source software before they're exploited, and that the number of
+   actually-exploited holes is no greater -- perhaps even less -- than
+   commercial software. I explain that one reason there are so many
+   break-ins into Linux systems is that there are so many Linux systems
+   on the Internet, and I explain that Linux can be as secure as any
+   other operating system.
+
+<p>    But Linux does have a security problem. It's not a universal problem,
+   but look at the following list of security Web sites, mailing lists,
+   and update tools for some common Linux distributions:
+
+<l> Red Hat Linux
+<l>  Debian
+<l>  SuSE
+<l>  Mandrake
+<l>  Caldera
+<l>  Corel
+<l> Turbo Linux
+<l> Slackware Linux
+         
+
+ <p>  These are all mainstream Linux distributions, tending towards a
+   general audience; at the least, they're not aiming at the router
+   market or the embedded devices market. These are all products intended
+   to be used by normal people and thrown up on a corporate network or
+   even the Internet. Some may be aimed at relatively expert users, but
+   I'm a fairly advanced user myself, and I still expect that my software
+   distributor is watching out for security at least minimally. That's
+   one of the reasons I don't roll my own distribution.
+
+<p>   Of the eight common distributions I could think of, three have nothing
+   whatsoever to do with security, and at least one of the others didn't
+   seem to be doing anything useful. No wonder Linux has a security
+   problem: while those four distributions have probably less than a
+   quarter of the Linux market, they tend to be high-profile
+   distributions which garner more than their share of media coverage.
+
+<p>   These distributions aren't just putting their users at risk; they're
+   damaging Linux's credibility and its image in the marketplace. Every
+   time I'm asked by a reporter why Linux is so insecure, I have to
+   consider Caldera, Corel, Turbo Linux, and Slackware before I can
+   answer. These distributions' total lack of concern with security is an
+   embarrassment to the entire Linux and Open-Source communities.
+
+<p>   Because of these distributions, I'm forced to admit to reporters that
+   many Linux installations are insecure, and there's little the average
+   user can do about it without dedicating an inordinate amount of time
+   to security work. Most users aren't paid to worry about security, as I
+   am. For many, computing may be only a small part of their work. These
+   people can't rightly be asked to read Bugtraq; they've got work to do.
+
+ <p>  If only systems were kept up to patch, huge numbers of systems
+   wouldn't be cracked. On the university campus where I work, systems
+   have been exploited using the automount daemon bug which is more than
+   a year old, and which has been patched nearly that long. Being a
+   professional, I know that they shouldn't even be running it, because I
+   know that they're not using it. But I can't expect them to know, and I
+   can't even fix it myself: I didn't know that some of these machines
+   existed until I found out that they'd been hacked. Asking these users
+   to read a single, low-volume, vendor-specific mailing list is a pretty
+   good solution -- when those lists exist.
+
+ <p>  Experienced users should abandon Linux distributions which don't
+   provide security fixes in a timely manner and post that information to
+   a Web site, a mailing list, or both. They should abandon these
+   distributions not because they necessarily need the security notices
+   for themselves, but because these distributions are ruining Linux's
+   image not only with novice users, but with the reporters and editors
+   who shape managers' opinions on whether Linux is a viable solution.
+
+ <p>  You may claim that you're a hobbyist, and you couldn't care less if
+   businesses use Linux; that's your right, certainly. However, you lose
+   nothing when businesses use Linux, you lose nothing when security
+   updates are made available and publicized, and you gain nothing when
+   businesses reject Linux because some vendor couldn't be bothered to
+   package up an already publicly-available solution to a security hole.
+
+ <p>  The rest of us do lose. It hurts our professional reputations when we
+   stand behind a piece of software with frequent and highly-publicized
+   security lapses. It wastes our time, tracking down hacked user
+   machines for which we're not responsible and rebuilding them from the
+   ground up. It wastes our money, when businesses and government
+   agencies buy more expensive hardware and software for the illusion of
+   security.
+
+ <p>  Solving this problem isn't difficult or time consuming; simply pick
+   distributions which express a basic level of concern for security
+   issues, and let vendors know -- at trade shows, in e-mail, in letters
+   to the editor of your favorite publication -- that security isn't just
+   about security. It's about preserving our reputation for quality, and
+   it's about saving time and money.
+                 __________________________________________
+
+<p>   Jon Lasser is a Unix Systems Administrator, Lead Coordinator for the
+   Bastille Linux Project, and author of a forthcoming Unix book from
+   Macmillan tentatively titled Think Unix. He's never bothered to take a
+   computer course, except a single Pascal class in high school. He lives
+   in Baltimore with his wife Kathleen, and their three cats: Mallet,
+   Dashigara, and Spike. If for some reason you want to know more, check
+   out his home page.
+                 __________________________________________
+
+<h>T-Shirts and Fame!
+
+<p>   We're eager to find people interested in writing editorials on
+   software-related topics. We're flexible on length, style, and topic,
+   so long as you know what you're talking about and back up your
+   opinions with facts. Anyone who writes an editorial gets a freshmeat
+   t-shirt from ThinkGeek in addition to 15 minutes of fame. If you think
+   you'd like to try your hand at it, let jeff.covey@freshmeat.net know
+   what you'd like to write about.
+
+  
+<h>    Referenced categories
+
+  
+<h> Comments
+
+<h>RE: RE: Linux and the Common Man(tm), revisited
+ <h>                    by RichD - Jan 12th 2000 13:08:28
+
+<h>                                Andy Wrote:
+
+<p>RichD wrote: My premise isn't even that every UNIX user should beresponsible fo
+	r understanding UNIX security.
+
+ <p>   My mistake. I must have misinterpretted the part where you screamed
+
+   <p>           Go back and read the sentence after that one ...
+
+<p>   if you don't know what inetd.conf is for, if you don't knowwhere your startu
+p scripts are [snip] ... then *you* *should* *NOT* *be**using* *UNIX*!!!!! 
+
+  <p>                          Well, you shouldn't.
+
+ <p>  there's no excuse for that level of incompetence in someonewho's educated en
+ough to be a CEO. 
+
+ <p>  Everyone who is interested should teach themselves about howcomputers
+   and networks work, how to configure them, etc. But the realityis that
+          in the long run, to use your car analogy, the people who
+   configurecomputers are more like car mechanics, not car drivers. CEOs
+    will not everlearn much, if anything, about how computers work. For
+   them it's a tool, nota hobby. It's much more cost effective to have an
+        expert configure their computer than it is for them to do it
+                                themselves. 
+
+<p>    Ok, then, let me take the car analogy one step further that that ...
+
+ <h>                             Windows Vehicle:
+<l> You turn on your machine, it boots Windows, you hit the Start
+       button,you chose a program, it runs. If there's a problem, an
+       "engine problem"indicator lights up on the dashboard.
+<l> You get in your Geo, put the key in the ignition, turn it on, put
+       thegearshift in Drive, step on the gas, and go. If there's a
+       problem, a"General Fault" message pops up on the screen.
+
+    <h>                           Linux Vehicle:
+<l> You turn on your machine, it boots Linux/BSD/Solaris/FooNIX, you
+       watchthe startup messages for any errors, you type in your login
+       and password,you get a shell prompt, maybe you type "startx" to
+       get a nice GUI. Younow have your choice of hudreds of commands,
+       tools, utilities, compilers,editors, and apps to bring to bear on
+       the problem at hand. If there's aproblem, a core file and a ton of
+       log messages are spewed out to tell theuser exactly what part
+       broke, and whether or not it's going to compromisethe stability of
+       the rest of the system.
+<l> You step out on the flight line, do a thorough walkaround of your
+       F-22checking for any potential problems, hop in the cockpit, enter
+       yourauthentication code, crank up the turbines, taxi out to the
+       end of therunway, get clearance from the tower, and take off. You
+       now have yourchoice of hundreds of possible maneuvers, and a wide
+       array of avionics,ECM, and weaponry to bring to bear on the
+       problem at hand. If there's aproblem, diagnostic information gets
+       spewed out at the pilot to tell himexactly what part broke, and
+       whether or not it's going to compromise theairworthiness of the
+       aircraft.
+
+<p>   The driver of the Geo doesn't need to know how the engine works, or
+   how torepair it, in order to get from point A to poing B. That's what
+       themechanic is for. If there's a problem, an "engine problem"
+                    indicatorlights up on the dashboard.
+
+  <p>      Likewise, the driver of the F-22 doesn't need to know how the
+    radar,avionics, and engine work, or how to repair them, in order to
+        shoot downthe other guy. That's what the ground crew is for.
+
+ <p>       The persond driving F-22, however, must have a great deal more
+   knowledgeof and competence in the physics involved in maneuvering the
+                     vehicle thanthe driver of the Geo.
+
+<p>      The "driver" of the Windows box doesn't need to know how files are
+   storedon disk, or how an interrupt vector tells the CPU that the sound
+      cardwants some attention. He does need to know enough to use the
+    Start->ShutDown menu item, instead of just turning off the power. He
+     shouldknow enough not to run any .exe files or open any word files
+                      that haven'tbeen virus scanned.
+
+  <p>   The "driver" of the Linux box doesn't need to know what an inode is,
+      orhow System V IPC works. He does need to know how to log on and
+     offproperly, and how to read basic error messages that show up on
+      theconsole, how to use the shutdown command. He should know the
+       basicsof configuring and compiling a kernel, and locking down
+                       inetd.conf and therc.* files.
+
+   <p>   In a corporate environment, most of the more complicated stuff for
+     eithersystem is handled by the IT staff. They take care of things
+    likefirewalls at the edge of the corporate network, and shutting off
+     telnet,ftp, rpc, and other such things on machines that don't need
+                                  them up.
+
+   <p>  At home, it's a different story. Someone using a computer at home is
+     mostlikely either dialing a modem in to an ISP, or connecting full
+    time with anISDN or DSL link. (Unless they're a total geek, and have
+            set up their own10.0.0.0 network behind a dedicated
+                        NAT-ing/Firewalling box ...)
+
+<p>     Sadly, most people don't realize the risk they're putting themselves
+     at bydoing this without installing and configuring security tools.
+      Even asimple thing like NukeNabber for Windows can help avert a
+    systemcompromise, if the user is aware enough to yank the phone line
+      out of thewall when a port scan is detected by it. I have little
+     sympathy forpeople who's machines get compromised due to their own
+   ignorance andincompetence. Anyone running a computer that's attatched
+      to the'net needs to take the time to learn how to secure it. (By
+   "running" Imean being the person responsible for it's maintenance, as
+       in an IT personfor a corporation, or the owner/user of a home
+                                 machine.)
+
+<p>    That's just the way it is. If you want Linux for the masses, it mustbe
+                                idiot proof.
+
+<p>                            There's no such thing.
+
+<p>    If no distro makes the idiot proof LAN workstation, then each network
+                 sys admin will have to cook up their own. 
+
+<p>     Who's better qualified to cook up a machine config that's suited to
+         thelocal network environment that the local network admin?
+
+<p>    Umm ... let's see ... rpm for RedHat, 
+
+ <p>   I've used that one. Last time I checked, it did not add or removelinks
+    from the rc.* directories, nor did it do a recursive dependancycheck
+      to install all the packages that the package I want depends on.
+
+ <p>    No, but it will tell you if you need to install another package that
+      thisone depends on. That way, it doesn't install stuff it's not
+                            telling youabout ...
+
+ <p>   Yet installation programs magically can do this. They seem differentto
+                                    me. 
+
+<p>    If you want Windows' InstallShield Wizard, you know where to find it.
+
+           
+   ______________________________________________________________________
+
+<h> RE: Linux for the Common Man(tm), revisited
+ <h>                  by Andy Wiggin - Jan 11th 2000 21:29:48
+
+ <p>       RichD wrote: My premise isn't even that every UNIX user should
+               beresponsible for understanding UNIX security.
+
+ <p>    My mistake. I must have misinterpretted the part where you screamed
+
+ <p>     if you don't know what inetd.conf is for, if you don't know where
+        yourstartup scripts are [snip] ... then *you* *should* *NOT*
+                          *be**using* *UNIX*!!!!! 
+
+  <p>                               moving on...
+
+  <p>       there's no excuse for that level of incompetence in someone
+                     who'seducated enough to be a CEO.
+
+ <p>   Everyone who is interested should teach themselves about how computers
+   andnetworks work, how to configure them, etc. But the reality is that
+     in thelong run, to use your car analogy, the people who configure
+    computers aremore like car mechanics, not car drivers. CEOs will not
+   ever learn much,if anything, about how computers work. For them it's a
+     tool, not a hobby.It's much more cost effective to have an expert
+      configure their computerthan it is for them to do it themselves.
+
+ <p>    That's just the way it is. If you want Linux for the masses, it must
+     beidiot proof. If no distro makes the idiot proof LAN workstation,
+         then eachnetwork sys admin will have to cook up their own.
+
+  <p>        But I do agree that it would be nice if people understood
+                              computersbetter.
+
+   <p>                 Umm ... let's see ... rpm for RedHat,
+
+ <p>     I've used that one. Last time I checked, it did not add or remove
+    linksfrom the rc.* directories, nor did it do a recursive dependancy
+    check toinstall all the packages that the package I want depends on.
+   Yetinstallation programs magically can do this. They seem different to
+                                    me.
+
+  <p>                     what are you complaining about?
+
+ <p>                 ... not complaing. Just floating an idea.
+
+ <p>                                     -a
+
+   ______________________________________________________________________
+
+<h>  Linux for the Common Man(tm), revisited.
+<h> by RichD - Jan 11th 2000 18:35:37
+
+ <p>   Andy wrote: First, I'm glad the discussion has risen from the gutter.
+    I think someof these slackeware types need to starting dealing with
+                               their anger...
+
+<p>    Well, some of the statements made in the original article (and many of
+   theresponses) were just bound to start a religious flame war. Welcome
+                  to thewonderful world of Linux geeks ...
+
+<p>      I have to disagree with RichD's premise that every UNIX user must
+               beresponsible for understanding UNIX security.
+
+ <p>      My premise isn't even that every UNIX user should be responsible
+   forunderstanding UNIX security. My premise is that every computeruser
+    should be responsible for understanding basic computersecurity. The
+     state of the general public's computer literacy is,IMNERHO, simply
+                                 pathetic!
+
+<p>     How many people simply assume it's safe to go into Windows and start
+      uptheir Dialup Networking and connect to the Internet? How many
+      peopleassume that because they use an ISP and have a dynamically
+   assigned IPaddress that they can't get hacked? How many people assume
+    it's ok toopen that Word file without virus scanning it because they
+   "know" thatonly .exe files can contain viruses? How many people assume
+      it's safe toget up from their workstation without locking their
+                                  screen?
+
+  <p>     From my point of view, that's just like driving off in a car not
+     knowingwhere the brake pedal is, and assuming you're not going to
+   crash intoanything. It's just like turning on a band saw and shoving a
+    piece ofwood in the general direction of the blades without wearing
+    safety glassesor knowing where the scram switch is, and assuming you
+          won't get a splinterin your eye or cut your fingers off.
+
+ <p>     A computer is a powerful, complex tool that, if properly applied,
+     canboost productivity in the workplace to a great degree. Like any
+   othertool, however, if it is not used correctly, it has the potential
+                        to do agreat deal of damage.
+
+ <p>      Linux advocates talk about displacing Windows, but it will never
+     happenuntil secrataries and CEOs can be productive on Linux, too. 
+
+ <p>    The tools are there, it's just a matter of R-ing TFM to learn how to
+                                  usethem.
+
+<p>      And believe me, they barely understand what their account name is.
+
+  <p>      True. And there's no excuse for that level of incompetence in
+                 someonewho's educated enough to be a CEO.
+
+ <p>        One person must be able to maintain 10's or 100's of "secure
+                            enough"Linux boxes.
+
+<p>       One person, who has even just a little experience installing and
+   securingLinux boxes, can. It would make a great internship opportunity
+     for a CSstudent looking at getting into network administration ...
+
+ <p>     You don't have to have a PhD in Computer Science to be able to use
+      acomputer safely and effectively, just as you don't need to know
+   thephysics and engineering of an internal combustion engine to drive a
+    carsafely and effectively -- but, as with a car or a bandsaw or any
+     otherpiece of equipment, a basic level of knowledge and competence
+   isneeded. It is this lack of knowledge of the fundamentals of networks
+       andtheir hazards that causes so many machines to get cracked.
+
+ <p>     With regards to distro install scripts, one thing I find annoying
+   isthat the scripts (the one's I've used, at least) only run at install
+   time.I think a better way to do it would be to have an install script
+   that detected thehardware, installed the kernel and other non-optional
+   packages, thenrebooted into console mode. Then, use a general purpose
+       tool (one that you could runagain later) to enable and disable
+                  services, and install/uninstallsoftware.
+
+<p>     Umm ... let's see ... rpm for RedHat, pkgtool for Slackware, Debian
+     has apackage manager, FreeBSD has pkg_add pkg_delete and the ports
+   system,linuxconf lets you adjust all your system settings from an easy
+    to use andunderstand GUI (in X) or menu system (on the console) ...
+                       what are youcomplaining about?
+
+ <p>     Most distributions even let you select between a Workstation and a
+        Serverinstallation, and adjust what daemons are available by
+   defaultaccordingly. Perhaps they are a bit permissive with things like
+     telnet,ftp, nfs, and other services, but that's only in accordance
+      with the UNIXtradition, where these services are expected to be
+     available. If you havea problem with that, there's always OpenBSD,
+              which shuts everything exceptSSH off by default.
+
+ <p>      Above and beyond that issue, and I'll make this point again and
+          againuntil it's heard, it's not that hard to go and get
+   yourselfinformed enough about your computer and OS to not make a total
+                       ass ofyourself on the network!
+
+   ______________________________________________________________________
+
+ <h> Corporate LANs and distro install scripts
+ <h>  by Andy Wiggin - Jan 11th 2000 13:11:39
+
+ <p>   First, I'm glad the discussion has risen from the gutter. I think some
+   ofthese slackeware types need to starting dealing with their anger...
+   
+ <p>     I have to disagree with RichD's premise that every UNIX user must
+   beresponsible for understanding UNIX security. I'm a newer Linux user
+     (lessthan two years), so I don't have the same perspective as the
+    old-timers. Idon't see Linux as a hobbyist's toy, I see it as a tool
+   that I'd like to beable to use at work (much as Mr. Lasser was talking
+   about). In a LANsetting, not everyone is a sysadmin, and in fact, that
+   could never work.People can be perfectly productive UNIX users without
+      understandinganything about inetd.conf. I know I was for years.
+      
+   <p>   For Linux to make it in the corporate world, the boxes need to be
+     easyto set up as LAN workstations and easy to keep up to date with
+   softwarepatches. One person must be able to maintain 10's or 100's of
+    "secureenough" Linux boxes. In my mind that should be the goal, and
+        tools likeAutoRPM and Bastille Linux are the right approach.
+	
+<p>    Linux advocates talk about displacing Windows, but it will neverhappen
+   until secrataries and CEOs can be productive on Linux, too. Andbelieve
+           me, they barely understand what their account name is.
+	   
+ <p>     With regards to distro install scripts, one thing I find annoying
+   isthat the scripts (the one's I've used, at least) only run at install
+   time.I think a better way to do it would be to have an install script
+         thatdetected the hardware, installed the kernel and other
+     non-optionalpackages, then rebooted into console mode. Then, use a
+   general purposetool (one that you could run again later) to enable and
+    disable services,and install/uninstall software. That way turning on
+   and off services wouldnot be such a big deal, since they could easily
+    tweeked later using thesame, easy to use, vendor specific tool. This
+     might make it more practicleto turn off more services by default.
+   <p>                                 -Andy
+
+
+   ______________________________________________________________________
+
+<h> Security? distro independant.
+<h>  by digitalunity - Jan 11th 2000 02:44:20
+
+ <p>       I find fault not with Slackware, or Red Hat's policy on custom
+     packagesbeing included. My issue only is with the install programs
+    from thedistros. A linux install with all of the services turned off
+              is fairlysecure. This is not entirely practical.
+	      
+ <p>     Anyone intending to use their computer as a server should make it
+      theirresponsibility to keep themselves informed and their server
+     running onlynew software. I find it a little humorous when someone
+    sets up a webserver, and maybe an ftp server, and a portscan reveals
+   20 open ports.Thats insecure. And that is about right for any default
+   install of mostdistributions. I have always used slackware and yes, I
+                   felt it was in abeta-stage until v7.0.
+		   
+  <p>   My message is only that multiple inetd.conf files should be included
+    withevery distribution, and the user should have the opportunity to
+                        choosefrom several options:
+			
+ <p>                  Secure: for single users - no open ports
+   Medium: for remote-admin nodes - telnet, ssh, just the 'portant stuff
+      Insecure: for the hacker who will do it all themself anyways :)
+      
+ <p>   I find it discontenting that distributions include soooo many services
+                              onby default...
+			      
+ <p>                            but thats just me...
+                           and I'm just the user
+          digitalunity aka digitalun aka mike the hacker next door
+  <p>                 bud - bag, can, bottle, keg. itsallgood.
+
+
+   ______________________________________________________________________
+
+ <h> Out of the box secure distro? One word ...
+ <h> by RichD - Jan 10th 2000 17:11:39
+
+ <p>     OpenBSD. By default, remote access services are disabled until the
+           adminexplicitly goes into inetd.conf and enables them.
+
+ <p>    Slimy is correct in saying that I miss the point of the main article
+     in myprevious post. I wasn't aiming for it. I intended the post in
+     contextwith the other replies talking about how there should be a
+     distro that is"secure" out of the box. (I guess I missed that by a
+                                hair, too ;)
+
+<p>        The simple truth remains that there just is no such thing. The
+   securityof any system, no matter what OS it is running, is a function
+     of thecluefulness of the admin. A well run Linux box will be more
+   secure than apoorly run OpenBSD install. A well run NT server will be
+            more secure thata shoddily maintained Solaris 7 box.
+
+ <p>     Of course, the only way to have a system that is completely secure
+    frombeing hacked on the 'net, is not to have it on the 'net at all.
+    Then allyou have to deal with is the security of physical access to
+      the machineitself ... we've all seen the draconian measures that
+   Hollywood producerscan think of to try and do that, and Tom Cruise was
+        still able to stealdata off of it in Mission Impossible ...
+
+
+   ______________________________________________________________________
+
+ <h> Missing the point
+<h>  by slimy - Jan 10th 2000 14:49:17
+
+ <p>    While I agree with RickD's comment (especially the first paragraph),
+             Ibelieve it misses the main point of the article.
+	     
+  <p>       Clearly, one must learn Unix if one expects to administer a
+        Linuxmachine. And that includes home users. But still, most
+      LinuxDistributions that I have run across, Slackware and Debian
+   included, makeassuptions about system installations that are not, from
+      a securitystandpoint, logical. For example, installing a telnetd
+   server by defaultis probably not a good idea. Having it installed and
+     configured to acceptremote connections by default is horrific! Yet
+   this was the case when Iinstalled Debian 2.1. Debian 2.2 (Potato) is a
+     little smarter than this,but thats not the official release (yet).
+ <p>       As anyone who has delt with security issues for some time will
+     tellyou: the best security policy you can adopt is "that which is
+   notexplicitly allowed is denied". More distributions need to take this
+                                intoaccount.
+ <p>   If I want a telnet server, I will ask for it. And when I install it,I
+        would expect that: at best, it would not aceept connections
+     fromanywhere until I told it otherwise; at worst, it would accept
+             localconnections only, until I told it otherwise.
+
+
+   ______________________________________________________________________
+
+<h>  Linux, security, and the Common Man(tm)
+<h>   by RichD - Jan 10th 2000 13:17:07
+
+<p>       Linux is a UNIX style operating system. UNIX was not originally
+   intendedfor the "casual" or "home" user ... they just didn't exist in
+                                   1969.
+				   
+<p>       Linux, the BSDs, and any UNIX flavor, for that matter, requires
+   theuser to have a given level of cluefulness. IMNERHO, this is a Good
+    Thing. The plain, simple, ugly truth is that if you don't know what
+   inetd.conf isfor, if you don't know where your startup scripts are and
+    how to edit them,if you don't know how to set up your anonymous FTP
+     server correctly, etc.etc. etc. ... then *you* *should* *NOT* *be*
+                            *using* *UNIX*!!!!!
+			    
+ <p>           The flip side of that is that anyone can easily obtain
+    thedocumentation and learn how to do all of these things, as well as
+      all theother tasks required to keep a UNIX system up and running
+    properly. Thishas the effect (or at least the potential) of raising
+             the computerliteracy level of the general public.
+	     
+ <p>        Sadly, most people think of their computer the same way they
+    thinkabout their television set, their microwave, and their car. The
+   way I seeit, computers are actually more akin to power tools -- if you
+    don't readthe instructions and/or get proper training in their use,
+                           you're gonna gethurt.
+			   
+ <p>       There are a few simple truths about the Internet as it stands
+               todaythat many, if not most, people overlook:
+	       
+<l>  The Internet, like Downtown(tm), is *NOT* a safe place. Anyone
+      whoattatches a computer or a network to the Internet is placing
+    themselves atrisk. There are malicious people out there who want to
+   steal yourinformation, just like there are malicious people out there
+    who want tosteal your wallet. There are Script Kiddies out there who
+    want to defaceyour website, just as there are Junior Gangbangers out
+     there who want totag your house/car/fence/wall/place of business.
+<l>  You gotta cover your own ass. Ultimately, your computer's safetyis
+        your responsibility, just like your personal safety is your
+    ownresponsibility. Companies have sysadmins who get paid to keep the
+    networksecure. They also have security guards and alarm systems and
+     such to keepthe physical premeses physically secured. At home, you
+     have locks on yourdoors, and perhaps an alarm system, to help keep
+   intruders out of yourhome. I say "help" because the fact remains that
+     if someone really wantsto break into your house, they will, alarm
+   system notwithstanding. Thesame is true for computers on the 'net. If
+       someone *really* wants to getin, they will. There are, however
+         measures that can be taken to make itmuch more difficult.
+	 
+ <p>      Yes, there are people out there who are trying to help look out
+      foreverybody's safety, just like there are police patrolling the
+      streetslooking out for everyones safety ... and they're about as
+      effective. Thefact remains that if you don't know how to spot a
+      potential mugger, and ifyou don't bother learning basic personal
+    safety practices (like scanningthe area for potential baddies before
+   unlocking your car door orapproaching your home, or being able to spot
+    the scratches on the lock anddoor frame that indicate forced entry),
+       you're much more likely to getmugged than the person who *has*
+                      bothered to learn these things.
+ 
+ <p>  Similarly, if you don't bother learning basic computer safetypractices
+     (like editing inetd.conf, and configuring firewalling), you'remuch
+        more likely to get cracked that the person who *has* learned
+                                thesethings.
+         
+ <p> 	 It doesn't take much. Anyone who has any semblance of
+     intelligencehigher that that of an earthworm can figure out how to
+   edit theirinetd.conf file to turn off unecessary daemons. Configuring
+    IPChains is apiece of cake, if you bother to read the FAQ and HOWTO.
+
+ <p>     I have no sympathy for anyone who whines about how hard it is to setup
+   a Linux/BSD/UNIX system. "But Windows just works" is the party line...
+    primarily because most people never actually *do* a Windows install.
+    They buy computers from the local consumer electronics store, which
+     comewith Windows preinstalled (by someone who gets paid to install
+   Windows ondozens or hundreds of computers a day), and have no clue how
+     insecure theyare when they hit that Dialup Networking button to go
+                              surfing the net.
+         
+	  <p> At least Linux and the other freeware Unices *have* easily
+      accessiblemechanisms like inetd.conf, and firewalling tools like
+   IPChains that allowthem to be made more secure. At least the users of
+    these systems know (orshould know) that there are security issues to
+                               be addressed.
+ 
+  <p> Most Windows users are blissfully unaware that they are wide open
+    tomany attacks that can crash their machines, and many more attacks
+      thattake advantage of their ignorance to use email attatchments,
+    JavaScript,ActiveX, and other such methods to install backdoors into
+    their systems. Furthermore, most Windows users have no simple method
+     to block suchattacks against their home box that they use to dial
+                           directly into the'net.
+
+ <p> 			   When these users load Linux, without taking the time to learn aboutthe
+           issues involved, they remain just as ignorant of their
+       securitysituation as they were when they were running Windows.
+
+ <p>        People take the time to attend self defense and "street
+     smarts"seminars, and martial arts classes to learn how to protect
+    themselves inthe Real World(tm). They watch the news to find out if
+    there is a serialrapist in town this week. They lock their doors and
+     windows at night, andturn on the alarm system to keep the burglers
+                                    out.
+ 
+ <p>  Is it really to much to expect people to take the time to learn
+     therelatively simple techniques (like editing out unneeded daemons
+   frominetd.conf and their startup scripts, and configuring firewalling
+    likeIPChains) that will lock down their Linux box to keep the Script
+                                Kiddiesout?
+
+
+   ______________________________________________________________________
+
+ <h> ok ok enough bickering
+ <h>   by Gary the Lineman - Jan 10th 2000 12:57:55
+
+  <p>      Agreed, the paper did seem like an attack on Slackware do to the
+    completemisconception about Volkerding's view on security. The sites
+     and listshave been pointed out enough in the comments. The man has
+                        appologized solets move on.
+ 
+ <p>  This article was a good one. Unfortunately most people missed the
+    point. I don't think it was intended to tell us what distribution to
+     use, or whoto boycott; rather, it was intended to tell us what we
+    should do aboutsecurity, why we need it, etc. The common quote from
+    most web sitedefacers is "Security is a Myth". This is true for the
+      most part, but ifwe all look at security and pay attention to it
+         rather than sloughing itoff, it doesn't have to be a myth.
+ 
+ <p>  Anyway, I lack sleep and I'm at work...so I hope this made sense...
+
+
+   ______________________________________________________________________
+
+  <h> Let's get the facts straight
+  <h>      by Olaf Kirch - Jan 10th 2000 12:08:03
+
+   <p>   Being the person at Caldera who's responsible for security issues, I
+    feltnot just a little insulted by your claim that Caldera is one of
+         thedistributions that doesn't to anything about security.
+
+  <p>       You write, in trying to apologize for your unfair treatment of
+      Slackware:``In the old days [...] Slackware had huge numbers of
+   security holes.''This sentence enforces my suspicion that your article
+   is based much moreon dated stereotypes than real understading of what
+                     goes on in the Linuxsecurity area.
+
+  <p>       If you go back to some time around 95, I grant you that Linux
+    distributions used to resemble leaky buckets more than a secure OS.
+   This,and the fact that Linux was ignored both by CERT and (to a large
+    degree)by bugtraq as well lead to the establishment of various Linux
+           securityresources--such as a the linux-security list.
+
+  <p>    Since then, most Linux distributors, including Caldera, have started
+   toput a lot more emphasis on security. There is even a certain amount
+        of information sharing and coordination concerning security
+                      issuesamong Linux distributors.
+
+ <p>     I have personally audited most if not all setuid applications and a
+   number of network servers shipped with OpenLinux. Linux as a whole has
+     profited from this. And we're not the only Linux vendor trying to
+                   address security problems proactively.
+
+  <p>        Working in the security area myself I can on the other hand
+    understandyour apparent frustration. Making an operating system more
+    secure is anuphill battle you cannot win. Distributors make mistakes
+    in integratingsoftware with their product (or they make choices you
+    consider a mistake).Programmers insist on putting the same bugs into
+     their programs over andover again (do a grep strcpy over the pine
+     sources one day). Many usersexpect things to "just work" and don't
+                take security serious until theyget hacked.
+
+ <p>     However don't blame distribution maintainers for a problem that has
+    manymore facets--especially if your assignment of blame is based on
+                              sloppyresearch.
+
+ <p>    On the overall scale, Linux security has improved a lot over the past
+    fewyears--and while I agree that there's a long way to go, progress
+    willdepend at least as much on creating more secure software in the
+         firstplace as on the vendors' timely delivery of patches.
+
+
+   ______________________________________________________________________
+
+  <h> we all know why he wrote this
+  <h>  by sanityimp - Jan 9th 2000 15:50:34
+
+ <p>     it wasnt to get publicity, or for his own ego. we all know he wrote
+      thisarticle for a free tshirt, i know im gonna write one myself.
+
+
+   ______________________________________________________________________
+
+ <h>  Another Slack Flame?
+  <h>  by KL Davis - Jan 9th 2000 09:42:16
+
+  <p>                                  Well...
+ 
+ <p>  I read this a few hours ago, but thought it best to hold any
+                 commentsfor awhile -- A while has passed.
+
+ <p> 		 First, I do not blame Mr. Lasser for this article. Having experienceas
+      an editor of a small, international law enforcement journal... I
+   knowthat the old adage "Don't shoot me, I'm just the messenger" holds
+   no waterin the journalism business. Mr. Covey... shame now, did we not
+   learn atleast one thing from the cinema classic "Real Genius"? "Never
+   forget tocheck your references!" (I think the kids still like it when
+                           I "get down"verbally).
+
+ <p> 			   Mr Lasser, I note that you have made an attempt, albeit feeble,
+   butwhat appears to be an attempt non the less at saying you are sorry?
+   Ifthis was an apology... then I, as a card carrying Slacker, accept --
+                                 Thankyou.
+ 
+ <p>  Now if I may make a comment or two? I do not claim to know even
+     afraction of what you, MR. Lasser, know about computer security. I
+    onlystarted *tinkering* with computers in 1984 -- The majority of my
+     securityexperience is more with MP5s than MD5. But, as anyone who
+    knows me (or hashad the misfortune of finding my web site) knows, I
+            have made a realdedication towards network security.
+ 
+ <p>  I seem to have taken a different, I like to think more
+   practical,approach to finding what flavor of Linux I would use for my
+     firewall andsecure OS base. Rather than which distro was the most
+   popular and had themost support, I chose the one that (IMO) needed the
+     least work: Slackware! But that is not why I am writing, I hope to
+        offer a simple explanation thatseems too often missed -- Or,
+   misunderstood. Anyway, this is what I havepicked up in the last couple
+                               of decades...
+ 
+ <p>  The notion that anyone can completely protect something is
+     silly...noble, but silly. There is no security panacea -- and look
+     closely atthose who claim to have it, odds are there little wagons
+     have the words"snake oil" freshly painted over on the sides. It is
+    this sort ofthinking that drives a company to spend $180,000.00 on a
+    high-tech,laminated steel door - mounted in hardened and reinforced
+     concrete & steelframe and casement - featuring hinges and locksets
+    made of solidunobtanium! Then put that door between two windows made
+                              of genuineglass?
+
+ <p>      This is the same rational that has System Administrators walkingaround
+                  touting their new mega buck, AI powered,
+   Super-Cyber-Crypt-KeeperSoftware... while EVERY terminal (even the one
+     that customers can use inthe lobby) has a functional floppy drive!
+                          (yes, I have seen this).
+
+ <p>  Security (my definition) is a measure of time -- a double ended
+   timeline, separated in the middle by an event... a breach or loss (X).
+   Onethe left side of that event is the time leading up to it, the time
+   beforeit happens -- not if, rather when. To the right of the event, is
+   the timeit will take to recover from the event -- to fully negate the
+                                   loss.
+              |-------------------------------(X)-----------|
+ 
+ <p>  Security is any effort that moves the event (X) further to the
+       right,in fact all effort should be to move the event as far as
+    possible to theright -- in a perfect world, a security compromise is
+     only a threat untilit is discovered, after action and contingency
+       plans are already testedand in place... negation is immediate.
+
+ <p>        Sorry, I have rambled on for far too long now... I do respect you
+    andyour efforts with the Bastille project, thanks! And BTW, there is
+    onefool proof plan for securing something, used every day actually,
+    theGovernment has printed several manuals on how to do it even! ...
+                             TotalDestruction.
+ 
+ <p>  KLD
+  <p>                 a.k.a Nanux
+
+
+   ______________________________________________________________________
+
+ <h>  a secure distribution
+  <h>                   by Phil Howard - Jan 9th 2000 04:15:04
+
+ <p>       Different distributions try to address different issues as seen
+       bydifferent kinds of users, all with different experiences and
+   differentgoals. The very fact we have so many distributions attest to
+        thediversity of the user base. This is something that Linux
+     distributions(and their BSD cousins) have over that commercial OS
+                             we've heard about.
+
+ <p> 			     One size does NOT fit all. It never did, and it never will. What
+   ahacker needs, or what a hobbyist needs, or what a web site needs, or
+   whata system administrator needs, or what an office manager needs, or
+          what asalesman needs ... all these things are different.
+ 
+ <p>  I can certainly says from experience as a system administrator thatthe
+       most secure systems are the result of a skilled administrator
+    takingthe time to get all the necessary information (and keep up to
+    date so youare a moving target) and apply all the necessary upgrades
+     andconfigurations. However, a system administrator is not going to
+    besetting up most machines anymore as Linux begins to bump out that
+     other OSfrom the desktop. Indeed, many server situations fall into
+      that arena. IfI were to set up and configure a Linux desktop for
+     someone, there are a LOTof things I'd be doing to the system AFTER
+    installing the distribution,with security changes being in the lead
+   position, and other things likemanageability being next (for example,
+            cleanup scripts that ensure logsdon't fill up /var).
+ 
+ <p>  There are a lot of things a distribution could do to make life HELLfor
+       a system administrator, but making EVERYTHING be defaulted to
+   turnedOFF is not one of them. I've used both Slackware and Redhat and
+     I have todo a lot to both (more to Redhat but still a significant
+   amount toSlackware) to make them secure. I don't clean inetd.conf ...
+   I shut offinetd itself ... on many systems. Every distribution should
+     leave everyservice that could listen on a port or pipe turned off,
+      even lpd. Duringinstall, and at any time later, there can be the
+   option to enable specificservices. But unless those actions are taken,
+     the services should beinstalled in such a way they are not running
+                         until properly turned on.
+ 
+ <p>  This would be to the best benefit of end users who have little or
+         notime to keep themselves security aware, and as a system
+    administrator, I'dmuch rather have to go turn things on than have to
+    turn them off. It wouldnot break any distribution to do it this way.
+
+
+   ______________________________________________________________________
+
+  <h>  Oh my.
+  <h>                 by Daniel T. Chen - Jan 9th 2000 04:10:57
+ 
+  <p>       Jon Lasser brings up some very good points, and his editorial
+      iswell-suited to the Linux community. As one of several student
+   Unixsysadmins in the computer science department, I have to deal with
+   the sametypes of things he does. One of the reasons we've opted not to
+     go withLinux 100% but instead concentrated on IRIX and Solaris is
+   because (1) wefeel IRIX has a proven track record of being more stable
+      and secure thanLinux; and (2) because Solaris provides a proven
+    environment in which ourCS students can code. This does not prevent
+   many attempts to exploit ourmachines, however. On the average, I spend
+    nearly twenty minutes *perhour* scrounging through logs and checking
+    stats to ensure that my fellowstudents are safe at what they do best
+   (coding). This does not come at an easy price. Since I'm only one of a
+     fewsecurity-minded student sysadmins, I have to make sure that my
+   coworkersare kept current on the latest exploits, security advisories
+     and fixes,etc. [I mean this as no offense to anyone, but I've also
+   noticed that the ircnetwork EFNet seems to split a lot more often now
+     that Linux ircds havepopped up. Things weren't this way when they
+   stuck to *BSD daemons. *sigh*] I simply wish we could all just listen
+    to what Jon Lasser was trying topoint out instead of nitpicking over
+    the details of whether or not aparticular distribution has security
+                            lists/pages/whatnot.
+
+
+   ______________________________________________________________________
+
+ <h>  re: 5 minutes a month
+  <h>                      by astro - Jan 9th 2000 02:52:14
+
+  <p>       I have to chime in on the 30 min/day / 5 min/month issue... If
+    1000programmers that bill out at $100/hr spend 5 minutes every month
+          checkingfor updates, in a year that's a loss of $100k...
+
+
+   ______________________________________________________________________
+
+ <h> Re: Linux Religions
+  <h>                      by Jihad - Jan 9th 2000 01:50:28
+
+  <p>     Its a _natural_ human reaction to defend your favorite [friend|ice
+    creamflavor|car|religion|pet goldfish|child|pez dispenser|whatever],
+    especiallyagainst undue and misleading criticism. When you criticize
+   someonesfavorite thing youre criticizing them for choosing that thing
+   as theirfavorite... pretty elementary principle... why do people have
+                     such a hardtime understanding it?
+ 
+ <p>  P.S.- Dont grow up, grown-ups are uptight mindless beings who
+       worshipwork, stress about taxes, and drink too much coffee :)
+
+
+   ______________________________________________________________________
+
+  <h> Abandon Slackware 3.0 Instead Use RedHat 4! :P
+ <h>    by iNarf - Jan 8th 2000 22:52:46
+
+  <p>     "But I'm really curious as to why everyone took this as an attack
+    onSlackware, specifically. It certainly wasn't intended to be that."
+ 
+ <p>  Simple Answer:
+ 
+ <p>  "These distributions aren't just putting their users at risk;
+   they'redamaging Linux's credibility and its image in the marketplace.
+   Every timeI'm asked by a reporter why Linux is so insecure, I have to
+      considerCaldera, Corel, Turbo Linux, and Slackware before I can
+   answer. Thesedistributions' total lack of concern with security is an
+       embarrassment tothe entire Linux and Open-Source communities."
+  
+ <p>   "Experienced users should abandon Linux distributions which don't
+   providesecurity fixes in a timely manner and post that information to
+       a Web site,a mailing list, or both. They should abandon these
+    distributions notbecause they necessarily need the security notices
+     for themselves, butbecause these distributions are ruining Linux's
+    image not only with noviceusers, but with the reporters and editors
+    who shape managers' opinions onwhether Linux is a viable solution."
+     
+ <p>      [ Further I found this funny
+
+ <p>  "If only systems were kept up to patch, huge numbers of systems
+     wouldn'tbe cracked. On the university campus where I work, systems
+   have beenexploited using the automount daemon bug which is more than a
+           year old,and which has been patched nearly that long"
+ 
+ <p>  What "Linux" Distribution would a university be running? ]
+ 
+ <p>  I believe the only thing that is going to hurt your reputation as a
+       linuxprofessional is not collecting the [current] facts before
+                     commenting oncontroversial items.
+
+ <p> 		     Yes of course I am bias towards Slackware. It is in my opinion the
+    bestdistribution. I have used Debian, RedHat and Stampede along some
+   of theBSD flavors. I am not going to say Slackware is the most secure
+     Linux, butthat is only because I agree with the comment about the
+     administratorsbeing the security. As far as getting a distribution
+          secure in a shortamound of time, Slackware is darn good.
+ 
+ <p>  Recently a RedHat loving (Once Slackware despising) friend of my'n
+   wasamazed at how easy slackware is to configure ( without all the junk
+    in theway ) and has since changed distributions. Slackware is quite
+   offtensmashed and bashed. It seems mostly by people who either haven't
+       used it,or NEED a GUI with pretty pictures to run a computer.
+ 
+ <p>  You are in the position to influcence people. Obtaining an article on
+   amajor open source / linux site. It is your responsibility to at least
+     knowwhat products / projects you are telling people to "abandon".
+  
+ <p>   "I certainly hope (and to some degree expect) that this situation's
+        beencleaned up by now, but this made it impossible to audit
+    slackware'ssecurity if you wanted to." Well why don't you try it out
+   before the nexttime you go publicly trashing it! I certainly hope (and
+    to some degreeexpect) you will go back and review the comments made.
+ 
+ <p>  nuff said
+
+
+   ______________________________________________________________________
+
+ <h>  Missing the point...
+   <h>                  by Bill Duncan - Jan 8th 2000 22:10:21
+
+ <p>       Unfortunately most people who've responded have missed the whole
+   point. All major distributions which I'm aware of come out of the box
+    with toomany services enabled, and too many potential holes for new
+    users to copewith. They could all use a front-end script or dialogue
+    which would asknew users what actually needs to be enabled, and then
+    disable everythingelse by default. I would rather assume that users
+   who need the serviceswill need to learn enough about the process to be
+                   able to enable themthemselves anyway.
+ 
+ <p>  The author makes a good point that if newbie users start
+   havingsecurity problems all over the place because services they know
+    nothingabout and could care less about are enabled by default, this
+   could have adetrimental impact on the Linux community in general with
+    bad press if,for example, many thousands of these unsuspecting users
+                  become mail relaysand stop-over points.
+ 
+ <p>  I've used a number of the major distributions, and to my knowledgethey
+        are all guilty of this. They should come out of the box with
+                      allservices disabled by default.
+ 
+ <p>  The users who need these services will do the necessary research (itis
+     hoped) to be able to use them in the most secure way possible, and
+       tokeep on top of security advisories etc. But you can't expect
+   everyone whojust wants to use Linux for themselves to be on top of it
+                                    all.
+
+
+   ______________________________________________________________________
+
+ <h>  Linux Religions
+  <h>              by NullPainterException - Jan 8th 2000 22:00:30
+
+  <p>   The feedback gained from this editorial demonstrates one facet of the
+      linuxcommunity that I find tremendously childish and immature -
+     religiousdedication to individual distributions. As much as I am a
+    linux advocate;linux is an operating system, to be used. Some people
+     appear to shift thefocus from the operating system to a particular
+      vendor's own cobblingtogether of software and scream loudly when
+         there's even a hintthat somebody is 'attacking' their pet
+                               distribution.
+
+  <p>                             Grow up, children.
+
+
+   ______________________________________________________________________
+
+  <h> Security.
+   <h>                   by MaxAttack - Jan 8th 2000 20:30:47
+
+  <p>       Jon stats that when he used slackware it was way back when the
+      securitywasnt considerd. And that his article was written not in
+   attempt to attackslackware and other distro's but to show the need for
+   security in linux. Hemight not of ment for the attack on slackware but
+    when a nobody, nerverused linux user read's your article and decides
+      to go with linux from thefacts that u offer he will determain to
+   follow redhat when your facts arntuptodate or even fully looked into.
+   Thats why it attacks slackware becausethe pertential users belive what
+       they read. And this lowers the possableusers for slackware to
+    increase. Also i couldnt write a arctile onWindows systems if i had
+    only run win 3.1 and win 98/2000 was latestventure. I would only be
+                 showing my lack of facts on that subject.
+
+   ______________________________________________________________________
+
+ <h> Read the message, not the words
+   <h>                 by Daniel Lawson - Jan 8th 2000 20:17:55
+
+  <p>       I think people are getting a little bit too inflamed over the
+                       mistakesconcerning slackware.
+ 
+ <p>  The point being made was, a lot of people use linux that do NOT
+     havetime to, or even understand how to, secure their systems. Its
+   exactly thesame with other more mainstream OSs - I know of several ppl
+   who claim tobe NT admins, and yet dont even know where the MS security
+                               websites are.
+ 
+ <p>  Sure, when I install a linux system I go through and clean out
+   inetd,add a decent ipchains firewall if appicable, and upgrade all the
+                  packagesthat I know have security flaws.
+ 
+ <p>  Does Jane Bloggs who just installed a redhat 6.0 (or *any* system)
+    toact as their companies dialup networking server and webserver know
+                               how todo this?
+ 
+ <p>  Would she know what cron *was*, much less that the redhat 6.0
+     rpmhappened to have a buffer overflow in it? (I think it was rh6.0
+                                  anyway)
+ 
+ <p>  Would she know what the significance of inetd.conf is, much less howto
+                                 secure it?
+ 
+ <p>  My take on the original article was not a dig at any particular
+      linuxdistribution - but a point about the level of education out
+   there. And,hand in hand with education, we have ease of accessability.
+
+ <p>    Half an hour a day, or even 5 minutes a day, might be enough to
+    coverthe headlines of bugtraq and a vendor-specific security mailing
+     list, butsomeone telling Jane that she needed to upgrade her cron
+   package becauseof a nasty buffer overflow which could give root access
+                          wont mean a thingunless
+			  
+ <l>  Jane knows if she uses the package
+ <l>  Jane knows if its relevant
+ <l>  Jane knows *how* to upgrade - be it installing a new rpm / deb,
+      orgrabbing a source tarball, applying the relative patches, and
+                                compilingit
+    
+ <p>     I think there are a lot of people who use linux, because of the
+           hypesurrouding it, who dont know what they are doing.
+ 
+ <p>  In my opinion, workstation distributions *should* be more or
+    lesssecure by default - with the exception of unforseen things like
+      bufferoverruns in packages etc. Why do you need to telnet into a
+     workstation?disable it by default. Why do you need ftp? pop3/imap?
+    www? disable it. Ifthe user needs it, they can set it up themselves.
+                            They need to learn.
+ 
+ <p>  Similar sort of tactics should be taken on a server distribution.
+ 
+
+ <p>  Oh no, people will cry, that will make it too hard! No one will
+                         uselinux if its too hard!
+    
+ <p>     Education....
+ 
+ <p>  We dont need distributions that do everything for us - unless werolled
+   it ourselves, and know what it does. What we do need is informationon
+                            *how* to secure it.
+         I thought the Bastille project was a good idea (although i
+      neveractually used it). Things like this need to be fostered and
+                                encouraged.
+  
+ <p>   We currently have screeds of disjoint man pages, HOWTOs which
+   dontagree with your distribution (most of the ones i've read appear to
+         workwith slackware, and bear no relevance to redhat), and
+     package-suppliedreadmes that can also bear no resemblance to your
+                       distribution-patchedbinaries.
+ 
+ <p>  I make a generalisation above, I know. But we need more
+        distributionspecific information on how to do these things.
+     And it needs to be centralised, and put in a 'to-do' list so that
+                   newusers can *find* it easily enough.
+ 
+ <p>  Hmm. I could have spent the time it took writing this, to insteadwrite
+   a redhat-specific HOWTO's on securing your workstation by lockingdown
+                inetd, and checking for recent rpm updates.
+  
+ <p>   Regards,
+     <p>                                Daniel
+              <p>        "Security through Education", maybe?
+
+   
+   ______________________________________________________________________
+
+ <h> Slackware Linux VS other *nix OSes and Secuirty (a mouth full)
+ <h>                      by Adam C. - Jan 8th 2000 19:44:24
+
+ <p>     As others have I must add my 2 cents, I curently am an administrator
+      for aShell providing business, as you know are normaly the first
+   targets of anyhack, exploit, etc. Personaly I have tried many versions
+     of Linux and*nix systems to find that I personaly prefer Slackware
+     Linux. Not onlyhave I found Slackware to be more secure, with less
+    exploits, I have foundit even easier to get the updates and install
+   them with-in little time. Ido have to state that Jon did make a large
+   accident by stating thatSlackware did not have any mailing lists etc,
+   especially since he is doing so without even using Slackware him self,
+                     which at least he washonest about.
+  
+ <p>   The Slackware Linux developement team puts a lot of time into
+    makingsure the distribution is as secure as posible before releasing
+   it, andpersonaly I think if Redhat put a little more time into do the
+     same beforereleasing each dist. it might be a bit more secure it's
+   self. Maybe I ambias to Red Hat because I have seen it hacked so many
+   times and at thesame time not very many people can hack Slackware, or
+   maybe it's just myexperiance with Slackware that has drawn me to it, I
+    am not sure. Onethings for certain though, Slackware does have less
+             exploits released foreach of there distributions.
+ 
+ <p>  Finaly, the only thing I have to say is I appriciate these fourms,
+    itgives us a chance to hear opinions from lots of people on security
+    and notjust one persons views. I think the only reason that Jon has
+   recieved somuch flaming on his editorial is because he didn't take the
+    time to thinkthat before you judge something you should use it your
+    self. Many peopleare opinionated on which Linux system people should
+     use, as hard as thatis to believe, and tend to take things to the
+    extreme when someone makescomment on it. I guess in a sense I am one
+    of those people as well, butas I have used Red Hat, Debian, OpenBSD,
+    SCO, Solaris, and many other *nixoses, I feel that my decision in a
+                      *nix OS is an educated decision.
+    <p>                                Cheers,
+   <p>                                 The Bug
+   <p>                            root@linuxbug.net
+
+
+   ______________________________________________________________________
+
+  <h> Slackware Linux VS other *nix OSes and Secuirty (a mouth full)
+  <h>                     by Adam C. - Jan 8th 2000 19:42:47
+
+  <p>    As others have I must add my 2 cents, I curently am an administrator
+      for aShell providing business, as you know are normaly the first
+   targets of anyhack, exploit, etc. Personaly I have tried many versions
+     of Linux and*nix systems to find that I personaly prefer Slackware
+     Linux. Not onlyhave I found Slackware to be more secure, with less
+    exploits, I have foundit even easier to get the updates and install
+   them with-in little time. Ido have to state that Jon did make a large
+   accident by stating thatSlackware did not have any mailing lists etc,
+   especially since he is doing so without even using Slackware him self,
+    which at least he washonest about. The Slackware Linux developement
+   team puts a lot of time into making surethe distribution is as secure
+    as posible before releasing it, andpersonaly I think if Redhat put a
+   little more time into do the same beforereleasing each dist. it might
+    be a bit more secure it's self. Maybe I ambias to Red Hat because I
+    have seen it hacked so many times and at thesame time not very many
+      people can hack Slackware, or maybe it's just myexperiance with
+      Slackware that has drawn me to it, I am not sure. Onethings for
+   certain though, Slackware does have less exploits released foreach of
+       there distributions. Finaly, the only thing I have to say is I
+     appriciate these fourms, itgives us a chance to hear opinions from
+   lots of people on security and notjust one persons views. I think the
+    only reason that Jon has recieved somuch flaming on his editorial is
+       because he didn't take the time to thinkthat before you judge
+    something you should use it your self. Many peopleare opinionated on
+    which Linux system people should use, as hard as thatis to believe,
+    and tend to take things to the extreme when someone makescomment on
+   it. I guess in a sense I am one of those people as well, butas I have
+   used Red Hat, Debian, OpenBSD, SCO, Solaris, and many other *nixoses,
+   I feel that my decision in a *nix OS is an educated decision. Cheers,
+                         The Bug root@linuxbug.net
+
+
+   ______________________________________________________________________
+
+  <h> Linux Security
+   <h>                by Jochen Striepe - Jan 8th 2000 19:34:43
+
+   <p>                     Hi, just some simple questions.
+ <l>  Can you _really_ make a system secure?
+ <l>  Can you _really_ build a foolproof out-of-the-box
+    linuxdistribution that is secure without the user knowing what (s)he
+                       is doing("linux for dummies")?
+ <l>  OpenBSD is AFAIK considered one of the most secure OSs
+   available.How much time do you expect a sys admin to invest in system
+                        security tokeep it that way?
+ <l>  Why do you expect average linux users to act more efficientlythan
+            experienced unix system admins concerning security?
+  <p>                                  So long,
+  <p>                                  Jochen.
+
+
+   ______________________________________________________________________
+
+  <h> Editorial Correction
+   <h>                     by glyph - Jan 8th 2000 19:32:25
+
+  <p>   I think that there has been an adequate listing of the incorrect facts
+      inthis article. The author should probably go back, re-think the
+      premise,get his facts straight, and re-write and re-submit this
+   editorial. Idon't think that something so obviously full of omissions
+   and (yes, evenwe Linux people do it) FUD should be left posted in such
+   a high-profilelocation. And Mr. Covey, (or someone from the FM staff)
+      please do alittle fact-checking of your own on these? Thank you.
+
+
+   ______________________________________________________________________
+
+ <h>  5 minutes a month?
+ <h>                      by casphar - Jan 8th 2000 18:17:39
+
+ <p>     5 minutes a month is bullshit, if users dont want to spend any brain
+    powerperhaps they shouldn't be using computers at all? And as far as
+     bettering the security on the net, im sure most distribs aresecure
+   when they're released, it's just after time that people go lookingfor
+      problems, which is a good thing, but that is also why you should
+    belooking at least once a day, if you want to keep your box secure.
+    And my final comment for the day, when something has a mailing list,
+     suchas slackware, it shows the maintainers are looking out for the
+   problemsand putting them at one central location for the users to look
+   at, see aproblem, then go and get the patch or do whatever needs to be
+                                   done.
+
+   ______________________________________________________________________
+
+ <h>  Research
+ <h>                      by DECula - Jan 8th 2000 17:22:41
+
+ <p>                                   Come on!
+
+ <p>  Just because a Linux distribution has a mailing list about security
+                       doesn't mean it's more secure!
+       Just because Microsoft has a security update webpage for their
+      products doesn't mean IIS isn't the most hacked web platform on
+                               earth, either.
+
+ <p> 			       As an admin of a primarily slackware site for 3 years and an abuser
+   of linux distributions since kernel 1.2.8, one of the keys things you
+        can do to discover how good your distributions security is:
+                         find / -perm +6000 -print
+ 
+  <p> Another point in the favor of slackwares' security is that the
+        number one remote crack on the net for linux distributions,
+     'imap', was not defaultly enabled in slackware. This is not to say
+     that slackware has not had security holes, but they have normally
+          been lesser than the red hat or derived red hat distros.
+
+ <p> 	  I am pleased that the slackware community has been vocal here,
+            good work, folks! and thank you Patrick Volkerding!
+
+
+   ______________________________________________________________________
+
+ <h>  Tune in next week for
+  <h>                    by PimpSmurf - Jan 8th 2000 17:01:10
+
+   <p>                             ok... here goes.
+  
+ <p>   You are wrong. Period.
+ 
+ <p>  I am a linux advocate. not a Slackware or Debian or Redhat or
+    *linuxadvocate. Your blatent disregard for the facts is normal . No
+    one seemsto care to research a liltle before going off on some rant
+      about someinformation they know very little about. You aparently
+    didn't even botherto email the heads of the distros to get a little
+   info. You just went offsaying how your selected distro's security was
+                    the best... here are a fewexamples.
+ 
+ <p>  You mention "no official tool for automatic update."
+     By automatic do you mean... gets the patches and installs for you,
+   youget the patches (some format. rpm, deb,slack tgz, whatever) and it
+    autoinstalls? what? If you want a deamon to install patches for you
+      over theinternet, you dont know the first thing about security.
+
+ <l>  your computer desides its time to check for updates.
+
+ <l>  I hacked your local nameserver to point (whatever).(whatever) at
+    mybox, and set up an package distrobution server for whatever client
+     is usedin whatever distro. you resolve to me and get a backdoored
+                 in.telnetd orwhatever. boom. your rooted.
+
+ <p>  "Slackware Linux "
+       
+ <l>  "No known web page for security "
+         try: ftp://ftp.cdrom.com/pub/linux/slackware-7.0/patches/
+      There are all the patches. the Changelog.txt file tells you what
+                    theyare and why you would need them.
+
+ <l>  "No known mail list for security"
+       Maybe if you went to www.slackware.com and clicked the little
+        "mailinglists" link you would see the slackware-security and
+           slackware-anouncelists. even avalible in journal form!
+ <l>  "No known tool for security updates"
+                      There are several ways to do it.
+                            installpkg [pkgname]
+                                  pkgtool
+
+ <p> 				  here again "Forgive them Father... they know not what they do..."
+
+ <p>  You tell people to abandon linux distros based on your lies.
+    Aparentlyyou say... screw everything else... Get Redhat (top of the
+                      list), Debian,SuSe or Mandrake.
+ 
+ <p>  You say those "other" distros damage linux's credability... You
+    damagelinux's credability. You make blatently wrong statments out of
+     lack ofknowledge and lack of desire to research an article before
+                       making a foolout of yourself.
+  
+  <p>                                     OK
+  
+  <p>                                   Enough
+  
+ <p>   Sorry for the length of this comment. Had to get it out.
+ 
+ <p>  As for the other distros which I am sure our friend Jon
+    Lasserwronged... someone else defend them. I only use slackware, and
+     dont knowmuch about other distros other than redhat, caldera, and
+                                 mandrake.
+  
+  <p>     Thank You... that is all,
+  
+  <p>                                 PimpSmurf
+  
+  <p>                       AkA Joseph Nicholas Yarbrough
+
+       
+   ______________________________________________________________________
+
+  <h> Re: half an hour a day?
+  <h>                       by jwz - Jan 8th 2000 16:35:37
+
+  <p>     Perhaps half an hour a day was a bit too much for the average
+     person.10minutes would work just as well 
+ 
+  <p>    If it takes more than 5 minutes a month, it's not going to get done.
+    Really, non-hackers just can't be bothered with this kind of stuff.
+   That's why, if you want to improve the overall security of the net and
+      thereputation of Linux as a whole, you need to secure it at the
+     source: thedistributions need to be more secure by default, and it
+   needs to bepossible for installations to remain secure without the end
+    users havingto spend any brainpower on it at all. Because they just
+                                   won't.
+
+________________________________________
+
+ <h> misinformation
+  <h>                    by karellen - Jan 8th 2000 16:12:02
+
+ <p>      You have misinformed people. There is a Slackware securitymailing
+     list. Slackware is secure and so is Debian. We're nottalking about
+     'the old days' here; we're talking `today`.I hope you get a lot of
+    flames on the subject, as you flameda lot of good distributions out
+   there. Even in your sorrymessage you don't stop flaming and make wrong
+       assumptionsabout certain distributions, since these cannot be
+   calledfacts. I don't know/care if you're getting paid to do thisbut it
+      certainly looks that way. Well, you obviously got aname now, Jon
+                                  Lasser.
+
+
+   ______________________________________________________________________
+
+ <h> half an hour a day?
+  <h>                     by casphar - Jan 8th 2000 15:55:18
+
+  <p>       Perhaps half an hour a day was a bit too much for the average
+   person.10minutes would work just as well, quick skim of the headlines
+   on yourlinux site or reading the security mailing list. These are not
+     hard nor time consumingthings to do. And as far as picking out one
+     trivial thing, if he got thiswrong when it's blatently obvious and
+   easy to find on the site (thesecurity list), i was wondering what else
+   he had missed or not cared to inform anyone of, in his pursuit ofthis
+                                 editorial.
+
+___________________________________________
+
+ <h>  Slackware, security, and so forth
+  <h>                      by Kobaz - Jan 8th 2000 15:44:14
+
+  <p>    I noticed about 3 people claiming that Slackware is quote "the most
+    securedistrobution" around. This is in fact not true, and neather is
+       saying"Redhat is the most secure" or Debian or Caldera, or any
+   distrobution orOperating system. Even your linux box in the corner of
+       your office with astatic ip, with just telnet and ftp services
+   running, and all the latestpatches you can think of put on it; is ALOT
+   less secure then if you pullout the ethernet wire. In this day and age
+       there is no "most secured"linux distrobution. There is always
+       something else you can do to make itjust a little more secure.
+  
+ <p>   All the linux distrobutions include programs written by not the
+       peoplewho released the distrobution. Which means in fact, that
+   hundreds ofdifferent programs, written by hundreds of different people
+     are on thesame computer. Thos will also mean that there is a very
+     likely chancethat one or more of those programs will have security
+      problems. And I amnot just talking about Linux, or just Unix in
+    general. Look at Windows 9598 and certan versions of NT: Hundreds of
+      programmers work on them, fromone major company, and there was a
+    mistake in codeing that caused remoteusers to be able to disconnect
+    them from the internet. Something likethat could happen in the linux
+        world also, a popularly used program thathas a tragic flaw.
+
+ <p> 	Personally though, as many other people have said, when
+     firstinstalling any distrobution they have to spend time fixing up
+   inetd.confdisableing services that arent needed. Slackware is the same
+    way, alongwith other problems. So you can't say that out of the box
+    Slackware is themost secure, because it just plain isn't. Neather is
+                                 anything.
+
+ ____________________________________________
+
+ <h>  Touche..
+ <h>                       by Jihad - Jan 8th 2000 15:26:07
+
+  <p>       "But if I can't hold someone to past mistakes, how can I judge
+   currentperformance when I'm measuring the invisible (as good security
+                                 is)? :-)"
+ 
+ <p>  Ok... maybe you can, but you should at least install and test
+   thelatest version (especially with slack 7.0, since its changed quite
+   a bitsince even 4.0, not to mention slack95) of the OS before stating
+   "I haveto consider Caldera, Corel, Turbo Linux, and Slackware before I
+   cananswer. These distributions' total lack of concern with security is
+     anembarrassment to the entire Linux and Open-Source communities."
+ 
+ <p>  This is not meant to be an attack, its just that slack has improved
+                              alot recently :)
+
+       
+   ______________________________________________________________________
+
+ <h>  Aha!
+   <h>                  by Jon Lasser - Jan 8th 2000 14:43:17
+
+   <p>      But if I can't hold someone to past mistakes, how can I judge
+   currentperformance when I'm measuring the invisible (as good security
+                                  is)?:-)
+
+  <p>     Exploits come out for Red Hat first because there are more targets
+    onthe net. Exploits used to come out for SunOS 4.x for precisely the
+    samereason, but that didn't mean that Ultrix was more secure. (Point
+     of fact,it probably wasn't, it was just less tested.) And the fact
+    that Red Hatreleases security fixes fairly promptly means that it's
+     possible to securethe system in a pretty much up-to-date fashion.
+
+  <p>     But that only answers half the question: so now I know why people
+    takeSlackware to be the target (because I made a mistake which gave
+    them afoothold from which to attack me), but why do they think it's
+     all aboutRed Hat? On the basis of the article, it seems clear that
+    SuSE, Debian,and Mandrake are all probably more secure than Red Hat.
+   The fact that I'vegot a whole project just to secure Red Hat seems as
+   much proof as any thatit's not especially secure -- but the fact that
+     they've got some securityresources certainly means they're trying.
+
+    <p>    (And I started Bastille not to secure RH for myself, but because
+   thereare dozens or hundreds of user-administered Red Hat boxes on the
+     campus ofthe university where I work. I need a way to secure those
+   machines when Ihave no direct control over them -- which means I need
+                 to secure the OSthey're already running.)
+
+   <p>     At any rate, other than the blurb up top (which I didn't write),
+      Idon't even mention Red Hat in the article except in the list of
+    Linuxdistributions and their security resources. I listed it up top
+    because itseems to have the largest number of users, not because it
+                                was thebest.
+
+
+   ______________________________________________________________________
+
+  <h>   A corrected list
+  <h>                  by Matt Brubeck - Jan 8th 2000 14:39:59
+
+ <p>          While Mr. Lasser makes some important points, the blantant
+      misinformationin his article certainly detracts from its overall
+       impact. He has clearlynever used most of the distributions he
+                                disparages.
+
+  <p>       From just my personal knowledge and a few minutes of browsing
+   around,here are corrections to several of the gaps and mistakes in Mr.
+                               Lasser'slist:
+
+ <l>  Corel
+          
+ <l>  Turbo Linux
+          
+ <l>  Slackware Linux
+          
+
+
+   ______________________________________________________________________
+
+ <h> Slackware security again
+  <h>                      by Jihad - Jan 8th 2000 14:29:07
+
+ <p>      I think people took it as an attack on slack because what was said
+    iswildly untrue, slack may have been a pile of security holes in the
+    past, idont know, as i said ive only been using it since 3.2, but i
+    dont think youshould hold patrick to past mistakes, as slackware now
+    is (IMHO) verystable and secure. Check out any exploit site and see
+    how many exploitsthere are against slackware vs. redhat or any other
+   dists, people mayargue that this doesnt prove much, but it puts me at
+                                   ease.
+ <p>       On a different subject, it takes a good man to admit a mistake,
+                                thanksJon :)
+
+____________________________________________
+
+ <h>  I can't understand
+  <h>                    by BluesMoon - Jan 8th 2000 14:03:12
+
+  <p>    What I can't understand is how so many people who have beeninvolved
+    with Unix and Linux for so long still use the termhack to refer to a
+   computer break in. Machine's can gethacked, but that's usually a good
+   thing. People gettinghacked? Not too sure about it, but whoever it is
+   might notlike it. Hacking software, now that's something that's areal
+      good thing. There are many other kinds of hacks, someof the more
+    famous ones are listed at http://fishwrap.mit.edu/none of these have
+   to do with computer break in.I agree though, that several distros are
+   not secure to start with, and ittakes a lot of reading to secure a new
+                                  system.
+
+
+   ______________________________________________________________________
+
+  <h> Oops
+  <h>                   by Jon Lasser - Jan 8th 2000 14:01:16
+
+ <p>    Yep, I did somehow manage to miss the Slackware security mailing list.
+   Iswear I went to the site and looked around before claiming not tofind
+               anything, but somehow I still made a mistake.
+
+ <p>      I can't speak to the security or insecurity per se of Slackware 7,
+     asI've not used it, but I'll note that most of the recent security
+       holes inRed Hat and Debian (with the very notable exception of
+   problems with RedHat's usermode tool -- a very, very serious problem)
+     have been bugs in theunderlying code, not particularly related to
+       either of those distributions.If those bugs aren't present in
+     Slackware, that's either because thosepackages weren't included in
+   Slackware (not a bad thing, just a point offact) or because Slackware
+      fixed those bugs before anyone else knew aboutthem and failed to
+           backpropogate the fixes. I don't think it's thelatter.
+
+  <p>   In the old days (pre 7.0, maybe another level back beyond that or so,
+   Ican't remember the last version I used), Slackware had hugenumbers of
+   security holes. They just ignored them. And the sources neverseemed to
+   be able to produce the binaries which were included -- sometimesit was
+      obvious that the included sources were pre-slackware-patches, as
+    thecompiler would spew errors. I certainly hope (and to some degree
+   expect)that this situation's been cleaned up by now, but this made it
+         impossibleto audit slackware's security if you wanted to.
+
+ <p>       But I'm really curious as to why everyone took this as an attack
+    onSlackware, specifically. It certainly wasn't intended to be that.
+         Icertainly think that Slackware's record on security could
+    standimprovement -- I'm more impressed with a large number of found
+    and fixedbugs than an apparent lack of them in a full-featured Linux
+   distribution-- but as far as I'm concerned in the article, this isn't
+                     about anyparticular distribution.
+
+  <p>    What it is about is why security is important, even if youpersonally
+    can handle yourself. Claiming otherwise is kind of likeclaiming that
+    ISO9660 filesystem support in Linux isn't worth keeping inthe kernel
+             simply because you personally don't use it: it's a
+     fundamental,enabling feature of the environment for any number of
+                                   users.
+
+  <p>       It's also about the importance of Linux's image in the media,
+    andsimple things we can do to improve that image. If you personally
+     don'tcare who besides yourself uses Linux, that's fine. But I need
+        Linux tolook good in the media, so that I can push for it in
+     appropriate projectsat work and elsewhere. Also, a good image for
+   Linux in the media makes itmore attractive for companies (ie Creative
+    Labs) to write open-sourcedrivers for hardware which is nice to play
+                                 with. :-)
+
+   
+   ______________________________________________________________________
+
+ <h>  Slackware security
+  <h>                      by Jihad - Jan 8th 2000 13:32:01
+
+ <p>     Is it just me or does this "professional" not know what hes talking
+    about? Ive been using linux since slack 3.2 and ive found that slack
+     is the mostsecure distro, with debian coming in second and redhat
+      coming in somewherenear dead last, being the hackers paradise of
+    buffer overflows and 'enabledby default' services that it is. As far
+     as the security/patches/supportgo, check out slackware.com and see
+   whats at the very top of the page,also slackware.com/lists. While jeff
+     did make some good points and touchon some issues that need to be
+    addressed, he should really take a closerlook at the actual OS next
+                                   time.
+
+
+   ______________________________________________________________________
+
+ <h>  All people seem to be able to do...
+   <h>                by Stephen Smoogen - Jan 8th 2000 13:30:12
+
+  <p>      is dis other distributions versus discuss the problem. Are we so
+   insecurethat we have to build a religion around what distro we use and
+   why theothers are evil? Its like watching a Baptist convention talking
+    about theevils of Catholics/Lutherans (and as about as worthwhile).
+
+ <p>      Slackware 7.0 is a very big improvement over earlier versions out
+    there.Patrick seems to be much more in tune with putting out things
+   with the4.0/5.0/6.0 Betas than I have seen him do in years (since the
+   2.x days). Idont know the reasoning behind it, but once slackware.com
+    came intoexistance... the quality of the Slackware machines I dealt
+   with seemed toincrease also. I dealt with too many people with hacked
+   Slack95 boxes withexploits that had been around way too long. Going to
+    the cdrom.com siteusually had out of date info. Now I see a central
+              site and people findthings rapidly and cleanly.
+
+   <p>     I used to use slackware up until 1996 when I switched to Red Hat
+   because Iwas tired of finding exploits and the Slackware response was
+   "Well patch itand compile it for yourself. We will put out a fix next
+    release"... whichnever came. When I found them in Red Hat, I saw an
+                           RPM at a central spot.
+
+ <p>    Now is Red Hat perfect? NO. There are bugs and it couldalways tighten
+   things up here or there. However I know every time a changeis made to
+           tighten security up... there are howls of "Why did you
+     changethis/that." The same is true for SuSE, Caldera, etc. You get
+     slammed nomatter what you do because a) people hate change, and b)
+                      people like towhine versus deal.
+
+ <p>      Anyway back to the main point.. which is what is the problem. The
+    problemis that Linux is not for System Administrators anymore!GASP!.
+   Sorry most of the people who are using Linuxprobably know only enough
+   system administration to start a modem and stopa modem... and that may
+   be a stretch. And that is what you get for havingan open community and
+     saying things like "Stop using Microsoft... usesomething better...
+   also we are a community versus an elitist club likeXYZbsd, etc." (Not
+     saying BSD is elitist, just a very common argument Ihear about why
+                             Linux is better).
+
+ <p>    Most people use computers as an ends to a means as JWZ said. They use
+    themto browse web sites, answer email, write documents and letters,
+    scanpictures in for a family album. The computer to them is nothing
+      more thana tool.. as much as the car gets them to and from work.
+
+  <p>      With this being the case, and being that we are supposed to be a
+   better OSand a better community... we need to make sure that we have a
+     betterattitude towards security. I dont feel boycotts are needed.
+    Tools thathelp home users (not hobbyists) get working with Linuxare
+                              what is needed.
+
+    <p>                       Anyway my 2 cents of many.
+
+    <p>                            Stephen Smoogen
+
+                                     --
+   <p>                    Where oh where is Carmen Sandiago?
+
+
+   ______________________________________________________________________
+
+ <h> Needed to be said.
+ <h>                       by Idcmp - Jan 8th 2000 13:03:20
+
+  <p>      Defining security without using the word "secure" is a task into
+    itself. We've all installed a linux distribution, and we've all gone
+   and cleanedout inetd.conf. All of us. Everyone one of us. Think about
+   it. Howmuch time and energy is wasted to clean out inetd.conf? To turn
+                     offportmapper? To do all the rest?
+ 
+ <p>  This article doesn't compare Linux security t o Microsoft security,
+       itcompares it to being absolutely secured. I'd love to have a
+   pre-securedLinux box, and the way this new market works, if there are
+   other peoplelike me out there, we'll find a distribution that does it,
+   and switch toit. Others will see our choice and begin to follow suit.
+   Being "secured"and remaining useful at the same time is a thin line to
+                                balance on.
+
+ 
+   ______________________________________________________________________
+
+  <h>   Security
+  <h>                  by The Shadowell - Jan 8th 2000 12:13:54
+
+  <p>      I think one of the main concepts that is missed here is that the
+    average,non-expert, trying Linux because they're tired of Microsoft
+   user doesn'twant a system that they have to do any real configuration
+   on. They wanteverything to work, even if they have no need at all for
+    the servicethey're running. You'll get users demanding that the ftp
+    daemon work,only for you to find out that they're logging in to the
+      machine from thesame machine, and have no real need for it to be
+     running at all. Tellthem that it's a good idea to disable it, and
+      they'll say that they'might' need it, and want it there. Current
+   distros do seem to haveserver written all over them, but that doesn't
+       really seem to be themarket they're trying to hit lately. Some
+    companies don't have theresources to re-release their software every
+     week. There are deadlins forpressing the CDs, writing the manuals,
+    testing the software, etc.., etc. It's not always very practical to
+    try to include the latest fix everyother day in the released distro.
+                As for security advisories, for Calderago to
+    http://www.calderasystems.com/support/security/ I love it whenpeople
+                         say things don't exist...
+
+
+   ______________________________________________________________________
+
+ <h> Comments
+   <h>                     by tito - Jan 8th 2000 12:04:05
+
+  <p>     I have to agree with jwz on monitoring for security patches. That
+    should bethe job of the system administrator(s). End users have more
+      importantthings to do (as far as the company is concerned) than
+    monitoring patchesfor their OS. If the system administrator doesn't
+   know where to look forsecurity advisories and patches, then maybe it's
+         time to find a new systemadministrator. I am not a system
+     administrator. I'm one of those geeks atthe company that brings in
+     money on contracts. I have enough things to doat work that I don't
+    need the added burden of duplicating the work of mycompany's system
+              administrators (no matter how bad they may be).
+ 
+ <p>  That being said, I also have to agree with Nicko Acks in that
+   Linuxdistrobutions turn too many services on by default. Heaven forbid
+   someoneshould take the better route and leave everything off to begin
+   with (likeOpenBSD) and then let the system admininstrator turn on only
+                           the serviceshe needs.
+
+ <p>   Having many distros may be a plus, in some ways, but it's also
+      adefinite minus too, considering that the (potential) user needs
+     toconsider the pros and cons of each (or just run out and buy the
+       newestversion of Red Hat like most people these days :p). And
+   significant energyis wasted duplicating efforts to keep patches up to
+                                   date.
+
+
+   ______________________________________________________________________
+
+ <h> Linux is Insecure
+  <h>                      by wabbz - Jan 8th 2000 11:54:11
+
+ <p>      Okey, First,its not the flavor of Linux that you are ruinning, its
+   theperson behind the computer. Computers don't get hacked, people do.
+    IfAdmins are stupid and don't know how to secure an OS, then certain
+   peoplewill take advantage of them and their computers. Second, Redhat
+    is bad.Everytime a new version of Redhat comes out is because there
+   are tworemote exploits for the previous version. Well, it just depends
+                on theadmin, not the flavor of Linux system.
+
+       
+   ______________________________________________________________________
+
+ <h>       Does he get paid for this
+  <h>                     by TGhost - Jan 8th 2000 10:56:19
+
+ <p>    I can not believe someone that has been in the job area for anytime
+     wouldmake those assumptions about Slackware. It is by far the most
+         secureflavor out there. And there are lists and sites for
+    Slackwarewww.slackware.com and www.linuxmafia.org just to name two.
+    When I do acomparison of changelogs I see RH has about 10+ security
+    fixes and growingfast Slackware only has 2. In the 5.2 vs 4.0 we saw
+      about 30vs3 . Redhat isgood mind you but should be saved for the
+    workstation or webserver with nousers type install. As long as they
+   try and change programs from theoriginal authors intent they will have
+    this problem they taint about 40%of the apps included if you look at
+   the odd ball versions they give them. Slackware on the other hand uses
+    programs as is and does virtually nomodifications which always seems
+    to get RH in trouble. They have thismindset that once they "brand" a
+    program the user thinks its going to bebetter I this is almost never
+   the case and alot of this is done by what Icall "KTWFF" Kids That Work
+   For Free. As for the others Mandrake isnothing more than a modified RH
+    and falls into the same catagory Debian ispretty good about security
+     but also gets prone to the above but is stillmuch better. Sorry to
+   flame on so much but the public is so miss-informedthat it just scares
+   me sometimes and the RH jaugernaut scares me also. Ihave been in this
+   biz for some years now and when I get hired for consultand I find they
+   are running RH that is the first thing to go I dont knothave the time
+                   to try and keep up with it. Flame off
+
+
+   ______________________________________________________________________
+
+ <h>     Slackware again
+  <h>                     by elesar - Jan 8th 2000 09:56:20
+
+  <p>      I am a bit suprised that such a "serious" guy can wrote this on
+    slackware.By experience, it's the most secured linux I know. People
+   before me addcomment on the mailing list, and the repository of patch.
+    You can noticethere are few patches, it's because Patrick Volkerding
+    has always takecare of security in his distribution of linux before
+   releasing it. thereare also less packages than other ones but I sleep
+                                  better.
+
+ <p> 				  Your article is interesting, but I have the impression you only
+    tellobviousness : Yes, of course, users concern by security have to
+   look fortools (mailing list web page, etc ...) that give distributions
+                   beforemaking a choice. It's obvious !
+
+ <p> 		   foreverybody, even if I think it's a bit dangerous. You simply want to
+             bedictator, choosing for everybody the good way...
+      An another point to answer to jwz, if you can't spend half an a
+   hourper day for security issues, security is definitely not a concern
+   for you,sorry. I'm a bit curious, what is your model of security OS ?
+      Windows ? Soyou never had a look on securityfocus (and others).
+ 
+ <p>  I can't see how we can have security actually without spend time
+                                   forit.
+ 
+ <p>  The power of linux is in distributions, everyone can find his
+     "good"distribution, so let the people of distributions works, help
+    them, askthem for new features, but don't ban them. You are missing
+           the real enemyand misunderstanding the open software.
+
+
+   ______________________________________________________________________
+
+   <h>     a couple of points
+  <h>                   by Nicko Acks - Jan 8th 2000 07:57:56
+
+ <p>     The bigest problem that I have found with linux distributions is the
+      same problem that I have faced with many commercial unix's: they
+      have too many services turned on by default that are not needed.
+     One of the bigest things that would be a help for security is that
+    distributions go to a policy where installed software is only turned
+     on when explicitly asked for rather than on by default. While this
+     will not stop everything, it would stop a good portion of the new
+             machines out there getting broken into right away.
+
+ <p> 	     One thing comes to mind. Why does every linux distribution need
+     to be server oriented? I think there is a real need out there for
+       a completely client-side distribution. This would take care of
+       the extra services problem by making sure that servers are not
+                              even an option.
+ 
+ <p>  Another issue that I think distributions should look into is finding
+     a way to more easily distribute patches. While it is a good thing
+     that to have fixes come out quickly it is entire different problem
+     with getting users to actually apply them. I think the process of
+      fixing bugs needs to be as simple as possible so that it can be
+       as automated as possible (debian's app-get method for updating
+     software comes to mind). While this introduces even more possible
+    security risks I think that it should be concidered at least for the
+                                 new user.
+ 
+ <p>  deffinitly a good editorial Jon...
+
+
+   ______________________________________________________________________
+
+  <h> Re: no slackware security list?
+  <h>                      by jones - Jan 8th 2000 07:22:36
+
+ <p>      What you're doing is picking out one trivial error and using it as
+     anexcuse to ignore the very good points he made. 
+
+  <p>   I don't think so.. I think he should concentrate on getting people to
+       choose the right distribution for their needs, not make stupid
+                          inflammatory statements.
+
+ 
+   ______________________________________________________________________
+
+  <h> Slackware doesn't take half an hour per day to patch
+  <h>                  by Bert Lindner - Jan 8th 2000 06:55:24
+
+  <p>            Slackware security mailing list info can be found at
+                          www.slackware.com/lists
+      ,brought to you by David Cantrell. This has been in place since
+                              October atleast.
+
+  <p>                You can find all security patches by ftp. 
+           AChangelogin that directory tells you the when, why and do-i-need-them
+                            about thesepatches.
+
+   <p>        That the author didn't look up the distro's before saying
+   somethingabout them may be a trivial mistake, and I hate to go against
+   jwz foranything, but it does matter for Slackware users and potential
+          Slackwareusers if Slackware security is declared sloppy.
+
+
+   ______________________________________________________________________
+
+  <h>    Re: no slackware security list?
+  <h>                       by jwz - Jan 8th 2000 06:22:58
+
+  <p>     i get at least 1 hack attempt a day. And strangely enough none of
+     them seem to have worked. Why? Because i spend half an hour a day
+     checking new email for problems, and checking websites for problems
+     with anything i'm running. 
+
+  <p>      It's great for you that you've got the time to do this. But for
+      thevast majority of people, asking them to spend half an hour a
+    dayjust looking for security fixes is completely unreasonable. If it
+     takeshalf an hour a day of every user's time to keep their system
+     secure, thenthere is something fundamentally wrong. That's a huge
+                               amount oftime.
+
+  <p>   Try to put yourself in the shoes of someone for whom messing withtheir
+   computer is a means to an end, rather than an end in itself. Theyjust
+   won't do it. They have more important things to do. Things that paythe
+                                   bills.
+
+  <p>     So if this professional sys admin has misinformed you of the
+     slackware side of linux, what else could he be wrong about? I could
+     be interpreting him wrong, or i might just not be thinking clearly
+     tonight, 
+
+  <p>     What you're doing is picking out one trivial error and using it as
+              anexcuse to ignore the very good points he made.
+
+   ______________________________________________________________________
+
+ <h> no slackware security list?
+  <h>                     by casphar - Jan 8th 2000 05:45:19
+
+  <p>   I'm a home and work user of Linux, my flavour of choice is Slackware.
+   I'veused most of the major distributions and am forced to use a few at
+    work. As far as Slackware goes, it does have a securitymailing list
+    which i am subscribed to, it can easily be found atwww.slackware.com
+    which also tells you that all of the current and future versions dir
+   treeswill have a patch dir, with patches for that particular version.
+    I also sit on a 24/7 internet connection, with a static ip, i get at
+    least1 hack attempt a day. And strangely enough none of them seem to
+   haveworked. Why? Because i spend half an hour a day checking new email
+     forproblems, and checking websites for problems with anything i'm
+    running. So if thisprofessional sys admin has misinformed you of the
+   slackware side oflinux, what else could he be wrong about? I could be
+       interpreting him wrong, or imight just not be thinking clearly
+     tonight, but i dont and never have hadproblems with the slackware
+                               distributions.
+
+   

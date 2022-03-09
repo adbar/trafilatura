@@ -1,0 +1,373 @@
+
+<h>   Structuring Corporate Buy-Sell Agreements
+<h>   Securing a Future for Closely Held Corporations 
+
+<h>   By David Joy, Jo Koehn, and Janice Klimek
+
+
+<p>   Within a closely held corporation, shareholders are often concerned
+   about what might occur if one of the owners dies. Will the deceased
+   shareholder's family retain the economic value of the corporate
+   interest? Can the surviving owners avoid interference from the
+   deceased shareholder's family? Will the survivors have the economic
+   resources to redeem the deceased owner's interest? Given these
+   concerns, corporate owners are best served by entering into a buy-sell
+   agreement while they are all alive.
+
+<h>   Forms of Buy-Sell Agreements and Tax Implications
+
+<p>   Owners usually choose from two basic types of buy-sell agreements.
+   With a cross-purchase agreement, each owner of the corporation
+   purchases an insurance policy on the other shareholders. The purchaser
+   is both owner and beneficiary of the policies. Upon the death of a
+   shareholder, the other shareholders are then able to use the life
+   insurance proceeds to purchase the deceased owner's shares. Another
+   commonly used type of agreement is a stock redemption agreement, in
+   which the corporation owns policies on the lives of the shareholders.
+   When a shareholder dies, the corporation buys the deceased
+   shareholder's interest in the company with the insurance proceeds.
+
+<p>   Cross-purchase agreements. The cross-purchase form of the buy-sell
+   agreement offers several advantages. The family of the deceased owner
+   will have a tax basis equal to the fair market value of the decedent's
+   stock at the date of death, thus avoiding any income tax consequences
+   as a result of the sale. The fair market value of the shares should be
+   defined by the buy-sell agreement (see the Exhibit).
+
+<p>   The life insurance proceeds received by the surviving owners are not
+   subject to income taxation. For newly purchased shares, the corporate
+   shareholders will be entitled to a tax basis equal to the purchase
+   price. The stepped-up basis should reduce future income taxes if the
+   surviving shareholders later sell their interests. The insurance
+   proceeds are not subject to the corporate alternative minimum tax
+   (AMT) and are also not subject to the claims of corporate creditors.
+   The AMT avoidance and creditor protection exist because the proceeds
+   are paid directly to the individual shareholders.
+
+<p>   The cross-purchase form of the buy-sell agreement carries several
+   disadvantages. The plan is difficult to administer if there are
+   numerous shareholders that must buy a plan for each other. For
+   example, for seven owners to cross-purchase life insurance would
+   require 42 (7 Â¥ 6) policies. The number of policies can multiply even
+   further if disability coverage is also part of the buy-sell agreement.
+
+<p>   Another disadvantage of the cross-purchase agreement is that age or
+   insurability can create a disparity in premiums. Younger or healthier
+   owners may incur higher premiums to cover older and less healthy
+   owners. A possible solution to this drawback is to have the
+   corporation raise salaries to cover the premiums incurred by the
+   owners. Inequities may persist, however, if owners' marginal tax rates
+   applied to the salary reimbursements are different. Additionally,
+   cross-purchase agreement adopters should recognize that the cost of
+   funding the buy-sell agreement will be greater if the shareholders
+   have a higher tax rate than the corporation.
+
+<p>   Stock redemption agreements. Under a stock redemption agreement, the
+   corporation owns policies on the lives of the shareholders. When a
+   shareholder dies, the corporation buys the deceased shareholder's
+   interest in the company with the insurance proceeds. A prime advantage
+   of the stock redemption agreement is that it is easier to administer
+   for multiple shareholders. An additional advantage to the stock
+   redemption structuring of the buy-sell agreement is that the
+   corporation will bear the premium differences associated with age
+   disparities among shareholders.
+
+<p>   The corporation will not recognize income for tax purposes when it
+   receives the insurance proceeds. The corporation must, however, heed
+   the effect of the entire transaction (proceeds received and redemption
+   accomplished) on the earnings and profits of the corporation. The
+   earnings and profits will increase with the life insurance proceeds
+   received and decrease as a result of the stock redemption, so the
+   corporation must attend to the overall net effect on earnings and
+   profits and consider how that might affect the dividend policy to
+   shareholders. For example, in the Exhibit's Scenario 3, the
+   corporation may have to issue dividends to avoid the accumulated
+   earnings tax on earnings and profits, assuming that the reasonable
+   needs of the business do not justify maintaining earnings and profits
+   above the $250,000 credit (IRC section 535). These dividends would be
+   taxed to the remaining shareholders at ordinary income rates.
+
+<p>   A significant disadvantage of the stock redemption form of the
+   buy-sell agreement is that the remaining shareholders do not get the
+   benefit of a step-up in basis when the corporation purchases the
+   deceased shareholder's interest. The continuing shareholders retain
+   their original bases in the company. Compared to the cross-purchase
+   agreement, the stock redemption structuring will create greater
+   capital gains upon the ultimate disposition of shares if made before
+   death. After the stock redemption is accomplished, however, the
+   corporate assets should be relatively unchanged (the insurance
+   proceeds have been used to purchase the deceased's interest), but each
+   owner now enjoys a greater percentage of ownership.
+
+<p>   Estate tax implications. When a cross-purchase plan exists, the
+   proceeds from the life insurance are not included in the deceased
+   shareholder's estate. The deceased is not the owner of the policy and,
+   therefore, the insurance proceeds payable at death are not included in
+   the estate. Under a redemption approach, however, the estate tax
+   consequences can become more pronounced when the deceased shareholder
+   has a controlling interest. A shareholder who owns more than a 50%
+   interest either directly or indirectly is deemed to control a
+   corporation, under IRC section 267. In this situation, the shareholder
+   is deemed to have an ownership interest in the life insurance policy
+   due to the shareholder's ability to designate a beneficiary, as well
+   as other ownership interests. The fact that control exists over the
+   policy in majority ownership instances would result in the proceeds
+   being includable in the deceased's estate. Thus, the after-tax returns
+   on life insurance policies can be substantially reduced if estate
+   taxes are incurred as a result of the life insurance proceeds being
+   included in the estate.
+
+<p>   In the case of family-owned corporations, purchase prices specified by
+   the buy-sell agreements are often disputed by the IRS as not
+   representing fair value. If a corporation owns life insurance for the
+   purposes of funding the redemption of the stock, and the deceased
+   shareholder owns a controlling interest in the corporation, the
+   probability that the life insurance policy will be included in the
+   decedent's estate is substantial. Note, however, that if the family
+   members own the insurance policy on the decedent, they will receive
+   the life insurance proceeds without including them in the taxable
+   estate. Thus, the cross-purchase option may be preferable to the
+   redemption option.
+
+<h>   Valuation Issues of Buy-Sell Agreements
+
+<p>   There is a distinct difference between the values that should be
+   established for the two alternative approaches to a buy-sell
+   agreement. This difference is due to the ownership of the life
+   insurance policy. In a cross-purchase agreement, the deceased
+   shareholder has no economic interest in the life insurance policy on
+   his life. Accordingly, the surviving shareholders should expect to pay
+   the fair market value of the underlying net assets, which represents
+   the value of the business operations.
+
+<p>   Under the stock redemption approach, the corporation owns the
+   policies, and therefore the value of the corporation includes both the
+   business operations and the insurance policies. The redemption price
+   of a buy-sell agreement should typically include a portion of the life
+   insurance proceeds. If the stock redemption agreement is so
+   structured, the tax implications may be negative, because the life
+   insurance proceeds may be subject to both estate tax and income tax if
+   the decedent is deemed to possess an ownership interest in the policy.
+   Given these tax implications, including the value of life insurance
+   proceeds in the buy-sell valuation price may result in an
+   unsatisfactory after-tax return.
+
+<p>   Another valuation issue is that the premiums on older shareholders can
+   be considerably higher than the premiums on younger shareholders. As
+   each unit of stock incurs the same cost, older shareholders will incur
+   higher premiums than they would under a cross-purchase plan.
+   Accordingly, younger shareholders expect to reap a greater benefit
+   from the insurance policies than their older counterparts. Thus,
+   younger shareholders would be entitled to a greater benefit at a lower
+   cost under a stock redemption approach than for a cross-purchase
+   approach.
+
+<p>   This scenario suggests that the redemption price should include a
+   portion of the life insurance payments, unless older shareholders are
+   compensated for the disparity in the premiums. This would convert
+   potentially nontaxable deferred income into accelerated taxable
+   income. It would also precipitate similar adjustments for the purchase
+   price for younger shareholders. The proper pricing for a buy-sell
+   agreement becomes much more complex in the case under the redemption
+   alternative.
+
+<h>   Funding of the Buy-Sell Agreement
+
+<p>   Type of insurance. Any buy-sell agreement requires a decision
+   regarding the type of insurance policy to purchase. The initial choice
+   is between term and whole life insurance. Premiums for term life
+   insurance increase throughout the coverage period, whereas premiums
+   for whole life are level throughout the coverage period. If the
+   shareholder dies in the first few years of coverage, the cost of term
+   insurance will be less than the cost of whole life insurance.
+   Conversely, the cost of term life may be much greater than whole life
+   if an individual exceeds the life expectancy used for underwriting the
+   whole life insurance policies.
+
+<p>   Whole life insurance with cash value buildups can offer advantages. If
+   policies are held for a significant number of years, the cash values
+   of whole life policies can supplement pension benefits or help fund
+   shareholder buyouts. Additionally, the policy's cash value is a liquid
+   asset of the corporation that may help secure advantageous loan terms
+   for the company.
+
+<p>   Shareholders may choose to forgo whole life insurance and purchase
+   term insurance. The early premiums saved may be invested in the
+   company to either reduce debt or promote growth. In favorable economic
+   conditions, the return on investment will typically be greater than
+   the earnings attributed to the cash value of the whole life policy.
+   The possibility of premium savings in the event of premature death and
+   the excess expected returns on premium differences invested are
+   advantages for term insurance.
+
+<p>   In addition to cost, insurability is a key consideration. The ability
+   to maintain life insurance throughout a shareholder's life is
+   important. Whole life insurance policies grant coverage until death
+   that may not be cancelled by the insurance company. This feature has
+   persuaded many that whole life insurance is the proper means to
+   finance corporate buy-sell agreements. The term life insurance
+   industry has, however, modified its products so that policyholders can
+   purchase term life with the same benefit. This can be accomplished
+   with either a guaranteed insurability option or lengthy (20- to
+   30-year) policy terms. The addition of a guaranteed insurability
+   option to a term policy will increase the cost of the term insurance.
+   The increased premium, however, will still be lower than whole life
+   premiums in the beginning years. Owners, therefore, must weigh the
+   escalating premium structure of term insurance against the early
+   returns that might be realized by purchasing less-expensive term
+   insurance and investing the premiums saved.
+
+<p>   With time, the value of a successful corporation will grow. Assuming
+   the buy-sell agreement ties the purchase price to fair market value,
+   owners should ensure that additional life insurance can be acquired
+   over time to keep pace with the increasing value of corporate shares.
+   Typically, guaranteed insurability options (available on either term
+   or whole polices) allow the policyholder to acquire additional life
+   insurance at timed intervals.
+
+<p>   When a shareholder dies, several issues arise with respect to policy
+   ownership by the deceased and the remaining shareholders in the
+   cross-purchase arrangement. The policies insuring remaining
+   shareholders but owned by the deceased will carry beneficiary
+   designations, generally family members. With whole life, the family
+   inherits the cash surrender value of the policies. With no continued
+   business purpose, and out of courtesy to the surviving shareholders,
+   the surviving family beneficiaries may choose to cash out the value of
+   the policies.
+
+<p>   Under a cross-purchase approach, the death of a corporate shareholder
+   will not diminish the value of the enduring corporation. Because
+   individuals and not the corporation hold the life insurance policies,
+   the receipt of death benefits or cash values by the policy
+   beneficiaries will not decrease the assets of the corporation. This
+   fact does, however, create a funding issue for the remaining
+   shareholders. The remaining cross-purchased policies will likely not
+   cover the continuing value of the business. The surviving shareholders
+   may need to address the shortfall by purchasing additional insurance
+   if other funds are not readily available.
+
+<p>   An alternative to purchasing additional insurance would be to use term
+   life insurance to fund the buy-sell agreement. The value of a term
+   life policy is normally equal to the unearned premium for the year of
+   death, usually very small in comparison to whole life insurance. Given
+   this low value of term life insurance, shareholders should consider
+   purchasing term insurance as joint tenants with rights of survival.
+   The insurance policies could then transfer from the deceased
+   shareholder to the surviving shareholders without triggering the
+   recognition of income upon the death of the insured.
+
+<p>   Uninsurable shareholders. The preceding discussion has assumed that
+   the shareholders can obtain new insurance policies on each other. Some
+   individuals, however, may not be insurable at the time that the
+   buy-sell agreement is adopted. In this case, the only alternative is
+   to use an existing policy of the uninsurable shareholder. Such
+   shareholders hopefully own whole life insurance policies on their
+   lives that have appreciated in value. A shareholder will typically
+   expect to be compensated for the cash surrender value of the policy
+   upon transferring it to either the corporation or fellow shareholders.
+   The most important factor in determining which party to sell the
+   policy to is the tax treatment afforded when the insurance proceeds
+   are ultimately received. If the corporation purchases the policy, the
+   insurance proceeds will not be taxable; if the shareholders purchase
+   the policy, the insurance proceeds will be taxable. The shareholders
+   must weigh the tax advantages of the corporate stock redemption
+   against the tax advantage of using a cross-purchase buy-sell approach.
+   If a policy must be purchased because there is an uninsurable
+   shareholder, the issues are the same as previously discussed except
+   that now the shareholders that have purchased the uninsurable's policy
+   must pay taxes when the proceeds are received. Recall that although
+   the insurance proceeds will be nontaxable to the corporation when the
+   life insurance proceeds are received, the remaining shareholders must
+   weigh this benefit against the fact that they will not receive a
+   step-up in basis upon the death of the noninsurable shareholder.
+   Accordingly, as the percentage of stock owned by the uninsurable
+   shareholder increases, the likelihood that a stock redemption buy-sell
+   agreement is preferable increases.
+
+<p>   Funding without life insurance policies. Although risk-averse
+   shareholders generally prefer to fund buy-sell agreements through the
+   purchase of life insurance, not all shareholders are risk averse.
+   Risk-seeking shareholders have two alternatives: to invest capital in
+   life insurance to fund the buy-sell agreement, or to invest to grow
+   (or perhaps to sustain) the corporate business operations. If capital
+   funds are limited, shareholders may not have the luxury of funding
+   both alternatives.
+
+<p>   Actuaries typically base premiums on a relatively low rate of return
+   to the insured. If it were not for the favorable tax treatment
+   provided by life insurance proceeds, few would use life insurance as
+   an investment. In contrast, the return on corporate business
+   operations, especially in the early years, may yield substantially
+   greater returns than those offered through life insurance. Thus,
+   risk-seeking shareholders may reason that if they live at least as
+   long as their actuarially determined life expectancy, the return on
+   capital invested should be greater for funds invested in the
+   corporation. Another reason not to fund the buy-sell agreement is that
+   buy-sell settlements often occur at the date of retirement--not at
+   death--leaving no need for life insurance to fund the settlement.
+
+<p>   Shareholders that decide not to fund settlements with life insurance
+   typically expect that corporate earnings and profits will increase as
+   the corporation matures. In such situations, C corporations often must
+   pay dividends to avoid the corporate accumulated earnings tax.
+   Alternatively, corporations may elect S status, whereby earnings flow
+   through to shareholders and are taxed then at the individual
+   shareholder level. Either way, shareholders will likely incur
+   increased taxes. Regardless of the corporate form, earnings may be
+   strategically accumulated so they can fund needed buy-sell
+   settlements. When the corporation executes the buy-sell agreements,
+   the estate of a deceased shareholder will receive the proceeds for
+   selling the stock without incurring income taxes (the share basis will
+   be the fair market value at the date of death). If the buy-sell
+   agreements are executed at the date of retirement, not at the date of
+   death, retired shareholders will benefit from capital gains treatment.
+   Buy-sell agreements should specify an installment purchase option
+   (rather than the immediate purchase of shares) where time might be
+   needed to accumulate funds for the redemption of the stock (e.g., upon
+   the sudden death of a shareholder).
+
+<p>   Combination funding of the buy-sell agreement. Shareholders that are
+   more risk averse may choose a combination approach to funding the
+   buy-sell agreement. A portion of the buy-sell agreement can be funded
+   with life insurance to guard against premature deaths, with the
+   remainder funded by accumulated earnings and corporate profits. For
+   example, shareholders could initiate a buy-sell arrangement to
+   purchase 80% of the stock through a cross-purchase agreement (with
+   funding provided by life insurance), and 20% of the stock would be
+   redeemed by the corporation upon the death of a shareholder.
+   Alternatively, shareholders may opt to initially fund 100% of the
+   buy-sell agreement with a cross-purchase design funded by insurance.
+   The funding of the agreement can then change annually, with the
+   corporation assuming responsibility for purchasing any incremental
+   increases in shareholder value as the corporation grows. This approach
+   eliminates the need for shareholders to increase the amount of life
+   insurance over time. It also provides assurance to the shareholder's
+   family that it will receive a minimum amount whether or not the
+   corporation can generate the funds needed for the buy-sell
+   arrangement.
+
+<p>   The combination approach may be especially appropriate for family
+   corporations. Tax law limits the amount of stock purchased by the
+   corporation that can be classified as redemption instead of as a
+   dividend to the sum of the estate, inheritance, legacy, succession
+   taxes, generation-skipping taxes, and funeral and administrative
+   expenses allowable as deductions to the estate of the deceased. Share
+   value in excess of IRC section 303 limitations may be purchased with
+   life insurance proceeds. The basis of this purchase will be the fair
+   market value of the shares at the date of death. To remove the value
+   of the remaining shares from the deceased shareholder's estate free of
+   taxes, the buy-sell agreement should provide a member of the family an
+   option to buy the stock from the estate. The family member may then
+   choose to exercise the right to purchase remaining shares, as
+   determined by the IRC section 303 limitations. The combination
+   approach (part corporate redemption, part family member purchase) can
+   result in the total value of the deceased's corporate shares being
+   extracted from the estate without income tax consequences. The case
+   law [see Estate of James J. Durkin, Sr., 99 TC 561 (1992) and Zenz v.
+   Quinlivan, 213 F2d 914 (6th Cir. 1954)] indicates, however, that the
+   taxpayer must not be obligated to purchase the stock.
+     _________________________________________________________________
+
+<p>   David Joy, PhD, CPA, and Jo Koehn, PhD, CPA, CFP, are professors of
+   accounting, and Janice Klimek, PhD, CPA, is an assistant professor of
+   accounting, all at Central Missouri State University.

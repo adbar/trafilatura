@@ -1,0 +1,130 @@
+URL: http://www.freeswan.org/freeswan_trees/freeswan-1.99/doc/quickstart-firewall.html
+
+ 
+                    <h> FreeS/WAN quick start on firewalling
+
+   <p>This firewalling information supplements our quickstart guide.
+
+   <p>It includes tips for firewalling:
+     <l>* a standalone system with initiator-only opportunism
+     <l>* incoming opportunistic connections
+     <l>* an opportunistic gateway
+
+   <p>and a list of helpful resources.
+
+<h>Firewalling a standalone system
+
+   <p>Firewall rules on a standalone system doing IPsec can be very simple.
+
+   <p>The first step is to allow IPsec packets (IKE on UDP port 500 plus
+   ESP, protocol 50) in and out of your gateway. A script to set up
+   iptables(8) rules for this is:
+# edit this line to match the interface you use as default route# ppp0 is corre
+ct for many modem, DSL or cable connections# but perhaps not for youworld=ppp0#
+# allow IPsec## IKE negotiationsiptables -A INPUT  -p udp -i $world --sport 500
+ --dport 500 -j ACCEPTiptables -A OUTPUT -p udp -o $world --sport 500 --dport 5
+00 -j ACCEPT# ESP encryption and authenticationiptables -A INPUT  -p 50 -i $wor
+ld -j ACCEPTiptables -A OUTPUT -p 50 -o $world -j ACCEPT
+
+   <p>Optionally, you could restrict this, allowing these packets only to
+   and from a list of known gateways.
+
+   <p>A second firewalling step -- access controls built into the IPsec
+   protocols -- is automatically applied:
+
+   <p>Pluto -- the FreeS/WAN keying daemon -- deals with the IKE packets.
+          Pluto authenticates its partners during the IKE negotiation,
+          and drops negotiation if authentication fails.
+
+   <p>KLIPS -- the FreeS/WAN kernel component -- handles the ESP packets.
+
+        KLIPS drops outgoing packets
+                if they are routed to IPsec, but no tunnel has been
+                negotiated for them
+
+        KLIPS drops incoming unencrypted packets
+                if source and destination addresses match a tunnel; the
+                packets should have been encrypted
+
+        KLIPS drops incoming encrypted packets
+                if source and destination address do not match the
+                negotiated parameters of the tunnel that delivers them
+                if packet-level authentication fails
+
+   <p>These errors are logged. See our troubleshooting document for details.
+
+   <p>As an optional third step, you may wish to filter packets emerging
+   from your opportunistic tunnels. These packets arrive on an interface
+   such as ipsec0, rather than eth0, ppp0 or whatever. For example, in an
+   iptables(8) rule set, you would use:
+
+   -i ipsec+
+          to specify packets arriving on any ipsec device
+
+   -o ipsec+
+          to specify packets leaving via any ipsec device
+
+   <p>In this way, you can apply whatever additional filtering you like to
+   these packets.
+
+   <p>The packets emerging on ipsec0 are likely to be things that a client
+   application on your machine requested: web pages, e-mail, file
+   transfers and so on. However, any time you initiate an opportunistic
+   connection, you open a two-way connection to another machine (or
+   network). It is conceivable that a Bad Guy there could take advantage
+   of your link.
+
+   <p>For more information, read the next section.
+
+<h>Firewalling incoming opportunistic connections
+
+   <p>The basic firewalling for IPsec does not change when you support
+   incoming connections as well as connections you initiate. You must
+   still allow IKE (UDP port 500) and ESP (protocol 50) packets to and
+   from your machine, as in the rules given above.
+
+   <p>However, there is an additional security concern when you allow
+   incoming opportunistic connections. Incoming opportunistic packets
+   enter your machine via an IPSec tunnel. That is, they all appear as
+   ESP (protocol 50) packets, concealing whatever port and protocol
+   characteristics the packet within the tunnel has. Contained in the
+   tunnel as they pass through ppp0 or eth0, these packets can bypass
+   your usual firewall rules on these interfaces.
+
+   <p>Consequently, you will want to firewall your ipsec interfaces the way
+   you would any publicly accessible interface.
+
+   <p>A simple way to do this is to create one iptables(8) table with all
+   your filtering rules for incoming packets, and apply the entire table
+   to all public interfaces, including ipsec interfaces.
+
+<h>Firewalling for opportunistic gateways
+
+   <p>On a gateway, the IPsec-related firewall rules applied for input and
+   output on the Internet side are exactly as shown above. A gateway
+   exchanges exactly the same things -- UDP 500 packets and IPsec packets
+   -- with other gateways that a standalone system does, so it can use
+   exactly the same firewall rules as a standalone system would.
+
+   <p>However, on a gateway there are additional things to do:
+     <l>* you have other interfaces and need rules for them
+     <l>* packets emerging from ipsec processing must be correctly forwarded
+
+   <p>You need additional rules to handle these things. For example, adding
+   some rules to the set shown above we get:
+# edit this line to match the interface you use as default route# ppp0 is corre
+ct for many modem, DSL or cable connections# but perhaps not for youworld=ppp0#
+# edit these lines to describe your internal subnet and interfacelocalnet=42.42
+.42.0/24internal=eth1## allow IPsec## IKE negotiationsiptables -A INPUT  -p udp
+ -i $world --sport 500 --dport 500 -j ACCEPTiptables -A OUTPUT -p udp -o $world
+ --sport 500 --dport 500 -j ACCEPT# ESP encryption and authenticationiptables -
+A INPUT  -p 50 -i $world -j ACCEPTiptables -A OUTPUT -p 50 -o $world -j ACCEPT#
+# packet forwarding for an IPsec gateway# simplest possible rules$ forward ever
+ything, with no attempt to filter## handle packets emerging from IPsec# ipsec+
+means any of ipsec0, ipsec1, ...iptables -A FORWARD -d $localnet -i ipsec+ -j A
+CCEPT# simple rule for outbound packets# let local net send anything# IPsec wil
+l encrypt some of itiptables -A FORWARD -s $localnet -i $internal -j ACCEPT
+
+   <p>On a production gateway, you would no doubt need tighter rules than
+   the above.
+

@@ -1,0 +1,279 @@
+URL: http://www.epinions.com/inst-review-120-11F157CF-39775E60-prod2
+
+
+
+<h>Alesis QS8.1
+
+  
+   <h>THE QS8.1: Would the Masters Have Approved?
+   <p>Jul 20 '00 (Updated Sep 24 '02)
+   <h>Author's Product Rating
+   <p>Product Rating: 4.0
+   
+   <h>Pros
+   <p>Excellent value quotient, nice looks, expandable, great sounds with
+   ample programming versatility.
+   <h>Cons
+   <p>Complex user interface with small display, awful tech support (Alesis
+   now bankrupt!), no onboard sequencer.
+   <h>The Bottom Line
+  <p> Unfortunately, Alesis has gone bankrupt, but you can still find many
+   of these keyboards at a good price online. It's a good instrument, but
+   requires patience.
+   <h>Full Review
+   <p>It's hard to imagine the composers of yesteryear: armed with just pen
+   and paper, the only way to get the musical masterpieces that echoed in
+   their minds was by writing it down. If they were lucky, they could
+   doodle on a piano to hear more or less what the music sounded like. Of
+   course, it was nothing like the ocean of sound a massive orchestra
+   could produce. Alas, even today, no machine can truly reproduce "the
+   real thing" yet. Even so, keyboards have taken their place as an
+   integral part in many forms of music. One day, I had the task of
+   choosing one.
+   <h>ENOUGH ABOUT YOU, LET'S TALK ABOUT ME:
+   <p>Before you hear my impressions, perhaps it would be easier to
+   understand my point of view if I briefly explain a few things about my
+   musical background.
+   I'm trained primarily in the piano (15 years), although I've played
+   the cello, violin, and am currently fumbling with guitar. I love all
+   forms of music, from classical to electronic. These two classes of
+   music that I just mentioned are my main focus of interest as far as
+   composition is concerned. Until I got the QS8, I used a Yamaha 510-PSR
+   (a $400 machine) to achieve that end. It was fun, but a toy, no more.
+   I wanted a serious machine that I could play piano on and compose
+   music with. My training in MIDI sequencing was very sparse, and even
+   today I'd still consider myself an amateur when it comes to advanced
+   MIDI functions.
+   <p>I've used this keyboard live on a couple of occasions (playing
+   funk/fusion), and it's performed rather well. Usually, however, this
+   keyboard sits inside my "makeshift studio" at home.
+   <h>ONE MORE THING BEFORE I START!
+   <p>I'm not going to bore you with all of the technical details (there's a
+   lot) of the QS8. For that, check out the Alesis website. Also, note
+   that the model I'm referring to is the QS8, not the QS8.1. There
+   aren't any major differences between these two models. Basically, the
+   display is a little larger on the QS8.1, and it has two new buttons
+   (Transpose and Sequence Select) that make navigation a little easier.
+   Alesis also claims that the General Midi sounds on the QS8.1 are
+   improved, but I haven't noticed that much of a difference. Other than
+   that, the two keyboards are identical.
+   <p>Okay, let's get started, shall we?
+   <h>DECISIONS, DECISIONS!
+   <p>I was in the market for a new keyboard when I got my own apartment a
+   couple of years ago. Because I wanted the full "piano experience" in
+   addition to having many voices for composition, my search was narrowed
+   down to 88-key machines only. This was a problem because the cost rose
+   accordingly.
+   <p>Ideally, I wanted the Korg Trinity ProX workstation, but at a price
+   reaching $3500, it was (and is) way out of my range. My search finally
+   brought me down to the Alesis QS8 and the Korg N1. Both were great
+   machines, but I chose the QS8 for several important reasons:
+   <p>» For starters, the piano sounded good on both machines, but better on
+   the QS8. What's more, the action of the keys was much better on the
+   Alesis than the Korg. The N1 only has weighted keys, nothing more.
+   There is a dead feel at the end of the key travel that isn't great for
+   playing fast. The QS8, on the other hand, had simulated hammer action
+   in addition to having fully weighted keys.
+   <p>» The QS8 is expandable by use of Flash RAM cards or Alesis Q-Cards
+   (more later). The N1 had more voices in memory, but was not
+   expandable, and didn't even have a floppy drive.
+   The only major drawback I could see of the Alesis QS8 was that it had
+   no onboard sequencer. That is, I couldn't compose the music on the
+   machine itself and had to use an external sequencer. Still, the QS8
+   had most of the key ingredients (and was $200 cheaper than the N1), so
+   I was sold on it.
+   <h>ON THE OUTSIDE:
+   <p>The QS8 feels like a heavy booger, but it's relatively light for its
+   class. At 55 pounds, it's cumbersome to carry alone, but possible. I
+   recommend getting a case if you plan on traveling with it. The surface
+   of the keyboard is a rough metal (a wrought iron feel, if you will),
+   and two black wooden braces support the frame on either side.
+   Fortunately, unlike many other keyboards, the power supply is
+   internal, so you won't need to use a huge power adapter to plug into
+   the wall. A serial port is in the back of the keyboard's frame for
+   hi-speed transfer of files (much faster than traditional MIDI cables),
+   and it works in either PC or Mac mode. It's a little expensive, but
+   worth it if you do a lot of file swapping with the computer.
+   <p>The keys (full size, of course), are designed by Fatar. I've heard
+   mixed reviews about these keys. Some swear by them and say that
+   they're the highest quality out there. There are those that think
+   otherwise. As for me, I've felt more solid keypads, but mine have
+   given me absolutely no trouble after years of constant banging and
+   trilling. My only complaint is that there's an audible *thud* when the
+   keys hit the keypad. It's not that noticeable, though, and really no
+   big deal.
+   <p>Few buttons grace the QS8, so it's not overly busy or flashy. They're
+   also the soft-pad variety, which I don't like one bit. I like the kind
+   of buttons that give you a *click* so you know you pressed it hard
+   enough. The backlit display on the QS8 is tiny, and not much larger on
+   the QS8.1, I might add. All in all, though, I find the aesthetics of
+   the QS8 visually pleasing. It's simple yet cleanly attractive.
+   <p>The design is tough, from what I can tell. In truth, I've never really
+   been tough on my machine, but the keyboard feels sturdy and of good
+   quality.
+   <h>"THE PIANO-PLAYING EXPERIENCE":
+   <p>In my humble opinion, keyboards have a ways to go before they can
+   truly emulate the feel and sound of a real piano. That said, the QS8
+   does a respectable job at it, with a broad selection of pianos that
+   suit many tastes. Although it doesn't feel the exact same as the real
+   thing, I absolutely love the simulated hammer action. When you strike
+   a key on a real piano, you can feel when the hammer disconnects with
+   the keys right before striking the strings. The key bounces right back
+   up after the note is played and allows for clean trills and fast
+   playing. You can really feel this effect with the QS8, which makes the
+   experience all that more real. As I said before, few keyboards on the
+   market offer this (not even my beloved Korg Trinity Pro X).
+   <p>The piano sounds themselves are very nice, and can be tweaked in a ton
+   of ways. I don't particularly like one called "Grand 64" because it
+   sounds oversampled... as if the same exact note was duplicated (giving
+   that nasty, metallic sound). Still, you can choose from dark pianos to
+   bright, good for any musical genre.
+   <p>My one complaint with using the QS8 as a piano is that the velocity
+   curve isn't exactly right. That is, when you want it to play extremely
+   soft it will play too loud, and when you want to play very loud it
+   won't. You can tweak the keyboard's sensitivity, but it's nothing like
+   the real thing. For example, if you very lightly touch a real piano
+   key you will hear nothing because the hammer wasn't hit hard enough to
+   strike the string. Do the same on the Alesis and you'll be reminded
+   it's not a piano: a note plays softly. In short, it's the little
+   nuances of a real piano that I miss when I play the Alesis.
+   <h>THE SOUNDS!
+   <p>Of course, there's many things the Alesis QS8 can do that a piano
+   could only dream of doing. The sound library of 640 voices on the QS8
+   is what makes it possible. There are three Preset banks, one General
+   Midi bank, and one User bank. All of these banks are found in a
+   "Program" library. The Preset banks are a bunch of factory programs
+   made from sounds on the keyboard's 16 megabytes of ROM (each program
+   can be made of up to four sounds). These Preset programs cannot be
+   altered. However, the User bank has 128 programs that can be altered
+   or completely deleted and started from scratch. Although I'm not a
+   MIDI programmer, making voices is pretty fun once you get the hang of
+   it.
+   <p>In addition to the "Program" library of sounds, there is a "Mix"
+   library, where you can mix up to 16 programs as one (or split them,
+   etc.). The keyboard has 64-voice polyphony. If we do the math, that
+   means you could mix 16 different programs, each with up to four sounds
+   making them. Of course, that's probably more than I'll ever need, but
+   it's nice to know my keyboard is capable of it.
+   I'll break down the musical sound groups individually, because they're
+   pretty important:
+   <p>Pianos and organs: As I said before, the pianos are very nice, and can
+   be used adequately in pretty much any musical style. The organs are
+   fantastic, in my opinion. They are great for classic rock songs,
+   gospel, or blues. Just my luck, that's not the stuff I compose with.
+   They should sound awesome live, however.
+   <p>Strings: In context (with other instruments), they're okay, but be
+   careful using them on their own. They don't sound right at all.
+   Individual instruments, with the exception (maybe) of the cello sound
+   downright awful and I never use them.
+   <p>Brass: Once again, these sound okay if played in context. Some of them
+   sound too shrill, others are too muffled.
+   <p>Winds: These can be played by themselves nicely. The oboe sounds
+   cheesy, though. There are nice ensemble presets, however, that sound
+   almost real when played in context.
+   <p>Synth: There is a very impressive array of synth sounds. Some of them
+   are "fillers" (just thrown in) but others are way cool. There's a lot
+   of emphasis on lead voices, which means there's no polyphony (play
+   only one note at a time). I still don't think the sounds are as
+   imaginative as those found on the Korg machines, but they're good.
+   <p>Drums: The drums sound great by themselves and awesome in context. My
+   only complaint is there is no classical percussion.
+   <p>All in all, the sounds are nice, but there's one thing that bugs me:
+   they are geared much more to the synth side of the spectrum than the
+   orchestral side. This makes the keyboard great for stuff like
+   techno/dance or rock and roll, but not the best for composing
+   concertos or movie soundtracks. Again, the sounds are all pretty good,
+   but when you listen to the five rather "synthy" demos on the keyboard,
+   you know where the emphasis is.
+   <h>EXPANDABILITY:
+   <p>You can use one of two methods for expanding the sound memory, or both
+   at the same time. The QS8 has two slots for two memory cards,
+   described below. Because you already have 16 MB of sound ROM, and can
+   add two cards qith 8 MB each, the QS8 is expandable to 32 MB of sound
+   ROM, which is a lot. Here's the two methods you could try...
+   <p>The first is Flash Ram cards, which are good for creating and burning
+   your own sounds. You can also import sounds of different formats using
+   the CD-ROM that comes with the QS8. Also, you can burn whole songs on
+   these cards, so you can leave your computer at home in a live
+   situation. The problem here is that Flash Cards are expensive, and
+   they must be compatible with the keyboard.
+   <p>If you don't want to go that route, the second option are the Alesis
+   Q-cards. These are pretty much Flash ROM cards that have the sounds
+   made for you, specifically tailored to a musical genre. The Alesis
+   Q-cards are as follows:
+   <p>Classical Q-card: For classical music (duh). Bought it on eBay and
+   have been very happy with it, though I expected better pipe organ and
+   string sounds.
+   <p>Eurodance Q-card: I own it (bought thru eBay, which is the best way to
+   do it), and like it a lot. It has way cool voices and neat drum loops.
+   <p>Sanctuary Q-card: For "spiritual" music and church hymns.
+   <p>Hip Hop: Neat bass grooves and drums (I've heard 'em).
+   <p>Vintage Keyboards: Emulates many analog organ sounds.
+   <p>Vintage Synths and Classic Beatboxes: Imitates the old synths and drum
+   machines.
+   <p>Latin Q-card: I heard a salsa sample with this card, and it sounded
+   very neat!
+   <p>Rap/Techno/Dance: Only 4MB on this card. Discontinued, although you
+   might still find it on eBay.
+   <p>I may have left a couple out, but I think you can appreciate the
+   variety of extra sounds you can have access to. The cards vary in
+   cost, but are all over $150. Buy them on eBay for cheap!
+   <h>USER INTERFACE:
+   <p>Oh, boy... watch out. This is the Achille's heel of the QS8.
+   Unfortunately, with so few buttons and such a small display,
+   navigation is far from obvious. I've had to read the manual almost
+   cover to cover. Luckily, the manual is very complete, and even teaches
+   you about MIDI, its history, and how to manipulate it.
+   Plus, the versatility of the keyboard is very good. You can adjust up
+   to six parameters of a voice (like chorus, volume, reverb, vibrato,
+   leslie, lo-pass, hi-pass, etc.) at once using the four control
+   sliders, the pitch wheel and the modulation wheel. Each of these
+   controllers can be programed to any effects that you want.
+   <p>Still, you just might find yourself tearing your hair out from being
+   trapped in submenus trying to do so.
+   <h>SEQUENCING:
+   <p>Well, Achilles had two heels, didn't he? Here's Achille's heel number
+   two. As I said, there is no onboard sequencer on the Alesis. So,
+   you'll need to connect to a computer and use some sequencing software.
+   This was also far from obvious to me, although at the time I was a
+   beginner. However, sometimes I'm still a little befuddled with the
+   interface and sometimes I've been overcome with laziness and stopped
+   my composing out of fatique. If you compose a lot and aren't that
+   well-versed at sequencing with software, I advise you to consider
+   another keyboard. It's the source of much frustration, and the manual
+   tells you very little about it.
+   <h>PROGRAMMING:
+   <p>If it weren't for the complicated menus and such, the Alesis would be
+   an ideal machine for this. A great number of parameters can be changed
+   of each sound in a voice, so you can tweak sounds to be as classical,
+   techno, or rock as you can.
+   <p>The effects are equally impressive. You can do just about anything
+   with them. The great part is that there are up to four effects buses.
+   That means you can add bass to a drum, reverb to a piano, leslie to an
+   organ, and vibrato to a trumpet all at the same time. They can also be
+   modified in a live situation using the control sliders and wheels once
+   they've been programmed.
+   <h>CUSTOMER SUPPORT:
+   <p>Absolutely terrible. I had e-mailed Alesis numerous times about my
+   sequencing woes, and received no answers. I called, only to be put on
+   hold for a half hour, and was met with a very brusque representative
+   who taught me nothing. I guess my problem was too basic for them, I
+   guess. I had to learn on my own, and it wasn't easy for me. I have
+   them to thank for that "character-building" experience!
+   <h>THE VERDICT: AFTER A FIERCE STRUGGLE, IT'S A FUN MACHINE & A GREAT
+   VALUE.
+   <p>For what you get, the QS8 certainly has a great bang-for-the-buck
+   quotient. It has given me hours and hours of fun and inspiration, but
+   also frustration and confusion. Once you get over that rather steep
+   learning curve, however, this keyboard is a blast. Still, I can't help
+   but wonder how things would have been if I bought the Korg N1 or
+   waited for something else. That's due to my musical tastes, mind you,
+   because this is indeed a quality instrument.
+   <p>If you don't want to have to deal with the complexity of the machine
+   or you can spend more, I strongly suggest you buy something else.
+   Heck, get a Korg Trinity Pro X in my name (or the new Triton). If
+   you're on a tighter budget and consider yourself to be extremely
+   patient, I say go for the Alesis QS8 (or QS8.1).
+   <p>Recommended:
+   <p>Yes
+   

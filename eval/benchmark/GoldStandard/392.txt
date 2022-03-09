@@ -1,0 +1,223 @@
+URL: http://www.edri.org/issues/governance/eupolicy?from=70
+
+
+
+   <h>Digital Civil Rights in Europe
+
+
+
+<h>EU Policy
+
+<h>Commission opposes framework decision on data retention
+
+   
+
+   <p>The European Commission has made it clear to all the Ministers of
+   Justice and Home Affairs in the EU that there is no legal basis for a
+   framework decision on mandatory data retention in the third pillar.
+   The draft framework decision on data retention was introduced in April
+   2004 by the governments of France, the UK, Ireland and Sweden in an
+   attempt to bypass the Commission, the European Parliament and even
+   national parliaments. In the third pillar, the ministers may agree
+   unanimously on a decision to harmonise legislation on police and
+   justice matters, without any co-decision right for the European
+   Parliament and a very limited margin for national parliaments to amend
+   such a decision. In the proposal for data retention this margin is
+   clearly defined. National parliaments may choose a different timeframe
+   for the retention, but only if they review their decision annually and
+   report to the Commission why they are still differing.
+   read more
+
+
+
+   <p>The European Commission has issued a press release announcing stronger
+   collaboration between anti-spam enforcement authorities in Europe.
+   "Anti-spam enforcement authorities in 13 European countries have
+   agreed to share information and pursue complaints across borders in a
+   pan-European drive to combat spam. They will co-operate in
+   investigating complaints about cross-border spam from anywhere within
+   the EU, so as to make it easier to identify and prosecute spammers
+   anywhere in Europe."
+
+   <p>There are still very few public hotlines in Europe where internet
+   users can report spam. These hotlines usually only accept complaints
+   about unsolicited e-mail originating in their own country. In that
+   light, the promise of closer collaboration between European
+   authorities seems a bit futile, if the final recipients of the mail,
+   the Internet users, are not involved.
+   read more
+
+<h>Microsoft excludes free software from EU ruling
+
+   
+
+   <p>The Free Software Foundation Europe says Microsoft is blocking Linux,
+   Samba and other major open source projects from taking part in a
+   protocol licensing scheme mandated by the European Commission's
+   antitrust ruling.
+
+   <p>If developers want to build the protocols into their products, they
+   must agree not to distribute that product in source-code form, or to
+   subject it to licenses that require source-code disclosure, a formula
+   that excludes many open source licenses.
+
+   <p>The European Commission gave Microsoft a record fine of 497 million
+   euro after a five-year investigation by the Competition Commissioner
+   into Microsoft's business practice. The Commission ordered Microsoft
+   to offer a version of Windows without a bundled media player and to
+   share more technical information with server rivals.
+   read more
+
+<h>EP committee wants new software patents proposal
+
+   
+
+   <p>On 2 February 2005 the legal affairs committee of the European
+   Parliament (JURI) voted with an overwhelming majority (19-2) to get
+   rid of the current software patent proposal and start all over again
+   with a new proposal. Only 1 MEP voted against the initiative, and 1
+   MEP was absent.
+
+   <p>The former French prime minister Michel Rocard gave an impressive
+   speech in the JURI committee. With all respect for the new
+   Commissioner for the internal market, Charlie McCreevy, he said he and
+   other MEPs felt "mustard was coming through their noses". A first
+   'inelegance' Rocard noted was the fact that all the EP amendments in
+   the first reading of the proposal had been ignored by Commission and
+   Council. Secondly, the ministers of Germany and The Netherlands had
+   ignored their own parliaments. Thirdly Rocard opposed the repeated
+   attempts to adopt the proposal in the wrong forum of ministers, twice
+   even at a Fishery Council. Rocard concluded his speech by explaining
+   once more why the word 'technical' in the Council proposal couldn't
+   help anybody distinguish between what is patentable and what is not.
+   read more
+
+<h>Rapporteur demands co-decision data retention
+
+   
+
+   <p>The rapporteur from the European Parliament on telecommunication data
+   retention, Alexander Alvaro, has presented his first views on the
+   draft framework decision in a turbulent meeting from the Committee on
+   Civil Liberties, Justice and Home Affairs (LIBE). Alvaro proposed on 1
+   February 2005 to split the proposal in two, and give the European
+   Parliament full co-decision power on the decision where it affects the
+   internal market, on the costs and the exact list of data. Currently,
+   the European Parliament only has a 'consultation' right on this issue.
+   It cannot veto or amend the proposed decision, since it is considered
+   third pillar legislation (police and judicial cooperation in criminal
+   matters). Only the ministers from the EU member states can decide
+   about these matters, if they reach unanimity. Alvaro doubts whether
+   the proposal can ever meet the demands of proportionality when it
+   comes to the Internet. He finds the proposal lacks proportionality, is
+   in possible violation of the assumption of innocence, and contrary to
+   the spirit of Article 15 of the E-Privacy Directive of 2002, which
+   only allows for specific and temporary legal measures by member
+   states, not for a harmonising decision. Concluding, he demanded a
+   maximum term of 6 months, a limitation to data already processed by
+   companies for business purposes and rules for general cost
+   reimbursement.
+   read more
+
+<h>EU consultation calls for social impact studies on nanotech
+
+
+   <p>The European Commission puts nanotechnology high on the political
+   agendawith its Communication 'Towards a European strategy for
+   nanotechnology'.The communication has been discussed at the political
+   level in theEuropean Council under the Irish and Dutch presidencies
+   during the year2004, and an on-line open consultation on the
+   communication was heldbetween August and October 2004 by Nanoforum,
+   the EU sponsored thematicnetwork on nanotechnology. The Nanoforum
+   received some 750 responses tothe consultation. Half of the
+   respondents came from the researchcommunity.
+
+   <p>The consultation concludes that nanotechnology will have a strong
+   impacton European industry and its citizens within only ten years from
+   now.Nanotechnology will have its strongest impact on chemistry and
+   materials,
+   read more
+
+<h>Data Retention: Parliament Rapporteur doubts legal foundation
+
+   
+
+   <p>The European Parliament's rapporteur on the retention of traffic
+   dataresulting from all kinds of electronic communications, Alexander
+   Alvaro(Liberal, Germany) has asked the Parliament's legal service to
+   look intothe legal foundation for this report. His doubts are founded
+   on the factthat the report contains obligations addressed to civil
+   parties, which isa strong indication that it ought to be in
+   co-decision. As Mr. Alvaro toldEDRI-gram, he proposes to split the
+   draft into two separate reports. Thefirst part would contain the
+   law-enforcement side of data retention andremain in the consultation
+   procedure. The other part, dealing with theindustry's obligations,
+   would have to be in the co-decision procedure. Mr.Alvaro also
+   considers going to the European Court of Justice to get a
+   read more
+
+<h>Poland blocks software patents once more
+
+   
+
+   <p>Poland did it again. For the second time they blocked the attempt
+   tosilently adopt EU Council's agreement on software patents, this time
+   inthe Fisheries Council of 24 January 2005. The government of Poland
+   hadalready requested the item to be deleted from the agenda of
+   theAgriculture and Fisheries Council on 21 December 2004.
+
+   <p>On the Friday preceding the Fishery minister's meeting the Polish
+   EuropeanCommittee of the Council of Ministers, presumedly acting on
+   the initiativeof the country's Ministry for Science and Technology,
+   requested not toinclude the Directive on the Patentability of
+   computer-implementedinventions on the agenda of that Council meeting,
+   because "the work on thefinal position of Poland on the issue has not
+   yet been completed". Astatement published on the Polish Office of the
+   Committee for European
+   read more
+
+<h>EU plans database of visa applicants' biometrics
+
+   
+
+   <p>The EU Commission plans to store biometric data taken from visa
+   applicants in the planned Visa Information System (VIS). This was
+   decided as part of a proposed regulation, which was already due in
+   late 2004, but was delayed until 7 January 2005. The delay seems to be
+   due to technical problems with stacking multiple RFIDs on documents.
+   The upcoming Luxembourg Presidency of the Council wrote a note on
+   these technical difficulties on 22 December 2004.
+
+   <p>The note mentions in particular collision problems arising when
+   several RFID tags would be included in one passport. As a possible
+   solution concerning visas, the note proposes to store the biometric
+   data only in the VIS and not on an RFID sticker, and says a majority
+   of EU member states delegations seems to be in favour of this second
+   solution. Concerning residence permits, the Luxembourg Presidency
+   proposes to issue separate cards, with the biometric data on an RFID
+   chip, as is currently planned also for EU citizens' travel documents.
+   This solution is, however, opposed by Germany, where residence permits
+   are already being issued in the form of stickers.
+   read more
+
+<h>Commission approves contracts for international data transfers
+
+   
+
+   <p>The European Commission has approved of a new set of standard
+   contractual clauses for international data transfers proposed by seven
+   international business associations. The contracts are said to offer
+   an adequate level of data protection under the EU's data protection
+   laws. Companies can use the clauses to provide a legal basis for
+   transfers to data controllers outside of Europe as from 1 April 2005.
+   The new clauses will be added to those already available under the
+   Commission's June 2001 decision (IP/01/851).
+
+   <p>Companies believe that some of the new clauses, such as those on
+   litigation, allocation of responsibilities or auditing requirements,
+   are more business-friendly. According to the Commission the new
+   clauses provide for a similar level of data protection as those of
+   2001 and prevent abuses, the data protection authorities are given
+   more powers to intervene and impose sanctions where necessary. The
+   implementation of this new set of clauses will be reviewed in 2008.
+   

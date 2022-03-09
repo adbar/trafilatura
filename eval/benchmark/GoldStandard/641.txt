@@ -1,0 +1,293 @@
+Performance Vision: Reengineering Corp. Learning
+       
+
+         <h>Reengineering Corporate Learning
+      Stanley E. Malcolm, Ph.D.
+      <p>(Published in slightly different form as "Reengineering Corporate 
+      Training" in Training, August 1992, pp. 57-61)
+      <p>Think back for a moment to the day you started your current job, or any 
+      other job for that matter. Despite any formal training you may have 
+      received prior to starting, did you feel fully competent? Fifty percent 
+      competent? 
+      <p>Or put it another way. Of the skills you now recognize as critical to 
+      success in your job, what percent of them did you learn in a formal, 
+      traditional (read classroom) setting? I'll bet the percentage is pretty 
+      small. In fact, numerous sources peg the average at something less than 20 
+      percent. Data on spending for education by US businesses suggest a similar 
+      proportion, 17 percent traditional; the rest occurring on the job, 
+      somehow. 
+      <p>Okay, so 80 percent or more of critical job skill learning occurs on the 
+      job. What do we know about most OJT programs? Well, for starters, 
+      "programs" is often an overstatement. Typical OJT is unstructured or 
+      understructured, inconsistent, and slow. How often have you heard accepted 
+      time-to-competency figures of 18 months or longer? In the life insurance 
+      business, the industry average is 75 percent turnover of the sales force 
+      in the first 36 months. Now that's a very expensive revolving door. What 
+      are the numbers for critical jobs in your business? Don't think in terms 
+      of annual turnover - look at the period of time it takes to at least break 
+      even on your investment in recruiting and development to competent 
+      performance. 
+      <p>Now shift gears for a moment. Let's talk about the process of 
+      reengineering work, as described by Mike Hammer. The essence of the case 
+      is that for years and years we've been putting bandaids on old work 
+      processes - more and more management layers, functional units, and 
+      automated traditional processes - in the search for percentage point 
+      improvements in productivity. Reengineering says let's take a clean slate 
+      approach; designing the work and systems together to seek order of 
+      magnitude improvements in productivity, not incremental change. Think 
+      about that for a goal. Ten times greater productivity, not a few 
+      percentage points. And there are enough examples in the literature today 
+      to say that it can work. It may not be easy - minds dulled to the 
+      possibility of meaningful change, and an entrenched, threatened 
+      bureaucracy will work against you - but reengineering works. 
+      <p>What if we were to set out to reengineer corporate learning? What does 
+      productivity mean for us? It seems to me we have two objectives: to 
+      minimize the time it takes for staff to become competent, and to strive 
+      for higher levels of competent performance than we have in the past. 
+      <p>Finally we're getting to the point, and it's as simple as this. How can we 
+      possibly hope for order of magnitude improvements in competency if we 
+      barely influence the 80 or more percent of learning that always has 
+      occurred, and probably always will occur, on the job? 
+      <p>As step one, I'd propose that we begin designing what I'll call the "100 
+      percent learning event". I'd define that as one that includes some 
+      traditional elements and a whole lot of support for application of skills 
+      on the job. A good rule of thumb is to say that the learning "event" isn't 
+      over until the skill has been successfully applied to real work. 
+      <p>This has some very interesting implications for evaluation. For one thing, 
+      it means you don't have to measure learning at all, you can measure task 
+      performance. For another, you don't have to measure task performance; 
+      that's the manager's job. . . but we'll come back to that. 
+      <p>Step two, once you've bought into the notion of the 100 percent event, is 
+      to recognize that there are alternatives to the old paradigm of filling 
+      people up with skills and knowledge and then putting them to work. A 
+      series of more or less synonymous terms, like "problem-centered learning", 
+      or "action learning", or "issue-centered learning", all describe a 180 
+      degree shift from the old paradigm. Now we can talk about putting people 
+      to work immediately, or at least much sooner, and supporting their 
+      learning as they perform their jobs. A number of medical schools have 
+      taken this approach, and I've heard of it in some MBA programs. 
+      <p>Take the medical school example. The old paradigm for physician training 
+      was a year or two of anatomy and physiology courses before students ever 
+      saw a patient. The problem-centered approach has them seeing patients - in 
+      teams, with a physician coach - in their first semester. They learn the 
+      anatomy and physiology, but they do so in the course of solving real 
+      world, diagnostic problems. The results so far have been physicians who 
+      are recognizably better diagnosticians - who have a little more trouble 
+      passing their board exams. But I ask you, which kind of physician would 
+      you rather have treating you, the one who got higher marks on exams or the 
+      one who gets it right when it counts? 
+      <p>Now things start to get really interesting. If you apply the notion of 
+      problem-centered learning in corporate setting, you begin to define 
+      "events" which have real work outcomes, and learning as a secondary - but 
+      desired and likely - outcome. Now staff are coming to the classroom, or 
+      the "classroom" is coming to them, with an expectation that before they're 
+      done they will have completed some real work task. Believe me, that 
+      expectation alone does a lot to banish the notions of learning as a 
+      vacation, or of students assuming they'll be "taught" while they sit 
+      passively by. 
+      <p>Also, if you start with the assumption that at the end of your 100 percent 
+      learning event, each person will walk away with a real work product, 
+      evaluation of skill application becomes a far more manageable task. In the 
+      old paradigm of fill 'em up and send them away to their jobs to apply 
+      their skills, evaluation is a constant frustration. We tend to do one of 
+      several things. We sometimes measure "learning" at the end of our 
+      traditional event. Sometimes we don't even do that, for reasons that will 
+      become apparent. Either way, we still have the problem of either trying to 
+      infer students' ability to apply skills from a measure of what they learn, 
+      or of going back at some point in the future - three to six months being 
+      typical - and asking about application on the job. 
+      <p>Neither is very satisfying. Why? It comes back to the 80/20 split. If 
+      you're only influencing 20 percent or less of competency development, 
+      there's a lot that can go wrong outside of your control. If students fail 
+      to apply knowledge or skills, you have to feel that you've failed. And 
+      even if they do succeed in application, down deep can you really take the 
+      credit? What craftsman could take satisfaction in doing only 20 percent of 
+      the job? 
+      <p>On the other hand, application is intrinsic to problem-centered designs. 
+      You'll know, and better still management will know, that students have 
+      successfully applied new skills and knowledge by the end of the event. 
+      How? Simply by examining the work products. And that explains my earlier 
+      point. It's no longer necessary to measure learning when you've got a 
+      direct measure of applied performance. And who better to do the 
+      measurement than managers, who have the most direct stake in the results 
+      and the clearest view of performance. Besides, I'd argue that even the 
+      best measures of training ROI, if measured by trainers, are viewed by 
+      management as suspect for their potential to be self-serving. They're 
+      analogous to the "scientific results" advertisers use to sell us this 
+      product or that. Instead, give managers the means to measure performance 
+      gains, and let them spread the news of your joint success. 
+      <p>Another characteristic of problem-centered learning is that it offers the 
+      opportunity to bring together the various competencies and sub-disciplines 
+      that make up any of today's complex jobs. Take the job of Casualty Claim 
+      Representative for example. The job centers on the technical skills 
+      required to investigate claims. But performing it well requires 
+      integrating computer skills - using Aetna's claim systems; interpersonal 
+      skills to deal professionally with claimants, agents, lawyers, and others; 
+      and resource management skills - because average case loads for Claim 
+      Representatives run into the hundreds. Teaching systems in isolation from 
+      the investigative tasks they support, or teaching the skills to 
+      investigate one claim when the need is to learn how to manage many 
+      simultaneously, leave new staff ill-prepared to face the realities of 
+      daily job expectations. Problem-centered designs are a natural means to 
+      accomplish the competency integration critical to success on the job. At 
+      Aetna, our interactive video "whole-job simulations" do just that. I can't 
+      elaborate here, but the way they work is that a small group of new Claim 
+      Reps gather to work through the case in computer simulation, supported by 
+      a claim trainer or supervisor. At every decision point options are 
+      discussed and "war stories" are shared. The result is an incredibly rich 
+      experience sharing in a very short period of time. (For more details, see 
+      "Whole Job Simulation" in CBT Directions, July, 1991, pp 27-30.) 
+      <p>There's another term I considered listing as a semi-synonym of 
+      problem-centered learning, and that's performance support systems. More 
+      specifically "Electronic Performance Support Systems" as articulated so 
+      well by Gloria Gery in her book of the same name. Electronic or not, the 
+      idea is to put people to work and provide whatever supports they need to 
+      perform competently - whether or not they are competent in the traditional 
+      sense of the term. Typical supports are task structuring, and access to 
+      information, advice, and learning. The learning is usually in the form of 
+      "granules", not modules or courses, and is focused on application - case 
+      studies and practice exercises. 
+      <p>Take Aetna's AMP Facilitator as an example. "AMP" stands for the Aetna 
+      Management Process, the way we analyze problems and make decisions. It's 
+      become our common language to such an extent that we now use AMP as a 
+      verb: we AMP projects, for example. The 7-step process is superficially 
+      simple: define your mission and critical success factors, scan the 
+      internal and external environments, identify performance gaps, set 
+      objectives and action steps, implement and monitor. But the analysis 
+      required is complex, as becomes apparent when you start to look at the 
+      many sub-steps. 
+
+      <p>Figure 1. The AMP Facilitator (20k) - A performance support tool for 
+      decision-making designed to accomodate small-group as well as individual 
+      use. Note the group process advice in the "Guide" pop-up.
+
+      <p>The AMP Facilitator is software which provides performance support to 
+      managers or teams who need to apply AMP to a business plan or project. You 
+      need to know very little about the AMP process before using the software. 
+      You bring a problem, the AMP Facilitator helps you structure the 
+      analytical tasks, coaches you, provides examples and self-checks, and 
+      allows you to print out your results in standard plan format. So when 
+      you're done you've got a real work product - your plan - and have learned 
+      an awful lot about AMP along the way. I said earlier that learning was a 
+      desirable, and likely objective, but secondary to performance. Here you 
+      can see that in action. I defy users of the AMP Facilitator not to learn 
+      about AMP while using it to solve their business problems. But whether 
+      they do or not doesn't really matter. All that matters is that the work 
+      output is to a high standard. (For more on the AMP Facilitator, see 
+      "Performance Goes On-Line" in Human Resource Executive, May, 1994, pp 
+      24-27.) 
+      <p>Performance support doesn't have to be electronic. Much can be 
+      accomplished by putting some structure behind the traditional notion of on 
+      the job learning. We can provide guides to help managers develop their 
+      staff, and evaluate their progress. I'm not thinking here about lesson 
+      plans. More like advice on how to determine performance gaps, with 
+      recommendations for the kind of activities that can close them, and 
+      job-specific guidelines for how to coach and critique staff to competent 
+      performance. 
+      <p>And let's not forget the value of the traditional educational technologies 
+      - computer based tutorials and simulations, direct broadcast satellite and 
+      video tape, and combinations of these with text-based materials designed 
+      for small groups working with local office or unit facilitators. All offer 
+      consistent means to close the most common or critical performance gaps - 
+      at the moment of need, anywhere. All shrink training delivery cycle-times 
+      dramatically. 
+      <p>In terms of CBT, my experience at Aetna suggests that emphasis be placed 
+      on simulations, which have most of the advantages of problem-centered 
+      designs without the risks of errors with real customers or dollars. 
+      Consider computer-based simulations as performance support to managers in 
+      their role as coaches. Used in small group settings, as we do with our 
+      interactive video job simulations, every decision point becomes an 
+      opportunity to share peer and supervisor experiences. What might be a one 
+      hour case study when used individually, becomes a rich four hours of 
+      discussion and shared "war stories" in a small group implementation. 
+      <p>As for Direct Broadcast Satellite, the trick there is to make it truly 
+      interactive and problem-based with a mass audience. From the technology 
+      side we attack that by adding response keypads for every participant. And 
+      in our best designs, like Managed Care College, no "teaching" at all is 
+      done on the air - the focus is on teams learning together locally and 
+      competing with other teams across the country via DBS. The "problem" 
+      they're all solving is how to sell - more specifically, how to respond to 
+      realistic customer requirements and objections which they themselves have 
+      generated. The result has been sales reps telling management that they 
+      wouldn't have sold such-and-such a case if they hadn't had this realistic 
+      experience. And every Managed Care sale is a big deal in our business. 
+      <p>If designing problem-centered, 100 percent learning events and performance 
+      support are all it takes, why isn't everyone doing it? Remember what I 
+      said about reengineering? It works, but it isn't easy. 
+      <p>There are a whole bunch of potential barriers to success; some of them 
+      uncomfortably close to home. If your staff define themselves as trainers 
+      first, and designers second, you're likely to run into trouble. Frequently 
+      in corporate training units, the career path is from instruction deliverer 
+      to instruction developer. Is it any wonder that we tend to design 
+      traditional events - trainer rather than learner driven? 
+      <p>Perhaps it's time to turn the career path around to match the 
+      problem-centered approach to learning. In other words, consider hiring (or 
+      rotating) trainers from business units. Let their first assignments be in 
+      problem-centered event development, supported by professional 
+      instructional designers, and making full use of their recent business 
+      experience. Then only secondarily, and only sometimes, should they ever 
+      set foot inside a classroom. After all, if you're designing 100 percent 
+      events, you've got to place much more emphasis on design and development 
+      relative to the 20 percent or less of traditional delivery that remains to 
+      be done. 
+      <p>Since learning technologies will play an important role in delivering the 
+      80 plus percent of on the job learning, special attention must be placed 
+      on assuring that the infrastructure is there to support them. Consistent 
+      hardware and software, well maintained, and available at or very near the 
+      work site are essential. 
+      <p>Our vocabulary is another potential barrier. The words we use - course, 
+      event, program; trainer, instructor, teacher - all suggest traditional 
+      definitions of how and where training (not learning) takes place. What 
+      does registration mean if our learning product is an electronic 
+      performance support system intended to be used as needed anytime? And how 
+      do we cost our services if we blur the notion of a training event? How do 
+      we resist the pressure - internally or externally applied - to "count 
+      beans": student numbers or student days? 
+      <p>Often too, we behave illogically in the matter of training cycle times. We 
+      measure the time from an initial request through delivery of the first 
+      post-pilot version of the event. Never mind that it may take an additional 
+      one to three years to march everyone through. How can we continue to do 
+      this. I mean, if the performance gap is so urgent, shouldn't we be 
+      targeting closure in months, not years? With or without technology for 
+      delivery, we can and should set cycle-time goals on the order of six 
+      months or less - from the first day of the project until all have been 
+      trained and the performance gap is closed. 
+      <p>Getting managers to accept their role as coaches and evaluators is no easy 
+      task either. You're going to need allies in high places - senior 
+      management and human resources professionals. Rewards systems have to 
+      demonstrate the value you place on the manager as coach. All your 
+      investment in designing the 80% that occurs on the job is wasted 
+      otherwise. 
+      <p>And speaking of allies, don't expect to create large scale electronic 
+      performance support systems on your own - you'd find yourself in 
+      competition with traditional system development professionals, a very 
+      uncomfortable and unnecessary place to be. To be successful, design of 
+      electronic performance support systems needs to be a collaboration of 
+      systems professionals, interface designers, documentation specialists, 
+      business experts, and learning technologists. The design team needs to be 
+      as integrated as the system you're trying to create. 
+      <p>Yes, there are a lot of potential barriers, but none are insurmountable. 
+      Is it all worth it? You bet it is. When it works, it's a beautiful thing. 
+      If you're still not convinced, try these words from Aetna's Chairman, Ron 
+      Compton, delivered in his keynote address to the first Electronic 
+      Performance Support System Conference several years ago: 
+      <p>"We've been looking at learning as an outcome, when learning is only a 
+      byproduct. Performance is what we want. And by providing the supports 
+      employees need to learn their jobs while they do their jobs, we'll get 
+      competent performance faster and more consistently. 
+      <p>"As business managers facing a tough and unknowable future, we can't 
+      afford the luxury of learning, when it's not accompanied by performing. We 
+      have to radically change our organizations and our processes so that 
+      automation finally gives us the gains in productivity that up to now have 
+      been unkept promises. To achieve that, we as managers must show leadership 
+      of the most radical kind, willing to develop and use the tools that make 
+      us better workers, better listeners and better thinkers. And we must be 
+      willing to provide the support, both human and electronic, that our 
+      workers need to perform successfully." 
+      <h>About the Author: 
+	  <p>Stan Malcolm serves as a coach to companies wishing to 
+      develop or review their strategies for performance support, learning 
+      technologies, and/or corporate learning issues generally. Formerly, he 
+      headed learning technologies and performance support initiatives at Aetna, 
+      Inc. He can be reached at Stan@Performance-Vision.com or 860-295-9711.
+

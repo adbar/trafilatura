@@ -1,0 +1,121 @@
+URL: http://www.mosnews.com/money/2004/10/05/mobilecasinos.shtml
+
+   <h>Mobile casinos are a new service being offered to Russian cell phone
+   users / Image by MosNews.com
+     _________________________________________________________________
+
+<h>Mobile Casinos: A Window of Opportunity
+
+   <h>Created: 05.10.2004 13:46 MSK (GMT +3), Updated: 18:21 MSK
+
+   <h>Marina Pustilnik
+
+   <h>MosNews
+   
+   <p>Russia's cellular operators realize that the non-voice services that
+   they can offer their subscribers are a real goldmine of future
+   profits. Currently the revenues from non-voice services, the most
+   popular of which is, of course, SMS (short message service), amount to
+   approximately 10% of the total. And while this figure is quite
+   admirable, there is still a way to go.
+   <p>In order to attract the widest circle of subscribers, the cell network
+   operators and their affiliated companies have come up with new
+   services. Among the most recent ones are Mobile Bodyguards offered by
+   MobileTeleSystems, the SMS service, announced by BeeLine, for lovers
+   of Russian history, which can be easily used as a crib by high school
+   and university students, and mobile casino for MegaFon's clients. And
+   while MegaFon, Russia's third largest and fastest growing cell network
+   operator, was the first to offer mobile casino service, it certainly
+   won't be the last.
+   <p>Considering how thriving the online casino segment of the Russian
+   Internet is, it was only a matter of time before somebody came up with
+   the idea of offering the same thing to mobile phone users, stuck in
+   traffic, out at the country house, on the subway or anywhere else for
+   that matter.
+   <p>Last week saw the announcement of the first mobile casino, which is
+   independent from all operators and therefore open to all mobile phone
+   users. The Flash Money project was created from the intersection of a
+   Java game technology and the real casino business, which is one of the
+   most handsomely profitable branches of Russia's entertainment
+   industry.
+   <p>The first game, introduced by the Flash Money company, is Flash Slot
+   which is basically a slot machine on your mobile phone. The casino's
+   creators point out four basic advantages of the project. They are
+   mobility, security, availability and a good chance of winning.
+   Concerning the high chances of winning, the project's internet site
+   (www.flashmoney.ru) announces that every one in four bets is a winning
+   one.
+   <p>When speaking to reporters the project's creators give much higher
+   figures, claiming that the chance of winning in Flash Slot game
+   amounts to 90-95%. (For comparison, the chance of winning in online
+   casinos currently runs between 95% and 98%). In order to experience
+   the thrill of mobile gaming, users have to own a cell phone capable of
+   supporting Java, WAP and GPRS technologies. To begin playing the Flash
+   Slot game, the user has to adjust the WAP and GPRS settings, download
+   the game using either the phone or a computer connected to the
+   Internet, register in the system (once again, using the Internet) and
+   put money into his game account. In order to start the game the user
+   enters the name of his account and the password given during
+   registration. This information is then passed onto the gaming server
+   "using a highly stable cryptographic algorithm", to quote the
+   service's creators. The service's users can make bets ranging from 1
+   to 1500 rubles (~3.3 cents to $50), and creators of Flash Slot promise
+   maximum winnings of 4.5 million rubles ($150,000).
+   <p>The owners of the online casino claim that they are carrying out their
+   activities in accordance with a license given by Russia's State
+   Committee on Sport and Physical Culture for a period of five years.
+   However, the analysts note that until now the TimEx advertising group
+   has had no connections with the gaming business, and it remains an
+   open question whether mobile phone owners should trust the new project
+   with their money.
+   <p>An additional problem is that in order to begin playing in the mobile
+   casino, the potential client has to perform a number of actions,
+   involving both online and offline apects. The registration has to be
+   done via the Internet, and replenishing the payments account can be
+   done using five different systems of web money. However, in order to
+   use the web money program the user has to perform certain offline
+   actions, such as buying a card (for example, YandexMoney) which then
+   can be activated through the Internet or using bank or postal money
+   transfers to replenish the account. All of this just might be too much
+   bother to get involved in a nameless project and to spend your money
+   on it.
+   <p>But even if the Flash Money project fails, its place is sure to be
+   taken by other market players who have a real expertise and a
+   respected trademark backing them. For example, the Russian branch of
+   Microgaming Group, which runs the online Goldchip (Goldfishka) casino,
+   has already announced that it sees mobile casinos as a promising
+   segment of its future work. "We are ready to supply the mobile gaming
+   business with our experience, reputation, honesty guarantees and
+   international standards of client service," said John Huse, the online
+   casino's marketing director.
+   <p>"We would like to offer our present and future clients an opportunity
+   to gamble both online and from a cell phone using the same payments
+   account." Such a technical solution would be optimal for Russia's
+   thriving population of online casino players because it would free
+   them from the worry of replenishing their account using their mobile
+   phone. Overall, Goldchip's management believes that mobile casinos
+   should not be separated from online ones, but instead should be seen
+   as two components of one service.
+   <p>Perhaps the best solution that can be offered in this case is the
+   close affiliation of a mobile casino services provider with one or
+   several cellular network operators. Such an affiliation would permit
+   the service's creators to offer their clients a practically cashless
+   method of settling financial issues, which will in turn make the
+   mobile casino a truly mobile business. There are, of course, certain
+   undercurrents in this sea of opportunity, as this service cannot be
+   offered to mobile phone subscribers who pay for the operator's
+   services using a credit system for fear of a failure to pay ballooning
+   game bills. However, considering that the majority of mobile
+   subscribers currently use the system of pre-payment, this issue should
+   not present too many problems for the accounting departments of cell
+   network majors.
+   <p>And while it is too early to evaluate the results of the mobile casino
+   projects offered by both MegaFon and Flash Money, it is not too early
+   to say that mobile gaming is here to stay. The window of opportunity
+   is wide open and the only question that remains is: who will make the
+   most of it? Will it be domestic providers, or cellular network
+   operators, or international majors with previous experience? The
+   answers to those questions is just around the corner, as Russia's
+   mobile services market is one of the fastest growing branches of the
+   country's economy.
+ 

@@ -251,7 +251,7 @@ def test_lrucache():
     assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
     assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
     assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
-    # 2 elements in cache, original element has been cleared?
+    # 2 elements in cache, ground element has been cleared?
     # print(LRU_TEST.maxsize, LRU_TEST.full)
     assert duplicate_test(other_element, DEFAULT_CONFIG) is True
     assert duplicate_test(yet_another_element, DEFAULT_CONFIG) is True
@@ -608,7 +608,7 @@ def test_precision_recall():
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
-    
+
 
 
 if __name__ == '__main__':

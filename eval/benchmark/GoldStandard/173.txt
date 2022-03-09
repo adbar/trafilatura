@@ -1,0 +1,51 @@
+
+<h> Matsushita's "Sound Window"
+
+<h> By Barry Willis
+
+<p> April 14, 2002 -- As normally conceived, loudspeakers
+        use electrodynamic forces to control the movements of their
+     diaphragms, which in turn move air. Matsushita Electric Industrial
+   Co., Ltd. has come up with an interesting twist on this principle, one
+   in which air pressure itself ("aerodynamic-drive technology") is used
+    to control the diaphragm. The result is a transparent panel speaker
+   called the "Sound Window," announced by the Japanese industrial giant
+                                 March 27.
+
+<p> The invention is intended to mate acoustic radiating surfaces with
+    video displays, enabling the launch of sound and image from the same
+      surface--or at least, from two closely-spaced surfaces--thereby
+        eliminating the need for the deep cavities required to house
+   traditional moving-coil drivers. The goal is maximum performance with
+   minimal energy expenditure from an integrated audio/video source with
+    shallow depth--in other words, a television-like device that can be
+                  hung on the wall like a framed picture.
+
+<p> Sound Windows employ a lightweight transparent panel suspended a
+   fraction of an inch from another surface, such as a video screen. The
+     sound pressure from a small conventional cone driver acoustically
+         vibrates the transparent panel, which can be 10 times--or
+    more--greater in diaphragm area. The aerodynamic-drive technology is
+       said to ensure sound-pressure transmission to the entire panel
+   surface. Matsushita claims this "acoustic leverage technology" enables
+        the Sound Window to operate on as little as 1/25 the power a
+     conventional driver would require. Panel shape isn't critical, the
+                            manufacturer states.
+
+<p> With varying degrees of success, other manufacturers have experimented
+    with flat-panel speakers. Matsushita claims that the Sound Window is
+    the industry's first speaker "that reproduces sound by pneumatically
+   vibrating a transparent panel using aerodynamic-drive technology." The
+         device appears to offer the most promise for use in small
+       communications products, such as cell phones, personal digital
+     assistants, and laptop computers. The Sound Window's extremely low
+   power consumption would appear to make it ideal for such applications.
+        Matshushita plans to ship the first Sound Window products to
+                   industrial customers later this year.
+
+<p> Matsushita doesn't specify the frequency response, distortion level,
+    or output capability of the Sound Window. Presumably, none of these
+    specifications is audiophile grade, but the ingenious device proves
+    that new designs for sound generation are possible for inventors who
+       think outside the box. A complete press release, including an
+                    operation diagram, can be seen here.

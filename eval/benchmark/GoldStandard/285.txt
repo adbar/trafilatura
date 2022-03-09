@@ -1,0 +1,88 @@
+URL: http://www.bit-tech.net/bits/2005/05/24/amd_lucas_starwars/1.html
+
+<h>AMD and Lucasfilm: Making Episode III
+
+<p>With Episode III now in theaters across the world, many of you will
+   have had a chance to be blown away by the final part of the Star Wars
+   saga. Rest assured that, for those of you who haven't had a chance to
+   experience the film yet, this article won't contain any spoilers.
+   Rather, we're taking a close look at the work that AMD have done with
+   Lucasfilm to bring the film from the mind of George Lucas to your
+   cinema screen.
+
+<p>We caught up with Charlie Boswell, Director of AMD's Digital Media and
+   Entertainment group and Dan Gregoire, Pre-Visualization Effects
+   Supervisor at JAK Films, a division of Lucasfilm.
+
+<h>It's time for Animaniacs
+
+<p>So what does AMD have to do with Episode III? Well, many of you will
+   by now be familiar with the term Animatics. Effectively invented for
+   Episode I, Animatics are computer-generated pre-renders of a film
+   scene. By creating a version of the scene in a computer before
+   filming, the Director can get an idea of what shots work well, the
+   pacing of the scene, ideas of camera angles and suchlike. This can
+   save time and money when it comes to actually filming.
+<p>Animatics can also be used to pre-render all-CGI sequences, with
+   simpler realisations of space battles and other similar sequences
+   giving an idea to the Director of how he wants the sequence handled.
+<p>Of course, all this computer pre-rendering requires some pretty spiffy
+   computers. Animators require fast machines to work on, and even faster
+   machines to render some of the bigger segments. This is where AMD step
+   in.
+<p>"Star Wars Producer, Rick McCallum's secretary called me and asked to
+   arrange a meeting," Charlie told bit-tech. "I was straight up there
+   the next day."
+<p>Dan elaborates, "Our relationship started a few years ago, with our
+   original Athlon MP systems. They came in at the end of Episode II,
+   when we had the end battle and the Droid Factory sequences to deal
+   with. These were scenes that were really going to take a lot more
+   horsepower than we had at the time. They kitted us out with Athlon MP
+   systems... we were very impressed with their performance."
+
+<p>For Episode 2, JAK pre-rendered 4400 shots, of which 2200 were used.
+   For Star Wars 3, 6500 shots were pre-rendered, of which 2200 were
+   used. What enabled them to add to their output so significantly?
+
+<h>The 64-bit Question
+
+<p>"For Episode III, AMD set us up with all new systems," continues Dan.
+   "Sometime during Episode III - we had always been on this track - we
+   moved over to 64-bit chips and dabbling with 64-bit Windows. We hacked
+   some of our apps to be large address aware."
+<p>If you've been wondering just how long it's going to be before the
+   average punter sees a decent increase in performance through 64-bit
+   technology in everyday system usage, rest assured that these guys are
+   already seeing it. "We're putting such a huge amount of data through
+   the system, AMD64 is so much faster at handling this stuff."
+<p>Which specific technologies in the platform enabled the performance
+   increase that JAK needed? "Even before we had the 64-bit aware
+   software, HyperTransport was delivering a performance increase. It's
+   just so much of a stronger connecting force than other platforms out
+   there. We're working with such huge amounts of data, and it's all
+   about getting the data through the architecture."
+<p>Charlie expands: "HyperTransport is really one of the key performance
+   enablers for the platform. We designed AMD64 from the ground up to be
+   an efficient architecture, putting a memory controller on each chip.
+   With the (Intel) Xeon architecture, the two chips share a single
+   connection to the memory controller and the rest of the system. It's a
+   bottleneck. Even now, when Intel have upgraded their chips to 64-bit,
+   putting 64-bits of data across that bottleneck just exacerbates the
+   problem."
+<p>The net result? Media intensive applications slow-down like crazy on
+   Xeon workstations, and fly on Opteron workstations, according to
+   Charlie. Rather than going straight to Apple Macs, the previous choice
+   of the media-savvy, "AMD technology makes doing this stuff on Windows
+   a possibility. A few years ago, we would have been flogged for even
+   suggesting Windows workstations to these guys. Now, they're the
+   fastest systems out there."
+<p>Hacking 64-bit applications? Dan: "The software was in a
+   chicken-and-egg situation. Companies were slow at updating their
+   software for 64-bit until the hardware was out there, and people
+   weren't buying the hardware because of the lack of software support.
+<p>"We went straight in and hacked our apps so that they were large
+   address aware. That gave us an extra tool in our arsenal. Even under
+   32-bit, our Opteron systems kicked ass, we were seeing render times
+   dropping in half from our previous setups. But if we had a really
+   intense scene that caused us to run into problems, we could move to
+   64-bit rendering to help with that and increase the performance."

@@ -1,0 +1,216 @@
+URL: http://www.chemguide.co.uk/physical/phaseeqia/vapourpress.html
+
+                <h>AN INTRODUCTION TO SATURATED VAPOUR PRESSURE
+
+    <p>This page looks at how the equilibrium between a liquid (or a solid)
+    and its vapour leads to the idea of a saturated vapour pressure. It
+    also looks at how saturated vapour pressure varies with temperature,
+     and the relationship between saturated vapour pressure and boiling
+                                   point.
+
+                  <h>The origin of saturated vapour pressure
+
+                        <h>The evaporation of a liquid
+
+     <p>The average energy of the particles in a liquid is governed by the
+      temperature. The higher the temperature, the higher the average
+    energy. But within that average, some particles have energies higher
+     than the average, and others have energies lower than the average.
+
+   <p>Some of the more energetic particles on the surface of the liquid can
+   be moving fast enough to escape from the attractive forces holding the
+                      liquid together. They evaporate.
+
+      <p> The diagram shows a small region of a liquid near its surface.
+
+                            
+   <p>Notice that evaporation only takes place on the surface of the liquid.
+   That's quite different from boiling which happens when there is enough
+   energy to disrupt the attractive forces throughout the liquid. That's
+   why, if you look at boiling water, you see bubbles of gas being formed
+                      all the way through the liquid.
+
+    <p>If you look at water which is just evaporating in the sun, you don't
+     see any bubbles. Water molecules are simply breaking away from the
+                               surface layer.
+
+   <p>Eventually, the water will all evaporate in this way. The energy which
+   is lost as the particles evaporate is replaced from the surroundings.
+    As the molecules in the water jostle with each other, new molecules
+            will gain enough energy to escape from the surface.
+
+             <h>The evaporation of a liquid in a closed container
+
+      <p>Now imagine what happens if the liquid is in a closed container.
+    Common sense tells you that water in a sealed bottle doesn't seem to
+          evaporate - or at least, it doesn't disappear over time.
+
+   <p>But there is constant evaporation from the surface. Particles continue
+   to break away from the surface of the liquid - but this time they are
+                   trapped in the space above the liquid.
+
+
+     <p>As the gaseous particles bounce around, some of them will hit the
+   surface of the liquid again, and be trapped there. There will rapidly
+   be an equilibrium set up in which the number of particles leaving the
+          surface is exactly balanced by the number rejoining it.
+
+
+      <p>In this equilibrium, there will be a fixed number of the gaseous
+                  particles in the space above the liquid.
+
+     <p>When these particles hit the walls of the container, they exert a
+   pressure. This pressure is called the saturated vapour pressure (also
+            known as saturation vapour pressure) of the liquid.
+
+                  <h>Measuring the saturated vapour pressure
+
+     <p>It isn't difficult to show the existence of this saturated vapour
+      pressure (and to measure it) using a simple piece of apparatus.
+     _________________________________________________________________
+
+   <p>Note:  This experiment is much easier to talk about than do, given the
+    safety problems in handling mercury because of its poisonous vapour.
+     This is particularly going to be a problem if you want to find the
+     saturated vapour pressure of a liquid at a higher temperature. You
+      would have to use a more complex bit of apparatus. That isn't a
+          problem you need to worry about for UK A level purposes.
+     _________________________________________________________________
+
+     <p>If you have a mercury barometer tube in a trough of mercury, at 1
+    atmosphere pressure the column will be 760 mm tall. 1 atmosphere is
+          sometimes quoted as 760 mmHg ("millimetres of mercury").
+
+                            
+     <p>If you squirt a few drops of liquid into the tube, it will rise to
+    form a thin layer floating on top of the mercury. Some of the liquid
+      will evaporate and you will get the equilibrium we've just been
+     talking about - provided there is still some liquid on top of the
+      mercury. It is only an equilibrium if both liquid and vapour are
+                                  present.
+
+                             
+     <p>The saturated vapour pressure of the liquid will force the mercury
+    level down a bit. You can measure the drop - and this gives a value
+    for the saturated vapour pressure of the liquid at this temperature.
+   In this case, the mercury has been forced down by a distance of 760 -
+        630 mm. The saturated vapour pressure of this liquid at the
+                 temperature of the experiment is 130 mmHg.
+
+    <p>You could convert this into proper SI units (pascals) if you wanted
+                  to. 760 mmHg is equivalent to 101325 Pa.
+
+   <p>A value of 130 mmHg is quite a high vapour pressure if we are talking
+   about room temperature. Water's saturated vapour pressure is about 20
+   mmHg at this temperature. A high vapour pressure means that the liquid
+      must be volatile - molecules escape from its surface relatively
+       easily, and aren't very good at sticking back on again either.
+
+      <p>That will result in larger numbers of them in the gas state once
+                          equilibrium is reached.
+
+         <p> The liquid in the example must have significantly weaker
+                     intermolecular forces than water.
+
+        <h>The variation of saturated vapour pressure with temperature
+
+   <h>The effect of temperature on the equilibrium between liquid and vapour
+
+                     <p>You can look at this in two ways.
+
+   <p>There is a common sense way. If you increase the temperature, you are
+     increasing the average energy of the particles present. That means
+   that more of them are likely to have enough energy to escape from the
+   surface of the liquid. That will tend to increase the saturated vapour
+                                 pressure.
+
+     <p>Or you can look at it in terms of Le Chatelier's Principle - which
+    works just as well in this kind of physical situation as it does in
+                    the more familiar chemical examples.
+     _________________________________________________________________
+
+       <p>Note:  You could follow this link if you aren't sure about Le
+                           Chatelier's Principle.
+
+     <p>Use the BACK button on your browser to return to this page later.
+     _________________________________________________________________
+
+    <p>When the space above the liquid is saturated with vapour particles,
+     you have this equilibrium occurring on the surface of the liquid:
+
+                             
+   <p>The forward change (liquid to vapour) is endothermic. It needs heat to
+                    convert the liquid into the vapour.
+
+   <p>According to Le Chatelier, increasing the temperature of a system in a
+    dynamic equilibrium favours the endothermic change. That means that
+   increasing the temperature increases the amount of vapour present, and
+                so increases the saturated vapour pressure.
+
+    <h>The effect of temperature on the saturated vapour pressure of water
+
+      <p>The graph shows how the saturated vapour pressure (svp) of water
+    varies from 0°C to 100 °C. The pressure scale (the vertical one) is
+    measured in kilopascals (kPa). 1 atmosphere pressure is 101.325 kPa.
+
+                        
+                <h>Saturated vapour pressure and boiling point
+
+   <p>A liquid boils when its saturated vapour pressure becomes equal to the
+   external pressure on the liquid. When that happens, it enables bubbles
+    of vapour to form throughout the liquid - those are the bubbles you
+                          see when a liquid boils.
+
+   <p>If the external pressure is higher than the saturated vapour pressure,
+   these bubbles are prevented from forming, and you just get evaporation
+                       at the surface of the liquid.
+
+        <p>If the liquid is in an open container and exposed to normal
+      atmospheric pressure, the liquid boils when its saturated vapour
+   pressure becomes equal to 1 atmosphere (or 101325 Pa or 101.325 kPa or
+   760 mmHg). This happens with water when the temperature reaches 100°C.
+
+   <p>But at different pressures, water will boil at different temperatures.
+    For example, at the top of Mount Everest the pressure is so low that
+      water will boil at about 70°C. Depressions from the Atlantic can
+    easily lower the atmospheric pressure in the UK enough so that water
+         will boil at 99°C - even lower with very deep depressions.
+
+   <p>Whenever we just talk about "the boiling point" of a liquid, we always
+   assume that it is being measured at exactly 1 atmosphere pressure. In
+             practice, of course, that is rarely exactly true.
+
+                    <h>Saturated vapour pressure and solids
+
+                                <h>Sublimation
+
+    <p>Solids can also lose particles from their surface to form a vapour,
+    except that in this case we call the effect sublimation rather than
+   evaporation. Sublimation is the direct change from solid to vapour (or
+            vice versa) without going through the liquid stage.
+
+       <p>In most cases, at ordinary temperatures, the saturated vapour
+   pressures of solids range from low to very, very, very low. The forces
+      of attraction in many solids are too high to allow much loss of
+                        particles from the surface.
+
+     <p>However, there are some which do easily form vapours. For example,
+      naphthalene (used in old-fashioned "moth balls" to deter clothes
+   moths) has quite a strong smell. Molecules must be breaking away from
+     the surface as a vapour, because otherwise you wouldn't be able to
+                                 smell it.
+
+   <p>Another fairly common example (discussed in detail on another page) is
+       solid carbon dioxide - "dry ice". This never forms a liquid at
+      atmospheric pressure and always converts directly from solid to
+                 vapour. That's why it is known as dry ice.
+     _________________________________________________________________
+
+      <p>Note:  This link will take you straight to the page about phase
+    diagrams where this is discussed in detail. Follow this link as well
+   if you are interested in the logical next step in this topic which is
+   a discussion of the phase diagrams of pure substances, including water
+                            and carbon dioxide.
+     _________________________________________________________________
+
+                    

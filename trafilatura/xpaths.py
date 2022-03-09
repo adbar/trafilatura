@@ -56,6 +56,10 @@ BODY_XPATH = [
 # or starts-with(@class, 'post ')
 # './/span[@class=""]', # instagram?
 
+# INFO XPATH
+INFO_XPATH = [
+    """.//*[]"""
+]
 
 COMMENTS_XPATH = [
     """.//*[(self::div or self::section or self::list)][contains(@id, 'commentlist')
@@ -93,6 +97,7 @@ REMOVE_COMMENTS_XPATH = [
 OVERALL_DISCARD_XPATH = [
     '''.//*[contains(@id, "footer") or contains(@class, "footer") or
     contains(@id, "bottom") or contains(@class, "bottom")]''',
+
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
     #'''.//*[
     # self::link
@@ -141,6 +146,21 @@ OVERALL_DISCARD_XPATH = [
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
+
+    # Add some names that is regular named
+    '''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
+    or contains(@class, "content-title") or contains(@class, "content-info") 
+    or contains(translate(@class, "N", "n"), "nav")
+    or contains(translate(@id, "N", "n"), "nav")]''',
+    # some confusion names here, may have to improve the logic? Need something to improve the logic here.
+    # Just put some manullay cleaned tag here.
+    # '''.//*[contains(@class, "yin") or contains(@class, "zlylin") or contains(@class, "dropdown-menu")
+    # or contains(@class, "xg1")
+    # or contains(@id, "wp") or contains(@id, "bmdh")]''',
+
+    # Remove Nav Bar from file 17
+    # How to implement?
+
 ]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
@@ -183,4 +203,18 @@ COMMENTS_DISCARD_XPATH = [
     starts-with(@class, "reply-") or contains(@class, "-reply-") or contains(@class, "message")
     or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
+]
+
+LINKS_XPATH = [
+    '//div'
+]
+
+
+AUTHOR_XPATH = [
+    '''
+    .//*[contains(@id, "author") or contains(@class, "author") or 
+    contains(@id, "zuozhe") or contains(@class, "zuozhe") or 
+    contains(@id, "bianji") or contains(@class, "bianji") or 
+    contains(@id, "xiaobian") or contains(@class, "xiaobian")]
+    '''
 ]

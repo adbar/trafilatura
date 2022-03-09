@@ -1,0 +1,487 @@
+URL: http://nsr.mij.mrs.org/1/20/complete.sym.html
+
+                            <h>Volume 1, Article 20
+
+     <h>Recent Results in the Crystal Growth of GaN at High N[2] Pressure
+
+   <h>I. Grzegory, M. Bockowski, B. Lucznik, S. Krukowski, M. Wroblewski, S.
+                                  Porowski
+                       <h>High Pressure Research Center
+
+     <h>This article was received on Friday, May 31, 1996 and accepted on
+                        Wednesday, October 23, 1996.
+
+                                  <h>Abstract
+
+   <p>We present recent results on bulk GaN crystallization. The best
+   quality GaN crystals grown from the solution at high N[2] pressure
+   without an intentional seeding are single crystalline platelets of
+   stable morphology reaching dimensions up to 10 mm. The fastest growth
+   direction for such crystals is [1 0 (-1) 0], perpendicular to the GaN
+   c-axis. The maximum stable growth rate perpendicular to crystal c-axis
+   is determined from the experiment and used for an estimate of the
+   effective supersaturation for the {10 (-1) 0} face assuming two
+   dimensional layer growth. The heat of GaN disssolution, determined
+   from experimental solubility data, is used for the estimation of the
+   edge energy of 2-D nuclei on the growing {10 (-1) 0} face. Bulk
+   crystal growth seeded by a single hexagonal needle with well developed
+   {10 (-1) 0} faces is also reported. The crystallization mechanisms and
+   morphological stability in seeded growth of GaN are discussed on the
+   basis of experimental results. The physical properties of the GaN
+   crystals and homoepitaxial layers grown on them are briefly reviewed.
+
+<h>1. Introduction
+
+   <p>GaN is a strongly bonded compound well suited for applications such as
+   high power, high temperature electronics. The bonding energy of GaN is
+   8.9 eV/atom whereas for GaAs it is only 6.5 eV/atom. Consequently,
+   the free energy G(T) of the crystal is very low in relation to the
+   reference state of free N and Ga atoms. On the other hand, the N[2]
+   molecule is also strongly bonded (4.9eV/atom). Therefore, the free
+   energy of the constituent Ga and N[2] becomes quite close and
+   surpasses that of GaN as the temperature is raised. Figure 1 shows the
+   free energy of GaN (1 mole) versus its constituents (Ga + 1/2N[2]) as
+   a function of temperature.
+
+   <p>The G(T) of the constituents decreases faster than that of the GaN
+   crystal and at higher temperatures GaN become thermodynamically
+   unstable. The crossing of G(T) curves determines the equilibrium
+   temperature where GaN coexists with its constituents at a given N[2
+   ]pressure. The application of pressure allows us to increase the free
+   energy of the constituents much more than that of the crystal shifting
+   the equilibrium point to higher temperature and extending the
+   stability range of GaN. The equilibrium p[N2] - T conditions for GaN
+   determined experimentally by Karpinski et al. are shown in
+   Figure 2.
+
+   <p>Most of crystallization processes discussed in this paper have been
+   carried-out in large volume gas pressure reactors at an N[2]
+   overpressure of up to 15 kbar, which corresponds to a GaN stability
+   limit at 1850K. The maximum temperature of 1850 K is quite far from
+   the melting temperature of GaN. According to the theoretical
+   estimation of Van Vechten the melting point of GaN is ~3000K. The
+   N[2] equilibrium pressure at the melting point is therefore much
+   higher than we can obtain in our experimental system. The extension of
+   the GaN stability range to 1850 K allows the growth of GaN crystals
+   from a liquid Ga solution. In Figure 3 we show the N solubility data
+   resulting from the annealing of Ga at the three phase equilibrium
+   conditions of Figure 2.
+
+   <p>Since the N concentrations are not high, the growth experiments have
+   to be long to obtain high quality bulk GaN crystals with dimensions
+   appropriate for measurements and applications. Therefore, stability
+   over a long time (>100h) is an additional requirement for the growth
+   system. The solid line in Figure 3 is the liquidus line for Ga-GaN
+   system calculated using an ideal solution approximation and Van
+   Vechten's melting temperature of 2790K. For an ideal solution, the
+   solubility can be expressed as:
+
+   where H[sol] is the heat of dissolution. For GaN, H[sol ]= 44.7
+   kcal/mole = 0.49 eV/bond and expresses the bonding energy in the
+   crystal in relation to its mother phase: the solution.
+
+<h>2. Crystal Growth
+
+  <h>2.1. Experimental
+
+   <p>The growth system is designed for the crystallization of GaN from
+   solution under high N[2] overpressure at high temperature in
+   relatively large volumes. Since the material to be grown is a
+   semiconductor for optoelectronic applications, the system has to
+   fullfil all the requirements concerning purity and control of the
+   growth conditions. Moreover, crystallization from a dilute solution
+   requires lengthy processes of ~100 hours. Therefore, the high pressure
+   - high temperature crystallization reactor (chamber and multizone
+   furnace) has to be supplied with additional systems necessary for:
+    <l>1. in situ annealing in vacuum
+    <l>2. electronic stabilization and programming of pressure
+    <l>3. electronic stabilization and programming of temperature
+    <l>4. pressure, temperature, voltage and current sensitive alarms
+    <l>5. cooling of the pressure chamber
+
+   <p>In Figure 4 we have shown schematically such an experimental
+   apparatus. Many functions mentioned above are realized by the use of
+   standard commercially available devices ( e.g. vacuum pumps,
+   temperature programmers, mass flow detectors...). The pressure in the
+   chamber is stabilized with a precision better than 20 bar. The
+   temperature is measured by a set of thermocouples arranged along the
+   furnace and coupled with the standard input power control electronic
+   system. This allows the stabilization of temperature better than 0.5
+   deg., and the ability to program changes in the furnace temperature
+   distribution during the experiment.
+
+   <p>Supersaturation in the growth solution has been created by the
+   application of temperature gradients along the axis of the crucible.
+   Both horizontal and vertical arrangements of the crucibles have been
+   used. The typical duration of the experiments was 100 - 150 hours for
+   crystals of 6-10 mm in size.
+
+  <h>2.2. Crystallization without intentional seeding
+
+   <p>Gallium, when heated under high N[2] pressure, does not wet the
+   crucible walls (usually graphite or BN). Rather, it is covered with a
+   thin GaN layer consisting of GaN single crystals. This is the first
+   step of GaN crystallization at high N[2 ]pressure. The size of the
+   crystals covering the Ga depends on the sequence and rates of
+   compression and heating of the system. A typical structure of the
+   surface layer is shown in Figure 5.
+
+   <p>The formation of the surface layer inhibits further synthesis of the
+   nitride which allows longtime crystallization processes and the growth
+   of relatively large GaN crystals. Since the solution is in a
+   temperature gradient, the GaN layer at the hot end of the crucible
+   dissolves in gallium and is transported, by convection and diffusion,
+   to the cooler zone of the crucible where the solution become
+   supersaturated and crystallization of GaN takes place. The crystals of
+   the surface layer are the natural source of growth centers for further
+   crystallization. Some of them start to grow faster hindering the
+   growth of the neighboring ones. This selection leads to the formation
+   of relatively large, well shaped GaN crystals on the internal surface
+   of the surface layer.
+
+   <p>The GaN crystals grown by this method are wurzite, mainly in the form
+   of hexagonal platelets or hexagonal needles, depending on the growth
+   conditions. A general tendency is that high supersaturation favors
+   growth in the c-direction which produces the needle-like crystals.
+   Supersaturation of the growth solution is determined mainly by the
+   growth temperature, supercooling, mass transport mechanisms in Ga, and
+   also the local surroundings for a particular crystal.
+
+   <p>Crystals in the form of hexagonal platelets grow slowly, with a rate
+   <0.1 mm/h into the {10 (-1) 0} directions (perpendicular to the
+   c-axis). They are usually single crystals having perfect morphology
+   suggesting stable layer-by layer growth. They are transparent,
+   colorless, with flat faces. In some cases, three dimensional,
+   hexagonal growth which occurs during the post-growth system cooling is
+   observed on the crystal surfaces. Some GaN platelets grown without
+   intentional seeding are shown in Figure 6.
+
+   <p>For crystallization of large GaN crystals by this method, it is
+   crucial to control the supersaturation to avoid acceleration of the
+   growth near the edges and corners of the growing crystal. This can
+   occur if some of them reach dimensions significantly larger than the
+   others. Then the edge nucleation on the hexagonal faces of the GaN
+   platelets is often observed. This is the first step to unstable growth
+   on these faces. The result of such a growth is shown in Figure 7a. In
+   extreme cases of very high supersaturation or when the supersaturation
+   is abruptly increased (i.e. by increasing the temperature gradient),
+   the growth into c-direction, nucleated at the edges of the platelet,
+   become very fast and leads to the formation of well developed {10 (-1)
+   0} faces. This results in a hollow needle-like crystal such as is
+   shown in Figure 7b. Therefore, for growing of large GaN platelets of
+   stable morphology, the supersaturation must be decreased during the
+   crystallization process inorder to prevent the runaway phenomena just
+   described.
+
+   <p>Therefore for the stable growth of large GaN crystals it is necessary
+   to have sufficiently low and uniform supersaturation across the
+   growing crystal faces. One of the most important factors influencing
+   the uniformity of N-concentration in the growth zone is the volume of
+   the solution in relation to the size of the growing crystal. In Figure
+   8 we show a crystal grown in a crucible with an internal diameter of
+   17 mm (as opposed to 14 mm previously). The increase in the crucible
+   volume resulted in a significant increase of the size of crystals
+   which could be grown with stable morphology.
+
+   <p>We summarize the general tendencies of GaN crystal growth without an
+   intentional seeding following from the experimental results:
+    <l>1. The growth of GaN crystals from a diluted solution in liquid
+       gallium is strongly anisotropic.
+    <l>2. At lower supersaturations, the fastest growth directions are the
+       [1 0 (-1) 0 ] ones, perpendicular to the c-axis of the crystal.
+       The growth rate in the [ 0 0 0 1 ] directions, parallel to the
+       c-axis is then extremely slow. This results in thin hexagonal
+       platelets.
+    <l>3. With increasing supersaturation, the rate of the growth parallel
+       to the c-axis abruptly increases, resulting in needle like
+       crystals with well developed {10 (-1) 0} faces.
+
+   <p>We have estimated the supersaturation at which high quality GaN
+   platelet grow at a rate of 0.1 mm/h. in the [1 0 (-1) 0] direction
+   (see Figure 9). For the estimation, we assumed two dimensional
+   layer-by-layer growth on the {10 (-1) 0} face of the platelet with a
+   thickness of 0.1 mm and length of the leading edge of 1 mm. We also
+   assumed that the creation of a 2-D critical nucleus on the crystal
+   face results in the growth of a new layer. That is, the lateral growth
+   rate is fast enough to complete the plane before appearance of the
+   next nucleus of the critical size. A heat of GaN dissolution in liquid
+   Ga of 0.49eV/bond (see Introduction) was used as a measure of bond
+   energy in the crystal in relation to the liquid phase.
+
+   <p>For a crystal growing at 1800K, we have obtained a supersaturation of
+   the order of 50%. For the growth of GaN on a seed crystal with well
+   developed {10 (-1) 0} faces, the supersaturation necessary for stable
+   two dimensional growth can be significantly lower due to large surface
+   area of the fast growing planes. The details of this estimation will
+   be published elsewhere [5].
+
+  <h>2.3. Seeding
+
+   <p>Knowing that GaN in our experimental conditions prefers to grow in a
+   stable way in directions perpendicular to the c-axis, we decided to
+   use a needle like crystal to seed the growth on the {10 (-1) 0} faces.
+   In Figure 10, we show the seed crystal which was introduced into the
+   cooler zone of the vertical crucible. It had well developed {10 (-1)
+   0} prismatic faces and also {10 (-1) 1} pyramidal ones. A hexagonal
+   surface did not appear due to the fast growth of the needle in
+   c-direction.
+
+   <p>Prior to the growth, it was necessary to heat the system up to 1200^oC
+   at low N[2] pressure to achieve wetting of the seed with liquid Ga. If
+   the sysyem were be heated at high pressure, the polycrystalline
+   surface layer would cover the Ga surface adjacent to the seed, and
+   eliminate its usefulness for further crystallization.
+
+   <p>The growth on the seed was performed under conditions where high
+   quality platelets were obtained in previously described processes
+   without intentional seeding. The resulting crystal, after 50 hours of
+   growth, is shown in Figure 11.
+
+   <p>The fast growth directions were the [1 0  (-1)  0], as expected, and
+   also the [1 0  (-1)  1] one perpendicular to the pyramidal face. Since
+   the growth rate in the c-direction was very small, a hexagonal face
+   developed in the resulting crystal.
+
+   <p>As we know from previous considerations, at low supersaturations, the
+   growth rate in c-direction is almost zero whereas at higher
+   supersaturations we fall into the "difficult" region of the abrupt
+   increase of the nucleation rate. Therefore, the growth on the
+   hexagonal face is difficult to control and probably is very sensitive
+   to fluctuations of temperature, convectional flows and uniformity of
+   the nitrogen concentration field in the crystal surrounding. This can
+   easily lead to three dimensional nucleation or to edge instabilities
+   of the growth.
+
+<h>3. Physical Properties of GaN crystals
+
+   <p>The quality of the GaN crystals was estimated by X-ray rocking curves^. The full width at half maximum (FWHM) of the X-ray rocking curves
+   ((0004) CuK reflection) depends on the size of the crystal. The value
+   is 20-30 arcsec for 1mm crystals and 30-40 arcsec for 1-3 mm ones. For
+   larger platelets the rocking curves split into a few 30-40 arcsec
+   peaks showing the presence of low angle (1-3 arcmin) boundaries
+   separating grains of 0.5-2 mm in size. Misorientation between grains
+   increases monotonically from end to end of the crystal. This
+   indicates a "bending" of the crystal during growth, followed by strain
+   relaxation leading to the formation of the low angle boundaries.
+   Indeed, the lattice constantsmeasured for the two basal planes of the
+   crystals differ by 0.001 », suggesting different growth mechanisms and
+   defect structures for the two polar directions of the GaN platelet. It
+   was shown by Liliental-Weber et al. by TEM examination and
+   confirmed by AFM studies, that one of the polar surfaces of the
+   GaN crystals (especially for the smaller ones) is often atomically
+   flat (2-3 monolayer steps present) and the crystal below is
+   practically free of extended defects. However a high concentration of
+   point defects, mainly N-vacancies and Ga-antisites, were deduced from
+   Convergent Beam Electron Diffraction patterns. On the opposite
+   side, regular pyramids of 100 - 200 » in size terminate the surface. Below are many extended defects such as stacking faults,
+   dislocation loops and Ga micro-precipitates. Such pecularities result
+   from the different growth modes of the two polar directions of the
+   crystal in the Ga-rich conditions of the process.
+
+   <p>For larger (>3 mm) GaN plateletes, the presence of three dimensional
+   hexagonal features on the surfaces is typical. This results from the
+   system cooling after the growth in the temperature gradient.
+
+   <p>The GaN crystals are highly conductive, showing metallic behavior in
+   the whole temperature range of 4.2-300K. Free electron concentration
+   of 10^19 - 10^20 cm^-3 with mobilities of 30-90 cm^2/Vs are
+   present regardless of temperature. No clear dependence of the
+   electrical properties on the growth conditions has been observed. Both
+   ab initio calculations of electronic structure of GaN native defects
+  and experiments confirm that the source of free
+   electrons in this GaN is N-vacancies.
+
+   <p>The optical absorption spectra of pressure-grown GaN crystals and
+   epitaxial GaN layers with a free electron concentration of 6x10^17
+   cm^-3 have been measured by Teisseyre et al.^ . A shift to high
+   energy of the optical absorption edge for the bulk sample is observed
+   and assigned to the Burstein-Moss effect. Due to this shift, the
+   bulk GaN substrate crystals are transparent to near edge luminescence
+   of GaN.
+
+   <p>The dominant luminescence features of GaN bulk crystals are near band
+   edge emission at ~3.5 eV and a broad yellow luminescence band centered
+   around 2.3 eV.
+
+<h>4. GaN homoepitaxy
+
+   <p>The first results of homoepitaxial growth of GaN MOCVD layers have
+   been recently reported. Pressure grown GaN crystals were used as
+   substrates. The layers were grown in a horizontal atmospheric pressure
+   Epigress system adapted to the growth of nitrides. TMG and NH[3] were
+   used as sources of Ga and N, and H[2] was the carrier gas. The
+   substrates did not require any mechanical or chemical surface
+   treatment before the growth. Also the deposition of a low temperature
+   buffer layer was omitted. The growth temperature was 900 - 1050°C.
+   P-doping was realized using the MCp[2]Mg metalorganic and subsequent
+   annealing of the layer at 700°C in the presence of N[2] gas. Si was
+   introduced to achieve n-doping of the layers.
+
+   <p>Atomic Force Microscopy studies performed on homoepitaxially grown GaN
+   layers indicate the presence of monatomic steps on the layer surfaces,
+   often in the form of large diameter (100 m) spirals indicating two
+   dimensional growth on screw dislocations.
+
+   <p>The X-ray diffraction peaks from the homoepitaxial layer and from GaN
+   substrate from are shown in Figure 12. The lattice constant
+   parallel to the interface is the same for both the substrate and
+   homolayer, whereas the c constant of the epilayer is smaller by about
+   0.02%. The increase of the c lattice constant of the bulk GaN crystals
+   is related to the presence of the same point defects responsible for
+   the high concentration of free electrons.
+
+   <p>The high quality of the homoepitaxial layers is confirmed by the
+   photoluminescence measurements. The spectrum is dominated by two
+   strong and narrow lines XD (3.4719 eV) and XA (3.4666 eV) related to
+   the excitons bound to neutral impurity centers. The FWHM of these
+   lines is about1.8 meV and 1.0 meV respectively. The higher energy XD
+   line shows a double peak structure which fitted with Lorenzian curves
+   can be described by energies: E[1 ]= 3.4711 eV, E[2 ]= 3.4720 eV. The
+   photoluminescence and reflectivity of GaN homoepitaxial layers are
+   analyzed in detail in. Also the lifetime of the bound excitons
+   has been measured to be 650 and 700 ps for excitons bound to the
+   neutral donor and acceptor, respectively. This is much higher than the
+   corresponding values for GaN/sapphire (70 and 140 ps, respectively).
+
+   <p>The PL spectra for p-type Mg doped GaN homoepitaxial layers have been
+   reported. In addition to the XD and XA exciton lines (XA line
+   much stronger than for undoped layers), a series of very narrow lines
+   attributed to donor-acceptor pair related transitions have been
+   observed between 3.4 - 3.5 eV. The FWHM of these lines were < 0.5 meV.
+   The PL lines observed for MOCVD grown homoepitaxial layers are the
+   narrowest so far reported for GaN.
+
+   <p>Recently very high quality homoepitaxial layer have been obtained by
+   MBE. The nearedge photoluminescence spectrum of this layer is
+   dominated by XD and XA peaks and 3 lines corresponding to free
+   excitons. The PL lines for this layer are even sharper than for best
+   MOCVD samples. The halfwidth of the XA line is smaller than 0.5 meV
+
+<h>5. Conclusions
+
+   <p>High quality GaN crystals can be grown at nitrogen pressure up to 15
+   kbar. The main obstacle to growing larger substrate sized GaN crystals
+   is instability of the growth. The instability is related to the
+   non-uniform distribution of nitrogen in the solution due to the small
+   volume of the crucible in relation to the size of growing GaN
+   crystals.
+
+   <p>It is shown that high quality homoepitaxial layers can be obtained on
+   the "as grown", single crystalline, pressure grown GaN substrates.
+   Further optimization of both substrate and homoepitaxial growth
+   techniques should lead to the fabrication of efficient optoelectronic
+   devices. Special effort has to be paid to increasing of the size of
+   high quality GaN substrates.
+
+<h>Acknowledgments
+
+   <p>The research reported in this work has been supported by the Polish
+   Committee for ScientificResearch grant # 7 7834 95 C/2399.
+
+<h>References
+
+   <l>[1]W. A. Harrison, Electronic Structure and Properties of Solids,
+   Freeman, San Francisco, (1980)
+
+   <l>[2] J. Karpinski, J. Jun, S. Porowski, J. Cryst. Growth 66, 1 (1984).
+
+   <l>[3] J. Karpinski, S. Porowski, J. Cryst. Growth 66, 11 (1984).
+
+   <l>[4] J. A. Van Vechten, Phys. Rev. B 7, 1479 (1973).
+
+   <l>[5]I. Grzegory and S. Porowski, unpublished.
+
+   <l>[6] M Leszczynski, I Grzegory, M Bockowski, J. Cryst. Growth 126,
+   601-604 (1993).
+
+   <l>[7] M. Leszczynski, I. Grzegory, H. Teisseyre, T. Suski, M. Bockowski,
+   J. Jun, S. Porowski, J. Crystal Growth, unpublished (1996).
+
+   <l>[8] Z. Liliental-Weber, C. Kisielowski, S. Ruvimov, Y. Chen, J.
+   Washburn, I. Grzegory, M. Bockowski, J. Jun, S. Porowski, J. Electron.
+   Mater. 25, 1545 (1996).
+
+   <l>[9] G. Nowak, S. Krukowski, I. Grzegory, S. Porowski, J.M. Baranowski,
+   K. Pakula, J. Zak, MRS Internet J. Nitride Semicond. Res. 1, 5 (1996).
+
+   <l>[10] P. Perlin , J. Camassel, W. Knap, T. Taliercio , J. C. Chervin ,
+   T. Suski, I. Grzegory, S. Porowski , Appl. Phys. Lett. 67, 2524-2526
+   (1995).
+
+   <l>[11] P. Boguslawski , E. L. Briggs, J. Bernholc , Phys. Rev. B 51,
+   17255-17258 (1995).
+
+   <l>[12] Jorg Neugebauer, Chris G. Van de Walle , Phys. Rev. B 50,
+   8067-8070 (1994).
+
+   <l>[13] P. Perlin, T. Suski, H. Teisseyre, M. Leszczynski, I. Grzegory,
+   J. Jun, S. Porowski, P.Boguslawski, J. Bernholc, J. C. Chervin, A.
+   Polian, T. D. Moustakas , Phys. Rev. Lett. 75, 296-299 (1995).
+
+   <l>[14] H. Teisseyre, P. Perlin, T. Suski, I. Grzegory, S. Porowski, J.
+   Jun , A. Pietraszko , T. D. Moustakas , J. Appl. Phys. 76, 2429-2434
+   (1994).
+
+   <l>[15] K Pakula, A Wysmolek, KP Korona, JM Baranowski, R Stepniewski, I
+   Grzegory, M Bockowski, J Jun, S Krukowski, M Wroblewski, S Porowski,
+   Sol. St. Comm. 97, 919-922 (1996).
+
+   <l>[16] M. Godlewski, A. Wysmolek, K. Pakula, J. M. Baranowski, I.
+   Grzegory, J. Jun, S. Porowski, J. P. Bergman, B. Monemarin Proc. of
+   Intl. Symp. on Blue Lasers and Light Emitting Diodes, , (Chiba, Japan,
+   March 5-7, , 1996) 356.
+
+   <l>[17] A. Wysmolek, J. M. Baranowski, K. Pakula, K. P. Korona, I.
+   Grzegory, M.Wroblewski, S. Porowskiin Proc. of Intl. Symp. on Blue
+   Lasers and Light Emitting Diodes, , (Chiba, Japan, March 5-7, , 1996)
+   492.
+
+   <l>[18] H. Teisseyre, G. Nowak, M. Leszczynski, I. Grzegory, M.
+   Bockowski, S. Krukowski, S. Porowski, M. Mayer, A. Pelzmann, Markus
+   Kamp , K. J. Ebeling, G. Karczewski, MRS Internet J. Nitride Semicond.
+   Res. 1, 13 (1996).
+
+<p>Figure 1. Gibbs free energy of GaN and its constituents
+
+<h>Figure 2. <p>Equilibrium curve for GaN [2] [3]
+
+<h>Figure 3. <p>Liquidus line for the Ga-GaN system
+
+<h>Figure 4. <p>Experimental system for the crystal growth of
+   GaN at N[2] pressure up to 15 kbar.
+
+   <h>Figure 5. <p>Crystallized GaN surface layer at high N[2] pressure
+
+   <h>Figure 6a. <p>GaN single crystals grown without an intentional seeding.
+   The underlying grid is 1mm x 1mm.
+
+   <h>Figure 6b.
+
+   <h>Figure 6c.
+
+   <h>Figure 6d.
+
+   <h>Figure 7a. <p>Edge-nucleated growth on the {0001} faces at high
+   supersaturation.
+
+   <h>Figure 7b. <p>Initially plate-like growth changes into the needle-like
+   type due to the increase of supersaturation during the growth.
+
+   <h>Figure 7c. <p>Schematic of unstable growth of a GaN platelet at high,
+   non-uniform supersaturation in the solution. <l>(a) edge-nucleated growth
+   on the {0001} faces at high supersaturation, <l>(b) initially plate-like
+   growth changes into the needle-like type due to the increase of
+   supersaturation during the growth.
+
+   <h>Figure 8. <p>GaN crystal grown in a 150h process in the crucible having
+   an ID of 17 mm.
+
+<h>Figure 9. <p>GaN crystal growing quickly perpendicular to
+   the c-axis
+
+   <h>Figure 10. <p>GaN crystal used for the intentional seeding
+
+   <h>Figure 11. <p>GaN crystal grown on a GaN single crystalline seed.
+
+   <h>Figure 12. <p>Diffraction peaks of (0004) CuK reflection
+   from an MOCVD grown GaN heteroepitaxial layer and GaN substrate.

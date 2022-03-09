@@ -1,0 +1,532 @@
+URL: http://www.earthtym.net/ref-altitude.htm
+
+                        <h>Altitude influence on Health
+
+                       <h>Cellular mercury release, and
+                      chronic illness considerations.
+
+   
+   <h>Altitude Illness - Cerebral Syndromes
+   <p>Last Updated: May 16, 2003
+
+   <p>Synonyms and related keywords: acute mountain sickness, AMS, mal de
+   montagne, soroche, high-altitude cerebral edema, HACE
+
+   <h>Pathophysiology:
+   <p>Rapid ascent to high altitude overtaxes the body's ability to tolerate
+   the decreasing availability of oxygen. The cerebral forms of altitude
+   illness appear to be due to hypoxia-induced changes in blood-brain
+   barrier permeability, which results in a vasogenic brain edema.
+
+   <h>Mortality/Morbidity:
+   <p>AMS is a self-limiting disease and generally resolves in 1-5 days.
+   HACE may be fatal within 1-2 days unless treated by immediate descent.
+   Recovery is usually complete, although in very rare cases, patients
+   with either severe or prolonged HACE may have persistent neurological
+   deficits. A small percentage of very ill patients may die even with
+   proper treatment (i.e., descent, oxygen, steroids).
+
+   <h>History:
+   <p>AMS and HACE occur in the context of a recent ascent to altitudes
+   higher than about 2500 m (8,200 ft). Additionally, patients often have
+   a history of rapid ascent, with sleeping elevations increased by more
+   than 300 m (1,000 ft) per night above 3000 m (9,800 ft). Patients
+   frequently lack the spontaneous diuresis normally seen at altitude.
+
+   <p>Normal effects of exposure to altitude include the following:
+   <l>Exertional dyspnea
+   <l>Spontaneous diuresis
+   <l>Nocturnal periodic breathing (e.g., Cheyne-Stokes respirations)
+   <l>Frequent awakening at night
+   <l>Weird or vivid dreams
+
+   <p>In the context of a recent ascent, the diagnosis of AMS is implied by
+   headache plus at least 1 of the following symptoms:
+   <l>Gastrointestinal symptoms (e.g., anorexia, nausea, vomiting)
+   <l>Light-headedness or dizziness
+   <l>Weakness or fatigue
+   <l>Insomnia
+
+   <p>Diagnosis of HACE is implied by the following criteria:
+   <p>Ascent with symptoms of AMS is the most common history.
+   HACE may evolve after a very rapid ascent despite the absence of AMS.
+   In this context "rapid ascent" means significantly more than the
+   recommended 300 meters (1,000 ft) per day; the actual ascent rate in
+   meters per hour probably is not important.
+
+   <p>HACE commonly occurs after the onset of severe high-altitude pulmonary
+   edema (HAPE), probably due to severe hypoxemia. Confusion, lassitude,
+   and other mental status changes implied by patient's history could
+   indicate HACE.
+   History of gait ataxia may be a sign of HACE.
+
+   <h>Physical:
+   <h>Acute mountain sickness (AMS)
+   <p>Patients appear ill but otherwise have no characteristic physical
+   findings. Neurologic examination results (especially mental status and
+   gait) are normal. Cardiac rate does not correlate with acclimatization
+   or AMS.
+   <p>Pulmonary crackles may be present in some patients.
+   <p>Fever is absent.
+   <p>High-altitude cerebral edema
+   <p>Suspect the diagnosis in a patient with symptoms of AMS who develops
+   gait ataxia (i.e., unable to walk heel-to-toe in a straight line) or
+   mental status changes.
+   <p>Regardless of AMS symptoms, a combination of ataxia and mental status
+   changes suggests HACE.
+
+   <p>... In rare cases, focal neurologic signs (i.e., cranial nerve III
+   palsy, cranial nerve VI palsy) appear in end-stage HACE, although they
+   are more suggestive of other causes of focal deficits at altitude
+   (e.g., stroke, transient ischemic attack [TIA], migraine, brain
+   neoplasm).
+
+  
+
+   
+   <h>Altitude Illness - Pulmonary Syndromes
+   <p>Last Updated: May 16, 2003
+
+   <p>Synonyms and related keywords: high-altitude pulmonary edema, HAPE,
+   high-altitude cough, high-altitude bronchitis, high-altitude cerebral
+   edema, HACE
+
+   <h>Pathophysiology:
+   <p>HAPE is a noncardiogenic pulmonary edema.
+   <p>... the disease is thought to be caused by patchy hypoxic pulmonary
+   vasoconstriction (likely due to local shunting response to hypoxia)
+   with consequent localized overperfusion combined with hypoxic
+   permeability of pulmonary capillary walls. These changes result in
+   high pulmonary artery pressure, high permeability, and leak into the
+   alveoli. HAPE is quite distinct from other forms of pulmonary edema
+   and adult respiratory distress syndrome (ARDS).
+
+   <h>Mortality/Morbidity:
+   <p>HAPE may be fatal within a few hours unless treated by descent or
+   oxygen, and it is the most common cause of death related to high
+   altitude. As with high-altitude cerebral edema (HACE), recovery is
+   usually complete, although, even with proper treatment (i.e., oxygen,
+   prompt descent), a small percentage of very ill patients die. Patients
+   who recover have rapid clearing of edematous fluid and do not develop
+   fibrosis or other long-term sequelae.
+
+   <p>High-altitude cough may be disabling at altitude because of paroxysmal
+   coughing, chest pain from intercostal muscle strains and/or
+   cough-induced rib fractures, and insomnia. High-altitude cough
+   resolves with descent.
+
+   <h>History:
+   <p>HAPE occurs in the context of a recent ascent to altitudes higher than
+   about 2500 m (8,200 ft). Additionally, patients often have a history
+   of rapid ascent, with sleeping elevations increased by more than 300 m
+   (1,000 ft) per night above 3000 m (9,800 ft). Patients frequently lack
+   the spontaneous diuresis normally seen at altitude.
+
+   <p>Normal effects of altitude exposure include the following:
+   <l>Exertional dyspnea
+   <l>Spontaneous diuresis
+   <l>Nocturnal periodic breathing (e.g., Cheyne-Stokes respirations)
+   <l>Frequent awakening at night
+   <l>Weird or vivid dreams
+
+   <p>HAPE occurs in the first 2-4 days of ascent to a new elevation, most
+   often on the second night. HAPE typically worsens at night. The
+   diagnosis requires 2 or more of the signs listed under Physical as
+   well as 2 of the symptoms from the following list.
+
+   <p>Weakness, fatigue, or decreased exercise performance (most common and
+   often the earliest sign)
+   <l>Cough
+   <l>Dyspnea at rest
+   <l>Chest tightness or congestion
+   <l>High-altitude cough
+   <l>Paroxysmal cough, sometimes forceful enough to fracture 1 or more ribs
+   <l>Frequently productive of purulent sputum
+   <l>Absence of fever
+   <l>Absence of dyspnea at rest
+   <l>May lead to compromise of the airway
+
+   <h>Physical Diagnosis:
+   <p>In addition to 2 or more of the previously listed symptoms, HAPE is
+   diagnosed by presence of at least 2 of the following signs:
+   <l>Crackles or wheezing in at least 1 lung field
+   <l>Central cyanosis or significant arterial oxygen desaturation relative
+   to altitude
+   <l>Tachycardia
+   <l>Tachypnea
+
+   <p>Other findings in HAPE may include the following:
+   <l>Fever (relatively common)
+   <l>Orthopnea
+   <l>Pink/frothy sputum (a late finding)
+   <l>High-altitude cough
+   <l>No fever
+   <l>Lungs are clear to auscultation
+   <l>No cyanosis or desaturation
+
+   <h>Causes:
+   <l>High-altitude pulmonary edema
+   <l>Rapid ascent
+   <l>More risk at higher altitudes
+   <l>Low hypoxic ventilatory response
+   <l>Cold exposure (raises pulmonary artery pressure)
+   <l>Physical exertion (exacerbates the condition)
+   <l>Congenital absence of right pulmonary artery
+   <l>High-altitude cough
+   <l>Unknown etiology
+   <l>Potential causes - Dry or cold air, bronchospasm, altered cough
+   sensitivity Worse at higher altitudes
+
+   
+
+   
+   <h>Altitude Basics, 101
+
+   <p>Performing all forms of outdoor activity becomes an increasing
+   challenge as altitude increases. Contrary to popular belief, your
+   ability to perform at higher altitude is tied less to your physical
+   condition, and tied more to your genetic stock. Certain medical
+   conditions such as asthma and high blood pressure can be aggravated by
+   altitude. If you use a little common sense and do some preparation,
+   you will find that you will be able to perform most outdoor activities
+   all the way to 15,000 feet with little discomfort and medical
+   problems.
+
+   <h>Sea Level to 3,500 Feet (1068 metres)
+   <p>A vast majority of the North American population lives in this
+   altitude range. Most people, except for those with extreme
+   cardiopulmonary disorders can perform almost any activity at this
+   level. People who live at sea level will experience almost no
+   noticeable ill effects when moving within this altitude range where
+   the air pressure is around 12 psi (pounds per square inch).
+
+   <h>3,500 Feet to 6,000 Feet (1830 metres)
+   <p>Most people of ordinary health will have little problems at this
+   altitude. People who reside in areas that are below 2,500 feet may
+   start to notice some breathing difficulty as they move above the 5,000
+   feet mark. People who have cardiopulmonary disorders may have serious
+   problems in this altitude range and should consult a physician before
+   visiting or engaging in outdoor sporting activity. Women who are
+   pregnant may also experience problems at this altitude due to the
+   increased demand for oxygen that the fetus puts on their systems.
+
+   <h>6,000 Feet to 10,000 Feet (3050 metres)
+   <p>In this altitude range some people may start to experience problems
+   related to altitude. AMS, or Acute Mountain Sickness symptoms may set
+   in at any altitude above 6,000 feet. At 10,000 feet, the atmosphere is
+   only 50% of that found at sea level. Breathing can become difficult,
+   even for those in good physical condition. Women who are pregnant and
+   people with cardiopulmonary disorders should consult a physician
+   before spending any time at these altitudes.
+
+   <h>10,000 Feet to 14,000 Feet (4270 metres)
+   <p>Once you get above 10,000 feet the oxygen content in the atmosphere
+   has reached levels that can be dangerously thin. Not only is AMS a
+   possibility, but the risk of HAPE or High Altitude Pulmonary Edema
+   greatly increases over 12,000 feet. To put this in proper perspective,
+   private pilots who fly over 10,000 feet are required to use
+   supplemental oxygen. Most people that do mountaineering will climb in
+   these altitudes. Pregnant women, children under the age of two, and
+   people who have cardiopulmonary disorders should not go above 10,000
+   feet in altitude. Serious medical complications can occur in this
+   range.
+
+   <h>14,000 Feet to 18,000 Feet (5490 metres)
+   <p>Above 14,000 feet, a person enters an extreme altitude. The atmosphere
+   can be only 40% of that found at sea level, and air pressure can drop
+   to below 10 psi, causing physiological stress on the body. AMS, HAPE,
+   and HACE or High Altitude Cerebral Edema can all be experienced in
+   this altitude range. Typically in North America, only extreme
+   mountaineers will exceed these altitudes for any period of time. This
+   altitude range can be dangerous for any one, even those in good
+   physical condition.
+
+   <h>18,000 Feet and Above
+   <p>Altitude above 18,000 feet is also called, the death zone. As the air
+   pressure falls to as low as 7 psi, the body, even with supplemental
+   oxygen literally starts to die. The severe onset of HAPE and HACE can
+   occur at these altitudes and AMS symptoms are almost continuously
+   experienced. Only highly experienced mountaineers should venture into
+   these altitudes, and a constant vigil has to be made for HAPE and HACE
+   symptoms, with a focus on HACE symptoms as part of the symptoms for
+   HACE is clouded judgment.
+
+  
+   
+   <h>A corner of paradise
+   <h>Welcome to Le Village Catalan.
+
+   <p>Whether you prefer an activity holiday, nature and culture holiday,
+   relaxation, spa treatment, or a language course, you will find our
+   village to be an ideal base.
+
+   <h>General information
+   <p>Le Village Catalan is a small village of 12 houses in the
+   microclimatic foothills of snow-capped Canigou in the Pyrenees,
+   between the ski resorts and the Mediterranean. It is known to have the
+   best climate in France, with an average 300 days of sunshine per year,
+   and it is rich on history, culture and natural beauty.
+
+   <p>In the past Vernet-les-Bains has been the favoured health resort of
+   the British aristocracy, witnessed by the extravagant architecture of
+   the casino and the parks. Europes largest wilderness area, the
+   Pyrenees start just behind the village, with excellent opportunities
+   for leisure activities, from hiking through mountain biking and
+   fishing. A nearby waterfall has been named after the British -
+   Cascades des Anglais. Famous Carcassonne, the tax free mini state
+   Andorra, Spain and the Mediterranean beaches can be reached on
+   day-trips.
+
+   <p>Our little village is situated 5 minutes walk from Vernet-les-Bains
+   centre, with all facilities - shops, restaurants and cafés, a sports
+   centre, casino, thermal spa . Le Village Catalan comprises one, two
+   and three bedroom houses on two levels, containing lounge with wooden
+   beams and fireplace, kitchen, bathroom and all are equipped with
+   simple but robust furnishing.
+
+   <p>The architecture is medieval Catalan, but built as recent as 1965-1975
+   - it took ten years to build - and partly refurbished in 1998-2003.
+   Each house is different and half the houses are built in granite
+   stone. Each house has a private, sunny terrace with spectacular,
+   unobstructible views of Vernet Les Bains, the valleys and the
+   mountains. Six of the houses also have a private courtyard.
+
+   
+
+
+   <h>Home in Wiler, Switzerland.
+   <h>Resort Development
+
+   <p>Living at an altitude of 2000 metres in Switzerland - skiing at up to
+   3111 metres. We are building exclusive chalets and apartments right
+   next to the ski slope in Wiler, Valais (Lötschental, 1 hour south of
+   Berne)! With a unique mountain panorama. You can live the chalets and
+   apartments all over the year.
+
+   <p>We are building exclusive, comfortably furnished chalets and
+   apartments adjacent to the cable car station at 2000 meters, with a
+   clear view of the mountain panorama that is guaranteed into the
+   future. The sympathetic architecture fits in with the traditional
+   housing structure of the Alpine pasture regions and meets individual
+   requirements in respect of comfort. Scattered around in the
+   neighbourhood are further chalets and mountain restaurants. A new
+   clubhouse with restaurant and bar is planned.
+
+   <p>From November 2003, a cable car runs up to 3111 meters. A choice of 4
+   types of chalets and 6 types of apartments is anticipated (see above).
+   Construction has already begun. The first show house is now ready to
+   be visited or purchased immediately.
+
+   
+   <h>C. E. Bartlett Pty. Ltd
+   <h>Portable Altitude Chamber
+
+   <h>Acute Mountain Sickness (AMS)
+   <p>As we ascend above 2500 metres (8000 feet) our bodies must acclimatise
+   to the decreasing amount of oxygen available. Failure to acclimatise
+   can result in AMS.
+
+   <p>The symptoms of AMS may include any of the following: headache,
+   fatigue, loss of appetite, shortness of breath, cough, dizziness,
+   blurred vision, vomiting, etc. The intensity and severity of these
+   symptoms will vary, but can very quickly become extremely serious and
+   even fatal.
+
+   <p>The only treatment for AMS is to descend to a lower altitude.
+
+   <p>However, there are many situations where immediate descent is
+   difficult if not impossible, due to the hazards of weather, lack of
+   manpower, difficult terrain or geography such as a plateau.
+
+   <p>The pressure chamber concept has been around for 20 years or more, yet
+   the majority of trekkers and mountaineers going to high altitudes do
+   so without this essential piece of safety equipment. The PAC is an
+   Australian product, aimed at trekking groups, both private and
+   commercial, as well as expeditions to high altitude. It is an answer
+   to the need for an effective, simple, durable, lightweight and
+   affordable pressure chamber for the treatment of AMS.
+
+   <h>Effective
+   <p>PAC technology has been shown to be highly effective in the reversal
+   of symptoms of AMS. Depending on the starting altitude, simulated
+   descents of about 2000 metres (6000 feet) are achieved at the
+   operating pressure of 2 PSI above ambient pressure.
+
+   <h>Simple
+   <p>The PAC has been designed to be as simple to operate as possible. One
+   operator can perform a complete treatment cycle on their own. A
+   summary of the instructions found in the operator's manual are printed
+   on the PAC itself, while all the valves are clearly labelled to avoid
+   confusion.
+
+   <h>Light
+   <p>The PAC, all up with pump, hose, manual repair kit and storage bag
+   weighs in at less than 8 kgs.
+
+   <p>PAC technology buys time and can stabilise or reverse severe symptoms
+   of AMS before (or while) descent is undertaken.
+
+   <h>Treksafe
+   <p>Australia
+   
+
+  
+   <h>Nutrition of the Sportsman
+   <h>The Omega-3 fatty acids of the performance
+   
+
+   <h>"The Fatty Acids Polyinsaturés: Essential for health ".
+   
+
+   <h>INFLUENCE PHYSICAL EXERCISE AND HYPOXIA ON BLOOD FLUIDITY:
+   <p>[ Blood thickness is inversely dependent upon the membrane rigidity of
+   the blood cells, which is conversely dependent on the rigidity of
+   double-layered lipidic of the membrane of the red globule. A rise in
+   saturated fatty acid connections lowers the number of non-saturated
+   double connections and contributes to cell rigidity.]
+
+   <p>[ Endurance exercises increases the rigidity of the red blood cells,
+   providing an increase in the thickness of the blood. Hypoxia (lowered
+   oxygen volume) of altitude reduces plasmic volume and induces a
+   reduction in the thickness of the blood.]
+
+   <p>[ Increases in duration and intensity of exercise together with
+   increases in altitude, increases saturated fatty acid presence and
+   decreases polyunsaturated fatty acids -- acid arachidonic (omega-6),
+   EPA and DHA (omega-3). This increases membrane saturation with the
+   amount of omega-6 and omega-3 correlating with an increase in red
+   blood cell membrane rigidity. (similar in influence to an increase in
+   cholesterol presence) and reducing the blood capacity to absorb and
+   retain oxygen.]
+
+   <p>[ During prolonged exercise, and at higher altitudes, blood cell
+   changes produce reduced capillary efficiency, particularly in the
+   lungs, liver, and spleen and reduced ability to carry and transfer
+   oxygen to peripheral tissues. This induces an anaemia of iron
+   deficiency by rupture of the red blood cells in the capillaries, under
+   the effect of the rise in the cardiac flow and the blood pressure. ]
+
+   <h>INFLUENCE of FISH OIL ABSORPTION ON PHYSICAL PERFORMANCE
+   
+
+   <p>[ Supplementation of diet with fish oil (omega-3 = tuna, salmon,
+   sardines, mackerel, lake trout, walnuts, pecans, almonds) suppresses
+   the harmful blood fluidity changes encouraged by endurance exercises
+   and high altitudes.]
+
+   
+
+   <p>[ Fish oils reduce capillary resistance to oxygen uptake and increase
+   blood circulation to peripheral areas. The efficiency of oxygen
+   transfer from blood to muscle cells is enhanced by a reduction in
+   tissue rigidity and an increase in red blood cell presence at the
+   capillaries.]
+
+   <p>[ At higher altitudes and during endurance exercises, fish oils
+   increase the oxygen desaturation of the haemoglobin, and, increases
+   the blood concentration of lactic acid ... the consequence of
+   metabolism of glucose (stored energy in cellular sugars). Also,
+   adrenalin receptors on the cellular surfaces are sensitised by the
+   addition of omega-3 ( = tuna, salmon, sardines, mackerel, lake trout,
+   walnuts, pecans, almonds) fish oils making glucose metabolism easier
+   and faster.]
+
+   <h>PRACTICAL CONSEQUENCES
+   <p>[ For altitudes over 2000 m and for high endurance activities, a
+   supplementation of 250 g of omega-3 fish oils 3 to 5 times per week (
+   = tuna, salmon, sardines, mackerel, lake trout, walnuts, pecans,
+   almonds) is beneficial. To avoid a vitamin E deficiency from arising
+   from the exercise and the additional polyunsaturated fatty acids, a
+   supplementation with vitamin E is required. These changes will provide
+   for better performance.]
+
+   <h>COMMENT
+   <p>Release of mercury from cellular binding can be enhanced by remaining
+   at an altitude of 1800 to 2000 metres (5,800 to 6,400 feet) for a
+   period of not less than 1 week with an early daily fluctuation by
+   travel down to 0 to 100 metres and return within 4 to 6 hours. The
+   early fluctuations encourage greater permeability of the cell wall for
+   the release of mercury and other toxins. Living at the reduced
+   pressure altitude facilitates the release of these toxins from the
+   cells. 
+
+   <p>It can be fatal to not be aware of the hazards/cautions and to ignore
+   their significance. Detoxing too quickly can induce severe symptoms,
+   panic response, and acute depression. Pacing is imperative.
+
+   <h>HAZARDS / CAUTIONS
+   <p>The reduced air pressure fluctuation pattern and the moderate term
+   higher altitude living arrangement is best NOT to be considered or
+   acted upon UNLESS the individual either has accurate access to
+   Spiritual Guidance and has been guided to take this action, OR, has
+   been cleared by their physician who is aware of the potential health
+   difficulties and challenges. 
+
+   <p>IF your are aware that you have a low heart function (below 60%
+   efficiency) and/or low lung function (below 60% efficiency), the
+   likelihood of you experiencing altitude illness symptoms at the 1800
+   to 2000 metre (5,800 to 6,400 feet) level is HIGH.
+
+   <p>High cholesterol level and/or low blood pressure can be equally
+   contributing factors to hypoxia and altitude sickness. It is
+   imperative to remain self-directed and calm and take measures and
+   supplements as indicated by Spiritual Guidance or accurate muscle
+   testing if the symptoms are not to increase in severity due to panic.
+
+   <p>IF you are aware that you likely have residual mercury cellular
+   loading, systemic or organ specific cellular contamination by fungi,
+   bacterial, or FUIRERIA parasitic forms ... EXPECT that you will
+   experience severe symptoms of their presence and release.
+
+   <p>Tobacco smoke, air pollution, certain toxic chemicals, some drugs and
+   dry air (common at higher altitudes) all serve to decrease the healthy
+   activity of the cilia of the respiratory tract and increase the
+   likelihood of local viruses gaining entry further into the human body
+   than would be possible with a less compromised lifesystem.
+
+   <p>Ensure that you have an adequate range and quantity of supplements for
+   the detoxing of these contaminations from your blood and lymph, or,
+   your health will be endangered to a severe or fatal level. Do NOT
+   expect local physicians and health care workers to understand these
+   dynamics or have constructive and effective ways of treating the
+   symptoms beyond telling you to stay at lower altitudes.
+
+   <p>Supplements from which benefit are more often to be gained include:
+     <l>* hawthorn extract (tincture) - heart;
+     <l>* Evening primrose oil (detoxer);
+     <l>* Hot cayenne in capsule (circulation);
+     <l>* Coenzyme Q10 (heart and circulation);
+     <l>* Maca herb in capsules (energy and stamina);
+     <l>* Gingko Biloba (brain circulation);
+     <l>* Quercetin bioflavanoid complex (anti-histaminic).
+
+   <p>Arnica tincture or arnica homeopathic tablets will benefit some
+   individuals. As always, check with Spiritual Guidance or by muscle
+   testing for personal relevancy. Some personality types will NOT
+   benefit from some supplements; some blood types are disadvantaged by
+   some supplements.
+
+   <p>Cinnamon has been demonstrated to reduce cholesterol influence with
+   almost all persons.
+
+   <p>The use of passive aerobic exercise methods (i.e. The Chi Machine)
+   will increase oxygen availability and transport or the cells. If
+   living near or above 2000 m and experiencing periodic altitude
+   sickness, the use of the Chi Machine can reduce the symptoms. This
+   could also assist in reducing the symptoms of poor heart and/or lung
+   efficiency, and/or arteriosclerosis at lower altitudes.
+
+   <p>A reduction of the oxygen starvation influence of mercury/lead
+   poisoning, fungal and bacterial infections, worm and fluke
+   infestations, and, viral attacks -- can also be reduced by the use of
+   the Chi Machine. Alternatively, usage of the Chi Machine can be
+   restricted by one's Identity elements, energy blocks, and structural
+   integration.
+
+   <p>Articles on the Internet are transitory.
+   <p>The publishers may remove them, change sites, change URLs, or change
+   titles. For the purpose of maintaining an availability of this article
+   for you, it has been reprinted here with authorship maintained and
+   coding simplified for error-free loading and minimal file size. 
+
+                             

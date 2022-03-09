@@ -1,0 +1,310 @@
+﻿URL: http://www.everything2.com/index.pl?node=union
+
+ 
+
+<h>Union
+
+   <h>by pingouin
+   <p>How much is your time worth to you? A union is an organization of
+   workers who push for the best possible working conditions - who else
+   will? The boss? The boss invented sweatshops! Unions are easy to
+   demonize, if you don't belong to one. They brought about the 40-hour
+   work week, overtime pay, safety laws, and more, including
+   previously-unknown prosperity for those who punched a clock. It
+   enabled many to move to suburbia, buy homes, and raise kids who would
+   grow up to demonize unions.
+   <h>by Cogito 
+   <p>In the field of computation theory, union is one of the regular
+   operations. If A and B are languages (not necessarily regular
+   languages) then the union of A and B (usually written A )U B) is
+   defined as follows.
+
+   {x | x (- A or x (- B}
+
+   In plain English: A )U B is the set of all strings which are either
+   members of A or B or both.
+
+   For example, if A = {a,b,c}, and B = {c,d,e}
+   A )U B = {a,b,c,d,e}
+
+   <p>Some interesting things to note about the union operation:
+     <l>* The union of a set with any subset is equal to the original set
+       (iff B (_ A, then A )U B = A).
+     <l>* Regular languages are closed under the union operation. This means
+       that if A and B are regular languages, then so is A )U B.
+
+   <h>by novasoy 
+   <p>In SQL, UNION keyword does nothing more than mash the output of two or
+   more queries together into one big result set. UNION requres the
+   queries to have the same number of columns. Second, the columns should
+   have compatible data type and size, but some query engines are
+   flexible on this strict ANSI requirement. Third, the columns must have
+   the same constraints with regard to null values. Either both columns
+   must allow nulls or forbid nulls. Again, some products are less strict
+   than the standard. Last, UNIONs may not be subqueries, nor may they
+   have aggregate functions. Check your product's documentation for
+   details.
+
+   <p>Here is what one looks like:
+   SELECT name, email, phone_number FROM salespeople
+
+   UNION
+
+   SELECT name, email, phone_number FROM engineers;
+
+   <p>And the output might look like:
+Jones, Jim      bobj@salesman.com      123-123-1234
+Sousa, Sam      sams@salesman.com      123-123-1235
+Dilbert, J      jd@engineer.com        234-234-1234
+Smart, Alec     sa@engineer.com        234-234-2344
+
+   <p>There are no column headings on purpose in the output example above.
+   Since the column names are often different in the SELECT statements
+   comprising the UNION, the query engine cannot know what to call the
+   columns so quite often there are no column names in the output.
+   Remember, the columns must be of the same type and size, but there is
+   no requirement that their data be in any way related. You really can
+   mix apples and oranges with a UNION query.
+
+   <p>One important "gotcha" with UNION is that by default it eliminates
+   duplicate rows in each SELECT statement (see DISTINCT). To ensure each
+   row gets returned, UNION ALL must be used.
+   <h>by ariels 
+
+<h>Set Theory
+
+   <p>Set theory defines a union operation. For any set A, an axiom
+   guarantees the existence of the union: a set
+
+     B = )UA = { x : TEy.y(-A&x(-y }.
+
+   B is the set of all elements of elements of A.
+
+   <p>When A={a,b} is a pair (derived e.g. by the axiom of pairing), we use
+   the more common notation a)Ub = )UA. This notation is also used when
+   a=b.
+
+   <p>Note, however, that the existence of unions )UA when A is infinite
+   does not follow from the existence of unions of such pairs. In
+   particular: The cardinality of a finite union is bounded by the
+   cardinalities of A and of each of the elements of A. But the
+   cardinality of an infinite (even countable) union has no such bound.
+   Hence the need for an axiom.
+
+   <p>When A is an indexed set A = {a[i]: i(-I} for some index set I,
+   notations based on )U[i(-I]a[i] = )UA are common. Thus, we may see
+
+     N = )U[n=1]^infty {k · p[n] : k=1, 2, ...}
+
+   where p[1]=2, p[2]=3, p[3]=5, ... is the sequence of prime numbers.
+
+   <p>These less formal notations are more common in most of mathematics.
+
+   <p>Given a "universal" set in which to take complements, unions are
+   related to intersections by means of DeMorgan's laws.
+     _________________________________________________________________
+
+<h>C and C++
+
+   <p>In C and in C++, a union is a type. The syntax of a union is exactly
+   the same as the syntax of a struct:
+
+union U {
+  char *   a_string;
+  int      an_integer;
+  double   a_number;
+};
+
+   defines a union U with 3 fields. However, unions are limited in such a
+   way as to allow access to only one field at a time.
+
+<h>Defined behaviour
+
+   <p>The informal rule is that a union holds all fields overlapping in
+   memory. The formal rules are more complex, but amount to the same
+   thing:
+     <l>* A pointer to the union can be converted into a pointer to the type
+       of any of the fields (in particular, it has the correct alignment
+       for each of these types);
+     <l>* Reading any but the last-written field of the union yields
+       undefined behaviour;
+     <l>* The sizeof the union is the largest of the sizeofs each of the
+       members.
+
+   <p>As usual, standardese prohibits the use of words such as "memory", or
+   indeed any mention of implementation. But we all know what they mean.
+
+   <p>Since no portable conversions exist in such a configuration, standard
+   C unions are limited to expressing just the "variant" part of Pascal's
+   variant records. C has no notion of the type member; if YOU want to
+   know the type currently stored in a union, YOU have to make sure you
+   know what it is. One way to do this could be to say
+
+struct variant {
+  enum {e_pchar, e_int, e_double} type;
+  union U value;
+};
+
+   and use the type field to keep track of the type of the last stored
+   data.
+
+   <p>But C doesn't force you to do it this way. Your program might store
+   types differently. For instance:
+
+struct leaf { /* ... */ };
+struct node { /* ... */ };
+struct tree {
+  struct tree *left, *right;      /* left and right subtrees */
+  union {
+    struct leaf a_leaf;           /* If (!left) && (!right) */
+    struct node a_node;           /* Otherwise */
+  } data;
+};
+
+   could be one way to define a tree.
+
+<h>Undefined Behaviour
+
+   <p>Once compiler-specific features are taken into account, unions
+   naturally become more flexible: you can taken advantage of specific
+   knowledge of what the "undefined behaviour" of reading from a "wrong"
+   member will do. For instance, the standard assigns no meaning to this
+   code:
+
+union address_convert {
+  void *ptr;
+  long addr;
+};
+void *convert(long addr)
+{
+  union address_convert cvt;
+  cvt.addr = addr;
+  return cvt.ptr;
+}
+
+   <p>It invokes undefined behaviour. However, a particular implementation
+   MAY specify that such code will work "correctly". This would involve
+   ensuring that longs and void pointers have appropriate sizes, and that
+   the "correct" conversion does indeed occur.
+
+   <p>For such purposes too, unions are a very practicable way for
+   implementation-specific code to achieve certain behaviours.
+     _________________________________________________________________
+
+<h>The connection
+
+   <p>There isn't really one, except that the English language provides the
+   same word for both. The C union { A a; B b; }; can store all values of
+   the disjoint union A)UB. But it relies on labeled values (you can
+   store in either of the fields .a and .b, and you must specify which
+   one you mean). And if A and B refer to the same type, the distinction
+   is even more pronounced.
+
+   <p>C unions better fit (one of) the semantics commonly ascribed to "A
+   ``square cup'' B", which isn't really a union in the mathematical
+   sense.
+   <h>by Webster 1913 
+   <p>Un"ion [F., from L. unio oneness, union, a single large pearl, a kind
+   of onion, fr. unus one. See One, and cf. Onion, Unit.]
+
+   <l>1.
+
+   <p>The act of uniting or joining two or more things into one, or the
+   state of being united or joined; junction; coalition; combination.
+
+   <p>Union differs from connection, as it implies that the bodies are in
+   contact, without an interening body; whereas things may be connected
+   by the invention of a third body, as by a cord or chain.
+
+   <l>2.
+
+   <p>Agreement and conjunction of mind, spirit, will, affections, or the
+   like; harmony; concord.
+
+   <l>3.
+
+   That which is united, or made one; something formed by a combination
+   or coalition of parts or members; a confederation; a consolidated
+   body; a league; as, the weavers have formed a union; trades unions
+   have become very numerous; the United States of America are often
+   called the Union.
+
+   A. Hamilton.
+
+   <l>4.
+
+   <p>A textile fabric composed of two or more materials, as cotton, silk,
+   wool, etc., woven together.
+
+   <l>5.
+
+   <p>A large, fine pearl.
+   [Obs.]
+
+     If they [pearls] be white, great, round, smooth, and weighty . . .
+     our dainties and delicates here at Rome . . . call them unions, as
+     a man would say "singular," and by themselves alone. Holland.
+
+     In the cup an union shall he throw, Richer than that which four
+     successive kings In Denmark's crown have worn. Shak.
+
+   <l>6.
+
+   <p>A device emblematic of union, used on a national flag or ensign,
+   sometimes, as in the military standard of Great Britain, covering the
+   whole field; sometimes, as in the flag of the United States, and the
+   English naval and marine flag, occupying the upper inner corner, the
+   rest of the flag being called the fly. Also, a flag having such a
+   device; especially, the flag of Great Britain.
+
+   <p>=> The union of the United States ensign is a cluster of white stars,
+   denoting the union of the States, and, properly, equal in number to
+   that of the States, displayed on a blue field; the fly being composed
+   of alternate stripes of red and white. The union of the British ensign
+   is the three crosses of St. George, St. Andrew, and St. Patrick in
+   combination, denoting the union of England, Scotland and Ireland,
+   displayed on a blue field in the national banner used on shore, on a
+   red, white, or blue field in naval ensigns, and with a white border or
+   fly in the merchant service.
+
+   <l>7. Mach.
+
+   <p>A joint or other connection uniting parts of machinery, or the like,
+   as the elastic pipe of a tender connecting it with the feed pipe of a
+   locomotive engine; especially, a pipe fitting for connecting pipes, or
+   pipes and fittings, in such a way as to facilitate disconnection.
+
+   <l>8. Brewing
+
+   <p>A cask suspended on trunnions, in which fermentation is carried on.
+
+   <p>Hypostatic union Theol. See under Hypostatic. -- Latin union. See
+   under Latin. -- Legislative Union Eng. Hist., the union of Great
+   Britain and Ireland, which took place Jan. 1, 1801. -- Union, OR Act
+   of Union Eng. Hist., the act by which Scotland was united to England,
+   or by which the two kingdoms were incorporated into one, in 1707. --
+   Union by the first, OR second, intention. Surg. See To heal by the
+   first, OR second, intention, under Intention. -- Union down Naut., a
+   signal of distress at sea made by reversing the flag, or turning its
+   union downward. -- Union jack. Naut. See Jack, n., 10. -- Union joint.
+   Mech. (a) A joint formed by means of a union. (b) A piece of pipe made
+   in the form of the letter T.
+
+   <p>Syn. -- Unity; junction; connection; concord; alliance; coalition;
+   combination; confederacy. -- Union, Unity. Union is the act of
+   bringing two or more things together so as to make but one, or the
+   state of being united into one. Unity is a state of simple oneness,
+   either of essence, as the unity of God, or of action, feeling, etc.,
+   as unity of design, of affection, etc. Thus, we may speak of effecting
+   a union of interests which shall result in a unity of labor and
+   interest in securing a given object.
+
+     <p>One kingdom, joy, and union without end. Milton.
+
+     <p>[Man] is to . . . beget Like of his like, his image multiplied. In
+     unity defective; which requires Collateral love, and dearest amity.
+     Milton.
+
+
+                                                         
+  

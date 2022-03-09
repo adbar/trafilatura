@@ -1,0 +1,457 @@
+
+<h> Statement of Stuart K. Pratt, Consumer Data Industry Association
+
+<p> The Consumer Data Industry Association (CDIA) is pleased to submit
+   written testimony in connection with a hearing on the misuse of Social
+   Security numbers and we thank Chairman Shaw for holding this hearing.
+   CDIA has appeared in person before this subcommittee before and we
+   hope our testimony will be helpful to you.[1]
+
+<p> Founded in 1906, the Consumer Data Industry Association (CDIA),
+   formerly known as Associated Credit Bureaus, is the international
+   trade association that represents more than 500 consumer data
+   companies.  CDIA members represent the nations leading institutions in
+   credit reporting, mortgage reporting, check verification, fraud
+   prevention, risk management, employment reporting, tenant screening
+   and collection services.
+
+<p> Consumer reporting agencies are careful stewards of personal
+   information and they adhere to strict procedures outlined in federal
+   and state laws.[2]  The information infrastructure of the consumer
+   reporting system is the backbone of the consumer credit economy.[3]
+
+<p> Our members have a strong interest in the legitimate and lawful use of
+   all information, including Social Security numbers.  Used properly,
+   SSNs play a substantial role in reducing fraud, enhancing workplace
+   security, promoting public safety, supporting homeland defense,
+   reducing state and federal entitlement fraud, enhancing child support
+   enforcement, and facilitating commerce to a diverse, mobile electronic
+   society.
+
+<p> Before I specifically address how the SSN is used by our industry and
+   the importance of this number, I have found it helpful to provide a
+   short review of what a consumer reporting agency is, what is contained
+   in a consumer report, and the law that governs our industry.
+
+<h> CONSUMER REPORTING AGENCIES AND CONSUMER REPORTS
+
+<p> Consumer reporting agencies maintain information on individual
+   consumer payment patterns associated with various types of credit
+   obligations on approximately 190 million Americans.  The data compiled
+   by these agencies is used by creditors and others permitted under the
+   strict prescriptions of the FCRA.
+
+<p> Consumer credit histories are derived from, among other sources, the
+   voluntary provision of information about consumer payments on various
+   types of credit accounts or other debts from thousands of data
+   furnishers such as credit grantors, student loan guarantee and child
+   support enforcement agencies. A consumer's file may also include
+   public record items such as a bankruptcy filing, judgment or lien.
+   Note that these types of data sources often contain SSNs, as well.
+
+<p> For purposes of data accuracy and proper identification, generally our
+   members maintain information such as a consumer's full name, current
+   and previous addresses, Social Security Number (when voluntarily
+   provided by consumers) and places of employment. This data is loaded
+   into the system on a regular basis to ensure the completeness and
+   accuracy of data.[4]
+
+<p> It is interesting to note that the vast majority of data in our
+   members' systems simply confirms what most of you would expect; that
+   consumers pay their bills on time and are responsible, good credit
+   risks. This contrasts with the majority of systems maintained in other
+   countries, such as Japan or Italy, which store only negative data and
+   do not give consumers recognition for the responsible management of
+   their finances.
+
+<p> As important as knowing what we have in our files is also knowing what
+   types of information our members do not maintain in files used to
+   produce consumer reports. Our members do not know what consumers have
+   purchased using credit (e.g., a refrigerator, clothing, etc.) or where
+   they used a particular bank card (e.g., which stores a consumer
+   frequents). They also don't have a record of when consumers have been
+   declined for credit or another benefit based on the use of a consumer
+   report. Medical treatment data isn't a part of the databases and no
+   bank account information is available in a consumer report.
+
+<h> THE FAIR CREDIT REPORTING ACT (FCRA)
+
+<p> In addition to our general discussion of the industry, we believe it
+   is important for your Subcommittee to have a baseline understanding of
+   the law which regulates our industry.
+
+<p> Enacted in 1970, the Fair Credit Reporting Act was significantly
+   amended in the 104th Congress with the passage of the Credit Reporting
+   Reform Act.
+
+<p> Congress, our Association's members, creditors and consumer groups
+   spent over six years working through the modernization of what was the
+   first privacy law enacted in this country (1970). This amendatory
+   process resulted in a complete, current and forwarding-looking
+   statute. The FCRA serves as an example of successfully balancing the
+   rights of the individual with the economic benefits of maintaining a
+   competitive consumer reporting system so necessary to a
+   market-oriented economy.
+
+<p> The FCRA is an effective privacy statute, which protects the consumer
+   by narrowly limiting the appropriate uses of a consumer report (often
+   we call this a credit report) under Section 604 (15 U.S.C. 1681b),
+   entitled Permissible Purposes of Reports.
+
+<p> Some of the more common uses of a consumer's file are in the issuance
+   of credit, subsequent account review and collection processes. Reports
+   are also, for example, permitted to be used by child support
+   enforcement agencies when establishing levels of support.
+
+<p> Beyond protecting the privacy of the information contained in consumer
+   reports, the FCRA also provides consumers with certain rights such as
+   the right of access; the right to dispute any inaccurate information
+   and have it corrected or removed; and the right to prosecute any
+   person who accesses their information for an impermissible purpose.
+   The law also includes a shared liability for data accuracy between
+   consumer reporting agencies and furnishers of information to the
+   system.
+
+<h> SOCIAL SECURITY NUMBER USES
+
+<p> Let me now turn to the question of how our industry uses the SSN.
+
+<p> Under the Fair Credit Reporting Act, our industry has a duty to employ
+   reasonable procedures to ensure the maximum possible accuracy of the
+   consumer report.  Further, we must design systems that accurately
+   allow our customers to extract only the data requested on a specific
+   individual.
+
+<p> We must accomplish this dual mission of accuracy both in terms of
+   building databases, but also properly identifying files in our systems
+   in the context of a highly mobile society.  Consider the following:
+<l> * Approximately 16% of the nation's population moves each year
+       according to the U.S. Census Bureau, which means many addresses
+       change each year.  (This equates to approximately 42 million
+       Americans)
+<l> * Based on National Center for Health Statistics, it is estimated
+       that there are 2.4 million marriages and 1.2 million divorces
+       annually.  This event frequently triggers changes in addresses as
+       well as last names.
+<l> * In 1998 there were 6 million homes in the U.S. that are considered
+       vacation or second homes.  Consumers often switch billing
+       addresses if they stay at such residences for long periods of time
+       and in some cases maintain billing addresses for both residences
+       with various creditors.  (Source: U.S. Census Bureau House Vacancy
+       Survey as extrapolated by the National Association of Realtors)
+
+<p> These data clearly speak to the challenge our members face where
+   identifying data often changes.
+
+<p> In light of the mobility of our society, the Social Security Number
+   plays a very significant role in ensuring data quality.  Our members
+   process 2 billion data elements a month.  These elements are a
+   combination of credit history data and identifying information.
+   Consider the following very real example.
+
+<p> Where a consumer has changed a last name due to marriage or divorce
+   and has moved to a new address, which is common in either case, the
+   SSN is the most stable identifying element in the file.  First, it
+   helps us to identify the consumer's file with precision during this
+   life transition where he or she is likely applying for new credit,
+   seeking approval for utilities, and seeking to rent or purchase a new
+   residence.   The consumer expects that the consumer report will be
+   available for all of these necessary transactions and the SSN helps
+   our members to meet this expectation.  Second, the consumer expect his
+   or her file to be accurate and the SSN helps us to maintain the file
+   accurately even when the consumer is in the midst of updating
+   creditors with changes in name and address.
+
+<p> The SSN is also a critical element in producing information products,
+   which are commonly called locator services.  These services are made
+   available, for example, to child support enforcement agencies for
+   purposes of locating non-custodial parents;[5] to pension funds which
+   must locate beneficiaries; to law enforcement for locating criminals
+   or witnesses;[6] to healthcare providers that must locate individuals
+   who have chosen not to pay their bills, to state benefits agencies to
+   reduce public assistance fraud,[7] and for other similar uses.
+
+<p> Further, the SSN plays a role in fraud prevention products.  Where a
+   consumer makes application for a product or service, information
+   products that help the business to ensure that they are doing business
+   with the right consumer use information products to authenticate or
+   verify the application information.  This is true in both for
+   bricks-and-mortar business and in e-Commerce.
+
+<p> If applicant data does not match, then the business can take
+   additional steps to verify the consumer's identity and thus prevent
+   fraud.
+
+<h> FRAUD PREVENTION AND IDENTITY THEFT
+
+<p> In your press release announcing this hearing, you mention the
+   potential for misuse of the SSN.  Our industry has a history of
+   bringing forward initiatives to address fraud.  These efforts focus on
+   the use of new technologies, and better procedures and education.
+   CDIA and its members have a long history of being leading innovators
+   of identity fraud solutions.  The attachment provides a short
+   thumbnail of our involvement in identity fraud remediation since
+   1993.[8]
+
+<h> CONCLUSION
+
+<p> In conclusion, you can see by our actions that in large part our uses
+   of the SSN are governed under the Fair Credit Reporting Act, one of
+   the most extensive privacy laws in the country.  Beyond law, our
+   members have a history of proactively limiting how SSNs are used
+   outside of the FCRA.  No one particular element of information is the
+   key to identity theft.  The underlying theme in all of this is
+   balance.
+
+<p> Laws that overreach in attempting to limit use of the SSN are likely
+   to merely take fraud prevention tools out of the hands of legitimate
+   businesses at the expense of consumers.  Ironically, to prevent fraud
+   you must be able to crosscheck information.  To maintain accurate
+   databases, you must be able to maintain a range of identifying
+   elements.  Absent the availability of the SSN, we will be less able to
+   build accurate data bases, to accurately identify records and to help
+   prevent the very crime through the development of fraud prevention and
+   authentication tools.
+
+<p> Thank you for this opportunity to offer testimony.  CDIA is available
+   to assist your and your committee at any time.
+   __________
+
+<l> [1] Preventing Identity Theft by Terrorists: Hearing before the House
+   Comm. on Financial Services Subcomm. on Oversight and Investigations
+   and the House Comm. on Ways and Means Subcomm. on Social Security,
+   107^th Cong. (Nov. 8, 2001) (testimony of Stuart K. Pratt, Vice
+   President, Vice President, Associated Credit Bureaus); Use and Misuse
+   of Social Security Numbers: Hearing before the House Comm. on Ways and
+   Means Subcomm. on Social Security, 106^th Cong. (May 11, 2000)
+   (testimony of Stuart K. Pratt, , Vice President, Vice President,
+   Associated Credit Bureaus).
+
+<l> [2] All consumer reporting agencies are bound by the Fair Credit
+   Reporting Act (FCRA), 15 U.S.C. Â§ 1681 et seq. and numerous state
+   credit reporting laws.  Among other things, the FCRA requires consumer
+   reporting agencies to maintain reasonable procedures to assure maximum
+   possible accuracy, 15 U.S.C. Â§ 1681e(b) and prohibits data furnishers
+   from furnishing data to consumer reporting agencies if they know the
+   information has an error, Â§ 1681s-2(a).  In addition, a consumer
+   reporting agency is prohibited from furnishing a consumer report to
+   anyone without a permissible purpose -   a narrow and statutorily
+   limited list of permitted uses.  Â§ 1681b.
+
+<l> [3] For example, it was recently noted that
+
+<p> Maintaining a reliable and robust national credit reporting system
+     is essential to ensure the continued availability of consumer
+     credit at reasonable costs * * * The ready availability of
+     accurate, up-to-date credit information from consumer reporting
+     agencies benefits both creditors and consumers.  Information from
+     consumer reports gives creditors the ability to make credit
+     decisions quickly and in a fair, safe and sound, and cost-effective
+     manner.  Consumers benefit from access to credit information from
+     different sources, vigorous competition among creditors, quick
+     decisions on credit applications, and reasonable costs for credit.
+
+<p> Fair Credit Reporting Act: How it Functions for Consumers and the
+   Economy: Hearing before the House Comm. on Financial Services Subcomm.
+   on Financial Institutions and Consumer Credit, 108^th Cong. (June 4,
+   2003) (statement of Dolores S. Smith, Director, Division of Consumer
+   and Community Affairs, Board of Governors of the Federal Reserve
+   System).
+
+<l> [4] Note that there are in fact a number of major credit reporting
+   systems in this country. Within CDIAs membership the three most often
+   recognized systems would be Equifax, Atlanta, Georgia; Experian, Costa
+   Mesa, California; and TransUnion, Chicago, Illinois. These systems not
+   only manage their own data, but provide data processing services for
+   the hundreds of local independently-owned automated credit bureaus in
+   the Association's membership.
+
+<l> [5] The U.S. Department of Health and Human Services noted that
+   [r]outine transfer of child support payment information to credit
+   bureausis essential because these obligations may constitute a
+   superior lean on a creditors income.  A Guide About Child Support
+   Enforcement for Credit Grantors, U.S. Department of Health and Human
+   Services, Family Support Administration.  November 1988.  In addition
+   The Association for Children for Enforcement of Support reports that
+   public record information provided through commercial vendors helped
+   locate over 75 percent of the deadbeat parents they sought.
+   Information Privacy Act, Hearings before the Comm. on Banking and
+   Financial Services, House of Representatives, 105th Cong., 2d Sess.
+   (July 28, 1998) (statement of Robert Glass).
+
+<l> [6] Then-FBI Director Louis Freeh testified before Congress in 1999
+   and noted that in 1998, his agency made more than 53,000 inquiries to
+   commercial on-line databases to obtain public source information
+   regarding individuals, businesses, and organizations that are subjects
+   of investigations.  This information, according to Director Freeh,
+   assisted in the arrests of 393 fugitives, the identification of more
+   than $37 million in seizable assets, the locating of 1,966 individuals
+   wanted by law enforcement, and the locating of 3,209 witnesses wanted
+   for questioning.   Hearing before the Senate Comm. on Appropriations
+   Subcomm. for the Departments of Commerce, Justice, and State, and the
+   Judiciary and Related Agencies, March 24, 1999 (Statement of Louis J.
+   Freeh, Director of the Federal Bureau of Investigation).
+
+<l> [7] Consider the following examples:
+
+<l> * Individuals confined to a correction facility for at least 1 full
+       month are ineligible to continue receiving federal Supplemental
+       Security Insurance (SSI) program benefits Between January and
+       August 1996, the sharing of prisoner data between SSA and state
+       and local correction facilities helped SSA identify about $151
+       million overpayments already made and prevented about $173 million
+       in additional overpayments to ineligible prisoners. General
+       Accounting Office, Social Security Numbers: Government Benefits
+       from SSN Use but Could Provide Better Safeguards, GAO-02-352 (May
+       2002), 15, citing General Accounting Office, Supplemental Security
+       Income: Incentive Payments Have Reduced Benefit Overpayments to
+       Prisoners, GAO/HEHS-00-02 (Nov. 22, 1999).
+<l> * Applicants for Temporary Assistance for Needy Families (TANF), a
+       program designed to help low-income families, are required to
+       provide their SSNs.  Some agencies share SSN information to verify
+       eligibility and identity.  Between January and September 1999, New
+       York State estimated that SSN verification saved about $72
+       million.  General Accounting Office, Social Security Numbers,
+       Government Benefits from SSN Use but Could Provide Better
+       Safeguards, GAO-02-352 (May 2002), 15, citing General Accounting
+       Office, Benefit and Loan Programs: Improved Data Sharing Could
+       Enhance Program Integrity, GAO-HEHS-00-119 (Sept. 13, 200).
+<l> * The Department of Education uses SSNs to match data on defaulted
+       education loans with the National Directory of New Hires (NDNH)As
+       a result of this matchingthe department reported collecting $130
+       million from defaulted student loan borrowers in 2001. General
+       Accounting Office, Social Security Numbers, Government Benefits
+       from SSN Use but Could Provide Better Safeguards, GAO-02-352 (May
+       2002), 16.
+<l> * Federal agencies that are owned money share that information with
+       the Treasury Department which matches the debtors SSNs with those
+       taxpayers that are owed tax refunds and reduces the refund by the
+       amount owed.  In 2001, the Treasury Department offset tax refunds
+       by $1 billion.  Id.
+
+<l> [8] While we agree that identity fraud is a significant problem, we
+   also hope the committee will consider any legislation in the context
+   of the most accurate and reliable data on the scope of the problem.
+   One witness has suggested that the number of identity fraud victims
+   could be between 700,000 1.8 million per year.  Misuse of Social
+   Security Numbers: Hearing before the House Comm. on Ways and Means
+   Subcomm. on Social Security, 108^th Cong. (July 10, 2003) (statement
+   of Steve Edwards, Special Agent in Charge, Financial Investigations
+   Unit, Georgia Bureau of Investigations; State Coordinator, U.S.
+   Department of the Treasury, Financial Crimes Enforcement Network; and
+   Vice Chairman of the Board of Directors, National White Collar Crime
+   Center).  CDIA feels that the best review of the level of identity
+   fraud victimization is closer to 60,000 to 92,000 per year, General
+   Accounting Office, Identity Theft: Prevalence and Cost Appear to be
+   Growing, GAO-02-363 (March 2002), 4, or 162,000 per year.  FTC
+   Reports: Figures and Trends on Identity Theft, January 2002 December
+   2002.  The GAO figures were developed based on interviews with three
+   national consumer reporting agencies.  Consumer reporting agencies are
+   probably the best source understanding the scope of identity fraud
+   victimization as victims are mostly likely to contact consumer
+   reporting agencies as a first response.
+                                 __________
+
+<h> Consumer Reporting Agency Responses to Identity Fraud
+		   
+<l> * 1993.  Consumer Data Industry Association, then known as
+       Associated Credit Bureaus, formed a Fraud and Security Task Force.
+
+<l> * 1998.  Creation of True Name Fraud Task Force led by former
+       Vermont Attorney General M. Jerome Diamond.   The work of the task
+       force included meetings with law enforcement, consumer
+       organizations, privacy advocates, legislators and staff, victims,
+       and others.
+
+<l> * The capstone of the True Name Fraud Task Force was a series of
+       initiatives announced in March 2000.  These initiatives meant the
+       consumer reporting industry was the first industry to step forward
+       and not only educate its members about the problems consumers
+       experienced, but to seek specific changes in business practices.
+       The initiatives are to:
+	   
+<l> + Advocate the use and improve the effectiveness of security
+            alerts through the use of codes transmitted to creditors.
+            These alerts and codes can help creditors avoid opening
+            additional fraudulent accounts.
+<l> + Implement victim-assistance best practices to provide a more
+            uniform experience for victims when working with personnel
+            from multiple fraud units.
+<l> + Assist identity theft victims by sending a notice to
+            creditors and other report users when the victim does not
+            recognize a recent inquiry on the victim's file.
+<l> + Execute a three-step uniform response for victims who call
+            automated telephone systems: automatically adding security
+            alerts to files, opting the victim out of prescreened credit
+            offers, and sending a copy of his or her file within three
+            business days.
+<l> + Launch new software systems that will monitor the victim's
+            corrected file for three months, notify the consumer of any
+            activity, and provide fraud unit contact information.
+<l> + Fund, through CDIA, the development of a series of consumer
+            education initiatives through CDIA to help consumers
+            understand how to prevent identity theft and also what steps
+            to take if they are victims.
+			
+<l> * 2001.  CDIA announced a police report initiative so that when a
+       police report is provided as part of the process of disputing
+       fraudulent data, Equifax, Experian and TransUnion will block these
+       disputed items from appearing on subsequent consumer reports
+       regarding that individual.
+
+<l> * Another collaborative effort with tremendous promise is your new
+       police report initiative...I appreciate that certain
+       consumer-based initiatives require you to balance accuracy issues
+       - knowing that the consumers report contains all relevant credit
+       information, including derogatory reports - against customer
+       service.  From my perspective, your police report initiative
+       strikes just the right balance.  J. Howard Beales, III, Director
+       of the FTCs Bureau of Consumer Protection, before the Consumer
+       Data Industry Association.  Jan. 17, 2002.  
+
+<l> * 2002-03. ID Fraud Victim Data Exchange.  CDIA and its members
+       committed in 2002 to start a pilot test in early-2003 so that when
+       an ID fraud victim calls any one of the participating credit
+       reporting agencies, the victim will be notified that his or her
+       identifying information will be shared by the receiving credit
+       reporting agency with the other two participating credit reporting
+       agencies and that the following steps will be taken by each
+       recipient of the victims information:
+
+<l> * A temporary security alert will be added to the victims file.
+       This security alert will be transmitted to all subsequent users
+       (e.g., creditors) which request a copy of the file for a
+       permissible purpose under the Fair Credit Reporting Act.
+<l> * The victim will be opted out of all non-initiated offers of credit
+       or insurance.
+<l> * The CRA will ensure that a copy of the victims file is in the mail
+       within three business days of the victims request.
+
+<l> Our efforts are paying off.
+
+<l> * Most calls are prevention related.  CDIA members report a majority
+       of consumers who contact fraud units are taking preventative steps
+       and are not reporting a crime.
+<l> * Victims are learning of the fraud earlier.  According to an FTC
+       report in June 2001, 42% of victims learn about the crime within
+       30 days or less, a full 10% less than than in the prior report.
+       CDIA estimates another 35% lean of the crime within one to six
+       months and 7% learn of the crime in six months to a year.
+<l> * Victimization of the elderly is dropping.  In 2001, the FTC
+       estimated that 6.3% of identity fraud victims were over 65, a 5%
+       decrease from 2000.
+
+<h> About CDIA
+
+<p> Founded in 1906, the Consumer Data Industry Association (CDIA),
+   formerly known as Associated Credit Bureaus (ACB), is the
+   international trade association that represents more than 400 consumer
+   data companies.  CDIA members represent the nations leading
+   institutions in credit reporting, mortgage reporting, check
+   verification, fraud prevention, risk management, employment reporting,
+   tenant screening and collection services.
+
+<p> For more information about CDIA, its members, or identity fraud or
+   other issues, please visit us at www.cdiaonline.org or contact us at
+   202-371-0910.
+        

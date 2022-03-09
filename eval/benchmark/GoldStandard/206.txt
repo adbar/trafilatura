@@ -1,0 +1,116 @@
+
+<h> Reports Available through Faculty Roster
+
+<h> U.S. Medical School Faculty
+
+<p> The annual report U.S. Medical School Faculty is a set of 20 tables
+   that answer common questions about the national distribution of
+   full-time faculty. The information is displayed by specialty,
+   department, rank, degree, sex, and race/hispanic origin. (Data on
+   part-time faculty, volunteer, and emeritus faculty are excluded.)
+
+<p> From 1986-1997, printed copies of U.S. Medical School Faculty were
+   distributed to medical school deans, Faculty Roster representatives,
+   and other selected constituents. The report is now published online
+   only and is produced using a database snapshot from December 31. Prior
+   to December 31, 1997, the publication was based on a June 30 database
+   snapshot.
+
+<p> Note that the AAMC Faculty Roster does not necessarily reflect
+   official faculty counts. As a result, the figures in these tables
+   should be viewed and used with care. While the proportion of faculty
+   across key variables may be reasonably accurate, the number of faculty
+   may not be. For the official faculty figures, please visit the Medical
+   School Profile System at http://services.aamc.org/mspsreports.
+   Although the Medical School Profile System reflects official faculty
+   counts that institutions provide as part of their accreditation
+   process, the Medical School Profile System does not always provide the
+   kind of detail that the Faculty Roster provides.
+
+<p> The following issues of the report are available online:
+
+<l> * U.S. Medical School Faculty, 2005
+<l> * U.S. Medical School Faculty, 2004
+<l> * U.S. Medical School Faculty, 2003
+<l> * U.S. Medical School Faculty, 2002
+<l> * U.S. Medical School Faculty, 2001
+
+<l> * U.S. Medical School Faculty, 2000
+<l> * U.S. Medical School Faculty, 1999
+<l> * U.S. Medical School Faculty, 1998
+<l> * U.S. Medical School Faculty, 1997 (Updated)
+<l> * U.S. Medical School Faculty, 1997 
+
+<p> For additional information, contact Hershel Alexander,
+   halexander@aamc.org.
+
+<h> U.S. Medical School Faculty Trends
+
+<p> U.S. Medical School Faculty Trends, 1995-2005 summarizes changes in
+   the distribution of full-time faculty members across various
+   dimensions over the last decade.
+
+<p> In figures 3a and 3b, "OHD" denotes "Other Health Doctorate" which
+   includes doctorates in dentistry, veterinary medicine, public health,
+   optometry, and other health-related fields. Race/Hispanic origin
+   trends reflect Faculty Roster data collection and reporting practices
+   at the time. The Faculty Roster began collecting and reporting
+   multiple race information in 2002.
+
+<p> Select the links below to view specific trends:
+
+<h> Figure 1.
+   (PDF, 1 page - 58 KB)
+
+<l> U.S. Medical School Faculty by Sex
+
+<h> Figure 2.
+   (PDF, 1 page - 62 KB)
+
+<l> U.S. Medical School Female Faculty as a Percent of Each Rank
+
+<h> Figure 3.
+   (PDF, 1 page - 58 KB)
+
+<l> U.S. Medical School Faculty in Basic Science Departments by Degree
+
+<h> Figure 3b.
+   (PDF, 1 page - 62 KB)
+
+<l> U.S. Medical School Faculty in Clinical Science Departments by Degree
+
+<h> Figure 4.
+   (PDF, 1 page - 69 KB)
+
+<l> U.S. Medical School Female Faculty by Race/Hispanic Origin
+
+<h> Figure 5.
+   (PDF, 1 page - 69 KB)
+
+<l> U.S. Medical School Male Faculty by Race/Hispanic Origin
+
+<h> Figure 6.
+   (PDF, 1 page - 62 KB)
+
+<l> U.S. Medical School Faculty by Department
+
+<h> Faculty Roster Benchmark Reports
+
+<p> The Faculty Roster Benchmark Reports application is an interactive
+   reporting tool utilizing Faculty Roster data. Users have the ability
+   to generate reports in a variety of ways. For example, users can
+   generate one of the Template Reports and tweak it to view the data
+   according to their own criteria, including creating comparison groups
+   of institutions. Users can also create their own Custom Reports,
+   choosing from a large number of permutations of Faculty Roster fields.
+
+<h> Special Reports
+
+<p> Faculty Roster staff are able to conduct special reports for
+   individuals whose needs are not met from existing reports. Special
+   reports may vary from simple analyses requiring minimal programming to
+   complicated analyses requiring significant time and effort. The charge
+   for a special report depends on the length of time to complete the
+   analysis, with three hours as the typical length of time. For
+   additional information, contact Hershel Alexander,
+   halexander@aamc.org.

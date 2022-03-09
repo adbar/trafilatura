@@ -1,0 +1,802 @@
+URL: http://www.calmis.ca.gov/file/oesstructure/oes_def3.htm
+
+<h>Employment Development Department
+
+<h>Labor Market Information
+ 
+<h>1996 OES Definitions - Professional, Paraprofessional, and Technical
+  Occupations (Part 2)
+
+<p>This major occupational group includes persons concerned with the
+   theoretical or practical aspects of such fields as science, art,
+   education, law, and business relations where substantial postsecondary
+   educational preparation or equivalent on-the-job training or
+   experience is required. Occupations in this section are ordered as
+   follows: General management support; engineering and scientific; data
+   processing and mathematical; social sciences, law and related;
+   teaching and related; medicine and health; writing, art and related;
+   and a residual "All Other" category.
+
+<p>This pages covers OES codes 31111, Lecturers, to code 39999, All Other
+   Professional, Paraprofessional, and Technical Workers. The first part
+   of this group are in Part 1. 
+
+<h>LECTURERS
+
+<p>Responsible solely for preparing and delivering discourses on subjects
+   requiring specialized knowledge. Exclude persons trained as lecturers
+   but currently employed in positions not requiring the use of such
+   training.
+
+<h>NURSING INSTRUCTORS, POSTSECONDARY
+
+<p>Demonstrate and teach patient care in classroom and clinical units to
+   nursing students. Instruct students in principles and application of
+   physical, biological, and psychological subjects related to nursing.
+   Conduct and supervise laboratory experiments. Issue assignments,
+   direct seminars, etc. Participate in planning curriculum with medical
+   and nursing personnel and in evaluating and improving teaching and
+   nursing practices. May specialize in specific subjects, such as
+   anatomy or chemistry, or in a type of nursing activity, such as
+   nursing of surgical patients.
+
+<h>GRADUATE ASSISTANTS, TEACHING
+
+<p>Assist department chairperson, faculty members, or other professional
+   staff members in college or university by performing teaching or
+   teaching-related duties, such as teaching lower level courses,
+   developing teaching materials, preparing and giving examinations, and
+   grading examinations or papers. Graduate Assistants who primarily
+   perform non-teaching duties, such as laboratory Research, should be
+   reported in the occupational category related to the work performed.
+
+<h>AGRICULTURAL SCIENCES TEACHERS, POSTSECONDARY
+
+<p>Teach courses pertaining to agricultural sciences. Include teachers of
+   agronomy, dairy sciences, fisheries management, forestry,
+   horticultural sciences, poultry sciences, range management, and soil
+   conservation.
+
+<h>LIFE SCIENCES TEACHERS, POSTSECONDARY
+
+<p>Teach courses in biological sciences. Include teachers of
+   biochemistry, biophysics, botany, and zoology. Exclude teachers of
+   Agricultural Sciences. Exclude Health Diagnostics and Health Treatment
+   Teachers.
+
+<h>CHEMISTRY TEACHERS, POSTSECONDARY
+
+<p>Teach courses in chemistry. Include teachers of analytical, inorganic,
+   and organic chemistry.
+
+<h>PHYSICS TEACHERS, POSTSECONDARY
+
+<p>Teach courses in physics.
+
+<h>ALL OTHER PHYSICAL SCIENCES TEACHERS, POSTSECONDARY
+
+<p>Teach courses in the physical sciences, except chemistry and physics.
+   Include teachers of subjects such as astronomy, atmospheric sciences,
+   space sciences, and geology.
+
+<h>HEALTH DIAGNOSTICS TEACHERS, POSTSECONDARY
+
+<p>Teach courses required for medical degrees that are necessary to
+   practice as chiropractors, dentists, optometrists, physicians,
+   podiatrists, veterinarians, or similar practitioners.
+
+<h>HEALTH ASSESSMENT AND TREATMENT TEACHERS, POSTSECONDARY
+
+<p>Teach courses required for degrees needed by health specialists,
+   technicians, and technologists working as nutritionists, occupational
+   therapists, pharmacists, physical therapists, physician assistants,
+   respiratory therapists, or in similar occupations. Exclude Nursing
+   Instructors.
+
+<h>COMMUNICATIONS TEACHERS, POSTSECONDARY
+
+<p>Teach courses in communications, such as: organizational
+   communications, public relations, and radio/television broadcasting.
+   Include teachers of journalism.
+
+<h>ENGLISH LANGUAGE AND LITERATURE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in English language and literature. Include teachers of
+   linguistics, and of comparative literature taught in English.
+
+<h>FOREIGN LANGUAGE AND LITERATURE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in foreign (i.e., other than English) languages and
+   literature.
+
+<h>ART, DRAMA, AND MUSIC TEACHERS, POSTSECONDARY
+
+<p>Teach courses in visual and performing arts, such as: cinema, dance,
+   drama, music, painting, sculpture, and theater.
+
+<h>ENGINEERING TEACHERS, POSTSECONDARY
+
+<p>Teach courses in engineering. Include teachers of engineering
+   specialties such as: aerospace, chemical, civil, electrical,
+   industrial, mechanical, mineral, nuclear, and petroleum engineering.
+
+<h>ARCHITECTURE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in architecture and architectural design, such as:
+   architectural environmental design, interior architecture/design, and
+   landscape architecture.
+
+<h>MATHEMATICAL SCIENCES TEACHERS, POSTSECONDARY
+
+<p>Teach courses in mathematics, applied mathematics, statistics, and
+   actuarial science.
+
+<h>COMPUTER SCIENCE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in computer and information science, including computer
+   engineering, computer programming, and information systems theory.
+
+<h>ANTHROPOLOGY AND SOCIOLOGY TEACHERS, POSTSECONDARY
+
+<p>Teach courses in anthropology and sociology.
+
+<h>AREA, ETHNIC, AND CULTURAL STUDIES TEACHERS, POSTSECONDARY
+
+<p>Teach courses pertaining to the culture and development of an area
+   (e.g., Latin America), an ethnic group, or any other group (e.g.,
+   women's studies, urban affairs).
+
+<h>ECONOMICS TEACHERS, POSTSECONDARY
+
+<p>Teach courses in economics.
+
+<h>GEOGRAPHY TEACHERS, POSTSECONDARY
+
+<p>Teach courses in geography.
+
+<h>HISTORY TEACHERS, POSTSECONDARY
+
+<p>Teach courses in human history and historiography.
+
+<h>POLITICAL SCIENCE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in political science, international affairs, and
+   international relations.
+
+<h>PSYCHOLOGY TEACHERS, POSTSECONDARY
+
+<p>Teach courses in psychology, such as: child, clinical, and
+   developmental psychology, and psychological counseling.
+
+<h>ALL OTHER SOCIAL SCIENCES TEACHERS, POSTSECONDARY
+
+<p>Teach courses in social sciences not classified separately above.
+
+<h>BUSINESS TEACHERS, POSTSECONDARY
+
+<p>Teach courses in business administration and management, such as:
+   accounting, finance, human resources, labor relations, marketing, and
+   operations Research.
+
+<h>LAW TEACHERS, POSTSECONDARY
+
+<p>Teach courses in law.
+
+<h>CRIMINAL JUSTICE AND LAW ENFORCEMENT TEACHERS, POSTSECONDARY
+
+<p>Teach courses in criminal justice, corrections, and law enforcement
+   administration.
+
+<h>SOCIAL WORK TEACHERS, POSTSECONDARY
+
+<p>Teach courses in social work.
+
+<h>EDUCATION TEACHERS, POSTSECONDARY
+
+<p>Teach courses pertaining to education, such as: counseling,
+   curriculum, guidance, instruction, teacher education, and teaching
+   English as a second language.
+
+<h>PHILOSOPHY AND RELIGION TEACHERS, POSTSECONDARY
+
+<p>Teach courses in philosophy, religion, and theology.
+
+<h>LIBRARY SCIENCE TEACHERS, POSTSECONDARY
+
+<p>Teach courses in library science.
+
+<h>PARKS, RECREATION, LEISURE, AND FITNESS STUDIES TEACHERS,
+   POSTSECONDARY
+
+<p>Teach courses pertaining to recreation, leisure, and fitness studies,
+   including: exercise physiology, facilities management, natural
+   resources conservation, and wildlife/wetlands management.
+
+<h>HOME ECONOMICS TEACHERS, POSTSECONDARY
+
+<p>Teach courses in child care, family relations, finance, nutrition, and
+   related subjects as pertaining to home management.
+
+<h>ALL OTHER POSTSECONDARY TEACHERS
+
+<p>All other postsecondary teachers not elsewhere classified.
+
+<h>TEACHERS, PRESCHOOL
+
+<p>Instruct children (normally up to 5 years of age) in activities
+   designed to promote social, physical, and intellectual growth needed
+   for primary school in preschool, day care center, or other child
+   development facility. May be required to hold State certification.
+
+<h>TEACHERS, KINDERGARTEN
+
+<p>Teach elemental natural and social science, personal hygiene, music,
+   art, and literature to children from 4 to 6 years old. Promote
+   physical, mental, and social development. May be required to hold
+   State certification.
+
+<h>TEACHERS, ELEMENTARY SCHOOL
+
+<p>Teach elementary pupils in public or private schools basic academic,
+   social, and other formative skills. Exclude special education teachers
+   of the handicapped.
+
+<h>TEACHERS, SECONDARY SCHOOL
+
+<p>Instruct students in public or private schools in one or more
+   subjects, such as English, mathematics, or social studies. May be
+   designated according to subject matter specialty, such as Typing
+   Instructors, Commercial Teachers, or English Teachers. Include
+   vocational high school teachers.
+
+<h>TEACHERS, SPECIAL EDUCATION
+
+<p>Teach elementary and secondary school subjects to educationally and
+   physically handicapped students. Include teachers who specialize and
+   work with audibly and visually handicapped students and those who
+   teach basic academic and life processes skills to the mentally
+   retarded.
+
+<h>TEACHERS AND INSTRUCTORS, VOCATIONAL EDUCATION AND TRAINING
+
+<p>Teach or instruct vocational and/or occupational subjects at the
+   postsecondary level (but at less than the baccalaureate) to students
+   who have graduated or left high school. Subjects include business,
+   secretarial science, data processing, trades, and practical nursing.
+   Include correspondence school instructors; industrial, commercial and
+   government training instructors; and adult education teachers and
+   instructors who prepare persons to operate industrial machinery and
+   equipment and transportation and communications equipment. Teaching
+   may take place in public or private schools whose primary business is
+   education or in a school associated with an organization whose primary
+   business is other than education.
+
+<h>INSTRUCTORS, NONVOCATIONAL EDUCATION
+
+<p>Teach or instruct out-of-school youths and adults in courses other
+   than those that normally lead to an occupational objective and are
+   less than the baccalaureate level. Subjects may include
+   self-improvement and nonvocational courses such as Americanization,
+   basic education, art, drama, music, bridge, homemaking, stock market
+   analysis, languages, modeling, flying, dancing, and automobile
+   driving. Teaching may take place in public or private schools or in an
+   organization whose primary business is other than education.
+
+<h>INSTRUCTORS AND COACHES, SPORTS AND PHYSICAL TRAINING
+
+<p>Instruct or coach groups or individuals in the fundamentals of sports.
+   Demonstrate techniques and methods of participation. Observe and
+   inform participants of corrective measures necessary to improve their
+   skills. Those required to hold teaching degrees should be reported in
+   the appropriate teaching category.
+
+<h>FARM AND HOME MANAGEMENT ADVISORS
+
+<p>Advise, instruct, and assist individuals and families engaged in
+   agriculture, agricultural related processes, or home economics
+   activities. Demonstrate procedures and apply Research findings to
+   solve problems; instruct and train in product development, sales, and
+   the utilization of machinery and equipment to promote general welfare.
+   Include County Agricultural Agents, Feed and Farm Management Advisers,
+   Home Economists, and Extension Service Advisers.
+
+<h>ALL OTHER TEACHERS AND INSTRUCTORS
+
+<p>All other teachers and instructors not classified separately above.
+
+<h>LIBRARIANS, PROFESSIONAL
+
+<p>Administer libraries and perform related library services. Includes
+   selecting, acquiring, cataloging, classifying, circulating, and
+   maintaining library materials; furnishing reference, bibliographical,
+   and reader's advisory services. May select music, films, or other
+   audio-visual material for programs.
+
+<h>TECHNICAL ASSISTANTS, LIBRARY
+
+<p>Assist librarians by furnishing information on library sciences,
+   facilities, and rules; by assisting readers in the use of card
+   catalogs and indexes to locate books and other materials; and by
+   answering questions that require only brief consultation of standard
+   reference. May catalog books or train and supervise clerical staff.
+
+<h>AUDIO-VISUAL SPECIALISTS
+
+<p>Plan and prepare audio-visual teaching aids and methods for use in
+   education.
+
+<h>CURATORS, ARCHIVISTS, MUSEUM TECHNICIANS, AND CONSERVATORS
+
+<p>Curators: Administer affairs of museum and conduct scientific Research
+   programs. Direct instructional, Research, and public service
+   activities of institution. Archivists: Appraise, edit, and direct
+   safekeeping of permanent records and historically valuable documents.
+   Participate in Research activities based on archival materials. Museum
+   Technicians and Conservators: Prepare specimens such as fossils,
+   skeletal parts, lace, and textiles for museum collection and exhibits.
+   May restore documents or install, arrange, and exhibit materials.
+
+<h>VOCATIONAL AND EDUCATIONAL COUNSELORS
+
+<p>Counsel individuals and provide group educational and vocational
+   guidance services.
+
+<h>INSTRUCTIONAL COORDINATORS
+
+<p>Develop instructional material, coordinate educational content, and
+   incorporate current technology in specialized fields that provide
+   guidelines to educators and instructors for developing curricula and
+   conducting courses. Include Educational Consultants and Specialists,
+   Public Health Educators, and Instructional Material Directors.
+
+<h>TEACHER AIDES, PARAPROFESSIONAL
+
+<p>Perform duties that are instructional in nature or deliver direct
+   services to students and/or parents. Serve in a position for which a
+   teacher or another professional has ultimate responsibility for the
+   design and implementation of educational programs and services.
+
+<h>PHYSICIANS AND SURGEONS
+
+<p>Doctors of medicine who diagnose and treat mental or physical
+   disorders. May specialize in one field such as surgery, obstetrics, or
+   psychiatry.
+
+<h>DENTISTS
+
+<p>Diagnose and treat diseases, injuries, and malformations of teeth,
+   gums, and related oral structures.
+
+<h>OPTOMETRISTS
+
+<p>Diagnose, manage, and treat conditions and diseases of the human eye
+   and visual system. Examine eyes to determine visual efficiency and
+   performance by use of instruments and observation. Prescribe
+   corrective procedures.
+
+<h>PODIATRISTS
+
+<p>Diagnose and treat diseases and deformities of the human foot.
+
+<h>CHIROPRACTORS
+
+<p>Adjust spinal column and other articulations of the body to prevent
+   disease and correct abnormalities of the human body believed to be
+   caused by interference with the nervous system. Examine patient to
+   determine nature and extent of disorder. Manipulate spine or other
+   involved area. May utilize supplementary measures such as exercise,
+   rest, water, light, heat, and nutritional therapy.
+
+<h>VETERINARIANS AND VETERINARY INSPECTORS
+
+<p>Diagnose and treat diseases and dysfunctions of animals. May engage in
+   a particular function such as Research and development, consultation,
+   administration, technical writing, sale or production of commercial
+   products, or rendering of technical services to commercial firms or
+   other organizations. Include Veterinary Inspectors.
+
+<h>ALL OTHER HEALTH DIAGNOSING AND TREATING PRACTITIONERS
+
+<p>All other health diagnosing and treating practitioners not classified
+   separately above.
+
+<h>RESPIRATORY THERAPISTS
+
+<p>Provide assessment, diagnostic evaluation, treatment, and care for
+   patients with breathing disorders. Assume primary responsibility for
+   all respiratory care modalities, including the supervision of
+   respiratory therapy technicians. Initiate and conduct therapeutic
+   procedures; maintain patient records; and select, assemble, check, and
+   operate equipment.
+
+<h>OCCUPATIONAL THERAPISTS
+
+<p>Plan, organize, and participate in medically-oriented occupational
+   programs in hospital or similar institution to rehabilitate patients
+   who are physically or mentally ill.
+
+<h>PHYSICAL THERAPISTS
+
+<p>Apply techniques and treatments that help relieve pain, increase the
+   patient's strength, and decrease or prevent deformity and crippling.
+
+<h>CORRECTIVE AND MANUAL ARTS THERAPISTS
+
+<p>Corrective Therapists: Apply techniques and treatments designed to
+   prevent muscular deconditioning resulting from long convalescence or
+   inactivity due to chronic illness. Manual Arts Therapists: Instruct
+   patients in prescribed manual arts activities to prevent anatomical
+   and physiological deconditioning and to assist in maintaining,
+   improving, or developing work skills.
+
+<h>SPEECH-LANGUAGE PATHOLOGISTS AND AUDIOLOGISTS
+
+<p>Examine and provide remedial services for persons with speech and
+   hearing disorders. Perform Research related to speech and language
+   problems.
+
+<h>RECREATIONAL THERAPISTS
+
+<p>Plan, organize, and direct medically-approved recreation programs for
+   patients in hospitals, nursing homes, or other institutions.
+   Activities include sports, trips, dramatics, social activities, and
+   arts and crafts.
+
+<h>ALL OTHER THERAPISTS
+
+<p>All other therapists not classified separately above.
+
+<h>REGISTERED NURSES
+
+<p>Administer nursing care to ill or injured persons. Licensing or
+   registration required. Include administrative, public health,
+   industrial, private duty, and surgical nurses.
+
+<h>LICENSED PRACTICAL NURSES
+
+<p>Care for ill, injured, convalescent, and handicapped persons in
+   hospitals, clinics, private homes, sanitariums, and similar
+   institutions.
+
+<h>EMERGENCY MEDICAL TECHNICIANS
+
+<p>Administer first aid treatment and transport sick or injured persons
+   to medical facility, working as a member of an emergency medical team.
+
+<h>PHYSICIAN'S ASSISTANTS
+
+<p>Provide patient services under direct supervision and responsibility
+   of doctor of medicine or osteopathy. Elicit detailed patient histories
+   and make complete physical examinations. Reach tentative diagnosis and
+   order appropriate laboratory tests. Require substantial educational
+   preparation, usually at junior or 4-year colleges. Most physician's
+   assistants complete 2 years of formal training, but training may vary
+   from 1 to 5 years depending on the nature of the training and previous
+   education and experience. May require certification. Exclude Ambulance
+   Attendants, whose training is limited to the application of first aid,
+   and Nurses.
+
+<h>OPTICIANS, DISPENSING AND MEASURING
+
+<p>Design, measure, fit, and adapt lenses and frames for client according
+   to written optical prescription or specification. Assist client with
+   selecting frames. Measure customer for size of eyeglasses and
+   coordinate frames with facial and eye measurements and optical
+   prescription. Prepare work order for optical laboratory containing
+   instructions for grinding and mounting lenses in frames. Verify
+   exactness of finished lens spectacles. Adjust frame and lens position
+   to fit client. May shape or reshape frames. Include Contact Lens
+   Opticians.
+
+<h>PHARMACISTS
+
+<p>Compound and dispense medications following prescriptions issued by
+   physicians, dentists, or other authorized medical practitioners.
+
+<h>PHARMACY TECHNICIANS
+
+<p>Fill orders for unit doses and prepackaged pharmaceuticals and perform
+   other related duties under the supervision and direction of a pharmacy
+   supervisor or staff pharmacist. Duties include keeping records of
+   drugs delivered to the pharmacy, storing incoming merchandise in
+   proper locations, and informing the supervisor of stock needs and
+   shortages. May clean equipment used in the performance of duties and
+   assist in the care and maintenance of equipment and supplies.
+
+<h>DIETITIANS AND NUTRITIONISTS
+
+<p>Organize, plan, and conduct food service or nutritional programs to
+   assist in promotion of health and control of disease. May administer
+   activities of department providing quantity food service. May plan,
+   organize, and conduct programs in nutritional Research.
+
+<h>DIETETIC TECHNICIANS
+
+<p>Under direct supervision of Dietitians, or following established
+   nutritional guidelines, advise on food or nutrition.
+
+<h>MEDICAL AND CLINICAL LABORATORY TECHNOLOGISTS
+
+<p>Perform a wide range of complex procedures in the general area of the
+   clinical laboratory or perform specialized procedures in such areas as
+   cytology, histology, and microbiology. Duties may include supervising
+   and coordinating activities of workers engaged in laboratory testing.
+   Include workers who teach medical technology when teaching is not
+   their primary activity.
+
+<h>MEDICAL AND CLINICAL LABORATORY TECHNICIANS
+
+<p>Perform routine tests in medical laboratory for use in treatment and
+   diagnosis of disease. Prepare vaccines, biologicals, and serums for
+   prevention of disease. Prepare tissue samples for Pathologists, take
+   blood samples, and execute such laboratory tests as urinalysis and
+   blood counts. May work under the general supervision of a Medical
+   Laboratory Technologist.
+
+<h>DENTAL HYGIENISTS
+
+<p>Perform dental prophylactic treatments and instruct groups and
+   individuals in the care of the teeth and mouth.
+
+<h>MEDICAL RECORDS TECHNICIANS
+
+<p>Compile and maintain medical records of hospital and clinic patients.
+
+<h>RADIATION THERAPISTS
+
+<p>Provide radiation therapy to patients as prescribed by a radiologist
+   according to established practices and standards. Duties may include
+   reviewing prescription and diagnosis; acting as liaison with physician
+   and supportive care personnel; preparing equipment, such as
+   immobilization, treatment, and protection devices; and maintaining
+   records, reports, and files. May assist in dosimetry procedures and
+   tumor localization.
+
+<h>NUCLEAR MEDICINE TECHNOLOGISTS
+
+<p>Prepare, administer, and measure radioactive isotopes in therapeutic,
+   diagnostic, and tracer studies utilizing a variety of radioisotope
+   equipment. Prepare stock solutions of radioactive materials and
+   calculate doses to be administered by Radiologists. Subject patients
+   to radiation. Execute blood volume, red cell survival, and fat
+   absorption studies following standard laboratory techniques.
+
+<h>RADIOLOGIC TECHNOLOGISTS
+
+<p>Take X-rays and CAT scans or administer nonradioactive materials into
+   patient's blood stream for diagnostic purposes. Include technologists
+   who specialize in other modalities such as computed tomography,
+   ultrasound, and magnetic resonance. Include workers whose primary
+   duties are to demonstrate portions of the human body on X-ray film or
+   fluoroscopic screen.
+
+<h>ELECTRONEURODIAGNOSTIC TECHNOLOGISTS
+
+<p>Record electrical activity of the brain and other nervous system
+   functions using a variety of techniques and equipment. May prepare
+   patients for tests, obtain medical histories, calculate results, and
+   maintain equipment.
+
+<h>CARDIOLOGY TECHNOLOGISTS
+
+<p>Conduct tests on pulmonary and/or cardiovascular systems of patients
+   for diagnostic purposes. May conduct or assist in electrocardiograms,
+   cardiac catheterizations, and pulmonary-function, lung capacity and
+   similar tests.
+
+<h>ELECTROCARDIOGRAPH TECHNICIANS
+
+<p>Record electromotive variations in heart muscle using
+   electrocardiograph, to provide data for diagnosis of heart ailments.
+
+<h>SURGICAL TECHNOLOGISTS AND TECHNICIANS
+
+<p>Perform any combination of the following tasks either before, during,
+   or after an operation: Prepare patient by washing, shaving, etc.;
+   place equipment and supplies in operating room according to surgeon's
+   instruction; arrange instruments under direction of nurse; maintain
+   specified supply of fluids for use during operation; adjust lights and
+   equipment as directed; hand instruments and supplies to surgeon, hold
+   retractors, and cut sutures as directed; count sponges, needles, and
+   instruments used during operation; and clean operating room.
+
+<h>PSYCHIATRIC TECHNICIANS
+
+<p>Provide nursing care to mentally ill, emotionally disturbed, or
+   mentally retarded patients. Participate in rehabilitation and
+   treatment programs. Help with personal hygiene. Administer oral
+   medications and hypodermic injections, following physician's
+   prescriptions and hospital procedures. Monitor patient's physical and
+   emotional well-being and report to medical staff.
+
+<h>VETERINARY TECHNICIANS AND TECHNOLOGISTS
+
+<p>Perform medical tests in a laboratory environment for use in the
+   treatment and diagnosis of diseases in animals. Prepare vaccines and
+   serums for prevention of diseases. Prepare tissue samples, take blood
+   samples, and execute laboratory tests such as urinalysis and blood
+   counts. Clean and sterilize instruments and materials and maintain
+   equipment and machines.
+
+<h>ALL OTHER HEALTH PROFESSIONALS, PARAPROFESSIONALS, AND
+   TECHNICIANS
+
+<p>All other health professionals, paraprofessionals, and technicians not
+   classified separately above.
+
+<h>WRITERS AND EDITORS
+
+<p>Writers: Originate and prepare written material such as scripts,
+   stories, news items, advertisements, and other material. Editors:
+   Coordinate, edit, and analyze prepared written material. Include
+   Managing Editors. Exclude Publicity Writers, Public Relations
+   Specialists, Technical Writers, and Technical Editors.
+
+<h>TECHNICAL WRITERS AND EDITORS
+
+<p>Write or edit technical materials, such as equipment manuals,
+   appendices, and operating and maintenance instructions. May oversee
+   preparation of illustrations, photographs, diagrams, and charts; and
+   assist in layout work.
+
+<h>PUBLIC RELATIONS SPECIALISTS AND PUBLICITY WRITERS
+
+<p>Engage in promoting or creating good will for individuals, groups, or
+   organizations by writing or selecting favorable publicity material and
+   releasing it through various communications media. Prepare and arrange
+   displays, make speeches, and perform related publicity efforts.
+
+<h>REPORTERS AND CORRESPONDENTS
+
+<p>Collect and analyze facts about newsworthy events by interview,
+   investigation, or observation. Report and write stories for newspaper,
+   news magazine, radio, or television. Exclude correspondents who
+   broadcast news for radio and television.
+
+<h>BROADCAST NEWS ANALYSTS
+
+<p>Analyze, interpret, and broadcast news received from various sources.
+
+<h>ANNOUNCERS, RADIO AND TELEVISION
+
+<p>Introduce various types of radio or television programs, interview or
+   question guests, or act as master of ceremonies. Read news flashes and
+   identify station by giving call letters.
+
+<h>ANNOUNCERS, EXCEPT RADIO AND TELEVISION
+
+<p>Announce information to patrons of sporting and other entertainment
+   events using public address system.
+
+<h>PHOTOGRAPHER
+
+<p>Photograph persons, subjects, merchandise, or other commercial
+   products. May develop negatives and produce finished prints. Include
+   Scientific Photographers, Aerial Photographers, and Photojournalists.
+
+<h>CAMERA OPERATORS, TELEVISION AND MOTION PICTURE
+
+<p>Operate television or motion picture camera to photograph scenes for
+   TV broadcasts, advertising, or motion pictures.
+
+<h>BROADCAST TECHNICIANS
+
+<p>Set up, operate, and maintain the electronic equipment used to
+   transmit radio and television programs. Control audio equipment to
+   regulate volume level and quality of sound during radio and television
+   broadcasts. Operate radio transmitter to broadcast radio and
+   television programs. An FCC first class operator's license is usually
+   required for this occupation. A few typical broadcast technician
+   workers include: AUDIO OPERATORS, VIDEO OPERATORS, CONTROL ROOM
+   TECHNICIANS, TRANSMITTER OPERATORS, MASTER-CONTROL ENGINEERS, TELECINE
+   OPERATORS
+
+<h>FILM EDITORS
+
+<p>Edit motion picture film, video tape, and sound tracks.
+
+<h>ARTISTS AND RELATED WORKERS
+
+<p>Design and execute artwork to illustrate subject matter; promote
+   public consumption of materials, products, or services; or to
+   influence others in their opinions of individuals or organizations.
+   Include Graphic Designers, Commercial Artists, Artistic Painters, Art
+   Directors, and Painting Restorers.
+
+<h>DESIGNERS, EXCEPT INTERIOR DESIGNERS
+
+<p>Design or arrange objects and materials to achieve artistic or
+   decorative effects for apparel or other commercial items. May also
+   create, mark out, or draw designs for items such as furniture and
+   machinery (product design). Designers are generally categorized
+   according to articles or products designed, such as Clothes Designers,
+   Industrial Designers, or according to type of design work, such as
+   Embroidery Designers. Include Layout Artists.
+
+<h>INTERIOR DESIGNERS
+
+<p>Plan, design, and furnish interiors of residential, commercial, or
+   industrial buildings. Formulate design which is practical, aesthetic
+   and conducive to intended purposes, such as raising productivity,
+   selling merchandise, or improving life style. May specialize in a
+   particular field, style, or phase of interior design. Exclude
+   Merchandise Display Designers.
+
+<h>MERCHANDISE DISPLAYERS AND WINDOW TRIMMERS
+
+<p>Plan and erect commercial displays, such as those in windows and
+   interiors of retail stores and at trade exhibitions.
+
+<h>MUSIC DIRECTORS, SINGERS, COMPOSERS, AND RELATED WORKERS
+
+<p>Conduct, direct, plan, and lead instrumental or vocal performances by
+   musical groups, such as orchestras, choirs, and glee clubs. Include
+   workers who entertain by singing songs on stage, radio, television, or
+   in motion pictures. Include Arrangers, Composers, and Orchestrators.
+
+<h>MUSICIANS, INSTRUMENTAL
+
+<p>Play one or more musical instruments in recital, in accompaniment, or
+   as members of an orchestra, band, or other musical group.
+
+<h>DANCERS AND CHOREOGRAPHERS
+
+<p>Dancers: Perform dances solo, with partners, or in groups to entertain
+   audience. May also sing or act. Choreographers: Create and teach
+   original dance for ballet, musical, or review. May direct and stage
+   presentations.
+
+<h>PRODUCERS, DIRECTORS, ACTORS, AND OTHER ENTERTAINERS
+
+<p>Produce, direct, or play parts in stage, television, radio, or motion
+   picture productions for entertainment, information, or instruction.
+
+<h>ATHLETES, COACHES, UMPIRES, AND RELATED WORKERS
+
+<p>Participate in competitive professional athletic events as a player,
+   coach, manager, umpire, or judge. Include Athletic Trainers, Scouts,
+   Official Scorers, and Timekeepers.
+
+<h>AIRPLANE DISPATCHERS AND AIR TRAFFIC CONTROLLERS
+
+<p>Control air traffic on and within vicinity of airport and movement of
+   air traffic between altitude sectors and control centers according to
+   established procedures and policies. Authorize, regulate, and control
+   commercial airline flights according to government or company
+   regulations to expedite and insure flight safety.
+
+<h>TRAFFIC TECHNICIANS
+
+<p>Conduct field studies to determine traffic volume, speed,
+   effectiveness of signals, adequacy of lighting, and other factors
+   influencing traffic conditions, under direction of traffic engineer.
+
+<h>RADIO OPERATORS
+
+<p>Receive and transmit communications using radiotelegraph or
+   radiotelephone equipment in accordance with government regulations.
+   May repair equipment.
+
+<h>FUNERAL DIRECTORS AND MORTICIANS
+
+<p>Perform various tasks to arrange and direct funeral services, such as
+   coordinating transportation of body to mortuary for embalming,
+   interviewing family or other authorized person to arrange details,
+   selecting pallbearers, procuring official for religious rites, and
+   providing transportation for mourners. Exclude top and middle managers
+   whose duties are primarily policy making, planning, and administrative
+   in nature and report them as General Managers or in another
+   appropriate managerial occupation.
+
+<h>EMBALMERS
+
+<p>Prepare bodies for interment in conformity with legal requirements.
+
+<h>ALL OTHER PROFESSIONAL, PARAPROFESSIONAL, AND TECHNICAL WORKERS
+
+<p>All other professional, paraprofessional, and technical workers not
+   classified separately above.
+
+<p>This pages covers OES codes 31111, Lecturers, to code 39999, All Other
+   Professional, Paraprofessional, and Technical Workers. The first part
+   of this group are in Part 1. 

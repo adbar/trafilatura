@@ -1,0 +1,453 @@
+URL: http://www.chfpatients.com/faq/dhf.htm
+
+                            <h>Diastolic Heart Failure
+
+   <p>The heart's pumping cycle has 2 phases:
+
+   <p>Diastole
+   <p>(pronounced : die ass tuh lee)
+   <p>the heart muscle relaxes and fills with blood
+
+   <p>Systole
+   <p>(pronounced : sis tuh lee)
+   <p>the heart muscle contracts (squeezes) and pumps blood out into the
+   body
+
+
+   <p>updated July 5, 2006 - People think of heart failure as a condition
+   where the heart does not pump out enough blood. That is called
+   systolic heart failure. However, many CHFers have a different kind of
+   heart failure - caused when the heart does not fully relax, so it does
+   not fill properly with blood. This is called diastolic heart failure.
+   This page is about diastolic heart failure or DHF.
+        <p>In mild DHF, SOB and fatigue usually only happen during stress or
+   activity. More severe DHF causes many of the same symptoms that
+   systolic heart failure or SHF, causes.
+        <p>A person with DHF has high pressures in the arteries of their
+   lungs - pulmonary pressure. Their heart's pumping chambers may not be
+   enlarged and their ejection fraction may be normal, but they still
+   have the same nasty symptoms as a person with SHF.
+         In people with diastolic heart failure, Toprol-XL may be a
+   better beta-blocker choice than Coreg. Too-low blood pressure can be a
+   real problem for DHF patients. Toprol-XL does not lower blood pressure
+   as much as Coreg.
+ 
+<h>Causes of diastolic heart failure
+
+     <l> Ischemia - can be caused by CAD or by a chronic too-fast heart
+       rate. Ischemia prevents the heart muscle from fully relaxing and
+       increases heart stiffness. Chronic ischemia results in remodeling
+       and DHF
+     <l> pressure overload caused by chronic high blood pressure or aortic
+       valve problems
+     <l> infiltrative cardiomyopathies, also called restrictive
+       cardiomyopathy
+     <l> pericarditis - inflammation of the sac around the outside of the
+       heart
+     <l> normal aging can cause some DHF
+     <l> chemotherapy for diseases like cancer
+     <l> genetic causes
+
+  <h>Diagnosing diastolic heart failure
+
+   <p>How to always diagnose DHF accurately is uncertain but a correct
+   diagnosis is important. Some guidelines propose that 3 requirements be
+   met to make the call:
+    <l> symptoms or signs of CHF
+    <l> normal systolic function
+    <l> abnormal diastolic function
+
+   <p>There are some situations where symptoms alone may lead to a
+   misdiagnosis. This is especially true in older patients who get short
+   of breath mainly because they have very poor physical fitness. It can
+   also happen with non-heart-related shortness of breath such as with
+   lung disease. So diagnosing DHF requires some signs or symptoms of CHF
+   like lung congestion, edema, raised jugular vein, etc. You do have to
+   rule out problems like mitral valve disease and and lung disease.
+        <p>DHF cannot usually be distinguished from SHF by patient history,
+   physical exam, x-ray, and EKG alone. Diagnosis requires an estimate of
+   LV size and EF. These measurements can be made using echo, MUGA, or
+   cath. Really, DHF diagnosis is a matter of ruling out other possible
+   causes in patients seeming to have heart failure but who have normal
+   heart size and EF.
+        Since echo does have limits for spotting DHF and cath is
+   invasive, one trial studied whether the BNP blood test could help spot
+   diastolic heart failure. That study is shown on the BNP Test page. It
+   turns out that a quick BNP test can help a doctor diagnose DHF.
+
+   <h>Diagnosis: Systolic versus diastolic heart failure
+      
+   <h>Symptoms
+    <l>Shortness of breath on exertion  85%  96%
+    <l>Waking at night short of breath  55%  50%
+    <l>Difficulty breathing except upright  60%  73%
+   <h>Physical Examination
+    <l>Jugular vein swollen  35%  46%
+    <l>Sounds in lungs  72%  70%
+    <l>Point of maximum impulse  50%  60%
+     <l>Enlarged (congested) liver  15%  16%
+    <l>Edema  30%  40%
+    <l>Heart enlargement on chest x-ray  90%  96%
+    <l>High pulmonary (lung) pressures  75%  80%
+
+    <h>How common is DHF?
+
+   <p>As many as 33% of patients with obvious heart failure and a normal EF
+   may have DHF. Risk of DHF increases with age:
+    <l> 15% in patients under 60 years
+    <l> 35% in patients 60 to 70 years
+    <l> 50% in patients over 70 years old
+
+      <h>Mortality
+
+   <p>Prognosis of patients with DHF is better than for SHF. Annual
+   mortality for DHF is about 5 to 8%, while it is about 10 to 15% for
+   SHF. In healthy people of the same age, mortality is about 1%. In DHF
+   patients, prognosis is also affected by cause. When CAD is not the
+   cause, annual mortality is much better, at about 2% to 3%. Age also
+   affects risk of death. The 5-year mortality rate in DHF patients is:
+    <l> 25% in patients under 60 years old
+    <l> 35% in patients 60 to 70 years
+    <l> 50% in patients over 70 years old
+
+        <h>Complications
+
+   <p>The complication rate is about the same as for SHF patients. DHF
+   causes frequent outpatient visits and hospital admissions. The one
+   year readmission rate is almost 50% in DHF patients.
+
+   <h>Treatment
+
+   <p>Treatment guidelines for systolic heart failure are based on large,
+   properly done trials. Unfortunately, no such trials exist for DHF. So
+   guidelines come from small trials, a doctor's experience, and his
+   understanding of the disease. The general approach to treating DHF has
+   3 main steps:
+    <l> Treatment should reduce symptoms, mainly by lowering pulmonary
+       pressure. Ways to reduce pressure include reducing heart size,
+       maintaining good pumping in the heart's upper chambers, and
+       slowing the heart rate.
+    <l> Treatment should target the underlying cause if possible. For
+       example, high blood pressure should be controlled, remodeling
+       should be reversed, the aortic valve replaced if necessary, and
+       ischemia treated by increasing blood flow to the heart and
+       reducing its need for oxygen
+    <l> Treatment should target the bodily systems changed by the disease,
+       mainly neurohormonal systems
+
+   <h>Drug Therapy - General Principles
+
+   <p>With some exceptions, many of the drugs used to treat systolic heart
+   pressure are also used to treat diastolic heart failure. However, the
+   reason they are used and the dose may be different for DHF.
+        <p>For example, in DHF beta-blockers are used to make filling the
+   heart with blood take longer, and to change the heart's response to
+   exercise. In SHF, beta-blockers are used to increase pumping power and
+   reverse heart remodeling. Diuretic dose for DHF is usually much
+   smaller than for SHF. Calcium channel blockers have no place in SHF
+   treatment but may help DHF.
+        <p>The first step in treating DHF patients is to reduce lung
+   congestion. You do that by lowering pulmonary (lung) pressure. This
+   has 3 steps:
+
+   <h>Reduce heart size
+          <p>At first, heart size can be reduced by restricting fluid and
+          sodium intake, by dialysis or filtering the blood,
+          plasmapheresis, and diuretics. Relaxing (dilating) the blood
+          vessels using nitro or morphine is effective but should be
+          started at low doses to avoid low blood pressure. Low blood
+          pressure can be a real problem in DHF patients. Long-term
+          treatment should include small to moderate diuretic doses, mild
+          doses of long-acting nitro, and restricted sodium intake.
+          Aldactone (spironolactone) may be effective long-term because
+          it suppresses the RAS. ACE inhibitors and ARBs reduce fluid
+          retention and oxygen demand.
+
+
+   <h>Make the heart's chambers beat together as a team
+          <p>The second step in lowering pulmonary pressure is to keep the
+          heart's upper chambers (atriums) beating properly. Atrial
+          fibrillation is poorly tolerated in DHF patients because it
+          increases diastolic pressures, causing lung congestion and low
+          blood pressure.In patients with a-fib, restoring normal rhythm
+          should be a priority. Patients who need a pacemaker should have
+          atrial pacing as well as ventricular pacing.
+
+
+   <h>Slowing the heart rate
+          <p>The third step in lowering pulmonary pressures is to slow the
+          heart rate. This gives the heart more time to relax so it can
+          fill with blood. Fast heart rate is poorly tolerated in DHF
+          patients because rapid heart rate:
+
+         <l> increases the heart's oxygen demand and reduces blood flow to
+            the heart, causing ischemia even without CAD
+         <l> prevents full relaxation of the heart muscle, which raises
+            pressure and reduces the heart's flexibility
+         <l> shortens the heart's relaxation period, making it incomplete,
+            which reduces the amount of blood pumped per beat
+
+   <p>For these reasons, most doctors use beta-blockers and calcium channel
+   blockers to slow the heart rate a lot in DHF patients. However,
+   slowing the heart rate too much can reduce cardiac output despite
+   better filling. This is why DHF patients need very individualized
+   treatment. An initial goal might be a resting heart rate of about 60
+   beats per minute.
+        <p>Beta-blockers and calcium channel blockers increase the time it
+   takes the heart to fill with blood. This helps keep pulmonary
+   pressures low. However, these drugs also directly reduce the heart's
+   ability to relax by their effects at the cell level. It's a tricky
+   balance to strike in DHF patients. The overall effect of these drugs
+   in DHF patients is improved symptoms.
+        <p>The long-term effect of calcium channel blockers on diastolic
+   heart failure patients is unknown. All calcium channel blockers except
+   amlodipine increase mortality in patients with systolic heart failure.
+
+    <h>Nebivolol Helps CHF Seniors with Normal EF
+
+   <p>March 27, 2006 - A "third generation" (new) beta-blocker called
+   Nebivolol is on the way. Nebivolol has the main good benefit of
+   Toprol-XL (beta-1 blocking without beta-2 blocking) plus one of the
+   good benefits of Coreg (relaxing the arteries, called vasodilation).
+   It also helps endothelial function and is a powerful anti-oxidant.
+   Nebivolol does this without all of Coreg's side effects.
+        <p>Researchers studied how nebivolol affects systolic versus
+   diastolic left heart function in patients. This substudy included 104
+   patients; 43 had an EF less than 36%. Echo was done on each patient to
+   take quite a few heart measures at study start and again one year
+   later.
+        <p>In the group with EF less than 36%, nebivolol reduced heart size
+   and improved EF 5%. Other measures remained the same. In patients with
+   EF higher than 36%, no changes in the heart muscle were seen.
+        <p>So in patients with weakly pumping hearts (low EF), nebivolol
+   reduces heart size and improves EF. In patients with near-normal or
+   normal EF (diastolic heart failure) no changes in the heart muscle
+   were seen. None the less, risk of death or heart-related
+   hospitalization improved in both groups in SENIORS.
+        <p>The SENIORS trial showed that nebivolol reduces risk of death and
+   heart-related hospitalizations in senior CHFers regardless of EF. What
+   does this mean? It suggests that CHFers with diastolic heart failure
+   may now have a drug proven to help them.
+        <p>Jon's note : The average age in the SENIORS trial was 76 years.
+
+   <p>Source: Eur Heart J. 2006 Mar;27(5):562-8. Epub 2006 Jan 27.
+   <p>Title: Effects of nebivolol in elderly heart failure patients with or
+   without systolic left ventricular dysfunction: results of the SENIORS
+   echocardiographic substudy.
+   <p>Authors: Ghio S , Magrini G , Serio A, Klersy C, Fucilli A, Ronaszeki
+   A, Karpati P, Mordenti G, Capriati A, Poole-Wilson PA, Tavazzi L;
+   SENIORS investigators.PMID: 16443607
+
+   <h>Drugs and Exercise Tolerance
+
+   <p>Exercise in a healthy person makes the heart relax more quickly and
+   lowers LV pressure faster. The heart muscle actually stretches and
+   gets larger when full of blood just before pumping it out. This
+   increases EF. In a healthy person, these actions help the body handle
+   exercise.
+        <p>In DHF, those actions are very limited. The heart's stiffness
+   prevents it from stretching to increase its size when filled with
+   blood. EF does not rise, and patients get short of breath and very
+   tired. Often, there is quite a rise in blood pressure and heart rate
+   during exercise. The rise in blood pressure makes the heart work
+   harder, which screws up the entire pumping cycle.
+        <p>These changes increase diastolic pressures. High diastolic
+   pressures reduce lung function and make breathing harder. Low heart
+   output during exercise causes fatigue in the legs and other muscles.
+        <p>Small trials show that calcium channel blockers, beta-blockers,
+   and ARBs improve exercise ability in many DHF patients. However, these
+   drugs do not always improve heart function.
+
+   <h>Inotropes
+
+   <p>Use inotropic drugs with caution. Since ejection fraction is often
+   okay in DHF patients, inotropes may give no benefit at all. However,
+   such drugs can cause harm in these patients. Inotropic drugs may help
+   in the short-term for lung congestion but even short-term use may
+   cause ischemia, speed up heart rate, or trigger arrhythmias.
+
+   <h>Digoxin (Lanoxin, digitalis)
+
+   <p>Digoxin (Lanoxin) strengthens the heart's pumping power. This
+   increases energy demand, which may only show up during stress like
+   exercise or ischemia, when digoxin can worsen diastolic function. With
+   the exception of patients in chronic atrial fibrillation (to slow
+   ventricular rate), digoxin is not recommended for DHF.
+
+   <h>Coronary Artery Disease
+
+   <p>In CAD, treatment should aim to reduce the heart's oxygen demand and
+   increase blood flow to the heart. Drugs like nitrates
+   (nitroglycerine), calcium channel blockers, and beta-blockers have all
+   been shown to help. Clearing blocked arteries with angioplasty or CABG
+   may also help diastolic heart failure patients with CAD.
+
+   <h>Drug treatment of diastolic heart failure
+   <p>Loop diuretics Bumex (bumetanide), Lasix (furosemide), Demadex
+   (torsemide)
+   <p>Thiazide diuretics Hygroton (chlorthalidone), Hydrodiuril, Esidrix
+   (HCTZ, hydrochlorothiazide), Amiloride, Aldactone (spironolactone)
+   <p>Long-acting nitrates Isordil, Sorbitrate (Isosorbide Dinitrate), Imdur
+   (Isosorbide mononitrate)
+   <p>Beta-blockers See this page
+   <p>Calcium channel blockers Norvasc (amlodipine), Cardizem (diltiazem),
+   Isoptin (verapamil), Procardia (nifedipine)
+   <p>RAS inhibitors ACE inhibitors (see this page), ARBs (see this page),
+   and aldosterone antagonists
+
+   <h>Questions and Answers
+
+   <p>Question
+          <p>Is the rise in DHF cases caused by doctors better recognizing
+          the condition or has there been an actual increase in the
+          number of cases?
+
+   <p>Dr. Zile
+          <p>I think it is both. We are recognizing it better. Also, the
+          general population is aging so high blood pressure, heart
+          disease, and diabetes are rising just because they are more
+          common in the elderly. Age itself causes changes in the heart
+          that encourage DHF
+
+   <p>Question
+          <p>Why the controversy surrounding the diagnosis of DHF?
+
+   <p>Dr. Zile
+          <p>The guidelines that exist or have been proposed come from the
+          European Cardiology Society and the Canadian Heart Society, as
+          well as from a recent editorial by Vasan and Levy published in
+          the journal Circulation. They all require that 3 standards be
+          met to diagnose DHF:
+
+          <l> signs and symptoms of heart failure
+          <l>  normal EF
+          <l> problems with diastolic function seen by cath or echo
+
+          <p>I think these criteria are too tight and that number 3 should
+          be eliminated. Ninety percent of patients who fit the first 2
+          will indeed turn out to have diastolic heart failure confirmed
+          by cath. The problem arises because measuring diastolic
+          function with noninvasive tests like echo is difficult and
+          confusing.
+               <p>Why? Echo usually measures what we call the E and A
+          velocities. However, E-wave velocity drops with age, heart
+          enlargement, and DHF. So in someone with congested lungs and
+          signs of high heart pressures those E-waves can appear normal.
+          While the E-wave should be low in DHF patients, it may appear
+          normal if the doctor is not experienced at treating diastolic
+          heart failure.
+
+   <p>Question
+          <p>Is finding diastolic problems on an echo that is done for
+          another reason important, even in a patient with no history or
+          symptoms of CHF?
+
+   <p>Dr. Zile
+          <p>Yes. In systolic heart failure, a wide range of patient types
+          is seen - from those with low EFs but no symptoms, to those
+          with mild or moderate symptoms, to class 4 patients with severe
+          symptoms even at rest. The same range is likely to be seen in
+          diastolic heart failure patients
+
+   <p>Question
+          <p>Since most of the blood that fills the LV does so in the early
+          part of the filling phase, why does it help to lengthen that
+          phase in DHF patients by slowing heart rate? Doesn't increasing
+          heart rate increase cardiac output?
+
+   <p>Dr. Zile
+          <p>While speeding up heart rate increases output, it also raises
+          pressure, making symptoms worse. In a healthy person, raising
+          heart rate does not change pressures much because the ventricle
+          is able to relax faster as heart rate speeds up.
+               <p>However, in DHF patients, the response to increased heart
+          rate is not normal. When heart rate speeds up, the ventricle
+          cannot relax any faster. This raises pressures. By slowing
+          heart rate, you give the ventricle more time to relax, lowering
+          filling pressures. Also, many DHF patients have ischemia. By
+          slowing the heart rate, you reduce the heart's need for oxygen
+          and that helps balance supply and demand of blood and oxygen
+
+   <p>Question
+          <p>Seeing that pretty much the same drugs are used to treat both
+          diastolic are systolic heart failure, how important is it to
+          tell DHF from SHF?
+
+   <p>Dr. Zile
+          <p>There are at least 40 well-done trials to guide treatment for
+          systolic heart failure patients. This is not true for DHF, so
+          its treatment is less certain. Even though we say ACE
+          inhibitors will probably help and ARBs may help, and
+          beta-blockers may help, and so on, it is not proven in large
+          numbers of DHF patients. Also, there are differences in the way
+          you use those drugs and in the doses you use.
+               <p>The best example is beta-blockers. Treating heart failure
+          in patients with an EF of 30% requires that beta-blocker dose
+          be raised carefully, starting with tiny doses and raising it
+          slowly over several months. In the DHF patient, that very slow
+          rise in dose is not usually necessary.
+               <p>Another example is calcium channel blockers. These drugs
+          should not be used in systolic heart failure patients at all,
+          but they may help DHF patients. As another example, diuretic
+          use needs to be much more cautious in the DHF patient since
+          drying them out too much can easily cause too-low blood
+          pressure.
+               <p>So even though the same drugs may be used to treat SHF and
+          DHF, there are important differences. It is important for
+          doctors to be aware of the differences when treating CHF
+          patients
+
+   <p>Question
+          <p>Have beta-blockers and calcium channel blockers been shown to
+          reverse measurements of diastolic dysfunction?
+
+   <p>Dr. Zile
+          <p>If you give beta-blockers to DHF patients, their relaxation
+          rate gets worse instead of better. Despite this, patients feel
+          better - so measurements don't always agree with how patients
+          actually do while taking a drug. With calcium channel blockers,
+          DHF patients feel better while taking them and their filling
+          rates usually get better. There is a complex relationship
+          between how any one drug affects a person versus how that drug
+          affects the measurements we take of that person's heart
+          function.
+               <p>One study that used a calcium channel blocker and another
+          study using an ARB showed improved exercise times in patients
+          taking these drugs. However, neither study showed improved
+          measurements of heart relaxation or stiffness. I don't think
+          you can rely just on measures of heart function to guide
+          treatment.
+
+   <p>Question
+          <p>In making a DHF diagnosis, what must be ruled out besides
+          systolic heart failure?
+
+   <p>Dr. Zile
+          <p>Besides excluding SHF, it is also important to rule out mitral
+          valve stenosis and chronic lung disease, both of which can
+          imitate heart failure with a normal EF
+
+   <p>Question
+          <p>What blood pressure drugs are most likely to help heart
+          enlargement in DHF patients?
+
+   <p>Dr. Zile
+          <p>Although it hasn't been clearly proven yet, I think drugs that
+          alter the neurohormonal systems work well. They not only lower
+          pressure, but they also reduce the effects of overactive bodily
+          systems. The problem is that in most trials, heart enlargement
+          only goes down about 10 to 15%. This will probably improve
+          heart function but not totally reverse DHF. If those high blood
+          pressure trials had been longer by 5 or 10 years, we might have
+          seen more improvement proven down the road.
+               <p>What evidence do I have to support that? The answer comes
+          from patients with aortic stenosis who had their aortic valves
+          replaced. Three to 5 years after aortic valve replacement,
+          ventricular size and stiffness often returned to normal,
+          improving the heart's stiffness and relaxation
+
+   <p>Title: Diastolic Heart Failure: Diagnosis and Treatment
+   <p>Authors: Dr. Michael R. Zile, Dr. Janet M. Simsic
+   <p>Source: Clinical Cornerstone 3(2):13-24, 2000
+
+

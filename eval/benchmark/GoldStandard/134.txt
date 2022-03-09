@@ -1,0 +1,81 @@
+URL: http://oval.mitre.org/community/board/minutes/2004-09-21.html
+
+<h>Discussion Archives
+
+<h>Community Forum Email List
+
+   <p>Archives of the discussions on the OVAL Community Forum are made
+   available to the public for review and comment. The archives are
+   available in two formats.
+   <h>January 2006 <h>February 2006 <h>March 2006 April 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread 
+   <h>May 2006 <h>June 2006 <h>July 2006 <h>August 2006
+   <p>by Date
+  <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+   <h>September 2006 <h>October 2006 <h>November 2006 <h>December 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+
+<h>Developer's Email List
+
+   <p>Archives of the discussions on the OVAL Developer's List are made
+   available to the public for review and comment. The archives are
+   available in two formats.
+   <h>January 2006 <h>February 2006 <h>March 2006 April 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread 
+   <h>May 2006 <h>June 2006 <h>July 2006 <h>August 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+   <h>September 2006 <h>October 2006 <h>November 2006 <h>December 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+
+<h>Board Email List
+
+   <p>The OVAL Board has made a commitment to make its discussions available
+   to the public. The archives of these discussions are available in two
+   formats.
+   <h>January 2006 <h>February 2006 <h>March 2006 <h>April 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread 
+   <h>May 2006 <h>June 2006 <h>July 2006 <h>August 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+   <h>September 2006 <h>October 2006 <h>November 2006 <h>December 2006
+   <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread <p>by Date
+   <p>by Thread
+
+<h>Board Meetings
+
+   <p>The OVAL Board periodically holds teleconferences and face-to-face
+   meetings. Below are summaries of the Board meetings, as recorded in
+   the OVAL Board mailing list archives.

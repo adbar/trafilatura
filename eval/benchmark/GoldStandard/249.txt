@@ -1,0 +1,162 @@
+<l>Skip to Content
+<l>Skip to Table of Contents
+<h>ATPM - About This Particular Macintosh
+
+          
+
+<h>ATPM 10.10
+October 2004
+
+<h>Columns
+  <l>Segments  
+  <l>Networks in Action
+<h>Extras
+
+<h>Reviews 
+  <l>Panther for Unix Geeks
+
+<h>Download ATPM 10.10
+<p>Choose a format:
+
+<h>Segments: Slices from the Macintosh Life
+<p>by Andrew Kator, akator@atpm.com
+<h>Internet Democracy Gone Bad
+<p>We are all working in a more interconnected world, with unprecedented access to 
+information and other people with skills. You might think that having a pool of 
+thousands of new and skilled people working with you on a project would be a 
+bonus. Unfortunately, the same accessibility that makes great people accessible 
+also makes questionable people just as likely to contact you. The same 
+democratic principles that make the Internet a great thing also mean that you 
+may be democratically exposed to con artists and incompetent people claiming 
+great skills.
+<p>The following information may appear to be common sense, and most of these 
+suggestions are the same things you might do if someone were applying in person 
+to work with you at a business or on a project. Apply the same principles to 
+working with people on the Internet that you would in “real life.”
+<h>Beware of Lofty Claims
+<p>Someone who claims great things should be able to prove it. If she teaches at an 
+internationally renowned institution, she will give you equivalent material to 
+back up the claim. Additionally, most institutions list their affiliations and 
+employees on the Web. If you visit the institution Web site and she is nowhere 
+to be found, something is probably wrong.
+<p>If an applicant is really known for her work in a particular area, there is a 
+high chance of finding corroborating evidence on the Web.
+<h>Beware of Inconsistencies
+<p>Someone who claims to be a teacher and a week later claims to be an Art Director 
+is misrepresenting something. If he were both a teacher and Art Director, he 
+would have presented that information to you in the first place. You want 
+nothing to do with him. I have never found an exception in which someone 
+“accidentally” forgot to mention all the important information.
+<p>Look out for “backtracking” with information. If a potential partner or 
+applicant claims to work somewhere, and upon being questioned changes the 
+employer, something is wrong. After all, don’t we all know who we work for? 
+There is no example I can give in which someone legitimately misrepresented his 
+current job, title, position, and employer.
+<p>A potential contributor may profess to be many things, but he should be able to 
+back it up. For example, if she claims to be a video camera operator and video 
+editor, she should be able to give proof of both skills and not just one. Simply 
+providing proof of camera work does not prove editing skills, and vice versa.
+<p>Also beware of people who state “I would like to…” such as, “I am a cameraman 
+who would like to be involved in production.” This person is telling you that 
+while he may have video experience, he wants to be something else that he has no 
+proven skills with. He will refrain from doing his proven work (video camera 
+work) and will instead try to only do what he imagines as his “proper” position 
+and title. What he is really saying is, “I am a cameraman but don’t want to do 
+that anymore and I want to be a Producer even though I have no experience.”
+<h>Ask for References
+<p>The same things that apply in the rest of world apply on the Internet. Someone 
+with false claims will be unable to present corroborating references. Of course, 
+it is also important to check the validity of references to make sure they are 
+legitimate.
+<p>If someone gives you a reference that is extremely impressive (example, Steve 
+Jobs) then don’t be impressed…yet. E-mail the person in the reference, no matter 
+how important. If the reference in question, no matter how lofty, responds 
+favorably, then you are in good shape. You might be surprised at how many times 
+you will get a response of non-association and unfamiliarity.
+<h>Writing
+<p>If a potential partner isn’t willing to adhere to the established principles of 
+grammar and spelling, you shouldn’t waste your time. No more than 10% of an 
+article should need correction and/or editing, and that is being generous. The 
+more you let partners get away with, the more work you and your competent staff 
+will suffer by being forced to compensate.
+<h>Language is Not a Problem
+<p>Don’t let anyone fool you with providing excuses like “I didn’t understand your 
+request,” or “Forgive me, I do not speak well.” If she can manage to express 
+those sentiments, she can also understand everything else perfectly. While the 
+Web language translation engines are far from perfect, they can usually give 
+clear enough translation for most people.
+<h>Pay Attention to Presentation
+<p>Professionalism translates to e-mails just as much as it does with other media. 
+If someone professing to be a designer doesn’t present you with images and 
+examples that indicates an understanding of line, shape, negative space, 
+composition, type, and color, then he is not a professional designer.
+<h>Beware of Forums & Forum-presented Content
+<p>A large number of people want their “name in lights” but are too lazy to present 
+their materials properly. It is enough for them to have their artwork, their 
+articles or other content posted in forums—because this gives them the attention 
+they desire.
+<p>Even decent articles and artwork are not best represented by a forum 
+presentation. If someone proudly displays her work in that format, she is 
+unlikely to understand the demands of a professional organization. These days it 
+is too easy to set up a Web site (even for free) for anyone to use the excuse 
+that her only option is displaying work in forums on another Web site.
+<p>If the forum-presented work is exceptional, you can judge the work based upon 
+the exact content but not on other abilities. Judge the work in the forum, and 
+realize the person cannot show you examples of how she is competent to present 
+her excellent works.
+<p>Judging Web design, design, and presentation skills based on forums is 
+impossible because forums are easily had. For example, someone who has set up a 
+PHP Nuke forum Web site does not necessarily know Web design. Installing PHP 
+Nuke or any equivalent forum technology is easy, and there are hundreds of free 
+templates available to present the site well. A poorly presented PHP Nuke Web 
+site demonstrates a lack of understanding or outright laziness about proper 
+presentation, design, and merchandising. Having a PHP Nuke Web site means she 
+installed PHP Nuke, but nothing more.
+<p>As tempting as it may be, you should also avoid advertising for new contributors 
+and staff on forums-based Web sites. If you advertise this way, you will only 
+increase your work as you weed through the responses.
+<h>Demand Original Files
+<p>You might be surprised at the number of people who present work from others as 
+their own. Anyone can copy images, 3D graphics, or other content from the 
+millions of Web sites available. There is no way to check to see whether a 
+person has stolen content from other sources without spending months searching 
+the millions of Web sites worldwide.
+<p>By demanding original works in original formats from the application used for 
+creation, you can increase the chances that you are actually seeing work that 
+represents the person in question. A designer who copied a graphic, photo, or 
+other material from another Web site will have no supporting material.
+<h>Listen to Your Gut Reaction
+<p>“Listening to your gut” sums up everything above. Many times when people are in 
+need of services, they have a tendency to look for what they want rather than 
+what is actually being presented. Be as objective as possible in your 
+determinations and your communications with people over the Web.
+<p>Do not worry about having to turn away people you feel are questionable. The 
+people who truly offer something will shine though the mire. You may get 
+thousands of e-mails and only end up with a half-dozen people to work with, but 
+at least the ones you pick are more likely to come through.
+<p>Remember the scene from Indiana Jones and The Last Crusade: “He chose poorly.” 
+By not paying attention to what is in front of you and instead picking what you 
+envision, you will most likely “choose poorly” and destroy everything you 
+intended to create.
+<p>The Segments section is open to 
+anyone. If you have something interesting to say about life with your Mac, write 
+us.
+<h>Also in This Series
+  <l>Building a Web Site · April 2006 
+  <l>Thanks For All the Fish · February 2006 
+  <l>Living The Wireless Life · December 2005 
+  <l>Hit Me Again · July 2005 
+  <l>Podcasts: Number One on the Hype Parade · July 2005 
+  <l>Love at First iBook · July 2005 
+  <l>Tiger’s New Stripes · June 2005 
+  <l>Mac mini—The Modular Tower of Power · June 2005 
+  <l>The Apple Store SOHO—My Small Office/Home Office Away From Home in Manhattan · 
+  May 2005 
+
+<h>Reader Comments (0)
+<h>Add A Comment
+ 
+ 
+
+<p>ATPM: An e-zine about the personal computing experience.
+

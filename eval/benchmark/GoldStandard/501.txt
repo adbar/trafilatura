@@ -1,0 +1,542 @@
+URL: http://www.illinoistrialpractice.com/
+
+
+
+<h>The Illinois Trial Practice Weblog
+
+<h>Tips and techniques for trial lawyers, appearing for the plaintiff or
+defense
+
+
+
+<h>December 26, 2006
+
+<h>Search 7 Million U.S. Patents Using Google
+
+   <p>The new Google Patent Search covers U.S. patents from the 1790s
+   through 2006. Not covered are patent applications, international
+   patents, or patents from the last few months.
+
+   There's more at  The Invent Blog and Patent Baristas.
+
+   Related posts:
+
+
+
+<h>December 21, 2006
+
+<h>Where and How to Stand During Direct and Cross-Examination
+
+   <p>Assuming the trial judge gives you the freedom to move around the
+   courtroom, does it matter where and how you stand during direct and
+   cross-examination?
+
+   <p>During direct examination, many lawyers recommend standing near the
+   far end of the jury box, which forces the witness to look at the jury
+   when answering.
+
+   <p>Is cross-examination any different? According to Steven Puiszis,
+   President of the Illinois Association of Defense Trial Counsel, it's
+   best to move around during cross-examination. That's according to
+   Helen Gunnarsson's "Cross-Examination: Beyond the Perry Mason Moment,"
+   in this month's Illinois Bar Journal--
+
+     <p>Puiszis says that he paces around the courtroom during his
+     cross-examination so that the witness will look at him and not at
+     the jury. Doing so not only emphasized Puiszis's role as star but
+     also further diminishes the witness's opportunity to gain
+     credibility with the jury through eye contact.
+
+   <p>What's the "role as star" business? During cross-examination, the
+   cross-examining lawyer should be the main focus of the jury's
+   attention. It's the complete opposite of direct, when the witness
+   plays only a supporting role. During cross-examination, the jury's
+   attention should be squarely on the questioning lawyer, who asks
+   leading questions to which the witness can only answer yes or no.
+
+   To read Gunnarrson's entire article about cross-examination, look here 
+   (ISBA members only).
+
+
+<h>December 19, 2006
+
+<h>Technology Tip: Receive Faxes on Your Smart Phone
+
+   <p>Though connected to email with devices like a BlackBerry or smart
+   phone, lawyers might still have trouble receiving faxes when out of
+   the office. Internet fax services like eFax can take care of the
+   problem. For a modest fee, the company sends all your faxes to your
+   email address as a pdf file. To do this, they'll also need to provide
+   you with a new fax number, but you can simply set things up so that
+   faxes to your current number are automatically forwarded to the new
+   one. That way, you don't need to change your stationery.
+
+   <p>Note: This tip was suggested by an article written by Allan Press for
+   the 12/06 newsletter of the Illinois Bar Associations Standing
+   Committee on Legal Technology. ISBA members may be able to access the
+   newsletter here.
+
+<h>December 14, 2006
+
+<h>Finding Other Law-Related Weblogs
+
+   <p>There are two new legal blog search tools from Justia.com you might
+   want to know about:BlawgSearch.com for legal weblogs and Blawgs.fm
+   for law-related audio and video content.
+
+   <p>If you want an introduction to these new tools, see the Justia weblog,
+   where Tim Stanley has a long post explaining the site's Blawg
+   Directory, Blawg Rankings, and more. There are already 48 law-related
+   weblogs in the "trials and litigation" category, with other
+   law-related weblogs being added each day.
+
+   <p>That's a lot of useful, free information from lawyers who have no
+   problem sharing their secrets with others--much more than when I
+   started Illinois Trial Practice three years ago.
+
+
+
+<h>December 12, 2006
+
+<h>What to Do When Your Cross-Examination Fails
+
+   <p>What can you do when your cross-examination fails not because of your
+   own incompetence, but because the witness is so, well, slippery?
+
+   <p>One answer: During closing, talk about what happened. You might even
+   call the witness a "greased pig."
+
+   Full details at The Maryland Injury Lawyer Blog.
+
+<h>December 07, 2006
+
+<h>New Amendments to the Illinois Supreme Court Rules
+
+   <p>The Illinois Supreme Court has made a pdf file of the new amendments
+   to the Illinois Supreme Court Rules available online. The amended
+   rules are 40, 213, 316, and 527; some of the amendments are effective
+   immediately, and some not until January 1.
+
+   <p>Litigators might be most interested in the amendments to Rule 213(g),
+   which explain how an expert's trial testimony is circumscribed by the
+   opinions disclosed in interrogatory answers and discovery depositions.
+   The amendments are an attempt to make clear that an expert cannot
+   disclose new opinions in an evidence deposition and then testify to
+   those opinions live at trial. Opinions are to be disclosed before the
+   evidence deposition, in an interrogatory response or a discovery
+   deposition.
+
+   <p>The amended rule reads as follows, with the new amendments noted in
+   italics:
+
+     <p>213(g) Limitation on Testimony and Freedom to Cross-Examine.
+
+     <p>The information disclosed in answer to a Rule 213(f) interrogatory,
+     or in a discovery deposition, limits the testimony that can be
+     given by a witness on direct examination at trial. Information
+     disclosed in a discovery deposition need not be later specifically
+     identified in a Rule 213(f) answer, but, upon objection at trial,
+     the burden is on the proponent of the witness to prove the
+     information was provided in a Rule 213(f) answer or in the
+     discovery deposition. Except upon a showing of good cause,
+     information in an evidence deposition not previously disclosed in a
+     Rule 213(f) interrogatory answer or in a discovery deposition shall
+     not be admissible upon objection at trial.
+
+     <p>Without making disclosure under this rule, however, a
+     cross-examining party can elicit information, including opinions,
+     from the witness. This freedom to cross-examine is subject to a
+     restriction that applies in actions that involve multiple parties
+     and multiple representation. In such actions, the cross-examining
+     party may not elicit undisclosed information, including opinions,
+     from the witness on an issue on which its position is aligned with
+     that of the party doing the direct examination.
+
+
+
+<h>December 05, 2006
+
+<h>New Frontiers in Electronic Discovery
+
+   <p>It's likely you already think about email when drafting your
+   e-discovery requests. But there are several other newfangled ways of
+   communicating you might not think to consider--
+     * <l>Web-based email;
+     * <l>Instant messaging;
+     * <l>Voicemail;
+     * <l>Company-provided productivity tools;
+     * <l>Portable storage devices.
+
+   <p>According to forensic technologists David Sumner and Damon Reissman,
+   these other communication tools are "often overlooked." To find out
+   why this might be a mistake, read their article at Law.com,
+   "E-Discovery May Target Unexpected Sources."
+
+ 
+
+<h>November 30, 2006
+
+<h>Searching for the Law
+
+   <p>In his article "What can Google do for you?" (Trial, 9/06), David
+   Ratcliff suggests a number of Google-powered search engines that might
+   be useful to lawyers, including these:
+
+
+   <p>Ratcliff also reminds readers to try Google's advanced search options,
+   which allow Boolean operators. There are still other suggestions in
+   the article.
+
+   <p>Extra-serious Google users should check out the book ,
+   Google Hacks, which documents a number of useful but little-known Google
+   capabilities.
+
+
+
+<h>November 21, 2006
+
+<h>Closing Argument: Comparing Your Experts to Theirs
+
+   <p>Juries in personal injury cases generally hear two versions of the
+   medical facts, each presented by an opposing group of experts. If this
+   isn't confusing enough, there's also testimony about the medical facts
+   from the treating doctors, who may not agree with any of the experts.
+   The treating doctors might disagree with each other too.
+
+   <p>How can you help the jury sort it out? If the better set of experts
+   and treating physicians is on your side, emphasize this point with a
+   chart that compares your doctors and experts to their doctors and
+   experts. Here are some points of comparison you might use:
+     * <l>Where the doctors went to medical school;
+     * <l>The doctors' board certifications;
+     * <l>The doctors' research interests;
+     * <l>The doctors' publishing history;
+     * <l>The doctors' teaching experience.
+
+   <p>In closing, you can use the chart to point out that the most qualified
+   doctors and experts support your view of the case. Example: "You heard
+   a lot in this case about a diagnosis of adhesive capsulitis, which was
+   presented mostly through the testimony of Dr. Jones. Remember Dr.
+   Jones? He's the doctor who said he's not yet board certified, though
+   he's 'working on it.' Let's take a closer look at Dr. Jones--let's
+   compare his credentials to those of Dr. Smith, who disagreed with him
+   about the diagnosis of adhesive capsulitis. Dr. Smith should know
+   about adhesive capsulitis. He's treated it every single day, day in
+   and day out, for more than twenty-five years. He's published more than
+   thirty articles specifically on the topic -- adhesive capsulitis has
+   been his primary research interest since just after he graduated from
+   Harvard medical school. Not only is Dr. Smith board-certified in
+   orthopedic surgery, but he helps to write and administer the
+   board-certification exam to new doctors and teaches orthopedic surgery
+   to medical students. Now let's look at Dr. Jones. Dr. Jones isn't
+   board certified, has never published on adhesive capsulitis, and has
+   only done original research about knees, not shoulders. Although he
+   treats shoulders in his practice, he's only been doing it for two
+   years--no, sorry, only a year and a half, only eighteen months."
+
+   <p>The example is a little over-the-top but you get the idea. Although
+   the example relies on only a few points of comparison, there might be
+   many others in any given case. Don't wait until your closing argument
+   to start thinking about them. Instead, get into the habit of viewing
+   the medical part of the case through a points-of-comparison lens. If
+   you do, you'll automatically think about comparisons as you prepare
+   the case, especially when you review C.V.s and depose the treating
+   doctors and experts.
+
+
+
+<h>November 16, 2006
+
+<h>The ABA Weighs In on Metadata
+
+   <p>The ABA has issued a new ethics opinion concerning the uses and
+   misuses of metadata. I have details at Legal Underground, "New ABA
+   Ethics Opinion on Metadata," which also lists all my prior posts on
+   the topic.
+
+
+<h>November 14, 2006
+
+<h>Expert Depositions: The World's Shortest Outline
+
+   <p>I knew a lawyer who used to say that expert depositions were extremely
+   easy. "You only need to ask a single question," he'd say. "'What are
+   your opinions?'"
+
+   <p>Expert depositions aren't quite that easy. Even so, there's something
+   about expert depositions that make lawyers want to boil them down to
+   their bare essence. It's a sort of game, like trying to prove a math
+   theorem in the fewest steps possible.
+
+
+   <p>It's in this spirit that one should read a post at the Trial Lawyer
+   Resource Center: "Expert Witness Deposition: Five Questions To Ask."
+   Here's most of the post--
+
+
+     <p>Expert's deposition. While there is no substitute for being
+     prepared, you can take an effective deposition "on the fly" by
+     remembering five essential questions and their logical
+     subquestions:
+
+     <l>1. Who engaged you in this case.
+     <l>2. What they ask you to do?
+     <l>3. What did you do?
+     <l>4. What conclusions, opinions did you reach and what do you intend
+     to testify to at trial?
+
+   <p>It might be the world's shortest expert-deposition outline. Four
+   questions plus a fifth I didn't include--to see it, you'll have to
+   read the original post.
+
+   <p>Is it a good idea to start an expert deposition with such a simple
+   plan? If nothing else, the exercise of writing a very short outline is
+   a helpful one, as it will force you to consider what's most important
+   about the deposition.
+
+   <p>I'll talk more about this idea in my third podcast on advanced
+   deposition techniques, coming soon.
+
+   Related posts:
+
+
+<h>November 09, 2006
+
+<h>A Taped Discussion about the New Federal E-Discovery Rules
+
+   <p>Here's how the Coast to Coast show on the new federal e-discovery
+   rules is described at the Legal Talk Network--
+
+     <p>On December 1, 2006, new amendments to the Federal Rules of Civil
+     Procedure will take effect and change how civil cases will be tried
+     forever. In this Coast to Coast we discuss the e-discovery changes,
+     what the impact will be for corporate America and how companies can
+     prepare themselves before the new rules take effect.
+
+   <p>The show participants are hosts J.Craig Willams and Robert Ambrogi and
+   their two guests,  Michele C.S. Lange, Esq., of Kroll Ontrack Inc.,
+   and Dennis Kennedy, the legal technology consultant and weblogger.
+
+   <p>You can listen to the show on your computer or download it as a
+   podcast.
+
+
+<h>November 07, 2006
+
+<h>Featured at the Wall Street Journal Law Blog: The Curmudgeon's Guide to
+Practicing Law
+
+   <p>I've written about Mark Hermann's excellent Curmudgeon's Guide to
+   Practicing Law on two earlier occasions, here and here. Now the Wall
+   Street Journal Law Blog has also joined the bandwagon, highlighting
+   the book and excerpting it in a series of posts, as follows:
+
+
+
+   <p>If you're interested in learning more about the book, these posts are
+   a good place to start.
+
+
+
+<h>November 02, 2006
+
+<h>A Second Podcast on Advanced Deposition Techniques
+
+   <p>You'll find my second podcast in the deposition series at Legal
+   Underground: The Legal Underground Podcast Episode #50: Advanced
+   Deposition Techniques, Part 2.
+
+
+   <p>In Part 1, I covered five tips for asserting control at depositions.
+   The new podcast covers four tips for using psychology at depositions.
+
+
+<h>October 31, 2006
+
+<h>Oral Argument Tips from Someone Who Does It a Lot
+
+
+   <h>From Law.com: "Making the Most of Oral Argument," by Howard Bashman--
+
+
+     <p>When I am representing the appellant, and thus am the first to take
+     the lectern when the case is called for argument, I know that I
+     will have at least a few moments of uninterrupted time before the
+     onset of a barrage of questions. That time is best used to focus
+     directly on the result I am asking the court to reach and the
+     several reasons (to be covered in more detail during the argument,
+     if the court allows) why the court should reach that result.
+
+   <p>There's that and much more in Bashman's column. Read it before your
+   next oral argument.
+
+
+
+<h>October 26, 2006
+
+<h>All You Need to Know About Electronic Discovery
+
+
+   <p>At Law Practice Today, Dennis Kennedy and Tom Mighell have a very
+   useful article titled "EDD-ucating Yourself About Electronic
+   Discovery." It begins like this--
+
+
+     <p>It was back in  July 2004 when Tom published the first Strongest
+     Links article on the subject of electronic discovery as part of an
+     influential EDD-themed issue of Law Practice Today.  Since that
+     time, the electronic evidence landscape has changed considerably,
+     and EDD is more important that ever.  With December 1 -- the date
+     the amended Federal Rules of Civil Procedure will take effect --
+     fast approaching, we thought it would be a good idea to revisit
+     those links, and provide an update to those of you who are still
+     learning about the intricacies of e-discovery.
+
+   <p>The rest of the article collects links to portals, resources, blogs,
+   and cases on electronic discovery. It's an article worth bookmarking.
+
+
+
+<h>October 24, 2006
+
+<h>Admissibility of Medical Records as Business Records in Illinois
+
+   <p>A recent case from the Illinois Appellate Court, Troyan v. Reyes (3d
+   Distr. 9/29/06), contains a helpful primer for getting medical records
+   into evidence without a doctor to sponsor them. Though plaintiff's
+   counsel wanted to introduce medical records at trial, the doctors were
+   not available to testify. As a work-around, plaintiff's counsel called
+   the record keepers from the various hospitals and had them testify to
+   the foundational requirements for business records, which are found in
+   Illinois Supreme Court Rule 236.
+
+     <p>Any writing or record . . . made as a memorandum or record of any
+     act, transaction, occurrence, or event, shall be admissible as
+     evidence of the act, transaction, occurrence, or event, if made in
+     the regular course of any business, and if it was the regular
+     course of the business to make such a memorandum or record at the
+     time of such an act, transaction, occurrence, or event or within a
+     reasonable time thereafter . . .
+
+   <p>At trial, the record keepers testified to these foundational
+   requirements. During closing, plaintiff's counsel wanted to publish
+   the records to the jury. When the defendant objected, the trial court
+   denied the request as to a radiology report and some of the other
+   medical records that contained "observations, assessments, diagnoses
+   and impressions of certain doctors."
+
+   <p>On appeal, the Troyan court considered whether the medical records,
+   which contained the opinions and diagnoses of absent doctors, should
+   have been published to the jury under the business-records exception
+   to the hearsay rule.
+
+   <p>After setting out the foundational requirements for business records
+   from Rule 236, the court made the following points:
+     * <l>First, in order to introduce a record under the business-records
+       exception to the hearsay rule, "it is not necessary that the
+       author or creator of the record testify or be cross-examined about
+       the contents of the record";
+     * <l>Second, once a witness has established the foundational
+       requirements, "the records themselves should be introduced";
+     * <l>Third, these rules apply even to "diagnoses and opinions contained
+       in medical records," which should be "admissible and published to
+       the jury as a proper part of the business records exception to the
+       hearsay rule";
+     * <l>Fourth, there is an important exception: when the medical records
+       either aren't relevant or are "too complex for the jury to
+       understand on its own," then these rules do not apply and the
+       medical records should not be introduced into evidence.
+
+   <p>Applying these principles, the Troyan court held that the radiology
+   report, which contained "complicated medical terminology," was "too
+   complex and confusing to aid the jury absent medical testimony." Most
+   of the other medical records were admissible, however, since the jury
+   "could have easily understood the opinions and diagnoses contained" in
+   the reports in that they did not contain "difficult medical
+   terminology or opinions."
+
+
+
+<h>October 19, 2006
+
+<h>My Deposition Book Is Coming Soon
+
+   <p>My book about depositions, Deposition Checklists and Strategies, will
+   be published next month by James Publishing. You can find details at
+   the publisher's website here (pdf) and at Legal Underground.
+
+
+<h>October 17, 2006
+
+<h>A New Discovery Resources Column: Metadata Revisited
+
+   <p>The latest "Thinking E-Discovery" column is up at
+   DiscoveryResources.org: "Metadata Revisited: Recent Developments,
+   Correcting Common Misconceptions and Analyzing the Florida Approach,"
+   by Dennis Kennedy, Tom Mighell, and me.
+
+
+   <p>Our past columns are available there as well:
+
+
+<h>October 12, 2006
+
+<h>The Illinois Supreme Court on Class-Action Waivers in Arbitration Agreements
+
+   <p>In Kinkel v. Cingular Wireless, ____ N.E.2d ____ (Ill. 10/5/06), the
+   Illinois Supreme Court held that an arbitration clause that prohibited
+   class-wide arbitration was unconscionable.
+
+   <p>The case began as an Illinois state-court class action in which
+   plaintiff alleged that Cingular's $150 early-termination fee was an
+   illegal penalty in violation of the Illinois Consumer Fraud Act.
+   Plaintiff's agreement with Cingular included an arbitration clause
+   with a class-action waiver, that is, a provision that "no arbitrator
+   has the authority" to resolve class claims. Based on this clause,
+   Cingular moved to compel arbitration solely on plaintiff's individual
+   claims. The arbitration fee was $125. Cingular did not desire
+   arbitration on a class-wide basis.
+
+   <p>The trial court denied the motion to compel arbitration, holding that
+   the class-action waiver was unconscionable and that the entire
+   arbitration agreement unenforceable. After an intermediate appeal, the
+   Illinois Supreme Court reviewed the case. The Supreme Court agreed
+   that the prohibition of class arbitration was unconscionable. However,
+   it also ruled that the class-action waiver was severable and that the
+   arbitration clause could be enforced without it. The practical effect
+   is that although Cingular can arbitrate the plaintiff's individual
+   claims, it cannot preclude arbitration of the class claims, a result
+   it was hoping to avoid.
+
+   <p>The Supreme Court summarized its reasoning on unconscionability as
+   follows:
+
+     <p>In sum, we hold that under the circumstances of this case, the
+     waiver on class actions is unconscionable. It is not unconscionable
+     merely because it is contained in an arbitration clause. It is
+     unconscionable because it is contained in a contract of adhesion
+     that fails to inform the customer of the cost to her of
+     arbitration, and that does not provide a cost-effective mechanism
+     for individual customers to obtain a remedy for the specific injury
+     alleged in either a judicial or an arbitral forum. We further hold
+     that the offending clause is severable from the arbitration clause.
+
+     <p>We do not hold that class action waivers are per se unconscionable.
+     It is not unconscionable or even unethical for a business to
+     attempt to limit its exposure to class arbitration or litigation,
+     but to prefer to resolve the claims of customers or clients
+     individually. Indeed, it has been suggested that, as a matter of
+     economic theory, consumers may benefit from reduced costs if
+     companies are allowed to engage in this strategy. See, e.g., J.
+     Sternlight & E. Jensen, Using Arbitration to Eliminate Consumer
+     Class Actions: Efficient Business Practice or Unconscionable
+     Abuse?, 67 Law & Contemp. Probs. 75, 92-99 (2004). The
+     unconscionability of class action waivers must be determined on a
+     case-by-case basis, considering the totality of the circumstances.
+
+   <p>At Workplace Prog Blog, Richard Bales has more, including thoughts
+   about the article that was cited in the quoted portion of the Supreme
+   Court opinion.
+
+
+

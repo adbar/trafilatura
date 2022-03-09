@@ -1,0 +1,140 @@
+URL: http://science.nasa.gov/headlines/y2004/23apr_biocorr2.htm
+
+                     <h>Keeping an Eye on Central America
+
+ <p>NASA-supported researchers have developed software anyone can use to fly,
+video game-style, over Central America and survey its current environmental
+                                conditions.
+
+   <p>April 23, 2004:  Flying over the lush, mountainous landscape of
+   Central America, a local environmental official points out plumes of
+   smoke where "slash and burn" agriculture is destroying hundreds of
+   acres of rain forest. In the distance, dark-tinted waters of a red
+   tide nearing coastal fishing villages are clearly visible from this
+   altitude. He points to a silt-filled river snaking through the forest
+   below -- a symptom of soil erosion caused by unsustainable farming
+   practices upstream, he explains.
+
+   <p>The view evokes a kind of intuitive understanding of these
+   environmental concerns that words alone can not provide.
+
+   <p>Right: A computer-generated, 3-dimensional landscape of the Caribbean
+   coastal plain of Costa Rica based on satellite data. [More]
+
+   <p>Juan Mario Dary, the environmental minister of Guatemala, plans to
+   give such an aerial tour of Central America this weekend. Only he
+   won't actually be in a plane. In fact, he won't be anywhere near
+   Central America. He'll be in Tokyo, Japan, at the second annual Earth
+   Observation Summit.
+
+   <p>The tour Dary plans to give will be a virtual flight over a
+   computer-generated, 3-dimensional landscape -- something like a
+   "flight simulator" video game. The view through the window, though, is
+   reality. It's based on real satellite and geographic data, offering a
+   "big picture" view of how humans are affecting the rich diversity of
+   wildlife in the region.
+
+   <p>"In some ways, it's better than the real thing," says Daniel Irwin, a
+   research scientist at NASA's Marshall Space Flight Center. "The user
+   can choose which 'layers' of the data they want to see, some of which
+   aren't obvious from a real plane: conservation park boundaries, small
+   village locations, ecosystem types, and endangered species habitats,
+   just to name a few."
+
+   <p>This virtual landscape software is one of many new tools that Irwin
+   and others are developing as part of an international project called
+   SIAM-SERVIR, an acronym in Spanish meaning "Mesoamerican System of
+   Environmental Information -- Regional System of Monitoring and
+   Visualization."
+
+   <p>Through a coordinated effort between the seven countries of Central
+   America, NASA, the World Bank, the U.S. Agency for International
+   Development (USAID), and others, SIAM-SERVIR is creating an
+   easy-to-use Web portal to environmental data for the entire region.
+   The portal (http://servir.nsstc.nasa.gov) is online now, though it is
+   still incomplete. The importance of having daily wildfire data
+   available during the spring fire season convinced them to pre-release
+   the site, Irwin says. It will be finished later this year.
+
+   <p>Above: A scene from the flyby. False colors in this satellite image of
+   Lake Nicaragua represent types of land cover: green is forest, while
+   purple, red, and pink represent specific combinations of agriculture,
+   bare soil, and urban areas. This perspective view was created using
+   software from Skyline Software Systems.
+
+   <p>Daily, near real-time updates to the portal are based on NASA
+   satellite data, acquired and processed automatically. Web surfers--
+   whether students, scientists, or Central American politicians -- can
+   view the information in a variety of ways: interactive 2-dimensional
+   maps, "fly throughs" of a 3D virtual landscape, or they can download a
+   specific slice of the raw data to do their own analysis.
+
+   <p>"This project will be ending a distinctive feature of Central America,
+   where environmental information has always been jealously guarded by
+   institutions or people. Now instead we hope that the information will
+   flow freely," says Rafael Guillen, Irwin's primary technical
+   collaborator in Central America and an expert in Geographic
+   Information Systems mapping software (GIS).
+
+  <p>Left: Dan Irwin (light blue shirt) in Central America,
+   flanked by NASA Administrator Sean O'Keefe and Ghassem Asrar, NASA's
+   Associate Administrator for Earth Science. Irwin is the NASA manager
+   of SIAM-SERVER. [Larger image]
+
+   <p>Anything that can be plotted on a map can be integrated into the
+   master database: historic geographic records, modern road maps,
+   satellite spectral data from Landsat and MODIS (MODerate-resolution
+   Imaging Spectroradiometer), or wildlife habitat data from traditional
+   fieldwork. Irwin, Guillen and colleagues hope that all this
+   information, freely available and easy to understand, will help
+   Central Americans make better decisions about the region's beleaguered
+   natural resources.
+
+   <p>In July, construction will begin on a central data storage facility in
+   Panama. In addition to being the information warehouse for the
+   project, the Panama facility will be a kind of "situation room" -- a
+   "mission control" for monitoring the health and condition of rain
+   forests, croplands, rivers, and coastal waters throughout Central
+   America. USAID is funding the development of this facility, as well as
+   six smaller facilities in each of the other Central American
+   countries: Belize, Guatemala, Costa Rica, Nicaragua, Honduras, and El
+   Salvador. These smaller national centers will be staffed by experts
+   with direct access to the central database for helping address the
+   environmental issues in their own countries.
+   <p>Central America is a region with a great richness and diversity of
+   tropical wildlife: though it only constitutes roughly 1% of the
+   planet's surface, the region is home to about 7% of all land-dwelling
+   species. The region is also home to a rapidly growing and widely
+   impoverished human population. Serving the needs of the people without
+   bankrupting the natural resources on which they depend is an enormous
+   challenge to political decision makers.
+
+  <p>Right: Much of Central America's rich biodiversity in is
+   being destroyed by "slash and burn" agriculture. This photo was taken
+   in Petén, Guatemala, by Daniel Irwin.
+   <p>It was local decision makers who came up with the idea for this
+   Web-portal project, explains Irwin. The impetus came from an
+   intergovernmental organization called CCAD (a Spanish acronym meaning
+   "Central American Commission of Environment and Development"), which
+   combines and coordinates the efforts of the seven Central American
+   countries' ministries of the environment. Regional treaties charge the
+   CCAD with the task of promoting environmental protection and
+   sustainable development throughout the region. This new Web portal is
+   one tool they sought to help them in their work.
+
+   <p>"We're not telling the Central Americans what needs to be done," says
+   Irwin. "Rather we're trying to listen and develop products and tools
+   based on their needs. It is a demand-driven process."
+
+   <p>Once development of the system is finished and local experts have been
+   sufficiently trained, control and operation of the system will be
+   turned over to the local environmental authorities, though NASA will
+   remain available to them for technical support.
+
+   <p>Meanwhile, anyone with an Internet connection can visit. At the portal
+   you can see plumes from fires and watch rain clouds drift by.
+   Eventually, when the site is complete, you can hop aboard a virtual
+   plane and fly up and down the long Central American coast--just like a
+   high-level environmental minister. As Irwin says, in some ways, it's
+   better than the real thing.
+                
