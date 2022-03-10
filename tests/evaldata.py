@@ -2985,7 +2985,7 @@ EVAL_PAGES = {
     'tags': ['ann wilson', 'drama', 'eighties', 'heart', 'loneliness', 'Music', 'nancy wilson', 'power ballads', 'Rock'],
     'with': ['Fans of Heart, the rawk band', 'I stayed, because Ann was really about to deliver', 'And of course they did get through it.'],
     'without': ['Leave a Reply', 'responses to “The Loneliest Woman in', 'TIM ANDERSON has done many amazing things in his short life.'],
-    'comments': ['“How can you not hear Ann Wilson when she’s singing at you?!”', 'The Wilson sisters are goddesses.', 'Fischer and the ground bass player it was'],
+    'comments': ['“How can you not hear Ann Wilson when she’s singing at you?!”', 'The Wilson sisters are goddesses.', 'Fischer and the original bass player it was'],
     'license': '',
     'region': '',
 },

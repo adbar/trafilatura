@@ -646,7 +646,7 @@ def remove_nav(cleaned_tree):
             ratio = paras_chars_count / refs_count
             if ratio > 0.5:
                 ele.drop_tree()
-            print(ratio)
+            # print(ratio)
     # print(removal)
 
     # for k, v in removal.items():
