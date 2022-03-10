@@ -16,11 +16,12 @@ from justext.utils import get_stoplist, get_stoplists
 from lxml import etree, html
 
 # own
-from .htmlprocessing import convert_tags, tree_cleaning
+from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
+from .xpaths import PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
@@ -60,6 +61,7 @@ def custom_justext(tree, stoplist):
 
 def try_justext(tree, url, target_language):
     '''Second safety net: try with the generic algorithm justext'''
+    # init
     result_body = etree.Element('body')
     # determine language
     if target_language is not None and target_language in JUSTEXT_LANGUAGES:
@@ -83,6 +85,10 @@ def try_justext(tree, url, target_language):
 def justext_rescue(tree, url, target_language, postbody, len_text, text):
     '''Try to use justext algorithm as a second fallback'''
     result_bool = False
+    # additional cleaning
+    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
+    tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
+    # proceed
     temppost_algo = try_justext(tree, url, target_language)
     if temppost_algo is not None:
         temp_text = trim(' '.join(temppost_algo.itertext()))
