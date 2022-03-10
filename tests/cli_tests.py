@@ -45,11 +45,13 @@ def test_parser():
     assert args.output_format == 'csv'
     assert args.no_tables is False
     # test args mapping
-    testargs = ['', '--xml', '--nocomments']
+    testargs = ['', '--xml', '--nocomments', '--precision', '--recall']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
     assert args.output_format == 'xml' and args.no_comments is False
+    # combination possible (?)
+    assert args.precision is True and args.recall is True
     args.xml, args.csv = False, True
     args = cli.map_args(args)
     assert args.output_format == 'csv'
@@ -260,14 +262,14 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
-    testargs = ['', '-out', 'xml', '--only-with-metadata']
+    testargs = ['', '-out', 'xml', '--only-with-metadata', '--precision']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     # test JSON output
-    testargs = ['', '-out', 'json']
+    testargs = ['', '-out', 'json', '--recall']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:

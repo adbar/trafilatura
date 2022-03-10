@@ -364,7 +364,8 @@ def examine(htmlstring, args, url=None, config=None):
                              include_images=args.images, only_with_metadata=args.only_with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
-                             config=config) # settingsfile=args.config_file,
+                             favor_precision=args.precision, favor_recall=args.recall, config=config)
+        # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('ERROR: ' + str(err) + '\n' + traceback.format_exc() + '\n')

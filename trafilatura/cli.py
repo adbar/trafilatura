@@ -152,6 +152,12 @@ def parse_args(args):
     group4.add_argument("--config-file",
                         help="override standard extraction parameters with a custom config file",
                         type=str)
+    group4.add_argument("--precision",
+                        help="favor extraction precision (less noise, possibly less text)",
+                        action="store_true")
+    group4.add_argument("--recall",
+                        help="favor extraction recall (more text, possibly more noise)",
+                        action="store_true")
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
