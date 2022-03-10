@@ -43,6 +43,7 @@ FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'fw', 'head', 'ref'}
 
+
 def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
     if len(element) == 0:
@@ -398,10 +399,10 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     else:
         etree.strip_tags(search_tree, 'span')
     result_body.extend(e for e in
-                        [handle_textelem(
-                            element, potential_tags, deduplicate, config)
-                            for element in search_tree.iter(search_list)]
-                        if e is not None)
+                       [handle_textelem(
+                           element, potential_tags, deduplicate, config)
+                           for element in search_tree.iter(search_list)]
+                       if e is not None)
     return result_body
 
 
@@ -496,7 +497,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
         subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-        #subtree = delete_by_link_density(subtree, 'head', backtracking=False)
+        # subtree = delete_by_link_density(subtree, 'head', backtracking=False)
         # also filter fw/head, table and quote elements?
         if favor_precision is True:
             subtree = delete_by_link_density(subtree, 'head', backtracking=False)
@@ -541,7 +542,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision,
+                                        favor_recall=favor_recall, potential_tags=potential_tags,
+                                        deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     # filter output
     etree.strip_elements(result_body, 'done')
@@ -617,24 +620,10 @@ def remove_nav(cleaned_tree):
     # print([i.text for i in cleaned_tree.iter('a')])
     # print(type(cleaned_tree))
     # print(cleaned_tree.find('a'))
-    removal = {}
     for expr in LINKS_XPATH:
         subtree = cleaned_tree.xpath(expr)
         if not subtree:
             continue
-        # for ele in subtree:
-        #     # Replaced Algorithm - Abandoned?
-        #     # while ele.getparent().tag == 'item':
-        #     # TODO: Iterate Child
-        #     if ele.getparent().tag == 'item':
-        #         parent = ele.getparent().getparent()
-        #         ref_count = len([i for i in parent.iter('ref')])
-        #         print(ref_count)
-                # if ele.getparent().getparent() not in removal.keys():
-                #     removal[ele.getparent().getparent()] = 1
-                # else:
-                #     removal[ele.getparent().getparent()] += 1
-                # print(ele.getparent().getparent(), ele.text)
         for ele in subtree:
             refs = [i for i in ele.iter('ref')]
             paras = [i for i in ele.iter('p', 'head', 'quote')]
@@ -645,16 +634,10 @@ def remove_nav(cleaned_tree):
                 refs_count = 1
             ratio = paras_chars_count / refs_count
             if ratio > 0.5:
-                ele.drop_tree()
-            # print(ratio)
-    # print(removal)
-
-    # for k, v in removal.items():
-    #     if v > 3:
-    #         try:
-    #             k.drop_tree()  # faster when applicable
-    #         except AttributeError:
-    #             k.getparent().remove(k)
+                try:
+                    ele.drop_tree()
+                except AttributeError:
+                    ele.getparent().remove(ele)
     return cleaned_tree
 
 
@@ -890,7 +873,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             if only_with_metadata is True and any(
                     x is None for x in
                     [document.date, document.title, document.url]
-                ):
+            ):
                 LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
         else:
@@ -907,7 +890,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         cleaned_tree = remove_nav(cleaned_tree)
 
         # Extract authors (Modified_
-        cleaned_tree, info = extract_info(cleaned_tree)
+        # cleaned_tree, info = extract_info(cleaned_tree)
 
         # comments first, then remove
         if include_comments is True:
@@ -919,11 +902,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables,
+                                                        include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody,
+                                                               temp_text, len_text, target_language, favor_precision,
+                                                               favor_recall, include_formatting, include_links,
+                                                               include_images, include_tables, config)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):

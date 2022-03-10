@@ -623,7 +623,7 @@ def test_precision_recall():
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
-    
+
 
 
 if __name__ == '__main__':

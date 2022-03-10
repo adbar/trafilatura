@@ -150,7 +150,7 @@ OVERALL_DISCARD_XPATH = [
 
     # Add some names that is regular named
     '''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
-    or contains(@class, "content-title") or contains(@class, "content-info") 
+    or contains(@class, "content-title") or contains(@class, "content-info")
     or contains(translate(@class, "N", "n"), "nav")
     or contains(translate(@id, "N", "n"), "nav")]''',
     # some confusion names here, may have to improve the logic? Need something to improve the logic here.
