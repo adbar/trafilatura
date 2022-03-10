@@ -476,11 +476,12 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
-        subtree = tree.xpath(expr)
-        if not subtree:
+        try:
+            subtree = tree.xpath(expr)[0]
+        except IndexError:
             continue
         # prune the rest
-        subtree = prune_unwanted_nodes(subtree[0], OVERALL_DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH)
         # prune images
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
@@ -522,8 +523,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             etree.strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
         ##etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # extract content
-        # list(filter(None.__ne__, processed_elems))
+        # extract content # list(filter(None.__ne__, processed_elems)) ?
         result_body.extend(e for e in
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None)
@@ -553,9 +553,9 @@ def process_comments_node(elem, potential_tags, dedupbool, config):
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, comments_fix=True, deduplicate=dedupbool, config=config)
         # test length and remove
-        if processed_element is not None: # and processed_element.text not in COMMENTS_BLACKLIST:
+        if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
-            # if textfilter(elem) is True: # ^Pingback
+            # if textfilter(elem) is True:  # ^Pingback
             #    return None
             return processed_element
     return None
@@ -602,6 +602,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
         return body, text, len_text
     algo_flag, jt_result = False, False
+    # prior cleaning
+    if favor_precision is True:
+        backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -632,17 +635,13 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
-    # override faulty extraction # len_text < MIN_EXTRACTED_SIZE*10
-    if body.xpath(SANITIZED_XPATH):
+    # override faulty extraction: try with justext
+    if body.xpath(SANITIZED_XPATH) or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    # or favor_recall is True ?
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
         if jt_result is True:  # and not len_text > 2*len_text2:
-            LOGGER.debug('using justext, length: %s', len_text2)  # MIN_EXTRACTED_SIZE:
+            LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
-    # try with justext
-    elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') or favor_recall is True:
-        LOGGER.error('not enough text %s', url)
-        body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
-        LOGGER.debug('justext length %s', len_text)
     # post-processing: remove unwanted sections
     if algo_flag is True and jt_result is False:
         body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images, include_tables)
@@ -811,9 +810,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             LOGGER.error('wrong HTML meta language for URL %s', url)
             raise ValueError
 
-        # backup (or not) for further processing
-        tree_backup_1 = deepcopy(tree) if no_fallback is False else None
-        tree_backup_2 = deepcopy(tree)
         # extract metadata if necessary
         if output_format != 'txt':
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
@@ -831,6 +827,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         else:
             document = Document()
 
+        # backup (or not) for further processing
+        tree_backup_1 = deepcopy(tree) if no_fallback is False else None
+        tree_backup_2 = deepcopy(tree)
+
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)
         cleaned_tree_backup = deepcopy(cleaned_tree)
@@ -843,8 +843,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-            if favor_precision is True:
-                cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
+        if favor_precision is True:
+            cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
         postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
@@ -853,7 +853,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         if no_fallback is False:
             postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
         # add baseline as additional fallback
-        # rescue: try to use original/dirty tree
+        # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
             postbody, temp_text, len_text = baseline(tree_backup_2)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
