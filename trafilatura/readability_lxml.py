@@ -301,7 +301,7 @@ class Document:
                 and (not REGEXES["okMaybeItsACandidateRe"].search(attrs))
                 and elem.tag not in ("html", "body")
             ):
-                LOGGER.debug("Removing unlikely candidate:", elem.tag)
+                LOGGER.debug("Removing unlikely candidate: %s", elem.tag)
                 elem.drop_tree()
 
     def transform_misused_divs_into_paragraphs(self):
