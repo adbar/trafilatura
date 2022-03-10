@@ -628,12 +628,13 @@ def remove_nav(cleaned_tree):
             refs = [i for i in ele.iter('ref')]
             paras = [i for i in ele.iter('p', 'head', 'quote')]
             refs_count = len(refs)
-            paras_chars_count = len([(len(i.text) if i.text is not None else 0) for i in paras])
+            paras_chars_count = sum([(len(i.text) if i.text is not None else 0) for i in paras])
             # print(paras_chars_count, refs_count)
             if refs_count == 0:
                 refs_count = 1
             ratio = paras_chars_count / refs_count
-            if ratio > 0.5:
+            # print([i.text for i in refs], [i.text for i in paras], paras_chars_count, ratio)
+            if ratio < 20:
                 try:
                     ele.drop_tree()
                 except AttributeError:
