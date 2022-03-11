@@ -489,7 +489,6 @@ def test_images():
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'test.jpg Example image' not in extract(teststring)
-    # print(teststring)
     assert 'test.jpg Example image' in extract(teststring, include_images=True, no_fallback=True)
     assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
     # CNN example
@@ -624,7 +623,7 @@ def test_precision_recall():
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
-
+    
 
 
 if __name__ == '__main__':
