@@ -224,7 +224,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             if processed_child.tag == 'p':
                 LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text, processed_child.tail)
                 if processed_element.text:
-                    processed_element.text += f' {processed_child.text}'
+                    processed_element.text += ' ' + processed_child.text
                 else:
                     processed_element.text = processed_child.text
                 continue
@@ -235,7 +235,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
-                            item.text = f' {item.text}'
+                            item.text = ' ' + item.text
                         strip_tags(processed_child, item.tag)
                 # correct attributes
                 if child.tag == 'hi':
@@ -621,13 +621,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2 * len_text:
         algo_flag = True
-    elif not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-        algo_flag = True
-    elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-        algo_flag = True
+    # borderline cases
     else:
-        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-        algo_flag = False
+        if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+            algo_flag = True
+        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+            algo_flag = True
+        else:
+            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+            algo_flag = False
     # apply decision
     if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
@@ -665,9 +667,8 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            if mymatch := re.search(
-                r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I
-            ):
+            mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
+            if mymatch:
                 elem = SubElement(postbody, 'p')
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
