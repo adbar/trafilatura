@@ -91,15 +91,15 @@ def check_html_lang(tree, target_language, strict=False):
 
 def language_filter(temp_text, temp_comments, target_language, docmeta):
     '''Run external component (if installed) for language identification'''
-    # sanity check on language
     if target_language is not None:
         if LANGID_FLAG is True:
             # comments
-            if len(temp_comments) > len(temp_text):
-                result, _ = py3langid.classify(temp_comments)
-            # default
-            else:
-                result, _ = py3langid.classify(temp_text)
+            result, _ = (
+                py3langid.classify(temp_comments)
+                if len(temp_comments) > len(temp_text)
+                else py3langid.classify(temp_text)
+            )
+
             if result != target_language:
                 LOGGER.warning('wrong language: %s %s %s', result, docmeta.id, docmeta.url)
                 return True

@@ -57,10 +57,12 @@ def load_input_urls(args):
         try:
             # optional: errors='strict', buffering=1
             with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
-                for line in inputfile:
-                    url_match = re.match(r'https?://[^\s]+', line)
-                    if url_match:
-                        input_urls.append(url_match.group(0))
+                input_urls.extend(
+                    url_match.group(0)
+                    for line in inputfile
+                    if (url_match := re.match(r'https?://[^\s]+', line))
+                )
+
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
     elif args.crawl:
@@ -204,10 +206,7 @@ def file_processing(filename, args, counter=None, config=None):
 def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
-    if args.backup_dir:
-        fileslug = archive_html(htmlstring, args, counter)
-    else:
-        fileslug = None
+    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)
@@ -309,7 +308,7 @@ def url_processing_pipeline(args, inputdict):
     # option to retry
     if args.archived is True:
         inputdict = {}
-        inputdict['https://web.archive.org'] = deque(['/web/20/' + e for e in errors])
+        inputdict['https://web.archive.org'] = deque([f'/web/20/{e}' for e in errors])
         if len(inputdict['https://web.archive.org']) > 0:
             archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
@@ -351,7 +350,6 @@ def examine(htmlstring, args, url=None, config=None):
         sys.stderr.write('ERROR: file too large\n')
     elif len(htmlstring) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         sys.stderr.write('ERROR: file too small\n')
-    # proceed
     else:
         # put timeout signal in place
         if HAS_SIGNAL is True:
@@ -365,10 +363,8 @@ def examine(htmlstring, args, url=None, config=None):
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              favor_precision=args.precision, favor_recall=args.recall, config=config)
-        # settingsfile=args.config_file,
-        # ugly but efficient
         except Exception as err:
-            sys.stderr.write('ERROR: ' + str(err) + '\n' + traceback.format_exc() + '\n')
+            sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
         # deactivate
         if HAS_SIGNAL is True:
             alarm(0)

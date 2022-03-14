@@ -324,7 +324,7 @@ def write_fullheader(tei, docmeta):
     source_bibl = SubElement(sourcedesc, 'bibl')
     # determination of sigle string
     if docmeta.sitename and docmeta.date:
-        sigle = docmeta.sitename + ', ' + docmeta.date
+        sigle = f'{docmeta.sitename}, {docmeta.date}'
     elif not docmeta.sitename and docmeta.date:
         sigle = docmeta.date
     elif docmeta.sitename:
@@ -333,9 +333,9 @@ def write_fullheader(tei, docmeta):
         LOGGER.warning('no sigle for URL %s', docmeta.url)
         sigle = ''
     if docmeta.title:
-        source_bibl.text = docmeta.title + '. ' + sigle
+        source_bibl.text = f'{docmeta.title}. {sigle}'
     else:
-        source_bibl.text = '. ' + sigle
+        source_bibl.text = f'. {sigle}'
     source_sigle = SubElement(sourcedesc, 'bibl', type='sigle')
     source_sigle.text = sigle
     biblfull = SubElement(sourcedesc, 'biblFull')
@@ -348,7 +348,7 @@ def write_fullheader(tei, docmeta):
     publicationstmt = SubElement(biblfull, 'publicationStmt')
     publication_publisher = SubElement(publicationstmt, 'publisher')
     if docmeta.hostname and docmeta.sitename:
-        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+        publisherstring = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
     elif docmeta.hostname:
         publisherstring = docmeta.hostname
     elif docmeta.sitename:
@@ -368,12 +368,12 @@ def write_fullheader(tei, docmeta):
     if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
         textclass = SubElement(profiledesc, 'textClass')
         keywords = SubElement(textclass, 'keywords')
-        if len(docmeta.categories) > 0:
-            cat_list = SubElement(keywords, 'term', type='categories')
-            cat_list.text = ','.join(docmeta.categories)
-        if len(docmeta.tags) > 0:
-            tags_list = SubElement(keywords, 'term', type='tags')
-            tags_list.text = ','.join(docmeta.tags)
+    if len(docmeta.categories) > 0:
+        cat_list = SubElement(keywords, 'term', type='categories')
+        cat_list.text = ','.join(docmeta.categories)
+    if len(docmeta.tags) > 0:
+        tags_list = SubElement(keywords, 'term', type='tags')
+        tags_list.text = ','.join(docmeta.tags)
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
     application = SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')

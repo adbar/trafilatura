@@ -137,17 +137,14 @@ def extract_json_parse_error(elem, metadata):
                 metadata.sitename = candidate
     # category
     if '"articleSection"' in elem:
-        mymatch = JSON_CATEGORY.search(elem)
-        if mymatch:
+        if mymatch := JSON_CATEGORY.search(elem):
             metadata.categories = [normalize_json(mymatch.group(1))]
     # try to extract title
     if '"name"' in elem and metadata.title is None:
-        mymatch = JSON_NAME.search(elem)
-        if mymatch:
+        if mymatch := JSON_NAME.search(elem):
             metadata.title = normalize_json(mymatch.group(1))
     if '"headline"' in elem and metadata.title is None:
-        mymatch = JSON_HEADLINE.search(elem)
-        if mymatch:
+        if mymatch := JSON_HEADLINE.search(elem):
             metadata.title = normalize_json(mymatch.group(1))
     # exit if found
     return metadata
