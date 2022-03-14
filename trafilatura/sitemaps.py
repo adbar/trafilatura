@@ -56,7 +56,7 @@ def sitemap_search(url, target_lang=None):
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
-        sitemapurl = f'{baseurl}/sitemap.xml'
+        sitemapurl = baseurl + '/sitemap.xml'
         # filter triggered, prepare it
         if len(url) > len(baseurl) + 2:
             urlfilter = url
@@ -175,13 +175,11 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
         return [], []
     sitemapurls, linklist = [], []
     # compile regex here for modularity and efficiency
-    lang_regex = re.compile(
-        f"""hreflang=[\\"']({target_lang}.*?|x-default)[\\"']""", re.DOTALL
-    )
-
+    lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
     for attributes in XHTML_REGEX.findall(pagecontent):
         if lang_regex.search(attributes):
-            if match := HREFLANG_REGEX.search(attributes):
+            match = HREFLANG_REGEX.search(attributes)
+            if match:
                 link, state = handle_link(match.group(1), sitemapurl, domainname, baseurl, target_lang)
                 sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
     LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemapurl)
@@ -203,7 +201,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
 def find_robots_sitemaps(baseurl):
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
-    robotstxt = fetch_url(f'{baseurl}/robots.txt')
+    robotstxt = fetch_url(baseurl + '/robots.txt')
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
