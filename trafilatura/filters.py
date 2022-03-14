@@ -93,13 +93,11 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
     '''Run external component (if installed) for language identification'''
     if target_language is not None:
         if LANGID_FLAG is True:
-            # comments
             result, _ = (
-                py3langid.classify(temp_comments)
-                if len(temp_comments) > len(temp_text)
-                else py3langid.classify(temp_text)
+                py3langid.classify(temp_text)
+                if len(temp_text) > len(temp_comments)
+                else py3langid.classify(temp_comments)
             )
-
             if result != target_language:
                 LOGGER.warning('wrong language: %s %s %s', result, docmeta.id, docmeta.url)
                 return True
