@@ -19,10 +19,9 @@ from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 
-from signal import alarm, signal
 # SIGALRM isn't present on Windows, detect it
 try:
-    from signal import SIGALRM
+    from signal import signal, alarm, SIGALRM
     HAS_SIGNAL = True
 except ImportError:
     HAS_SIGNAL = False
