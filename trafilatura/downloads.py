@@ -4,7 +4,6 @@ All functions needed to steer and execute downloads of web documents.
 """
 
 
-
 import logging
 import random
 import re
@@ -53,10 +52,7 @@ HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_cert
 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=20)
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-USER_AGENT = (
-    f'trafilatura/{__version__}' + ' (+https://github.com/adbar/trafilatura)'
-)
-
+USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
 LOGGER = logging.getLogger(__name__)
@@ -205,14 +201,13 @@ def draw_backoff_url(domain_dict, backoff_dict, sleep_time):
             # choose among a fresh pool of hosts
             host = random.choice(tuple(targets))
             targets.remove(host)
-            if (
-                host not in backoff_dict
-                or (datetime.now() - backoff_dict[host]).total_seconds()
-                >= sleep_time
-            ):
+            # take another one if this host has been visited too recently
+            if host in backoff_dict and \
+                (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
+                LOGGER.debug('spacing request for host %s', host)
+                host = None
+            else:
                 break
-            LOGGER.debug('spacing request for host %s', host)
-            host = None
         # safeguard
         if host is None:
             LOGGER.debug('spacing downloads for all targets')
@@ -269,9 +264,8 @@ def _send_pycurl_request(url, no_ssl, config):
     # headerbytes = BytesIO()
     headers = _determine_headers(config)
     headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
-    headerlist.extend(
-        f'{header}: {content}' for header, content in headers.items()
-    )
+    for header, content in headers.items():
+        headerlist.append(header + ': ' + content)
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
