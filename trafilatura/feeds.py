@@ -80,6 +80,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             #if '"' in feedlink:
             #    feedlink = feedlink.split('"')[0]
             feed_links.append(feedlink)
+    # could be RSS
     elif '<link>' in feed_string:
         feed_links.extend(
             item.strip()
