@@ -147,6 +147,7 @@ def test_queue():
     config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(domain_dict, args, None, config)
     assert len(results[0]) == 6 and results[1] is None
+    # test backoff algorithm
     backoffdict = {}
     testdict = {'http://test.org': deque(['/1'])}
     assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
