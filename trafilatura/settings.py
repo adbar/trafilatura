@@ -6,8 +6,8 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-import configparser
 
+from configparser import ConfigParser
 from os import cpu_count
 from pathlib import Path
 
@@ -21,7 +21,7 @@ def use_config(filename=None, config=None):
     if filename is None:
         filename = str(Path(__file__).parent / 'settings.cfg')
     # load
-    config = configparser.ConfigParser()
+    config = ConfigParser()
     config.read(filename)
     return config
 

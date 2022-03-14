@@ -6,15 +6,14 @@ All functions related to XML generation, processing and validation.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-import json
 import logging
-import pickle
 
+from json import dumps as json_dumps
 from html import unescape
-from io import StringIO
 from pathlib import Path
+from pickle import load as load_pickle
 
-from lxml import etree
+from lxml.etree import Element, RelaxNG, SubElement, XMLParser, fromstring, tostring
 
 from . import __version__
 from .filters import text_chars_test
@@ -29,7 +28,7 @@ TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head',
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
-CONTROL_PARSER = etree.XMLParser(remove_blank_text=True)
+CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 
@@ -47,7 +46,7 @@ def build_json_output(docmeta):
         outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
     else:
         del outputdict['commentsbody']
-    return json.dumps(outputdict, ensure_ascii=False)
+    return json_dumps(outputdict, ensure_ascii=False)
 
 
 def clean_attributes(tree):
@@ -68,7 +67,7 @@ def remove_empty_elements(tree):
 
 def build_xml_output(docmeta):
     '''Build XML output tree based on extracted information'''
-    output = etree.Element('doc')
+    output = Element('doc')
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
@@ -84,14 +83,14 @@ def build_xml_output(docmeta):
 
 def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     '''Make sure the XML output is conform and valid if required'''
-    control_string = sanitize(etree.tostring(output_tree, encoding='unicode'))
+    control_string = sanitize(tostring(output_tree, encoding='unicode'))
     # necessary for cleaning
-    output_tree = etree.fromstring(control_string, CONTROL_PARSER)
+    output_tree = fromstring(control_string, CONTROL_PARSER)
     # validate
     if output_format == 'xmltei' and tei_validation is True:
         result = validate_tei(output_tree)
         LOGGER.info('TEI validation result: %s %s %s', result, docmeta.id, docmeta.url)
-    return etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
+    return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 
 def add_xml_meta(output, docmeta):
@@ -166,9 +165,9 @@ def validate_tei(tei):  # , filename=""
     if TEI_RELAXNG is None:
         # load validator
         with open(TEI_SCHEMA, 'rb') as schemafile:
-            schema_data = pickle.load(schemafile)
-        relaxng_doc = etree.parse(StringIO(schema_data))
-        TEI_RELAXNG = etree.RelaxNG(relaxng_doc)
+            schema_data = load_pickle(schemafile)
+        relaxng_doc = fromstring(schema_data)
+        TEI_RELAXNG = RelaxNG(relaxng_doc)
     result = TEI_RELAXNG.validate(tei)
     if result is False:
         LOGGER.warning('not a valid TEI document: %s', TEI_RELAXNG.error_log.last_error)
@@ -278,10 +277,10 @@ def xmltotxt(xmloutput, include_formatting, include_links):
 
 def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
-    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    tei = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = write_fullheader(tei, docmeta)
-    textelem = etree.SubElement(tei, 'text')
-    textbody = etree.SubElement(textelem, 'body')
+    textelem = SubElement(tei, 'text')
+    textbody = SubElement(textelem, 'body')
     # post
     postbody = clean_attributes(docmeta.body)
     postbody.tag = 'div'
@@ -298,31 +297,31 @@ def write_teitree(docmeta):
 
 def write_fullheader(tei, docmeta):
     '''Write TEI header based on gathered metadata'''
-    header = etree.SubElement(tei, 'teiHeader')
-    filedesc = etree.SubElement(header, 'fileDesc')
-    bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
-    bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
+    header = SubElement(tei, 'teiHeader')
+    filedesc = SubElement(header, 'fileDesc')
+    bib_titlestmt = SubElement(filedesc, 'titleStmt')
+    bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')
     bib_titlemain.text = docmeta.title
     if docmeta.author:
-        bib_author = etree.SubElement(bib_titlestmt, 'author')
+        bib_author = SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
-    publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
+    publicationstmt_a = SubElement(filedesc, 'publicationStmt')
     # license, if applicable
     if docmeta.license:
-        availability = etree.SubElement(publicationstmt_a, 'availability')
-        avail_p = etree.SubElement(availability, 'p')
+        availability = SubElement(publicationstmt_a, 'availability')
+        avail_p = SubElement(availability, 'p')
         avail_p.text = docmeta.license
     # insert an empty paragraph for conformity
     else:
-        publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
-    notesstmt = etree.SubElement(filedesc, 'notesStmt')
+        publicationstmt_p = SubElement(publicationstmt_a, 'p')
+    notesstmt = SubElement(filedesc, 'notesStmt')
     if docmeta.id:
-        idno = etree.SubElement(notesstmt, 'note', type='id')
+        idno = SubElement(notesstmt, 'note', type='id')
         idno.text = docmeta.id
-    fingerprint = etree.SubElement(notesstmt, 'note', type='fingerprint')
+    fingerprint = SubElement(notesstmt, 'note', type='fingerprint')
     fingerprint.text = docmeta.fingerprint
-    sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
-    source_bibl = etree.SubElement(sourcedesc, 'bibl')
+    sourcedesc = SubElement(filedesc, 'sourceDesc')
+    source_bibl = SubElement(sourcedesc, 'bibl')
     # determination of sigle string
     if docmeta.sitename and docmeta.date:
         sigle = docmeta.sitename + ', ' + docmeta.date
@@ -337,17 +336,17 @@ def write_fullheader(tei, docmeta):
         source_bibl.text = docmeta.title + '. ' + sigle
     else:
         source_bibl.text = '. ' + sigle
-    source_sigle = etree.SubElement(sourcedesc, 'bibl', type='sigle')
+    source_sigle = SubElement(sourcedesc, 'bibl', type='sigle')
     source_sigle.text = sigle
-    biblfull = etree.SubElement(sourcedesc, 'biblFull')
-    bib_titlestmt = etree.SubElement(biblfull, 'titleStmt')
-    bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
+    biblfull = SubElement(sourcedesc, 'biblFull')
+    bib_titlestmt = SubElement(biblfull, 'titleStmt')
+    bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')
     bib_titlemain.text = docmeta.title
     if docmeta.author:
-        bib_author = etree.SubElement(bib_titlestmt, 'author')
+        bib_author = SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
-    publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
-    publication_publisher = etree.SubElement(publicationstmt, 'publisher')
+    publicationstmt = SubElement(biblfull, 'publicationStmt')
+    publication_publisher = SubElement(publicationstmt, 'publisher')
     if docmeta.hostname and docmeta.sitename:
         publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
     elif docmeta.hostname:
@@ -359,26 +358,26 @@ def write_fullheader(tei, docmeta):
         publisherstring = 'N/A'
     publication_publisher.text = publisherstring
     if docmeta.url:
-        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
-    publication_date = etree.SubElement(publicationstmt, 'date')
+        publication_url = SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
+    publication_date = SubElement(publicationstmt, 'date')
     publication_date.text = docmeta.date
-    profiledesc = etree.SubElement(header, 'profileDesc')
-    abstract = etree.SubElement(profiledesc, 'abstract')
-    abstract_p = etree.SubElement(abstract, 'p')
+    profiledesc = SubElement(header, 'profileDesc')
+    abstract = SubElement(profiledesc, 'abstract')
+    abstract_p = SubElement(abstract, 'p')
     abstract_p.text = docmeta.description
     if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
-        textclass = etree.SubElement(profiledesc, 'textClass')
-        keywords = etree.SubElement(textclass, 'keywords')
+        textclass = SubElement(profiledesc, 'textClass')
+        keywords = SubElement(textclass, 'keywords')
         if len(docmeta.categories) > 0:
-            cat_list = etree.SubElement(keywords, 'term', type='categories')
+            cat_list = SubElement(keywords, 'term', type='categories')
             cat_list.text = ','.join(docmeta.categories)
         if len(docmeta.tags) > 0:
-            tags_list = etree.SubElement(keywords, 'term', type='tags')
+            tags_list = SubElement(keywords, 'term', type='tags')
             tags_list.text = ','.join(docmeta.tags)
-    encodingdesc = etree.SubElement(header, 'encodingDesc')
-    appinfo = etree.SubElement(encodingdesc, 'appInfo')
-    application = etree.SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
-    label = etree.SubElement(application, 'label')
+    encodingdesc = SubElement(header, 'encodingDesc')
+    appinfo = SubElement(encodingdesc, 'appInfo')
+    application = SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
+    label = SubElement(application, 'label')
     label.text = 'Trafilatura'
-    pointer = etree.SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
+    pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header

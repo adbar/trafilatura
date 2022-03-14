@@ -7,11 +7,11 @@ Module bundling functions related to HTML and text processing.
 ## under GNU GPL v3 license
 
 # import csv
-import gzip
 import logging
 import re
 import sys
 
+from gzip import decompress
 from functools import lru_cache
 from html import unescape
 from unicodedata import normalize
@@ -23,7 +23,7 @@ except ImportError:
     cchardet_detect = None
 from charset_normalizer import from_bytes
 
-from lxml import etree, html
+from lxml.html import HtmlElement, HTMLParser, fromstring
 # from lxml.html.soupparser import fromstring as fromsoup
 
 # response types
@@ -36,7 +36,7 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
-HTML_PARSER = html.HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
+HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(
     r'''
@@ -82,7 +82,7 @@ def handle_gz_file(filecontent):
     if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
         # decode GZipped data
         try:
-            filecontent = gzip.decompress(filecontent)
+            filecontent = decompress(filecontent)
         except (EOFError, OSError):
             logging.warning('invalid GZ file')
     return filecontent
@@ -163,10 +163,10 @@ def is_dubious_html(htmlobject):
 
 def load_html(htmlobject):
     """Load object given as input and validate its type
-    (accepted: LXML tree, trafilatura/urllib3 response, bytestring and string)
+    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
     """
     # use tree directly
-    if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
+    if isinstance(htmlobject, HtmlElement):
         return htmlobject
     # use trafilatura or urllib3 responses directly
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, 'data'):
@@ -182,17 +182,17 @@ def load_html(htmlobject):
     check_flag = is_dubious_html(htmlobject)
     # use Unicode string
     try:
-        tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+        tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
         try:
-            tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+            tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
         except Exception as err:
             LOGGER.error('lxml parser bytestring %s', err)
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # more robust option: try BeautifulSoup
-    #if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
+    #if tree is None or not isinstance(tree, HtmlElement):
     #    if isinstance(htmlobject, (bytes, str)):
     #        try:
     #            tree = fromsoup(htmlobject)

@@ -2,10 +2,11 @@
 Functions needed to scrape metadata from JSON-LD format.
 """
 
-import re
 import json
+import re
 
 from .utils import normalize_authors, trim
+
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting"}
 JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}

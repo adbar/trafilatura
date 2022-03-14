@@ -13,7 +13,9 @@ import logging
 from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revise_paragraph_classification
 from justext.utils import get_stoplist, get_stoplists
 
-from lxml import etree, html
+from lxml.etree import Element, strip_tags
+from lxml.html import fromstring
+
 
 # own
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
@@ -34,10 +36,10 @@ def try_readability(htmlinput):
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
-        return html.fromstring(doc.summary(), parser=HTML_PARSER)
+        return fromstring(doc.summary(), parser=HTML_PARSER)
     except Exception as err:
         LOGGER.warning('readability_lxml failed: %s', err)
-        return etree.Element('div')
+        return Element('div')
 
 
 def jt_stoplist_init():
@@ -62,7 +64,7 @@ def custom_justext(tree, stoplist):
 def try_justext(tree, url, target_language):
     '''Second safety net: try with the generic algorithm justext'''
     # init
-    result_body = etree.Element('body')
+    result_body = Element('body')
     # determine language
     if target_language is not None and target_language in JUSTEXT_LANGUAGES:
         justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
@@ -77,7 +79,7 @@ def try_justext(tree, url, target_language):
     else:
         for paragraph in [p for p in paragraphs if not p.is_boilerplate]:
             #if duplicate_test(paragraph) is not True:
-            elem, elem.text = etree.Element('p'), paragraph.text
+            elem, elem.text = Element('p'), paragraph.text
             result_body.append(elem)
     return result_body
 
@@ -106,8 +108,8 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
     for elem in tree.xpath(SANITIZED_XPATH):
         elem.getparent().remove(elem)
     if include_links is False:
-        etree.strip_tags(cleaned_tree, 'a')
-    etree.strip_tags(cleaned_tree, 'span')
+        strip_tags(cleaned_tree, 'a')
+    strip_tags(cleaned_tree, 'span')
     # 2. convert
     cleaned_tree = convert_tags(cleaned_tree, include_tables=include_tables, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
     for elem in cleaned_tree.iter('td', 'th', 'tr'):
@@ -125,7 +127,7 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]
         if tagname not in TEI_VALID_TAGS
     ]
-    etree.strip_tags(cleaned_tree, *sanitization_list)
+    strip_tags(cleaned_tree, *sanitization_list)
     # 4. return
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)
