@@ -109,7 +109,8 @@ def run_baseline_2(htmlstring):
     # try json-ld
     for elem in tree.xpath('//script[@type="application/ld+json"]'):
         if elem.text and '"articleBody":' in elem.text:
-            if mymatch := re.search(r'"articleBody":"(.+?)","', elem.text):
+            mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
+            if mymatch:
                 result = mymatch.group(1)
                 result = result.replace('\\"', '"')
                 # result = trim(result)
@@ -129,6 +130,18 @@ def run_baseline_2(htmlstring):
         #if entry not in results and len(entry) > 10:
         resultlist.append(entry)
         #results.add(entry)
+    # if nothing has been found
+    #if len(resultlist) < 1:
+    #    for element in tree.iter('b', 'em', 'i', 'strong'):
+    #        entry = element.text_content()
+    #        #if entry not in results: # and len(entry) > 15:
+    #        resultlist.append(entry)
+    #        #results.add(entry)
+    #if len(resultlist) == 0:
+    #    cleaned_tree = HTML_CLEANER.clean_html(tree)
+    #    for element in tree.iter('div'):
+    #        entry = element.text_content()
+            #if len(entry) > 15:
     #        resultlist.append(entry)
     #        #results.add(entry)
     #print(len(resultlist))
