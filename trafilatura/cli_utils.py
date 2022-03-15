@@ -57,11 +57,10 @@ def load_input_urls(args):
         try:
             # optional: errors='strict', buffering=1
             with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
-                input_urls.extend(
-                    url_match.group(0)
-                    for line in inputfile
-                    if (url_match := re.match(r'https?://[^\s]+', line))
-                )
+                for line in inputfile:
+                    url_match = re.match(r'https?://[^\s]+', line)
+                    if url_match:
+                        input_urls.append(url_match.group(0))
 
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
