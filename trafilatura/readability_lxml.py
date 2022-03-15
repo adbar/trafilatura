@@ -34,15 +34,13 @@ BAD_ATTRS = ("|".join(["width", "height", "style", "[-a-z]*color", "background[-
 QUOTES = '\'[^\']+\'|"[^"]+"'
 NON_SPACE = "[^ \"'>]+"
 HTMLSTRIP = re.compile(
-    (
-        (
-            "<"  # open
-            "([^>]+) "  # prefix
-            "(?:%s) *" % BAD_ATTRS + f"= *(?:{NON_SPACE}|{QUOTES})"
-        )
-        + "([^>]*)"  # value  # postfix
-        ">"
-    ),
+    "<"  # open
+    "([^>]+) "  # prefix
+    "(?:%s) *" % BAD_ATTRS
+    + "= *(?:%s|%s)"  # undesirable attributes
+    % (NON_SPACE, QUOTES)
+    + "([^>]*)"  # value  # postfix
+    ">",  # end
     re.I,
 )
 
@@ -430,13 +428,15 @@ class Document:
                     # find x non empty preceding and succeeding siblings
                     siblings = []
                     for sib in elem.itersiblings():
-                        if sib_content_length := text_length(sib):
+                        sib_content_length = text_length(sib)
+                        if sib_content_length:
                             siblings.append(sib_content_length)
-                            if siblings:
-                                break
+                            # if len(siblings) >= 1:
+                            break
                     limit = len(siblings) + 1
                     for sib in elem.itersiblings(preceding=True):
-                        if sib_content_length := text_length(sib):
+                        sib_content_length = text_length(sib)
+                        if sib_content_length:
                             siblings.append(sib_content_length)
                             if len(siblings) >= limit:
                                 break
