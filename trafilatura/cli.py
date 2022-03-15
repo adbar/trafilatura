@@ -277,6 +277,7 @@ def process_args(args):
         INPUTDICT = load_input_dict(args)
         url_processing_pipeline(args, INPUTDICT)
 
+    # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
         input_urls = load_input_urls(args)
         # link discovery and storage
@@ -307,15 +308,20 @@ def process_args(args):
             # add to compressed dict and crawl the remaining websites
             cli_crawler(args, n=100, domain_dict=still_to_crawl)
 
+    # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
 
+    # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)
 
+    # process input URL
     elif args.URL:
         INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
         url_processing_pipeline(args, INPUTDICT)  # process single url
+    
+    # read input on STDIN directly
     else:
         # file type and unicode check
         try:
