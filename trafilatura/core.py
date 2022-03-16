@@ -14,7 +14,8 @@ import warnings
 
 from copy import deepcopy
 
-from lxml import etree, html
+from lxml.etree import Element, SubElement, strip_elements, strip_tags
+from lxml.html import tostring
 
 # own
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
@@ -78,7 +79,7 @@ def handle_formatting(element, dedupbool, config):
         return None
     # repair orphan elements
     # if formatting is None:
-    #    formatting = etree.Element(element.tag)
+    #    formatting = Element(element.tag)
     #     return None
     # if len(element) > 0:
     #    for child in element.iter('*'):
@@ -97,7 +98,7 @@ def handle_formatting(element, dedupbool, config):
     #    processed_element = process_node(element, dedupbool, config)
     # children
     # else:
-    #    processed_element = etree.Element(element.tag)
+    #    processed_element = Element(element.tag)
     #    processed_element.text, processed_element.tail = element.text, element.tail
     #    for child in element.iter('*'):
     #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
@@ -111,7 +112,7 @@ def handle_formatting(element, dedupbool, config):
     if parent is None:
         parent = element.getprevious()
     if parent is None or parent.tag not in FORMATTING_PROTECTED:
-        processed_element = etree.Element('p')
+        processed_element = Element('p')
         processed_element.insert(0, formatting)
     else:
         processed_element = formatting
@@ -120,13 +121,13 @@ def handle_formatting(element, dedupbool, config):
 
 def handle_lists(element, dedupbool, config):
     '''Process lists elements'''
-    processed_element = etree.Element(element.tag)
+    processed_element = Element(element.tag)
     if element.text is not None:
         processed_element.text = element.text
     # if element.tail is not None:
     #    processed_element.tail = element.text
     for child in element.iter('item'):
-        newchildelem = etree.Element('item')
+        newchildelem = Element('item')
         if len(child) == 0:
             processed_child = process_node(child, dedupbool, config)
             if processed_child is not None:
@@ -145,11 +146,11 @@ def handle_lists(element, dedupbool, config):
                                                          config=config)
                     # add child element to processed_element
                     if processed_subchild is not None:
-                        subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
+                        subchildelem = SubElement(newchildelem, processed_subchild.tag)
                         subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
                         if subelem.tag == 'ref' and subelem.get('target') is not None:
                             subchildelem.set('target', subelem.get('target'))
-                # etree.strip_tags(newchildelem, 'item')
+                # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
         if newchildelem.text or len(newchildelem) > 0:
             processed_element.append(newchildelem)
@@ -162,16 +163,16 @@ def handle_lists(element, dedupbool, config):
 
 def handle_quotes(element, dedupbool, config):
     '''Process quotes elements'''
-    processed_element = etree.Element(element.tag)
+    processed_element = Element(element.tag)
     for child in element.iter('*'):
         processed_child = process_node(child, dedupbool, config)  # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
-            newsub = etree.SubElement(processed_element, child.tag)
+            newsub = SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
         child.tag = 'done'
     if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
         # avoid double/nested tags
-        etree.strip_tags(processed_element, 'quote')
+        strip_tags(processed_element, 'quote')
         return processed_element
     return None
 
@@ -202,7 +203,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
-    # etree.strip_tags(element, 'p') # change in precision due to spaces?
+    # strip_tags(element, 'p') # change in precision due to spaces?
     # no children
     if len(element) == 0:
         processed_element = process_node(element, dedupbool, config)
@@ -210,7 +211,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             return processed_element
         return None
     # children
-    processed_element = etree.Element(element.tag)
+    processed_element = Element(element.tag)
     for child in element.iter('*'):
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.debug('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
@@ -230,14 +231,14 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                     processed_element.text = processed_child.text
                 continue
             # handle formatting
-            newsub = etree.Element(child.tag)
+            newsub = Element(child.tag)
             if processed_child.tag in P_FORMATTING:
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = ' ' + item.text
-                        etree.strip_tags(processed_child, item.tag)
+                        strip_tags(processed_child, item.tag)
                 # correct attributes
                 if child.tag == 'hi':
                     newsub.set('rend', child.get('rend'))
@@ -276,14 +277,14 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         return processed_element
     if processed_element.text:
         return processed_element
-    LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
+    LOGGER.debug('discarding p-child: %s', tostring(processed_element))
     return None
 
 
 def define_cell_type(element):
     '''Determine cell element type and mint new element'''
     # define tag
-    cell_element = etree.Element('cell')
+    cell_element = Element('cell')
     if element.tag == 'th':
         cell_element.set('role', 'head')
     return cell_element
@@ -291,11 +292,11 @@ def define_cell_type(element):
 
 def handle_table(table_elem, potential_tags, dedupbool, config):
     '''Process single table element'''
-    newtable = etree.Element('table')
-    newrow = etree.Element('row')
+    newtable = Element('table')
+    newrow = Element('row')
     i = 0
     # strip these structural elements
-    etree.strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
+    strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
     # explore sub-elements
     for subelement in table_elem.iter('*'):
         i += 1
@@ -303,7 +304,7 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             # process existing row
             if len(newrow) > 0:
                 newtable.append(newrow)
-                newrow = etree.Element('row')
+                newrow = Element('row')
         elif subelement.tag in TABLE_ELEMS:
             newchildelem = define_cell_type(subelement)
             # process
@@ -323,11 +324,11 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
                                                              deduplicate=dedupbool, config=config)
                     # todo: lists in table cells
                     else:
-                        # subcell_elem = etree.Element(child.tag)
+                        # subcell_elem = Element(child.tag)
                         processed_subchild = handle_textelem(child, potential_tags.union(['div']), dedupbool, config)
                     # add child element to processed_element
                     if processed_subchild is not None:
-                        subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
+                        subchildelem = SubElement(newchildelem, processed_subchild.tag)
                         subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
                     child.tag = 'done'
             # add to tree
@@ -349,7 +350,7 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
 def handle_image(element):
     '''Process image element'''
     # image source
-    processed_element = etree.Element(element.tag)
+    processed_element = Element(element.tag)
     if is_image_file(element.get('data-src')):
         processed_element.set('src', element.get('data-src'))
     elif is_image_file(element.get('src')):
@@ -395,9 +396,9 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
         search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
     # decide if links are preserved
     if 'ref' not in potential_tags:
-        etree.strip_tags(search_tree, 'a', 'ref', 'span')
+        strip_tags(search_tree, 'a', 'ref', 'span')
     else:
-        etree.strip_tags(search_tree, 'span')
+        strip_tags(search_tree, 'span')
     result_body.extend(e for e in
                        [handle_textelem(
                            element, potential_tags, deduplicate, config)
@@ -422,7 +423,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
         if text_chars_test(element.tail) is True:
             element = process_node(element, dedupbool, config)
             if element is not None:
-                new_element = etree.Element('p')
+                new_element = Element('p')
                 new_element.text = element.tail
     elif element.tag in FORMATTING:
         new_element = handle_formatting(element, dedupbool, config)  # process_node(element, dedupbool, config)
@@ -469,7 +470,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
     backup_tree = deepcopy(tree)
-    result_body = etree.Element('body')
+    result_body = Element('body')
     potential_tags = set(TAG_CATALOG)
     if include_tables is True:
         potential_tags.update(['table', 'td', 'th', 'tr'])
@@ -480,11 +481,12 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
-        subtree = tree.xpath(expr)
-        if not subtree:
+        try:
+            subtree = tree.xpath(expr)[0]
+        except IndexError:
             continue
         # prune the rest
-        subtree = prune_unwanted_nodes(subtree[0], OVERALL_DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH)
         # prune images
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
@@ -521,13 +523,12 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             potential_tags.add('div')
         # polish list of potential tags
         if 'ref' not in potential_tags:
-            etree.strip_tags(subtree, 'ref')
+            strip_tags(subtree, 'ref')
         if 'span' not in potential_tags:
-            etree.strip_tags(subtree, 'span')
+            strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
-        ##etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # extract content
-        # list(filter(None.__ne__, processed_elems))
+        ##strip_tags(subtree, 'lb') # BoingBoing-Bug
+        # extract content # list(filter(None.__ne__, processed_elems)) ?
         result_body.extend(e for e in
                            [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                            if e is not None)
@@ -547,8 +548,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
                                         deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     # filter output
-    etree.strip_elements(result_body, 'done')
-    etree.strip_tags(result_body, 'div')
+    strip_elements(result_body, 'done')
+    strip_tags(result_body, 'div')
     # return
     return result_body, temp_text, len(temp_text)
 
@@ -561,7 +562,7 @@ def process_comments_node(elem, potential_tags, dedupbool, config):
         # test length and remove
         if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
-            # if textfilter(elem) is True: # ^Pingback
+            # if textfilter(elem) is True:  # ^Pingback
             #    return None
             return processed_element
     return None
@@ -569,7 +570,7 @@ def process_comments_node(elem, potential_tags, dedupbool, config):
 
 def extract_comments(tree, dedupbool, config):
     '''Try and extract comments out of potential sections in the HTML'''
-    comments_body = etree.Element('body')
+    comments_body = Element('body')
     # define iteration strategy
     potential_tags = set(TAG_CATALOG)  # 'span'
     # potential_tags.add('div') trouble with <div class="comment-author meta">
@@ -582,7 +583,7 @@ def extract_comments(tree, dedupbool, config):
         # prune
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
-        etree.strip_tags(subtree, 'a', 'ref', 'span')
+        strip_tags(subtree, 'a', 'ref', 'span')
         # extract content
         # for elem in subtree.xpath('.//*'):
         #    processed_elem = process_comments_node(elem, potential_tags)
@@ -650,6 +651,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
+    # prior cleaning
+    if favor_precision is True:
+        backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -681,17 +685,13 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
-    # override faulty extraction # len_text < MIN_EXTRACTED_SIZE*10
-    if body.xpath(SANITIZED_XPATH):
+    # override faulty extraction: try with justext
+    if body.xpath(SANITIZED_XPATH) or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    # or favor_recall is True ?
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
         if jt_result is True:  # and not len_text > 2*len_text2:
-            LOGGER.debug('using justext, length: %s', len_text2)  # MIN_EXTRACTED_SIZE:
+            LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
-    # try with justext
-    elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') or favor_recall is True:
-        LOGGER.error('not enough text %s', url)
-        body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
-        LOGGER.debug('justext length %s', len_text)
     # post-processing: remove unwanted sections
     if algo_flag is True and jt_result is False:
         body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images, include_tables)
@@ -710,7 +710,7 @@ def baseline(filecontent):
 
     """
     tree = load_html(filecontent)
-    postbody = etree.Element('body')
+    postbody = Element('body')
     if tree is None:
         return postbody, '', 0
     # scrape from json text
@@ -718,7 +718,7 @@ def baseline(filecontent):
         if elem.text and '"article' in elem.text:
             mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
             if mymatch:
-                elem = etree.SubElement(postbody, 'p')
+                elem = SubElement(postbody, 'p')
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
@@ -729,7 +729,7 @@ def baseline(filecontent):
     if article_elem is not None:
         temp_text = trim(article_elem.text_content())
         if len(temp_text) > 0:
-            elem = etree.SubElement(postbody, 'p')
+            elem = SubElement(postbody, 'p')
             elem.text = temp_text
             return postbody, temp_text, len(temp_text)
     # scrape from text paragraphs
@@ -737,17 +737,17 @@ def baseline(filecontent):
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
         entry = element.text_content()
         if entry not in results:
-            elem = etree.SubElement(postbody, 'p')
+            elem = SubElement(postbody, 'p')
             elem.text = entry
             results.add(entry)
     temp_text = trim('\n'.join(postbody.itertext()))
     if len(temp_text) > 0:
         return postbody, temp_text, len(temp_text)
     # default strategy: clean the tree and take everything
-    postbody = etree.Element('body')
+    postbody = Element('body')
     body_elem = tree.find('.//body')
     if body_elem is not None:
-        elem = etree.SubElement(postbody, 'p')
+        elem = SubElement(postbody, 'p')
         # elem.text = trim(body_elem.text_content())
         elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
         return postbody, elem.text, len(elem.text)
@@ -860,9 +860,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             LOGGER.error('wrong HTML meta language for URL %s', url)
             raise ValueError
 
-        # backup (or not) for further processing
-        tree_backup_1 = deepcopy(tree) if no_fallback is False else None
-        tree_backup_2 = deepcopy(tree)
         # extract metadata if necessary
         if output_format != 'txt':
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
@@ -879,6 +876,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 raise ValueError
         else:
             document = Document()
+
+        # backup (or not) for further processing
+        tree_backup_1 = deepcopy(tree) if no_fallback is False else None
+        tree_backup_2 = deepcopy(tree)
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)
@@ -899,8 +900,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                                                                                        config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-            if favor_precision is True:
-                cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
+        if favor_precision is True:
+            cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
         postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables,
@@ -913,7 +914,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                                                                favor_recall, include_formatting, include_links,
                                                                include_images, include_tables, config)
         # add baseline as additional fallback
-        # rescue: try to use original/dirty tree
+        # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
             postbody, temp_text, len_text = baseline(tree_backup_2)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
@@ -923,7 +924,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             # strip tags
             if len(postbody) > max_tree_size:
                 LOGGER.warning('output tree too long: %s', len(postbody))
-                etree.strip_tags(postbody, 'hi')
+                strip_tags(postbody, 'hi')
             # still too long, raise an error
             if len(postbody) > max_tree_size:
                 LOGGER.error('output tree too long: %s, discarding file', len(postbody))

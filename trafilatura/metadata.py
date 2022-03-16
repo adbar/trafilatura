@@ -5,13 +5,14 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+
 from copy import deepcopy
 
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
 from courlan.filters import validate_url
 from htmldate import find_date
-from lxml import html
+from lxml.html import tostring
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
@@ -207,7 +208,7 @@ def examine_meta(tree):
             for key in EXTRA_META
         ):
             LOGGER.debug('unknown attribute: %s',
-                         html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+                         tostring(elem, pretty_print=False, encoding='unicode').strip())
     # backups
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
@@ -303,7 +304,7 @@ def extract_url(tree, default_url=None):
                 and element.attrib['hreflang'] == 'x-default'
                 and URL_COMP_CHECK.match(element.attrib['href'])
             ):
-                LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
+                LOGGER.debug(tostring(element, pretty_print=False, encoding='unicode').strip())
                 url = element.attrib['href']
     # add domain name if it's missing
     if url is not None and url.startswith('/'):

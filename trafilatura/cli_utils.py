@@ -10,7 +10,6 @@ import gzip
 import logging
 import random
 import re
-import signal
 import string
 import sys
 import traceback
@@ -19,14 +18,15 @@ from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
-from time import sleep
 
 # SIGALRM isn't present on Windows, detect it
 try:
-    from signal import SIGALRM
+    from signal import signal, alarm, SIGALRM
     HAS_SIGNAL = True
 except ImportError:
     HAS_SIGNAL = False
+
+from time import sleep
 
 from courlan import get_host_and_path, is_navigation_page, validate_url
 
@@ -355,8 +355,8 @@ def examine(htmlstring, args, url=None, config=None):
     else:
         # put timeout signal in place
         if HAS_SIGNAL is True:
-            signal.signal(SIGALRM, handler)
-            signal.alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
+            signal(SIGALRM, handler)
+            alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.no_comments, include_tables=args.no_tables,
@@ -364,11 +364,12 @@ def examine(htmlstring, args, url=None, config=None):
                              include_images=args.images, only_with_metadata=args.only_with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
-                             config=config) # settingsfile=args.config_file,
+                             favor_precision=args.precision, favor_recall=args.recall, config=config)
+        # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('ERROR: ' + str(err) + '\n' + traceback.format_exc() + '\n')
         # deactivate
         if HAS_SIGNAL is True:
-            signal.alarm(0)
+            alarm(0)
     return result

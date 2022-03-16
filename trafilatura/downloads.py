@@ -11,7 +11,6 @@ import re
 from collections import defaultdict, deque, namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from threading import RLock
 from time import sleep
 
 import certifi
@@ -34,8 +33,6 @@ from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
 from .utils import decode_response, uniquify_list
 
-
-LOCK = RLock()
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2

@@ -9,7 +9,7 @@ Functions to process nodes in HTML code.
 import logging
 import re
 
-from lxml import etree
+from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
@@ -191,7 +191,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
         # strip the rest
-        etree.strip_tags(tree, 'a')
+        strip_tags(tree, 'a')
     else:
         for elem in tree.iter('a', 'ref'):
             elem.tag = 'ref'
@@ -214,7 +214,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         elem.tag = 'quote'
     # include_formatting
     if include_formatting is False:
-        etree.strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
+        strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
     else:
         # italics
         for elem in tree.iter('em', 'i'):
