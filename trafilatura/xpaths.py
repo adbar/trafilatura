@@ -125,10 +125,9 @@ OVERALL_DISCARD_XPATH = [
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")
     or contains(@class, "meta") or
     contains(@id, "menu") or contains(@class, "menu") or
-    starts-with(@id, "nav") or starts-with(@class, "nav") or
-    contains(@id, "navigation") or contains(translate(@class, "N","n"), "navigation")
-    or contains(@role, "navigation") or contains(@class, "navbar")
-    or contains(@class, "navbox") or starts-with(@class, "post-nav")
+    contains(translate(@id, "N", "n"), "nav") or contains(translate(@role, "N", "n"), "nav")
+    or starts-with(@class, "nav") or contains(translate(@class, "N","n"), "navigation") or
+    contains(@class, "navbar") or contains(@class, "navbox") or starts-with(@class, "post-nav")
     or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb") or
     contains(@id, "author") or contains(@class, "author") or
@@ -149,6 +148,8 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, " ad ")
     or contains(@class, "next-post")
     or contains(@class, "message-container") or contains(@id, "message_container")
+    or contains(@class, "yin") or contains(@class, "zlylin") or
+    contains(@class, "xg1") or contains(@id, "bmdh")
     or @data-lp-replacement-content]''',
 
     # comment debris
@@ -158,27 +159,14 @@ OVERALL_DISCARD_XPATH = [
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
-
-    # added in #186, to be tested
-    #'''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
-    #or contains(@class, "content-title") or contains(@class, "content-info")
-    #or contains(translate(@class, "N", "n"), "nav")
-    #or contains(translate(@id, "N", "n"), "nav")]''',
-
-    # useful for Chinese web pages?
-    # '''.//*[contains(@class, "yin") or contains(@class, "zlylin") or contains(@class, "dropdown-menu")
-    # or contains(@class, "xg1")
-    # or contains(@id, "wp") or contains(@id, "bmdh")]''',
-
 ]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
 # class contains "cats" (categories, also tags?)
 # or contains(@class, "hidden ")  or contains(@class, "-hide")
-# or contains(@class, "paywall") 
-
-# conflicts in #186
-# or contains(@class, "notloaded")
+# or contains(@class, "paywall")
+# contains(@class, "content-info") or contains(@class, "content-title")
+# contains(translate(@class, "N", "n"), "nav") or
 
 
 # the following conditions focus on extraction precision
