@@ -42,8 +42,6 @@ HTML_CLEANER = Cleaner(
 )
 
 
-# Strip: Remove contents in the tag / Clean: Flatten the content
-# Modification: Due to result 11 from self-made dataset, improve the logic.
 def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
     # determine cleaning strategy, use lists to keep it deterministic

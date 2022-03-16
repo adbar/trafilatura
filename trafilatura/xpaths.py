@@ -99,8 +99,6 @@ OVERALL_DISCARD_XPATH = [
     contains(@id, "bottom") or contains(@class, "bottom")]''',
 
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
-    #'''.//*[
-    # self::link
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
     contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
@@ -141,32 +139,34 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, " ad ")
     or contains(@class, "next-post")
     or contains(@class, "message-container") or contains(@id, "message_container")]''',
+
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
+
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
-    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
+    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
 
-    # Add some names that is regular named
+    # added in #186, to be tested
     '''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
     or contains(@class, "content-title") or contains(@class, "content-info")
     or contains(translate(@class, "N", "n"), "nav")
     or contains(translate(@id, "N", "n"), "nav")]''',
-    # some confusion names here, may have to improve the logic? Need something to improve the logic here.
-    # Just put some manullay cleaned tag here.
+
+    # useful for Chinese web pages?
     # '''.//*[contains(@class, "yin") or contains(@class, "zlylin") or contains(@class, "dropdown-menu")
     # or contains(@class, "xg1")
     # or contains(@id, "wp") or contains(@id, "bmdh")]''',
-
-    # Remove Nav Bar from file 17
-    # How to implement?
 
 ]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
 # class contains "cats" (categories, also tags?)
 # or contains(@class, "hidden ")  or contains(@class, "-hide")
+
+# conflicts in #186
+# or contains(@class, "notloaded")
 
 
 # the following conditions focus on extraction precision
