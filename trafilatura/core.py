@@ -603,34 +603,6 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-# Remove navigation bars from observation - With Tag Ratios
-def remove_nav(cleaned_tree):
-    # TODO: Marking for implementation - Nearly? Wait for check.
-    # print([i.text for i in cleaned_tree.iter('a')])
-    # print(type(cleaned_tree))
-    # print(cleaned_tree.find('a'))
-    for expr in ['//div']:
-        subtree = cleaned_tree.xpath(expr)
-        if not subtree:
-            continue
-        for ele in subtree:
-            refs = [i for i in ele.iter('ref')]
-            paras = [i for i in ele.iter('p', 'head', 'quote')]
-            refs_count = len(refs)
-            paras_chars_count = sum((len(i.text) if i.text is not None else 0) for i in paras)
-            # print(paras_chars_count, refs_count)
-            if refs_count == 0:
-                refs_count = 1
-            ratio = paras_chars_count / refs_count
-            # print([i.text for i in refs], [i.text for i in paras], paras_chars_count, ratio)
-            if ratio < 0 and ele.getparent() is not None:
-                try:
-                    ele.drop_tree()
-                except AttributeError:
-                    ele.getparent().remove(ele)
-    return cleaned_tree
-
-
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall,
                        include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
@@ -875,9 +847,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
-
-        # Remove navigation bars
-        cleaned_tree = remove_nav(cleaned_tree)
 
         # comments first, then remove
         if include_comments is True:
