@@ -222,12 +222,3 @@ LINKS_XPATH = [
     '//div'
 ]
 
-
-AUTHOR_XPATH = [
-    '''
-    .//*[contains(@id, "author") or contains(@class, "author") or 
-    contains(@id, "zuozhe") or contains(@class, "zuozhe") or 
-    contains(@id, "bianji") or contains(@class, "bianji") or 
-    contains(@id, "xiaobian") or contains(@class, "xiaobian")]
-    '''
-]

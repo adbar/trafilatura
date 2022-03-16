@@ -31,7 +31,7 @@ from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
                      ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH, LINKS_XPATH, AUTHOR_XPATH)
+                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH, LINKS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -603,18 +603,6 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-# A more precise function for extract info -
-def extract_info(cleaned_tree):
-    # TODO: Construct a dataset for all names
-    info = {}
-    # Extract with author tag
-    for expr in AUTHOR_XPATH:
-        subtree = cleaned_tree.xpath(expr)
-        for ele in subtree:
-            print(ele.text)
-    return cleaned_tree, info
-
-
 # Remove navigation bars from observation - With Tag Ratios
 def remove_nav(cleaned_tree):
     # TODO: Marking for implementation - Nearly? Wait for check.
@@ -890,9 +878,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # Remove navigation bars
         cleaned_tree = remove_nav(cleaned_tree)
-
-        # Extract authors (Modified_
-        # cleaned_tree, info = extract_info(cleaned_tree)
 
         # comments first, then remove
         if include_comments is True:
