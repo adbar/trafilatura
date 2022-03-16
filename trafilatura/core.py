@@ -31,7 +31,7 @@ from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
                      ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH, LINKS_XPATH)
+                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -609,7 +609,7 @@ def remove_nav(cleaned_tree):
     # print([i.text for i in cleaned_tree.iter('a')])
     # print(type(cleaned_tree))
     # print(cleaned_tree.find('a'))
-    for expr in LINKS_XPATH:
+    for expr in ['//div']:
         subtree = cleaned_tree.xpath(expr)
         if not subtree:
             continue
@@ -617,13 +617,13 @@ def remove_nav(cleaned_tree):
             refs = [i for i in ele.iter('ref')]
             paras = [i for i in ele.iter('p', 'head', 'quote')]
             refs_count = len(refs)
-            paras_chars_count = sum([(len(i.text) if i.text is not None else 0) for i in paras])
+            paras_chars_count = sum((len(i.text) if i.text is not None else 0) for i in paras)
             # print(paras_chars_count, refs_count)
             if refs_count == 0:
                 refs_count = 1
             ratio = paras_chars_count / refs_count
             # print([i.text for i in refs], [i.text for i in paras], paras_chars_count, ratio)
-            if ratio < 20:
+            if ratio < 0 and ele.getparent() is not None:
                 try:
                     ele.drop_tree()
                 except AttributeError:

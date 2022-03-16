@@ -160,10 +160,10 @@ OVERALL_DISCARD_XPATH = [
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
 
     # added in #186, to be tested
-    '''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
-    or contains(@class, "content-title") or contains(@class, "content-info")
-    or contains(translate(@class, "N", "n"), "nav")
-    or contains(translate(@id, "N", "n"), "nav")]''',
+    #'''.//*[contains(@class, "top") or contains(@class, "dropdown-menu")
+    #or contains(@class, "content-title") or contains(@class, "content-info")
+    #or contains(translate(@class, "N", "n"), "nav")
+    #or contains(translate(@id, "N", "n"), "nav")]''',
 
     # useful for Chinese web pages?
     # '''.//*[contains(@class, "yin") or contains(@class, "zlylin") or contains(@class, "dropdown-menu")
@@ -216,9 +216,5 @@ COMMENTS_DISCARD_XPATH = [
     starts-with(@class, "reply-") or contains(@class, "-reply-") or contains(@class, "message")
     or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
-]
-
-LINKS_XPATH = [
-    '//div'
 ]
 
