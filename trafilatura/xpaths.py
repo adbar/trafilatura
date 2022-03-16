@@ -56,10 +56,6 @@ BODY_XPATH = [
 # or starts-with(@class, 'post ')
 # './/span[@class=""]', # instagram?
 
-# INFO XPATH
-INFO_XPATH = [
-    """.//*[]"""
-]
 
 COMMENTS_XPATH = [
     """.//*[(self::div or self::section or self::list)][contains(@id, 'commentlist')
