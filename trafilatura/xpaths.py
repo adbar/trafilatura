@@ -102,9 +102,8 @@ PAYWALL_DISCARD_XPATH = [
 OVERALL_DISCARD_XPATH = [
     '''.//*[contains(@id, "footer") or contains(@class, "footer") or
     contains(@id, "bottom") or contains(@class, "bottom")]''',
+
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
-    #'''.//*[
-    # self::link
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
     contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
@@ -149,9 +148,11 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, "yin") or contains(@class, "zlylin") or
     contains(@class, "xg1") or contains(@id, "bmdh")
     or @data-lp-replacement-content]''',
+
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
+
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
@@ -201,3 +202,4 @@ COMMENTS_DISCARD_XPATH = [
     or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
+

@@ -8,10 +8,12 @@
 dist/
 build/
 *.egg-info/
+.idea/
 
 # tests
 .cache/
 .eggs/
+.pytest_cache/
 .tox/
 .coverage
 
@@ -30,3 +32,4 @@ Pipfile*
 
 # older stuff
 old/
+
