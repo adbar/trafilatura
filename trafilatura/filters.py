@@ -27,7 +27,11 @@ LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 RE_HTML_LANG = re.compile(r'([a-z]{2})', re.I)
 
-RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|Linkedin|Mail|PDF|Pinterest|Pocket|Print|Reddit|Twitter|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$', flags=re.IGNORECASE)
+# Mostly filters for social media
+RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|'
+                        'Linkedin|Mail|PDF|Pinterest|Pocket|Print|QQ|Reddit|Twitter|'
+                        'WeChat|WeiBo|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$',
+                       flags=re.IGNORECASE)
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
