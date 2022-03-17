@@ -82,8 +82,11 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
-        for item in LINK_ELEMENTS.findall(feed_string, re.DOTALL):
-            feed_links.append(item.strip())
+        feed_links.extend(
+            item.strip()
+            for item in LINK_ELEMENTS.findall(feed_string, re.DOTALL)
+        )
+
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
     output_links = [l for l in output_links if l != reference and l.count('/') > 2]

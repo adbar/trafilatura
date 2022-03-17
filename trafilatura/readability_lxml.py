@@ -17,6 +17,7 @@ License of forked code: Apache-2.0 License
 This code: GPLv3+
 """
 
+
 import logging
 import re
 
@@ -161,7 +162,7 @@ class Document:
 
             cleaned_article = self.sanitize(article, candidates)
             article_length = len(cleaned_article or "")
-            if ruthless is True and not article_length >= self.retry_length:
+            if ruthless is True and article_length < self.retry_length:
                 ruthless = False
                 # Loop through and try again.
                 continue
@@ -202,7 +203,7 @@ class Document:
                 ):
                     append = True
             # append to the output div
-            if append is True:
+            if append:
                 output.append(sibling)
         #if output is not None:
         #    output.append(best_candidate.elem)
@@ -338,13 +339,11 @@ class Document:
 
     def tags(self, node, *tag_names):
         for tag_name in tag_names:
-            for elem in node.findall(".//%s" % tag_name):
-                yield elem
+            yield from node.findall(f".//{tag_name}")
 
     def reverse_tags(self, node, *tag_names):
         for tag_name in tag_names:
-            for elem in reversed(node.findall(".//%s" % tag_name)):
-                yield elem
+            yield from reversed(node.findall(f".//{tag_name}"))
 
     def sanitize(self, node, candidates):
         for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
@@ -368,11 +367,7 @@ class Document:
             if elem in allowed:
                 continue
             weight = self.class_weight(elem)
-            if elem in candidates:
-                score = candidates[elem].score
-            else:
-                score = 0
-
+            score = candidates[elem].score if elem in candidates else 0
             if weight + score < 0:
                 LOGGER.debug("Removed %s with score %6.3f and weight %-3s",
                     elem.tag, score, weight
@@ -380,9 +375,7 @@ class Document:
                 elem.drop_tree()
             elif elem.text_content().count(",") < 10:
                 to_remove = False
-                counts = {}
-                for kind in TEXT_CLEAN_ELEMS:
-                    counts[kind] = len(elem.findall(".//%s" % kind))
+                counts = {kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS}
                 counts["li"] -= 100
                 counts["input"] -= len(elem.findall('.//input[@type="hidden"]'))
 
@@ -391,15 +384,11 @@ class Document:
                 link_density = self.get_link_density(elem)
                 parent_node = elem.getparent()
                 if parent_node is not None:
-                    if parent_node in candidates:
-                        score = candidates[parent_node].score
-                    else:
-                        score = 0
-
+                    score = candidates[parent_node].score if parent_node in candidates else 0
                 # if elem.tag == 'div' and counts["img"] >= 1:
                 #    continue
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
-                    reason = "too many images (%s)" % counts["img"]
+                    reason = f'too many images ({counts["img"]})'
                     to_remove = True
                 elif counts["li"] > counts["p"] and elem.tag not in ("ol", "ul"):
                     reason = "more <li>s than <p>s"
@@ -408,16 +397,10 @@ class Document:
                     reason = "less than 3x <p>s than <input>s"
                     to_remove = True
                 elif content_length < self.min_text_length and counts["img"] == 0:
-                    reason = (
-                        "too short content length %s without a single image"
-                        % content_length
-                    )
+                    reason = f"too short content length {content_length} without a single image"
                     to_remove = True
                 elif content_length < self.min_text_length and counts["img"] > 2:
-                    reason = (
-                        "too short content length %s and too many images"
-                        % content_length
-                    )
+                    reason = f"too short content length {content_length} and too many images"
                     to_remove = True
                 elif weight < 25 and link_density > 0.2:
                     reason = "too many links %.3f for its weight %s" % (
@@ -448,8 +431,8 @@ class Document:
                         sib_content_length = text_length(sib)
                         if sib_content_length:
                             siblings.append(sib_content_length)
-                            if len(siblings) >= 1:
-                                break
+                            # if len(siblings) >= 1:
+                            break
                     limit = len(siblings) + 1
                     for sib in elem.itersiblings(preceding=True):
                         sib_content_length = text_length(sib)

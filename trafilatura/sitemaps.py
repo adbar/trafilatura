@@ -52,7 +52,6 @@ def sitemap_search(url, target_lang=None):
         LOGGER.warning('Invalid URL: %s', url)
         return []
     urlfilter = None
-    sitemaps_seen = set()
     # determine sitemap URL
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
@@ -62,7 +61,7 @@ def sitemap_search(url, target_lang=None):
         if len(url) > len(baseurl) + 2:
             urlfilter = url
     sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
-    sitemaps_seen.add(sitemapurl)
+    sitemaps_seen = {sitemapurl}
     if sitemapurls == [] and len(linklist) > 0:
         linklist = filter_urls(linklist, urlfilter)
         LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)

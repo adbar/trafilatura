@@ -324,12 +324,7 @@ def extract_url(tree, default_url=None):
     # sanity check: don't return invalid URLs
     if url is not None:
         validation_result, parsed_url = validate_url(url)
-        if validation_result is False:
-            url = None
-        else:
-            url = normalize_url(parsed_url)
-        # suggested:
-        # url = None if validation_result is False else normalize_url(parsed_url)
+        url = None if validation_result is False else normalize_url(parsed_url)
     return url
 
 
@@ -347,17 +342,14 @@ def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
     regexpr = '/' + metatype + '[s|ies]?/'
-    if metatype == 'category':
-        xpath_expression = categories_xpaths
-    else:
-        xpath_expression = tags_xpaths
-    # suggested:
-    # xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
+    xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
     # search using custom expressions
     for catexpr in xpath_expression:
-        for elem in tree.xpath(catexpr):
-            if 'href' in elem.attrib and re.search(regexpr, elem.attrib['href']):
-                results.append(elem.text_content())
+        results.extend(
+            elem.text_content()
+            for elem in tree.xpath(catexpr)
+            if 'href' in elem.attrib and re.search(regexpr, elem.attrib['href'])
+        )
         if results:
             break
     # category fallback
