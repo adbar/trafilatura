@@ -124,7 +124,7 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, "meta") or
     contains(@id, "menu") or contains(@class, "menu") or
     contains(translate(@id, "N", "n"), "nav") or contains(translate(@role, "N", "n"), "nav")
-    or starts-with(@class, "nav") or contains(translate(@class, "N","n"), "navigation") or
+    or starts-with(@class, "nav") or contains(translate(@class, "N", "n"), "navigation") or
     contains(@class, "navbar") or contains(@class, "navbox") or starts-with(@class, "post-nav")
     or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb") or
@@ -169,7 +169,7 @@ OVERALL_DISCARD_XPATH = [
 ADDITIONAL_DISCARD_XPATH = [
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
-        contains(translate(@id, "T","t"), "teaser") or contains(translate(@class, "T","t"), "teaser")
+        contains(translate(@id, "T", "t"), "teaser") or contains(translate(@class, "T", "t"), "teaser")
     ]''',
 ]
 
