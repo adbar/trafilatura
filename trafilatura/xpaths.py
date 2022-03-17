@@ -9,9 +9,7 @@ BODY_XPATH = [
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "content-main") or
     contains(@class, "content-main") or contains(@class, "content_main") or
     contains(@id, "content-body") or contains(@class, "content-body") or
-    contains(@id, "articleBody") or contains(@class, "articleBody") or
-    contains(@class, "story-body") or
-    @id="article" or @class="post" or @class="entry"]''',
+    contains(@class, "story-body") or @id="article" or @class="post" or @class="entry"]''',
     # contains(@class, "main-content") or
     '''.//*[(self::article or self::div or self::main or self::section)][
     contains(@class, "post-text") or contains(@class, "post_text") or
@@ -24,7 +22,9 @@ BODY_XPATH = [
     contains(@class, "article-content") or contains(@id, "article__content") or
     contains(@class, "article__content") or contains(@id, "article-body") or
     contains(@class, "article-body") or contains(@id, "article__body") or
-    contains(@class, "article__body") or @itemprop="articleBody" or @id="articleContent" or
+    contains(@class, "article__body") or @itemprop="articleBody" or
+    contains(translate(@id, "B", "b"), "articlebody") or contains(translate(@class, "B", "b"), "articleBody")
+    or @id="articleContent" or
     contains(@class, "ArticleContent") or contains(@class, "page-content") or
     contains(@class, "text-content") or contains(@class, "content__body") or
     contains(@id, "body-text") or contains(@class, "body-text") or
@@ -123,21 +123,20 @@ OVERALL_DISCARD_XPATH = [
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")
     or contains(@class, "meta") or
     contains(@id, "menu") or contains(@class, "menu") or
-    starts-with(@id, "nav") or starts-with(@class, "nav") or
-    contains(@id, "navigation") or contains(translate(@class, "N","n"), "navigation")
-    or contains(@role, "navigation") or contains(@class, "navbar")
-    or contains(@class, "navbox") or starts-with(@class, "post-nav")
+    contains(translate(@id, "N", "n"), "nav") or contains(translate(@role, "N", "n"), "nav")
+    or starts-with(@class, "nav") or contains(translate(@class, "N","n"), "navigation") or
+    contains(@class, "navbar") or contains(@class, "navbox") or starts-with(@class, "post-nav")
     or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb") or
     contains(@id, "author") or contains(@class, "author") or
     contains(@id, "button") or contains(@class, "button")
-    or contains(translate(@class, "B","b"), "byline")
+    or contains(translate(@class, "B", "b"), "byline")
     or contains(@class, "rating") or starts-with(@class, "widget") or
     contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon")
     or contains(@class, "article-infos") or
-    contains(translate(@class, "I","i"), "infoline")
+    contains(translate(@class, "I", "i"), "infoline")
     or contains(@data-component, "MostPopularStories")
     or contains(@class, "options")
     or contains(@class, "consent") or contains(@class, "modal-content")
@@ -147,6 +146,8 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, " ad ")
     or contains(@class, "next-post")
     or contains(@class, "message-container") or contains(@id, "message_container")
+    or contains(@class, "yin") or contains(@class, "zlylin") or
+    contains(@class, "xg1") or contains(@id, "bmdh")
     or @data-lp-replacement-content]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
@@ -159,7 +160,9 @@ OVERALL_DISCARD_XPATH = [
 # contains(@id, "header") or contains(@class, "header") or
 # class contains "cats" (categories, also tags?)
 # or contains(@class, "hidden ")  or contains(@class, "-hide")
-# or contains(@class, "paywall") 
+# or contains(@class, "paywall")
+# contains(@class, "content-info") or contains(@class, "content-title")
+# contains(translate(@class, "N", "n"), "nav") or
 
 
 # the following conditions focus on extraction precision
