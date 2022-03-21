@@ -14,6 +14,13 @@ import warnings
 
 from copy import deepcopy
 
+# SIGALRM isn't present on Windows, detect it
+try:
+    from signal import signal, alarm, SIGALRM
+    HAS_SIGNAL = True
+except ImportError:
+    HAS_SIGNAL = False
+
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
 
@@ -917,6 +924,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     return document
 
 
+def timeout_handler(signum, frame):
+    '''Raise a timeout exception to handle rare malicious files'''
+    raise RuntimeError('unusual file processing time, aborting')
+
+
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
             favor_precision=False, favor_recall=False,
             include_comments=True, output_format='txt',
@@ -965,19 +977,36 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # configuration init
     config = use_config(settingsfile, config)
 
+    # put timeout signal in place
+    if HAS_SIGNAL is True:
+        signal(SIGALRM, timeout_handler)
+        alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
+
     # extraction
-    document = bare_extraction(
-        filecontent, url=url, no_fallback=no_fallback,
-        favor_precision=favor_precision, favor_recall=favor_recall,
-        include_comments=include_comments, output_format=output_format,
-        target_language=target_language, include_tables=include_tables, include_images=include_images,
-        include_formatting=include_formatting, include_links=include_links,
-        deduplicate=deduplicate,
-        date_extraction_params=date_extraction_params,
-        only_with_metadata=only_with_metadata, with_metadata=with_metadata,
-        max_tree_size=max_tree_size, url_blacklist=url_blacklist, author_blacklist=author_blacklist,
-        as_dict=False, config=config,
-    )
+    try:
+        document = bare_extraction(
+            filecontent, url=url, no_fallback=no_fallback,
+            favor_precision=favor_precision, favor_recall=favor_recall,
+            include_comments=include_comments, output_format=output_format,
+            target_language=target_language, include_tables=include_tables,
+            include_images=include_images,
+            include_formatting=include_formatting, include_links=include_links,
+            deduplicate=deduplicate,
+            date_extraction_params=date_extraction_params,
+            only_with_metadata=only_with_metadata, with_metadata=with_metadata,
+            max_tree_size=max_tree_size, url_blacklist=url_blacklist,
+            author_blacklist=author_blacklist,
+            as_dict=False, config=config,
+        )
+    except RuntimeError:
+        LOGGER.error('Processing timeout for %s', url)
+        document = None
+
+    # deactivate alarm signal
+    if HAS_SIGNAL is True:
+        alarm(0)
+
+    # post-processing
     if document is None:
         return None
     if output_format != 'txt':
@@ -985,6 +1014,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         document.id = record_id
         # calculate fingerprint
         document.fingerprint = content_fingerprint(document.raw_text)
+
     # return
     return determine_returnstring(document, output_format, include_formatting, include_links, tei_validation)
 

@@ -18,14 +18,6 @@ from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
-
-# SIGALRM isn't present on Windows, detect it
-try:
-    from signal import signal, alarm, SIGALRM
-    HAS_SIGNAL = True
-except ImportError:
-    HAS_SIGNAL = False
-
 from time import sleep
 
 from courlan import get_host_and_path, is_navigation_page, validate_url
@@ -42,12 +34,6 @@ from .spider import get_crawl_delay, init_crawl, process_response
 LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
-
-
-# try signal https://stackoverflow.com/questions/492519/timeout-on-a-function-call
-def handler(signum, frame):
-    '''Raise a timeout exception to handle rare malicious files'''
-    raise Exception('unusual file processing time, aborting')
 
 
 def load_input_urls(args):
@@ -351,10 +337,6 @@ def examine(htmlstring, args, url=None, config=None):
         sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:
-        # put timeout signal in place
-        if HAS_SIGNAL is True:
-            signal(SIGALRM, handler)
-            alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.no_comments, include_tables=args.no_tables,
@@ -367,7 +349,4 @@ def examine(htmlstring, args, url=None, config=None):
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
-        # deactivate
-        if HAS_SIGNAL is True:
-            alarm(0)
     return result
