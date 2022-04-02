@@ -32,4 +32,5 @@ Pipfile*
 
 # older stuff
 old/
-
+eval/
+.idea
