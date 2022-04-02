@@ -127,10 +127,7 @@ def _handle_response(url, response, decode, config):
         LOGGER.error('too large: length %s for URL %s', len(response.data), url)
         return ''  # raise error instead?
     else:
-        if decode is True:
-            return decode_response(response.data)
-        # else: return raw
-        return response
+        return decode_response(response.data) if decode is True else response
     # catchall
     return None
 

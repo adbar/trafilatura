@@ -183,12 +183,13 @@ def parse_args(args):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help="increase logging verbosity (-v or -vv)",
                         )
-    parser.add_argument("--version",
-                        help="show version information and exit",
-                        action="version",
-                        version="Trafilatura {} - Python {}".format(
-                        __version__, python_version()
-                        ),)
+    parser.add_argument(
+        "--version",
+        help="show version information and exit",
+        action="version",
+        version=f"Trafilatura {__version__} - Python {python_version()}",
+    )
+
 
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())
@@ -242,7 +243,7 @@ def dump_on_exit(inputdict=None):
     if inputdict:
         for hostname in inputdict:
             for urlpath in inputdict[hostname]:
-                sys.stdout.write('todo: ' + hostname + urlpath + '\n')
+                sys.stdout.write(f'todo: {hostname}{urlpath}' + '\n')
 
 atexit.register(dump_on_exit, INPUTDICT)
 
@@ -315,22 +316,21 @@ def process_args(args):
     elif args.inputdir:
         file_processing_pipeline(args)
 
-    # read from input directly
+    # process input URL
+    elif args.URL:
+        INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
+        url_processing_pipeline(args, INPUTDICT)  # process single url
+    
+    # read input on STDIN directly
     else:
-        # process input URL
-        if args.URL:
-            INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
-            url_processing_pipeline(args, INPUTDICT)  # process single url
-        # process input on STDIN
-        else:
-            # file type and unicode check
-            try:
-                htmlstring = sys.stdin.read()
-            except UnicodeDecodeError:
-                sys.exit('ERROR: system, file type or buffer encoding')
-            # process
-            result = examine(htmlstring, args, url=args.URL)
-            write_result(result, args)
+        # file type and unicode check
+        try:
+            htmlstring = sys.stdin.read()
+        except UnicodeDecodeError:
+            sys.exit('ERROR: system, file type or buffer encoding')
+        # process
+        result = examine(htmlstring, args, url=args.URL)
+        write_result(result, args)
 
 
 if __name__ == '__main__':

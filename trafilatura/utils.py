@@ -357,7 +357,6 @@ def check_authors(authors, author_blacklist):
         for author in authors.split('; ')
         if author.lower() not in [a.lower() for a in author_blacklist]
     ]
-
     if new_authors:
         return '; '.join(new_authors).strip('; ')
     return None

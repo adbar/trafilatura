@@ -18,14 +18,6 @@ from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
-
-# SIGALRM isn't present on Windows, detect it
-try:
-    from signal import signal, alarm, SIGALRM
-    HAS_SIGNAL = True
-except ImportError:
-    HAS_SIGNAL = False
-
 from time import sleep
 
 from courlan import get_host_and_path, is_navigation_page, validate_url
@@ -44,12 +36,6 @@ random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
 
-# try signal https://stackoverflow.com/questions/492519/timeout-on-a-function-call
-def handler(signum, frame):
-    '''Raise a timeout exception to handle rare malicious files'''
-    raise Exception('unusual file processing time, aborting')
-
-
 def load_input_urls(args):
     '''Read list of URLs to process or derive one from command-line arguments'''
     if args.inputfile:
@@ -61,6 +47,7 @@ def load_input_urls(args):
                     url_match = re.match(r'https?://[^\s]+', line)
                     if url_match:
                         input_urls.append(url_match.group(0))
+
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
     elif args.crawl:
@@ -204,10 +191,7 @@ def file_processing(filename, args, counter=None, config=None):
 def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
-    if args.backup_dir:
-        fileslug = archive_html(htmlstring, args, counter)
-    else:
-        fileslug = None
+    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)
@@ -353,10 +337,6 @@ def examine(htmlstring, args, url=None, config=None):
         sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:
-        # put timeout signal in place
-        if HAS_SIGNAL is True:
-            signal(SIGALRM, handler)
-            alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.no_comments, include_tables=args.no_tables,
@@ -365,11 +345,8 @@ def examine(htmlstring, args, url=None, config=None):
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              favor_precision=args.precision, favor_recall=args.recall, config=config)
-        # settingsfile=args.config_file,
+            # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
-            sys.stderr.write('ERROR: ' + str(err) + '\n' + traceback.format_exc() + '\n')
-        # deactivate
-        if HAS_SIGNAL is True:
-            alarm(0)
+            sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
     return result
