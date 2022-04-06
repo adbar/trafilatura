@@ -229,11 +229,11 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
 
 def get_crawl_delay(rules, default=5):
     """Define sleeping time between requests (in seconds)."""
-    delay = rules.crawl_delay("*") or 0
+    delay = None
+    if rules is not None:
+        delay = rules.crawl_delay("*") or None
     # backup
-    if delay == 0:
-        delay = default
-    return delay
+    return delay or default
 
 
 def is_still_navigation(todo):
