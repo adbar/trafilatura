@@ -8,7 +8,7 @@ import re
 from .utils import normalize_authors, trim
 
 
-JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting"}
+JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
 JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
@@ -30,7 +30,7 @@ def extract_json(schema, metadata):
             continue
         if '@graph' in parent:
             parent = parent['@graph'] if isinstance(parent['@graph'], list) else [parent['@graph']]
-        elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower():
+        elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower() and 'liveBlogUpdate' in parent:
             parent = parent['liveBlogUpdate'] if isinstance(parent['liveBlogUpdate'], list) else [parent['liveBlogUpdate']]
         else:
             parent = schema
@@ -53,7 +53,7 @@ def extract_json(schema, metadata):
                     if candidate in content and content[candidate] is not None:
                         if metadata.sitename is None or (len(metadata.sitename) < len(content[candidate]) and content_type != "webpage"):
                             metadata.sitename = content[candidate]
-                        if metadata.sitename is None and metadata.sitename.startswith('http') and not content[candidate].startswith('http'):
+                        if metadata.sitename is not None and metadata.sitename.startswith('http') and not content[candidate].startswith('http'):
                             metadata.sitename = content[candidate]
 
             elif content_type == "person":
