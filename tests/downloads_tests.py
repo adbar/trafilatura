@@ -146,7 +146,8 @@ def test_queue():
     config = use_config(filename=args.config_file)
     config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(domain_dict, args, None, config)
-    assert len(results[0]) == 6 and results[1] is None
+    ## fixed: /301 missing, probably for a good reason...
+    assert len(results[0]) == 5 and results[1] is None
     # test backoff algorithm
     backoffdict = {}
     testdict = {'http://test.org': deque(['/1'])}
