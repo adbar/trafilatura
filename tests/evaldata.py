@@ -1,5 +1,13 @@
 # pylint: disable=C0114,C0301,C0302
 EVAL_PAGES = {
+
+'https://www.thebalance.com/coinbase-vs-coinbase-pro-5116733': {
+    'file': 'coinbase-vs-coinbase-pro-5116733’
+    'with': 
+    'without':
+},
+
+
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': {
     'file': 'die-partei.net.luebeck.html',
     'with': ['Die GEMA dreht völlig am Zeiger!', 'http://www.openpetition.de'],
