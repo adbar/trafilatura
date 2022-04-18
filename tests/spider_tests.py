@@ -112,6 +112,7 @@ def test_crawl_logic():
     assert spider.is_known_link('http://test.org/', known_links) is True
     assert spider.is_known_link('https://test.org/', known_links) is True
     # delay between requests
+    assert spider.get_crawl_delay(None) == 5
     assert spider.get_crawl_delay(rules) == 5
     assert spider.get_crawl_delay(rules, default=2.0) == 2.0
 

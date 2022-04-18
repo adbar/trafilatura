@@ -1,6 +1,6 @@
 # with version specifier
-Sphinx==4.4.0
-pydata-sphinx-theme==0.7.2
+Sphinx>=4.5.0
+pydata-sphinx-theme>=0.8.1
 docutils==0.17.1
 # without version specifier
 trafilatura

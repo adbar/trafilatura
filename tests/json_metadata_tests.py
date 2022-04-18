@@ -54,6 +54,7 @@ def test_json_extraction():
     assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
 
     ### Test for potential errors
+    metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
 <html><body>
 <script type="application/ld+json">
@@ -89,6 +90,30 @@ def test_json_extraction():
 }
 </script>
 </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
+
+    ### Test for potential errors - Missing content on live blog
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+    <script type="application/ld+json">
+    {
+      "@context":"http://schema.org",
+      "@type":"LiveBlogPosting",
+      "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+      "about":{
+        "@type":"Event",
+        "startDate":"2015-03-09T13:00:00-07:00",
+        "name":"Apple Spring Forward Event"
+      },
+      "coverageStartTime":"2015-03-09T11:30:00-07:00",
+      "coverageEndTime":"2015-03-09T16:00:00-07:00",
+      "headline":"Apple Spring Forward Event Live Blog",
+      "description":"Welcome to live coverage of the Apple Spring Forward …"
+    }
+    </script>
+    </body></html>'''), metadata)
 
     assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
 
