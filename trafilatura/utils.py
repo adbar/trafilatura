@@ -7,11 +7,11 @@ Module bundling functions related to HTML and text processing.
 ## under GNU GPL v3 license
 
 # import csv
+import gzip
 import logging
 import re
 import sys
 
-from gzip import decompress
 from functools import lru_cache
 from html import unescape
 from unicodedata import normalize
@@ -23,12 +23,11 @@ except ImportError:
     cchardet_detect = None
 from charset_normalizer import from_bytes
 
-from lxml.html import HtmlElement, HTMLParser, fromstring
+from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
 # response types
 from urllib3.response import HTTPResponse
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -36,7 +35,8 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
-HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
+HTML_PARSER = html.HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True,
+                              remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(
     r'''
@@ -46,7 +46,7 @@ UNICODE_WHITESPACE = re.compile(
 )
 
 NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
-SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
+SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE | re.MULTILINE)
 
 NOPRINT_TRANS_TABLE = {
     i: None
@@ -72,6 +72,9 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
     u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
+ENCODING_REPL_RE = re.compile(r"[\u3000\t]")
+DUPLICATES_REMOVAL_RE = re.compile(r"\n+")
+
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 
@@ -82,7 +85,7 @@ def handle_gz_file(filecontent):
     if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
         # decode GZipped data
         try:
-            filecontent = decompress(filecontent)
+            filecontent = gzip.decompress(filecontent)
         except (EOFError, OSError):
             logging.warning('invalid GZ file')
     return filecontent
@@ -141,7 +144,7 @@ def decode_file(filecontent):
     for guessed_encoding in detect_encoding(filecontent):
         try:
             htmltext = filecontent.decode(guessed_encoding)
-        except (LookupError, UnicodeDecodeError): # VISCII: lookup
+        except (LookupError, UnicodeDecodeError):  # VISCII: lookup
             LOGGER.warning('wrong encoding detected: %s', guessed_encoding)
             htmltext = None
         else:
@@ -163,10 +166,10 @@ def is_dubious_html(htmlobject):
 
 def load_html(htmlobject):
     """Load object given as input and validate its type
-    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
+    (accepted: LXML tree, trafilatura/urllib3 response, bytestring and string)
     """
     # use tree directly
-    if isinstance(htmlobject, HtmlElement):
+    if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
     # use trafilatura or urllib3 responses directly
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, 'data'):
@@ -182,17 +185,17 @@ def load_html(htmlobject):
     check_flag = is_dubious_html(htmlobject)
     # use Unicode string
     try:
-        tree = fromstring(htmlobject, parser=HTML_PARSER)
+        tree = html.fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
         try:
-            tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+            tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
         except Exception as err:
             LOGGER.error('lxml parser bytestring %s', err)
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # more robust option: try BeautifulSoup
-    #if tree is None or not isinstance(tree, HtmlElement):
+    # if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
     #    if isinstance(htmlobject, (bytes, str)):
     #        try:
     #            tree = fromsoup(htmlobject)
@@ -215,15 +218,15 @@ def txttocsv(text, comments, docmeta):
         comments = trim(' '.join(comments.splitlines()))
     tsv_output = \
         '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\t{textlicense}\n' \
-        .format(
-        url=docmeta.url,
-        fingerprint=docmeta.fingerprint,
-        hostname=docmeta.hostname,
-        doctitle=docmeta.title,
-        docdate=docmeta.date,
-        text=text,
-        comments=comments,
-        textlicense=docmeta.license
+            .format(
+            url=docmeta.url,
+            fingerprint=docmeta.fingerprint,
+            hostname=docmeta.hostname,
+            doctitle=docmeta.title,
+            docdate=docmeta.date,
+            text=text,
+            comments=comments,
+            textlicense=docmeta.license
         )
     # add id up front if provided
     if docmeta.id is not None:
@@ -238,9 +241,18 @@ def remove_control_characters(string):
     return string.translate(NOPRINT_TRANS_TABLE)
 
 
+# Post-processing encodings
+def encoding_postprocessing(string):
+    textelement = ENCODING_REPL_RE.sub(" ", string)
+    textelement = DUPLICATES_REMOVAL_RE.sub("\n", textelement)
+    return textelement
+
+
 def normalize_unicode(string, unicodeform='NFC'):
+    # remove unsupported encodings
+    textelement = encoding_postprocessing(string)
     'Normalize the given string to the specified unicode format.'
-    return normalize(unicodeform, string)
+    return normalize(unicodeform, textelement)
 
 
 @lru_cache(maxsize=128)
@@ -261,8 +273,8 @@ def line_processing(line):
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
-        #returnlines = []
-        #for line in text.splitlines():
+        # returnlines = []
+        # for line in text.splitlines():
         #    returnlines.append(line_processing(line))
         # return '\n'.join(list(filter(None.__ne__, returnlines)))
         return '\n'.join([l for l in (line_processing(l) for l in text.splitlines()) if l is not None])
@@ -335,15 +347,16 @@ def normalize_authors(current_authors, author_string):
         author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         # skip empty or improbably long strings
         if len(author) == 0 or (
-            # simple heuristics, regex or vowel tests also possible
-            ' ' not in author and '-' not in author and len(author) >= 50
-            ):
+                # simple heuristics, regex or vowel tests also possible
+                ' ' not in author and '-' not in author and len(author) >= 50
+        ):
             continue
         # title case
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
             author = author.title()
         # safety checks
-        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
+        if author not in new_authors and (
+                len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
             new_authors.append(author)
     if len(new_authors) == 0:
         return current_authors
@@ -357,6 +370,7 @@ def check_authors(authors, author_blacklist):
         for author in authors.split('; ')
         if author.lower() not in [a.lower() for a in author_blacklist]
     ]
+
     if new_authors:
         return '; '.join(new_authors).strip('; ')
     return None
