@@ -72,7 +72,7 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
     u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
-ENCODING_REPL_RE = re.compile(r"[\u3000\t]")
+ENCODING_REPL_RE = re.compile(r"[\u3000]")
 DUPLICATES_REMOVAL_RE = re.compile(r"\n+")
 
 CLEAN_META_TAGS = re.compile(r'["\']')
