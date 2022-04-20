@@ -28,10 +28,11 @@ from .filters import content_fingerprint
 from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .spider import get_crawl_delay, init_crawl, process_response
+from .spider import URL_STORE, get_crawl_delay, init_crawl, process_response
 
 
 LOGGER = logging.getLogger(__name__)
+
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
@@ -233,7 +234,7 @@ def cli_crawler(args, n=30, domain_dict=None):
     for website in domain_dict:
         homepage = website + domain_dict[website].popleft()
         crawlinfo[website] = {}
-        domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], crawlinfo[website]['count'], crawlinfo[website]['rules'] = init_crawl(homepage, None, set(), language=args.target_language, shortform=True)
+        domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], crawlinfo[website]['count'], crawlinfo[website]['rules'] = init_crawl(homepage, None, set(), language=args.target_language)
         # update info
         # TODO: register changes?
         # if base_url != website:
@@ -247,7 +248,7 @@ def cli_crawler(args, n=30, domain_dict=None):
             crawlinfo[website]['count'] += 1
             # handle result
             if result is not None and result != '':
-                domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
+                domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], args.target_language, rules=crawlinfo[website]['rules'])
                 # only store content pages, not navigation
                 if not is_navigation_page(url):  # + response.url
                     if args.list:
