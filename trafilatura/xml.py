@@ -7,6 +7,7 @@ All functions related to XML generation, processing and validation.
 ## under GNU GPL v3 license
 
 import logging
+import lzma
 
 from json import dumps as json_dumps
 from html import unescape
@@ -22,7 +23,7 @@ from .utils import sanitize
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema.pickle')
+TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
@@ -134,14 +135,14 @@ def build_tei_output(docmeta):
     return output
 
 
-def check_tei(tei, url):
+def check_tei(xmldoc, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
-    for elem in tei.iter('head'):
+    for elem in xmldoc.iter('head'):
         elem.tag = 'fw'
         elem.set('type', 'header')
     # look for elements that are not valid
-    for element in tei.xpath('//text/body//*'):
+    for element in xmldoc.xpath('//text/body//*'):
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -156,19 +157,18 @@ def check_tei(tei, url):
                 element.attrib.pop(attribute)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
-    return tei
+    return xmldoc
 
 
-def validate_tei(tei):  # , filename=""
+def validate_tei(xmldoc):  # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
         # load validator
-        with open(TEI_SCHEMA, 'rb') as schemafile:
+        with lzma.open(TEI_SCHEMA, 'rb') as schemafile:
             schema_data = load_pickle(schemafile)
-        relaxng_doc = fromstring(schema_data)
-        TEI_RELAXNG = RelaxNG(relaxng_doc)
-    result = TEI_RELAXNG.validate(tei)
+        TEI_RELAXNG = RelaxNG(fromstring(schema_data))
+    result = TEI_RELAXNG.validate(xmldoc)
     if result is False:
         LOGGER.warning('not a valid TEI document: %s', TEI_RELAXNG.error_log.last_error)
     return result
@@ -277,9 +277,9 @@ def xmltotxt(xmloutput, include_formatting, include_links):
 
 def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
-    tei = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    header = write_fullheader(tei, docmeta)
-    textelem = SubElement(tei, 'text')
+    teidoc = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    header = write_fullheader(teidoc, docmeta)
+    textelem = SubElement(teidoc, 'text')
     textbody = SubElement(textelem, 'body')
     # post
     postbody = clean_attributes(docmeta.body)
@@ -292,12 +292,12 @@ def write_teitree(docmeta):
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
-    return tei
+    return teidoc
 
 
-def write_fullheader(tei, docmeta):
+def write_fullheader(teidoc, docmeta):
     '''Write TEI header based on gathered metadata'''
-    header = SubElement(tei, 'teiHeader')
+    header = SubElement(teidoc, 'teiHeader')
     filedesc = SubElement(header, 'fileDesc')
     bib_titlestmt = SubElement(filedesc, 'titleStmt')
     bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')
