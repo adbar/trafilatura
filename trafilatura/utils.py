@@ -9,7 +9,6 @@ Module bundling functions related to HTML and text processing.
 # import csv
 import logging
 import re
-import sys
 
 from gzip import decompress
 from functools import lru_cache
@@ -38,21 +37,14 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
-UNICODE_WHITESPACE = re.compile(
-    r'''
-    \u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|
-    \u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000
-    '''
-)
+SPACES_TABLE = {
+    c: ' ' for c in ('\u00A0', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003',
+    '\u2004', '\u2005', '\u2006', '\u2007', '\u2008', '\u2009', '\u200a', '\u2028',
+    '\u2029', '\u202F', '\u205F', '\u3000')
+}
 
 NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
-
-NOPRINT_TRANS_TABLE = {
-    i: None
-    for i in range(sys.maxunicode + 1)
-    if not chr(i).isprintable() and not chr(i).isspace()
-}
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
@@ -231,11 +223,9 @@ def txttocsv(text, comments, docmeta):
     return tsv_output
 
 
-@lru_cache(maxsize=128)
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
-    # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
-    return string.translate(NOPRINT_TRANS_TABLE)
+    return ''.join([c for c in string if c.isprintable() or c.isspace()])
 
 
 def normalize_unicode(string, unicodeform='NFC'):
@@ -250,7 +240,7 @@ def line_processing(line):
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
     # remove non-printable chars and normalize space characters
-    line = trim(remove_control_characters(UNICODE_WHITESPACE.sub(' ', line)))
+    line = trim(remove_control_characters(line.translate(SPACES_TABLE)))
     # prune empty lines
     if re.match(r'\s*$', line):
         line = None
