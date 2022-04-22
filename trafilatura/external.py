@@ -1,4 +1,4 @@
-# pylint:disable-msg=I1101
+# pylint:disable-msg=E0611,I1101
 """
 Functions grounding on third-party software.
 """
@@ -8,10 +8,14 @@ Functions grounding on third-party software.
 
 
 import logging
+import lzma
+
+from pathlib import Path
+from pickle import load as load_pickle
 
 # third-party
 from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revise_paragraph_classification
-from justext.utils import get_stoplist, get_stoplists
+from justext.utils import get_stoplist  # , get_stoplists
 
 from lxml.etree import Element, strip_tags
 from lxml.html import fromstring
@@ -27,6 +31,9 @@ from .xpaths import PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
+
+JT_STOPLIST = None
+JT_PICKLE = str(Path(__file__).parent / 'data/jt-stopwords-pickle.lzma')
 
 SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
 
@@ -44,12 +51,14 @@ def try_readability(htmlinput):
 
 def jt_stoplist_init():
     'Retrieve and return the content of all JusText stoplists'
-    stoplist = set()
-    for language in get_stoplists():
-        stoplist.update(get_stoplist(language))
-    return tuple(stoplist)
-
-JT_STOPLIST = jt_stoplist_init()
+    global JT_STOPLIST
+    with lzma.open(JT_PICKLE, 'rb') as picklefile:
+        JT_STOPLIST = load_pickle(picklefile)
+    # stoplist = set()
+    # for language in get_stoplists():
+    #     stoplist.update(get_stoplist(language))
+    # JT_STOPLIST = tuple(stoplist)
+    return JT_STOPLIST
 
 
 def custom_justext(tree, stoplist):
@@ -69,7 +78,7 @@ def try_justext(tree, url, target_language):
     if target_language is not None and target_language in JUSTEXT_LANGUAGES:
         justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
     else:
-        justext_stoplist = JT_STOPLIST
+        justext_stoplist = JT_STOPLIST or jt_stoplist_init()
     # extract
     try:
         paragraphs = custom_justext(tree, justext_stoplist)

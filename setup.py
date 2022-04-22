@@ -87,7 +87,7 @@ setup(
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',
     packages=['trafilatura'],
-    package_data={'trafilatura': ['data/tei-schema.pickle', 'settings.cfg']},
+    package_data={'trafilatura': ['data/jt-stopwords-pickle.lzma', 'data/tei-schema.pickle', 'settings.cfg']},
     include_package_data=True,
     python_requires='>=3.6',
     install_requires=[
