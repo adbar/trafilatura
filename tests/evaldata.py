@@ -2,7 +2,7 @@
 EVAL_PAGES = {
 
 'https://www.thebalance.com/coinbase-vs-coinbase-pro-5116733': {
-    'file': 'coinbase-vs-coinbase-pro-5116733’,
+    'file': 'coinbase-vs-coinbase-pro-5116733',
     'with': ['Coinbase vs. Coinbase Pro', 'How do they compare?', 'Buy/sell with debit cards'],
     'without': ['The Balance is part of the Dotdash Meredith publishing family.', 'Kraken vs. Coinbase: How Do They compare?', 'the balance', 'FOLLOW US']
 },
