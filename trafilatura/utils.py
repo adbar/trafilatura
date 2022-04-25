@@ -47,7 +47,7 @@ NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
+IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
 
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
