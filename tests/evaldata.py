@@ -1,10 +1,19 @@
 # pylint: disable=C0114,C0301,C0302
 EVAL_PAGES = {
 
+
+'https://docs.docker.com/engine/install/': {
+    'file': 'index.html',
+    'tags': ['docker','installation', 'install'],
+    'with': ['0.0.0-YYYYmmddHHMMSS-abcdefabcdef', 'Docker Desktop for Windows', 'For more information, see Docker Desktop for Linux.'],
+    'without': [ 'Installation per distro', 'On this page:', 'What is a Container?'],
+
+},
+
 'https://www.thebalance.com/coinbase-vs-coinbase-pro-5116733': {
     'file': 'coinbase-vs-coinbase-pro-5116733',
     'with': ['Coinbase vs. Coinbase Pro', 'How do they compare?', 'Buy/sell with debit cards'],
-    'without': ['The Balance is part of the Dotdash Meredith publishing family.', 'Kraken vs. Coinbase: How Do They compare?', 'the balance', 'FOLLOW US']
+    'without': ['The Balance is part of the Dotdash Meredith publishing family.', 'Kraken vs. Coinbase: How Do They compare?', 'the balance', 'FOLLOW US'],
 },
 
 
