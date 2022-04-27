@@ -31,7 +31,7 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-TEXTELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 
 
@@ -179,13 +179,16 @@ def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting: convert to markdown
-    if include_formatting is True and element.tag in ('del', 'head', 'hi') and element.text is not None:
-        if element.tag == 'head':
-            try:
-                number = int(element.get('rend')[1])
-            except (TypeError, ValueError):
-                number = 2
-            element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+    if include_formatting is True:
+        if element.tag in ('del', 'head') and element.text is not None:
+            if element.tag == 'head':
+                try:
+                    number = int(element.get('rend')[1])
+                except (TypeError, ValueError):
+                    number = 2
+                element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+            elif element.tag == 'del':
+                element.text = ''.join(['~~', element.text, '~~'])
         elif element.tag == 'hi':
             if element.get('rend') == '#b':
                 element.text = ''.join(['**', element.text, '**'])
@@ -195,8 +198,6 @@ def replace_element_text(element, include_formatting):
                 element.text = ''.join(['__', element.text, '__'])
             elif element.get('rend') == '#t':
                 element.text = ''.join(['`', element.text, '`'])
-        elif element.tag == 'del':
-            element.text = ''.join(['~~', element.text, '~~'])
     # handle links
     if element.tag == 'ref':
         try:
@@ -240,11 +241,7 @@ def merge_with_parent(element, include_formatting=False):
 def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
-    # etree.strip_tags(xmloutput, 'div', 'main', 'span')
-    # remove and insert into the previous tag
-    for element in xmloutput.xpath('//hi|//ref'):
-        merge_with_parent(element, include_formatting)
-        continue
+    # strip_tags(xmloutput, 'div', 'main', 'span')
     # iterate and convert to list of strings
     for element in xmloutput.iter('*'):
         if element.text is None and element.tail is None: 
@@ -261,7 +258,7 @@ def xmltotxt(xmloutput, include_formatting):
         # process text
         textelement = replace_element_text(element, include_formatting)
         # common elements
-        if element.tag in TEXTELEMS:
+        if element.tag in NEWLINE_ELEMS:
             returnlist.extend(['\n', textelement, '\n'])
         # particular cases
         elif element.tag == 'item':

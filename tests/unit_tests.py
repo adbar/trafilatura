@@ -332,6 +332,9 @@ def test_formatting():
 
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
+    my_result = extract(my_document, no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
+    # TXT: newline problem here
+    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link.'
     my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
@@ -339,7 +342,7 @@ def test_formatting():
     assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref>.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`,\n~~deleted~~, __underlined__, link.'
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
