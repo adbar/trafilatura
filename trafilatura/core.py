@@ -740,9 +740,9 @@ def determine_returnstring(document, output_format, include_formatting, include_
         returnstring = control_xml_output(output, output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
-        posttext = xmltotxt(document.body, include_formatting, include_links)
+        posttext = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            commentstext = xmltotxt(document.commentsbody, include_formatting, include_links)
+            commentstext = xmltotxt(document.commentsbody, include_formatting)
         else:
             commentstext = ''
         returnstring = txttocsv(posttext, commentstext, document)
@@ -751,9 +751,9 @@ def determine_returnstring(document, output_format, include_formatting, include_
         returnstring = build_json_output(document)
     # TXT
     else:
-        returnstring = xmltotxt(document.body, include_formatting, include_links)
+        returnstring = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting, include_links)
+            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting)
             returnstring = returnstring.strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
@@ -914,9 +914,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # special case: python variables
     if output_format == 'python':
-        document.text = xmltotxt(postbody, include_formatting, include_links)
+        document.text = xmltotxt(postbody, include_formatting)
         if include_comments is True:
-            document.comments = xmltotxt(commentsbody, include_formatting, include_links)
+            document.comments = xmltotxt(commentsbody, include_formatting)
     else:
         document.raw_text, document.body, document.commentsbody = temp_text, postbody, commentsbody
     if as_dict is True:

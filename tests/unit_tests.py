@@ -339,7 +339,6 @@ def test_formatting():
     assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref>.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert '**bold**' in my_result and '*italics*' in my_result and '`tt`' in my_result and '~~deleted~~' in my_result and '__underlined__' in my_result
     assert my_result == '**bold**, *italics*, `tt`,\n~~deleted~~, __underlined__, link.'
 
     # double <p>-elems
