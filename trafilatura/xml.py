@@ -31,7 +31,7 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+TEXTELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 
 
 def build_json_output(docmeta):
@@ -246,23 +246,23 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         continue
     # iterate and convert to list of strings
     for element in xmloutput.iter('*'):
-        # process text
-        if element.text is None and element.tail is None:
+        if element.text is None and element.tail is None: 
             if element.tag == 'graphic':
                 # add source, default to ''
-                returnlist.extend(['\n', element.get('src', '')])
-                # proceed with other potential attributes
+                text = element.get('title', '')
                 if element.get('alt') is not None:
-                    returnlist.extend([' ', element.get('alt')])
-                if element.get('title') is not None:
-                    returnlist.extend([' ', element.get('title')])
+                    text += ' ' + element.get('alt')
+                returnlist.extend(['![', text, ']', '(', element.get('src', ''), ')'])
             # newlines for textless elements
             if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
             continue
+        # process text
         textelement = replace_element_text(element, include_formatting, include_links)
+        # common elements
         if element.tag in TEXTELEMS:
             returnlist.extend(['\n', textelement, '\n'])
+        # particular cases
         elif element.tag == 'item':
             returnlist.extend(['\n- ', textelement, '\n'])
         elif element.tag == 'cell':
@@ -270,7 +270,7 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
-            LOGGER.debug('unexpected element: %s', element.tag)
+            LOGGER.debug('unprocessed element in output: %s', element.tag)
             returnlist.extend([textelement, ' '])
     return unescape(sanitize(''.join(returnlist)))
 
