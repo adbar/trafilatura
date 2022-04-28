@@ -31,7 +31,8 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 
 
 def build_json_output(docmeta):
@@ -42,9 +43,9 @@ def build_json_output(docmeta):
     outputdict['excerpt'] = outputdict.pop('description')
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
-    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False, include_links=False)
+    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False)
     if outputdict['commentsbody'] is not None:
-        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
+        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False)
     else:
         del outputdict['commentsbody']
     return json_dumps(outputdict, ensure_ascii=False)
@@ -174,17 +175,20 @@ def validate_tei(xmldoc):  # , filename=""
     return result
 
 
-def replace_element_text(element, include_formatting, include_links):
+def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting: convert to markdown
-    if include_formatting is True and element.text is not None:
-        if element.tag == 'head':
-            try:
-                number = int(element.get('rend')[1])
-            except (TypeError, ValueError):
-                number = 2
-            element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+    if include_formatting is True:
+        if element.tag in ('del', 'head') and element.text is not None:
+            if element.tag == 'head':
+                try:
+                    number = int(element.get('rend')[1])
+                except (TypeError, ValueError):
+                    number = 2
+                element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+            elif element.tag == 'del':
+                element.text = ''.join(['~~', element.text, '~~'])
         elif element.tag == 'hi':
             if element.get('rend') == '#b':
                 element.text = ''.join(['**', element.text, '**'])
@@ -194,10 +198,8 @@ def replace_element_text(element, include_formatting, include_links):
                 element.text = ''.join(['__', element.text, '__'])
             elif element.get('rend') == '#t':
                 element.text = ''.join(['`', element.text, '`'])
-        elif element.tag == 'del':
-            element.text = ''.join(['~~', element.text, '~~'])
     # handle links
-    if include_links is True and element.tag == 'ref':
+    if element.tag == 'ref':
         try:
             element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
         except TypeError:
@@ -216,12 +218,12 @@ def replace_element_text(element, include_formatting, include_links):
     return full_text
 
 
-def merge_with_parent(element, include_formatting=False, include_links=False):
+def merge_with_parent(element, include_formatting=False):
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
     if parent is None:
         return
-    full_text = replace_element_text(element, include_formatting, include_links)
+    full_text = replace_element_text(element, include_formatting)
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
@@ -236,33 +238,29 @@ def merge_with_parent(element, include_formatting=False, include_links=False):
     parent.remove(element)
 
 
-def xmltotxt(xmloutput, include_formatting, include_links):
+def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
-    # etree.strip_tags(xmloutput, 'div', 'main', 'span')
-    # remove and insert into the previous tag
-    for element in xmloutput.xpath('//hi|//ref'):
-        merge_with_parent(element, include_formatting, include_links)
-        continue
+    # strip_tags(xmloutput, 'div', 'main', 'span')
     # iterate and convert to list of strings
     for element in xmloutput.iter('*'):
-        # process text
-        if element.text is None and element.tail is None:
+        if element.text is None and element.tail is None: 
             if element.tag == 'graphic':
                 # add source, default to ''
-                returnlist.extend(['\n', element.get('src', '')])
-                # proceed with other potential attributes
+                text = element.get('title', '')
                 if element.get('alt') is not None:
-                    returnlist.extend([' ', element.get('alt')])
-                if element.get('title') is not None:
-                    returnlist.extend([' ', element.get('title')])
+                    text += ' ' + element.get('alt')
+                returnlist.extend(['![', text, ']', '(', element.get('src', ''), ')'])
             # newlines for textless elements
             if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
             continue
-        textelement = replace_element_text(element, include_formatting, include_links)
-        if element.tag in TEXTELEMS:
+        # process text
+        textelement = replace_element_text(element, include_formatting)
+        # common elements
+        if element.tag in NEWLINE_ELEMS:
             returnlist.extend(['\n', textelement, '\n'])
+        # particular cases
         elif element.tag == 'item':
             returnlist.extend(['\n- ', textelement, '\n'])
         elif element.tag == 'cell':
@@ -270,7 +268,8 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
-            LOGGER.debug('unexpected element: %s', element.tag)
+            if element.tag not in SPECIAL_FORMATTING:
+                LOGGER.debug('unprocessed element in output: %s', element.tag)
             returnlist.extend([textelement, ' '])
     return unescape(sanitize(''.join(returnlist)))
 
