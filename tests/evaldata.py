@@ -2,11 +2,19 @@
 EVAL_PAGES = {
 
 
+'https://www.kickstarter.com/': {
+    'file': 'index.html.1',
+    'with': ['Beiträge für kreative Arbeiten', 'Plant Light Nº1', 'Craighton Bermans Ratschläge für einfache, kreative Kampagnen'],
+    'without': ['Kunst:', 'Über uns', 'Von Jeffrey & Jill Dalton', 'Starte ein Projekt'],
+
+},
+
+
 'https://docs.docker.com/engine/install/': {
     'file': 'index.html',
     'tags': ['docker','installation', 'install'],
     'with': ['0.0.0-YYYYmmddHHMMSS-abcdefabcdef', 'Docker Desktop for Windows', 'For more information, see Docker Desktop for Linux.'],
-    'without': [ 'Installation per distro', 'On this page:', 'What is a Container?'],
+    'without': ['Installation per distro', 'On this page:', 'What is a Container?'],
 
 },
 
