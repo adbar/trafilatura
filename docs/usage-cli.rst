@@ -94,6 +94,22 @@ Output as TXT without metadata is the default, another format can be selected in
     Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
 
 
+Optimizing for precision and recall
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The arguments ``--precision`` & ``--recall`` can be passed to the extractor.
+
+They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+
+
+Language identification
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Passing the argument ``--target-language`` along with a 2-letter code (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_) will trigger language filtering of the output if the identification component has been `installed <installation.html>`_ and if the target language is available.
+
+.. note::
+    Additional components are required: ``pip install trafilatura[all]``
+
 
 Process files locally
 ---------------------
