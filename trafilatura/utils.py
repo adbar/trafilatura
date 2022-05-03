@@ -316,7 +316,7 @@ def normalize_authors(current_authors, author_string):
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)
         # replace special characters with space
-        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
+        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
         author = AUTHOR_REMOVE_NICKNAME.sub('', author)
         # remove special characters
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)
