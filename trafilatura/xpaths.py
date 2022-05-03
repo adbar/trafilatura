@@ -40,55 +40,50 @@ BODY_XPATH = [
     contains(@class, 'main-column') or contains(@class, 'wpb_text_column') or
     starts-with(@id, 'primary') or starts-with(@class, 'article ') or @class="text" or
     @class="cell" or @id="story" or @class="story" or
-    contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
-    '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
-    contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
+    contains(translate(@class, "FULTEX","fultex"), "fulltext")]""",
+    '''.//*[(self::article or self::div or self::main or self::section)][
+    contains(translate(@id, "CM","cm"), "main-content") or contains(translate(@class, "CM","cm"), "main-content")
+    or contains(translate(@class, "CP","cp"), "page-content")]''',
     './/*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
-
 ]
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
-# or @class="content" or @id="content"
 # starts-with(@class, "content ") or contains(@class, " content")
 # '//div[contains(@class, "text") or contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
 # '//div[contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
 # |//*[(self::article or self::div or self::main or self::section)][contains(@class, "article") or contains(@class, "Article")]
-# or @class="content" or @class="Content"
+# @id="content"or @class="content" or @class="Content"
 # or starts-with(@class, 'post ')
 # './/span[@class=""]', # instagram?
 
 
 COMMENTS_XPATH = [
-    """.//*[(self::div or self::section or self::list)][contains(@id, 'commentlist')
+    """.//*[(self::div or self::list or self::section)][contains(@id, 'commentlist')
     or contains(@class, 'commentlist') or contains(@class, 'comment-page') or
     contains(@id, 'comment-list') or contains(@class, 'comments-list') or
-    contains(@class, 'comments-content')]""",
+    contains(@class, 'comments-content') or contains(@class, 'post-comments')]""",
     """.//*[(self::div or self::section or self::list)][starts-with(@id, 'comments')
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or
     starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
     contains(@class, 'article-comments')]""",
     """.//*[(self::div or self::section or self::list)][starts-with(@id, 'comol') or
     starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]""",
-    """.//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]"""
+    ".//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]",
 ]
 # or contains(@class, 'Comments')
 
 
 REMOVE_COMMENTS_XPATH = [
-    """.//*[(self::div or self::section)][@id='comments' or @class='comments' or
-    contains(@id, 'commentlist') or contains(@class, 'commentlist')
-    or contains(@id, 'comment-list') or contains(@class, 'comments-list') or
-    starts-with(@id, 'comments')
-    or starts-with(@class, 'comments') or starts-with(@class, 'Comments')
+    """.//*[(self::div or self::list or self::section)][
+    starts-with(translate(@id, "C","c"), 'comment') or
+    starts-with(translate(@class, "C","c"), 'comment') or
+    contains(@class, 'article-comments') or contains(@class, 'post-comments')
+    or starts-with(@id, 'comol') or starts-with(@id, 'disqus_thread')
+    or starts-with(@id, 'dsq-comments')
     ]""",
 ]
-# or self::list
-# or contains(@id, 'commentlist') or contains(@class, 'commentlist') or
-#    contains(@id, 'comment-list') or contains(@class, 'comments-list') or
-#    contains(@class, 'comments-content')
-#  or starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
-#    contains(@class, 'article-comments')
-#  or contains(@class, 'comment-page') or
+# or self::span
+# or contains(@class, 'comment') or contains(@id, 'comment')
 
 
 PAYWALL_DISCARD_XPATH = [
@@ -98,6 +93,7 @@ PAYWALL_DISCARD_XPATH = [
     contains(@class, "obfuscated") or contains(@class, "blurred")
     ]''',
 ]
+
 
 OVERALL_DISCARD_XPATH = [
     '''.//*[contains(@id, "footer") or contains(@class, "footer") or

@@ -116,11 +116,22 @@ Only ``include_tables`` is activated by default.
     If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
 
 
+Optimizing for precision and recall
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions:
+
+.. code-block:: python
+
+    >>> result = extract(downloaded, url, favor_precision=True)
+
+They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+
 
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_).
+The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_) or if the target language is not available.
 
 .. code-block:: python
 
@@ -151,12 +162,6 @@ The following combination can lead to shorter processing times:
 
 Extraction settings
 -------------------
-
-Precision and recall-oriented presets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions, e.g. ``favor_precision=True``. They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
-
 
 Text extraction
 ^^^^^^^^^^^^^^^
@@ -226,7 +231,6 @@ Even if the page to process has already been downloaded it can still be useful t
 
 Customization
 -------------
-
 
 Settings file
 ^^^^^^^^^^^^^
