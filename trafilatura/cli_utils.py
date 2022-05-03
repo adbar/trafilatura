@@ -20,7 +20,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import get_host_and_path, is_navigation_page, validate_url
+from courlan import get_host_and_path, is_navigation_page, validate_url, UrlStore
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
@@ -203,12 +203,13 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def download_queue_processing(domain_dict, args, counter, config):
+def download_queue_processing(url_store, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    backoff_dict, errors = {}, []
-    while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
+    errors = []
+    while url_store.done is False:
+        bufferlist, download_threads, url_store = load_download_buffer(url_store, sleep_time, threads=args.parallel)
+        print('##', bufferlist)
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
@@ -241,7 +242,7 @@ def cli_crawler(args, n=30, domain_dict=None):
         # ...
     # iterate until the threshold is reached
     while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
+        bufferlist, download_threads, url_store = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)
@@ -271,25 +272,24 @@ def cli_crawler(args, n=30, domain_dict=None):
     #return todo, known_links
 
 
-def url_processing_pipeline(args, inputdict):
+def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''
     # print list without further processing
     if args.list:
-        for hostname in inputdict:
-            for urlpath in inputdict[hostname]:
-                write_result(hostname + urlpath, args)  # print('\n'.join(input_urls))
+        for domain in url_store.urldict:
+            print('\n'.join([domain + u.urlpath for u in url_store._load_urls(domain) if u.visited is False]))
         return # sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
     counter, i = None, 0
-    for hostname in inputdict:
-        i += len(inputdict[hostname])
+    for hostname in url_store:
+        i += len(url_store[hostname])
         if i > MAX_FILES_PER_DIRECTORY:
             counter = 0
             break
     # download strategy
-    errors, counter = download_queue_processing(inputdict, args, counter, config)
+    errors, counter = download_queue_processing(url_store, args, counter, config)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
