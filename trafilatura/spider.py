@@ -26,7 +26,7 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
-URL_STORE = UrlStore(compressed=False, strict=False, validation=False)
+URL_STORE = UrlStore(compressed=False, strict=False)
 
 
 def refresh_detection(htmlstring, homepage):

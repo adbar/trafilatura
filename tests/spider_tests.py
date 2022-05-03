@@ -90,7 +90,7 @@ def test_process_links():
 
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
-    spider.URL_STORE = UrlStore(compressed=False, strict=False, validation=False)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # erroneous webpage
     with pytest.raises(ValueError):
         base_url, i, known_num, rules, is_on = spider.init_crawl('xyz', None, None)
@@ -100,7 +100,7 @@ def test_crawl_logic():
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     # normal webpage
-    spider.URL_STORE = UrlStore(compressed=False, strict=False, validation=False)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
     base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbin.org/html', None, None)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
@@ -114,7 +114,7 @@ def test_crawl_logic():
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = 'https://httpbin.org'
-    spider.URL_STORE = UrlStore(compressed=False, strict=False, validation=False)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
     spider.URL_STORE.add_urls(['https://httpbin.org/links/2/2'])
     is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbin.org')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
@@ -122,7 +122,7 @@ def test_crawl_page():
     assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
     assert len(known_links) == 3 and visited_num == 1
     # initial page
-    spider.URL_STORE = UrlStore(compressed=False, strict=False, validation=False)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
     spider.URL_STORE.add_urls(['https://httpbin.org/html'])
     # if LANGID_FLAG is True:
     is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbin.org', initial=True, lang='de')
