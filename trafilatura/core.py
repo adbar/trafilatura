@@ -774,8 +774,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         filecontent: HTML code as string.
         url: URL of the webpage.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: prefer more text even when unsure (experimental).
+        favor_precision: prefer less text but correct extraction.
+        favor_recall: prefer more text even when unsure.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
@@ -790,7 +790,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        with_metadata: Similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
@@ -947,8 +946,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: when unsure, prefer more text (experimental).
+        favor_precision: prefer less text but correct extraction.
+        favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
             'txt', 'csv', 'json', 'xml', or 'xmltei'.
@@ -963,7 +962,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        with_metadata: similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
@@ -979,8 +977,10 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
     # put timeout signal in place
     if HAS_SIGNAL is True:
-        signal(SIGALRM, timeout_handler)
-        alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
+        timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
+        if timeout > 0:
+            signal(SIGALRM, timeout_handler)
+            alarm(timeout)
 
     # extraction
     try:
@@ -1003,7 +1003,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         document = None
 
     # deactivate alarm signal
-    if HAS_SIGNAL is True:
+    if HAS_SIGNAL is True and timeout > 0:
         alarm(0)
 
     # post-processing
