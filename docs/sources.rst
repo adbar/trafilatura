@@ -72,6 +72,7 @@ With particular filters, one may look for specific kinds of sources as well, her
 
     "(<link[^>]*(?:\s(?:type=[\"']?(application\/rss\+xml|application\/atom\+xml|application\/rss|application\/atom|application\/rdf\+xml|application\/rdf|text\/rss\+xml|text\/atom\+xml|text\/rss|text\/atom|text\/rdf\+xml|text\/rdf|text\/xml|application\/xml)[\"']?|rel=[\"']?(?:alternate)[\"']?))[^>]*>)"
 
+Discovering feeds on social networks can also be used for corpus construction (Minocha et al. 2013).
 
 
 Search engines
@@ -173,5 +174,7 @@ Blombach, A., Dykes, N., Heinrich, P., Kabashi, B., & Proisl, T. (2020). A corpu
 Henzinger, M. R., Heydon, A., Mitzenmacher, M., & Najork, M. (2000). On near-uniform URL sampling. Computer Networks, 33(1-6), 295-308.
 
 Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In Proceedings of the 12th Web as Corpus Workshop (pp. 23-32).
+
+Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
 
 Schäfer, R., Barbaresi, A., & Bildhauer, F. (2014). Focused web corpus crawling. In Proceedings of the 9th Web as Corpus workshop (WAC-9), pp. 9-15.

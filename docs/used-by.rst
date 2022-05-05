@@ -9,18 +9,29 @@ Uses & citations
 
 Trafilatura is used by other software packages and cited in research publications. This page lists projects mentioning the library.
 
-To add further projects, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and `suggest changes <https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github>`_.
+To add further projects, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
 
 
 
 Notable projects using this software
 ------------------------------------
 
-- `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, a tool to derive massive amounts of language data
-- `GLAM Workbench <https://github.com/GLAM-Workbench/web-archives>`_ for cultural heritage and web archives
-- `Obsei <https://lalitpagaria.github.io/obsei/>`_, a text analysis tool
-- The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web for the `Fatcat catalog <https://fatcat.wiki/>`_ of research publications.
-- `SciencesPo's médialab <https://medialab.sciencespo.fr/>`_ through its `Minet <https://github.com/medialab/minet>`_ webmining
+Institutional users
+^^^^^^^^^^^^^^^^^^^
+
+- `Data against Feminicide <https://datoscontrafeminicidio.net/>`_
+- `Media Cloud platform <https://mediacloud.org>`_ for media analysis
+- The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web for the `Fatcat catalog <https://fatcat.wiki/>`_ of research publications
+- `SciencesPo médialab <https://medialab.sciencespo.fr>`_ through its `Minet <https://github.com/medialab/minet>`_ webmining package
+
+
+Various repositories
+^^^^^^^^^^^^^^^^^^^^
+
+- `Benson <https://github.com/timoteostewart/benson>`_, to turn a list of URLs into mp3s of the contents of each web page
+- `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
+- `GLAM Workbench <https://glam-workbench.github.io/web-archives/>`_ for cultural heritage (web archives section)
+- `Obsei <https://lalitpagaria.github.io/obsei/>`_, a text collection and analysis tool
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
 
 
@@ -92,6 +103,7 @@ Research using Htmldate
 -----------------------
 
 
+- Grabovoy, A., Bakhteev, O., & Chekhovich, Y. (2021). "The automatic approach for scientific papers dating," 2021 Ivannikov Ispras Open Conference (ISPRAS), pp. 107-113, IEEE, DOI: 10.1109/ISPRAS53967.2021.00020.
 - Kupi, M. (2021). `Late to the Party? Agile Methods in British and German Government Institutions <https://osf.io/preprints/socarxiv/3j4sh/download>`_, Master’s Thesis, Hertie School Berlin.
 - Smits, T., & Ros, R. (2021). `Distant reading 940,000 online circulations of 26 iconic photographs <https://journals.sagepub.com/doi/pdf/10.1177/14614448211049459>`_. New Media & Society, DOI: 10.1177/14614448211049.
 

@@ -12,7 +12,7 @@ Compendium: Web texts in linguistics and humanities
 Web corpora as scientific objects
 ---------------------------------
 
-In linguistics, a text corpus (plural corpora) is a language resource consisting of a structured set of texts.  Nowadays, corpora are mostly electronically stored and processed. They can be considered to be a “collection of linguistic data that are directly observable” and as such “naturalistic data”, that is data “intended to be reflective of actual language use” (Good 2022).
+In linguistics, a text corpus (plural corpora) is a language resource consisting of a structured set of texts.  Nowadays, corpora are mostly electronically stored and processed. By nature, web corpora are digital by default. They can be considered to be a “collection of linguistic data that are directly observable” and as such “naturalistic data”, that is data “intended to be reflective of actual language use” (Good 2022).
 
 
     “A corpus is simply described as a large body of linguistic evidence typically composed of attested language use. […] The term corpus should properly only be applied to a well-organized collection of data.” (McEnery 2003, p. 449)
@@ -47,7 +47,6 @@ Corpus construction methods:
         - use of search engines via focused searches or BootCaT method (Baroni & Bernardini 2004), see blog post `Replicating the BootCat method to build web corpora from search engines <https://adrien.barbaresi.eu/blog/replicate-bootcat-corpus-method.html>`_
     3. “Open-end” approach & automated web browsing (web crawling, broad crawls)
         - needs “crawling seeds”, hops from page to page and from one website to another
-
 
 
 General-purpose corpora
@@ -85,14 +84,49 @@ The distinction is not always clear-cut, web corpora can target a particular set
 
     “Manually selecting, crawling and cleaning particular web sites with large and good-enough-quality textual content.” (Spoustová & Spousta 2012, see also `Review of the Czech Internet corpus <https://adrien.barbaresi.eu/blog/review-czech-internet-corpus-focused-corpus-construction.html>`_)
 
+    “One possibility to address the difficulty to find good sources is to avoid “wide crawling” but instead to bind the crawler to manually identified Web domains which are updated on a regular basis and which offer textual data of good quality (this can be seen as 'vertical crawling' as opposed to 'horizontal' or 'wide crawling').”
+    “Do not sort a list of retrieved documents, but retrieve a list of sorted documents.” (Fairon 2006)
+
+
+Monitor corpora
+~~~~~~~~~~~~~~~
+
+Term coined by Sinclair (1982) and proposal motivated by increasing text availability over time, with the following expectations (Clear 1987):
+
+    - More information about language
+    - Better statistical foundation
+    - A diachronic perspective
+    - More effective use of computer facilities
+
+Does that imply that a monitor corpus is a sliding window? Opinions may differ:
+
+    “It would be absurd for entymologists studying beetles to keep in the laboratory every single beetle that has ever been looked at; if they want to see more beetles then there are plenty of them in the wild. So it is with words: only the rare and interesting specimens need to be kept in matchboxes.” (Clear 1987)
+
+
+Corpus size
+~~~~~~~~~~~
+
+    “Corpora that have been used for lexicographical purposes – looking at the whole language – have, perhaps by necessity, always been created to be as large as possible. However, the need for smaller corpora – looking at specific areas of the language – has been recognised, especially in relation to teaching and use in the language classroom.” (Nelson 2010)
+
+Most agree on the fact that quality and adequateness of the data relatively to the research objectives are at least as important as the sheer size.
 
 
 Corpus construction steps
 -------------------------
 
+Preliminary questions
+~~~~~~~~~~~~~~~~~~~~~
+
+Nelson (2010) formulates the following questions which should be answered before building a corpus:
+
+- "Why build a new corpus?" / "What do you want to achieve?" / "What will it be used for?"
+- "Will you stick to [the] plan rigidly, or will you take texts from where you can readily get them?"
+
+
+Working like search engines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In a `seminal article <https://aclanthology.org/J07-1010.pdf>`_, Adam Kilgarriff sums up issues related to the “low-entry-cost way to use the Web” which commercial search engines represent. He shows how an alternative can be developed within the academic community.
-
 
     “An alternative is to work like the search engines, downloading and indexing substantial
     proportions of the World Wide Web, but to do so transparently, giving reliable figures, and supporting
@@ -119,6 +153,7 @@ In case a search engine is used to find documents, pre- and post-processing phas
 
 *N.B.: unlike in BootCat corpora, in this approach words from the general lexicon as used as seeds.*
 
+In the case of a corpus based on web feeds, four steps can be distinguished: feed discovery, validation, scheduling and crawling (Minocha et al. 2013).
 
 
 Crawling and download
@@ -203,6 +238,12 @@ Methodological issues
 ---------------------
 
 
+Limited time or ressources
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Creating a corpus means finding a “balance academic integrity with practical realities, accuracy with expediency and size with efficiency” (Nelson 2010).
+
+
 Data sparsity
 ~~~~~~~~~~~~~
 
@@ -227,15 +268,18 @@ Technicalities
 Technical problems are mostly related to communications over the network and text processing. For smaller projects running from a single computer, bandwidth and RAM are two main limitations. For larger projects, the capacity to scale crawling and processing operations across servers is paramount. This notably includes the capacity to control when web servers are contacted, to what extent web pages can be processed on the fly, and how the resulting corpus data is stored and eventually indexed.
 
 
-Access
-~~~~~~
+Access and ownership
+~~~~~~~~~~~~~~~~~~~~
 
+The growing digitization of text production and processing leaves us with remaining leagal issues:
 
-Sharing URL lists can alleviate copyright issues raised by access to web corpora:
+   “The speed of technological advance has left us with an ethical and legal confusion over the ownership of information, which is hindering the acquisition of text.” (Clear 1987)
+
+In the USA, the `Van Buren v. United States <https://www.eff.org/cases/van-buren-v-united-states>`_ case has been used to defend the right to scrape publicly available web pages, i.e. without bypassing authentication or going off-limits.
+
+In addition, sharing URL lists rather than full documents can alleviate copyright issues raised by access to web corpora:
 
    “Given that the list of links in an Internet corpus does not give the impression that websites it points to are the same as the URL list itself nor compete with services provided by respective websites, a corpus in the form of lists of URLs is not subject to copyright restrictions.” (Sharoff 2006)
-
-
 
 
 
@@ -260,7 +304,11 @@ Berners-Lee, T., Hall, W., & Hendler, J. A. (2006). A Framework for Web Science.
 
 Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. *Computer networks and ISDN systems*, 30(1-7), 161–172.
 
+Clear, J. (1987). Trawling the language: monitor corpora. ZURILEX Proceedings. Tübingen: Francke.
+
 Edwards, J., McCurley, K. S., and Tomlin, J. A. (2001). "An adaptive model for optimizing performance of an incremental web crawler". In *Proceedings of the 10th international conference on World Wide Web - WWW '01*, pp. 106–113.
+
+Fairon, C. (2006). Corporator: A tool for creating RSS-based specialized corpora. In Proceedings of the 2nd International Workshop on Web as Corpus.
 
 Good, J. (2022). "The Scope of Linguistic Data", In *The Open Handbook of Linguistic Data Management*, MIT Press, 27-47.
 
@@ -274,6 +322,10 @@ Kilgarriff, A. and Suchomel, V. (2013) "Web Spam". In: *Proceedings of the 8th W
 
 McEnery, T. (2003). Corpus Linguistics. In R. Mitkov (Ed.), *The Oxford Handbook of Computational Linguistics* (pp. 448–463). Oxford University Press.
 
+Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
+
+Nelson, M. (2010). Building a written corpus. *The Routledge Handbook of Corpus Linguistics*, 53-65.
+
 Schäfer, R., Barbaresi, A., & Bildhauer, F. (2013). The Good, the Bad, and the Hazy: Design Decisions in Web Corpus Construction. In *8th Web as Corpus Workshop*, pp. 7-15, ACL SIGWAC.
 
 Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool.
@@ -281,6 +333,8 @@ Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool
 Sharoff, S. (2006). Open-source corpora: Using the net to fish for linguistic data. *International journal of corpus linguistics*, 11(4), 435-462.
 
 Sharoff, S. (2018). Functional text dimensions for the annotation of web corpora. *Corpora*, 13(1), 65-95.
+
+Sinclair, J. (1982). Reflections on computer corpora in English language research. Computer corpora in English language research, 1-6.
 
 Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
 

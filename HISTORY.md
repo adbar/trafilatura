@@ -1,5 +1,14 @@
 ## History / Changelog
 
+
+### 1.2.1
+- ``--precision`` and ``--recall`` arguments added to the CLI
+- better text cleaning: paywalls and comments
+- improvements for Chinese websites (with @glacierck & @immortal-autumn): #186, #187, #188
+- further bugs fixed: #189, #192 (with @felipehertzer), #200
+- efficiency: faster module loading and improved RAM footprint
+
+
 ### 1.2.0
 - efficiency: replaced module readability-lxml by trimmed fork
 - bug fixed: (#179, #180, #183, #184)
