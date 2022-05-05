@@ -248,14 +248,14 @@ def dump_on_exit(inputdict=None):
 atexit.register(dump_on_exit, INPUTDICT)
 
 
-def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
+def process_parallel_results(future_to_url, blacklist, url_filter, url_store):
     """Process results from the parallel threads and add them
        to the compressed URL dictionary for further processing."""
     for future in as_completed(future_to_url):
         if future.result() is not None:
             inputdict = add_to_compressed_dict(
                         future.result(), blacklist=blacklist,
-                        url_filter=url_filter, inputdict=inputdict
+                        url_filter=url_filter, url_store=url_store
                         )
     return inputdict
 

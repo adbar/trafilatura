@@ -209,7 +209,6 @@ def download_queue_processing(url_store, args, counter, config):
     errors = []
     while url_store.done is False:
         bufferlist, download_threads, url_store = load_download_buffer(url_store, sleep_time, threads=args.parallel)
-        print('##', bufferlist)
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
@@ -277,14 +276,14 @@ def url_processing_pipeline(args, url_store):
     # print list without further processing
     if args.list:
         for domain in url_store.urldict:
-            print('\n'.join([domain + u.urlpath for u in url_store._load_urls(domain) if u.visited is False]))
-        return # sys.exit(0)
+            print('\n'.join(url_store.find_unvisited_urls(domain)))
+        return  # sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
     counter, i = None, 0
-    for hostname in url_store:
-        i += len(url_store[hostname])
+    for hostname in url_store.urldict:
+        i += len(url_store.find_known_urls(hostname))
         if i > MAX_FILES_PER_DIRECTORY:
             counter = 0
             break
@@ -293,10 +292,10 @@ def url_processing_pipeline(args, url_store):
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
-        inputdict = {}
-        inputdict['https://web.archive.org'] = deque(['/web/20/' + e for e in errors])
-        if len(inputdict['https://web.archive.org']) > 0:
-            archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
+        url_store = UrlStore()
+        url_store.add_urls(['https://web.archive.org/web/20/' + e for e in errors])
+        if len(url_store.find_known_urls('https://web.archive.org')) > 0:
+            archived_errors, _ = download_queue_processing(url_store, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
