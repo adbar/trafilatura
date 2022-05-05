@@ -2,11 +2,17 @@
 EVAL_PAGES = {
 
 
+'https://german.stackexchange.com/questions/10376/when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau': {
+    'file': 'when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau.1',
+    'with': ['Ich wurde ausgeraubt', 'I don\'t quite agree with the other two answers.', '(This is active, not passive)'],
+    'without': ['Asked 8 years, 2 months ago', 'asked Feb 6, 2014 at 20:37', 'The moose must flow, but how?'],
+    'comments': ['Exactly, "Ich war ausgeraubt" is simply not correct.', 'Unless of what?', 'Daher gebe ich hier -1'],
+},
+
 'https://www.kickstarter.com/': {
     'file': 'index.html.1',
     'with': ['Beiträge für kreative Arbeiten', 'Plant Light Nº1', 'Craighton Bermans Ratschläge für einfache, kreative Kampagnen'],
     'without': ['Kunst:', 'Über uns', 'Von Jeffrey & Jill Dalton', 'Starte ein Projekt'],
-
 },
 
 
@@ -15,7 +21,6 @@ EVAL_PAGES = {
     'tags': ['docker','installation', 'install'],
     'with': ['0.0.0-YYYYmmddHHMMSS-abcdefabcdef', 'Docker Desktop for Windows', 'For more information, see Docker Desktop for Linux.'],
     'without': ['Installation per distro', 'On this page:', 'What is a Container?'],
-
 },
 
 'https://www.thebalance.com/coinbase-vs-coinbase-pro-5116733': {
