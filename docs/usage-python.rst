@@ -180,6 +180,8 @@ Text extraction can be parametrized by providing a custom configuration file (th
     # provide a file name directly (can be slower)
     >>> extract(downloaded, settingsfile="myfile.cfg")
 
+Useful adjustments include download parameters, minimal extraction length, or de-duplication settings. A timeout exit during extraction can be turned off if malicious data are not an issue or if you run into an error like `signal only works in main thread <https://github.com/adbar/trafilatura/issues/202>`_.
+
 
 Output Python objects
 ^^^^^^^^^^^^^^^^^^^^^

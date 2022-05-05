@@ -179,6 +179,352 @@ def test_json_extraction():
 </body></html>'''), metadata)
     assert metadata is not None and len(metadata.categories) == 0
 
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context":"http://schema.org",
+            "@type":"WebPage",
+            "url":"https://7news.com.au/sport/golf/mickelson-comments-hurt-new-league-norman-c-6658099",
+            "name":"Mickelson comments hurt new league: Norman | 7NEWS",
+            "alternateName":"7NEWS",
+            "author":{
+                "@type":"Person",
+                "name":"7NEWS"
+            },
+            "description":"Greg Norman says a host of the world's top golfers were set to be involved in his new Saudi-funded golf league until Phil Mikelson's controversial comments.",
+            "publisher":{
+                "@type":"Organization",
+                "name":"7NEWS",
+                "url":"https://7news.com.au",
+                "logo":{
+                "@type":"ImageObject",
+                "url":"https://7news.com.au/static/social-images/publisher-logo-60px-high.png",
+                "width":600,
+                "height":60
+                }
+            },
+            "image":{
+                "@type":"ImageObject",
+                "url":"https://7news.com.au/static/social-images/share-400x400.png",
+                "width":400,
+                "height":400
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context":"http://schema.org",
+            "@type":"NewsArticle",
+            "mainEntityOfPage":{
+                "@type":"WebPage",
+                "@id":"https://7news.com.au/sport/golf/mickelson-comments-hurt-new-league-norman-c-6658099"
+            },
+            "dateline":"Sydney, AU",
+            "publisher":{
+                "@type":"Organization",
+                "name":"7NEWS",
+                "url":"https://7news.com.au",
+                "logo":{
+                "@type":"ImageObject",
+                "url":"https://7news.com.au/static/social-images/publisher-logo-60px-high.png",
+                "width":600,
+                "height":60
+            }
+            },
+            "keywords":[
+                "Sport",
+                "Golf"
+            ],
+            "articleSection":"Golf",
+            "headline":"Mickelson comments hurt new league: Norman",
+            "description":"Greg Norman says a host of the world's top golfers were set to be involved in his new Saudi-funded golf league until Phil Mikelson's controversial comments.",
+            "dateCreated":"2022-05-02T23:20:48.000Z",
+            "datePublished":"2022-05-02T23:20:48.000Z",
+            "dateModified":"2022-05-02T23:20:50.493Z",
+            "isAccessibleForFree":true,
+            "isPartOf":{
+                "@type":[
+                    "CreativeWork",
+                    "Product"
+                ],
+                "name":"7NEWS",
+                "productID":"7news.com.au:everyday_digital"
+            },
+            "articleBody":"Greg Norman has declared that Phil Mickelson's controversial comments complicated matters for the lucrative new golf league he is fronting that is backed by Saudi Arabian investment. "There's no question (it) hurt. It hurt a lot of aspects," Norman told ESPN. "It hurt the PGA Tour. It hurt us. It hurt the game of golf. It hurt Phil. So yeah, across all fronts. It wasn't just specifically to us. But it definitely created negative momentum against us." Two-time major championship winner Norman is the CEO of the LIV Golf Invitational Series, formerly known as the Super Golf League. As the venture was trying to get rolling, comments from Mickelson published on February 15, after a November interview with author Alan Shipnuck, caused a firestorm. Mickelson referenced the killing of Washington Post reporter Jamal Khashoggi and called the Saudi Arabians "scary motherf***ers to get involved with." He went on to explain why he still had interest in joining the Saudi-backed league. "(They) have a horrible record on human rights," Mickelson was said, according to Shipnuck. "They execute people over there for being gay. Knowing all of this, why would I even consider it? Because this is a once-in-a-lifetime opportunity to reshape how the PGA Tour operates. "They've been able to get by with manipulative, coercive, strong-arm tactics because we, the players, had no recourse." Norman said on Monday that nearly one third of the top 50 players in the world were committed to playing in the new golf tour. When Mickelson's comments were revealed, many top players instead reaffirmed their commitment to playing on the PGA Tour. "Quite honestly, we were ready to launch (in February)," Norman said to ESPN. "We had enough players in our strength of field, or minimal viable product, ready to come on board. "And when all of that happened, everybody got the jitters, and the PGA Tour threatened people with lifetime bans and stuff like that." Originally set to be a 14-event schedule, the LIV Golf Invitational Series has been restructured to an eight tournament season. Of those, five are expected to take place in the United States with a total of $255 million ($A361m) in prize money. Mickelson has since filed a request to play in an event that conflicts with the PGA Tour, signalling his desire to still play in the LIV Golf Invitational Series. A June 9-11 tournament is set for London and will be open to 48 players set to compete on 12 four-man teams. "I've been very pleasantly surprised," Norman said. "What has been talked about in the media and what is reality are two different things. "We know what's happening with a lot of interest expressed. "From an expectation standpoint, we've got a lot of interest from significantly named players."",
+            "image":[
+            {
+                "@type":"ImageObject",
+                "url":"https://images.7news.com.au/publication/C-6658099/47ef62deeb56ad4e91bde98237459c3c66dec3e9-16x9-x0y0w1280h720.jpg",
+                "width":1280,
+                "height":720
+            },
+            {
+                "@type":"ImageObject",
+                "url":"https://images.7news.com.au/publication/C-6658099/47ef62deeb56ad4e91bde98237459c3c66dec3e9-4x3-x160y0w960h720.jpg",
+                "width":960,
+                "height":720
+            }
+            ],
+            "thumbnailUrl":"https://images.7news.com.au/publication/C-6658099/47ef62deeb56ad4e91bde98237459c3c66dec3e9-16x9-x0y0w1280h720.jpg",
+            "url":"https://7news.com.au/sport/golf/mickelson-comments-hurt-new-league-norman-c-6658099",
+            "author":[
+            {
+                "@type":"Person",
+                "@id":"/profile/digital-staff",
+                "jobTitle":"Writer",
+                "name":"Digital Staff",
+                "publishingPrinciples":null,
+                "description":"Journalist from the 7NEWS.com.au team.",
+                "sameas":[
+                ],
+                "image":null
+                }
+            ],
+            "name":"Mickelson comments hurt new league: Norman"
+            }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == "Mickelson comments hurt new league: Norman" and metadata.sitename == "7NEWS" and metadata.author == "Digital Staff" and "Golf" in metadata.categories
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context":"http://schema.org",
+            "@type":"NewsArticle",
+            "author":[
+                {
+                    "@type":"Person",
+                    "name":"Bill Birtles"
+                }
+            ],
+            "dateModified":"2022-05-02T17:58:24+00:00",
+            "datePublished":"2022-05-02T17:58:24+00:00",
+            "description":"Some Australians caught up in Shanghai's extreme five-week lockdown say the Australian government has done little to help its citizens in distress, and they're pleading with Canberra to arrange charter flights to get them home. ",
+            "headline":"Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee",
+            "image":{
+                "@type":"ImageObject",
+                "height":485,
+                "url":"https://live-production.wcms.abc-cdn.net.au/e4c2d55eac0a18fae458413c45915787?impolicy=wcms_crop_resize&cropH=608&cropW=1080&xPos=0&yPos=38&width=862&height=485",
+                "width":862
+            },
+            "keywords":"",
+            "mainEntityOfPage":"https://www.abc.net.au/news/2022-05-03/australians-in-shanghai-lockdown-voice-frustration/101031126",
+            "publisher":{
+                "@type":"Organization",
+                "name":"ABC News",
+                "logo":{
+                    "@type":"ImageObject",
+                    "height":60,
+                    "url":"https://www.abc.net.au/res/abc/logos/amp-news-logo-60x240.png",
+                    "width":240
+                }
+            }
+        }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee" and metadata.author == "Bill Birtles" and metadata.sitename == "ABC News"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+    {
+        "@context":"http://schema.org",
+        "@type":"NewsArticle",
+        "description":"The city moved into the medium risk level, known as yellow, as it sees a troubling increase in cases and the mayor weighs bringing back some restrictions.",
+        "image":[
+            {
+                "@context":"http://schema.org",
+                "@type":"ImageObject",
+                "url":"https://static01.nyt.com/images/2022/05/02/multimedia/02nyvirus-alert2/02nyvirus-alert2-videoSixteenByNineJumbo1600.jpg",
+                "height":900,
+                "width":1600,
+                "caption":"Herald Square in Manhattan on Monday. New York City entered the yellow coronavirus risk level, meaning cases rose above 200 per 100,000 residents per week."
+            },
+            {
+                "@context":"http://schema.org",
+                "@type":"ImageObject",
+                "url":"https://static01.nyt.com/images/2022/05/02/multimedia/02nyvirus-alert2/02nyvirus-alert2-superJumbo.jpg",
+                "height":1366,
+                "width":2048,
+                "caption":"Herald Square in Manhattan on Monday. New York City entered the yellow coronavirus risk level, meaning cases rose above 200 per 100,000 residents per week."
+            },
+            {
+                "@context":"http://schema.org",
+                "@type":"ImageObject",
+                "url":"https://static01.nyt.com/images/2022/05/02/multimedia/02nyvirus-alert2/02nyvirus-alert2-mediumSquareAt3X.jpg",
+                "height":1801,
+                "width":1800,
+                "caption":"Herald Square in Manhattan on Monday. New York City entered the yellow coronavirus risk level, meaning cases rose above 200 per 100,000 residents per week."
+            }
+        ],
+        "mainEntityOfPage":"https://www.nytimes.com/2022/05/02/nyregion/nyc-coronavirus-yellow-risk-level.html",
+        "url":"https://www.nytimes.com/2022/05/02/nyregion/nyc-coronavirus-yellow-risk-level.html",
+        "inLanguage":"en",
+        "author":[
+            {
+                "@context":"http://schema.org",
+                "@type":"Person",
+                "url":"https://www.nytimes.com/by/sharon-otterman",
+                "name":"Sharon Otterman"
+            },
+            {
+                "@context":"http://schema.org",
+                "@type":"Person",
+                "url":"https://www.nytimes.com/by/emma-g-fitzsimmons",
+                "name":"Emma G. Fitzsimmons"
+            }
+        ],
+        "dateModified":"2022-05-02T20:21:32.149Z",
+        "datePublished":"2022-05-02T14:31:28.000Z",
+        "headline":"New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise",
+        "publisher":{
+            "@id":"https://www.nytimes.com/#publisher"
+        },
+        "copyrightHolder":{
+            "@id":"https://www.nytimes.com/#publisher"
+        },
+        "sourceOrganization":{
+            "@id":"https://www.nytimes.com/#publisher"
+        },
+        "copyrightYear":2022,
+        "isAccessibleForFree":false,
+        "hasPart":{
+            "@type":"WebPageElement",
+            "isAccessibleForFree":false,
+            "cssSelector":".meteredContent"
+        },
+        "isPartOf":{
+            "@type":[
+                "CreativeWork",
+                "Product"
+            ],
+            "name":"The New York Times",
+            "productID":"nytimes.com:basic"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context":"http://schema.org",
+            "@type":"NewsMediaOrganization",
+            "name":"The New York Times",
+            "logo":{
+                "@context":"http://schema.org",
+                "@type":"ImageObject",
+                "url":"https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png",
+                "height":40,
+                "width":250
+            },
+            "url":"https://www.nytimes.com/",
+            "@id":"https://www.nytimes.com/#publisher",
+            "diversityPolicy":"https://www.nytco.com/diversity-and-inclusion-at-the-new-york-times/",
+            "ethicsPolicy":"https://www.nytco.com/who-we-are/culture/standards-and-ethics/",
+            "masthead":"https://www.nytimes.com/interactive/2020/09/08/admin/the-new-york-times-masthead.html",
+            "foundingDate":"1851-09-18",
+            "sameAs":"https://en.wikipedia.org/wiki/The_New_York_Times"
+        }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise" and metadata.author == "Sharon Otterman; Emma G Fitzsimmons" and metadata.sitename == "The New York Times"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        [
+            {
+                "@type":"NewsArticle",
+                "@context":"http://schema.org",
+                "headline":"Decreto permite que consumidor cancele serviços de empresas via WhatsApp",
+                "description":"O governo federal estabeleceu mudanças nas regras do SAC (Serviço de Atendimento ao Consumidor). Uma das principais alterações é a obrigação das empresas em disponibilizarem a possibilidade de cancelamento de algum serviço através do mesmo canal em que oc",
+                "author":{
+                    "name":"Caio Mello",
+                    "@type":"Person",
+                    "url":"https://uol.com.br/"
+                },
+                "publisher":{
+                    "@type":"Organization",
+                    "name":"UOL",
+                    "url":"https://www.uol.com.br",
+                    "logo":{
+                        "@type":"ImageObject",
+                        "url":"https://conteudo.imguol.com.br/uolamp/UOL_logo_156x60.png",
+                        "width":156,
+                        "height":60
+                    }
+                },
+                "url":"https://economia.uol.com.br/noticias/redacao/2022/05/02/empresas-devem-permitir-cancelamento-pelo-whatsapp-a-partir-de-outubro.htm",
+                "mainEntityOfPage":"https://economia.uol.com.br/noticias/redacao/2022/05/02/empresas-devem-permitir-cancelamento-pelo-whatsapp-a-partir-de-outubro.htm",
+                "image":[
+                    "https://conteudo.imguol.com.br/c/noticias/82/2022/01/28/telegram-e-whatsapp-na-tela-do-celular-smartphone-wechat-aps-de-mensageria-mensagem-1643388540478_v2_1x1.jpg",
+                    "https://conteudo.imguol.com.br/c/noticias/82/2022/01/28/telegram-e-whatsapp-na-tela-do-celular-smartphone-wechat-aps-de-mensageria-mensagem-1643388540478_v2_3x4.jpg",
+                    "https://conteudo.imguol.com.br/c/noticias/82/2022/01/28/telegram-e-whatsapp-na-tela-do-celular-smartphone-wechat-aps-de-mensageria-mensagem-1643388540478_v2_4x3.jpg"
+                ],
+                "datePublished":"2022-05-02T15:40:13-03:00",
+                "dateModified":"2022-05-02T17:52:35-03:00"
+            }
+        ]
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp" and metadata.author == "Caio Mello" and metadata.sitename == "UOL"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "NewsArticle",
+            "mainEntityOfPage": "https://www.thelocal.de/20190402/12-words-and-phrases-to-help-you-show-off-in-hamburg/",
+            "headline": "12 words and phrases you need to survive in Hamburg",
+            "datePublished": "2019-04-02T10:18:44+02:00",
+            "dateModified": "2022-05-02T16:48:55+02:00",
+            "description": "Hamburg is a pretty cosmopolitan place, and you won’t have any problem speaking Hochdeutsch around town. But traditionally, people in the city speak Hamburger Platt, and it&#39;s still very much alive.",
+            "keywords": ["language","hamburg"],
+            "isAccessibleForFree": true,
+            "author": {
+                "@type": "Person",
+                "name": "Alexander Johnstone",
+                "email": "news@thelocal.de",
+                "url": "https://www.thelocal.de"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "The Local",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.thelocal.de/wp-content/themes/thelocal/assets/images/the-local-network-logo-300x60.png",
+                    "width": 300,
+                    "height": 60
+                }
+            },
+            "isPartOf": {
+              "@type": ["CreativeWork", "Product"],
+              "name" : "Membership of The Local",
+              "productID": "thelocal.de:member"
+            },
+            "image": {
+                "@type": "ImageObject",
+                "url": "https://apiwp.thelocal.com/wp-content/uploads/2019/04/c99168bc66462f0a1ae0472c449af4b5c28c9652c1ccf7cb961a8d8cf77b147b.jpg",
+                "width": 1500,
+                "height": 1000
+            },
+            "articleBody": "<p><i>Hamburger Platt</i> a quirky variation of Low Saxon (<i>Niederdeutsch</i>), a language which is spoken in northern Germany and eastern parts of the Netherlands.</p><p>It is estimated that are around <a href=\"http://www.hamburg.de/stadtleben/4108598/plattdeutsch-geschichte/\" target=\"_blank\" rel=\"noopener noreferrer\">six million people in eight different German states speak Low Saxon, and around 100,000 speak it in Hamburg itself.</a></p><p><strong>SEE ALSO:<a href=\"https://www.thelocal.de/20190321/local-knowledge-an-insiders-guide-to-life-in-hamburg\"> Local knowledge: an insider guide to life in Hamburg</a></strong></p><p>But it’s on the rise, especially among the young. Some schools teach it from first grade, and there’s even a Hip-Hop group “De fofftig Penns” (“Die fünfzig Pfennige” or \"50 cents\" as pfennig was a former currency) that raps in Plattdeutsch.</p><p>So we thought we should get started on some Hamburger Platt too.</p><p>Here’s a little list of words and phrases to get you started, so that next time you go to Hamburg, you can start to fit in like a true local:</p><p><strong>1. Moin (hello)</strong></p><p><i>Moin</i>, also sometimes <i>moin moin </i>covers a lot of different greetings, as it can mean <i>Guten Morgen</i>, <i>Guten Tag</i> and even <i>Guten Abend</i>. How simple!</p><p><img class=\"size-full wp-image-687931\" src=\"https://apiwp.thelocal.com/wp-content/uploads/2019/04/275024014-scaled.jpg\" alt=\"A shop in Hamburg with the sign 'Moin' outside. \" width=\"2560\" height=\"1673\" /></p><div class=\"post-thumbnail-credit\">A shop in Hamburg with the sign 'Moin' outside. Photo: picture alliance/dpa | Axel Heimken</div><p><strong>2. Schnacken (chat)</strong></p><p><i>Schnack</i> is also the word for chit-chat, and someone who speaks Plattdeutsch could be described as a <i>Plattschnacker</i>.</p><div class=\"ml-manual-widget-container\" style=\"height: 50px; border: 1px solid #c3c3c3; background-color: #dedede;\">Manual widget for ML (class=\"ml-manual-widget-container\")</div><p><strong>3. Macker (lad)</strong></p><p>This means a lad or a mate or even a boyfriend. Or you could try the slang term <i>Digga</i>, which is more equivalent to <i>Alter</i>, meaning dude or man, and has become pretty cool recently.</p><p><strong>4. Klock (clock)</strong></p><p>You probably could've guessed this one. It shows how close some of the words are to English. There isn't always that much difference between the Low Saxon and the Anglo Saxon (which is the route of much of the English language).</p><p><strong>5. Schmöken (smoke)</strong></p><p>Another one that just sounds like English in a German accent! When you're in Hamburg you'll see people <i>schnacken</i> while they <i>schmöken</i> outside a restaurant.</p><p><strong>6. Büx (trousers)</strong></p><p><span style=\"font-size: 10px;\"><i><img style=\"width: 640px; height: 383px;\" src=\"https://www.thelocal.com/wp-content/uploads/2019/04/1511264772_1481025162_buex.jpg\" alt=\"\" />A man holds up a huge pair of </i>Büx<i> at the Hamburg tailor's Herrenkleidung Policke, which makes suits for all sizes imaginable. Photo: DPA</i></span></p><p>Perhaps not one you'll use everyday, but there's also the related verb <i>utbüxen,</i> which means to slip away or escape.</p><p><strong>7. Mall (mad)</strong></p><p>You may well hear \"Bist du mall?!\" being bounded around, which means \"Are you out of you mind?!\"</p><p><strong>8. Sabbelknoken (mobile phone)</strong></p><p>It's definitely a bit of a mouthful, but it is still used by some in Hamburg, and literally translates as a \"mouth bone/limb\".</p><p><strong>9. Wat is de Klock? (What’s the time?)</strong></p><p>You don't need to be Sherlock to deduce this one either, as it sounds like broken English, but it could come in pretty useful on a visit.</p><p><strong>10. En mol Lütt un Lütt (a beer and a schnapps)</strong></p><p>Here's where you might need Sherlock. This is a classic order in a traditional Hamburg pub, but who would have thought that asking for two Lütt could get you both a beer and a shot?</p><p><strong>11. In’n Tüddel koomm (get confused)</strong></p><p>This one almost sounds like what it means, and you almost have to yodel to say it. If you by mistake stumbled into Herbertstraße off the Reeperbahn, you may well <i>in'n Tüddel koomm</i>.</p><p><strong>12. Du bist mein Schietbüdel (you’re my darling)</strong></p><p>And finally one for if you find the right person in Hamburg. It's become really popular in the last few years, and although it used to be an insult, it's now used as a term of endearment. </p>"
+          }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == "12 words and phrases you need to survive in Hamburg" and metadata.author == "Alexander Johnstone" and metadata.sitename == "The Local"
+
 
 if __name__ == '__main__':
     test_json_extraction()
