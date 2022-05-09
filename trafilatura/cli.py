@@ -300,13 +300,13 @@ def process_args(args):
         if args.explore:
             # find domains for which nothing has been found and crawl
             control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-            still_to_crawl = {
-                key: control_dict[key]
-                for key in control_dict
-                if key not in INPUTDICT
-            }
+            #still_to_crawl = {
+            #    key: control_dict[key]
+            #    for key in control_dict
+            #    if key not in INPUTDICT
+            #}
             # add to compressed dict and crawl the remaining websites
-            cli_crawler(args, n=100, domain_dict=still_to_crawl)
+            cli_crawler(args, n=100, url_store=control_dict)
 
     # activate crawler/spider
     elif args.crawl:

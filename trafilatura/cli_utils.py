@@ -234,17 +234,19 @@ def cli_crawler(args, n=30, url_store=None):
     else:
         spider.URL_STORE = url_store
     # load crawl data
-    for hostname in spider.URL_STORE.urldict:
-        homepage = spider.URL_STORE.get_url(hostname)
-        base_url, i, known_num, rules, is_on = spider.init_crawl(homepage, None, set(), language=args.target_language)
+    for hostname in list(spider.URL_STORE.urldict.keys()):
+        startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath  # hostname  # spider.URL_STORE.get_url(hostname)
+        base_url, i, known_num, rules, is_on = spider.init_crawl(startpage, None, set(), language=args.target_language)
         # update info
         # TODO: register changes?
         # if base_url != hostname:
         # ...
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
-        bufferlist, download_threads, url_store = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
-        spider.URL_STORE = url_store
+        bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
+        #for w in spider.URL_STORE.urldict:
+        #    for t in spider.URL_STORE.urldict[w].tuples:
+        #        print(t.urlpath, t.visited)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)
@@ -252,11 +254,11 @@ def cli_crawler(args, n=30, url_store=None):
             if result is not None and result != '':
                 spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.urldict[website].rules)
                 # only store content pages, not navigation
-                if not is_navigation_page(url):  # + response.url
-                    if args.list:
-                        write_result(url, args)
-                    else:
-                        counter = process_result(htmlstring, args, url, counter, config)
+                #if not is_navigation_page(url):  # + response.url
+                #    if args.list:
+                #        write_result(url, args)
+                    #else:
+                    #    counter = process_result(htmlstring, args, url, counter, config)
                 # just in case a crawl delay is specified in robots.txt
                 sleep(spider.get_crawl_delay(spider.URL_STORE.urldict[website].rules))
                 #else:
@@ -266,11 +268,15 @@ def cli_crawler(args, n=30, url_store=None):
         # early exit if maximum count is reached
         if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
             break
-    # print results # spider.URL_STORE.dump_urls() ?
-    for website in spider.URL_STORE.urldict:
+    # print results
+    #for w in spider.URL_STORE.urldict:
+    #    for t in spider.URL_STORE.urldict[w].tuples:
+    #        print(t.urlpath, t.visited)
+    print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
+    #for website in spider.URL_STORE.urldict:
         #print(spider.URL_STORE.urldict[website].tuples)
-        for url in sorted(spider.URL_STORE.find_known_urls(website)):
-            sys.stdout.write(url +'\n')
+    #    for url in sorted(spider.URL_STORE.find_known_urls(website)):
+    #        sys.stdout.write(url +'\n')
     #return todo, known_links
 
 

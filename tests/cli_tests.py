@@ -227,6 +227,32 @@ def test_cli_pipeline():
     # Force encoding to utf-8 for Windows in future processes spawned by multiprocessing.Pool
     os.environ['PYTHONIOENCODING'] = "utf-8"
 
+    # Crawling
+    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/html\n'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # links permitted
+    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/links/1/1\nhttps://httpbin.org/links/1/0\n'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # 0 links permitted
+    args.crawl = 'https://httpbin.org/links/4/4'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args, n=0)
+    assert len(f.getvalue().split('\n')) == 6
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -311,35 +337,6 @@ def test_cli_pipeline():
     #result = cli.examine(teststring, args)
     #assert '[link](testlink.html)' in result # and 'test.jpg' in result
 
-    # Crawling
-    testargs = ['', '--crawl', 'https://httpbin.org/html']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
-    print(f.getvalue())
-    ## assert len(f.getvalue()) == 0
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    # links permitted
-    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
-    print(f.getvalue())
-    assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    # 0 links permitted
-    args.crawl = 'https://httpbin.org/links/4/4'
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args, n=0)
-    # print(f.getvalue())
-    assert len(f.getvalue().split('\n')) == 5
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-
     # Exploration (Sitemap + Crawl)
     testargs = ['', '--explore', 'https://httpbin.org/html']
     with patch.object(sys, 'argv', testargs):
@@ -347,7 +344,8 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert len(f.getvalue()) == 0
+    print(f.getvalue())
+    assert f.getvalue() == 'https://httpbin.org/html\n'
 
 
 def test_input_filtering():

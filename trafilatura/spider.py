@@ -108,7 +108,7 @@ def process_response(response, base_url, language, rules=None):
     """Convert urllib3 response object and extract links."""
     # add final document URL to known_links
     if response is not None:
-        URL_STORE.add_urls([response.url])
+        URL_STORE.add_urls([response.url], visited=True)
         if response.data is not None and response.data != '':
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
