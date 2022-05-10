@@ -689,7 +689,7 @@ def baseline(filecontent):
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
-    for elem in tree.xpath('//aside|//footer|//script'):
+    for elem in tree.xpath('//aside|//footer|//script|//style'):
         elem.getparent().remove(elem)
     # scrape from article tag
     article_elem = tree.find('.//article')
