@@ -9,6 +9,8 @@ Functions to process nodes in HTML code.
 import logging
 import re
 
+from copy import deepcopy
+
 from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
@@ -77,8 +79,11 @@ def prune_html(tree):
     return tree
 
 
-def prune_unwanted_nodes(tree, nodelist):
+def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     '''Prune the HTML tree by removing unwanted sections.'''
+    if with_backup is True:
+        old_len = len(tree.text_content())  # ' '.join(tree.itertext())
+        backup = deepcopy(tree)
     for expr in nodelist:
         for subtree in tree.xpath(expr):
             # preserve tail text from deletion
@@ -94,7 +99,14 @@ def prune_unwanted_nodes(tree, nodelist):
                         previous.tail = subtree.tail
             # remove the node
             subtree.getparent().remove(subtree)
-    return tree
+    if with_backup is False:
+        return tree
+    else:
+        new_len = len(tree.text_content())
+        # todo: adjust for recall and precision settings
+        if new_len > old_len/7:
+            return tree
+    return backup
 
 
 def collect_link_info(links_xpath):

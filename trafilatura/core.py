@@ -467,7 +467,10 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
     for elem in uniquify_list(deletions):
-        elem.getparent().remove(elem)
+        try:
+            elem.getparent().remove(elem)
+        except AttributeError:
+            pass
     return subtree
 
 
@@ -493,7 +496,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         except IndexError:
             continue
         # prune the rest
-        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH, with_backup=True)
         # prune images
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
