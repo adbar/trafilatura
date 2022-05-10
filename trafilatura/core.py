@@ -937,7 +937,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             date_extraction_params=None,
             only_with_metadata=False, with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
-            settingsfile=None, config=DEFAULT_CONFIG):
+            settingsfile=None, config=DEFAULT_CONFIG,
+            **kwargs):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
 
@@ -972,6 +973,18 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         A string in the desired format or None.
 
     """
+    # older, deprecated functions
+    if kwargs:
+        # output formats
+        if any([
+            'csv_output' in kwargs, 'json_output' in kwargs,
+            'tei_output' in kwargs, 'xml_output' in kwargs
+            ]):
+            raise NameError(
+                'Deprecated argument: use output_format instead, e.g. output_format="xml"'
+                )
+        # todo: add with_metadata later
+
     # configuration init
     config = use_config(settingsfile, config)
 
