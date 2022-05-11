@@ -30,8 +30,9 @@ BODY_XPATH = [
     contains(@id, "body-text") or contains(@class, "body-text") or
     contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")
     or contains(@id, "contentBody")]''',
-    './/article',
-    """.//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
+    # (…)[1] = first occurrence
+    '(.//article)[1]',
+    """(.//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
     contains(@class, 'storycontent') or contains(@class, 'story-content') or
     @class='postarea' or @class='art-postcontent' or
     contains(@class, 'theme-content') or contains(@class, 'blog-content') or
@@ -40,11 +41,11 @@ BODY_XPATH = [
     contains(@class, 'main-column') or contains(@class, 'wpb_text_column') or
     starts-with(@id, 'primary') or starts-with(@class, 'article ') or @class="text" or
     @class="cell" or @id="story" or @class="story" or
-    contains(translate(@class, "FULTEX","fultex"), "fulltext")]""",
-    '''.//*[(self::article or self::div or self::main or self::section)][
+    contains(translate(@class, "FULTEX","fultex"), "fulltext")])[1]""",
+    '''(.//*[(self::article or self::div or self::main or self::section)][
     contains(translate(@id, "CM","cm"), "main-content") or contains(translate(@class, "CM","cm"), "main-content")
-    or contains(translate(@class, "CP","cp"), "page-content")]''',
-    './/*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
+    or contains(translate(@class, "CP","cp"), "page-content")])[1]''',
+    '(.//*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")])[1]|(.//main)[1]',
 ]
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
@@ -96,13 +97,11 @@ PAYWALL_DISCARD_XPATH = [
 
 
 OVERALL_DISCARD_XPATH = [
-    '''.//*[contains(@id, "footer") or contains(@class, "footer") or
-    contains(@id, "bottom") or contains(@class, "bottom")]''',
-
-    # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
+    # navigation + footers, news outlets related posts, sharing, jp-post-flair jp-relatedposts
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
-    contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
+    contains(translate(@id, "F","f"), "footer") or contains(translate(@class, "F","f"), "footer")
+    or contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
     contains(@id, "viral") or contains(@class, "viral") or
     starts-with(@id, "shar") or starts-with(@class, "shar") or
     contains(@class, "share-") or
@@ -145,13 +144,15 @@ OVERALL_DISCARD_XPATH = [
     contains(@class, "xg1") or contains(@id, "bmdh")
     or @data-lp-replacement-content]''',
 
-    # comment debris
-    '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
-    contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
-
-    # hidden
-    '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
-    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
+    # comment debris + hidden parts
+    '''.//*[@class="comments-title" or contains(@class, "comments-title") or
+    contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
+    contains(@class, "-reply-") or contains(@class, "message")
+    or contains(@id, "akismet") or contains(@class, "akismet") or
+    starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
+    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint")
+    or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"
+    or contains(@class, "notloaded")]''',
 ]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
@@ -163,7 +164,7 @@ OVERALL_DISCARD_XPATH = [
 
 
 # the following conditions focus on extraction precision
-ADDITIONAL_DISCARD_XPATH = [
+TEASER_DISCARD_XPATH = [
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
         contains(translate(@id, "T", "t"), "teaser") or contains(translate(@class, "T", "t"), "teaser")
@@ -175,6 +176,7 @@ PRECISION_DISCARD_XPATH = [
     './/header',
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
+        contains(@id, "bottom") or contains(@class, "bottom") or
         contains(@id, "link") or contains(@class, "link")
     ]''',
 ]

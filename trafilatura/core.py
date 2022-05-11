@@ -37,7 +37,7 @@ from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, 
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     TEASER_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
                      DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
@@ -389,13 +389,13 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     LOGGER.debug('Recovering wild text elements')
     search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
     if favor_recall is True:
-        potential_tags.add('div')
-        search_list.append('div')
+        potential_tags.update(['div', 'lb'])
+        search_list.extend(['div', 'lb'])
     # prune
-    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
+    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
     # get rid of additional elements
     if favor_recall is False:
-        search_tree = prune_unwanted_nodes(search_tree, ADDITIONAL_DISCARD_XPATH)
+        search_tree = prune_unwanted_nodes(search_tree, TEASER_DISCARD_XPATH)
         if favor_precision is True:
             search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
     # decide if images are preserved
@@ -502,7 +502,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         # balance precision/recall
         if favor_recall is False:
-            subtree = prune_unwanted_nodes(subtree, ADDITIONAL_DISCARD_XPATH)
+            subtree = prune_unwanted_nodes(subtree, TEASER_DISCARD_XPATH)
             if favor_precision is True:
                 subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
         # remove elements by link density
