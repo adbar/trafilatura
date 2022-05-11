@@ -537,10 +537,14 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if 'span' not in potential_tags:
             strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
-        ##strip_tags(subtree, 'lb') # BoingBoing-Bug
+        # proper extraction
+        subelems = subtree.xpath('.//*')
+        # e.g. only lb-elems in a div
+        if set(e.tag for e in subelems) == {'lb'}:
+            subelems = [subtree]
         # extract content # list(filter(None.__ne__, processed_elems)) ?
         result_body.extend(e for e in
-                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
+                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subelems]
                            if e is not None)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
