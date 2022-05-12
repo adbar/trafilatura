@@ -1,6 +1,15 @@
 # pylint: disable=C0114,C0301,C0302
 EVAL_PAGES = {
 
+'https://advertising.jodel.com/': {
+    'file': 'index.html.5',
+    'with': ['Was sorgt dafür, dass deine Marke auf Jodel sicher ist?', 'Visuelle und Text-Posts werden in einer 2. Stufe von den Jodler*innen selbst durch Downvotes oder Melden unpassender Beiträge kontrolliert.', 'Lass dich inspirieren und starte deine Erfolgsgeschichte heute'],
+    'without': ['Welche Unternehmen bereits Jodel vertrauen', 'Termin wählen', 'The Jodel Venture GmbH. All Rights Reserved.'],
+},
+
+
+
+
 'https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/': {
     'file': 'index.html.3',
     'with': ['Python 3: simple HTTP Request with the Socket module', 'This module provides access to the BSD socket interface. It is available on all modern Unix systems, Windows, MacOS, and probably additional platforms. ', 'GET / HTTP/1.1\r\nHost:www.google.com\r\n\r\n'],
