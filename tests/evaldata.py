@@ -1,38 +1,40 @@
 # pylint: disable=C0114,C0301,C0302
 EVAL_PAGES = {
 
-
-
-
 'https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/': {
     'file': 'index.html.3',
-    'with': ['', '', ''],
-    'without': ['', '', ''],
+    'with': ['Python 3: simple HTTP Request with the Socket module', 'This module provides access to the BSD socket interface. It is available on all modern Unix systems, Windows, MacOS, and probably additional platforms. ', 'GET / HTTP/1.1\r\nHost:www.google.com\r\n\r\n'],
+    'without': ['Twitter: @GeeXLab', 'Demos: geexlab-demopack-python3/socket/01-socket-http-request/main.xml', 'Your email address will not be published. Required fields are marked'],
 },
 
 'https://github.com/golemfactory/yapapi': {
     'file': 'yapapi',
-    'with': ['', '', ''],
-    'without': ['', '', ''],
+    'with': ['What\'s Golem and yapapi?', 'pip install yapapi', 'Write your own app with yapapi:'],
+    'without': ['Contact GitHub', '2022 GitHub, Inc.', 'Python high-level API for Golem.'],
 },
 
 'https://www.vabali.de/online/reservierung/': {
     'file': 'index.html.4',
-    'with': ['', '', ''],
-    'without': ['', '', ''],
+    'with': ['Für die Aufenthaltsdauer entscheiden Sie sich vor Ort.', 'Reservierungen können bis zu vier Wochen im Voraus vorgenommen werden.', 'Name, Adresse und Telefonnummer aller Personen werden dabei erhoben und nach vier Wochen gelöscht.'],
+    'without': ['Wählen Sie bitte das Wunschdatum Ihres Besuches', 'Registrieren Sie sich für unseren kostenlosen Newsletter', 'Vabali Spa Berlin GmbH & Co. KG'],
 },
 
 'https://www.oreilly.com/library/view/aws-certified-solutions/9781119138556/ftoc.xhtml': {
     'file': 'ftoc.xhtml',
-    'with': ['', '', ''],
-    'without': ['', '', ''],
+    'with': ['About the Authors', 'Chapter 3 Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Elastic Block Store (Amazon EBS)', 'AWS Certified Solutions Architect Official Study Guide'],
+    'without': ['CONTENT SPONSORSHIP', 'START YOUR FREE TRIAL', 'Teach/write/train'],
 },
 
 'https://www.telegraph.co.uk/news/uknews/law-and-order/9209302/Plumber-jailed-after-boiler-killed-millionaires-daughter.html': {
     'file': 'Plumber-jailed-after-boiler-killed-millionaires-daughter.html',
-    'with': ['', '', ''],
-    'without': ['', '', ''],
+    'with': ['Plumber jailed after boiler killed millionaire\'s daughter ', 'A plumber who killed the "dazzling" daughter of a multi-millionaire publishing boss when lethal gas from a botched boiler installation filled a bathroom was jailed for three years.', 'Gas fitter Andrew Hartley was jailed for the manslaughter of a millionaire\'s daughter who died from carbon monoxide poisoning following his botched installation of a boiler'],
+    'without': ['Enjoy unlimited access to all articles', 'Already a subscriber? Log in', 'Syndication and Commissioning'],
 },
+
+
+
+
+
 
 
 
