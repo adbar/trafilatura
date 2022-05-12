@@ -1,4 +1,4 @@
-# pylint:disable-msg=I1101
+# pylint:disable-msg=C0301,E0611,I1101
 """
 Functions to process nodes in HTML code.
 """
@@ -101,11 +101,11 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
             subtree.getparent().remove(subtree)
     if with_backup is False:
         return tree
-    else:
-        new_len = len(tree.text_content())
-        # todo: adjust for recall and precision settings
-        if new_len > old_len/7:
-            return tree
+    # else:
+    new_len = len(tree.text_content())
+    # todo: adjust for recall and precision settings
+    if new_len > old_len/7:
+        return tree
     return backup
 
 
@@ -119,7 +119,7 @@ def collect_link_info(links_xpath):
             continue
         linklen += subelemlen
         elemnum += 1
-        # TODO: unnecessary?
+        # longer strings impact recall in favor of precision
         if subelemlen < 10:
             shortelems += 1
         mylist.append(subelemtext)

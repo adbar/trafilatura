@@ -633,7 +633,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
-    algo_text = trim(' '.join(temppost_algo.itertext()))
+    algo_text = trim(temppost_algo.text_content())
     len_algo = len(algo_text)
     # compare
     LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
@@ -731,7 +731,7 @@ def baseline(filecontent):
     return postbody, '', 0
 
 
-def determine_returnstring(document, output_format, include_formatting, include_links, tei_validation):
+def determine_returnstring(document, output_format, include_formatting, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
@@ -1039,7 +1039,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         document.fingerprint = content_fingerprint(document.raw_text)
 
     # return
-    return determine_returnstring(document, output_format, include_formatting, include_links, tei_validation)
+    return determine_returnstring(document, output_format, include_formatting, tei_validation)
 
 
 # for legacy and backwards compatibility

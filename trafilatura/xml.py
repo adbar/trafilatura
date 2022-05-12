@@ -244,7 +244,7 @@ def xmltotxt(xmloutput, include_formatting):
     # strip_tags(xmloutput, 'div', 'main', 'span')
     # iterate and convert to list of strings
     for element in xmloutput.iter('*'):
-        if element.text is None and element.tail is None: 
+        if element.text is None and element.tail is None:
             if element.tag == 'graphic':
                 # add source, default to ''
                 text = element.get('title', '')
