@@ -2,6 +2,38 @@
 EVAL_PAGES = {
 
 
+
+'https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/': {
+    'file': '',
+    'with': ['', '', ''],
+    'without': ['', '', ''],
+},
+
+'https://github.com/golemfactory/yapapi': {
+    'file': '',
+    'with': ['', '', ''],
+    'without': ['', '', ''],
+},
+
+'https://www.vabali.de/online/reservierung/': {
+    'file': '',
+    'with': ['', '', ''],
+    'without': ['', '', ''],
+},
+
+'https://www.cloudflare.com/learning/what-is-cloudflare/': {
+    'file': '',
+    'with': ['', '', ''],
+    'without': ['', '', ''],
+},
+
+'https://www.upwork.com/freelance-jobs/technical-writing/': {
+    'file': '',
+    'with': ['', '', ''],
+    'without': ['', '', ''],
+},
+
+
 'https://german.stackexchange.com/questions/10376/when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau': {
     'file': 'when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau.1',
     'with': ['Ich wurde ausgeraubt', 'I don\'t quite agree with the other two answers.', '(This is active, not passive)'],
