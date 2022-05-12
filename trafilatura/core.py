@@ -37,7 +37,7 @@ from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, 
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     TEASER_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
                      DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
@@ -389,13 +389,13 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     LOGGER.debug('Recovering wild text elements')
     search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
     if favor_recall is True:
-        potential_tags.add('div')
-        search_list.append('div')
+        potential_tags.update(['div', 'lb'])
+        search_list.extend(['div', 'lb'])
     # prune
-    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
+    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
     # get rid of additional elements
     if favor_recall is False:
-        search_tree = prune_unwanted_nodes(search_tree, ADDITIONAL_DISCARD_XPATH)
+        search_tree = prune_unwanted_nodes(search_tree, TEASER_DISCARD_XPATH)
         if favor_precision is True:
             search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
     # decide if images are preserved
@@ -467,7 +467,10 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
     for elem in uniquify_list(deletions):
-        elem.getparent().remove(elem)
+        try:
+            elem.getparent().remove(elem)
+        except AttributeError:
+            pass
     return subtree
 
 
@@ -493,13 +496,13 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         except IndexError:
             continue
         # prune the rest
-        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH, with_backup=True)
         # prune images
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         # balance precision/recall
         if favor_recall is False:
-            subtree = prune_unwanted_nodes(subtree, ADDITIONAL_DISCARD_XPATH)
+            subtree = prune_unwanted_nodes(subtree, TEASER_DISCARD_XPATH)
             if favor_precision is True:
                 subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
         # remove elements by link density
@@ -534,10 +537,14 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if 'span' not in potential_tags:
             strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
-        ##strip_tags(subtree, 'lb') # BoingBoing-Bug
+        # proper extraction
+        subelems = subtree.xpath('.//*')
+        # e.g. only lb-elems in a div
+        if set(e.tag for e in subelems) == {'lb'}:
+            subelems = [subtree]
         # extract content # list(filter(None.__ne__, processed_elems)) ?
         result_body.extend(e for e in
-                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
+                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subelems]
                            if e is not None)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
@@ -689,7 +696,7 @@ def baseline(filecontent):
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
-    for elem in tree.xpath('//aside|//footer|//script'):
+    for elem in tree.xpath('//aside|//footer|//script|//style'):
         elem.getparent().remove(elem)
     # scrape from article tag
     article_elem = tree.find('.//article')

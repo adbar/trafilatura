@@ -171,6 +171,8 @@ def test_exotic_tags(xmloutput=False):
     element.append(etree.Element('lb'))
     converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
+    # naked div with <lb>
+    assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
     assert result.count(b'List item') == 3

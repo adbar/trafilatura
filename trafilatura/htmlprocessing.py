@@ -9,6 +9,8 @@ Functions to process nodes in HTML code.
 import logging
 import re
 
+from copy import deepcopy
+
 from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
@@ -77,8 +79,11 @@ def prune_html(tree):
     return tree
 
 
-def prune_unwanted_nodes(tree, nodelist):
+def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     '''Prune the HTML tree by removing unwanted sections.'''
+    if with_backup is True:
+        old_len = len(tree.text_content())  # ' '.join(tree.itertext())
+        backup = deepcopy(tree)
     for expr in nodelist:
         for subtree in tree.xpath(expr):
             # preserve tail text from deletion
@@ -94,7 +99,14 @@ def prune_unwanted_nodes(tree, nodelist):
                         previous.tail = subtree.tail
             # remove the node
             subtree.getparent().remove(subtree)
-    return tree
+    if with_backup is False:
+        return tree
+    else:
+        new_len = len(tree.text_content())
+        # todo: adjust for recall and precision settings
+        if new_len > old_len/7:
+            return tree
+    return backup
 
 
 def collect_link_info(links_xpath):
@@ -118,9 +130,7 @@ def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath, mylist = element.xpath('.//ref'), []
     if links_xpath:
-        elemtext = element.text_content()
-        elemlen = len(trim(elemtext))
-        #elemlen = len(trim(element.text_content()))
+        elemlen = len(trim(element.text_content()))
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
             #if element.getnext() is None:
             #    limitlen, threshold = 100, 0.8
@@ -132,7 +142,7 @@ def link_density_test(element):
         #    limitlen, threshold = 50, 0.8
         else:
             if element.getnext() is None:
-                limitlen, threshold = 200, 0.66
+                limitlen, threshold = 300, 0.8
             #elif re.search(r'[.?!:]', elemtext):
             #    limitlen, threshold = 150, 0.66
             else:
@@ -146,7 +156,6 @@ def link_density_test(element):
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
             if linklen >= threshold*elemlen or shortelems/elemnum >= threshold:
                 return True, mylist
-            #print(mylist)
     return False, mylist
 
 
