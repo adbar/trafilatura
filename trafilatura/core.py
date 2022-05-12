@@ -37,7 +37,7 @@ from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, 
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     TEASER_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     TEASER_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
                      DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
@@ -393,6 +393,7 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
         search_list.extend(['div', 'lb'])
     # prune
     search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
+    search_tree = prune_unwanted_nodes(search_tree, PAYWALL_DISCARD_XPATH)
     # get rid of additional elements
     if favor_recall is False:
         search_tree = prune_unwanted_nodes(search_tree, TEASER_DISCARD_XPATH)
@@ -497,6 +498,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             continue
         # prune the rest
         subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH, with_backup=True)
+        subtree = prune_unwanted_nodes(subtree, PAYWALL_DISCARD_XPATH)
         # prune images
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
@@ -626,6 +628,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         return body, text, len_text
     algo_flag, jt_result = False, False
     # prior cleaning
+    backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
     if favor_precision is True:
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
