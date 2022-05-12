@@ -3,35 +3,40 @@ EVAL_PAGES = {
 
 
 
+
 'https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/': {
-    'file': '',
+    'file': 'index.html.3',
     'with': ['', '', ''],
     'without': ['', '', ''],
 },
 
 'https://github.com/golemfactory/yapapi': {
-    'file': '',
+    'file': 'yapapi',
     'with': ['', '', ''],
     'without': ['', '', ''],
 },
 
 'https://www.vabali.de/online/reservierung/': {
-    'file': '',
+    'file': 'index.html.4',
     'with': ['', '', ''],
     'without': ['', '', ''],
 },
 
-'https://www.cloudflare.com/learning/what-is-cloudflare/': {
-    'file': '',
+'https://www.oreilly.com/library/view/aws-certified-solutions/9781119138556/ftoc.xhtml': {
+    'file': 'ftoc.xhtml',
     'with': ['', '', ''],
     'without': ['', '', ''],
 },
 
-'https://www.upwork.com/freelance-jobs/technical-writing/': {
-    'file': '',
+'https://www.telegraph.co.uk/news/uknews/law-and-order/9209302/Plumber-jailed-after-boiler-killed-millionaires-daughter.html': {
+    'file': 'Plumber-jailed-after-boiler-killed-millionaires-daughter.html',
     'with': ['', '', ''],
     'without': ['', '', ''],
 },
+
+
+
+
 
 
 'https://german.stackexchange.com/questions/10376/when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau': {
