@@ -513,12 +513,12 @@ def test_links():
     mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
     # link with target
-    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
+    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert 'testlink.html' not in extract(mydoc)
-    assert '[Test link text.](testlink.html)' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
-    mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
-    assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result

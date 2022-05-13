@@ -392,16 +392,7 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
         potential_tags.update(['div', 'lb'])
         search_list.extend(['div', 'lb'])
     # prune
-    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
-    search_tree = prune_unwanted_nodes(search_tree, PAYWALL_DISCARD_XPATH)
-    # get rid of additional elements
-    if favor_recall is False:
-        search_tree = prune_unwanted_nodes(search_tree, TEASER_DISCARD_XPATH)
-        if favor_precision is True:
-            search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
-    # decide if images are preserved
-    if 'graphic' not in potential_tags:
-        search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
+    search_tree = prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
     # decide if links are preserved
     if 'ref' not in potential_tags:
         strip_tags(search_tree, 'a', 'ref', 'span')
@@ -448,6 +439,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
 def delete_by_link_density(subtree, tagname, backtracking=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
+    # todo: higher values for more precision
     myelems, deletions = {}, []
     for elem in subtree.iter(tagname):
         result, templist = link_density_test(elem)
@@ -475,12 +467,39 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
+def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision):
+    'Rule-based deletion of targeted document sections'
+    # prune the rest
+    tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
+    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
+    # decide if images are preserved
+    if 'graphic' not in potential_tags:
+        tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
+    # balance precision/recall
+    if favor_recall is False:
+        tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
+        if favor_precision is True:
+            tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
+    # remove elements by link density
+    tree = delete_by_link_density(tree, 'div', backtracking=True)
+    # tree = delete_by_link_density(tree, 'list', backtracking=False)
+    tree = delete_by_link_density(tree, 'p', backtracking=False)
+    # tree = delete_by_link_density(tree, 'head', backtracking=False)
+    # also filter fw/head, table and quote elements?
+    if favor_precision is True:
+        tree = delete_by_link_density(tree, 'head', backtracking=False)
+        tree = delete_by_link_density(tree, 'quote', backtracking=False)
+    return tree
+
+
 def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False,
                     include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
+    # backup
     backup_tree = deepcopy(tree)
+    # init
     result_body = Element('body')
     potential_tags = set(TAG_CATALOG)
     if include_tables is True:
@@ -496,26 +515,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             subtree = tree.xpath(expr)[0]
         except IndexError:
             continue
-        # prune the rest
-        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH, with_backup=True)
-        subtree = prune_unwanted_nodes(subtree, PAYWALL_DISCARD_XPATH)
-        # prune images
-        if include_images is False:
-            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
-        # balance precision/recall
-        if favor_recall is False:
-            subtree = prune_unwanted_nodes(subtree, TEASER_DISCARD_XPATH)
-            if favor_precision is True:
-                subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
-        # remove elements by link density
-        subtree = delete_by_link_density(subtree, 'div', backtracking=True)
+        # prune the subtree
+        subtree = prune_unwanted_sections(subtree, potential_tags, favor_recall, favor_precision)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
-        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-        # subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-        # also filter fw/head, table and quote elements?
-        if favor_precision is True:
-            subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-            subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
         if 'table' in potential_tags or favor_precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
@@ -623,8 +625,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
                        include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
+    min_target_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
     # bypass for recall
-    if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 10:
+    if favor_recall is True and len_text > min_target_length * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
     # prior cleaning
@@ -648,10 +651,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = True
     # borderline cases
     else:
-        if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        if not body.xpath('//p//text()') and len_algo > min_target_length * 2:
             algo_flag = True
-        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT',
-                                                                                              'MIN_EXTRACTED_SIZE') * 2:
+        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > min_target_length * 2:
             algo_flag = True
         else:
             LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -663,8 +665,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction: try with justext
-    if body.xpath(SANITIZED_XPATH) or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:
     # or favor_recall is True ?
+        # tree = prune_unwanted_sections(tree, {}, favor_recall, favor_precision)
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
         if jt_result is True:  # and not len_text > 2*len_text2:
             LOGGER.debug('using justext, length: %s', len_text2)
