@@ -28,12 +28,12 @@ from lxml.html import tostring
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                       language_filter, text_chars_test)
-from .htmlprocessing import (convert_tags, handle_textnode,
-                             link_density_test, link_density_test_tables,
-                             process_node, prune_unwanted_nodes, tree_cleaning)
+from .htmlprocessing import (convert_tags, handle_textnode, process_node,
+                             delete_by_link_density, link_density_test_tables,
+                             prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, is_image_file
+from .utils import load_html, normalize_unicode, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
@@ -436,37 +436,6 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     return new_element
 
 
-def delete_by_link_density(subtree, tagname, backtracking=False):
-    '''Determine the link density of elements with respect to their length,
-       and remove the elements identified as boilerplate.'''
-    # todo: higher values for more precision
-    myelems, deletions = {}, []
-    for elem in subtree.iter(tagname):
-        result, templist = link_density_test(elem)
-        if result is True:
-            deletions.append(elem)
-        elif backtracking is True and len(templist) > 0:
-            text = trim(elem.text_content())
-            if text not in myelems:
-                myelems[text] = [elem]
-            else:
-                myelems[text].append(elem)
-    # summing up
-    if backtracking is True:
-        for text, elem in myelems.items():
-            if 0 < len(text) < 100 and len(elem) >= 3:
-                deletions.extend(elem)
-                # print('backtrack:', text)
-            # else: # and not re.search(r'[?!.]', text):
-            # print(elem.tag, templist)
-    for elem in uniquify_list(deletions):
-        try:
-            elem.getparent().remove(elem)
-        except AttributeError:
-            pass
-    return subtree
-
-
 def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision):
     'Rule-based deletion of targeted document sections'
     # prune the rest
@@ -481,14 +450,14 @@ def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
         if favor_precision is True:
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density
-    tree = delete_by_link_density(tree, 'div', backtracking=True)
+    tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
     # tree = delete_by_link_density(tree, 'list', backtracking=False)
-    tree = delete_by_link_density(tree, 'p', backtracking=False)
+    tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
     # tree = delete_by_link_density(tree, 'head', backtracking=False)
     # also filter fw/head, table and quote elements?
     if favor_precision is True:
-        tree = delete_by_link_density(tree, 'head', backtracking=False)
-        tree = delete_by_link_density(tree, 'quote', backtracking=False)
+        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=favor_precision
+        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=favor_precision
     return tree
 
 
@@ -517,7 +486,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             continue
         # prune the subtree
         subtree = prune_unwanted_sections(subtree, potential_tags, favor_recall, favor_precision)
-        subtree = delete_by_link_density(subtree, 'list', backtracking=False)
+        subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=favor_precision)
         if 'table' in potential_tags or favor_precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
