@@ -359,11 +359,6 @@ def extract_catstags(metatype, tree):
         #if not results:
         #    for elem in tree.xpath('.//a[@href]'):
         #        search for 'category'
-    # tags fallback
-    if metatype == 'tags' and not results:
-        element = tree.find('.//head//meta[@name="keywords"][@content]')
-        if element is not None:
-            results.append(element.attrib['content'])
     results = [line_processing(x) for x in results if x is not None]
     return uniquify_list([x for x in results if x is not None])
 
