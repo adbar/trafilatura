@@ -68,8 +68,10 @@ jobs:
     # pycurl installation fix
     - name: Install packages required by pycurl
       if: ${{ matrix.env.MINIMAL == 'false'}}
-      run: sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
-    # alternatively sudo apt-get install libcurl4-openssl-dev libssl-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
+    # alternatively: sudo apt-get install libcurl4-openssl-dev libssl-dev
 
     - name: Install full dependencies
       if: ${{ matrix.env.MINIMAL == 'false'}}
