@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+### 1.2.2
+- more efficient rules for extraction
+- metadata: further attributes used (with @felipehertzer)
+- better baseline extraction
+- issues fixed: #202, #204, #205
+- evaluation updated
+
+
 ### 1.2.1
 - ``--precision`` and ``--recall`` arguments added to the CLI
 - better text cleaning: paywalls and comments
