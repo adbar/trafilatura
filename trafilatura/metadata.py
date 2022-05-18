@@ -63,8 +63,8 @@ LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
 
 METANAME_AUTHOR = {
-    'author', 'byl', 'citation_author', 'dc.creator', 'dc.creator.aut',
-    'dc:creator', 'article:author',
+    'article:author','author', 'byl', 'citation_author',
+    'dc.creator', 'dc.creator.aut', 'dc:creator',
     'dcterms.creator', 'dcterms.creator.aut', 'parsely-author',
     'sailthru.author', 'shareaholic:article_author_name'
 }  # questionable: twitter:creator
@@ -74,8 +74,9 @@ METANAME_DESCRIPTION = {
     'description', 'sailthru.description', 'twitter:description'
 }
 METANAME_PUBLISHER = {
-    'citation_journal_title', 'copyright', 'dc.publisher',
-    'dc:publisher', 'dcterms.publisher', 'publisher'
+    'article:publisher', 'citation_journal_title', 'copyright',
+    'dc.publisher', 'dc:publisher', 'dcterms.publisher',
+    'publisher'
 }  # questionable: citation_publisher
 METANAME_TAG = {
     'citation_keywords', 'dcterms.subject', 'keywords', 'parsely-tags',
@@ -89,6 +90,8 @@ METANAME_TITLE = {
 OG_AUTHOR = {'og:author', 'og:article:author'}
 PROPERTY_AUTHOR = {'author', 'article:author'}
 TWITTER_ATTRS = {'twitter:site', 'application-name'}
+
+# also interesting: article:section & og:type
 
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
@@ -167,6 +170,8 @@ def examine_meta(tree):
                 tags.append(normalize_tags(content_attr))
             elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
+            elif elem.get('property') == 'article:publisher':
+                site_name = site_name or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
