@@ -64,7 +64,7 @@ TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc
 
 METANAME_AUTHOR = {
     'author', 'byl', 'citation_author', 'dc.creator', 'dc.creator.aut',
-    'dc:creator',
+    'dc:creator', 'article:author',
     'dcterms.creator', 'dcterms.creator.aut', 'parsely-author',
     'sailthru.author', 'shareaholic:article_author_name'
 }  # questionable: twitter:creator
