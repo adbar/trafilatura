@@ -7,7 +7,7 @@ import os
 import re
 import time
 
-from lxml import html #  etree
+from lxml import html  # etree
 #from lxml.html.clean import Cleaner
 #HTML_CLEANER = Cleaner()
 
@@ -19,8 +19,10 @@ except ImportError:
 import html2text
 import html_text
 import justext
+
 from boilerpy3 import extractors
-from dragnet import extract_content #, extract_content_and_comments
+from bs4 import BeautifulSoup
+#from dragnet import extract_content #, extract_content_and_comments
 from goose3 import Goose
 from inscriptis import get_text
 # from jparser import PageModel
@@ -29,16 +31,17 @@ from newspaper import fulltext
 from newsplease import NewsPlease
 from readabilipy import simple_json_from_html_string
 from readability import Document
+
 from trafilatura import extract
-
-## TODO: time, best of 3
-
-from evaldata import EVAL_PAGES
 try:
     from trafilatura.core import baseline
 except ImportError:
     baseline = None
 from trafilatura.utils import sanitize
+
+from evaldata import EVAL_PAGES
+
+## TODO: time, best of 3
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -273,9 +276,9 @@ def run_newspaper(htmlstring):
     return text
 
 
-def run_dragnet(htmlstring):
-    '''try with the dragnet module'''
-    return extract_content(htmlstring)  # sanitize(content)
+#def run_dragnet(htmlstring):
+#    '''try with the dragnet module'''
+#    return extract_content(htmlstring)  # sanitize(content)
 
 
 def run_boilerpipe(htmlstring):
@@ -283,7 +286,8 @@ def run_boilerpipe(htmlstring):
     try:
         content = boilerpipe_extractor.get_content(htmlstring)
         # sanitize(boilerpipe_extractor.get_content(htmlstring))
-    except:
+    except Exception:
+        #print('Boilerpipe exception:', err)
         content = ''
     return content
 
@@ -294,7 +298,7 @@ def run_newsplease(htmlstring):
         article = NewsPlease.from_html(htmlstring, url=None)
         return article.maintext # sanitize(article.maintext)
     except Exception as err:
-        print('Exception:', err)
+        #print('Newsplease exception:', err)
         return ''
 
 #def run_jparser(htmlstring):
@@ -323,13 +327,19 @@ def run_newsplease(htmlstring):
 
 
 def run_readabilipy(htmlstring):
-    '''try with the dragnet module'''
+    '''try with the readability.py module'''
     try:
         article = simple_json_from_html_string(htmlstring, use_readability=True)
-    except (TypeError, ValueError):
+        returnlist = [textelem['text'] for textelem in article['plain_text']]
+        return '\n'.join(returnlist) # sanitize(content)
+    except Exception as err:
+        #print('Readabilipy exception:', err)
         return ''
-    returnlist = [textelem['text'] for textelem in article['plain_text']]
-    return '\n'.join(returnlist) # sanitize(content)
+
+
+def run_bs4(htmlstring):
+    '''try with the BeautifulSoup module'''
+    return BeautifulSoup(htmlstring, features='lxml').get_text(strip=True)
 
 
 #def run_libextract(htmlstring):
@@ -389,7 +399,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result, bs4_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
@@ -404,11 +414,12 @@ inscriptis_result.update(template_dict)
 newspaper_result.update(template_dict)
 html2text_result.update(template_dict)
 html_text_result.update(template_dict)
-dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
 readabilipy_result.update(template_dict)
+bs4_result.update(template_dict)
 # jparser_result.update(template_dict)
+#dragnet_result.update(template_dict)
 
 
 i = 0
@@ -541,14 +552,14 @@ for item in EVAL_PAGES:
     newspaper_result['true negatives'] += tn
     newspaper_result['false negatives'] += fn
     # dragnet
-    start = time.time()
-    result = run_dragnet(htmlstring)
-    dragnet_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    dragnet_result['true positives'] += tp
-    dragnet_result['false positives'] += fp
-    dragnet_result['true negatives'] += tn
-    dragnet_result['false negatives'] += fn
+    #start = time.time()
+    #result = run_dragnet(htmlstring)
+    #dragnet_result['time'] += time.time() - start
+    #tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    #dragnet_result['true positives'] += tp
+    #dragnet_result['false positives'] += fp
+    #dragnet_result['true negatives'] += tn
+    #dragnet_result['false negatives'] += fn
     # boilerpipe
     start = time.time()
     result = run_boilerpipe(htmlstring)
@@ -585,6 +596,15 @@ for item in EVAL_PAGES:
     readabilipy_result['false positives'] += fp
     readabilipy_result['true negatives'] += tn
     readabilipy_result['false negatives'] += fn
+    # bs4
+    start = time.time()
+    result = run_bs4(htmlstring)
+    bs4_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    bs4_result['true positives'] += tp
+    bs4_result['false positives'] += fp
+    bs4_result['true negatives'] += tn
+    bs4_result['false negatives'] += fn
     # counter
     i += 1
 
@@ -634,10 +654,10 @@ print(newspaper_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
 print("time diff.: %.2f" % (newspaper_result['time'] / baseline_result['time']))
 
-print('dragnet')
-print(dragnet_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
-print("time diff.: %.2f" % (dragnet_result['time'] / baseline_result['time']))
+#print('dragnet')
+#print(dragnet_result)
+#print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
+#print("time diff.: %.2f" % (dragnet_result['time'] / baseline_result['time']))
 
 print('boilerpipe')
 print(boilerpipe_result)
@@ -663,6 +683,11 @@ print('readabilipy')
 print(readabilipy_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
 print("time diff.: %.2f" % (readabilipy_result['time'] / baseline_result['time']))
+
+print('bs4')
+print(bs4_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(bs4_result)))
+print("time diff.: %.2f" % (bs4_result['time'] / baseline_result['time']))
 
 print('trafilatura')
 print(trafilatura_result)
