@@ -1,4 +1,4 @@
-# pylint:disable-msg=I1101
+# pylint:disable-msg=C0301,E0611,I1101
 """
 Functions to process nodes in HTML code.
 """
@@ -9,12 +9,14 @@ Functions to process nodes in HTML code.
 import logging
 import re
 
+from copy import deepcopy
+
 from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
-from .utils import trim
+from .utils import trim, uniquify_list
 
 
 LOGGER = logging.getLogger(__name__)
@@ -77,8 +79,11 @@ def prune_html(tree):
     return tree
 
 
-def prune_unwanted_nodes(tree, nodelist):
+def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     '''Prune the HTML tree by removing unwanted sections.'''
+    if with_backup is True:
+        old_len = len(tree.text_content())  # ' '.join(tree.itertext())
+        backup = deepcopy(tree)
     for expr in nodelist:
         for subtree in tree.xpath(expr):
             # preserve tail text from deletion
@@ -94,10 +99,17 @@ def prune_unwanted_nodes(tree, nodelist):
                         previous.tail = subtree.tail
             # remove the node
             subtree.getparent().remove(subtree)
-    return tree
+    if with_backup is False:
+        return tree
+    # else:
+    new_len = len(tree.text_content())
+    # todo: adjust for recall and precision settings
+    if new_len > old_len/7:
+        return tree
+    return backup
 
 
-def collect_link_info(links_xpath):
+def collect_link_info(links_xpath, favor_precision=False):
     '''Collect heuristics on link text'''
     linklen, elemnum, shortelems, mylist = 0, 0, 0, []
     for subelem in links_xpath:
@@ -107,46 +119,49 @@ def collect_link_info(links_xpath):
             continue
         linklen += subelemlen
         elemnum += 1
-        # TODO: unnecessary?
-        if subelemlen < 10:
+        # longer strings impact recall in favor of precision
+        if favor_precision is False:
+            threshold = 10
+        else:
+            threshold = 50
+        if subelemlen < threshold:
             shortelems += 1
         mylist.append(subelemtext)
     return linklen, elemnum, shortelems, mylist
 
 
-def link_density_test(element):
+def link_density_test(element, favor_precision=False):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath, mylist = element.xpath('.//ref'), []
     if links_xpath:
-        elemtext = element.text_content()
-        elemlen = len(trim(elemtext))
-        #elemlen = len(trim(element.text_content()))
+        elemlen = len(trim(element.text_content()))
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
             #if element.getnext() is None:
             #    limitlen, threshold = 100, 0.8
             #else:
-            limitlen, threshold = 25, 0.8
+            if favor_precision is False:
+                limitlen, threshold = 25, 0.8
+            else:
+                limitlen, threshold = 100, 0.8
             #if 'hi' in list(element):
             #    limitlen, threshold = 100, 0.8
         #elif element.tag == 'head':
         #    limitlen, threshold = 50, 0.8
         else:
             if element.getnext() is None:
-                limitlen, threshold = 200, 0.66
+                limitlen, threshold = 300, 0.8
             #elif re.search(r'[.?!:]', elemtext):
             #    limitlen, threshold = 150, 0.66
             else:
-                limitlen, threshold = 100, 0.66
-            # suggested:
-            # limitlen, threshold = (200, 0.66) if element.getnext() is None else (100, 0.66)
+                limitlen, threshold = 100, 0.8
         if elemlen < limitlen:
-            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
+            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath, favor_precision)
             if elemnum == 0:
                 return True, mylist
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
-            if linklen >= threshold*elemlen or shortelems/elemnum >= threshold:
+            # (elemnum > 1 and shortelems/elemnum > 0.8):
+            if linklen > threshold*elemlen or shortelems/elemnum > 0.8:
                 return True, mylist
-            #print(mylist)
     return False, mylist
 
 
@@ -168,6 +183,40 @@ def link_density_test_tables(element):
             #if shortelems > len(links_xpath) * 0.66:
             #    return True
     return False
+
+
+def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision=False):
+    '''Determine the link density of elements with respect to their length,
+       and remove the elements identified as boilerplate.'''
+    myelems, deletions = {}, []
+    for elem in subtree.iter(tagname):
+        result, templist = link_density_test(elem, favor_precision)
+        if result is True:
+            deletions.append(elem)
+        elif backtracking is True and len(templist) > 0:
+            text = trim(elem.text_content())
+            if text not in myelems:
+                myelems[text] = [elem]
+            else:
+                myelems[text].append(elem)
+    # summing up
+    if backtracking is True:
+        if favor_precision is False:
+            threshold = 100
+        else:
+            threshold = 200
+        for text, elem in myelems.items():
+            if 0 < len(text) < threshold and len(elem) >= 3:
+                deletions.extend(elem)
+                # print('backtrack:', text)
+            # else: # and not re.search(r'[?!.]', text):
+            # print(elem.tag, templist)
+    for elem in uniquify_list(deletions):
+        try:
+            elem.getparent().remove(elem)
+        except AttributeError:
+            pass
+    return subtree
 
 
 def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):

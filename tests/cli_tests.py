@@ -111,6 +111,12 @@ def test_climain():
         # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
         env['PYTHONIOENCODING'] = 'utf-8'
     assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR], env=env).returncode == 0
+    # dump urls
+    inputdict = add_to_compressed_dict(['https://www.example.org'])
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.dump_on_exit(inputdict)
+    assert f.getvalue() == 'todo: https://www.example.org/\n'
 
 
 def test_input_type():
