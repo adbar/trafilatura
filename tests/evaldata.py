@@ -2896,7 +2896,7 @@ EVAL_PAGES = {
     'author': 'André Loibl',
     'title': '',
     'date': '',
-    'description': 'André Loibl ​Der beliebteste Mindset-Coach mit Freude und Sönnchen reinlassen- Für Dein stabiles und großartiges Business, das Menschen bewegt und einen echten Unterschied in der Welt macht -Hey, André hier! :-)Du willst mich besser kennen lernen? Prima! Fangen wir mit den grundlegenden Fragen an:Wofür stehe ich?1',
+    'description': 'André Loibl ​Der beliebteste Mindset-Coach mit Freude und Sönnchen reinlassen- Für Dein stabiles und großartiges Business, das Menschen bewegt und einen echten Unterschied in der Welt macht -Hey, André hier! :-)Du willst mich besser kennen lernen? Prima! Fangen wir mit den grundlegenden Fragen an:Wofür stehe ich?',
     'categories': [],
     'tags': [],
     'with': ['1. Freude und Leichtigkeit.', 'Ich habe ein kurzes Video gemacht', 'Natürlich erfordert das Veränderung und Wachstum', 'offen und neugierig sind'],
@@ -8916,6 +8916,61 @@ EVAL_PAGES = {
     'date': '2021-11-02',
     'with': ['die globale Kampagne', 'wird zu verheerenden Verstößen', 'nationalen Nichtregierungsorganisationen'],  # 3 segments
     'without': ['Wir respektieren deine Privatsphäre', 'Aktuell', 'Getty Images'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.for-me-online.de/familie/kinder/tochter-pubertaet': {
+    'file': 'for-me-online.de-pubertät.html',
+    'author': '',
+    'title': 'Wie spreche ich mit meiner Tochter über ihre Pubertät?',
+    'date': '2022-02-17',
+    'with': ['Dann ist sie wohl in der Pubertät!', 'bei Problemen auch an andere', 'Du wirst manchmal sehr'],  # 3 segments
+    'without': ['Mehr Inspiration', 'Jetzt registrieren', 'erhalten Sie exklusive'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.lidl.de/c/nachhaltigkeit-im-onlineshop/s10009344': {
+    'file': 'lidl.de-nachhaltigkeit.html',
+    'author': '',
+    'title': 'Nachhaltigkeit im Onlineshop',
+    'date': '',
+    'with': ['Wegfall des Lieferscheins und der', 'geben wir an unsere Kartonagelieferanten weiter.', 'unserer Kundschaft zukünftig die'],  # 3 segments
+    'without': ['ZUR NACHHALTIGKEIT IM ONLINESHOP', 'SCHRITT FÜR SCHRITT ANLEITUNG', 'Ich habe als Gast bestellt'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.nestle-marktplatz.de/mitmachen/produkttests': {
+    'file': 'nestle-marktplatz.de-produkttest.html',
+    'author': '',
+    'title': "Jetzt Produkttester werden - so einfach geht's",
+    'date': '',
+    'with': ['können Sie die Einstellung ganz', 'auf Foren und Blogs, teilen Sie', 'Wir zählen auf Ihre Meinung'],  # 3 segments
+    'without': ['Aktuelle Produkttests', 'NESQUIK Trinkfertig', 'Wie läuft ein Produkttest ab'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.theinsidersnet.com/de-de/campaigns/info/55887/welladryhairspraysmf2202.htm': {
+    'file': 'theinsidersnet.com-wellaflex.html',
+    'author': '',
+    'title': 'Wellaflex – Schnell aufgefrischtes Haar in jeder Situation mit dem 10-in-1 Trockenshampoo',
+    'date': '',
+    'with': ['Dann haben wir genau das richtige für Dich!', 'Du möchtet Deinen Look nach', 'Dose kräftig schütteln. Sprühkopf'],  # 3 segments
+    'without': ['Start', 'das Influencer-Marketingnetzwerk', 'eine Kampagne mit uns'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.arbeitsagentur.de/news/arbeitsmarkt-2022': {
+    'file': 'arbeitsagentur.de-arbeitsmarkt.html',
+    'author': '',
+    'title': 'Arbeitslosenquote & Arbeitslosenzahlen 2022',
+    'date': '2022-02-01',
+    'with': ['sagte der Vorstand Regionen der Bundesagentur', 'Beschäftigung nahm saisonbereinigt von Oktober', 'Anzeigen wurde vom 1. bis einschließlich'],  # 3 segments
+    'without': ['Auf der Seite Aktuelle Meldungen 2021', 'auf der Seite Entwicklung des', 'Arbeitsmarkts in den Vorjahren lesen'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
