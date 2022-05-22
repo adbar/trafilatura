@@ -90,7 +90,8 @@ PAYWALL_DISCARD_XPATH = [
     '''.//*[(self::div or self::p)][
     contains(@id, "paywall") or contains(@id, "premium") or
     contains(@class, "paid-content") or contains(@class, "paidcontent") or
-    contains(@class, "obfuscated") or contains(@class, "blurred")
+    contains(@class, "obfuscated") or contains(@class, "blurred") or
+    contains(@class, "restricted") or contains(@class, "overlay")
     ]''',
 ]
 
@@ -177,6 +178,7 @@ PRECISION_DISCARD_XPATH = [
              or self::p or self::section or self::span)][
         contains(@id, "bottom") or contains(@class, "bottom") or
         contains(@id, "link") or contains(@class, "link")
+        or contains(@style, "border")
     ]''',
 ]
 

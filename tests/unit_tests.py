@@ -26,8 +26,9 @@ except ImportError:
 import trafilatura.filters
 import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
-from trafilatura.lru import LRUCache
+from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
+from trafilatura.lru import LRUCache
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
@@ -233,6 +234,17 @@ def test_exotic_tags(xmloutput=False):
       </item>
       <item>Milk</item>
     </list>''' in my_result
+    # table with links
+    # todo: further tests and adjustsments
+    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    assert 'ABCD' not in result
+    # nested table
+    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    # todo: all elements are there, but output not nested
+    # todo: th conversion
+    assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
 
 
 def test_lrucache():
@@ -416,13 +428,13 @@ def test_filters():
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is None
     # paragraph level
-    #lru_test = LRUCache(maxsize=2)
-    #trafilatura.filters.LRU_TEST = lru_test
-    #my_p = etree.fromstring('<p>abc</p>')
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is None
+    lru_test = LRUCache(maxsize=2)
+    trafilatura.filters.LRU_TEST = lru_test
+    my_p = etree.fromstring('<p>' + 'abc'*50 + '</p>')
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is None
     # HTML lang filter
     # no lang
     assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
@@ -513,12 +525,12 @@ def test_links():
     mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
     # link with target
-    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
+    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert 'testlink.html' not in extract(mydoc)
-    assert '[Test link text.](testlink.html)' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
-    mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
-    assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
@@ -605,11 +617,16 @@ def test_htmlprocessing():
     for element in mydoc.iter('span'):
         xml.merge_with_parent(element)
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
+    # paywalls
+    my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
+    assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
+    assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
+    
 
 
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
-    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.</p></div></body></html>'
+    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
     with pytest.raises(NameError) as err:
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
@@ -617,6 +634,7 @@ def test_extraction_options():
     assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
+    assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
 
 
@@ -630,7 +648,9 @@ def test_precision_recall():
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
-    
+    my_document = html.fromstring('<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>')
+    assert '1' not in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
+    assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
 
 
 if __name__ == '__main__':

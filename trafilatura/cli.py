@@ -320,7 +320,7 @@ def process_args(args):
     elif args.URL:
         INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
         url_processing_pipeline(args, INPUTDICT)  # process single url
-    
+
     # read input on STDIN directly
     else:
         # file type and unicode check

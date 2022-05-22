@@ -48,6 +48,9 @@ def test_authors():
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
     assert normalize_json('Test \\nthis') == 'Test this'
+    # blacklist
+    metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>', author_blacklist={'Jenny Smith'})
+    assert metadata.author == None
     # extraction
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
     assert metadata.author == 'Jenny Smith'
@@ -71,6 +74,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith and John Smith"/></head><body></body></html>')
     assert metadata.author == 'Jenny Smith; John Smith'
+    metadata = extract_metadata('<html><head><meta name="article:author" content="Jenny Smith"/></head><body></body></html>')
+    assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a href="" rel="author">Jenny Smith</a></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a href="" rel="author">Jenny "The Author" Smith</a></body></html>')
@@ -166,6 +171,10 @@ def test_dates():
 
 def test_sitename():
     '''Test extraction of site name'''
+    metadata = extract_metadata('<html><head><meta name="article:publisher" content="The Newspaper"/></head><body/></html>')
+    assert metadata.sitename == 'The Newspaper'
+    metadata = extract_metadata('<html><head><meta property="article:publisher" content="The Newspaper"/></head><body/></html>')
+    assert metadata.sitename == 'The Newspaper'
     metadata = extract_metadata('<html><head><title>sitemaps.org - Home</title></head><body/></html>')
     assert metadata.sitename == 'sitemaps.org'
 
