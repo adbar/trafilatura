@@ -148,6 +148,8 @@ def test_url():
     assert metadata.url == 'https://example.org'
     metadata = extract_metadata('<html><head><link rel="alternate" hreflang="x-default" href="https://example.org"/></head><body></body></html>')
     assert metadata.url == 'https://example.org'
+    metadata = extract_metadata('<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>', default_url="https://example.org")
+    assert metadata.url == 'https://example.org'
 
 
 def test_description():
