@@ -468,6 +468,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata.sitename is None:
         metadata.sitename = extract_sitename(tree)
     if metadata.sitename is not None:
+        # fix: take 1st element (['Westdeutscher Rundfunk'])
+        if isinstance(metadata.sitename, list):
+            metadata.sitename = metadata.sitename[0]
         if metadata.sitename.startswith('@'):
             # scrap Twitter ID
             metadata.sitename = re.sub(r'^@', '', metadata.sitename)
