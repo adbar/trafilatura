@@ -84,6 +84,9 @@ REGEXES = {
     "videoRe": re.compile(r"https?:\/\/(www\.)?(youtube|vimeo)\.com", re.I),
 }
 
+FRAME_TAGS = {'body', 'html'}
+LIST_TAGS = {"ol", "ul"}
+# DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
 
 def text_length(elem):
     return len(trim(elem.text_content())) or 0
@@ -298,9 +301,9 @@ class Document:
             if len(attrs) < 2:
                 continue
             if (
-                REGEXES["unlikelyCandidatesRe"].search(attrs)
+                elem.tag not in FRAME_TAGS
+                and REGEXES["unlikelyCandidatesRe"].search(attrs)
                 and (not REGEXES["okMaybeItsACandidateRe"].search(attrs))
-                and elem.tag not in ("html", "body")
             ):
                 LOGGER.debug("Removing unlikely candidate: %s", elem.tag)
                 elem.drop_tree()
@@ -313,7 +316,8 @@ class Document:
             # are not direct children of elem
             # This results in incorrect results in case there is an <img>
             # buried within an <a> for example
-            ## TODO: if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
+            #hurts precision:
+            #if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
             if not REGEXES["divToPElementsRe"].search(
                 ''.join(_tostring(e) for e in list(elem))
             ):
@@ -390,7 +394,7 @@ class Document:
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
                     reason = f'too many images ({counts["img"]})'
                     to_remove = True
-                elif counts["li"] > counts["p"] and elem.tag not in ("ol", "ul"):
+                elif counts["li"] > counts["p"] and elem.tag not in LIST_TAGS:
                     reason = "more <li>s than <p>s"
                     to_remove = True
                 elif counts["input"] > (counts["p"] / 3):
