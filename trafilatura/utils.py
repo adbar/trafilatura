@@ -43,8 +43,7 @@ SPACES_TABLE = {
     '\u2029', '\u202F', '\u205F', '\u3000')
 }
 
-NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
-SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
+SPACE_TRIMMING = re.compile(r'(?<![p{P}>])\n|\s+', flags=re.UNICODE|re.MULTILINE)
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
@@ -233,7 +232,7 @@ def normalize_unicode(string, unicodeform='NFC'):
     return normalize(unicodeform, string)
 
 
-@lru_cache(maxsize=128)
+@lru_cache(maxsize=1024)
 def line_processing(line):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
@@ -247,26 +246,20 @@ def line_processing(line):
     return line
 
 
-@lru_cache(maxsize=32)
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
-        #returnlines = []
-        #for line in text.splitlines():
-        #    returnlines.append(line_processing(line))
-        # return '\n'.join(list(filter(None.__ne__, returnlines)))
-        return '\n'.join([l for l in (line_processing(l) for l in text.splitlines()) if l is not None])
-        # return '\n'.join([l for l in map(line_processing, text.splitlines()) if l is not None])
+        return '\n'.join(l for l in (line_processing(l) for l in text.splitlines()) if l is not None)
     except AttributeError:
         return None
 
 
-@lru_cache(maxsize=128)
+@lru_cache(maxsize=1024)
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
-        return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
+        return SPACE_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
     except TypeError:
         return None
 

@@ -89,7 +89,7 @@ LIST_TAGS = {"ol", "ul"}
 # DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
 
 def text_length(elem):
-    return len(trim(elem.text_content())) or 0
+    return len(trim(elem.text_content()))
 
 
 class Candidate:
@@ -237,7 +237,7 @@ class Document:
                 continue
             grand_parent_node = parent_node.getparent()
 
-            elem_text = trim(elem.text_content() or "")
+            elem_text = trim(elem.text_content())
             elem_text_len = len(elem_text)
 
             # don't count too short paragraphs
