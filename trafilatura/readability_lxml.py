@@ -52,7 +52,7 @@ def clean_attributes(html):
 
 
 def _tostring(string):
-    return tostring(string, encoding=str, method='xml')  # method='text'
+    return tostring(string, encoding=str, method='xml')
 
 
 DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
@@ -275,7 +275,7 @@ class Document:
 
     def class_weight(self, elem):
         weight = 0
-        for attribute in (a for a in (elem.get("class"), elem.get("id")) if a is not None):
+        for attribute in filter(None, (elem.get("class"), elem.get("id"))):
             if REGEXES["negativeRe"].search(attribute):
                 weight -= 25
             if REGEXES["positiveRe"].search(attribute):
@@ -297,7 +297,7 @@ class Document:
 
     def remove_unlikely_candidates(self):
         for elem in self.doc.findall(".//*"):
-            attrs = ' '.join(a for a in (elem.get("class"), elem.get("id")) if a is not None)
+            attrs = ' '.join(filter(None, (elem.get("class"), elem.get("id"))))
             if len(attrs) < 2:
                 continue
             if (
@@ -319,7 +319,7 @@ class Document:
             #hurts precision:
             #if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
             if not REGEXES["divToPElementsRe"].search(
-                ''.join(_tostring(e) for e in list(elem))
+                ''.join([_tostring(e) for e in list(elem)])
             ):
                 elem.tag = "p"
 

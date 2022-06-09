@@ -398,11 +398,8 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
         strip_tags(search_tree, 'a', 'ref', 'span')
     else:
         strip_tags(search_tree, 'span')
-    result_body.extend(e for e in
-                       [handle_textelem(
-                           element, potential_tags, deduplicate, config)
-                           for element in search_tree.iter(search_list)]
-                       if e is not None)
+    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config)
+                              for e in search_tree.iter(search_list))))
     return result_body
 
 
@@ -515,10 +512,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         # e.g. only lb-elems in a div
         if set(e.tag for e in subelems) == {'lb'}:
             subelems = [subtree]
-        # extract content # list(filter(None.__ne__, processed_elems)) ?
-        result_body.extend(e for e in
-                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subelems]
-                           if e is not None)
+        # extract content
+        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config) for e in subelems)))
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
@@ -576,9 +571,9 @@ def extract_comments(tree, dedupbool, config):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
-                           subtree.xpath('.//*'))
-        comments_body.extend(elem for elem in processed_elems if elem is not None)
+        # processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
+        #                    subtree.xpath('.//*'))
+        comments_body.extend(filter(None.__ne__, (process_comments_node(e, potential_tags, dedupbool, config) for e in subtree.xpath('.//*'))))
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
@@ -697,7 +692,7 @@ def baseline(filecontent):
     body_elem = tree.find('.//body')
     if body_elem is not None:
         elem = SubElement(postbody, 'p')
-        # elem.text = trim(body_elem.text_content())
+        #elem.text = trim(body_elem.text_content())
         elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
         return postbody, elem.text, len(elem.text)
     return postbody, '', 0

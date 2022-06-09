@@ -37,13 +37,7 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
-SPACES_TABLE = {
-    c: ' ' for c in ('\u00A0', '\u1680', '\u2000', '\u2001', '\u2002', '\u2003',
-    '\u2004', '\u2005', '\u2006', '\u2007', '\u2008', '\u2009', '\u200a', '\u2028',
-    '\u2029', '\u202F', '\u205F', '\u3000')
-}
-
-SPACE_TRIMMING = re.compile(r'(?<![p{P}>])\n|\s+', flags=re.UNICODE|re.MULTILINE)
+LINES_TRIMMING = re.compile(r'(?<![p{P}>])\n', flags=re.UNICODE|re.MULTILINE)
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
@@ -238,10 +232,11 @@ def line_processing(line):
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
-    # remove non-printable chars and normalize space characters
-    line = trim(remove_control_characters(line.translate(SPACES_TABLE)))
+    # remove newlines that are not related to punctuation or markup
+    # remove non-printable chars and normalize space characters (including Unicode spaces)
+    line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
     # prune empty lines
-    if re.match(r'\s*$', line):
+    if all(map(str.isspace, line)):
         line = None
     return line
 
@@ -249,7 +244,7 @@ def line_processing(line):
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
-        return '\n'.join(l for l in (line_processing(l) for l in text.splitlines()) if l is not None)
+        return '\n'.join(filter(None, (line_processing(l) for l in text.splitlines())))
     except AttributeError:
         return None
 
@@ -259,16 +254,17 @@ def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
-        return SPACE_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
-    except TypeError:
+        # return LINES_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
+        # faster:
+        return ' '.join(string.split()).strip()
+    except (AttributeError, TypeError):
         return None
 
 
 def normalize_tags(tags):
     '''Remove special characters of tags'''
     tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
-    tags = list(filter(None, tags.split(", ")))
-    return ", ".join(tags)
+    return ", ".join(filter(None, tags.split(", ")))
 
 
 def is_image_file(imagesrc):
