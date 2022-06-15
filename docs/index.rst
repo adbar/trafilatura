@@ -73,24 +73,7 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For more detailed results see the `benchmark <evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
-
-=============================== =========  ========== ========= ========= ======
-500 documents, 1487 text and 1496 boilerplate segments (2021-06-07)
---------------------------------------------------------------------------------
-Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
-=============================== =========  ========== ========= ========= ======
-justext 2.2.0 (custom)          0.870      0.584      0.749     0.699     6.1x
-newspaper3k 0.2.8               0.921      0.574      0.763     0.708     12.9x
-boilerpy3 1.0.2 (article mode)  0.851      0.696      0.788     0.766     4.8x
-goose3 3.1.9                    **0.950**  0.644      0.806     0.767     18.8x
-*baseline (text markup)*        0.746      0.804      0.766     0.774     **1x**
-dragnet 2.0.4                   0.906      0.689      0.810     0.783     3.1x
-readability-lxml 0.8.1          0.917      0.716      0.826     0.804     5.9x
-news-please 1.5.21              0.924      0.718      0.830     0.808     60x
-trafilatura 0.8.2 (fast)        0.925      0.868      0.899     0.896     3.9x
-trafilatura 0.8.2               0.934      **0.890**  **0.914** **0.912** 8.4x
-=============================== =========  ========== ========= ========= ======
+For detailed results see the `benchmark <evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 Other evaluations:
 ^^^^^^^^^^^^^^^^^^
