@@ -30,8 +30,8 @@ def get_long_description():
 extras = {
     'all': [
         'cchardet >= 2.1.7',
-        'htmldate[speed] >= 1.2.1',
-        'py3langid >= 0.2.1',
+        'htmldate[speed] >= 1.2.3',
+        'py3langid >= 0.2.2',
         'pycurl >= 7.45.1',
         'urllib3[brotli]',
     ],
@@ -92,9 +92,9 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'certifi',
-        'charset_normalizer >= 2.0.12',
+        'charset_normalizer >= 2.1.0',
         'courlan >= 0.7.2',
-        'htmldate >= 1.2.1',
+        'htmldate >= 1.2.3',
         'justext >= 3.0.0',
         'lxml >= 4.6.4',
         'urllib3 >= 1.26, < 2',
