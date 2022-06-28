@@ -109,7 +109,7 @@ For more information please refer to `the documentation <https://trafilatura.rea
 - `Installation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_
 - Usage: `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_, `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_, `With R <https://trafilatura.readthedocs.io/en/latest/usage-r.html>`_
 - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
-- Python Notebook `Trafilatura Overview <Trafilatura_Overview.ipynb>`_
+- Python Notebook `Trafilatura Overview <docs/Trafilatura_Overview.ipynb>`_
 - `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
 
 For video tutorials see this Youtube playlist:
