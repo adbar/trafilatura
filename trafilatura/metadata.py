@@ -56,7 +56,7 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
-URL_COMP_CHECK = re.compile(r'https?://|/')
+URL_COMP_CHECK = re.compile(r'https?://')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')

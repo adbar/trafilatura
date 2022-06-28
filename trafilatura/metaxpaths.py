@@ -13,15 +13,15 @@ author_xpaths = [
     '//*[(self::a or self::div or self::span or self::p or self::h4 or self::h3)][contains(@class, "author") or contains(@id, "author") or contains(@itemprop, "author") or @class="byline" or contains(@id, "zuozhe") or contains(@class, "zuozhe") or contains(@id, "bianji") or contains(@class, "bianji") or contains(@id, "xiaobian") or contains(@class, "xiaobian")]', # almost generic
     '//*[(self::a or self::div or self::span or self::p)][contains(@class, "authors") or contains(@class, "byline") or contains(@class, "ByLine") or contains(@class, "submitted-by") or contains(@class, "posted-by")]', # generic
     '//*[contains(@class, "author") or contains(@class, "Author") or contains(@id, "Author") or contains(@class, "screenname") or contains(@data-component, "Byline") or contains(@itemprop, "author") or contains(@class, "writer") or contains(@class, "byline")]', # any element
-    '//*[(self::a or self::span)][@class="username" or @class="BBL"]', # not common
+    '//*[(self::a or self::span)][@class="username" or @class="BBL" or contains(@class, "journalist-name")]', # not common
 ]
 
 
 author_discard_xpaths = [
-    """.//*[(self::div or self::section or self::a)][@id='comments' or @class='comments' or @class='title' or @class='date' or
-    contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'sidebar') or contains(@class, 'is-hidden')
+    """.//*[(self::div or self::section or self::a or self::span)][@id='comments' or @class='comments' or @class='title' or @class='date' or
+    contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'sidebar') or contains(@class, 'is-hidden') or contains(@class, 'quote')
     or contains(@id, 'comment-list') or contains(@class, 'comments-list') or contains(@class, 'embedly-instagram') or contains(@id, 'ProductReviews') or
-    starts-with(@id, 'comments') or contains(@data-component, "Figure") or contains(@class, "article-share") or contains(@class, "article-support") or contains(@class, "print") or contains(@class, "category")
+    starts-with(@id, 'comments') or contains(@data-component, "Figure") or contains(@class, "article-share") or contains(@class, "article-support") or contains(@class, "print") or contains(@class, "category") or contains(@class, "meta-date") or contains(@class, "meta-reviewer")
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments')
     ]""",
     '//*[(self::time or self::figure)]'
