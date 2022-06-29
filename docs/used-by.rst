@@ -3,13 +3,12 @@ Uses & citations
 
 .. meta::
     :description lang=en:
-        Trafilatura is used by other software packages and cited in research publications.
-        This page lists projects mentioning the library.
+        Trafilatura is used at several institutions, included in other software packages and cited in research publications. This page lists projects and publications mentioning the library.
 
 
-Trafilatura is used by other software packages and cited in research publications. This page lists projects mentioning the library.
+Trafilatura is used at several institutions, included in other software packages and cited in research publications. This page lists projects and publications mentioning the library.
 
-To add further projects, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
+To add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
 
 
 
@@ -39,11 +38,22 @@ Various repositories
 Citations in papers
 -------------------
 
+Trafilatura as a whole
+^^^^^^^^^^^^^^^^^^^^^^
+
 
 **To reference this software in a publication please cite the following paper:**
 
-- Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, in *Proceedings of ACL/IJCNLP 2021: System Demonstrations*, 2021, p. 122-131. DOI: 10.18653/v1/2021.acl-demo.15
+- Barbaresi, A. "`Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_", in *Proceedings of ACL/IJCNLP 2021: System Demonstrations*, 2021, p. 122-131. DOI: 10.18653/v1/2021.acl-demo.15
 
+
+.. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
+    :target: https://aclanthology.org/2021.acl-demo.15/
+    :alt: Reference DOI: 10.18653/v1/2021.acl-demo.15
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
+   :target: https://doi.org/10.5281/zenodo.3460969
+   :alt: Zenodo archive DOI: 10.5281/zenodo.3460969
 
 .. code-block:: shell
 
@@ -58,10 +68,20 @@ Citations in papers
     }
 
 
+Date extraction (htmldate)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 The date extraction component ``htmldate`` is referenced in the following publication:
 
-- Barbaresi, A. "`htmldate: A Python package to extract publication dates from web pages <https://doi.org/10.21105/joss.02439>`_", Journal of Open Source Software, 5(51), 2439, 2020. DOI: 10.21105/joss.02439
+- Barbaresi, A. "`htmldate: A Python package to extract publication dates from web pages <https://doi.org/10.21105/joss.02439>`_", *Journal of Open Source Software*, 5(51), 2439, 2020. DOI: 10.21105/joss.02439
 
+.. image:: https://joss.theoj.org/papers/10.21105/joss.02439/status.svg
+   :target: https://doi.org/10.21105/joss.02439
+   :alt: JOSS article
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3459599.svg
+   :target: https://doi.org/10.5281/zenodo.3459599
+   :alt: Zenodo archive
 
 .. code-block:: shell
 
@@ -78,34 +98,39 @@ The date extraction component ``htmldate`` is referenced in the following public
     }
 
 
-Research using Trafilatura
---------------------------
+Publications citing Trafilatura
+-------------------------------
 
 
-- Alhamzeh, A., Bouhaouel, M., Egyed-Zsigmond, E., & Mitrović, J. (2021). `DistilBERT-based Argumentation Retrieval for Answering Comparative Questions <http://ceur-ws.org/Vol-2936/paper-209.pdf>`_. Proceedings of CLEF 2021 – Conference and Labs of the Evaluation Forum.
-- Bozarth, L., & Budak, C. (2021). `An Analysis of the Partnership between Retailers and Low-credibility News Publishers <https://journalqd.org/article/download/2579/1818>`_. Journal of Quantitative Description: Digital Media, 1.
-- Braun, D. (2021). `Automated Semantic Analysis, Legal Assessment, and Summarization of Standard Form Contracts <https://mediatum.ub.tum.de/doc/1581193/h6380wz6h5srahb6llt2d1jd7.Dissertation-Daniel_Braun.pdf>`_ (Doctoral dissertation, Universität München).
-- Fröbe, M., Hagen, M., Bevendorff, J., Völske, M., Stein, B., Schröder, C., ... & Potthast, M. (2021). `The Impact of Main Content Extraction on Near-Duplicate Detection <https://arxiv.org/pdf/2111.10864>`_. arXiv preprint arXiv:2111.10864.
-- Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). `The Pile: An 800GB Dataset of Diverse Text for Language Modeling <https://arxiv.org/pdf/2101.00027>`_. arXiv preprint arXiv:2101.00027.
-- Harrando, I., & Troncy, R. (2021). `Explainable Zero-Shot Topic Extraction Using a Common-Sense Knowledge Graph <https://drops.dagstuhl.de/opus/volltexte/2021/14553/pdf/OASIcs-LDK-2021-17.pdf>`_. In 3rd Conference on Language, Data and Knowledge (LDK 2021). OpenAccess Series in Informatics, Dagstuhl Publishing.
-- Karabulut, M., & Mayda, İ. (2020). `Development of Browser Extension for HTML Web Page Content Extraction <https://www.researchgate.net/profile/Islam_Mayda/publication/343338712_Development_of_Browser_Extension_for_HTML_Web_Page_Content_Extraction/links/5f331778a6fdcccc43c1f88a/Development-of-Browser-Extension-for-HTML-Web-Page-Content-Extraction.pdf>`_. In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
-- Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. `First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems <http://ceur-ws.org/Vol-2780/paper8.pdf>`_.
-- Laippala, V., Rönnqvist, S., Hellström, S., Luotolahti, J., Repo, L., Salmela, A., ... & Pyysalo, S. (2020). `From Web Crawl to Clean Register-Annotated Corpora <https://www.aclweb.org/anthology/2020.wac-1.3.pdf>`_. In Proceedings of the 12th Web as Corpus Workshop (pp. 14-22).
-- Madrid-Morales, D. (2021). `Who Set the Narrative? Assessing the Influence of Chinese Media in News Coverage of COVID-19 in 30 African Countries <https://uh-ir.tdl.org/bitstream/handle/10657/7708/GMAC_Submission_DMM_preprint.pdf>`_.
-- Meng, K. (2021). `An End-to-End Computational System for Monitoring and Verifying Factual Claims <https://mengk.me/projects/vericlaim/vericlaim.pdf>`_. (pre-print)
-- Robertson, F., Lagus, J., & Kajava, K. (2021). `A COVID-19 news coverage mood map of Europe <https://www.aclweb.org/anthology/2021.hackashop-1.15.pdf>`_. In Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
-- Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). `Fact-checking: relevance assessment of references in the Polish political domain <https://www.sciencedirect.com/science/article/pii/S1877050921016215/pdf?md5=852bdcde532c50079b336d1775772c6c&pid=1-s2.0-S1877050921016215-main.pdf>`_. Procedia Computer Science, 192, 1285-1293.
-- Zinn, J. O., & Müller, M. (2021). Understanding discourse and language of risk. Journal of Risk Research, 1-14.
+- Alakukku, L. (2022). "Domain specific boilerplate removal from web pages with entropy and clustering", Master's thesis, University of Aalto.
+- Alhamzeh, A., Bouhaouel, M., Egyed-Zsigmond, E., & Mitrović, J. (2021). "DistilBERT-based Argumentation Retrieval for Answering Comparative Questions", Proceedings of CLEF 2021 – Conference and Labs of the Evaluation Forum.
+- Bozarth, L., & Budak, C. (2021). "An Analysis of the Partnership between Retailers and Low-credibility News Publishers", Journal of Quantitative Description: Digital Media, 1.
+- Braun, D. (2021). "Automated Semantic Analysis, Legal Assessment, and Summarization of Standard Form Contracts", PhD Thesis, Technische Universität München.
+- Fröbe, M., Hagen, M., Bevendorff, J., Völske, M., Stein, B., Schröder, C., ... & Potthast, M. (2021). "The Impact of Main Content Extraction on Near-Duplicate Detection". arXiv preprint arXiv:2111.10864.
+- Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). "The Pile: An 800GB Dataset of Diverse Text for Language Modeling", arXiv preprint arXiv:2101.00027.
+- Harrando, I., & Troncy, R. (2021). "Explainable Zero-Shot Topic Extraction Using a Common-Sense Knowledge Graph", In 3rd Conference on Language, Data and Knowledge (LDK 2021). OpenAccess Series in Informatics, Dagstuhl Publishing.
+- Karabulut, M., & Mayda, İ. (2020). "Development of Browser Extension for HTML Web Page Content Extraction", In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
+- Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. "First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems", In CMCL (pp. 90-101).
+- Laippala, V., Rönnqvist, S., Hellström, S., Luotolahti, J., Repo, L., Salmela, A., ... & Pyysalo, S. (2020). "From Web Crawl to Clean Register-Annotated Corpora", Proceedings of the 12th Web as Corpus Workshop (pp. 14-22).
+- Madrid-Morales, D. (2021). "Who Set the Narrative? Assessing the Influence of Chinese Media in News Coverage of COVID-19 in 30 African Countries", Global Media and China, 6(2), 129-151.
+- Meier-Vieracker, S. (2022). "Fußballwortschatz digital–Korpuslinguistische Ressourcen für den Sprachunterricht." Korpora Deutsch als Fremdsprache (KorDaF), 2022/01 (pre-print).
+- Meng, K. (2021). "An End-to-End Computational System for Monitoring and Verifying Factual Claims" (pre-print).
+- Robertson, F., Lagus, J., & Kajava, K. (2021). "A COVID-19 news coverage mood map of Europe", Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
+- Salmela, A. (2022). "Distinguishing Noise and Main Text Content from Web-Sourced Plain Text Documents Using Sequential Neural Networks", Master's thesis, University of Turku.
+- Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). "Fact-checking: relevance assessment of references in the Polish political domain", Procedia Computer Science, 192, 1285-1293.
+- Ter-Akopyan, B. (2022). "Identification of Political Leaning in German News", Master's thesis, Ludwig Maximilian University of Munich.
+- Zinn, J. O., & Müller, M. (2021). "Understanding discourse and language of risk", Journal of Risk Research, 1-14.
 
 
 
-Research using Htmldate
------------------------
+Publications citing Htmldate
+----------------------------
 
 
 - Grabovoy, A., Bakhteev, O., & Chekhovich, Y. (2021). "The automatic approach for scientific papers dating," 2021 Ivannikov Ispras Open Conference (ISPRAS), pp. 107-113, IEEE, DOI: 10.1109/ISPRAS53967.2021.00020.
-- Kupi, M. (2021). `Late to the Party? Agile Methods in British and German Government Institutions <https://osf.io/preprints/socarxiv/3j4sh/download>`_, Master’s Thesis, Hertie School Berlin.
-- Smits, T., & Ros, R. (2021). `Distant reading 940,000 online circulations of 26 iconic photographs <https://journals.sagepub.com/doi/pdf/10.1177/14614448211049459>`_. New Media & Society, DOI: 10.1177/14614448211049.
+- Hanley, H. W., Kumar, D., & Durumeric, Z. (2022). "Happenstance: Utilizing Semantic Search to Track Russian State Media Narratives about the Russo-Ukrainian War On Reddit". arXiv preprint arXiv:2205.14484.
+- Kupi, M. (2021). "Late to the Party? Agile Methods in British and German Government Institutions", Master’s thesis, Hertie School Berlin.
+- Smits, T., & Ros, R. (2021). "Distant reading 940,000 online circulations of 26 iconic photographs", New Media & Society, DOI: 10.1177/14614448211049.
 
 
 
