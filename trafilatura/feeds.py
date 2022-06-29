@@ -73,7 +73,8 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
-        for link in LINK_ATTRS.findall(feed_string):
+        for match in LINK_ATTRS.finditer(feed_string):
+            link = match[0]
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
             feedlink = LINK_HREF.search(link).group(1)
@@ -82,10 +83,8 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
-        feed_links.extend(
-            item.strip()
-            for item in LINK_ELEMENTS.findall(feed_string, re.DOTALL)
-        )
+        for match in LINK_ELEMENTS.finditer(feed_string, re.DOTALL):
+            feed_links.append(match[1].strip())
 
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
