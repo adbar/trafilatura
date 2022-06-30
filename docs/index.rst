@@ -38,19 +38,24 @@ A Python package & command-line tool to gather text on the Web
 Description
 -----------
 
-Trafilatura is a **Python package and command-line tool** designed gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to various commonly used formats.
+Trafilatura is a **Python package and command-line tool** designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to various commonly used formats.
 
 Going from raw HTML to essential parts can alleviate many problems related to text quality, first by avoiding the **noise caused by recurring elements** (headers, footers, links/blogroll etc.) and second by including information such as author and date in order to **make sense of the data**. The extractor tries to strike a balance between limiting noise (precision) and including all valid parts (recall). It also has to be **robust and reasonably fast**, it runs in production on millions of documents.
 
-This tool can be **useful for quantitative research** in corpus linguistics, natural language processing, computational social science and beyond: it is also relevant to anyone interested in data science, information extraction, text mining, and in scraping-intensive use cases like search engine optimization, business analytics or information security.
+This tool can be **useful for quantitative research** in corpus linguistics, natural language processing, computational social science and beyond: it is relevant to anyone interested in data science, information extraction, text mining, and scraping-intensive use cases like search engine optimization, business analytics or information security.
 
 
 Features
 ~~~~~~~~
 
-- Seamless and parallel online/offline processing:
-   - Download and conversion utilities included
-   - URLs, HTML files or parsed HTML trees as input
+- Web crawling and text discovery:
+   - Focused crawling and politeness rules
+   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
+   - URL management (blacklists, filtering and de-duplication)
+- Seamless and parallel processing, online and offline:
+   - URLs, HTML files or parsed HTML trees usable as input
+   - Efficient and polite processing of download queues
+   - Conversion of previously downloaded files
 - Robust and efficient extraction:
    - Main text (with LXML, common patterns and generic algorithms: jusText, fork of readability-lxml)
    - Metadata (title, author, date, site name, categories and tags)
@@ -61,14 +66,10 @@ Features
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (with metadata, text formatting and page structure) and `TEI-XML <https://tei-c.org/>`_
-- Link discovery and URL management:
-   - Focused crawling and politeness rules
-   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - Efficient and polite processing of URL queues
-   - Blacklisting
 - Optional add-ons:
    - Language detection on extracted content
    - Graphical user interface (GUI)
+   - Speed optimizations
 
 
 Evaluation and alternatives
