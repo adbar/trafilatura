@@ -56,7 +56,7 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
-URL_COMP_CHECK = re.compile(r'https?://|/')
+URL_COMP_CHECK = re.compile(r'https?://')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
@@ -468,6 +468,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata.sitename is None:
         metadata.sitename = extract_sitename(tree)
     if metadata.sitename is not None:
+        # fix: take 1st element (['Westdeutscher Rundfunk'])
+        if isinstance(metadata.sitename, list):
+            metadata.sitename = metadata.sitename[0]
         if metadata.sitename.startswith('@'):
             # scrap Twitter ID
             metadata.sitename = re.sub(r'^@', '', metadata.sitename)

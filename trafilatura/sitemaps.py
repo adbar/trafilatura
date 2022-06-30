@@ -20,7 +20,7 @@ from .utils import filter_urls
 
 LOGGER = logging.getLogger(__name__)
 
-LINK_REGEX = re.compile(r'<loc>(<!\[CDATA\[)?(http.+?)(\]\]>)?</loc>')
+LINK_REGEX = re.compile(r'<loc>(?:<!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>')
 XHTML_REGEX = re.compile(r'<xhtml:link.+?>', re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
@@ -124,7 +124,8 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
     # try to extract links from TXT file
     if not SITEMAP_FORMAT.match(contents):
         sitemapurls, linklist = [], []
-        for result in DETECT_LINKS.findall(contents):
+        for match in DETECT_LINKS.finditer(contents):
+            result = match[0]
             link, state = handle_link(result, url, domain, baseurl, target_lang)
             sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
         return sitemapurls, linklist
@@ -176,11 +177,12 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
     sitemapurls, linklist = [], []
     # compile regex here for modularity and efficiency
     lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
-    for attributes in XHTML_REGEX.findall(pagecontent):
+    for attr_match in XHTML_REGEX.finditer(pagecontent):
+        attributes = attr_match[0]
         if lang_regex.search(attributes):
-            match = HREFLANG_REGEX.search(attributes)
-            if match:
-                link, state = handle_link(match.group(1), sitemapurl, domainname, baseurl, target_lang)
+            lang_match = HREFLANG_REGEX.search(attributes)
+            if lang_match:
+                link, state = handle_link(lang_match[1], sitemapurl, domainname, baseurl, target_lang)
                 sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
     LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemapurl)
     return sitemapurls, linklist
@@ -190,7 +192,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
     'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []
     # extract
-    for match in LINK_REGEX.findall(pagecontent):
+    for match in LINK_REGEX.finditer(pagecontent):
         # process middle part of the match tuple
         link, state = handle_link(match[1], sitemapurl, domainname, baseurl, target_lang)
         sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)

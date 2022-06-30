@@ -52,7 +52,7 @@ def clean_attributes(html):
 
 
 def _tostring(string):
-    return tostring(string, encoding=str, method='xml')  # method='text'
+    return tostring(string, encoding=str, method='xml')
 
 
 DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
@@ -84,9 +84,12 @@ REGEXES = {
     "videoRe": re.compile(r"https?:\/\/(www\.)?(youtube|vimeo)\.com", re.I),
 }
 
+FRAME_TAGS = {'body', 'html'}
+LIST_TAGS = {"ol", "ul"}
+# DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
 
 def text_length(elem):
-    return len(trim(elem.text_content())) or 0
+    return len(trim(elem.text_content()))
 
 
 class Candidate:
@@ -234,7 +237,7 @@ class Document:
                 continue
             grand_parent_node = parent_node.getparent()
 
-            elem_text = trim(elem.text_content() or "")
+            elem_text = trim(elem.text_content())
             elem_text_len = len(elem_text)
 
             # don't count too short paragraphs
@@ -272,7 +275,7 @@ class Document:
 
     def class_weight(self, elem):
         weight = 0
-        for attribute in (a for a in (elem.get("class"), elem.get("id")) if a is not None):
+        for attribute in filter(None, (elem.get("class"), elem.get("id"))):
             if REGEXES["negativeRe"].search(attribute):
                 weight -= 25
             if REGEXES["positiveRe"].search(attribute):
@@ -294,13 +297,13 @@ class Document:
 
     def remove_unlikely_candidates(self):
         for elem in self.doc.findall(".//*"):
-            attrs = ' '.join(a for a in (elem.get("class"), elem.get("id")) if a is not None)
+            attrs = ' '.join(filter(None, (elem.get("class"), elem.get("id"))))
             if len(attrs) < 2:
                 continue
             if (
-                REGEXES["unlikelyCandidatesRe"].search(attrs)
+                elem.tag not in FRAME_TAGS
+                and REGEXES["unlikelyCandidatesRe"].search(attrs)
                 and (not REGEXES["okMaybeItsACandidateRe"].search(attrs))
-                and elem.tag not in ("html", "body")
             ):
                 LOGGER.debug("Removing unlikely candidate: %s", elem.tag)
                 elem.drop_tree()
@@ -313,9 +316,10 @@ class Document:
             # are not direct children of elem
             # This results in incorrect results in case there is an <img>
             # buried within an <a> for example
-            ## TODO: if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
+            #hurts precision:
+            #if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
             if not REGEXES["divToPElementsRe"].search(
-                ''.join(_tostring(e) for e in list(elem))
+                ''.join([_tostring(e) for e in list(elem)])
             ):
                 elem.tag = "p"
 
@@ -390,7 +394,7 @@ class Document:
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
                     reason = f'too many images ({counts["img"]})'
                     to_remove = True
-                elif counts["li"] > counts["p"] and elem.tag not in ("ol", "ul"):
+                elif counts["li"] > counts["p"] and elem.tag not in LIST_TAGS:
                     reason = "more <li>s than <p>s"
                     to_remove = True
                 elif counts["input"] > (counts["p"] / 3):
