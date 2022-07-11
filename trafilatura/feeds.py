@@ -77,7 +77,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             link = match[0]
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
-            feedlink = LINK_HREF.search(link).group(1)
+            feedlink = LINK_HREF.search(link)[1]
             #if '"' in feedlink:
             #    feedlink = feedlink.split('"')[0]
             feed_links.append(feedlink)

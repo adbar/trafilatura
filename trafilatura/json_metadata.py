@@ -107,8 +107,8 @@ def extract_json_author(elemtext, regular_expression):
     authors = None
     mymatch = regular_expression.search(elemtext)
     while mymatch is not None:
-        if mymatch.group(1) and ' ' in mymatch.group(1):
-            authors = normalize_authors(authors, mymatch.group(1))
+        if mymatch[1] and ' ' in mymatch[1]:
+            authors = normalize_authors(authors, mymatch[1])
             elemtext = regular_expression.sub(r'', elemtext, count=1)
             mymatch = regular_expression.search(elemtext)
         else:
@@ -129,8 +129,8 @@ def extract_json_parse_error(elem, metadata):
     # try to extract publisher
     if '"publisher"' in elem:
         mymatch = JSON_PUBLISHER.search(elem)
-        if mymatch and ',' not in mymatch.group(1):
-            candidate = normalize_json(mymatch.group(1))
+        if mymatch and ',' not in mymatch[1]:
+            candidate = normalize_json(mymatch[1])
             if metadata.sitename is None or len(metadata.sitename) < len(candidate):
                 metadata.sitename = candidate
             if metadata.sitename.startswith('http') and not candidate.startswith('http'):
@@ -139,16 +139,16 @@ def extract_json_parse_error(elem, metadata):
     if '"articleSection"' in elem:
         mymatch = JSON_CATEGORY.search(elem)
         if mymatch:
-            metadata.categories = [normalize_json(mymatch.group(1))]
+            metadata.categories = [normalize_json(mymatch[1])]
     # try to extract title
     if '"name"' in elem and metadata.title is None:
         mymatch = JSON_NAME.search(elem)
         if mymatch:
-            metadata.title = normalize_json(mymatch.group(1))
+            metadata.title = normalize_json(mymatch[1])
     if '"headline"' in elem and metadata.title is None:
         mymatch = JSON_HEADLINE.search(elem)
         if mymatch:
-            metadata.title = normalize_json(mymatch.group(1))
+            metadata.title = normalize_json(mymatch[1])
     # exit if found
     return metadata
 

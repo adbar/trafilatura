@@ -246,8 +246,8 @@ def examine_title_element(tree):
         title = trim(tree.xpath('//head//title')[0].text_content())
         mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch is not None:
-            first = mymatch.group(1) or None
-            second = mymatch.group(2) or None
+            first = mymatch[1] or None
+            second = mymatch[2] or None
     except IndexError:
         LOGGER.warning('no main title found')
     return title, first, second
@@ -323,7 +323,7 @@ def extract_url(tree, default_url=None):
                 domain_match = re.match(r'https?://[^/]+', element.attrib['content'])
                 if domain_match:
                     # prepend URL
-                    url = domain_match.group(0) + url
+                    url = domain_match[0] + url
                     break
     # sanity check: don't return invalid URLs
     if url is not None:
@@ -374,7 +374,7 @@ def parse_license_element(element, strict=False):
    # look for Creative Commons elements
     match = LICENSE_REGEX.search(element.get('href'))
     if match:
-        return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
+        return 'CC ' + match[1].upper() + ' ' + match[2]
     if element.text is not None:
         # just return the anchor text without further ado
         if strict is False:
@@ -382,7 +382,7 @@ def parse_license_element(element, strict=False):
         # else: check if it could be a CC license
         match = TEXT_LICENSE_REGEX.search(element.text)
         if match:
-            return match.group(0)
+            return match[0]
     return None
 
 
@@ -488,7 +488,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     elif metadata.url:
         mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url)
         if mymatch:
-            metadata.sitename = mymatch.group(1)
+            metadata.sitename = mymatch[1]
     # categories
     if not metadata.categories:
         metadata.categories = extract_catstags('category', tree)

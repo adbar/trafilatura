@@ -663,7 +663,7 @@ def baseline(filecontent):
             mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
             if mymatch:
                 elem = SubElement(postbody, 'p')
-                elem.text = trim(mymatch.group(1).replace('\\"', '"'))
+                elem.text = trim(mymatch[1].replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
     for elem in tree.xpath('//aside|//footer|//script|//style'):
