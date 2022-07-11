@@ -273,18 +273,6 @@ def is_image_file(imagesrc):
     return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
 
 
-def filter_urls(linklist, urlfilter):
-    'Return a list of links corresponding to the given substring pattern.'
-    if urlfilter is None:
-        return sorted(set(linklist))
-    # filter links
-    newlist = [l for l in linklist if urlfilter in l]
-    # feedburner option
-    if not newlist:
-        newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
-    return sorted(set(newlist))
-
-
 def normalize_authors(current_authors, author_string):
     '''Normalize author info to focus on author names only'''
     new_authors = []

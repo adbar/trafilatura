@@ -7,7 +7,7 @@ import os
 import sys
 
 from trafilatura import sitemaps
-from trafilatura.utils import decode_response, filter_urls
+from trafilatura.utils import decode_response
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -75,10 +75,6 @@ def test_extraction():
     assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/1\nhttps://test.org/2') == ([], ['https://test.org/1', 'https://test.org/2'])
     # TXT links + language
     assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/en/1\nhttps://test.org/en/2\nhttps://test.org/es/3', target_lang='en') == ([], ['https://test.org/en/1', 'https://test.org/en/2'])
-    # unique and sorted URLs
-    urlfilter = 'category'
-    myurls = ['/category/xyz', '/category/abc', '/cat/test', '/category/abc']
-    assert filter_urls(myurls, urlfilter) == ['/category/abc', '/category/xyz']
 
 
 def test_robotstxt():

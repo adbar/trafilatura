@@ -93,7 +93,7 @@ setup(
     install_requires=[
         'certifi',
         'charset_normalizer >= 2.1.0',
-        'courlan >= 0.7.2',
+        'courlan >= 0.8.1',
         'htmldate >= 1.2.3',
         'justext >= 3.0.0',
         'lxml >= 4.6.4',
