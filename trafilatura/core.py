@@ -33,7 +33,7 @@ from .htmlprocessing import (convert_tags, handle_textnode, process_node,
                              prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import load_html, normalize_unicode, trim, txttocsv, is_image_file
+from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
@@ -671,7 +671,7 @@ def baseline(filecontent):
     article_elem = tree.find('.//article')
     if article_elem is not None:
         temp_text = trim(article_elem.text_content())
-        if len(temp_text) > 0:
+        if len(temp_text) > 100:
             elem = SubElement(postbody, 'p')
             elem.text = temp_text
             return postbody, temp_text, len(temp_text)
@@ -684,17 +684,38 @@ def baseline(filecontent):
             elem.text = entry
             results.add(entry)
     temp_text = trim('\n'.join(postbody.itertext()))
-    if len(temp_text) > 0:
+    if len(temp_text) > 100:
         return postbody, temp_text, len(temp_text)
     # default strategy: clean the tree and take everything
     postbody = Element('body')
     body_elem = tree.find('.//body')
     if body_elem is not None:
-        elem = SubElement(postbody, 'p')
-        #elem.text = trim(body_elem.text_content())
-        elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
-        return postbody, elem.text, len(elem.text)
-    return postbody, '', 0
+        # elem.text = trim(body_elem.text_content())
+        text = '\n'.join([trim(e) for e in body_elem.itertext()])
+        if len(text) > 100:
+            elem = SubElement(postbody, 'p')
+            elem.text = text
+            return postbody, text, len(text)
+    # new fallback
+    text = html2txt(tree)
+    elem = SubElement(postbody, 'p')
+    elem.text = text
+    return postbody, text, len(text)
+    # old: return postbody, '', 0
+
+
+def html2txt(content):
+    """Run basic html2txt on a document.
+
+    Args:
+        content: HTML document as string or LXML element.
+
+    Returns:
+        The extracted text in the form of a string.
+
+    """
+    tree = load_html(content)
+    return ' '.join(tree.text_content().split()).strip()
 
 
 def determine_returnstring(document, output_format, include_formatting, tei_validation):

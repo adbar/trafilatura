@@ -23,9 +23,14 @@ try:
 except ImportError:
     LANGID_FLAG = False
 
+
+
 import trafilatura.filters
 import trafilatura.htmlprocessing
-from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
+
+from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
+
+from trafilatura.core import handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
 from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -389,6 +394,12 @@ def test_baseline():
     my_document = "<html><body><div>   Document body...   </div><script> console.log('Hello world') </script></body></html>"
     _, result, _ = baseline(my_document)
     assert result == 'Document body...'
+
+
+def test_html2txt():
+    mydoc = "<html><body>Here is the body text</body></html>"
+    assert html2txt(mydoc) == "Here is the body text"
+    assert html2txt(html.fromstring(mydoc)) == "Here is the body text"
 
 
 def test_filters():
