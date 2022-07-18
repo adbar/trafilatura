@@ -243,7 +243,7 @@ def examine_title_element(tree):
     '''Extract text segments out of main <title> element.'''
     title, first, second = None, None, None
     try:
-        title = trim(tree.xpath('//head//title')[0].text_content())
+        title = trim(tree.xpath('.//head//title')[0].text_content())
         mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch is not None:
             first = mymatch[1] or None
@@ -256,7 +256,7 @@ def examine_title_element(tree):
 def extract_title(tree):
     '''Extract the document title'''
     # only one h1-element: take it
-    h1_results = tree.xpath('//h1')
+    h1_results = tree.findall('.//h1')
     if len(h1_results) == 1:
         title = trim(h1_results[0].text_content())
         if len(title) > 0:
@@ -276,7 +276,7 @@ def extract_title(tree):
         return h1_results[0].text_content()
     # take first h2-title
     try:
-        title = tree.xpath('//h2')[0].text_content()
+        title = tree.xpath('.//h2')[0].text_content()
     except IndexError:
         LOGGER.warning('no h2 title found')
     return title
@@ -390,14 +390,14 @@ def extract_license(tree):
     '''Search the HTML code for license information and parse it.'''
     result = None
     # look for links labeled as license
-    for element in tree.xpath('//a[@rel="license"][@href]'):
+    for element in tree.findall('.//a[@rel="license"][@href]'):
         result = parse_license_element(element, strict=False)
         if result is not None:
             break
     # probe footer elements for CC links
     if result is None:
         for element in tree.xpath(
-            '//footer//a[@href]|//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
+            './/footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
         ):
             result = parse_license_element(element, strict=True)
             if result is not None:

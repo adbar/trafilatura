@@ -132,7 +132,7 @@ def collect_link_info(links_xpath, favor_precision=False):
 
 def link_density_test(element, favor_precision=False):
     '''Remove sections which are rich in links (probably boilerplate)'''
-    links_xpath, mylist = element.xpath('.//ref'), []
+    links_xpath, mylist = element.findall('.//ref'), []
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
@@ -169,7 +169,7 @@ def link_density_test_tables(element):
     '''Remove tables which are rich in links (probably boilerplate)'''
     # if element.getnext() is not None:
     #    return False
-    links_xpath = element.xpath('.//ref')
+    links_xpath = element.findall('.//ref')
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if elemlen > 250:
@@ -233,9 +233,9 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     # delete links for faster processing
     if include_links is False:
         if include_tables is True:
-            xpath_expr = '//div//a|//list//a|//table//a'
+            xpath_expr = './/div//a|.//list//a|.//table//a'
         else:
-            xpath_expr = '//div//a|//list//a'
+            xpath_expr = './/div//a|.//list//a'
         # necessary for further detection
         for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
@@ -325,7 +325,7 @@ def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_space
         if element.tail:
             element.tail = trim(element.tail)
     # filter content
-    if not element.text or not re.search(r'\w', element.text):  # text_content()?
+    if not element.text:  # or not re.search(r'\w', element.text):  # text_content()?
         return None
     if textfilter(element) is True:
         return None

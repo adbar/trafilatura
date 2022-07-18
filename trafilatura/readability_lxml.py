@@ -1,3 +1,4 @@
+# pylint:disable-msg=E0611,I1101
 """Minimalistic fork of readability-lxml code
 
 This is a python port of a ruby port of arc90's readability project
@@ -43,6 +44,8 @@ HTMLSTRIP = re.compile(
     ">",  # end
     re.I,
 )
+
+DOT_SPACE = re.compile(r"\.( |$)")
 
 
 def clean_attributes(html):
@@ -202,7 +205,7 @@ class Document:
                 elif (
                     node_length <= 80
                     and link_density == 0
-                    and re.search(r"\.( |$)", node_content)
+                    and DOT_SPACE.search(node_content)
                 ):
                     append = True
             # append to the output div
@@ -407,23 +410,13 @@ class Document:
                     reason = f"too short content length {content_length} and too many images"
                     to_remove = True
                 elif weight < 25 and link_density > 0.2:
-                    reason = "too many links %.3f for its weight %s" % (
-                        link_density,
-                        weight,
-                    )
+                    reason = f"too many links {link_density:.3f} for its weight {weight}"
                     to_remove = True
                 elif weight >= 25 and link_density > 0.5:
-                    reason = "too many links %.3f for its weight %s" % (
-                        link_density,
-                        weight,
-                    )
+                    reason = f"too many links {link_density:.3f} for its weight {weight}"
                     to_remove = True
-                elif (counts["embed"] == 1 and content_length < 75) or counts[
-                    "embed"
-                ] > 1:
-                    reason = (
-                        "<embed>s with too short content length, or too many <embed>s"
-                    )
+                elif (counts["embed"] == 1 and content_length < 75) or counts["embed"] > 1:
+                    reason = "<embed>s with too short content length, or too many <embed>s"
                     to_remove = True
                 elif not content_length:
                     reason = "no content"

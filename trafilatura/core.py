@@ -51,6 +51,8 @@ FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'fw', 'head', 'ref'}
 
+JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
+
 
 def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
@@ -382,8 +384,7 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG,
-                      deduplicate=True, config=None):
+def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
@@ -458,8 +459,7 @@ def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
     return tree
 
 
-def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False,
-                    include_links=False, deduplicate=False, config=None):
+def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -521,14 +521,14 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if len(result_body) > 1:
             LOGGER.debug(expr)
             break
-    temp_text = trim(' '.join(result_body.itertext()))
+    temp_text = ' '.join(result_body.itertext()).strip()
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision,
                                         favor_recall=favor_recall, potential_tags=potential_tags,
                                         deduplicate=deduplicate, config=config)
-        temp_text = trim(' '.join(result_body.itertext()))
+        temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
     strip_elements(result_body, 'done')
     strip_tags(result_body, 'div')
@@ -581,12 +581,11 @@ def extract_comments(tree, dedupbool, config):
             subtree.getparent().remove(subtree)
             break
     # lengths
-    temp_comments = trim(' '.join(comments_body.itertext()))
+    temp_comments = ' '.join(comments_body.itertext()).strip()
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall,
-                       include_formatting, include_links, include_images, include_tables, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     min_target_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
@@ -615,9 +614,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = True
     # borderline cases
     else:
-        if not body.xpath('//p//text()') and len_algo > min_target_length * 2:
+        if not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
             algo_flag = True
-        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > min_target_length * 2:
+        elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
             algo_flag = True
         else:
             LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -629,7 +628,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction: try with justext
-    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:
+    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
     # or favor_recall is True ?
         # tree = prune_unwanted_sections(tree, {}, favor_recall, favor_precision)
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
@@ -660,13 +659,13 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
+            mymatch = JSON_SEARCH.search(elem.text)
             if mymatch:
                 elem = SubElement(postbody, 'p')
                 elem.text = trim(mymatch[1].replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
-    for elem in tree.xpath('//aside|//footer|//script|//style'):
+    for elem in tree.xpath('.//aside|.//footer|.//script|.//style'):
         elem.getparent().remove(elem)
     # scrape from article tag
     article_elem = tree.find('.//article')
@@ -833,23 +832,18 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # comments first, then remove
         if include_comments is True:
-            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate,
-                                                                                       config)
+            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
         if favor_precision is True:
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables,
-                                                        include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody,
-                                                               temp_text, len_text, target_language, favor_precision,
-                                                               favor_recall, include_formatting, include_links,
-                                                               include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):

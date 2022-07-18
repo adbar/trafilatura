@@ -143,7 +143,7 @@ def check_tei(xmldoc, url):
         elem.tag = 'fw'
         elem.set('type', 'header')
     # look for elements that are not valid
-    for element in xmldoc.xpath('//text/body//*'):
+    for element in xmldoc.findall('.//text/body//*'):
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
