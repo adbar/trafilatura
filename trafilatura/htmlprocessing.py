@@ -217,21 +217,12 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
 
 def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # ul/ol → list / li → item
-    for elem in tree.iter('ul', 'ol', 'dl'):
-        elem.tag = 'list'
-        for subelem in elem.iter('dd', 'dt', 'li'):
-            subelem.tag = 'item'
-    # images
-    if include_images is True:
-        for elem in tree.iter('img'):
-            elem.tag = 'graphic'
     # delete links for faster processing
     if include_links is False:
         if include_tables is True:
-            xpath_expr = './/div//a|.//list//a|.//table//a'
+            xpath_expr = './/div//a|.//table//a|.//ul//a'  # .//p//a ?
         else:
-            xpath_expr = './/div//a|.//list//a'
+            xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
         # necessary for further detection
         for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
@@ -245,54 +236,66 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             elem.attrib.clear()
             if target is not None:
                 elem.set('target', target)
-    # head tags + delete attributes
-    for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-        elem.attrib.clear()
-        elem.set('rend', elem.tag)
-        elem.tag = 'head'
-    # br → lb
-    for elem in tree.iter('br', 'hr'):
-        elem.tag = 'lb'
-    # wbr
-    # blockquote, pre, q → quote
-    for elem in tree.iter('blockquote', 'pre', 'q'):
-        elem.tag = 'quote'
     # include_formatting
     if include_formatting is False:
         strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
     else:
-        # italics
-        for elem in tree.iter('em', 'i'):
-            elem.tag = 'hi'
-            elem.set('rend', '#i')
-        # bold font
-        for elem in tree.iter('b', 'strong'):
-            elem.tag = 'hi'
-            elem.set('rend', '#b')
-        # u (very rare)
-        for elem in tree.iter('u'):
-            elem.tag = 'hi'
-            elem.set('rend', '#u')
-        # tt (very rare)
-        for elem in tree.iter('kbd', 'samp', 'tt', 'var'):
-            elem.tag = 'hi'
-            elem.set('rend', '#t')
-        # sub and sup (very rare)
-        for elem in tree.iter('sub'):
-            elem.tag = 'hi'
-            elem.set('rend', '#sub')
-        for elem in tree.iter('sup'):
-            elem.tag = 'hi'
-            elem.set('rend', '#sup')
-    # del | s | strike → <del rend="overstrike">
-    for elem in tree.iter('del', 's', 'strike'):
-        elem.tag = 'del'
-        elem.set('rend', 'overstrike')
-    # details + summary
-    for elem in tree.iter('details'):
-        elem.tag = 'div'
-        for subelem in elem.iter('summary'):
-            subelem.tag = 'head'
+        for elem in tree.iter('em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup'):
+            # italics
+            if elem.tag in ('em', 'i'):
+                elem.tag = 'hi'
+                elem.set('rend', '#i')
+            # bold font
+            elif elem.tag in ('b', 'strong'):
+                elem.tag = 'hi'
+                elem.set('rend', '#b')
+            # u (very rare)
+            elif elem.tag == 'u':
+                elem.tag = 'hi'
+                elem.set('rend', '#u')
+            # tt (very rare)
+            elif elem.tag in ('kbd', 'samp', 'tt', 'var'):
+                elem.tag = 'hi'
+                elem.set('rend', '#t')
+            # sub and sup (very rare)
+            elif elem.tag == 'sub':
+                elem.tag = 'hi'
+                elem.set('rend', '#sub')
+            elif elem.tag == 'sup':
+                elem.tag = 'hi'
+                elem.set('rend', '#sup')
+    # iterate over all concerned elements
+    for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
+        # ul/ol → list / li → item
+        if elem.tag in ('dl', 'ol', 'ul'):
+            elem.tag = 'list'
+            for subelem in elem.iter('dd', 'dt', 'li'):
+                subelem.tag = 'item'
+        # head tags + delete attributes
+        elif elem.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+            elem.attrib.clear()
+            elem.set('rend', elem.tag)
+            elem.tag = 'head'
+        # br → lb
+        elif elem.tag in ('br', 'hr'):
+            elem.tag = 'lb'
+        # wbr
+        # blockquote, pre, q → quote
+        elif elem.tag in ('blockquote', 'pre', 'q'):
+            elem.tag = 'quote'
+        # del | s | strike → <del rend="overstrike">
+        elif elem.tag in ('del', 's', 'strike'):
+            elem.tag = 'del'
+            elem.set('rend', 'overstrike')
+        # details + summary
+        elif elem.tag == 'details':
+            elem.tag = 'div'
+            for subelem in elem.iter('summary'):
+                subelem.tag = 'head'
+    # images
+    if include_images is True:
+        for elem in tree.iter('img'):
+            elem.tag = 'graphic'
     return tree
 
 
