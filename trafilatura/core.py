@@ -1025,4 +1025,15 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
 
 # for legacy and backwards compatibility
-process_record = extract
+def process_record(filecontent, url=None, record_id=None, no_fallback=False,
+                   include_comments=True, target_language=None,
+                   include_tables=True):
+    "Legacy extraction function, now deprecated."
+    # deprecation warning
+    warnings.warn(
+        "process_record() is deprecated, use extract() instead",
+        DeprecationWarning
+    )
+    return extract(filecontent, url=url, record_id=record_id, no_fallback=no_fallback,
+                   include_comments=include_comments, target_language=target_language,
+                   include_tables=include_tables)
