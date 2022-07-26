@@ -525,6 +525,56 @@ def test_json_extraction():
 </body></html>'''), metadata)
     assert metadata is not None and metadata.title == "12 words and phrases you need to survive in Hamburg" and metadata.author == "Alexander Johnstone" and metadata.sitename == "The Local"
 
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "@id": "https://a16z.com/#website",
+                    "url": "https://a16z.com/",
+                    "name": "Andreessen Horowitz",
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://a16z.com/?s={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                },
+                {
+                    "@type": "ProfilePage",
+                    "@id": "https://a16z.com/author/ben-horowitz/#webpage",
+                    "url": "https://a16z.com/author/ben-horowitz/",
+                    "inLanguage": "en-US",
+                    "name": "- Andreessen Horowitz",
+                    "isPartOf": {
+                        "@id": "https://a16z.com/#website"
+                    }
+                },
+                {
+                    "@type": [
+                        "Person"
+                    ],
+                    "@id": "https://a16z.com/#/schema/person/2022059d3b1b2ba8b3464ff2cc2e4165",
+                    "name": null,
+                    "image": {
+                        "@type": "ImageObject",
+                        "@id": "https://a16z.com/#authorlogo",
+                        "url": "https://secure.gravatar.com/avatar/?s=96&d=identicon&r=g"
+                    },
+                    "sameAs": [],
+                    "mainEntityOfPage": {
+                        "@id": "https://a16z.com/author/ben-horowitz/#webpage"
+                    }
+                }
+            ]
+        }
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.author is None and metadata.sitename == "Andreessen Horowitz"
+
 
 if __name__ == '__main__':
     test_json_extraction()
