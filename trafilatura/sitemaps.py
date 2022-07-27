@@ -148,11 +148,12 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     # clean and normalize
     link = clean_url(link, target_lang)
     if link is not None and lang_filter(link, target_lang) is True:
-        newdomain = extract_domain(link)
+        newdomain = extract_domain(link, fast=True)
         if newdomain is None:
             LOGGER.error("Couldn't extract domain: %s", link)
         # don't take links from another domain and make an exception for main platforms
-        elif newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
+        # also bypass: subdomains vs. domains
+        elif newdomain != domainname and not newdomain in domainname and not WHITELISTED_PLATFORMS.search(newdomain):
             LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
         else:
             state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
