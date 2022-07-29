@@ -1,6 +1,17 @@
 ## History / Changelog
 
 
+### 1.3.0
+- fast and robust `html2txt()` function added (#221)
+- more robust parsing (#228)
+- fixed bugs in metadata extraction, with @felipehertzer in #213 & #226 
+- extraction about 10-20% faster, slightly better recall
+- partial fixes for memory leaks (#216)
+- docs extended and updated (#217, #225)
+- prepared deprecation of old `process_record()` function
+- more stable processing with updated dependencies
+
+
 ### 1.2.2
 - more efficient rules for extraction
 - metadata: further attributes used (with @felipehertzer)
