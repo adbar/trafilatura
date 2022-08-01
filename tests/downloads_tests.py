@@ -108,7 +108,6 @@ def test_config():
 def test_decode():
     '''Test how responses are being decoded.'''
     assert decode_response(b'\x1f\x8babcdef') is not None
-    assert decode_response(b'\x1f\x8babcdef') is not None
     mock = Mock()
     mock.data = (b' ')
     assert decode_response(mock) is not None
@@ -124,7 +123,7 @@ def test_queue():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    assert url_processing_pipeline(args, inputdict) is None
+    assert url_processing_pipeline(args, inputdict) is False
     # single/multiprocessing
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
