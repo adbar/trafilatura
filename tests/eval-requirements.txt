@@ -1,4 +1,4 @@
-trafilatura==1.2.2
+trafilatura==1.3.0
 
 # alternatives
 beautifulsoup4==4.11.1
