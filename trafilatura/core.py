@@ -28,16 +28,16 @@ from lxml.html import tostring
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                       language_filter, text_chars_test)
-from .htmlprocessing import (convert_tags, handle_textnode,
-                             link_density_test, link_density_test_tables,
-                             process_node, prune_unwanted_nodes, tree_cleaning)
+from .htmlprocessing import (convert_tags, handle_textnode, process_node,
+                             delete_by_link_density, link_density_test_tables,
+                             prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, is_image_file
+from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     TEASER_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
                      DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 LOGGER = logging.getLogger(__name__)
@@ -50,6 +50,8 @@ TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'fw', 'head', 'ref'}
+
+JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
 
 
 def handle_titles(element, dedupbool, config):
@@ -382,35 +384,23 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG,
-                      deduplicate=True, config=None):
+def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
     if favor_recall is True:
-        potential_tags.add('div')
-        search_list.append('div')
+        potential_tags.update(['div', 'lb'])
+        search_list.extend(['div', 'lb'])
     # prune
-    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
-    # get rid of additional elements
-    if favor_recall is False:
-        search_tree = prune_unwanted_nodes(search_tree, ADDITIONAL_DISCARD_XPATH)
-        if favor_precision is True:
-            search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
-    # decide if images are preserved
-    if 'graphic' not in potential_tags:
-        search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
+    search_tree = prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
     # decide if links are preserved
     if 'ref' not in potential_tags:
         strip_tags(search_tree, 'a', 'ref', 'span')
     else:
         strip_tags(search_tree, 'span')
-    result_body.extend(e for e in
-                       [handle_textelem(
-                           element, potential_tags, deduplicate, config)
-                           for element in search_tree.iter(search_list)]
-                       if e is not None)
+    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config)
+                              for e in search_tree.iter(search_list))))
     return result_body
 
 
@@ -444,39 +434,38 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     return new_element
 
 
-def delete_by_link_density(subtree, tagname, backtracking=False):
-    '''Determine the link density of elements with respect to their length,
-       and remove the elements identified as boilerplate.'''
-    myelems, deletions = {}, []
-    for elem in subtree.iter(tagname):
-        result, templist = link_density_test(elem)
-        if result is True:
-            deletions.append(elem)
-        elif backtracking is True and len(templist) > 0:
-            text = trim(elem.text_content())
-            if text not in myelems:
-                myelems[text] = [elem]
-            else:
-                myelems[text].append(elem)
-    # summing up
-    if backtracking is True:
-        for text, elem in myelems.items():
-            if 0 < len(text) < 100 and len(elem) >= 3:
-                deletions.extend(elem)
-                # print('backtrack:', text)
-            # else: # and not re.search(r'[?!.]', text):
-            # print(elem.tag, templist)
-    for elem in uniquify_list(deletions):
-        elem.getparent().remove(elem)
-    return subtree
+def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision):
+    'Rule-based deletion of targeted document sections'
+    # prune the rest
+    tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
+    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
+    # decide if images are preserved
+    if 'graphic' not in potential_tags:
+        tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
+    # balance precision/recall
+    if favor_recall is False:
+        tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
+        if favor_precision is True:
+            tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
+    # remove elements by link density
+    tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
+    # tree = delete_by_link_density(tree, 'list', backtracking=False)
+    tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
+    # tree = delete_by_link_density(tree, 'head', backtracking=False)
+    # also filter fw/head, table and quote elements?
+    if favor_precision is True:
+        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=favor_precision
+        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=favor_precision
+    return tree
 
 
-def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False,
-                    include_links=False, deduplicate=False, config=None):
+def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
+    # backup
     backup_tree = deepcopy(tree)
+    # init
     result_body = Element('body')
     potential_tags = set(TAG_CATALOG)
     if include_tables is True:
@@ -492,25 +481,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             subtree = tree.xpath(expr)[0]
         except IndexError:
             continue
-        # prune the rest
-        subtree = prune_unwanted_nodes(subtree, OVERALL_DISCARD_XPATH)
-        # prune images
-        if include_images is False:
-            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
-        # balance precision/recall
-        if favor_recall is False:
-            subtree = prune_unwanted_nodes(subtree, ADDITIONAL_DISCARD_XPATH)
-            if favor_precision is True:
-                subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
-        # remove elements by link density
-        subtree = delete_by_link_density(subtree, 'div', backtracking=True)
-        subtree = delete_by_link_density(subtree, 'list', backtracking=False)
-        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-        # subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-        # also filter fw/head, table and quote elements?
-        if favor_precision is True:
-            subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-            subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
+        # prune the subtree
+        subtree = prune_unwanted_sections(subtree, potential_tags, favor_recall, favor_precision)
+        subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=favor_precision)
         if 'table' in potential_tags or favor_precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
@@ -534,11 +507,13 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if 'span' not in potential_tags:
             strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
-        ##strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # extract content # list(filter(None.__ne__, processed_elems)) ?
-        result_body.extend(e for e in
-                           [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
-                           if e is not None)
+        # proper extraction
+        subelems = subtree.xpath('.//*')
+        # e.g. only lb-elems in a div
+        if set(e.tag for e in subelems) == {'lb'}:
+            subelems = [subtree]
+        # extract content
+        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config) for e in subelems)))
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
@@ -546,14 +521,14 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if len(result_body) > 1:
             LOGGER.debug(expr)
             break
-    temp_text = trim(' '.join(result_body.itertext()))
+    temp_text = ' '.join(result_body.itertext()).strip()
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision,
                                         favor_recall=favor_recall, potential_tags=potential_tags,
                                         deduplicate=deduplicate, config=config)
-        temp_text = trim(' '.join(result_body.itertext()))
+        temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
     strip_elements(result_body, 'done')
     strip_tags(result_body, 'div')
@@ -596,9 +571,9 @@ def extract_comments(tree, dedupbool, config):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
-                           subtree.xpath('.//*'))
-        comments_body.extend(elem for elem in processed_elems if elem is not None)
+        # processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
+        #                    subtree.xpath('.//*'))
+        comments_body.extend(filter(None.__ne__, (process_comments_node(e, potential_tags, dedupbool, config) for e in subtree.xpath('.//*'))))
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
@@ -606,24 +581,25 @@ def extract_comments(tree, dedupbool, config):
             subtree.getparent().remove(subtree)
             break
     # lengths
-    temp_comments = trim(' '.join(comments_body.itertext()))
+    temp_comments = ' '.join(comments_body.itertext()).strip()
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall,
-                       include_formatting, include_links, include_images, include_tables, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
+    min_target_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
     # bypass for recall
-    if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 10:
+    if favor_recall is True and len_text > min_target_length * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
     # prior cleaning
+    backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
     if favor_precision is True:
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
-    algo_text = trim(' '.join(temppost_algo.itertext()))
+    algo_text = trim(temppost_algo.text_content())
     len_algo = len(algo_text)
     # compare
     LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
@@ -638,10 +614,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = True
     # borderline cases
     else:
-        if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        if not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
             algo_flag = True
-        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT',
-                                                                                              'MIN_EXTRACTED_SIZE') * 2:
+        elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
             algo_flag = True
         else:
             LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -653,8 +628,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction: try with justext
-    if body.xpath(SANITIZED_XPATH) or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
     # or favor_recall is True ?
+        # tree = prune_unwanted_sections(tree, {}, favor_recall, favor_precision)
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
         if jt_result is True:  # and not len_text > 2*len_text2:
             LOGGER.debug('using justext, length: %s', len_text2)
@@ -683,19 +659,19 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
+            mymatch = JSON_SEARCH.search(elem.text)
             if mymatch:
                 elem = SubElement(postbody, 'p')
-                elem.text = trim(mymatch.group(1).replace('\\"', '"'))
+                elem.text = trim(mymatch[1].replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # basic tree cleaning
-    for elem in tree.xpath('//aside|//footer|//script'):
+    for elem in tree.xpath('.//aside|.//footer|.//script|.//style'):
         elem.getparent().remove(elem)
     # scrape from article tag
     article_elem = tree.find('.//article')
     if article_elem is not None:
         temp_text = trim(article_elem.text_content())
-        if len(temp_text) > 0:
+        if len(temp_text) > 100:
             elem = SubElement(postbody, 'p')
             elem.text = temp_text
             return postbody, temp_text, len(temp_text)
@@ -708,20 +684,41 @@ def baseline(filecontent):
             elem.text = entry
             results.add(entry)
     temp_text = trim('\n'.join(postbody.itertext()))
-    if len(temp_text) > 0:
+    if len(temp_text) > 100:
         return postbody, temp_text, len(temp_text)
     # default strategy: clean the tree and take everything
     postbody = Element('body')
     body_elem = tree.find('.//body')
     if body_elem is not None:
-        elem = SubElement(postbody, 'p')
         # elem.text = trim(body_elem.text_content())
-        elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
-        return postbody, elem.text, len(elem.text)
-    return postbody, '', 0
+        text = '\n'.join([trim(e) for e in body_elem.itertext()])
+        if len(text) > 100:
+            elem = SubElement(postbody, 'p')
+            elem.text = text
+            return postbody, text, len(text)
+    # new fallback
+    text = html2txt(tree)
+    elem = SubElement(postbody, 'p')
+    elem.text = text
+    return postbody, text, len(text)
+    # old: return postbody, '', 0
 
 
-def determine_returnstring(document, output_format, include_formatting, include_links, tei_validation):
+def html2txt(content):
+    """Run basic html2txt on a document.
+
+    Args:
+        content: HTML document as string or LXML element.
+
+    Returns:
+        The extracted text in the form of a string.
+
+    """
+    tree = load_html(content)
+    return ' '.join(tree.text_content().split()).strip()
+
+
+def determine_returnstring(document, output_format, include_formatting, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
@@ -740,9 +737,9 @@ def determine_returnstring(document, output_format, include_formatting, include_
         returnstring = control_xml_output(output, output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
-        posttext = xmltotxt(document.body, include_formatting, include_links)
+        posttext = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            commentstext = xmltotxt(document.commentsbody, include_formatting, include_links)
+            commentstext = xmltotxt(document.commentsbody, include_formatting)
         else:
             commentstext = ''
         returnstring = txttocsv(posttext, commentstext, document)
@@ -751,9 +748,9 @@ def determine_returnstring(document, output_format, include_formatting, include_
         returnstring = build_json_output(document)
     # TXT
     else:
-        returnstring = xmltotxt(document.body, include_formatting, include_links)
+        returnstring = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting, include_links)
+            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting)
             returnstring = returnstring.strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
@@ -774,8 +771,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         filecontent: HTML code as string.
         url: URL of the webpage.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: prefer more text even when unsure (experimental).
+        favor_precision: prefer less text but correct extraction.
+        favor_recall: prefer more text even when unsure.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
@@ -790,7 +787,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        with_metadata: Similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
@@ -857,23 +853,18 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # comments first, then remove
         if include_comments is True:
-            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate,
-                                                                                       config)
+            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
         if favor_precision is True:
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables,
-                                                        include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody,
-                                                               temp_text, len_text, target_language, favor_precision,
-                                                               favor_recall, include_formatting, include_links,
-                                                               include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
@@ -914,9 +905,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # special case: python variables
     if output_format == 'python':
-        document.text = xmltotxt(postbody, include_formatting, include_links)
+        document.text = xmltotxt(postbody, include_formatting)
         if include_comments is True:
-            document.comments = xmltotxt(commentsbody, include_formatting, include_links)
+            document.comments = xmltotxt(commentsbody, include_formatting)
     else:
         document.raw_text, document.body, document.commentsbody = temp_text, postbody, commentsbody
     if as_dict is True:
@@ -938,7 +929,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             date_extraction_params=None,
             only_with_metadata=False, with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
-            settingsfile=None, config=DEFAULT_CONFIG):
+            settingsfile=None, config=DEFAULT_CONFIG,
+            **kwargs):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
 
@@ -947,8 +939,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: when unsure, prefer more text (experimental).
+        favor_precision: prefer less text but correct extraction.
+        favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
             'txt', 'csv', 'json', 'xml', or 'xmltei'.
@@ -963,7 +955,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        with_metadata: similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
@@ -974,13 +965,27 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         A string in the desired format or None.
 
     """
+    # older, deprecated functions
+    if kwargs:
+        # output formats
+        if any([
+            'csv_output' in kwargs, 'json_output' in kwargs,
+            'tei_output' in kwargs, 'xml_output' in kwargs
+            ]):
+            raise NameError(
+                'Deprecated argument: use output_format instead, e.g. output_format="xml"'
+                )
+        # todo: add with_metadata later
+
     # configuration init
     config = use_config(settingsfile, config)
 
     # put timeout signal in place
     if HAS_SIGNAL is True:
-        signal(SIGALRM, timeout_handler)
-        alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
+        timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
+        if timeout > 0:
+            signal(SIGALRM, timeout_handler)
+            alarm(timeout)
 
     # extraction
     try:
@@ -1003,7 +1008,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         document = None
 
     # deactivate alarm signal
-    if HAS_SIGNAL is True:
+    if HAS_SIGNAL is True and timeout > 0:
         alarm(0)
 
     # post-processing
@@ -1016,8 +1021,19 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         document.fingerprint = content_fingerprint(document.raw_text)
 
     # return
-    return determine_returnstring(document, output_format, include_formatting, include_links, tei_validation)
+    return determine_returnstring(document, output_format, include_formatting, tei_validation)
 
 
 # for legacy and backwards compatibility
-process_record = extract
+def process_record(filecontent, url=None, record_id=None, no_fallback=False,
+                   include_comments=True, target_language=None,
+                   include_tables=True):
+    "Legacy extraction function, now deprecated."
+    # deprecation warning
+    warnings.warn(
+        "process_record() is deprecated, use extract() instead",
+        DeprecationWarning
+    )
+    return extract(filecontent, url=url, record_id=record_id, no_fallback=no_fallback,
+                   include_comments=include_comments, target_language=target_language,
+                   include_tables=include_tables)

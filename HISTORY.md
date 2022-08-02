@@ -1,5 +1,33 @@
 ## History / Changelog
 
+
+### 1.3.0
+- fast and robust `html2txt()` function added (#221)
+- more robust parsing (#228)
+- fixed bugs in metadata extraction, with @felipehertzer in #213 & #226 
+- extraction about 10-20% faster, slightly better recall
+- partial fixes for memory leaks (#216)
+- docs extended and updated (#217, #225)
+- prepared deprecation of old `process_record()` function
+- more stable processing with updated dependencies
+
+
+### 1.2.2
+- more efficient rules for extraction
+- metadata: further attributes used (with @felipehertzer)
+- better baseline extraction
+- issues fixed: #202, #204, #205
+- evaluation updated
+
+
+### 1.2.1
+- ``--precision`` and ``--recall`` arguments added to the CLI
+- better text cleaning: paywalls and comments
+- improvements for Chinese websites (with @glacierck & @immortal-autumn): #186, #187, #188
+- further bugs fixed: #189, #192 (with @felipehertzer), #200
+- efficiency: faster module loading and improved RAM footprint
+
+
 ### 1.2.0
 - efficiency: replaced module readability-lxml by trimmed fork
 - bug fixed: (#179, #180, #183, #184)

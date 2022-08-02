@@ -65,7 +65,7 @@ def check_html_lang(tree, target_language, strict=False):
     '''Check HTML meta-elements for language information and split
        the result in case there are several languages'''
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-    target_elements = tree.xpath('//meta[@http-equiv="content-language"]')
+    target_elements = tree.findall('.//meta[@http-equiv="content-language"]')
     if len(target_elements) > 0:
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
@@ -73,7 +73,7 @@ def check_html_lang(tree, target_language, strict=False):
         LOGGER.debug('HTML lang detection failed')
         return False
     # locale
-    target_elements = tree.xpath('//meta[@property="og:locale"]')
+    target_elements = tree.findall('.//meta[@property="og:locale"]')
     if len(target_elements) > 0:
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):

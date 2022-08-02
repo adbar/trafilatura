@@ -48,7 +48,7 @@ def load_input_urls(args):
                 for line in inputfile:
                     url_match = re.match(r'https?://[^\s]+', line)
                     if url_match:
-                        input_urls.append(url_match.group(0))
+                        input_urls.append(url_match[0])
 
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
@@ -284,6 +284,7 @@ def url_processing_pipeline(args, url_store):
     # print list without further processing
     if args.list:
         for domain in url_store.urldict:
+            # write_result('\n'.join(url_store.find_unvisited_urls(domain)), args)
             print('\n'.join(url_store.find_unvisited_urls(domain)))
         return False  # sys.exit(0)
     # parse config

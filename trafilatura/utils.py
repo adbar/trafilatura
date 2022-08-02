@@ -9,7 +9,6 @@ Module bundling functions related to HTML and text processing.
 # import csv
 import logging
 import re
-import sys
 
 from gzip import decompress
 from functools import lru_cache
@@ -38,26 +37,12 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
-UNICODE_WHITESPACE = re.compile(
-    r'''
-    \u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|
-    \u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000
-    '''
-)
-
-NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
-SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
-
-NOPRINT_TRANS_TABLE = {
-    i: None
-    for i in range(sys.maxunicode + 1)
-    if not chr(i).isprintable() and not chr(i).isspace()
-}
+LINES_TRIMMING = re.compile(r'(?<![p{P}>])\n', flags=re.UNICODE|re.MULTILINE)
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
+IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
 
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von) ', flags=re.IGNORECASE)
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
@@ -161,6 +146,16 @@ def is_dubious_html(htmlobject):
     return False
 
 
+def fromstring_bytes(htmlobject):
+    "Try to pass bytes to LXML parser."
+    tree = None
+    try:
+        tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+    except Exception as err:
+        LOGGER.error('lxml parser bytestring %s', err)
+    return tree
+
+
 def load_html(htmlobject):
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
@@ -180,18 +175,20 @@ def load_html(htmlobject):
     htmlobject = decode_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
-    # use Unicode string
+    fallback_parse = False
+    # first pass: use Unicode string
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
-        try:
-            tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
-        except Exception as err:
-            LOGGER.error('lxml parser bytestring %s', err)
+        fallback_parse = True
+        tree = fromstring_bytes(htmlobject)
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
-    # more robust option: try BeautifulSoup
+    # second pass: try passing bytes to LXML
+    if (tree is None or len(tree) < 2) and fallback_parse is False:
+        tree = fromstring_bytes(htmlobject)
+    # more robust option: try BeautifulSoup?
     #if tree is None or not isinstance(tree, HtmlElement):
     #    if isinstance(htmlobject, (bytes, str)):
     #        try:
@@ -199,6 +196,7 @@ def load_html(htmlobject):
     #        except Exception as err:
     #            LOGGER.error('BS parser error: %s', err)
     # rejection test: is it (well-formed) HTML at all?
+    # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None
@@ -214,28 +212,16 @@ def txttocsv(text, comments, docmeta):
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
     tsv_output = \
-        '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\t{textlicense}\n' \
-        .format(
-        url=docmeta.url,
-        fingerprint=docmeta.fingerprint,
-        hostname=docmeta.hostname,
-        doctitle=docmeta.title,
-        docdate=docmeta.date,
-        text=text,
-        comments=comments,
-        textlicense=docmeta.license
-        )
+        f'{docmeta.url}\t{docmeta.fingerprint}\t{docmeta.hostname}\t{docmeta.title}\t{docmeta.date}\t{text}\t{comments}\t{docmeta.license}\n'
     # add id up front if provided
     if docmeta.id is not None:
         tsv_output = docmeta.id + '\t' + tsv_output
     return tsv_output
 
 
-@lru_cache(maxsize=128)
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
-    # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
-    return string.translate(NOPRINT_TRANS_TABLE)
+    return ''.join([c for c in string if c.isprintable() or c.isspace()])
 
 
 def normalize_unicode(string, unicodeform='NFC'):
@@ -243,67 +229,51 @@ def normalize_unicode(string, unicodeform='NFC'):
     return normalize(unicodeform, string)
 
 
-@lru_cache(maxsize=128)
+@lru_cache(maxsize=1024)
 def line_processing(line):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
-    # remove non-printable chars and normalize space characters
-    line = trim(remove_control_characters(UNICODE_WHITESPACE.sub(' ', line)))
+    # remove newlines that are not related to punctuation or markup
+    # remove non-printable chars and normalize space characters (including Unicode spaces)
+    line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
     # prune empty lines
-    if re.match(r'\s*$', line):
+    if all(map(str.isspace, line)):
         line = None
     return line
 
 
-@lru_cache(maxsize=32)
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
-        #returnlines = []
-        #for line in text.splitlines():
-        #    returnlines.append(line_processing(line))
-        # return '\n'.join(list(filter(None.__ne__, returnlines)))
-        return '\n'.join([l for l in (line_processing(l) for l in text.splitlines()) if l is not None])
-        # return '\n'.join([l for l in map(line_processing, text.splitlines()) if l is not None])
+        return '\n'.join(filter(None, (line_processing(l) for l in text.splitlines())))
     except AttributeError:
         return None
 
 
-@lru_cache(maxsize=128)
+@lru_cache(maxsize=1024)
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
-        return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
-    except TypeError:
+        # return LINES_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
+        # faster:
+        return ' '.join(string.split()).strip()
+    except (AttributeError, TypeError):
         return None
 
 
 def normalize_tags(tags):
     '''Remove special characters of tags'''
     tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
-    tags = list(filter(None, tags.split(", ")))
-    return ", ".join(tags)
+    return ", ".join(filter(None, tags.split(", ")))
 
 
 def is_image_file(imagesrc):
     '''Check if the observed string corresponds to a valid image extension,
        return False otherwise'''
     return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
-
-
-def filter_urls(linklist, urlfilter):
-    'Return a list of links corresponding to the given substring pattern.'
-    if urlfilter is None:
-        return sorted(set(linklist))
-    # filter links
-    newlist = [l for l in linklist if urlfilter in l]
-    # feedburner option
-    if not newlist:
-        newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
-    return sorted(set(newlist))
 
 
 def normalize_authors(current_authors, author_string):
@@ -326,7 +296,7 @@ def normalize_authors(current_authors, author_string):
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)
         # replace special characters with space
-        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
+        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
         author = AUTHOR_REMOVE_NICKNAME.sub('', author)
         # remove special characters
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)

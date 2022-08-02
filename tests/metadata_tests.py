@@ -48,6 +48,9 @@ def test_authors():
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
     assert normalize_json('Test \\nthis') == 'Test this'
+    # blacklist
+    metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>', author_blacklist={'Jenny Smith'})
+    assert metadata.author == None
     # extraction
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
     assert metadata.author == 'Jenny Smith'
@@ -71,6 +74,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith and John Smith"/></head><body></body></html>')
     assert metadata.author == 'Jenny Smith; John Smith'
+    metadata = extract_metadata('<html><head><meta name="article:author" content="Jenny Smith"/></head><body></body></html>')
+    assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a href="" rel="author">Jenny Smith</a></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a href="" rel="author">Jenny "The Author" Smith</a></body></html>')
@@ -89,6 +94,8 @@ def test_authors():
     assert metadata.author is None
     metadata = extract_metadata('<html><body><div class="sidebar"><div class="author">Jenny Smith</div></figure></body></html>')
     assert metadata.author is None
+    metadata = extract_metadata('<html><body><div class="quote"><p>My quote here</p><p class="quote-author"><span>—</span> Jenny Smith</p></div></body></html>')
+    assert metadata.author is None
     metadata = extract_metadata('<html><body><span class="author">Jenny Smith and John Smith</span></body></html>')
     assert metadata.author == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith</a></body></html>')
@@ -106,6 +113,8 @@ def test_authors():
     metadata = extract_metadata('<html><body><div class="byline-content"><div class="byline"><a>Jenny Smith</a></div><time>July 12, 2021 08:05</time></div></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><h3 itemprop="author">Jenny Smith</h3></body></html>')
+    assert metadata.author == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><div class="article-meta article-meta-byline article-meta-with-photo article-meta-author-and-reviewer" itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="article-meta-photo-wrap"><img src="" alt="Jenny Smith" itemprop="image" class="article-meta-photo"></span><span class="article-meta-contents"><span class="article-meta-author">By <a href="" itemprop="url"><span itemprop="name">Jenny Smith</span></a></span><span class="article-meta-date">May 18 2022</span><span class="article-meta-reviewer">Reviewed by <a href="">Robert Smith</a></span></span></div></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><div data-component="Byline">Jenny Smith</div></body></html>')
     assert metadata.author == 'Jenny Smith'
@@ -139,6 +148,8 @@ def test_url():
     assert metadata.url == 'https://example.org'
     metadata = extract_metadata('<html><head><link rel="alternate" hreflang="x-default" href="https://example.org"/></head><body></body></html>')
     assert metadata.url == 'https://example.org'
+    metadata = extract_metadata('<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>', default_url="https://example.org")
+    assert metadata.url == 'https://example.org'
 
 
 def test_description():
@@ -166,6 +177,10 @@ def test_dates():
 
 def test_sitename():
     '''Test extraction of site name'''
+    metadata = extract_metadata('<html><head><meta name="article:publisher" content="The Newspaper"/></head><body/></html>')
+    assert metadata.sitename == 'The Newspaper'
+    metadata = extract_metadata('<html><head><meta property="article:publisher" content="The Newspaper"/></head><body/></html>')
+    assert metadata.sitename == 'The Newspaper'
     metadata = extract_metadata('<html><head><title>sitemaps.org - Home</title></head><body/></html>')
     assert metadata.sitename == 'sitemaps.org'
 

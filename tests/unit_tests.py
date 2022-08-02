@@ -23,11 +23,18 @@ try:
 except ImportError:
     LANGID_FLAG = False
 
+
+
 import trafilatura.filters
 import trafilatura.htmlprocessing
-from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
-from trafilatura.lru import LRUCache
+
+from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
+
+from trafilatura.core import handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
+from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
+from trafilatura.lru import LRUCache
+from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
@@ -44,7 +51,7 @@ ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
-UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
+NEW_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
@@ -98,6 +105,11 @@ def test_trim():
     # non-breaking spaces
     print(utils.sanitize('Test&nbsp;Text'))
     assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    # clear cache
+    # reset caches: examine_date_elements used above
+    old_values = trim.cache_info()
+    reset_caches()
+    assert trim.cache_info() != old_values
 
 
 def test_input():
@@ -171,6 +183,8 @@ def test_exotic_tags(xmloutput=False):
     element.append(etree.Element('lb'))
     converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
+    # naked div with <lb>
+    assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
     assert result.count(b'List item') == 3
@@ -231,6 +245,17 @@ def test_exotic_tags(xmloutput=False):
       </item>
       <item>Milk</item>
     </list>''' in my_result
+    # table with links
+    # todo: further tests and adjustsments
+    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    assert 'ABCD' not in result
+    # nested table
+    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    # todo: all elements are there, but output not nested
+    # todo: th conversion
+    assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
 
 
 def test_lrucache():
@@ -332,6 +357,9 @@ def test_formatting():
 
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
+    my_result = extract(my_document, no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
+    # TXT: newline problem here
+    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link.'
     my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
@@ -339,8 +367,7 @@ def test_formatting():
     assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref>.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert '**bold**' in my_result and '*italics*' in my_result and '`tt`' in my_result and '~~deleted~~' in my_result and '__underlined__' in my_result
-    assert my_result == '**bold**, *italics*, `tt`,\n~~deleted~~, __underlined__, link.'
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
@@ -373,6 +400,12 @@ def test_baseline():
     my_document = "<html><body><div>   Document body...   </div><script> console.log('Hello world') </script></body></html>"
     _, result, _ = baseline(my_document)
     assert result == 'Document body...'
+
+
+def test_html2txt():
+    mydoc = "<html><body>Here is the body text</body></html>"
+    assert html2txt(mydoc) == "Here is the body text"
+    assert html2txt(html.fromstring(mydoc)) == "Here is the body text"
 
 
 def test_filters():
@@ -412,13 +445,13 @@ def test_filters():
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is None
     # paragraph level
-    #lru_test = LRUCache(maxsize=2)
-    #trafilatura.filters.LRU_TEST = lru_test
-    #my_p = etree.fromstring('<p>abc</p>')
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    #assert trafilatura.htmlprocessing.process_node(my_p) is None
+    lru_test = LRUCache(maxsize=2)
+    trafilatura.filters.LRU_TEST = lru_test
+    my_p = etree.fromstring('<p>' + 'abc'*50 + '</p>')
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p) is None
     # HTML lang filter
     # no lang
     assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
@@ -488,8 +521,8 @@ def test_images():
     assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
-    assert 'test.jpg Example image' not in extract(teststring)
-    assert 'test.jpg Example image' in extract(teststring, include_images=True, no_fallback=True)
+    assert '![Example image](test.jpg)' not in extract(teststring)
+    assert '![Example image](test.jpg)' in extract(teststring, include_images=True, no_fallback=True)
     assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
     # CNN example
     mydoc = html.fromstring('<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781" src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-eq-state="mini xsmall small medium" data-src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg">')
@@ -509,12 +542,12 @@ def test_links():
     mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
     # link with target
-    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
+    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert 'testlink.html' not in extract(mydoc)
-    assert '[Test link text.](testlink.html)' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
-    mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
-    assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
@@ -601,15 +634,24 @@ def test_htmlprocessing():
     for element in mydoc.iter('span'):
         xml.merge_with_parent(element)
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
+    # paywalls
+    my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
+    assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
+    assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
+    
 
 
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
-    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.</p></div></body></html>'
+    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
+    with pytest.raises(NameError) as err:
+        extract(my_html, json_output=True)
+    assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
     assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
+    assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
 
 
@@ -623,7 +665,9 @@ def test_precision_recall():
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
-    
+    my_document = html.fromstring('<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>')
+    assert '1' not in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
+    assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
 
 
 if __name__ == '__main__':

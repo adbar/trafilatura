@@ -1,5 +1,5 @@
-trafilatura: Web scraping tool for text discovery and retrieval
-===============================================================
+A Python package & command-line tool to gather text on the Web
+==============================================================
 
 
 .. image:: docs/trafilatura-logo.png
@@ -29,6 +29,11 @@ trafilatura: Web scraping tool for text discovery and retrieval
     :target: https://pepy.tech/project/trafilatura
     :alt: Downloads
 
+.. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
+    :target: https://aclanthology.org/2021.acl-demo.15/
+    :alt: Reference DOI: 10.18653/v1/2021.acl-demo.15
+
+
 |
 
 .. image:: docs/trafilatura-demo.gif
@@ -41,34 +46,38 @@ trafilatura: Web scraping tool for text discovery and retrieval
 Description
 -----------
 
-*Trafilatura* is a Python software package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract text and metadata while preserving parts of text formatting and page structure. This light-weight package acts as a modular toolkit: no database is required, the output can be converted to different commonly used formats.
+Trafilatura is a **Python package and command-line tool** designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to various commonly used formats.
 
+Going from raw HTML to essential parts can alleviate many problems related to text quality, first by avoiding the **noise caused by recurring elements** (headers, footers, links/blogroll etc.) and second by including information such as author and date in order to **make sense of the data**. The extractor tries to strike a balance between limiting noise (precision) and including all valid parts (recall). It also has to be **robust and reasonably fast**, it runs in production on millions of documents.
 
+This tool can be **useful for quantitative research** in corpus linguistics, natural language processing, computational social science and beyond: it is relevant to anyone interested in data science, information extraction, text mining, and scraping-intensive use cases like search engine optimization, business analytics or information security.
 
 
 Features
 ~~~~~~~~
 
-- Seamless and parallel online/offline processing:
-   - Download and conversion utilities included
-   - URLs, HTML files or parsed HTML trees as input
+- Web crawling and text discovery:
+   - Focused crawling and politeness rules
+   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
+   - URL management (blacklists, filtering and de-duplication)
+- Seamless and parallel processing, online and offline:
+   - URLs, HTML files or parsed HTML trees usable as input
+   - Efficient and polite processing of download queues
+   - Conversion of previously downloaded files
 - Robust and efficient extraction:
-   - Main text and/or comments
-   - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-   - Extraction of metadata (title, author, date, site name, categories and tags)
-- Several output formats supported:
+   - Main text (with LXML, common patterns and generic algorithms: jusText, fork of readability-lxml)
+   - Metadata (title, author, date, site name, categories and tags)
+   - Formatting and structural elements: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+   - Comments (if applicable)
+- Output formats:
    - Text (minimal formatting or Markdown)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
-   - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
-- Link discovery and URL lists:
-   - Focused crawling and politeness rules
-   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - Efficient and polite processing of URL queues
-   - Blacklisting
+   - XML (with metadata, text formatting and page structure) and `TEI-XML <https://tei-c.org/>`_
 - Optional add-ons:
    - Language detection on extracted content
    - Graphical user interface (GUI)
+   - Speed optimizations
 
 
 Evaluation and alternatives
@@ -77,20 +86,21 @@ Evaluation and alternatives
 For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= ======
-500 documents, 1487 text and 1496 boilerplate segments (2021-06-07)
+750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8
 --------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
 =============================== =========  ========== ========= ========= ======
-justext 2.2.0 (custom)          0.870      0.584      0.749     0.699     6.1x
-newspaper3k 0.2.8               0.921      0.574      0.763     0.708     12.9x
-boilerpy3 1.0.2 (article mode)  0.851      0.696      0.788     0.766     4.8x
-goose3 3.1.9                    **0.950**  0.644      0.806     0.767     18.8x
-*baseline (text markup)*        0.746      0.804      0.766     0.774     **1x**
-dragnet 2.0.4                   0.906      0.689      0.810     0.783     3.1x
-readability-lxml 0.8.1          0.917      0.716      0.826     0.804     5.9x
-news-please 1.5.21              0.924      0.718      0.830     0.808     60x
-trafilatura 0.8.2 (fast)        0.925      0.868      0.899     0.896     3.9x
-trafilatura 0.8.2               0.934      **0.890**  **0.914** **0.912** 8.4x
+html_text 0.5.2                 0.529      **0.958**  0.554     0.682     2.2x
+inscriptis 2.2.0 (html to txt)  0.534      **0.959**  0.563     0.686     3.5x
+newspaper3k 0.2.8               0.895      0.593      0.762     0.713     12x
+justext 3.0.0 (custom)          0.865      0.650      0.775     0.742     5.2x
+boilerpy3 1.0.6 (article mode)  0.814      0.744      0.787     0.777     4.1x
+*baseline (text markup)*        0.757      0.827      0.781     0.790     **1x**
+goose3 3.1.9                    **0.934**  0.690      0.821     0.793     22x
+readability-lxml 0.8.1          0.891      0.729      0.820     0.801     5.8x
+news-please 1.5.22              0.898      0.734      0.826     0.808     61x
+readabilipy 0.2.0               0.877      0.870      0.874     0.874     248x
+trafilatura 1.2.2 (standard)    0.914      0.904      **0.910** **0.909** 7.1x
 =============================== =========  ========== ========= ========= ======
 
 Other evaluations:
@@ -108,7 +118,7 @@ For more information please refer to `the documentation <https://trafilatura.rea
 - `Installation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_
 - Usage: `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_, `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_, `With R <https://trafilatura.readthedocs.io/en/latest/usage-r.html>`_
 - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
-- Python Notebook `Trafilatura Overview <Trafilatura_Overview.ipynb>`_
+- Python Notebook `Trafilatura Overview <docs/Trafilatura_Overview.ipynb>`_
 - `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
 
 For video tutorials see this Youtube playlist:
@@ -148,12 +158,19 @@ Author
 
 This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
 
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
-   :target: https://doi.org/10.5281/zenodo.3460969
 
 - Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, Proceedings of ACL/IJCNLP 2021: System Demonstrations, 2021, p. 122-131.
 -  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
+
+
+.. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
+    :target: https://aclanthology.org/2021.acl-demo.15/
+    :alt: Reference DOI: 10.18653/v1/2021.acl-demo.15
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
+   :target: https://doi.org/10.5281/zenodo.3460969
+   :alt: Zenodo archive DOI: 10.5281/zenodo.3460969
 
 
 .. code-block:: shell
@@ -169,11 +186,11 @@ This effort is part of methods to derive information from web documents in order
     }
 
 
-You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.
+You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or on `GitHub <https://github.com/adbar>`_.
 
 
-Software
-~~~~~~~~
+Software ecosystem
+~~~~~~~~~~~~~~~~~~
 
 
 .. image:: docs/software-ecosystem.png
