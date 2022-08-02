@@ -210,6 +210,13 @@ def test_download():
     teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
+    # test exit code for faulty URLs
+    testargs = ['', '-u', 'https://1234.yz/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with pytest.raises(SystemExit) as e:
+        cli.process_args(args)
+    assert e.type == SystemExit and e.value.code == 1
 
 
 def test_cli_pipeline():
@@ -256,7 +263,7 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.url_processing_pipeline(args, UrlStore()) is None
+    assert cli_utils.url_processing_pipeline(args, UrlStore()) is False
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
@@ -318,6 +325,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
+    print(f.getvalue())
     assert len(f.getvalue()) == 0
     # config file
     testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
@@ -337,6 +345,31 @@ def test_cli_pipeline():
     #result = cli.examine(teststring, args)
     #assert '[link](testlink.html)' in result # and 'test.jpg' in result
 
+    # Crawling
+    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    print(f.getvalue())
+    assert len(f.getvalue()) == 0
+    # links permitted
+    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
+    # 0 links permitted
+    args.crawl = 'https://httpbin.org/links/4/4'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args, n=0)
+    # print(f.getvalue())
+    assert len(f.getvalue().split('\n')) == 5
+
     # Exploration (Sitemap + Crawl)
     testargs = ['', '--explore', 'https://httpbin.org/html']
     with patch.object(sys, 'argv', testargs):
@@ -344,7 +377,6 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    print(f.getvalue())
     assert f.getvalue() == 'https://httpbin.org/html\n'
 
 
