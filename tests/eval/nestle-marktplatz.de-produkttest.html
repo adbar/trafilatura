@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
+<head>
+    <meta charset="utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net"]},distributed_tracing:{enabled:true}};(window.NREUM||(NREUM={})).loader_config={agentID:"875178415",accountID:"3148943",trustKey:"1702226",xpid:"VwcDWV9XCxAIU1RTAAYOV1U=",licenseKey:"NRJS-dcfae422587116ee2bb",applicationID:"875177911"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var o,i=t("ee"),a=t(32),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{l?l-=1:o(s||new UncaughtException(t,e,n),!0)}catch(f){try{i("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function o(t,e){var n=e?null:c.now();i("err",[t,n])}var i=t("handle"),a=t(33),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,p="nr@seenError";if(!c.disabled){var l=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(14),t(13),"addEventListener"in window&&t(7),c.xhrWrappable&&t(15),d=!0)}s.on("fn-start",function(t,e,n){d&&(l+=1)}),s.on("fn-err",function(t,e,n){d&&!n[p]&&(f(n,p,function(){return!0}),this.thrown=!0,o(n))}),s.on("fn-end",function(){d&&!this.thrown&&l>0&&(l-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})}},{}],3:[function(t,e,n){var r=t("loader");r.disabled||(r.features.ins=!0)},{}],4:[function(t,e,n){function r(){U++,L=g.hash,this[u]=y.now()}function o(){U--,g.hash!==L&&i(0,!0);var t=y.now();this[h]=~~this[h]+t-this[u],this[d]=t}function i(t,e){E.emit("newURL",[""+g,e])}function a(t,e){t.on(e,function(){this[e]=y.now()})}var s="-start",c="-end",f="-body",u="fn"+s,d="fn"+c,p="cb"+s,l="cb"+c,h="jsTime",m="fetch",v="addEventListener",w=window,g=w.location,y=t("loader");if(w[v]&&y.xhrWrappable&&!y.disabled){var x=t(11),b=t(12),E=t(9),R=t(7),O=t(14),T=t(8),S=t(15),P=t(10),M=t("ee"),C=M.get("tracer"),N=t(23);t(17),y.features.spa=!0;var L,U=0;M.on(u,r),b.on(p,r),P.on(p,r),M.on(d,o),b.on(l,o),P.on(l,o),M.buffer([u,d,"xhr-resolved"]),R.buffer([u]),O.buffer(["setTimeout"+c,"clearTimeout"+s,u]),S.buffer([u,"new-xhr","send-xhr"+s]),T.buffer([m+s,m+"-done",m+f+s,m+f+c]),E.buffer(["newURL"]),x.buffer([u]),b.buffer(["propagate",p,l,"executor-err","resolve"+s]),C.buffer([u,"no-"+u]),P.buffer(["new-jsonp","cb-start","jsonp-error","jsonp-end"]),a(T,m+s),a(T,m+"-done"),a(P,"new-jsonp"),a(P,"jsonp-end"),a(P,"cb-start"),E.on("pushState-end",i),E.on("replaceState-end",i),w[v]("hashchange",i,N(!0)),w[v]("load",i,N(!0)),w[v]("popstate",function(){i(0,U>1)},N(!0))}},{}],5:[function(t,e,n){function r(){var t=new PerformanceObserver(function(t,e){var n=t.getEntries();s(v,[n])});try{t.observe({entryTypes:["resource"]})}catch(e){}}function o(t){if(s(v,[window.performance.getEntriesByType(w)]),window.performance["c"+p])try{window.performance[h](m,o,!1)}catch(t){}else try{window.performance[h]("webkit"+m,o,!1)}catch(t){}}function i(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var a=t("ee"),s=t("handle"),c=t(14),f=t(13),u=t(6),d=t(23),p="learResourceTimings",l="addEventListener",h="removeEventListener",m="resourcetimingbufferfull",v="bstResource",w="resource",g="-start",y="-end",x="fn"+g,b="fn"+y,E="bstTimer",R="pushState",O=t("loader");if(!O.disabled){O.features.stn=!0,t(9),"addEventListener"in window&&t(7);var T=NREUM.o.EV;a.on(x,function(t,e){var n=t[0];n instanceof T&&(this.bstStart=O.now())}),a.on(b,function(t,e){var n=t[0];n instanceof T&&s("bst",[n,e,this.bstStart,O.now()])}),c.on(x,function(t,e,n){this.bstStart=O.now(),this.bstType=n}),c.on(b,function(t,e){s(E,[e,this.bstStart,O.now(),this.bstType])}),f.on(x,function(){this.bstStart=O.now()}),f.on(b,function(t,e){s(E,[e,this.bstStart,O.now(),"requestAnimationFrame"])}),a.on(R+g,function(t){this.time=O.now(),this.startPath=location.pathname+location.hash}),a.on(R+y,function(t){s("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),u()?(s(v,[window.performance.getEntriesByType("resource")]),r()):l in window.performance&&(window.performance["c"+p]?window.performance[l](m,o,d(!1)):window.performance[l]("webkit"+m,o,d(!1))),document[l]("scroll",i,d(!1)),document[l]("keypress",i,d(!1)),document[l]("click",i,d(!1))}}},{}],6:[function(t,e,n){e.exports=function(){return"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver}},{}],7:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&o(e)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],8:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=i(arguments),e={};o.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return o.emit(n+"start",[t,a],s),s.then(function(t){return o.emit(n+"end",[null,t],s),t},function(t){throw o.emit(n+"end",[t],s),t})})}var o=t("ee").get("fetch"),i=t(33),a=t(32);e.exports=o;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,p=s.Response,l=s.fetch,h="prototype",m="nr@context";d&&p&&l&&(a(u,function(t,e){r(d[h],e,f),r(p[h],e,f)}),r(s,"fetch",c),o.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),o.emit(c+"done",[null,e],n)}else o.emit(c+"done",[t],n)}))},{}],9:[function(t,e,n){var r=t("ee").get("history"),o=t("wrap-function")(r);e.exports=r;var i=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;i&&i.pushState&&i.replaceState&&(a=i),o.inPlace(a,["pushState","replaceState"],"-")},{}],10:[function(t,e,n){function r(t){function e(){f.emit("jsonp-end",[],l),t.removeEventListener("load",e,c(!1)),t.removeEventListener("error",n,c(!1))}function n(){f.emit("jsonp-error",[],l),f.emit("jsonp-end",[],l),t.removeEventListener("load",e,c(!1)),t.removeEventListener("error",n,c(!1))}var r=t&&"string"==typeof t.nodeName&&"script"===t.nodeName.toLowerCase();if(r){var o="function"==typeof t.addEventListener;if(o){var a=i(t.src);if(a){var d=s(a),p="function"==typeof d.parent[d.key];if(p){var l={};u.inPlace(d.parent,[d.key],"cb-",l),t.addEventListener("load",e,c(!1)),t.addEventListener("error",n,c(!1)),f.emit("new-jsonp",[t.src],l)}}}}}function o(){return"addEventListener"in window}function i(t){var e=t.match(d);return e?e[1]:null}function a(t,e){var n=t.match(l),r=n[1],o=n[3];return o?a(o,e[r]):e[r]}function s(t){var e=t.match(p);return e&&e.length>=3?{key:e[2],parent:a(e[1],window)}:{key:t,parent:window}}var c=t(23),f=t("ee").get("jsonp"),u=t("wrap-function")(f);if(e.exports=f,o()){var d=/[?&](?:callback|cb)=([^&#]+)/,p=/(.*)\.([^.]+)/,l=/^(\w+)(\.|$)(.*)$/,h=["appendChild","insertBefore","replaceChild"];Node&&Node.prototype&&Node.prototype.appendChild?u.inPlace(Node.prototype,h,"dom-"):(u.inPlace(HTMLElement.prototype,h,"dom-"),u.inPlace(HTMLHeadElement.prototype,h,"dom-"),u.inPlace(HTMLBodyElement.prototype,h,"dom-")),f.on("dom-start",function(t){r(t[0])})}},{}],11:[function(t,e,n){var r=t("ee").get("mutation"),o=t("wrap-function")(r),i=NREUM.o.MO;e.exports=r,i&&(window.MutationObserver=function(t){return this instanceof i?new i(o(t,"fn-")):i.apply(this,arguments)},MutationObserver.prototype=i.prototype)},{}],12:[function(t,e,n){function r(t){var e=i.context(),n=s(t,"executor-",e,null,!1),r=new f(n);return i.context(r).getCtx=function(){return e},r}var o=t("wrap-function"),i=t("ee").get("promise"),a=t("ee").getOrSetContext,s=o(i),c=t(32),f=NREUM.o.PR;e.exports=i,f&&(window.Promise=r,["all","race"].forEach(function(t){var e=f[t];f[t]=function(n){function r(t){return function(){i.emit("propagate",[null,!o],a,!1,!1),o=o||!t}}var o=!1;c(n,function(e,n){Promise.resolve(n).then(r("all"===t),r(!1))});var a=e.apply(f,arguments),s=f.resolve(a);return s}}),["resolve","reject"].forEach(function(t){var e=f[t];f[t]=function(t){var n=e.apply(f,arguments);return t!==n&&i.emit("propagate",[t,!0],n,!1,!1),n}}),f.prototype["catch"]=function(t){return this.then(null,t)},f.prototype=Object.create(f.prototype,{constructor:{value:r}}),c(Object.getOwnPropertyNames(f),function(t,e){try{r[e]=f[e]}catch(n){}}),o.wrapInPlace(f.prototype,"then",function(t){return function(){var e=this,n=o.argsToArray.apply(this,arguments),r=a(e);r.promise=e,n[0]=s(n[0],"cb-",r,null,!1),n[1]=s(n[1],"cb-",r,null,!1);var c=t.apply(this,n);return r.nextPromise=c,i.emit("propagate",[e,!0],c,!1,!1),c}}),i.on("executor-start",function(t){t[0]=s(t[0],"resolve-",this,null,!1),t[1]=s(t[1],"resolve-",this,null,!1)}),i.on("executor-err",function(t,e,n){t[1](n)}),i.on("cb-end",function(t,e,n){i.emit("propagate",[n,!0],this.nextPromise,!1,!1)}),i.on("propagate",function(t,e,n){this.getCtx&&!e||(this.getCtx=function(){if(t instanceof Promise)var e=i.context(t);return e&&e.getCtx?e.getCtx():this})}),r.toString=function(){return""+f})},{}],13:[function(t,e,n){var r=t("ee").get("raf"),o=t("wrap-function")(r),i="equestAnimationFrame";e.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],14:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function o(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var i=t("ee").get("timer"),a=t("wrap-function")(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],15:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function o(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,y,"fn-",s)}function i(t){x.push(t),m&&(E?E.then(a):w?w(a):(R=-R,O.data=R))}function a(){for(var t=0;t<x.length;t++)r([],x[t]);x.length&&(x=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(7);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),p=t(23),l=NREUM.o,h=l.XHR,m=l.MO,v=l.PR,w=l.SI,g="readystatechange",y=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],x=[];e.exports=u;var b=window.XMLHttpRequest=function(t){var e=new h(t);try{u.emit("new-xhr",[e],e),e.addEventListener(g,o,p(!1))}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(h,b),b.prototype=h.prototype,d.inPlace(b.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),i(e)}),u.on("open-xhr-start",r),m){var E=v&&v.resolve();if(!w&&!v){var R=1,O=document.createTextNode(R);new m(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===g||a()})},{}],16:[function(t,e,n){function r(t){if(!s(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=l.generateSpanId(),m=l.generateTraceId(),v=Date.now(),w={spanId:h,traceId:m,timestamp:v};return(t.sameOrigin||c(t)&&p())&&(w.traceContextParentHeader=o(h,m),w.traceContextStateHeader=i(h,v,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&c(t)&&d())&&(w.newrelicHeader=a(h,m,v,n,r,f)),w}function o(t,e){return"00-"+e+"-"+t+"-01"}function i(t,e,n,r,o){var i=0,a="",s=1,c="",f="";return o+"@nr="+i+"-"+s+"-"+n+"-"+r+"-"+t+"-"+a+"-"+c+"-"+f+"-"+e}function a(t,e,n,r,o,i){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:o,id:t,tr:e,ti:n}};return i&&r!==i&&(s.d.tk=i),btoa(JSON.stringify(s))}function s(t){return f()&&c(t)}function c(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var o=h(n.allowed_origins[r]);if(t.hostname===o.hostname&&t.protocol===o.protocol&&t.port===o.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function p(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var l=t(29),h=t(18);e.exports={generateTracePayload:r,shouldGenerateTrace:s}},{}],17:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<p;r++)t.removeEventListener(d[r],this.listener,!1);return e.protocol&&"data"===e.protocol?void g("Ajax/DataUrl/Excluded"):void(e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):i(this,t),n.cbTime=this.cbTime,s("xhr",[e,n,this.startTime,this.endTime,"xhr"],this)))}}function o(t,e){var n=c(e),r=t.params;r.hostname=n.hostname,r.port=n.port,r.protocol=n.protocol,r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=n,t.sameOrigin=n.sameOrigin}function i(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable&&!a.disabled){var s=t("handle"),c=t(18),f=t(16).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],p=d.length,l=t("id"),h=t(24),m=t(22),v=t(19),w=t(23),g=t(25).recordSupportability,y=NREUM.o.REQ,x=window.XMLHttpRequest;a.features.xhr=!0,t(15),t(8),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,e.params=this.params||{},e.metrics=this.metrics||{},t.addEventListener("load",function(n){i(e,t)},w(!1)),h&&(h>34||h<10)||t.addEventListener("progress",function(t){e.lastSize=t.loaded},w(!1))}),u.on("open-xhr-start",function(t){this.params={method:t[0]},o(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],o=this;if(n&&r){var i=m(r);i&&(n.txSize=i)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof e.onload))&&o.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<p;s++)e.addEventListener(d[s],this.listener,w(!1))}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+l(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("xhr-resolved",function(){this.endTime=a.now()}),u.on("addEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof x&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=c(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var o=f(this.parsedOrigin);if(o&&(o.newrelicHeader||o.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var i={};for(var a in r)i[a]=r[a];i.headers=new Headers(r.headers||{}),e(i.headers,o)&&(this.dt=o),t.length>1?t[1]=i:t.push(i)}else t[0]&&t[0].headers&&e(t[0].headers,o)&&(this.dt=o)}),u.on("fetch-start",function(t,e){this.params={},this.metrics={},this.startTime=a.now(),this.dt=e,t.length>=1&&(this.target=t[0]),t.length>=2&&(this.opts=t[1]);var n,r=this.opts||{},i=this.target;if("string"==typeof i?n=i:"object"==typeof i&&i instanceof y?n=i.url:window.URL&&"object"==typeof i&&i instanceof URL&&(n=i.href),o(this,n),"data"!==this.params.protocol){var s=(""+(i&&i instanceof y&&i.method||r.method||"GET")).toUpperCase();this.params.method=s,this.txSize=m(r.body)||0}}),u.on("fetch-done",function(t,e){if(this.endTime=a.now(),this.params||(this.params={}),"data"===this.params.protocol)return void g("Ajax/DataUrl/Excluded");this.params.status=e?e.status:0;var n;"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var r={txSize:this.txSize,rxSize:n,duration:a.now()-this.startTime};s("xhr",[this.params,r,this.startTime,this.endTime,"fetch"],this)})}},{}],18:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];if(0===(t||"").indexOf("data:"))return{protocol:"data"};var e=document.createElement("a"),n=window.location,o={};e.href=t,o.port=e.port;var i=e.href.split("://");!o.port&&i[1]&&(o.port=i[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===i[0]?"443":"80"),o.hostname=e.hostname||n.hostname,o.pathname=e.pathname,o.protocol=i[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return o.sameOrigin=a&&(!e.hostname||s),"/"===o.pathname&&(r[t]=o),o}},{}],19:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?o(t.response):"text"===n||""===n||void 0===n?o(t.responseText):void 0}var o=t(22);e.exports=r},{}],20:[function(t,e,n){function r(){}function o(t,e,n,r){return function(){return u.recordSupportability("API/"+e+"/called"),i(t+e,[f.now()].concat(s(arguments)),n?null:this,r),n?void 0:this}}var i=t("handle"),a=t(32),s=t(33),c=t("ee").get("tracer"),f=t("loader"),u=t(25),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",h=l+"ixn-";a(p,function(t,e){d[e]=o(l,e,!0,"api")}),d.addPageAction=o(l,"addPageAction",!0),d.setCurrentRouteName=o(l,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,o="function"==typeof e;return i(h+"tracer",[f.now(),t,n],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],n),o)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=o(h,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),u.recordSupportability("API/noticeError/called"),i("err",[t,f.now(),!1,e])}},{}],21:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],22:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],23:[function(t,e,n){var r=!1;try{var o=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,o),window.removeEventListener("testPassive",null,o)}catch(i){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],24:[function(t,e,n){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),e.exports=r},{}],25:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return i("storeMetric",n,null,"api"),n}function o(t,e){var n=[s,t,{name:t},e];return i("storeEventMetrics",n,null,"api"),n}var i=t("handle"),a="sm",s="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:s},recordSupportability:r,recordCustom:o}},{}],26:[function(t,e,n){function r(){return s.exists&&performance.now?Math.round(performance.now()):(i=Math.max((new Date).getTime(),i))-a}function o(){return i}var i=(new Date).getTime(),a=i,s=t(34);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=o},{}],27:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],28:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?l("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&l("timing",["fcp",Math.floor(t.startTime)])})}function o(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(f&&f<r.startTime)return;var o=[r],i=a({});i&&o.push(i),l("lcp",o)}}function i(t){t.getEntries().forEach(function(t){t.hadRecentInput||l("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function s(t){if(t instanceof w&&!y){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=h.now()?n.fid=h.now()-e:e>h.offset&&e<=Date.now()?(e-=h.offset,n.fid=h.now()-e):e=h.now(),y=!0,l("timing",["fi",e,n])}}function c(t){"hidden"===t&&(f=h.now(),l("pageHide",[f]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,d,p,l=t("handle"),h=t("loader"),m=t(31),v=t(23),w=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){u=new PerformanceObserver(r);try{u.observe({entryTypes:["paint"]})}catch(g){}d=new PerformanceObserver(o);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(g){}p=new PerformanceObserver(i);try{p.observe({type:"layout-shift",buffered:!0})}catch(g){}}if("addEventListener"in document){var y=!1,x=["click","keydown","mousedown","pointerdown","touchstart"];x.forEach(function(t){document.addEventListener(t,s,v(!1))})}m(c)}},{}],29:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var o,i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<i.length;s++)o=i[s],"x"===o?a+=t().toString(16):"y"===o?(o=3&t()|8,a+=o.toString(16)):a+=o;return a}function o(){return a(16)}function i(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,o=window.crypto||window.msCrypto;o&&o.getRandomValues&&Uint8Array&&(n=o.getRandomValues(new Uint8Array(31)));for(var i=[],a=0;a<t;a++)i.push(e().toString(16));return i.join("")}e.exports={generateUuid:r,generateSpanId:o,generateTraceId:i}},{}],30:[function(t,e,n){function r(t,e){if(!o)return!1;if(t!==o)return!1;if(!e)return!0;if(!i)return!1;for(var n=i.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(o="Safari",i=c[1])}e.exports={agent:o,version:i,match:r}},{}],31:[function(t,e,n){function r(t){function e(){t(s&&document[s]?document[s]:document[i]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,o(!1))}var o=t(23);e.exports=r;var i,a,s;"undefined"!=typeof document.hidden?(i="hidden",a="visibilitychange",s="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",a="webkitvisibilitychange",s="webkitVisibilityState")},{}],32:[function(t,e,n){function r(t,e){var n=[],r="",i=0;for(r in t)o.call(t,r)&&(n[i]=e(r,t[r]),i+=1);return n}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],33:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(o<0?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=r},{}],34:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function o(t){function e(t){return t&&t instanceof r?t:t?f(t,c,a):a()}function n(n,r,o,i,a){if(a!==!1&&(a=!0),!l.aborted||i){t&&a&&t(n,r,o);for(var s=e(o),c=m(n),f=c.length,u=0;u<f;u++)c[u].apply(s,r);var p=d[y[n]];return p&&p.push([x,n,r,s]),s}}function i(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return p[t]=p[t]||o(n)}function w(t,e){l.aborted||u(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var g={},y={},x={on:i,addEventListener:i,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:s,aborted:!1};return x}function i(t){return f(t,c,a)}function a(){return new r}function s(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var c="nr@context",f=t("gos"),u=t(32),d={},p={},l=e.exports=o();e.exports.getOrSetContext=i,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(o.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[e]=r,r}var o=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){o.buffer([t],r),o.emit(t,e,n)}var o=t("ee").get("handle");e.exports=r,r.ee=o},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!S++){var t=T.info=NREUM.info,e=v.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();c(R,function(e,n){t[e]||(t[e]=n)});var n=a();s("mark",["onload",n+T.offset],null,"api"),s("timing",["load",n]);var r=v.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=h+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function o(){"complete"===v.readyState&&i()}function i(){s("mark",["domContent",a()+T.offset],null,"api")}var a=t(26),s=t("handle"),c=t(32),f=t("ee"),u=t(30),d=t(27),p=t(21),l=t(23),h=p.getConfiguration("ssl")===!1?"http":"https",m=window,v=m.document,w="addEventListener",g="attachEvent",y=m.XMLHttpRequest,x=y&&y.prototype,b=!d(m.location);NREUM.o={ST:setTimeout,SI:m.setImmediate,CT:clearTimeout,XHR:y,REQ:m.Request,EV:m.Event,PR:m.Promise,MO:m.MutationObserver};var E=""+location,R={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-spa-1215.min.js"},O=y&&x&&x[w]&&!/CriOS/.test(navigator.userAgent),T=e.exports={offset:a.getLastTimestamp(),now:a,origin:E,features:{},xhrWrappable:O,userAgent:u,disabled:b};if(!b){t(20),t(28),v[w]?(v[w]("DOMContentLoaded",i,l(!1)),m[w]("load",r,l(!1))):(v[g]("onreadystatechange",o),m[g]("onload",r)),s("mark",["firstbyte",a.getLastTimestamp()],null,"api");var S=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,c,f){function nrWrapper(){var i,a,u,p;try{a=this,i=d(arguments),u="function"==typeof r?r(i,a):r||{}}catch(l){o([l,"",[i,a,c],u],t)}s(n+"start",[i,a,c],u,f);try{return p=e.apply(a,i)}catch(h){throw s(n+"err",[i,a,h],u,f),h}finally{s(n+"end",[i,a,p],u,f)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,i(e,nrWrapper,t),nrWrapper)}function r(t,e,r,o,i){r||(r="");var s,c,f,u="-"===r.charAt(0);for(f=0;f<e.length;f++)c=e[f],s=t[c],a(s)||(t[c]=n(s,u?c+r:r,o,c,i))}function s(n,r,i,a){if(!h||e){var s=h;h=!0;try{t.emit(n,r,i,e,a)}catch(c){o([c,n,r,i],t)}h=s}}return t||(t=u),n.inPlace=r,n.flag=p,n}function o(t,e){e||(e=u);try{e.emit("internal-error",t)}catch(n){}}function i(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(i){o([i],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function s(t,e){var n=e(t);return n[p]=t,i(t,n,u),n}function c(t,e,n){var r=t[e];t[e]=s(r,n)}function f(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var u=t("ee"),d=t(33),p="nr@original",l=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=s,e.exports.wrapInPlace=c,e.exports.argsToArray=f},{}]},{},["loader",2,17,5,3,4]);</script>
+<link rel="canonical" href="https://www.nestle-marktplatz.de/mitmachen/produkttests" />
+<meta name="description" content="Lieblingsprodukte ♥ gratis testen. Werden Sie Produkttester: (Neu-)Produkte testen, Erfahrungen teilen &amp; mitgestalten. ✓Jetzt registrieren!" />
+<meta name="keywords" content="Nestlé, Nestlé Marktplatz, Marktplatz, Entdecken, Shoppen, Mitmachen, Neu, Lecker, Marken, Ideen, Tests, Produkttests, TV-Spots" />
+<meta name="MobileOptimized" content="480" />
+<meta name="MobileOptimized" content="768" />
+<meta name="MobileOptimized" content="1024" />
+<meta name="MobileOptimized" content="2048" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width = 320, user-scalable=no, shrink-to-fit=no" />
+<meta property="og:title" content="Produkttester werden: gratis testen &amp; bewerten │ Nestlé Marktplatz" />
+<meta property="og:description" content="Nestlé Marktplatz sucht Produkttester für neue Nestlé-Produkte. Interesse? Dann registrieren Sie sich jetzt!" />
+<meta property="og:image" content="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2022-01/BG_Tile_0.jpg" />
+<meta property="og:image:width" content="256" />
+<meta property="og:image:height" content="256" />
+<meta name="google-site-verification" content="v5KvmoDCfEtL5HRem4Sqk_XXVgrND2_XHJ_kPz4LA8c" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<link rel="shortcut icon" href="/sites/g/files/cisvdi466/files/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="revision" href="https://www.nestle-marktplatz.de/mitmachen/produkttests" />
+<script type="text/javascript">var _gaq = _gaq || [];</script><script src="/sites/g/files/cisvdi466/files/google_tag/nema_gtm_container/google_tag.script.js?r7g9lc" defer></script>
+
+        <title>Produkttester werden &amp; gratis testen│Nestlé Marktplatz</title>
+                <link rel="stylesheet" media="all" href="/sites/g/files/cisvdi466/files/css/css_M0YXhIqbH_kzPCfpCuLfLC7NT-QCKBgP7mlSZqyowP4.css" />
+<link rel="stylesheet" media="all" href="/sites/g/files/cisvdi466/files/css/css_IZKvMzYmYU9yRF14q8xXPtqE4Df9_Kn5wbhT1O70C-w.css" />
+
+            <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/7721","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"de"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"blazy\/load,classy\/base,classy\/messages,classy\/node,core\/normalize,dsu_c_core\/general,dsu_c_image\/general,dsu_c_text\/general,dsu_product\/dsu-product,dsu_ratings_reviews\/dsu-event-tracking,nde_promotheus\/style,nema\/custom-components-css,nema\/nema-default,nema\/nema-global,nema\/nema-js,nema_comment\/nema_comment,nema_components_alphabet\/alphabet,newnestlegermany_components_accordion\/accordion,newnestlegermany_components_image\/general,newnestlegermany_components_sideimagetext\/general,newnestlegermany_social_share\/social-share,paragraphs\/drupal.paragraphs.unpublished,search_api_autocomplete\/search_api_autocomplete,slick\/slick.css,slick\/slick.easing,slick\/slick.load,slick\/slick.main.fullwidth,slick\/slick.theme,system\/base","theme":"nema","theme_token":null},"ajaxTrustedUrl":{"https:\/\/www.nestle-marktplatz.de\/suche":true},"blazy":{"loadInvisible":false,"offset":100,"saveViewportOffsetDelay":50,"validateDelay":25},"blazyIo":{"enabled":false,"disconnect":false,"rootMargin":"0px","threshold":[0]},"slick":{"accessibility":true,"adaptiveHeight":false,"autoplay":false,"autoplaySpeed":3000,"pauseOnHover":true,"pauseOnDotsHover":false,"arrows":true,"downArrow":false,"downArrowTarget":"","downArrowOffset":0,"centerMode":false,"centerPadding":"50px","dots":false,"dotsClass":"slick-dots","draggable":true,"fade":false,"focusOnSelect":false,"infinite":true,"initialSlide":0,"lazyLoad":"ondemand","mouseWheel":false,"randomize":false,"rtl":false,"rows":1,"slidesPerRow":1,"slide":"","slidesToShow":1,"slidesToScroll":1,"speed":500,"swipe":true,"swipeToSlide":false,"edgeFriction":0.34999999999999998,"touchMove":true,"touchThreshold":5,"useCSS":true,"cssEase":"ease","cssEaseBezier":"","cssEaseOverride":"","useTransform":true,"easing":"linear","variableWidth":false,"vertical":false,"verticalSwiping":false,"waitForAnimate":true,"pauseOnFocus":true},"captcha_key":null,"captcha_secret":null,"search_api_autocomplete":{"newnestlegermany_site_search":{"min_length":2}},"newNestlegermanyMasterConfig":{"domain":"https:\/\/www.nestle-marktplatz.de"},"newnestlegermany_social_share":{"networks":{"services":[],"settings":{"pubid_desktop":"ra-536cea227e0f3e2d","pubid_mobile":"ra-536cea227e0f3e2d","active":1,"desktop_theme":"transparent","desktop_position":"0","enable_desktop":1,"enable_mobile":1,"mobile_theme":"transparent","mobile_position":"bottom","api":"\/\/s7.addthis.com\/js\/300\/addthis_widget.js#async=1"}}},"ajax":[],"user":{"uid":0,"permissionsHash":"c6e773ab63111967ff520c13fdcbb35073fa5d9e5ac14df0e090bc6dd34ad408"}}</script>
+<script src="/core/assets/vendor/modernizr/modernizr.min.js?v=3.11.7"></script>
+<script src="/sites/g/files/cisvdi466/files/js/js_mQRpPjZ_QHAFYjaFp0drMHNTBS1ln6O9gb4liacvOUo.js"></script>
+<script src="/core/misc/modernizr-additional-tests.js?v=3.11.7"></script>
+<script src="/sites/g/files/cisvdi466/files/js/js_JqAr_OZ5VM7ZL9ryJ7H0-LviUXFbF6wq5inzAOjtEW8.js"></script>
+
+                        <script type="text/javascript" src="/modules/contrib/seckit/js/seckit.document_write.js"></script>
+        <link type="text/css" rel="stylesheet" id="seckit-clickjacking-no-body" media="all" href="/modules/contrib/seckit/css/seckit.no_body.css" />
+        <!-- stop SecKit protection -->
+        <noscript>
+        <link type="text/css" rel="stylesheet" id="seckit-clickjacking-noscript-tag" media="all" href="/modules/contrib/seckit/css/seckit.noscript_tag.css" />
+        <div id="seckit-noscript-tag">
+          Sorry, you need to enable JavaScript to visit this website.
+        </div>
+        </noscript></head>
+<body style="background-image: url(https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2022-01/BG_Tile_0.jpg)" class="page-node-7721 no-sidebars path-node page-node-type-dsu-component-page">
+<a href="#main-content" class="visually-hidden focusable skip-link">
+    Direkt zum Inhalt
+</a>
+<noscript aria-hidden="true"><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5ZN84V" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+
+  <header class="headerUniversalContainerBig desktop">
+    <section class="siteContainer">
+      <section class="structure-container-col-1-set">
+        <section class="structure-container-col-1">
+          <section class="nemaHeaderBig">
+                   <article class="universalSearchFormContainerBig theme1" id="search_form">
+    <form class="newnestlegermany-site-search universalSearchFormBigContainer" data-drupal-selector="views-exposed-form-newnestlegermany-site-search" action="https://www.nestle-marktplatz.de/suche" method="get" id="views-exposed-form-newnestlegermany-site-search" accept-charset="UTF-8">
+  <input class="universalSearchFormBigInputText js_autosuggest form-autocomplete form-text" data-drupal-selector="edit-suche" data-search-api-autocomplete-search="newnestlegermany_site_search" data-autocomplete-path="/search_api_autocomplete/newnestlegermany_site_search" type="text" id="edit-suche" name="suche" value="" size="60" maxlength="128" placeholder="Suchen" data-qa-id="Search"/>
+
+<section class="js_autosuggestWrapper" data-qa-id="SearchAutosuggest"></section><section class="universalSearchFormBigInputSubmitContainer"><input class="universalSearchFormBigInputSubmit button js-form-submit form-submit" data-drupal-selector="edit-submit-newnestlegermany-site-search" type="submit" id="edit-submit-newnestlegermany-site-search" value="" data-qa-id="SearchSubmit"/>
+</section>
+
+</form>
+
+</article>
+            <a title="Startseite" class="universalLogoContainerBig desktop" href="/" data-qa-id="HeaderLogoNema">
+        </a>
+        <a title="Startseite" class="logoContainer mobile" href="/" data-qa-id="HeaderLogoNema">
+    </a>
+<nav class="universalMetaNaviContainerBig desktop">
+    <ul>
+                    <li class="naviItemContainer">
+                <a class="naviItem" href="/hilfe-und-kontakt" target="_self" title="Kontakt &amp; Hilfe" data-qa-id="HeaderLink">Kontakt &amp; Hilfe</a>
+            </li>
+            </ul>
+</nav>
+
+<nav class="universalMetaNaviContainerBig mobile" id="contact_menu_mobile">
+    <ul>
+                    <li class="naviItemContainer">
+                <a class="naviItem" href="/hilfe-und-kontakt" target="_self" title="Kontakt &amp; Hilfe" data-qa-id="HeaderLink">Kontakt &amp; Hilfe</a>
+            </li>
+            </ul>
+</nav>
+
+    <nav role="navigation" aria-labelledby="block-useraccountmenu-menu" class="universalLoginContainerBig  naviItemContainer desktop">
+        
+
+
+                                                           <ul>
+                                                            <li class="naviItemContainer">
+                     <a href="/login" class="naviItem  main-header-login" data-qa-id="HeaderLink">Anmelden</a>
+                                      </li>
+                          </ul>
+                  <ul class="mobile">
+                                                                    <li class="naviItemContainer">
+                 
+                 <a href="/login" class="naviItem textTyp21">Anmelden</a>
+                                  </li>
+             
+         </ul>
+     
+      
+    </nav>
+
+    <nav role="navigation" aria-labelledby="block-useraccountmenu-menu" class="universalLoginContainerBig  naviItemContainer mobile" id="user_account_mob">
+        
+
+
+                                                           <ul>
+                                                            <li class="naviItemContainer">
+                     <a href="/login" class="naviItem  main-header-login" data-qa-id="HeaderLink">Anmelden</a>
+                                      </li>
+                          </ul>
+                  <ul class="mobile">
+                                                                    <li class="naviItemContainer">
+                 
+                 <a href="/login" class="naviItem textTyp21">Anmelden</a>
+                                  </li>
+             
+         </ul>
+     
+      
+    </nav>
+
+
+              <nav class="universalMainNaviContainerBig desktop" data-qa-id="Menu">
+    <ul>
+                    <li class="naviItemContainer">
+                <a href="/themen" class="naviItem hon_brandflyout hon_shoplayer" title="Themen" target="_self" data-qa-id="MenuItem">
+                    Themen
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/feste-feiern" title="Feste Feiern" target="_self">Feste Feiern</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/familienzeit" title="Familienzeit" target="_self">Familienzeit</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/diy" title="DIY" target="_self">DIY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/laender-specials" title="Länder Specials" target="_self">Länder Specials</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/besondere-rezepte" title="Besondere Rezepte" target="_self">Besondere Rezepte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/tv-spots" title="TV-Spots" target="_self">TV-Spots</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://ernaehrungsstudio.nestle.de" title="Nestlé Ernährungsstudio" target="_self">Nestlé Ernährungsstudio</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/nema-shop" title="Nestlé Marktplatz Shop" target="_self">Nestlé Marktplatz Shop</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/marken" class="naviItem hon_brandflyout hon_shoplayer" title="Marken" target="_self" data-qa-id="MenuItem">
+                    Marken
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#cerealien" title="Cerealien &amp; Riegel" target="_self">Cerealien &amp; Riegel</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#getraenke" title="Erfrischungsgetränke" target="_self">Erfrischungsgetränke</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#gesundheit" title="Gesundheit &amp; Wohlbefinden" target="_self">Gesundheit &amp; Wohlbefinden</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kaffee" title="Kaffee, Kakao &amp; Tee" target="_self">Kaffee, Kakao &amp; Tee</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kochen" title="Kochen" target="_self">Kochen</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#desserts" title="Milchprodukte &amp; Desserts" target="_self">Milchprodukte &amp; Desserts</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#eltern" title="ELTERN &amp; BABY" target="_self">ELTERN &amp; BABY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#schokolade" title="Süßwaren" target="_self">Süßwaren</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiefkuehl" title="Tiefkühlprodukte" target="_self">Tiefkühlprodukte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiernahrung" title="Tiernahrung" target="_self">Tiernahrung</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/produkte" class="naviItem hon_brandflyout hon_shoplayer" title="Produkte" target="_self" data-qa-id="MenuItem">
+                    Produkte
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/produkte" title="Produktübersicht" target="_self">Produktübersicht</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://productfinder.nestle.de/" title="Händler finden" target="_self">Händler finden</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/mitmachen" class="naviItem hon_brandflyout hon_shoplayer" title="Mitmachen" target="_self" data-qa-id="MenuItem">
+                    Mitmachen
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/produkttests" title="Produkttests" target="_self">Produkttests</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/gewinnspieluebersicht" title="Gewinnspiele" target="_self">Gewinnspiele</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/voting" title="Votings" target="_self">Votings</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/unsere-werte" class="naviItem hon_brandflyout hon_shoplayer" title="Unsere Werte" target="_self" data-qa-id="MenuItem">
+                    Unsere Werte
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/ernaehrung" title="Einzelne &amp; Familien" target="_self">Einzelne &amp; Familien</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/gesellschaft" title="Unsere Gemeinschaften" target="_self">Unsere Gemeinschaften</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/umwelt" title="Unser Planet" target="_self">Unser Planet</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/gemeinsam-fair" title="Gemeinsam Fair" target="_self">Gemeinsam Fair</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/qualitaetsbotschafter" title="Botschafter" target="_self">Botschafter</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/verbraucherrat" title="Verbraucherrat" target="_self">Verbraucherrat</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+            </ul>
+</nav>
+
+<nav class="preHeader nemaMainNavigation mobile" data-qa-id="Menu">
+    <section class="requestMainNaviButtonContainer js_showNemaNavi">
+        <a title="zum Nestlé Marktplatz" class="naviItem" href="#"> zum Nestle Marktplatz > </a>
+        <span class="naviItem nemaMenu">Menü</span>
+    </section>
+    <ul id="mobile_main_navigation">
+                    <li class="naviItemContainer">
+                <a href="/themen" class="naviItem js_toggleSubNavi" title="Themen" target="_self" data-qa-id="MenuItem">
+                    Themen
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/feste-feiern" title="Feste Feiern" target="_self">Feste Feiern</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/familienzeit" title="Familienzeit" target="_self">Familienzeit</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/diy" title="DIY" target="_self">DIY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/laender-specials" title="Länder Specials" target="_self">Länder Specials</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/besondere-rezepte" title="Besondere Rezepte" target="_self">Besondere Rezepte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/tv-spots" title="TV-Spots" target="_self">TV-Spots</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://ernaehrungsstudio.nestle.de" title="Nestlé Ernährungsstudio" target="_self">Nestlé Ernährungsstudio</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/nema-shop" title="Nestlé Marktplatz Shop" target="_self">Nestlé Marktplatz Shop</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/marken" class="naviItem js_toggleSubNavi" title="Marken" target="_self" data-qa-id="MenuItem">
+                    Marken
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#cerealien" title="Cerealien &amp; Riegel" target="_self">Cerealien &amp; Riegel</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#getraenke" title="Erfrischungsgetränke" target="_self">Erfrischungsgetränke</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#gesundheit" title="Gesundheit &amp; Wohlbefinden" target="_self">Gesundheit &amp; Wohlbefinden</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kaffee" title="Kaffee, Kakao &amp; Tee" target="_self">Kaffee, Kakao &amp; Tee</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kochen" title="Kochen" target="_self">Kochen</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#desserts" title="Milchprodukte &amp; Desserts" target="_self">Milchprodukte &amp; Desserts</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#eltern" title="ELTERN &amp; BABY" target="_self">ELTERN &amp; BABY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#schokolade" title="Süßwaren" target="_self">Süßwaren</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiefkuehl" title="Tiefkühlprodukte" target="_self">Tiefkühlprodukte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiernahrung" title="Tiernahrung" target="_self">Tiernahrung</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/produkte" class="naviItem js_toggleSubNavi" title="Produkte" target="_self" data-qa-id="MenuItem">
+                    Produkte
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/produkte" title="Produktübersicht" target="_self">Produktübersicht</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://productfinder.nestle.de/" title="Händler finden" target="_self">Händler finden</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/mitmachen" class="naviItem js_toggleSubNavi" title="Mitmachen" target="_self" data-qa-id="MenuItem">
+                    Mitmachen
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/produkttests" title="Produkttests" target="_self">Produkttests</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/gewinnspieluebersicht" title="Gewinnspiele" target="_self">Gewinnspiele</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/voting" title="Votings" target="_self">Votings</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/unsere-werte" class="naviItem js_toggleSubNavi" title="Unsere Werte" target="_self" data-qa-id="MenuItem">
+                    Unsere Werte
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/ernaehrung" title="Einzelne &amp; Familien" target="_self">Einzelne &amp; Familien</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/gesellschaft" title="Unsere Gemeinschaften" target="_self">Unsere Gemeinschaften</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/umwelt" title="Unser Planet" target="_self">Unser Planet</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/gemeinsam-fair" title="Gemeinsam Fair" target="_self">Gemeinsam Fair</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/qualitaetsbotschafter" title="Botschafter" target="_self">Botschafter</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/verbraucherrat" title="Verbraucherrat" target="_self">Verbraucherrat</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+            </ul>
+</nav>
+
+          </section>
+        </section>
+      </section>
+    </section>
+  </header>
+  <header class="headerUniversalContainer mobile">
+    <section class="siteContainer">
+      <section class="structure-container-col-1-set">
+        <section class="structure-container-col-1">
+          <section class="nemaHeader">
+                   <article class="universalSearchFormContainerBig theme1" id="search_form">
+    <form class="newnestlegermany-site-search universalSearchFormBigContainer" data-drupal-selector="views-exposed-form-newnestlegermany-site-search" action="https://www.nestle-marktplatz.de/suche" method="get" id="views-exposed-form-newnestlegermany-site-search" accept-charset="UTF-8">
+  <input class="universalSearchFormBigInputText js_autosuggest form-autocomplete form-text" data-drupal-selector="edit-suche" data-search-api-autocomplete-search="newnestlegermany_site_search" data-autocomplete-path="/search_api_autocomplete/newnestlegermany_site_search" type="text" id="edit-suche" name="suche" value="" size="60" maxlength="128" placeholder="Suchen" data-qa-id="Search"/>
+
+<section class="js_autosuggestWrapper" data-qa-id="SearchAutosuggest"></section><section class="universalSearchFormBigInputSubmitContainer"><input class="universalSearchFormBigInputSubmit button js-form-submit form-submit" data-drupal-selector="edit-submit-newnestlegermany-site-search" type="submit" id="edit-submit-newnestlegermany-site-search" value="" data-qa-id="SearchSubmit"/>
+</section>
+
+</form>
+
+</article>
+            <a title="Startseite" class="universalLogoContainerBig desktop" href="/" data-qa-id="HeaderLogoNema">
+        </a>
+        <a title="Startseite" class="logoContainer mobile" href="/" data-qa-id="HeaderLogoNema">
+    </a>
+<nav class="universalMetaNaviContainerBig desktop">
+    <ul>
+                    <li class="naviItemContainer">
+                <a class="naviItem" href="/hilfe-und-kontakt" target="_self" title="Kontakt &amp; Hilfe" data-qa-id="HeaderLink">Kontakt &amp; Hilfe</a>
+            </li>
+            </ul>
+</nav>
+
+<nav class="universalMetaNaviContainerBig mobile" id="contact_menu_mobile">
+    <ul>
+                    <li class="naviItemContainer">
+                <a class="naviItem" href="/hilfe-und-kontakt" target="_self" title="Kontakt &amp; Hilfe" data-qa-id="HeaderLink">Kontakt &amp; Hilfe</a>
+            </li>
+            </ul>
+</nav>
+
+    <nav role="navigation" aria-labelledby="block-useraccountmenu-menu" class="universalLoginContainerBig  naviItemContainer desktop">
+        
+
+
+                                                           <ul>
+                                                            <li class="naviItemContainer">
+                     <a href="/login" class="naviItem  main-header-login" data-qa-id="HeaderLink">Anmelden</a>
+                                      </li>
+                          </ul>
+                  <ul class="mobile">
+                                                                    <li class="naviItemContainer">
+                 
+                 <a href="/login" class="naviItem textTyp21">Anmelden</a>
+                                  </li>
+             
+         </ul>
+     
+      
+    </nav>
+
+    <nav role="navigation" aria-labelledby="block-useraccountmenu-menu" class="universalLoginContainerBig  naviItemContainer mobile" id="user_account_mob">
+        
+
+
+                                                           <ul>
+                                                            <li class="naviItemContainer">
+                     <a href="/login" class="naviItem  main-header-login" data-qa-id="HeaderLink">Anmelden</a>
+                                      </li>
+                          </ul>
+                  <ul class="mobile">
+                                                                    <li class="naviItemContainer">
+                 
+                 <a href="/login" class="naviItem textTyp21">Anmelden</a>
+                                  </li>
+             
+         </ul>
+     
+      
+    </nav>
+
+
+              <nav class="universalMainNaviContainerBig desktop" data-qa-id="Menu">
+    <ul>
+                    <li class="naviItemContainer">
+                <a href="/themen" class="naviItem hon_brandflyout hon_shoplayer" title="Themen" target="_self" data-qa-id="MenuItem">
+                    Themen
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/feste-feiern" title="Feste Feiern" target="_self">Feste Feiern</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/familienzeit" title="Familienzeit" target="_self">Familienzeit</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/diy" title="DIY" target="_self">DIY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/laender-specials" title="Länder Specials" target="_self">Länder Specials</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/besondere-rezepte" title="Besondere Rezepte" target="_self">Besondere Rezepte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/tv-spots" title="TV-Spots" target="_self">TV-Spots</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://ernaehrungsstudio.nestle.de" title="Nestlé Ernährungsstudio" target="_self">Nestlé Ernährungsstudio</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/nema-shop" title="Nestlé Marktplatz Shop" target="_self">Nestlé Marktplatz Shop</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/marken" class="naviItem hon_brandflyout hon_shoplayer" title="Marken" target="_self" data-qa-id="MenuItem">
+                    Marken
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#cerealien" title="Cerealien &amp; Riegel" target="_self">Cerealien &amp; Riegel</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#getraenke" title="Erfrischungsgetränke" target="_self">Erfrischungsgetränke</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#gesundheit" title="Gesundheit &amp; Wohlbefinden" target="_self">Gesundheit &amp; Wohlbefinden</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kaffee" title="Kaffee, Kakao &amp; Tee" target="_self">Kaffee, Kakao &amp; Tee</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kochen" title="Kochen" target="_self">Kochen</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#desserts" title="Milchprodukte &amp; Desserts" target="_self">Milchprodukte &amp; Desserts</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#eltern" title="ELTERN &amp; BABY" target="_self">ELTERN &amp; BABY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#schokolade" title="Süßwaren" target="_self">Süßwaren</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiefkuehl" title="Tiefkühlprodukte" target="_self">Tiefkühlprodukte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiernahrung" title="Tiernahrung" target="_self">Tiernahrung</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/produkte" class="naviItem hon_brandflyout hon_shoplayer" title="Produkte" target="_self" data-qa-id="MenuItem">
+                    Produkte
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/produkte" title="Produktübersicht" target="_self">Produktübersicht</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://productfinder.nestle.de/" title="Händler finden" target="_self">Händler finden</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/mitmachen" class="naviItem hon_brandflyout hon_shoplayer" title="Mitmachen" target="_self" data-qa-id="MenuItem">
+                    Mitmachen
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/produkttests" title="Produkttests" target="_self">Produkttests</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/gewinnspieluebersicht" title="Gewinnspiele" target="_self">Gewinnspiele</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/voting" title="Votings" target="_self">Votings</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+                    <li class="naviItemContainer">
+                <a href="/unsere-werte" class="naviItem hon_brandflyout hon_shoplayer" title="Unsere Werte" target="_self" data-qa-id="MenuItem">
+                    Unsere Werte
+                </a>
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/ernaehrung" title="Einzelne &amp; Familien" target="_self">Einzelne &amp; Familien</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/gesellschaft" title="Unsere Gemeinschaften" target="_self">Unsere Gemeinschaften</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/umwelt" title="Unser Planet" target="_self">Unser Planet</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/gemeinsam-fair" title="Gemeinsam Fair" target="_self">Gemeinsam Fair</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/qualitaetsbotschafter" title="Botschafter" target="_self">Botschafter</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/verbraucherrat" title="Verbraucherrat" target="_self">Verbraucherrat</a>
+                                </li>
+                            
+                                            </ul>
+                            </li>
+            </ul>
+</nav>
+
+<nav class="preHeader nemaMainNavigation mobile" data-qa-id="Menu">
+    <section class="requestMainNaviButtonContainer js_showNemaNavi">
+        <a title="zum Nestlé Marktplatz" class="naviItem" href="#"> zum Nestle Marktplatz > </a>
+        <span class="naviItem nemaMenu">Menü</span>
+    </section>
+    <ul id="mobile_main_navigation">
+                    <li class="naviItemContainer">
+                <a href="/themen" class="naviItem js_toggleSubNavi" title="Themen" target="_self" data-qa-id="MenuItem">
+                    Themen
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/feste-feiern" title="Feste Feiern" target="_self">Feste Feiern</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/familienzeit" title="Familienzeit" target="_self">Familienzeit</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/diy" title="DIY" target="_self">DIY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/laender-specials" title="Länder Specials" target="_self">Länder Specials</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/besondere-rezepte" title="Besondere Rezepte" target="_self">Besondere Rezepte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/tv-spots" title="TV-Spots" target="_self">TV-Spots</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://ernaehrungsstudio.nestle.de" title="Nestlé Ernährungsstudio" target="_self">Nestlé Ernährungsstudio</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/themen/nema-shop" title="Nestlé Marktplatz Shop" target="_self">Nestlé Marktplatz Shop</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/marken" class="naviItem js_toggleSubNavi" title="Marken" target="_self" data-qa-id="MenuItem">
+                    Marken
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#cerealien" title="Cerealien &amp; Riegel" target="_self">Cerealien &amp; Riegel</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#getraenke" title="Erfrischungsgetränke" target="_self">Erfrischungsgetränke</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#gesundheit" title="Gesundheit &amp; Wohlbefinden" target="_self">Gesundheit &amp; Wohlbefinden</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kaffee" title="Kaffee, Kakao &amp; Tee" target="_self">Kaffee, Kakao &amp; Tee</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#kochen" title="Kochen" target="_self">Kochen</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#desserts" title="Milchprodukte &amp; Desserts" target="_self">Milchprodukte &amp; Desserts</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#eltern" title="ELTERN &amp; BABY" target="_self">ELTERN &amp; BABY</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#schokolade" title="Süßwaren" target="_self">Süßwaren</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiefkuehl" title="Tiefkühlprodukte" target="_self">Tiefkühlprodukte</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/marken#tiernahrung" title="Tiernahrung" target="_self">Tiernahrung</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/produkte" class="naviItem js_toggleSubNavi" title="Produkte" target="_self" data-qa-id="MenuItem">
+                    Produkte
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/produkte" title="Produktübersicht" target="_self">Produktübersicht</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="https://productfinder.nestle.de/" title="Händler finden" target="_self">Händler finden</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/mitmachen" class="naviItem js_toggleSubNavi" title="Mitmachen" target="_self" data-qa-id="MenuItem">
+                    Mitmachen
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/produkttests" title="Produkttests" target="_self">Produkttests</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/gewinnspieluebersicht" title="Gewinnspiele" target="_self">Gewinnspiele</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/mitmachen/voting" title="Votings" target="_self">Votings</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+                    <li class="naviItemContainer">
+                <a href="/unsere-werte" class="naviItem js_toggleSubNavi" title="Unsere Werte" target="_self" data-qa-id="MenuItem">
+                    Unsere Werte
+                </a>
+                <!--
+                                    <ul class="universalSubNaviItemContainer">
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/ernaehrung" title="Einzelne &amp; Familien" target="_self">Einzelne &amp; Familien</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/gesellschaft" title="Unsere Gemeinschaften" target="_self">Unsere Gemeinschaften</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/umwelt" title="Unser Planet" target="_self">Unser Planet</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/gemeinsam-fair" title="Gemeinsam Fair" target="_self">Gemeinsam Fair</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/qualitaet/qualitaetsbotschafter" title="Botschafter" target="_self">Botschafter</a>
+                                </li>
+                            
+                                                                                    <li class="naviItemContainer naviLayout25">
+                                    <a class="naviItem textTyp3" href="/unsere-werte/verbraucherrat" title="Verbraucherrat" target="_self">Verbraucherrat</a>
+                                </li>
+                            
+                                            </ul>
+                -->
+            </li>
+            </ul>
+</nav>
+
+          </section>
+        </section>
+      </section>
+    </section>
+  </header>
+<header class="headerBrandContainer">
+  <section class="siteContainer layoutTyp2">
+    <section class="structure-container-col-2-set">
+      <section class="structure-container-col-1">
+      </section>
+      <section class="structure-container-col-2">
+
+      </section>
+    </section>
+  </section>
+</header>
+<section class="siteContainer">
+  <section class="contentContainer">
+    <section class="structure-container-col-2-set">
+      <section class="structure-container-col-1">
+
+      </section>
+
+      <section class="structure-container-col-2  ">
+          
+          <div data-drupal-messages-fallback class="hidden"></div>
+
+
+
+                        <div data-qa-id="1ColumnContainer" style="position:static;">
+  
+                        <article class="js_jcarouselTyp1 containerModulTyp3 layoutTyp1 theme1 nemaSlider" data-qa-id="Slider">
+    <section class="containerModulHeader"></section><section data-jcarousel="true" class="jcarousel" data-jcarouselautoscroll="true"><ul class="jcarouselContainer"><li class="jcarouselItemContainer" data-qa-id="Slide"><article class="contentContainerTyp1 layoutTyp9 js-clickmore-container theme1"><figure class="visualContainer"><img src="/sites/g/files/cisvdi466/files/h3ehf48952058642462_nestle-marktplatz-produkttests.jpg" class="visual" title=""></figure></article></li><li class="jcarouselItemContainer" data-qa-id="Slide"><article class="contentContainerTyp1 layoutTyp9 js-clickmore-container theme1"><figure class="visualContainer"><img src="/sites/g/files/cisvdi466/files/h51h418952058839070_Produkttests-meinung-mitteilen.jpg" class="visual" title=""></figure></article></li><li class="jcarouselItemContainer" data-qa-id="Slide"><article class="contentContainerTyp1 layoutTyp9 js-clickmore-container theme1"><figure class="visualContainer"><img src="/sites/g/files/cisvdi466/files/h83he08952059035678_Produkttests-mitgestaltunsmoeglichkeiten.jpg" class="visual" title=""></figure></article></li><li class="jcarouselItemContainer" data-qa-id="Slide"><article class="contentContainerTyp1 layoutTyp9 js-clickmore-container theme1"><figure class="visualContainer"><img src="/sites/g/files/cisvdi466/files/h98hb38952325734430_Produkttests-jede-stimme-zaehlt.jpg" class="visual" title=""></figure></article></li></ul></section><ul data-jcarouselpagination="true" class="jcarousel-pagination"></ul><section data-jcarouselcontrol="true" class="jcarousel-control-prev buttonContainer button"><a class="layoutTyp3" href="#" data-qa-id="SliderArrowleft">&lt;</a></section><section data-jcarouselcontrol="true" class="jcarousel-control-next buttonContainer button"><a class="layoutTyp4" href="#" data-qa-id="SliderArrowRight">&gt;</a></section>
+</article>
+
+                    
+                                                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme1 teaser_287866" data-qa-id="Introtext">
+                                <div class="descriptionContainer">
+                                            <h1 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Jetzt Produkttester werden - so einfach geht's
+                        </h1>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Herzlich Willkommen! Werden Sie ein Teil der großen Nestlé Produkttester-Community und unterstützen Sie uns dabei, unsere Marken und Produkte zu verbessern. Wir zählen auf Ihre Meinung, Wünsche, Anregungen und ehrlichen Bewertungen.<br /><br />
+Registrieren Sie sich jetzt und machen Sie mit: Bewerten Sie Ihre Lieblingsmarken auf Foren und Blogs, teilen Sie Fotos und Videos, sprechen und diskutieren Sie mit Freunden.</p>
+
+<p> </p>
+
+<p>Falls Sie schon registriert sind können Sie die Einstellung ganz einfach in Ihrem Profil anpassen. <br /><br />
+Wir freuen uns auf Ihr Feedback!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/profil/produkttester-verwaltung" target="_blank" title="Auf geht’s!"  data-qa-id="IntrotextCTA">
+                                Auf geht’s!
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                        
+
+                        <article class="contentContainerTyp5">
+                <h1 class="siteHeadline textTyp1" data-qa-id="Headline"><a name="aktuelleprodukttests" id="aktuelleprodukttests"></a>Aktuelle Produkttests</h1>
+            </article>
+            
+            
+</div>
+
+                    
+        <article class="containerModulTyp4 layoutTyp5 theme1">
+        <section class="containerModulContentWrapper" data-qa-id="3ColumnContainer">
+                            
+                        
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_6601026" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/produkttest-fuer-eltern-und-kleinkinder" target="_self" title="Mehr erfahren"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-11/210824_BEBA_Produkttest_Serie%205%20%28beendet%29%20-%20307x184px.jpg" alt="BEBA Folgemilch &amp; BEBA Kindermilch Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            BEBA Folgemilch &amp; BEBA Kindermilch Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        750 Eltern haben mit ihrem kleinen Schatz BEBA Folgemilch und BEBA Kindermilch getestet.  
+Vielen Dank für eure Teilnahme!
+
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/produkttest-fuer-eltern-und-kleinkinder" target="_self" title="Mehr erfahren"  data-qa-id="IntrotextCTA">
+                                Mehr erfahren
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_6364006" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/nesquik-trinkfertig" target="_self" title="Ergebnisse anschauen "  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-08/Mitmachen_Teaser_307x184px_Test_beendet_NQ_Trinkfertige_Milchvariante.jpg" alt="NESQUIK Trinkfertig-Produkttest " class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            NESQUIK Trinkfertig-Produkttest 
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.000 Familien haben NESQUIK Produkte getestet. Erfahre hier, wie es ihnen geschmeckt hat.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/nesquik-trinkfertig" target="_self" title="Ergebnisse anschauen "  data-qa-id="IntrotextCTA">
+                                Ergebnisse anschauen 
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_6203516" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/maggi-pastasaucen" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-08/Mitmachen_Teaser_307x184px_Test_beendet_jh.jpg" alt="MAGGI Pasta Saucen im Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            MAGGI Pasta Saucen im Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.000 Pasta-Fans haben MAGGI Pasta Saucen im Glas getestet. Erfahren Sie hier, wie sie ihnen geschmeckt haben!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/maggi-pastasaucen" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_6055781" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/little-steps" target="_self" title="mehr erfahren"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-06/Mitmachen_Teaser_Little_Steps-Produkttest_307x184_Test_beendet.jpg" alt="LITTLE STEPS Folge- und Kindermilch Produkttest " class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            LITTLE STEPS Folge- und Kindermilch Produkttest 
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>1.500 Eltern haben mit ihren Kindern die LITTLE STEPS Folgemilch und Kindermilch getestet. Vielen Dank für die Teilnahme!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/little-steps" target="_self" title="mehr erfahren"  data-qa-id="IntrotextCTA">
+                                mehr erfahren
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5828686" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/mitmachen/produkttests/felix-sossenschmaus" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-05/Mitmachen_Teaser_307x184px_Test_beendet_ab.jpg" alt="FELIX® Soßenschmaus Produkttest " class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            FELIX® Soßenschmaus Produkttest 
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>3.000 Katzenbesitzer haben FELIX® Soßenschmaus getestet. Erfahre hier, wie es ihren Rackern geschmeckt hat!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/mitmachen/produkttests/felix-sossenschmaus" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5588951" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/mitmachen/produkttests/bueffelheld-lernmemory" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-05/Mitmachen_Teaser_307x184px_Test_beendet_Bueffelheld.jpg" alt="Büffelheld-Lernmemory gratis testen" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Büffelheld-Lernmemory gratis testen
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>1.000 Familien mit Kids haben Büffelheld getestet. Erfahre hier, wie ihnen das Lernmemory gefallen hat.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/mitmachen/produkttests/bueffelheld-lernmemory" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5548096" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/wagner-bella-napoli" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-03/Mitmachen_Teaser_307x184px_Test_beendet_Wagner_Bella_Napoli.jpg" alt="ERNST WAGNERs BELLA NAPOLI Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            ERNST WAGNERs BELLA NAPOLI Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>1.500 Pizzafans haben ERNST WAGNERs BELLA NAPOLI getestet.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/wagner-bella-napoli" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5436116" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/nesquik-porridge" target="_self" title="Test mitverfolgen"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-03/Mitmachen_Teaser_307x184px_test_beenden_NQ_porridge.jpg" alt="NESQUIK All Natural Porridge Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            NESQUIK All Natural Porridge Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.000 Frühstücksfans haben NESQUIK All Natural Porridge getestet. Erfahren Sie hier, wie es ihnen geschmeckt hat.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/nesquik-porridge" target="_self" title="Test mitverfolgen"  data-qa-id="IntrotextCTA">
+                                Test mitverfolgen
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5436111" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/maggi-gap-suppen" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2021-03/Mitmachen_Teaser_307x184px_Test_beendet_maggi-Suppe.jpg" alt="MAGGI Suppen Produkttest " class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            MAGGI Suppen Produkttest 
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.000 Suppenfans haben MAGGI Guten Appetit Suppen getestet. Hier erfahren, wie sie ihnen geschmeckt haben!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/maggi-gap-suppen" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5209541" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/maggi-food-travel-fixe-produkttest" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-12/Mitmachen_Teaser_307x184px_Test_beendet_maggi-fixe.jpg" alt="MAGGI Food Travel Fixe Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            MAGGI Food Travel Fixe Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.500 Kochfans haben die neuen MAGGI Food Travel Fixe getestet. Erfahren Sie hier, wie sie ihnen geschmeckt haben!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/maggi-food-travel-fixe-produkttest" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_5176196" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/purina-one-dualnature" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-12/Mitmachen_Teaser_307x184px_Test_beendet_jh.jpg" alt="Purina ONE® DualNature™ Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Purina ONE® DualNature™ Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>3.000 Katzenbesitzer haben Purina ONE® DualNature™ mit Cranberry und mit Spirulina getestet. Erfahren Sie hier, wie es ihren Katzen geschmeckt hat!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/purina-one-dualnature" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_4796261" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/maggi-food-travel-wuerzpasten" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-10/maggi-food-travel-wuerzpasten-produkttest.jpg" alt="MAGGI Food Travel Würzpasten Produkttest " class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            MAGGI Food Travel Würzpasten Produkttest 
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>2.500 Kochfans haben MAGGI Food Travel Würzpasten getestet. Erfahren Sie hier, wie sie ihnen geschmeckt haben!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/maggi-food-travel-wuerzpasten" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_4650156" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/produkttests/maggi-saucy-noodles-produkttest" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-08/Mitmachen_Teaser_307x184px_test_beendet_jh.jpg" alt="MAGGI Magic Asia SAUCY NOODLES Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            MAGGI Magic Asia SAUCY NOODLES Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>1.000 Food-Fans haben MAGGI Magic Asia SAUCY NOODLES getestet. Erfahren Sie hier, wie sie ihnen geschmeckt haben!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/produkttests/maggi-saucy-noodles-produkttest" target="_self" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_4641456" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/mitmachen/produkttests/eltern-produkttest" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-08/200615_BEBA_Produkttest_Serie%205%20%28beendet%29%20-%20307x184px.jpg" alt="BEBA Folgemilch &amp; BEBA JUNIOR" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            BEBA Folgemilch &amp; BEBA JUNIOR
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>1.500 Eltern haben vom 27.07. bis zum 20.08.2020 BEBA Folgemilch und BEBA JUNIOR getestet. Sehen Sie jetzt, was dabei herausgekommen ist. Stillen ist die beste Ernährung für dein Baby. BEBA 2 für Säuglinge nach dem 6. Monat ab Einführung von Beikost.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/mitmachen/produkttests/eltern-produkttest" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_4444281" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/mitmachen/produkttests/gourmet-natures-creations" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-06/gourmet-natures-creations-produkttest.jpg" alt="GOURMET™ Nature’s Creations Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            GOURMET™ Nature’s Creations Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>10.000 Katzenbesitzer haben GOURMET™ Nature’s Creations getestet. Erfahren Sie hier, wie es ihren Katzen geschmeckt hat!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/mitmachen/produkttests/gourmet-natures-creations" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_4336706" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/mitmachen/produkttests/felix-tasty-shreds" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2020-05/034.402006%20FELIX%20Tasty%20Shreds%20NeMa_Teaser_B_307x184.jpg" alt="FELIX® Tasty Shreds Produkttest" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            FELIX® Tasty Shreds Produkttest
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>3.000 Katzenbesitzer haben FELIX® Tasty Shreds getestet. Erfahren Sie hier, wie es ihren Katzen geschmeckt hat!</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/mitmachen/produkttests/felix-tasty-shreds" target="_blank" title="Ergebnisse entdecken"  data-qa-id="IntrotextCTA">
+                                Ergebnisse entdecken
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme4 teaser_287906" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="//www.nestle-marktplatz.de/newsletter-registrierung" target="_blank" title="Jetzt anmelden"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/2019-11/Newsletter_abonieren_mini-teaser.jpg" alt="Immer up to date" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Immer up to date
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Gewinnspiele, Produkttests, interessante Artikel rund um die Themen Family &amp; Kids – tragen Sie sich gleich für den Nestlé Marktplatz Newsletter ein, damit Sie immer auf dem Laufenden sind! Hier geht’s zur kostenlosen Anmeldung.</p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="//www.nestle-marktplatz.de/newsletter-registrierung" target="_blank" title="Jetzt anmelden"  data-qa-id="IntrotextCTA">
+                                Jetzt anmelden
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+            
+                
+                
+                    </section>
+    </article>
+    
+                    
+
+  
+      
+                      <article class="containerModulTyp4 layoutTyp3">
+              <section class="containerModulContentWrapper" data-qa-id="2ColumnContainer">
+                  
+                  
+              </section>
+            </article>
+                  
+
+                    <div data-qa-id="1ColumnContainer" style="position:static;">
+  
+                            
+
+                        <article class="contentContainerTyp5">
+                <h1 class="siteHeadline textTyp1" data-qa-id="Headline">Produkttester werden: So geht's</h1>
+            </article>
+            
+            
+</div>
+
+                    
+        <article class="containerModulTyp4 layoutTyp5 theme1">
+        <section class="containerModulContentWrapper" data-qa-id="3ColumnContainer">
+                            
+                        
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme1 teaser_287931" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/h89ha38952059428894_Produkttest-registrierung.jpg" alt="1. Registrieren" class="visual" data-qa-id="IntrotextImage"/>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            1. Registrieren
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Formular ausfüllen, der Produkttester-Community beitreten und künftig Einladungs-E-Mails zu Produkttests erhalten.</p>
+
+            
+                        </div>
+                                                        </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme1 teaser_287936" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/h33hd88952059527198_Produkttest-anmeldung.jpg" alt="2. Bewerben" class="visual" data-qa-id="IntrotextImage"/>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            2. Bewerben
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Über den Link in der Einladungs-E-Mail Fragebogen beantworten und damit zum konkreten Produkttest bewerben.</p>
+
+            
+                        </div>
+                                                        </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp6  js-clickmore-container theme1 teaser_287941" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/h12ha98952059625502_Mitmachen-beim-produkttest.jpg" alt="3. Mitmachen" class="visual" data-qa-id="IntrotextImage"/>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            3. Mitmachen
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Paket erhalten, Produkte testen, mit Freunden teilen, bewerten und Feedback geben. Viel Spaß beim Testen!</p>
+
+            
+                        </div>
+                                                        </div>
+            </article>
+            
+            
+                
+                
+                    </section>
+    </article>
+    
+                    <div data-qa-id="1ColumnContainer" style="position:static;">
+  
+                            
+
+                        <article class="contentContainerTyp5">
+                <h1 class="siteHeadline textTyp1" data-qa-id="Headline">Alle Produkttests und Ergebnisse im Überblick</h1>
+            </article>
+            
+            
+</div>
+
+                    
+            <article class="containerModulTyp4 layoutTyp11 theme4" data-qa-id="Layoutteaseset">
+            <section class="containerModulContentWrapper">
+                                    
+                        
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/thomy-leichter-genuss" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/2019-08/190603_ThomyMitmachenTeaser_Rot_307x184_ss.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/thomy-leichter-genuss" target="_self">
+                THOMY Leichter Genuss
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/gourmet-schmelzender-kern" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/2019-07/Gourmet_Gold_Produkttest_Mitmachen%20Teaser_307x184.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/gourmet-schmelzender-kern" target="_self">
+                GOURMET™ Gold Schmelzender Kern
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/fruehlingserwachen-2019" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/h38hb18991977570334_produkttest-fruehling-multibrand-beendet.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/fruehlingserwachen-2019" target="_self">
+                „Frühlingserwachen“
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/beyond-2019" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/ha7h2d8992917946398_purina-one-dualnature-produkttest-ergebnisse.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/beyond-2019" target="_self">
+                Purina ONE® DualNature™
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/felix-soup-2019" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/h44h548989745709086_felix-soup-produkttest.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/felix-soup-2019" target="_self">
+                Felix
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/lion-2019" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/hfeha68988813131806_3-Teaser-320x192-mobil-rot.png" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/lion-2019" target="_self">
+                LION® 2GO
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+                    
+
+
+            <article class="contentContainerTyp7 layoutTyp8 theme4">
+                  <figure class="visualContainer">
+            <a href="/mitmachen/produkttests/rueckblick" target="_self">
+              <img src="/sites/g/files/cisvdi466/files/h5ch548952061198366_Produkttest-rueckblick.jpg" class="visual" title="">
+            </a>
+          </figure>
+                          <div class="descriptionContainer">
+            <h4 class="descriptionHeadline textTyp4" style="height: 44px;">
+              <a class="naviItem  textTyp4 " href="/mitmachen/produkttests/rueckblick" target="_self">
+                Archiv
+              </a>
+            </h4>
+          </div>
+              </article>
+      
+
+            
+                            </section>
+        </article>
+    
+                    <div data-qa-id="1ColumnContainer" style="position:static;">
+  
+                        
+
+
+  
+            <article class="theme4 contentContainerTyp3 js-clickmore-container">
+            
+                                                <h2 class="descriptionHeadline textTyp2">Nestlé sucht Sie – jetzt Produkttester werden!</h2>
+                            
+                            <section class="rteContainer">
+                    <p>Nestlé Cerealien Knusper-Müslis, neue Variationen aus der MAGGI Küche, leckere Mahlzeiten für den geliebten Vierbeiner und vieles mehr – Ihre Lieblingsmarken sind vielfältig und abwechslungsreich. </p>
+
+<p>Gemeinsam mit anderen Mitgliedern der Nestlé Produkttester-Community nehmen Sie bekannte und neue Markenprodukte genauestens unter die Lupe. Ihre Familie und Freunde sind natürlich ebenfalls herzlich willkommen, Feedback zu geben.</p>
+
+<p>Registrieren Sie sich jetzt als <a href="https://www.nestle-marktplatz.de/profil/produkttester-verwaltung" title="Nestlé Produkttester">Nestlé Produkttester</a> und füllen Sie unser Anmeldeformular aus. Bitte setzen Sie ein Häkchen bei „Ja, ich möchte Nestlé Deutschland Produkttester werden“. So erfahren Sie von zukünftigen Aktionen. Schauen Sie regelmäßig vorbei, es finden immer wieder neue Tests statt. Es lohnt sich!</p>
+
+<p>Um Ihre Registrierung abzuschließen, bestätigen Sie in der zugesandten E-Mail den angegebenen Link und teilen Sie uns mit, für welche Produktkategorien Sie sich interessieren. Ab sofort erhalten Sie immer dann eine E-Mail, wenn interessante Produkttests geplant sind. Nur über den Link zum Fragebogen in dieser E-Mail, können Sie sich für den jeweiligen Produkttest registrieren. </p>
+
+<p>Für viele Produkttests ist es uns wichtig, dass wir Ihre Interessen kennen, um so die richtigen Personen befragen zu können. Wir bitten Sie daher, Ihr Profil zu ergänzen und vorher ein paar spezifische Fragen zu beantworten. </p>
+
+<p>Nach der Bewerbungsphase informieren wir Sie, ob Sie als Tester ausgewählt wurden.</p>
+
+<p>Anschließend erhalten Sie von uns das Testpaket und können ausgiebig experimentieren. Zum Abschluss geht’s an die Bewertung der Produkte. Wir freuen uns darüber, wenn Sie sich mit Freunden und Bekannten austauschen oder Videos zu Ihrem Test auf unserer <a href="https://www.facebook.com/NestleMarktplatz" target="_blank" title="Facebookseite">Facebookseite</a> hochladen. In einem Fragebogen geben Sie uns zum Abschluss Ihr ausführliches Feedback zu Ihren persönlichen Erfahrungen und Erlebnissen mit den Produkten. </p>
+
+<p>Diese abwechslungsreichen und vielfältigen Kategorien erwarten Sie: Cerealien und Müsli, Eiscreme, Erfrischungsgetränke, Gesundheit und Wohlbefinden, Kaffee, Kakao und Tee, Kochen, Desserts, Mutter und Baby, Süßwaren, Tiefkühlprodukte, Tiernahrung, Wurst und Schinken. Gerne können Sie jederzeit auch Ihre Freunde und Bekannten in die Produkttester-Community einladen. </p>
+
+<p>So oder ähnlich können unsere Produkttests ablaufen:</p>
+
+<p>Für BÜBCHEN wurde das Wickelduo aus Wundschutzspray und Feuchttüchern getestet. Hier ging es darum, Reinigungskraft, Hautverträglichkeit, Duft, Hautgefühl und Entnahme aus der Packung zu begutachten.</p>
+
+<p>Aber auch die Lieblingsvierbeiner kommen nicht zu kurz: Zum Beispiel wurden schon bei FELIX, PURINA ONE BIFENSIS, PURINA DENTALIFE oder PURINA GOURMET Soup neue Mahlzeiten und attraktive Extras ausgiebig probiert.</p>
+
+<p>Wir freuen uns auf Ihr Feedback!</p>
+
+                </section>
+            
+                            <section class="buttonContainer button">
+                    <a href="https://www.nestle-marktplatz.de/profil/produkttester-verwaltung" class="naviItem layoutTyp1 textTyp11 js_openModal"
+                       title="Jetzt Produkttester werden">Jetzt Produkttester werden</a>
+                </section>
+                    </article>
+    
+                    
+            <article class="containerModulTyp7 js_accordionTyp1 theme1"  data-qa-id="Accordion">
+        
+                        
+
+        <h2 class="containerModulHeader textTyp20" data-qa-id="AccordionItemTitle">Ich möchte Nestlé Produkttester werden. Was muss ich dafür tun?</h2>
+
+      <section class="containerModulContentWrapper" data-qa-id="AccordionItemContent">
+      
+          
+          
+                        
+
+
+  
+            <article class="theme1 contentContainerTyp3 js-clickmore-container">
+            
+            
+                            <section class="rteContainer">
+                    <p>Neu hier? Dann klicken Sie unter „<a href="https://www.nestle-marktplatz.de/profil/produkttester-verwaltung" target="_blank">Anmeldung</a>“ auf „Neu registrieren“ und füllen Sie dort das Formular aus. </p>
+
+<p>Nach erfolgreicher Registrierung vervollständigen Sie die weiteren Angaben auf Ihrem Profil. So können wir Ihre Interessen kennenlernen und zukünftige Produkttests besser auf Sie abstimmen.</p>
+
+<p>Registriert und eingeloggt? Dann setzen Sie unter „Mein Profil“ im Menüpunkt „Produkttester“ ein Häkchen (siehe oben) und vervollständigen Sie den Fragebogen.</p>
+
+                </section>
+            
+                    </article>
+    
+            
+          
+          </section>
+  
+                    
+
+        <h2 class="containerModulHeader textTyp20" data-qa-id="AccordionItemTitle">Wie erfahre ich von neuen Produkttests?</h2>
+
+      <section class="containerModulContentWrapper" data-qa-id="AccordionItemContent">
+      
+          
+          
+                        
+
+
+  
+            <article class="theme1 contentContainerTyp3 js-clickmore-container">
+            
+            
+                            <section class="rteContainer">
+                    Wenn auf dem Nestlé Marktplatz neue Tester gesucht werden, kündigen wir dies immer an folgenden Stellen an: <ul><li>auf der Startseite</li><li>auf der Seite „Mitmachen/Produkttests“</li><li>auf Facebook </li><li>im Produkttester-Newsletter</li></ul><p>Über den Bewerbungslink im Newsletter gelangen Sie nach erfolgreicher Anmeldung zum Fragebogen und wandern so in den Auswahltopf für die Produkttester.</p>
+                </section>
+            
+                    </article>
+    
+            
+          
+          </section>
+  
+                    
+
+        <h2 class="containerModulHeader textTyp20" data-qa-id="AccordionItemTitle">Wie läuft ein Produkttest ab?</h2>
+
+      <section class="containerModulContentWrapper" data-qa-id="AccordionItemContent">
+      
+          
+          
+                        
+
+
+  
+            <article class="theme1 contentContainerTyp3 js-clickmore-container">
+            
+            
+                            <section class="rteContainer">
+                    <p>Werden Sie nach Ende der Bewerbungsfrist als Tester ausgewählt, informieren wir Sie per E-Mail und versenden kurz darauf Ihr Testpaket.</p>
+
+<p>Nun können Sie nach Herzenslust testen, mit Freunden und Bekannten darüber sprechen und diskutieren. Zusätzlich können Sie auf Facebook, in Blogs und Co. die Tests bewerten, Fotos und Videos teilen und was Ihnen sonst noch einfällt. Der Kreativität sind keine Grenzen gesetzt. </p>
+
+<p>Nachdem Sie den Bewertungsbogen ausgefüllt haben, werden die Ergebnisse als Nachbericht zusammengefasst und anonymisiert auf dem Nestlé Marktplatz veröffentlicht.</p>
+
+                </section>
+            
+                    </article>
+    
+            
+          
+          </section>
+  
+            
+        </article>
+    
+            
+</div>
+
+                    
+
+  
+      
+                      <article class="containerModulTyp4 layoutTyp2">
+              <section class="containerModulContentWrapper" data-qa-id="2ColumnContainer">
+                  
+                        
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp7  js-clickmore-container theme4 teaser_288051" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/mitmachen/gewinnspieluebersicht" target="_self" title="Jetzt mitmachen"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/ha4hc08988928081950_gewinnspiel-teilnahme.jpg" alt="Unsere Gewinnspiele" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Unsere Gewinnspiele
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Entdecken Sie die aufregende Nestlé Markenwelt – und mit etwas Glück können Sie bei uns tolle Preise gewinnen. </p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/mitmachen/gewinnspieluebersicht" target="_self" title="Jetzt mitmachen"  data-qa-id="IntrotextCTA">
+                                Jetzt mitmachen
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+                    
+                    
+        
+                            
+                            
+                    <article class="contentContainerTyp1 layoutTyp7  js-clickmore-container theme1 teaser_288056" data-qa-id="Introtext">
+                                    <figure class="visualContainer">
+                                                    <a class="" href="/newsletter-registrierung" target="_self" title="Anmelden"  data-qa-id="IntrotextImageCTA">
+                                <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/h27h2e8988929261598_newsletter-anmelden.jpg" alt="Newsletter" class="visual" data-qa-id="IntrotextImage"/>
+                            </a>
+                                            </figure>
+                                <div class="descriptionContainer">
+                                            <h2 class="descriptionHeadline textTyp2" data-qa-id="IntrotextTitle">
+                            Newsletter
+                        </h2>
+                                                                <div class="descriptionText textTyp10" data-qa-id="IntrotextBody">
+                            
+                        <p>Ob aktuelle Produkttests, Gewinnspiele oder News aus der Nestlé Welt – mit unserem Newsletter sind Sie immer uptodate. </p>
+
+            
+                        </div>
+                                                                <section class="buttonContainer button">
+                            <a class="naviItem layoutTyp1 textTyp11 " href="/newsletter-registrierung" target="_self" title="Anmelden"  data-qa-id="IntrotextCTA">
+                                Anmelden
+                            </a>
+                        </section>
+                                    </div>
+            </article>
+            
+            
+                  
+              </section>
+            </article>
+                  
+
+            
+<article class="containerModulTyp4 layoutTyp7 theme1">
+    <section class="containerModulContentWrapper" data-qa-id="Linkbar">
+                                                    <article class="contentContainerTyp7 layoutTyp10  js-clickmore-container  theme1">
+                    <figure class="visualContainer" data-qa-id="LinkbarItem">
+                        <a class="" href="/newsletter-registrierung" target="_self" title="/newsletter-registrierung" data-qa-id="LinkbarItemLink">
+                            <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/nema-sample-ico-newsletter-media_0.png" alt="/newsletter-registrierung" class="visual" data-qa-id="LinkbarItemImage">
+                        </a>
+                    </figure>
+
+                    <div class="descriptionContainer">
+                        <h4 class="descriptionHeadline textTyp4">
+                            <a class="naviItem textTyp4" href="/newsletter-registrierung" target="_self" title="Newsletter">
+                                Newsletter
+                            </a>
+                        </h4>
+                    </div>
+                </article>
+                                                            <article class="contentContainerTyp7 layoutTyp10  js-clickmore-container  theme1">
+                    <figure class="visualContainer" data-qa-id="LinkbarItem">
+                        <a class="" href="https://de-de.facebook.com/NestleMarktplatz" target="_blank" title="https://de-de.facebook.com/NestleMarktplatz" data-qa-id="LinkbarItemLink">
+                            <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/nema-sample-ico-facebook-media_0.png" alt="https://de-de.facebook.com/NestleMarktplatz" class="visual" data-qa-id="LinkbarItemImage">
+                        </a>
+                    </figure>
+
+                    <div class="descriptionContainer">
+                        <h4 class="descriptionHeadline textTyp4">
+                            <a class="naviItem textTyp4" href="https://de-de.facebook.com/NestleMarktplatz" target="_blank" title="Facebook">
+                                Facebook
+                            </a>
+                        </h4>
+                    </div>
+                </article>
+                                                            <article class="contentContainerTyp7 layoutTyp10  js-clickmore-container  theme1">
+                    <figure class="visualContainer" data-qa-id="LinkbarItem">
+                        <a class="" href="https://www.pinterest.de/NestleMarktplatz/" target="_blank" title="https://www.pinterest.de/NestleMarktplatz/" data-qa-id="LinkbarItemLink">
+                            <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/nema-sample-ico-pinterest-media.png" alt="https://www.pinterest.de/NestleMarktplatz/" class="visual" data-qa-id="LinkbarItemImage">
+                        </a>
+                    </figure>
+
+                    <div class="descriptionContainer">
+                        <h4 class="descriptionHeadline textTyp4">
+                            <a class="naviItem textTyp4" href="https://www.pinterest.de/NestleMarktplatz/" target="_blank" title="Pinterest">
+                                Pinterest
+                            </a>
+                        </h4>
+                    </div>
+                </article>
+                                                            <article class="contentContainerTyp7 layoutTyp10  js-clickmore-container  theme1">
+                    <figure class="visualContainer" data-qa-id="LinkbarItem">
+                        <a class="" href="/hilfe-und-kontakt" target="_self" title="/hilfe-und-kontakt" data-qa-id="LinkbarItemLink">
+                            <img src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/nema-sample-ico-faq-media.png" alt="/hilfe-und-kontakt" class="visual" data-qa-id="LinkbarItemImage">
+                        </a>
+                    </figure>
+
+                    <div class="descriptionContainer">
+                        <h4 class="descriptionHeadline textTyp4">
+                            <a class="naviItem textTyp4" href="/hilfe-und-kontakt" target="_self" title="FAQ">
+                                FAQ
+                            </a>
+                        </h4>
+                    </div>
+                </article>
+                                        </section>
+</article>
+
+      </section>
+
+    </section>
+  </section>
+</section>
+
+
+<footer class="footerBrandContainer">
+  <section class="siteContainer">
+    <section class="structure-container-col-2-set">
+      <section class="structure-container-col-1">&nbsp;</section>
+      <section class="structure-container-col-2">
+        <section class="sitemap containerModulTyp4 layoutTyp6 theme1">
+          <section class="containerModulContentWrapper">
+               <article class="contentContainerTyp22 layoutTyp1">
+                    <h2 class="listHeadline">
+                <a class="naviItem textTyp4" href="/themen">Themen</a>
+            </h2>
+                                    <ol class="listContainer">
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/feste-feiern" title="Feste Feiern" target="_self">Feste Feiern</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/familienzeit" title="Familienzeit" target="_self">Familienzeit</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/diy" title="DIY" target="_self">DIY</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/laender-specials" title="Länder Specials" target="_self">Länder Specials</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/besondere-rezepte" title="Besondere Rezepte" target="_self">Besondere Rezepte</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="/themen/tv-spots" title="TV-Spots" target="_self">TV-Spots</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem">
+                                                            <a class="naviItem" href="https://ernaehrungsstudio.nestle.de" title="Nestlé Ernährungsstudio" target="_blank">Nestlé Ernährungsstudio</a>
+                                </li>
+                            
+                                                                                                        <li class="listItem last">
+                                                            <a class="naviItem" href="/themen/nema-shop" title="Nestlé Marktplatz Shop" target="_self">Nestlé Marktplatz Shop</a>
+                                </li>
+                            
+                                            </ol>
+                            </li>
+         </article>
+
+              <article class="contentContainerTyp22 layoutTyp1">
+
+            <h2 class="listHeadline">
+            <a class="naviItem textTyp4" href="/mitmachen">Mitmachen</a>
+        </h2>
+                    <ol class="listContainer">
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/mitmachen/produkttests" title="Produkttests" target="_self">Produkttests</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/mitmachen/gewinnspieluebersicht" title="Gewinnspiele" target="_self">Gewinnspiele</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/mitmachen/voting" title="Votings" target="_self">Votings</a>
+                        </li>
+                    
+                            </ol>
+                </li>
+    </article>
+
+              <article class="contentContainerTyp22 layoutTyp1">
+
+            <h2 class="listHeadline">
+            <a class="naviItem textTyp4" href="/unsere-werte">Unsere Werte</a>
+        </h2>
+                    <ol class="listContainer">
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/qualitaet/ernaehrung" title="Einzelne &amp; Familien" target="_self">Einzelne &amp; Familien</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/qualitaet/gesellschaft" title="Unsere Gemeinschaften" target="_self">Unsere Gemeinschaften</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/qualitaet/umwelt" title="Unser Planet" target="_self">Unser Planet</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/unsere-werte/gemeinsam-fair" title="Gemeinsam Fair" target="_self">Gemeinsam Fair</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/qualitaet/qualitaetsbotschafter" title="Botschafter" target="_self">Botschafter</a>
+                        </li>
+                    
+                                                            <li class="listItem">
+                            <a class="naviItem" href="/unsere-werte/verbraucherrat" title="Verbraucherrat" target="_self">Verbraucherrat</a>
+                        </li>
+                    
+                            </ol>
+                </li>
+    </article>
+
+              <article class="contentContainerTyp22 layoutTyp1">
+
+    </article>
+
+          </section>
+        </section>
+      </section>
+    </section>
+  </section>
+</footer>
+<footer class="footerUniversalContainer">
+  <section class="siteContainer">
+    <section class="structure-container-col-1-set">
+      <section class="structure-container-col-1">
+          <nav class="footerNavigation">
+                    
+      <ul class="right" data-qa-id="FooterLinks">
+                <li class="naviItemContainer">
+                                <a href="/impressum"  class="naviItem textTyp14"> Impressum </a>
+                                  </li>
+                <li class="naviItemContainer">
+                                <a href="https://www.nestle.de/info/rechtshinweise" target="_blank" class="naviItem textTyp14"> Datenschutz </a>
+                                  </li>
+                <li class="naviItemContainer">
+                                <a href="https://productfinder.nestle.de/" target="_blank" class="naviItem textTyp14"> Händler finden </a>
+                                  </li>
+                <li class="naviItemContainer">
+                                                  <a id="_bapw-link" href="https://info.evidon.com/pub_info/16252?v=1&amp;nt=0&amp;nw=false" target="_blank" class="naviItem textTyp14"> Cookie Einstellungen </a>
+                                  </li>
+                <li class="naviItemContainer last">
+                                <a href="http://www.nestle.de/" target="_blank" class="naviItem textTyp14"> Nestle.de </a>
+                                  </li>
+        </ul>
+  
+
+
+    </nav>
+<a name="bottom"></a>
+      </section>
+    </section>
+  </section>
+    <a title="Nestlé" class="logoEcke" href="http://www.nestle.de" data-qa-id="FooterNestleLogo">
+  <img alt="Nestlé" src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/images/nestle_footer_logo.png">
+</a>
+
+<article class="contentContainerTyp2 layoutTyp9 js_sozialMediaTrigger" id="general_disclaimer">
+    <figure class="visualContainer">
+        <a id="generalDisclaimer" data-needajax="false" data-modalcontent=".generalDisclaimer" class="js_openModal" href="#">
+            <img class="visual mobile" alt="" src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/images/AddThis-Platzhalter-mobil-640.png">
+            <img class="visual desktop" alt="" src="https://www.nestle-marktplatz.de/sites/g/files/cisvdi466/files/images/Platzhalter-AddThis-NeMa-vertikal-grau.png">
+        </a>
+    </figure>
+</article>
+<div class="generalDisclaimerContainer">
+    <article class="contentContainerTyp1 layoutTyp6 js-clickmore-container general_disclaimer generalDisclaimer" data-reference="general_disclaimer" style="display:none">
+        <div class="descriptionContainer">
+            <h2 class="descriptionHeadline textTyp2">
+                Mit Freunden teilen!
+            </h2>
+            <div class="descriptionText textTyp10">
+                Die folgende Funktion ist nicht Teil der Website der Nestlé Deutschland AG. Bitte beachten Sie, dass mit der Bestätigung des Dialogs Daten von Ihnen an sämtliche in unsere Website integrierten Social Plugin – Anbieter und AddThis LLC (siehe hierzu den Punkt <a href="http://www.nestle.de/info/rechtshinweise#social-plugins">Werden auf unseren Websites Social Plugins verwendet?</a> in unseren Datenschutzbedingungen) übermittelt werden können. Um welche Daten zu welchem Zweck es sich handelt, können Sie den Datenschutzbedingungen des jeweiligen Anbieters auf deren Website entnehmen. Mit der Bestätigung des Dialogs erklären Sie sich mit dieser Datenübermittlung einverstanden.<br>
+<br>
+Wenn Sie diese Seite/ dieses Produkt teilen möchten, dann klicken Sie bitte im Anschluss nochmals auf das jeweilige Icon.
+            </div>
+            <section class="buttonContainer button">
+                <a class="naviItem js_showSozialMedia layoutTyp1 textTyp11" href="javascript:void(0);" target="_self" title="Ok, weiter">
+                    Ok, weiter
+                </a>
+            </section>
+        </div>
+    </article>
+</div>
+
+</footer>
+
+
+
+<script src="/sites/g/files/cisvdi466/files/js/js_rsi7vqSbzjIw09OpBVm8RYvgs51LI1T--u3Nxvgv-Zo.js"></script>
+
+</js-bottom-placeholder>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"NRJS-dcfae422587116ee2bb","applicationID":"875177911,875177912","transactionName":"ZFYHNRRUDEZRVkFdVl0cJAISXA1bH3FHQUlSXzkPCVEHaXNaW0BLXF8JBBRpLFpUUGNdXERwCg8SRw1ZXFBHGQdFWgAW","queueTime":0,"applicationTime":892,"atts":"SBEEQ1xOH0g=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

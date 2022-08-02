@@ -10,10 +10,8 @@ from setuptools import setup
 
 def get_version(package):
     "Return package version as listed in `__version__` in `init.py`"
-    # version = Path(package, '__init__.py').read_text() # Python >= 3.5
-    with open(str(Path(package, '__init__.py')), 'r', encoding='utf-8') as filehandle:
-        initfile = filehandle.read()
-    return re.search('__version__ = [\'"]([^\'"]+)[\'"]', initfile).group(1)
+    initfile = Path(package, '__init__.py').read_text()  # Python >= 3.5
+    return re.search('__version__ = [\'"]([^\'"]+)[\'"]', initfile)[1]
 
 
 def get_long_description():
@@ -30,8 +28,8 @@ def get_long_description():
 extras = {
     'all': [
         'cchardet >= 2.1.7',
-        'htmldate[speed] >= 1.2.1',
-        'py3langid >= 0.2.1',
+        'htmldate[speed] >= 1.3.0',
+        'py3langid >= 0.2.2',
         'pycurl >= 7.45.1',
         'urllib3[brotli]',
     ],
@@ -43,7 +41,7 @@ extras = {
 setup(
     name='trafilatura',
     version=get_version('trafilatura'),
-    description='Web scraping library and command-line tool for text discovery and retrieval. Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
+    description='Python package and command-line tool designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are web crawling, downloads, scraping, and extraction of main texts, metadata and comments.',
     long_description=get_long_description(),
     classifiers=[
         # As from https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -87,14 +85,14 @@ setup(
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',
     packages=['trafilatura'],
-    package_data={'trafilatura': ['data/tei-schema.pickle', 'settings.cfg']},
+    package_data={'trafilatura': ['data/tei-schema-pickle.lzma', 'data/jt-stopwords-pickle.lzma', 'settings.cfg']},
     include_package_data=True,
     python_requires='>=3.6',
     install_requires=[
         'certifi',
-        'charset_normalizer >= 2.0.12',
-        'courlan >= 0.7.1',
-        'htmldate >= 1.2.1',
+        'charset_normalizer >= 2.1.0',
+        'courlan >= 0.8.3',
+        'htmldate >= 1.3.0',
         'justext >= 3.0.0',
         'lxml >= 4.6.4',
         'urllib3 >= 1.26, < 2',

@@ -116,11 +116,22 @@ Only ``include_tables`` is activated by default.
     If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
 
 
+Optimizing for precision and recall
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions:
+
+.. code-block:: python
+
+    >>> result = extract(downloaded, url, favor_precision=True)
+
+They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+
 
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_).
+The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_) or if the target language is not available.
 
 .. code-block:: python
 
@@ -152,16 +163,13 @@ The following combination can lead to shorter processing times:
 Extraction settings
 -------------------
 
-Precision and recall-oriented presets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions, e.g. ``favor_precision=True``. They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+Settings file
+^^^^^^^^^^^^^
 
 
-Text extraction
-^^^^^^^^^^^^^^^
+The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified and a custom configuration file can be provided with the ``config`` parameter to the ``bare_extraction()`` and ``extract()`` functions.
 
-Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``config`` parameter in ``bare_extraction`` or ``extract``, which overrides the standard settings:
+This overrides the standard settings:
 
 .. code-block:: python
 
@@ -176,21 +184,41 @@ Text extraction can be parametrized by providing a custom configuration file (th
     >>> extract(downloaded, settingsfile="myfile.cfg")
 
 
-Output Python objects
-^^^^^^^^^^^^^^^^^^^^^
+.. note::
+    Useful adjustments include download parameters, minimal extraction length, or de-duplication settings.
+    User agent settings can also be specified in a custom ``settings.cfg`` file.
 
-The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
+Disabling ``signal``
+~~~~~~~~~~~~~~~~~~~~
+
+A timeout exit during extraction can be turned off if malicious data are not an issue or if you run into an error like `signal only works in main thread <https://github.com/adbar/trafilatura/issues/202>`_. In this case, the following code can be useful as it explicitly changes the required setting:
 
 .. code-block:: python
 
-    >>> from trafilatura import bare_extraction
-    >>> bare_extraction(downloaded)
+    # see above for imports
+    >>> newconfig = use_config()
+    >>> newconfig.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
+    >>> extract(downloaded, config=newconfig)
 
 
-Date extraction
-^^^^^^^^^^^^^^^
+Package settings
+^^^^^^^^^^^^^^^^
+
+For further configuration (if the ``settings.cfg`` file is not enough) you can edit package-wide variables contained in the `settings.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.py>`_ file:
+
+1. `Clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_
+2. Edit ``settings.py``
+3. Reinstall the package locally: ``pip install --no-deps -U .`` in the home directory of the cloned repository
+
+These remaining variables greatly alter the functioning of the package!
+
+
+Metadata extraction
+^^^^^^^^^^^^^^^^^^^
+
+Date
+~~~~
 
 Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. By default, focus is on original dates and the extraction replicates the *fast/no_fallback* option.
 
@@ -208,8 +236,8 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
     >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
 
 
-Passing URLs
-^^^^^^^^^^^^
+URL
+~~~
 
 Even if the page to process has already been downloaded it can still be useful to pass the URL as an argument. See this `previous bug <https://github.com/adbar/trafilatura/issues/75>`_ for an example:
 
@@ -224,24 +252,20 @@ Even if the page to process has already been downloaded it can still be useful t
     # date found in URL, extraction successful
 
 
-Customization
--------------
+Input/Output types
+------------------
 
+Python objects as output
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Settings file
-^^^^^^^^^^^^^
+The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-
-The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified. It currently entails variables related to text extraction.
+The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
 
 .. code-block:: python
 
-    >>> from trafilatura.settings import use_config
-    >>> myconfig = use_config('path/to/myfile')
-    >>> extract(downloaded, config=myconfig)
-
-
-User agent settings can also be specified in a custom ``settings.cfg`` file. Then you can apply the changes by parsing it beforehand and using the config argument.
+    >>> from trafilatura import bare_extraction
+    >>> bare_extraction(downloaded)
 
 
 Raw HTTP response objects
@@ -269,18 +293,6 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
     >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
     >>> extract(mytree)
     'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
-
-
-Package settings
-^^^^^^^^^^^^^^^^
-
-For further configuration (if the ``settings.cfg`` file is not enough) you can edit package-wide variables contained in the `settings.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.py>`_ file:
-
-1. `Clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_
-2. Edit ``settings.py``
-3. Reinstall the package locally: ``pip install --no-deps -U .`` in the home directory of the cloned repository
-
-These remaining variables greatly alter the functioning of the package!
 
 
 Navigation

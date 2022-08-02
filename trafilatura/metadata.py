@@ -16,7 +16,7 @@ from lxml.html import tostring
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape
+from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape, uniquify_list
 from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
@@ -56,15 +56,15 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
-URL_COMP_CHECK = re.compile(r'https?://|/')
+URL_COMP_CHECK = re.compile(r'https?://')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
 
 METANAME_AUTHOR = {
-    'author', 'byl', 'citation_author', 'dc.creator', 'dc.creator.aut',
-    'dc:creator',
+    'article:author','author', 'byl', 'citation_author',
+    'dc.creator', 'dc.creator.aut', 'dc:creator',
     'dcterms.creator', 'dcterms.creator.aut', 'parsely-author',
     'sailthru.author', 'shareaholic:article_author_name'
 }  # questionable: twitter:creator
@@ -74,8 +74,9 @@ METANAME_DESCRIPTION = {
     'description', 'sailthru.description', 'twitter:description'
 }
 METANAME_PUBLISHER = {
-    'citation_journal_title', 'copyright', 'dc.publisher',
-    'dc:publisher', 'dcterms.publisher', 'publisher'
+    'article:publisher', 'citation_journal_title', 'copyright',
+    'dc.publisher', 'dc:publisher', 'dcterms.publisher',
+    'publisher'
 }  # questionable: citation_publisher
 METANAME_TAG = {
     'citation_keywords', 'dcterms.subject', 'keywords', 'parsely-tags',
@@ -89,6 +90,8 @@ METANAME_TITLE = {
 OG_AUTHOR = {'og:author', 'og:article:author'}
 PROPERTY_AUTHOR = {'author', 'article:author'}
 TWITTER_ATTRS = {'twitter:site', 'application-name'}
+
+# also interesting: article:section & og:type
 
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
@@ -167,6 +170,8 @@ def examine_meta(tree):
                 tags.append(normalize_tags(content_attr))
             elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
+            elif elem.get('property') == 'article:publisher':
+                site_name = site_name or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
@@ -238,11 +243,11 @@ def examine_title_element(tree):
     '''Extract text segments out of main <title> element.'''
     title, first, second = None, None, None
     try:
-        title = trim(tree.xpath('//head//title')[0].text_content())
+        title = trim(tree.xpath('.//head//title')[0].text_content())
         mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch is not None:
-            first = mymatch.group(1) or None
-            second = mymatch.group(2) or None
+            first = mymatch[1] or None
+            second = mymatch[2] or None
     except IndexError:
         LOGGER.warning('no main title found')
     return title, first, second
@@ -251,7 +256,7 @@ def examine_title_element(tree):
 def extract_title(tree):
     '''Extract the document title'''
     # only one h1-element: take it
-    h1_results = tree.xpath('//h1')
+    h1_results = tree.findall('.//h1')
     if len(h1_results) == 1:
         title = trim(h1_results[0].text_content())
         if len(title) > 0:
@@ -271,7 +276,7 @@ def extract_title(tree):
         return h1_results[0].text_content()
     # take first h2-title
     try:
-        title = tree.xpath('//h2')[0].text_content()
+        title = tree.xpath('.//h2')[0].text_content()
     except IndexError:
         LOGGER.warning('no h2 title found')
     return title
@@ -283,6 +288,7 @@ def extract_author(tree):
     author = extract_metainfo(subtree, author_xpaths, len_limit=120)
     if author:
         author = normalize_authors(None, author)
+    # copyright?
     return author
 
 
@@ -292,16 +298,14 @@ def extract_url(tree, default_url=None):
     # default url as fallback
     url = default_url
     # try canonical link first
-    element = tree.find('.//head//link[@rel="canonical"]')
-    if element is not None and 'href' in element.attrib and URL_COMP_CHECK.match(element.attrib['href']):
+    element = tree.find('.//head//link[@rel="canonical"][@href]')
+    if element is not None and URL_COMP_CHECK.match(element.attrib['href']):
         url = element.attrib['href']
     # try default language link
     else:
-        for element in tree.iterfind('.//head//link[@rel="alternate"]'):
+        for element in tree.iterfind('.//head//link[@rel="alternate"][@hreflang]'):
             if (
-                'hreflang' in element.attrib
-                and element.attrib['hreflang'] is not None
-                and element.attrib['hreflang'] == 'x-default'
+                element.attrib['hreflang'] == 'x-default'
                 and URL_COMP_CHECK.match(element.attrib['href'])
             ):
                 LOGGER.debug(tostring(element, pretty_print=False, encoding='unicode').strip())
@@ -319,7 +323,7 @@ def extract_url(tree, default_url=None):
                 domain_match = re.match(r'https?://[^/]+', element.attrib['content'])
                 if domain_match:
                     # prepend URL
-                    url = domain_match.group(0) + url
+                    url = domain_match[0] + url
                     break
     # sanity check: don't return invalid URLs
     if url is not None:
@@ -348,27 +352,29 @@ def extract_catstags(metatype, tree):
         results.extend(
             elem.text_content()
             for elem in tree.xpath(catexpr)
-            if 'href' in elem.attrib and re.search(regexpr, elem.attrib['href'])
+            if re.search(regexpr, elem.attrib['href'])
         )
         if results:
             break
     # category fallback
     if metatype == 'category' and not results:
-        element = tree.find('.//head//meta[@property="article:section"]')
-        if element is not None and 'content' in element.attrib:
+        for element in tree.xpath('.//head//meta[@property="article:section" or contains(@name, "subject")][@content]'):
             results.append(element.attrib['content'])
+        # optional: search through links
+        #if not results:
+        #    for elem in tree.xpath('.//a[@href]'):
+        #        search for 'category'
     results = [line_processing(x) for x in results if x is not None]
-    return [x for x in results if x is not None]
+    return uniquify_list([x for x in results if x is not None])
 
 
 def parse_license_element(element, strict=False):
     '''Probe a link for identifiable free license cues.
        Parse the href attribute first and then the link text.'''
-    if element.get('href') is not None:
-       # look for Creative Commons elements
-        match = LICENSE_REGEX.search(element.get('href'))
-        if match:
-            return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
+   # look for Creative Commons elements
+    match = LICENSE_REGEX.search(element.get('href'))
+    if match:
+        return 'CC ' + match[1].upper() + ' ' + match[2]
     if element.text is not None:
         # just return the anchor text without further ado
         if strict is False:
@@ -376,7 +382,7 @@ def parse_license_element(element, strict=False):
         # else: check if it could be a CC license
         match = TEXT_LICENSE_REGEX.search(element.text)
         if match:
-            return match.group(0)
+            return match[0]
     return None
 
 
@@ -384,14 +390,14 @@ def extract_license(tree):
     '''Search the HTML code for license information and parse it.'''
     result = None
     # look for links labeled as license
-    for element in tree.xpath('//a[@rel="license"]'):
+    for element in tree.findall('.//a[@rel="license"][@href]'):
         result = parse_license_element(element, strict=False)
         if result is not None:
             break
     # probe footer elements for CC links
     if result is None:
         for element in tree.xpath(
-            '//footer//a|//div[contains(@class, "footer") or contains(@id, "footer")]//a'
+            './/footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
         ):
             result = parse_license_element(element, strict=True)
             if result is not None:
@@ -462,6 +468,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata.sitename is None:
         metadata.sitename = extract_sitename(tree)
     if metadata.sitename is not None:
+        # fix: take 1st element (['Westdeutscher Rundfunk'])
+        if isinstance(metadata.sitename, list):
+            metadata.sitename = metadata.sitename[0]
         if metadata.sitename.startswith('@'):
             # scrap Twitter ID
             metadata.sitename = re.sub(r'^@', '', metadata.sitename)
@@ -479,7 +488,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     elif metadata.url:
         mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url)
         if mymatch:
-            metadata.sitename = mymatch.group(1)
+            metadata.sitename = mymatch[1]
     # categories
     if not metadata.categories:
         metadata.categories = extract_catstags('category', tree)

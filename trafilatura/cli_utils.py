@@ -48,7 +48,7 @@ def load_input_urls(args):
                 for line in inputfile:
                     url_match = re.match(r'https?://[^\s]+', line)
                     if url_match:
-                        input_urls.append(url_match.group(0))
+                        input_urls.append(url_match[0])
 
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
@@ -216,9 +216,8 @@ def download_queue_processing(url_store, args, counter, config):
             if result is not None and result != '':
                 counter = process_result(result, args, url, counter, config)
             else:
-                LOGGER.debug('No result for URL: %s', url)
-                if args.archived is True:
-                    errors.append(url)
+                LOGGER.warning('No result for URL: %s', url)
+                errors.append(url)
     return errors, counter
 
 
@@ -285,8 +284,9 @@ def url_processing_pipeline(args, url_store):
     # print list without further processing
     if args.list:
         for domain in url_store.urldict:
+            # write_result('\n'.join(url_store.find_unvisited_urls(domain)), args)
             print('\n'.join(url_store.find_unvisited_urls(domain)))
-        return  # sys.exit(0)
+        return False  # sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
@@ -306,6 +306,10 @@ def url_processing_pipeline(args, url_store):
         if len(url_store.find_known_urls('https://web.archive.org')) > 0:
             archived_errors, _ = download_queue_processing(url_store, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
+            # pass information along if URLs are missing
+            return bool(archived_errors)
+    # pass information along if URLs are missing
+    return bool(errors)
 
 
 def file_processing_pipeline(args):

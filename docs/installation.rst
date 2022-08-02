@@ -62,6 +62,13 @@ This project is under active development, please make sure you keep it up-to-dat
 On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
 
 
+Older Python versions
+~~~~~~~~~~~~~~~~~~~~~
+
+- Last version for Python 3.5: ``pip install trafilatura==0.9.3``
+- Last version for Python 3.4: ``pip install trafilatura==0.8.2``
+
+
 Command-line tool
 ~~~~~~~~~~~~~~~~~
 
@@ -70,7 +77,6 @@ If you installed the library successfully but cannot start the command-line tool
 If you are using a Unix derivative (e.g. Linux, OS X), you can achieve this by running the following command: ``export PATH="$HOME/.local/bin:$PATH"``.
 
 For local or user installations where trafilatura cannot be used from the command-line, please refer to `the official Python documentation <https://docs.python.org/3/library/site.html#cmdoption-site-user-base>`_ and this page on `finding executables from the command-line <https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line>`_.
-
 
 
 Additional functionality

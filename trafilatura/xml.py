@@ -7,6 +7,7 @@ All functions related to XML generation, processing and validation.
 ## under GNU GPL v3 license
 
 import logging
+import lzma
 
 from json import dumps as json_dumps
 from html import unescape
@@ -22,7 +23,7 @@ from .utils import sanitize
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema.pickle')
+TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
@@ -30,7 +31,8 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 
 
 def build_json_output(docmeta):
@@ -41,9 +43,9 @@ def build_json_output(docmeta):
     outputdict['excerpt'] = outputdict.pop('description')
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
-    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False, include_links=False)
+    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False)
     if outputdict['commentsbody'] is not None:
-        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
+        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False)
     else:
         del outputdict['commentsbody']
     return json_dumps(outputdict, ensure_ascii=False)
@@ -134,14 +136,14 @@ def build_tei_output(docmeta):
     return output
 
 
-def check_tei(tei, url):
+def check_tei(xmldoc, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
-    for elem in tei.iter('head'):
+    for elem in xmldoc.iter('head'):
         elem.tag = 'fw'
         elem.set('type', 'header')
     # look for elements that are not valid
-    for element in tei.xpath('//text/body//*'):
+    for element in xmldoc.findall('.//text/body//*'):
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -156,35 +158,37 @@ def check_tei(tei, url):
                 element.attrib.pop(attribute)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
-    return tei
+    return xmldoc
 
 
-def validate_tei(tei):  # , filename=""
+def validate_tei(xmldoc):  # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
         # load validator
-        with open(TEI_SCHEMA, 'rb') as schemafile:
+        with lzma.open(TEI_SCHEMA, 'rb') as schemafile:
             schema_data = load_pickle(schemafile)
-        relaxng_doc = fromstring(schema_data)
-        TEI_RELAXNG = RelaxNG(relaxng_doc)
-    result = TEI_RELAXNG.validate(tei)
+        TEI_RELAXNG = RelaxNG(fromstring(schema_data))
+    result = TEI_RELAXNG.validate(xmldoc)
     if result is False:
         LOGGER.warning('not a valid TEI document: %s', TEI_RELAXNG.error_log.last_error)
     return result
 
 
-def replace_element_text(element, include_formatting, include_links):
+def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting: convert to markdown
-    if include_formatting is True and element.text is not None:
-        if element.tag == 'head':
-            try:
-                number = int(element.get('rend')[1])
-            except (TypeError, ValueError):
-                number = 2
-            element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+    if include_formatting is True:
+        if element.tag in ('del', 'head') and element.text is not None:
+            if element.tag == 'head':
+                try:
+                    number = int(element.get('rend')[1])
+                except (TypeError, ValueError):
+                    number = 2
+                element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+            elif element.tag == 'del':
+                element.text = ''.join(['~~', element.text, '~~'])
         elif element.tag == 'hi':
             if element.get('rend') == '#b':
                 element.text = ''.join(['**', element.text, '**'])
@@ -194,10 +198,8 @@ def replace_element_text(element, include_formatting, include_links):
                 element.text = ''.join(['__', element.text, '__'])
             elif element.get('rend') == '#t':
                 element.text = ''.join(['`', element.text, '`'])
-        elif element.tag == 'del':
-            element.text = ''.join(['~~', element.text, '~~'])
     # handle links
-    if include_links is True and element.tag == 'ref':
+    if element.tag == 'ref':
         try:
             element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
         except TypeError:
@@ -216,12 +218,12 @@ def replace_element_text(element, include_formatting, include_links):
     return full_text
 
 
-def merge_with_parent(element, include_formatting=False, include_links=False):
+def merge_with_parent(element, include_formatting=False):
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
     if parent is None:
         return
-    full_text = replace_element_text(element, include_formatting, include_links)
+    full_text = replace_element_text(element, include_formatting)
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
@@ -236,33 +238,29 @@ def merge_with_parent(element, include_formatting=False, include_links=False):
     parent.remove(element)
 
 
-def xmltotxt(xmloutput, include_formatting, include_links):
+def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
-    # etree.strip_tags(xmloutput, 'div', 'main', 'span')
-    # remove and insert into the previous tag
-    for element in xmloutput.xpath('//hi|//ref'):
-        merge_with_parent(element, include_formatting, include_links)
-        continue
+    # strip_tags(xmloutput, 'div', 'main', 'span')
     # iterate and convert to list of strings
     for element in xmloutput.iter('*'):
-        # process text
         if element.text is None and element.tail is None:
             if element.tag == 'graphic':
                 # add source, default to ''
-                returnlist.extend(['\n', element.get('src', '')])
-                # proceed with other potential attributes
+                text = element.get('title', '')
                 if element.get('alt') is not None:
-                    returnlist.extend([' ', element.get('alt')])
-                if element.get('title') is not None:
-                    returnlist.extend([' ', element.get('title')])
+                    text += ' ' + element.get('alt')
+                returnlist.extend(['![', text, ']', '(', element.get('src', ''), ')'])
             # newlines for textless elements
             if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
             continue
-        textelement = replace_element_text(element, include_formatting, include_links)
-        if element.tag in TEXTELEMS:
+        # process text
+        textelement = replace_element_text(element, include_formatting)
+        # common elements
+        if element.tag in NEWLINE_ELEMS:
             returnlist.extend(['\n', textelement, '\n'])
+        # particular cases
         elif element.tag == 'item':
             returnlist.extend(['\n- ', textelement, '\n'])
         elif element.tag == 'cell':
@@ -270,16 +268,17 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
-            LOGGER.debug('unexpected element: %s', element.tag)
+            if element.tag not in SPECIAL_FORMATTING:
+                LOGGER.debug('unprocessed element in output: %s', element.tag)
             returnlist.extend([textelement, ' '])
     return unescape(sanitize(''.join(returnlist)))
 
 
 def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
-    tei = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    header = write_fullheader(tei, docmeta)
-    textelem = SubElement(tei, 'text')
+    teidoc = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    header = write_fullheader(teidoc, docmeta)
+    textelem = SubElement(teidoc, 'text')
     textbody = SubElement(textelem, 'body')
     # post
     postbody = clean_attributes(docmeta.body)
@@ -292,12 +291,12 @@ def write_teitree(docmeta):
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
-    return tei
+    return teidoc
 
 
-def write_fullheader(tei, docmeta):
+def write_fullheader(teidoc, docmeta):
     '''Write TEI header based on gathered metadata'''
-    header = SubElement(tei, 'teiHeader')
+    header = SubElement(teidoc, 'teiHeader')
     filedesc = SubElement(header, 'fileDesc')
     bib_titlestmt = SubElement(filedesc, 'titleStmt')
     bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')

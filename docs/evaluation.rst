@@ -18,7 +18,7 @@ Alternatives
 
 Although a few corresponding Python packages are not actively maintained the following alternatives exist.
 
-These packages keep the structure intact but don't focus on main text extraction:
+These packages keep the structure intact but do not focus on main text extraction:
 
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language
 - `html_text <https://github.com/TeamHG-Memex/html-text>`_ converts HTML code to plain text
@@ -26,39 +26,77 @@ These packages keep the structure intact but don't focus on main text extraction
 
 These packages focus on main text extraction:
 
-- `boilerpy3 <https://github.com/jmriebold/BoilerPy3>`_ is a Python version of the `boilerpipe algorithm <https://github.com/kohlschutter/boilerpipe>`_ for boilerplate removal and fulltext extraction
-- `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires more dependencies and potentially fine-tuning
+- `boilerpy3 <https://github.com/jmriebold/BoilerPy3>`_ is a Python version of the boilerpipe algorithm for boilerplate removal and fulltext extraction
+- *dragnet* is not maintained anymore, it is provided for reference only (in older evaluations)
 - `goose3 <https://github.com/goose3/goose3>`_ can extract information for embedded content but doesn't preserve markup
 - `jusText <https://github.com/miso-belica/jusText>`_ is designed to preserve mainly text containing full sentences along with some markup, it has been explicitly developed to create linguistic resources
-- `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
+- `newspaper3k <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
 - `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
-- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
+- `readability-lxml <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
+- `readabilipy <https://github.com/alan-turing-institute/ReadabiliPy>`_ contains a Python wrapper for Mozilla's Node.js package, as well as article extraction routines written in pure Python
+- `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here, several options are tested regarding main text extraction only, without metadata or comments
 
-Last but not least, `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here. It downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML.
-
-The tools are compared to the raw page source and to a meaningful baseline consisting of extracting all the text contained in paragraph, code or quoting elements.
+The tools are compared to the raw page source and to a meaningful baseline consisting of extracting the raw text contained in the JSON article element or in a combination of paragraph, code and quote elements.
 
 
 Description
 -----------
 
-**Test set**: The experiments below are run on a collection of documents which are either typical for Internet articles (news outlets, blogs) or non-standard and thus harder to process. Some contain mixed content (lists, tables) and/or non-standard not fully valid HTML code. They were selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness a few documents in other languages are added (notably English, French, other European languages, Chinese and Arabic).
+**Test set**: The experiments below are run on a collection of documents which are either typical for Internet articles (news outlets, blogs). Some are harder to process due to mixed content (lists, tables) or not fully valid HTML code. They are selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness documents in other languages are added (notably English, French, other European languages, Chinese and Arabic, about 20-30% of the total).
 
 **Evaluation**: Decisive document segments are singled out which are not statistically representative but very significant in the perspective of working with the texts, most notably left/right columns, additional header, author or footer information such as imprints or addresses, as well as affiliated and social network links, in short boilerplate. Raw text segments are expected which is also a way to evaluate the quality of HTML extraction in itself.
 
-**Time**: The execution time is not to be taken too seriously, the only conclusion at this stage is that *goose3* and *newspaper* are slower than the rest while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction. Baseline extraction is simple and fast.
+**Time**: The execution time is provided as an indication. As the baseline extraction is simple and fast, it is used for the benchmark. Certain packages are noticeably slower than the rest: *goose3* and *newspaper*, while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction. ReadabiliPy is very slow for unclear reasons.
 
-**Errors**: The *newspaper* and *boilerpipe* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs.
+**Errors**: The *boilerpy3*, *newspaper3k*, and *readabilipy* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
 
-**Results**: The baseline beats a few systems, showing its interest. It turns out that rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions. *justext* is highly configurable and tweaking its configuration leads to better performance than its generic settings.
+**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions.
 
-**Roadmap**: Further evaluations coming up, including additional tools and languages. Comment extraction still has to be evaluated, although most libraries don't offer this functionality.
+**Roadmap**: Further evaluations will be run, including additional tools and languages. Comment extraction still has to be evaluated, although most libraries don not offer this functionality.
 
-The evaluation script is available on the project repository: `tests/comparison.py <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
-Results (2021-06-07)
+Results (2022-05-18)
 --------------------
+
+=============================== =========  ========== ========= ========= ======
+750 documents, 2236 text & 2250 boilerplate segments, Python 3.8
+--------------------------------------------------------------------------------
+Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
+=============================== =========  ========== ========= ========= ======
+*raw HTML*                      0.527      0.874      0.546     0.658     0
+html2text 2020.1.16             0.486      0.709      0.481     0.577     7.6x
+html_text 0.5.2                 0.529      **0.958**  0.554     0.682     2.2x
+inscriptis 2.2.0 (html to txt)  0.534      **0.959**  0.563     0.686     3.5x
+newspaper3k 0.2.8               0.895      0.593      0.762     0.713     12x
+justext 3.0.0 (custom)          0.865      0.650      0.775     0.742     5.2x
+boilerpy3 1.0.6 (article mode)  0.814      0.744      0.787     0.777     4.1x
+*baseline (text markup)*        0.757      0.827      0.781     0.790     **1x**
+goose3 3.1.9                    **0.934**  0.690      0.821     0.793     22x
+readability-lxml 0.8.1          0.891      0.729      0.820     0.801     5.8x
+news-please 1.5.22              0.898      0.734      0.826     0.808     61x
+readabilipy 0.2.0               0.877      0.870      0.874     0.874     248x
+trafilatura 1.2.2 (fast)        0.914      0.886      0.902     0.900     4.8x
+trafilatura 1.2.2 (precision)   **0.932**  0.874      0.905     0.902     9.4x
+trafilatura 1.2.2 (standard)    0.914      0.904      **0.910** **0.909** 7.1x
+=============================== =========  ========== ========= ========= ======
+
+
+External evaluations
+--------------------
+
+- Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, in French).
+- Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_.
+
+
+Older results
+-------------
+
+
+Older results (2021-06-07)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= ======
 500 documents, 1487 text and 1496 boilerplate segments
@@ -82,17 +120,9 @@ trafilatura 0.8.2               0.934      **0.890**  **0.914** **0.912** 8.4x
 =============================== =========  ========== ========= ========= ======
 
 
-External evaluations
---------------------
-
-- Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
-- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, in French).
-- Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_.
-
-
 
 Older results (2020-11-06)
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= ======
 500 documents, 1487 text and 1496 boilerplate segments
@@ -118,7 +148,7 @@ trafilatura 0.6.0 (+ fallbacks) 0.933      **0.877**  **0.907** **0.904** 8.4x
 
 
 Older results (2020-07-16)
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= ======
 400 documents, 1186 text and 1198 boilerplate segments
@@ -143,7 +173,7 @@ trafilatura 0.5.1 (+ fallbacks) 0.933      0.885      **0.911** **0.908** 6.8x
 
 
 Older results (2020-03-19)
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= =====
 300 documents, 869 text and 878 boilerplate segments
@@ -169,7 +199,7 @@ trafilatura 0.4 (+ fallback)    0.925      0.904      **0.916** **0.914** 9.94
 
 
 Older results (2020-01-29)
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= =====
 100 documents, 266 text and 294 boilerplate segments
