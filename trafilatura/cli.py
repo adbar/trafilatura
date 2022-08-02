@@ -237,17 +237,6 @@ def main():
     process_args(args)
 
 
-def dump_on_exit(inputdict=None):
-    """Write all remaining URLs still in the input/processing list
-       to standard output before exiting."""
-    if inputdict:
-        for hostname in inputdict:
-            for urlpath in inputdict[hostname]:
-                sys.stdout.write(f'todo: {hostname}{urlpath}' + '\n')
-
-atexit.register(dump_on_exit, INPUTDICT)
-
-
 def process_parallel_results(future_to_url, blacklist, url_filter, url_store):
     """Process results from the parallel threads and add them
        to the compressed URL dictionary for further processing."""
