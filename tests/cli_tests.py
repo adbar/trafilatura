@@ -325,7 +325,6 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    print(f.getvalue())
     assert len(f.getvalue()) == 0
     # config file
     testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
@@ -352,8 +351,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    print(f.getvalue())
-    assert len(f.getvalue()) == 0
+    assert f.getvalue() == 'https://httpbin.org/html\n'
     # links permitted
     testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
@@ -361,7 +359,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
+    assert f.getvalue().endswith('https://httpbin.org/links/1/0\n')
     # 0 links permitted
     args.crawl = 'https://httpbin.org/links/4/4'
     f = io.StringIO()

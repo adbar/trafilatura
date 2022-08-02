@@ -8,7 +8,7 @@ import urllib.robotparser
 
 from time import sleep
 
-from courlan import extract_domain, extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable, UrlStore
+from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable, UrlStore
 from lxml import etree
 
 from .core import baseline

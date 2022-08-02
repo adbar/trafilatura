@@ -8,9 +8,8 @@ import logging
 import random
 import re
 
-from collections import defaultdict, deque, namedtuple
+from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
 from time import sleep
 
 import certifi
@@ -27,7 +26,7 @@ except ImportError:
     pycurl = None
 import urllib3
 
-from courlan import get_host_and_path, validate_url, UrlStore
+from courlan import validate_url, UrlStore
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
