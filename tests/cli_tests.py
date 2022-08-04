@@ -229,7 +229,6 @@ def test_cli_pipeline():
     #with redirect_stdout(f):
     #    cli.process_args(args)
     #assert len(f.getvalue()) == 0
-    # test URL listing
 
     # Force encoding to utf-8 for Windows in future processes spawned by multiprocessing.Pool
     os.environ['PYTHONIOENCODING'] = "utf-8"
@@ -260,6 +259,7 @@ def test_cli_pipeline():
     assert len(f.getvalue().split('\n')) == 6
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
 
+    # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -325,7 +325,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert len(f.getvalue()) == 0
+    assert len(f.getvalue().strip()) == 0
     # config file
     testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
@@ -339,10 +339,10 @@ def test_cli_pipeline():
     testargs = ['', '--links', '--images']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    #with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r') as f:
-    #    teststring = f.read()
-    #result = cli.examine(teststring, args)
-    #assert '[link](testlink.html)' in result # and 'test.jpg' in result
+    with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r') as f:
+        teststring = f.read()
+    result = cli.examine(teststring, args)
+    assert '[link](testlink.html)' in result and 'test.jpg' in result
 
     # Crawling
     testargs = ['', '--crawl', 'https://httpbin.org/html']
@@ -365,7 +365,6 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args, n=0)
-    # print(f.getvalue())
     assert len(f.getvalue().split('\n')) == 5
 
     # Exploration (Sitemap + Crawl)
