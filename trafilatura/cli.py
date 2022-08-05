@@ -262,7 +262,9 @@ def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
 
 def process_args(args):
     """Perform the actual processing according to the arguments"""
+    # init
     global INPUTDICT
+    error_caught = False
     # verbosity
     if args.verbose == 1:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
@@ -275,7 +277,7 @@ def process_args(args):
     # read url list from input file
     if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
         INPUTDICT = load_input_dict(args)
-        url_processing_pipeline(args, INPUTDICT)
+        error_caught = url_processing_pipeline(args, INPUTDICT)
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
@@ -291,10 +293,10 @@ def process_args(args):
                 INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
                 # list all links found to free memory
                 if args.list:
-                    url_processing_pipeline(args, INPUTDICT)
+                    error_caught = url_processing_pipeline(args, INPUTDICT)
 
         # process the links found
-        url_processing_pipeline(args, INPUTDICT)
+        error_caught = url_processing_pipeline(args, INPUTDICT)
 
         # activate site explorer
         if args.explore:
@@ -319,7 +321,7 @@ def process_args(args):
     # process input URL
     elif args.URL:
         INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
-        url_processing_pipeline(args, INPUTDICT)  # process single url
+        error_caught = url_processing_pipeline(args, INPUTDICT)  # process single url
 
     # read input on STDIN directly
     else:
@@ -331,6 +333,10 @@ def process_args(args):
         # process
         result = examine(htmlstring, args, url=args.URL)
         write_result(result, args)
+
+    # change exit code if there are errors
+    if error_caught is True:
+        sys.exit(1)
 
 
 if __name__ == '__main__':

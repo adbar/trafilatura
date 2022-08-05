@@ -9,10 +9,10 @@ import logging
 import json
 import re
 
-from courlan import check_url, clean_url, fix_relative_urls, get_hostinfo, validate_url
+from courlan import check_url, clean_url, filter_urls, fix_relative_urls, get_hostinfo, validate_url
 
 from .downloads import fetch_url
-from .utils import filter_urls, load_html
+from .utils import load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -77,7 +77,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             link = match[0]
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
-            feedlink = LINK_HREF.search(link).group(1)
+            feedlink = LINK_HREF.search(link)[1]
             #if '"' in feedlink:
             #    feedlink = feedlink.split('"')[0]
             feed_links.append(feedlink)

@@ -286,59 +286,32 @@ In addition, sharing URL lists rather than full documents can alleviate copyrigh
 References
 ----------
 
-Anthony, L. (2013). A critical look at software tools in corpus linguistics. *Linguistic Research*, 30(2), 141-161.
-
-Barbaresi, A. (2015). Ad hoc and general-purpose corpus construction from web sources (Doctoral dissertation, ENS Lyon).
-
-Barbaresi, A. (2016). Collection and indexing of tweets with a geographical focus. In *Proceedings of the 4th Workshop on Challenges in the Management of Large Corpora (CMLC-4)*, pp. 24-27.
-
-Barbaresi, A. (2019). The Vast and the Focused: On the need for thematic web and blog corpora. In *Proceedings of the 7th Workshop on Challenges in the Management of Large Corpora (CMLC-7)*, Leibniz-Institut für Deutsche Sprache, pp. 29-32.
-
-Baroni, M., & Bernardini, S. (2004). BootCaT: Bootstrapping Corpora and Terms from the Web. In *Proceedings of LREC 2004*, pp. 1313-1316.
-
-Baroni, M., & Ueyama, M. (2006). Building general- and special-purpose corpora by Web crawling. In *Proceedings of the 13th NIJL international symposium, Language Corpora: Their compilation and application* (pp. 31–40).
-
-Baroni, M., Bernardini, S., Ferraresi, A., & Zanchetta, E. (2009). The WaCky Wide Web: a collection of very large linguistically processed web-crawled corpora. *Language Resources and Evaluation*, 43(3), 209-226.
-
-Berners-Lee, T., Hall, W., & Hendler, J. A. (2006). A Framework for Web Science. *Foundations and Trends in Web Science*, 1, 1, 1–130.
-
-Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. *Computer networks and ISDN systems*, 30(1-7), 161–172.
-
-Clear, J. (1987). Trawling the language: monitor corpora. ZURILEX Proceedings. Tübingen: Francke.
-
-Edwards, J., McCurley, K. S., and Tomlin, J. A. (2001). "An adaptive model for optimizing performance of an incremental web crawler". In *Proceedings of the 10th international conference on World Wide Web - WWW '01*, pp. 106–113.
-
-Fairon, C. (2006). Corporator: A tool for creating RSS-based specialized corpora. In Proceedings of the 2nd International Workshop on Web as Corpus.
-
-Good, J. (2022). "The Scope of Linguistic Data", In *The Open Handbook of Linguistic Data Management*, MIT Press, 27-47.
-
-Gries, S. T., & Newman, J. (2014). Creating and using corpora. In *Research methods in linguistics*, Podesva, R.J., & Sharma, D. (eds.), 257-287.
-
-Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In *Proceedings of the 12th Web as Corpus Workshop*, pp. 23-32.
-
-Kilgarriff, A. (2007). Googleology is bad science. *Computational linguistics*, 33(1), 147-151.
-
-Kilgarriff, A. and Suchomel, V. (2013) "Web Spam". In: *Proceedings of the 8th Web as Corpus Workshop (WAC-8)*, Corpus Linguistics 2013, pp. 46–52.
-
-McEnery, T. (2003). Corpus Linguistics. In R. Mitkov (Ed.), *The Oxford Handbook of Computational Linguistics* (pp. 448–463). Oxford University Press.
-
-Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
-
-Nelson, M. (2010). Building a written corpus. *The Routledge Handbook of Corpus Linguistics*, 53-65.
-
-Schäfer, R., Barbaresi, A., & Bildhauer, F. (2013). The Good, the Bad, and the Hazy: Design Decisions in Web Corpus Construction. In *8th Web as Corpus Workshop*, pp. 7-15, ACL SIGWAC.
-
-Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool.
-
-Sharoff, S. (2006). Open-source corpora: Using the net to fish for linguistic data. *International journal of corpus linguistics*, 11(4), 435-462.
-
-Sharoff, S. (2018). Functional text dimensions for the annotation of web corpora. *Corpora*, 13(1), 65-95.
-
-Sinclair, J. (1982). Reflections on computer corpora in English language research. Computer corpora in English language research, 1-6.
-
-Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
-
-Suchomel, V. (2020). Better Web Corpora For Corpus Linguistics And NLP (Doctoral dissertation, PhD thesis, Masaryk University).
-
-Tanguy, L. (2013). La ruée linguistique vers le Web. *Texto! Textes et Cultures*, 18(4).
+* Anthony, L. (2013). A critical look at software tools in corpus linguistics. *Linguistic Research*, 30(2), 141-161.
+* Barbaresi, A. (2015). Ad hoc and general-purpose corpus construction from web sources (Doctoral dissertation, ENS Lyon).
+* Barbaresi, A. (2016). Collection and indexing of tweets with a geographical focus. In *Proceedings of the 4th Workshop on Challenges in the Management of Large Corpora (CMLC-4)*, pp. 24-27.
+* Barbaresi, A. (2019). The Vast and the Focused: On the need for thematic web and blog corpora. In *Proceedings of the 7th Workshop on Challenges in the Management of Large Corpora (CMLC-7)*, Leibniz-Institut für Deutsche Sprache, pp. 29-32.
+* Baroni, M., & Bernardini, S. (2004). BootCaT: Bootstrapping Corpora and Terms from the Web. In *Proceedings of LREC 2004*, pp. 1313-1316.
+* Baroni, M., & Ueyama, M. (2006). Building general- and special-purpose corpora by Web crawling. In *Proceedings of the 13th NIJL international symposium, Language Corpora: Their compilation and application* (pp. 31–40).
+* Baroni, M., Bernardini, S., Ferraresi, A., & Zanchetta, E. (2009). The WaCky Wide Web: a collection of very large linguistically processed web-crawled corpora. *Language Resources and Evaluation*, 43(3), 209-226.
+* Berners-Lee, T., Hall, W., & Hendler, J. A. (2006). A Framework for Web Science. *Foundations and Trends in Web Science*, 1, 1, 1–130.
+* Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. *Computer networks and ISDN systems*, 30(1-7), 161–172.
+* Clear, J. (1987). Trawling the language: monitor corpora. ZURILEX Proceedings. Tübingen: Francke.
+* Edwards, J., McCurley, K. S., and Tomlin, J. A. (2001). "An adaptive model for optimizing performance of an incremental web crawler". In *Proceedings of the 10th international conference on World Wide Web - WWW '01*, pp. 106–113.
+* Fairon, C. (2006). Corporator: A tool for creating RSS-based specialized corpora. In Proceedings of the 2nd International Workshop on Web as Corpus.
+* Good, J. (2022). "The Scope of Linguistic Data", In *The Open Handbook of Linguistic Data Management*, MIT Press, 27-47.
+* Gries, S. T., & Newman, J. (2014). Creating and using corpora. In *Research methods in linguistics*, Podesva, R.J., & Sharma, D. (eds.), 257-287.
+* Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In *Proceedings of the 12th Web as Corpus Workshop*, pp. 23-32.
+* Kilgarriff, A. (2007). Googleology is bad science. *Computational linguistics*, 33(1), 147-151.
+* Kilgarriff, A. and Suchomel, V. (2013) "Web Spam". In: *Proceedings of the 8th Web as Corpus Workshop (WAC-8)*, Corpus Linguistics 2013, pp. 46–52.
+* McEnery, T. (2003). Corpus Linguistics. In R. Mitkov (Ed.), *The Oxford Handbook of Computational Linguistics* (pp. 448–463). Oxford University Press.
+* Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
+* Nelson, M. (2010). Building a written corpus. *The Routledge Handbook of Corpus Linguistics*, 53-65.
+* Schäfer, R., Barbaresi, A., & Bildhauer, F. (2013). The Good, the Bad, and the Hazy: Design Decisions in Web Corpus Construction. In *8th Web as Corpus Workshop*, pp. 7-15, ACL SIGWAC.
+* Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool.
+* Sharoff, S. (2006). Open-source corpora: Using the net to fish for linguistic data. *International journal of corpus linguistics*, 11(4), 435-462.
+* Sharoff, S. (2018). Functional text dimensions for the annotation of web corpora. *Corpora*, 13(1), 65-95.
+* Sinclair, J. (1982). Reflections on computer corpora in English language research. Computer corpora in English language research, 1-6.
+* Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
+* Suchomel, V. (2020). Better Web Corpora For Corpus Linguistics And NLP (Doctoral dissertation, PhD thesis, Masaryk University).
+* Tanguy, L. (2013). La ruée linguistique vers le Web. *Texto! Textes et Cultures*, 18(4).
 

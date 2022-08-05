@@ -23,7 +23,7 @@ BODY_XPATH = [
     or @id="articleContent" or contains(@class, "ArticleContent") or
     contains(@class, "page-content") or contains(@class, "text-content") or
     contains(@id, "body-text") or contains(@class, "body-text") or
-    contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")]''',
+    contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")][1]''',
     # (…)[1] = first occurrence
     '(.//article)[1]',
     """(.//*[(self::article or self::div or self::main or self::section)][

@@ -35,7 +35,7 @@ LOGGER = logging.getLogger(__name__)
 JT_STOPLIST = None
 JT_PICKLE = str(Path(__file__).parent / 'data/jt-stopwords-pickle.lzma')
 
-SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
 
 def try_readability(htmlinput):
@@ -114,7 +114,7 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # 1. clean
     cleaned_tree = tree_cleaning(tree, include_tables, include_images)
-    for elem in tree.xpath(SANITIZED_XPATH):
+    for elem in tree.findall(SANITIZED_XPATH):
         elem.getparent().remove(elem)
     if include_links is False:
         strip_tags(cleaned_tree, 'a')
