@@ -104,6 +104,7 @@ def _send_request(url, no_ssl, config):
         return ''  # raise error instead?
     except urllib3.exceptions.TimeoutError as err:
         LOGGER.error('connection timeout: %s %s', url, err)
+        return ''  # raise error instead?
     except urllib3.exceptions.SSLError:
         LOGGER.error('retrying after SSLError: %s', url)
         return _send_request(url, True, config)
@@ -296,13 +297,13 @@ def _send_pycurl_request(url, no_ssl, config):
     try:
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
-        logging.error('pycurl: %s %s', url, err)
+        logging.error('pycurl error: %s %s', url, err)
         # retry in case of SSL-related error
         # see https://curl.se/libcurl/c/libcurl-errors.html
         # errmsg = curl.errstr_raw()
         # additional error codes: 80, 90, 96, 98
         if no_ssl is False and err.args[0] in (35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91):
-            LOGGER.error('retrying after SSL error: %s %s', url, err)
+            LOGGER.debug('retrying after SSL error: %s %s', url, err)
             return _send_pycurl_request(url, True, config)
         # traceback.print_exc(file=sys.stderr)
         # sys.stderr.flush()

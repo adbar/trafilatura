@@ -14,13 +14,17 @@ From link lists to web corpora
 URLs and corpora
 ~~~~~~~~~~~~~~~~
 
-Getting a list of web pages to start from is essential in order to build document collections. The latter are often called *web corpora* by linguists. The former lists of links (also known as URL lists) can be used in two different ways: first, to build a corpus straight from the pages they link to, and second, to start web crawls and hopefully discover other relevant pages. On the one hand, corpus sources are restricted to a fixed list, and on the other hand, one looks opportunistically for more content without knowing everything in advance.
+Getting a list of web pages to start from is essential in order to build document collections. The latter are often called *web corpora* by linguists.
+
+The former lists of links (also known as URL lists) can be used in two different ways: first, to build a corpus straight from the pages they link to, and second, to start web crawls and hopefully discover other relevant pages. On the one hand, corpus sources are restricted to a fixed list, and on the other hand, one looks opportunistically for more content without knowing everything in advance.
 
 
 The issue with the sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The question of web corpus sources does not stop there. Indeed, one does not necessarily know where to look for interesting websites, i.e. “seeds” to start from. The answers to this issue that are frequently found in the literature are twofold: either one initiates a web crawling phase with a (small or large) list of websites, or one uses already existing link collections. Note that both strategies can also complement each other and be used alternatively during different corpus construction phases.
+The question of web corpus sources does not stop there. Indeed, one does not necessarily know where to look for interesting websites, i.e. “seeds” to start from.
+
+The answers to this issue that are frequently found in the literature are twofold: either one initiates a web crawling phase with a (small or large) list of websites, or one uses already existing link collections. Note that both strategies can also complement each other and be used alternatively during different corpus construction phases.
 
 
 As with “traditional” corpora, web corpora can either focus on a given range of websites and topics, or be merely language-minded and opportunistically take all kinds of possible texts into account. In the latter case, using diverse sources for URL seeds could ensure there is no potentially unknown bias.
@@ -36,20 +40,20 @@ URL lists from corpus linguistic projects can be a starting ground to derive inf
 
 - `Sources for the Internet Corpora <http://corpus.leeds.ac.uk/internet.html>`_ of the Leeds Centre for Translation Studies
 - `Link data sets <https://corporafromtheweb.org/link-data-sets-cc-by/>`_  of the COW project
-- `Coronakorpus links <https://github.com/adbar/coronakorpus>`_
 
 
 URL directories
 ~~~~~~~~~~~~~~~
 
+- `Overview of the Web archiving community <https://github.com/pirate/ArchiveBox/wiki/Web-Archiving-Community>`_
+- `lazynlp list of sources <https://github.com/chiphuyen/lazynlp>`_
+
 DMOZ (now an archive) and Wikipedia work quite well as primary sources:
 
 - `Qualification of URLs extracted from DMOZ and Wikipedia <https://tel.archives-ouvertes.fr/tel-01167309/document#page=189>`_ (PhD thesis section)
-- `Overview of the Web archiving community <https://github.com/pirate/ArchiveBox/wiki/Web-Archiving-Community>`_
 
 ..
    https://www.sketchengine.eu/guide/create-a-corpus-from-the-web/
-   https://github.com/chiphuyen/lazynlp
 
 
 
@@ -159,22 +163,13 @@ References
 ----------
 
 
-Barbaresi, A. (2014). Finding viable seed URLs for web corpora: a scouting approach and comparative study of available sources. In 9th Web as Corpus Workshop (WaC-9), 14th Conference of the European Chapter of the Association for Computational Linguistics (pp. 1-8).
-
-Barbaresi, A. (2015). Ad hoc and general-purpose corpus construction from web sources (Doctoral dissertation, ENS Lyon).
-
-Barbaresi, A. (2016). Collection and indexing of tweets with a geographical focus. In Proceedings of CMLC workshop, 10th International Conference on Language Resources and Evaluation (LREC 2016), pp. 24-27.
-
-Baroni, M., & Bernardini, S. (2004). BootCaT: Bootstrapping Corpora and Terms from the Web. In Proceedings of LREC 2004 (pp. 1313-1316).
-
-Berners-Lee, T., Hall, W., & Hendler, J. A. (2006). A framework for web science. Found. Trends Web Sci. 1, 1, 1–130.
-
-Blombach, A., Dykes, N., Heinrich, P., Kabashi, B., & Proisl, T. (2020). A corpus of German Reddit exchanges (GeRedE). In Proceedings of the 12th Language Resources and Evaluation Conference (pp. 6310-6316).
-
-Henzinger, M. R., Heydon, A., Mitzenmacher, M., & Najork, M. (2000). On near-uniform URL sampling. Computer Networks, 33(1-6), 295-308.
-
-Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In Proceedings of the 12th Web as Corpus Workshop (pp. 23-32).
-
-Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
-
-Schäfer, R., Barbaresi, A., & Bildhauer, F. (2014). Focused web corpus crawling. In Proceedings of the 9th Web as Corpus workshop (WAC-9), pp. 9-15.
+* Barbaresi, A. (2014). Finding viable seed URLs for web corpora: a scouting approach and comparative study of available sources. In 9th Web as Corpus Workshop (WaC-9), 14th Conference of the European Chapter of the Association for Computational Linguistics (pp. 1-8).
+* Barbaresi, A. (2015). Ad hoc and general-purpose corpus construction from web sources (Doctoral dissertation, ENS Lyon).
+* Barbaresi, A. (2016). Collection and indexing of tweets with a geographical focus. In Proceedings of CMLC workshop, 10th International Conference on Language Resources and Evaluation (LREC 2016), pp. 24-27.
+* Baroni, M., & Bernardini, S. (2004). BootCaT: Bootstrapping Corpora and Terms from the Web. In Proceedings of LREC 2004 (pp. 1313-1316).
+* Berners-Lee, T., Hall, W., & Hendler, J. A. (2006). A framework for web science. Found. Trends Web Sci. 1, 1, 1–130.
+* Blombach, A., Dykes, N., Heinrich, P., Kabashi, B., & Proisl, T. (2020). A corpus of German Reddit exchanges (GeRedE). In Proceedings of the 12th Language Resources and Evaluation Conference (pp. 6310-6316).
+* Henzinger, M. R., Heydon, A., Mitzenmacher, M., & Najork, M. (2000). On near-uniform URL sampling. Computer Networks, 33(1-6), 295-308.
+* Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for minority languages. In Proceedings of the 12th Web as Corpus Workshop (pp. 23-32).
+* Minocha, A., Reddy, S., & Kilgarriff, A. (2014). Feed Corpus: an ever growing up-to-date corpus. *Proceedings of the 8th Web as Corpus Workshop*, pp. 1-4, ACL SIGWAC.
+* Schäfer, R., Barbaresi, A., & Bildhauer, F. (2014). Focused web corpus crawling. In Proceedings of the 9th Web as Corpus workshop (WAC-9), pp. 9-15.

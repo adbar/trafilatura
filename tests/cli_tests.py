@@ -214,6 +214,13 @@ def test_download():
     teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
+    # test exit code for faulty URLs
+    testargs = ['', '-u', 'https://1234.yz/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with pytest.raises(SystemExit) as e:
+        cli.process_args(args)
+    assert e.type == SystemExit and e.value.code == 1
 
 
 def test_cli_pipeline():
@@ -234,7 +241,7 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.url_processing_pipeline(args, dict()) is None
+    assert cli_utils.url_processing_pipeline(args, dict()) is False
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):

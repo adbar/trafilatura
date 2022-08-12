@@ -146,6 +146,16 @@ def is_dubious_html(htmlobject):
     return False
 
 
+def fromstring_bytes(htmlobject):
+    "Try to pass bytes to LXML parser."
+    tree = None
+    try:
+        tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+    except Exception as err:
+        LOGGER.error('lxml parser bytestring %s', err)
+    return tree
+
+
 def load_html(htmlobject):
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
@@ -165,18 +175,20 @@ def load_html(htmlobject):
     htmlobject = decode_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
-    # use Unicode string
+    fallback_parse = False
+    # first pass: use Unicode string
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
-        try:
-            tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
-        except Exception as err:
-            LOGGER.error('lxml parser bytestring %s', err)
+        fallback_parse = True
+        tree = fromstring_bytes(htmlobject)
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
-    # more robust option: try BeautifulSoup
+    # second pass: try passing bytes to LXML
+    if (tree is None or len(tree) < 2) and fallback_parse is False:
+        tree = fromstring_bytes(htmlobject)
+    # more robust option: try BeautifulSoup?
     #if tree is None or not isinstance(tree, HtmlElement):
     #    if isinstance(htmlobject, (bytes, str)):
     #        try:
@@ -184,6 +196,7 @@ def load_html(htmlobject):
     #        except Exception as err:
     #            LOGGER.error('BS parser error: %s', err)
     # rejection test: is it (well-formed) HTML at all?
+    # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None

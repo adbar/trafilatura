@@ -6,6 +6,7 @@ import logging
 import os
 import sys
 
+from courlan import get_hostinfo
 from trafilatura import sitemaps
 from trafilatura.utils import decode_response
 
@@ -30,6 +31,16 @@ def test_extraction():
     assert sitemaps.handle_link('https://mydomain', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain', '0')
     assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain.wordpress.com/1', 'link')
     assert sitemaps.handle_link('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', 'https://programtalk.com/sitemap.xml', 'programtalk.com', 'https://programtalk.com', None) == ('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', 'link')
+    # subdomain vs. domain: de.sitemaps.org / sitemaps.org
+    url = 'https://de.sitemaps.org/1'
+    sitemap_url = 'https://de.sitemaps.org/sitemap.xml'
+    domain, baseurl = get_hostinfo(sitemap_url)
+    assert sitemaps.handle_link(url, sitemap_url, domain, baseurl, None) == (url, 'link')
+    # don't take this one?
+    #url = 'https://subdomain.sitemaps.org/1'
+    #sitemap_url = 'https://www.sitemaps.org/sitemap.xml'
+    #domain, baseurl = get_hostinfo(sitemap_url)
+    #assert sitemaps.handle_link(url, sitemap_url, domain, baseurl, None) == (url, '0')
     # safety belts
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml', 'ABC') is None
