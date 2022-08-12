@@ -584,7 +584,7 @@ def test_json_extraction():
     "@type":"Event",
     "startDate":"2015-03-09T13:00:00-07:00",
     "name":"Apple Spring Forward Event"
-  }
+  },
 }
 </script>
 </body></html>'''), metadata)
@@ -613,7 +613,7 @@ def test_json_extraction():
           "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
           "datePublished":"2015-03-09T13:08:00-07:00",
           "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
-       }]
+        }],
     }
     </script>
     </body></html>'''), metadata)
@@ -705,18 +705,18 @@ def test_json_extraction():
     <html><body>
     <script type="application/ld+json">
     {
-        "@context": "http:\/\/schema.org",
-        "@type": "ReportageNewsArticle",
-        "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
-        "publisher": {
-            "@type": "NewsMediaOrganization",
-            "name": "BBC News",
-            "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
-            }
-            }
+            "@context": "http:\/\/schema.org",
+            "@type": "ReportageNewsArticle",
+            "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+            "publisher": {
+                "@type": "NewsMediaOrganization",
+                "name": "BBC News",
+                "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+                }
+            },
         }
     </script>
     </body></html>'''), metadata)
@@ -785,10 +785,11 @@ def test_json_extraction():
             "@type":"Event",
             "startDate":"2015-03-09T13:00:00-07:00",
             "name":"Apple Spring Forward Event"
-          }
+          },
         }
         </script>
     </body></html>'''), metadata)
+
     assert metadata is not None and metadata.title is None and metadata.sitename is None
 
 
