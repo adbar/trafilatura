@@ -34,6 +34,7 @@ from trafilatura.core import handle_formatting, handle_lists, handle_image, hand
 from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
+from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
@@ -104,6 +105,11 @@ def test_trim():
     # non-breaking spaces
     print(utils.sanitize('Test&nbsp;Text'))
     assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    # clear cache
+    # reset caches: examine_date_elements used above
+    old_values = trim.cache_info()
+    reset_caches()
+    assert trim.cache_info() != old_values
 
 
 def test_input():

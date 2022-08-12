@@ -111,6 +111,18 @@ Downloads on the command-line are automatically run with threads and domain-awar
 For more information, see `page on command-line use <usage-cli.html>`_.
 
 
+Troubleshooting
+---------------
+
+Download issues can be addressed by retrieving the files somewhere else (i.e. from already existing internet archives) or by using another download utility (see ``pycurl`` with Python and ``wget`` or ``curl`` on the command-line), and another IP or network infrastructure.
+
+- Installing the additional download utility ``pycurl`` manually or using ``pip3 install trafilatura[all]`` can alleviate the problem: another download library is used, leading to different results.
+- Several alternatives are available on the command-line, e.g. ``wget -O - "my_url" | trafilatura`` instead of ``trafilatura -u "my_url"``.
+
+.. note::
+    Downloads may fail because your IP or user agent are blocked. Trafilatura's crawling and download capacities do not bypass such restrictions.
+
+
 Enforcing politeness rules
 --------------------------
 
