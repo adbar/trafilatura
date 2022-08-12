@@ -584,7 +584,7 @@ def test_json_extraction():
     "@type":"Event",
     "startDate":"2015-03-09T13:00:00-07:00",
     "name":"Apple Spring Forward Event"
-  },
+  }
 }
 </script>
 </body></html>'''), metadata)
@@ -596,11 +596,24 @@ def test_json_extraction():
     <html><body>
     <script type="application/ld+json">
     {
+      "@context":"http://google.com",
+      "@type":"LiveBlogPosting",
+      "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
       "about":{
-        "@context":"Event",
+        "@type":"Event",
         "startDate":"2015-03-09T13:00:00-07:00",
         "name":"Apple Spring Forward Event"
       },
+      "coverageStartTime":"2015-03-09T11:30:00-07:00",
+      "coverageEndTime":"2015-03-09T16:00:00-07:00",
+      "headline":"Apple Spring Forward Event Live Blog",
+      "description":"Welcome to live coverage of the Apple Spring Forward …",
+      "liveBlogUpdate":[{
+          "@type":"BlogPosting",
+          "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
+          "datePublished":"2015-03-09T13:08:00-07:00",
+          "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
+       }]
     }
     </script>
     </body></html>'''), metadata)
@@ -634,23 +647,6 @@ def test_json_extraction():
 </script>
 </body></html>'''), metadata)
     assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
-
-    metadata = Document()
-    metadata = extract_meta_json(html.fromstring('''
-<html><body>
-<script type="application/ld+json">
-{
-  "@context":"http://schema.org",
-  "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
-  "about":{
-    "@type":"Event",
-    "startDate":"2015-03-09T13:00:00-07:00",
-    "name":"Apple Spring Forward Event"
-  },
-}
-</script>
-</body></html>'''), metadata)
-    assert metadata is not None and metadata.title is None and metadata.sitename is None
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -709,18 +705,18 @@ def test_json_extraction():
     <html><body>
     <script type="application/ld+json">
     {
-            "@context": "http:\/\/schema.org",
-            "@type": "ReportageNewsArticle",
-            "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
-            "publisher": {
-                "@type": "NewsMediaOrganization",
-                "name": "BBC News",
-                "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
-                }
-            },
+        "@context": "http:\/\/schema.org",
+        "@type": "ReportageNewsArticle",
+        "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+        "publisher": {
+            "@type": "NewsMediaOrganization",
+            "name": "BBC News",
+            "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+            }
+            }
         }
     </script>
     </body></html>'''), metadata)
@@ -777,6 +773,23 @@ def test_json_extraction():
     </script>
     </body></html>'''), metadata)
     assert metadata is not None and metadata.author == "Bill Birtles; John Smith"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+        <script type="application/ld+json">
+        {
+          "@context":"http://schema.org",
+          "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+          "about":{
+            "@type":"Event",
+            "startDate":"2015-03-09T13:00:00-07:00",
+            "name":"Apple Spring Forward Event"
+          }
+        }
+        </script>
+    </body></html>'''), metadata)
+    assert metadata is not None and metadata.title is None and metadata.sitename is None
 
 
 if __name__ == '__main__':
