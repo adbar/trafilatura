@@ -12,19 +12,6 @@
 
 
 
-# to-do:
-
-# push to github
-
-# clean the code in VS code
-
-# debug
-
-# draft the iteration-over-urls loop
-
-
-
-
 
 
 
@@ -41,13 +28,13 @@
 
 
 
-# This script automates the process of annotating web pages for the Trafilatura library's test data. 
+# This script automates the process of annotating web pages for the Trafilatura library's test data (https://github.com/adbar/trafilatura).
 
 # It makes use of Common Crawl, an open source web crawling database that stores information about the web. 
 
 # They have an "index" with which you can access URLs at random, which are evenly representative of the web at large. 
 
-# That way, the test data is more balanced and does not favor certain kinds of web pages over others
+# That way, the test data is more balanced and does not favor certain kinds of web pages over others,
 
 # (which would cause the data to be incomplete, so it would be less certain if the tool were universally effective).
 
@@ -63,8 +50,6 @@
 
 
 # SET-UP
-
-# (TBD: Try to automate the installation dependencies.)
 
 # This script requires Python and the package boto3; it was written for macOS; it requires you to make an Amazon Web Services account with an Identity Access Management user, with the Athena service enabled; 
 # and it requires you to have Firefox installed with a certain configuration (described below). 
@@ -130,7 +115,7 @@ To make Firefox open all links in the same tab, follow these instructions:
 
 
 
-# At that point you should be ready to execute the script. The rest of this file contains the code, with documentation.
+# At that point you should be ready to run the script. The rest of this file contains the code and documentation.
 
 
 
@@ -138,7 +123,7 @@ To make Firefox open all links in the same tab, follow these instructions:
 
 
 
-# THE SCRIPT.
+# SCRIPT.
 
 
 
