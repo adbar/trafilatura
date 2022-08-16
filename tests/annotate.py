@@ -281,24 +281,17 @@ query_data = client.get_query_results(QueryExecutionId=queryid)
 
 
 
+# This is what the query response data looks like:
 
 
 '''
-
-
-
-
-this is what the query response data looks like:
-
-
-
-
 >>> pprint.pprint(response)
+'''
 
 
 # the first key is "ResponseMetadata"
+'''
 {'ResponseMetadata': 
-
 
 
 {'HTTPHeaders': 
@@ -313,28 +306,19 @@ this is what the query response data looks like:
                       'RequestId': 'fb9852fa-cb2f-4d04-94cd-cff4f191bd89',
                       'RetryAttempts': 0
 
-
-
-
-
 },
-
-
-
-
-
-
-
+'''
 
 
 # the second key - the one that you need - is "ResultSet"
 
 
-
+'''
 'ResultSet': {
+'''
 
-
-# you do not need this key, "ResultSetMetadata"
+# you do not need this key, "ResultSetMetadata":
+'''
 'ResultSetMetadata': {'ColumnInfo': [{'CaseSensitive': True,
                                                      'CatalogName': 'hive',
                                                      'Label': 'url',
@@ -346,24 +330,19 @@ this is what the query response data looks like:
                                                      'TableName': '',
                                                      'Type': 'varchar'}]},
                
+'''
 
 
 
-
-# this is the second key - "Rows" - again, the one you need. So thus far, it is "querydata["ResultSet"]["Rows"]". 
-# That returns a list of small dictionaries.
+# this is the second key - "Rows" - again, the one you need.
+# Thus far, it is "querydata["ResultSet"]["Rows"]". 
+# (That returns a list of small dictionaries.)
 
 'Rows': 
 
-
-
-
 [
 
-
-
 # it appears that each dictionary that is part of the list essentially has the following structure:
-
 
 # the key "Data", which refers to a list, which contains a single-entry dictionary, inside which the key "VarCharValue" corresponds with the actual URLs sought:
 
@@ -413,7 +392,7 @@ this is what the query response data looks like:
 # I honestly think this is terribly designed and not user-friendly, but it is what it is and has to be used this way, for the time being.
 
 # this is just a SAMPLE of the data, i redacted probably 40-50 lines (as this bernoulli value (0.000001) returns usually about 70 results).
-
+'''
                         {'Data': [{'VarCharValue': 'https://www.jeremysavel-photographe.com/BOUTIQUE-EN-LIGNE-ACHAT-TIRAGE-.RB/s341841p/Photo_a_poster'}]},
                         {'Data': [{'VarCharValue': 'https://meyer-imports.typepad.com/meyer_folder/2010/11/found-on-etsy-mini-version-glass-glitter-christmas-light-bulbs.html'}]},
                         {'Data': [{'VarCharValue': 'https://www.ictpower.it/guide/configurare-e-gestire-azure-dns.htm'}]},
