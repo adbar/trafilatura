@@ -123,10 +123,6 @@ To make Firefox open all links in the same tab, follow these instructions:
 
 
 
-# SCRIPT.
-
-
-
 # How the script works:
 # 
 # 1. It retrieves 70 URLs at random from the Common Crawl archives.
@@ -214,10 +210,7 @@ QueryExecutionContext = {
 'Database': 'ccindex',
 
 # The "AWS Data Catalog" is general location containing databases
-'Catalog': 'AwsDataCatalog'
-
-}
-,
+'Catalog': 'AwsDataCatalog'},
 
 
 
@@ -232,11 +225,7 @@ QueryExecutionContext = {
 ResultConfiguration={
 
 # a personal S3 Bucket where the SQL query's response is stored
-'OutputLocation': 's3://commoncrawltest0.001',
-        
-}
-
-)
+'OutputLocation': 's3://commoncrawltest0.001',})
 
 
 
@@ -322,10 +311,13 @@ query_data = client.get_query_results(QueryExecutionId=queryid)
 # this is the second key - "Rows" - again, the one you need.
 # Thus far, it is "querydata["ResultSet"]["Rows"]". 
 # (That returns a list of small dictionaries.)
+'''
 
 'Rows': 
 
 [
+
+'''
 
 # it appears that each dictionary that is part of the list essentially has the following structure:
 
@@ -333,16 +325,16 @@ query_data = client.get_query_results(QueryExecutionId=queryid)
 
 # EXCEPT FOR THE FIRST DICTIONARY IN THE LIST, which appears to be a header or mere sample data. So, skip the first:
 
-
+'''
 {'Data': [{'VarCharValue': 'url'}]},
                         
 
-
+'''
 
 # so now the sample command appears to be:
 # querydata["ResultSet"]["Rows"][1:]
 
-
+'''
 {
 
 
@@ -367,7 +359,7 @@ query_data = client.get_query_results(QueryExecutionId=queryid)
 
 },
 
-
+'''
 
 
 # So, hopefully at this point you will have a list of dictionaries, and for each element in the list, just index it with "element["Data"][0]["VarCharValue"]
@@ -426,9 +418,10 @@ query_data = client.get_query_results(QueryExecutionId=queryid)
 
 
 # this gets the actual list of URL entries from the general data structure:
-urls_list = querydata["ResultSet"]["Rows"][1:] 
+urls_list = query_data["ResultSet"]["Rows"][1:] 
 
-
+# just to be sure this way of indexing the data works
+print(urls_list)
 
 
 
