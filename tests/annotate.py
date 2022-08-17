@@ -177,7 +177,7 @@ response = client.start_query_execution(
 
 
 
-# Query
+
 
 QueryString = 
 
@@ -202,7 +202,7 @@ SELECT url FROM ccindex.ccindex TABLESAMPLE BERNOULLI (.000001) WHERE crawl = 'C
 
 
 
-# Target
+
 
 QueryExecutionContext = {
 
@@ -220,7 +220,7 @@ QueryExecutionContext = {
 
 
 
-# Results
+
 
 ResultConfiguration={
 
