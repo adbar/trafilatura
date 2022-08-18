@@ -1,235 +1,112 @@
 #!/usr/bin/python3
-# (this shebang depends on where on your system your python installation is located. on my system, python is located at /usr/bin/python3)
-# (due to the way shebangs work, you can run this script either with "./annotate.py" or "python3 annotate.py")
+
+
+# This script annotates web pages for Trafilatura: (https://github.com/adbar/trafilatura).
+
+# It uses Common Crawl (https://commoncrawl.org).
+
+# CC features an "index" offering access to random URLs.
+
+# By using URLs that are evenly sampled, the test data is more balanced.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-### ABOUT
-
-
-
-
-# This script automates the process of annotating web pages for the Trafilatura library's test data (https://github.com/adbar/trafilatura).
-
-# It makes use of Common Crawl, an open source web crawling database that stores information about the web. 
-
-# They have an "index" with which you can access URLs at random, which are evenly representative of the web at large. 
-
-# That way, the test data is more balanced and does not favor certain kinds of web pages over others,
-
-# (which would cause the data to be incomplete, so it would be less certain if the tool were universally effective).
-
-
-
-
-
-
-
-
-
-
-
-
-# SET-UP
-
-# This script requires Python and the package boto3; it was written for macOS; it requires you to make an Amazon Web Services account with an Identity Access Management user, with the Athena service enabled; 
-# and it requires you to have Firefox installed with a certain configuration (described below). 
+# Dependencies: 
+# - boto3
+# 
+# The script was written on MacOS.
+# 
+# The script requires you to have an AWS Athena account and Firefox installed.
+# 
 # 
 
 
 
-# AWS ATHENA
+# Athena
 
-# Common Crawl's archives are hosted on Amazon Web Services and are therefore accessible via SQL queries through their service "Athena".
+# Common Crawl's archives are hosted on Amazon Web Services. They're accessible via SQL queries, through the service "Athena".
 
-# To access them, you need to make an AWS account and enable the service Athena.
-# You actually first have to make a root/admin account, then use that to make a second IAM user.
-# Then you install the AWS CLI and enter an access token into it.
-
-# As long as you have an authenticated AWS CLI installed, you can use the pip package Boto3 to make queries through Athena.
-# Boto3 is just the Python SDK for Amazon Web Services.
-
+# You need to make an AWS account and enable that service. First make an admin account, then make an IAM user.
+# 
+# Then install the AWS command line utility. Configure it with an access token.
+#
+# Boto3 works as long as you have a configured AWS package.
+# 
 
 
 
 # FIREFOX
 
-# Download Firefox if you don't already have it installed (https://www.mozilla.org/en-GB/firefox/)
+# Download Firefox if you don't have it already: (https://www.mozilla.org/en-GB/firefox/)
 
-# You need to change the settings so that when Firefox opens a link from the command line, it opens it in the current tab, not a new one - 
-# that way the script won't accumulate 70 new tabs by the end of execution.
+# Change the settings so when Firefox opens a link, it opens it in the same tab, not a new one.
 
-# This is the general documentation page about how to configure Firefox (https://support.mozilla.org/en-US/kb/about-config-editor-firefox),
-# but this page describes the specific steps you will need: https://support.mozilla.org/en-US/questions/1226151
-
-# Here are the steps:
-
+# Specific steps you will need (https://support.mozilla.org/en-US/questions/1226151):
 
 '''
-To make Firefox open all links in the same tab, follow these instructions:
-
     Type about:config in the Firefox address bar
-    Bypass the security warning
-    Find the browser.link.open_newwindow.restriction preference
-    Double click it to change the value to 0
-    Find the browser.link.open_newwindow preference
-    Double click it to change the value to 1 
+    Change the browser.link.open_newwindow.restriction value to 0
+    Change the browser.link.open_newwindow value to 1
 
-
-    NOTE: You may need to restart Firefox for the changes to take effect.
 '''
 
-# The command for opening a URL from the command line with Firefox on MacOS is:
+# Test that the configuration worked by running this command: "open -a Firefox https://www.google.com"
 
-# open -a Firefox [URL]
 
-# (Note that the URL must be prepended with "https://" or else the shell will think it's a local file being passed.)
-
-# Test that the above configuration worked by running the below command from the terminal a couple times:
-
-# "open -a Firefox https://www.google.com"
-
-# If it worked, you can now close Firefox completely. The script launches Firefox on its own.
+# (You can run this script either with "./annotate.py" or "python3 annotate.py".)
 
 
 
+# The script retrieves 70 URLs at random from Common Crawl, opens them in Firefox, prompts the user for data, then saves it in "eval-data.py".
 
 
-
-# At that point you should be ready to run the script. The rest of this file contains the code and documentation.
-
-
-
-
-
-
-
-# How the script works:
-# 
-# 1. It retrieves 70 URLs at random from the Common Crawl archives.
-# 
-# 2. It opens them one at a time in Firefox. 
-# 
-# 3. It prompts the user for the relevant data from each web page, and saves it in the proper format.
-# 
-# (The annotations are written to the file "eval-data.py".)
-
-
-
-
-# import the boto3 library with which you can access "AWS Athena" - a service through which you can access the Common Crawl archives.
+# import boto3, with which you can access "AWS Athena"
 import boto3
 
 
-# For modularity, the function that handles annotating is defined separately and imported:
+# The function for annotating is defined separately
 from iterate_over_urls import iterate_over_urls
 
 
-
-
-
-
-# From boto3, select the Athena client.
+# Select the Athena client.
 client = boto3.client('athena')
 
 
-
-
-
-# Use the "start_query_execution" to execute an Athena query.
+# Use the "start_query_execution" to execute SQL
 response = client.start_query_execution(
 
 
-# The required parameters to this method are "QueryString", "QueryExecutionContext", and "ResultConfiguration", explained below:
+# Required parameters:
 
-# "QueryString": the actual SQL query to be run
-# "QueryExecutionContext": where you specify the database you will be querying
-# "ResultConfiguration": the location for the output - an Amazon S3 bucket
-
-
-
-
-
-
-
-
-
-
-
-
-
+# "QueryString", the SQL query
+# "QueryExecutionContext", the database
+# "ResultConfiguration": the location for the results
 
 
 QueryString = 
 
-# This SQL query was copied from the Common Crawl documentation (url)
-
+# Copied from Common Crawl (https://github.com/commoncrawl/cc-index-table/blob/main/src/sql/examples/cc-index/random-sample-urls.sql)
 """
-
 SELECT url FROM ccindex.ccindex TABLESAMPLE BERNOULLI (.000001) WHERE crawl = 'CC-MAIN-2022-27' AND (subset = 'warc' OR subset = 'crawldiagnostics')
-
 """
 ,
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 QueryExecutionContext = {
 
-# the "common crawl index"
+# "common crawl index"
 'Database': 'ccindex',
 
-# The "AWS Data Catalog" is general location containing databases
+# location where ccindex is stored
 'Catalog': 'AwsDataCatalog'},
-
-
-
-
-
-
-
-
 
 
 
 ResultConfiguration={
 
-# a personal S3 Bucket where the SQL query's response is stored
+# my personal S3 Bucket
 'OutputLocation': 's3://commoncrawltest0.001',})
-
-
-
-
 
 
 
