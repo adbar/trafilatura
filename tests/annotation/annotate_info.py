@@ -7,6 +7,8 @@
 # 
 # The script requires you to have an AWS Athena account and Firefox installed.
 # 
+# It uses Common Crawl (https://commoncrawl.org). CC features an "index" offering access to random URLs. By using URLs that are evenly sampled, the test data is more balanced.
+# 
 # 
 
 
