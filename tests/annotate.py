@@ -9,55 +9,8 @@
 
 # By using URLs that are evenly sampled, the test data is more balanced.
 
+# See "annotate.info" for more info
 
-
-# Dependencies: 
-# - boto3
-# 
-# The script was written on MacOS.
-# 
-# The script requires you to have an AWS Athena account and Firefox installed.
-# 
-# 
-
-
-
-# Athena
-
-# Common Crawl's archives are hosted on Amazon Web Services. They're accessible via SQL queries, through the service "Athena".
-
-# You need to make an AWS account and enable that service. First make an admin account, then make an IAM user.
-# 
-# Then install the AWS command line utility. Configure it with an access token.
-#
-# Boto3 works as long as you have a configured AWS package.
-# 
-
-
-
-# FIREFOX
-
-# Download Firefox if you don't have it already: (https://www.mozilla.org/en-GB/firefox/)
-
-# Change the settings so when Firefox opens a link, it opens it in the same tab, not a new one.
-
-# Specific steps you will need (https://support.mozilla.org/en-US/questions/1226151):
-
-'''
-    Type about:config in the Firefox address bar
-    Change the browser.link.open_newwindow.restriction value to 0
-    Change the browser.link.open_newwindow value to 1
-
-'''
-
-# Test that the configuration worked by running this command: "open -a Firefox https://www.google.com"
-
-
-# (You can run this script either with "./annotate.py" or "python3 annotate.py".)
-
-
-
-# The script retrieves 70 URLs at random from Common Crawl, opens them in Firefox, prompts the user for data, then saves it in "eval-data.py".
 
 
 # import boto3, with which you can access "AWS Athena"
@@ -76,13 +29,8 @@ client = boto3.client('athena')
 response = client.start_query_execution(
 
 
-# Required parameters:
 
-# "QueryString", the SQL query
-# "QueryExecutionContext", the database
-# "ResultConfiguration": the location for the results
-
-
+# the SQL query
 QueryString = 
 
 # Copied from Common Crawl (https://github.com/commoncrawl/cc-index-table/blob/main/src/sql/examples/cc-index/random-sample-urls.sql)
@@ -92,7 +40,7 @@ SELECT url FROM ccindex.ccindex TABLESAMPLE BERNOULLI (.000001) WHERE crawl = 'C
 ,
 
 
-
+# the database
 QueryExecutionContext = {
 
 # "common crawl index"
@@ -102,7 +50,7 @@ QueryExecutionContext = {
 'Catalog': 'AwsDataCatalog'},
 
 
-
+# the location for the results
 ResultConfiguration={
 
 # my personal S3 Bucket
@@ -110,23 +58,11 @@ ResultConfiguration={
 
 
 
-
-# This command returns a nested structure which containing the ID of the query. 
-# 
-# Use the "get_query_results" method with that ID to obtain the results.
-
-
-
-# the query ID is under "QueryExecutionId"
+# Use the "get_query_results" method with that ID to obtain the results. The ID is under "QueryExecutionId"
 queryid = response["QueryExecutionId"]
 
-
-
-
-# now just pass that query ID as the sole parameter to the "get_query_results" method:
+# pass the query ID to "get_query_results"
 query_data = client.get_query_results(QueryExecutionId=queryid)
-
-
 
 
 
