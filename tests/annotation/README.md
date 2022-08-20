@@ -1,5 +1,7 @@
 # info about annotate.py
 
+# This script annotates web pages for Trafilatura: (https://github.com/adbar/trafilatura).
+
 # Dependencies: 
 # - boto3
 # 
@@ -11,8 +13,6 @@
 # 
 # 
 
-
-
 # Athena
 
 # Common Crawl's archives are hosted on Amazon Web Services. They're accessible via SQL queries, through the service "Athena".
@@ -23,8 +23,6 @@
 #
 # Boto3 works as long as you have a configured AWS package.
 # 
-
-
 
 # FIREFOX
 

@@ -1,4 +1,4 @@
-
+# remove all breakpoints in the other script??? or just test it right now with a main. I think that's better. And simple.
 
 import os
 import json
@@ -22,6 +22,7 @@ def iterate_over_urls(urls):
     # 'license': '',
     # 'region': 'DE',
 
+# deferred, cool idea: scrape and automatically build the annotation structure from an above such string.
 
     single_parameters = ["url", "file", "author", "title", "date", "description", "license", "region"]
     multi_parameters = ["categories", "tags", "with", "without", "comments"]
@@ -35,7 +36,7 @@ def iterate_over_urls(urls):
 
         # open the annotations file, "eval-data.py"
         # this means that the script must be run from the directory "trafilatura/tests" - conveniently, where it is already housed.
-        f = json.load("eval-data.py")
+        f = json.load(open("eval-data.py"))
 
         # check if the url is already present in the evaluation data. If so, skip it.
         if url in f: continue
@@ -87,7 +88,8 @@ def iterate_over_urls(urls):
 
         # finish up by adding, committing and pushing the annotation to GitHub, so the annotations won't be lost
             
-
+urls = json.load(open("urls"))
+iterate_over_urls(urls)
 
                  
 
