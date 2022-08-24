@@ -15,8 +15,8 @@ To add further references, please `edit this page <https://github.com/adbar/traf
 Notable projects using this software
 ------------------------------------
 
-Institutional users
-^^^^^^^^^^^^^^^^^^^
+Known institutional users
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - `Data against Feminicide <https://datoscontrafeminicidio.net/>`_
 - `Media Cloud platform <https://mediacloud.org>`_ for media analysis
@@ -24,8 +24,8 @@ Institutional users
 - `SciencesPo médialab <https://medialab.sciencespo.fr>`_ through its `Minet <https://github.com/medialab/minet>`_ webmining package
 
 
-Various repositories
-^^^^^^^^^^^^^^^^^^^^
+Various software repositories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - `Benson <https://github.com/timoteostewart/benson>`_, to turn a list of URLs into mp3s of the contents of each web page
 - `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
@@ -33,6 +33,7 @@ Various repositories
 - `Obsei <https://lalitpagaria.github.io/obsei/>`_, a text collection and analysis tool
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
 
+For more see this list of `software using Trafilatura <https://github.com/adbar/trafilatura/network/dependents>`_.
 
 
 Citations in papers
@@ -104,8 +105,11 @@ Publications citing Trafilatura
 
 - Alakukku, L. (2022). "Domain specific boilerplate removal from web pages with entropy and clustering", Master's thesis, University of Aalto.
 - Alhamzeh, A., Bouhaouel, M., Egyed-Zsigmond, E., & Mitrović, J. (2021). "DistilBERT-based Argumentation Retrieval for Answering Comparative Questions", Proceedings of CLEF 2021 – Conference and Labs of the Evaluation Forum.
+- Bender, M., Bubenhofer, N., Dreesen, P., Georgi, C., Rüdiger, J. O., & Vogel, F. (2022). Techniken und Praktiken der Verdatung. Diskurse–digital, 135-158.
 - Bozarth, L., & Budak, C. (2021). "An Analysis of the Partnership between Retailers and Low-credibility News Publishers", Journal of Quantitative Description: Digital Media, 1.
 - Braun, D. (2021). "Automated Semantic Analysis, Legal Assessment, and Summarization of Standard Form Contracts", PhD Thesis, Technische Universität München.
+- Chen, X., Zeynali, A., Camargo, C., Flöck, F., Gaffney, D., Grabowicz, P., ... & Samory, M. (2022). SemEval-2022 Task 8: Multilingual news article similarity. In Proceedings of the 16th International Workshop on Semantic Evaluation (SemEval-2022) (pp. 1094-1106).
+- Di Giovanni, M., Tasca, T., & Brambilla, M. (2022). DataScience-Polimi at SemEval-2022 Task 8: Stacking Language Models to Predict News Article Similarity. In Proceedings of the 16th International Workshop on Semantic Evaluation (SemEval-2022) (pp. 1229-1234).
 - Fröbe, M., Hagen, M., Bevendorff, J., Völske, M., Stein, B., Schröder, C., ... & Potthast, M. (2021). "The Impact of Main Content Extraction on Near-Duplicate Detection". arXiv preprint arXiv:2111.10864.
 - Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). "The Pile: An 800GB Dataset of Diverse Text for Language Modeling", arXiv preprint arXiv:2101.00027.
 - Harrando, I., & Troncy, R. (2021). "Explainable Zero-Shot Topic Extraction Using a Common-Sense Knowledge Graph", In 3rd Conference on Language, Data and Knowledge (LDK 2021). OpenAccess Series in Informatics, Dagstuhl Publishing.
@@ -118,6 +122,7 @@ Publications citing Trafilatura
 - Robertson, F., Lagus, J., & Kajava, K. (2021). "A COVID-19 news coverage mood map of Europe", Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
 - Salmela, A. (2022). "Distinguishing Noise and Main Text Content from Web-Sourced Plain Text Documents Using Sequential Neural Networks", Master's thesis, University of Turku.
 - Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). "Fact-checking: relevance assessment of references in the Polish political domain", Procedia Computer Science, 192, 1285-1293.
+- Schamel, T., Braun, D., & Matthes, F. (2022). Structured Extraction of Terms and Conditions from German and English Online Shops. In Proceedings of The Fifth Workshop on e-Commerce and NLP (ECNLP 5) (pp. 181-190).
 - Ter-Akopyan, B. (2022). "Identification of Political Leaning in German News", Master's thesis, Ludwig Maximilian University of Munich.
 - Zinn, J. O., & Müller, M. (2021). "Understanding discourse and language of risk", Journal of Risk Research, 1-14.
 
@@ -131,6 +136,8 @@ Publications citing Htmldate
 - Hanley, H. W., Kumar, D., & Durumeric, Z. (2022). "Happenstance: Utilizing Semantic Search to Track Russian State Media Narratives about the Russo-Ukrainian War On Reddit". arXiv preprint arXiv:2205.14484.
 - Kupi, M. (2021). "Late to the Party? Agile Methods in British and German Government Institutions", Master’s thesis, Hertie School Berlin.
 - Smits, T., & Ros, R. (2021). "Distant reading 940,000 online circulations of 26 iconic photographs", New Media & Society, DOI: 10.1177/14614448211049.
+- Stefanovitch, N. (2022). Team TMA at SemEval-2022 Task 8: Lightweight and Language-Agnostic News Similarity Classifier. In Proceedings of the 16th International Workshop on Semantic Evaluation (SemEval-2022) (pp. 1178-1183).
+- Viduka, D., Ličina, B., & Ilić, L. (2021). Choosing the best Python web framework for beginner according to experienced users. In 11th International Conference on Applied Information and Internet Technologies (p. 100-103).
 
 
 

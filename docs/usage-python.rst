@@ -252,6 +252,19 @@ Even if the page to process has already been downloaded it can still be useful t
     # date found in URL, extraction successful
 
 
+Memory use
+^^^^^^^^^^
+
+Trafilatura uses caches to speed up extraction and cleaning processes. This may lead to memory leaks in some cases, particularly in large-scale applications. If that happens you can reset all cached information in order to release RAM:
+
+.. code-block:: python
+
+    >>> from trafilatura.meta import reset_caches
+
+    # at any given point
+    >>> reset_caches()
+
+
 Input/Output types
 ------------------
 
