@@ -294,6 +294,19 @@ def write_teitree(docmeta):
     return teidoc
 
 
+def _get_publisher_string(docmeta):
+    if docmeta.hostname and docmeta.sitename:
+        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+    elif docmeta.hostname:
+        publisherstring = docmeta.hostname
+    elif docmeta.sitename:
+        publisherstring = docmeta.sitename
+    else:
+        LOGGER.warning('no publisher for URL %s', docmeta.url)
+        publisherstring = 'N/A'
+    return publisherstring
+
+
 def write_fullheader(teidoc, docmeta):
     '''Write TEI header based on gathered metadata'''
     header = SubElement(teidoc, 'teiHeader')
@@ -346,16 +359,7 @@ def write_fullheader(teidoc, docmeta):
         bib_author.text = docmeta.author
     publicationstmt = SubElement(biblfull, 'publicationStmt')
     publication_publisher = SubElement(publicationstmt, 'publisher')
-    if docmeta.hostname and docmeta.sitename:
-        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
-    elif docmeta.hostname:
-        publisherstring = docmeta.hostname
-    elif docmeta.sitename:
-        publisherstring = docmeta.sitename
-    else:
-        LOGGER.warning('no publisher for URL %s', docmeta.url)
-        publisherstring = 'N/A'
-    publication_publisher.text = publisherstring
+    publication_publisher.text = _get_publisher_string(docmeta)
     if docmeta.url:
         publication_url = SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
     publication_date = SubElement(publicationstmt, 'date')
