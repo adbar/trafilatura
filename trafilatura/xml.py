@@ -294,7 +294,8 @@ def write_teitree(docmeta):
     return teidoc
 
 
-def _get_publisher_string(docmeta):
+def _define_publisher_string(docmeta):
+    '''Construct a publisher string to include in TEI header'''
     if docmeta.hostname and docmeta.sitename:
         publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
     elif docmeta.hostname:
@@ -318,10 +319,11 @@ def write_fullheader(teidoc, docmeta):
         bib_author = SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
     publicationstmt_a = SubElement(filedesc, 'publicationStmt')
+    publisher_string = _define_publisher_string(docmeta)
     # license, if applicable
     if docmeta.license:
         publicationstmt_publisher = SubElement(publicationstmt_a, 'publisher')
-        publicationstmt_publisher.text = _get_publisher_string(docmeta)
+        publicationstmt_publisher.text = publisher_string
         availability = SubElement(publicationstmt_a, 'availability')
         avail_p = SubElement(availability, 'p')
         avail_p.text = docmeta.license
@@ -361,7 +363,7 @@ def write_fullheader(teidoc, docmeta):
         bib_author.text = docmeta.author
     publicationstmt = SubElement(biblfull, 'publicationStmt')
     publication_publisher = SubElement(publicationstmt, 'publisher')
-    publication_publisher.text = _get_publisher_string(docmeta)
+    publication_publisher.text = publisher_string
     if docmeta.url:
         publication_url = SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
     publication_date = SubElement(publicationstmt, 'date')
