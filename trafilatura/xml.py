@@ -320,6 +320,8 @@ def write_fullheader(teidoc, docmeta):
     publicationstmt_a = SubElement(filedesc, 'publicationStmt')
     # license, if applicable
     if docmeta.license:
+        publicationstmt_publisher = SubElement(publicationstmt_a, 'publisher')
+        publicationstmt_publisher.text = _get_publisher_string(docmeta)
         availability = SubElement(publicationstmt_a, 'availability')
         avail_p = SubElement(availability, 'p')
         avail_p.text = docmeta.license
