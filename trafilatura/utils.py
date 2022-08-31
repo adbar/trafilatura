@@ -219,9 +219,17 @@ def txttocsv(text, comments, docmeta):
     return tsv_output
 
 
+@lru_cache(maxsize=1114111)  # sys.maxunicode = 1114111
+def return_printables_and_spaces(char):
+    'Return a character if it belongs to certain classes'
+    if char.isprintable() or char.isspace():
+        return char
+    return ''
+
+
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
-    return ''.join([c for c in string if c.isprintable() or c.isspace()])
+    return ''.join(map(return_printables_and_spaces, string))
 
 
 def normalize_unicode(string, unicodeform='NFC'):
