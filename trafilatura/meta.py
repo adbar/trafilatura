@@ -7,7 +7,7 @@ from htmldate.meta import reset_caches as reset_caches_htmldate
 from justext.core import define_stoplist
 
 from .filters import LRU_TEST
-from .utils import line_processing, trim
+from .utils import is_printable_or_space, line_processing, trim
 
 
 def reset_caches() -> None:
@@ -20,6 +20,7 @@ def reset_caches() -> None:
     # courlan
     get_tldinfo.cache_clear()
     # own
+    is_printable_or_space.cache_clear()
     line_processing.cache_clear()
     trim.cache_clear()
     LRU_TEST.clear()
