@@ -166,6 +166,9 @@ def handle_lists(element, dedupbool, config):
         child.tag = 'done'
     # test if it has children and text. Avoid double tags??
     if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
+        # set attribute
+        if element.get('rend') is not None:
+            processed_element.set('rend', element.get('rend'))
         return processed_element
     return None
 

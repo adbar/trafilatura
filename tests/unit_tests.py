@@ -234,11 +234,11 @@ def test_exotic_tags(xmloutput=False):
 </article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
     assert '''
-    <list>
+    <list rend="ul">
       <item>Coffee</item>
       <item>
         <item>Tea</item>
-        <list>
+        <list rend="ul">
           <item>Black tea</item>
           <item>Green tea</item>
         </list>

@@ -268,6 +268,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
         # ul/ol → list / li → item
         if elem.tag in ('dl', 'ol', 'ul'):
+            elem.set('rend', elem.tag)
             elem.tag = 'list'
             for subelem in elem.iter('dd', 'dt', 'li'):
                 subelem.tag = 'item'
