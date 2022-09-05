@@ -162,6 +162,9 @@ def handle_lists(element, dedupbool, config):
                 # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
         if newchildelem.text or len(newchildelem) > 0:
+            # set attribute
+            if child.get('rend') is not None:
+                newchildelem.set('rend', child.get('rend'))
             processed_element.append(newchildelem)
         child.tag = 'done'
     # test if it has children and text. Avoid double tags??

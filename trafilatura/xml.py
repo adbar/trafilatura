@@ -27,12 +27,13 @@ TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
-TEI_RELAXNG = None # to be downloaded later if necessary
+TEI_RELAXNG = None  # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
+WITH_ATTRIBUTES = {'del', 'fw', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 
 def build_json_output(docmeta):
@@ -54,7 +55,7 @@ def build_json_output(docmeta):
 def clean_attributes(tree):
     '''Remove unnecessary attributes.'''
     for elem in tree.iter('*'):
-        if elem.tag not in ('del', 'fw', 'graphic', 'head', 'hi', 'list', 'ref'):
+        if elem.tag not in WITH_ATTRIBUTES:
             elem.attrib.clear()
     return tree
 

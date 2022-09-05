@@ -256,6 +256,25 @@ def test_exotic_tags(xmloutput=False):
     # todo: all elements are there, but output not nested
     # todo: th conversion
     assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
+    # description list
+    # nested list
+    htmlstring = '''<html><body><article>
+ <dl>
+  <dt>Coffee</dt>
+  <dd>Black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>White cold drink</dd>
+</dl>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    print(my_result)
+    assert '''
+    <list rend="dl">
+      <item rend="dt-1">Coffee</item>
+      <item rend="dd-1">Black hot drink</item>
+      <item rend="dt-2">Milk</item>
+      <item rend="dd-2">White cold drink</item>
+    </list>''' in my_result
 
 
 def test_lrucache():

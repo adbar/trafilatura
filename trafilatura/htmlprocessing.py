@@ -270,7 +270,15 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         if elem.tag in ('dl', 'ol', 'ul'):
             elem.set('rend', elem.tag)
             elem.tag = 'list'
+            i = 1
             for subelem in elem.iter('dd', 'dt', 'li'):
+                # keep track of dd/dt items
+                if subelem.tag == 'dd' or subelem.tag == 'dt':
+                    subelem.set('rend', subelem.tag + '-' + str(i))
+                    # increment counter after <dd> in description list
+                    if subelem.tag == 'dd':
+                        i += 1
+                # convert elem tag
                 subelem.tag = 'item'
         # head tags + delete attributes
         elif elem.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
