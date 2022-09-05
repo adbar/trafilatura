@@ -345,6 +345,7 @@ def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
     # adapt content string
     if element.tag != 'lb' and not element.text and element.tail:
         element.text = element.tail
+        element.tail = None
     # content checks
     if element.text or element.tail:
         if textfilter(element) is True:
