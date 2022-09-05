@@ -65,9 +65,9 @@ RawResponse = namedtuple('RawResponse', ['data', 'status', 'url'])
 def _parse_config(config):
     'Read and extract HTTP header strings from the configuration file.'
     # load a series of user-agents
-    myagents = config.get('DEFAULT', 'USER_AGENTS') or None
+    myagents = config.get('DEFAULT', 'USER_AGENTS').strip() or None
     if myagents is not None and myagents != '':
-        myagents = myagents.split(',')
+        myagents = myagents.split("\n")
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
     # todo: support for several cookies?
     mycookie = config.get('DEFAULT', 'COOKIE') or None
