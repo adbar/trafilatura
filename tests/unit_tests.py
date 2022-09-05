@@ -638,7 +638,23 @@ def test_htmlprocessing():
     my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
-    
+    # test tail of node deleted if set as text
+    node = etree.fromstring("<div><p></p>tail</div>")[0]
+    trafilatura.htmlprocessing.process_node(node)
+    assert node.text == 'tail'
+    assert node.tail is None
+    node = etree.fromstring("<list><item></item>text in tail</list>")[0]
+    trafilatura.htmlprocessing.process_node(node)
+    assert node.text == "text in tail"
+    assert node.tail is None
+    line_break = etree.fromstring("<p><lb/>tail</p>")[0]
+    trafilatura.htmlprocessing.process_node(line_break)
+    assert line_break.text is None
+    assert line_break.tail == "tail"
+    node = etree.fromstring("<div><p>some text</p>tail</div>")[0]
+    trafilatura.htmlprocessing.process_node(node)
+    assert node.text == "some text"
+    assert node.tail == "tail"
 
 
 def test_extraction_options():
