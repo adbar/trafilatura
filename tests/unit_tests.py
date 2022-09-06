@@ -750,9 +750,72 @@ def test_table_processing():
     processed_table = handle_table(
         table_cell_with_link, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
     )
-    result = [child.tag for child in  processed_table.find('.//cell').iterdescendants()]
-    assert result == ['p']
-
+    result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
+    assert result == ["p"]
+    table_with_head = html.fromstring(
+        """<table>
+      <tr>
+        <th>Month</th>
+        <th>Days</th>
+      </tr>
+      <tr>
+        <td>January</td>
+        <td>31</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>28</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    first_row = processed_table[0]
+    assert len(processed_table) == 3
+    assert [
+        (child.tag, child.attrib, child.text) for child in first_row.iterdescendants()
+    ] == [("cell", {"role": "head"}, "Month"), ("cell", {"role": "head"}, "Days")]
+    table_with_head_spanning_two_cols = html.fromstring(
+        """<table>
+      <tr>
+        <th>Name</th>
+        <th>Adress</th>
+        <th colspan="2">Phone</th>
+      </tr>
+      <tr>
+        <td>Jane Doe</td>
+        <td>test@example.com</td>
+        <td>phone 1</td>
+        <td>phone 2</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head_spanning_two_cols,
+        TAG_CATALOG,
+        dedupbool=False,
+        config=DEFAULT_CONFIG,
+    )
+    first_row = processed_table[0]
+    assert len(first_row) == 3
+    assert {child.tag for child in first_row.iterdescendants()} == {"cell"}
+    table_cell_with_hi = html.fromstring(
+        "<table><tr><td><hi>highlighted text</hi></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_hi, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><hi>highlighted text</hi></cell>"
+    table_cell_with_span = html.fromstring(
+        "<table><tr><td><span style='sth'>span text</span></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_span, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><p/></cell>"
 
 
 if __name__ == '__main__':
