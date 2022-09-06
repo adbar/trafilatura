@@ -705,6 +705,56 @@ def test_precision_recall():
     assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
 
 
+def test_table_processing():
+    table_simple_cell = html.fromstring(
+        "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_simple_cell, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [(child.tag, child.text) for child in processed_table.iter()]
+    assert result == [
+        ("table", None),
+        ("row", None),
+        ("cell", "cell1"),
+        ("cell", "cell2"),
+        ("row", None),
+        ("cell", "cell3"),
+        ("cell", "cell4"),
+    ]
+    # if a cell contains 'exotic tags', they are clean during the extraction
+    # process and the content is merged with the parent e.g. <td>
+    table_cell_with_children = html.fromstring(
+        "<table><tr><td><p>text</p><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_children, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell><p>text</p><p>more text</p></cell></row></table>"
+    )
+    table_cell_w_text_and_child = html.fromstring(
+        "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_w_text_and_child, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell>text<p>more text</p></cell></row></table>"
+    )
+    table_cell_with_link = html.fromstring(
+        "<table><tr><td><ref='test'>link</ref></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_link, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [child.tag for child in  processed_table.find('.//cell').iterdescendants()]
+    assert result == ['p']
+
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -721,3 +771,4 @@ if __name__ == '__main__':
     test_txttocsv()
     test_external()
     test_tei()
+    test_table_processing()

@@ -329,7 +329,9 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
                     newchildelem.text, newchildelem.tail = processed_cell.text, processed_cell.tail
             else:
                 # proceed with iteration, fix for nested elements
-                for child in subelement.iter('*'):
+                newchildelem.text, newchildelem.tail = subelement.text, subelement.tail
+                subelement.tag = "done"
+                for child in subelement.iterdescendants():
                     if child.tag in TABLE_ALL:
                         # todo: define attributes properly
                         if child.tag in TABLE_ELEMS:
