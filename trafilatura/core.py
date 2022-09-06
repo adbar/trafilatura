@@ -309,12 +309,10 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
     '''Process single table element'''
     newtable = Element('table')
     newrow = Element('row')
-    i = 0
     # strip these structural elements
     strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
     # explore sub-elements
-    for subelement in table_elem.iter('*'):
-        i += 1
+    for subelement in table_elem.iterdescendants():
         if subelement.tag == 'tr':
             # process existing row
             if len(newrow) > 0:
@@ -352,7 +350,7 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             if newchildelem.text or len(newchildelem) > 0:
                 newrow.append(newchildelem)
         # beware of nested tables
-        elif subelement.tag == 'table' and i > 1:
+        elif subelement.tag == 'table':
             break
         # cleanup
         subelement.tag = 'done'
