@@ -722,7 +722,7 @@ def test_table_processing():
         ("cell", "cell3"),
         ("cell", "cell4"),
     ]
-    # if a cell contains 'exotic tags', they are clean during the extraction
+    # if a cell contains 'exotic' tags, they are cleaned during the extraction
     # process and the content is merged with the parent e.g. <td>
     table_cell_with_children = html.fromstring(
         "<table><tr><td><p>text</p><p>more text</p></td></tr></table>"
@@ -734,6 +734,29 @@ def test_table_processing():
         etree.tostring(processed_table, encoding="unicode")
         == "<table><row><cell><p>text</p><p>more text</p></cell></row></table>"
     )
+    # complex table that hasn't been cleaned yet
+    htmlstring = html.fromstring(
+        """<html>
+              <body><article>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <small>text<br></small>
+                        <h4>more_text</h4>
+                      </td>
+                      <td><a href='link'>linktext</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article></body>
+            </html>"""
+    )
+    processed = extract(
+        htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
+    )
+    result = processed.replace('\n', '').replace(' ', '')
+    assert """<table><row><cell>text<head>more_text</head></cell><cell/>""" in result
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )
