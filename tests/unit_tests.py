@@ -836,6 +836,78 @@ def test_table_processing():
     result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     # todo: all elements are there, but output not nested
     assert '<cell role="head">1</cell>' in result and '<cell>2</cell>' in result
+    nested_table = html.fromstring(
+        """
+        <table>
+        <tr>
+        <td>
+          <table><tr><td>1</td></tr></table>
+        </td>
+        </tr>
+        </table>"""
+    )
+    processed_table = handle_table(
+        nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", "table", "row", ("cell", "1")]
+    complex_nested_table = html.fromstring(
+    """
+    <table>
+    <tr>
+    <td>
+      <table><tr><td>1</td></tr></table>
+    </td>
+    <td>text1</td>
+    </tr>
+    <tr><td>text2</td></tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        complex_nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert (
+            result
+            == ["table", "row", "cell", "table", "row", ("cell", "1"), ("cell", "text1"), "row", ("cell", "text2")]
+    )
+    table_with_list = html.fromstring(
+    """
+    <table><tr><td>
+    <p>a list</p>
+    <list>
+      <item>one</item>
+      <item>two</item>
+    </list>
+    </td>
+    </tr></table>
+    """)
+    processed_table = handle_table(
+        table_with_list, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
+    broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
+    processed_table = handle_table(
+        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ['table', 'row', 'cell', 'row', 'cell']
+    broken_table = html.fromstring("<table><tr><p>text</p></tr><tr><td>cell</td></tr></table>")
+    processed_table = handle_table(
+        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ["table", "row", "cell", ]
 
 
 if __name__ == '__main__':
