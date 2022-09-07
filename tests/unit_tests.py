@@ -152,11 +152,11 @@ def test_txttocsv():
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
     # test json
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
-    assert result.endswith('}') and '"fingerprint":' in result
+    assert result.endswith('}') and '"fingerprint":' in result and '"language":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 17
+    assert isinstance(result, dict) and len(result) == 18
 
 
 def test_exotic_tags(xmloutput=False):
@@ -431,17 +431,17 @@ def test_filters():
     '''Test content filtering'''
     if LANGID_FLAG is True:
         # main text
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', SAMPLE_META) is False
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META) is True
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', SAMPLE_META)[0] is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META)[0] is True
         # comments
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META)[0] is False
         # lang detection on the content
         doc = html.fromstring('<html><body><article><p>How many ages hence/Shall this our lofty scene be acted over,/In states unborn and accents yet unknown!</p></article></body></html>')
         assert extract(doc, config=ZERO_CONFIG, target_language='de') is None
         assert extract(doc, config=ZERO_CONFIG, target_language='en') is not None
     else:
         # no detection
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META)[0] is False
     # test URL blacklist
     assert trafilatura.extract('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', output_format='xml', url_blacklist={'https://example.org'}) is None
     ## recursion limit

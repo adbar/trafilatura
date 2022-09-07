@@ -93,21 +93,28 @@ def check_html_lang(tree, target_language, strict=False):
     return True
 
 
-def language_filter(temp_text, temp_comments, target_language, docmeta):
+def language_classifier(temp_text, temp_comments):
     '''Run external component (if installed) for language identification'''
+    if LANGID_FLAG is True:
+        result, _ = (
+            py3langid.classify(temp_text)
+            if len(temp_text) > len(temp_comments)
+            else py3langid.classify(temp_comments)
+        )
+    else:
+        LOGGER.warning('Detector not installed, no language detection run')
+        result = None
+    return result
+
+
+def language_filter(temp_text, temp_comments, target_language, docmeta):
+    '''Filter text based on language detection and store relevant information'''
     if target_language is not None:
-        if LANGID_FLAG is True:
-            result, _ = (
-                py3langid.classify(temp_text)
-                if len(temp_text) > len(temp_comments)
-                else py3langid.classify(temp_comments)
-            )
-            if result != target_language:
-                LOGGER.warning('wrong language: %s %s %s', result, docmeta.id, docmeta.url)
-                return True
-        else:
-            LOGGER.warning('Detector not installed, no language detection run')
-    return False
+        docmeta.language = language_classifier(temp_text, temp_comments)
+        if docmeta.language is not None and docmeta.language != target_language:
+            LOGGER.warning('wrong language: %s %s %s', docmeta.language, docmeta.id, docmeta.url)
+            return True, docmeta
+    return False, docmeta
 
 
 def textfilter(element):

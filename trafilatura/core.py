@@ -825,6 +825,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             raise ValueError
 
         # HTML lang check
+        # todo: sometimes contradicted by detection on actual text content
         if target_language is not None and check_html_lang(tree, target_language) is False:
             LOGGER.error('wrong HTML meta language for URL %s', url)
             raise ValueError
@@ -901,9 +902,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             raise ValueError
 
         # sanity check on language
-        if target_language is not None and language_filter(temp_text, temp_comments, target_language, document) is True:
-            LOGGER.error('wrong language for URL %s', url)
-            raise ValueError
+        if target_language is not None:
+            is_not_target_lang, document = language_filter(temp_text, temp_comments, target_language, document)
+            if is_not_target_lang is True:
+                LOGGER.error('wrong language for URL %s', url)
+                raise ValueError
 
     except ValueError:
         LOGGER.info('discarding data for url: %s', url)  # document.url , record_id

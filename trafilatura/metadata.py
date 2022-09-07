@@ -28,7 +28,8 @@ class Document:
     __slots__ = [
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
-    'body', 'comments', 'commentsbody', 'raw_text', 'text'
+    'body', 'comments', 'commentsbody', 'raw_text', 'text',
+    'language',
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):

@@ -124,6 +124,8 @@ def add_xml_meta(output, docmeta):
             output.set('id', docmeta.id)
         if docmeta.fingerprint is not None:
             output.set('fingerprint', docmeta.fingerprint)
+        if docmeta.language is not None:
+            output.set('language', docmeta.language)
     return output
 
 
@@ -311,6 +313,7 @@ def _define_publisher_string(docmeta):
 
 def write_fullheader(teidoc, docmeta):
     '''Write TEI header based on gathered metadata'''
+    # todo: add language info
     header = SubElement(teidoc, 'teiHeader')
     filedesc = SubElement(header, 'fileDesc')
     bib_titlestmt = SubElement(filedesc, 'titleStmt')
