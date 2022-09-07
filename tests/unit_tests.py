@@ -267,7 +267,6 @@ def test_exotic_tags(xmloutput=False):
 </dl>
 </article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    print(my_result)
     assert '''
     <list rend="dl">
       <item rend="dt-1">Coffee</item>
