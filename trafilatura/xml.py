@@ -33,7 +33,7 @@ CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
-WITH_ATTRIBUTES = {'del', 'fw', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+WITH_ATTRIBUTES = {'cell', 'del', 'fw', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 
 def build_json_output(docmeta):

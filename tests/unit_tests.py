@@ -195,30 +195,6 @@ def test_exotic_tags(xmloutput=False):
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-    # tables with nested elements
-    htmlstring = '''<html><body><article>
-<table>
-<tr><td><b>Present Tense</b></td>
-<td>I buy</td>
-<td>you buy</td>
-<td>he/she/it buys</td>
-<td>we buy</td>
-<td>you buy</td>
-<td>they buy</td>
-</tr>
-    </table></article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '''<row>
-        <cell>
-          <hi>Present Tense</hi>
-        </cell>
-        <cell>I buy</cell>
-        <cell>you buy</cell>
-        <cell>he/she/it buys</cell>
-        <cell>we buy</cell>
-        <cell>you buy</cell>
-        <cell>they buy</cell>
-      </row>''' in my_result
     # nested list
     htmlstring = '''<html><body><article>
 <ul>
@@ -245,19 +221,7 @@ def test_exotic_tags(xmloutput=False):
       </item>
       <item>Milk</item>
     </list>''' in my_result
-    # table with links
-    # todo: further tests and adjustsments
-    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
-    assert 'ABCD' not in result
-    # nested table
-    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
-    # todo: all elements are there, but output not nested
-    # todo: th conversion
-    assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
     # description list
-    # nested list
     htmlstring = '''<html><body><article>
  <dl>
   <dt>Coffee</dt>
@@ -838,6 +802,40 @@ def test_table_processing():
     )
     result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
     assert result == "<cell><p/></cell>"
+    # tables with nested elements
+    htmlstring = '''<html><body><article>
+<table>
+<tr><td><b>Present Tense</b></td>
+<td>I buy</td>
+<td>you buy</td>
+<td>he/she/it buys</td>
+<td>we buy</td>
+<td>you buy</td>
+<td>they buy</td>
+</tr>
+    </table></article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    assert '''<row>
+        <cell>
+          <hi>Present Tense</hi>
+        </cell>
+        <cell>I buy</cell>
+        <cell>you buy</cell>
+        <cell>he/she/it buys</cell>
+        <cell>we buy</cell>
+        <cell>you buy</cell>
+        <cell>they buy</cell>
+      </row>''' in my_result
+    # table with links
+    # todo: further tests and adjustsments
+    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    assert 'ABCD' not in result
+    # nested table
+    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    # todo: all elements are there, but output not nested
+    assert '<cell role="head">1</cell>' in result and '<cell>2</cell>' in result
 
 
 if __name__ == '__main__':
