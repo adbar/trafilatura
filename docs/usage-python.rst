@@ -128,6 +128,18 @@ The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``ext
 They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
 
 
+
+html2txt
+^^^^^^^^
+
+This function emulates the behavior of similar functions in other packages, it is normally used as a last resort during extraction but can be called specifically in order to output all possible text:
+
+.. code-block:: python
+
+    >>> from trafilatura import html2txt
+    >>> html2txt(downloaded)
+
+
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
