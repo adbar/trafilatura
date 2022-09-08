@@ -44,14 +44,14 @@ HTML_CLEANER = Cleaner(
 )
 
 
-def tree_cleaning(tree, include_tables, include_images=False):
+def tree_cleaning(tree, options):
     '''Prune the tree by discarding unwanted elements'''
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
-    if include_tables is False:
+    if options.tables is False:
         cleaning_list.extend(['table', 'td', 'th', 'tr'])
-    if include_images is True:
+    if options.images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
                          not in ('figure', 'picture', 'source')]
@@ -215,11 +215,11 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     return subtree
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
+def convert_tags(tree, options):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # delete links for faster processing
-    if include_links is False:
-        if include_tables is True:
+    if options.links is False:
+        if options.tables is True:
             xpath_expr = './/div//a|.//table//a|.//ul//a'  # .//p//a ?
         else:
             xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
@@ -237,7 +237,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             if target is not None:
                 elem.set('target', target)
     # include_formatting
-    if include_formatting is False:
+    if options.formatting is False:
         strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
     else:
         for elem in tree.iter('em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup'):
@@ -302,7 +302,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             for subelem in elem.iter('summary'):
                 subelem.tag = 'head'
     # images
-    if include_images is True:
+    if options.images is True:
         for elem in tree.iter('img'):
             elem.tag = 'graphic'
     return tree

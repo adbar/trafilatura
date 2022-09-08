@@ -54,6 +54,27 @@ NOT_AT_THE_END = {'fw', 'head', 'ref'}
 JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
 
 
+class Extractor:
+    "Defines a class to store all extraction options."
+    __slots__ = [
+    'config', 'fast', 'precision', 'recall', 'comments',
+    'formatting', 'links', 'images', 'tables', 'dedup',
+    ]
+    # consider dataclasses for Python 3.7+
+    def __init__(self, config, fast, precision, recall, comments,
+                 formatting, links, images, tables, deduplicate):
+        self.config = config
+        self.fast = fast
+        self.precision = precision
+        self.recall = recall
+        self.comments = comments
+        self.formatting = formatting
+        self.links = links
+        self.images = images
+        self.tables = tables
+        self.dedup = deduplicate
+
+
 def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
     if len(element) == 0:
@@ -390,22 +411,22 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
+def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
-    if favor_recall is True:
+    if options.recall is True:
         potential_tags.update(['div', 'lb'])
         search_list.extend(['div', 'lb'])
     # prune
-    search_tree = prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
+    search_tree = prune_unwanted_sections(tree, potential_tags, options.recall, options.precision)
     # decide if links are preserved
     if 'ref' not in potential_tags:
         strip_tags(search_tree, 'a', 'ref', 'span')
     else:
         strip_tags(search_tree, 'span')
-    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config)
+    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config)
                               for e in search_tree.iter(search_list))))
     return result_body
 
@@ -465,7 +486,7 @@ def prune_unwanted_sections(tree, potential_tags, favor_recall, favor_precision)
     return tree
 
 
-def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
+def extract_content(tree, options):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -474,11 +495,11 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # init
     result_body = Element('body')
     potential_tags = set(TAG_CATALOG)
-    if include_tables is True:
+    if options.tables is True:
         potential_tags.update(['table', 'td', 'th', 'tr'])
-    if include_images is True:
+    if options.images is True:
         potential_tags.add('graphic')
-    if include_links is True:
+    if options.links is True:
         potential_tags.add('ref')
     # iterate
     for expr in BODY_XPATH:
@@ -488,9 +509,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         except IndexError:
             continue
         # prune the subtree
-        subtree = prune_unwanted_sections(subtree, potential_tags, favor_recall, favor_precision)
-        subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=favor_precision)
-        if 'table' in potential_tags or favor_precision is True:
+        subtree = prune_unwanted_sections(subtree, potential_tags, options.recall, options.precision)
+        subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.precision)
+        if 'table' in potential_tags or options.precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
@@ -499,13 +520,13 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             continue
         # no paragraphs containing text, or not enough
         ptest = subtree.xpath('//p//text()')
-        if favor_recall is True:
+        if options.recall is True:
             factor = 5
-        elif favor_precision is True:
+        elif options.precision is True:
             factor = 1
         else:
             factor = 3
-        if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * factor:
+        if not ptest or len(''.join(ptest)) < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * factor:
             potential_tags.add('div')
         # polish list of potential tags
         if 'ref' not in potential_tags:
@@ -519,7 +540,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if set(e.tag for e in subelems) == {'lb'}:
             subelems = [subtree]
         # extract content
-        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, deduplicate, config) for e in subelems)))
+        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config) for e in subelems)))
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
@@ -530,10 +551,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     temp_text = ' '.join(result_body.itertext()).strip()
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision,
-                                        favor_recall=favor_recall, potential_tags=potential_tags,
-                                        deduplicate=deduplicate, config=config)
+    if len(result_body) == 0 or len(temp_text) < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+        result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
     strip_elements(result_body, 'done')
@@ -542,11 +561,11 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     return result_body, temp_text, len(temp_text)
 
 
-def process_comments_node(elem, potential_tags, dedupbool, config):
+def process_comments_node(elem, potential_tags, options):
     '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
-        processed_element = handle_textnode(elem, comments_fix=True, deduplicate=dedupbool, config=config)
+        processed_element = handle_textnode(elem, comments_fix=True, deduplicate=options.dedup, config=options.config)
         # test length and remove
         if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
@@ -556,7 +575,7 @@ def process_comments_node(elem, potential_tags, dedupbool, config):
     return None
 
 
-def extract_comments(tree, dedupbool, config):
+def extract_comments(tree, options):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = Element('body')
     # define iteration strategy
@@ -579,7 +598,7 @@ def extract_comments(tree, dedupbool, config):
         #        comments_body.append(processed_elem)
         # processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
         #                    subtree.xpath('.//*'))
-        comments_body.extend(filter(None.__ne__, (process_comments_node(e, potential_tags, dedupbool, config) for e in subtree.xpath('.//*'))))
+        comments_body.extend(filter(None.__ne__, (process_comments_node(e, potential_tags, options) for e in subtree.xpath('.//*'))))
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
@@ -591,17 +610,17 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, options):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    min_target_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+    min_target_length = options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
     # bypass for recall
-    if favor_recall is True and len_text > min_target_length * 10:
+    if options.recall is True and len_text > min_target_length * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
     # prior cleaning
     backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
-    if favor_precision is True:
+    if options.precision is True:
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
@@ -636,14 +655,14 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
     # or favor_recall is True ?
-        # tree = prune_unwanted_sections(tree, {}, favor_recall, favor_precision)
+        # tree = prune_unwanted_sections(tree, {}, options.recall, options.precision)
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
         if jt_result is True:  # and not len_text > 2*len_text2:
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
     # post-processing: remove unwanted sections
     if algo_flag is True and jt_result is False:
-        body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images, include_tables)
+        body, text, len_text = sanitize_tree(body, options)
     return body, text, len_text
 
 
@@ -818,10 +837,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         )
     #if no_fallback is True:
     #    fast = no_fallback
-    #    warnings.warn(
-    #        '"no_fallback" will be deprecated in a future version, use "fast" instead',
-    #        PendingDeprecationWarning
-    #    )
+        #warnings.warn(
+        #    '"no_fallback" will be deprecated in a future version, use "fast" instead',
+        #    PendingDeprecationWarning
+        #)
 
     # load data
     try:
@@ -853,31 +872,36 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         else:
             document = Document()
 
+        # regroup extraction options
+        options = Extractor(config, no_fallback, favor_precision, favor_recall,
+                            include_comments, include_formatting, include_links,
+                            include_images, include_tables, deduplicate)
+
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None
         tree_backup_2 = deepcopy(tree)
 
         # clean + use LXML cleaner
-        cleaned_tree = tree_cleaning(tree, include_tables, include_images)
+        cleaned_tree = tree_cleaning(tree, options)
         cleaned_tree_backup = deepcopy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
+        cleaned_tree = convert_tags(cleaned_tree, options)
 
         # comments first, then remove
         if include_comments is True:
-            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
+            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
         if favor_precision is True:
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, options)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):

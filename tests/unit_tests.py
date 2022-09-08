@@ -24,13 +24,12 @@ except ImportError:
     LANGID_FLAG = False
 
 
-
 import trafilatura.filters
 import trafilatura.htmlprocessing
 
 from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
 
-from trafilatura.core import handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
+from trafilatura.core import Extractor, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
 from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -502,19 +501,22 @@ def test_filters():
 
 def test_external():
     '''Test external components'''
+    options = Extractor(*[False]*10)
+    options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
-    _, _, mylen = sanitize_tree(mydoc)
+    _, _, mylen = sanitize_tree(mydoc, options)
     assert mylen == 0
     mydoc = html.fromstring('<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>')
-    _, _, mylen = sanitize_tree(mydoc)
+    _, _, mylen = sanitize_tree(mydoc, options)
     assert mylen > 0
     # strip fancy tags while including links and images
     mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
-    mytree, _, _ = sanitize_tree(mydoc, include_links=False, include_images=False)
+    mytree, _, _ = sanitize_tree(mydoc, options)
     assert len(mytree) == 1
     mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
-    mytree, _, _ = sanitize_tree(mydoc, include_links=True, include_images=True)
+    options.links, options.images = True, True
+    mytree, _, _ = sanitize_tree(mydoc, options)
     myelems = {element.tag for element in set(mytree.iter())}
     assert 'graphic' in myelems and 'ref' in myelems
     # test langid
@@ -637,12 +639,16 @@ def test_tei():
 
 def test_htmlprocessing():
     '''test html-related functions'''
-    assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), True) is not None
+    options = Extractor(*[False]*10)
+    options.tables = True
+    assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
     mydoc = html.fromstring('<html><body><table><a href="">Link</a></table><img src="test.jpg"/><u>Underlined</u><tt>True Type</tt><sub>Text</sub><sup>Text</sup></body></html>')
-    myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, include_formatting=True, include_tables=True, include_images=True, include_links=True)
+    options.formatting, options.images, options.links = True, True, True
+    myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, options)
     assert myconverted.xpath('.//ref') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
-    myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, include_tables=False, include_images=True)
+    options.images, options.tables = True, False
+    myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
