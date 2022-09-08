@@ -26,7 +26,7 @@ from lxml.html import tostring
 
 # own
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
-from .filters import (check_html_lang, content_fingerprint, duplicate_test,
+from .filters import (LANGID_FLAG, check_html_lang, content_fingerprint, duplicate_test,
                       language_filter, text_chars_test)
 from .htmlprocessing import (convert_tags, handle_textnode, process_node,
                              delete_by_link_density, link_density_test_tables,
@@ -762,7 +762,7 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
     return normalize_unicode(returnstring)
 
 
-def bare_extraction(filecontent, url=None, no_fallback=False,
+def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     favor_precision=False, favor_recall=False,
                     include_comments=True, output_format='python', target_language=None,
                     include_tables=True, include_images=False, include_formatting=False,
@@ -776,13 +776,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     Args:
         filecontent: HTML code as string.
         url: URL of the webpage.
-        no_fallback: Skip the backup extraction with readability-lxml and justext.
+        no_fallback: Use faster heuristics and skip backup extraction.
         favor_precision: prefer less text but correct extraction.
         favor_recall: prefer more text even when unsure.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
-            Other values: 'txt', 'csv', 'json', 'xml', or 'xmltei'.
+            Other values: "txt", "csv", "json", "xml", or "xmltei".
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
@@ -809,13 +809,19 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     if url_blacklist is None:
         url_blacklist = set()
 
-    # deprecation warning
+    # deprecation warnings
     if with_metadata is True:
         only_with_metadata = with_metadata
         warnings.warn(
-            "with_metadata will be deprecated in a future version, use only_with_metadata instead",
+            '"with_metadata" will be deprecated in a future version, use "only_with_metadata instead"',
             PendingDeprecationWarning
         )
+    #if no_fallback is True:
+    #    fast = no_fallback
+    #    warnings.warn(
+    #        '"no_fallback" will be deprecated in a future version, use "fast" instead',
+    #        PendingDeprecationWarning
+    #    )
 
     # load data
     try:
@@ -824,11 +830,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             LOGGER.error('empty HTML tree for URL %s', url)
             raise ValueError
 
-        # HTML lang check
-        # todo: sometimes contradicted by detection on actual text content
-        if target_language is not None and check_html_lang(tree, target_language) is False:
-            LOGGER.error('wrong HTML meta language for URL %s', url)
-            raise ValueError
+        # quick and dirty HTML lang check
+        if target_language is not None and (no_fallback is True or LANGID_FLAG is False):
+            if check_html_lang(tree, target_language) is False:
+                LOGGER.error('wrong HTML meta language for URL %s', url)
+                raise ValueError
 
         # extract metadata if necessary
         if output_format != 'txt':

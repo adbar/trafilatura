@@ -25,7 +25,7 @@ LOGGER = logging.getLogger(__name__)
 
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
-RE_HTML_LANG = re.compile(r'([a-z]{2})', re.I)
+RE_HTML_LANG = re.compile(r'([a-z]{2})')
 
 # Mostly filters for social media
 RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|'
@@ -65,16 +65,16 @@ def check_html_lang(tree, target_language, strict=False):
     '''Check HTML meta-elements for language information and split
        the result in case there are several languages'''
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-    target_elements = tree.findall('.//meta[@http-equiv="content-language"]')
-    if len(target_elements) > 0:
+    target_elements = tree.findall('.//meta[@http-equiv="content-language"][@content]')
+    if target_elements:
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
                 return True
         LOGGER.debug('HTML lang detection failed')
         return False
     # locale
-    target_elements = tree.findall('.//meta[@property="og:locale"]')
-    if len(target_elements) > 0:
+    target_elements = tree.findall('.//meta[@property="og:locale"][@content]')
+    if target_elements:
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
                 return True
@@ -83,9 +83,9 @@ def check_html_lang(tree, target_language, strict=False):
     # HTML lang attribute: sometimes a wrong indication
     if strict is True:
         target_elements = tree.xpath('//html[@lang]')
-        if len(target_elements) > 0:
+        if target_elements:
             for elem in target_elements:
-                if target_language in RE_HTML_LANG.split(elem.get('lang')):
+                if target_language in RE_HTML_LANG.split(elem.get('lang').lower()):
                     return True
             LOGGER.debug('HTML lang detection failed')
             return False
@@ -109,8 +109,15 @@ def language_classifier(temp_text, temp_comments):
 
 def language_filter(temp_text, temp_comments, target_language, docmeta):
     '''Filter text based on language detection and store relevant information'''
+    # todo: run and pass info along anyway?
     if target_language is not None:
+        # more thorough: detection on actual text content
         docmeta.language = language_classifier(temp_text, temp_comments)
+        # HTML lang check? sometimes contradicted by detection above
+        #if docmeta.language is None:
+        #    if check_html_lang(tree, target_language) is False:
+        #        LOGGER.error('wrong HTML meta language for URL %s', url)
+        #        raise ValueError
         if docmeta.language is not None and docmeta.language != target_language:
             LOGGER.warning('wrong language: %s %s %s', docmeta.language, docmeta.id, docmeta.url)
             return True, docmeta

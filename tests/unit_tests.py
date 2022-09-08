@@ -477,8 +477,13 @@ def test_filters():
     # text + lang
     my_p = '<p>In sleep a king, but waking no such matter.</p>'
     if LANGID_FLAG is True:
-        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='en') is not None
-        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
+        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), no_fallback=True, target_language='en') is not None
+        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), no_fallback=True, target_language='de') is None
+        # caught
+        assert extract(html.fromstring('<html lang="de-DE"><body>' + my_p*50 + '</body></html>'), no_fallback=False, target_language='de') is None
+    else:
+        # not caught, HTML tag used
+        assert extract(html.fromstring('<html lang="de-DE"><body>' + my_p*50 + '</body></html>'), no_fallback=False, target_language='de') is not None
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='en') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de', strict=True) is True
