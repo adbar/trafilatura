@@ -19,7 +19,7 @@ The only required argument is the input document (here a downloaded HTML file), 
     >>> result = trafilatura.extract(downloaded, output_format="xml")
     >>> print(result)
     # formatting preserved in XML structure ...
-    >>> trafilatura.extract(downloaded, xml_output=True, include_comments=False)
+    >>> trafilatura.extract(downloaded, output_format="xml", include_comments=False)
     # outputs main content without comments as XML ...
 
 
