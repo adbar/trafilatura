@@ -273,7 +273,7 @@ def convert_tags(tree, options):
             i = 1
             for subelem in elem.iter('dd', 'dt', 'li'):
                 # keep track of dd/dt items
-                if subelem.tag == 'dd' or subelem.tag == 'dt':
+                if subelem.tag in ('dd', 'dt'):
                     subelem.set('rend', subelem.tag + '-' + str(i))
                     # increment counter after <dd> in description list
                     if subelem.tag == 'dd':

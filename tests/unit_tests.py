@@ -501,7 +501,7 @@ def test_filters():
 
 def test_external():
     '''Test external components'''
-    options = Extractor(*[False]*10)
+    options = Extractor(*[False]*11)
     options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
@@ -639,7 +639,7 @@ def test_tei():
 
 def test_htmlprocessing():
     '''test html-related functions'''
-    options = Extractor(*[False]*10)
+    options = Extractor(*[False]*11)
     options.tables = True
     assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
