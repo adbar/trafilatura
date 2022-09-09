@@ -303,7 +303,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             #        newsub.tail = processed_child.text
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
             processed_element.append(newsub)
-            child.tag = 'done'
+        child.tag = 'done'
     # finish
     if len(processed_element) > 0:
         # clean trailing lb-elements
@@ -413,26 +413,6 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
-    '''Look for all previously unconsidered wild elements, including outside of the determined
-       frame and throughout the document to recover potentially missing text parts'''
-    LOGGER.debug('Recovering wild text elements')
-    search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
-    if options.recall is True:
-        potential_tags.update(['div', 'lb'])
-        search_list.extend(['div', 'lb'])
-    # prune
-    search_tree = prune_unwanted_sections(tree, potential_tags, options)
-    # decide if links are preserved
-    if 'ref' not in potential_tags:
-        strip_tags(search_tree, 'a', 'ref', 'span')
-    else:
-        strip_tags(search_tree, 'span')
-    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config)
-                              for e in search_tree.iter(search_list))))
-    return result_body
-
-
 def handle_textelem(element, potential_tags, dedupbool, config):
     '''Process text element and determine how to deal with its content'''
     new_element = None
@@ -463,6 +443,27 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     return new_element
 
 
+def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
+    '''Look for all previously unconsidered wild elements, including outside of the determined
+       frame and throughout the document to recover potentially missing text parts'''
+    LOGGER.debug('Recovering wild text elements')
+    search_expr = './/blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table'
+    if options.recall is True:
+        potential_tags.update(['div', 'lb'])
+        search_expr += '|.//div|.//lb|.//list'
+    # prune
+    search_tree = prune_unwanted_sections(tree, potential_tags, options)
+    # decide if links are preserved
+    if 'ref' not in potential_tags:
+        strip_tags(search_tree, 'a', 'ref', 'span')
+    else:
+        strip_tags(search_tree, 'span')
+    subelems = search_tree.xpath(search_expr)
+    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config)
+                       for e in subelems)))
+    return result_body
+
+
 def prune_unwanted_sections(tree, potential_tags, options):
     'Rule-based deletion of targeted document sections'
     # prune the rest
@@ -478,11 +479,13 @@ def prune_unwanted_sections(tree, potential_tags, options):
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density
     tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=options.precision)
-    # tree = delete_by_link_density(tree, 'list', backtracking=False)
+    tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=options.precision)
     tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=options.precision)
-    # tree = delete_by_link_density(tree, 'head', backtracking=False)
     # also filter fw/head, table and quote elements?
     if options.precision is True:
+        # delete trailing titles
+        while len(tree) > 0 and (tree[-1].tag == 'head'):
+            tree[-1].getparent().remove(tree[-1])
         tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=options.precision
         tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=options.precision
     return tree
@@ -512,7 +515,8 @@ def extract_content(tree, options):
             continue
         # prune the subtree
         subtree = prune_unwanted_sections(subtree, potential_tags, options)
-        subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.precision)
+        # second pass?
+        # subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.precision)
         if 'table' in potential_tags or options.precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
