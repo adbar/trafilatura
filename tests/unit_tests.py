@@ -194,30 +194,6 @@ def test_exotic_tags(xmloutput=False):
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-    # tables with nested elements
-    htmlstring = '''<html><body><article>
-<table>
-<tr><td><b>Present Tense</b></td>
-<td>I buy</td>
-<td>you buy</td>
-<td>he/she/it buys</td>
-<td>we buy</td>
-<td>you buy</td>
-<td>they buy</td>
-</tr>
-    </table></article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '''<row>
-        <cell>
-          <hi>Present Tense</hi>
-        </cell>
-        <cell>I buy</cell>
-        <cell>you buy</cell>
-        <cell>he/she/it buys</cell>
-        <cell>we buy</cell>
-        <cell>you buy</cell>
-        <cell>they buy</cell>
-      </row>''' in my_result
     # nested list
     htmlstring = '''<html><body><article>
 <ul>
@@ -244,19 +220,7 @@ def test_exotic_tags(xmloutput=False):
       </item>
       <item>Milk</item>
     </list>''' in my_result
-    # table with links
-    # todo: further tests and adjustsments
-    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
-    assert 'ABCD' not in result
-    # nested table
-    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
-    # todo: all elements are there, but output not nested
-    # todo: th conversion
-    assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
     # description list
-    # nested list
     htmlstring = '''<html><body><article>
  <dl>
   <dt>Coffee</dt>
@@ -266,7 +230,6 @@ def test_exotic_tags(xmloutput=False):
 </dl>
 </article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    print(my_result)
     assert '''
     <list rend="dl">
       <item rend="dt-1">Coffee</item>
@@ -716,6 +679,251 @@ def test_precision_recall():
     assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
 
 
+def test_table_processing():
+    table_simple_cell = html.fromstring(
+        "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_simple_cell, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [(child.tag, child.text) for child in processed_table.iter()]
+    assert result == [
+        ("table", None),
+        ("row", None),
+        ("cell", "cell1"),
+        ("cell", "cell2"),
+        ("row", None),
+        ("cell", "cell3"),
+        ("cell", "cell4"),
+    ]
+    # if a cell contains 'exotic' tags, they are cleaned during the extraction
+    # process and the content is merged with the parent e.g. <td>
+    table_cell_with_children = html.fromstring(
+        "<table><tr><td><p>text</p><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_children, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell><p>text</p><p>more text</p></cell></row></table>"
+    )
+    # complex table that hasn't been cleaned yet
+    htmlstring = html.fromstring(
+        """<html>
+              <body><article>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <small>text<br></small>
+                        <h4>more_text</h4>
+                      </td>
+                      <td><a href='link'>linktext</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article></body>
+            </html>"""
+    )
+    processed = extract(
+        htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
+    )
+    result = processed.replace('\n', '').replace(' ', '')
+    assert """<table><row><cell>text<head>more_text</head></cell><cell/>""" in result
+    table_cell_w_text_and_child = html.fromstring(
+        "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_w_text_and_child, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell>text<p>more text</p></cell></row></table>"
+    )
+    table_cell_with_link = html.fromstring(
+        "<table><tr><td><ref='test'>link</ref></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_link, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
+    assert result == ["p"]
+    table_with_head = html.fromstring(
+        """<table>
+      <tr>
+        <th>Month</th>
+        <th>Days</th>
+      </tr>
+      <tr>
+        <td>January</td>
+        <td>31</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>28</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    first_row = processed_table[0]
+    assert len(processed_table) == 3
+    assert [
+        (child.tag, child.attrib, child.text) for child in first_row.iterdescendants()
+    ] == [("cell", {"role": "head"}, "Month"), ("cell", {"role": "head"}, "Days")]
+    table_with_head_spanning_two_cols = html.fromstring(
+        """<table>
+      <tr>
+        <th>Name</th>
+        <th>Adress</th>
+        <th colspan="2">Phone</th>
+      </tr>
+      <tr>
+        <td>Jane Doe</td>
+        <td>test@example.com</td>
+        <td>phone 1</td>
+        <td>phone 2</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head_spanning_two_cols,
+        TAG_CATALOG,
+        dedupbool=False,
+        config=DEFAULT_CONFIG,
+    )
+    first_row = processed_table[0]
+    assert len(first_row) == 3
+    assert {child.tag for child in first_row.iterdescendants()} == {"cell"}
+    table_cell_with_hi = html.fromstring(
+        "<table><tr><td><hi>highlighted text</hi></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_hi, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><hi>highlighted text</hi></cell>"
+    table_cell_with_span = html.fromstring(
+        "<table><tr><td><span style='sth'>span text</span></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_with_span, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><p/></cell>"
+    # tables with nested elements
+    htmlstring = '''<html><body><article>
+<table>
+<tr><td><b>Present Tense</b></td>
+<td>I buy</td>
+<td>you buy</td>
+<td>he/she/it buys</td>
+<td>we buy</td>
+<td>you buy</td>
+<td>they buy</td>
+</tr>
+    </table></article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    assert '''<row>
+        <cell>
+          <hi>Present Tense</hi>
+        </cell>
+        <cell>I buy</cell>
+        <cell>you buy</cell>
+        <cell>he/she/it buys</cell>
+        <cell>we buy</cell>
+        <cell>you buy</cell>
+        <cell>they buy</cell>
+      </row>''' in my_result
+    # table with links
+    # todo: further tests and adjustsments
+    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    assert 'ABCD' not in result
+    # nested table
+    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    # todo: all elements are there, but output not nested
+    assert '<cell role="head">1</cell>' in result and '<cell>2</cell>' in result
+    nested_table = html.fromstring(
+        """
+        <table>
+        <tr>
+        <td>
+          <table><tr><td>1</td></tr></table>
+        </td>
+        </tr>
+        </table>"""
+    )
+    processed_table = handle_table(
+        nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    #assert result == ["table", "row", "cell", "table", "row", ("cell", "1")]
+    assert result == ["table", "row", "cell", ("cell", "1")]
+    complex_nested_table = html.fromstring(
+    """
+    <table>
+    <tr>
+    <td>
+      <table><tr><td>1</td></tr></table>
+    </td>
+    <td>text1</td>
+    </tr>
+    <tr><td>text2</td></tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        complex_nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    #assert (
+    #        result
+    #        == ["table", "row", "cell", "table", "row", ("cell", "1"), ("cell", "text1"), "row", ("cell", "text2")]
+    #)
+    assert result == ['table', 'row', 'cell', ('cell', '1'), ('cell', 'text1'), 'row', ('cell', 'text2')]
+    table_with_list = html.fromstring(
+    """
+    <table><tr><td>
+    <p>a list</p>
+    <list>
+      <item>one</item>
+      <item>two</item>
+    </list>
+    </td>
+    </tr></table>
+    """)
+    processed_table = handle_table(
+        table_with_list, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
+    assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+    broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
+    processed_table = handle_table(
+        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ['table', 'row', 'cell', 'row', 'cell']
+    broken_table = html.fromstring("<table><tr><p>text</p></tr><tr><td>cell</td></tr></table>")
+    processed_table = handle_table(
+        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+    )
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ["table", "row", "cell", ]
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -732,3 +940,4 @@ if __name__ == '__main__':
     test_txttocsv()
     test_external()
     test_tei()
+    test_table_processing()
