@@ -77,14 +77,14 @@ class Extractor:
         self.lang = target_language
 
 
-def handle_titles(element, dedupbool, config):
+def handle_titles(element, options):
     '''Process head elements (titles)'''
     if len(element) == 0:
         # maybe needs attention?
         # if element.tail and re.search(r'\w', element.tail):
         #    LOGGER.debug('tail in title, stripping: %s', element.tail)
         #    element.tail = None
-        title = process_node(element, dedupbool, config)
+        title = process_node(element, options)
     # children
     else:
         title = deepcopy(element)
@@ -94,7 +94,7 @@ def handle_titles(element, dedupbool, config):
             # if child.tag not in potential_tags:
             #    LOGGER.debug('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
             #    continue
-            processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+            processed_child = handle_textnode(child, options, comments_fix=False)
             if processed_child is not None:
                 title.append(processed_child)
             child.tag = 'done'
@@ -103,10 +103,10 @@ def handle_titles(element, dedupbool, config):
     return None
 
 
-def handle_formatting(element, dedupbool, config):
+def handle_formatting(element, options):
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
-    formatting = process_node(element, dedupbool, config)
+    formatting = process_node(element, options)
     if len(element) == 0 and formatting is None:
         return None
     # repair orphan elements
@@ -118,7 +118,7 @@ def handle_formatting(element, dedupbool, config):
     #        if child.tag not in potential_tags:
     #            LOGGER.debug('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
     #            continue
-    #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+    #        processed_child = handle_textnode(child, options, comments_fix=False)
     #        if processed_child is not None:
     #            formatting.append(processed_child)
     #        child.tag = 'done'
@@ -127,13 +127,13 @@ def handle_formatting(element, dedupbool, config):
     # if text_chars_test(element.tail) is True:
     #    processed_child.tail = trim(element.tail)
     # if len(element) == 0:
-    #    processed_element = process_node(element, dedupbool, config)
+    #    processed_element = process_node(element, options)
     # children
     # else:
     #    processed_element = Element(element.tag)
     #    processed_element.text, processed_element.tail = element.text, element.tail
     #    for child in element.iter('*'):
-    #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+    #        processed_child = handle_textnode(child, options, comments_fix=False)
     #        if processed_child is not None:
     #            processed_element.append(processed_child)
     #        child.tag = 'done'
@@ -151,7 +151,7 @@ def handle_formatting(element, dedupbool, config):
     return processed_element
 
 
-def handle_lists(element, dedupbool, config):
+def handle_lists(element, options):
     '''Process lists elements'''
     processed_element = Element(element.tag)
     if element.text is not None:
@@ -161,7 +161,7 @@ def handle_lists(element, dedupbool, config):
     for child in element.iter('item'):
         newchildelem = Element('item')
         if len(child) == 0:
-            processed_child = process_node(child, dedupbool, config)
+            processed_child = process_node(child, options)
             if processed_child is not None:
                 newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
                 processed_element.append(newchildelem)
@@ -170,12 +170,11 @@ def handle_lists(element, dedupbool, config):
             for subelem in child.iter('*'):
                 # beware of nested lists
                 if subelem.tag == 'list':
-                    processed_subchild = handle_lists(subelem, dedupbool, config)
+                    processed_subchild = handle_lists(subelem, options)
                     if processed_subchild is not None:
                         newchildelem.append(processed_subchild)
                 else:
-                    processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool,
-                                                         config=config)
+                    processed_subchild = handle_textnode(subelem, options, comments_fix=False)
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
@@ -199,11 +198,11 @@ def handle_lists(element, dedupbool, config):
     return None
 
 
-def handle_quotes(element, dedupbool, config):
+def handle_quotes(element, options):
     '''Process quotes elements'''
     processed_element = Element(element.tag)
     for child in element.iter('*'):
-        processed_child = process_node(child, dedupbool, config)  # handle_textnode(child, comments_fix=True)
+        processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             newsub = SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
@@ -215,7 +214,7 @@ def handle_quotes(element, dedupbool, config):
     return None
 
 
-def handle_other_elements(element, potential_tags, dedupbool, config):
+def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
@@ -224,7 +223,7 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
     if element.tag == 'div':
         # make a copy and prune it in case it contains sub-elements handled on their own?
         # divcopy = deepcopy(element)
-        processed_element = handle_textnode(element, comments_fix=False, deduplicate=dedupbool, config=config)
+        processed_element = handle_textnode(element, options, comments_fix=False)
         if processed_element is not None and text_chars_test(processed_element.text) is True:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
@@ -237,14 +236,14 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
     return None
 
 
-def handle_paragraphs(element, potential_tags, dedupbool, config):
+def handle_paragraphs(element, potential_tags, options):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
     # strip_tags(element, 'p') # change in precision due to spaces?
     # no children
     if len(element) == 0:
-        processed_element = process_node(element, dedupbool, config)
+        processed_element = process_node(element, options)
         if processed_element is not None:
             return processed_element
         return None
@@ -256,8 +255,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             continue
         # spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
-        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True,
-                                          config=config)
+        processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
         if processed_child is not None:
             # todo: needing attention!
             if processed_child.tag == 'p':
@@ -286,7 +284,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             # handle line breaks
             # elif processed_child.tag == 'lb':
             #    try:
-            #        processed_child.tail = process_node(child, dedupbool, config).tail
+            #        processed_child.tail = process_node(child, options).tail
             #    except AttributeError:  # no text
             #        pass
             # prepare text
@@ -328,7 +326,7 @@ def define_cell_type(element):
     return cell_element
 
 
-def handle_table(table_elem, potential_tags, dedupbool, config):
+def handle_table(table_elem, potential_tags, options):
     '''Process single table element'''
     newtable = Element('table')
     newrow = Element('row')
@@ -345,7 +343,7 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             newchildelem = define_cell_type(subelement)
             # process
             if len(subelement) == 0:
-                processed_cell = process_node(subelement, dedupbool, config)
+                processed_cell = process_node(subelement, options)
                 if processed_cell is not None:
                     newchildelem.text, newchildelem.tail = processed_cell.text, processed_cell.tail
             else:
@@ -358,12 +356,11 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
                         if child.tag in TABLE_ELEMS:
                             # subcell_elem = define_cell_type(subelement)
                             child.tag = 'cell'
-                        processed_subchild = handle_textnode(child, preserve_spaces=True, comments_fix=True,
-                                                             deduplicate=dedupbool, config=config)
+                        processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
                     else:
                         # subcell_elem = Element(child.tag)
-                        processed_subchild = handle_textelem(child, potential_tags.union(['div']), dedupbool, config)
+                        processed_subchild = handle_textelem(child, potential_tags.union(['div']), options)
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
@@ -413,33 +410,33 @@ def handle_image(element):
     return processed_element
 
 
-def handle_textelem(element, potential_tags, dedupbool, config):
+def handle_textelem(element, potential_tags, options):
     '''Process text element and determine how to deal with its content'''
     new_element = None
     # bypass: nested elements
     if element.tag == 'list':
-        new_element = handle_lists(element, dedupbool, config)
+        new_element = handle_lists(element, options)
     elif element.tag in CODES_QUOTES:
-        new_element = handle_quotes(element, dedupbool, config)
+        new_element = handle_quotes(element, options)
     elif element.tag == 'head':
-        new_element = handle_titles(element, dedupbool, config)
+        new_element = handle_titles(element, options)
     elif element.tag == 'p':
-        new_element = handle_paragraphs(element, potential_tags, dedupbool, config)
+        new_element = handle_paragraphs(element, potential_tags, options)
     elif element.tag == 'lb':
         if text_chars_test(element.tail) is True:
-            element = process_node(element, dedupbool, config)
+            element = process_node(element, options)
             if element is not None:
                 new_element = Element('p')
                 new_element.text = element.tail
     elif element.tag in FORMATTING:
-        new_element = handle_formatting(element, dedupbool, config)  # process_node(element, dedupbool, config)
+        new_element = handle_formatting(element, options)  # process_node(element, options)
     elif element.tag == 'table' and 'table' in potential_tags:
-        new_element = handle_table(element, potential_tags, dedupbool, config)
+        new_element = handle_table(element, potential_tags, options)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
         new_element = handle_image(element)
     else:
         # other elements (div, ??, ??)
-        new_element = handle_other_elements(element, potential_tags, dedupbool, config)
+        new_element = handle_other_elements(element, potential_tags, options)
     return new_element
 
 
@@ -459,7 +456,7 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
     else:
         strip_tags(search_tree, 'span')
     subelems = search_tree.xpath(search_expr)
-    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config)
+    result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options)
                        for e in subelems)))
     return result_body
 
@@ -546,7 +543,7 @@ def extract_content(tree, options):
         if set(e.tag for e in subelems) == {'lb'}:
             subelems = [subtree]
         # extract content
-        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options.dedup, options.config) for e in subelems)))
+        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options) for e in subelems)))
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
@@ -571,7 +568,7 @@ def process_comments_node(elem, potential_tags, options):
     '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
-        processed_element = handle_textnode(elem, comments_fix=True, deduplicate=options.dedup, config=options.config)
+        processed_element = handle_textnode(elem, options, comments_fix=True)
         # test length and remove
         if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
@@ -602,7 +599,7 @@ def extract_comments(tree, options):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        # processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in
+        # processed_elems = (process_comments_node(elem, potential_tags, options) for elem in
         #                    subtree.xpath('.//*'))
         comments_body.extend(filter(None.__ne__, (process_comments_node(e, potential_tags, options) for e in subtree.xpath('.//*'))))
         # control

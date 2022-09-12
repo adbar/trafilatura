@@ -56,6 +56,9 @@ MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
 
+DEFAULT_OPTIONS = Extractor(*[False]*11)
+DEFAULT_OPTIONS.config = DEFAULT_CONFIG
+
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
@@ -159,6 +162,8 @@ def test_txttocsv():
 
 
 def test_exotic_tags(xmloutput=False):
+    options = DEFAULT_OPTIONS
+    options.config = ZERO_CONFIG
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
@@ -172,20 +177,20 @@ def test_exotic_tags(xmloutput=False):
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
-    assert handle_quotes(etree.Element('quote'), False, ZERO_CONFIG) is None
-    assert handle_table(etree.Element('table'), TAG_CATALOG, False, ZERO_CONFIG) is None
+    assert handle_quotes(etree.Element('quote'), options) is None
+    assert handle_table(etree.Element('table'), TAG_CATALOG, options) is None
     # p within p
     element, second = etree.Element('p'), etree.Element('p')
     element.text, second.text = '1st part.', '2nd part.'
     element.append(second)
     # delete last <lb>
     element.append(etree.Element('lb'))
-    converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
+    converted = handle_paragraphs(element, ['p'], options)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # naked div with <lb>
     assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
     # malformed lists (common error)
-    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
+    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
     assert result.count(b'List item') == 3
     assert b"Description" in result
     # HTML5: <details>
@@ -283,11 +288,12 @@ def test_lrucache():
 
 def test_formatting():
     '''Test HTML formatting conversion and extraction'''
+    options = DEFAULT_OPTIONS
+
     # trailing <lb>
     my_document = html.fromstring('<html><body><p>This here is the text.<br/></p></body></html>')
     my_result = extract(my_document, output_format='xml', config=ZERO_CONFIG)
     assert 'lb' not in my_result
-
     # simple formatting
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -325,7 +331,8 @@ def test_formatting():
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    converted = handle_formatting(element, dedupbool=False, config=ZERO_CONFIG)
+    options.config = ZERO_CONFIG
+    converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
     my_document = html.fromstring('<html><body><div>\t\n</div><div>There is text here.</div></body></html>')
@@ -429,10 +436,12 @@ def test_filters():
     lru_test = LRUCache(maxsize=2)
     trafilatura.filters.LRU_TEST = lru_test
     my_p = etree.fromstring('<p>' + 'abc'*50 + '</p>')
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is None
+    options = DEFAULT_OPTIONS
+    options.dedup = True
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is None
     # HTML lang filter
     # no lang
     assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
@@ -464,7 +473,7 @@ def test_filters():
 
 def test_external():
     '''Test external components'''
-    options = Extractor(*[False]*11)
+    options = DEFAULT_OPTIONS
     options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
@@ -507,7 +516,7 @@ def test_images():
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     # HTML conversion
-    assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
+    assert handle_textelem(etree.Element('graphic'), [], DEFAULT_OPTIONS) is None
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert '![Example image](test.jpg)' not in extract(teststring)
@@ -525,8 +534,10 @@ def test_images():
 
 def test_links():
     '''Test link extraction function'''
-    assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
-    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), dedupbool=False, config=ZERO_CONFIG) is not None
+    options = DEFAULT_OPTIONS
+    options.config = ZERO_CONFIG
+    assert handle_textelem(etree.Element('ref'), [], options) is None
+    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
     mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
@@ -602,7 +613,7 @@ def test_tei():
 
 def test_htmlprocessing():
     '''test html-related functions'''
-    options = Extractor(*[False]*11)
+    options = DEFAULT_OPTIONS
     options.tables = True
     assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
@@ -633,19 +644,19 @@ def test_htmlprocessing():
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
     # test tail of node deleted if set as text
     node = etree.fromstring("<div><p></p>tail</div>")[0]
-    trafilatura.htmlprocessing.process_node(node)
+    trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == 'tail'
     assert node.tail is None
     node = etree.fromstring("<list><item></item>text in tail</list>")[0]
-    trafilatura.htmlprocessing.process_node(node)
+    trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "text in tail"
     assert node.tail is None
     line_break = etree.fromstring("<p><lb/>tail</p>")[0]
-    trafilatura.htmlprocessing.process_node(line_break)
+    trafilatura.htmlprocessing.process_node(line_break, options)
     assert line_break.text is None
     assert line_break.tail == "tail"
     node = etree.fromstring("<div><p>some text</p>tail</div>")[0]
-    trafilatura.htmlprocessing.process_node(node)
+    trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "some text"
     assert node.tail == "tail"
 
@@ -680,12 +691,11 @@ def test_precision_recall():
 
 
 def test_table_processing():
+    options = DEFAULT_OPTIONS
     table_simple_cell = html.fromstring(
         "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
     )
-    processed_table = handle_table(
-        table_simple_cell, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_simple_cell, TAG_CATALOG, options)
     result = [(child.tag, child.text) for child in processed_table.iter()]
     assert result == [
         ("table", None),
@@ -701,9 +711,7 @@ def test_table_processing():
     table_cell_with_children = html.fromstring(
         "<table><tr><td><p>text</p><p>more text</p></td></tr></table>"
     )
-    processed_table = handle_table(
-        table_cell_with_children, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_cell_with_children, TAG_CATALOG, options)
     assert (
         etree.tostring(processed_table, encoding="unicode")
         == "<table><row><cell><p>text</p><p>more text</p></cell></row></table>"
@@ -735,7 +743,7 @@ def test_table_processing():
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )
     processed_table = handle_table(
-        table_cell_w_text_and_child, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+        table_cell_w_text_and_child, TAG_CATALOG, options
     )
     assert (
         etree.tostring(processed_table, encoding="unicode")
@@ -744,9 +752,7 @@ def test_table_processing():
     table_cell_with_link = html.fromstring(
         "<table><tr><td><ref='test'>link</ref></td></tr></table>"
     )
-    processed_table = handle_table(
-        table_cell_with_link, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
     result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
     assert result == ["p"]
     table_with_head = html.fromstring(
@@ -766,7 +772,7 @@ def test_table_processing():
     </table>"""
     )
     processed_table = handle_table(
-        table_with_head, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
+        table_with_head, TAG_CATALOG, options
     )
     first_row = processed_table[0]
     assert len(processed_table) == 3
@@ -791,8 +797,7 @@ def test_table_processing():
     processed_table = handle_table(
         table_with_head_spanning_two_cols,
         TAG_CATALOG,
-        dedupbool=False,
-        config=DEFAULT_CONFIG,
+        options,
     )
     first_row = processed_table[0]
     assert len(first_row) == 3
@@ -800,17 +805,13 @@ def test_table_processing():
     table_cell_with_hi = html.fromstring(
         "<table><tr><td><hi>highlighted text</hi></td></tr></table>"
     )
-    processed_table = handle_table(
-        table_cell_with_hi, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_cell_with_hi, TAG_CATALOG, options)
     result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
     assert result == "<cell><hi>highlighted text</hi></cell>"
     table_cell_with_span = html.fromstring(
         "<table><tr><td><span style='sth'>span text</span></td></tr></table>"
     )
-    processed_table = handle_table(
-        table_cell_with_span, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_cell_with_span, TAG_CATALOG, options)
     result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
     assert result == "<cell><p/></cell>"
     # tables with nested elements
@@ -857,9 +858,7 @@ def test_table_processing():
         </tr>
         </table>"""
     )
-    processed_table = handle_table(
-        nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(nested_table, TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
@@ -878,9 +877,7 @@ def test_table_processing():
     <tr><td>text2</td></tr>
     </table>"""
     )
-    processed_table = handle_table(
-        complex_nested_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(complex_nested_table, TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
@@ -901,9 +898,7 @@ def test_table_processing():
     </td>
     </tr></table>
     """)
-    processed_table = handle_table(
-        table_with_list, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
@@ -911,15 +906,11 @@ def test_table_processing():
     # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
     broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
-    processed_table = handle_table(
-        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
     assert result == ['table', 'row', 'cell', 'row', 'cell']
     broken_table = html.fromstring("<table><tr><p>text</p></tr><tr><td>cell</td></tr></table>")
-    processed_table = handle_table(
-        broken_table, TAG_CATALOG, dedupbool=False, config=DEFAULT_CONFIG
-    )
+    processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
     assert result == ["table", "row", "cell", ]
 

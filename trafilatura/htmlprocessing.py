@@ -15,7 +15,7 @@ from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
-from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
+from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim, uniquify_list
 
 
@@ -308,7 +308,7 @@ def convert_tags(tree, options):
     return tree
 
 
-def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_spaces=False, config=DEFAULT_CONFIG):
+def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
     '''Convert, format, and probe potential text elements'''
     if element.text is None and element.tail is None:
         return None
@@ -337,12 +337,12 @@ def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_space
         return None
     if textfilter(element) is True:
         return None
-    if deduplicate is True and duplicate_test(element, config) is True:
+    if options.dedup and duplicate_test(element, options.config) is True:
         return None
     return element
 
 
-def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
+def process_node(element, options):
     '''Convert, format, and probe potential text elements (light format)'''
     if element.tag == 'done':
         return None
@@ -358,6 +358,6 @@ def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
     if element.text or element.tail:
         if textfilter(element) is True:
             return None
-        if deduplicate is True and duplicate_test(element, config) is True:
+        if options.dedup and duplicate_test(element, options.config) is True:
             return None
     return element
