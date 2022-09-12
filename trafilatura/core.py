@@ -306,64 +306,6 @@ def define_cell_type(element):
     return cell_element
 
 
-def _handle_cell(cell_elem, potential_tags, dedupbool, config):
-    if cell_elem.tag in TABLE_ELEMS:
-        newchildelem = define_cell_type(cell_elem)
-        # simple cell
-        if len(cell_elem) == 0:
-            processed_cell = process_node(cell_elem, dedupbool, config)
-            if processed_cell is not None:
-                newchildelem.text, newchildelem.tail = (
-                    processed_cell.text,
-                    processed_cell.tail,
-                )
-            cell_elem.tag = "done"
-        else:
-            # if cell contains text and has children
-            newchildelem.text, newchildelem.tail = (
-                cell_elem.text,
-                cell_elem.tail,
-            )
-            cell_elem.tag = "done"
-            # explore children of cell
-            for cell_child in cell_elem.iterdescendants():
-                if cell_child.tag == "hi":
-                    processed_subchild = handle_textnode(
-                        cell_child,
-                        preserve_spaces=True,
-                        comments_fix=True,
-                        deduplicate=dedupbool,
-                        config=config,
-                    )
-                else:
-                    processed_subchild = handle_textelem(
-                        cell_child,
-                        potential_tags.union(["div", "table"]),
-                        dedupbool,
-                        config,
-                    )
-                if processed_subchild is not None:
-                    subchildelem = SubElement(
-                        newchildelem, processed_subchild.tag
-                    )
-                    subchildelem.text, subchildelem.tail = (
-                        processed_subchild.text,
-                        processed_subchild.tail,
-                    )
-                    if processed_subchild.tag in TABLE_NESTED_ELEMS:
-                        subchildelem.extend(
-                            processed_subchild.getchildren()
-                        )
-                cell_child.tag = "done"
-    # todo: handle rogue tags in <tr> ?
-    else:
-        # for now, create empty element
-        LOGGER.info("Deleting element with tag %s from table", cell_elem.tag)
-        newchildelem = Element('p')
-        cell_elem.tag = "done"
-    return newchildelem
-
-
 def handle_table(table_elem, potential_tags, dedupbool, config):
     '''Process single table element'''
     newtable = Element('table')
@@ -374,26 +316,62 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
     for subelement in table_elem.getchildren():
         if subelement.tag == "tr":
             for row_child in subelement.iterdescendants():
-                    newchildelem = _handle_cell(row_child, potential_tags, dedupbool, config)
+                if row_child.tag in TABLE_ELEMS:
+                    newchildelem = define_cell_type(row_child)
+                    # simle cell
+                    if len(row_child) == 0:
+                        processed_cell = process_node(row_child, dedupbool, config)
+                        if processed_cell is not None:
+                            newchildelem.text, newchildelem.tail = (
+                                processed_cell.text,
+                                processed_cell.tail,
+                            )
+                            row_child.tag = "done"
+                    else:
+                        # if cell contains text and has children
+                        newchildelem.text, newchildelem.tail = (
+                            row_child.text,
+                            row_child.tail,
+                        )
+                        row_child.tag = "done"
+                        # explore children of cell
+                        for cell_child in row_child.iterdescendants():
+                            if cell_child.tag == "hi":
+                                processed_subchild = handle_textnode(
+                                    cell_child,
+                                    preserve_spaces=True,
+                                    comments_fix=True,
+                                    deduplicate=dedupbool,
+                                    config=config,
+                                )
+                            else:
+                                processed_subchild = handle_textelem(
+                                    cell_child,
+                                    potential_tags.union(["div", "table"]),
+                                    dedupbool,
+                                    config,
+                                )
+                            if processed_subchild is not None:
+                                subchildelem = SubElement(
+                                    newchildelem, processed_subchild.tag
+                                )
+                                subchildelem.text, subchildelem.tail = (
+                                    processed_subchild.text,
+                                    processed_subchild.tail,
+                                )
+                                if processed_subchild.tag in TABLE_NESTED_ELEMS:
+                                    subchildelem.extend(
+                                        processed_subchild.getchildren()
+                                    )
+                            cell_child.tag = "done"
                     if newchildelem.text or len(newchildelem) > 0:
                         newrow.append(newchildelem)
-        elif subelement.tag in TABLE_ELEMS:
-            newchildelem = _handle_cell(subelement, potential_tags, dedupbool, config)
-            if newchildelem.text or len(newchildelem) > 0:
-                newrow.append(newchildelem)
-        elif subelement.tag == "table":
-            newchildelem = Element('cell')
-            processed_elem = handle_table(subelement, potential_tags, dedupbool, config)
-            newchildelem.append(processed_elem)
-            if newchildelem.text or len(newchildelem) > 0:
-                newrow.append(newchildelem)
+            # process existing row
+            if len(newrow) > 0:
+                newtable.append(newrow)
+                newrow = Element("row")
         else:
-            # ignore anything that is not <table>, <tr> or in TABLE_ELEMS
             LOGGER.info("Deleting element with tag %s from table", subelement.tag)
-        # process existing row
-        if len(newrow) > 0:
-            newtable.append(newrow)
-            newrow = Element("row")
         # cleanup
         subelement.tag = "done"
     # end of processing
@@ -403,7 +381,6 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
     if len(newtable) > 0:
         return newtable
     return None
-
 
 def handle_image(element):
     '''Process image element'''
