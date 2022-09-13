@@ -207,6 +207,7 @@ def replace_element_text(element, include_formatting):
             if element.get('target') is not None:
                 element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
             else:
+                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
                 element.text = ''.join(['[', element.text, ']'])
         else:
             LOGGER.error('empty link: %s %s', element.text, element.attrib)
