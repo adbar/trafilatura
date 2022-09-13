@@ -243,6 +243,45 @@ def test_exotic_tags(xmloutput=False):
       <item rend="dd-2">White cold drink</item>
     </list>''' in my_result
 
+    # edge cases
+    htmlstring = '''<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>A weird bug</title>
+  </head>
+  <body>
+      <div>
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <h2>Sed et interdum lectus.</h2>
+        <p>Quisque molestie nunc eu arcu condimentum fringilla.</p>
+        <!-- strong can be changed to b, em, i, u, or kbd -->
+        <strong><a></a></strong>
+        <h2>Aliquam eget interdum elit, id posuere ipsum.</h2>
+        <p>Phasellus lectus erat, hendrerit sed tortor ac, dignissim vehicula metus.</p>
+      </div>
+  </body>
+</html>'''
+    assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+    htmlstring = '''<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>A weird bug</title>
+  </head>
+  <body>
+    <div id="content">
+      <h1>A header</h1>
+      <h2>Very specific bug so odd</h2>
+      <h3>Nested header</h3>
+      <p>Some "hyphenated-word quote" followed by a bit more text line.</p>
+      <em><p>em improperly wrapping p here</p></em>
+      <p>Text here</p>
+    </div>
+  </body>
+</html>'''
+    assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+
 
 def test_lrucache():
     '''test basic duplicate detection'''

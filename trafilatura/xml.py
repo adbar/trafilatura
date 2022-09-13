@@ -182,8 +182,8 @@ def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting: convert to markdown
-    if include_formatting is True:
-        if element.tag in ('del', 'head') and element.text is not None:
+    if include_formatting is True and element.text is not None:
+        if element.tag in ('del', 'head'):
             if element.tag == 'head':
                 try:
                     number = int(element.get('rend')[1])
@@ -203,14 +203,14 @@ def replace_element_text(element, include_formatting):
                 element.text = ''.join(['`', element.text, '`'])
     # handle links
     if element.tag == 'ref':
-        try:
-            element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
-        except TypeError:
-            LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-            try:
+        if element.text is not None:
+            if element.get('target') is not None:
+                element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
+            else:
+                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
                 element.text = ''.join(['[', element.text, ']'])
-            except TypeError:
-                LOGGER.error('empty link: %s %s', element.text, element.attrib)
+        else:
+            LOGGER.error('empty link: %s %s', element.text, element.attrib)
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ''.join([element.text, element.tail])
