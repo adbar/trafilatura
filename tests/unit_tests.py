@@ -189,60 +189,12 @@ def test_exotic_tags(xmloutput=False):
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # naked div with <lb>
     assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
-    # malformed lists (common error)
-    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
-    assert result.count(b'List item') == 3
-    assert b"Description" in result
     # HTML5: <details>
     htmlstring = '<html><body><article><details><summary>Epcot Center</summary><p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p></details></article></body></html>'
     my_result = extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-    # nested list
-    htmlstring = '''<html><body><article>
-<ul>
-  <li>Coffee</li>
-  <li>Tea
-    <ul>
-      <li>Black tea</li>
-      <li>Green tea</li>
-    </ul>
-  </li>
-  <li>Milk</li>
-</ul>
-</article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    assert '''
-    <list rend="ul">
-      <item>Coffee</item>
-      <item>
-        <item>Tea</item>
-        <list rend="ul">
-          <item>Black tea</item>
-          <item>Green tea</item>
-        </list>
-      </item>
-      <item>Milk</item>
-    </list>''' in my_result
-    # description list
-    htmlstring = '''<html><body><article>
- <dl>
-  <dt>Coffee</dt>
-  <dd>Black hot drink</dd>
-  <dt>Milk</dt>
-  <dd>White cold drink</dd>
-</dl>
-</article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    assert '''
-    <list rend="dl">
-      <item rend="dt-1">Coffee</item>
-      <item rend="dd-1">Black hot drink</item>
-      <item rend="dt-2">Milk</item>
-      <item rend="dd-2">White cold drink</item>
-    </list>''' in my_result
-
     # edge cases
     htmlstring = '''<!DOCTYPE html>
 <html>
@@ -954,6 +906,57 @@ def test_table_processing():
     assert result == ["table", "row", "cell", ]
 
 
+def test_list_processing():
+    options = DEFAULT_OPTIONS
+    # malformed lists (common error)
+    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
+    assert result.count(b'List item') == 3
+    assert b"Description" in result
+    # nested list
+    htmlstring = '''<html><body><article>
+<ul>
+  <li>Coffee</li>
+  <li>Tea
+    <ul>
+      <li>Black tea</li>
+      <li>Green tea</li>
+    </ul>
+  </li>
+  <li>Milk</li>
+</ul>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert '''
+    <list rend="ul">
+      <item>Coffee</item>
+      <item>
+        <item>Tea</item>
+        <list rend="ul">
+          <item>Black tea</item>
+          <item>Green tea</item>
+        </list>
+      </item>
+      <item>Milk</item>
+    </list>''' in my_result
+    # description list
+    htmlstring = '''<html><body><article>
+ <dl>
+  <dt>Coffee</dt>
+  <dd>Black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>White cold drink</dd>
+</dl>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert '''
+    <list rend="dl">
+      <item rend="dt-1">Coffee</item>
+      <item rend="dd-1">Black hot drink</item>
+      <item rend="dt-2">Milk</item>
+      <item rend="dd-2">White cold drink</item>
+    </list>''' in my_result
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -971,3 +974,4 @@ if __name__ == '__main__':
     test_external()
     test_tei()
     test_table_processing()
+    test_list_processing()
