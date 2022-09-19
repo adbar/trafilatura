@@ -155,7 +155,8 @@ def handle_lists(element, options):
     '''Process lists elements'''
     processed_element = Element(element.tag)
     if element.text is not None:
-        processed_element.text = element.text
+        newchildelem = SubElement(processed_element, "item")
+        newchildelem.text = element.text
     # if element.tail is not None:
     #    processed_element.tail = element.text
     for child in element.iter('item'):

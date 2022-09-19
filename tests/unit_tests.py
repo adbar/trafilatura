@@ -967,7 +967,10 @@ def test_list_processing():
     processed_list = handle_lists(list_item_with_lb, options)
     result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
     assert result == ["list", ("item", "text"), "lb"]
-
+    list_with_text_outside_item = html.fromstring("<list>header<item>text</item></list>")
+    processed_list = handle_lists(list_with_text_outside_item, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "header"), ("item", "text")]
 
 
 if __name__ == '__main__':
