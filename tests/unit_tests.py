@@ -971,6 +971,9 @@ def test_list_processing():
     processed_list = handle_lists(list_with_text_outside_item, options)
     result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
     assert result == ["list", ("item", "header"), ("item", "text")]
+    empty_list = html.fromstring("<list>   <item>text</item></list>")
+    processed_list = handle_lists(empty_list, options)
+    assert len(processed_list) == 1
 
 
 if __name__ == '__main__':

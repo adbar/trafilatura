@@ -154,7 +154,7 @@ def handle_formatting(element, options):
 def handle_lists(element, options):
     '''Process lists elements'''
     processed_element = Element(element.tag)
-    if element.text is not None:
+    if element.text is not None and element.text.strip():
         newchildelem = SubElement(processed_element, "item")
         newchildelem.text = element.text
     # if element.tail is not None:
