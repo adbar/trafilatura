@@ -164,10 +164,12 @@ def handle_lists(element, options):
         if len(child) == 0:
             processed_child = process_node(child, options)
             if processed_child is not None:
-                newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
+                newchildelem.text = processed_child.text
+                if processed_child.tail is not None and processed_child.tail.strip():
+                    newchildelem.text += " " + processed_child.tail
                 processed_element.append(newchildelem)
         else:
-            newchildelem.text, newchildelem.tail = child.text, child.tail
+            newchildelem.text = child.text
             # proceed with iteration, fix for nested elements
             for subelem in child.iterdescendants('*'):
                 # beware of nested lists
@@ -185,6 +187,14 @@ def handle_lists(element, options):
                             subchildelem.set('target', subelem.get('target'))
                 # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
+            if child.tail is not None and child.tail.strip():
+                newchildelem_children = [el for el in newchildelem.getchildren() if el.tag != 'done']
+                if newchildelem_children:
+                    last_subchild = newchildelem_children[-1]
+                    if last_subchild.tail is None or not last_subchild.tail.strip():
+                        last_subchild.tail = child.tail
+                    else:
+                        last_subchild.tail += ' ' + child.tail
         if newchildelem.text or len(newchildelem) > 0:
             # set attribute
             if child.get('rend') is not None:

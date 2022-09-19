@@ -974,6 +974,28 @@ def test_list_processing():
     empty_list = html.fromstring("<list>   <item>text</item></list>")
     processed_list = handle_lists(empty_list, options)
     assert len(processed_list) == 1
+    list_item_with_tail = html.fromstring("<list><item>text</item>tail</list>")
+    processed_list = handle_lists(list_item_with_tail, options)
+    assert processed_list[0].text == "text tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p></item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p>tail1</item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail1 tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p>\n</item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail"
+    list_item_with_tail_and_nested_list = html.fromstring("<list><item><list><item>text</item></list></item>tail</list>")
+    processed_list = handle_lists(list_item_with_tail_and_nested_list, options)
+    target_element = processed_list.find(".//item/list")
+    assert target_element.tail == 'tail'
 
 
 if __name__ == '__main__':
