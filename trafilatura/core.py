@@ -166,8 +166,9 @@ def handle_lists(element, options):
                 newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
                 processed_element.append(newchildelem)
         else:
+            newchildelem.text, newchildelem.tail = child.text, child.tail
             # proceed with iteration, fix for nested elements
-            for subelem in child.iter('*'):
+            for subelem in child.iterdescendants('*'):
                 # beware of nested lists
                 if subelem.tag == 'list':
                     processed_subchild = handle_lists(subelem, options)

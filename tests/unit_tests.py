@@ -926,18 +926,18 @@ def test_list_processing():
 </ul>
 </article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    assert '''
+    expected = '''
     <list rend="ul">
       <item>Coffee</item>
-      <item>
-        <item>Tea</item>
+      <item>Tea
         <list rend="ul">
           <item>Black tea</item>
           <item>Green tea</item>
         </list>
       </item>
       <item>Milk</item>
-    </list>''' in my_result
+    </list>'''.replace("\n", "").replace(" ", "")
+    assert expected in my_result.replace("\n", "").replace(" ", "")
     # description list
     htmlstring = '''<html><body><article>
  <dl>
@@ -955,6 +955,19 @@ def test_list_processing():
       <item rend="dt-2">Milk</item>
       <item rend="dd-2">White cold drink</item>
     </list>''' in my_result
+    list_item_with_child = html.fromstring("<list><item><p>text</p></item></list>")
+    processed_list = handle_lists(list_item_with_child, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", "item", ("p", "text")]
+    list_item_with_text_and_child = html.fromstring("<list><item>text1<p>text2</p></item></list>")
+    processed_list = handle_lists(list_item_with_text_and_child, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "text1"), ("p", "text2")]
+    list_item_with_lb = html.fromstring("<list><item>text<lb/>more text</item></list>")
+    processed_list = handle_lists(list_item_with_lb, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "text"), "lb"]
+
 
 
 if __name__ == '__main__':
