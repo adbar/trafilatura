@@ -127,6 +127,10 @@ def test_head_with_children_converted_to_ab():
     result = cleaned.find(".//ab")
     assert result.text == 'text'
     assert result.attrib == {"type":"header"}
+    xml_doc = fromstring("<text><body><head>text1<p>text2</p></head></body></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(child.tag, child.text, child.tail) for child in cleaned.find(".//ab").iter()]
+    assert result == [("ab", "text1", None), ("lb", None, "text2")]
 
 
 if __name__ == "__main__":

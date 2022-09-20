@@ -399,6 +399,7 @@ def write_fullheader(teidoc, docmeta):
 
 def _tei_handle_complex_head(element):
     new_element = Element('ab', attrib=element.attrib)
+    new_element.text = element.text
     for child in element.iterchildren():
         if child.tag == 'p':
             if len(new_element) > 0 or new_element.text:
