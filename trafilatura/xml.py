@@ -143,8 +143,12 @@ def check_tei(xmldoc, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
     for elem in xmldoc.iter('head'):
-        elem.tag = 'fw'
-        elem.set('type', 'header')
+        if len(elem) > 0:
+            new_elem = _tei_handle_complex_head(elem)
+            elem.getparent().replace(elem, new_elem)
+        else:
+            elem.tag = 'fw'
+            elem.set('type', 'header')
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
         # check elements
@@ -392,3 +396,20 @@ def write_fullheader(teidoc, docmeta):
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
+
+
+def _tei_handle_complex_head(element):
+    new_element = Element('ab', attrib=element.attrib)
+    new_element.set("type", "header")
+    for child in element.iterchildren():
+        if child.tag == 'p':
+            if len(new_element) > 0 or new_element.text:
+                # add <lb> if new_element has no children or last tail contains text
+                if len(new_element) == 0 or new_element[-1].tail:
+                    SubElement(new_element, 'lb')
+                new_element[-1].tail = child.text
+            else:
+                new_element.text = child.text
+        else:
+            new_element.append(child)
+    return new_element
