@@ -648,6 +648,9 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
+    htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
+    extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
+    assert xml.validate_tei(etree.fromstring(extracted)) is True
 
 
 def test_htmlprocessing():
