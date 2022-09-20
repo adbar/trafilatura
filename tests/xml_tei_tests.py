@@ -122,6 +122,11 @@ def test_head_with_children_converted_to_ab():
     cleaned = check_tei(xml_doc, "fake_url")
     result = cleaned[0].attrib
     assert result == {"type":"header", "rend":"h3"}
+    tei_doc = fromstring("<TEI><teiheader/><text><body><head><p>text</p></head></body></text></TEI>")
+    cleaned = check_tei(tei_doc, "fake_url")
+    result = cleaned.find(".//ab")
+    assert result.text == 'text'
+    assert result.attrib == {"type":"header"}
 
 
 if __name__ == "__main__":
