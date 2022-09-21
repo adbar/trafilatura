@@ -1,10 +1,10 @@
 """
 Test for transformation to TEI.
 """
-from lxml.etree import Element
+from lxml.etree import Element, fromstring
 
 from trafilatura.metadata import Document
-from trafilatura.xml import write_fullheader
+from trafilatura.xml import write_fullheader, check_tei
 
 
 def test_publisher_added_before_availability_in_publicationStmt():
@@ -69,5 +69,29 @@ def test_publisher_added_before_availability_in_publicationStmt():
     assert [child.tag for child in publicationstmt.getchildren()] == ["p"]
 
 
+def test_tail_on_p_like_elements_removed():
+    xml_doc = fromstring(
+        """
+    <TEI><text><body>
+      <div>
+        <p>text</p>former link
+        <p>more text</p>former span
+        <p>even more text</p>another span
+      </div>
+    </body></text></TEI>""")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(el.text, el.tail) for el in cleaned.iter('p')]
+    assert result == [("text former link", None), ("more text former span", None), ("even more text another span", None)]
+    xml_doc = fromstring("<TEI><text><body><div><head>title</head>some text<p>article</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div").iterdescendants()]
+    assert result == [("fw", "title", None), ("p", "some text", None), ("p", "article", None)]
+    xml_doc = fromstring("<TEI><text><body><div><ab>title</ab>tail<p>more text</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div").iterdescendants()]
+    assert result == [("ab", "title", None), ("p", "tail", None), ("p", "more text", None)]
+
+
 if __name__ == "__main__":
     test_publisher_added_before_availability_in_publicationStmt()
+    test_tail_on_p_like_elements_removed()
