@@ -201,6 +201,7 @@ def handle_lists(element, options):
                 newchildelem.set('rend', child.get('rend'))
             processed_element.append(newchildelem)
         child.tag = 'done'
+    element.tag = 'done'
     # test if it has children and text. Avoid double tags??
     if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
         # set attribute
