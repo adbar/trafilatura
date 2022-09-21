@@ -156,6 +156,10 @@ def check_tei(xmldoc, url):
                 parent = element.getparent()
                 parent.insert(parent.index(element) + 1 , new_sibling)
             element.tail = None
+        if element.tag == 'lb' and element.getparent().tag == 'div':
+            element.tag = 'p'
+            element.text = element.tail
+            element.tail = None
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
