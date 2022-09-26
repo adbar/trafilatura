@@ -94,6 +94,10 @@ def test_tail_on_p_like_elements_removed():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div").iterdescendants()]
     assert result == [("p", "text", None), ("p", "tail", None)]
+    xml_doc = fromstring("<TEI><text><body><div><p/>tail</div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//p").iter()]
+    assert result == [("p", "tail", None)]
 
 
 if __name__ == "__main__":

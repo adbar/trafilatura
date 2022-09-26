@@ -149,7 +149,10 @@ def check_tei(xmldoc, url):
     for element in xmldoc.findall('.//text/body//*'):
         if element.tag in {"ab", "fw", "p"} and element.tail and element.tail.strip():
             if element.tag == 'p':
-                element.text += ' ' + element.tail.strip()
+                if element.text:
+                    element.text += ' ' + element.tail.strip()
+                else:
+                    element.text = element.tail
             else:
                 new_sibling = Element('p')
                 new_sibling.text = element.tail.strip()
