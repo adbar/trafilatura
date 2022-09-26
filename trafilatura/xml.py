@@ -148,17 +148,7 @@ def check_tei(xmldoc, url):
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
         if element.tag in {"ab", "fw", "p"} and element.tail and element.tail.strip():
-            if element.tag == 'p':
-                if element.text:
-                    element.text += ' ' + element.tail.strip()
-                else:
-                    element.text = element.tail
-            else:
-                new_sibling = Element('p')
-                new_sibling.text = element.tail.strip()
-                parent = element.getparent()
-                parent.insert(parent.index(element) + 1 , new_sibling)
-            element.tail = None
+            _handle_unwanted_tails(element)
         if element.tag == 'lb' and element.getparent().tag == 'div':
             element.tag = 'p'
             element.text = element.tail
@@ -408,3 +398,18 @@ def write_fullheader(teidoc, docmeta):
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
+
+
+def _handle_unwanted_tails(element):
+    "Handle tail on p, fw and ab elements"
+    if element.tag == 'p':
+        if element.text:
+            element.text += ' ' + element.tail.strip()
+        else:
+            element.text = element.tail
+    else:
+        new_sibling = Element('p')
+        new_sibling.text = element.tail.strip()
+        parent = element.getparent()
+        parent.insert(parent.index(element) + 1 , new_sibling)
+    element.tail = None
