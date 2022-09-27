@@ -24,7 +24,7 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
-TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
+TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
@@ -166,7 +166,7 @@ def check_tei(xmldoc, url):
         for sibling in div_elem.itersiblings():
             if sibling.tag == "div":
                 break
-            if sibling.tag in {"p", "list", "table"}:
+            if sibling.tag in {"p", "list", "table", "quote", "ab"}:
                 if new_sibling_index is None:
                     new_sibling_index = parent.index(sibling)
                 new_sibling.append(sibling)
