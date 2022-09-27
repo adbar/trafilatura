@@ -154,13 +154,13 @@ def check_tei(xmldoc, url):
             LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
             merge_with_parent(element)
             continue
+        if element.tag == "div":
+            _wrap_unwanted_siblings_of_div(element)
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
-    for div_elem in xmldoc.findall(".//text/body//div"):
-        _wrap_unwanted_siblings_of_div(div_elem)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return xmldoc
