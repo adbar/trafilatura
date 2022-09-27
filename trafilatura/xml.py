@@ -160,23 +160,7 @@ def check_tei(xmldoc, url):
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
     for div_elem in xmldoc.findall(".//text/body//div"):
-        new_sibling = Element("div")
-        new_sibling_index = None
-        parent = div_elem.getparent()
-        for sibling in div_elem.itersiblings():
-            if sibling.tag == "div":
-                break
-            if sibling.tag in {"p", "list", "table", "quote", "ab"}:
-                if new_sibling_index is None:
-                    new_sibling_index = parent.index(sibling)
-                new_sibling.append(sibling)
-            else:
-                if new_sibling_index is not None and len(new_sibling) != 0:
-                    parent.insert(new_sibling_index, new_sibling)
-                    new_sibling = Element("div")
-                    new_sibling_index = None
-        if new_sibling_index is not None and len(new_sibling) != 0:
-            parent.insert(new_sibling_index, new_sibling)
+        _wrap_unwanted_siblings_of_div(div_elem)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return xmldoc
@@ -410,3 +394,26 @@ def write_fullheader(teidoc, docmeta):
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
+
+
+def _wrap_unwanted_siblings_of_div(div_element):
+    new_sibling = Element("div")
+    new_sibling_index = None
+    parent = div_element.getparent()
+    # check siblings after target element
+    for sibling in div_element.itersiblings():
+        if sibling.tag == "div":
+            break
+        if sibling.tag in {"p", "list", "table", "quote", "ab"}:
+            if new_sibling_index is None:
+                new_sibling_index = parent.index(sibling)
+            new_sibling.append(sibling)
+        # some elements (e.g. <lb/>, <fw>) can appear next to div, but
+        # order of elements should be kept, thus add and reset new_sibling
+        else:
+            if new_sibling_index is not None and len(new_sibling) != 0:
+                parent.insert(new_sibling_index, new_sibling)
+                new_sibling = Element("div")
+                new_sibling_index = None
+    if new_sibling_index is not None and len(new_sibling) != 0:
+        parent.insert(new_sibling_index, new_sibling)
