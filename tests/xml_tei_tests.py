@@ -131,6 +131,16 @@ def test_unwanted_siblings_of_div_removed():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [elem.tag for elem in cleaned.find(".//div").iter()]
     assert result == ["div", "div", "fw"]
+    xml_doc = fromstring("<TEI><text><body><div><div><p>text1</p></div><list/><ul><li>text2</li></ul></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result_str = tostring(cleaned.find(".//body"), encoding="unicode")
+    expected_str = "<body><div><div><p>text1</p></div><div><list/></div></div></body>"
+    assert result_str == expected_str
+    xml_doc = fromstring("<TEI><text><body><div><div><p>text1</p></div><ul><li>text2</li></ul><list/></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result_str = tostring(cleaned.find(".//body"), encoding="unicode")
+    expected_str = "<body><div><div><p>text1</p></div><div><list/></div></div></body>"
+    assert result_str == expected_str
 
 
 if __name__ == "__main__":
