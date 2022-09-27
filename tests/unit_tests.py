@@ -648,6 +648,21 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
+    xml_doc = etree.fromstring("<TEI><text><body><div>text</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("p", "text")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1 text2")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<head>text2</head></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1"), ("fw", "text2")]
+    assert result == expected
 
 
 def test_htmlprocessing():

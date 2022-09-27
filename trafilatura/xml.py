@@ -154,6 +154,15 @@ def check_tei(xmldoc, url):
             LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
             merge_with_parent(element)
             continue
+        if element.tag == "div":
+            if element.text is not None and element.text.strip():
+                if element.getchildren() and element[0].tag == 'p':
+                    element[0].text = ' '.join([element.text, element[0].text])
+                else:
+                    new_child = Element("p")
+                    new_child.text = element.text
+                    element.insert(0, new_child)
+                element.text = None
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
