@@ -170,6 +170,11 @@ def check_tei(xmldoc, url):
                 if new_sibling_index is None:
                     new_sibling_index = parent.index(sibling)
                 new_sibling.append(sibling)
+            else:
+                if new_sibling_index is not None and len(new_sibling) != 0:
+                    parent.insert(new_sibling_index, new_sibling)
+                    new_sibling = Element("div")
+                    new_sibling_index = None
         if new_sibling_index is not None and len(new_sibling) != 0:
             parent.insert(new_sibling_index, new_sibling)
     # export metadata
