@@ -1,10 +1,10 @@
 """
 Test for transformation to TEI.
 """
-from lxml.etree import Element
+from lxml.etree import Element, fromstring, tostring
 
 from trafilatura.metadata import Document
-from trafilatura.xml import write_fullheader
+from trafilatura.xml import write_fullheader, check_tei
 
 
 def test_publisher_added_before_availability_in_publicationStmt():
@@ -69,5 +69,47 @@ def test_publisher_added_before_availability_in_publicationStmt():
     assert [child.tag for child in publicationstmt.getchildren()] == ["p"]
 
 
+def test_unwanted_siblings_of_div_removed():
+    xml_doc = fromstring("<TEI><text><body><div><div><p>text1</p></div><p>text2</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result =  [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "div", "p", "div", "p"]
+    assert result == expected
+    result_str = tostring(cleaned.find(".//body"), encoding="unicode")
+    expected_str = "<body><div><div><p>text1</p></div><div><p>text2</p></div></div></body>"
+    assert result_str == expected_str
+    xml_doc = fromstring("<TEI><text><body><div><div/><list><item>text</item></list></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "div", "div", "list", "item"]
+    assert result == expected
+    xml_doc = fromstring("<TEI><text><body><div><div/><table><row><cell>text</cell></row></table></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "div", "div", "table", "row", "cell"]
+    assert result == expected
+    xml_doc = fromstring("<TEI><text><body><div><p>text1</p><div/><div/><p>text2</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = tostring(cleaned.find(".//body"), encoding="unicode")
+    expected = "<body><div><p>text1</p><div/><div/><div><p>text2</p></div></div></body>"
+    assert result == expected
+    xml_doc = fromstring("<TEI><text><body><div><div><p>text1</p></div><p>text2</p><p>text3</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "div", "p", "div", "p", "p"]
+    assert result == expected
+    xml_doc = fromstring("<TEI><text><body><div><p>text1</p><div/><p>text2</p><div/><p>text3</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "p", "div", "div", "p", "div", "div", "p"]
+    assert result == expected
+    xml_doc = fromstring("<TEI><text><body><div><p>text1</p><div/><p>text2</p><div/><list/></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    expected = ["div", "p", "div", "div", "p", "div", "div", "list"]
+    assert result == expected
+
+
 if __name__ == "__main__":
     test_publisher_added_before_availability_in_publicationStmt()
+    test_unwanted_siblings_of_div_removed()

@@ -159,6 +159,19 @@ def check_tei(xmldoc, url):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
+    for div_elem in xmldoc.findall(".//text/body//div"):
+        new_sibling = Element("div")
+        new_sibling_index = None
+        parent = div_elem.getparent()
+        for sibling in div_elem.itersiblings():
+            if sibling.tag == "div":
+                break
+            if sibling.tag in {"p", "list", "table"}:
+                if new_sibling_index is None:
+                    new_sibling_index = parent.index(sibling)
+                new_sibling.append(sibling)
+        if new_sibling_index is not None and len(new_sibling) != 0:
+            parent.insert(new_sibling_index, new_sibling)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return xmldoc
