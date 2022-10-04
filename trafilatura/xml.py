@@ -24,7 +24,7 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
-TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
+TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
@@ -147,6 +147,12 @@ def check_tei(xmldoc, url):
         elem.set('type', 'header')
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
+        if element.tag in {"ab", "fw", "p"} and element.tail and element.tail.strip():
+            _handle_unwanted_tails(element)
+        if element.tag == 'lb' and element.getparent().tag == 'div':
+            element.tag = 'p'
+            element.text = element.tail
+            element.tail = None
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -413,3 +419,18 @@ def _handle_text_content_of_div_nodes(element):
             new_child.text = element.tail
             element.append(new_child)
         element.tail = None
+
+
+def _handle_unwanted_tails(element):
+    "Handle tail on p, fw and ab elements"
+    if element.tag == 'p':
+        if element.text:
+            element.text += ' ' + element.tail.strip()
+        else:
+            element.text = element.tail
+    else:
+        new_sibling = Element('p')
+        new_sibling.text = element.tail.strip()
+        parent = element.getparent()
+        parent.insert(parent.index(element) + 1 , new_sibling)
+    element.tail = None
