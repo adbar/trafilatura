@@ -681,7 +681,10 @@ def test_tei():
     htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
     extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
     assert xml.validate_tei(etree.fromstring(extracted)) is True
-
+    htmlstring  = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h1" type="header">title</ab>' in extracted
+    assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
 
 
 def test_htmlprocessing():
