@@ -663,6 +663,16 @@ def test_tei():
     result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
     expected = [("div", None), ("div", None), ("p", "text1"), ("fw", "text2")]
     assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<quote>text2</quote></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1", None), ("quote", "text2", None), ("p", "has to be there", None)]
+    assert result == expected
 
 
 def test_htmlprocessing():
