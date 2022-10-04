@@ -145,6 +145,9 @@ def check_tei(xmldoc, url):
     for elem in xmldoc.iter('head'):
         elem.tag = 'fw'
         elem.set('type', 'header')
+        if len(elem) > 0:
+            new_elem = _tei_handle_complex_head(elem)
+            elem.getparent().replace(elem, new_elem)
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
         if element.tag in {"ab", "fw", "p"} and element.tail and element.tail.strip():
@@ -434,3 +437,20 @@ def _handle_unwanted_tails(element):
         parent = element.getparent()
         parent.insert(parent.index(element) + 1 , new_sibling)
     element.tail = None
+
+
+def _tei_handle_complex_head(element):
+    new_element = Element('ab', attrib=element.attrib)
+    new_element.text = element.text
+    for child in element.iterchildren():
+        if child.tag == 'p':
+            if len(new_element) > 0 or new_element.text:
+                # add <lb> if <ab> has no children or last tail contains text
+                if len(new_element) == 0 or new_element[-1].tail:
+                    SubElement(new_element, 'lb')
+                new_element[-1].tail = child.text
+            else:
+                new_element.text = child.text
+        else:
+            new_element.append(child)
+    return new_element

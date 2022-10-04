@@ -678,6 +678,9 @@ def test_tei():
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
     expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
     assert result == expected
+    htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
+    extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
+    assert xml.validate_tei(etree.fromstring(extracted)) is True
 
 
 def test_htmlprocessing():
