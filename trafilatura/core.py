@@ -154,8 +154,9 @@ def handle_formatting(element, options):
 def handle_lists(element, options):
     '''Process lists elements'''
     processed_element = Element(element.tag)
-    if element.text is not None:
-        processed_element.text = element.text
+    if element.text is not None and element.text.strip():
+        newchildelem = SubElement(processed_element, "item")
+        newchildelem.text = element.text
     # if element.tail is not None:
     #    processed_element.tail = element.text
     for child in element.iter('item'):
@@ -163,11 +164,14 @@ def handle_lists(element, options):
         if len(child) == 0:
             processed_child = process_node(child, options)
             if processed_child is not None:
-                newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
+                newchildelem.text = processed_child.text
+                if processed_child.tail is not None and processed_child.tail.strip():
+                    newchildelem.text += " " + processed_child.tail
                 processed_element.append(newchildelem)
         else:
+            newchildelem.text = child.text
             # proceed with iteration, fix for nested elements
-            for subelem in child.iter('*'):
+            for subelem in child.iterdescendants('*'):
                 # beware of nested lists
                 if subelem.tag == 'list':
                     processed_subchild = handle_lists(subelem, options)
@@ -183,12 +187,21 @@ def handle_lists(element, options):
                             subchildelem.set('target', subelem.get('target'))
                 # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
+            if child.tail is not None and child.tail.strip():
+                newchildelem_children = [el for el in newchildelem.getchildren() if el.tag != 'done']
+                if newchildelem_children:
+                    last_subchild = newchildelem_children[-1]
+                    if last_subchild.tail is None or not last_subchild.tail.strip():
+                        last_subchild.tail = child.tail
+                    else:
+                        last_subchild.tail += ' ' + child.tail
         if newchildelem.text or len(newchildelem) > 0:
             # set attribute
             if child.get('rend') is not None:
                 newchildelem.set('rend', child.get('rend'))
             processed_element.append(newchildelem)
         child.tag = 'done'
+    element.tag = 'done'
     # test if it has children and text. Avoid double tags??
     if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
         # set attribute
