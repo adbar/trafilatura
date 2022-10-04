@@ -661,7 +661,7 @@ def test_tei():
     xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<head>text2</head></div></div></body></text></TEI>")
     cleaned = xml.check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
-    expected = [("div", None), ("div", None), ("p", "text1"), ("fw", "text2")]
+    expected = [("div", None), ("div", None), ("p", "text1"), ("ab", "text2")]
     assert result == expected
     xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div>has to be there</div></body></text></TEI>")
     cleaned = xml.check_tei(xml_doc, "fake_url")
@@ -683,6 +683,7 @@ def test_tei():
     assert xml.validate_tei(etree.fromstring(extracted)) is True
 
 
+
 def test_htmlprocessing():
     '''test html-related functions'''
     options = DEFAULT_OPTIONS
@@ -698,7 +699,7 @@ def test_htmlprocessing():
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
-    assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
     # merge with parent function
     element = etree.Element('test')
     xml.merge_with_parent(element)

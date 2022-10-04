@@ -143,14 +143,14 @@ def check_tei(xmldoc, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
     for elem in xmldoc.iter('head'):
-        elem.tag = 'fw'
+        elem.tag = 'ab'
         elem.set('type', 'header')
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
             elem.getparent().replace(elem, new_elem)
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
-        if element.tag in {"ab", "fw", "p"} and element.tail and element.tail.strip():
+        if element.tag in {"ab", "p"} and element.tail and element.tail.strip():
             _handle_unwanted_tails(element)
         if element.tag == 'lb' and element.getparent().tag == 'div':
             element.tag = 'p'
@@ -425,7 +425,7 @@ def _handle_text_content_of_div_nodes(element):
 
 
 def _handle_unwanted_tails(element):
-    "Handle tail on p, fw and ab elements"
+    "Handle tail on p and ab elements"
     if element.tag == 'p':
         if element.text:
             element.text += ' ' + element.tail.strip()
