@@ -155,22 +155,7 @@ def check_tei(xmldoc, url):
             merge_with_parent(element)
             continue
         if element.tag == "div":
-            if element.text is not None and element.text.strip():
-                if element.getchildren() and element[0].tag == 'p':
-                    element[0].text = ' '.join([element.text, element[0].text])
-                else:
-                    new_child = Element("p")
-                    new_child.text = element.text
-                    element.insert(0, new_child)
-                element.text = None
-            if element.tail is not None and element.tail.strip():
-                if element.getchildren() and element[-1].tag == 'p':
-                    element[-1].text = ' '.join([element[-1].text, element.tail])
-                else:
-                    new_child = Element("p")
-                    new_child.text = element.tail
-                    element.append(new_child)
-                element.tail = None
+            _handle_text_content_of_div_nodes(element)
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
@@ -409,3 +394,22 @@ def write_fullheader(teidoc, docmeta):
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
+
+
+def _handle_text_content_of_div_nodes(element):
+    if element.text is not None and element.text.strip():
+        if element.getchildren() and element[0].tag == 'p':
+            element[0].text = ' '.join([element.text, element[0].text])
+        else:
+            new_child = Element("p")
+            new_child.text = element.text
+            element.insert(0, new_child)
+        element.text = None
+    if element.tail is not None and element.tail.strip():
+        if element.getchildren() and element[-1].tag == 'p':
+            element[-1].text = ' '.join([element[-1].text, element.tail])
+        else:
+            new_child = Element("p")
+            new_child.text = element.tail
+            element.append(new_child)
+        element.tail = None
