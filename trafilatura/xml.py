@@ -148,14 +148,16 @@ def check_tei(xmldoc, url):
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
             elem.getparent().replace(elem, new_elem)
+    # convert <lb/> when child of <div> to <p>
+    for element in xmldoc.findall(".//text/body//div/lb"):
+        if element.tail is not None and element.tail.strip():
+            element.tag = 'p'
+            element.text = element.tail
+            element.tail = None
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
         if element.tag in {"ab", "p"} and element.tail and element.tail.strip():
             _handle_unwanted_tails(element)
-        if element.tag == 'lb' and element.getparent().tag == 'div':
-            element.tag = 'p'
-            element.text = element.tail
-            element.tail = None
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -165,6 +167,7 @@ def check_tei(xmldoc, url):
             continue
         if element.tag == "div":
             _handle_text_content_of_div_nodes(element)
+            _wrap_unwanted_siblings_of_div(element)
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
@@ -454,3 +457,26 @@ def _tei_handle_complex_head(element):
         else:
             new_element.append(child)
     return new_element
+
+
+def _wrap_unwanted_siblings_of_div(div_element):
+    new_sibling = Element("div")
+    new_sibling_index = None
+    parent = div_element.getparent()
+    # check siblings after target element
+    for sibling in div_element.itersiblings():
+        if sibling.tag == "div":
+            break
+        if sibling.tag in {"p", "list", "table", "quote", "ab"}:
+            if new_sibling_index is None:
+                new_sibling_index = parent.index(sibling)
+            new_sibling.append(sibling)
+        # some elements (e.g. <lb/>) can appear next to div, but
+        # order of elements should be kept, thus add and reset new_sibling
+        else:
+            if new_sibling_index is not None and len(new_sibling) != 0:
+                parent.insert(new_sibling_index, new_sibling)
+                new_sibling = Element("div")
+                new_sibling_index = None
+    if new_sibling_index is not None and len(new_sibling) != 0:
+        parent.insert(new_sibling_index, new_sibling)
