@@ -441,7 +441,7 @@ def _handle_unwanted_tails(element):
 
 def _tei_handle_complex_head(element):
     new_element = Element('ab', attrib=element.attrib)
-    new_element.text = element.text
+    new_element.text = element.text.strip() if element.text is not None else None
     for child in element.iterchildren():
         if child.tag == 'p':
             if len(new_element) > 0 or new_element.text:

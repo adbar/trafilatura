@@ -685,6 +685,21 @@ def test_tei():
     extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
     assert '<ab rend="h1" type="header">title</ab>' in extracted
     assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
+    htmlstring = html.fromstring(
+    """<html>
+        <body><article>
+            <h2><div>
+              <p>content</p>
+              <ul>
+                <li>text1</li>
+                <li>text2</li>
+              </ul>
+            </div></h2>
+        </article></body>
+        </html>"""
+    )
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
 
 
 def test_htmlprocessing():
