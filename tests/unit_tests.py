@@ -600,6 +600,58 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
+    xml_doc = etree.fromstring("<TEI><text><body><div>text</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("p", "text")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1 text2")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<head>text2</head></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1"), ("ab", "text2")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<quote>text2</quote></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1", None), ("quote", "text2", None), ("p", "has to be there", None)]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p>has to be there</div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
+    assert result == expected
+    htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
+    extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
+    assert xml.validate_tei(etree.fromstring(extracted)) is True
+    htmlstring  = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h1" type="header">title</ab>' in extracted
+    assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
+    htmlstring = html.fromstring(
+    """<html>
+        <body><article>
+            <h2><div>
+              <p>content</p>
+              <ul>
+                <li>text1</li>
+                <li>text2</li>
+              </ul>
+            </div></h2>
+        </article></body>
+        </html>"""
+    )
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
 
 
 def test_htmlprocessing():
@@ -617,7 +669,7 @@ def test_htmlprocessing():
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
-    assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
     # merge with parent function
     element = etree.Element('test')
     xml.merge_with_parent(element)
