@@ -49,7 +49,7 @@ TABLE_ELEMS = {'td', 'th'}
 TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
-NOT_AT_THE_END = {'fw', 'head', 'ref'}
+NOT_AT_THE_END = {'head', 'ref'}
 
 JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
 

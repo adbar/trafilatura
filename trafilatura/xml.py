@@ -31,9 +31,9 @@ TEI_RELAXNG = None  # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
-WITH_ATTRIBUTES = {'cell', 'del', 'fw', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 
 def build_json_output(docmeta):
@@ -62,7 +62,7 @@ def clean_attributes(tree):
 
 def remove_empty_elements(tree):
     '''Remove text elements without text.'''
-    for element in tree.iter('fw', 'head', 'hi', 'item', 'p'):
+    for element in tree.iter('head', 'hi', 'item', 'p'):
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
             element.getparent().remove(element)
     return tree
