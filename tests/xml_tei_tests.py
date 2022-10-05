@@ -144,6 +144,10 @@ def test_unwanted_siblings_of_div_removed():
     xml_str = "<TEI><text><body><div><p/><div/></div></body></text></TEI>"
     result = tostring(check_tei(fromstring(xml_str), "fake_url"), encoding="unicode")
     assert result == xml_str
+    xml_doc = fromstring("<TEI><text><body><div><div/><lb/>tail</div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.tag for elem in cleaned.find(".//div").iter()]
+    assert result == ["div", "div", "div", "p"]
 
 
 def test_tail_on_p_like_elements_removed():

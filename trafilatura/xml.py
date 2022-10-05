@@ -148,14 +148,16 @@ def check_tei(xmldoc, url):
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
             elem.getparent().replace(elem, new_elem)
+    # convert <lb/> when child of <div> to <p>
+    for element in xmldoc.findall(".//text/body//div/lb"):
+        if element.tail is not None and element.tail.strip():
+            element.tag = 'p'
+            element.text = element.tail
+            element.tail = None
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
         if element.tag in {"ab", "p"} and element.tail and element.tail.strip():
             _handle_unwanted_tails(element)
-        if element.tag == 'lb' and element.getparent().tag == 'div':
-            element.tag = 'p'
-            element.text = element.tail
-            element.tail = None
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
