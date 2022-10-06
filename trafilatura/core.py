@@ -14,12 +14,15 @@ import warnings
 
 from copy import deepcopy
 
+# turn this off to try to get it working with threading on Lambda
+HAS_SIGNAL = False
+
 # SIGALRM isn't present on Windows, detect it
-try:
-    from signal import signal, alarm, SIGALRM
-    HAS_SIGNAL = True
-except ImportError:
-    HAS_SIGNAL = False
+# try:
+#     from signal import signal, alarm, SIGALRM
+#     HAS_SIGNAL = True
+# except ImportError:
+#     HAS_SIGNAL = False
 
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
