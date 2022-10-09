@@ -203,7 +203,7 @@ def replace_element_text(element, include_formatting):
                     number = int(element.get('rend')[1])
                 except (TypeError, ValueError):
                     number = 2
-                element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+                element.text = ''.join(['#'*number, ' ', element.text])
             elif element.tag == 'del':
                 element.text = ''.join(['~~', element.text, '~~'])
         elif element.tag == 'hi':
