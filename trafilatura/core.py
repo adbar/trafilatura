@@ -658,9 +658,11 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
     # or options.recall is True ?
+        LOGGER.debug('unclean document triggering justext examination: %s', url)
         # tree = prune_unwanted_sections(tree, {}, options)
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, options.lang, body, 0, '')
-        if jt_result is True:  # and not len_text > 2*len_text2:
+        # prevent too short documents from replacing the main text
+        if jt_result is True and not len_text > 4*len_text2:  # threshold could be adjusted
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
     # post-processing: remove unwanted sections
