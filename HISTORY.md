@@ -1,6 +1,27 @@
 ## History / Changelog
 
 
+### 1.4.0
+
+Impact on extraction and output format:
+- better extraction (#233, #243 & #250 with @knit-bee, #246 with @mrienstra, #258)
+- XML: preserve list type as attribute (#229)
+- XML TEI: better conformity with @knit-bee (#238, #242, #253, #254)
+- faster text cleaning and shorter code (#237 with @deedy5, #245)
+- metadata: add language when detector is activated (#224)
+- metadata: extend fallbacks and test coverage for json_metadata functions by @felipehertzer (#235)
+- TXT: change markdown formatting of headers by @LaundroMat (#257)
+
+Smaller changes in convenience functions:
+- add function to clear caches (#219)
+- CLI: change exit code if download fails (#223)
+- settings: use "\n" for multiple user agents by @k-sareen (#241)
+
+Updates:
+- docs updated (and #244 by @dsgibbons)
+- package dependencies updated
+
+
 ### 1.3.0
 - fast and robust `html2txt()` function added (#221)
 - more robust parsing (#228)
