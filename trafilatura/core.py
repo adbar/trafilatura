@@ -853,7 +853,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         # prune the tree by custom xpaths
         if prune_xpaths is not None:
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, prune_xpaths)
-            print(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
