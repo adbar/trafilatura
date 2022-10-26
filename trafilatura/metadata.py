@@ -29,7 +29,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language',
+    'language',  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -455,7 +455,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata.url = extract_url(tree, default_url)
     # hostname
     if metadata.url is not None:
-        metadata.hostname = extract_domain(metadata.url)
+        metadata.hostname = extract_domain(metadata.url, fast=True)
     # extract date with external module htmldate
     if date_config is None:
         # decide on fast mode
