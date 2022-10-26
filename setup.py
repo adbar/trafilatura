@@ -90,7 +90,7 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'certifi',
-        'charset_normalizer >= 2.1.1',
+        'charset_normalizer >= 3.0.0',
         'courlan >= 0.8.3',
         'htmldate >= 1.3.2',
         'justext >= 3.0.0',
