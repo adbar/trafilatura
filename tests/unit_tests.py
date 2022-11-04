@@ -125,10 +125,10 @@ def test_input():
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
-    with pytest.raises(TypeError) as err:
-        assert extract(None, 'url', '0000', target_language=None) is None
-        # legacy
-        assert process_record(None, 'url', '0000', target_language=None) is None
+    # old: with pytest.raises(TypeError) as err:
+    assert extract(None, 'url', '0000', target_language=None) is None
+    # legacy
+    assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()

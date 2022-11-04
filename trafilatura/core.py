@@ -957,7 +957,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 LOGGER.error('wrong language for URL %s', url)
                 raise ValueError
 
-    except ValueError:
+    except (TypeError, ValueError):
         LOGGER.info('discarding data for url: %s', url)  # document.url , record_id
         return None
 
