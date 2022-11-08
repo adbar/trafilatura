@@ -52,10 +52,15 @@ AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|wi
 AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
-    "["u"\U0001F300-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
-    u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
-    u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u200d"
-    u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
+    "["
+    u"\U00002700-\U000027BF"  # Dingbats
+    u"\U0001F600-\U0001F64F"  # Emoticons
+    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+    "]+", flags=re.UNICODE)
 
 CLEAN_META_TAGS = re.compile(r'["\']')
 
