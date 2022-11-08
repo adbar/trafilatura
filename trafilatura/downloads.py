@@ -30,26 +30,17 @@ import urllib3
 from courlan import get_host_and_path, validate_url
 
 from . import __version__
-from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
+from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
 from .utils import decode_response, uniquify_list
 
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
 
-# customize headers
-RETRY_STRATEGY = urllib3.util.Retry(
-    total=0,
-    redirect=MAX_REDIRECTS, # raise_on_redirect=False,
-    connect=0,
-    backoff_factor=TIMEOUT*2,
-    status_forcelist=[429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598],
-    # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
-)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-# cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
-HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)
-NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=20)
+HTTP_POOL = None
+NO_CERT_POOL = None
+RETRY_STRATEGY = None
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
@@ -88,13 +79,32 @@ def _determine_headers(config, headers=None):
 
 
 def _send_request(url, no_ssl, config):
-    'Internal function to send a robustly (SSL) send a request and return its result.'
+    "Internal function to robustly send a request (SSL or not) and return its result."
+    # customize headers
+    global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
+    if not RETRY_STRATEGY:
+        RETRY_STRATEGY = urllib3.util.Retry(
+            total=0,
+            redirect=MAX_REDIRECTS, # raise_on_redirect=False,
+            connect=0,
+            backoff_factor=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT')*2,
+            status_forcelist=[429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598],
+            # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
+        )
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         if no_ssl is False:
+            # define pool
+            if not HTTP_POOL:
+                HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)  # cert_reqs='CERT_REQUIRED'
+            # execute request
             response = HTTP_POOL.request('GET', url, headers=_determine_headers(config))
         else:
+            # define pool
+            if not NO_CERT_POOL:
+                NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=20)
+            # execute request
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
     except urllib3.exceptions.NewConnectionError as err:
         LOGGER.error('connection refused: %s %s', url, err)
@@ -278,8 +288,8 @@ def _send_pycurl_request(url, no_ssl, config):
     # curl.setopt(pycurl.USERAGENT, '')
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
     curl.setopt(pycurl.MAXREDIRS, MAX_REDIRECTS)
-    curl.setopt(pycurl.CONNECTTIMEOUT, TIMEOUT)
-    curl.setopt(pycurl.TIMEOUT, TIMEOUT)
+    curl.setopt(pycurl.CONNECTTIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
+    curl.setopt(pycurl.TIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
     curl.setopt(pycurl.NOSIGNAL, 1)
     if no_ssl is True:
         curl.setopt(pycurl.SSL_VERIFYPEER, 0)

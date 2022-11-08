@@ -30,7 +30,6 @@ DEFAULT_CONFIG = use_config()
 
 # Safety checks
 DOWNLOAD_THREADS = min(cpu_count(), 16)  # 16 processes at most
-TIMEOUT = 30
 LRU_SIZE = 4096
 
 # Files
