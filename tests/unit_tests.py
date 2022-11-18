@@ -117,7 +117,12 @@ def test_trim():
 def test_input():
     '''test if loaded strings/trees are handled properly'''
     assert utils.is_dubious_html('This is a string.') is True
-    assert utils.is_dubious_html(b'This is a string.') is True
+    htmlstring = "<!DOCTYPE html PUBLIC />\n<html/>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == "\n<html/>"
+    htmlstring = "<html>\n</html>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == htmlstring
     with pytest.raises(TypeError) as err:
         assert utils.load_html(123) is None
     assert 'incompatible' in str(err.value)

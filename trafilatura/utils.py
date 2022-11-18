@@ -33,6 +33,8 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
+
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
@@ -140,15 +142,18 @@ def decode_file(filecontent):
     return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
 
-def is_dubious_html(htmlobject):
-    "Assess if the object is proper HTML (with a corresponding declaration)."
-    if isinstance(htmlobject, bytes):
-        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
-            return True
-    elif isinstance(htmlobject, str):
-        if 'html' not in htmlobject[:50].lower():
-            return True
-    return False
+def is_dubious_html(beginning: str) -> bool:
+    "Assess if the object is proper HTML (awith a corresponding tag or declaration)."
+    return "html" not in beginning
+
+
+def strip_faulty_doctypes(htmlstring: str, beginning: str) -> str:
+    "Repair faulty doctype strings to make then palatable for libxml2."
+    # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
+    if "doctype" in beginning:
+        firstline, _, rest = htmlstring.partition("\n")
+        return DOCTYPE_TAG.sub("", firstline, count=1) + "\n" + rest
+    return htmlstring
 
 
 def fromstring_bytes(htmlobject):
@@ -178,10 +183,13 @@ def load_html(htmlobject):
     tree = None
     # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject)
-    # sanity check
-    check_flag = is_dubious_html(htmlobject)
-    fallback_parse = False
+    # sanity checks
+    beginning = htmlobject[:50].lower()
+    check_flag = is_dubious_html(beginning)
+    # repair first
+    htmlobject = strip_faulty_doctypes(htmlobject, beginning)
     # first pass: use Unicode string
+    fallback_parse = False
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
