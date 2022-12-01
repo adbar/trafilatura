@@ -62,9 +62,12 @@ def clean_attributes(tree):
 
 def remove_empty_elements(tree):
     '''Remove text elements without text.'''
-    for element in tree.iter('head', 'hi', 'item', 'p'):
+    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
-            element.getparent().remove(element)
+            parent = element.getparent()
+            # not root element or element which is naturally empty
+            if parent and element.tag != "graphic":
+                element.getparent().remove(element)
     return tree
 
 

@@ -786,7 +786,7 @@ def test_table_processing():
         htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
-    assert """<table><row><cell>text<head>more_text</head></cell><cell/>""" in result
+    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )
