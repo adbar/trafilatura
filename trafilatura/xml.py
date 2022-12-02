@@ -94,7 +94,7 @@ def build_xml_output(docmeta):
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
-    docmeta.body = strip_double_tags(docmeta.body)
+    ## TODO: docmeta.body = strip_double_tags(docmeta.body)
     docmeta.body = remove_empty_elements(docmeta.body)
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:
@@ -194,8 +194,9 @@ def check_tei(xmldoc, url):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
-    # export metadata
-    #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
+    ## TODO: add functions here?
+    # xmldoc = strip_double_tags(xmldoc)
+    # xmldoc = remove_empty_elements(xmldoc)
     return xmldoc
 
 
