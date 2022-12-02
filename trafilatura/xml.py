@@ -71,12 +71,30 @@ def remove_empty_elements(tree):
     return tree
 
 
+def strip_double_tags(tree):
+    "Prevent nested tags among a fixed list of tags."
+    seen = set()
+    target_list = ["ab", "code", "div", "p"]
+    for elem in tree.iter(target_list):
+        if elem in seen:
+            continue
+        for subelem in elem.iterdescendants(target_list):
+            if subelem in seen:
+                continue
+            if subelem.tag == elem.tag:
+                merge_with_parent(subelem)
+            #seen.add(subelem)
+        seen.add(elem)
+    return tree
+
+
 def build_xml_output(docmeta):
     '''Build XML output tree based on extracted information'''
     output = Element('doc')
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
+    docmeta.body = strip_double_tags(docmeta.body)
     docmeta.body = remove_empty_elements(docmeta.body)
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:

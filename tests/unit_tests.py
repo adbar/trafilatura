@@ -657,6 +657,19 @@ def test_tei():
     )
     extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
+    # merge double elements
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <p><p>
+              <span><p>content</p></span>
+            </p></p>
+        </body>
+        </html>"""
+    )
+    tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
+    result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    assert result == "<html><body><p><span>content</span></p></body></html>"
 
 
 def test_htmlprocessing():
