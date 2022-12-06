@@ -35,6 +35,8 @@ NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', '
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
+NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
+
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
@@ -73,18 +75,12 @@ def remove_empty_elements(tree):
 
 def strip_double_tags(tree):
     "Prevent nested tags among a fixed list of tags."
-    seen = set()
-    target_list = ["ab", "code", "div", "p"]
-    for elem in tree.iter(target_list):
-        if elem in seen:
-            continue
-        for subelem in elem.iterdescendants(target_list):
-            if subelem in seen:
+    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
+        for subelem in elem.iterdescendants("code", "head", "p"):
+            if subelem.getparent().tag in NESTING_WHITELIST:
                 continue
             if subelem.tag == elem.tag:
                 merge_with_parent(subelem)
-            #seen.add(subelem)
-        seen.add(elem)
     return tree
 
 
@@ -94,8 +90,6 @@ def build_xml_output(docmeta):
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
-    ## TODO: docmeta.body = strip_double_tags(docmeta.body)
-    docmeta.body = remove_empty_elements(docmeta.body)
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:
         docmeta.commentsbody.tag = 'comments'
@@ -194,9 +188,6 @@ def check_tei(xmldoc, url):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
-    ## TODO: add functions here?
-    # xmldoc = strip_double_tags(xmldoc)
-    # xmldoc = remove_empty_elements(xmldoc)
     return xmldoc
 
 
