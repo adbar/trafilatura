@@ -670,6 +670,91 @@ def test_tei():
     tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
     result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
     assert result == "<html><body><p><span>content</span></p></body></html>"
+    tree = html.fromstring(
+    """
+    <html>
+        <body>
+            <div>
+                <div>
+                    <p>
+                        <p>text</p>
+                    <p>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//div/div") is not None and tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6</p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6<p>text7</p></p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    assert "text7" in etree.tostring(tree, encoding="unicode")
+    # nested elements with same tag not merged
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <div>
+                <p>
+                  <list>
+                    <item>
+                        <p>text</p>
+                    </item>
+                  </list>
+                </p>
+                <p>
+                    <table>
+                      <row>
+                        <cell>
+                          <p>text1</p>
+                         </cell>
+                      </row>
+                    </table>
+                </p>
+                <p>
+                    <note>
+                      <p>text2</p>
+                    </note>
+                </p>
+                <p>
+                    <quote>
+                        <p>text3</p>
+                    </quote>
+                </p>
+                <p>
+                    <figure>
+                        <p>text4</p>
+                    </figure>
+                </p>
+            </div>
+        </body>
+    </html>"""
+    )
+    xml.strip_double_tags(tree)
+    for parent_tag in ["item", "cell", "quote", "note", "figure"]:
+        assert tree.find(f".//{parent_tag}/p") is not None
 
 
 def test_htmlprocessing():
