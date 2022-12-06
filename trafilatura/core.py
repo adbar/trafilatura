@@ -35,7 +35,7 @@ from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
 from .xml import (build_json_output, build_xml_output, build_tei_output,
-                  control_xml_output, xmltotxt)
+                  control_xml_output, remove_empty_elements, strip_double_tags, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
                      TEASER_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
                      DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
@@ -772,6 +772,8 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
                 if parent is not None:
                     parent.remove(element)
         # build output trees
+        strip_double_tags(document.body)
+        remove_empty_elements(document.body)
         if output_format == 'xml':
             output = build_xml_output(document)
         elif output_format == 'xmltei':
