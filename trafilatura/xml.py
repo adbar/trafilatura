@@ -35,6 +35,8 @@ NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', '
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
+NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
+
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
@@ -73,11 +75,9 @@ def remove_empty_elements(tree):
 
 def strip_double_tags(tree):
     "Prevent nested tags among a fixed list of tags."
-    target_list = ["head", "code", "p"]
-    nesting_tags = {"cell", "item", "note", "quote", "figure"}
     for elem in reversed(tree.xpath(".//head | .//code | .//p")):
-        for subelem in elem.iterdescendants(target_list):
-            if subelem.getparent().tag in nesting_tags:
+        for subelem in elem.iterdescendants("code", "head", "p"):
+            if subelem.getparent().tag in NESTING_WHITELIST:
                 continue
             if subelem.tag == elem.tag:
                 merge_with_parent(subelem)
