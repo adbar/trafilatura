@@ -73,9 +73,9 @@ def remove_empty_elements(tree):
 
 def strip_double_tags(tree):
     "Prevent nested tags among a fixed list of tags."
-    target_list = ["ab", "code", "p"]
+    target_list = ["head", "code", "p"]
     nesting_tags = {"cell", "item", "note", "quote", "figure"}
-    for elem in reversed(tree.xpath(".//ab | .//code | .//p")):
+    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
         for subelem in elem.iterdescendants(target_list):
             if subelem.getparent().tag in nesting_tags:
                 continue
