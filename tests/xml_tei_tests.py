@@ -179,6 +179,10 @@ def test_tail_on_p_like_elements_removed():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//p").iter()]
     assert result == [("p", "tail", None)]
+    xml_doc = fromstring("<TEI><text><body><div><p/>tail1<ab/>tail2<ab/>tail3</div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.text for elem in cleaned.iter() if elem.text]
+    assert result == ["tail1", "tail2", "tail3"]
 
 
 def test_head_with_children_converted_to_ab():
@@ -256,7 +260,16 @@ def test_head_with_children_converted_to_ab():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(child.tag, child.text, child.tail) for child in cleaned.find(".//ab").iter()]
     assert result == [("ab", "text1", None), ("lb", None, "text2")]
-    # check that parent of <ab> is not <p>
+    xml_doc = fromstring("<TEI><text><body><head><list><item>text1</item></list><p>text2</p></head>tail</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(child.tag, child.text, child.tail) for child in cleaned.find(".//body").iter()]
+    assert result == [
+        ("body", None, None),
+        ("ab", None, None),
+        ("list", None, "text2"),
+        ("item", "text1", None),
+        ("p", "tail", None)
+    ]
     xml_doc = fromstring("<text><p><head>text1</head></p></text>")
     cleaned = check_tei(xml_doc, "fake_url")
     assert cleaned.find(".//ab") is not None and cleaned.find(".//p") is None

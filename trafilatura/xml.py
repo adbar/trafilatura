@@ -473,6 +473,8 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
+    if element.tail is not None and element.tail.strip():
+        new_element.tail = element.tail.strip()
     return new_element
 
 
