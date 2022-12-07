@@ -213,16 +213,17 @@ def handle_lists(element, options):
 
 def handle_quotes(element, options):
     '''Process quotes elements'''
-    processed_element = Element(element.tag)
-    for child in element.iter('*'):
-        processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
-        if processed_child is not None:
-            newsub = SubElement(processed_element, child.tag)
-            newsub.text, newsub.tail = processed_child.text, processed_child.tail
-        child.tag = 'done'
-    if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
-        # avoid double/nested tags
-        strip_tags(processed_element, 'quote')
+    if len(element) == 0:
+        processed_element = process_node(element, options)
+    # children
+    else:
+        processed_element = Element(element.tag)
+        for child in element.iterchildren('*'):
+            processed_child = handle_textelem(child, TAG_CATALOG, options)
+            if processed_child is not None:
+                processed_element.append(processed_child)
+            child.tag = 'done'
+    if processed_element is not None and text_chars_test(''.join(processed_element.itertext())) is True:
         return processed_element
     return None
 

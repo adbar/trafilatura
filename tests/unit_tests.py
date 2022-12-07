@@ -183,6 +183,14 @@ def test_exotic_tags(xmloutput=False):
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
     assert handle_quotes(etree.Element('quote'), options) is None
+    htmlstring = """<html><body>
+    <quote>
+        <ul><li>line1</li><li>line2</li></ul>
+    </quote>
+    </body></html>"""
+    result = extract(htmlstring, config=ZERO_CONFIG, output_format="xml")
+    assert '<list rend="ul">' in result and "<item>line2</item>\n      </list>" in result
+    # tables
     assert handle_table(etree.Element('table'), TAG_CATALOG, options) is None
     # p within p
     element, second = etree.Element('p'), etree.Element('p')
