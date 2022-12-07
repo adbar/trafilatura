@@ -11,7 +11,7 @@ import logging
 from collections import defaultdict
 from copy import deepcopy
 
-from lxml.etree import strip_tags
+from lxml.etree import Element, strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
@@ -360,4 +360,6 @@ def process_node(element, options):
             return None
         if options.dedup and duplicate_test(element, options.config) is True:
             return None
-    return element
+    new_elem = Element(element.tag, attrib=element.attrib)
+    new_elem.text, new_elem.tail = element.text, element.tail
+    return new_elem
