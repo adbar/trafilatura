@@ -186,7 +186,6 @@ def test_tail_on_p_like_elements_removed():
 
 
 def test_head_with_children_converted_to_ab():
-    parser = XMLParser(remove_blank_text=True)
     xml_doc = fromstring("<text><head>heading</head><p>some text</p></text>")
     cleaned = check_tei(xml_doc, "fake_url")
     result = [
@@ -270,6 +269,10 @@ def test_head_with_children_converted_to_ab():
         ("item", "text1", None),
         ("p", "tail", None)
     ]
+
+
+def test_ab_with_p_parent_resolved():
+    parser = XMLParser(remove_blank_text=True)
     xml_doc = fromstring("<text><p><head>text1</head></p></text>")
     cleaned = check_tei(xml_doc, "fake_url")
     assert cleaned.find(".//ab") is not None and cleaned.find(".//p") is None
@@ -426,3 +429,4 @@ if __name__ == "__main__":
     test_unwanted_siblings_of_div_removed()
     test_tail_on_p_like_elements_removed()
     test_head_with_children_converted_to_ab()
+    test_ab_with_p_parent_resolved()
