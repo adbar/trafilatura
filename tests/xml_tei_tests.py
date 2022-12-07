@@ -303,9 +303,9 @@ def test_ab_with_p_parent_resolved():
     xml_doc = fromstring("<TEI><text><body><p>text0<head>text1</head>text2</p></body></text></TEI>")
     cleaned = check_tei(xml_doc, "fake_url")
     assert cleaned.find(".//ab").getnext().text == "text2"
-    xml_doc = fromstring("<TEI><text><body><p>text0<head>text1</head>text2</p></body></text></TEI>")
+    xml_doc = fromstring("<TEI><text><body><p>text0<list/><head>text1</head>text2</p>text3</body></text></TEI>")
     cleaned = check_tei(xml_doc, "fake_url")
-    assert "text2" in tostring(cleaned, encoding="unicode")
+    assert "text2" in tostring(cleaned, encoding="unicode") and cleaned.find(".//p/list") is not None
     xml_doc = fromstring("""
     <TEI>
       <text><body>
@@ -355,13 +355,14 @@ def test_ab_with_p_parent_resolved():
         ("ab", "text1", None),
         ("p", "text2", None),
     ]
-    xml_doc = fromstring("<TEI><text><body><p>text1<head>text2</head>text3</p></body></text></TEI>")
+    xml_doc = fromstring("<TEI><text><body><p>text1<head>text2</head>text3<head>text4</head></p></body></text></TEI>")
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.iter(["p", "ab"])]
     assert result == [
         ("p", "text1", None),
         ("ab", "text2", None),
         ("p", "text3", None),
+        ("ab", "text4", None),
     ]
     xml_doc = fromstring("<text><head>text1</head><p>text2<head>text3</head></p></text>")
     cleaned = check_tei(xml_doc, "fake_url")
