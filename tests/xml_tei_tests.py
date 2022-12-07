@@ -1,7 +1,7 @@
 """
 Test for transformation to TEI.
 """
-from lxml.etree import Element, fromstring, tostring
+from lxml.etree import Element, fromstring, tostring, XMLParser
 
 from trafilatura.metadata import Document
 from trafilatura.xml import check_tei, write_fullheader
@@ -179,6 +179,10 @@ def test_tail_on_p_like_elements_removed():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//p").iter()]
     assert result == [("p", "tail", None)]
+    xml_doc = fromstring("<TEI><text><body><div><p/>tail1<ab/>tail2<ab/>tail3</div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [elem.text for elem in cleaned.iter() if elem.text]
+    assert result == ["tail1", "tail2", "tail3"]
 
 
 def test_head_with_children_converted_to_ab():
@@ -255,6 +259,170 @@ def test_head_with_children_converted_to_ab():
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(child.tag, child.text, child.tail) for child in cleaned.find(".//ab").iter()]
     assert result == [("ab", "text1", None), ("lb", None, "text2")]
+    xml_doc = fromstring("<TEI><text><body><head><list><item>text1</item></list><p>text2</p></head>tail</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(child.tag, child.text, child.tail) for child in cleaned.find(".//body").iter()]
+    assert result == [
+        ("body", None, None),
+        ("ab", None, None),
+        ("list", None, "text2"),
+        ("item", "text1", None),
+        ("p", "tail", None)
+    ]
+
+
+def test_ab_with_p_parent_resolved():
+    parser = XMLParser(remove_blank_text=True)
+    xml_doc = fromstring("<text><p><head>text1</head></p></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//ab") is not None and cleaned.find(".//p") is None
+    xml_doc = fromstring("<body><p>text1<head>text2</head></p></body>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = cleaned.find(".//ab")
+    assert result.getparent().tag == "body" and result.text == "text2"
+    xml_doc = fromstring("<TEI><text><body><p><head>text1</head></p>text2</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//ab").text == "text1" and cleaned.find(".//p").text == "text2"
+    xml_doc = fromstring("<text><p><head rend='h3'>text</head></p></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find("ab").attrib == {"type":"header", "rend":"h3"}
+    xml_doc = fromstring("<text><p><head>text1</head><list/><head>text2</head></p></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.iter()]
+    assert result == [
+        ("text", None, None),
+        ("ab", "text1", None),
+        ("p", None, None),
+        ("list", None, None),
+        ("ab", "text2", None),
+
+    ]
+    xml_doc = fromstring("<TEI><text><body><p><head>text1</head>text2</p></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//p").text == "text2"
+    xml_doc = fromstring("<TEI><text><body><p>text0<head>text1</head>text2</p></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//ab").getnext().text == "text2"
+    xml_doc = fromstring("<TEI><text><body><p>text0<list/><head>text1</head>text2</p>text3</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert "text2" in tostring(cleaned, encoding="unicode") and cleaned.find(".//p/list") is not None
+    xml_doc = fromstring("""
+    <TEI>
+      <text><body>
+        <p>text1<head>text2</head>text3
+          <head>text4</head>text5
+        </p>
+      </body></text>
+    </TEI>"""
+    )
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in xml_doc.iter(["p", "ab"])]
+    assert result == [
+        ("p", "text1", None),
+        ("ab", "text2", None),
+        ("p", "text3", None),
+        ("ab", "text4", None),
+        ("p", "text5", None),
+    ]
+    xml_doc = fromstring("""
+    <TEI>
+      <text>
+        <body>
+          <p>text0<head>text1</head>
+            <list>
+              <item>text2</item>
+            </list>
+            <head>text3</head>text4
+          </p>
+        </body>
+      </text>
+    </TEI>"""
+    )
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in xml_doc.iter(["p", "ab"])]
+    assert result == [
+        ("p", "text0", None),
+        ("ab", "text1", None),
+        ("p", None, None),
+        ("ab", "text3", None),
+        ("p", "text4", None),
+    ]
+    xml_doc = fromstring("<TEI><text><body><p>text0<head>text1</head></p>text2</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in xml_doc.iter(["p", "ab"])]
+    assert result == [
+        ("p", "text0", None),
+        ("ab", "text1", None),
+        ("p", "text2", None),
+    ]
+    xml_doc = fromstring("<TEI><text><body><p>text1<head>text2</head>text3<head>text4</head></p></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.iter(["p", "ab"])]
+    assert result == [
+        ("p", "text1", None),
+        ("ab", "text2", None),
+        ("p", "text3", None),
+        ("ab", "text4", None),
+    ]
+    xml_doc = fromstring("<text><head>text1</head><p>text2<head>text3</head></p></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned]
+    assert [
+        ("ab", "text1", None),
+        ("p", "text2", None),
+        ("ab", "text3", None),
+    ]
+    xml_doc = fromstring("<text><p>text1<head>text2</head></p><head>text3</head></text>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned]
+    assert result == [
+        ("p", "text1", None),
+        ("ab", "text2", None),
+        ("ab", "text3", None),
+    ]
+    xml_doc = fromstring(
+        """
+        <text>
+            <head>text1<p>text2</p></head>
+            <p>text3<head>text4</head></p>
+        </text>""",
+        parser=parser
+    )
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.iter()]
+    assert result == [
+        ("text", None, None),
+        ("ab", "text1", None),
+        ("lb", None, "text2"),
+        ("p", "text3", None),
+        ("ab", "text4", None),
+    ]
+    xml_doc = fromstring(
+        """
+        <TEI>
+        <text>
+          <body>
+            <p>text1<head>
+                    <list>
+                        <item>text2</item>
+                    </list>
+                </head>
+            text3
+            </p>
+          </body>
+        </text>
+        </TEI>
+        """,
+        parser=parser
+    )
+    cleaned = check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.iter(["p", "ab", "item"])]
+    assert result ==  [
+        ("p", "text1", None),
+        ("ab", None, None),
+        ("item", "text2", None),
+        ("p", "text3", None),
+    ]
 
 
 if __name__ == "__main__":
@@ -262,3 +430,4 @@ if __name__ == "__main__":
     test_unwanted_siblings_of_div_removed()
     test_tail_on_p_like_elements_removed()
     test_head_with_children_converted_to_ab()
+    test_ab_with_p_parent_resolved()

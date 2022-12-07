@@ -160,9 +160,13 @@ def check_tei(xmldoc, url):
     for elem in xmldoc.iter('head'):
         elem.tag = 'ab'
         elem.set('type', 'header')
+        parent = elem.getparent()
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
-            elem.getparent().replace(elem, new_elem)
+            parent.replace(elem, new_elem)
+            elem = new_elem
+        if parent.tag == "p":
+            _move_element_one_level_up(elem)
     # convert <lb/> when child of <div> to <p>
     for element in xmldoc.findall(".//text/body//div/lb"):
         if element.tail is not None and element.tail.strip():
@@ -469,6 +473,8 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
+    if element.tail is not None and element.tail.strip():
+        new_element.tail = element.tail.strip()
     return new_element
 
 
@@ -493,3 +499,18 @@ def _wrap_unwanted_siblings_of_div(div_element):
                 new_sibling_index = None
     if new_sibling_index is not None and len(new_sibling) != 0:
         parent.insert(new_sibling_index, new_sibling)
+
+
+def _move_element_one_level_up(element):
+    parent = element.getparent()
+    new_elem = Element("p")
+    for sibling in element.itersiblings():
+        new_elem.append(sibling)
+    parent.addnext(element)
+    if element.tail is not None and element.tail.strip():
+        new_elem.text = element.tail.strip()
+        element.tail = None
+    if len(new_elem) != 0 or new_elem.text:
+        element.addnext(new_elem)
+    if len(parent) == 0 and parent.text is None:
+        parent.getparent().remove(parent)
