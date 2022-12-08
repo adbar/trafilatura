@@ -211,19 +211,24 @@ def handle_lists(element, options):
     return None
 
 
-def handle_quotes(element, options):
-    '''Process quotes elements'''
-    if len(element) == 0:
-        processed_element = process_node(element, options)
-    # children
-    else:
-        processed_element = Element(element.tag)
+def handle_generic_elems(element, potential_tags, options):
+    '''Generic way to handle elements and their embedded children.'''
+    # replace potentially messy element by new, clean one
+    processed_element = Element(element.tag, attrib=element.attrib)
+    processed_element.text, processed_element.tail = element.text, element.tail
+    # deal with potential children
+    if len(element) > 0:
+        # processed_element = deepcopy(element)
         for child in element.iterchildren('*'):
             processed_child = handle_textelem(child, TAG_CATALOG, options)
             if processed_child is not None:
                 processed_element.append(processed_child)
             child.tag = 'done'
+    element.tag = 'done'
     if processed_element is not None and text_chars_test(''.join(processed_element.itertext())) is True:
+        # div post-processing?
+        #if processed_element.tag == 'div' and text_chars_test(processed_element.text) is True:
+        #    processed_element.tag = 'p'
         return processed_element
     return None
 
@@ -235,6 +240,8 @@ def handle_other_elements(element, potential_tags, options):
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
+        # performance drop:
+        # return handle_generic_elems(element, potential_tags, options)
         # make a copy and prune it in case it contains sub-elements handled on their own?
         # divcopy = deepcopy(element)
         processed_element = handle_textnode(element, options, comments_fix=False)
@@ -431,9 +438,9 @@ def handle_textelem(element, potential_tags, options):
     if element.tag == 'list':
         new_element = handle_lists(element, options)
     elif element.tag in CODES_QUOTES:
-        new_element = handle_quotes(element, options)
+        new_element = handle_generic_elems(element, potential_tags, options)
     elif element.tag == 'head':
-        new_element = handle_titles(element, options)
+        new_element = handle_generic_elems(element, potential_tags, options)
     elif element.tag == 'p':
         new_element = handle_paragraphs(element, potential_tags, options)
     elif element.tag == 'lb':

@@ -348,7 +348,7 @@ def process_node(element, options):
         return None
     if len(element) == 0 and not element.text and not element.tail:
         return None
-    # trim
+    # trim: can lead to missing spaces!
     element.text, element.tail = trim(element.text), trim(element.tail)
     # adapt content string
     if element.tag != 'lb' and not element.text and element.tail:

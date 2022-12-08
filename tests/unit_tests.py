@@ -29,7 +29,7 @@ import trafilatura.htmlprocessing
 
 from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
 
-from trafilatura.core import Extractor, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
+from trafilatura.core import Extractor, handle_formatting, handle_generic_elems, handle_lists, handle_image, handle_paragraphs, handle_table, handle_textelem, sanitize_tree, trim
 from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -182,7 +182,7 @@ def test_exotic_tags(xmloutput=False):
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
-    assert handle_quotes(etree.Element('quote'), options) is None
+    assert handle_generic_elems(etree.Element('quote'), TAG_CATALOG, options) is None
     htmlstring = """<html><body>
     <quote>
         <ul><li>line1</li><li>line2</li></ul>
@@ -664,6 +664,7 @@ def test_tei():
         </html>"""
     )
     extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    print(extracted)
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
     # merge double elements
     tree = html.fromstring(
