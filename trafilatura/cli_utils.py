@@ -144,6 +144,8 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
             output_path, _ = get_writable_path(destination_directory, extension)
         else:
             output_path = path.join(destination_directory, new_filename + extension)
+            
+    output_path = path.join(args.outputdir, "urlList" + extension)
     return output_path, destination_directory
 
 
@@ -169,8 +171,8 @@ def write_result(result, args, orig_filename=None, counter=None, new_filename=No
         destination_path, destination_directory = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_directory) is True:
-            with open(destination_path, mode='w', encoding='utf-8') as outputfile:
-                outputfile.write(result)
+            with open(destination_path, mode='a', encoding='utf-8') as outputfile:
+                outputfile.write(result + '\n')
 
 
 def generate_filelist(inputdir):
