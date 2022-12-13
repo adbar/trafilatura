@@ -23,8 +23,6 @@ jobs:
         # custom python versions
         - python-version: "3.12-dev"
           os: ubuntu-latest
-          experimental: true
-          allowed_failure: true
         - os: ubuntu-20.04
           python-version: 3.6
         # other OS
@@ -32,8 +30,6 @@ jobs:
           python-version: 3.7
         - os: windows-latest
           python-version: 3.7
-          experimental: true
-          allowed_failure: true
 
     steps:
     # Python and pip setup
@@ -41,22 +37,10 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'pip'
 
     - name: Upgrade pip
       run: python -m pip install --upgrade pip setuptools wheel
-
-    - name: Get pip cache dir
-      id: pip-cache
-      run: |
-        echo "::set-output name=dir::$(pip cache dir)"
-
-    - name: pip cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
 
     # optional, just for certain versions where prebuilt wheels don't exist
     - name: Install LXML and pycld3 dependencies
