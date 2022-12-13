@@ -22,7 +22,6 @@ jobs:
         include:
         # custom python versions
         - python-version: "3.12-dev"
-          os: ubuntu-latest
         - os: ubuntu-20.04
           python-version: 3.6
         # other OS
@@ -40,6 +39,19 @@ jobs:
 
     - name: Upgrade pip
       run: python -m pip install --upgrade pip setuptools wheel
+
+    - name: Get pip cache dir
+      id: pip-cache
+      run: |
+        echo "::set-output name=dir::$(pip cache dir)"
+
+    - name: pip cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.pip-cache.outputs.dir }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
     # optional, just for certain versions where prebuilt wheels don't exist
     - name: Install LXML and pycld3 dependencies
