@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9, "3.10", "3.11"]
+        python-version: [3.7, 3.8, 3.9, "3.10", "3.11"]
         env: [{ MINIMAL: "true" }, { MINIMAL: "false" }]
         include:
         # custom tests
@@ -25,6 +25,8 @@ jobs:
           os: ubuntu-latest
           experimental: true
           allowed_failure: true
+        - os: ubuntu-20.04
+          python-version: 3.6
         - os: macos-latest
           python-version: 3.7
         - os: windows-latest
