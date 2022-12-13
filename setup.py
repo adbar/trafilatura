@@ -28,7 +28,7 @@ def get_long_description():
 extras = {
     'all': [
         'cchardet >= 2.1.7; python_version < "3.11"',  # build issue
-        'faust-cchardet >= 2.1.21; python_version >= "3.11"',  # fix for build
+        'faust-cchardet >= 2.1.12; python_version >= "3.11"',  # fix for build
         'htmldate[speed] >= 1.4.0',
         'py3langid >= 0.2.2',
         'pycurl >= 7.45.1',
