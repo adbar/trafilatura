@@ -22,9 +22,11 @@ jobs:
         include:
         # custom python versions
         - python-version: "3.12-dev"
+          os: ubuntu-latest
+          experimental: true
+          allowed_failure: true
         - os: ubuntu-20.04
           python-version: 3.6
-        # other OS
         - os: macos-latest
           python-version: 3.7
         - os: windows-latest
