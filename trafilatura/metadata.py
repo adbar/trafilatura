@@ -56,7 +56,7 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
-HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
+HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
@@ -77,7 +77,7 @@ METANAME_DESCRIPTION = {
 METANAME_PUBLISHER = {
     'article:publisher', 'citation_journal_title', 'copyright',
     'dc.publisher', 'dc:publisher', 'dcterms.publisher',
-    'publisher'
+    'publisher', 'rbpubname'
 }  # questionable: citation_publisher
 METANAME_TAG = {
     'citation_keywords', 'dcterms.subject', 'keywords', 'parsely-tags',

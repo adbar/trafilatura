@@ -39,6 +39,8 @@ def test_titles():
     assert metadata.title == 'Semantic satiation'
     metadata = extract_metadata('<html><head><title> - Home</title></head><body/></html>')
     assert metadata.title == '- Home'
+    metadata = extract_metadata('<html><head><title>My Title » My Website</title></head><body/></html>')
+    assert metadata.title == "My Title"  # TODO: and metadata.sitename == "My Website"
 
 
 def test_authors():
