@@ -10,6 +10,11 @@ Module bundling functions related to HTML and text processing.
 import logging
 import re
 
+# if brotli is installed
+try:
+    import brotli
+except ImportError:
+    brotli = None
 from gzip import decompress
 from functools import lru_cache
 from html import unescape
@@ -67,16 +72,24 @@ AUTHOR_EMOJI_REMOVE = re.compile(
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 
-def handle_gz_file(filecontent):
+def handle_compressed_file(filecontent):
     """Tell if a file's magic number corresponds to the GZip format
-       and try to decode it"""
-    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
-        # decode GZipped data
-        try:
-            filecontent = decompress(filecontent)
-        except (EOFError, OSError):
-            logging.warning('invalid GZ file')
+       and try to decode it. Alternatively, try Brotli if the package
+       is installed."""
+    if isinstance(filecontent, bytes):
+        # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+        if filecontent[:2] == b'\x1f\x8b':
+            # decode GZipped data
+            try:
+                filecontent = decompress(filecontent)
+            except (EOFError, OSError):
+                logging.warning('invalid GZ file')
+        # try brotli
+        elif brotli is not None:
+            try:
+                filecontent = brotli.decompress(filecontent)
+            except brotli.error:
+                logging.warning('invalid Brotli file')
     return filecontent
 
 
@@ -127,8 +140,8 @@ def decode_file(filecontent):
     if isinstance(filecontent, str):
         return filecontent
     htmltext = None
-    # GZip test
-    filecontent = handle_gz_file(filecontent)
+    # GZip and Brotli test
+    filecontent = handle_compressed_file(filecontent)
     # encoding
     for guessed_encoding in detect_encoding(filecontent):
         try:

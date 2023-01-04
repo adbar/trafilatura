@@ -27,12 +27,12 @@ def get_long_description():
 # some problems with installation solved this way
 extras = {
     "all": [
+        "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.12; python_version >= '3.11'",  # fix for build
         "htmldate[speed] >= 1.4.0",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.1",
-        "urllib3[brotli]",
     ],
     "gui": [
         "Gooey >= 1.0.1",
