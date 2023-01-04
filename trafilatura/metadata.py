@@ -64,10 +64,10 @@ LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
 
 METANAME_AUTHOR = {
-    'article:author','author', 'byl', 'citation_author',
-    'dc.creator', 'dc.creator.aut', 'dc:creator',
-    'dcterms.creator', 'dcterms.creator.aut', 'parsely-author',
-    'sailthru.author', 'shareaholic:article_author_name'
+    'article:author', 'atc-metaauthor', 'author', 'authors', 'byl', 'citation_author',
+    'creator', 'dc.creator', 'dc.creator.aut', 'dc:creator',
+    'dcterms.creator', 'dcterms.creator.aut', 'dcsext.author', 'parsely-author',
+    'rbauthors', 'sailthru.author', 'shareaholic:article_author_name'
 }  # questionable: twitter:creator
 METANAME_DESCRIPTION = {
     'dc.description', 'dc:description',
@@ -77,7 +77,7 @@ METANAME_DESCRIPTION = {
 METANAME_PUBLISHER = {
     'article:publisher', 'citation_journal_title', 'copyright',
     'dc.publisher', 'dc:publisher', 'dcterms.publisher',
-    'publisher', 'rbpubname'
+    'publisher', 'sailthru.publisher', 'rbpubname', 'twitter:site'
 }  # questionable: citation_publisher
 METANAME_TAG = {
     'citation_keywords', 'dcterms.subject', 'keywords', 'parsely-tags',
@@ -85,8 +85,11 @@ METANAME_TAG = {
 }
 METANAME_TITLE = {
     'citation_title', 'dc.title', 'dcterms.title', 'fb_title',
-    'parsely-title', 'sailthru.title', 'shareaholic:title',
-    'title', 'twitter:title'
+    'headline', 'parsely-title', 'sailthru.title', 'shareaholic:title',
+    'rbtitle', 'title', 'twitter:title'
+}
+METANAME_URL = {
+    'rbmainurl', 'twitter:url'
 }
 OG_AUTHOR = {'og:author', 'og:article:author'}
 PROPERTY_AUTHOR = {'author', 'article:author'}
