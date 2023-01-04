@@ -39,6 +39,8 @@ def test_titles():
     assert metadata.title == 'Semantic satiation'
     metadata = extract_metadata('<html><head><title> - Home</title></head><body/></html>')
     assert metadata.title == '- Home'
+    metadata = extract_metadata('<html><head><title>My Title » My Website</title></head><body/></html>')
+    assert metadata.title == "My Title"  # TODO: and metadata.sitename == "My Website"
 
 
 def test_authors():
@@ -213,6 +215,8 @@ def test_catstags():
     '''Test extraction of categories and tags'''
     metadata = extract_metadata('<html><body><p class="entry-categories"><a href="https://example.org/category/cat1/">Cat1</a>, <a href="https://example.org/category/cat2/">Cat2</a></p></body></html>')
     assert metadata.categories == ['Cat1', 'Cat2']
+    metadata = extract_metadata('<html><body><div class="postmeta"><a href="https://example.org/category/cat1/">Cat1</a></div></body></html>')
+    assert metadata.categories == ['Cat1']
     metadata = extract_metadata('<html><body><p class="entry-tags"><a href="https://example.org/tags/tag1/">Tag1</a>, <a href="https://example.org/tags/tag2/">Tag2</a></p></body></html>')
     assert metadata.tags == ['Tag1', 'Tag2']
     metadata = extract_metadata('<html><head><meta name="keywords" content="sodium, salt, paracetamol, blood, pressure, high, heart, &amp;quot, intake, warning, study, &amp;quot, medicine, dissolvable, cardiovascular" /></head></html>')

@@ -79,6 +79,12 @@ For a full list of arguments see `extraction documentation <corefunctions.html#e
 
 Already stored documents can also be read directly from R, for example with CSV/TSV output and ``read_delim()``, see information on `data import in R <https://r4ds.had.co.nz/data-import.html>`_.
 
+The ``html2txt`` function extracts all possible text on the webpage, it can be used as follows:
+
+.. code-block:: R
+
+    > trafilatura$html2txt(downloaded)
+
 
 Other functions
 ---------------

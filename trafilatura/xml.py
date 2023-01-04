@@ -24,15 +24,18 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
-TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
+TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
-TEI_RELAXNG = None # to be downloaded later if necessary
+TEI_RELAXNG = None  # to be downloaded later if necessary
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-NEWLINE_ELEMS = {'code', 'fw', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
+WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+
+NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 
 def build_json_output(docmeta):
@@ -54,16 +57,30 @@ def build_json_output(docmeta):
 def clean_attributes(tree):
     '''Remove unnecessary attributes.'''
     for elem in tree.iter('*'):
-        if elem.tag not in ('del', 'fw', 'graphic', 'head', 'hi', 'ref'):
+        if elem.tag not in WITH_ATTRIBUTES:
             elem.attrib.clear()
     return tree
 
 
 def remove_empty_elements(tree):
     '''Remove text elements without text.'''
-    for element in tree.iter('fw', 'head', 'hi', 'item', 'p'):
+    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
-            element.getparent().remove(element)
+            parent = element.getparent()
+            # not root element or element which is naturally empty
+            if parent and element.tag != "graphic":
+                element.getparent().remove(element)
+    return tree
+
+
+def strip_double_tags(tree):
+    "Prevent nested tags among a fixed list of tags."
+    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
+        for subelem in elem.iterdescendants("code", "head", "p"):
+            if subelem.getparent().tag in NESTING_WHITELIST:
+                continue
+            if subelem.tag == elem.tag:
+                merge_with_parent(subelem)
     return tree
 
 
@@ -73,7 +90,6 @@ def build_xml_output(docmeta):
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
-    docmeta.body = remove_empty_elements(docmeta.body)
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:
         docmeta.commentsbody.tag = 'comments'
@@ -123,6 +139,8 @@ def add_xml_meta(output, docmeta):
             output.set('id', docmeta.id)
         if docmeta.fingerprint is not None:
             output.set('fingerprint', docmeta.fingerprint)
+        if docmeta.language is not None:
+            output.set('language', docmeta.language)
     return output
 
 
@@ -140,10 +158,25 @@ def check_tei(xmldoc, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
     for elem in xmldoc.iter('head'):
-        elem.tag = 'fw'
+        elem.tag = 'ab'
         elem.set('type', 'header')
+        parent = elem.getparent()
+        if len(elem) > 0:
+            new_elem = _tei_handle_complex_head(elem)
+            parent.replace(elem, new_elem)
+            elem = new_elem
+        if parent.tag == "p":
+            _move_element_one_level_up(elem)
+    # convert <lb/> when child of <div> to <p>
+    for element in xmldoc.findall(".//text/body//div/lb"):
+        if element.tail is not None and element.tail.strip():
+            element.tag = 'p'
+            element.text = element.tail
+            element.tail = None
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
+        if element.tag in {"ab", "p"} and element.tail and element.tail.strip():
+            _handle_unwanted_tails(element)
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -151,13 +184,14 @@ def check_tei(xmldoc, url):
             LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
             merge_with_parent(element)
             continue
+        if element.tag == "div":
+            _handle_text_content_of_div_nodes(element)
+            _wrap_unwanted_siblings_of_div(element)
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
-    # export metadata
-    #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return xmldoc
 
 
@@ -179,14 +213,14 @@ def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting: convert to markdown
-    if include_formatting is True:
-        if element.tag in ('del', 'head') and element.text is not None:
+    if include_formatting is True and element.text is not None:
+        if element.tag in ('del', 'head'):
             if element.tag == 'head':
                 try:
                     number = int(element.get('rend')[1])
                 except (TypeError, ValueError):
                     number = 2
-                element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+                element.text = ''.join(['#'*number, ' ', element.text])
             elif element.tag == 'del':
                 element.text = ''.join(['~~', element.text, '~~'])
         elif element.tag == 'hi':
@@ -200,14 +234,14 @@ def replace_element_text(element, include_formatting):
                 element.text = ''.join(['`', element.text, '`'])
     # handle links
     if element.tag == 'ref':
-        try:
-            element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
-        except TypeError:
-            LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-            try:
+        if element.text is not None:
+            if element.get('target') is not None:
+                element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
+            else:
+                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
                 element.text = ''.join(['[', element.text, ']'])
-            except TypeError:
-                LOGGER.error('empty link: %s %s', element.text, element.attrib)
+        else:
+            LOGGER.error('empty link: %s %s', element.text, element.attrib)
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ''.join([element.text, element.tail])
@@ -294,8 +328,23 @@ def write_teitree(docmeta):
     return teidoc
 
 
+def _define_publisher_string(docmeta):
+    '''Construct a publisher string to include in TEI header'''
+    if docmeta.hostname and docmeta.sitename:
+        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+    elif docmeta.hostname:
+        publisherstring = docmeta.hostname
+    elif docmeta.sitename:
+        publisherstring = docmeta.sitename
+    else:
+        LOGGER.warning('no publisher for URL %s', docmeta.url)
+        publisherstring = 'N/A'
+    return publisherstring
+
+
 def write_fullheader(teidoc, docmeta):
     '''Write TEI header based on gathered metadata'''
+    # todo: add language info
     header = SubElement(teidoc, 'teiHeader')
     filedesc = SubElement(header, 'fileDesc')
     bib_titlestmt = SubElement(filedesc, 'titleStmt')
@@ -305,8 +354,11 @@ def write_fullheader(teidoc, docmeta):
         bib_author = SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
     publicationstmt_a = SubElement(filedesc, 'publicationStmt')
+    publisher_string = _define_publisher_string(docmeta)
     # license, if applicable
     if docmeta.license:
+        publicationstmt_publisher = SubElement(publicationstmt_a, 'publisher')
+        publicationstmt_publisher.text = publisher_string
         availability = SubElement(publicationstmt_a, 'availability')
         avail_p = SubElement(availability, 'p')
         avail_p.text = docmeta.license
@@ -346,16 +398,7 @@ def write_fullheader(teidoc, docmeta):
         bib_author.text = docmeta.author
     publicationstmt = SubElement(biblfull, 'publicationStmt')
     publication_publisher = SubElement(publicationstmt, 'publisher')
-    if docmeta.hostname and docmeta.sitename:
-        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
-    elif docmeta.hostname:
-        publisherstring = docmeta.hostname
-    elif docmeta.sitename:
-        publisherstring = docmeta.sitename
-    else:
-        LOGGER.warning('no publisher for URL %s', docmeta.url)
-        publisherstring = 'N/A'
-    publication_publisher.text = publisherstring
+    publication_publisher.text = publisher_string
     if docmeta.url:
         publication_url = SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
     publication_date = SubElement(publicationstmt, 'date')
@@ -380,3 +423,94 @@ def write_fullheader(teidoc, docmeta):
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
+
+
+def _handle_text_content_of_div_nodes(element):
+    if element.text is not None and element.text.strip():
+        if element.getchildren() and element[0].tag == 'p':
+            element[0].text = ' '.join([element.text, element[0].text])
+        else:
+            new_child = Element("p")
+            new_child.text = element.text
+            element.insert(0, new_child)
+        element.text = None
+    if element.tail is not None and element.tail.strip():
+        if element.getchildren() and element[-1].tag == 'p':
+            element[-1].text = ' '.join([element[-1].text, element.tail])
+        else:
+            new_child = Element("p")
+            new_child.text = element.tail
+            element.append(new_child)
+        element.tail = None
+
+
+def _handle_unwanted_tails(element):
+    "Handle tail on p and ab elements"
+    if element.tag == 'p':
+        if element.text:
+            element.text += ' ' + element.tail.strip()
+        else:
+            element.text = element.tail
+    else:
+        new_sibling = Element('p')
+        new_sibling.text = element.tail.strip()
+        parent = element.getparent()
+        parent.insert(parent.index(element) + 1 , new_sibling)
+    element.tail = None
+
+
+def _tei_handle_complex_head(element):
+    new_element = Element('ab', attrib=element.attrib)
+    new_element.text = element.text.strip() if element.text is not None else None
+    for child in element.iterchildren():
+        if child.tag == 'p':
+            if len(new_element) > 0 or new_element.text:
+                # add <lb> if <ab> has no children or last tail contains text
+                if len(new_element) == 0 or new_element[-1].tail:
+                    SubElement(new_element, 'lb')
+                new_element[-1].tail = child.text
+            else:
+                new_element.text = child.text
+        else:
+            new_element.append(child)
+    if element.tail is not None and element.tail.strip():
+        new_element.tail = element.tail.strip()
+    return new_element
+
+
+def _wrap_unwanted_siblings_of_div(div_element):
+    new_sibling = Element("div")
+    new_sibling_index = None
+    parent = div_element.getparent()
+    # check siblings after target element
+    for sibling in div_element.itersiblings():
+        if sibling.tag == "div":
+            break
+        if sibling.tag in {"p", "list", "table", "quote", "ab"}:
+            if new_sibling_index is None:
+                new_sibling_index = parent.index(sibling)
+            new_sibling.append(sibling)
+        # some elements (e.g. <lb/>) can appear next to div, but
+        # order of elements should be kept, thus add and reset new_sibling
+        else:
+            if new_sibling_index is not None and len(new_sibling) != 0:
+                parent.insert(new_sibling_index, new_sibling)
+                new_sibling = Element("div")
+                new_sibling_index = None
+    if new_sibling_index is not None and len(new_sibling) != 0:
+        parent.insert(new_sibling_index, new_sibling)
+
+
+def _move_element_one_level_up(element):
+    parent = element.getparent()
+    new_elem = Element("p")
+    for sibling in element.itersiblings():
+        new_elem.append(sibling)
+    parent.addnext(element)
+    if element.tail is not None and element.tail.strip():
+        new_elem.text = element.tail.strip()
+        element.tail = None
+    if len(new_elem) != 0 or new_elem.text:
+        element.addnext(new_elem)
+    if len(parent) == 0 and parent.text is None:
+        parent.getparent().remove(parent)

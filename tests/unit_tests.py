@@ -24,13 +24,12 @@ except ImportError:
     LANGID_FLAG = False
 
 
-
 import trafilatura.filters
 import trafilatura.htmlprocessing
 
 from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
 
-from trafilatura.core import handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
+from trafilatura.core import Extractor, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
 from trafilatura.external import try_justext
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -56,6 +55,9 @@ NEW_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
+
+DEFAULT_OPTIONS = Extractor(*[False]*11)
+DEFAULT_OPTIONS.config = DEFAULT_CONFIG
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
@@ -115,7 +117,12 @@ def test_trim():
 def test_input():
     '''test if loaded strings/trees are handled properly'''
     assert utils.is_dubious_html('This is a string.') is True
-    assert utils.is_dubious_html(b'This is a string.') is True
+    htmlstring = "<!DOCTYPE html PUBLIC />\n<html/>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == "\n<html/>"
+    htmlstring = "<html>\n</html>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == htmlstring
     with pytest.raises(TypeError) as err:
         assert utils.load_html(123) is None
     assert 'incompatible' in str(err.value)
@@ -123,10 +130,10 @@ def test_input():
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
-    with pytest.raises(TypeError) as err:
-        assert extract(None, 'url', '0000', target_language=None) is None
-        # legacy
-        assert process_record(None, 'url', '0000', target_language=None) is None
+    # old: with pytest.raises(TypeError) as err:
+    assert extract(None, 'url', '0000', target_language=None) is None
+    # legacy
+    assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
@@ -152,14 +159,16 @@ def test_txttocsv():
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
     # test json
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
-    assert result.endswith('}') and '"fingerprint":' in result
+    assert result.endswith('}') and '"fingerprint":' in result and '"language":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 17
+    assert isinstance(result, dict) and len(result) == 18
 
 
 def test_exotic_tags(xmloutput=False):
+    options = DEFAULT_OPTIONS
+    options.config = ZERO_CONFIG
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
@@ -173,89 +182,62 @@ def test_exotic_tags(xmloutput=False):
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
-    assert handle_quotes(etree.Element('quote'), False, ZERO_CONFIG) is None
-    assert handle_table(etree.Element('table'), TAG_CATALOG, False, ZERO_CONFIG) is None
+    assert handle_quotes(etree.Element('quote'), options) is None
+    assert handle_table(etree.Element('table'), TAG_CATALOG, options) is None
     # p within p
     element, second = etree.Element('p'), etree.Element('p')
     element.text, second.text = '1st part.', '2nd part.'
     element.append(second)
     # delete last <lb>
     element.append(etree.Element('lb'))
-    converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
+    converted = handle_paragraphs(element, ['p'], options)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # naked div with <lb>
     assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
-    # malformed lists (common error)
-    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
-    assert result.count(b'List item') == 3
-    assert b"Description" in result
     # HTML5: <details>
     htmlstring = '<html><body><article><details><summary>Epcot Center</summary><p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p></details></article></body></html>'
     my_result = extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-    # tables with nested elements
-    htmlstring = '''<html><body><article>
-<table>
-<tr><td><b>Present Tense</b></td>
-<td>I buy</td>
-<td>you buy</td>
-<td>he/she/it buys</td>
-<td>we buy</td>
-<td>you buy</td>
-<td>they buy</td>
-</tr>
-    </table></article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '''<row>
-        <cell>
-          <hi>Present Tense</hi>
-        </cell>
-        <cell>I buy</cell>
-        <cell>you buy</cell>
-        <cell>he/she/it buys</cell>
-        <cell>we buy</cell>
-        <cell>you buy</cell>
-        <cell>they buy</cell>
-      </row>''' in my_result
-    # nested list
-    htmlstring = '''<html><body><article>
-<ul>
-  <li>Coffee</li>
-  <li>Tea
-    <ul>
-      <li>Black tea</li>
-      <li>Green tea</li>
-    </ul>
-  </li>
-  <li>Milk</li>
-</ul>
-</article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    assert '''
-    <list>
-      <item>Coffee</item>
-      <item>
-        <item>Tea</item>
-        <list>
-          <item>Black tea</item>
-          <item>Green tea</item>
-        </list>
-      </item>
-      <item>Milk</item>
-    </list>''' in my_result
-    # table with links
-    # todo: further tests and adjustsments
-    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
-    assert 'ABCD' not in result
-    # nested table
-    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
-    # todo: all elements are there, but output not nested
-    # todo: th conversion
-    assert '<cell>1</cell>' in result and '<cell>2</cell>' in result
+    # edge cases
+    htmlstring = '''<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>A weird bug</title>
+  </head>
+  <body>
+      <div>
+        <h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
+        <h2>Sed et interdum lectus.</h2>
+        <p>Quisque molestie nunc eu arcu condimentum fringilla.</p>
+        <!-- strong can be changed to b, em, i, u, or kbd -->
+        <strong><a></a></strong>
+        <h2>Aliquam eget interdum elit, id posuere ipsum.</h2>
+        <p>Phasellus lectus erat, hendrerit sed tortor ac, dignissim vehicula metus.</p>
+      </div>
+  </body>
+</html>'''
+    assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+    htmlstring = '''<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>A weird bug</title>
+  </head>
+  <body>
+    <div id="content">
+      <h1>A header</h1>
+      <h2>Very specific bug so odd</h2>
+      <h3>Nested header</h3>
+      <p>Some "hyphenated-word quote" followed by a bit more text line.</p>
+      <em><p>em improperly wrapping p here</p></em>
+      <p>Text here</p>
+    </div>
+  </body>
+</html>'''
+    assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
 
 
 def test_lrucache():
@@ -302,11 +284,12 @@ def test_lrucache():
 
 def test_formatting():
     '''Test HTML formatting conversion and extraction'''
+    options = DEFAULT_OPTIONS
+
     # trailing <lb>
     my_document = html.fromstring('<html><body><p>This here is the text.<br/></p></body></html>')
     my_result = extract(my_document, output_format='xml', config=ZERO_CONFIG)
     assert 'lb' not in my_result
-
     # simple formatting
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -314,7 +297,7 @@ def test_formatting():
     # titles as markdown
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '=== Title ===\n**This here is in bold font.**'
+    assert my_result == '### Title\n**This here is in bold font.**'
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -344,7 +327,8 @@ def test_formatting():
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    converted = handle_formatting(element, dedupbool=False, config=ZERO_CONFIG)
+    options.config = ZERO_CONFIG
+    converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
     my_document = html.fromstring('<html><body><div>\t\n</div><div>There is text here.</div></body></html>')
@@ -412,17 +396,17 @@ def test_filters():
     '''Test content filtering'''
     if LANGID_FLAG is True:
         # main text
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', SAMPLE_META) is False
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META) is True
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', SAMPLE_META)[0] is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META)[0] is True
         # comments
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META)[0] is False
         # lang detection on the content
         doc = html.fromstring('<html><body><article><p>How many ages hence/Shall this our lofty scene be acted over,/In states unborn and accents yet unknown!</p></article></body></html>')
         assert extract(doc, config=ZERO_CONFIG, target_language='de') is None
         assert extract(doc, config=ZERO_CONFIG, target_language='en') is not None
     else:
         # no detection
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META)[0] is False
     # test URL blacklist
     assert trafilatura.extract('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', output_format='xml', url_blacklist={'https://example.org'}) is None
     ## recursion limit
@@ -448,18 +432,25 @@ def test_filters():
     lru_test = LRUCache(maxsize=2)
     trafilatura.filters.LRU_TEST = lru_test
     my_p = etree.fromstring('<p>' + 'abc'*50 + '</p>')
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p) is None
+    options = DEFAULT_OPTIONS
+    options.dedup = True
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
+    assert trafilatura.htmlprocessing.process_node(my_p, options) is None
     # HTML lang filter
     # no lang
     assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
     # text + lang
     my_p = '<p>In sleep a king, but waking no such matter.</p>'
     if LANGID_FLAG is True:
-        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='en') is not None
-        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
+        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), no_fallback=True, target_language='en') is not None
+        assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), no_fallback=True, target_language='de') is None
+        # caught
+        assert extract(html.fromstring('<html lang="de-DE"><body>' + my_p*50 + '</body></html>'), no_fallback=False, target_language='de') is None
+    else:
+        # not caught, HTML tag used
+        assert extract(html.fromstring('<html lang="de-DE"><body>' + my_p*50 + '</body></html>'), no_fallback=False, target_language='de') is not None
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='en') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de', strict=True) is True
@@ -478,19 +469,22 @@ def test_filters():
 
 def test_external():
     '''Test external components'''
+    options = DEFAULT_OPTIONS
+    options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
-    _, _, mylen = sanitize_tree(mydoc)
+    _, _, mylen = sanitize_tree(mydoc, options)
     assert mylen == 0
     mydoc = html.fromstring('<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>')
-    _, _, mylen = sanitize_tree(mydoc)
+    _, _, mylen = sanitize_tree(mydoc, options)
     assert mylen > 0
     # strip fancy tags while including links and images
     mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
-    mytree, _, _ = sanitize_tree(mydoc, include_links=False, include_images=False)
+    mytree, _, _ = sanitize_tree(mydoc, options)
     assert len(mytree) == 1
     mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
-    mytree, _, _ = sanitize_tree(mydoc, include_links=True, include_images=True)
+    options.links, options.images = True, True
+    mytree, _, _ = sanitize_tree(mydoc, options)
     myelems = {element.tag for element in set(mytree.iter())}
     assert 'graphic' in myelems and 'ref' in myelems
     # test langid
@@ -518,7 +512,7 @@ def test_images():
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     # HTML conversion
-    assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
+    assert handle_textelem(etree.Element('graphic'), [], DEFAULT_OPTIONS) is None
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert '![Example image](test.jpg)' not in extract(teststring)
@@ -536,8 +530,10 @@ def test_images():
 
 def test_links():
     '''Test link extraction function'''
-    assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
-    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), dedupbool=False, config=ZERO_CONFIG) is not None
+    options = DEFAULT_OPTIONS
+    options.config = ZERO_CONFIG
+    assert handle_textelem(etree.Element('ref'), [], options) is None
+    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
     mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
@@ -609,20 +605,174 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
+    xml_doc = etree.fromstring("<TEI><text><body><div>text</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("p", "text")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1 text2")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<head>text2</head></div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text) for elem in cleaned.find(".//div").iter()]
+    expected = [("div", None), ("div", None), ("p", "text1"), ("ab", "text2")]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<quote>text2</quote></div>has to be there</div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1", None), ("quote", "text2", None), ("p", "has to be there", None)]
+    assert result == expected
+    xml_doc = etree.fromstring("<TEI><text><body><div><div>text1<p>text2</p>has to be there</div></div></body></text></TEI>")
+    cleaned = xml.check_tei(xml_doc, "fake_url")
+    result = [(elem.tag, elem.text, elem.tail) for elem in cleaned.find(".//div/div").iter()]
+    expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
+    assert result == expected
+    htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
+    extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
+    assert xml.validate_tei(etree.fromstring(extracted)) is True
+    htmlstring  = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h1" type="header">title</ab>' in extracted
+    assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
+    htmlstring = html.fromstring(
+    """<html>
+        <body><article>
+            <h2><div>
+              <p>content</p>
+              <ul>
+                <li>text1</li>
+                <li>text2</li>
+              </ul>
+            </div></h2>
+        </article></body>
+        </html>"""
+    )
+    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
+    # merge double elements
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <p><p>
+              <span><p>content</p></span>
+            </p></p>
+        </body>
+        </html>"""
+    )
+    tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
+    result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    assert result == "<html><body><p><span>content</span></p></body></html>"
+    tree = html.fromstring(
+    """
+    <html>
+        <body>
+            <div>
+                <div>
+                    <p>
+                        <p>text</p>
+                    <p>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//div/div") is not None and tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6</p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6<p>text7</p></p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    assert "text7" in etree.tostring(tree, encoding="unicode")
+    # nested elements with same tag not merged
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <div>
+                <p>
+                  <list>
+                    <item>
+                        <p>text</p>
+                    </item>
+                  </list>
+                </p>
+                <p>
+                    <table>
+                      <row>
+                        <cell>
+                          <p>text1</p>
+                         </cell>
+                      </row>
+                    </table>
+                </p>
+                <p>
+                    <note>
+                      <p>text2</p>
+                    </note>
+                </p>
+                <p>
+                    <quote>
+                        <p>text3</p>
+                    </quote>
+                </p>
+                <p>
+                    <figure>
+                        <p>text4</p>
+                    </figure>
+                </p>
+            </div>
+        </body>
+    </html>"""
+    )
+    xml.strip_double_tags(tree)
+    for parent_tag in ["item", "cell", "quote", "note", "figure"]:
+        assert tree.find(f".//{parent_tag}/p") is not None
 
 
 def test_htmlprocessing():
     '''test html-related functions'''
-    assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), True) is not None
+    options = DEFAULT_OPTIONS
+    options.tables = True
+    assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
     mydoc = html.fromstring('<html><body><table><a href="">Link</a></table><img src="test.jpg"/><u>Underlined</u><tt>True Type</tt><sub>Text</sub><sup>Text</sup></body></html>')
-    myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, include_formatting=True, include_tables=True, include_images=True, include_links=True)
+    options.formatting, options.images, options.links = True, True, True
+    myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, options)
     assert myconverted.xpath('.//ref') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
-    myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, include_tables=False, include_images=True)
+    options.images, options.tables = True, False
+    myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
-    assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
     # merge with parent function
     element = etree.Element('test')
     xml.merge_with_parent(element)
@@ -638,7 +788,23 @@ def test_htmlprocessing():
     my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
-    
+    # test tail of node deleted if set as text
+    node = etree.fromstring("<div><p></p>tail</div>")[0]
+    trafilatura.htmlprocessing.process_node(node, options)
+    assert node.text == 'tail'
+    assert node.tail is None
+    node = etree.fromstring("<list><item></item>text in tail</list>")[0]
+    trafilatura.htmlprocessing.process_node(node, options)
+    assert node.text == "text in tail"
+    assert node.tail is None
+    line_break = etree.fromstring("<p><lb/>tail</p>")[0]
+    trafilatura.htmlprocessing.process_node(line_break, options)
+    assert line_break.text is None
+    assert line_break.tail == "tail"
+    node = etree.fromstring("<div><p>some text</p>tail</div>")[0]
+    trafilatura.htmlprocessing.process_node(node, options)
+    assert node.text == "some text"
+    assert node.tail == "tail"
 
 
 def test_extraction_options():
@@ -670,6 +836,323 @@ def test_precision_recall():
     assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
 
 
+def test_table_processing():
+    options = DEFAULT_OPTIONS
+    table_simple_cell = html.fromstring(
+        "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
+    )
+    processed_table = handle_table(table_simple_cell, TAG_CATALOG, options)
+    result = [(child.tag, child.text) for child in processed_table.iter()]
+    assert result == [
+        ("table", None),
+        ("row", None),
+        ("cell", "cell1"),
+        ("cell", "cell2"),
+        ("row", None),
+        ("cell", "cell3"),
+        ("cell", "cell4"),
+    ]
+    # if a cell contains 'exotic' tags, they are cleaned during the extraction
+    # process and the content is merged with the parent e.g. <td>
+    table_cell_with_children = html.fromstring(
+        "<table><tr><td><p>text</p><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(table_cell_with_children, TAG_CATALOG, options)
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell><p>text</p><p>more text</p></cell></row></table>"
+    )
+    # complex table that hasn't been cleaned yet
+    htmlstring = html.fromstring(
+        """<html>
+              <body><article>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <small>text<br></small>
+                        <h4>more_text</h4>
+                      </td>
+                      <td><a href='link'>linktext</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </article></body>
+            </html>"""
+    )
+    processed = extract(
+        htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
+    )
+    result = processed.replace('\n', '').replace(' ', '')
+    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
+    table_cell_w_text_and_child = html.fromstring(
+        "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
+    )
+    processed_table = handle_table(
+        table_cell_w_text_and_child, TAG_CATALOG, options
+    )
+    assert (
+        etree.tostring(processed_table, encoding="unicode")
+        == "<table><row><cell>text<p>more text</p></cell></row></table>"
+    )
+    table_cell_with_link = html.fromstring(
+        "<table><tr><td><ref='test'>link</ref></td></tr></table>"
+    )
+    processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
+    result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
+    assert result == ["p"]
+    table_with_head = html.fromstring(
+        """<table>
+      <tr>
+        <th>Month</th>
+        <th>Days</th>
+      </tr>
+      <tr>
+        <td>January</td>
+        <td>31</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>28</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head, TAG_CATALOG, options
+    )
+    first_row = processed_table[0]
+    assert len(processed_table) == 3
+    assert [
+        (child.tag, child.attrib, child.text) for child in first_row.iterdescendants()
+    ] == [("cell", {"role": "head"}, "Month"), ("cell", {"role": "head"}, "Days")]
+    table_with_head_spanning_two_cols = html.fromstring(
+        """<table>
+      <tr>
+        <th>Name</th>
+        <th>Adress</th>
+        <th colspan="2">Phone</th>
+      </tr>
+      <tr>
+        <td>Jane Doe</td>
+        <td>test@example.com</td>
+        <td>phone 1</td>
+        <td>phone 2</td>
+      </tr>
+    </table>"""
+    )
+    processed_table = handle_table(
+        table_with_head_spanning_two_cols,
+        TAG_CATALOG,
+        options,
+    )
+    first_row = processed_table[0]
+    assert len(first_row) == 3
+    assert {child.tag for child in first_row.iterdescendants()} == {"cell"}
+    table_cell_with_hi = html.fromstring(
+        "<table><tr><td><hi>highlighted text</hi></td></tr></table>"
+    )
+    processed_table = handle_table(table_cell_with_hi, TAG_CATALOG, options)
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><hi>highlighted text</hi></cell>"
+    table_cell_with_span = html.fromstring(
+        "<table><tr><td><span style='sth'>span text</span></td></tr></table>"
+    )
+    processed_table = handle_table(table_cell_with_span, TAG_CATALOG, options)
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == "<cell><p/></cell>"
+    # tables with nested elements
+    htmlstring = '''<html><body><article>
+<table>
+<tr><td><b>Present Tense</b></td>
+<td>I buy</td>
+<td>you buy</td>
+<td>he/she/it buys</td>
+<td>we buy</td>
+<td>you buy</td>
+<td>they buy</td>
+</tr>
+    </table></article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    assert '''<row>
+        <cell>
+          <hi>Present Tense</hi>
+        </cell>
+        <cell>I buy</cell>
+        <cell>you buy</cell>
+        <cell>he/she/it buys</cell>
+        <cell>we buy</cell>
+        <cell>you buy</cell>
+        <cell>they buy</cell>
+      </row>''' in my_result
+    # table with links
+    # todo: further tests and adjustsments
+    htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    assert 'ABCD' not in result
+    # nested table
+    htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    # todo: all elements are there, but output not nested
+    assert '<cell role="head">1</cell>' in result and '<cell>2</cell>' in result
+    nested_table = html.fromstring(
+        """
+        <table>
+        <tr>
+        <td>
+          <table><tr><td>1</td></tr></table>
+        </td>
+        </tr>
+        </table>"""
+    )
+    processed_table = handle_table(nested_table, TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    #assert result == ["table", "row", "cell", "table", "row", ("cell", "1")]
+    assert result == ["table", "row", "cell", ("cell", "1")]
+    complex_nested_table = html.fromstring(
+    """
+    <table>
+    <tr>
+    <td>
+      <table><tr><td>1</td></tr></table>
+    </td>
+    <td>text1</td>
+    </tr>
+    <tr><td>text2</td></tr>
+    </table>"""
+    )
+    processed_table = handle_table(complex_nested_table, TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    #assert (
+    #        result
+    #        == ["table", "row", "cell", "table", "row", ("cell", "1"), ("cell", "text1"), "row", ("cell", "text2")]
+    #)
+    assert result == ['table', 'row', 'cell', ('cell', '1'), ('cell', 'text1'), 'row', ('cell', 'text2')]
+    table_with_list = html.fromstring(
+    """
+    <table><tr><td>
+    <p>a list</p>
+    <list>
+      <item>one</item>
+      <item>two</item>
+    </list>
+    </td>
+    </tr></table>
+    """)
+    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
+    assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+    broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
+    processed_table = handle_table(broken_table, TAG_CATALOG, options)
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ['table', 'row', 'cell', 'row', 'cell']
+    broken_table = html.fromstring("<table><tr><p>text</p></tr><tr><td>cell</td></tr></table>")
+    processed_table = handle_table(broken_table, TAG_CATALOG, options)
+    result = [el.tag for el in processed_table.iter()]
+    assert result == ["table", "row", "cell", ]
+
+
+def test_list_processing():
+    options = DEFAULT_OPTIONS
+    # malformed lists (common error)
+    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
+    assert result.count(b'List item') == 3
+    assert b"Description" in result
+    # nested list
+    htmlstring = '''<html><body><article>
+<ul>
+  <li>Coffee</li>
+  <li>Tea
+    <ul>
+      <li>Black tea</li>
+      <li>Green tea</li>
+    </ul>
+  </li>
+  <li>Milk</li>
+</ul>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    expected = '''
+    <list rend="ul">
+      <item>Coffee</item>
+      <item>Tea
+        <list rend="ul">
+          <item>Black tea</item>
+          <item>Green tea</item>
+        </list>
+      </item>
+      <item>Milk</item>
+    </list>'''.replace("\n", "").replace(" ", "")
+    assert expected in my_result.replace("\n", "").replace(" ", "")
+    # description list
+    htmlstring = '''<html><body><article>
+ <dl>
+  <dt>Coffee</dt>
+  <dd>Black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>White cold drink</dd>
+</dl>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert '''
+    <list rend="dl">
+      <item rend="dt-1">Coffee</item>
+      <item rend="dd-1">Black hot drink</item>
+      <item rend="dt-2">Milk</item>
+      <item rend="dd-2">White cold drink</item>
+    </list>''' in my_result
+    list_item_with_child = html.fromstring("<list><item><p>text</p></item></list>")
+    processed_list = handle_lists(list_item_with_child, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", "item", ("p", "text")]
+    list_item_with_text_and_child = html.fromstring("<list><item>text1<p>text2</p></item></list>")
+    processed_list = handle_lists(list_item_with_text_and_child, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "text1"), ("p", "text2")]
+    list_item_with_lb = html.fromstring("<list><item>text<lb/>more text</item></list>")
+    processed_list = handle_lists(list_item_with_lb, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "text"), "lb"]
+    list_with_text_outside_item = html.fromstring("<list>header<item>text</item></list>")
+    processed_list = handle_lists(list_with_text_outside_item, options)
+    result = [(child.tag, child.text) if child.text is not None else child.tag for child in processed_list.iter()]
+    assert result == ["list", ("item", "header"), ("item", "text")]
+    empty_list = html.fromstring("<list>   <item>text</item></list>")
+    processed_list = handle_lists(empty_list, options)
+    assert len(processed_list) == 1
+    list_item_with_tail = html.fromstring("<list><item>text</item>tail</list>")
+    processed_list = handle_lists(list_item_with_tail, options)
+    assert processed_list[0].text == "text tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p></item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p>tail1</item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail1 tail"
+    list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p>\n</item>tail</list>")
+    processed_list = handle_lists(list_item_with_child_and_tail, options)
+    item_element = processed_list[0]
+    assert item_element.tail is not True
+    assert item_element[0].tail == "tail"
+    list_item_with_tail_and_nested_list = html.fromstring("<list><item><list><item>text</item></list></item>tail</list>")
+    processed_list = handle_lists(list_item_with_tail_and_nested_list, options)
+    target_element = processed_list.find(".//item/list")
+    assert target_element.tail == 'tail'
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -686,3 +1169,5 @@ if __name__ == '__main__':
     test_txttocsv()
     test_external()
     test_tei()
+    test_table_processing()
+    test_list_processing()

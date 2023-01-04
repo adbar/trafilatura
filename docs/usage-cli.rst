@@ -135,6 +135,8 @@ Process a list of links
 
     In addition, some websites may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 
+    For more information see the `page on downloads <downloads.html>`_.
+
 
 Two major command line arguments are necessary here:
 

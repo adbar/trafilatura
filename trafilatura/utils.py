@@ -10,6 +10,11 @@ Module bundling functions related to HTML and text processing.
 import logging
 import re
 
+# if brotli is installed
+try:
+    import brotli
+except ImportError:
+    brotli = None
 from gzip import decompress
 from functools import lru_cache
 from html import unescape
@@ -33,6 +38,8 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
+
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
@@ -52,24 +59,37 @@ AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|wi
 AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
-    "["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
-    u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
-    u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
-    u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
+    "["
+    u"\U00002700-\U000027BF"  # Dingbats
+    u"\U0001F600-\U0001F64F"  # Emoticons
+    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+    "]+", flags=re.UNICODE)
 
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 
-def handle_gz_file(filecontent):
+def handle_compressed_file(filecontent):
     """Tell if a file's magic number corresponds to the GZip format
-       and try to decode it"""
-    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
-        # decode GZipped data
-        try:
-            filecontent = decompress(filecontent)
-        except (EOFError, OSError):
-            logging.warning('invalid GZ file')
+       and try to decode it. Alternatively, try Brotli if the package
+       is installed."""
+    if isinstance(filecontent, bytes):
+        # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+        if filecontent[:2] == b'\x1f\x8b':
+            # decode GZipped data
+            try:
+                filecontent = decompress(filecontent)
+            except (EOFError, OSError):
+                logging.warning('invalid GZ file')
+        # try brotli
+        elif brotli is not None:
+            try:
+                filecontent = brotli.decompress(filecontent)
+            except brotli.error:
+                logging.warning('invalid Brotli file')
     return filecontent
 
 
@@ -120,8 +140,8 @@ def decode_file(filecontent):
     if isinstance(filecontent, str):
         return filecontent
     htmltext = None
-    # GZip test
-    filecontent = handle_gz_file(filecontent)
+    # GZip and Brotli test
+    filecontent = handle_compressed_file(filecontent)
     # encoding
     for guessed_encoding in detect_encoding(filecontent):
         try:
@@ -135,15 +155,18 @@ def decode_file(filecontent):
     return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
 
-def is_dubious_html(htmlobject):
-    "Assess if the object is proper HTML (with a corresponding declaration)."
-    if isinstance(htmlobject, bytes):
-        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
-            return True
-    elif isinstance(htmlobject, str):
-        if 'html' not in htmlobject[:50].lower():
-            return True
-    return False
+def is_dubious_html(beginning: str) -> bool:
+    "Assess if the object is proper HTML (awith a corresponding tag or declaration)."
+    return "html" not in beginning
+
+
+def strip_faulty_doctypes(htmlstring: str, beginning: str) -> str:
+    "Repair faulty doctype strings to make then palatable for libxml2."
+    # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
+    if "doctype" in beginning:
+        firstline, _, rest = htmlstring.partition("\n")
+        return DOCTYPE_TAG.sub("", firstline, count=1) + "\n" + rest
+    return htmlstring
 
 
 def fromstring_bytes(htmlobject):
@@ -173,10 +196,13 @@ def load_html(htmlobject):
     tree = None
     # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject)
-    # sanity check
-    check_flag = is_dubious_html(htmlobject)
-    fallback_parse = False
+    # sanity checks
+    beginning = htmlobject[:50].lower()
+    check_flag = is_dubious_html(beginning)
+    # repair first
+    htmlobject = strip_faulty_doctypes(htmlobject, beginning)
     # first pass: use Unicode string
+    fallback_parse = False
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
@@ -219,9 +245,17 @@ def txttocsv(text, comments, docmeta):
     return tsv_output
 
 
+@lru_cache(maxsize=1114111)  # sys.maxunicode = 1114111
+def return_printables_and_spaces(char):
+    'Return a character if it belongs to certain classes'
+    if char.isprintable() or char.isspace():
+        return char
+    return ''
+
+
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
-    return ''.join([c for c in string if c.isprintable() or c.isspace()])
+    return ''.join(map(return_printables_and_spaces, string))
 
 
 def normalize_unicode(string, unicodeform='NFC'):

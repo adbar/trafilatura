@@ -15,7 +15,7 @@ from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
-from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
+from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim, uniquify_list
 
 
@@ -44,14 +44,14 @@ HTML_CLEANER = Cleaner(
 )
 
 
-def tree_cleaning(tree, include_tables, include_images=False):
+def tree_cleaning(tree, options):
     '''Prune the tree by discarding unwanted elements'''
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
-    if include_tables is False:
+    if options.tables is False:
         cleaning_list.extend(['table', 'td', 'th', 'tr'])
-    if include_images is True:
+    if options.images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
                          not in ('figure', 'picture', 'source')]
@@ -215,11 +215,11 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     return subtree
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
+def convert_tags(tree, options):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # delete links for faster processing
-    if include_links is False:
-        if include_tables is True:
+    if options.links is False:
+        if options.tables is True:
             xpath_expr = './/div//a|.//table//a|.//ul//a'  # .//p//a ?
         else:
             xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
@@ -237,7 +237,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             if target is not None:
                 elem.set('target', target)
     # include_formatting
-    if include_formatting is False:
+    if options.formatting is False:
         strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
     else:
         for elem in tree.iter('em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup'):
@@ -268,8 +268,17 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
         # ul/ol → list / li → item
         if elem.tag in ('dl', 'ol', 'ul'):
+            elem.set('rend', elem.tag)
             elem.tag = 'list'
+            i = 1
             for subelem in elem.iter('dd', 'dt', 'li'):
+                # keep track of dd/dt items
+                if subelem.tag in ('dd', 'dt'):
+                    subelem.set('rend', subelem.tag + '-' + str(i))
+                    # increment counter after <dd> in description list
+                    if subelem.tag == 'dd':
+                        i += 1
+                # convert elem tag
                 subelem.tag = 'item'
         # head tags + delete attributes
         elif elem.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
@@ -293,13 +302,13 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             for subelem in elem.iter('summary'):
                 subelem.tag = 'head'
     # images
-    if include_images is True:
+    if options.images is True:
         for elem in tree.iter('img'):
             elem.tag = 'graphic'
     return tree
 
 
-def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_spaces=False, config=DEFAULT_CONFIG):
+def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
     '''Convert, format, and probe potential text elements'''
     if element.text is None and element.tail is None:
         return None
@@ -328,12 +337,12 @@ def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_space
         return None
     if textfilter(element) is True:
         return None
-    if deduplicate is True and duplicate_test(element, config) is True:
+    if options.dedup and duplicate_test(element, options.config) is True:
         return None
     return element
 
 
-def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
+def process_node(element, options):
     '''Convert, format, and probe potential text elements (light format)'''
     if element.tag == 'done':
         return None
@@ -344,10 +353,11 @@ def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
     # adapt content string
     if element.tag != 'lb' and not element.text and element.tail:
         element.text = element.tail
+        element.tail = None
     # content checks
     if element.text or element.tail:
         if textfilter(element) is True:
             return None
-        if deduplicate is True and duplicate_test(element, config) is True:
+        if options.dedup and duplicate_test(element, options.config) is True:
             return None
     return element

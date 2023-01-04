@@ -30,7 +30,6 @@ DEFAULT_CONFIG = use_config()
 
 # Safety checks
 DOWNLOAD_THREADS = min(cpu_count(), 16)  # 16 processes at most
-TIMEOUT = 30
 LRU_SIZE = 4096
 
 # Files
@@ -72,7 +71,7 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
+TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # + list(CUT_EMPTY_ELEMS)
 
 

@@ -128,6 +128,18 @@ The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``ext
 They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
 
 
+
+html2txt
+^^^^^^^^
+
+This function emulates the behavior of similar functions in other packages, it is normally used as a last resort during extraction but can be called specifically in order to output all possible text:
+
+.. code-block:: python
+
+    >>> from trafilatura import html2txt
+    >>> html2txt(downloaded)
+
+
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -250,6 +262,19 @@ Even if the page to process has already been downloaded it can still be useful t
     >>> url = "https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer"
     >>> bare_extraction(downloaded, with_metadata=True, url=url)
     # date found in URL, extraction successful
+
+
+Memory use
+^^^^^^^^^^
+
+Trafilatura uses caches to speed up extraction and cleaning processes. This may lead to memory leaks in some cases, particularly in large-scale applications. If that happens you can reset all cached information in order to release RAM:
+
+.. code-block:: python
+
+    >>> from trafilatura.meta import reset_caches
+
+    # at any given point
+    >>> reset_caches()
 
 
 Input/Output types

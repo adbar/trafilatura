@@ -575,6 +575,223 @@ def test_json_extraction():
 </body></html>'''), metadata)
     assert metadata is not None and metadata.author is None and metadata.sitename == "Andreessen Horowitz"
 
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+<script type="application/ld+json">
+{
+  "about":{
+    "@type":"Event",
+    "startDate":"2015-03-09T13:00:00-07:00",
+    "name":"Apple Spring Forward Event"
+  },
+}
+</script>
+</body></html>'''), metadata)
+
+    assert metadata is not None and metadata.author is None and metadata.sitename is None
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+    <script type="application/ld+json">
+    {
+      "@context":"http://google.com",
+      "@type":"LiveBlogPosting",
+      "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+      "about":{
+        "@type":"Event",
+        "startDate":"2015-03-09T13:00:00-07:00",
+        "name":"Apple Spring Forward Event"
+      },
+      "coverageStartTime":"2015-03-09T11:30:00-07:00",
+      "coverageEndTime":"2015-03-09T16:00:00-07:00",
+      "headline":"Apple Spring Forward Event Live Blog",
+      "description":"Welcome to live coverage of the Apple Spring Forward …",
+      "liveBlogUpdate":[{
+          "@type":"BlogPosting",
+          "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
+          "datePublished":"2015-03-09T13:08:00-07:00",
+          "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
+        }],
+    }
+    </script>
+    </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.author is None and metadata.sitename is None
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+<script type="application/ld+json">
+{
+  "@context":"http://schema.org",
+  "@type":"LiveBlogPosting",
+  "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+  "about":{
+    "@type":"Event",
+    "startDate":"2015-03-09T13:00:00-07:00",
+    "name":"Apple Spring Forward Event"
+  },
+  "coverageStartTime":"2015-03-09T11:30:00-07:00",
+  "coverageEndTime":"2015-03-09T16:00:00-07:00",
+  "headline":"Apple Spring Forward Event Live Blog",
+  "description":"Welcome to live coverage of the Apple Spring Forward …",
+  "liveBlogUpdate":[{
+      "@type":"BlogPosting",
+      "headline":"Coming this April, HBO NOW will be available exclusively in the U.S. on Apple TV and the App Store.",
+      "datePublished":"2015-03-09T13:08:00-07:00",
+      "articleBody": "It's $14.99 a month.<br> And for a limited time, …"
+    }],
+}
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+<script type="application/ld+json">
+{
+        "@context": "http:\/\/schema.org",
+        "@type": "ReportageNewsArticle",
+        "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+        "publisher": {
+            "@type": "NewsMediaOrganization",
+            "name": "BBC News",
+            "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+            }
+        },
+        "datePublished": "2020-02-21T05:02:18+00:00",
+        "dateModified": "2020-02-21T05:02:18+00:00",
+        "headline": "EastEnders' June Brown leaves soap 'for good'",
+        "image": {
+            "@type": "ImageObject",
+            "width": 720,
+            "height": 405,
+            "url": "https:\/\/ichef.bbci.co.uk\/news\/720\/cpsprodpb\/B4EE\/production\/_110981364_hi057715325.jpg"
+        },
+        "thumbnailUrl": "https:\/\/ichef.bbci.co.uk\/news\/208\/cpsprodpb\/B4EE\/production\/_110981364_hi057715325.jpg",
+        "author": {
+            "@type": "NewsMediaOrganization",
+            "name": "BBC News",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+            },
+            "noBylinesPolicy": "http:\/\/www.bbc.co.uk\/news\/help-41670342#authorexpertise"
+        },
+        "mainEntityOfPage": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+        "video": {
+            "@type": "VideoObject",
+            "name": "June Brown's 90 years in 90 seconds",
+            "description": "EastEnders star June Brown - aka Dot Cotton - is turning 90 on Thursday. Here's a 90-second look back at her life.",
+            "duration": "PT1M36S",
+            "thumbnailUrl": "https:\/\/ichef.bbci.co.uk\/images\/ic\/208x117\/p04t12n5.jpg",
+            "uploadDate": "2017-02-15T18:05:00+00:00"
+        }
+    }
+</script>
+</body></html>'''), metadata)
+
+    assert metadata is not None and metadata.title == "EastEnders' June Brown leaves soap 'for good'" and metadata.sitename == "BBC News"
+
+    metadata = Document()
+    metadata.sitename = "https://bbcnews.com"
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+    <script type="application/ld+json">
+    {
+            "@context": "http:\/\/schema.org",
+            "@type": "ReportageNewsArticle",
+            "url": "https:\/\/www.bbc.com\/news\/entertainment-arts-51582573",
+            "publisher": {
+                "@type": "NewsMediaOrganization",
+                "name": "BBC News",
+                "publishingPrinciples": "http:\/\/www.bbc.co.uk\/news\/help-41670342",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/www.bbc.co.uk\/news\/special\/2015\/newsspec_10857\/bbc_news_logo.png?cb=1"
+                }
+            },
+        }
+    </script>
+    </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.sitename == "BBC News"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "author": "John Doe",
+      "interactionStatistic": [
+        {
+          "@type": "InteractionCounter",
+          "interactionService": {
+            "@type": "WebSite",
+            "name": "Twitter",
+            "url": "http://www.twitter.com"
+          },
+          "interactionType": "https://schema.org/ShareAction",
+          "userInteractionCount": "1203"
+        },
+        {
+          "@type": "InteractionCounter",
+          "interactionType": "https://schema.org/CommentAction",
+          "userInteractionCount": "78"
+        }
+      ],
+      "name": "How to Tie a Reef Knot"
+    }
+    </script>
+    </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.author == "John Doe" and metadata.title == "How to Tie a Reef Knot"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+        <script type="application/ld+json">
+            {
+                "@context":"http://schema.org",
+                "@type":"NewsArticle",
+                "author":[
+                    {
+                        "@type":"Person",
+                        "name":["Bill Birtles", "John Smith"]
+                    }
+                ]
+            }
+        </script>
+    </script>
+    </body></html>'''), metadata)
+    assert metadata is not None and metadata.author == "Bill Birtles; John Smith"
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+        <script type="application/ld+json">
+        {
+          "@context":"http://schema.org",
+          "@id":"http://techcrunch.com/2015/03/08/apple-watch-event-live-blog",
+          "about":{
+            "@type":"Event",
+            "startDate":"2015-03-09T13:00:00-07:00",
+            "name":"Apple Spring Forward Event"
+          },
+        }
+        </script>
+    </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.title is None and metadata.sitename is None
+
 
 if __name__ == '__main__':
     test_json_extraction()
