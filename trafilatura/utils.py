@@ -89,7 +89,7 @@ def handle_compressed_file(filecontent):
             try:
                 filecontent = brotli.decompress(filecontent)
             except brotli.error:
-                logging.warning('invalid Brotli file')
+                logging.debug('invalid Brotli file')
     return filecontent
 
 
