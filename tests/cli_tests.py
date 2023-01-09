@@ -64,7 +64,7 @@ def test_parser():
     args = cli.map_args(args)
     assert args.only_with_metadata is True
     # process_args
-    args.inputdir = '/dev/null'
+    args.input_dir = '/dev/null'
     args.verbose = 1
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     cli.process_args(args)
@@ -73,9 +73,9 @@ def test_parser():
     testargs = ['', '-i', 'resources/list-discard.txt', '--url-filter', 'test1', 'test2']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert args.inputfile == 'resources/list-discard.txt'
+    assert args.input_file == 'resources/list-discard.txt'
     assert args.url_filter == ['test1', 'test2']
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-discard.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     f = io.StringIO()
     with redirect_stdout(f):
@@ -90,10 +90,14 @@ def test_parser():
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
     # test future deprecations
-    testargs = ['', '-u', 'TEST', '--with-metadata', '--outputdir', 'test', '--nocomments', '--notables']
+    testargs = ['', '-i', 'test.txt', '--with-metadata', '--nocomments', '--notables']
     with patch.object(sys, 'argv', testargs):
         args = cli.map_args(cli.parse_args(testargs))
-    assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.output_dir
+    assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.input_file == 'test.txt'
+    testargs = ['', '--inputdir', 'test1', '--outputdir', 'test2']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.map_args(cli.parse_args(testargs))
+    assert args.input_dir and args.output_dir
 
 
 def test_climain():
@@ -115,7 +119,7 @@ def test_climain():
     if os.name == 'nt':
         # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
         env['PYTHONIOENCODING'] = 'utf-8'
-    assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR], env=env).returncode == 0
+    assert subprocess.run([trafilatura_bin, '--input-dir', RESOURCES_DIR], env=env).returncode == 0
     # dump urls
     inputdict = add_to_compressed_dict(['https://www.example.org'])
     f = io.StringIO()
@@ -294,12 +298,12 @@ def test_cli_pipeline():
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
     # dry-run file processing pipeline
-    testargs = ['', '--parallel', '1', '--inputdir', '/dev/null']
+    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     cli_utils.file_processing_pipeline(args)
     # file processing pipeline on resources/
-    args.inputdir = RESOURCES_DIR
+    args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # sitemaps
     testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
@@ -310,7 +314,7 @@ def test_cli_pipeline():
         cli.process_args(args)
     assert len(f.getvalue()) == 0
     # config file
-    testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
+    testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
@@ -367,10 +371,10 @@ def test_input_filtering():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     # load dictionary
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200', '/status/404'])
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     args.blacklist = {'httpbin.org/status/404'}
     inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200'])
@@ -380,13 +384,13 @@ def test_input_filtering():
     inputdict = add_to_compressed_dict(myinput, myblacklist)
     assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
     # URL in blacklist
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
     inputdict = add_to_compressed_dict(my_urls, my_blacklist)
     assert len(inputdict) == 0
     # URL filter
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     assert len(add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
     assert len(add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
@@ -395,7 +399,7 @@ def test_input_filtering():
     inputdict = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
     assert len(inputdict) == 1
     # double URLs
-    args.inputfile = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
     my_urls = cli_utils.load_input_urls(args)
     assert len(my_urls) == 5
 

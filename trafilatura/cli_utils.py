@@ -38,11 +38,11 @@ CHAR_CLASS = string.ascii_letters + string.digits
 
 def load_input_urls(args):
     '''Read list of URLs to process or derive one from command-line arguments'''
-    if args.inputfile:
+    if args.input_file:
         input_urls = []
         try:
             # optional: errors='strict', buffering=1
-            with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
+            with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
                 for line in inputfile:
                     url_match = re.match(r'https?://[^\s]+', line)
                     if url_match:
@@ -308,7 +308,7 @@ def file_processing_pipeline(args):
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
     # loop: iterate through file list
-    for filename in generate_filelist(args.inputdir):
+    for filename in generate_filelist(args.input_dir):
         filebatch.append(filename)
         if len(filebatch) > MAX_FILES_PER_DIRECTORY:
             if filecounter is None:
