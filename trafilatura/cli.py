@@ -78,9 +78,12 @@ def parse_args(args):
     group2.add_argument("--list",
                         help="display a list of URLs without downloading them",
                         action="store_true")
-    group2.add_argument("-o", "--outputdir",
+    group2.add_argument("-o", "--output-dir",
                         help="write results in a specified directory (relative path)",
                         type=str)
+    group2.add_argument("--outputdir",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
     group2.add_argument('--backup-dir',
                         help="preserve a copy of downloaded files in a backup directory",
                         type=str)
@@ -226,6 +229,13 @@ def map_args(args):
         warnings.warn(
             """--with-metadata will be deprecated in a future version,
                use --only-with-metadata instead""",
+             PendingDeprecationWarning
+        )
+    if args.outputdir:
+        args.output_dir = args.outputdir
+        warnings.warn(
+            """--outputdir will be deprecated in a future version,
+               use --output-dir instead""",
              PendingDeprecationWarning
         )
     return args

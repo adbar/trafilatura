@@ -27,12 +27,12 @@ RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resour
 
 def test_parser():
     '''test argument parsing for the command-line interface'''
-    testargs = ['', '-fvv', '--xmltei', '--notables', '-u', 'https://www.example.org']
+    testargs = ['', '-fvv', '--xmltei', '--no-tables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert args.fast is True
     assert args.verbose == 2
-    assert args.notables is False and args.no_tables is False
+    assert args.no_tables is False
     assert args.xmltei is True
     assert args.URL == 'https://www.example.org'
     args = cli.map_args(args)
@@ -45,7 +45,7 @@ def test_parser():
     assert args.output_format == 'csv'
     assert args.no_tables is False
     # test args mapping
-    testargs = ['', '--xml', '--nocomments', '--precision', '--recall']
+    testargs = ['', '--xml', '--no-comments', '--precision', '--recall']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
@@ -58,7 +58,7 @@ def test_parser():
     args.csv, args.json = False, True
     args = cli.map_args(args)
     assert args.output_format == 'json'
-    testargs = ['', '--with-metadata']
+    testargs = ['', '--only-with-metadata']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
@@ -89,6 +89,11 @@ def test_parser():
     assert e.type == SystemExit
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
+    # test future deprecations
+    testargs = ['', '-u', 'TEST', '--with-metadata', '--outputdir', 'test', '--nocomments', '--notables']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.map_args(cli.parse_args(testargs))
+    assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.output_dir
 
 
 def test_climain():
@@ -144,26 +149,26 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '')
+    filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, '')
     assert len(filepath) >= 10 and filepath.endswith('.csv')
     assert destdir == '/root/forbidden/'
     # doesn't work the same on Windows
     if os.name != 'nt':
-        assert cli_utils.check_outputdir_status(args.outputdir) is False
+        assert cli_utils.check_outputdir_status(args.output_dir) is False
     else:
-        assert cli_utils.check_outputdir_status(args.outputdir) is True
+        assert cli_utils.check_outputdir_status(args.output_dir) is True
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.check_outputdir_status(args.outputdir) is True
+    assert cli_utils.check_outputdir_status(args.output_dir) is True
     # test fileslug for name
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
+    filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, '', new_filename='AAZZ')
     assert filepath.endswith('AAZZ.xml')
     # test json output
     args2 = args
     args2.xml, args2.json = False, True
     args2 = cli.map_args(args2)
-    filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
+    filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, '', new_filename='AAZZ')
     assert filepath2.endswith('AAZZ.json')
     # test directory counter
     # doesn't work the same on Windows
@@ -269,7 +274,7 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     cli_utils.archive_html('00Test', args)
     # test date-based exclusion
-    testargs = ['', '-out', 'xml', '--with-metadata']
+    testargs = ['', '-out', 'xml', '--only-with-metadata']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:

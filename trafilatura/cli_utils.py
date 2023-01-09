@@ -133,12 +133,12 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     if args.keep_dirs is True:
         # strip directory
         orig_directory = re.sub(r'[^/]+$', '', orig_filename)
-        destination_directory = path.join(args.outputdir, orig_directory)
+        destination_directory = path.join(args.output_dir, orig_directory)
         # strip extension
         filename = re.sub(r'\.[a-z]{2,5}$', '', orig_filename)
-        output_path = path.join(args.outputdir, filename + extension)
+        output_path = path.join(args.output_dir, filename + extension)
     else:
-        destination_directory = determine_counter_dir(args.outputdir, counter)
+        destination_directory = determine_counter_dir(args.output_dir, counter)
         # determine file slug
         if new_filename is None:
             output_path, _ = get_writable_path(destination_directory, extension)
@@ -163,7 +163,7 @@ def write_result(result, args, orig_filename=None, counter=None, new_filename=No
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
         return
-    if args.outputdir is None:
+    if args.output_dir is None:
         sys.stdout.write(result + '\n')
     else:
         destination_path, destination_directory = determine_output_path(args, orig_filename, result, counter, new_filename)
