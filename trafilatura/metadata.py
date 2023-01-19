@@ -450,7 +450,7 @@ def extract_image(tree):
             if elem.get('property') == 'twitter:image':
                 image = elem.get('content')
             # twitter:image:src
-            if elem.get('property') == 'twitter:image':
+            if elem.get('property') == 'twitter:image:src':
                 image = elem.get('content')
     
     return image
