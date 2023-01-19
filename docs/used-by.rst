@@ -113,17 +113,22 @@ Publications citing Trafilatura
 - Fröbe, M., Hagen, M., Bevendorff, J., Völske, M., Stein, B., Schröder, C., ... & Potthast, M. (2021). "The Impact of Main Content Extraction on Near-Duplicate Detection". arXiv preprint arXiv:2111.10864.
 - Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). "The Pile: An 800GB Dataset of Diverse Text for Language Modeling", arXiv preprint arXiv:2101.00027.
 - Harrando, I., & Troncy, R. (2021). "Explainable Zero-Shot Topic Extraction Using a Common-Sense Knowledge Graph", In 3rd Conference on Language, Data and Knowledge (LDK 2021). OpenAccess Series in Informatics, Dagstuhl Publishing.
+- Indig, B., Sárközi-Lindner, Z., & Nagy, M. (2022). Use the Metadata, Luke!–An Experimental Joint Metadata Search and N-gram Trend Viewer for Personal Web Archives. In Proceedings of the 2nd International Workshop on Natural Language Processing for Digital Humanities (pp. 47-52).
+- Jung, G., Han, S., Kim, H., Kim, K., & Cha, J. (2022). Extracting the Main Content of Web Pages Using the First Impression Area. IEEE Access.
 - Karabulut, M., & Mayda, İ. (2020). "Development of Browser Extension for HTML Web Page Content Extraction", In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
 - Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. "First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems", In CMCL (pp. 90-101).
 - Laippala, V., Rönnqvist, S., Hellström, S., Luotolahti, J., Repo, L., Salmela, A., ... & Pyysalo, S. (2020). "From Web Crawl to Clean Register-Annotated Corpora", Proceedings of the 12th Web as Corpus Workshop (pp. 14-22).
 - Madrid-Morales, D. (2021). "Who Set the Narrative? Assessing the Influence of Chinese Media in News Coverage of COVID-19 in 30 African Countries", Global Media and China, 6(2), 129-151.
 - Meier-Vieracker, S. (2022). "Fußballwortschatz digital–Korpuslinguistische Ressourcen für den Sprachunterricht." Korpora Deutsch als Fremdsprache (KorDaF), 2022/01 (pre-print).
 - Meng, K. (2021). "An End-to-End Computational System for Monitoring and Verifying Factual Claims" (pre-print).
+- Miquelina, N., Quaresma, P., & Nogueira, V. B. (2022). Generating a European Portuguese BERT Based Model Using Content from Arquivo. pt Archive. In International Conference on Intelligent Data Engineering and Automated Learning (pp. 280-288). Springer, Cham.
 - Robertson, F., Lagus, J., & Kajava, K. (2021). "A COVID-19 news coverage mood map of Europe", Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
 - Salmela, A. (2022). "Distinguishing Noise and Main Text Content from Web-Sourced Plain Text Documents Using Sequential Neural Networks", Master's thesis, University of Turku.
 - Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). "Fact-checking: relevance assessment of references in the Polish political domain", Procedia Computer Science, 192, 1285-1293.
 - Schamel, T., Braun, D., & Matthes, F. (2022). Structured Extraction of Terms and Conditions from German and English Online Shops. In Proceedings of The Fifth Workshop on e-Commerce and NLP (ECNLP 5) (pp. 181-190).
+- Sutter, T., Bozkir, A. S., Gehring, B., & Berlich, P. (2022). Avoiding the Hook: Influential Factors of Phishing Awareness Training on Click-Rates and a Data-Driven Approach to Predict Email Difficulty Perception. IEEE Access, 10, 100540-100565.
 - Ter-Akopyan, B. (2022). "Identification of Political Leaning in German News", Master's thesis, Ludwig Maximilian University of Munich.
+- Waheed, A., Qunaibi, S., Barradas, D., & Weinberg, Z. (2022). Darwin's Theory of Censorship: Analysing the Evolution of Censored Topics with Dynamic Topic Models. In Proceedings of the 21st Workshop on Privacy in the Electronic Society (pp. 103-108).
 - Zinn, J. O., & Müller, M. (2021). "Understanding discourse and language of risk", Journal of Risk Research, 1-14.
 
 
@@ -131,13 +136,7 @@ Publications citing Trafilatura
 Publications citing Htmldate
 ----------------------------
 
-
-- Grabovoy, A., Bakhteev, O., & Chekhovich, Y. (2021). "The automatic approach for scientific papers dating," 2021 Ivannikov Ispras Open Conference (ISPRAS), pp. 107-113, IEEE, DOI: 10.1109/ISPRAS53967.2021.00020.
-- Hanley, H. W., Kumar, D., & Durumeric, Z. (2022). "Happenstance: Utilizing Semantic Search to Track Russian State Media Narratives about the Russo-Ukrainian War On Reddit". arXiv preprint arXiv:2205.14484.
-- Kupi, M. (2021). "Late to the Party? Agile Methods in British and German Government Institutions", Master’s thesis, Hertie School Berlin.
-- Smits, T., & Ros, R. (2021). "Distant reading 940,000 online circulations of 26 iconic photographs", New Media & Society, DOI: 10.1177/14614448211049.
-- Stefanovitch, N. (2022). Team TMA at SemEval-2022 Task 8: Lightweight and Language-Agnostic News Similarity Classifier. In Proceedings of the 16th International Workshop on Semantic Evaluation (SemEval-2022) (pp. 1178-1183).
-- Viduka, D., Ličina, B., & Ilić, L. (2021). Choosing the best Python web framework for beginner according to experienced users. In 11th International Conference on Applied Information and Internet Technologies (p. 100-103).
+See `citation page of htmldate's documentation <https://htmldate.readthedocs.io/en/latest/used-by.html>`_.
 
 
 

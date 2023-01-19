@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Extract the text content of web pages.
+Python & command-line tool to gather text on the Web:
+web crawling/scraping, extraction of text, metadata, comments.
 """
 
 # meta
 __title__ = 'trafilatura'
 __author__ = 'Adrien Barbaresi and contributors'
 __license__ = 'GNU GPL v3+'
-__copyright__ = 'Copyright 2019-2022, Adrien Barbaresi'
-__version__ = '1.4.0'
+__copyright__ = 'Copyright 2019-2023, Adrien Barbaresi'
+__version__ = '1.4.1'
 
 
 import logging
