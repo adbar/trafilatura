@@ -256,6 +256,16 @@ def test_license():
     assert metadata.license == 'CC BY-NC'
 
 
+def test_images():
+    '''Image extraction from meta SEO tags'''
+    metadata = extract_metadata('<html><head><meta property="image" content="https://example.org/example.jpg"></html>')
+    assert metadata.image == 'https://example.org/example.jpg'
+    metadata = extract_metadata('<html><head><meta property="og:image" content="https://example.org/example-opengraph.jpg" /><body/></html>')
+    assert metadata.image == 'https://example.org/example-opengraph.jpg'
+    metadata = extract_metadata('<html><head><meta property="twitter:image" content="https://example.org/example-twitter.jpg"></html>')
+    assert metadata.image == 'https://example.org/example-twitter.jpg'
+
+
 
 if __name__ == '__main__':
     test_titles()
@@ -267,3 +277,4 @@ if __name__ == '__main__':
     test_catstags()
     test_sitename()
     test_license()
+    test_images()

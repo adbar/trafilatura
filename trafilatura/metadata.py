@@ -189,6 +189,8 @@ def examine_meta(tree):
                 author = normalize_authors(author, content_attr)
             elif elem.get('property') == 'article:publisher':
                 site_name = site_name or content_attr
+            elif elem.get('property') in METANAME_IMAGE:
+                image = image or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
@@ -204,9 +206,7 @@ def examine_meta(tree):
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 site_name = site_name or content_attr
-            # image
-            elif name_attr in METANAME_IMAGE:
-                image = image or content_attr
+            # twitter
             elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in elem.get('name'):
                 backup_sitename = content_attr
             # url
@@ -426,19 +426,33 @@ def extract_license(tree):
 
 
 def extract_image(tree):
-    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     image = None
-    # detect OpenGraph schema
+
+    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
         if not elem.get('content'):
             continue
-        # og:image default
+        # og:image
         if elem.get('property') == 'og:image':
             image = elem.get('content')
         # og:image:url
         if elem.get('property') == 'og:image:url':
             image = elem.get('content')
+
+    '''Search meta tags with Twitter Image'''
+    if image is None:
+        for elem in tree.xpath('.//head/meta[starts-with(@property, "twitter:")]'):
+            # safeguard
+            if not elem.get('content'):
+                continue
+            # twitter:image
+            if elem.get('property') == 'twitter:image':
+                image = elem.get('content')
+            # twitter:image:src
+            if elem.get('property') == 'twitter:image':
+                image = elem.get('content')
+    
     return image
 
 
