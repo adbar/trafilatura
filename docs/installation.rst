@@ -57,7 +57,7 @@ This project is under active development, please make sure you keep it up-to-dat
     # to make sure you have the latest version
     $ pip install -U trafilatura
     # latest available code base
-    $ pip install -U git+https://github.com/adbar/trafilatura.git
+    $ pip install --force-reinstall -U git+https://github.com/adbar/trafilatura
 
 On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
 

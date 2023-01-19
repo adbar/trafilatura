@@ -13,6 +13,7 @@ newspaper3k==0.2.8
 news-please==1.5.22
 readabilipy==0.2.0
 readability-lxml==0.8.1
+resiliparse==0.13.7
 
 # additional data
 #jparser==0.0.20

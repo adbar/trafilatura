@@ -27,12 +27,12 @@ RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resour
 
 def test_parser():
     '''test argument parsing for the command-line interface'''
-    testargs = ['', '-fvv', '--xmltei', '--notables', '-u', 'https://www.example.org']
+    testargs = ['', '-fvv', '--xmltei', '--no-tables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert args.fast is True
     assert args.verbose == 2
-    assert args.notables is False and args.no_tables is False
+    assert args.no_tables is False
     assert args.xmltei is True
     assert args.URL == 'https://www.example.org'
     args = cli.map_args(args)
@@ -45,7 +45,7 @@ def test_parser():
     assert args.output_format == 'csv'
     assert args.no_tables is False
     # test args mapping
-    testargs = ['', '--xml', '--nocomments', '--precision', '--recall']
+    testargs = ['', '--xml', '--no-comments', '--precision', '--recall']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
@@ -58,13 +58,13 @@ def test_parser():
     args.csv, args.json = False, True
     args = cli.map_args(args)
     assert args.output_format == 'json'
-    testargs = ['', '--with-metadata']
+    testargs = ['', '--only-with-metadata']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
     assert args.only_with_metadata is True
     # process_args
-    args.inputdir = '/dev/null'
+    args.input_dir = '/dev/null'
     args.verbose = 1
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     cli.process_args(args)
@@ -73,9 +73,9 @@ def test_parser():
     testargs = ['', '-i', 'resources/list-discard.txt', '--url-filter', 'test1', 'test2']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert args.inputfile == 'resources/list-discard.txt'
+    assert args.input_file == 'resources/list-discard.txt'
     assert args.url_filter == ['test1', 'test2']
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-discard.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     f = io.StringIO()
     with redirect_stdout(f):
@@ -89,6 +89,15 @@ def test_parser():
     assert e.type == SystemExit
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
+    # test future deprecations
+    testargs = ['', '-i', 'test.txt', '--with-metadata', '--nocomments', '--notables']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.map_args(cli.parse_args(testargs))
+    assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.input_file == 'test.txt'
+    testargs = ['', '--inputdir', 'test1', '--outputdir', 'test2']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.map_args(cli.parse_args(testargs))
+    assert args.input_dir and args.output_dir
 
 
 def test_climain():
@@ -110,7 +119,7 @@ def test_climain():
     if os.name == 'nt':
         # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
         env['PYTHONIOENCODING'] = 'utf-8'
-    assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR], env=env).returncode == 0
+    assert subprocess.run([trafilatura_bin, '--input-dir', RESOURCES_DIR], env=env).returncode == 0
     # dump urls
     inputdict = add_to_compressed_dict(['https://www.example.org'])
     f = io.StringIO()
@@ -144,26 +153,26 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '')
+    filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, '')
     assert len(filepath) >= 10 and filepath.endswith('.csv')
     assert destdir == '/root/forbidden/'
     # doesn't work the same on Windows
     if os.name != 'nt':
-        assert cli_utils.check_outputdir_status(args.outputdir) is False
+        assert cli_utils.check_outputdir_status(args.output_dir) is False
     else:
-        assert cli_utils.check_outputdir_status(args.outputdir) is True
+        assert cli_utils.check_outputdir_status(args.output_dir) is True
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.check_outputdir_status(args.outputdir) is True
+    assert cli_utils.check_outputdir_status(args.output_dir) is True
     # test fileslug for name
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
+    filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, '', new_filename='AAZZ')
     assert filepath.endswith('AAZZ.xml')
     # test json output
     args2 = args
     args2.xml, args2.json = False, True
     args2 = cli.map_args(args2)
-    filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
+    filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, '', new_filename='AAZZ')
     assert filepath2.endswith('AAZZ.json')
     # test directory counter
     # doesn't work the same on Windows
@@ -269,7 +278,7 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     cli_utils.archive_html('00Test', args)
     # test date-based exclusion
-    testargs = ['', '-out', 'xml', '--with-metadata']
+    testargs = ['', '-out', 'xml', '--only-with-metadata']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
@@ -289,12 +298,12 @@ def test_cli_pipeline():
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
     # dry-run file processing pipeline
-    testargs = ['', '--parallel', '1', '--inputdir', '/dev/null']
+    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     cli_utils.file_processing_pipeline(args)
     # file processing pipeline on resources/
-    args.inputdir = RESOURCES_DIR
+    args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # sitemaps
     testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
@@ -305,7 +314,7 @@ def test_cli_pipeline():
         cli.process_args(args)
     assert len(f.getvalue()) == 0
     # config file
-    testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
+    testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
@@ -362,10 +371,10 @@ def test_input_filtering():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     # load dictionary
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200', '/status/404'])
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     args.blacklist = {'httpbin.org/status/404'}
     inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200'])
@@ -375,13 +384,13 @@ def test_input_filtering():
     inputdict = add_to_compressed_dict(myinput, myblacklist)
     assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
     # URL in blacklist
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
     inputdict = add_to_compressed_dict(my_urls, my_blacklist)
     assert len(inputdict) == 0
     # URL filter
-    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     assert len(add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
     assert len(add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
@@ -390,7 +399,7 @@ def test_input_filtering():
     inputdict = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
     assert len(inputdict) == 1
     # double URLs
-    args.inputfile = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
+    args.input_file = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
     my_urls = cli_utils.load_input_urls(args)
     assert len(my_urls) == 5
 
