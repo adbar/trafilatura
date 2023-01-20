@@ -29,7 +29,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language',  # 'locale'?
+    'language', 'image',  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -91,6 +91,10 @@ METANAME_TITLE = {
 METANAME_URL = {
     'rbmainurl', 'twitter:url'
 }
+METANAME_IMAGE = {
+    'image', 'og:image', 'og:image:url', 'og:image:secure_url',
+    'twitter:image', 'twitter:image:src'
+}
 OG_AUTHOR = {'og:author', 'og:article:author'}
 PROPERTY_AUTHOR = {'author', 'article:author'}
 TWITTER_ATTRS = {'twitter:site', 'application-name'}
@@ -116,7 +120,7 @@ def extract_meta_json(tree, metadata):
 
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
-    title, author, url, description, site_name = (None,) * 5
+    title, author, url, description, site_name, image = (None,) * 6
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
@@ -138,23 +142,32 @@ def extract_opengraph(tree):
         # og:author
         elif elem.get('property') in OG_AUTHOR:
             author = elem.get('content')
+        # image default
+        elif elem.get('property') == 'og:image':
+            image = elem.get('content')
+        # image url
+        elif elem.get('property') == 'og:image:url':
+            image = elem.get('content')
+        # image secure url
+        elif elem.get('property') == 'og:image:secure_url':
+            image = elem.get('content')
         # og:type
         # elif elem.get('property') == 'og:type':
         #    pagetype = elem.get('content')
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return title, author, url, description, site_name
+    return title, author, url, description, site_name, image
 
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
     metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
-    title, author, url, description, site_name = extract_opengraph(tree)
+    title, author, url, description, site_name, image = extract_opengraph(tree)
     # test if all return values have been assigned
-    if all((title, author, url, description, site_name)):  # if they are all defined
-        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename = title, author, url, description, site_name
+    if all((title, author, url, description, site_name, image)):  # if they are all defined
+        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.image = title, author, url, description, site_name, image
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -176,6 +189,8 @@ def examine_meta(tree):
                 author = normalize_authors(author, content_attr)
             elif elem.get('property') == 'article:publisher':
                 site_name = site_name or content_attr
+            elif elem.get('property') in METANAME_IMAGE:
+                image = image or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
@@ -191,6 +206,7 @@ def examine_meta(tree):
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 site_name = site_name or content_attr
+            # twitter
             elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in elem.get('name'):
                 backup_sitename = content_attr
             # url
@@ -222,7 +238,7 @@ def examine_meta(tree):
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
     # copy
-    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags = title, author, url, description, site_name, tags
+    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags, metadata.image = title, author, url, description, site_name, tags, image
     return metadata
 
 
@@ -409,6 +425,37 @@ def extract_license(tree):
     return result
 
 
+def extract_image(tree):
+    image = None
+
+    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
+    for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
+        # safeguard
+        if not elem.get('content'):
+            continue
+        # og:image
+        if elem.get('property') == 'og:image':
+            image = elem.get('content')
+        # og:image:url
+        if elem.get('property') == 'og:image:url':
+            image = elem.get('content')
+
+    '''Search meta tags with Twitter Image'''
+    if image is None:
+        for elem in tree.xpath('.//head/meta[starts-with(@property, "twitter:")]'):
+            # safeguard
+            if not elem.get('content'):
+                continue
+            # twitter:image
+            if elem.get('property') == 'twitter:image':
+                image = elem.get('content')
+            # twitter:image:src
+            if elem.get('property') == 'twitter:image:src':
+                image = elem.get('content')
+    
+    return image
+
+
 def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
     """Main process for metadata extraction.
 
@@ -458,7 +505,10 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata.url = extract_url(tree, default_url)
     # hostname
     if metadata.url is not None:
-        metadata.hostname = extract_domain(metadata.url, fast=True)
+        metadata.hostname = extract_domain(metadata.url)
+    # image
+    if metadata.image is None:
+        metadata.image = extract_image(tree)
     # extract date with external module htmldate
     if date_config is None:
         # decide on fast mode
