@@ -1,6 +1,27 @@
 ## History / Changelog
 
 
+
+### 1.4.1
+
+Extraction:
+- XML output improvements with @knit-bee (#273, #274)
+- extraction bugs fixed (#263, #266), more robust HTML doctype parsing
+- adjust thresholds for link density in paragraphs
+
+Metadata:
+- improved title and sitename detection (#284)
+- faster author, categories, domain name, and tags extraction
+- fixes to author emoji regexes by @felipehertzer (#269)
+
+Command-line interface:
+- review argument consistency and add deprecation warnings (#261)
+
+Setup:
+- make download timeout configurable (#263)
+- updated dependencies, use of faust-cchardet for Python 3.11
+
+
 ### 1.4.0
 
 Impact on extraction and output format:

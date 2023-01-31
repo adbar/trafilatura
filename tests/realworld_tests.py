@@ -640,7 +640,7 @@ def test_pages():
     assert metadata.title == 'Gigantic Chinese telescope opens to astronomers worldwide'
     assert metadata.author == 'Elizabeth Gibney'
     assert metadata.description == 'FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars.'
-    assert metadata.sitename == 'Nature Publishing Group'  # 'Nature'
+    assert metadata.sitename == 'Nature'
     assert 'Exoplanets' in metadata.categories  # ['Astronomy', 'Telescope', 'China']
     assert metadata.url == url
 

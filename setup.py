@@ -29,10 +29,10 @@ extras = {
     "all": [
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
-        "faust-cchardet >= 2.1.12; python_version >= '3.11'",  # fix for build
-        "htmldate[speed] >= 1.4.0",
+        "faust-cchardet >= 2.1.16; python_version >= '3.11'",  # fix for build
+        "htmldate[speed] >= 1.4.1",
         "py3langid >= 0.2.2",
-        "pycurl >= 7.45.1",
+        "pycurl >= 7.45.2",
     ],
     "gui": [
         "Gooey >= 1.0.1",
@@ -109,9 +109,9 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1",
         "courlan >= 0.8.3",
-        "htmldate >= 1.4.0",
+        "htmldate >= 1.4.1",
         "justext >= 3.0.0",
-        "lxml >= 4.9.1",
+        "lxml >= 4.9.2",
         "urllib3 >= 1.26, < 2",
     ],
     extras_require=extras,

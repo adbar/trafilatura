@@ -147,13 +147,14 @@ def test_input():
 
 def test_txttocsv():
     mymeta = Document()
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\n'
     mymeta.title = 'Test title'
     mymeta.url = 'https://example.org'
     mymeta.hostname = 'example.org'
     mymeta.id = '1'
     mymeta.license = 'CC BY-SA'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\tCC BY-SA\n'
+    mymeta.image = 'https://example.org/image.jpg'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
@@ -163,7 +164,7 @@ def test_txttocsv():
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 18
+    assert isinstance(result, dict) and len(result) == 19
 
 
 def test_exotic_tags(xmloutput=False):
@@ -340,18 +341,17 @@ def test_formatting():
     assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
 
     # XML and Markdown formatting within <p>-tag
-    my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
+    my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(my_document, no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
     # TXT: newline problem here
-    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link.'
+    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link and additional text to bypass detection.'
     my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link.</p>' in my_result
+    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
     my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
-    assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
-    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref>.</p>' in my_result
+    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref> and additional text to bypass detection.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link.'
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them

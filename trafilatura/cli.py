@@ -58,12 +58,18 @@ def parse_args(args):
     group5 = parser.add_argument_group('Format', 'Selection of the output format')
     group5_ex = group5.add_mutually_exclusive_group()
 
-    group1_ex.add_argument("-i", "--inputfile",
+    group1_ex.add_argument("-i", "--input-file",
                         help="name of input file for batch processing",
                         type=str)
-    group1_ex.add_argument("--inputdir",
+    group1_ex.add_argument("--inputfile",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
+    group1_ex.add_argument("--input-dir",
                         help="read files from a specified directory (relative path)",
                         type=str)
+    group1_ex.add_argument("--inputdir",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
     group1_ex.add_argument("-u", "--URL",
                         help="custom URL download",
                         type=str)
@@ -78,9 +84,12 @@ def parse_args(args):
     group2.add_argument("--list",
                         help="display a list of URLs without downloading them",
                         action="store_true")
-    group2.add_argument("-o", "--outputdir",
+    group2.add_argument("-o", "--output-dir",
                         help="write results in a specified directory (relative path)",
                         type=str)
+    group2.add_argument("--outputdir",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
     group2.add_argument('--backup-dir',
                         help="preserve a copy of downloaded files in a backup directory",
                         type=str)
@@ -228,6 +237,27 @@ def map_args(args):
                use --only-with-metadata instead""",
              PendingDeprecationWarning
         )
+    if args.inputfile:
+        args.input_file = args.inputfile
+        warnings.warn(
+            """--inputfile will be deprecated in a future version,
+               use --input-file instead""",
+             PendingDeprecationWarning
+        )
+    if args.inputdir:
+        args.input_dir = args.inputdir
+        warnings.warn(
+            """--inputdir will be deprecated in a future version,
+               use --input-dir instead""",
+             PendingDeprecationWarning
+        )
+    if args.outputdir:
+        args.output_dir = args.outputdir
+        warnings.warn(
+            """--outputdir will be deprecated in a future version,
+               use --output-dir instead""",
+             PendingDeprecationWarning
+        )
     return args
 
 
@@ -264,7 +294,7 @@ def process_args(args):
 
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
+    if args.input_file and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
         INPUTDICT = load_input_dict(args)
         error_caught = url_processing_pipeline(args, INPUTDICT)
 
@@ -304,7 +334,7 @@ def process_args(args):
         cli_crawler(args)
 
     # read files from an input directory
-    elif args.inputdir:
+    elif args.input_dir:
         file_processing_pipeline(args)
 
     # process input URL

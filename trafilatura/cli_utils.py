@@ -40,11 +40,11 @@ CHAR_CLASS = string.ascii_letters + string.digits
 
 def load_input_urls(args):
     '''Read list of URLs to process or derive one from command-line arguments'''
-    if args.inputfile:
+    if args.input_file:
         input_urls = []
         try:
             # optional: errors='strict', buffering=1
-            with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
+            with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
                 for line in inputfile:
                     url_match = re.match(r'https?://[^\s]+', line)
                     if url_match:
@@ -135,12 +135,12 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     if args.keep_dirs is True:
         # strip directory
         orig_directory = re.sub(r'[^/]+$', '', orig_filename)
-        destination_directory = path.join(args.outputdir, orig_directory)
+        destination_directory = path.join(args.output_dir, orig_directory)
         # strip extension
         filename = re.sub(r'\.[a-z]{2,5}$', '', orig_filename)
-        output_path = path.join(args.outputdir, filename + extension)
+        output_path = path.join(args.output_dir, filename + extension)
     else:
-        destination_directory = determine_counter_dir(args.outputdir, counter)
+        destination_directory = determine_counter_dir(args.output_dir, counter)
         # determine file slug
         if new_filename is None:
             output_path, _ = get_writable_path(destination_directory, extension)
@@ -165,7 +165,7 @@ def write_result(result, args, orig_filename=None, counter=None, new_filename=No
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
         return
-    if args.outputdir is None:
+    if args.output_dir is None:
         sys.stdout.write(result + '\n')
     else:
         destination_path, destination_directory = determine_output_path(args, orig_filename, result, counter, new_filename)
@@ -318,7 +318,7 @@ def file_processing_pipeline(args):
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
     # loop: iterate through file list
-    for filename in generate_filelist(args.inputdir):
+    for filename in generate_filelist(args.input_dir):
         filebatch.append(filename)
         if len(filebatch) > MAX_FILES_PER_DIRECTORY:
             if filecounter is None:
