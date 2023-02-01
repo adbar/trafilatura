@@ -1,7 +1,7 @@
 trafilatura==1.4.0
 
 # alternatives
-beautifulsoup4==4.11.1
+beautifulsoup4==4.11.2
 boilerpy3==1.0.6
 #dragnet==2.0.4  # unmaintained!
 goose3==3.1.12
