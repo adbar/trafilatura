@@ -64,17 +64,17 @@ def duplicate_test(element, config):
 def check_html_lang(tree, target_language, strict=False):
     '''Check HTML meta-elements for language information and split
        the result in case there are several languages'''
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-    target_elements = tree.findall('.//meta[@http-equiv="content-language"][@content]')
-    if target_elements:
+    if target_elements := tree.findall(
+        './/meta[@http-equiv="content-language"][@content]'
+    ):
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
                 return True
         LOGGER.debug('HTML lang detection failed')
         return False
-    # locale
-    target_elements = tree.findall('.//meta[@property="og:locale"][@content]')
-    if target_elements:
+    if target_elements := tree.findall(
+        './/meta[@property="og:locale"][@content]'
+    ):
         for elem in target_elements:
             if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
                 return True
@@ -82,8 +82,7 @@ def check_html_lang(tree, target_language, strict=False):
         return False
     # HTML lang attribute: sometimes a wrong indication
     if strict is True:
-        target_elements = tree.xpath('//html[@lang]')
-        if target_elements:
+        if target_elements := tree.xpath('//html[@lang]'):
             for elem in target_elements:
                 if target_language in RE_HTML_LANG.split(elem.get('lang').lower()):
                     return True

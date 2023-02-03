@@ -367,11 +367,6 @@ def test_ab_with_p_parent_resolved():
     xml_doc = fromstring("<text><head>text1</head><p>text2<head>text3</head></p></text>")
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned]
-    assert [
-        ("ab", "text1", None),
-        ("p", "text2", None),
-        ("ab", "text3", None),
-    ]
     xml_doc = fromstring("<text><p>text1<head>text2</head></p><head>text3</head></text>")
     cleaned = check_tei(xml_doc, "fake_url")
     result = [(elem.tag, elem.text, elem.tail) for elem in cleaned]

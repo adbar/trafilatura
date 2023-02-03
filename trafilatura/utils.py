@@ -212,7 +212,7 @@ def load_html(htmlobject):
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 2) and fallback_parse is False:
+    if (tree is None or len(tree) < 2) and not fallback_parse:
         tree = fromstring_bytes(htmlobject)
     # more robust option: try BeautifulSoup?
     #if tree is None or not isinstance(tree, HtmlElement):
@@ -248,9 +248,7 @@ def txttocsv(text, comments, docmeta):
 @lru_cache(maxsize=1114111)  # sys.maxunicode = 1114111
 def return_printables_and_spaces(char):
     'Return a character if it belongs to certain classes'
-    if char.isprintable() or char.isspace():
-        return char
-    return ''
+    return char if char.isprintable() or char.isspace() else ''
 
 
 def remove_control_characters(string):
@@ -312,11 +310,9 @@ def is_image_file(imagesrc):
 
 def normalize_authors(current_authors, author_string):
     '''Normalize author info to focus on author names only'''
-    new_authors = []
     if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):
         return current_authors
-    if current_authors is not None:
-        new_authors = current_authors.split('; ')
+    new_authors = [] if current_authors is None else current_authors.split('; ')
     # fix to code with unicode
     if '\\u' in author_string:
         author_string = author_string.encode().decode('unicode_escape')
@@ -344,7 +340,10 @@ def normalize_authors(current_authors, author_string):
             ):
             continue
         # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+        if (
+            not author[0].isupper()
+            or sum(bool(c.isupper()) for c in author) < 1
+        ):
             author = author.title()
         # safety checks
         if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
@@ -356,12 +355,11 @@ def normalize_authors(current_authors, author_string):
 
 # todo: document and check this function
 def check_authors(authors, author_blacklist):
-    new_authors = [
+    if new_authors := [
         author
         for author in authors.split('; ')
         if author.lower() not in [a.lower() for a in author_blacklist]
-    ]
-    if new_authors:
+    ]:
         return '; '.join(new_authors).strip('; ')
     return None
 

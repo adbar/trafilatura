@@ -104,9 +104,7 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     # else:
     new_len = len(tree.text_content())
     # todo: adjust for recall and precision settings
-    if new_len > old_len/7:
-        return tree
-    return backup
+    return tree if new_len > old_len/7 else backup
 
 
 def collect_link_info(links_xpath, favor_precision=False):
@@ -114,16 +112,11 @@ def collect_link_info(links_xpath, favor_precision=False):
     # init
     shortelems, mylist = 0, []
     # longer strings impact recall in favor of precision
-    if favor_precision is False:
-        threshold = 10
-    else:
-        threshold = 50
+    threshold = 10 if favor_precision is False else 50
     # examine the elements
     for subelem in links_xpath:
-        subelemtext = trim(subelem.text_content())
-        if not subelemtext:
-            continue
-        mylist.append(subelemtext)
+        if subelemtext := trim(subelem.text_content()):
+            mylist.append(subelemtext)
     lengths = [len(text) for text in mylist]
     shortelems = len([l for l in lengths if l < threshold])
     return sum(lengths), len(mylist), shortelems, mylist
@@ -135,23 +128,13 @@ def link_density_test(element, text, favor_precision=False):
     if links_xpath:
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
             if favor_precision is False:
-                if element.getnext() is None:
-                    limitlen, threshold = 60, 0.8
-                else:
-                    limitlen, threshold = 30, 0.8
+                limitlen, threshold = (60, 0.8) if element.getnext() is None else (30, 0.8)
             else:
                 limitlen, threshold = 200, 0.8
-            #if 'hi' in list(element):
-            #    limitlen, threshold = 100, 0.8
-        #elif element.tag == 'head':
-        #    limitlen, threshold = 50, 0.8
+                    #if 'hi' in list(element):
+                    #    limitlen, threshold = 100, 0.8
         else:
-            if element.getnext() is None:
-                limitlen, threshold = 300, 0.8
-            #elif re.search(r'[.?!:]', elemtext):
-            #    limitlen, threshold = 150, 0.66
-            else:
-                limitlen, threshold = 100, 0.8
+            limitlen, threshold = (300, 0.8) if element.getnext() is None else (100, 0.8)
         elemlen = len(text)
         if elemlen < limitlen:
             linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath, favor_precision)
@@ -166,10 +149,7 @@ def link_density_test(element, text, favor_precision=False):
 
 def link_density_test_tables(element):
     '''Remove tables which are rich in links (probably boilerplate)'''
-    # if element.getnext() is not None:
-    #     return False
-    links_xpath = element.findall('.//ref')
-    if links_xpath:
+    if links_xpath := element.findall('.//ref'):
         elemlen = len(trim(element.text_content()))
         if elemlen > 250:
             linklen, elemnum, _, _ = collect_link_info(links_xpath)
@@ -197,10 +177,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
             myelems[elemtext].append(elem)
     # summing up
     if backtracking is True:
-        if favor_precision is False:
-            threshold = 100
-        else:
-            threshold = 200
+        threshold = 100 if favor_precision is False else 200
         for text, elem in myelems.items():
             if 0 < len(text) < threshold and len(elem) >= 3:
                 deletions.extend(elem)
@@ -274,29 +251,23 @@ def convert_tags(tree, options):
             for subelem in elem.iter('dd', 'dt', 'li'):
                 # keep track of dd/dt items
                 if subelem.tag in ('dd', 'dt'):
-                    subelem.set('rend', subelem.tag + '-' + str(i))
+                    subelem.set('rend', f'{subelem.tag}-{str(i)}')
                     # increment counter after <dd> in description list
                     if subelem.tag == 'dd':
                         i += 1
                 # convert elem tag
                 subelem.tag = 'item'
-        # head tags + delete attributes
         elif elem.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
             elem.attrib.clear()
             elem.set('rend', elem.tag)
             elem.tag = 'head'
-        # br → lb
         elif elem.tag in ('br', 'hr'):
             elem.tag = 'lb'
-        # wbr
-        # blockquote, pre, q → quote
         elif elem.tag in ('blockquote', 'pre', 'q'):
             elem.tag = 'quote'
-        # del | s | strike → <del rend="overstrike">
         elif elem.tag in ('del', 's', 'strike'):
             elem.tag = 'del'
             elem.set('rend', 'overstrike')
-        # details + summary
         elif elem.tag == 'details':
             elem.tag = 'div'
             for subelem in elem.iter('summary'):

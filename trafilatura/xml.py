@@ -232,16 +232,14 @@ def replace_element_text(element, include_formatting):
                 element.text = ''.join(['__', element.text, '__'])
             elif element.get('rend') == '#t':
                 element.text = ''.join(['`', element.text, '`'])
-    # handle links
     if element.tag == 'ref':
-        if element.text is not None:
-            if element.get('target') is not None:
-                element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
-            else:
-                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-                element.text = ''.join(['[', element.text, ']'])
-        else:
+        if element.text is None:
             LOGGER.error('empty link: %s %s', element.text, element.attrib)
+        elif element.get('target') is None:
+            LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
+            element.text = ''.join(['[', element.text, ']'])
+        else:
+            element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ''.join([element.text, element.tail])
@@ -331,15 +329,14 @@ def write_teitree(docmeta):
 def _define_publisher_string(docmeta):
     '''Construct a publisher string to include in TEI header'''
     if docmeta.hostname and docmeta.sitename:
-        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+        return f'{docmeta.sitename.strip()} ({docmeta.hostname})'
     elif docmeta.hostname:
-        publisherstring = docmeta.hostname
+        return docmeta.hostname
     elif docmeta.sitename:
-        publisherstring = docmeta.sitename
+        return docmeta.sitename
     else:
         LOGGER.warning('no publisher for URL %s', docmeta.url)
-        publisherstring = 'N/A'
-    return publisherstring
+        return 'N/A'
 
 
 def write_fullheader(teidoc, docmeta):
@@ -375,7 +372,7 @@ def write_fullheader(teidoc, docmeta):
     source_bibl = SubElement(sourcedesc, 'bibl')
     # determination of sigle string
     if docmeta.sitename and docmeta.date:
-        sigle = docmeta.sitename + ', ' + docmeta.date
+        sigle = f'{docmeta.sitename}, {docmeta.date}'
     elif not docmeta.sitename and docmeta.date:
         sigle = docmeta.date
     elif docmeta.sitename:
@@ -384,9 +381,9 @@ def write_fullheader(teidoc, docmeta):
         LOGGER.warning('no sigle for URL %s', docmeta.url)
         sigle = ''
     if docmeta.title:
-        source_bibl.text = docmeta.title + '. ' + sigle
+        source_bibl.text = f'{docmeta.title}. {sigle}'
     else:
-        source_bibl.text = '. ' + sigle
+        source_bibl.text = f'. {sigle}'
     source_sigle = SubElement(sourcedesc, 'bibl', type='sigle')
     source_sigle.text = sigle
     biblfull = SubElement(sourcedesc, 'biblFull')
@@ -410,12 +407,12 @@ def write_fullheader(teidoc, docmeta):
     if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
         textclass = SubElement(profiledesc, 'textClass')
         keywords = SubElement(textclass, 'keywords')
-        if len(docmeta.categories) > 0:
-            cat_list = SubElement(keywords, 'term', type='categories')
-            cat_list.text = ','.join(docmeta.categories)
-        if len(docmeta.tags) > 0:
-            tags_list = SubElement(keywords, 'term', type='tags')
-            tags_list.text = ','.join(docmeta.tags)
+    if len(docmeta.categories) > 0:
+        cat_list = SubElement(keywords, 'term', type='categories')
+        cat_list.text = ','.join(docmeta.categories)
+    if len(docmeta.tags) > 0:
+        tags_list = SubElement(keywords, 'term', type='tags')
+        tags_list.text = ','.join(docmeta.tags)
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
     application = SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
@@ -448,7 +445,7 @@ def _handle_unwanted_tails(element):
     "Handle tail on p and ab elements"
     if element.tag == 'p':
         if element.text:
-            element.text += ' ' + element.tail.strip()
+            element.text += f' {element.tail.strip()}'
         else:
             element.text = element.tail
     else:
@@ -490,13 +487,10 @@ def _wrap_unwanted_siblings_of_div(div_element):
             if new_sibling_index is None:
                 new_sibling_index = parent.index(sibling)
             new_sibling.append(sibling)
-        # some elements (e.g. <lb/>) can appear next to div, but
-        # order of elements should be kept, thus add and reset new_sibling
-        else:
-            if new_sibling_index is not None and len(new_sibling) != 0:
-                parent.insert(new_sibling_index, new_sibling)
-                new_sibling = Element("div")
-                new_sibling_index = None
+        elif new_sibling_index is not None and len(new_sibling) != 0:
+            parent.insert(new_sibling_index, new_sibling)
+            new_sibling = Element("div")
+            new_sibling_index = None
     if new_sibling_index is not None and len(new_sibling) != 0:
         parent.insert(new_sibling_index, new_sibling)
 

@@ -43,7 +43,7 @@ class Document:
             if isinstance(value, str):
                 # length
                 if len(value) > 10000:
-                    new_value = value[:9999] + '…'
+                    new_value = f'{value[:9999]}…'
                     setattr(self, slot, new_value)
                     value = new_value
                 # HTML entities, remove spaces and control characters
@@ -340,8 +340,9 @@ def extract_url(tree, default_url=None):
             else:
                 continue
             if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
-                domain_match = re.match(r'https?://[^/]+', element.attrib['content'])
-                if domain_match:
+                if domain_match := re.match(
+                    r'https?://[^/]+', element.attrib['content']
+                ):
                     # prepend URL
                     url = domain_match[0] + url
                     break
@@ -357,15 +358,13 @@ def extract_sitename(tree):
     _, first, second = examine_title_element(tree)
     if first is not None and '.' in first:
         return first
-    if second is not None and '.' in second:
-        return second
-    return None
+    return second if second is not None and '.' in second else None
 
 
 def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
-    regexpr = '/' + metatype + '[s|ies]?/'
+    regexpr = f'/{metatype}[s|ies]?/'
     xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
     # search using custom expressions
     for catexpr in xpath_expression:
@@ -378,12 +377,16 @@ def extract_catstags(metatype, tree):
             break
     # category fallback
     if metatype == 'category' and not results:
-        for element in tree.xpath('.//head//meta[@property="article:section" or contains(@name, "subject")][@content]'):
-            results.append(element.attrib['content'])
-        # optional: search through links
-        #if not results:
-        #    for elem in tree.xpath('.//a[@href]'):
-        #        search for 'category'
+        results.extend(
+            element.attrib['content']
+            for element in tree.xpath(
+                './/head//meta[@property="article:section" or contains(@name, "subject")][@content]'
+            )
+        )
+            # optional: search through links
+            #if not results:
+            #    for elem in tree.xpath('.//a[@href]'):
+            #        search for 'category'
     results = [line_processing(x) for x in results if x is not None]
     return uniquify_list([x for x in results if x is not None])
 
@@ -391,17 +394,13 @@ def extract_catstags(metatype, tree):
 def parse_license_element(element, strict=False):
     '''Probe a link for identifiable free license cues.
        Parse the href attribute first and then the link text.'''
-   # look for Creative Commons elements
-    match = LICENSE_REGEX.search(element.get('href'))
-    if match:
-        return 'CC ' + match[1].upper() + ' ' + match[2]
+    if match := LICENSE_REGEX.search(element.get('href')):
+        return f'CC {match[1].upper()} {match[2]}'
     if element.text is not None:
         # just return the anchor text without further ado
         if strict is False:
             return trim(element.text)
-        # else: check if it could be a CC license
-        match = TEXT_LICENSE_REGEX.search(element.text)
-        if match:
+        if match := TEXT_LICENSE_REGEX.search(element.text):
             return match[0]
     return None
 
@@ -538,10 +537,10 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         # fix for empty name
         except IndexError as err:
             LOGGER.warning('error in sitename extraction: %s', err)
-    # use URL
     elif metadata.url:
-        mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url)
-        if mymatch:
+        if mymatch := re.match(
+            r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url
+        ):
             metadata.sitename = mymatch[1]
     # categories
     if not metadata.categories:

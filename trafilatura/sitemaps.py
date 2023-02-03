@@ -55,7 +55,7 @@ def sitemap_search(url, target_lang=None):
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
-        sitemapurl = baseurl + '/sitemap.xml'
+        sitemapurl = f'{baseurl}/sitemap.xml'
         # filter triggered, prepare it
         if len(url) > len(baseurl) + 2:
             urlfilter = url
@@ -151,9 +151,11 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
         newdomain = extract_domain(link, fast=True)
         if newdomain is None:
             LOGGER.error("Couldn't extract domain: %s", link)
-        # don't take links from another domain and make an exception for main platforms
-        # also bypass: subdomains vs. domains
-        elif newdomain != domainname and not newdomain in domainname and not WHITELISTED_PLATFORMS.search(newdomain):
+        elif (
+            newdomain != domainname
+            and newdomain not in domainname
+            and not WHITELISTED_PLATFORMS.search(newdomain)
+        ):
             LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
         else:
             state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
@@ -176,12 +178,13 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
         return [], []
     sitemapurls, linklist = [], []
     # compile regex here for modularity and efficiency
-    lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
+    lang_regex = re.compile(
+        f"""hreflang=[\"']({target_lang}.*?|x-default)[\"']""", re.DOTALL
+    )
     for attr_match in XHTML_REGEX.finditer(pagecontent):
         attributes = attr_match[0]
         if lang_regex.search(attributes):
-            lang_match = HREFLANG_REGEX.search(attributes)
-            if lang_match:
+            if lang_match := HREFLANG_REGEX.search(attributes):
                 link, state = handle_link(lang_match[1], sitemapurl, domainname, baseurl, target_lang)
                 sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
     LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemapurl)
@@ -203,7 +206,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
 def find_robots_sitemaps(baseurl):
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
-    robotstxt = fetch_url(baseurl + '/robots.txt')
+    robotstxt = fetch_url(f'{baseurl}/robots.txt')
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 

@@ -19,6 +19,7 @@ This code: GPLv3+
 """
 
 
+
 import logging
 import re
 
@@ -31,17 +32,16 @@ from .utils import trim
 LOGGER = logging.getLogger(__name__)
 
 
-BAD_ATTRS = ("|".join(["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"]))
 QUOTES = '\'[^\']+\'|"[^"]+"'
 NON_SPACE = "[^ \"'>]+"
+BAD_ATTRS = "|".join(
+    ["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"]
+)
 HTMLSTRIP = re.compile(
-    "<"  # open
-    "([^>]+) "  # prefix
-    "(?:%s) *" % BAD_ATTRS
-    + "= *(?:%s|%s)"  # undesirable attributes
-    % (NON_SPACE, QUOTES)
+    f"<([^>]+) (?:{BAD_ATTRS}) *"
+    + f"= *(?:{NON_SPACE}|{QUOTES})"
     + "([^>]*)"  # value  # postfix
-    ">",  # end
+    ">",
     re.I,
 )
 
@@ -328,8 +328,7 @@ class Document:
 
         for elem in self.tags(self.doc, "div"):
             if elem.text is not None:
-                elem_text = elem.text.strip()
-                if elem_text:
+                if elem_text := elem.text.strip():
                     p_elem = fragment_fromstring("<p/>")
                     p_elem.text = elem.text
                     elem.text = None
@@ -425,15 +424,13 @@ class Document:
                     # find x non empty preceding and succeeding siblings
                     siblings = []
                     for sib in elem.itersiblings():
-                        sib_content_length = text_length(sib)
-                        if sib_content_length:
+                        if sib_content_length := text_length(sib):
                             siblings.append(sib_content_length)
                             # if len(siblings) >= 1:
                             break
                     limit = len(siblings) + 1
                     for sib in elem.itersiblings(preceding=True):
-                        sib_content_length = text_length(sib)
-                        if sib_content_length:
+                        if sib_content_length := text_length(sib):
                             siblings.append(sib_content_length)
                             if len(siblings) >= limit:
                                 break

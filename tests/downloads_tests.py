@@ -124,7 +124,7 @@ def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
     inputdict = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
-    assert inputdict == dict()
+    assert inputdict == {}
     inputdict = add_to_compressed_dict(['https://www.example.org/'])
     # CLI args
     testargs = ['', '--list']
@@ -157,10 +157,18 @@ def test_queue():
     # test backoff algorithm
     backoffdict = {}
     testdict = {'http://test.org': deque(['/1'])}
-    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
+    assert draw_backoff_url(testdict, backoffdict, 0) == (
+        'http://test.org/1',
+        {},
+        {},
+    )
     testdict['http://test.org'] = deque(['/1'])
     backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
+    assert draw_backoff_url(testdict, backoffdict, 0) == (
+        'http://test.org/1',
+        {},
+        {},
+    )
     # concurrent domains
     testdict = {}
     backoffdict = {}
@@ -181,9 +189,13 @@ def test_queue():
     #assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
     # download buffer
     domain_dict = {'https://test.org': deque(['/1', '/2', '/3']), 'https://test2.org': deque(['/1', '/2', '/3']), 'https://test3.org': deque(['/1', '/2', '/3']), 'https://test4.org': deque(['/1', '/2', '/3']), 'https://test5.org': deque(['/1', '/2', '/3']), 'https://test6.org': deque(['/1', '/2', '/3'])}
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=1)
+    bufferlist, _, _, _ = load_download_buffer(
+        domain_dict, {}, sleep_time=5, threads=1
+    )
     assert len(bufferlist) == 6
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=2)
+    bufferlist, _, _, _ = load_download_buffer(
+        domain_dict, {}, sleep_time=5, threads=2
+    )
     assert len(bufferlist) == 6
 
 

@@ -80,7 +80,7 @@ def is_known_link(link, known_links):
     #if link in known_links:
     #    return True
     test1 = link.rstrip('/')
-    test2 = test1 + '/'
+    test2 = f'{test1}/'
     if test1 in known_links or test2 in known_links:
         return True
     if link[:5] == 'https':
@@ -165,7 +165,7 @@ def init_crawl(homepage, todo, known_links, language=None, shortform=False, rule
     # fetch and parse robots.txt file if necessary
     if rules is None:
         rules = urllib.robotparser.RobotFileParser()
-        rules.set_url(base_url + '/robots.txt')
+        rules.set_url(f'{base_url}/robots.txt')
         # exceptions happening here
         try:
             rules.read()
@@ -229,9 +229,7 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
 
 def get_crawl_delay(rules, default=5):
     """Define sleeping time between requests (in seconds)."""
-    delay = None
-    if rules is not None:
-        delay = rules.crawl_delay("*") or None
+    delay = rules.crawl_delay("*") or None if rules is not None else None
     # backup
     return delay or default
 

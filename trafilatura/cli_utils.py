@@ -44,8 +44,7 @@ def load_input_urls(args):
             # optional: errors='strict', buffering=1
             with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
                 for line in inputfile:
-                    url_match = re.match(r'https?://[^\s]+', line)
-                    if url_match:
+                    if url_match := re.match(r'https?://[^\s]+', line):
                         input_urls.append(url_match[0])
 
         except UnicodeDecodeError:
@@ -91,7 +90,10 @@ def check_outputdir_status(directory):
             # maybe the directory has already been created
             #sleep(0.25)
             #if not path.exists(directory) or not path.isdir(directory):
-            sys.stderr.write('ERROR: Destination directory cannot be created: ' + directory + '\n')
+            sys.stderr.write(
+                f'ERROR: Destination directory cannot be created: {directory}'
+                + '\n'
+            )
             # raise OSError()
             return False
     return True
@@ -292,7 +294,7 @@ def url_processing_pipeline(args, inputdict):
     # option to retry
     if args.archived is True:
         inputdict = {}
-        inputdict['https://web.archive.org'] = deque(['/web/20/' + e for e in errors])
+        inputdict['https://web.archive.org'] = deque([f'/web/20/{e}' for e in errors])
         if len(inputdict['https://web.archive.org']) > 0:
             archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))

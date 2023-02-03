@@ -107,13 +107,10 @@ def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
-    while mymatch is not None:
-        if mymatch[1] and ' ' in mymatch[1]:
-            authors = normalize_authors(authors, mymatch[1])
-            elemtext = regular_expression.sub(r'', elemtext, count=1)
-            mymatch = regular_expression.search(elemtext)
-        else:
-            break
+    while mymatch is not None and mymatch[1] and ' ' in mymatch[1]:
+        authors = normalize_authors(authors, mymatch[1])
+        elemtext = regular_expression.sub(r'', elemtext, count=1)
+        mymatch = regular_expression.search(elemtext)
     return authors or None
 
 
@@ -138,17 +135,14 @@ def extract_json_parse_error(elem, metadata):
                 metadata.sitename = candidate
     # category
     if '"articleSection"' in elem:
-        mymatch = JSON_CATEGORY.search(elem)
-        if mymatch:
+        if mymatch := JSON_CATEGORY.search(elem):
             metadata.categories = [normalize_json(mymatch[1])]
     # try to extract title
     if '"name"' in elem and metadata.title is None:
-        mymatch = JSON_NAME.search(elem)
-        if mymatch:
+        if mymatch := JSON_NAME.search(elem):
             metadata.title = normalize_json(mymatch[1])
     if '"headline"' in elem and metadata.title is None:
-        mymatch = JSON_HEADLINE.search(elem)
-        if mymatch:
+        if mymatch := JSON_HEADLINE.search(elem):
             metadata.title = normalize_json(mymatch[1])
     # exit if found
     return metadata

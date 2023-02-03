@@ -166,7 +166,7 @@ def handle_lists(element, options):
             if processed_child is not None:
                 newchildelem.text = processed_child.text
                 if processed_child.tail is not None and processed_child.tail.strip():
-                    newchildelem.text += " " + processed_child.tail
+                    newchildelem.text += f" {processed_child.tail}"
                 processed_element.append(newchildelem)
         else:
             newchildelem.text = child.text
@@ -188,13 +188,14 @@ def handle_lists(element, options):
                 # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
             if child.tail is not None and child.tail.strip():
-                newchildelem_children = [el for el in newchildelem.getchildren() if el.tag != 'done']
-                if newchildelem_children:
+                if newchildelem_children := [
+                    el for el in newchildelem.getchildren() if el.tag != 'done'
+                ]:
                     last_subchild = newchildelem_children[-1]
                     if last_subchild.tail is None or not last_subchild.tail.strip():
                         last_subchild.tail = child.tail
                     else:
-                        last_subchild.tail += ' ' + child.tail
+                        last_subchild.tail += f' {child.tail}'
         if newchildelem.text or len(newchildelem) > 0:
             # set attribute
             if child.get('rend') is not None:
@@ -257,9 +258,7 @@ def handle_paragraphs(element, potential_tags, options):
     # no children
     if len(element) == 0:
         processed_element = process_node(element, options)
-        if processed_element is not None:
-            return processed_element
-        return None
+        return processed_element if processed_element is not None else None
     # children
     processed_element = Element(element.tag)
     for child in element.iter('*'):
@@ -275,7 +274,7 @@ def handle_paragraphs(element, potential_tags, options):
                 LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text,
                              processed_child.tail)
                 if processed_element.text:
-                    processed_element.text += ' ' + processed_child.text
+                    processed_element.text += f' {processed_child.text}'
                 else:
                     processed_element.text = processed_child.text
                 continue
@@ -286,7 +285,7 @@ def handle_paragraphs(element, potential_tags, options):
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
-                            item.text = ' ' + item.text
+                            item.text = f' {item.text}'
                         strip_tags(processed_child, item.tag)
                 # correct attributes
                 if child.tag == 'hi':
@@ -390,9 +389,7 @@ def handle_table(table_elem, potential_tags, options):
     # end of processing
     if len(newrow) > 0:
         newtable.append(newrow)
-    if len(newtable) > 0:
-        return newtable
-    return None
+    return newtable if len(newtable) > 0 else None
 
 
 def handle_image(element):
@@ -553,7 +550,7 @@ def extract_content(tree, options):
         # proper extraction
         subelems = subtree.xpath('.//*')
         # e.g. only lb-elems in a div
-        if set(e.tag for e in subelems) == {'lb'}:
+        if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
         # extract content
         result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options) for e in subelems)))
@@ -653,17 +650,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         algo_flag = False
     elif len_algo > 2 * len_text:
         algo_flag = True
-    # borderline cases
+    elif not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
+        algo_flag = True
+    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
+        algo_flag = True
     else:
-        if not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
-            algo_flag = True
-        elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
-            algo_flag = True
-        else:
-            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-            algo_flag = False
+        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+        algo_flag = False
     # apply decision
-    if algo_flag is True:
+    if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
@@ -679,7 +674,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
     # post-processing: remove unwanted sections
-    if algo_flag is True and jt_result is False:
+    if algo_flag and jt_result is False:
         body, text, len_text = sanitize_tree(body, options)
     return body, text, len_text
 
@@ -702,8 +697,7 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            mymatch = JSON_SEARCH.search(elem.text)
-            if mymatch:
+            if mymatch := JSON_SEARCH.search(elem.text):
                 elem = SubElement(postbody, 'p')
                 elem.text = trim(mymatch[1].replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
@@ -855,13 +849,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             '"with_metadata" will be deprecated in a future version, use "only_with_metadata instead"',
             PendingDeprecationWarning
         )
-    #if no_fallback is True:
-    #    fast = no_fallback
-        #warnings.warn(
-        #    '"no_fallback" will be deprecated in a future version, use "fast" instead',
-        #    PendingDeprecationWarning
-        #)
-
     # load data
     try:
         tree = load_html(filecontent)
@@ -870,10 +857,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             raise ValueError
 
         # quick and dirty HTML lang check
-        if target_language is not None and (no_fallback is True or LANGID_FLAG is False):
-            if check_html_lang(tree, target_language) is False:
-                LOGGER.error('wrong HTML meta language for URL %s', url)
-                raise ValueError
+        if (
+            target_language is not None
+            and (no_fallback is True or LANGID_FLAG is False)
+            and check_html_lang(tree, target_language) is False
+        ):
+            LOGGER.error('wrong HTML meta language for URL %s', url)
+            raise ValueError
 
         # extract metadata if necessary
         if output_format != 'txt':
@@ -1026,17 +1016,17 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
     """
     # older, deprecated functions
-    if kwargs:
-        # output formats
-        if any([
-            'csv_output' in kwargs, 'json_output' in kwargs,
-            'tei_output' in kwargs, 'xml_output' in kwargs
-            ]):
-            raise NameError(
-                'Deprecated argument: use output_format instead, e.g. output_format="xml"'
-                )
-        # todo: add with_metadata later
-
+    if kwargs and any(
+        [
+            'csv_output' in kwargs,
+            'json_output' in kwargs,
+            'tei_output' in kwargs,
+            'xml_output' in kwargs,
+        ]
+    ):
+        raise NameError(
+            'Deprecated argument: use output_format instead, e.g. output_format="xml"'
+            )
     # configuration init
     config = use_config(settingsfile, config)
 
