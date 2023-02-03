@@ -124,7 +124,7 @@ def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
     inputdict = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
-    assert inputdict == dict()
+    assert inputdict == {}
     inputdict = add_to_compressed_dict(['https://www.example.org/'])
     # CLI args
     testargs = ['', '--list']

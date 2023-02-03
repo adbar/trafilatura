@@ -250,7 +250,7 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.url_processing_pipeline(args, dict()) is False
+    assert cli_utils.url_processing_pipeline(args, {}) is False
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):

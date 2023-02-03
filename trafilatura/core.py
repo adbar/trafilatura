@@ -553,7 +553,7 @@ def extract_content(tree, options):
         # proper extraction
         subelems = subtree.xpath('.//*')
         # e.g. only lb-elems in a div
-        if set(e.tag for e in subelems) == {'lb'}:
+        if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
         # extract content
         result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options) for e in subelems)))
@@ -654,16 +654,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     elif len_algo > 2 * len_text:
         algo_flag = True
     # borderline cases
+    elif not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
+        algo_flag = True
+    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
+        algo_flag = True
     else:
-        if not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
-            algo_flag = True
-        elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
-            algo_flag = True
-        else:
-            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-            algo_flag = False
+        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+        algo_flag = False
     # apply decision
-    if algo_flag is True:
+    if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
@@ -1026,15 +1025,16 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
     """
     # older, deprecated functions
-    if kwargs:
+    if kwargs and any([
         # output formats
-        if any([
-            'csv_output' in kwargs, 'json_output' in kwargs,
-            'tei_output' in kwargs, 'xml_output' in kwargs
-            ]):
-            raise NameError(
-                'Deprecated argument: use output_format instead, e.g. output_format="xml"'
-                )
+            'csv_output' in kwargs,
+            'json_output' in kwargs,
+            'tei_output' in kwargs,
+            'xml_output' in kwargs
+        ]):
+        raise NameError(
+            'Deprecated argument: use output_format instead, e.g. output_format="xml"'
+            )
         # todo: add with_metadata later
 
     # configuration init

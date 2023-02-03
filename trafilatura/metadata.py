@@ -426,9 +426,10 @@ def extract_license(tree):
 
 
 def extract_image(tree):
+    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)
+       and search meta tags with Twitter Image'''
     image = None
 
-    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
         if not elem.get('content'):
@@ -440,7 +441,6 @@ def extract_image(tree):
         if elem.get('property') == 'og:image:url':
             image = elem.get('content')
 
-    '''Search meta tags with Twitter Image'''
     if image is None:
         for elem in tree.xpath('.//head/meta[starts-with(@property, "twitter:")]'):
             # safeguard
@@ -452,7 +452,7 @@ def extract_image(tree):
             # twitter:image:src
             if elem.get('property') == 'twitter:image:src':
                 image = elem.get('content')
-    
+
     return image
 
 
