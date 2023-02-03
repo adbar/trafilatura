@@ -85,7 +85,7 @@ class LRUCache:
                 last[NEXT] = self.root[PREV] = self.cache[key] = link
                 # Use the cache_len bound method instead of the len() function
                 # which could potentially be wrapped in an lru_cache itself.
-                self.full = (len(self.cache) >= self.maxsize)
+                self.full = len(self.cache) >= self.maxsize
 
     def clear(self):
         '''Delete all cache content'''

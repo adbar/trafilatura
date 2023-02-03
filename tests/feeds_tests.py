@@ -27,22 +27,97 @@ def test_atom_extraction():
     with open(filepath) as f:
         teststring = f.read()
     assert len(feeds.extract_links(teststring, 'example.org', 'https://example.org', '')) > 0
-    assert len(feeds.extract_links(XMLDECL + '<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>', 'dwds.de', 'https://www.dwds.de', '')) == 0
-    assert len(feeds.extract_links(XMLDECL + '<link rel="self" href="http://example.org/article1/"/>', 'example.org', 'http://example.org/', 'http://example.org')) == 0
-    assert len(feeds.extract_links(XMLDECL + '<link type="application/atom+xml" rel="self" href="123://api.exe"/>', 'example.org', 'https://example.org', '')) == 0
-    assert feeds.extract_links(XMLDECL + '<link href="http://example.org/article1/"rest"/>', 'example.org', 'http://example.org/', 'http://example.org') == ['http://example.org/article1/']
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>',
+                'dwds.de',
+                'https://www.dwds.de',
+                '',
+            )
+        )
+        == 0
+    )
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link rel="self" href="http://example.org/article1/"/>',
+                'example.org',
+                'http://example.org/',
+                'http://example.org',
+            )
+        )
+        == 0
+    )
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link type="application/atom+xml" rel="self" href="123://api.exe"/>',
+                'example.org',
+                'https://example.org',
+                '',
+            )
+        )
+        == 0
+    )
+    assert feeds.extract_links(
+        f'{XMLDECL}<link href="http://example.org/article1/"rest"/>',
+        'example.org',
+        'http://example.org/',
+        'http://example.org',
+    ) == ['http://example.org/article1/']
 
 
 def test_rss_extraction():
     '''Test link extraction from a RSS feed'''
-    assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 1
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link>http://example.org/article1/</link>',
+                'example.org',
+                'http://example.org/',
+                '',
+            )
+        )
+        == 1
+    )
     # CDATA
-    assert feeds.extract_links(XMLDECL + '<link><![CDATA[http://example.org/article1/]]></link>', 'example.org', 'http://example.org/', '') == ['http://example.org/article1/']
+    assert feeds.extract_links(
+        f'{XMLDECL}<link><![CDATA[http://example.org/article1/]]></link>',
+        'example.org',
+        'http://example.org/',
+        '',
+    ) == ['http://example.org/article1/']
     # spaces
     assert len(feeds.extract_links(XMLDECL + '<link>\r\n    https://www.ak-kurier.de/akkurier/www/artikel/108815-sinfonisches-blasorchester-spielt-1500-euro-fuer-kinder-in-drk-krankenhaus-kirchen-ein    </link>', 'ak-kurier.de', 'https://www.ak-kurier.de/', '')) == 1
-    assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/</link>', 'example.org', 'http://example.org', 'http://example.org')) == 0
-    assert len(feeds.extract_links(XMLDECL + '<link>https://example.org</link>', 'example.org', 'http://example.org/', '')) == 0
-    assert feeds.extract_links(XMLDECL + '<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de', 'https://www.dwds.de') == ['https://www.dwds.de/api/feed/themenglossar/Corona']
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link>http://example.org/</link>',
+                'example.org',
+                'http://example.org',
+                'http://example.org',
+            )
+        )
+        == 0
+    )
+    assert (
+        len(
+            feeds.extract_links(
+                f'{XMLDECL}<link>https://example.org</link>',
+                'example.org',
+                'http://example.org/',
+                '',
+            )
+        )
+        == 0
+    )
+    assert feeds.extract_links(
+        f'{XMLDECL}<link>/api/feed/themenglossar/Corona</link>',
+        'www.dwds.de',
+        'https://www.dwds.de',
+        'https://www.dwds.de',
+    ) == ['https://www.dwds.de/api/feed/themenglossar/Corona']
     filepath = os.path.join(RESOURCES_DIR, 'feed2.rss')
     with open(filepath) as f:
         teststring = f.read()

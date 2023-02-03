@@ -31,15 +31,14 @@ from .utils import trim
 LOGGER = logging.getLogger(__name__)
 
 
-BAD_ATTRS = ("|".join(["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"]))
+BAD_ATTRS = "|".join(["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"])
 QUOTES = '\'[^\']+\'|"[^"]+"'
 NON_SPACE = "[^ \"'>]+"
 HTMLSTRIP = re.compile(
     "<"  # open
     "([^>]+) "  # prefix
-    "(?:%s) *" % BAD_ATTRS
-    + "= *(?:%s|%s)"  # undesirable attributes
-    % (NON_SPACE, QUOTES)
+    " (?:{BAD_ATTRS}) *"
+    + "= *(?:{NON_SPACE}|{QUOTES})"  # undesirable attributes
     + "([^>]*)"  # value  # postfix
     ">",  # end
     re.I,

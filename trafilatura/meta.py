@@ -24,4 +24,3 @@ def reset_caches() -> None:
     return_printables_and_spaces.cache_clear()
     trim.cache_clear()
     LRU_TEST.clear()
-

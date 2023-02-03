@@ -107,13 +107,10 @@ def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
-    while mymatch is not None:
-        if mymatch[1] and ' ' in mymatch[1]:
-            authors = normalize_authors(authors, mymatch[1])
-            elemtext = regular_expression.sub(r'', elemtext, count=1)
-            mymatch = regular_expression.search(elemtext)
-        else:
-            break
+    while mymatch is not None and mymatch[1] and ' ' in mymatch[1]:
+        authors = normalize_authors(authors, mymatch[1])
+        elemtext = regular_expression.sub(r'', elemtext, count=1)
+        mymatch = regular_expression.search(elemtext)
     return authors or None
 
 
