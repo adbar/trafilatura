@@ -21,12 +21,15 @@ import gzip
 
 from collections import deque
 from datetime import datetime
+from time import sleep
 from unittest.mock import Mock, patch
+
+from courlan import UrlStore
 
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
+from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -123,68 +126,35 @@ def test_decode():
 def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
-    inputdict = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
-    assert inputdict == {}
-    inputdict = add_to_compressed_dict(['https://www.example.org/'])
-    # CLI args
+    url_store = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
+    assert isinstance(url_store, UrlStore)
+    # download buffer
+    inputurls = ['https://test.org/1', 'https://test.org/2', 'https://test.org/3', 'https://test2.org/1', 'https://test2.org/2', 'https://test2.org/3', 'https://test3.org/1', 'https://test3.org/2', 'https://test3.org/3', 'https://test4.org/1', 'https://test4.org/2', 'https://test4.org/3', 'https://test5.org/1', 'https://test5.org/2', 'https://test5.org/3', 'https://test6.org/1', 'https://test6.org/2', 'https://test6.org/3']
+    url_store = add_to_compressed_dict(inputurls)
+    bufferlist, _, _ = load_download_buffer(url_store, sleep_time=5, threads=1)
+    assert len(bufferlist) == 6
+    sleep(0.25)
+    bufferlist, _, _ = load_download_buffer(url_store, sleep_time=0.1, threads=2)
+    assert len(bufferlist) == 6
+    # CLI args 
+    url_store = add_to_compressed_dict(['https://www.example.org/'])
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    assert url_processing_pipeline(args, inputdict) is False
+    assert url_processing_pipeline(args, url_store) is False
     # single/multiprocessing
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    domain_dict = {
-        'https://httpbin.org': deque(
-            [
-                '/status/301',
-                '/status/304',
-                '/status/200',
-                '/status/300',
-                '/status/400',
-                '/status/505',
-            ]
-        )
-    }
+    inputurls = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/505']
+    url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)
     config['DEFAULT']['SLEEP_TIME'] = '0.2'
-    results = download_queue_processing(domain_dict, args, None, config)
+    results = download_queue_processing(url_store, args, None, config)
     ## fixed: /301 missing, probably for a good reason...
     assert len(results[0]) == 5 and results[1] is None
-    # test backoff algorithm
-    backoffdict = {}
-    testdict = {'http://test.org': deque(['/1'])}
-    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
-    testdict['http://test.org'] = deque(['/1'])
-    backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
-    # concurrent domains
-    testdict = {}
-    backoffdict = {}
-    testdict['http://test.org'] = deque(['/1'])
-    testdict['http://example.org'] = deque(['/1'])
-    # simulate recent request
-    backoffdict['http://test.org'] = datetime.now()
-    # must return the other domain
-    test = draw_backoff_url(testdict, backoffdict, 5)
-    assert test[0], test[1] == ('http://example.org/1', {'http://test.org': deque(['/1'])})
-    print(test)
-    assert test[2] != {}
-    # sleeps and returns the rest
-    assert draw_backoff_url(testdict, backoffdict, 1) == ('http://test.org/1', {}, {})
-    # code hangs, logical:
-    #testdict['http://test.org'] = deque(['/1'])
-    #backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
-    #assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
-    # download buffer
-    domain_dict = {'https://test.org': deque(['/1', '/2', '/3']), 'https://test2.org': deque(['/1', '/2', '/3']), 'https://test3.org': deque(['/1', '/2', '/3']), 'https://test4.org': deque(['/1', '/2', '/3']), 'https://test5.org': deque(['/1', '/2', '/3']), 'https://test6.org': deque(['/1', '/2', '/3'])}
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=1)
-    assert len(bufferlist) == 6
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=2)
-    assert len(bufferlist) == 6
 
 
 if __name__ == '__main__':

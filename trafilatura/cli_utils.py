@@ -20,7 +20,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import get_host_and_path, is_navigation_page, validate_url
+from courlan import get_host_and_path, is_navigation_page, validate_url, UrlStore
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
@@ -28,10 +28,12 @@ from .filters import content_fingerprint
 from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .spider import get_crawl_delay, init_crawl, process_response
+import trafilatura.spider as spider
+#from .spider import URL_STORE, get_crawl_delay, init_crawl, process_response
 
 
 LOGGER = logging.getLogger(__name__)
+
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
@@ -202,12 +204,12 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def download_queue_processing(domain_dict, args, counter, config):
+def download_queue_processing(url_store, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    backoff_dict, errors = {}, []
-    while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
+    errors = []
+    while url_store.done is False:
+        bufferlist, download_threads, url_store = load_download_buffer(url_store, sleep_time, threads=args.parallel)
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
@@ -219,82 +221,90 @@ def download_queue_processing(domain_dict, args, counter, config):
     return errors, counter
 
 
-def cli_crawler(args, n=30, domain_dict=None):
+def cli_crawler(args, n=30, url_store=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    counter, crawlinfo, backoff_dict = None, {}, {}
+    counter = None
     # load input URLs
-    if domain_dict is None:
-        domain_dict = load_input_dict(args)
+    if url_store is None:
+        spider.URL_STORE.add_urls(load_input_urls(args))
+    else:
+        spider.URL_STORE = url_store
     # load crawl data
-    for website in domain_dict:
-        homepage = website + domain_dict[website].popleft()
-        crawlinfo[website] = {}
-        domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], crawlinfo[website]['count'], crawlinfo[website]['rules'] = init_crawl(homepage, None, set(), language=args.target_language, shortform=True)
+    for hostname in list(spider.URL_STORE.urldict.keys()):
+        startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath  # hostname  # spider.URL_STORE.get_url(hostname)
+        base_url, i, known_num, rules, is_on = spider.init_crawl(startpage, None, set(), language=args.target_language)
         # update info
         # TODO: register changes?
-        # if base_url != website:
+        # if base_url != hostname:
         # ...
     # iterate until the threshold is reached
-    while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
+    while spider.URL_STORE.done is False:
+        bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
+        #for w in spider.URL_STORE.urldict:
+        #    for t in spider.URL_STORE.urldict[w].tuples:
+        #        print(t.urlpath, t.visited)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)
-            crawlinfo[website]['count'] += 1
             # handle result
             if result is not None and result != '':
-                domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
+                spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.urldict[website].rules)
                 # only store content pages, not navigation
-                if not is_navigation_page(url):  # + response.url
-                    if args.list:
-                        write_result(url, args)
-                    else:
-                        counter = process_result(htmlstring, args, url, counter, config)
+                #if not is_navigation_page(url):  # + response.url
+                #    if args.list:
+                #        write_result(url, args)
+                    #else:
+                    #    counter = process_result(htmlstring, args, url, counter, config)
                 # just in case a crawl delay is specified in robots.txt
-                sleep(get_crawl_delay(crawlinfo[website]['rules']))
+                sleep(spider.get_crawl_delay(spider.URL_STORE.urldict[website].rules))
                 #else:
                 #    LOGGER.debug('No result for URL: %s', url)
                 #    if args.archived is True:
                 #        errors.append(url)
         # early exit if maximum count is reached
-        if any(i >= n for i in [dictvalue['count'] for _, dictvalue in crawlinfo.items()]):
+        if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
             break
     # print results
-    for website in sorted(domain_dict):
-        for urlpath in sorted(domain_dict[website]):
-            sys.stdout.write(website + urlpath +'\n')
+    #for w in spider.URL_STORE.urldict:
+    #    for t in spider.URL_STORE.urldict[w].tuples:
+    #        print(t.urlpath, t.visited)
+    print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
+    #for website in spider.URL_STORE.urldict:
+        #print(spider.URL_STORE.urldict[website].tuples)
+    #    for url in sorted(spider.URL_STORE.find_known_urls(website)):
+    #        sys.stdout.write(url +'\n')
     #return todo, known_links
 
 
-def url_processing_pipeline(args, inputdict):
+def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''
     # print list without further processing
     if args.list:
-        for hostname in inputdict:
-            for urlpath in inputdict[hostname]:
-                write_result(hostname + urlpath, args)  # print('\n'.join(input_urls))
+        for domain in url_store.urldict:
+            # write_result('\n'.join(url_store.find_unvisited_urls(domain)), args)
+            print('\n'.join(url_store.find_unvisited_urls(domain)))
         return False  # sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
     counter, i = None, 0
-    for hostname in inputdict:
-        i += len(inputdict[hostname])
+    for hostname in url_store.urldict:
+        i += len(url_store.find_known_urls(hostname))
         if i > MAX_FILES_PER_DIRECTORY:
             counter = 0
             break
     # download strategy
-    errors, counter = download_queue_processing(inputdict, args, counter, config)
+    errors, counter = download_queue_processing(url_store, args, counter, config)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
-        inputdict = {}
-        inputdict['https://web.archive.org'] = deque(['/web/20/' + e for e in errors])
-        if len(inputdict['https://web.archive.org']) > 0:
-            archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
+        url_store = UrlStore()
+        url_store.add_urls(['https://web.archive.org/web/20/' + e for e in errors])
+        if len(url_store.find_known_urls('https://web.archive.org')) > 0:
+            archived_errors, _ = download_queue_processing(url_store, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
             # pass information along if URLs are missing
             return bool(archived_errors)

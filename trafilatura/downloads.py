@@ -8,9 +8,8 @@ import logging
 import random
 import re
 
-from collections import defaultdict, deque, namedtuple
+from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
 from time import sleep
 
 import certifi
@@ -27,12 +26,14 @@ except ImportError:
     pycurl = None
 import urllib3
 
-from courlan import get_host_and_path, validate_url
+from courlan import validate_url, UrlStore
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
 from .utils import decode_response, uniquify_list
 
+
+URL_STORE = UrlStore(compressed=False, strict=False)
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
@@ -169,11 +170,11 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     return None
 
 
-def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict=None):
+def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None):
     '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
     # init
-    if inputdict is None:
-        inputdict = defaultdict(deque)
+    if url_store is None:
+        url_store = UrlStore(compressed=False, strict=False)
     # deduplicate while keeping order
     inputlist = uniquify_list(inputlist)
     # filter
@@ -189,72 +190,28 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict
                     break
         inputlist = filtered_list
     # validate and store in dict
-    for url in inputlist:
-        # validate URL
-        if validate_url(url)[0] is False:
-            continue
-        # segment URL and add to domain dictionary
-        try:
-            hostinfo, urlpath = get_host_and_path(url)
-            inputdict[hostinfo].append(urlpath)
-        except ValueError:
-            LOGGER.warning('Could not parse URL, discarding: %s', url)
-    return inputdict
+    inputlist = [u for u in inputlist if validate_url(u)[0] is True]
+    # segment URL and add to domain dictionary
+    url_store.add_urls(inputlist)
+    return url_store
 
 
-def draw_backoff_url(domain_dict, backoff_dict, sleep_time):
-    '''Select a random URL from the domains pool and apply backoff rule'''
-    green_light = False
-    targets = set(domain_dict.keys())
-    while not green_light:  # use walrus operator in Python >= 3.8
-        # choose randomly multiple times until a usable target is found
-        while targets:
-            # choose among a fresh pool of hosts
-            host = random.choice(tuple(targets))
-            targets.remove(host)
-            # take another one if this host has been visited too recently
-            if host in backoff_dict and \
-                (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
-                LOGGER.debug('spacing request for host %s', host)
-                host = None
-            else:
-                break
-        # safeguard
-        if host is None:
-            LOGGER.debug('spacing downloads for all targets')
-            sleep(sleep_time)
-            targets = set(domain_dict.keys())
-        else:
-            green_light = True
-    if domain_dict[host]:
-        # draw URL
-        url = host + domain_dict[host].popleft()
-        backoff_dict[host] = datetime.now()
-    else:
-        url = None
-    # clean registries
-    if not domain_dict[host]:
-        del domain_dict[host]
-        if host in backoff_dict:
-            del backoff_dict[host]
-    return url, domain_dict, backoff_dict
-
-
-def load_download_buffer(domain_dict, backoff_dict, sleep_time=5, threads=DOWNLOAD_THREADS):
+def load_download_buffer(url_store, sleep_time=5, threads=DOWNLOAD_THREADS):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    bufferlist= []
     # the remaining list is too small, process it differently
-    if len(domain_dict) < threads or \
-       len({x for v in domain_dict.values() for x in v}) < threads:
+    if len([d for d in url_store.urldict if url_store.urldict[d].all_visited is False]) < threads:
         threads = 1
-    # populate buffer until all parallel URLs are ready
-    while domain_dict and len(bufferlist) < len(domain_dict):
-        url, domain_dict, backoff_dict = draw_backoff_url(
-            domain_dict, backoff_dict, sleep_time
-            )
-        if url is not None:
-            bufferlist.append(url)
-    return bufferlist, threads, domain_dict, backoff_dict
+    bufferlist = []
+    while not bufferlist:
+        bufferlist = url_store.get_download_urls(timelimit=sleep_time)
+        # add emptiness test or sleep?
+        if not bufferlist:
+            if url_store.done is False:
+                sleep(sleep_time)
+            else:
+                bufferlist = []
+                break
+    return bufferlist, threads, url_store
 
 
 def buffered_downloads(bufferlist, download_threads, decode=True):

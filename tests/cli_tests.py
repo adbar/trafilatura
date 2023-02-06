@@ -16,7 +16,9 @@ from unittest.mock import patch
 
 import pytest
 
-from trafilatura import cli, cli_utils
+from courlan import UrlStore
+
+from trafilatura import cli, cli_utils, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
 from trafilatura.settings import DEFAULT_CONFIG
 
@@ -120,12 +122,6 @@ def test_climain():
         # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
         env['PYTHONIOENCODING'] = 'utf-8'
     assert subprocess.run([trafilatura_bin, '--input-dir', RESOURCES_DIR], env=env).returncode == 0
-    # dump urls
-    inputdict = add_to_compressed_dict(['https://www.example.org'])
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli.dump_on_exit(inputdict)
-    assert f.getvalue() == 'todo: https://www.example.org/\n'
 
 
 def test_input_type():
@@ -242,15 +238,41 @@ def test_cli_pipeline():
     #with redirect_stdout(f):
     #    cli.process_args(args)
     #assert len(f.getvalue()) == 0
-    # test URL listing
 
     # Force encoding to utf-8 for Windows in future processes spawned by multiprocessing.Pool
     os.environ['PYTHONIOENCODING'] = "utf-8"
 
+    # Crawling
+    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/html\n'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # links permitted
+    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/links/1/1\nhttps://httpbin.org/links/1/0\n'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # 0 links permitted
+    args.crawl = 'https://httpbin.org/links/4/4'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args, n=0)
+    assert len(f.getvalue().split('\n')) == 6
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+    # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.url_processing_pipeline(args, {}) is False
+    assert cli_utils.url_processing_pipeline(args, UrlStore()) is False
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
@@ -262,16 +284,16 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     assert args.blacklist is not None
     # test backoff between domain requests
-    inputdict = add_to_compressed_dict(my_urls, args.blacklist, None, None)
+    url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
     reftime = datetime.now()
-    cli_utils.url_processing_pipeline(args, inputdict)
+    cli_utils.url_processing_pipeline(args, url_store)
     delta = (datetime.now() - reftime).total_seconds()
     assert delta > 2
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     assert len(args.blacklist) == 2
-    inputdict = add_to_compressed_dict(my_urls, args.blacklist, None, None)
-    cli_utils.url_processing_pipeline(args, inputdict)
+    url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
+    cli_utils.url_processing_pipeline(args, url_store)
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
     with patch.object(sys, 'argv', testargs):
@@ -312,7 +334,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert len(f.getvalue()) == 0
+    assert len(f.getvalue().strip()) == 0
     # config file
     testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
@@ -326,10 +348,10 @@ def test_cli_pipeline():
     testargs = ['', '--links', '--images']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    #with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r') as f:
-    #    teststring = f.read()
-    #result = cli.examine(teststring, args)
-    #assert '[link](testlink.html)' in result # and 'test.jpg' in result
+    with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r') as f:
+        teststring = f.read()
+    result = cli.examine(teststring, args)
+    assert '[link](testlink.html)' in result and 'test.jpg' in result
 
     # Crawling
     testargs = ['', '--crawl', 'https://httpbin.org/html']
@@ -338,7 +360,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert len(f.getvalue()) == 0
+    assert f.getvalue() == 'https://httpbin.org/html\n'
     # links permitted
     testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
@@ -346,13 +368,12 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
+    assert f.getvalue().endswith('https://httpbin.org/links/1/0\n')
     # 0 links permitted
     args.crawl = 'https://httpbin.org/links/4/4'
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args, n=0)
-    # print(f.getvalue())
     assert len(f.getvalue().split('\n')) == 5
 
     # Exploration (Sitemap + Crawl)
@@ -362,7 +383,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert len(f.getvalue()) == 0
+    assert f.getvalue() == 'https://httpbin.org/html\n'
 
 
 def test_input_filtering():
@@ -372,36 +393,40 @@ def test_input_filtering():
         args = cli.parse_args(testargs)
     # load dictionary
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
-    inputdict = cli.load_input_dict(args)
-    assert inputdict['https://httpbin.org'] == deque(['/status/200', '/status/404'])
+    url_store = cli.load_input_dict(args)
+    assert len(url_store.find_known_urls('https://httpbin.org')) == 2
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     args.blacklist = {'httpbin.org/status/404'}
-    inputdict = cli.load_input_dict(args)
-    assert inputdict['https://httpbin.org'] == deque(['/status/200'])
+    url_store = cli.load_input_dict(args)
+    assert len(url_store.find_known_urls('https://httpbin.org')) == 1
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
     myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
-    inputdict = add_to_compressed_dict(myinput, myblacklist)
-    assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
+    url_store = add_to_compressed_dict(myinput, myblacklist)
+    assert url_store.find_known_urls('https://example.org') == ['https://example.org/2', 'https://example.org/4', 'https://example.org/6']
     # URL in blacklist
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
-    inputdict = add_to_compressed_dict(my_urls, my_blacklist)
-    assert len(inputdict) == 0
+    url_store = add_to_compressed_dict(my_urls, my_blacklist)
+    assert len(url_store.urldict) == 0
     # URL filter
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
-    assert len(add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
-    assert len(add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
-    assert len(add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)) == 1
+    url_store = add_to_compressed_dict(my_urls, None, ['status'], None)
+    assert len(url_store.urldict) == 1
+    url_store = add_to_compressed_dict(my_urls, None, ['teststring'], None)
+    assert len(url_store.urldict) == 0
+    url_store = add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)
+    assert len(url_store.urldict) == 1
     # malformed URLs
-    inputdict = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
-    assert len(inputdict) == 1
+    url_store = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
+    assert len(url_store.urldict) == 1
     # double URLs
     args.input_file = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
     my_urls = cli_utils.load_input_urls(args)
-    assert len(my_urls) == 5
+    url_store = add_to_compressed_dict(my_urls)
+    assert len(url_store.find_known_urls('https://example.org')) == 1
 
 
 if __name__ == '__main__':
