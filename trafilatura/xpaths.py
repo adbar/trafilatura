@@ -201,4 +201,3 @@ COMMENTS_DISCARD_XPATH = [
     or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
-

@@ -134,13 +134,13 @@ def link_density_test(element, text, favor_precision=False):
     links_xpath, mylist = element.findall('.//ref'), []
     if links_xpath:
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
-            #if element.getnext() is None:
-            #    limitlen, threshold = 100, 0.8
-            #else:
             if favor_precision is False:
-                limitlen, threshold = 25, 0.8
+                if element.getnext() is None:
+                    limitlen, threshold = 60, 0.8
+                else:
+                    limitlen, threshold = 30, 0.8
             else:
-                limitlen, threshold = 100, 0.8
+                limitlen, threshold = 200, 0.8
             #if 'hi' in list(element):
             #    limitlen, threshold = 100, 0.8
         #elif element.tag == 'head':
@@ -159,7 +159,7 @@ def link_density_test(element, text, favor_precision=False):
                 return True, mylist
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
             # (elemnum > 1 and shortelems/elemnum > 0.8):
-            if linklen > threshold*elemlen or shortelems/elemnum > 0.8:
+            if linklen > threshold*elemlen or (elemnum > 1 and shortelems/elemnum > 0.8):
                 return True, mylist
     return False, mylist
 

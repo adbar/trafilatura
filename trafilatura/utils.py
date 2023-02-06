@@ -10,6 +10,11 @@ Module bundling functions related to HTML and text processing.
 import logging
 import re
 
+# if brotli is installed
+try:
+    import brotli
+except ImportError:
+    brotli = None
 from gzip import decompress
 from functools import lru_cache
 from html import unescape
@@ -32,6 +37,8 @@ from urllib3.response import HTTPResponse
 LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
+
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
@@ -65,16 +72,24 @@ AUTHOR_EMOJI_REMOVE = re.compile(
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 
-def handle_gz_file(filecontent):
+def handle_compressed_file(filecontent):
     """Tell if a file's magic number corresponds to the GZip format
-       and try to decode it"""
-    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
-        # decode GZipped data
-        try:
-            filecontent = decompress(filecontent)
-        except (EOFError, OSError):
-            logging.warning('invalid GZ file')
+       and try to decode it. Alternatively, try Brotli if the package
+       is installed."""
+    if isinstance(filecontent, bytes):
+        # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+        if filecontent[:2] == b'\x1f\x8b':
+            # decode GZipped data
+            try:
+                filecontent = decompress(filecontent)
+            except (EOFError, OSError):
+                logging.warning('invalid GZ file')
+        # try brotli
+        elif brotli is not None:
+            try:
+                filecontent = brotli.decompress(filecontent)
+            except brotli.error:
+                logging.debug('invalid Brotli file')
     return filecontent
 
 
@@ -84,8 +99,7 @@ def isutf8(data):
         data.decode('UTF-8')
     except UnicodeDecodeError:
         return False
-    else:
-        return True
+    return True
 
 
 def detect_encoding(bytesobject):
@@ -125,8 +139,8 @@ def decode_file(filecontent):
     if isinstance(filecontent, str):
         return filecontent
     htmltext = None
-    # GZip test
-    filecontent = handle_gz_file(filecontent)
+    # GZip and Brotli test
+    filecontent = handle_compressed_file(filecontent)
     # encoding
     for guessed_encoding in detect_encoding(filecontent):
         try:
@@ -140,15 +154,18 @@ def decode_file(filecontent):
     return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
 
-def is_dubious_html(htmlobject):
-    "Assess if the object is proper HTML (with a corresponding declaration)."
-    if isinstance(htmlobject, bytes):
-        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
-            return True
-    elif isinstance(htmlobject, str):
-        if 'html' not in htmlobject[:50].lower():
-            return True
-    return False
+def is_dubious_html(beginning: str) -> bool:
+    "Assess if the object is proper HTML (awith a corresponding tag or declaration)."
+    return "html" not in beginning
+
+
+def strip_faulty_doctypes(htmlstring: str, beginning: str) -> str:
+    "Repair faulty doctype strings to make then palatable for libxml2."
+    # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
+    if "doctype" in beginning:
+        firstline, _, rest = htmlstring.partition("\n")
+        return DOCTYPE_TAG.sub("", firstline, count=1) + "\n" + rest
+    return htmlstring
 
 
 def fromstring_bytes(htmlobject):
@@ -178,10 +195,13 @@ def load_html(htmlobject):
     tree = None
     # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject)
-    # sanity check
-    check_flag = is_dubious_html(htmlobject)
-    fallback_parse = False
+    # sanity checks
+    beginning = htmlobject[:50].lower()
+    check_flag = is_dubious_html(beginning)
+    # repair first
+    htmlobject = strip_faulty_doctypes(htmlobject, beginning)
     # first pass: use Unicode string
+    fallback_parse = False
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
@@ -217,7 +237,7 @@ def txttocsv(text, comments, docmeta):
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
     tsv_output = \
-        f'{docmeta.url}\t{docmeta.fingerprint}\t{docmeta.hostname}\t{docmeta.title}\t{docmeta.date}\t{text}\t{comments}\t{docmeta.license}\n'
+        f'{docmeta.url}\t{docmeta.fingerprint}\t{docmeta.hostname}\t{docmeta.title}\t{docmeta.image}\t{docmeta.date}\t{text}\t{comments}\t{docmeta.license}\n'
     # add id up front if provided
     if docmeta.id is not None:
         tsv_output = docmeta.id + '\t' + tsv_output

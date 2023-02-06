@@ -16,7 +16,7 @@ from .utils import load_html
 
 LOGGER = logging.getLogger(__name__)
 
-FEED_TYPES = set(['application/atom+xml', 'application/json', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/plain', 'text/rdf+xml', 'text/rss+xml', 'text/xml'])
+FEED_TYPES = {'application/atom+xml', 'application/json', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/plain', 'text/rdf+xml', 'text/rss+xml', 'text/xml'}
 FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
@@ -83,8 +83,10 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
-        for match in LINK_ELEMENTS.finditer(feed_string, re.DOTALL):
-            feed_links.append(match[1].strip())
+        feed_links.extend(
+            match[1].strip()
+            for match in LINK_ELEMENTS.finditer(feed_string, re.DOTALL)
+        )
 
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
@@ -183,7 +185,9 @@ def find_feed_urls(url, target_lang=None):
             return try_homepage(baseurl, target_lang)
     # try alternative: Google News
     if target_lang is not None:
-        downloaded = fetch_url('https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100')
+        downloaded = fetch_url(
+            f'https://news.google.com/rss/search?q=site:{baseurl}&hl={target_lang}&scoring=n&num=100'
+        )
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
             feed_links = filter_urls(feed_links, urlfilter)

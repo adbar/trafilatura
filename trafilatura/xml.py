@@ -35,6 +35,8 @@ NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', '
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
+NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
+
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
@@ -62,9 +64,23 @@ def clean_attributes(tree):
 
 def remove_empty_elements(tree):
     '''Remove text elements without text.'''
-    for element in tree.iter('head', 'hi', 'item', 'p'):
+    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
-            element.getparent().remove(element)
+            parent = element.getparent()
+            # not root element or element which is naturally empty
+            if parent and element.tag != "graphic":
+                element.getparent().remove(element)
+    return tree
+
+
+def strip_double_tags(tree):
+    "Prevent nested tags among a fixed list of tags."
+    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
+        for subelem in elem.iterdescendants("code", "head", "p"):
+            if subelem.getparent().tag in NESTING_WHITELIST:
+                continue
+            if subelem.tag == elem.tag:
+                merge_with_parent(subelem)
     return tree
 
 
@@ -74,7 +90,6 @@ def build_xml_output(docmeta):
     output = add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
-    docmeta.body = remove_empty_elements(docmeta.body)
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:
         docmeta.commentsbody.tag = 'comments'
@@ -145,9 +160,13 @@ def check_tei(xmldoc, url):
     for elem in xmldoc.iter('head'):
         elem.tag = 'ab'
         elem.set('type', 'header')
+        parent = elem.getparent()
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
-            elem.getparent().replace(elem, new_elem)
+            parent.replace(elem, new_elem)
+            elem = new_elem
+        if parent.tag == "p":
+            _move_element_one_level_up(elem)
     # convert <lb/> when child of <div> to <p>
     for element in xmldoc.findall(".//text/body//div/lb"):
         if element.tail is not None and element.tail.strip():
@@ -173,8 +192,6 @@ def check_tei(xmldoc, url):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
-    # export metadata
-    #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return xmldoc
 
 
@@ -456,6 +473,8 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
+    if element.tail is not None and element.tail.strip():
+        new_element.tail = element.tail.strip()
     return new_element
 
 
@@ -480,3 +499,18 @@ def _wrap_unwanted_siblings_of_div(div_element):
                 new_sibling_index = None
     if new_sibling_index is not None and len(new_sibling) != 0:
         parent.insert(new_sibling_index, new_sibling)
+
+
+def _move_element_one_level_up(element):
+    parent = element.getparent()
+    new_elem = Element("p")
+    for sibling in element.itersiblings():
+        new_elem.append(sibling)
+    parent.addnext(element)
+    if element.tail is not None and element.tail.strip():
+        new_elem.text = element.tail.strip()
+        element.tail = None
+    if len(new_elem) != 0 or new_elem.text:
+        element.addnext(new_elem)
+    if len(parent) == 0 and parent.text is None:
+        parent.getparent().remove(parent)

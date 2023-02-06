@@ -32,6 +32,10 @@ from newsplease import NewsPlease
 from readabilipy import simple_json_from_html_string
 from readability import Document
 
+from resiliparse.parse.encoding import detect_encoding, bytes_to_str
+from resiliparse.parse.html import HTMLTree
+from resiliparse.extract.html2text import extract_plain_text
+
 from trafilatura import extract
 try:
     from trafilatura.core import baseline
@@ -337,6 +341,13 @@ def run_readabilipy(htmlstring):
         return ''
 
 
+def run_resiliparse(htmlstring):
+    '''try with the resiliparse package'''
+    decoded = bytes_to_str(htmlstring, detect_encoding(htmlstring))
+    tree = HTMLTree.parse(decoded)
+    return extract_plain_text(tree, main_content=True)
+
+
 def run_bs4(htmlstring):
     '''try with the BeautifulSoup module'''
     return BeautifulSoup(htmlstring, features='lxml').get_text(strip=True)
@@ -399,7 +410,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result, bs4_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result, resiliparse_result, bs4_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
@@ -417,6 +428,7 @@ html_text_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
 readabilipy_result.update(template_dict)
+resiliparse_result.update(template_dict)
 bs4_result.update(template_dict)
 # jparser_result.update(template_dict)
 #dragnet_result.update(template_dict)
@@ -596,6 +608,15 @@ for item in EVAL_PAGES:
     readabilipy_result['false positives'] += fp
     readabilipy_result['true negatives'] += tn
     readabilipy_result['false negatives'] += fn
+    # resiliparse
+    start = time.time()
+    result = run_resiliparse(htmlstring)
+    resiliparse_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    resiliparse_result['true positives'] += tp
+    resiliparse_result['false positives'] += fp
+    resiliparse_result['true negatives'] += tn
+    resiliparse_result['false negatives'] += fn
     # bs4
     start = time.time()
     result = run_bs4(htmlstring)
@@ -683,6 +704,11 @@ print('readabilipy')
 print(readabilipy_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
 print("time diff.: %.2f" % (readabilipy_result['time'] / baseline_result['time']))
+
+print('resiliparse')
+print(resiliparse_result)
+print("time diff.: %.2f" % (resiliparse_result['time'] / baseline_result['time']))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(resiliparse_result)))
 
 print('bs4')
 print(bs4_result)

@@ -117,7 +117,12 @@ def test_trim():
 def test_input():
     '''test if loaded strings/trees are handled properly'''
     assert utils.is_dubious_html('This is a string.') is True
-    assert utils.is_dubious_html(b'This is a string.') is True
+    htmlstring = "<!DOCTYPE html PUBLIC />\n<html/>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == "\n<html/>"
+    htmlstring = "<html>\n</html>"
+    beginning = htmlstring[:50].lower()
+    assert utils.strip_faulty_doctypes(htmlstring, beginning) == htmlstring
     with pytest.raises(TypeError) as err:
         assert utils.load_html(123) is None
     assert 'incompatible' in str(err.value)
@@ -142,13 +147,14 @@ def test_input():
 
 def test_txttocsv():
     mymeta = Document()
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\n'
     mymeta.title = 'Test title'
     mymeta.url = 'https://example.org'
     mymeta.hostname = 'example.org'
     mymeta.id = '1'
     mymeta.license = 'CC BY-SA'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\tCC BY-SA\n'
+    mymeta.image = 'https://example.org/image.jpg'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
@@ -158,7 +164,7 @@ def test_txttocsv():
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 18
+    assert isinstance(result, dict) and len(result) == 19
 
 
 def test_exotic_tags(xmloutput=False):
@@ -335,18 +341,17 @@ def test_formatting():
     assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
 
     # XML and Markdown formatting within <p>-tag
-    my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
+    my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(my_document, no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
     # TXT: newline problem here
-    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link.'
+    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link and additional text to bypass detection.'
     my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link.</p>' in my_result
+    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
     my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
-    assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
-    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref>.</p>' in my_result
+    assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref> and additional text to bypass detection.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link.'
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
@@ -652,6 +657,104 @@ def test_tei():
     )
     extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
+    # merge double elements
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <p><p>
+              <span><p>content</p></span>
+            </p></p>
+        </body>
+        </html>"""
+    )
+    tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
+    result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    assert result == "<html><body><p><span>content</span></p></body></html>"
+    tree = html.fromstring(
+    """
+    <html>
+        <body>
+            <div>
+                <div>
+                    <p>
+                        <p>text</p>
+                    <p>
+                </div>
+            </div>
+        </body>
+    </html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//div/div") is not None and tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6</p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    tree = etree.XML(
+    """
+    <html><body>
+        <div>
+            <p>text1<lb/>text2<p>text3</p><lb/>text4</p>
+            <p>text5<p>text6<p>text7</p></p></p>
+        </div>
+    </body></html>
+    """
+    )
+    xml.strip_double_tags(tree)
+    assert tree.find(".//p/p") is None
+    assert "text7" in etree.tostring(tree, encoding="unicode")
+    # nested elements with same tag not merged
+    tree = html.fromstring(
+    """<html>
+        <body>
+            <div>
+                <p>
+                  <list>
+                    <item>
+                        <p>text</p>
+                    </item>
+                  </list>
+                </p>
+                <p>
+                    <table>
+                      <row>
+                        <cell>
+                          <p>text1</p>
+                         </cell>
+                      </row>
+                    </table>
+                </p>
+                <p>
+                    <note>
+                      <p>text2</p>
+                    </note>
+                </p>
+                <p>
+                    <quote>
+                        <p>text3</p>
+                    </quote>
+                </p>
+                <p>
+                    <figure>
+                        <p>text4</p>
+                    </figure>
+                </p>
+            </div>
+        </body>
+    </html>"""
+    )
+    xml.strip_double_tags(tree)
+    for parent_tag in ["item", "cell", "quote", "note", "figure"]:
+        assert tree.find(f".//{parent_tag}/p") is not None
 
 
 def test_htmlprocessing():
@@ -781,7 +884,7 @@ def test_table_processing():
         htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
-    assert """<table><row><cell>text<head>more_text</head></cell><cell/>""" in result
+    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )

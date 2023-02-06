@@ -118,8 +118,8 @@ In case web pages have already been downloaded and stored, it's possible to proc
 
 Two major command line arguments are necessary here:
 
--  ``--inputdir`` to select a directory to read files from
--  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+-  ``--input-dir`` to select a directory to read files from
+-  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
 
 
 .. note::
@@ -140,11 +140,11 @@ Process a list of links
 
 Two major command line arguments are necessary here:
 
--  ``-i`` or ``--inputfile`` to select an input list to read links from.
+-  ``-i`` or ``--input-file`` to select an input list to read links from.
 
    This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
 
--  ``-o`` or ``--outputdir`` to define a directory to eventually store the results.
+-  ``-o`` or ``--output-dir`` to define a directory to eventually store the results.
 
    The output directory can be created on demand, but it must be writable.
 
@@ -158,7 +158,7 @@ Two major command line arguments are necessary here:
 .. hint::
     Backup of HTML sources can be useful for archival and further processing:
     
-    ``$ trafilatura --inputfile links.txt --outputdir converted/ --backup-dir html-sources/ --xml``
+    ``$ trafilatura --input-file links.txt --output-dir converted/ --backup-dir html-sources/ --xml``
 
 
 Internet Archive
@@ -253,7 +253,7 @@ For all usage instructions see ``trafilatura -h``:
 
 .. code-block:: bash
 
-    trafilatura [-h] [-i INPUTFILE | --inputdir INPUTDIR | -u URL]
+    trafilatura [-h] [-i INPUTFILE | --input-dir INPUTDIR | -u URL]
                    [--parallel PARALLEL] [-b BLACKLIST] [--list]
                    [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
                    [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP] |
@@ -277,9 +277,9 @@ optional arguments:
 Input:
   URLs, files or directories to process
 
-  -i INPUTFILE, --inputfile INPUTFILE
+  -i INPUTFILE, --input-file INPUTFILE
                         name of input file for batch processing
-  --inputdir INPUTDIR   read files from a specified directory (relative path)
+  --input-dir INPUTDIR   read files from a specified directory (relative path)
   -u URL, --URL URL     custom URL download
   --parallel PARALLEL   specify a number of cores/threads for downloads and/or
                         processing
@@ -291,7 +291,7 @@ Output:
   Determines if and how files will be written
 
   --list                display a list of URLs without downloading them
-  -o OUTPUTDIR, --outputdir OUTPUTDIR
+  -o OUTPUTDIR, --output-dir OUTPUTDIR
                         write results in a specified directory (relative path)
   --backup-dir BACKUP_DIR
                         preserve a copy of downloaded files in a backup
@@ -333,6 +333,11 @@ Extraction:
   --config-file CONFIG_FILE
                         override standard extraction parameters with a custom
                         config file
+  --precision           favor extraction precision (less noise, possibly less
+                        text)
+  --recall              favor extraction recall (more text, possibly more
+                        noise)
+
 
 Format:
   Selection of the output format

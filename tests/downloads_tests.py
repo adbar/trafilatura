@@ -13,12 +13,11 @@ except ImportError:
     pycurl = None
 
 try:
-    try:
-        import brotlicffi as brotli
-    except ImportError:
-        import brotli
+    import brotli
 except ImportError:
     brotli = None
+
+import gzip
 
 from collections import deque
 from datetime import datetime
@@ -107,17 +106,25 @@ def test_config():
 
 def test_decode():
     '''Test how responses are being decoded.'''
-    assert decode_response(b'\x1f\x8babcdef') is not None
+    # response type
     mock = Mock()
     mock.data = (b' ')
     assert decode_response(mock) is not None
+    # GZip
+    html_string = "<html><head/><body><div>ABC</div></body></html>"
+    gz_string = gzip.compress(html_string.encode("utf-8"))
+    assert decode_response(gz_string) == html_string
+    # Brotli
+    if brotli is not None:
+        brotli_string = brotli.compress(html_string.encode("utf-8"))
+        assert decode_response(brotli_string) == html_string
 
 
 def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
     inputdict = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
-    assert inputdict == dict()
+    assert inputdict == {}
     inputdict = add_to_compressed_dict(['https://www.example.org/'])
     # CLI args
     testargs = ['', '--list']
