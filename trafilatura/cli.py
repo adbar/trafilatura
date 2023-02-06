@@ -267,25 +267,14 @@ def main():
     process_args(args)
 
 
-def dump_on_exit(inputdict=None):
-    """Write all remaining URLs still in the input/processing list
-       to standard output before exiting."""
-    if inputdict:
-        for hostname in inputdict:
-            for urlpath in inputdict[hostname]:
-                sys.stdout.write(f'todo: {hostname}{urlpath}' + '\n')
-
-atexit.register(dump_on_exit, INPUTDICT)
-
-
-def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
+def process_parallel_results(future_to_url, blacklist, url_filter, url_store):
     """Process results from the parallel threads and add them
        to the compressed URL dictionary for further processing."""
     for future in as_completed(future_to_url):
         if future.result() is not None:
             inputdict = add_to_compressed_dict(
                         future.result(), blacklist=blacklist,
-                        url_filter=url_filter, inputdict=inputdict
+                        url_filter=url_filter, url_store=url_store
                         )
     return inputdict
 
@@ -332,13 +321,13 @@ def process_args(args):
         if args.explore:
             # find domains for which nothing has been found and crawl
             control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-            still_to_crawl = {
-                key: control_dict[key]
-                for key in control_dict
-                if key not in INPUTDICT
-            }
+            #still_to_crawl = {
+            #    key: control_dict[key]
+            #    for key in control_dict
+            #    if key not in INPUTDICT
+            #}
             # add to compressed dict and crawl the remaining websites
-            cli_crawler(args, n=100, domain_dict=still_to_crawl)
+            cli_crawler(args, n=100, url_store=control_dict)
 
     # activate crawler/spider
     elif args.crawl:
