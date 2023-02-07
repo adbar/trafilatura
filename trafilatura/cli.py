@@ -267,18 +267,6 @@ def main():
     process_args(args)
 
 
-def process_parallel_results(future_to_url, blacklist, url_filter, url_store):
-    """Process results from the parallel threads and add them
-       to the compressed URL dictionary for further processing."""
-    for future in as_completed(future_to_url):
-        if future.result() is not None:
-            inputdict = add_to_compressed_dict(
-                        future.result(), blacklist=blacklist,
-                        url_filter=url_filter, url_store=url_store
-                        )
-    return inputdict
-
-
 def process_args(args):
     """Perform the actual processing according to the arguments"""
     # init
@@ -307,12 +295,15 @@ def process_args(args):
                 future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
             elif args.explore or args.sitemap:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
-            # process results
-            with THREAD_LOCK:
-                INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
-                # list all links found to free memory
-                if args.list:
-                    error_caught = url_processing_pipeline(args, INPUTDICT)
+            # process results from the parallel threads and add them
+            # to the compressed URL dictionary for further processing
+            for future in as_completed(future_to_url):
+                with THREAD_LOCK:
+                    if future.result() is not None:
+                        INPUTDICT = add_to_compressed_dict(
+                            future.result(), blacklist=args.blacklist,
+                            url_filter=args.url_filter, url_store=INPUTDICT
+                        )
 
         # process the links found
         error_caught = url_processing_pipeline(args, INPUTDICT)
