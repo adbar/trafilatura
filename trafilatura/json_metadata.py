@@ -81,7 +81,11 @@ def extract_json(schema, metadata):
                                 author_name = author['name']
                                 if isinstance(author_name, list):
                                     author_name = '; '.join(author_name).strip('; ')
-                                metadata.author = normalize_authors(metadata.author, author_name)
+                                elif isinstance(author_name, dict) and "name" in author_name:
+                                    author_name = author_name["name"]
+                                # check for no more bugs on json
+                                if isinstance(author_name, str):
+                                    metadata.author = normalize_authors(metadata.author, author_name)
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
                                 metadata.author = normalize_authors(

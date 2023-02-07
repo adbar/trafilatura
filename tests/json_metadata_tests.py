@@ -792,6 +792,61 @@ def test_json_extraction():
 
     assert metadata is not None and metadata.title is None and metadata.sitename is None
 
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring('''
+    <html><body>
+        <script type="application/ld+json">
+        {
+           "@context":"https://schema.org",
+           "@graph":[
+              {
+                 "@type":"Article",
+                 "headline":"21 Best Beaches in the World",
+                 "name":"Find perfection in these places where land meets water.",
+                 "datePublished":"2017-11-11T22:44:12Z",
+                 "dateModified":"2017-11-11T22:44:12Z",
+                 "publisher":{
+                    "@type":"Organization",
+                    "@id":"https://www.nationalgeographic.co.uk/",
+                    "name":"National Geographic",
+                    "url":"https://www.nationalgeographic.co.uk/",
+                    "logo":{
+                       "@type":"ImageObject",
+                       "url":"https://www.nationalgeographic.co.uk/images/logo.png"
+                    }
+                 },
+                 "author":{
+                    "@type":"Person",
+                    "name":{
+                       "@type":"Person",
+                       "name":"Kimberley Lovato"
+                    }
+                 },
+                 "mainEntityOfPage":"https://www.nationalgeographic.co.uk/travel-and-adventure/21-best-beaches-in-the-world",
+                 "image":{
+                    "@type":"ImageObject",
+                    "url":"https://static.nationalgeographic.co.uk/files/styles/image_3200/public/playa-del-amor-mexico.jpg?w=1900&h=1259",
+                    "width":1900,
+                    "height":1259,
+                    "author":{
+                       "@type":"Person",
+                       "name":"Miguel Naranjo"
+                    },
+                    "contributor":{
+                       "@type":"Person",
+                       "name":"Miguel Naranjo"
+                    },
+                    "caption":"People exploring Playa del Amor in Marieta Islands, Mexico",
+                    "name":"playa-del-amor-mexico.jpg",
+                    "alternateName":"playa-del-amor-mexico"
+                 }
+              }
+           ]
+        }
+        </script>
+    </body></html>'''), metadata)
+
+    assert metadata is not None and metadata.title == "Find perfection in these places where land meets water." and metadata.sitename == "National Geographic" and metadata.author == "Kimberley Lovato"
 
 if __name__ == '__main__':
     test_json_extraction()
