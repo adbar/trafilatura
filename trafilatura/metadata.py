@@ -525,6 +525,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         # fix: take 1st element (['Westdeutscher Rundfunk'])
         if isinstance(metadata.sitename, list):
             metadata.sitename = metadata.sitename[0]
+        # hotfix: probably an error coming from json_metadata (#195)
+        elif isinstance(metadata.sitename, dict):
+            metadata.sitename = str(metadata.sitename)
         if metadata.sitename.startswith('@'):
             # scrap Twitter ID
             metadata.sitename = re.sub(r'^@', '', metadata.sitename)
