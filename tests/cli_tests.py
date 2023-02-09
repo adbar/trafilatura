@@ -83,6 +83,14 @@ def test_parser():
     with redirect_stdout(f):
         cli.process_args(args)
     assert len(f.getvalue()) == 0
+    # input directory
+    testargs = ['', '--input-dir', 'resources/test/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert len(f.getvalue()) == 0
     # version
     testargs = ['', '--version']
     with pytest.raises(SystemExit) as e, redirect_stdout(f):
@@ -92,11 +100,11 @@ def test_parser():
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
     # test future deprecations
-    testargs = ['', '-i', 'test.txt', '--with-metadata', '--nocomments', '--notables']
+    testargs = ['', '--inputfile', 'test.txt', '--with-metadata', '--nocomments', '--notables']
     with patch.object(sys, 'argv', testargs):
         args = cli.map_args(cli.parse_args(testargs))
     assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.input_file == 'test.txt'
-    testargs = ['', '--inputdir', 'test1', '--outputdir', 'test2']
+    testargs = ['', '--inputdir', 'test1', '--outputdir', 'test2', '-vv']
     with patch.object(sys, 'argv', testargs):
         args = cli.map_args(cli.parse_args(testargs))
     assert args.input_dir and args.output_dir

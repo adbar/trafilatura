@@ -239,6 +239,8 @@ def test_exotic_tags(xmloutput=False):
   </body>
 </html>'''
     assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+    # comments
+    assert extract('<html><body><article><p>text</p><div class="comments"><p>comment</p></div></article></body></html>', include_comments=True, no_fallback=True, config=ZERO_CONFIG).endswith("\ncomment")
 
 
 def test_lrucache():
@@ -375,6 +377,9 @@ def test_baseline():
     my_document = r'<html><body><script type="application/ld+json">{"description":"In letzter Zeit kam man am Begriff \"Hygge\", was so viel wie \"angenehm\" oder \"gemütlich\" bedeutet, ja nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend ...","image":[{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/uncropped-0-0\/7d00b2658fd0a3b19e1b161f4657cc20\/Xw\/ikigai--1-.jpg","width":"2048","height":"1366","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-1280-720\/bf947c7c24167d7c0adae0be10942d57\/Uf\/ikigai--1-.jpg","width":"1280","height":"720","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-938-528\/bf947c7c24167d7c0adae0be10942d57\/JK\/ikigai--1-.jpg","width":"938","height":"528","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/large1x1-622-622\/f5544b7d67e1be04f7729b130e7e0485\/KN\/ikigai--1-.jpg","width":"622","height":"622","@type":"ImageObject"}],"mainEntityOfPage":{"@id":"https:\/\/www.brigitte.de\/liebe\/persoenlichkeit\/ikigai-macht-dich-sofort-gluecklicher--10972896.html","@type":"WebPage"},"headline":"Ikigai macht dich sofort glücklicher!","datePublished":"2019-06-19T14:29:08+0000","dateModified":"2019-06-19T14:29:10+0000","author":{"name":"BRIGITTE.de","@type":"Organization"},"publisher":{"name":"BRIGITTE.de","logo":{"url":"https:\/\/image.brigitte.de\/11476842\/uncropped-0-0\/f19537e97b9189bf0f25ce924168bedb\/kK\/bri-logo-schema-org.png","width":"167","height":"60","@type":"ImageObject"},"@type":"Organization"},"articleBody":"In letzter Zeit kam man am Begriff \"Hygge\" (\"gemütlich\" oder \"angenehm\") nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend Konkurrenz: \"Ikigai\". Bist du glücklich? Schwierige Frage, nicht wahr? Viele von uns müssen da erst mal überlegen.","@type":"NewsArticle"}</script></body></html>'
     _, result, _  = baseline(my_document)
     assert result.startswith('In letzter Zeit kam man') and result.endswith('erst mal überlegen.')
+    my_document = '<html><body><article>' + 'The article consists of this text.'*10 + '</article></body></html>'
+    _, result, _ = baseline(my_document)
+    assert result is not None
     my_document = '<html><body><article><b>The article consists of this text.</b></article></body></html>'
     _, result, _ = baseline(my_document)
     assert result is not None
@@ -518,6 +523,8 @@ def test_images():
     assert '![Example image](test.jpg)' not in extract(teststring)
     assert '![Example image](test.jpg)' in extract(teststring, include_images=True, no_fallback=True)
     assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert extract('<html><body><article><img data-src="test.jpg" alt="text" title="a title"/></article></body></html>', include_images=True, no_fallback=True) == '![a title text](test.jpg)'
+
     # CNN example
     mydoc = html.fromstring('<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781" src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-eq-state="mini xsmall small medium" data-src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg">')
     myimage = handle_image(mydoc)
@@ -825,15 +832,20 @@ def test_precision_recall():
     '''test precision- and recall-oriented settings'''
     # the test cases could be better
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
-    assert extract(my_document, favor_precision=True, config=ZERO_CONFIG) is not None
-    assert extract(my_document, favor_recall=True, config=ZERO_CONFIG) is not None
+    assert extract(my_document, favor_precision=True, config=ZERO_CONFIG, fast=True) is not None
+    assert extract(my_document, favor_recall=True, config=ZERO_CONFIG, fast=True) is not None
     my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>')
-    assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
-    assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
-    assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
+    assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG, fast=True)
+    assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG, fast=True)
+    assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG, fast=True)
     my_document = html.fromstring('<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>')
-    assert '1' not in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
-    assert '1' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
+    result = extract(my_document, favor_recall=True, config=ZERO_CONFIG, fast=True)
+    assert '1' not in result
+    result = extract(my_document, favor_precision=True, config=ZERO_CONFIG, fast=True)
+    assert '1' not in result
+    my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><h2>Test</h2></div></body></html>')
+    result = extract(my_document, favor_precision=True, config=ZERO_CONFIG, fast=True)
+    assert 'content' in result and 'Test' not in result
 
 
 def test_table_processing():
