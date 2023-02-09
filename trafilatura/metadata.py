@@ -8,9 +8,7 @@ import re
 
 from copy import deepcopy
 
-from courlan.clean import normalize_url
-from courlan.core import extract_domain
-from courlan.filters import validate_url
+from courlan import extract_domain, normalize_url, validate_url
 from htmldate import find_date
 from lxml.html import tostring
 
@@ -57,11 +55,12 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$')  # part without dots?
-URL_COMP_CHECK = re.compile(r'https?://')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
+
+URL_DOMAIN_REGEX = re.compile(r"https://[^/]+")  # to be replaced by extract_domain
 
 METANAME_AUTHOR = {
     'article:author', 'atc-metaauthor', 'author', 'authors', 'byl', 'citation_author',
@@ -314,20 +313,16 @@ def extract_author(tree):
 
 def extract_url(tree, default_url=None):
     '''Extract the URL from the canonical link'''
+    url = None
     # https://www.tutorialrepublic.com/html-reference/html-base-tag.php
-    # default url as fallback
-    url = default_url
     # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"][@href]')
-    if element is not None and URL_COMP_CHECK.match(element.attrib['href']):
+    if element is not None:
         url = element.attrib['href']
     # try default language link
     else:
         for element in tree.iterfind('.//head//link[@rel="alternate"][@hreflang]'):
-            if (
-                element.attrib['hreflang'] == 'x-default'
-                and URL_COMP_CHECK.match(element.attrib['href'])
-            ):
+            if element.attrib['hreflang'] == 'x-default':
                 LOGGER.debug(tostring(element, pretty_print=False, encoding='unicode').strip())
                 url = element.attrib['href']
     # add domain name if it's missing
@@ -340,7 +335,8 @@ def extract_url(tree, default_url=None):
             else:
                 continue
             if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
-                domain_match = re.match(r'https?://[^/]+', element.attrib['content'])
+                # to be replaced by extract_domain
+                domain_match = URL_DOMAIN_REGEX.match(element.attrib['content'])
                 if domain_match:
                     # prepend URL
                     url = domain_match[0] + url
@@ -349,7 +345,7 @@ def extract_url(tree, default_url=None):
     if url is not None:
         validation_result, parsed_url = validate_url(url)
         url = None if validation_result is False else normalize_url(parsed_url)
-    return url
+    return url or default_url
 
 
 def extract_sitename(tree):
@@ -428,32 +424,14 @@ def extract_license(tree):
 def extract_image(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)
        and search meta tags with Twitter Image'''
-    image = None
 
-    for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
-        # safeguard
-        if not elem.get('content'):
-            continue
-        # og:image
-        if elem.get('property') == 'og:image':
-            image = elem.get('content')
-        # og:image:url
-        if elem.get('property') == 'og:image:url':
-            image = elem.get('content')
+    for elem in tree.xpath('.//head/meta[@property="og:image" or "og:image:url"][@content]'):
+        return elem.get('content')
 
-    if image is None:
-        for elem in tree.xpath('.//head/meta[starts-with(@property, "twitter:")]'):
-            # safeguard
-            if not elem.get('content'):
-                continue
-            # twitter:image
-            if elem.get('property') == 'twitter:image':
-                image = elem.get('content')
-            # twitter:image:src
-            if elem.get('property') == 'twitter:image:src':
-                image = elem.get('content')
+    for elem in tree.xpath('.//head/meta[@property="twitter:image" or @property="twitter:image:src"][@content]'):
+        return elem.get('content')
 
-    return image
+    return None
 
 
 def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
@@ -505,7 +483,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata.url = extract_url(tree, default_url)
     # hostname
     if metadata.url is not None:
-        metadata.hostname = extract_domain(metadata.url)
+        metadata.hostname = extract_domain(metadata.url, fast=True)
     # image
     if metadata.image is None:
         metadata.image = extract_image(tree)
