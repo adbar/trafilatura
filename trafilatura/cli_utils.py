@@ -14,13 +14,14 @@ import string
 import sys
 import traceback
 
-from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import get_host_and_path, is_navigation_page, validate_url, UrlStore
+from courlan import get_host_and_path, validate_url, UrlStore
+
+from trafilatura import spider
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
@@ -28,8 +29,6 @@ from .filters import content_fingerprint
 from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-import trafilatura.spider as spider
-#from .spider import URL_STORE, get_crawl_delay, init_crawl, process_response
 
 
 LOGGER = logging.getLogger(__name__)
@@ -226,16 +225,17 @@ def cli_crawler(args, n=30, url_store=None):
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    counter = None
+    # counter = None
     # load input URLs
     if url_store is None:
         spider.URL_STORE.add_urls(load_input_urls(args))
     else:
         spider.URL_STORE = url_store
     # load crawl data
-    for hostname in list(spider.URL_STORE.urldict.keys()):
-        startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath  # hostname  # spider.URL_STORE.get_url(hostname)
-        base_url, i, known_num, rules, is_on = spider.init_crawl(startpage, None, set(), language=args.target_language)
+    for hostname in spider.URL_STORE.get_known_domains():
+        startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath  # URL_STORE.get_url(hostname)
+        # base_url, i, known_num, rules, is_on
+        _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
         # update info
         # TODO: register changes?
         # if base_url != hostname:
@@ -243,39 +243,19 @@ def cli_crawler(args, n=30, url_store=None):
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
         bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
-        #for w in spider.URL_STORE.urldict:
-        #    for t in spider.URL_STORE.urldict[w].tuples:
-        #        print(t.urlpath, t.visited)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)
             # handle result
             if result is not None and result != '':
-                spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.urldict[website].rules)
-                # only store content pages, not navigation
-                #if not is_navigation_page(url):  # + response.url
-                #    if args.list:
-                #        write_result(url, args)
-                    #else:
-                    #    counter = process_result(htmlstring, args, url, counter, config)
+                spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.get_rules(website))
                 # just in case a crawl delay is specified in robots.txt
-                sleep(spider.get_crawl_delay(spider.URL_STORE.urldict[website].rules))
-                #else:
-                #    LOGGER.debug('No result for URL: %s', url)
-                #    if args.archived is True:
-                #        errors.append(url)
+                sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(website)))
         # early exit if maximum count is reached
         if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
             break
     # print results
-    #for w in spider.URL_STORE.urldict:
-    #    for t in spider.URL_STORE.urldict[w].tuples:
-    #        print(t.urlpath, t.visited)
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
-    #for website in spider.URL_STORE.urldict:
-        #print(spider.URL_STORE.urldict[website].tuples)
-    #    for url in sorted(spider.URL_STORE.find_known_urls(website)):
-    #        sys.stdout.write(url +'\n')
     #return todo, known_links
 
 
