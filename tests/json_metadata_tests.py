@@ -848,5 +848,40 @@ def test_json_extraction():
 
     assert metadata is not None and metadata.title == "Find perfection in these places where land meets water." and metadata.sitename == "National Geographic" and metadata.author == "Kimberley Lovato"
 
+    # tests that "@type": [] in the JSON doesn't cause an exeption
+
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring(
+    """
+    <html>
+    <body>
+        <script type="application/ld+json">
+        {
+            "@context": "http:\/\/schema.org",
+            "@type": [],
+            "publishingPrinciples": "https:\/\/www.mercurynews.com\/policies-and-standards\/",
+            "image": "https:\/\/www.mercurynews.com\/wp-content\/uploads\/2020\/12\/EBT-L-OSCAR-1211-18.jpg?w=150&strip=all",
+            "headline": "Letters: Coddling criminals | Undermining road | Tax dollars | Recount cost | Predicting climate",
+            "datePublished": "2023-01-16 16:30:41",
+            "author": {
+            "@type": "Person",
+            "workLocation": {
+                "@type": "Place"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "Journalist"
+            },
+            "sameAs": ["https:\/\/www.mercurynews.com\/author\/jaimoe0\/"],
+            "name": "Jaime Welton"
+            }
+        }
+        </script>
+    </body>
+    </html>
+    """), metadata)
+
+    assert metadata is not None
+
 if __name__ == '__main__':
     test_json_extraction()
