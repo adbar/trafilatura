@@ -13,20 +13,22 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
 
 import certifi
+
 try:
     import pycurl
     CURL_SHARE = pycurl.CurlShare()
-    # available options: https://pycurl.io/docs/latest/curlshareobject.html?highlight=lock_data_cookie
+    # available options:
+    # https://curl.se/libcurl/c/curl_share_setopt.html
     CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
     CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
     # not thread-safe
-    # https://curl.se/libcurl/c/curl_share_setopt.html
     # CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
 except ImportError:
     pycurl = None
+
 import urllib3
 
-from courlan import validate_url, UrlStore
+from courlan import UrlStore
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
@@ -89,11 +91,13 @@ def _send_request(url, no_ssl, config):
             redirect=MAX_REDIRECTS, # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT')*2,
-            status_forcelist=[429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598],
+            status_forcelist=[
+                429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598
+            ],
             # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
     try:
-        # read by streaming chunks (stream=True, iter_content=xx)
+        # TODO: read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         if no_ssl is False:
             # define pool
@@ -104,23 +108,14 @@ def _send_request(url, no_ssl, config):
         else:
             # define pool
             if not NO_CERT_POOL:
-                NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=20)
+                NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=NUM_CONNECTIONS)
             # execute request
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
-    except urllib3.exceptions.NewConnectionError as err:
-        LOGGER.error('connection refused: %s %s', url, err)
-        return ''  # raise error instead?
-    except urllib3.exceptions.MaxRetryError as err:
-        LOGGER.error('retries/redirects: %s %s', url, err)
-        return ''  # raise error instead?
-    except urllib3.exceptions.TimeoutError as err:
-        LOGGER.error('connection timeout: %s %s', url, err)
-        return ''  # raise error instead?
     except urllib3.exceptions.SSLError:
         LOGGER.error('retrying after SSLError: %s', url)
         return _send_request(url, True, config)
     except Exception as err:
-        logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
+        logging.error('download error: %s %s', url, err)  # sys.exc_info()[0]
     else:
         # necessary for standardization
         return RawResponse(response.data, response.status, response.geturl())
@@ -134,10 +129,10 @@ def _handle_response(url, response, decode, config):
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
     elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         LOGGER.error('too small/incorrect for URL %s', url)
-        return ''  # raise error instead?
+        # raise error instead?
     elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
         LOGGER.error('too large: length %s for URL %s', len(response.data), url)
-        return ''  # raise error instead?
+        # raise error instead?
     else:
         return decode_response(response.data) if decode is True else response
     # catchall
@@ -154,19 +149,20 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         config: Pass configuration values for output control.
 
     Returns:
-        HTML code as string, or Urllib3 response object (headers + body), or empty string in case
-        the result is invalid, or None if there was a problem with the network.
+        RawResponse object: data (headers + body), status (HTML code as string) and url
+        or None in case the result is invalid or there was a problem with the network.
 
     """
+    LOGGER.debug('sending request: %s', url)
     if pycurl is None:
         response = _send_request(url, no_ssl, config)
     else:
         response = _send_pycurl_request(url, no_ssl, config)
-    if response is not None:
-        if response != '':
-            return _handle_response(url, response, decode, config)
+    if response is not None and response != '':
+        return _handle_response(url, response, decode, config)
         # return '' (useful do discard further processing?)
-        return response
+        # return response
+    LOGGER.debug('no response: %s', url)
     return None
 
 
@@ -189,9 +185,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
                     filtered_list.append(u)
                     break
         inputlist = filtered_list
-    # validate and store in dict
-    inputlist = [u for u in inputlist if validate_url(u)[0] is True]
-    # segment URL and add to domain dictionary
+    # validate and store
     url_store.add_urls(inputlist)
     return url_store
 

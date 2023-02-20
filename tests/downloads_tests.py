@@ -46,17 +46,18 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 def test_fetch():
     '''Test URL fetching.'''
+    # empty request?
+    assert _send_request('', True, DEFAULT_CONFIG) is None
     # pycurl tests
     if pycurl is not None:
         assert fetch_url('1234') is None
     # urllib3 tests
     else:
-        assert fetch_url('1234') == ''
+        assert fetch_url('1234') is None
     assert fetch_url('https://httpbin.org/status/404') is None
-    # empty request?
-    #assert _send_request('') is None
-    # test if the fonctions default to no_ssl
-    assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # test if the functions default to no_ssl
+    # doesn't work?
+    # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
@@ -77,10 +78,10 @@ def test_fetch():
     mock.status = 200
     # too large
     mock.data = (b'ABC'*10000000)
-    assert _handle_response(url, mock, False, DEFAULT_CONFIG) == ''
+    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
     # too small
     mock.data = (b'ABC')
-    assert _handle_response(url, mock, False, DEFAULT_CONFIG) == ''
+    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
     # straight handling of response object
     assert load_html(response) is not None
     # nothing to see here

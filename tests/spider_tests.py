@@ -45,9 +45,9 @@ def test_meta_redirections():
     htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=1234"/></html>', 'https://httpbin.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 is None and homepage2 is None
-    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=https://httpbin.org/status/200"/></html>', 'http://test.org/'
+    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=https://httpbin.org/html"/></html>', 'http://test.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
-    assert htmlstring2 == '' and homepage2 == 'https://httpbin.org/status/200'
+    assert htmlstring2 is not None and homepage2 == 'https://httpbin.org/html'
 
 
 def test_process_links():

@@ -212,7 +212,7 @@ def download_queue_processing(url_store, args, counter, config):
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
-            if result is not None and result != '':
+            if result is not None:
                 counter = process_result(result, args, url, counter, config)
             else:
                 LOGGER.warning('No result for URL: %s', url)
@@ -247,7 +247,7 @@ def cli_crawler(args, n=30, url_store=None):
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)
             # handle result
-            if result is not None and result != '':
+            if result is not None:
                 spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.get_rules(website))
                 # just in case a crawl delay is specified in robots.txt
                 sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(website)))
