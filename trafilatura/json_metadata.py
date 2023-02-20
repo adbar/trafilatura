@@ -40,7 +40,7 @@ def extract_json(schema, metadata):
             if 'publisher' in content and 'name' in content['publisher']:
                 metadata.sitename = content['publisher']['name']
 
-            if '@type' not in content:
+            if '@type' not in content or len(content["@type"]) == 0:
                 continue
             if isinstance(content["@type"], list):
                 # some websites are using ['Person'] as type

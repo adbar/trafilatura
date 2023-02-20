@@ -138,6 +138,7 @@ MOCK_PAGES = {
     'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be': 'scmp.com.playbook.html',
     'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': 'faz.net.streaming.html',
     'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html': 'ndr.de.podcastcoronavirus140.html',
+    "https://www.mercurynews.com/2023/01/16/letters-1119/": "mercurynews.com.2023.01.16.letters-1119.html"
 }
 # '': '', \
 
@@ -704,7 +705,10 @@ def test_pages():
     assert 'Korinna Hennig' in metadata.author
     assert 'Ältere Menschen' in str(metadata.tags)
 
+    url = "https://www.mercurynews.com/2023/01/16/letters-1119/"
+    metadata = extract_metadata(load_mock_page(url, xml_flag=True))
 
+    
 if __name__ == '__main__':
     test_extract(False)
     test_extract(True)
