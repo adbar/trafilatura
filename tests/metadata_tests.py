@@ -275,7 +275,47 @@ def test_images():
     metadata = extract_metadata('<html><head><meta property="twitter:image" content="https://example.org/example-twitter.jpg"></html>')
     assert metadata.image == 'https://example.org/example-twitter.jpg'
 
+def test_Document_as_dict():
+    """Tests that the dict serialization works and preserves data."""
 
+    html = """
+    <html>
+    <head>
+        <title>Test Title</title>
+        <meta itemprop="author" content="Jenny Smith" />
+        <meta property="og:url" content="https://example.org" />
+        <meta itemprop="description" content="Description" />
+        <meta property="og:published_time" content="2017-09-01" />
+        <meta name="article:publisher" content="The Newspaper" />
+        <meta property="image" content="https://example.org/example.jpg" />
+    </head>
+    <body>
+        <p class="entry-categories">
+        <a href="https://example.org/category/cat1/">Cat1</a>,
+        <a href="https://example.org/category/cat2/">Cat2</a>
+        </p>
+        <p>
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license"
+            >CC BY-SA</a
+        >
+        </p>
+    </body>
+    </html>
+    """
+
+    document = extract_metadata(html)
+
+    dict_ = document.as_dict()
+
+    assert dict_["title"] == "Test Title"
+    assert dict_["author"] == "Jenny Smith"
+    assert dict_["url"] == "https://example.org"
+    assert dict_["description"] == "Description"
+    assert dict_["sitename"] == "The Newspaper"
+    assert dict_["date"] == "2017-09-01"
+    assert dict_["categories"] == ["Cat1", "Cat2"]
+    assert dict_["license"] == "CC BY-SA 4.0"
+    assert dict_["image"] == "https://example.org/example.jpg"
 
 if __name__ == '__main__':
     test_titles()

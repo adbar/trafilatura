@@ -47,6 +47,15 @@ class Document:
                 # HTML entities, remove spaces and control characters
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
+    
+    def as_dict(self):
+        "Convert the document to a dictionary."
+        return {
+            attr: getattr(self, attr)
+            for attr in self.__slots__
+            if hasattr(self, attr)
+        }
+
 
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
@@ -444,8 +453,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
 
     Returns:
-        A dict() containing the extracted metadata information or None.
-
+        A trafilatura.metadata.Document containing the extracted metadata information or None.
+        trafilatura.metadata.Document has .as_dict() method that will return a copy as a dict.
     """
     # init
     if author_blacklist is None:
