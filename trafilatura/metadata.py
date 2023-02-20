@@ -54,7 +54,7 @@ class Document:
             attr: getattr(self, attr)
             for attr in self.__slots__
             if hasattr(self, attr)
-    }
+        }
 
 
 
