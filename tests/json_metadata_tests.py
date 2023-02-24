@@ -891,5 +891,20 @@ def test_json_extraction():
 
     assert metadata is not None
 
+    # tests if the JSON-LD with html entities is parsed correctly
+    metadata = Document()
+    metadata = extract_meta_json(html.fromstring(
+    """
+    <html>
+    <body>
+        <script type="application/ld+json">
+        &#13;{&#13;"@context":"http://schema.org",&#13;"@type":"WebSite",&#13;"url":"https://example.com/",&#13;"potentialAction":{&#13;"@type":"SearchAction",&#13;"target":"https://example.com/?s={search_term_string}",&#13;"query-input":"required name=search_term_string"&#13;}&#13;}&#13;
+        </script>
+    </body>
+    </html>
+    """), metadata)
+
+    assert metadata.pagetype == 'website'
+
 if __name__ == '__main__':
     test_json_extraction()
