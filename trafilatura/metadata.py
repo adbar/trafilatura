@@ -5,7 +5,6 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
-import html
 
 from copy import deepcopy
 
@@ -13,10 +12,11 @@ from courlan import extract_domain, normalize_url, validate_url
 from htmldate import find_date
 from lxml.html import tostring
 
-from .json_metadata import extract_json, extract_json_parse_error
+from .htmlprocessing import prune_unwanted_nodes
+from .json_metadata import extract_json, extract_json_parse_error, normalize_json
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
 from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape, uniquify_list
-from .htmlprocessing import prune_unwanted_nodes
+
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -48,7 +48,7 @@ class Document:
                 # HTML entities, remove spaces and control characters
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
-    
+
     def as_dict(self):
         "Convert the document to a dictionary."
         return {
@@ -118,7 +118,7 @@ def extract_meta_json(tree, metadata):
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
-        element_text = html.unescape(JSON_MINIFY.sub(r'\1', elem.text))
+        element_text = normalize_json(JSON_MINIFY.sub(r'\1', elem.text))
         try:
             schema = json.loads(element_text)
             metadata = extract_json(schema, metadata)
@@ -162,7 +162,7 @@ def extract_opengraph(tree):
             image = elem.get('content')
         # og:type
         elif elem.get('property') == 'og:type':
-           pagetype = elem.get('content')
+            pagetype = elem.get('content')
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')

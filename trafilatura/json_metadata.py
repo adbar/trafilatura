@@ -6,6 +6,8 @@ For reference, here is the list of all JSON-LD types: https://schema.org/docs/fu
 import json
 import re
 
+from html import unescape
+
 from .utils import normalize_authors, trim
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
@@ -170,5 +172,5 @@ def extract_json_parse_error(elem, metadata):
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
     if '\\' in inputstring:
-        return trim(inputstring.encode().decode('unicode-escape'))
+        return trim(unescape(inputstring.encode().decode('unicode-escape')))
     return trim(inputstring)
