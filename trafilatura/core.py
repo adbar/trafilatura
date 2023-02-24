@@ -183,8 +183,9 @@ def handle_lists(element, options):
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
                         subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                        if subelem.tag == 'ref' and subelem.get('target') is not None:
-                            subchildelem.set('target', subelem.get('target'))
+                        # set attributes
+                        for attr in subelem.attrib:
+                            subchildelem.set(attr, subelem.get(attr))
                 # strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
             if child.tail is not None and child.tail.strip():
@@ -658,6 +659,8 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         algo_flag = True
     elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
         algo_flag = True
+    #elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3') and len_algo > len_text:
+    #    algo_flag = True
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
         algo_flag = False
