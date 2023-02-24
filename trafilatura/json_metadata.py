@@ -1,5 +1,6 @@
 """
 Functions needed to scrape metadata from JSON-LD format.
+For reference, here is the list of all JSON-LD types: https://schema.org/docs/full.html
 """
 
 import json
@@ -7,13 +8,14 @@ import re
 
 from .utils import normalize_authors, trim
 
-
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
+JSON_OGTYPE_SCHEMA = {"aboutpage", "checkoutpage", "collectionpage", "contactpage", "faqpage", "itempage", "medicalwebpage", "profilepage", "qapage", "realestatelisting", "searchresultspage", "webpage", "website", "article", "advertisercontentarticle", "newsarticle", "analysisnewsarticle", "askpublicnewsarticle", "backgroundnewsarticle", "opinionnewsarticle", "reportagenewsarticle", "reviewnewsarticle", "report", "satiricalarticle", "scholarlyarticle", "medicalscholarlyarticle", "socialmediaposting", "blogposting", "liveblogposting", "discussionforumposting", "techarticle", "blog", "jobposting"}
 JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(r',?(?:"\w+":?[:|,\[])?{?"@type":"(?:[Ii]mageObject|[Oo]rganization|[Ww]eb[Pp]age)",[^}[]+}[\]|}]?')
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
+JSON_TYPE = re.compile(r'"@type"\s*:\s*"([^"]*)"', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
@@ -47,6 +49,10 @@ def extract_json(schema, metadata):
                 content_type = content["@type"][0].lower()
             else:
                 content_type = content["@type"].lower()
+
+            # The "pagetype" should only be returned if the page is some kind of an article, category, website...
+            if content_type in JSON_OGTYPE_SCHEMA and metadata.pagetype is None:
+                metadata.pagetype = normalize_json(content_type)
 
             if content_type in JSON_PUBLISHER_SCHEMA:
                 for candidate in ("name", "alternateName"):
@@ -128,6 +134,12 @@ def extract_json_parse_error(elem, metadata):
             author = extract_json_author(element_text_author, JSON_AUTHOR_2)
         if author is not None:
             metadata.author = author
+    # try to extract page type as an alternative to og:type
+    if "@type" in elem:
+        mymatch = JSON_TYPE.search(elem)
+        candidate = normalize_json(mymatch[1].lower())
+        if mymatch and candidate in JSON_OGTYPE_SCHEMA:
+            metadata.pagetype = candidate
     # try to extract publisher
     if '"publisher"' in elem:
         mymatch = JSON_PUBLISHER.search(elem)

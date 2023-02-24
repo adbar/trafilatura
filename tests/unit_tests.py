@@ -147,14 +147,15 @@ def test_input():
 
 def test_txttocsv():
     mymeta = Document()
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\n'
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\tNone\n'
     mymeta.title = 'Test title'
     mymeta.url = 'https://example.org'
     mymeta.hostname = 'example.org'
     mymeta.id = '1'
     mymeta.license = 'CC BY-SA'
     mymeta.image = 'https://example.org/image.jpg'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\n'
+    mymeta.pagetype = 'article'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\tarticle\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
@@ -164,7 +165,7 @@ def test_txttocsv():
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 19
+    assert isinstance(result, dict) and len(result) == 20
 
 
 def test_exotic_tags(xmloutput=False):
