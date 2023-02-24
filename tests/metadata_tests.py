@@ -198,7 +198,8 @@ def test_sitename():
 
 def test_meta():
     '''Test extraction out of meta-elements'''
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
+    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/><meta property="og:type" content="Open Graph Type"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
+    assert metadata.pagetype == 'Open Graph Type'
     assert metadata.title == 'Open Graph Title'
     assert metadata.author == 'Jenny Smith'
     assert metadata.description == 'This is an Open Graph description'

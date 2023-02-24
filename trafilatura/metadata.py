@@ -27,7 +27,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language', 'image',  # 'locale'?
+    'language', 'image', 'pagetype'  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -128,7 +128,7 @@ def extract_meta_json(tree, metadata):
 
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
-    title, author, url, description, site_name, image = (None,) * 6
+    title, author, url, description, site_name, image, pagetype = (None,) * 7
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
@@ -160,22 +160,22 @@ def extract_opengraph(tree):
         elif elem.get('property') == 'og:image:secure_url':
             image = elem.get('content')
         # og:type
-        # elif elem.get('property') == 'og:type':
-        #    pagetype = elem.get('content')
+        elif elem.get('property') == 'og:type':
+           pagetype = elem.get('content')
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return title, author, url, description, site_name, image
+    return title, author, url, description, site_name, image, pagetype
 
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
     metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
-    title, author, url, description, site_name, image = extract_opengraph(tree)
+    title, author, url, description, site_name, image, pagetype = extract_opengraph(tree)
     # test if all return values have been assigned
-    if all((title, author, url, description, site_name, image)):  # if they are all defined
-        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.image = title, author, url, description, site_name, image
+    if all((title, author, url, description, site_name, image, pagetype)):  # if they are all defined
+        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.image, metadata.pagetype = title, author, url, description, site_name, image, pagetype
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -246,7 +246,7 @@ def examine_meta(tree):
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
     # copy
-    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags, metadata.image = title, author, url, description, site_name, tags, image
+    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags, metadata.image, metadata.pagetype = title, author, url, description, site_name, tags, image, pagetype
     return metadata
 
 
