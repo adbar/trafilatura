@@ -5,6 +5,7 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+import html
 
 from copy import deepcopy
 
@@ -117,7 +118,7 @@ def extract_meta_json(tree, metadata):
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
-        element_text = JSON_MINIFY.sub(r'\1', elem.text)
+        element_text = html.unescape(JSON_MINIFY.sub(r'\1', elem.text))
         try:
             schema = json.loads(element_text)
             metadata = extract_json(schema, metadata)
