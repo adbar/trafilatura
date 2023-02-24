@@ -9,7 +9,7 @@ from .utils import normalize_authors, trim
 
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
-JSON_OGTYPE_SCHEMA = {'aboutpage', 'checkoutpage', 'collectionpage', 'contactpage', 'faqpage', 'itempage', 'medicalwebpage', 'profilepage', 'qapage', 'realestatelisting', 'searchresultspage', 'webpage', 'website', 'article', 'advertisercontentarticle', 'newsarticle', 'analysisnewsarticle', 'askpublicnewsarticle', 'backgroundnewsarticle', 'opinionnewsarticle', 'reportagenewsarticle', 'reviewnewsarticle', 'report', 'satiricalarticle', 'scholarlyarticle', 'medicalscholarlyarticle', 'socialmediaposting', 'blogposting', 'liveblogposting', 'discussionforumposting', 'techarticle', 'blog'}
+JSON_OGTYPE_SCHEMA = {"aboutpage", "checkoutpage", "collectionpage", "contactpage", "faqpage", "itempage", "medicalwebpage", "profilepage", "qapage", "realestatelisting", "searchresultspage", "webpage", "website", "article", "advertisercontentarticle", "newsarticle", "analysisnewsarticle", "askpublicnewsarticle", "backgroundnewsarticle", "opinionnewsarticle", "reportagenewsarticle", "reviewnewsarticle", "report", "satiricalarticle", "scholarlyarticle", "medicalscholarlyarticle", "socialmediaposting", "blogposting", "liveblogposting", "discussionforumposting", "techarticle", "blog", "jobposting"}
 JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
