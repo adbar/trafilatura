@@ -1,12 +1,12 @@
 """
 Functions needed to scrape metadata from JSON-LD format.
+For reference, here is the list of all JSON-LD types: https://schema.org/docs/full.html
 """
 
 import json
 import re
 
 from .utils import normalize_authors, trim
-
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
 JSON_OGTYPE_SCHEMA = {"aboutpage", "checkoutpage", "collectionpage", "contactpage", "faqpage", "itempage", "medicalwebpage", "profilepage", "qapage", "realestatelisting", "searchresultspage", "webpage", "website", "article", "advertisercontentarticle", "newsarticle", "analysisnewsarticle", "askpublicnewsarticle", "backgroundnewsarticle", "opinionnewsarticle", "reportagenewsarticle", "reviewnewsarticle", "report", "satiricalarticle", "scholarlyarticle", "medicalscholarlyarticle", "socialmediaposting", "blogposting", "liveblogposting", "discussionforumposting", "techarticle", "blog", "jobposting"}
@@ -50,6 +50,7 @@ def extract_json(schema, metadata):
             else:
                 content_type = content["@type"].lower()
 
+            # The "pagetype" should only be returned if the page is some kind of an article, category, website...
             if content_type in JSON_OGTYPE_SCHEMA and metadata.pagetype is None:
                 metadata.pagetype = normalize_json(content_type)
 
