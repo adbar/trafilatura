@@ -8,7 +8,7 @@ import re
 
 from copy import deepcopy
 
-from courlan import extract_domain, normalize_url, validate_url
+from courlan import extract_domain, get_base_url, normalize_url, validate_url
 from htmldate import find_date
 from lxml.html import tostring
 
@@ -58,7 +58,6 @@ class Document:
         }
 
 
-
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
 HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
@@ -69,8 +68,6 @@ HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
-
-URL_DOMAIN_REGEX = re.compile(r"https://[^/]+")  # to be replaced by extract_domain
 
 METANAME_AUTHOR = {
     'article:author', 'atc-metaauthor', 'author', 'authors', 'byl', 'citation_author',
@@ -108,7 +105,7 @@ OG_AUTHOR = {'og:author', 'og:article:author'}
 PROPERTY_AUTHOR = {'author', 'article:author'}
 TWITTER_ATTRS = {'twitter:site', 'application-name'}
 
-# also interesting: article:section & og:type
+# also interesting: article:section
 
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
@@ -345,11 +342,10 @@ def extract_url(tree, default_url=None):
             else:
                 continue
             if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
-                # to be replaced by extract_domain
-                domain_match = URL_DOMAIN_REGEX.match(element.attrib['content'])
-                if domain_match:
+                base_url = get_base_url(element.attrib['content'])
+                if base_url:
                     # prepend URL
-                    url = domain_match[0] + url
+                    url = base_url + url
                     break
     # sanity check: don't return invalid URLs
     if url is not None:
