@@ -71,6 +71,8 @@ def probe_alternative_homepage(homepage):
     htmlstring = decode_response(response.data)
     # is there a meta-refresh on the page?
     htmlstring, homepage = refresh_detection(htmlstring, homepage)
+    if homepage is None:  # malformed or malicious content
+        return None, None, None
     logging.info('fetching homepage OK: %s', homepage)
     _, base_url = get_hostinfo(homepage)
     return htmlstring, homepage, base_url
@@ -85,7 +87,6 @@ def process_links(htmlstring, base_url, language=None, rules=None):
     if language is not None and LANGID_FLAG is True:
         _, text, _ = baseline(htmlstring)
         result, _ = py3langid.classify(text)
-
         if result != language:
             return
     # iterate through the links and filter them
@@ -157,7 +158,7 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
             # probe and process homepage
             htmlstring, homepage, base_url = probe_alternative_homepage(url)
             # add potentially "new" homepage
-            if homepage != url:
+            if homepage and homepage != url:
                 URL_STORE.add_urls([homepage])
             # extract links on homepage
             process_links(htmlstring, base_url, language=lang, rules=rules)
