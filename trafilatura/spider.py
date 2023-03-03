@@ -9,7 +9,6 @@ import urllib.robotparser
 from time import sleep
 
 from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable, UrlStore
-from lxml import etree
 
 from .core import baseline
 from .downloads import fetch_url
@@ -31,30 +30,34 @@ URL_STORE = UrlStore(compressed=False, strict=False)
 
 def refresh_detection(htmlstring, homepage):
     "Check if there could be a redirection by meta-refresh tag."
-    if '"refresh"' in htmlstring or '"REFRESH"' in htmlstring:
-        try:
-            html_tree = load_html(htmlstring)
-            # test meta-refresh redirection
-            # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
-            attr = html_tree.xpath('//meta[@http-equiv="refresh"]/@content|//meta[@http-equiv="REFRESH"]/@content')[0]
-            _, text = attr.split(';')
-            text = text.strip().lower()
-            if text.startswith('url=') or text.startswith('URL='):
-                url2 = text[4:]
-                if not url2.startswith('http'):
-                    # Relative URL, adapt
-                    _, base_url = get_hostinfo(url2)
-                    url2 = fix_relative_urls(base_url, url2)
-                # second fetch
-                newhtmlstring = fetch_url(url2)
-                if newhtmlstring is None:
-                    logging.warning('failed redirect: %s', url2)
-                    return None, None
-                #else:
-                htmlstring, homepage = newhtmlstring, url2
-                logging.info('successful redirect: %s', url2)
-        except (IndexError, ValueError, etree.ParserError, etree.XMLSyntaxError, etree.XPathEvalError) as err:
-            logging.info('no redirect found: %s %s', homepage, err)
+    if not '"refresh"' in htmlstring and not '"REFRESH"' in htmlstring:
+        return htmlstring, homepage
+
+    html_tree = load_html(htmlstring)
+    if html_tree is None:
+        return htmlstring, homepage
+
+    # test meta-refresh redirection
+    # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
+    results =  html_tree.xpath('//meta[@http-equiv="refresh"]/@content|//meta[@http-equiv="REFRESH"]/@content')
+    if results and ';' in results[0]:
+        text = results[0].split(';')[1].strip().lower()
+        if text.startswith('url=') or text.startswith('URL='):
+            url2 = text[4:]
+            if not url2.startswith('http'):
+                # Relative URL, adapt
+                _, base_url = get_hostinfo(url2)
+                url2 = fix_relative_urls(base_url, url2)
+            # second fetch
+            newhtmlstring = fetch_url(url2)
+            if newhtmlstring is None:
+                logging.warning('failed redirect: %s', url2)
+                return None, None
+            #else:
+            htmlstring, homepage = newhtmlstring, url2
+            logging.info('successful redirect: %s', url2)
+        else:
+            logging.info('no redirect found: %s', homepage)
     return htmlstring, homepage
 
 

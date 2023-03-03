@@ -37,6 +37,9 @@ def test_redirections():
 def test_meta_redirections():
     "Test redirection detection using meta tag."
     # empty
+    htmlstring, homepage = '"refresh"', 'https://httpbin.org/'
+    htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert htmlstring2 == htmlstring and homepage2 == homepage
     htmlstring, homepage = '<html></html>', 'https://httpbin.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 == htmlstring and homepage2 == homepage
@@ -79,17 +82,17 @@ def test_process_links():
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert todo[0] == 'https://example.org/tag/number1' and len(known_links) == 3
-    # test language
-    htmlstring = '<html><body><a href="https://example.org/en/page1"/></body></html>'
+    # test cleaning and language
+    htmlstring = '<html><body><a href="https://example.org/en/page1/?"/></body></html>'
     spider.process_links(htmlstring, base_url, language='en')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert 'https://example.org/en/page1' in todo and len(known_links) == 4
+    assert 'https://example.org/en/page1/' in todo and len(known_links) == 4
+    # wrong language
     htmlstring = '<html><body><a href="https://example.org/en/page2"/></body></html>'
     spider.process_links(htmlstring, base_url, language='de')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    # wrong language, doesn't get stored anywhere (?)
     assert 'https://example.org/en/page2' not in todo and len(known_links) == 4
     # test queue evaluation
     todo = deque()
