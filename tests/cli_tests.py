@@ -251,6 +251,16 @@ def test_cli_pipeline():
     os.environ['PYTHONIOENCODING'] = "utf-8"
 
     # Crawling
+    testargs = ['', '--crawl', '']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.cli_crawler(args)
+
+    testargs = ['', '--crawl', ' ']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.cli_crawler(args)
+
     testargs = ['', '--crawl', 'https://httpbin.org/html']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -258,6 +268,7 @@ def test_cli_pipeline():
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
     assert f.getvalue() == 'https://httpbin.org/html\n'
+
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # links permitted
     testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
@@ -267,6 +278,7 @@ def test_cli_pipeline():
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
     assert f.getvalue() == 'https://httpbin.org/links/1/1\nhttps://httpbin.org/links/1/0\n'
+
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # 0 links permitted
     args.crawl = 'https://httpbin.org/links/4/4'

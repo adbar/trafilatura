@@ -17,7 +17,6 @@ import traceback
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
-from time import sleep
 
 from courlan import get_host_and_path, validate_url, UrlStore
 
@@ -59,6 +58,9 @@ def load_input_urls(args):
         input_urls = [args.feed]
     elif args.sitemap:
         input_urls = [args.sitemap]
+    else:
+        LOGGER.warning('No input provided')
+        input_urls = []
     # uniq URLs while preserving order (important)
     return uniquify_list(input_urls)
 
@@ -233,24 +235,27 @@ def cli_crawler(args, n=30, url_store=None):
         spider.URL_STORE = url_store
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
-        startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath  # URL_STORE.get_url(hostname)
-        # base_url, i, known_num, rules, is_on
-        _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
-        # update info
-        # TODO: register changes?
-        # if base_url != hostname:
-        # ...
+        if spider.URL_STORE.urldict[hostname].tuples:
+            # startpage = spider.URL_STORE.get_url(hostname, mark=False)
+            startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath
+            # base_url, i, known_num, rules, is_on
+            _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
+            # update info
+            # TODO: register changes?
+            # if base_url != hostname:
+            # ...
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
         bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
-            website, _ = get_host_and_path(url)
+            # base_url = get_base_url(url)
+            base_url, _ = get_host_and_path(url)
             # handle result
             if result is not None:
-                spider.process_response(result, website, args.target_language, rules=spider.URL_STORE.get_rules(website))
+                spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
                 # just in case a crawl delay is specified in robots.txt
-                sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(website)))
+                # sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(base_url)))
         # early exit if maximum count is reached
         if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
             break
