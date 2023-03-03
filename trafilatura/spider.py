@@ -53,7 +53,7 @@ def refresh_detection(htmlstring, homepage):
                 #else:
                 htmlstring, homepage = newhtmlstring, url2
                 logging.info('successful redirect: %s', url2)
-        except (IndexError, etree.ParserError, etree.XMLSyntaxError, etree.XPathEvalError) as err:
+        except (IndexError, ValueError, etree.ParserError, etree.XMLSyntaxError, etree.XPathEvalError) as err:
             logging.info('no redirect found: %s %s', homepage, err)
     return htmlstring, homepage
 

@@ -36,15 +36,27 @@ def test_redirections():
 
 def test_meta_redirections():
     "Test redirection detection using meta tag."
+    # empty
     htmlstring, homepage = '<html></html>', 'https://httpbin.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 == htmlstring and homepage2 == homepage
+
+    # unusable
     htmlstring, homepage = '<html>REDIRECT!</html>', 'https://httpbin.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 == htmlstring and homepage2 == homepage
+
+    # malformed
+    htmlstring, homepage = '<html><meta http-equiv="refresh" content="3600\n&lt;meta http-equiv=" content-type=""></html>', 'https://httpbin.org/'
+    htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert htmlstring2 == htmlstring and homepage2 == homepage
+
+    # wrong URL
     htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=1234"/></html>', 'https://httpbin.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 is None and homepage2 is None
+
+    # normal
     htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=https://httpbin.org/html"/></html>', 'http://test.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 is not None and homepage2 == 'https://httpbin.org/html'
