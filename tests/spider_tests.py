@@ -121,9 +121,8 @@ def test_crawl_logic():
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert todo == [] and known_links == ['https://httpbin.org/html'] and base_url == 'https://httpbin.org' and i == 1
     # delay between requests
-    assert spider.get_crawl_delay(None) == 5
-    assert spider.get_crawl_delay(rules) == 5
-    assert spider.get_crawl_delay(rules, default=2.0) == 2.0
+    assert spider.URL_STORE.get_crawl_delay('https://httpbin.org') == 5
+    assert spider.URL_STORE.get_crawl_delay('https://httpbin.org', default=2.0) == 2.0
 
 
 def test_crawl_page():
@@ -147,6 +146,13 @@ def test_crawl_page():
     ## TODO: find a better page for language tests
 
 
+def test_focused_crawler():
+    "Test the whole focused crawler mechanism."
+    spider.URL_STORE = UrlStore()
+    todo, known_links = spider.focused_crawler("https://httpbin.org/links/1/1", max_seen_urls=1)
+    assert sorted(known_links) == ['https://httpbin.org/links/1/0', 'https://httpbin.org/links/1/1']
+    assert sorted(todo) == ['https://httpbin.org/links/1/0']
+
 
 if __name__ == '__main__':
     test_redirections()
@@ -154,4 +160,4 @@ if __name__ == '__main__':
     test_process_links()
     test_crawl_logic()
     test_crawl_page()
-
+    test_focused_crawler()

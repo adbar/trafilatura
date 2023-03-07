@@ -196,23 +196,12 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
     # visit pages until a limit is reached
     while is_on and i < max_seen_urls and known_num <= max_known_urls:
         is_on, known_num, i = crawl_page(i, base_url, lang=lang, rules=rules)
-        sleep(get_crawl_delay(rules, default=config.getfloat('DEFAULT', 'SLEEP_TIME')))
+        sleep(URL_STORE.get_crawl_delay(base_url, default=config.getfloat('DEFAULT', 'SLEEP_TIME')))
     todo = set(URL_STORE.find_unvisited_urls(base_url))
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
-    known_links = {u.urlpath for u in URL_STORE._load_urls(base_url)}
+    known_links = set(URL_STORE.find_known_urls(base_url))
     return todo, known_links
-
-
-def get_crawl_delay(rules, default=5):
-    """Define sleeping time between requests (in seconds)."""
-    delay = None
-    try:
-        delay = rules.crawl_delay("*")
-    except AttributeError:  # no rules or no crawl delay
-        pass
-    # backup
-    return delay or default
 
 
 def is_still_navigation(todo):
