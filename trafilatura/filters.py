@@ -6,8 +6,8 @@ detection.
 import logging
 import re
 
-from base64 import b64encode
-from hashlib import sha1
+from base64 import b64encode, urlsafe_b64encode
+from hashlib import blake2b
 
 # language detection
 try:
@@ -144,10 +144,22 @@ def text_chars_test(string):
     return string not in (None, '') and not string.isspace()
 
 
-def content_fingerprint(string):
+def generate_bow_hash(string, length=24):
+    "Create a bag of words and generate a hash for an input string."
+    # pre-process string
+    words = re.findall(r'[\w-]{3,}', string.lower())
+    # [w for w in s.lower().split() if len(w) > 3 and w.isalpha()]
+    teststring = ' '.join(words).strip()
+    # perform hashing with limited size
+    return blake2b(teststring.encode(), digest_size=length).digest()
+
+
+def content_fingerprint(content, length=24):
     '''Calculate a hash value for meaningful bits of the content'''
-    teststring = ' '.join(re.findall(r'\w{5,}', string.lower()))
-    m = sha1()
-    m.update(teststring.encode())
-    fingerprint = m.digest()
-    return b64encode(fingerprint).decode()
+    # return unicode string, default length 24+8
+    return b64encode(generate_bow_hash(content, length)).decode()
+
+
+def generate_hash_filename(content):
+    "Create a filename-safe string by hashing the given content."
+    return urlsafe_b64encode(generate_bow_hash(content, 12)).decode()

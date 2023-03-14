@@ -204,7 +204,7 @@ def test_sysoutput():
     assert args.keep_dirs is True
     args.keep_dirs = False
     filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
-    assert filepath == 'test/2jmj7l5rSw0yVb-vlWAYkK-YBwk.txt'
+    assert filepath == 'test/uOHdo6wKo4IK0pkL.txt'
 
 
 def test_download():
