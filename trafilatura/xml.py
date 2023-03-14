@@ -428,7 +428,7 @@ def write_fullheader(teidoc, docmeta):
 def _handle_text_content_of_div_nodes(element):
     if element.text is not None and element.text.strip():
         if element.getchildren() and element[0].tag == 'p':
-            p_text = element[0].text if element[0].text is not None else ""
+            p_text = element[0].text or ""
             element[0].text = ' '.join([element.text, p_text]).strip()
         else:
             new_child = Element("p")
@@ -437,7 +437,7 @@ def _handle_text_content_of_div_nodes(element):
         element.text = None
     if element.tail is not None and element.tail.strip():
         if element.getchildren() and element[-1].tag == 'p':
-            p_text = element[-1].text if element[-1].text is not None else ""
+            p_text = element[-1].text or ""
             element[-1].text = ' '.join([p_text, element.tail]).strip()
         else:
             new_child = Element("p")
