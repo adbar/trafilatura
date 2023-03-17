@@ -24,7 +24,7 @@ from trafilatura import spider
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
-from .filters import generate_hash_filename
+from .hashing import generate_hash_filename
 from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)

@@ -18,7 +18,7 @@ from trafilatura import extract
 import trafilatura.filters
 
 from trafilatura.core import Extractor
-from trafilatura.filters import check_html_lang, content_fingerprint, duplicate_test, generate_hash_filename, language_filter
+from trafilatura.filters import check_html_lang, duplicate_test, language_filter
 from trafilatura.lru import LRUCache
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG
@@ -107,13 +107,6 @@ def test_filters():
     assert check_html_lang(html.fromstring('<html lang="en-US"><head><meta property="og:locale" content="de_DE" /></head><body></body></html>'), target_language='de', strict=True) is True
 
 
-def test_hashes():
-    "Test hashing functions."
-    content = "abcde ijk l, "*10
-    assert content_fingerprint(content) == "9Q9q30UL9dCeqCT3b3qqOkyT0G1kUG+p"
-    assert generate_hash_filename(content) == "cote3i_T9Wf1NAtb"
-
-
 def test_lrucache():
     '''test basic duplicate detection'''
     lru_test = LRUCache(maxsize=2)
@@ -158,5 +151,4 @@ def test_lrucache():
 
 if __name__ == '__main__':
     test_filters()
-    test_hashes()
     test_lrucache()
