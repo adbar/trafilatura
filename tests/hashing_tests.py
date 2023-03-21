@@ -7,7 +7,7 @@ from trafilatura.hashing import Simhash, content_fingerprint, generate_hash_file
 def test_hashes():
     "Test hashing functions."
     content = "abcde ijk l, "*10
-    assert content_fingerprint(content) == "dec4b7f9d17b66ff"
+    assert content_fingerprint(content) == "528497a1d07b66d6"
     assert generate_hash_filename(content) == "cote3i_T9Wf1NAtb"
 
 
@@ -32,6 +32,7 @@ def test_simhash():
 
     # re-hashed
     assert Simhash(existing_hash="aghj").hash == 18446744073709551615
+    assert Simhash(existing_hash="18446744073709551615").hash == 18446744073709551615
     assert Simhash(existing_hash=123).hash != 123
     assert Simhash(existing_hash=None).hash == Simhash().hash
 
@@ -39,6 +40,7 @@ def test_simhash():
     assert Simhash("abcde").similarity(Simhash("abcde")) == 1.0
     assert Simhash("abcde").similarity(Simhash("abcde", length=2)) != 1.0
     assert Simhash("abcde").similarity(Simhash("fghij")) < 0.6
+    assert Simhash("abcde "*100).similarity(Simhash("abcde")) == 1.0
 
 
 
