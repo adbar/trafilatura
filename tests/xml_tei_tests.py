@@ -425,6 +425,21 @@ def test_ab_with_p_parent_resolved():
     ]
 
 
+def test_handling_of_text_content_in_div():
+    xml_doc = fromstring("<TEI><text><body><div>text<head/></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//p").text == "text"
+    xml_doc = fromstring("<TEI><text><body><div>text1<p>text2</p></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//p").text == "text1 text2"
+    xml_doc = fromstring("<TEI><text><body><div>text<p/></div></body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//p").text == "text"
+    xml_doc = fromstring("<TEI><text><body><div><p/></div>tail</body></text></TEI>")
+    cleaned = check_tei(xml_doc, "fake_url")
+    assert cleaned.find(".//p").text == "tail"
+
+
 if __name__ == "__main__":
     test_publisher_added_before_availability_in_publicationStmt()
     test_unwanted_siblings_of_div_removed()
