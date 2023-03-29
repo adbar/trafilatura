@@ -114,9 +114,9 @@ Passing the argument ``--target-language`` along with a 2-letter code (`ISO 639-
 Process files locally
 ---------------------
 
-In case web pages have already been downloaded and stored, it's possible to process single files or directories as a whole.
+In case web pages have already been downloaded and stored, it is possible to process single files or directories as a whole. It can be especially helpful to separate download and extraction to circumvent blocking mechanisms, either by scrambling IPs used to access the pages or by using web browser automation software to bypass issues related to cookies and paywalls.
 
-Two major command line arguments are necessary here:
+Trafilatura will work as well provided web pages (HTML documents) are used as input. Two major command line arguments are necessary:
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
