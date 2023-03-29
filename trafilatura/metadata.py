@@ -15,7 +15,7 @@ from lxml.html import tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import extract_json, extract_json_parse_error, normalize_json
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape, uniquify_list
+from .utils import line_processing, load_html, normalize_authors, normalize_tags, trim, unescape, uniquify_list
 
 
 LOGGER = logging.getLogger(__name__)
@@ -35,8 +35,27 @@ class Document:
         for slot in self.__slots__:
             setattr(self, slot, None)
 
+    def set_attributes(self, title, author, url, description, site_name, image, pagetype, tags):
+        "Helper function to (re-)set a series of attributes."
+        if title:
+            self.title = title
+        if author:
+            self.author = author
+        if url:
+            self.url = url
+        if description:
+            self.description = description
+        if site_name:
+            self.sitename = site_name
+        if image:
+            self.image = image
+        if pagetype:
+            self.pagetype = pagetype
+        if tags:
+            self.tags = tags
+
     def clean_and_trim(self):
-        'Limit text length and trim the attributes.'
+        "Limit text length and trim the attributes."
         for slot in self.__slots__:
             value = getattr(self, slot)
             if isinstance(value, str):
@@ -110,6 +129,19 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
+def check_authors(authors, author_blacklist):
+    "Check if the authors string correspond to expected values."
+    author_blacklist = {a.lower() for a in author_blacklist}
+    new_authors = [
+        author.strip()
+        for author in authors.split(';')
+        if author.strip().lower() not in author_blacklist
+    ]
+    if new_authors:
+        return '; '.join(new_authors).strip('; ')
+    return None
+
+
 def extract_meta_json(tree, metadata):
     '''Parse and extract metadata from JSON-LD data'''
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
@@ -171,9 +203,9 @@ def examine_meta(tree):
     metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name, image, pagetype = extract_opengraph(tree)
-    # test if all return values have been assigned
-    if all((title, author, url, description, site_name, image, pagetype)):  # if they are all defined
-        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.image, metadata.pagetype = title, author, url, description, site_name, image, pagetype
+    # test if all values not assigned in the following have already been assigned
+    if all((title, author, url, description, site_name, image)):
+        metadata.set_attributes(title, author, url, description, site_name, image, pagetype, None)  # tags
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -244,7 +276,7 @@ def examine_meta(tree):
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
     # copy
-    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags, metadata.image, metadata.pagetype = title, author, url, description, site_name, tags, image, pagetype
+    metadata.set_attributes(title, author, url, description, site_name, image, pagetype, tags)
     return metadata
 
 
@@ -471,7 +503,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # todo: fix bugs in json_metadata.py
     except TypeError as err:
         LOGGER.warning('error in JSON metadata extraction: %s', err)
-    # try with x-paths
     # title
     if metadata.title is None:
         metadata.title = extract_title(tree)
