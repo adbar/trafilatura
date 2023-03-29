@@ -1082,7 +1082,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         # add record ID to metadata
         document.id = record_id
         # calculate fingerprint
-        document.fingerprint = content_fingerprint(document.raw_text)
+        document.fingerprint = content_fingerprint(str(document.title) + " " + document.raw_text)
 
     # return
     return determine_returnstring(document, output_format, include_formatting, tei_validation)

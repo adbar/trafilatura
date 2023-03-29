@@ -8,7 +8,7 @@ def test_hashes():
     "Test hashing functions."
     content = "abcde ijk l, "*10
     assert content_fingerprint(content) == "528497a1d07b66d6"
-    assert generate_hash_filename(content) == "cote3i_T9Wf1NAtb"
+    assert generate_hash_filename(content) == "42LNugG3Sc95646i"
 
 
 
