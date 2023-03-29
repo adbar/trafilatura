@@ -22,7 +22,6 @@ jobs:
         include:
         # custom python versions
         - python-version: "3.12-dev"
-          os: ubuntu-latest
           experimental: true
           allowed_failure: true
         - os: ubuntu-20.04
@@ -53,11 +52,6 @@ jobs:
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
         restore-keys: |
           ${{ runner.os }}-pip-
-
-    # optional, just for certain versions where prebuilt wheels don't exist
-    - name: Install LXML and pycld3 dependencies
-      if: ${{ matrix.python-version == '3.12-dev' }}
-      run: sudo apt-get install libxml2-dev libxslt-dev protobuf-compiler
 
     # package setup
     - uses: actions/checkout@v3
