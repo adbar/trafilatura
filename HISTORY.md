@@ -1,6 +1,22 @@
 ## History / Changelog
 
 
+### 1.5.0
+
+
+Extraction:
+- fixes for metadata extraction with @felipehertzer (#295, #296),  @andremacola (#282, #310), and @edkrueger (#303)
+- add as_dict method to Document class with @edkrueger in #306
+- XML fix with @knit-bee (#315)
+- fixes: lists (#309), ad networks, metadata hardening
+
+Navigation:
+- transfer URL management to courlan.UrlStore (#232, #312)
+- fixes for spider module
+
+Maintenance:
+- simplify code and extend tests
+
 
 ### 1.4.1
 

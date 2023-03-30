@@ -1,19 +1,19 @@
-trafilatura==1.4.0
+trafilatura==1.5.0
 
 # alternatives
-beautifulsoup4==4.11.1
+beautifulsoup4==4.12.1
 boilerpy3==1.0.6
 #dragnet==2.0.4  # unmaintained!
-goose3==3.1.12
+goose3==3.1.13
 html2text==2020.1.16
 html-text==0.5.2
-inscriptis==2.3.1
+inscriptis==2.3.2
 justext==3.0.0
 newspaper3k==0.2.8
 news-please==1.5.22
 readabilipy==0.2.0
 readability-lxml==0.8.1
-resiliparse==0.13.7
+resiliparse==0.14.3
 
 # additional data
 #jparser==0.0.20
