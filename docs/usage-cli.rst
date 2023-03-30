@@ -34,12 +34,15 @@ URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
-    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
+    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
+
+    # outputs main text with basic XML structure ...
     $ trafilatura --xml --URL "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
-    $ # outputs main text with basic XML structure ...
-    $ trafilatura -h
+
     # displays help message
+    $ trafilatura -h
+
 
 You can also pipe a HTML document (and response body) to trafilatura:
 
@@ -47,8 +50,10 @@ You can also pipe a HTML document (and response body) to trafilatura:
 
     # use the contents of an already existing file
     $ cat myfile.html | trafilatura
+
     # alternative syntax
     $ < myfile.html trafilatura
+
     # use a custom download utility and pipe it to trafilatura
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
 
@@ -109,6 +114,14 @@ Passing the argument ``--target-language`` along with a 2-letter code (`ISO 639-
 
 .. note::
     Additional components are required: ``pip install trafilatura[all]``
+
+
+
+Changing default settings
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See `documentation page on settings <settings.html>`_.
+
 
 
 Process files locally
@@ -185,10 +198,12 @@ Feeds
 
 .. code-block:: bash
 
-    # looking for feeds
+    # automatically detecting feeds starting from the homepage
     $ trafilatura --feed "https://www.dwds.de/" --list
+
     # already known feed
     $ trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list
+
     # processing a list in parallel
     $ trafilatura -i mylist.txt --feed --list
 
@@ -208,8 +223,10 @@ Sitemaps
 
     # run link discovery through a sitemap for sitemaps.org and store the resulting links in a file
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylinks.txt
+
     # using an already known sitemap URL
     $ trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list
+
     # targeting webpages in German
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --target-language "de"
 
@@ -239,15 +256,13 @@ Using a subpart of the site also acts like a filter, for example ``--sitemap "ht
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
 
-Configuration
--------------
-
-
-Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings. Useful adjustments include download parameters, minimal extraction length, or de-duplication settings.
-
-
 Further information
 -------------------
+
+
+.. hint::
+    See also `how to modify the default settings <settings.html>`_.
+
 
 For all usage instructions see ``trafilatura -h``:
 

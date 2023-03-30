@@ -28,11 +28,16 @@ Quickstart
 
 .. code-block:: python
 
+    # load necessary components
     >>> from trafilatura import fetch_url, extract
+
+    # download a web page
     >>> url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
     >>> downloaded = fetch_url(url)
     >>> downloaded is None  # assuming the download was successful
     False
+
+    # extract information from HTML
     >>> result = extract(downloaded)
     >>> print(result)
     # newlines preserved, TXT output ...
@@ -62,12 +67,16 @@ The variables from the example above can be used further:
 
     # newlines preserved, TXT output
     >>> extract(downloaded)
+
     # TXT/Markdown output
     >>> extract(downloaded, include_links=True)
+
     # some formatting preserved in basic XML structure
     >>> extract(downloaded, output_format='xml')
+
     # source URL provided for inclusion in metadata
     >>> extract(downloaded, output_format='xml', url=url)
+
     # links preserved in XML
     >>> extract(downloaded, output_format='xml', include_links=True)
 
@@ -88,8 +97,10 @@ Their inclusion can be activated or deactivated using paramaters passed to the `
 
     # no comments in output
     >>> result = extract(downloaded, include_comments=False)
+
     # skip tables examination
     >>> result = extract(downloaded, include_tables=False)
+
     # output with links
     >>> result = extract(downloaded, include_links=True)
     # and so on...
@@ -147,7 +158,7 @@ The target language can also be set using 2-letter codes (`ISO 639-1 <https://en
 
 .. code-block:: python
 
-    >>> result = extract(downloaded, url, target_language='de')
+    >>> result = extract(downloaded, url, target_language="de")
 
 .. note::
     Additional components are required: ``pip install trafilatura[all]``
@@ -175,55 +186,21 @@ The following combination can lead to shorter processing times:
 Extraction settings
 -------------------
 
-Settings file
-^^^^^^^^^^^^^
-
-
-The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified and a custom configuration file can be provided with the ``config`` parameter to the ``bare_extraction()`` and ``extract()`` functions.
-
-This overrides the standard settings:
-
-.. code-block:: python
-
-    # load the required functions
-    >>> from trafilatura import extract
-    >>> from trafilatura.settings import use_config
-    # load the new settings by providing a file name
-    >>> newconfig = use_config("myfile.cfg")
-    # use with a previously downloaded document
-    >>> extract(downloaded, config=newconfig)
-    # provide a file name directly (can be slower)
-    >>> extract(downloaded, settingsfile="myfile.cfg")
-
-
-.. note::
-    Useful adjustments include download parameters, minimal extraction length, or de-duplication settings.
-    User agent settings can also be specified in a custom ``settings.cfg`` file.
+.. hint::
+    See also `settings page <settings.html>`_.
 
 
 Disabling ``signal``
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^
 
 A timeout exit during extraction can be turned off if malicious data are not an issue or if you run into an error like `signal only works in main thread <https://github.com/adbar/trafilatura/issues/202>`_. In this case, the following code can be useful as it explicitly changes the required setting:
 
 .. code-block:: python
 
-    # see above for imports
+    >>> from trafilatura.settings import use_config
     >>> newconfig = use_config()
     >>> newconfig.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
     >>> extract(downloaded, config=newconfig)
-
-
-Package settings
-^^^^^^^^^^^^^^^^
-
-For further configuration (if the ``settings.cfg`` file is not enough) you can edit package-wide variables contained in the `settings.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.py>`_ file:
-
-1. `Clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_
-2. Edit ``settings.py``
-3. Reinstall the package locally: ``pip install --no-deps -U .`` in the home directory of the cloned repository
-
-These remaining variables greatly alter the functioning of the package!
 
 
 Metadata extraction
@@ -243,9 +220,11 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
 
 .. code-block:: python
 
-    >>> from trafilatura import extract
-    # pass the new parameters as dict, with a previously downloaded document
-    >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
+    # import the extract() function, use a previously downloaded document
+    # pass the new parameters as dict
+    >>> extract(downloaded, output_format="xml", date_extraction_params={
+            "extensive_search": True, "max_date": "2018-07-01"
+        })
 
 
 URL
@@ -255,13 +234,16 @@ Even if the page to process has already been downloaded it can still be useful t
 
 .. code-block:: python
 
-    >>> url = "https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer"
+    # define a URL and download the example
+    >>> url = "https://web.archive.org/web/20210613232513/https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer/"
     >>> downloaded = fetch_url(url)
-    >>> bare_extraction(downloaded, with_metadata=True)
+
     # content discarded since necessary metadata couldn't be extracted
-    >>> url = "https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer"
-    >>> bare_extraction(downloaded, with_metadata=True, url=url)
+    >>> bare_extraction(downloaded, with_metadata=True)
+    >>>
+
     # date found in URL, extraction successful
+    >>> bare_extraction(downloaded, with_metadata=True, url=url)
 
 
 Memory use
@@ -298,13 +280,16 @@ Raw HTTP response objects
 
 The ``fetch_url()`` function can pass a urllib3 response object straight to the extraction by setting the optional ``decode`` argument to ``False``.
 
-This can be useful to get the final redirection URL with ``response.geturl()`` and then pass is directly as a URL argument to the extraction function:
+This can be useful to get the final redirection URL with ``response.url`` and then pass is directly as a URL argument to the extraction function:
 
 .. code-block:: python
 
+    # necessary components
     >>> from trafilatura import fetch_url, bare_extraction
-    >>> response = fetch_url(url, decode=False)
-    >>> bare_extraction(response, url=response.geturl()) # here is the redirection URL
+    # load an example
+    >>> response = fetch_url("https://www.example.org", decode=False)
+    # perform extract() or bare_extraction() on Trafilatura's response object
+    >>> bare_extraction(response, url=response.url) # here is the redirection URL
 
 
 LXML objects
@@ -314,10 +299,15 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
 
 .. code-block:: python
 
+    # define document and load it with LXML
     >>> from lxml import html
-    >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
+    >>> my_doc = """<html><body><article><p>
+                    Here is the main text.
+                    </p></article></body></html>"""
+    >>> mytree = html.fromstring(my_doc)
+    # extract from the already loaded LXML tree
     >>> extract(mytree)
-    'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
+    'Here is the main text.'
 
 
 Navigation
@@ -331,12 +321,15 @@ The function ``find_feed_urls`` is a all-in-one utility that attemps to discover
 
 .. code-block:: python
 
+    # import the feeds module
     >>> from trafilatura import feeds
+
+    # use the homepage to automatically retrieve feeds
     >>> mylist = feeds.find_feed_urls('https://www.theguardian.com/')
-    # https://www.theguardian.com/international/rss has been found
     >>> mylist
-    ['https://www.theguardian.com/...', '...'] # and so on
-    # use a feed URL directly
+    ['https://www.theguardian.com/international/rss', '...'] # and so on
+
+    # use a predetermined feed URL directly
     >>> mylist = feeds.find_feed_urls('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
     >>> mylist is not []
     True # it's not empty
@@ -351,13 +344,16 @@ An optional argument ``target_lang`` makes it possible to filter links according
 
 .. code-block:: python
 
-    >>> from trafilatura import feeds
+    # the feeds module has to be imported
+    # search for feeds in English
     >>> mylist = feeds.find_feed_urls('https://www.un.org/en/rss.xml', target_lang='en')
     >>> mylist is not []
     True # links found as expected
+
+    # target_lang set to Japanese, the English links are discarded
     >>> mylist = feeds.find_feed_urls('https://www.un.org/en/rss.xml', target_lang='ja')
     >>> mylist
-    [] # target_lang set to Japanese, the English links were discarded this time
+    []
 
 For more information about feeds and web crawling see:
 
@@ -372,10 +368,13 @@ Sitemaps
 
 .. code-block:: python
 
+    # load sitemaps module
     >>> from trafilatura import sitemaps
+
+    # automatically find sitemaps by providing the homepage
     >>> mylinks = sitemaps.sitemap_search('https://www.theguardian.com/')
-    # this function also accepts a target_lang argument
+
+    # the target_lang argument works as explained above
     >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
 
 The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
-

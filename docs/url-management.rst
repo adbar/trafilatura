@@ -26,8 +26,10 @@ The  function ``check_url()`` returns a URL and a domain name if everything is f
 
 .. code-block:: python
 
+    # load the function from the included courlan package
     >>> from courlan import check_url
 
+    # checking a URL returns None or a tuple (cleaned url, hostname)
     >>> check_url('https://github.com/adbar/courlan')
     ('https://github.com/adbar/courlan', 'github.com')
 
@@ -70,10 +72,13 @@ Most fonctions are also available through a command-line utility:
 
     # display a message listing all options
     $ courlan --help
+
     # simple filtering and normalization
     $ courlan --inputfile url-list.txt --outputfile cleaned-urls.txt
+
     # strict filtering
     $ courlan --language de --strict --inputfile mylist.txt --outputfile mylist-filtered.txt
+
     # strict filtering including language filter
     $ courlan --language de --strict --inputfile mylist.txt --outputfile mylist-filtered.txt
 

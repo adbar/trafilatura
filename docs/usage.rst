@@ -12,5 +12,6 @@ Usage
    usage-gui
    downloads
    crawls
+   settings
    troubleshooting
    url-management
