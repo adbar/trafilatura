@@ -557,7 +557,7 @@ def extract_content(tree, options):
         if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
         # extract content
-        result_body.extend(filter(None.__ne__, (handle_textelem(e, potential_tags, options) for e in subelems)))
+        result_body.extend(filter(lambda x: x is not None, (handle_textelem(e, potential_tags, options) for e in subelems)))
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
