@@ -118,8 +118,12 @@ class Simhash:
 
     def hamming_distance(self, other_hash: Any) -> int:
         "Return distance between two hashes of equal length using the XOR operator."
-        # https://docs.python.org/3.10/library/stdtypes.html#int.bit_count
-        return bin(self.hash ^ other_hash.hash).count("1")
+        xor_result = self.hash ^ other_hash.hash
+        try:
+            # Python >= 3.10
+            return xor_result.bit_count()
+        except AttributeError:
+            return bin(xor_result).count("1")
 
     def similarity(self, other_hash: Any) -> float:
         """Calculate how similar this hash is from another simhash.
