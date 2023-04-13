@@ -257,6 +257,12 @@ def map_args(args):
                use --output-dir instead""",
              PendingDeprecationWarning
         )
+    if args.hash_as_name:
+        warnings.warn(
+            """--hash-as-name will be deprecated in a future version,
+               hashes are now used by default.""",
+             PendingDeprecationWarning
+        )
     return args
 
 
