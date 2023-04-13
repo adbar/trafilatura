@@ -34,6 +34,7 @@ def test_simhash():
     assert Simhash(existing_hash="aghj").hash == 18446744073709551615
     assert Simhash(existing_hash="18446744073709551615").hash == 18446744073709551615
     assert Simhash(existing_hash=123).hash != 123
+    assert Simhash(existing_hash=18446744073709551615).hash == 18446744073709551615
     assert Simhash(existing_hash=None).hash == Simhash().hash
 
     # similarity

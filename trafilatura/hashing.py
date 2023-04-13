@@ -107,7 +107,7 @@ class Simhash:
 
     def validate(self, inputhash: Optional[Any]) -> Optional[int]:
         "Validate the input hash and return it, or None otherwise."
-        if isinstance(inputhash, int) and len(str(inputhash)) == 16:
+        if isinstance(inputhash, int) and 18 <= len(str(inputhash)) <= 22:
             return inputhash
         if isinstance(inputhash, str):
             if inputhash.isdigit() and 18 <= len(inputhash) <= 22:
