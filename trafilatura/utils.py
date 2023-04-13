@@ -353,18 +353,6 @@ def normalize_authors(current_authors, author_string):
     return '; '.join(new_authors).strip('; ')
 
 
-# todo: document and check this function
-def check_authors(authors, author_blacklist):
-    new_authors = [
-        author
-        for author in authors.split('; ')
-        if author.lower() not in [a.lower() for a in author_blacklist]
-    ]
-    if new_authors:
-        return '; '.join(new_authors).strip('; ')
-    return None
-
-
 def uniquify_list(l):
     """
     Remove duplicates from a list while keeping order in an efficient way.

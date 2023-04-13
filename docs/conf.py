@@ -21,7 +21,7 @@ import trafilatura
 # -- Project information -----------------------------------------------------
 
 project = 'trafilatura'
-copyright = '2022, Adrien Barbaresi'
+copyright = '2023, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__
@@ -91,10 +91,13 @@ html_theme_options = {
   "external_links": [
       {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],
-  "google_analytics_id": "G-K3R5QCVDF1",
 #  "use_edit_page_button": True,
 #  "navigation_depth": 3,
 #  "show_toc_level": 3,
+}
+html_theme_options["analytics"] = {
+  "google_analytics_id": "G-K3R5QCVDF1",
+  "analytics_anonymize_ip": True,
 }
 
 html_logo = "trafilatura-logo.png"

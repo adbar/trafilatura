@@ -232,6 +232,8 @@ That is why web texts can and should be further examined and prepared for inclus
 
 A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain texts types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Kilgarriff & Suchomel (2013), Schäfer et al. (2013). For work on corpus description in terms of genres see Sharoff (2018).
 
+Quality assessments can also be made in the context of distributional semantics, for example by creating vectors of co-occurring lemmas (Versley & Panchenko 2012). Evert (2015) lists the following approaches: statistical properties, corpus comparison, use as training data in NLP, and linguistic evaluation (e.g. frequency comparisons).
+
 
 
 Methodological issues
@@ -297,6 +299,7 @@ References
 * Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. *Computer networks and ISDN systems*, 30(1-7), 161–172.
 * Clear, J. (1987). Trawling the language: monitor corpora. ZURILEX Proceedings. Tübingen: Francke.
 * Edwards, J., McCurley, K. S., and Tomlin, J. A. (2001). "An adaptive model for optimizing performance of an incremental web crawler". In *Proceedings of the 10th international conference on World Wide Web - WWW '01*, pp. 106–113.
+* Evert, S. (2015). An NLP approach to the evaluation of Web Corpora. Evaluation, (1/64).
 * Fairon, C. (2006). Corporator: A tool for creating RSS-based specialized corpora. In Proceedings of the 2nd International Workshop on Web as Corpus.
 * Good, J. (2022). "The Scope of Linguistic Data", In *The Open Handbook of Linguistic Data Management*, MIT Press, 27-47.
 * Gries, S. T., & Newman, J. (2014). Creating and using corpora. In *Research methods in linguistics*, Podesva, R.J., & Sharma, D. (eds.), 257-287.
@@ -314,4 +317,5 @@ References
 * Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
 * Suchomel, V. (2020). Better Web Corpora For Corpus Linguistics And NLP (Doctoral dissertation, PhD thesis, Masaryk University).
 * Tanguy, L. (2013). La ruée linguistique vers le Web. *Texto! Textes et Cultures*, 18(4).
+* Versley, Y., & Panchenko, Y. (2012). Not just bigger: Towards better-quality Web corpora. In *Proceedings of the seventh Web as Corpus Workshop (WAC7)*, pp. 44-52.
 

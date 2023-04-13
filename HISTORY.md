@@ -1,6 +1,24 @@
 ## History / Changelog
 
 
+### 1.5.0
+
+
+Extraction:
+- fixes for metadata extraction with @felipehertzer (#295, #296),  @andremacola (#282, #310), and @edkrueger (#303)
+- pagetype and image urls added to metadata by @andremacola (#282, #310)
+- add as_dict method to Document class with @edkrueger in #306
+- XML output fix with @knit-bee in #315
+- various smaller fixes: lists (#309), XPaths, metadata hardening
+
+Navigation:
+- transfer URL management to courlan.UrlStore (#232, #312)
+- fixes for spider module
+
+Maintenance:
+- simplify code and extend tests
+- underlying packages htmldate and courlan, update setup and docs
+
 
 ### 1.4.1
 

@@ -13,10 +13,13 @@ In Python:
 .. code-block:: python
 
     # load the necessary components
-    import trafilatura
-    # open a file and parse it
-    downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
-    result = trafilatura.extract(downloaded, output_format='xmltei', tei_validation=True)
+    from trafilatura import fetch_url, extract
+
+    # download a file
+    downloaded = fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
+
+    # extract information as XML TEI and validate the result
+    result = extract(downloaded, output_format='xmltei', tei_validation=True)
 
 
 From the command line:
@@ -38,8 +41,10 @@ The following code returns `True` if a document is valid and outputs a message r
     # load the necessary components
     from lxml import etree
     from trafilatura.xml import validate_tei
+
     # open a file and parse it
     mytree = etree.parse('document-name.xml')
+
     # validate it
     validate_tei(mytree)
     # returns True or an error message

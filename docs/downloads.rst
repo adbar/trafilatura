@@ -89,15 +89,6 @@ Asynchronous downloads
 Asynchronous processing in probably even more efficient in the context of file downloads from a variety of websites. See for instance the `AIOHTTP library <https://docs.aiohttp.org/>`_.
 
 
-Managing cookies
-~~~~~~~~~~~~~~~~
-
-The standard library `cookiejar <https://docs.python.org/3/library/http.cookiejar.html>`_ can be used along ``urllib3`` in order to use cookies along with HTTP requests, see this `documentation pull request <https://github.com/urllib3/urllib3/pull/2474/files>`_.
-
-Alternatively, cookies (ideally not many) can be manually specified in ``settings.cfg``.
-
-
-
 On the command-line
 -------------------
 
@@ -112,18 +103,6 @@ Downloads on the command-line are automatically run with threads and domain-awar
     To check for download errors you can use the exit code (0 if all pages could be downloaded, 1 otherwise) and sift through the logs if necessary.
 
 For more information, see `page on command-line use <usage-cli.html>`_.
-
-
-Troubleshooting
----------------
-
-Download issues can be addressed by retrieving the files somewhere else (i.e. from already existing internet archives) or by using another download utility (see ``pycurl`` with Python and ``wget`` or ``curl`` on the command-line), and another IP or network infrastructure.
-
-- Installing the additional download utility ``pycurl`` manually or using ``pip3 install trafilatura[all]`` can alleviate the problem: another download library is used, leading to different results.
-- Several alternatives are available on the command-line, e.g. ``wget -O - "my_url" | trafilatura`` instead of ``trafilatura -u "my_url"``.
-
-.. note::
-    Downloads may fail because your IP or user agent are blocked. Trafilatura's crawling and download capacities do not bypass such restrictions.
 
 
 Enforcing politeness rules
@@ -244,4 +223,4 @@ Here is the simplest way to stay polite while taking all potential constraints i
 1. Read ``robots.txt`` files, filter your URL list accordingly and care for crawl delay
 2. Use the framework described above and set the throttling variable to a safe value (your main bottleneck is your connection speed anyway)
 3. Optional: for longer crawls, keep track of the throttling info and revisit ``robots.txt`` regularly
-
+4. See also `page on troubleshooting <troubleshooting.html>`_.

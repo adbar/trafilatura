@@ -113,6 +113,8 @@ Publications citing Trafilatura
 - Fröbe, M., Hagen, M., Bevendorff, J., Völske, M., Stein, B., Schröder, C., ... & Potthast, M. (2021). "The Impact of Main Content Extraction on Near-Duplicate Detection". arXiv preprint arXiv:2111.10864.
 - Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). "The Pile: An 800GB Dataset of Diverse Text for Language Modeling", arXiv preprint arXiv:2101.00027.
 - Harrando, I., & Troncy, R. (2021). "Explainable Zero-Shot Topic Extraction Using a Common-Sense Knowledge Graph", In 3rd Conference on Language, Data and Knowledge (LDK 2021). OpenAccess Series in Informatics, Dagstuhl Publishing.
+- Hartmann, S. (2023). Open Corpus Linguistics–or How to overcome common problems in dealing with corpus data by adopting open research practices.
+- Hunter, B., Mathews, F., & Weeds, J. (2023). Using hierarchical text classification to investigate the utility of machine learning in automating online analyses of wildlife exploitation. Ecological Informatics, 102076.
 - Indig, B., Sárközi-Lindner, Z., & Nagy, M. (2022). Use the Metadata, Luke!–An Experimental Joint Metadata Search and N-gram Trend Viewer for Personal Web Archives. In Proceedings of the 2nd International Workshop on Natural Language Processing for Digital Humanities (pp. 47-52).
 - Jung, G., Han, S., Kim, H., Kim, K., & Cha, J. (2022). Extracting the Main Content of Web Pages Using the First Impression Area. IEEE Access.
 - Karabulut, M., & Mayda, İ. (2020). "Development of Browser Extension for HTML Web Page Content Extraction", In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
@@ -128,6 +130,7 @@ Publications citing Trafilatura
 - Schamel, T., Braun, D., & Matthes, F. (2022). Structured Extraction of Terms and Conditions from German and English Online Shops. In Proceedings of The Fifth Workshop on e-Commerce and NLP (ECNLP 5) (pp. 181-190).
 - Sutter, T., Bozkir, A. S., Gehring, B., & Berlich, P. (2022). Avoiding the Hook: Influential Factors of Phishing Awareness Training on Click-Rates and a Data-Driven Approach to Predict Email Difficulty Perception. IEEE Access, 10, 100540-100565.
 - Ter-Akopyan, B. (2022). "Identification of Political Leaning in German News", Master's thesis, Ludwig Maximilian University of Munich.
+- Varlamov, M., Galanin, D., Bedrin, P., Duda, S., Lazarev, V., & Yatskov, A. (2022, December). A Dataset for Information Extraction from News Web Pages. In 2022 Ivannikov Ispras Open Conference (ISPRAS) (pp. 100-106). IEEE.
 - Waheed, A., Qunaibi, S., Barradas, D., & Weinberg, Z. (2022). Darwin's Theory of Censorship: Analysing the Evolution of Censored Topics with Dynamic Topic Models. In Proceedings of the 21st Workshop on Privacy in the Electronic Society (pp. 103-108).
 - Zinn, J. O., & Müller, M. (2021). "Understanding discourse and language of risk", Journal of Risk Research, 1-14.
 

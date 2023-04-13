@@ -12,23 +12,25 @@ The only required argument is the input document (here a downloaded HTML file), 
 
 .. code-block:: python
 
-    # import the package
-    >>> import trafilatura
+    # import the necessary functions
+    >>> from trafilatura import fetch_url, extract
+
     # grab a HTML file to extract data from
-    >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
-    # outputs main content and comments as plain text
+    >>> downloaded = fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
+
+    # output main content and comments as plain text
     >>> result = trafilatura.extract(downloaded)
-    # formatting preserved in XML structure
+
+    # change the output format to XML (allowing for preservation of document structure)
     >>> result = trafilatura.extract(downloaded, output_format="xml")
-    # outputs main content without comments as JSON ...
+
+    # discard potential comment and change the output to JSON
     >>> trafilatura.extract(downloaded, output_format="json", include_comments=False)
 
 The use of fallback algorithms can also be bypassed in fast mode:
 
 .. code-block:: python
 
-    # shorter alternative to import the function
-    >>> from trafilatura import extract
     # faster mode without backup extraction
     >>> result = extract(downloaded, no_fallback=True)
 
@@ -51,11 +53,11 @@ URLs can be used directly (-u/--URL):
 
 .. code-block:: bash
 
+    # outputs main content and comments as plain text
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
-    # outputs main content and comments as plain text ...
-    $ trafilatura -h
-    # displays help message with all possible options
 
+    # displays help message with all possible options
+    $ trafilatura -h
 
 You can also pipe a HTML document (and response body) to trafilatura:
 
