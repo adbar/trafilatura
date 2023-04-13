@@ -7,6 +7,7 @@ from htmldate.meta import reset_caches as reset_caches_htmldate
 from justext.core import define_stoplist
 
 from .filters import LRU_TEST
+from .hashing import Simhash
 from .utils import line_processing, return_printables_and_spaces, trim
 
 
@@ -24,3 +25,4 @@ def reset_caches() -> None:
     return_printables_and_spaces.cache_clear()
     trim.cache_clear()
     LRU_TEST.clear()
+    Simhash._vector_to_add.cache_clear()

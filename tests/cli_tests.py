@@ -100,7 +100,7 @@ def test_parser():
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
     # test future deprecations
-    testargs = ['', '--inputfile', 'test.txt', '--with-metadata', '--nocomments', '--notables']
+    testargs = ['', '--inputfile', 'test.txt', '--with-metadata', '--nocomments', '--notables', '--hash-as-name']
     with patch.object(sys, 'argv', testargs):
         args = cli.map_args(cli.parse_args(testargs))
     assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.input_file == 'test.txt'
@@ -199,12 +199,10 @@ def test_sysoutput():
     filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
     assert filepath == 'test/testfile.txt'
     # test hash as output file name
-    assert args.hash_as_name is False
-    args.hash_as_name = True
     assert args.keep_dirs is True
     args.keep_dirs = False
     filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
-    assert filepath == 'test/2jmj7l5rSw0yVb-vlWAYkK-YBwk.txt'
+    assert filepath == 'test/uOHdo6wKo4IK0pkL.txt'
 
 
 def test_download():

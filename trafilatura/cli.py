@@ -6,7 +6,6 @@ Implementing a basic command-line interface.
 ## under GNU GPL v3 license
 
 import argparse
-import atexit
 import logging
 import sys
 import warnings
@@ -97,8 +96,8 @@ def parse_args(args):
                         help="keep input directory structure and file names",
                         action="store_true")
     group2.add_argument('--hash-as-name',
-                        help="use hash value as output file name instead of random default",
-                        action="store_true")
+                        help=argparse.SUPPRESS,
+                        action="store_true")   # will be deprecated
 
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",
@@ -256,6 +255,12 @@ def map_args(args):
         warnings.warn(
             """--outputdir will be deprecated in a future version,
                use --output-dir instead""",
+             PendingDeprecationWarning
+        )
+    if args.hash_as_name:
+        warnings.warn(
+            """--hash-as-name will be deprecated in a future version,
+               hashes are now used by default.""",
              PendingDeprecationWarning
         )
     return args

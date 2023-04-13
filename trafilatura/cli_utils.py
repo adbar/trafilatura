@@ -24,7 +24,7 @@ from trafilatura import spider
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
-from .filters import content_fingerprint
+from .hashing import generate_hash_filename
 from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
@@ -129,9 +129,6 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
         extension = '.csv'
     elif args.output_format == 'json':
         extension = '.json'
-    # use cryptographic hash on file contents to define name
-    if args.hash_as_name is True:
-        new_filename = content_fingerprint(content)[:27].replace('/', '-')
     # determine directory
     if args.keep_dirs is True:
         # strip directory
@@ -142,11 +139,10 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
         output_path = path.join(args.output_dir, filename + extension)
     else:
         destination_directory = determine_counter_dir(args.output_dir, counter)
-        # determine file slug
+        # use cryptographic hash on file contents to define name
         if new_filename is None:
-            output_path, _ = get_writable_path(destination_directory, extension)
-        else:
-            output_path = path.join(destination_directory, new_filename + extension)
+            new_filename = generate_hash_filename(content)
+        output_path = path.join(destination_directory, new_filename + extension)
     return output_path, destination_directory
 
 
