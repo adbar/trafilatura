@@ -335,7 +335,7 @@ def process_args(args):
 
     # process input URL
     elif args.URL:
-        INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
+        INPUTDICT = load_input_dict(args)
         error_caught = url_processing_pipeline(args, INPUTDICT)  # process single url
 
     # read input on STDIN directly
