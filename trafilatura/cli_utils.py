@@ -50,6 +50,8 @@ def load_input_urls(args):
 
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
+    elif args.URL:
+        input_urls = [args.URL]
     elif args.crawl:
         input_urls = [args.crawl]
     elif args.explore:
