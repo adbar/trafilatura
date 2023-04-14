@@ -35,6 +35,11 @@ LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
+MATCH_URL = re.compile(r'https?://[^\s]+')
+STRIP_PROTOCOL = re.compile(r'^https?://')
+STRIP_DIR = re.compile(r'[^/]+$')
+STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
+
 
 def load_input_urls(args):
     '''Read list of URLs to process or derive one from command-line arguments'''
@@ -44,7 +49,7 @@ def load_input_urls(args):
             # optional: errors='strict', buffering=1
             with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
                 for line in inputfile:
-                    url_match = re.match(r'https?://[^\s]+', line)
+                    url_match = MATCH_URL.match(line)
                     if url_match:
                         input_urls.append(url_match[0])
 
@@ -74,7 +79,7 @@ def load_blacklist(filename):
         for line in inputfh:
             url = line.strip()
             if validate_url(url)[0] is True:
-                blacklist.add(re.sub(r'^https?://', '', url))
+                blacklist.add(STRIP_PROTOCOL.sub('', url))
     return blacklist
 
 
@@ -111,12 +116,16 @@ def determine_counter_dir(dirname, counter):
     return path.join(dirname, counter_dir)
 
 
+def generate_filename():
+    '''Generate a random filename of the desired length'''
+    return ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
+
+
 def get_writable_path(destdir, extension):
     '''Find a writable path and return it along with its random file name'''
-    filename = ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
-    output_path = path.join(destdir, filename + extension)
-    while path.exists(output_path):
-        filename = ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
+    output_path = None
+    while output_path is None or path.exists(output_path):
+        filename = generate_filename()
         output_path = path.join(destdir, filename + extension)
     return output_path, filename
 
@@ -134,10 +143,10 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     # determine directory
     if args.keep_dirs is True:
         # strip directory
-        orig_directory = re.sub(r'[^/]+$', '', orig_filename)
+        orig_directory = STRIP_DIR.sub('', orig_filename)
         destination_directory = path.join(args.output_dir, orig_directory)
         # strip extension
-        filename = re.sub(r'\.[a-z]{2,5}$', '', orig_filename)
+        filename = STRIP_EXTENSION.sub('', orig_filename)
         output_path = path.join(args.output_dir, filename + extension)
     else:
         destination_directory = determine_counter_dir(args.output_dir, counter)
