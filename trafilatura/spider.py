@@ -87,7 +87,7 @@ def process_links(htmlstring, base_url, language=None, rules=None):
        Store the links in todo-list while prioritizing the navigation ones."""
     links, links_priority = [], []
     # optional language check: run baseline extraction + language identifier
-    if language is not None and LANGID_FLAG is True:
+    if language is not None and LANGID_FLAG is True and htmlstring is not None:
         _, text, _ = baseline(htmlstring)
         result, _ = py3langid.classify(text)
         if result != language:
