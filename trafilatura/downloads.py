@@ -35,8 +35,6 @@ from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
 from .utils import decode_response, uniquify_list
 
 
-URL_STORE = UrlStore(compressed=False, strict=False)
-
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
 
@@ -90,7 +88,7 @@ def _send_request(url, no_ssl, config):
             total=0,
             redirect=MAX_REDIRECTS, # raise_on_redirect=False,
             connect=0,
-            backoff_factor=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT')*2,
+            backoff_factor=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT')/2,
             status_forcelist=[
                 429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598
             ],
