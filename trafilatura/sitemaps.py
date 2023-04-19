@@ -11,7 +11,10 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
+from typing import List, Optional, Tuple
+
 from courlan import clean_url, extract_domain, filter_urls, fix_relative_urls, get_hostinfo, lang_filter
+from courlan.network import redirection_test
 
 from .downloads import fetch_url
 from .settings import MAX_SITEMAPS_SEEN
@@ -33,7 +36,7 @@ POTENTIAL_SITEMAP = re.compile(r'\.xml\b')
 GUESSES = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
 
 
-def sitemap_search(url, target_lang=None):
+def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
     Args:
@@ -50,8 +53,14 @@ def sitemap_search(url, target_lang=None):
     if domainname is None:
         LOGGER.warning('Invalid URL: %s', url)
         return []
-    urlfilter = None
+    # check base URL
+    try:
+        _ = redirection_test(baseurl)
+    except Exception:
+        LOGGER.warning('Base URL unreachable, dropping sitemap: %s', url)
+        return []
     # determine sitemap URL
+    urlfilter = None
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
@@ -60,7 +69,6 @@ def sitemap_search(url, target_lang=None):
         if len(url) > len(baseurl) + 2:
             urlfilter = url
     sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
-    sitemaps_seen = {sitemapurl}
     if sitemapurls == [] and len(linklist) > 0:
         linklist = filter_urls(linklist, urlfilter)
         LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
@@ -73,6 +81,7 @@ def sitemap_search(url, target_lang=None):
             sitemapurls = [''.join([baseurl, '/', g]) for g in GUESSES]
     # iterate through nested sitemaps and results
     i = 1
+    sitemaps_seen = {sitemapurl}
     while sitemapurls:
         sitemapurl = sitemapurls.pop()
         sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang, sitemapurls, linklist)
@@ -88,7 +97,7 @@ def sitemap_search(url, target_lang=None):
     return linklist
 
 
-def check_sitemap(url, contents):
+def check_sitemap(url: str, contents: Optional[str]) -> Optional[str]:
     '''Check if the sitemap corresponds to an expected format,
        i.e. TXT or XML.'''
     if contents is not None:
@@ -102,7 +111,7 @@ def check_sitemap(url, contents):
     return contents
 
 
-def download_and_process_sitemap(url, domain, baseurl, target_lang, sitemapurls=None, linklist=None):
+def download_and_process_sitemap(url: str, domain: str, baseurl: str, target_lang: Optional[str], sitemapurls: Optional[List[str]] = None, linklist: Optional[List[str]] = None) -> Tuple[List[str], List[str]]:
     'Helper function chaining download and processing of sitemaps.'
     # variables init
     sitemapurls, linklist = sitemapurls or [], linklist or []
@@ -113,7 +122,7 @@ def download_and_process_sitemap(url, domain, baseurl, target_lang, sitemapurls=
     return sitemapurls + add_sitemaps, linklist + add_links
 
 
-def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
+def process_sitemap(url: str, domain: str, baseurl: str, pagecontent: str, target_lang: Optional[str] = None) -> Tuple[List[str], List[str]]:
     'Download a sitemap and extract the links it contains.'
     contents = check_sitemap(url, pagecontent)
     # safeguard
@@ -122,7 +131,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         return [], []
     # try to extract links from TXT file
     if not SITEMAP_FORMAT.match(contents):
-        sitemapurls, linklist = [], []
+        sitemapurls, linklist = [], []  # type: List[str], List[str]
         for match in DETECT_LINKS.finditer(contents):
             result = match[0]
             link, state = handle_link(result, url, domain, baseurl, target_lang)
@@ -136,7 +145,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
     return extract_sitemap_links(contents, url, domain, baseurl, target_lang)
 
 
-def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
+def handle_link(link: str, sitemapurl: str, domainname: str, baseurl: str, target_lang: Optional[str]) -> Tuple[str, str]:
     '''Examine a link and determine if it's valid and if it leads to
        a sitemap or a web page.'''
     state = '0'
@@ -160,7 +169,7 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     return link, state
 
 
-def store_sitemap_link(sitemapurls, linklist, link, state):
+def store_sitemap_link(sitemapurls: List[str], linklist: List[str], link: str, state: str) -> Tuple[List[str], List[str]]:
     '''Process link according to filtered result: discard it or store it
        in the appropriate list.'''
     if state == 'sitemap' and link is not None:
@@ -170,13 +179,13 @@ def store_sitemap_link(sitemapurls, linklist, link, state):
     return sitemapurls, linklist
 
 
-def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, target_lang):
+def extract_sitemap_langlinks(pagecontent: str, sitemapurl: str, domainname: str, baseurl: str, target_lang: Optional[str]) -> Tuple[List[str], List[str]]:
     'Extract links corresponding to a given target language.'
     if 'hreflang=' not in pagecontent:
         return [], []
-    sitemapurls, linklist = [], []
+    sitemapurls, linklist = [], []  # type: List[str], List[str]
     # compile regex here for modularity and efficiency
-    lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
+    lang_regex = re.compile(rf"hreflang=[\"']({target_lang}.*?|x-default)[\"']", re.DOTALL)
     for attr_match in XHTML_REGEX.finditer(pagecontent):
         attributes = attr_match[0]
         if lang_regex.search(attributes):
@@ -188,9 +197,9 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
     return sitemapurls, linklist
 
 
-def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_lang):
+def extract_sitemap_links(pagecontent: str, sitemapurl: str, domainname: str, baseurl: str, target_lang: Optional[str]) -> Tuple[List[str], List[str]]:
     'Extract sitemap links and web page links from a sitemap file.'
-    sitemapurls, linklist = [], []
+    sitemapurls, linklist = [], []  # type: List[str], List[str]
     # extract
     for match in LINK_REGEX.finditer(pagecontent):
         # process middle part of the match tuple
@@ -200,14 +209,14 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
     return sitemapurls, linklist
 
 
-def find_robots_sitemaps(baseurl):
+def find_robots_sitemaps(baseurl: str) -> List[str]:
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
     robotstxt = fetch_url(baseurl + '/robots.txt')
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
-def extract_robots_sitemaps(robotstxt, baseurl):
+def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
     'Read a robots.txt file and find sitemap links.'
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > 10000:

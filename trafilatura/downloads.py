@@ -166,11 +166,11 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     return None
 
 
-def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None):
+def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False):
     '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
     # init
     if url_store is None:
-        url_store = UrlStore(compressed=False, strict=False)
+        url_store = UrlStore(compressed=compression, strict=False)
     # deduplicate while keeping order
     inputlist = uniquify_list(inputlist)
     # filter

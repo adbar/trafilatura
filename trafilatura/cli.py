@@ -12,7 +12,6 @@ import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from platform import python_version
-from threading import Lock
 
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
@@ -28,7 +27,6 @@ from .sitemaps import sitemap_search
 LOGGER = logging.getLogger(__name__)
 
 INPUTDICT = None
-THREAD_LOCK = Lock()
 
 # fix output encoding on some systems
 try:
@@ -303,12 +301,12 @@ def process_args(args):
             # process results from the parallel threads and add them
             # to the compressed URL dictionary for further processing
             for future in as_completed(future_to_url):
-                with THREAD_LOCK:
-                    if future.result() is not None:
-                        INPUTDICT = add_to_compressed_dict(
-                            future.result(), blacklist=args.blacklist,
-                            url_filter=args.url_filter, url_store=INPUTDICT
-                        )
+                if future.result() is not None:
+                    INPUTDICT = add_to_compressed_dict(
+                        future.result(), blacklist=args.blacklist,
+                        url_filter=args.url_filter, url_store=INPUTDICT,
+                        compression=args.sitemap
+                    )
 
         # process the links found
         error_caught = url_processing_pipeline(args, INPUTDICT)

@@ -88,7 +88,7 @@ def load_input_dict(args):
        build a domain-aware dictionary'''
     inputlist = load_input_urls(args)
     # deduplicate, filter and and convert to dict
-    return add_to_compressed_dict(inputlist, args.blacklist) # args.filter
+    return add_to_compressed_dict(inputlist, blacklist=args.blacklist, url_filter=args.url_filter)
 
 
 def check_outputdir_status(directory):
