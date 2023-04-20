@@ -29,6 +29,7 @@ except ImportError:
 import urllib3
 
 from courlan import UrlStore
+from courlan.network import redirection_test
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
@@ -113,7 +114,7 @@ def _send_request(url, no_ssl, config):
         LOGGER.error('retrying after SSLError: %s', url)
         return _send_request(url, True, config)
     except Exception as err:
-        logging.error('download error: %s %s', url, err)  # sys.exc_info()[0]
+        LOGGER.error('download error: %s %s', url, err)  # sys.exc_info()[0]
     else:
         # necessary for standardization
         return RawResponse(response.data, response.status, response.geturl())
@@ -162,6 +163,45 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         # return response
     LOGGER.debug('no response: %s', url)
     return None
+
+
+def _pycurl_is_live_page(url):
+    "Send a basic HTTP HEAD request with pycurl."
+    # Initialize pycurl object
+    curl = pycurl.Curl()
+    # Set the URL and HTTP method (HEAD)
+    curl.setopt(pycurl.URL, url.encode('utf-8'))
+    curl.setopt(pycurl.CONNECTTIMEOUT, 10)
+    # Set option to avoid getting the response body
+    curl.setopt(curl.NOBODY, True)
+    # Perform the request
+    try:
+        curl.perform()
+    except pycurl.error as err:
+        LOGGER.debug('pycurl HEAD error: %s %s', url, err)
+        return False
+    # Get the response code
+    page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
+    # Clean up
+    curl.close()
+    return page_exists
+
+
+def _urllib3_is_live_page(url):
+    "Use courlan redirection test (based on urllib3) to send a HEAD request."
+    try:
+        _ = redirection_test(url)
+    except Exception as err:
+        LOGGER.debug('urllib3 HEAD error: %s %s', url, err)
+        return False
+    return True
+
+
+def is_live_page(url):
+    "Send a HTTP HEAD request without taking anything else into account."
+    if pycurl is not None:
+        return _pycurl_is_live_page(url)
+    return _urllib3_is_live_page(url)
 
 
 def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False):
@@ -256,7 +296,7 @@ def _send_pycurl_request(url, no_ssl, config):
     try:
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
-        logging.error('pycurl error: %s %s', url, err)
+        LOGGER.error('pycurl error: %s %s', url, err)
         # retry in case of SSL-related error
         # see https://curl.se/libcurl/c/libcurl-errors.html
         # errmsg = curl.errstr_raw()
