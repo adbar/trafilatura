@@ -13,6 +13,8 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from platform import python_version
 
+from courlan import UrlStore
+
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
                         cli_crawler,
@@ -26,7 +28,7 @@ from .sitemaps import sitemap_search
 
 LOGGER = logging.getLogger(__name__)
 
-INPUTDICT = None
+INPUTDICT = UrlStore()
 
 # fix output encoding on some systems
 try:
@@ -285,19 +287,17 @@ def process_args(args):
 
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.input_file and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
+    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.sitemap]):
         INPUTDICT = load_input_dict(args)
         error_caught = url_processing_pipeline(args, INPUTDICT)
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
         input_urls = load_input_urls(args)
+        func = find_feed_urls if args.feed else sitemap_search
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-            if args.feed:
-                future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
-            elif args.explore or args.sitemap:
-                future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
+            future_to_url = {executor.submit(func, url, target_lang=args.target_language): url for url in input_urls}
             # process results from the parallel threads and add them
             # to the compressed URL dictionary for further processing
             for future in as_completed(future_to_url):
@@ -305,8 +305,12 @@ def process_args(args):
                     INPUTDICT = add_to_compressed_dict(
                         future.result(), blacklist=args.blacklist,
                         url_filter=args.url_filter, url_store=INPUTDICT,
-                        compression=args.sitemap
+                        compression=(args.sitemap and not args.list)
                     )
+                    # empty buffer in order to spare memory
+                    if args.sitemap and args.list:
+                        _ = url_processing_pipeline(args, INPUTDICT)
+                        INPUTDICT = UrlStore()
 
         # process the links found
         error_caught = url_processing_pipeline(args, INPUTDICT)
