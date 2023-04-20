@@ -19,8 +19,6 @@ except ImportError:
 
 import gzip
 
-from collections import deque
-from datetime import datetime
 from time import sleep
 from unittest.mock import Mock, patch
 
@@ -29,7 +27,7 @@ from courlan import UrlStore
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
+from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, is_live_page, load_download_buffer, _determine_headers, _handle_response, _parse_config, _pycurl_is_live_page, _send_request, _send_pycurl_request, _urllib3_is_live_page
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -46,15 +44,20 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 def test_fetch():
     '''Test URL fetching.'''
-    # empty request?
+    # logic: empty request?
     assert _send_request('', True, DEFAULT_CONFIG) is None
-    # pycurl tests
+
+    # is_live general tests
+    assert _urllib3_is_live_page('https://httpstat.us/301') is True
+    assert _urllib3_is_live_page('https://httpstat.us/404') is False
+    assert is_live_page('https://httpstat.us/403') is False
+    # is_live pycurl tests
     if pycurl is not None:
-        assert fetch_url('1234') is None
-    # urllib3 tests
-    else:
-        assert fetch_url('1234') is None
-    assert fetch_url('https://httpbin.org/status/404') is None
+        assert _pycurl_is_live_page('https://httpstat.us/301') is True
+
+    # fetch_url
+    assert fetch_url('#@1234') is None
+    assert fetch_url('https://httpstat.us/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
     # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
@@ -77,10 +80,10 @@ def test_fetch():
     mock = Mock()
     mock.status = 200
     # too large
-    mock.data = (b'ABC'*10000000)
+    mock.data = b'ABC'*10000000
     assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
     # too small
-    mock.data = (b'ABC')
+    mock.data = b'ABC'
     assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
     # straight handling of response object
     assert load_html(response) is not None
@@ -112,7 +115,7 @@ def test_decode():
     '''Test how responses are being decoded.'''
     # response type
     mock = Mock()
-    mock.data = (b' ')
+    mock.data = b' '
     assert decode_response(mock) is not None
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
@@ -137,7 +140,7 @@ def test_queue():
     sleep(0.25)
     bufferlist, _, _ = load_download_buffer(url_store, sleep_time=0.1, threads=2)
     assert len(bufferlist) == 6
-    # CLI args 
+    # CLI args
     url_store = add_to_compressed_dict(['https://www.example.org/'])
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
@@ -147,7 +150,7 @@ def test_queue():
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    inputurls = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/505']
+    inputurls = ['https://httpstat.us/301', 'https://httpstat.us/304', 'https://httpstat.us/200', 'https://httpstat.us/300', 'https://httpstat.us/400', 'https://httpstat.us/505']
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
