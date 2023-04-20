@@ -63,13 +63,13 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     """
     domainname, baseurl = get_hostinfo(url)
     if domainname is None:
-        LOGGER.warning('Invalid URL: %s', url)
+        LOGGER.warning('invalid URL: %s', url)
         return []
     # check base URL
     try:
         _ = redirection_test(baseurl)
     except Exception:
-        LOGGER.warning('Base URL unreachable, dropping sitemap: %s', url)
+        LOGGER.warning('base URL unreachable, dropping sitemap: %s', url)
         return []
     # determine sitemap URL
     urlfilter = None
@@ -120,7 +120,7 @@ def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
     if POTENTIAL_SITEMAP.search(url) and \
         (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents)) \
          or '<html' in contents[:150].lower():
-        LOGGER.info('not a valid XML sitemap: %s', url)
+        LOGGER.warning('not a valid XML sitemap: %s', url)
         return False
     return True
 
@@ -142,7 +142,6 @@ def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
     plausible = is_plausible_sitemap(sitemap.sitemap_url, sitemap.content)
     # safeguard
     if not plausible:
-        LOGGER.debug('not a sitemap: %s', sitemap.sitemap_url) # respheaders
         return [], []
     # try to extract links from TXT file
     if not SITEMAP_FORMAT.match(sitemap.content):
@@ -173,11 +172,11 @@ def handle_link(link: str, sitemap: SitemapObject) -> Tuple[str, str]:
     if link is not None and lang_filter(link, sitemap.target_lang) is True:
         newdomain = extract_domain(link, fast=True)
         if newdomain is None:
-            LOGGER.error("Couldn't extract domain: %s", link)
+            LOGGER.error("couldn't extract domain: %s", link)
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
         elif newdomain != sitemap.domain and not newdomain in sitemap.domain and not WHITELISTED_PLATFORMS.search(newdomain):
-            LOGGER.warning('Diverging domain names: %s %s', sitemap.domain, newdomain)
+            LOGGER.warning('diverging domain names: %s %s', sitemap.domain, newdomain)
         else:
             state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
     return link, state
@@ -207,7 +206,8 @@ def extract_sitemap_langlinks(sitemap: SitemapObject) -> Tuple[List[str], List[s
             if lang_match:
                 link, state = handle_link(lang_match[1], sitemap)
                 sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
-    LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
+    LOGGER.info('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
+    LOGGER.debug('sitemaps found: %s', sitemapurls)
     return sitemapurls, linklist
 
 
@@ -219,7 +219,8 @@ def extract_sitemap_links(sitemap: SitemapObject) -> Tuple[List[str], List[str]]
         # process middle part of the match tuple
         link, state = handle_link(match[1], sitemap)
         sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
-    LOGGER.debug('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
+    LOGGER.info('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
+    LOGGER.debug('sitemaps found: %s', sitemapurls)
     return sitemapurls, linklist
 
 
@@ -252,5 +253,6 @@ def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
                 # urllib.parse.unquote(line[1].strip())
                 candidate = fix_relative_urls(baseurl, line[1].strip())
                 sitemapurls.append(candidate)
-    LOGGER.debug('%s sitemaps found in robots.txt', len(sitemapurls))
+    LOGGER.info('%s sitemaps found in robots.txt', len(sitemapurls))
+    LOGGER.debug('sitemaps found in robots.txt: %s', sitemapurls)
     return sitemapurls
