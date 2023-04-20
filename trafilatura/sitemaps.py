@@ -14,9 +14,8 @@ import re
 from typing import List, Optional, Tuple
 
 from courlan import clean_url, extract_domain, filter_urls, fix_relative_urls, get_hostinfo, lang_filter
-from courlan.network import redirection_test
 
-from .downloads import fetch_url
+from .downloads import fetch_url, is_live_page
 from .settings import MAX_SITEMAPS_SEEN
 
 
@@ -66,9 +65,7 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
         LOGGER.warning('invalid URL: %s', url)
         return []
     # check base URL
-    try:
-        _ = redirection_test(baseurl)
-    except Exception:
+    if not is_live_page(baseurl):
         LOGGER.warning('base URL unreachable, dropping sitemap: %s', url)
         return []
     # determine sitemap URL
