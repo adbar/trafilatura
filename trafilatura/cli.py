@@ -303,14 +303,17 @@ def process_args(args):
             for future in as_completed(future_to_url):
                 if future.result() is not None:
                     INPUTDICT = add_to_compressed_dict(
-                        future.result(), blacklist=args.blacklist,
-                        url_filter=args.url_filter, url_store=INPUTDICT,
-                        compression=(args.sitemap and not args.list)
+                        future.result(),
+                        url_store=INPUTDICT,
+                        blacklist=args.blacklist,
+                        compression=(args.sitemap and not args.list),
+                        url_filter=args.url_filter,
+                        verbose=args.verbose
                     )
                     # empty buffer in order to spare memory
                     if args.sitemap and args.list:
                         _ = url_processing_pipeline(args, INPUTDICT)
-                        INPUTDICT = UrlStore()
+                        INPUTDICT.reset()
 
         # process the links found
         error_caught = url_processing_pipeline(args, INPUTDICT)
@@ -318,14 +321,15 @@ def process_args(args):
         # activate site explorer
         if args.explore:
             # find domains for which nothing has been found and crawl
-            control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-            #still_to_crawl = {
-            #    key: control_dict[key]
-            #    for key in control_dict
-            #    if key not in INPUTDICT
-            #}
+            still_to_crawl = list(set(input_urls) - set(INPUTDICT.get_known_domains()))
+            control_dict = add_to_compressed_dict(
+                               still_to_crawl,
+                               blacklist=args.blacklist,
+                               url_filter=args.url_filter,
+                               verbose=args.verbose
+                           )
             # add to compressed dict and crawl the remaining websites
-            cli_crawler(args, n=100, url_store=control_dict)
+            cli_crawler(args, url_store=control_dict)
 
     # activate crawler/spider
     elif args.crawl:

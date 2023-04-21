@@ -140,7 +140,7 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
         except Exception as exc:
             LOGGER.error('cannot read robots.txt: %s', exc)
             rules = None
-    URL_STORE.urldict[base_url].rules = rules
+    URL_STORE.store_rules(base_url, rules)
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         URL_STORE.add_urls(urls=[homepage], visited=False)
