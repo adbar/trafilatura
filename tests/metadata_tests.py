@@ -280,6 +280,9 @@ def test_images():
     assert metadata.image == 'https://example.org/example-opengraph.jpg'
     metadata = extract_metadata('<html><head><meta property="twitter:image" content="https://example.org/example-twitter.jpg"></html>')
     assert metadata.image == 'https://example.org/example-twitter.jpg'
+    '''Without Image'''
+    metadata = extract_metadata('<html><head><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" /></html>')
+    assert metadata.image == None
 
 def test_Document_as_dict():
     """Tests that the dict serialization works and preserves data."""
