@@ -281,10 +281,8 @@ def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''
     # print list without further processing
     if args.list:
-        for domain in url_store.urldict:
-            # write_result('\n'.join(url_store.find_unvisited_urls(domain)), args)
-            print('\n'.join(url_store.find_unvisited_urls(domain)))
-        return False  # sys.exit(0)
+        url_store.print_unvisited_urls()  # and not write_result()
+        return False  # and not sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
