@@ -463,7 +463,7 @@ def extract_image(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)
        and search meta tags with Twitter Image'''
 
-    for elem in tree.xpath('.//head/meta[@property="og:image" or "og:image:url"][@content]'):
+    for elem in tree.xpath('.//head/meta[@property="og:image" or @property="og:image:url"][@content]'):
         return elem.get('content')
 
     for elem in tree.xpath('.//head/meta[@property="twitter:image" or @property="twitter:image:src"][@content]'):
