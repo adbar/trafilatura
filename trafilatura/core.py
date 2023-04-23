@@ -13,6 +13,7 @@ import re  # import regex as re
 import warnings
 
 from copy import deepcopy
+from lxml import etree
 
 # SIGALRM isn't present on Windows, detect it
 try:
@@ -642,7 +643,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
-    algo_text = trim(temppost_algo.text_content())
+    algo_text = trim(etree.tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
     len_algo = len(algo_text)
     # compare
     LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
