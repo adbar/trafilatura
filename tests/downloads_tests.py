@@ -62,13 +62,13 @@ def test_fetch():
     # doesn't work?
     # assert _send_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
-        assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+        assert _send_pycurl_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbin.org/status/200'
     response = _send_request('https://httpbin.org/status/200', True, False, DEFAULT_CONFIG)
     assert response.data == b''
     if pycurl is not None:
-        response1 = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request('https://httpbin.org/status/200', True, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object

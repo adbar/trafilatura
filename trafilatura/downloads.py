@@ -174,7 +174,7 @@ def fetch_url(url, decode=True, no_ssl=False, use_proxy=False, config=DEFAULT_CO
     if pycurl is None:
         response = _send_request(url, no_ssl, use_proxy, config)
     else:
-        response = _send_pycurl_request(url, no_ssl, config)
+        response = _send_pycurl_request(url, no_ssl, use_proxy, config)
     if response is not None and response != '':
         return _handle_response(url, response, decode, config)
         # return '' (useful do discard further processing?)
@@ -327,7 +327,7 @@ def _send_pycurl_request(url, no_ssl, use_proxy, config):
         # additional error codes: 80, 90, 96, 98
         if no_ssl is False and err.args[0] in (35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91):
             LOGGER.debug('retrying after SSL error: %s %s', url, err)
-            return _send_pycurl_request(url, True, config)
+            return _send_pycurl_request(url, True, use_proxy, config)
         # traceback.print_exc(file=sys.stderr)
         # sys.stderr.flush()
         return None
