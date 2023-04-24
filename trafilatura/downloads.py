@@ -27,6 +27,7 @@ except ImportError:
     pycurl = None
 
 import urllib3
+from urllib3.util.url import parse_url
 
 from courlan import UrlStore
 from courlan.network import redirection_test
@@ -80,7 +81,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_request(url, no_ssl, config):
+def _send_request(url, no_ssl, use_proxy, config):
     "Internal function to robustly send a request (SSL or not) and return its result."
     # customize headers
     global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
@@ -98,16 +99,33 @@ def _send_request(url, no_ssl, config):
     try:
         # TODO: read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
+        POOL_ARGS = {
+            'retries': RETRY_STRATEGY,
+            'timeout': config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'),
+            'ca_certs': certifi.where(), # cert_reqs='CERT_REQUIRED'
+            'num_pools': NUM_CONNECTIONS,
+        }
+
+        if use_proxy:
+            proxy = parse_url(use_proxy)
+            proxy_user = proxy.auth.split(':')[0]
+            proxy_pass = proxy.auth.split(':')[1]
+            POOL_ARGS['proxy_url'] = proxy.scheme + '://' + proxy.host + ':' + str(proxy.port)
+            POOL_ARGS['proxy_headers'] = urllib3.util.make_headers(proxy_basic_auth=f'{proxy_user}:{proxy_pass}')
+
+        http_class = urllib3.ProxyManager if use_proxy else urllib3.PoolManager   
+
         if no_ssl is False:
             # define pool
             if not HTTP_POOL:
-                HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)  # cert_reqs='CERT_REQUIRED'
+                HTTP_POOL = http_class(**POOL_ARGS)
             # execute request
             response = HTTP_POOL.request('GET', url, headers=_determine_headers(config))
         else:
             # define pool
             if not NO_CERT_POOL:
-                NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=NUM_CONNECTIONS)
+                POOL_ARGS['cert_reqs'] = 'CERT_NONE'
+                NO_CERT_POOL = http_class(**POOL_ARGS)
             # execute request
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
     except urllib3.exceptions.SSLError:
@@ -138,7 +156,7 @@ def _handle_response(url, response, decode, config):
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, use_proxy=False, config=DEFAULT_CONFIG):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
@@ -154,7 +172,7 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     """
     LOGGER.debug('sending request: %s', url)
     if pycurl is None:
-        response = _send_request(url, no_ssl, config)
+        response = _send_request(url, no_ssl, use_proxy, config)
     else:
         response = _send_pycurl_request(url, no_ssl, config)
     if response is not None and response != '':
@@ -256,7 +274,7 @@ def buffered_downloads(bufferlist, download_threads, decode=True):
             yield future_to_url[future], future.result()
 
 
-def _send_pycurl_request(url, no_ssl, config):
+def _send_pycurl_request(url, no_ssl, use_proxy, config):
     '''Experimental function using libcurl and pycurl to speed up downloads'''
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
@@ -271,6 +289,12 @@ def _send_pycurl_request(url, no_ssl, config):
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url.encode('utf-8'))
+    # set proxy if enabled
+    if use_proxy:
+        proxy = parse_url(use_proxy)
+        proxy_url = proxy.scheme + '://' + proxy.host + ':' + str(proxy.port)
+        curl.setopt(pycurl.PROXY, proxy_url)
+        curl.setopt(pycurl.PROXYUSERPWD, proxy.auth)
     # share data
     curl.setopt(pycurl.SHARE, CURL_SHARE)
     curl.setopt(pycurl.HTTPHEADER, headerlist)

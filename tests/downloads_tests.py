@@ -45,7 +45,7 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 def test_fetch():
     '''Test URL fetching.'''
     # logic: empty request?
-    assert _send_request('', True, DEFAULT_CONFIG) is None
+    assert _send_request('', True, False, DEFAULT_CONFIG) is None
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpstat.us/301') is True
@@ -60,12 +60,12 @@ def test_fetch():
     assert fetch_url('https://httpstat.us/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
-    # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # assert _send_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbin.org/status/200'
-    response = _send_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+    response = _send_request('https://httpbin.org/status/200', True, False, DEFAULT_CONFIG)
     assert response.data == b''
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
@@ -73,7 +73,7 @@ def test_fetch():
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
     url = 'https://httpbin.org/encoding/utf8'
-    response = _send_request(url, False, DEFAULT_CONFIG)
+    response = _send_request(url, False, False, DEFAULT_CONFIG)
     myobject = _handle_response(url, response, False, DEFAULT_CONFIG)
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
     # too large response object
@@ -166,3 +166,4 @@ if __name__ == '__main__':
     test_config()
     test_decode()
     test_queue()
+    
