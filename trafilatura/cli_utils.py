@@ -249,8 +249,7 @@ def cli_crawler(args, n=30, url_store=None):
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
-            # startpage = spider.URL_STORE.get_url(hostname, mark=False)
-            startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath
+            startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             # base_url, i, known_num, rules, is_on
             _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
             # update info
@@ -270,7 +269,7 @@ def cli_crawler(args, n=30, url_store=None):
                 # just in case a crawl delay is specified in robots.txt
                 # sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(base_url)))
         # early exit if maximum count is reached
-        if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
+        if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
     # print results
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
