@@ -109,7 +109,7 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.1.0; python_version >= '3.7'",
-        "courlan @ https://github.com/adbar/courlan/archive/master.zip",
+        "courlan >= 0.9.1",
         "htmldate >= 1.4.2",
         "justext >= 3.0.0",
         "lxml >= 4.9.2",
