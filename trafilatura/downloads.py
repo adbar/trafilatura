@@ -204,11 +204,15 @@ def is_live_page(url):
     return _urllib3_is_live_page(url)
 
 
-def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False):
+def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False, verbose=False):
     '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
     # init
     if url_store is None:
-        url_store = UrlStore(compressed=compression, strict=False)
+        url_store = UrlStore(
+                        compressed=compression,
+                        strict=False,
+                        verbose=verbose
+                    )
     # deduplicate while keeping order
     inputlist = uniquify_list(inputlist)
     # filter
