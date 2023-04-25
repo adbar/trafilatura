@@ -409,6 +409,7 @@ def test_input_filtering():
     testargs = ['']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
+
     # load dictionary
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     url_store = cli.load_input_dict(args)
@@ -417,34 +418,45 @@ def test_input_filtering():
     args.blacklist = {'httpbin.org/status/404'}
     url_store = cli.load_input_dict(args)
     assert len(url_store.find_known_urls('https://httpbin.org')) == 1
+
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
     myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
-    url_store = add_to_compressed_dict(myinput, myblacklist)
+    url_store = add_to_compressed_dict(myinput, blacklist=myblacklist)
     assert url_store.find_known_urls('https://example.org') == ['https://example.org/2', 'https://example.org/4', 'https://example.org/6']
+
     # URL in blacklist
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
-    url_store = add_to_compressed_dict(my_urls, my_blacklist)
+    url_store = add_to_compressed_dict(my_urls, blacklist=my_blacklist)
     assert len(url_store.urldict) == 0
+
     # URL filter
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
-    url_store = add_to_compressed_dict(my_urls, None, ['status'], None)
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=['status'], url_store=None)
     assert len(url_store.urldict) == 1
-    url_store = add_to_compressed_dict(my_urls, None, ['teststring'], None)
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=['teststring'], url_store=None)
     assert len(url_store.urldict) == 0
-    url_store = add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=['status', 'teststring'], url_store=None)
     assert len(url_store.urldict) == 1
+
     # malformed URLs
-    url_store = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
+    url_store = add_to_compressed_dict(['123345', 'https://www.example.org/1'])
     assert len(url_store.urldict) == 1
+
     # double URLs
     args.input_file = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
     my_urls = cli_utils.load_input_urls(args)
     url_store = add_to_compressed_dict(my_urls)
     assert len(url_store.find_known_urls('https://example.org')) == 1
+
+    # filter before exploration
+    input_store = add_to_compressed_dict(["https://example.org/1", "https://sitemaps.org/test"])
+    input_urls = ["https://example.org", "http://sitemaps.org/", "https://test.info/"]
+    url_store = cli_utils.build_exploration_dict(input_store, input_urls, args)
+    assert url_store.get_known_domains() == ["https://test.info"]
 
 
 if __name__ == '__main__':
