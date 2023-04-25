@@ -18,7 +18,7 @@ from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 
-from courlan import get_host_and_path, validate_url, UrlStore
+from courlan import extract_domain, get_base_url, validate_url, UrlStore
 
 from trafilatura import spider
 
@@ -235,6 +235,21 @@ def download_queue_processing(url_store, args, counter, config):
     return errors, counter
 
 
+def build_exploration_dict(url_store, input_urls, args):
+    "Find domains for which nothing has been found and add info to the crawl dict."
+    input_domains = set(extract_domain(u) for u in input_urls)
+    known_domains = set(extract_domain(u) for u in url_store.get_known_domains())
+    still_to_crawl = input_domains - known_domains
+    new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
+    control_dict = add_to_compressed_dict(
+                       new_input_urls,
+                       blacklist=args.blacklist,
+                       url_filter=args.url_filter,
+                       verbose=args.verbose
+                   )
+    return control_dict
+
+
 def cli_crawler(args, n=30, url_store=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
@@ -261,8 +276,7 @@ def cli_crawler(args, n=30, url_store=None):
         bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
-            # base_url = get_base_url(url)
-            base_url, _ = get_host_and_path(url)
+            base_url = get_base_url(url)
             # handle result
             if result is not None:
                 spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))

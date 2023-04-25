@@ -17,7 +17,7 @@ from courlan import UrlStore
 
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        cli_crawler,
+                        build_exploration_dict, cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .downloads import add_to_compressed_dict
@@ -320,15 +320,8 @@ def process_args(args):
 
         # activate site explorer
         if args.explore:
-            # find domains for which nothing has been found and crawl
-            still_to_crawl = list(set(input_urls) - set(INPUTDICT.get_known_domains()))
-            control_dict = add_to_compressed_dict(
-                               still_to_crawl,
-                               blacklist=args.blacklist,
-                               url_filter=args.url_filter,
-                               verbose=args.verbose
-                           )
             # add to compressed dict and crawl the remaining websites
+            control_dict = build_exploration_dict(INPUTDICT, input_urls, args)
             cli_crawler(args, url_store=control_dict)
 
     # activate crawler/spider
