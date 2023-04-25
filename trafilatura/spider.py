@@ -93,7 +93,7 @@ def process_links(htmlstring, base_url, language=None, rules=None):
         if result != language:
             return
     # iterate through the links and filter them
-    for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
+    for link in extract_links(pagecontent=htmlstring, base_url=base_url, external_bool=False, language=language, with_nav=True):
         # check robots.txt rules
         if rules is not None and not rules.can_fetch("*", link):
             continue
@@ -140,7 +140,7 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
         except Exception as exc:
             LOGGER.error('cannot read robots.txt: %s', exc)
             rules = None
-    URL_STORE.urldict[base_url].rules = rules
+    URL_STORE.store_rules(base_url, rules)
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         URL_STORE.add_urls(urls=[homepage], visited=False)

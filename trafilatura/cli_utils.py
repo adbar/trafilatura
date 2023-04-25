@@ -18,7 +18,7 @@ from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 
-from courlan import get_host_and_path, validate_url, UrlStore
+from courlan import extract_domain, get_base_url, validate_url, UrlStore
 
 from trafilatura import spider
 
@@ -51,7 +51,7 @@ def load_input_urls(args):
                 for line in inputfile:
                     url_match = MATCH_URL.match(line)
                     if url_match:
-                        input_urls.append(url_match[0])
+                        input_urls.append(url_match[0].rstrip("/"))
 
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
@@ -88,7 +88,13 @@ def load_input_dict(args):
        build a domain-aware dictionary'''
     inputlist = load_input_urls(args)
     # deduplicate, filter and and convert to dict
-    return add_to_compressed_dict(inputlist, blacklist=args.blacklist, url_filter=args.url_filter)
+    return add_to_compressed_dict(
+        inputlist,
+        blacklist=args.blacklist,
+        # compression=(args.sitemap and not args.list),
+        url_filter=args.url_filter,
+        verbose=args.verbose
+    )
 
 
 def check_outputdir_status(directory):
@@ -229,6 +235,21 @@ def download_queue_processing(url_store, args, counter, config):
     return errors, counter
 
 
+def build_exploration_dict(url_store, input_urls, args):
+    "Find domains for which nothing has been found and add info to the crawl dict."
+    input_domains = set(extract_domain(u) for u in input_urls)
+    known_domains = set(extract_domain(u) for u in url_store.get_known_domains())
+    still_to_crawl = input_domains - known_domains
+    new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
+    control_dict = add_to_compressed_dict(
+                       new_input_urls,
+                       blacklist=args.blacklist,
+                       url_filter=args.url_filter,
+                       verbose=args.verbose
+                   )
+    return control_dict
+
+
 def cli_crawler(args, n=30, url_store=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
@@ -243,8 +264,7 @@ def cli_crawler(args, n=30, url_store=None):
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
-            # startpage = spider.URL_STORE.get_url(hostname, mark=False)
-            startpage = hostname + spider.URL_STORE.urldict[hostname].tuples[0].urlpath
+            startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             # base_url, i, known_num, rules, is_on
             _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
             # update info
@@ -256,15 +276,14 @@ def cli_crawler(args, n=30, url_store=None):
         bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
-            # base_url = get_base_url(url)
-            base_url, _ = get_host_and_path(url)
+            base_url = get_base_url(url)
             # handle result
             if result is not None:
                 spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
                 # just in case a crawl delay is specified in robots.txt
                 # sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(base_url)))
         # early exit if maximum count is reached
-        if any(spider.URL_STORE.urldict[d].count >= n for d in spider.URL_STORE.urldict):
+        if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
     # print results
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
@@ -275,10 +294,8 @@ def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''
     # print list without further processing
     if args.list:
-        for domain in url_store.urldict:
-            # write_result('\n'.join(url_store.find_unvisited_urls(domain)), args)
-            print('\n'.join(url_store.find_unvisited_urls(domain)))
-        return False  # sys.exit(0)
+        url_store.print_unvisited_urls()  # and not write_result()
+        return False  # and not sys.exit(0)
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
