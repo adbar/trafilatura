@@ -8,7 +8,7 @@ import sys
 
 from courlan import get_hostinfo
 from trafilatura import sitemaps
-from trafilatura.utils import decode_response
+from trafilatura.utils import decode_response, is_similar_string
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -40,12 +40,23 @@ def test_extraction():
     sitemap = sitemaps.SitemapObject('https://programtalk.com', "", 'programtalk.com', 'https://programtalk.com/sitemap.xml')
     assert sitemaps.handle_link('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', sitemap) == ('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', 'link')
 
+    # similar domain names
+    assert not is_similar_string('kleins-weindepot.de', 'eurosoft.net')
+    assert is_similar_string('kleins-weindepot.de', 'weindepot.info')
+
     # subdomain vs. domain: de.sitemaps.org / sitemaps.org
     url = 'https://de.sitemaps.org/1'
     sitemap_url = 'https://de.sitemaps.org/sitemap.xml'
     domain, baseurl = get_hostinfo(sitemap_url)
     sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
     assert sitemaps.handle_link(url, sitemap) == (url, 'link')
+
+    # diverging domains
+    url = 'https://www.software.info/1'
+    sitemap_url = 'https://example.org/sitemap.xml'
+    domain, baseurl = get_hostinfo(sitemap_url)
+    sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
+    assert sitemaps.handle_link(url, sitemap) == (url, '0')
 
     # don't take this one?
     #url = 'https://subdomain.sitemaps.org/1'
