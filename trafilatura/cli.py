@@ -13,11 +13,9 @@ import warnings
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from platform import python_version
 
-from courlan import UrlStore
-
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        cli_crawler,
+                        build_exploration_dict, cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .downloads import add_to_compressed_dict
@@ -27,8 +25,6 @@ from .sitemaps import sitemap_search
 
 
 LOGGER = logging.getLogger(__name__)
-
-INPUTDICT = UrlStore()
 
 # fix output encoding on some systems
 try:
@@ -275,7 +271,6 @@ def main():
 def process_args(args):
     """Perform the actual processing according to the arguments"""
     # init
-    global INPUTDICT
     error_caught = False
     # verbosity
     if args.verbose == 1:
@@ -288,13 +283,20 @@ def process_args(args):
     # processing according to mutually exclusive options
     # read url list from input file
     if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.sitemap]):
-        INPUTDICT = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, INPUTDICT)
+        url_store = load_input_dict(args)
+        error_caught = url_processing_pipeline(args, url_store)
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
         input_urls = load_input_urls(args)
         func = find_feed_urls if args.feed else sitemap_search
+        url_store = add_to_compressed_dict(
+                        [],
+                        blacklist=args.blacklist,
+                        compression=(args.sitemap and not args.list),
+                        url_filter=args.url_filter,
+                        verbose=args.verbose
+                    )
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             future_to_url = {executor.submit(func, url, target_lang=args.target_language): url for url in input_urls}
@@ -302,30 +304,20 @@ def process_args(args):
             # to the compressed URL dictionary for further processing
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    INPUTDICT = add_to_compressed_dict(
-                        future.result(), blacklist=args.blacklist,
-                        url_filter=args.url_filter, url_store=INPUTDICT,
-                        compression=(args.sitemap and not args.list)
-                    )
+                    url_store.add_urls(future.result())
                     # empty buffer in order to spare memory
                     if args.sitemap and args.list:
-                        _ = url_processing_pipeline(args, INPUTDICT)
-                        INPUTDICT = UrlStore()
+                        url_store.print_unvisited_urls()
+                        url_store.reset()
 
         # process the links found
-        error_caught = url_processing_pipeline(args, INPUTDICT)
+        error_caught = url_processing_pipeline(args, url_store)
 
         # activate site explorer
         if args.explore:
-            # find domains for which nothing has been found and crawl
-            control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-            #still_to_crawl = {
-            #    key: control_dict[key]
-            #    for key in control_dict
-            #    if key not in INPUTDICT
-            #}
             # add to compressed dict and crawl the remaining websites
-            cli_crawler(args, n=100, url_store=control_dict)
+            control_dict = build_exploration_dict(url_store, input_urls, args)
+            cli_crawler(args, url_store=control_dict)
 
     # activate crawler/spider
     elif args.crawl:
@@ -337,8 +329,8 @@ def process_args(args):
 
     # process input URL
     elif args.URL:
-        INPUTDICT = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, INPUTDICT)  # process single url
+        url_store = load_input_dict(args)
+        error_caught = url_processing_pipeline(args, url_store)  # process single url
 
     # read input on STDIN directly
     else:
