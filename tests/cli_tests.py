@@ -213,15 +213,15 @@ def test_download():
     assert cli.examine(None, args) is None
     assert cli.examine(' ', args) is None
     assert cli.examine('0'*int(10e7), args) is None
-    #url = 'https://httpbin.org/status/200'
+    #url = 'https://httpbun.org/status/200'
     #teststring = fetch_url(url)
     #assert teststring is None  # too small
     #assert cli.examine(teststring, args, url) is None
-    #url = 'https://httpbin.org/links/2/2'
+    #url = 'https://httpbun.org/links/2/2'
     #teststring = fetch_url(url)
     #assert teststring is not None
     #assert cli.examine(teststring, args, url) is None
-    url = 'https://httpbin.org/html'
+    url = 'https://httpbun.org/html'
     teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
@@ -259,27 +259,27 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     cli_utils.cli_crawler(args)
 
-    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    testargs = ['', '--crawl', 'https://httpbun.org/html']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbin.org/html\n'
+    assert f.getvalue() == 'https://httpbun.org/html\n'
 
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # links permitted
-    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
+    testargs = ['', '--crawl', 'https://httpbun.org/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbin.org/links/1/1\nhttps://httpbin.org/links/1/0\n'
+    assert f.getvalue() == 'https://httpbun.org/links/1/1\nhttps://httpbun.org/links/1/0\n'
 
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # 0 links permitted
-    args.crawl = 'https://httpbin.org/links/4/4'
+    args.crawl = 'https://httpbun.org/links/4/4'
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args, n=0)
@@ -346,7 +346,7 @@ def test_cli_pipeline():
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # sitemaps
-    testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
+    testargs = ['', '--sitemap', 'https://httpbun.org/', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
@@ -372,36 +372,36 @@ def test_cli_pipeline():
     assert '[link](testlink.html)' in result and 'test.jpg' in result
 
     # Crawling
-    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    testargs = ['', '--crawl', 'https://httpbun.org/html']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbin.org/html\n'
+    assert f.getvalue() == 'https://httpbun.org/html\n'
     # links permitted
-    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
+    testargs = ['', '--crawl', 'https://httpbun.org/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue().endswith('https://httpbin.org/links/1/0\n')
+    assert f.getvalue().endswith('https://httpbun.org/links/1/0\n')
     # 0 links permitted
-    args.crawl = 'https://httpbin.org/links/4/4'
+    args.crawl = 'https://httpbun.org/links/4/4'
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args, n=0)
     assert len(f.getvalue().split('\n')) == 5
 
     # Exploration (Sitemap + Crawl)
-    testargs = ['', '--explore', 'https://httpbin.org/html']
+    testargs = ['', '--explore', 'https://httpbun.org/html']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert f.getvalue() == 'https://httpbin.org/html\n'
+    assert f.getvalue() == 'https://httpbun.org/html\n'
 
 
 def test_input_filtering():
