@@ -245,7 +245,7 @@ def load_download_buffer(url_store, sleep_time=5, threads=DOWNLOAD_THREADS):
             if url_store.done is False:
                 sleep(sleep_time)
             else:
-                bufferlist = []
+                bufferlist = []  # todo: delete once courlan changed
                 break
     return bufferlist, threads, url_store
 
