@@ -32,7 +32,7 @@ from courlan import UrlStore
 from courlan.network import redirection_test
 
 from . import __version__
-from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS
+from .settings import DEFAULT_CONFIG
 from .utils import decode_response, uniquify_list
 
 
@@ -232,7 +232,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
     return url_store
 
 
-def load_download_buffer(url_store, sleep_time=5, threads=DOWNLOAD_THREADS):
+def load_download_buffer(url_store, sleep_time=5):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
     bufferlist = []
     while not bufferlist:
@@ -243,7 +243,7 @@ def load_download_buffer(url_store, sleep_time=5, threads=DOWNLOAD_THREADS):
             if url_store.done is True:
                 break
             sleep(sleep_time)
-    return bufferlist, threads, url_store
+    return bufferlist, url_store
 
 
 def buffered_downloads(bufferlist, download_threads, decode=True):
