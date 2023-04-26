@@ -234,19 +234,15 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
 
 def load_download_buffer(url_store, sleep_time=5, threads=DOWNLOAD_THREADS):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    # the remaining list is too small, process it differently
-    if len([d for d in url_store.urldict if url_store.urldict[d].all_visited is False]) < threads:
-        threads = 1
     bufferlist = []
     while not bufferlist:
-        bufferlist = url_store.get_download_urls(timelimit=sleep_time)
+        # todo: delete [] once courlan changed
+        bufferlist = url_store.get_download_urls(timelimit=sleep_time) or []
         # add emptiness test or sleep?
         if not bufferlist:
-            if url_store.done is False:
-                sleep(sleep_time)
-            else:
-                bufferlist = []  # todo: delete once courlan changed
+            if url_store.done is True:
                 break
+            sleep(sleep_time)
     return bufferlist, threads, url_store
 
 
