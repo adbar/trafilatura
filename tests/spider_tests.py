@@ -111,35 +111,35 @@ def test_crawl_logic():
         base_url, i, known_num, rules, is_on = spider.init_crawl('xyz', None, None)
     assert len(spider.URL_STORE.urldict) == 0
     # already visited
-    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbin.org/html', None, ['https://httpbin.org/html'])
+    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbun.org/html', None, ['https://httpbun.org/html'])
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     # normal webpage
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbin.org/html', None, None)
+    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbun.org/html', None, None)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert todo == [] and known_links == ['https://httpbin.org/html'] and base_url == 'https://httpbin.org' and i == 1
+    assert todo == [] and known_links == ['https://httpbun.org/html'] and base_url == 'https://httpbun.org' and i == 1
     # delay between requests
-    assert spider.URL_STORE.get_crawl_delay('https://httpbin.org') == 5
-    assert spider.URL_STORE.get_crawl_delay('https://httpbin.org', default=2.0) == 2.0
+    assert spider.URL_STORE.get_crawl_delay('https://httpbun.org') == 5
+    assert spider.URL_STORE.get_crawl_delay('https://httpbun.org', default=2.0) == 2.0
 
 
 def test_crawl_page():
     "Test page-by-page processing."
-    base_url = 'https://httpbin.org'
+    base_url = 'https://httpbun.org'
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    spider.URL_STORE.add_urls(['https://httpbin.org/links/2/2'])
-    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbin.org')
+    spider.URL_STORE.add_urls(['https://httpbun.org/links/2/2'])
+    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbun.org')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
+    assert sorted(todo) == ['https://httpbun.org/links/2/0', 'https://httpbun.org/links/2/1']
     assert len(known_links) == 3 and visited_num == 1
     # initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    spider.URL_STORE.add_urls(['https://httpbin.org/html'])
+    spider.URL_STORE.add_urls(['https://httpbun.org/html'])
     # if LANGID_FLAG is True:
-    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbin.org', initial=True, lang='de')
+    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbun.org', initial=True, lang='de')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(todo) == 0 and len(known_links) == 1 and visited_num == 1
@@ -149,9 +149,9 @@ def test_crawl_page():
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
-    todo, known_links = spider.focused_crawler("https://httpbin.org/links/1/1", max_seen_urls=1)
-    assert sorted(known_links) == ['https://httpbin.org/links/1/0', 'https://httpbin.org/links/1/1']
-    assert sorted(todo) == ['https://httpbin.org/links/1/0']
+    todo, known_links = spider.focused_crawler("https://httpbun.org/links/1/1", max_seen_urls=1)
+    assert sorted(known_links) == ['https://httpbun.org/links/1/0', 'https://httpbun.org/links/1/1']
+    assert sorted(todo) == ['https://httpbun.org/links/1/0']
 
 
 if __name__ == '__main__':

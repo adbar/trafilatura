@@ -64,11 +64,11 @@ def test_fetch():
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
-    url = 'https://httpbin.org/status/200'
-    response = _send_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
-    assert response.data == b''
+    url = 'https://httpbun.org/status/200'
+    response = _send_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
+    assert response.data == b'200 OK'
     if pycurl is not None:
-        response1 = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
@@ -135,10 +135,10 @@ def test_queue():
     # download buffer
     inputurls = ['https://test.org/1', 'https://test.org/2', 'https://test.org/3', 'https://test2.org/1', 'https://test2.org/2', 'https://test2.org/3', 'https://test3.org/1', 'https://test3.org/2', 'https://test3.org/3', 'https://test4.org/1', 'https://test4.org/2', 'https://test4.org/3', 'https://test5.org/1', 'https://test5.org/2', 'https://test5.org/3', 'https://test6.org/1', 'https://test6.org/2', 'https://test6.org/3']
     url_store = add_to_compressed_dict(inputurls)
-    bufferlist, _, _ = load_download_buffer(url_store, sleep_time=5, threads=1)
+    bufferlist, _ = load_download_buffer(url_store, sleep_time=5)
     assert len(bufferlist) == 6
     sleep(0.25)
-    bufferlist, _, _ = load_download_buffer(url_store, sleep_time=0.1, threads=2)
+    bufferlist, _ = load_download_buffer(url_store, sleep_time=0.1)
     assert len(bufferlist) == 6
     # CLI args
     url_store = add_to_compressed_dict(['https://www.example.org/'])

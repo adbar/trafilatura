@@ -223,9 +223,9 @@ def download_queue_processing(url_store, args, counter, config):
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
     errors = []
     while url_store.done is False:
-        bufferlist, download_threads, url_store = load_download_buffer(url_store, sleep_time, threads=args.parallel)
+        bufferlist, url_store = load_download_buffer(url_store, sleep_time)
         # process downloads
-        for url, result in buffered_downloads(bufferlist, download_threads):
+        for url, result in buffered_downloads(bufferlist, args.parallel):
             # handle result
             if result is not None:
                 counter = process_result(result, args, url, counter, config)
@@ -273,9 +273,9 @@ def cli_crawler(args, n=30, url_store=None):
             # ...
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
-        bufferlist, download_threads, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time, threads=args.parallel)
+        bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
         # start several threads
-        for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
+        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False):
             base_url = get_base_url(url)
             # handle result
             if result is not None:
