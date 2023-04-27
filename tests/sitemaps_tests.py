@@ -134,7 +134,7 @@ def test_extraction():
 def test_robotstxt():
     '''Check if sitemaps can be found over robots.txt'''
     assert sitemaps.find_robots_sitemaps('https://http.org') == []
-    baseurl = 'https://httpbin.org'
+    baseurl = 'https://httpbun.org'
     assert sitemaps.find_robots_sitemaps(baseurl) == []
     assert sitemaps.extract_robots_sitemaps('# test', baseurl) == []
     assert sitemaps.extract_robots_sitemaps('# test'*10000, baseurl) == []
