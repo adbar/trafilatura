@@ -306,7 +306,7 @@ def process_args(args):
                 if future.result() is not None:
                     url_store.add_urls(future.result())
                     # empty buffer in order to spare memory
-                    if args.list and len(url_store.get_known_domains()) > 10:
+                    if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
                         url_store.print_unvisited_urls()
                         url_store.reset()
 
