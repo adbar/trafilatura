@@ -12,7 +12,7 @@ import re
 from courlan import check_url, clean_url, filter_urls, fix_relative_urls, get_hostinfo, validate_url
 
 from .downloads import fetch_url
-from .utils import is_similar_string, load_html
+from .utils import is_similar_domain, load_html
 
 
 LOGGER = logging.getLogger(__name__)
@@ -36,7 +36,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
         # control output for validity
         checked = check_url(link, language=target_lang)
         if checked is not None:
-            if not is_similar_string(domainname, checked[1]) and not "feed" in link:
+            if not is_similar_domain(domainname, checked[1]) and not "feed" in link:
                 LOGGER.error('Rejected, diverging domain names: %s %s', domainname, checked[1])
             else:
                 output_links.append(checked[0])
