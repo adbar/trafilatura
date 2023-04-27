@@ -145,7 +145,7 @@ def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
     # try to extract links from TXT file
     if not SITEMAP_FORMAT.match(sitemap.content):
         sitemapurls, linklist = [], []  # type: List[str], List[str]
-        for match in [m[0] for m in islice(DETECT_LINKS.finditer(sitemap.content), MAX_LINKS)]:
+        for match in (m[0] for m in islice(DETECT_LINKS.finditer(sitemap.content), MAX_LINKS)):
             link, state = handle_link(match, sitemap)
             sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
         return sitemapurls, linklist
@@ -199,7 +199,7 @@ def extract_sitemap_langlinks(sitemap: SitemapObject) -> Tuple[List[str], List[s
     # compile regex here for modularity and efficiency
     lang_regex = re.compile(rf"hreflang=[\"']({sitemap.target_lang}.*?|x-default)[\"']", re.DOTALL)
     # extract
-    for attrs in [m[0] for m in islice(XHTML_REGEX.finditer(sitemap.content), MAX_LINKS)]:
+    for attrs in (m[0] for m in islice(XHTML_REGEX.finditer(sitemap.content), MAX_LINKS)):
         if lang_regex.search(attrs):
             lang_match = HREFLANG_REGEX.search(attrs)
             if lang_match:
@@ -214,7 +214,7 @@ def extract_sitemap_links(sitemap: SitemapObject) -> Tuple[List[str], List[str]]
     'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []  # type: List[str], List[str]
     # extract
-    for match in [m[1] for m in islice(LINK_REGEX.finditer(sitemap.content), MAX_LINKS)]:
+    for match in (m[1] for m in islice(LINK_REGEX.finditer(sitemap.content), MAX_LINKS)):
         # process middle part of the match tuple
         link, state = handle_link(match, sitemap)
         sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)

@@ -78,7 +78,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
-        for link in [m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)]:
+        for link in (m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)):
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
             feedlink = LINK_HREF.search(link)[1]
