@@ -299,14 +299,14 @@ def process_args(args):
                     )
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-            future_to_url = {executor.submit(func, url, target_lang=args.target_language): url for url in input_urls}
+            futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
             # process results from the parallel threads and add them
             # to the compressed URL dictionary for further processing
-            for future in as_completed(future_to_url):
+            for future in as_completed(futures):
                 if future.result() is not None:
                     url_store.add_urls(future.result())
                     # empty buffer in order to spare memory
-                    if args.sitemap and args.list:
+                    if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
                         url_store.print_unvisited_urls()
                         url_store.reset()
 
