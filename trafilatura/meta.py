@@ -8,7 +8,7 @@ from justext.core import define_stoplist
 
 from .filters import LRU_TEST
 from .hashing import Simhash
-from .utils import is_similar_string, line_processing, return_printables_and_spaces, trim
+from .utils import is_similar_domain, line_processing, return_printables_and_spaces, trim
 
 
 def reset_caches() -> None:
@@ -21,7 +21,7 @@ def reset_caches() -> None:
     # courlan
     get_tldinfo.cache_clear()
     # own
-    is_similar_string.cache_clear()
+    is_similar_domain.cache_clear()
     line_processing.cache_clear()
     return_printables_and_spaces.cache_clear()
     trim.cache_clear()
