@@ -17,6 +17,7 @@ from courlan import clean_url, extract_domain, filter_urls, fix_relative_urls, g
 
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_SITEMAPS_SEEN
+from .utils import is_similar_domain
 
 
 LOGGER = logging.getLogger(__name__)
@@ -172,8 +173,8 @@ def handle_link(link: str, sitemap: SitemapObject) -> Tuple[str, str]:
             LOGGER.error("couldn't extract domain: %s", link)
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
-        elif newdomain != sitemap.domain and not newdomain in sitemap.domain and not WHITELISTED_PLATFORMS.search(newdomain):
-            LOGGER.warning('diverging domain names: %s %s', sitemap.domain, newdomain)
+        elif not is_similar_domain(sitemap.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
+            LOGGER.error('link discarded, diverging domain names: %s %s', sitemap.domain, newdomain)
         else:
             state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
     return link, state

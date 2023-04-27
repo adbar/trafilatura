@@ -15,6 +15,8 @@ try:
     import brotli
 except ImportError:
     brotli = None
+
+from difflib import SequenceMatcher
 from gzip import decompress
 from functools import lru_cache
 from html import unescape
@@ -70,6 +72,8 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     "]+", flags=re.UNICODE)
 
 CLEAN_META_TAGS = re.compile(r'["\']')
+
+STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 
 def handle_compressed_file(filecontent):
@@ -361,3 +365,14 @@ def uniquify_list(l):
     https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
     """
     return list(dict.fromkeys(l))
+
+
+@lru_cache(maxsize=1024)
+def is_similar_domain(reference, new_string, threshold=0.5):
+    "Return the similarity ratio between two short strings, here domain names."
+    if new_string != reference:
+        new_string = STRIP_EXTENSION.sub("", new_string)
+        reference = STRIP_EXTENSION.sub("", reference)
+        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
+            return False
+    return True
