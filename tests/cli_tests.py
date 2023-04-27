@@ -70,7 +70,7 @@ def test_parser():
     args.verbose = 1
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     cli.process_args(args)
-    assert len(args.blacklist) == 2
+    assert len(args.blacklist) == 3
     # filter
     testargs = ['', '-i', 'resources/list-discard.txt', '--url-filter', 'test1', 'test2']
     with patch.object(sys, 'argv', testargs):
@@ -296,7 +296,7 @@ def test_cli_pipeline():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     my_urls = cli_utils.load_input_urls(args)
-    assert my_urls is not None and len(my_urls) == 2
+    assert my_urls is not None and len(my_urls) == 3
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt'), '--blacklist', os.path.join(RESOURCES_DIR, 'list-discard.txt'), '--archived']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -309,7 +309,7 @@ def test_cli_pipeline():
     assert delta > 2
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
-    assert len(args.blacklist) == 2
+    assert len(args.blacklist) == 3
     url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
     cli_utils.url_processing_pipeline(args, url_store)
     # test backup
@@ -345,14 +345,15 @@ def test_cli_pipeline():
     # file processing pipeline on resources/
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
-    # sitemaps
-    testargs = ['', '--sitemap', 'https://httpbun.org/', '--list']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli.process_args(args)
-    assert len(f.getvalue().strip()) == 0
+    # sitemaps: tested in --explore
+    #testargs = ['', '--sitemap', 'https://httpbun.org/', '--list']
+    #with patch.object(sys, 'argv', testargs):
+    #    args = cli.parse_args(testargs)
+    #f = io.StringIO()
+    #with redirect_stdout(f):
+    #    cli.process_args(args)
+    #returnval = f.getvalue().strip()
+    #assert len(returnval) == 0 or returnval == "https://httpbun.org/"
     # config file
     testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
@@ -395,13 +396,13 @@ def test_cli_pipeline():
     assert len(f.getvalue().split('\n')) == 5
 
     # Exploration (Sitemap + Crawl)
-    testargs = ['', '--explore', 'https://httpbun.org/html']
+    testargs = ['', '--explore', 'https://httpbun.org/html', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert f.getvalue() == 'https://httpbun.org/html\n'
+    assert f.getvalue().strip() == 'https://httpbun.org/html'
 
 
 def test_input_filtering():
@@ -413,16 +414,16 @@ def test_input_filtering():
     # load dictionary
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     url_store = cli.load_input_dict(args)
-    assert len(url_store.find_known_urls('https://httpbin.org')) == 2
+    assert len(url_store.find_known_urls('https://httpbin.org')) == 3
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
     args.blacklist = {'httpbin.org/status/404'}
     url_store = cli.load_input_dict(args)
-    assert len(url_store.find_known_urls('https://httpbin.org')) == 1
+    assert len(url_store.find_known_urls('https://httpbin.org')) == 2
 
     # deduplication and filtering
-    myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
-    myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
-    url_store = add_to_compressed_dict(myinput, blacklist=myblacklist)
+    inputlist = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
+    args.blacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
+    url_store = add_to_compressed_dict(inputlist, blacklist=args.blacklist)
     assert url_store.find_known_urls('https://example.org') == ['https://example.org/2', 'https://example.org/4', 'https://example.org/6']
 
     # URL in blacklist
@@ -430,7 +431,13 @@ def test_input_filtering():
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
     url_store = add_to_compressed_dict(my_urls, blacklist=my_blacklist)
-    assert len(url_store.urldict) == 0
+    assert len(url_store.dump_urls()) == 0
+    # other method
+    args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
+    args.blacklist = cli_utils.load_blacklist(args.blacklist)
+    url_store = cli_utils.load_input_dict(args)
+    assert len(url_store.dump_urls()) == 0
 
     # URL filter
     args.input_file = os.path.join(RESOURCES_DIR, 'list-process.txt')

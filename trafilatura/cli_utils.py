@@ -18,14 +18,14 @@ from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 
-from courlan import extract_domain, get_base_url, validate_url, UrlStore
+from courlan import extract_domain, get_base_url, UrlStore  # validate_url
 
 from trafilatura import spider
 
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 from .hashing import generate_hash_filename
-from .utils import uniquify_list
+from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
 
@@ -35,8 +35,6 @@ LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
-MATCH_URL = re.compile(r'https?://[^\s]+')
-STRIP_PROTOCOL = re.compile(r'^https?://')
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
 
@@ -49,10 +47,7 @@ def load_input_urls(args):
             # optional: errors='strict', buffering=1
             with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
                 for line in inputfile:
-                    url_match = MATCH_URL.match(line)
-                    if url_match:
-                        input_urls.append(url_match[0].rstrip("/"))
-
+                    input_urls.append(line.strip())
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
     elif args.URL:
@@ -78,8 +73,8 @@ def load_blacklist(filename):
     with open(filename, mode='r', encoding='utf-8') as inputfh:
         for line in inputfh:
             url = line.strip()
-            if validate_url(url)[0] is True:
-                blacklist.add(STRIP_PROTOCOL.sub('', url))
+            # if validate_url(url)[0] is True:
+            blacklist.add(URL_BLACKLIST_REGEX.sub('', url))
     return blacklist
 
 
@@ -91,7 +86,7 @@ def load_input_dict(args):
     return add_to_compressed_dict(
         inputlist,
         blacklist=args.blacklist,
-        # compression=(args.sitemap and not args.list),
+        compression=(args.sitemap and not args.list),
         url_filter=args.url_filter,
         verbose=args.verbose
     )

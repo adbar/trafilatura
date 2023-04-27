@@ -14,11 +14,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from platform import python_version
 
 from . import __version__
-from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
+from .cli_utils import (load_blacklist, load_input_dict,
                         build_exploration_dict, cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
-from .downloads import add_to_compressed_dict
 from .feeds import find_feed_urls
 from .settings import DOWNLOAD_THREADS
 from .sitemaps import sitemap_search
@@ -288,15 +287,9 @@ def process_args(args):
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
-        input_urls = load_input_urls(args)
+        url_store = load_input_dict(args)
         func = find_feed_urls if args.feed else sitemap_search
-        url_store = add_to_compressed_dict(
-                        [],
-                        blacklist=args.blacklist,
-                        compression=(args.sitemap and not args.list),
-                        url_filter=args.url_filter,
-                        verbose=args.verbose
-                    )
+        input_urls = url_store.dump_urls()
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
@@ -310,7 +303,7 @@ def process_args(args):
                         url_store.print_unvisited_urls()
                         url_store.reset()
 
-        # process the links found
+        # process the (rest of the) links found
         error_caught = url_processing_pipeline(args, url_store)
 
         # activate site explorer

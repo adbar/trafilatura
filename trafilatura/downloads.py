@@ -6,7 +6,6 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-import re
 
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -33,7 +32,7 @@ from courlan.network import redirection_test
 
 from . import __version__
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, uniquify_list
+from .utils import decode_response, uniquify_list, URL_BLACKLIST_REGEX
 
 
 NUM_CONNECTIONS = 50
@@ -217,7 +216,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
     inputlist = uniquify_list(inputlist)
     # filter
     if blacklist:
-        inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
+        inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub('', u) not in blacklist]
     if url_filter:
         filtered_list = []
         while inputlist:
