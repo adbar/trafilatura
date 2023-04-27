@@ -165,6 +165,8 @@ def test_feeds_helpers():
     assert feeds.handle_link_list(['https://feedproxy.google.com/ABCD'], 'example.org', 'https://example.org') == ['https://feedproxy.google.com/ABCD']
     # override failed checks
     assert feeds.handle_link_list(['https://feedburner.com/kat/1'], 'example.org', 'https://example.org') == ['https://feedburner.com/kat/1']
+    # diverging domain names
+    assert feeds.handle_link_list(['https://www.software.info/1'], 'example.org', 'https://example.org') == []
 
 
 def test_cli_behavior():

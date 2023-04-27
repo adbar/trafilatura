@@ -8,7 +8,7 @@ import sys
 
 from courlan import get_hostinfo
 from trafilatura import sitemaps
-from trafilatura.utils import decode_response
+from trafilatura.utils import decode_response, is_similar_domain
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -40,12 +40,24 @@ def test_extraction():
     sitemap = sitemaps.SitemapObject('https://programtalk.com', "", 'programtalk.com', 'https://programtalk.com/sitemap.xml')
     assert sitemaps.handle_link('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', sitemap) == ('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', 'link')
 
+    # similar domain names
+    assert not is_similar_domain('kleins-weindepot.de', 'eurosoft.net')
+    assert is_similar_domain('kleins-weindepot.de', 'weindepot.info')
+    assert is_similar_domain('airport-frankfurt.de', 'frankfurt-airport.com')
+
     # subdomain vs. domain: de.sitemaps.org / sitemaps.org
     url = 'https://de.sitemaps.org/1'
     sitemap_url = 'https://de.sitemaps.org/sitemap.xml'
     domain, baseurl = get_hostinfo(sitemap_url)
     sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
     assert sitemaps.handle_link(url, sitemap) == (url, 'link')
+
+    # diverging domains
+    url = 'https://www.software.info/1'
+    sitemap_url = 'https://example.org/sitemap.xml'
+    domain, baseurl = get_hostinfo(sitemap_url)
+    sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
+    assert sitemaps.handle_link(url, sitemap) == (url, '0')
 
     # don't take this one?
     #url = 'https://subdomain.sitemaps.org/1'
@@ -63,10 +75,11 @@ def test_extraction():
     assert sitemaps.extract_sitemap_links(sitemap) == ([], [])
 
     # parsing a file
+    url, domain, baseurl = 'http://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'http://www.sitemaps.org'
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml')
     with open(filepath) as f:
         teststring = f.read()
-    assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml', teststring) is True
+    assert sitemaps.is_plausible_sitemap('http://sitemaps.org/sitemap.xml', teststring) is True
     sitemap = sitemaps.SitemapObject(baseurl, teststring, domain, sitemap_url)
     sitemapurls, linklist = sitemaps.extract_sitemap_links(sitemap)
     assert len(sitemapurls) == 0 and len(linklist) == 84
