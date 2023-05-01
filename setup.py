@@ -113,7 +113,7 @@ setup(
         "htmldate >= 1.4.2",
         "justext >= 3.0.0",
         "lxml >= 4.9.2",
-        "urllib3 >= 1.26, < 2",
+        "urllib3 >= 1.26, < 3",
     ],
     extras_require=extras,
     entry_points={
