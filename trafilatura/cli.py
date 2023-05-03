@@ -23,8 +23,6 @@ from .settings import DOWNLOAD_THREADS
 from .sitemaps import sitemap_search
 
 
-LOGGER = logging.getLogger(__name__)
-
 # fix output encoding on some systems
 try:
     # > Python 3.7

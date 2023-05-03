@@ -289,7 +289,6 @@ def extract_metainfo(tree, expressions, len_limit=200):
         for elem in tree.xpath(expression):
             content = trim(' '.join(elem.itertext()))
             if content and 2 < len(content) < len_limit:
-                # LOGGER.debug('metadata found in: %s', expression)
                 return content
             i += 1
         if i > 1:
@@ -307,7 +306,7 @@ def examine_title_element(tree):
             first = mymatch[1] or None
             second = mymatch[2] or None
     except IndexError:
-        LOGGER.warning('no main title found')
+        LOGGER.debug('no main title found')
     return title, first, second
 
 
@@ -336,7 +335,7 @@ def extract_title(tree):
     try:
         title = tree.xpath('.//h2')[0].text_content()
     except IndexError:
-        LOGGER.warning('no h2 title found')
+        LOGGER.debug('no h2 title found')
     return title
 
 

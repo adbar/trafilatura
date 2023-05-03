@@ -107,7 +107,7 @@ def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     # validate
     if output_format == 'xmltei' and tei_validation is True:
         result = validate_tei(output_tree)
-        LOGGER.info('TEI validation result: %s %s %s', result, docmeta.id, docmeta.url)
+        LOGGER.debug('TEI validation result: %s %s %s', result, docmeta.id, docmeta.url)
     return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 
@@ -241,7 +241,7 @@ def replace_element_text(element, include_formatting):
                 LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
                 element.text = ''.join(['[', element.text, ']'])
         else:
-            LOGGER.error('empty link: %s %s', element.text, element.attrib)
+            LOGGER.warning('empty link: %s %s', element.text, element.attrib)
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ''.join([element.text, element.tail])

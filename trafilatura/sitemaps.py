@@ -128,7 +128,7 @@ def download_and_process_sitemap(url: str, domain: str, baseurl: str, target_lan
     # variables init
     sitemapurls, linklist = sitemapurls or [], linklist or []
     # fetch and pre-process
-    LOGGER.info('fetching sitemap: %s', url)
+    LOGGER.debug('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
     sitemap = SitemapObject(baseurl, pagecontent, domain, url, target_lang)
     add_sitemaps, add_links = process_sitemap(sitemap)
@@ -174,7 +174,7 @@ def handle_link(link: str, sitemap: SitemapObject) -> Tuple[str, str]:
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
         elif not is_similar_domain(sitemap.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
-            LOGGER.error('link discarded, diverging domain names: %s %s', sitemap.domain, newdomain)
+            LOGGER.warning('link discarded, diverging domain names: %s %s', sitemap.domain, newdomain)
         else:
             state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
     return link, state
@@ -204,8 +204,7 @@ def extract_sitemap_langlinks(sitemap: SitemapObject) -> Tuple[List[str], List[s
             if lang_match:
                 link, state = handle_link(lang_match[1], sitemap)
                 sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
-    LOGGER.info('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
-    LOGGER.debug('sitemaps found: %s', sitemapurls)
+    LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
     return sitemapurls, linklist
 
 
@@ -217,8 +216,7 @@ def extract_sitemap_links(sitemap: SitemapObject) -> Tuple[List[str], List[str]]
         # process middle part of the match tuple
         link, state = handle_link(match[1], sitemap)
         sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
-    LOGGER.info('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
-    LOGGER.debug('sitemaps found: %s', sitemapurls)
+    LOGGER.debug('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
     return sitemapurls, linklist
 
 
@@ -251,6 +249,5 @@ def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
                 # urllib.parse.unquote(line[1].strip())
                 candidate = fix_relative_urls(baseurl, line[1].strip())
                 sitemapurls.append(candidate)
-    LOGGER.info('%s sitemaps found in robots.txt', len(sitemapurls))
-    LOGGER.debug('sitemaps found in robots.txt: %s', sitemapurls)
+    LOGGER.debug('%s sitemaps found in robots.txt', len(sitemapurls))
     return sitemapurls
