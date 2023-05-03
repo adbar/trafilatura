@@ -37,7 +37,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
         checked = check_url(link, language=target_lang)
         if checked is not None:
             if not is_similar_domain(domainname, checked[1]) and not "feed" in link:
-                LOGGER.error('Rejected, diverging domain names: %s %s', domainname, checked[1])
+                LOGGER.warning('Rejected, diverging domain names: %s %s', domainname, checked[1])
             else:
                 output_links.append(checked[0])
         # Feedburner/Google feeds
@@ -182,7 +182,7 @@ def find_feed_urls(url, target_lang=None):
             return feed_links
         LOGGER.debug('No usable feed links found: %s', url)
     else:
-        LOGGER.warning('Could not download web page: %s', url)
+        LOGGER.error('Could not download web page: %s', url)
         if url.strip('/') != baseurl:
             return try_homepage(baseurl, target_lang)
     # try alternative: Google News
@@ -201,5 +201,5 @@ def find_feed_urls(url, target_lang=None):
 def try_homepage(baseurl, target_lang):
     '''Shift into reverse and try the homepage instead of the particular feed
        page that was given as input.'''
-    LOGGER.info('Probing homepage for feeds instead: %s', baseurl)
+    LOGGER.debug('Probing homepage for feeds instead: %s', baseurl)
     return find_feed_urls(baseurl, target_lang)

@@ -110,7 +110,7 @@ def _send_request(url, no_ssl, config):
             # execute request
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
     except urllib3.exceptions.SSLError:
-        LOGGER.error('retrying after SSLError: %s', url)
+        LOGGER.warning('retrying after SSLError: %s', url)
         return _send_request(url, True, config)
     except Exception as err:
         LOGGER.error('download error: %s %s', url, err)  # sys.exc_info()[0]
@@ -160,7 +160,7 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         return _handle_response(url, response, decode, config)
         # return '' (useful do discard further processing?)
         # return response
-    LOGGER.debug('no response: %s', url)
+    LOGGER.debug('request failed: %s', url)
     return None
 
 
@@ -171,6 +171,9 @@ def _pycurl_is_live_page(url):
     # Set the URL and HTTP method (HEAD)
     curl.setopt(pycurl.URL, url.encode('utf-8'))
     curl.setopt(pycurl.CONNECTTIMEOUT, 10)
+    # no SSL verification
+    curl.setopt(pycurl.SSL_VERIFYPEER, 0)
+    curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(curl.NOBODY, True)
     # Perform the request

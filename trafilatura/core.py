@@ -233,7 +233,7 @@ def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
-        # LOGGER.debug('discarding: %s %s', element.tag, element.text)
+        LOGGER.debug('discarding element: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
         # make a copy and prune it in case it contains sub-elements handled on their own?
@@ -668,9 +668,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     # apply decision
     if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
-        LOGGER.info('using generic algorithm: %s', url)
+        LOGGER.debug('using generic algorithm: %s', url)
     else:
-        LOGGER.info('using custom extraction: %s', url)
+        LOGGER.debug('using custom extraction: %s', url)
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
     # or options.recall is True ?
@@ -883,7 +883,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
             # cut short if extracted URL in blacklist
             if document.url in url_blacklist:
-                LOGGER.info('blacklisted URL: %s', url)
+                LOGGER.warning('blacklisted URL: %s', url)
                 raise ValueError
             # cut short if core elements are missing
             if only_with_metadata is True and any(
@@ -936,34 +936,34 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         if max_tree_size is not None:
             # strip tags
             if len(postbody) > max_tree_size:
-                LOGGER.warning('output tree too long: %s', len(postbody))
+                LOGGER.debug('output tree too long: %s', len(postbody))
                 strip_tags(postbody, 'hi')
             # still too long, raise an error
             if len(postbody) > max_tree_size:
-                LOGGER.error('output tree too long: %s, discarding file', len(postbody))
+                LOGGER.debug('output tree too long: %s, discarding file', len(postbody))
                 raise ValueError
         # size checks
         if len_comments < config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
-            LOGGER.info('not enough comments %s', url)
+            LOGGER.debug('not enough comments %s', url)
         if len_text < config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and len_comments < config.getint('DEFAULT',
                                                                                                    'MIN_OUTPUT_COMM_SIZE'):
-            LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
+            LOGGER.debug('text and comments not long enough: %s %s', len_text, len_comments)
             raise ValueError
 
         # check duplicates at body level
         if deduplicate is True and duplicate_test(postbody, config) is True:
-            LOGGER.error('duplicate document for URL %s', url)
+            LOGGER.debug('discarding duplicate document for URL %s', url)
             raise ValueError
 
         # sanity check on language
         if target_language is not None:
             is_not_target_lang, document = language_filter(temp_text, temp_comments, target_language, document)
             if is_not_target_lang is True:
-                LOGGER.error('wrong language for URL %s', url)
+                LOGGER.debug('wrong language for URL %s', url)
                 raise ValueError
 
     except (TypeError, ValueError):
-        LOGGER.info('discarding data for url: %s', url)  # document.url , record_id
+        LOGGER.warning('discarding data for url: %s', url)  # document.url , record_id
         return None
 
     # special case: python variables

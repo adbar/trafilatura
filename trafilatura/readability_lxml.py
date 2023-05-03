@@ -268,9 +268,9 @@ class Document:
         for elem in ordered:
             candidate = candidates[elem]
             density = self.get_link_density(elem)
-            LOGGER.debug("Branch %6.3f link density %.3f -> %6.3f",
-                candidate.score, density, candidate.score * (1 - density)
-            )
+            # LOGGER.debug("Branch %6.3f link density %.3f -> %6.3f",
+            #    candidate.score, density, candidate.score * (1 - density)
+            #)
             candidate.score *= 1 - density
 
         return candidates
@@ -307,7 +307,7 @@ class Document:
                 and REGEXES["unlikelyCandidatesRe"].search(attrs)
                 and (not REGEXES["okMaybeItsACandidateRe"].search(attrs))
             ):
-                LOGGER.debug("Removing unlikely candidate: %s", elem.tag)
+                # LOGGER.debug("Removing unlikely candidate: %s", elem.tag)
                 elem.drop_tree()
 
     def transform_misused_divs_into_paragraphs(self):
