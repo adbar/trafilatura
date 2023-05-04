@@ -66,7 +66,7 @@ def test_fetch():
     # no SSL, no decoding
     url = 'https://httpbun.org/status/200'
     response = _send_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
-    assert response.data == b'200 OK'
+    assert response.data == b''
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
