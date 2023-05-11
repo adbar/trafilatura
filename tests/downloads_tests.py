@@ -72,20 +72,20 @@ def test_fetch():
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
-    url = 'https://httpbin.org/encoding/utf8'
-    response = _send_request(url, False, DEFAULT_CONFIG)
-    myobject = _handle_response(url, response, False, DEFAULT_CONFIG)
-    assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
     # too large response object
-    mock = Mock()
-    mock.status = 200
+    response = Mock()
+    response.url = 'https://httpbin.org/encoding/utf8'
+    response.status = 200
     # too large
-    mock.data = b'ABC'*10000000
-    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
+    response.data = b'ABC'*10000000
+    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
     # too small
-    mock.data = b'ABC'
-    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
+    response.data = b'ABC'
+    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
     # straight handling of response object
+    with open(os.path.join(RESOURCES_DIR, 'utf8.html'), 'rb') as filehandle:
+        response.data = filehandle.read()
+    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is not None
     assert load_html(response) is not None
     # nothing to see here
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
