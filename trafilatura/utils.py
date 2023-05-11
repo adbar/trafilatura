@@ -48,6 +48,8 @@ HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding='utf
 
 LINES_TRIMMING = re.compile(r'(?<![p{P}>])\n', flags=re.UNICODE|re.MULTILINE)
 
+URL_BLACKLIST_REGEX = re.compile(r'^https?://|/+$')
+
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
 

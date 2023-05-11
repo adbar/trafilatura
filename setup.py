@@ -30,7 +30,7 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.18; python_version >= '3.11'",  # fix for build
-        "htmldate[speed] >= 1.4.2",
+        "htmldate[speed] >= 1.4.3",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.2",
     ],
@@ -109,11 +109,12 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.1.0; python_version >= '3.7'",
-        "courlan >= 0.9.1",
-        "htmldate >= 1.4.2",
+        "courlan >= 0.9.2",
+        "htmldate >= 1.4.3",
         "justext >= 3.0.0",
         "lxml >= 4.9.2",
-        "urllib3 >= 1.26, < 2",
+        "urllib3 >= 1.26, < 2; python_version < '3.7'",
+        "urllib3 >= 1.26, < 3; python_version >= '3.7'",
     ],
     extras_require=extras,
     entry_points={

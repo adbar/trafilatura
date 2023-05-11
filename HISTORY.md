@@ -1,6 +1,30 @@
 ## History / Changelog
 
 
+### 1.6.0
+
+Extraction:
+- new content hashes and default file names (#314)
+- fix deprecation warning with @sdondley in #321
+- fix for metadata image by @andremacola in #328
+- fix potential unicode issue in third-party extraction with @Korben00 in #331 
+- review logging levels (#347)
+
+Command-line interface:
+- more efficient sitemap processing (#326)
+- more efficient downloads (#338)
+- fix for single URL processing (#324) and URL blacklisting (#339)
+
+Navigation
+- additional safety check on domain similarity for feeds and sitemaps
+- new function ``is_live test()`` using HTTP HEAD request (#327)
+- code parts supported by new courlan version
+
+Maintenance
+- allow ``urllib3`` version 2.0+
+- minor code simplification and fixes
+
+
 ### 1.5.0
 
 
