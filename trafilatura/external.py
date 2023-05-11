@@ -18,14 +18,13 @@ from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revi
 from justext.utils import get_stoplist  # , get_stoplists
 
 from lxml.etree import Element, strip_tags
-from lxml.html import fromstring
 
 
 # own
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
-from .utils import trim, HTML_PARSER
+from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
 from .xpaths import PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
 
@@ -43,7 +42,8 @@ def try_readability(htmlinput):
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
-        return fromstring(doc.summary(), parser=HTML_PARSER)
+        # force conversion to utf-8 (see #319)
+        return fromstring_bytes(doc.summary())
     except Exception as err:
         LOGGER.warning('readability_lxml failed: %s', err)
         return Element('div')
