@@ -7,6 +7,7 @@ Extraction:
 - new content hashes and default file names (#314)
 - fix deprecation warning with @sdondley in #321
 - fix for metadata image by @andremacola in #328
+- fix potential unicode issue in third-party extraction with @Korben00 in #331 
 - review logging levels (#347)
 
 Command-line interface:
