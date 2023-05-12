@@ -160,7 +160,7 @@ def test_feeds_helpers():
     assert feeds.determine_feed('<html><body><a href="https://example.org/rss"><body/></html>', 'example.org', 'https://example.org') == ['https://example.org/rss']
     # feed discovery
     assert feeds.find_feed_urls('http://') == []
-    assert feeds.find_feed_urls('https://httpbin.org/status/404') == []
+    assert feeds.find_feed_urls('https://httpbun.org/status/404') == []
     # Feedburner/Google links
     assert feeds.handle_link_list(['https://feedproxy.google.com/ABCD'], 'example.org', 'https://example.org') == ['https://feedproxy.google.com/ABCD']
     # override failed checks
@@ -171,7 +171,7 @@ def test_feeds_helpers():
 
 def test_cli_behavior():
     '''Test command-line interface with respect to feeds'''
-    testargs = ['', '--list', '--feed', 'https://httpbin.org/xml']
+    testargs = ['', '--list', '--feed', 'https://httpbun.org/xml']
     with patch.object(sys, 'argv', testargs):
         assert cli.main() is None
 

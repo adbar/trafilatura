@@ -38,7 +38,8 @@ FILENAME_LEN = 8
 FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
 
 # Network
-MAX_SITEMAPS_SEEN = 10000
+MAX_LINKS = 10**6
+MAX_SITEMAPS_SEEN = 10**4
 
 
 # filters

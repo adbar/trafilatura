@@ -9,9 +9,12 @@ import logging
 import json
 import re
 
+from itertools import islice
+
 from courlan import check_url, clean_url, filter_urls, fix_relative_urls, get_hostinfo, validate_url
 
 from .downloads import fetch_url
+from .settings import MAX_LINKS
 from .utils import is_similar_domain, load_html
 
 
@@ -75,8 +78,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
-        for match in LINK_ATTRS.finditer(feed_string):
-            link = match[0]
+        for link in (m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)):
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
             feedlink = LINK_HREF.search(link)[1]
@@ -86,8 +88,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     # could be RSS
     elif '<link>' in feed_string:
         feed_links.extend(
-            match[1].strip()
-            for match in LINK_ELEMENTS.finditer(feed_string, re.DOTALL)
+            [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string, re.DOTALL), MAX_LINKS)]
         )
 
     # refine
