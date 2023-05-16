@@ -29,19 +29,19 @@ def test_extraction():
     # link handling
     url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
     sitemap = sitemaps.SitemapObject(baseurl, "", domain, url)
-    sitemap = sitemaps.handle_link(url, sitemap)
+    sitemap.handle_link(url)
     assert sitemap.sitemap_urls == [] and sitemap.urls == []
 
     sitemap = sitemaps.SitemapObject('https://example.org', "", 'example.org', 'https://example.org/sitemap.xml')
-    sitemap = sitemaps.handle_link('https://mydomain', sitemap)
+    sitemap.handle_link('https://mydomain')
     assert sitemap.sitemap_urls == [] and sitemap.urls == []
 
     sitemap = sitemaps.SitemapObject('https://example.org', "", 'example.org', 'https://example.org/sitemap.xml')
-    sitemap = sitemaps.handle_link('https://mydomain.wordpress.com/1', sitemap)
+    sitemap.handle_link('https://mydomain.wordpress.com/1')
     assert sitemap.sitemap_urls == [] and sitemap.urls == ['https://mydomain.wordpress.com/1']
 
     sitemap = sitemaps.SitemapObject('https://programtalk.com', "", 'programtalk.com', 'https://programtalk.com/sitemap.xml')
-    assert sitemaps.handle_link('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent', sitemap)
+    sitemap.handle_link('http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent')
     assert sitemap.sitemap_urls == [] and sitemap.urls == ['http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent']
 
     # similar domain names
@@ -54,7 +54,7 @@ def test_extraction():
     sitemap_url = 'https://de.sitemaps.org/sitemap.xml'
     domain, baseurl = get_hostinfo(sitemap_url)
     sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
-    sitemap = sitemaps.handle_link(url, sitemap)
+    sitemap.handle_link(url)
     assert sitemap.sitemap_urls == [] and sitemap.urls == [url]
 
     # diverging domains
@@ -62,14 +62,14 @@ def test_extraction():
     sitemap_url = 'https://example.org/sitemap.xml'
     domain, baseurl = get_hostinfo(sitemap_url)
     sitemap = sitemaps.SitemapObject(baseurl, "", domain, sitemap_url)
-    sitemap = sitemaps.handle_link(url, sitemap)
+    sitemap.handle_link(url)
     assert sitemap.sitemap_urls == [] and sitemap.urls == []
 
     # don't take this one?
     #url = 'https://subdomain.sitemaps.org/1'
     #sitemap_url = 'https://www.sitemaps.org/sitemap.xml'
     #domain, baseurl = get_hostinfo(sitemap_url)
-    #assert sitemaps.handle_link(url, sitemap_url, domain, baseurl, None) == (url, '0')
+    #sitemap.handle_link(url)  #  (url, '0')
 
     # safety belts
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is False

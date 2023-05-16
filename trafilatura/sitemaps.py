@@ -50,6 +50,30 @@ class SitemapObject:
         self.target_lang: Optional[str] = target_lang
         self.urls: List[str] = []
 
+    def handle_link(self, link: str) -> None:
+        '''Examine a link and determine if it's valid and if it leads to
+           a sitemap or a web page.'''
+        # safety net: recursivity
+        if link == self.sitemap_url:
+            return
+        # fix and check
+        link = fix_relative_urls(self.base_url, link)
+        # clean and normalize
+        link = clean_url(link, self.target_lang)
+        if link is not None and lang_filter(link, self.target_lang) is True:
+            newdomain = extract_domain(link, fast=True)
+            if newdomain is None:
+                LOGGER.error("couldn't extract domain: %s", link)
+            # don't take links from another domain and make an exception for main platforms
+            # also bypass: subdomains vs. domains
+            elif not is_similar_domain(self.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
+                LOGGER.warning('link discarded, diverging domain names: %s %s', self.domain, newdomain)
+            else:
+                if DETECT_SITEMAP_LINK.search(link):
+                    self.sitemap_urls.append(link)
+                else:
+                    self.urls.append(link)
+
 
 def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
@@ -148,7 +172,7 @@ def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
     if not SITEMAP_FORMAT.match(sitemap.content):
         sitemapurls, linklist = [], []  # type: List[str], List[str]
         for match in (m[0] for m in islice(DETECT_LINKS.finditer(sitemap.content), MAX_LINKS)):
-            sitemap = handle_link(match, sitemap)
+            sitemap.handle_link(match)
         return sitemap.sitemap_urls, sitemap.urls
     # process XML sitemap
     if sitemap.target_lang is not None:
@@ -156,32 +180,6 @@ def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
         if len(sitemapurls) != 0 or len(linklist) != 0:
             return sitemap.sitemap_urls, sitemap.urls
     return extract_sitemap_links(sitemap)
-
-
-def handle_link(link: str, sitemap: SitemapObject) -> SitemapObject:
-    '''Examine a link and determine if it's valid and if it leads to
-       a sitemap or a web page.'''
-    # safety net: recursivity
-    if link == sitemap.sitemap_url:
-        return sitemap
-    # fix and check
-    link = fix_relative_urls(sitemap.base_url, link)
-    # clean and normalize
-    link = clean_url(link, sitemap.target_lang)
-    if link is not None and lang_filter(link, sitemap.target_lang) is True:
-        newdomain = extract_domain(link, fast=True)
-        if newdomain is None:
-            LOGGER.error("couldn't extract domain: %s", link)
-        # don't take links from another domain and make an exception for main platforms
-        # also bypass: subdomains vs. domains
-        elif not is_similar_domain(sitemap.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
-            LOGGER.warning('link discarded, diverging domain names: %s %s', sitemap.domain, newdomain)
-        else:
-            if DETECT_SITEMAP_LINK.search(link):
-                sitemap.sitemap_urls.append(link)
-            else:
-                sitemap.urls.append(link)
-    return sitemap
 
 
 def extract_sitemap_langlinks(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
@@ -196,7 +194,7 @@ def extract_sitemap_langlinks(sitemap: SitemapObject) -> Tuple[List[str], List[s
         if lang_regex.search(attrs):
             lang_match = HREFLANG_REGEX.search(attrs)
             if lang_match:
-                sitemap = handle_link(lang_match[1], sitemap)
+                sitemap.handle_link(lang_match[1])
     LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
     return sitemap.sitemap_urls, sitemap.urls
 
@@ -207,7 +205,7 @@ def extract_sitemap_links(sitemap: SitemapObject) -> Tuple[List[str], List[str]]
     # extract
     for match in (m[1] for m in islice(LINK_REGEX.finditer(sitemap.content), MAX_LINKS)):
         # process middle part of the match tuple
-        sitemap = handle_link(match, sitemap)
+        sitemap.handle_link(match)
     LOGGER.debug('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
     return sitemap.sitemap_urls, sitemap.urls
 
