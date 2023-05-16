@@ -90,7 +90,9 @@ def test_extraction():
     sitemapurls, linklist = sitemaps.extract_sitemap_links(sitemap)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # hreflang
-    assert sitemaps.extract_sitemap_langlinks(sitemap) == ([], [])
+    sitemap.urls = []
+    sitemap = sitemaps.extract_sitemap_langlinks(sitemap)
+    assert not sitemap.sitemap_urls and not sitemap.urls
 
     # nested sitemaps
     url, domain, baseurl = 'http://www.example.com/sitemap.xml', 'example.com', 'http://www.example.com'
@@ -108,9 +110,9 @@ def test_extraction():
     with open(filepath) as f:
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, teststring, domain, url, target_lang='de')
-    sitemapsurls, linklist = sitemaps.extract_sitemap_langlinks(sitemap)
-    assert sitemapsurls == ['http://www.example.com/sitemap-de.xml.gz']
-    assert len(linklist) > 0
+    sitemap = sitemaps.extract_sitemap_langlinks(sitemap)
+    assert sitemap.sitemap_urls == ['http://www.example.com/sitemap-de.xml.gz']
+    assert len(sitemap.urls) > 0
 
     # GZ-compressed sitemaps
     url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
