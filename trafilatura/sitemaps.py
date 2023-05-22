@@ -12,7 +12,7 @@ import re
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
 from itertools import islice
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from courlan import clean_url, extract_domain, filter_urls, fix_relative_urls, get_hostinfo, lang_filter
 
@@ -83,6 +83,46 @@ class SitemapObject:
         else:
             self.urls.append(link)
 
+    def extract_sitemap_langlinks(self) -> None:
+        "Extract links corresponding to a given target language."
+        if 'hreflang=' not in self.content:
+            return
+        # compile regex here for modularity and efficiency
+        lang_regex = re.compile(rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL)
+        # extract
+        for attrs in (m[0] for m in islice(XHTML_REGEX.finditer(self.content), MAX_LINKS)):
+            if lang_regex.search(attrs):
+                lang_match = HREFLANG_REGEX.search(attrs)
+                if lang_match:
+                    self.handle_link(lang_match[1])
+        LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(self.sitemap_urls), len(self.urls), self.sitemap_url)
+
+    def extract_sitemap_links(self) -> None:
+        "Extract sitemap links and web page links from a sitemap file."
+        # extract
+        for match in (m[1] for m in islice(LINK_REGEX.finditer(self.content), MAX_LINKS)):
+            # process middle part of the match tuple
+            self.handle_link(match)
+        LOGGER.debug('%s sitemaps and %s links found for %s', len(self.sitemap_urls), len(self.urls), self.sitemap_url)
+
+    def process(self) -> None:
+        "Download a sitemap and extract the links it contains."
+        plausible = is_plausible_sitemap(self.sitemap_url, self.content)
+        # safeguard
+        if not plausible:
+            return
+        # try to extract links from TXT file
+        if not SITEMAP_FORMAT.match(self.content):
+            for match in (m[0] for m in islice(DETECT_LINKS.finditer(self.content), MAX_LINKS)):
+                self.handle_link(match)
+            return
+        # process XML sitemap
+        if self.target_lang is not None:
+            self.extract_sitemap_langlinks()
+            if self.sitemap_urls or self.urls:
+                return
+        self.extract_sitemap_links()
+
 
 def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
@@ -117,6 +157,7 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
 
     sitemap = SitemapObject(baseurl, domainname, sitemapurl, target_lang)
     sitemap.fetch()
+    sitemap.process()
 
     if not sitemap.sitemap_urls and sitemap.urls:
         linklist = filter_urls(sitemap.urls, urlfilter)
@@ -135,6 +176,7 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     for sitemapurl in sitemapurls[:MAX_SITEMAPS_SEEN]:
         sitemap.sitemap_url = sitemapurl
         sitemap.fetch()
+        sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
         sitemaps_seen.add(sitemapurl)
         sitemapurls = [s for s in sitemapurls if s not in sitemaps_seen]
@@ -161,55 +203,6 @@ def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
         return False
 
     return True
-
-
-def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
-    'Download a sitemap and extract the links it contains.'
-    plausible = is_plausible_sitemap(sitemap.sitemap_url, sitemap.content)
-    # safeguard
-    if not plausible:
-        return [], []
-    # try to extract links from TXT file
-    if not SITEMAP_FORMAT.match(sitemap.content):
-        for match in (m[0] for m in islice(DETECT_LINKS.finditer(sitemap.content), MAX_LINKS)):
-            sitemap.handle_link(match)
-        return sitemap.sitemap_urls, sitemap.urls
-    # process XML sitemap
-    if sitemap.target_lang is not None:
-        sitemap = extract_sitemap_langlinks(sitemap)
-        if sitemap.sitemap_urls or sitemap.urls:
-            return sitemap.sitemap_urls, sitemap.urls
-    return extract_sitemap_links(sitemap)
-
-
-def extract_sitemap_langlinks(sitemap: SitemapObject) -> SitemapObject:
-    'Extract links corresponding to a given target language.'
-    if 'hreflang=' not in sitemap.content:
-        return sitemap
-
-    # compile regex here for modularity and efficiency
-    lang_regex = re.compile(rf"hreflang=[\"']({sitemap.target_lang}.*?|x-default)[\"']", re.DOTALL)
-
-    # extract
-    for attrs in (m[0] for m in islice(XHTML_REGEX.finditer(sitemap.content), MAX_LINKS)):
-        if lang_regex.search(attrs):
-            lang_match = HREFLANG_REGEX.search(attrs)
-            if lang_match:
-                sitemap.handle_link(lang_match[1])
-
-    LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemap.sitemap_urls), len(sitemap.urls), sitemap.sitemap_url)
-    return sitemap
-
-
-def extract_sitemap_links(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
-    'Extract sitemap links and web page links from a sitemap file.'
-    sitemapurls, linklist = [], []  # type: List[str], List[str]
-    # extract
-    for match in (m[1] for m in islice(LINK_REGEX.finditer(sitemap.content), MAX_LINKS)):
-        # process middle part of the match tuple
-        sitemap.handle_link(match)
-    LOGGER.debug('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemap.sitemap_url)
-    return sitemap.sitemap_urls, sitemap.urls
 
 
 def find_robots_sitemaps(baseurl: str) -> List[str]:

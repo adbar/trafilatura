@@ -79,7 +79,8 @@ def test_extraction():
     # invalid
     sitemap = sitemaps.SitemapObject(baseurl, domain, url)
     sitemap.content = '<html>\n</html>'
-    assert sitemaps.extract_sitemap_links(sitemap) == ([], [])
+    sitemap.extract_sitemap_links()
+    assert not sitemap.sitemap_urls and not sitemap.urls
 
     # parsing a file
     url, domain, baseurl = 'http://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'http://www.sitemaps.org'
@@ -89,11 +90,11 @@ def test_extraction():
     assert sitemaps.is_plausible_sitemap('http://sitemaps.org/sitemap.xml', teststring) is True
     sitemap = sitemaps.SitemapObject(baseurl, domain, sitemap_url)
     sitemap.content = teststring
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(sitemap)
-    assert len(sitemapurls) == 0 and len(linklist) == 84
+    sitemap.extract_sitemap_links()
+    assert not sitemap.sitemap_urls and len(sitemap.urls) == 84
     # hreflang
     sitemap.urls = []
-    sitemap = sitemaps.extract_sitemap_langlinks(sitemap)
+    sitemap.extract_sitemap_langlinks()
     assert not sitemap.sitemap_urls and not sitemap.urls
 
     # nested sitemaps
@@ -103,19 +104,20 @@ def test_extraction():
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, domain, url)
     sitemap.content = teststring
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(sitemap)
-    assert sitemapurls == ['http://www.example.com/sitemap1.xml.gz', 'http://www.example.com/sitemap2.xml.gz'] and not linklist
+    sitemap.extract_sitemap_links()
+    assert sitemap.sitemap_urls == ['http://www.example.com/sitemap1.xml.gz', 'http://www.example.com/sitemap2.xml.gz'] and not sitemap.urls
 
     # hreflang
     sitemap = sitemaps.SitemapObject('https://test.org/', 'test.org', 'https://test.org/sitemap', 'en')
     sitemap.content = '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>http://www.test.org/english/page.html</loc></url></urlset>'
-    assert sitemaps.process_sitemap(sitemap) == ([], ['http://www.test.org/english/page.html'])
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == ([], ['http://www.test.org/english/page.html'])
     filepath = os.path.join(RESOURCES_DIR, 'sitemap-hreflang.xml')
     with open(filepath, "r", encoding="utf-8") as f:
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, domain, url, 'de')
     sitemap.content = teststring
-    sitemap = sitemaps.extract_sitemap_langlinks(sitemap)
+    sitemap.extract_sitemap_langlinks()
     assert sitemap.sitemap_urls == ['http://www.example.com/sitemap-de.xml.gz']
     assert len(sitemap.urls) > 0
 
@@ -128,8 +130,8 @@ def test_extraction():
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml.gz', teststring) is True
     sitemap = sitemaps.SitemapObject(baseurl, domain, url)
     sitemap.content = teststring
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(sitemap)
-    assert len(sitemapurls) == 0 and len(linklist) == 84
+    sitemap.extract_sitemap_links()
+    assert len(sitemap.sitemap_urls) == 0 and len(sitemap.urls) == 84
 
     # check contents
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is True
@@ -139,12 +141,14 @@ def test_extraction():
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap', content) is True
     sitemap = sitemaps.SitemapObject('https://test.org/', 'test.org', 'https://test.org/sitemap')
     sitemap.content = 'Tralala\nhttps://test.org/1\nhttps://test.org/2'
-    assert sitemaps.process_sitemap(sitemap) == ([], ['https://test.org/1', 'https://test.org/2'])
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == ([], ['https://test.org/1', 'https://test.org/2'])
 
     # TXT links + language
     sitemap = sitemaps.SitemapObject('https://test.org/', 'test.org', 'https://test.org/sitemap', 'en')
     sitemap.content = 'Tralala\nhttps://test.org/en/1\nhttps://test.org/en/2\nhttps://test.org/es/3'
-    assert sitemaps.process_sitemap(sitemap) == ([], ['https://test.org/en/1', 'https://test.org/en/2'])
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == ([], ['https://test.org/en/1', 'https://test.org/en/2'])
 
 
 def test_robotstxt():
