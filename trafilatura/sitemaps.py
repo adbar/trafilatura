@@ -41,18 +41,23 @@ class SitemapObject:
     "Store all necessary information on sitemap download and processing."
     __slots__ = ["base_url", "content", "domain", "sitemap_url", "sitemap_urls", "target_lang", "urls"]
 
-    def __init__(self, base_url: str, content: str, domain: str, sitemap_url: str, target_lang: Optional[str] = None) -> None:
+    def __init__(self, base_url: str, domain: str, sitemap_url: str, target_lang: Optional[str] = None) -> None:
         self.base_url: str = base_url
-        self.content: str = content
+        self.content: str = ""
         self.domain: str = domain
         self.sitemap_url: str = sitemap_url
         self.sitemap_urls: List[str] = []
         self.target_lang: Optional[str] = target_lang
         self.urls: List[str] = []
 
+    def fetch(self) -> None:
+        "Fetch a sitemap over the network."
+        LOGGER.debug('fetching sitemap: %s', self.sitemap_url)
+        self.content = fetch_url(self.sitemap_url)
+
     def handle_link(self, link: str) -> None:
-        '''Examine a link and determine if it's valid and if it leads to
-           a sitemap or a web page.'''
+        """Examine a link and determine if it's valid and if it leads to
+           a sitemap or a web page."""
         if link == self.sitemap_url:  # safety check
             return
         # fix, check, clean and normalize
@@ -110,15 +115,16 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
+    sitemap = SitemapObject(baseurl, domainname, sitemapurl, target_lang)
+    sitemap.fetch()
 
-    if not sitemapurls and linklist:
-        linklist = filter_urls(linklist, urlfilter)
+    if not sitemap.sitemap_urls and sitemap.urls:
+        linklist = filter_urls(sitemap.urls, urlfilter)
         LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
         return linklist
 
     # try sitemaps in robots.txt file if nothing has been found
-    if not sitemapurls and not linklist:
+    if not sitemap.sitemap_urls and not sitemap.urls:
         sitemapurls = find_robots_sitemaps(baseurl)
         # try additional URLs just in case
         if not sitemapurls:
@@ -127,12 +133,13 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
     # iterate through nested sitemaps and results
     sitemaps_seen = {sitemapurl}
     for sitemapurl in sitemapurls[:MAX_SITEMAPS_SEEN]:
-        sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang, sitemapurls, linklist)
+        sitemap.sitemap_url = sitemapurl
+        sitemap.fetch()
         # sanity check: keep track of visited sitemaps and exclude them
         sitemaps_seen.add(sitemapurl)
         sitemapurls = [s for s in sitemapurls if s not in sitemaps_seen]
 
-    linklist = filter_urls(linklist, urlfilter)
+    linklist = filter_urls(sitemap.urls, urlfilter)
     LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
     return linklist
 
@@ -154,18 +161,6 @@ def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
         return False
 
     return True
-
-
-def download_and_process_sitemap(url: str, domain: str, baseurl: str, target_lang: Optional[str], sitemapurls: Optional[List[str]] = None, linklist: Optional[List[str]] = None) -> Tuple[List[str], List[str]]:
-    'Helper function chaining download and processing of sitemaps.'
-    # variables init
-    sitemapurls, linklist = sitemapurls or [], linklist or []
-    # fetch and pre-process
-    LOGGER.debug('fetching sitemap: %s', url)
-    pagecontent = fetch_url(url)
-    sitemap = SitemapObject(baseurl, pagecontent, domain, url, target_lang)
-    add_sitemaps, add_links = process_sitemap(sitemap)
-    return sitemapurls + add_sitemaps, linklist + add_links
 
 
 def process_sitemap(sitemap: SitemapObject) -> Tuple[List[str], List[str]]:
