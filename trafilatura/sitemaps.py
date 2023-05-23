@@ -165,26 +165,30 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
         return linklist
 
     # try sitemaps in robots.txt file if nothing has been found
-    sitemapurls = sitemap.sitemap_urls
     if not sitemap.sitemap_urls and not sitemap.urls:
-        sitemapurls = find_robots_sitemaps(baseurl)
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl)
         # try additional URLs just in case
-        if not sitemapurls:
-            sitemapurls = [''.join([baseurl, '/', g]) for g in GUESSES]
+        if not sitemap.sitemap_urls:
+            sitemap.sitemap_urls = [''.join([baseurl, '/', g]) for g in GUESSES]
 
     # iterate through nested sitemaps and results
-    sitemaps_seen = {sitemapurl}
-    for sitemapurl in sitemapurls[:MAX_SITEMAPS_SEEN]:
-        sitemap.sitemap_url = sitemapurl
+    seen = {sitemapurl}
+    i = 1
+    while sitemap.sitemap_urls:
+        sitemap.sitemap_url = sitemap.sitemap_urls.pop()
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
-        sitemaps_seen.add(sitemapurl)
-        sitemapurls = [s for s in sitemapurls if s not in sitemaps_seen]
+        seen.add(sitemap.sitemap_url)
+        sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in seen]
+        # counter and safeguard
+        i += 1
+        if i > MAX_SITEMAPS_SEEN:
+            break
 
-    linklist = filter_urls(sitemap.urls, urlfilter)
-    LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
-    return linklist
+    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+    LOGGER.debug('%s sitemap links found for %s', len(sitemap.urls), domainname)
+    return sitemap.urls
 
 
 def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:

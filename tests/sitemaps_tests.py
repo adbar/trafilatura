@@ -165,9 +165,6 @@ def test_whole():
     "Test whole process."
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
     assert len(results) == 8
-    results = sitemaps.sitemap_search("https://www.sitemaps.org")
-    print(len(results))
-    assert 1 == 0
 
 
 if __name__ == '__main__':
