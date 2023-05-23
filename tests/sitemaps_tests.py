@@ -161,7 +161,17 @@ def test_robotstxt():
     assert sitemaps.extract_robots_sitemaps('sitemap: https://example.org/sitemap.xml', baseurl) == ['https://example.org/sitemap.xml']
 
 
+def test_whole():
+    "Test whole process."
+    results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
+    assert len(results) == 8
+    results = sitemaps.sitemap_search("https://www.sitemaps.org")
+    print(len(results))
+    assert 1 == 0
+
+
 if __name__ == '__main__':
     test_search()
     test_extraction()
     test_robotstxt()
+    test_whole()

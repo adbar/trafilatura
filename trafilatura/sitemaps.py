@@ -165,6 +165,7 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
         return linklist
 
     # try sitemaps in robots.txt file if nothing has been found
+    sitemapurls = sitemap.sitemap_urls
     if not sitemap.sitemap_urls and not sitemap.urls:
         sitemapurls = find_robots_sitemaps(baseurl)
         # try additional URLs just in case
