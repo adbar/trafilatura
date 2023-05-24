@@ -29,8 +29,8 @@ def test_redirections():
     "Test redirection detection."
     _, _, baseurl = spider.probe_alternative_homepage('xyz')
     assert baseurl is None
-    _, _, baseurl = spider.probe_alternative_homepage('https://httpbun.org/redirect-to?url=https://httpbin.org')
-    assert baseurl == 'https://httpbin.org'
+    _, _, baseurl = spider.probe_alternative_homepage('https://httpbun.org/redirect-to?url=https://example.org')
+    assert baseurl == 'https://example.org'
     #_, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
 
 
