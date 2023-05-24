@@ -129,16 +129,17 @@ def extract_json_parse_error(elem, metadata):
     # author info
     element_text_author = JSON_AUTHOR_REMOVE.sub('', elem)
     if any(JSON_MATCH.findall(element_text_author)):
-        element_text_author = JSON_AUTHOR_REMOVE.sub('', elem)
         author = extract_json_author(element_text_author, JSON_AUTHOR_1) or extract_json_author(element_text_author, JSON_AUTHOR_2)
         if author:
             metadata.author = author
+
     # try to extract page type as an alternative to og:type
     if "@type" in elem:
         mymatch = JSON_TYPE.search(elem)
         candidate = normalize_json(mymatch[1].lower())
         if mymatch and candidate in JSON_OGTYPE_SCHEMA:
             metadata.pagetype = candidate
+
     # try to extract publisher
     if '"publisher"' in elem:
         mymatch = JSON_PUBLISHER.search(elem)
@@ -148,11 +149,13 @@ def extract_json_parse_error(elem, metadata):
                 metadata.sitename = candidate
             if metadata.sitename.startswith('http') and not candidate.startswith('http'):
                 metadata.sitename = candidate
+
     # category
     if '"articleSection"' in elem:
         mymatch = JSON_CATEGORY.search(elem)
         if mymatch:
             metadata.categories = [normalize_json(mymatch[1])]
+
     # try to extract title
     if '"name"' in elem and metadata.title is None:
         mymatch = JSON_NAME.search(elem)
@@ -162,6 +165,7 @@ def extract_json_parse_error(elem, metadata):
         mymatch = JSON_HEADLINE.search(elem)
         if mymatch:
             metadata.title = normalize_json(mymatch[1])
+
     # exit if found
     return metadata
 
