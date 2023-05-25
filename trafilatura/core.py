@@ -652,8 +652,8 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         algo_flag = False
     elif len_text == 0 and len_algo > 0:
         algo_flag = True
-    elif len_text > 2 * len_algo:
-        algo_flag = False
+    #elif len_text > 2 * len_algo:
+    #    algo_flag = False
     elif len_algo > 2 * len_text:
         algo_flag = True
     # borderline cases
@@ -661,8 +661,10 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         algo_flag = True
     elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
         algo_flag = True
-    #elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3') and len_algo > len_text:
-    #    algo_flag = True
+    # https://github.com/adbar/trafilatura/issues/354
+    #elif set(e.tag for e in body.xpath('.//*')) == {'p'} and temppost_algo.xpath('.//h3') and len_algo > len_text:
+    elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
+        algo_flag = True
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
         algo_flag = False
