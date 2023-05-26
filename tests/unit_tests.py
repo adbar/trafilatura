@@ -952,6 +952,10 @@ def test_table_processing():
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
     assert result == ["table", "row", "cell", ]
+    # table nested in figure https://github.com/adbar/trafilatura/issues/301
+    htmlstring = '<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    assert "1" in result and "2" in result
 
 
 def test_list_processing():
