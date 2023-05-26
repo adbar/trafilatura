@@ -51,6 +51,10 @@ def tree_cleaning(tree, options):
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if options.tables is False:
         cleaning_list.extend(['table', 'td', 'th', 'tr'])
+    else:
+        # prevent this issue: https://github.com/adbar/trafilatura/issues/301
+        for elem in tree.xpath('.//figure[descendant::table]'):
+            elem.tag = 'div'
     if options.images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
