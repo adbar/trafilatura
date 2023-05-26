@@ -233,7 +233,8 @@ def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
-        LOGGER.debug('discarding element: %s %s', element.tag, element.text)
+        if element.tag != 'done':
+            LOGGER.debug('discarding element: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
         # make a copy and prune it in case it contains sub-elements handled on their own?

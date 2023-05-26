@@ -61,14 +61,14 @@ MANUALLY_CLEANED = [
     'frame', 'frameset', 'fieldset', 'link', 'input', 'ins', 'label', 'legend',
     'marquee', 'math', 'menuitem', 'nav', 'noscript', 'optgroup', 'option',
     'output', 'param', 'progress', 'rp', 'rt', 'rtc', 'select', 'source',
-    'style', 'track', 'template', 'textarea', 'time', 'use',
+    'style', 'track', 'textarea', 'time', 'use',
 ]
 # 'meta', 'hr', 'img', 'data', 'details', 'summary'
 
 MANUALLY_STRIPPED = [
     'abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn',
     'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody',
-    'tfoot', 'thead',
+    'template', 'tfoot', 'thead',
 ]
 # 'center', 'rb', 'wbr'
 
