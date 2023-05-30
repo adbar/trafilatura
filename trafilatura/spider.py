@@ -67,7 +67,7 @@ def probe_alternative_homepage(homepage):
     if response is None or response == '':
         return None, None, None
     # get redirected URL here?
-    if response.url != homepage:
+    if response.url not in (homepage, "/"):
         logging.info('followed redirect: %s', response.url)
         homepage = response.url
     # decode response
@@ -160,11 +160,12 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
         if initial is True:
             # probe and process homepage
             htmlstring, homepage, base_url = probe_alternative_homepage(url)
-            # add potentially "new" homepage
-            if homepage and homepage != url:
-                URL_STORE.add_urls([homepage])
-            # extract links on homepage
-            process_links(htmlstring, base_url, language=lang, rules=rules)
+            if all((htmlstring, homepage, base_url)):
+                # add potentially "new" homepage
+                if homepage != url:
+                    URL_STORE.add_urls([homepage])
+                # extract links on homepage
+                process_links(htmlstring, base_url, language=lang, rules=rules)
         else:
             response = fetch_url(url, decode=False)
             process_response(response, base_url, lang, rules=rules)
