@@ -294,12 +294,10 @@ def url_processing_pipeline(args, url_store):
     # parse config
     config = use_config(filename=args.config_file)
     # initialize file counter if necessary
-    counter, i = None, 0
-    for hostname in url_store.urldict:
-        i += len(url_store.find_known_urls(hostname))
-        if i > MAX_FILES_PER_DIRECTORY:
-            counter = 0
-            break
+    if url_store.total_url_number() > MAX_FILES_PER_DIRECTORY:
+        counter = 0
+    else:
+        counter = None
     # download strategy
     errors, counter = download_queue_processing(url_store, args, counter, config)
     LOGGER.debug('%s URLs could not be found', len(errors))
