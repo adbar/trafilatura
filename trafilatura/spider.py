@@ -125,7 +125,7 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
     # config=DEFAULT_CONFIG
     _, base_url = get_hostinfo(homepage)
     if base_url is None or len(base_url) < 1:
-        raise ValueError('cannot crawl homepage: %s', homepage)
+        raise ValueError(f'cannot crawl homepage: {homepage}')
     # TODO: just known or also visited?
     if known_links is not None:
         URL_STORE.add_urls(urls=known_links, visited=True)
@@ -146,7 +146,7 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
         URL_STORE.add_urls(urls=[homepage], visited=False)
         _, known_num, i = crawl_page(i, base_url, lang=language, rules=rules, initial=True)
     else:
-        known_num = len(URL_STORE.urldict[base_url].tuples)
+        known_num = len(URL_STORE.find_known_urls(base_url))
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
     return base_url, i, known_num, rules, is_on
 
@@ -154,7 +154,7 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
 def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
     """Examine a webpage, extract navigation links and links."""
     # config=DEFAULT_CONFIG
-    if URL_STORE.urldict[base_url].all_visited is False:
+    if not URL_STORE.is_exhausted_domain(base_url):
         url = URL_STORE.get_url(base_url)
         visited_num += 1
         if initial is True:
@@ -171,7 +171,7 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
             process_response(response, base_url, lang, rules=rules)
     # optional backup of gathered pages without nav-pages ? ...
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
-    known_num = len(URL_STORE.urldict[base_url].tuples)
+    known_num = len(URL_STORE.find_known_urls(base_url))
     return is_on, known_num, visited_num
 
 
