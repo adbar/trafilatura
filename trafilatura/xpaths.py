@@ -37,7 +37,8 @@ BODY_XPATH = [
     starts-with(@id, 'primary') or starts-with(@class, 'article ') or @class="text" or
     @id="article" or @class="cell" or @id="story" or @class="story" or
     contains(@class, "story-body") or contains(@class, "field-body") or
-    contains(translate(@class, "FULTEX","fultex"), "fulltext")])[1]""",
+    contains(translate(@class, "FULTEX","fultex"), "fulltext")
+    or @role='article'])[1]""",
     '''(.//*[(self::article or self::div or self::main or self::section)][
     contains(@id, "content-main") or contains(@class, "content-main") or contains(@class, "content_main") or
     contains(@id, "content-body") or contains(@class, "content-body") or contains(@id, "contentBody")

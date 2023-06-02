@@ -233,7 +233,8 @@ def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
-        LOGGER.debug('discarding element: %s %s', element.tag, element.text)
+        if element.tag != 'done':
+            LOGGER.debug('discarding element: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
         # make a copy and prune it in case it contains sub-elements handled on their own?
@@ -661,8 +662,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
         algo_flag = True
     elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
         algo_flag = True
-    #elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3') and len_algo > len_text:
-    #    algo_flag = True
+    # https://github.com/adbar/trafilatura/issues/354
+    elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
+        algo_flag = True
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
         algo_flag = False
