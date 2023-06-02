@@ -93,7 +93,7 @@ def extract_json(schema, metadata):
                                 if isinstance(author_name, str):
                                     metadata.author = normalize_authors(metadata.author, author_name)
                             elif 'givenName' in author and 'familyName' in author:
-                                name = [author['givenName'], author['additionalName'], author['familyName']]
+                                name = [author['givenName'], author.get('additionalName'), author['familyName']]
                                 metadata.author = normalize_authors(metadata.author, ' '.join(filter(None, name)))
 
                 # category
