@@ -31,8 +31,10 @@ Various software repositories
 - `Benson <https://github.com/timoteostewart/benson>`_, to turn a list of URLs into mp3s of the contents of each web page
 - `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
 - `GLAM Workbench <https://glam-workbench.github.io/web-archives/>`_ for cultural heritage (web archives section)
+- `llama-hub <https://github.com/emptycrown/llama-hub>`_, a library of data loaders for LLMs
 - `Obsei <https://lalitpagaria.github.io/obsei/>`_, a text collection and analysis tool
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
+- `Website-to-Chatbot <https://github.com/Anil-matcha/Website-to-Chatbot>`_, a personalized chatbot
 
 For more see this list of `software using Trafilatura <https://github.com/adbar/trafilatura/network/dependents>`_.
 
@@ -129,6 +131,7 @@ Publications citing Trafilatura
 - Meier-Vieracker, S. (2022). "Fußballwortschatz digital–Korpuslinguistische Ressourcen für den Sprachunterricht." Korpora Deutsch als Fremdsprache (KorDaF), 2022/01 (pre-print).
 - Meng, K. (2021). "An End-to-End Computational System for Monitoring and Verifying Factual Claims" (pre-print).
 - Miquelina, N., Quaresma, P., & Nogueira, V. B. (2022). Generating a European Portuguese BERT Based Model Using Content from Arquivo. pt Archive. In International Conference on Intelligent Data Engineering and Automated Learning (pp. 280-288). Springer, Cham.
+- Nissopoulou, T. X. (2023). Web content classification analysis, MSc thesis, International Hellenic University.
 - Nolda, A., Barbaresi, A., & Geyken, A. (2023). Korpora für die lexikographische Beschreibung diatopischer Variation in der deutschen Standardsprache. Korpora in der germanistischen Sprachwissenschaft: Mündlich, schriftlich, multimedial, 29.
 - Öhman, J., Verlinden, S., Ekgren, A., Gyllensten, A. C., Isbister, T., Gogoulou, E., ... & Sahlgren, M. (2023). The Nordic Pile: A 1.2 TB Nordic Dataset for Language Modeling. arXiv preprint arXiv:2303.17183.
 - Penedo, G., Malartic, Q., Hesslow, D., Cojocaru, R., Cappelli, A., Pannier, B., ... & Launay, J. The RefinedWeb Dataset for Falcon LLM: Outperforming Curated Corpora with Web Data, and Web Data Only.
