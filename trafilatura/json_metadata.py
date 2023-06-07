@@ -22,6 +22,7 @@ JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
+JSON_REMOVE_HTML = re.compile(r'<[^>]+>')
 
 
 def extract_json(schema, metadata):
@@ -29,7 +30,7 @@ def extract_json(schema, metadata):
     if isinstance(schema, dict):
         schema = [schema]
 
-    for parent in filter(lambda p: '@context' in p and isinstance(p['@context'], str) and p['@context'][-10:].lower() == 'schema.org', schema):
+    for parent in filter(lambda p: '@context' in p and isinstance(p['@context'], str) and 'schema.org' in p['@context'].lower(), schema):
         if '@graph' in parent:
             parent = parent['@graph'] if isinstance(parent['@graph'], list) else [parent['@graph']]
         elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower() and 'liveBlogUpdate' in parent:
@@ -173,5 +174,5 @@ def extract_json_parse_error(elem, metadata):
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
     if '\\' in inputstring:
-        return trim(unescape(inputstring.encode().decode('unicode-escape')))
-    return trim(inputstring)
+        inputstring = unescape(inputstring.encode('latin1').decode('unicode_escape'))
+    return trim(JSON_REMOVE_HTML.sub('', inputstring))

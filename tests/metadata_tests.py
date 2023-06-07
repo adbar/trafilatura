@@ -128,6 +128,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny Smith</span></body></html>')
     assert metadata.author == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><span id="author">Jenny Smith – The Moon</span></body></html>')
+    assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny_Smith</span></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span itemprop="author name">Shannon Deery, Mitch Clarke, Susie O’Brien, Laura Placella, Kara Irving, Jordy Atkinson, Suzan Delibasic</span></body></html>')
@@ -136,6 +138,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><author>Jenny Smith</author></body></html>')
     assert metadata.author == 'Jenny Smith'
+    metadata = extract_metadata('<html><head><meta data-rh="true" property="og:author" content="By &lt;a href=&quot;/profiles/amir-vera&quot;&gt;Amir Vera&lt;/a&gt;, Seán Federico O&#x27;Murchú, &lt;a href=&quot;/profiles/tara-subramaniam&quot;&gt;Tara Subramaniam&lt;/a&gt; and Adam Renton, CNN"/></head><body></body></html>')
+    assert metadata.author == "Amir Vera; Seán Federico O'Murchú; Tara Subramaniam; Adam Renton; CNN"
     metadata = extract_metadata('<html><body><div class="author"><span class="profile__name"> Jenny Smith </span> <a href="https://twitter.com/jenny_smith" class="profile__social" target="_blank"> @jenny_smith </a> <span class="profile__extra lg:hidden"> 11:57AM </span> </div></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><p class="author-section byline-plain">By <a class="author" rel="nofollow">Jenny Smith For Daily Mail Australia</a></p></body></html>')
