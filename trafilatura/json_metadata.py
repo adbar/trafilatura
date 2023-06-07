@@ -174,5 +174,5 @@ def extract_json_parse_error(elem, metadata):
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
     if '\\' in inputstring:
-        inputstring = unescape(inputstring.encode('latin1').decode('unicode_escape'))
+        inputstring = unescape(inputstring.encode('latin1', errors="replace").decode('unicode_escape'))
     return trim(JSON_REMOVE_HTML.sub('', inputstring))
