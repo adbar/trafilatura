@@ -105,24 +105,29 @@ def test_process_links():
 
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
+    url = 'https://httpbun.org/html'
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # erroneous webpage
     with pytest.raises(ValueError):
         base_url, i, known_num, rules, is_on = spider.init_crawl('xyz', None, None)
     assert len(spider.URL_STORE.urldict) == 0
     # already visited
-    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbun.org/html', None, ['https://httpbun.org/html'])
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, None, [url,])
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     # normal webpage
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    base_url, i, known_num, rules, is_on = spider.init_crawl('https://httpbun.org/html', None, None)
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, None, None)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert todo == [] and known_links == ['https://httpbun.org/html'] and base_url == 'https://httpbun.org' and i == 1
+    assert todo == [] and known_links == [url,] and base_url == 'https://httpbun.org' and i == 1
     # delay between requests
     assert spider.URL_STORE.get_crawl_delay('https://httpbun.org') == 5
     assert spider.URL_STORE.get_crawl_delay('https://httpbun.org', default=2.0) == 2.0
+    # existing todo
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, [url,], None)
+    assert base_url == 'https://httpbun.org' and i == 0
 
 
 def test_crawl_page():
