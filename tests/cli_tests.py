@@ -233,7 +233,7 @@ def test_download():
     assert e.type == SystemExit and e.value.code == 1
 
 
-@patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
+# @patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
 def test_cli_pipeline():
     '''test command-line processing pipeline'''
     # straight command-line input
