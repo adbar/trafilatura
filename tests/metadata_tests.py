@@ -56,6 +56,7 @@ def test_authors():
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
     assert normalize_json('Test \\nthis') == 'Test this'
+    assert normalize_json("Seán Federico O'Murchú") == "Seán Federico O'Murchú"
     # blacklist
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>', author_blacklist={'Jenny Smith'})
     assert metadata.author is None

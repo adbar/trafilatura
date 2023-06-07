@@ -23,6 +23,7 @@ JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
 JSON_REMOVE_HTML = re.compile(r'<[^>]+>')
+JSON_UNICODE_REPLACE = re.compile(r'\\u([0-9a-fA-F]{4})')
 
 
 def extract_json(schema, metadata):
@@ -174,5 +175,7 @@ def extract_json_parse_error(elem, metadata):
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
     if '\\' in inputstring:
-        inputstring = unescape(inputstring.encode('latin1', errors="replace").decode('unicode_escape'))
+        inputstring = inputstring.replace('\\n', '').replace('\\r', '').replace('\\t', '')
+        inputstring = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match.group(1), 16)), inputstring)
+        inputstring = unescape(inputstring)
     return trim(JSON_REMOVE_HTML.sub('', inputstring))
