@@ -178,7 +178,7 @@ def fromstring_bytes(htmlobject):
     "Try to pass bytes to LXML parser."
     tree = None
     try:
-        tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+        tree = fromstring(htmlobject.encode('utf8', 'surrogatepass'), parser=HTML_PARSER)
     except Exception as err:
         LOGGER.error('lxml parser bytestring %s', err)
     return tree

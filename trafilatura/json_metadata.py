@@ -178,5 +178,6 @@ def normalize_json(inputstring):
     if '\\' in inputstring:
         inputstring = inputstring.replace('\\n', '').replace('\\r', '').replace('\\t', '')
         inputstring = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match.group(1), 16)), inputstring)
+        inputstring = ''.join(c for c in inputstring if ord(c) < 0xD800 or ord(c) > 0xDFFF)
         inputstring = unescape(inputstring)
     return trim(JSON_REMOVE_HTML.sub('', inputstring))
