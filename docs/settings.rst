@@ -25,17 +25,20 @@ File structure
 The default file included in the package is `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ . Important values include:
 
 - Download
-   * ``DOWNLOAD_TIMEOUT = 30``: the time (in seconds) before requests are dropped
-   * ``SLEEP_TIME = 5``: time between requests (higher is better to avoid detection)
+   * ``DOWNLOAD_TIMEOUT = 30`` the time (in seconds) before requests are dropped
+   * ``SLEEP_TIME = 5`` time between requests (higher is better to avoid detection)
    * ``USER_AGENTS`` and ``COOKIE`` are empty by default
+- Input
+   * ``MAX_FILE_SIZE = 20000000`` maximum acceptable size of input (in bytes)
+   * ``MIN_FILE_SIZE = 10`` minimum acceptable size of input (in bytes)
 - Extraction
-   * ``MIN_EXTRACTED_SIZE = 250``: acceptable size in characters (used to trigger fallbacks)
-   * ``MIN_OUTPUT_SIZE = 1``: absolute acceptable minimum for main text output
+   * ``MIN_EXTRACTED_SIZE = 250`` acceptable size in characters (used to trigger fallbacks)
+   * ``MIN_OUTPUT_SIZE = 1`` absolute acceptable minimum for main text output
    * ``MIN_EXTRACTED_COMM_SIZE`` and ``MIN_OUTPUT_COMM_SIZE`` work the same for comment extraction
-   * ``EXTRACTION_TIMEOUT = 30``: drop extraction after 30 seconds to prevent malicious HTML bombs, set to 0 if you see errors related to the ``signal`` module and/or use a module such as `defusedxml <https://github.com/tiran/defusedxml>`_
+   * ``EXTRACTION_TIMEOUT = 30`` drop extraction after 30 seconds to prevent malicious HTML bombs, set to 0 if you see errors related to the ``signal`` module and/or use a module such as `defusedxml <https://github.com/tiran/defusedxml>`_
 - Deduplication (not active by default)
-   * ``MIN_DUPLCHECK_SIZE = 100``: minimum size in characters to run deduplication on
-   * ``MAX_REPETITIONS = 2``: maximum number of duplicates allowed
+   * ``MIN_DUPLCHECK_SIZE = 100`` minimum size in characters to run deduplication on
+   * ``MAX_REPETITIONS = 2`` maximum number of duplicates allowed
 
 
 Using a custom file on the command-line

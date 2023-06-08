@@ -183,6 +183,38 @@ The following combination can lead to shorter processing times:
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
 
 
+Content hashing
+^^^^^^^^^^^^^^^
+
+Functions used to build content hashes can be found in `hashing.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/hashing.py>`_.
+
+
+.. code-block:: python
+
+    # create a filename-safe string by hashing the given content
+    >>> from trafilatura.hashing import generate_hash_filename
+    >>> generate_hash_filename("This is a text.")
+    'qAgzZnskrcRgeftk'
+
+
+The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Charikar's hash) allows for near-duplicate detection. It implements a `locality-sensitive hashing <https://en.wikipedia.org/wiki/Locality-sensitive_hashing>`_ method based on a rolling hash and comparisons using the hamming distance. Overall it is reasonably fast and accurate for web texts and can be used to detect near duplicates by fixing a similarity threshold.
+
+
+.. code-block:: python
+
+    # create a Simhash for near-duplicate detection
+    >>> from trafilatura.hashing import Simhash
+    >>> first = Simhash("This is a text.")
+    >>> second = Simhash("This is a test.")
+    >>> second.similarity(first)
+    0.84375
+
+    # use existing Simhash
+    >>> first_copy = Simhash(existing_hash=first.hash)
+    >>> first_copy.similarity(first)
+    1.0
+
+
 Extraction settings
 -------------------
 

@@ -43,9 +43,25 @@ Running simple downloads is straightforward with the ``fetch_url()`` fonction. T
 For efficiency reasons the function makes use of a connection pool where connections are kept open (unless too many websites are retrieved at once). You may see warnings in logs about it which you can safely ignore.
 
 
-.. note::
-    The content (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string. This default setting can be bypassed. With the ``decode=False`` parameter ``fetch_url()`` will return a `urllib3 response object <https://urllib3.readthedocs.io/en/latest/user-guide.html#response-content>`_ which can then be processed in a custom fashion.
+``RawResponse`` object
+~~~~~~~~~~~~~~~~~~~~~~
 
+The content (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
+
+This default setting can be overriden using the ``decode=False`` parameter. ``fetch_url()`` then returns a `urllib3-like response object <https://urllib3.readthedocs.io/en/latest/user-guide.html#response-content>`_ providing additional information.
+
+This ``RawResponse`` object comprises the attributes ``data``, ``status``, and ``url`` which can be accessed as follows:
+
+.. code-block:: python
+
+    # RawResponse object instead of Unicode string
+    >>> response = fetch_url('https://www.example.org', decode=False)
+    >>> response.status
+    200
+    >>> response.url
+    'https://www.example.org'
+    >>> response.data
+    # raw HTML in binary format
 
 
 Trafilatura-backed parallel threads

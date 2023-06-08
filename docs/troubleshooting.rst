@@ -33,7 +33,7 @@ In such cases the way to go is to use a browser automation library like `Playwri
 Bypassing paywalls
 ^^^^^^^^^^^^^^^^^^
 
-A browser automation library can also be useful to bypass issues related to cookies and paywalls as it can be combined with a corresponding browser extension, e.g. `bypass-paywalls-chrome <https://github.com/iamadamdev/bypass-paywalls-chrome>`_.
+A browser automation library can also be useful to bypass issues related to cookies and paywalls as it can be combined with a corresponding browser extension, e.g. `iamdamdev's bypass-paywalls-chrome <https://github.com/iamadamdev/bypass-paywalls-chrome>`_ or `this alternative by magnolia1234 <https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean>`_.
 
 
 
@@ -64,6 +64,19 @@ Web page no longer available on the Internet
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Download issues can be addressed by retrieving the files somewhere else, i.e. from already existing internet archives like the Internet Archive or the CommonCrawl.
+
+On the command-line you can use ``--archived`` to use the Internet Archive to retrieve pages for which download failed. A corresponding function in Python could look as follows:
+
+.. code-block:: python
+
+    # url is the target
+    # downloaded is the result of the download
+    # also needs a function fetch_url() or equivalent
+    if downloaded is None:
+        new_url = "https://web.archive.org/web/20/" + url
+        downloaded = fetch_url(new_url)
+
+This approach is generic as it fetches the last available snapshot from the archive.
 
 
 Download first and extract later

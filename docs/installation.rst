@@ -102,16 +102,16 @@ A few additional libraries can be installed for extended functionality and faste
     You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
 
-cchardet
+brotli
+    Additional compression algorithm for downloads
+cchardet / faust-cchardet (Python >= 3.11)
     Faster encoding detection, also possibly more accurate (especially for encodings used in Asia)
-htmldate[all]
+htmldate[all] / htmldate[speed]
     Faster and more precise date extraction with a series of dedicated packages
 py3langid
     Language detection on extracted main text
 pycurl
     Faster downloads, possibly less robust though
-urllib3[brotli]
-    Potentially faster file downloads (not essential)
 
 
 
