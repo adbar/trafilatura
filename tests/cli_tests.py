@@ -17,9 +17,8 @@ import pytest
 
 from courlan import UrlStore
 
-from trafilatura import cli, cli_utils, spider
+from trafilatura import cli, cli_utils, settings, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
-from trafilatura.settings import DEFAULT_CONFIG
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -191,7 +190,7 @@ def test_sysoutput():
     result = 'DADIDA'
     cli_utils.write_result(result, args)
     # process with backup directory and no counter
-    assert cli_utils.process_result('DADIDA', args, None, None, DEFAULT_CONFIG) is None
+    assert cli_utils.process_result('DADIDA', args, None, None, settings.DEFAULT_CONFIG) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
     with patch.object(sys, 'argv', testargs):
@@ -234,6 +233,7 @@ def test_download():
     assert e.type == SystemExit and e.value.code == 1
 
 
+# @patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
 def test_cli_pipeline():
     '''test command-line processing pipeline'''
     # straight command-line input
@@ -292,6 +292,7 @@ def test_cli_pipeline():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.url_processing_pipeline(args, UrlStore()) is False
+
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
