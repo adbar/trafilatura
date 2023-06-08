@@ -22,6 +22,9 @@ JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
+JSON_REMOVE_HTML = re.compile(r'<[^>]+>')
+JSON_SCHEMA_ORG = re.compile(r"^https?://schema\.org", flags=re.IGNORECASE)
+JSON_UNICODE_REPLACE = re.compile(r'\\u([0-9a-fA-F]{4})')
 
 
 def extract_json(schema, metadata):
@@ -29,7 +32,7 @@ def extract_json(schema, metadata):
     if isinstance(schema, dict):
         schema = [schema]
 
-    for parent in filter(lambda p: '@context' in p and isinstance(p['@context'], str) and p['@context'][-10:].lower() == 'schema.org', schema):
+    for parent in filter(lambda p: '@context' in p and isinstance(p['@context'], str) and JSON_SCHEMA_ORG.match(p['@context']), schema):
         if '@graph' in parent:
             parent = parent['@graph'] if isinstance(parent['@graph'], list) else [parent['@graph']]
         elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower() and 'liveBlogUpdate' in parent:
@@ -173,5 +176,8 @@ def extract_json_parse_error(elem, metadata):
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
     if '\\' in inputstring:
-        return trim(unescape(inputstring.encode().decode('unicode-escape')))
-    return trim(inputstring)
+        inputstring = inputstring.replace('\\n', '').replace('\\r', '').replace('\\t', '')
+        inputstring = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match.group(1), 16)), inputstring)
+        inputstring = ''.join(c for c in inputstring if ord(c) < 0xD800 or ord(c) > 0xDFFF)
+        inputstring = unescape(inputstring)
+    return trim(JSON_REMOVE_HTML.sub('', inputstring))

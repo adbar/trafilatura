@@ -58,8 +58,8 @@ AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
 AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘({\[’\'][^"]+?[‘’"\')\]}]')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-)\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~¿]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
@@ -72,7 +72,7 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
     u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
     "]+", flags=re.UNICODE)
-
+AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
@@ -178,7 +178,7 @@ def fromstring_bytes(htmlobject):
     "Try to pass bytes to LXML parser."
     tree = None
     try:
-        tree = fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+        tree = fromstring(htmlobject.encode('utf8', 'surrogatepass'), parser=HTML_PARSER)
     except Exception as err:
         LOGGER.error('lxml parser bytestring %s', err)
     return tree
@@ -328,9 +328,12 @@ def normalize_authors(current_authors, author_string):
     # fix html entities
     if '&#' in author_string or '&amp;' in author_string:
         author_string = unescape(author_string)
+    # remove html tags
+    author_string = AUTHOR_REMOVE_HTML.sub('', author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)
+        # remove emoji
         author = AUTHOR_EMOJI_REMOVE.sub('', author)
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)

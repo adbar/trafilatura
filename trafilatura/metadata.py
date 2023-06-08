@@ -179,7 +179,7 @@ def extract_opengraph(tree):
             description = elem.get('content')
         # og:author
         elif elem.get('property') in OG_AUTHOR:
-            author = elem.get('content')
+            author = normalize_authors(None, elem.get('content'))
         # image default
         elif elem.get('property') == 'og:image':
             image = elem.get('content')
