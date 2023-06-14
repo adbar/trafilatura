@@ -44,7 +44,7 @@ def test_json_extraction():
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring(
-        '''<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"Article","headline":"Example Article","description":"This is an example article.","datePublished":"2023-06-14","dateModified":"2023-06-14","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"Example Publisher","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.png"}},"image":{"@type":"ImageObject","url":"https://www.example.com/article-image.jpg","width":800,"height":600},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.example.com/article"},"name":"Example Article","url":"https://www.example.com/article"}</script></body></html>'''),
+        '''<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"Article","name":"Example Article","description":"This is an example article.","datePublished":"2023-06-14".,"dateModified":"2023-06-14","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"Example Publisher","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.png"}},"image":{"@type":"ImageObject","url":"https://www.example.com/article-image.jpg","width":800,"height":600},"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.example.com/article"},"url":"https://www.example.com/article"}</script></body></html>'''),
                                  metadata)
     assert metadata.author == "John Doe"
     assert metadata.pagetype == 'article'
@@ -60,9 +60,9 @@ def test_json_extraction():
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring(
-        '''<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"Example News","url":"https://www.examplenews.com","logo":"https://www.examplenews.com/logo.png","sameAs":["https://www.facebook.com/examplenews","https://twitter.com/examplenews"],"contactPoint":{"@type":"ContactPoint","contactType":"customer support","telephone":"+1-555-123-4567","email":"contact@examplenews.com"},"memberOf":{"@type":"Organization","name":"News Association","url":"https://www.newsassociation.org"},"slogan":"Delivering news to the world","foundingDate":"2005-02-10","foundingLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":"Cityville","addressRegion":"Stateville","addressCountry":"Countryland"}},"founders":[{"@type":"Person","name":"John Doe"},{"@type":"Person","name":"Jane Smith"}]}</script></body></html>'''),
+        '''<html><body><script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@type":"WebPage","name":"Example Webpage","headline":"Example Webpage","datePublished":"2023-06-14","dateModified":"2023-06-14","description":"This is an example webpage.","author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"https://www.example.com","logo":{"@type":"ImageObject","url":"https://www.example.com/logo.jpg","width":600,"height":60}},"image":{"@type":"ImageObject","url":"https://www.example.com/webpage-image.jpg","width":800,"height":600}}</script></body></html>'''),
                                  metadata)
-    assert metadata.sitename == 'Example News'
+    assert metadata.sitename == 'Example Webpage'
 
     ### Test for potential errors
     metadata = Document()
