@@ -210,7 +210,6 @@ def load_html(htmlobject):
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
-        fallback_parse = True
         tree = fromstring_bytes(htmlobject)
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
@@ -220,7 +219,7 @@ def load_html(htmlobject):
             tree = fromstring_bytes(htmlobject)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
-    if tree is not None and check_flag is True and len(tree) < 1:
+    if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None
     return tree
