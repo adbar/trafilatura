@@ -30,7 +30,6 @@ except ImportError:
 from charset_normalizer import from_bytes
 
 from lxml.html import HtmlElement, HTMLParser, fromstring
-# from lxml.html.soupparser import fromstring as fromsoup
 
 # response types
 from urllib3.response import HTTPResponse
@@ -207,7 +206,6 @@ def load_html(htmlobject):
     # repair first
     htmlobject = strip_faulty_doctypes(htmlobject, beginning)
     # first pass: use Unicode string
-    fallback_parse = False
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
@@ -217,18 +215,12 @@ def load_html(htmlobject):
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 2) and fallback_parse is False:
-        tree = fromstring_bytes(htmlobject)
-    # more robust option: try BeautifulSoup?
-    #if tree is None or not isinstance(tree, HtmlElement):
-    #    if isinstance(htmlobject, (bytes, str)):
-    #        try:
-    #            tree = fromsoup(htmlobject)
-    #        except Exception as err:
-    #            LOGGER.error('BS parser error: %s', err)
+    else:
+        if tree is None or len(tree) < 1:
+            tree = fromstring_bytes(htmlobject)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
-    if tree is not None and check_flag is True and len(tree) < 2:
+    if tree is not None and check_flag is True and len(tree) < 1:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None
     return tree
