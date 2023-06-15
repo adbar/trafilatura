@@ -39,7 +39,7 @@ Corpora
 URL lists from corpus linguistic projects can be a starting ground to derive information from, either to recreate existing corpora or to re-crawl the websites and find new content. If the websites do not exist anymore, the links can still be useful as the corresponding web pages can be retrieved from web archives.
 
 - `Sources for the Internet Corpora <http://corpus.leeds.ac.uk/internet.html>`_ of the Leeds Centre for Translation Studies
-- `Link data sets <https://corporafromtheweb.org/link-data-sets-cc-by/>`_  of the COW project
+- `Link data sets <https://www.webcorpora.org/opendata/links/>`_  of the COW project
 
 
 URL directories
@@ -95,7 +95,7 @@ Here is how to make this method work in a modular way:
     # use the list gathered in (1)
     >>> wordlist = ['word1', 'word2', 'word3', 'word4']  # and so on
     # draw 3 random words from the list
-    >>> selection = random.choices(wordlist, k=3)
+    >>> selection = random.sample(wordlist, k=3)
 
 3. Get URL results from search engines for the random tuples. Here are examples of Python modules to query search engines: `search-engine-parser <https://github.com/bisohns/search-engine-parser>`_ and `GoogleScraper <https://github.com/NikolaiT/GoogleScraper>`_.
 
@@ -135,7 +135,7 @@ Previously collected tweet IDs can be “hydrated”, i.e. retrieved from Twitte
 - `Twitter datasets for research and archiving <https://tweetsets.library.gwu.edu/>`_
 - `Search GitHub for Tweet IDs <https://github.com/search?q=tweet+ids>`_
 
-Links can be extracted from tweets with a regular expression such as ``re.findall(r'https://[^ ]+')``. They probably need to be resolved first to get actual link targets and not just shortened URLs (like t.co/…).
+Links can be extracted from tweets with a regular expression such as ``re.findall(r'https?://[^ ]+')``. They probably need to be resolved first to get actual link targets and not just shortened URLs (like t.co/…).
 
 
 For further ideas from previous projects see references below.
