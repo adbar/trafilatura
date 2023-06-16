@@ -213,8 +213,32 @@ def handle_lists(element, options):
     return None
 
 
+def get_code_block_element(element):
+    # GitHub
+    parent = element.getparent()
+    if parent is not None and 'highlight' in parent.get('class', default=''):
+        return element
+    # highlightjs
+    code = element.find('code')
+    if code is not None and 'hljs' in code.get('class') and len(element.getchildren()) == 1:
+        return code
+    return None
+
+
+def handle_code_blocks(element, code):
+    processed_element = Element('code')
+    processed_element.text = code.text
+    for child in element.iter('*'):
+        child.tag = 'done'
+    return processed_element
+
+
 def handle_quotes(element, options):
     '''Process quotes elements'''
+    code = get_code_block_element(element)
+    if code is not None:
+        return handle_code_blocks(element, code)
+
     processed_element = Element(element.tag)
     for child in element.iter('*'):
         processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
