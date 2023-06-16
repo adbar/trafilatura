@@ -1076,6 +1076,26 @@ def test_code_blocks():
     inline_code = '<div><p>paragraph</p><p>here is <code>some</code> code</p></div>'
     testresult = extract(inline_code, config=ZERO_CONFIG, output_format='xml')
     assert '<code>some</code>' in testresult and 'quote' not in testresult
+    w3schools = '''<div class="w3-example"><h3>Example</h3>
+<p>Create a class named Person, use the __init__() function to assign values
+for name and age:</p>
+<div class="w3-code notranslate pythonHigh"><span class="pythoncolor" style="color:black"><span class="pythonnumbercolor" style="color:red">
+</span>  <span class="pythonkeywordcolor" style="color:mediumblue">class</span> Person:<br>&nbsp; <span class="pythonkeywordcolor" style="color:mediumblue">def</span> __init__(self, name, age):<br>&nbsp;&nbsp;&nbsp; <span class="pythonnumbercolor" style="color:red">
+</span>  self.name = name<br>&nbsp;&nbsp;&nbsp; self.age = age<br><br>p1 = Person(<span class="pythonstringcolor" style="color:brown">"John"</span>, <span class="pythonnumbercolor" style="color:red">
+</span>  <span class="pythonnumbercolor" style="color:red">36</span>)<br><span class="pythonnumbercolor" style="color:red">
+</span>  <br><span class="pythonkeywordcolor" style="color:mediumblue">print</span>(p1.name)<br><span class="pythonkeywordcolor" style="color:mediumblue">print</span>(p1.age) </span></div>
+</div>'''
+    testresult = extract(w3schools, config=ZERO_CONFIG, output_format='xml')
+    expected = '''<code>
+class Person:
+def __init__(self, name, age):
+self.name = name
+self.age = age
+p1 = Person("John",
+36)
+print(p1.name)
+print(p1.age) </code>'''
+    assert expected in testresult and 'quote' not in testresult
 
 
 if __name__ == '__main__':
