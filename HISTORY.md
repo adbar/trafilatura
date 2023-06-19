@@ -1,6 +1,22 @@
 ## History / Changelog
 
 
+### 1.6.1
+
+Extraction:
+- minor fixes: tables in figures (#301), headings (#354) and lists (#318)
+
+Metadata:
+- simplify and fully test JSON parsing code, with @felipehertzer (#352, #368)
+- authors, JSON and unicode fixes by @felipehertzer in #365
+- fix for authors without `additionalName` by @awwitecki in #363
+
+Navigation:
+- reviewed link processing in feeds and sitemaps (#340, #350)
+- more robust spider (#359)
+- updated underlying courlan package (#360)
+
+
 ### 1.6.0
 
 Extraction:
@@ -15,18 +31,17 @@ Command-line interface:
 - more efficient downloads (#338)
 - fix for single URL processing (#324) and URL blacklisting (#339)
 
-Navigation
+Navigation:
 - additional safety check on domain similarity for feeds and sitemaps
 - new function ``is_live test()`` using HTTP HEAD request (#327)
 - code parts supported by new courlan version
 
-Maintenance
+Maintenance:
 - allow ``urllib3`` version 2.0+
 - minor code simplification and fixes
 
 
 ### 1.5.0
-
 
 Extraction:
 - fixes for metadata extraction with @felipehertzer (#295, #296),  @andremacola (#282, #310), and @edkrueger (#303)
