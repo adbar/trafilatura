@@ -206,17 +206,18 @@ def load_html(htmlobject):
     # repair first
     htmlobject = strip_faulty_doctypes(htmlobject, beginning)
     # first pass: use Unicode string
+    fallback_parse = False
     try:
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
         tree = fromstring_bytes(htmlobject)
+        fallback_parse = True
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # second pass: try passing bytes to LXML
-    else:
-        if tree is None or len(tree) < 1:
-            tree = fromstring_bytes(htmlobject)
+    if (tree is None or len(tree) < 1) and not fallback_parse:
+        tree = fromstring_bytes(htmlobject)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
