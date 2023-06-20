@@ -22,8 +22,9 @@ from courlan import extract_domain, get_base_url, UrlStore  # validate_url
 
 from trafilatura import spider
 
-from .core import extract
+from .core import extract, html2txt
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .filters import language_classifier
 from .hashing import generate_hash_filename
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
@@ -56,6 +57,8 @@ def load_input_urls(args):
         input_urls = [args.crawl]
     elif args.explore:
         input_urls = [args.explore]
+    elif args.probe:
+        input_urls = [args.probe]
     elif args.feed:
         input_urls = [args.feed]
     elif args.sitemap:
@@ -283,6 +286,34 @@ def cli_crawler(args, n=30, url_store=None):
     # print results
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
     #return todo, known_links
+
+
+def probe_homepage(args):
+    "Probe websites for suitable content and return the fitting ones."
+    for url, result in buffered_downloads(load_input_urls(args), args.parallel):
+        if result is not None:
+            result = html2txt(result)
+            if language_classifier(result, "") is not None:
+                print(url)
+
+    #spider.URL_STORE.add_urls(load_input_urls(args))
+    #for hostname in spider.URL_STORE.get_known_domains():
+    #    startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
+    #    _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
+    #while spider.URL_STORE.done is False:
+    #    bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
+    #    # start several threads
+    #    for url, result in buffered_downloads(bufferlist, args.parallel, decode=False):
+    #        base_url = get_base_url(url)
+    #        # handle result
+    #        if result is not None:
+    #            spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
+    #            result = html2txt(result)
+    #        if result is None or language_classifier(result, ""):
+    #            pass
+    #            # set website to busted
+    #    if all(c >= n for c in spider.URL_STORE.get_all_counts()):
+    #        break
 
 
 def url_processing_pipeline(args, url_store):
