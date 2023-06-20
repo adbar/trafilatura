@@ -77,7 +77,7 @@ Further options:
 ``--formatting``
     Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
 ``--links``
-    Keep link targets (in ``href="..."``)
+    Keep link targets (in ``href="..."``), converting relative URLs to absolute where possible
 ``--images``
     Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
 
