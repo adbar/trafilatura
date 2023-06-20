@@ -1050,6 +1050,54 @@ def test_list_processing():
     assert target_element.tail == 'tail'
 
 
+def test_code_blocks():
+    highlightjs = '''<div class="s-prose js-post-body" itemprop="text">
+<p>Code:</p>
+<pre class="lang-sql s-code-block"><code class="hljs language-sql">code\n
+<span class="hljs-keyword">highlighted</span> more <span class="hljs-keyword">code</span>
+</code></pre>
+</div>'''
+    ''
+    testresult = extract(highlightjs, config=ZERO_CONFIG, output_format='xml')
+    assert '<code>code\nhighlighted more code\n</code>' in testresult and 'quote' not in testresult
+    github = '''<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn js-clipboard-copy m-2 p-0 tooltipped-no-delay" data-copy-feedback="Copied!" data-tooltip-direction="w" value="$ pip install PyGithub" tabindex="0" role="button" style="display: inherit;">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon m-2">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none m-2">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+    '''
+    testresult = extract(github, config=ZERO_CONFIG, output_format='xml')
+    assert '<code>$ pip install PyGithub</code>' in testresult and 'quote' not in testresult
+    inline_code = '<div><p>paragraph</p><p>here is <code>some</code> code</p></div>'
+    testresult = extract(inline_code, config=ZERO_CONFIG, output_format='xml')
+    assert '<code>some</code>' in testresult and 'quote' not in testresult
+    w3schools = '''<div class="w3-example"><h3>Example</h3>
+<p>Create a class named Person, use the __init__() function to assign values
+for name and age:</p>
+<div class="w3-code notranslate pythonHigh"><span class="pythoncolor" style="color:black"><span class="pythonnumbercolor" style="color:red">
+</span>  <span class="pythonkeywordcolor" style="color:mediumblue">class</span> Person:<br>&nbsp; <span class="pythonkeywordcolor" style="color:mediumblue">def</span> __init__(self, name, age):<br>&nbsp;&nbsp;&nbsp; <span class="pythonnumbercolor" style="color:red">
+</span>  self.name = name<br>&nbsp;&nbsp;&nbsp; self.age = age<br><br>p1 = Person(<span class="pythonstringcolor" style="color:brown">"John"</span>, <span class="pythonnumbercolor" style="color:red">
+</span>  <span class="pythonnumbercolor" style="color:red">36</span>)<br><span class="pythonnumbercolor" style="color:red">
+</span>  <br><span class="pythonkeywordcolor" style="color:mediumblue">print</span>(p1.name)<br><span class="pythonkeywordcolor" style="color:mediumblue">print</span>(p1.age) </span></div>
+</div>'''
+    testresult = extract(w3schools, config=ZERO_CONFIG, output_format='xml')
+    expected = '''<code>
+class Person:
+def __init__(self, name, age):
+self.name = name
+self.age = age
+p1 = Person("John",
+36)
+print(p1.name)
+print(p1.age) </code>'''
+    assert expected in testresult and 'quote' not in testresult
+
+
 if __name__ == '__main__':
     test_trim()
     test_input()
@@ -1066,3 +1114,4 @@ if __name__ == '__main__':
     test_tei()
     test_table_processing()
     test_list_processing()
+    test_code_blocks()

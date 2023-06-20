@@ -213,8 +213,34 @@ def handle_lists(element, options):
     return None
 
 
+def get_code_block_element(element):
+    # GitHub
+    parent = element.getparent()
+    if parent is not None and 'highlight' in parent.get('class', default=''):
+        return element
+    # highlightjs
+    code = element.find('code')
+    if code is not None and len(element.getchildren()) == 1:
+        return code
+    return None
+
+
+def handle_code_blocks(element, code):
+    processed_element = Element('code')
+    for child in element.iter('*'):
+        if child.tag == 'lb':
+            child.text = '\n'
+        child.tag = 'done'
+    processed_element.text = ''.join(code.itertext())
+    return processed_element
+
+
 def handle_quotes(element, options):
     '''Process quotes elements'''
+    code = get_code_block_element(element)
+    if code is not None:
+        return handle_code_blocks(element, code)
+
     processed_element = Element(element.tag)
     for child in element.iter('*'):
         processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
@@ -231,6 +257,9 @@ def handle_quotes(element, options):
 
 def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
+    # handle w3schools code
+    if element.tag == 'div' and 'w3-code' in element.get('class', default=''):
+        return handle_code_blocks(element, element)
     # delete unwanted
     if element.tag not in potential_tags:
         if element.tag != 'done':
@@ -460,7 +489,7 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
-    search_expr = './/blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table'
+    search_expr = './/blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table|.//div[contains(@class, \'w3-code\')]'
     if options.recall is True:
         potential_tags.update(['div', 'lb'])
         search_expr += '|.//div|.//lb|.//list'
