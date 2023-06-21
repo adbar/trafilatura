@@ -282,7 +282,7 @@ def process_args(args):
 
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.sitemap]):
+    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.probe, not args.sitemap]):
         url_store = load_input_dict(args)
         error_caught = url_processing_pipeline(args, url_store)
 
