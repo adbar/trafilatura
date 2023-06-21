@@ -793,6 +793,8 @@ def html2txt(content):
 
     """
     tree = load_html(content)
+    if tree is None:
+        return ''
     return ' '.join(tree.text_content().split()).strip()
 
 

@@ -293,8 +293,8 @@ def probe_homepage(args):
     for url, result in buffered_downloads(load_input_urls(args), args.parallel):
         if result is not None:
             result = html2txt(result)
-            if not LANGID_FLAG or language_classifier(result, "") is not None:
-                print(url)
+            if result and (not LANGID_FLAG or language_classifier(result, "") is not None):
+                print(url, flush=True)
 
     #spider.URL_STORE.add_urls(load_input_urls(args))
     #for hostname in spider.URL_STORE.get_known_domains():
