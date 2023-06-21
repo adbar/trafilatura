@@ -19,6 +19,7 @@ from courlan import UrlStore
 
 from trafilatura import cli, cli_utils, settings, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
+from trafilatura.filters import LANGID_FLAG
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -458,8 +459,12 @@ def test_probing():
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert f.getvalue().strip() == ''
+    if LANGID_FLAG:
+        assert f.getvalue().strip() == ''
+    else:
+        assert f.getvalue().strip() == url
     args.target_language = 'en'
+    f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
     assert f.getvalue().strip() == url
