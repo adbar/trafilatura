@@ -19,6 +19,7 @@ except ImportError:
 from difflib import SequenceMatcher
 from gzip import decompress
 from functools import lru_cache
+from itertools import islice
 from html import unescape
 from unicodedata import normalize
 
@@ -373,3 +374,10 @@ def is_similar_domain(reference, new_string, threshold=0.5):
         if SequenceMatcher(None, reference, new_string).ratio() < threshold:
             return False
     return True
+
+
+def make_chunks(data, size):
+    "Chunk data into smaller pieces."
+    it = iter(data)
+    for _ in range(0, len(data), size):
+        yield list(islice(it, size))
