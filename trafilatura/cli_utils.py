@@ -290,7 +290,8 @@ def cli_crawler(args, n=30, url_store=None):
 
 def probe_homepage(args):
     "Probe websites for suitable content and return the fitting ones."
-    for url, result in buffered_downloads(load_input_urls(args), args.parallel):
+    input_urls = load_input_urls(args)
+    for url, result in buffered_downloads(input_urls, args.parallel):
         if result is not None:
             result = html2txt(result)
             if result and (not LANGID_FLAG or language_classifier(result, "") is not None):

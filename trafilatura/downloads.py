@@ -4,6 +4,7 @@ All functions needed to steer and execute downloads of web documents.
 """
 
 
+import gc
 import logging
 import random
 
@@ -251,11 +252,16 @@ def load_download_buffer(url_store, sleep_time=5):
 def buffered_downloads(bufferlist, download_threads, decode=True):
     '''Download queue consumer, single- or multi-threaded.'''
     # start several threads
+    i = 0
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         future_to_url = {executor.submit(fetch_url, url, decode): url for url in bufferlist}
         for future in as_completed(future_to_url):
             # url and download result
             yield future_to_url[future], future.result()
+            del future_to_url[future]
+            i += 1
+            if i > 1000:
+                gc.collect()
 
 
 def _send_pycurl_request(url, no_ssl, config):
