@@ -942,7 +942,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         cleaned_tree_backup = deepcopy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, options)
+        cleaned_tree = convert_tags(cleaned_tree, options, url or document.url)
 
         # comments first, then remove
         if include_comments is True:
