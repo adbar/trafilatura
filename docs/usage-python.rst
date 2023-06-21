@@ -77,8 +77,11 @@ The variables from the example above can be used further:
     # source URL provided for inclusion in metadata
     >>> extract(downloaded, output_format='xml', url=url)
 
-    # links preserved in XML
+    # links preserved in XML, converting relative links to absolute where possible
     >>> extract(downloaded, output_format='xml', include_links=True)
+
+    # source URL must be provided to convert relative links to absolute with TXT output
+    >>> extract(downloaded, include_links=True, url=url)
 
 
 

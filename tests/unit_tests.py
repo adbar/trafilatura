@@ -429,6 +429,8 @@ def test_links():
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert 'testlink.html' not in extract(mydoc)
     assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    # relative link conversion
+    assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(mydoc, url='https://www.example.com/', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert '[Test link text.] This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
