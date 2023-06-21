@@ -24,7 +24,7 @@ from trafilatura import spider
 
 from .core import extract, html2txt
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
-from .filters import language_classifier
+from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
@@ -293,7 +293,7 @@ def probe_homepage(args):
     for url, result in buffered_downloads(load_input_urls(args), args.parallel):
         if result is not None:
             result = html2txt(result)
-            if language_classifier(result, "") is not None:
+            if not LANGID_FLAG or language_classifier(result, "") is not None:
                 print(url)
 
     #spider.URL_STORE.add_urls(load_input_urls(args))
