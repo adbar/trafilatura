@@ -294,7 +294,7 @@ def probe_homepage(args):
     for url, result in buffered_downloads(input_urls, args.parallel):
         if result is not None:
             result = html2txt(result)
-            if result and (not LANGID_FLAG or language_classifier(result, "") is not None):
+            if result and (not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language):
                 print(url, flush=True)
 
     #spider.URL_STORE.add_urls(load_input_urls(args))

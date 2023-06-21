@@ -451,14 +451,18 @@ def test_crawling():
 
 def test_probing():
     "Test webpage probing functions."
-    # Probe pages
-    testargs = ['', '--probe', 'https://httpbun.org/html', '--target-language', 'en']
+    url = 'https://httpbun.org/html'
+    testargs = ['', '--probe', url, '--target-language', 'de']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert f.getvalue().strip() == 'https://httpbun.org/html'
+    assert f.getvalue().strip() == ''
+    args.target_language = 'en'
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip() == url
 
 
 if __name__ == '__main__':

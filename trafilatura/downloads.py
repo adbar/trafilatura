@@ -251,7 +251,7 @@ def load_download_buffer(url_store, sleep_time=5):
 def buffered_downloads(bufferlist, download_threads, decode=True):
     '''Download queue consumer, single- or multi-threaded.'''
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
-        for chunk in make_chunks(bufferlist, 1000):
+        for chunk in make_chunks(bufferlist, 10000):
             future_to_url = {executor.submit(fetch_url, url, decode): url for url in chunk}
             for future in as_completed(future_to_url):
                 # url and download result
