@@ -105,7 +105,7 @@ def parse_args(args):
                         help="explore the given websites (combination of sitemap and crawl)",
                         nargs='?', const=True, default=False)
     group3_ex.add_argument("--probe",
-                        help="probe the given websites for suitable content",
+                        help="probe for extractable content (works best with target language)",
                         nargs='?', const=True, default=False)
     group3.add_argument('--archived',
                         help='try to fetch URLs from the Internet Archive if downloads fail',

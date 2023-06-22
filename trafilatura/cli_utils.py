@@ -297,25 +297,6 @@ def probe_homepage(args):
             if result and (not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language):
                 print(url, flush=True)
 
-    #spider.URL_STORE.add_urls(load_input_urls(args))
-    #for hostname in spider.URL_STORE.get_known_domains():
-    #    startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-    #    _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
-    #while spider.URL_STORE.done is False:
-    #    bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
-    #    # start several threads
-    #    for url, result in buffered_downloads(bufferlist, args.parallel, decode=False):
-    #        base_url = get_base_url(url)
-    #        # handle result
-    #        if result is not None:
-    #            spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
-    #            result = html2txt(result)
-    #        if result is None or language_classifier(result, ""):
-    #            pass
-    #            # set website to busted
-    #    if all(c >= n for c in spider.URL_STORE.get_all_counts()):
-    #        break
-
 
 def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''

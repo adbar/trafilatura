@@ -378,6 +378,6 @@ def is_similar_domain(reference, new_string, threshold=0.5):
 
 def make_chunks(data, size):
     "Chunk data into smaller pieces."
-    it = iter(data)
+    iterator = iter(data)
     for _ in range(0, len(data), size):
-        yield list(islice(it, size))
+        yield list(islice(iterator, size))
