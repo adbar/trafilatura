@@ -364,22 +364,20 @@ def file_processing_pipeline(args):
     filebatch, filecounter = [], None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
-    # loop: iterate through file list
-    for filename in generate_filelist(args.input_dir):
-        filebatch.append(filename)
-        if len(filebatch) > MAX_FILES_PER_DIRECTORY:
-            if filecounter is None:
-                filecounter = 0
-            # multiprocessing for the batch
-            with Pool(processes=processing_cores) as pool:
-                pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
-            filecounter += len(filebatch)
-            filebatch = []
-    # update counter
-    if filecounter is not None:
-        filecounter += len(filebatch)
-    # multiprocessing for the rest
+
     with Pool(processes=processing_cores) as pool:
+        for filename in generate_filelist(args.input_dir):
+            filebatch.append(filename)
+            if len(filebatch) > MAX_FILES_PER_DIRECTORY:
+                if filecounter is None:
+                    filecounter = 0
+                pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+                filecounter += len(filebatch)
+                filebatch = []
+        # update counter
+        if filecounter is not None:
+            filecounter += len(filebatch)
+        # process the rest
         pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
 
 
