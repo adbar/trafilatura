@@ -14,6 +14,7 @@ import string
 import sys
 import traceback
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
@@ -24,11 +25,14 @@ from trafilatura import spider
 
 from .core import extract, html2txt
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
+from .sitemaps import sitemap_search
+from .utils import make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -231,6 +235,34 @@ def download_queue_processing(url_store, args, counter, config):
                 LOGGER.warning('No result for URL: %s', url)
                 errors.append(url)
     return errors, counter
+
+
+def cli_discovery(args):
+    url_store = load_input_dict(args)
+    func = find_feed_urls if args.feed else sitemap_search
+    input_urls = url_store.dump_urls()
+    # link discovery and storage
+    with ThreadPoolExecutor(max_workers=args.parallel) as executor:
+        for chunk in make_chunks(input_urls, 10000):
+            futures = (executor.submit(func, url, target_lang=args.target_language) for url in chunk)
+            # process results from the parallel threads and add them
+            # to the compressed URL dictionary for further processing
+            for future in as_completed(futures):
+                if future.result() is not None:
+                    url_store.add_urls(future.result())
+                    # empty buffer in order to spare memory
+                    if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
+                        url_store.print_unvisited_urls()
+                        url_store.reset()
+
+    # process the (rest of the) links found
+    error_caught = url_processing_pipeline(args, url_store)
+
+    # activate site explorer
+    if args.explore:
+        # add to compressed dict and crawl the remaining websites
+        control_dict = build_exploration_dict(url_store, input_urls, args)
+        cli_crawler(args, url_store=control_dict)
 
 
 def build_exploration_dict(url_store, input_urls, args):
