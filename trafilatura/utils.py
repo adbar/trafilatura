@@ -17,10 +17,10 @@ except ImportError:
     brotli = None
 
 from difflib import SequenceMatcher
-from gzip import decompress
 from functools import lru_cache
-from itertools import islice
+from gzip import decompress
 from html import unescape
+from itertools import islice
 from unicodedata import normalize
 
 # CChardet is faster and can be more accurate

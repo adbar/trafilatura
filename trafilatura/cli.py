@@ -317,7 +317,7 @@ def process_args(args):
     elif args.crawl:
         cli_crawler(args)
 
-    # activate crawler/spider
+    # probe and print only
     elif args.probe:
         probe_homepage(args)
 

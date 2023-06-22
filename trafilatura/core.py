@@ -789,7 +789,7 @@ def html2txt(content):
         content: HTML document as string or LXML element.
 
     Returns:
-        The extracted text in the form of a string.
+        The extracted text in the form of a string or an empty string.
 
     """
     tree = load_html(content)

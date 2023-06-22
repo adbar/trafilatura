@@ -289,7 +289,7 @@ def cli_crawler(args, n=30, url_store=None):
 
 
 def probe_homepage(args):
-    "Probe websites for suitable content and return the fitting ones."
+    "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_urls(args)
     for url, result in buffered_downloads(input_urls, args.parallel):
         if result is not None:
