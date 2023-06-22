@@ -17,9 +17,10 @@ except ImportError:
     brotli = None
 
 from difflib import SequenceMatcher
-from gzip import decompress
 from functools import lru_cache
+from gzip import decompress
 from html import unescape
+from itertools import islice
 from unicodedata import normalize
 
 # CChardet is faster and can be more accurate
@@ -373,3 +374,10 @@ def is_similar_domain(reference, new_string, threshold=0.5):
         if SequenceMatcher(None, reference, new_string).ratio() < threshold:
             return False
     return True
+
+
+def make_chunks(data, size):
+    "Chunk data into smaller pieces."
+    iterator = iter(data)
+    for _ in range(0, len(data), size):
+        yield list(islice(iterator, size))

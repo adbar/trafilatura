@@ -351,6 +351,8 @@ def test_html2txt():
     mydoc = "<html><body>Here is the body text</body></html>"
     assert html2txt(mydoc) == "Here is the body text"
     assert html2txt(html.fromstring(mydoc)) == "Here is the body text"
+    assert html2txt("") == ""
+    assert html2txt("123") == ""
 
 
 def test_external():

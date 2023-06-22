@@ -32,7 +32,7 @@ from courlan.network import redirection_test
 
 from . import __version__
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, uniquify_list, URL_BLACKLIST_REGEX
+from .utils import decode_response, make_chunks, uniquify_list, URL_BLACKLIST_REGEX
 
 
 NUM_CONNECTIONS = 50
@@ -250,12 +250,12 @@ def load_download_buffer(url_store, sleep_time=5):
 
 def buffered_downloads(bufferlist, download_threads, decode=True):
     '''Download queue consumer, single- or multi-threaded.'''
-    # start several threads
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
-        future_to_url = {executor.submit(fetch_url, url, decode): url for url in bufferlist}
-        for future in as_completed(future_to_url):
-            # url and download result
-            yield future_to_url[future], future.result()
+        for chunk in make_chunks(bufferlist, 10000):
+            future_to_url = {executor.submit(fetch_url, url, decode): url for url in chunk}
+            for future in as_completed(future_to_url):
+                # url and download result
+                yield future_to_url[future], future.result()
 
 
 def _send_pycurl_request(url, no_ssl, config):
