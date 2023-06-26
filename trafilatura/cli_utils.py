@@ -14,9 +14,8 @@ import string
 import sys
 import traceback
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
-from multiprocessing import Pool
 from os import makedirs, path, walk
 
 from courlan import extract_domain, get_base_url, UrlStore  # validate_url
@@ -365,20 +364,21 @@ def file_processing_pipeline(args):
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
 
-    with Pool(processes=processing_cores) as pool:
-        for filename in generate_filelist(args.input_dir):
-            filebatch.append(filename)
-            if len(filebatch) > MAX_FILES_PER_DIRECTORY:
-                if filecounter is None:
-                    filecounter = 0
-                pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+    for filename in generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY:
+        filebatch.append(filename)
+        if len(filebatch) >= MAX_FILES_PER_DIRECTORY:
+            if filecounter is None:
+                filecounter = 0
+            with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+                executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+            # update counter
+            if filecounter is not None:
                 filecounter += len(filebatch)
-                filebatch = []
-        # update counter
-        if filecounter is not None:
-            filecounter += len(filebatch)
-        # process the rest
-        pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+            filebatch = []
+
+    if filebatch:
+        with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+            executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
 
 
 def examine(htmlstring, args, url=None, config=None):
