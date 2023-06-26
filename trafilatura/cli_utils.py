@@ -16,6 +16,7 @@ import traceback
 
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
+from itertools import islice
 from os import makedirs, path, walk
 
 from courlan import extract_domain, get_base_url, UrlStore  # validate_url
@@ -364,21 +365,14 @@ def file_processing_pipeline(args):
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
 
-    for filename in generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY:
-        filebatch.append(filename)
-        if len(filebatch) >= MAX_FILES_PER_DIRECTORY:
-            if filecounter is None:
+    with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+        for filebatch in list(islice(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY)):
+            if len(filebatch) >= MAX_FILES_PER_DIRECTORY and filecounter is None:
                 filecounter = 0
-            with ProcessPoolExecutor(max_workers=processing_cores) as executor:
-                executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+            executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
-            filebatch = []
-
-    if filebatch:
-        with ProcessPoolExecutor(max_workers=processing_cores) as executor:
-            executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
 
 
 def examine(htmlstring, args, url=None, config=None):
