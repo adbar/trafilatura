@@ -15,7 +15,7 @@ from platform import python_version
 
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict,
-                        build_exploration_dict, cli_crawler,
+                        build_exploration_dict, cli_crawler, probe_homepage,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
@@ -103,6 +103,9 @@ def parse_args(args):
                         nargs='?', const=True, default=False)
     group3_ex.add_argument("--explore",
                         help="explore the given websites (combination of sitemap and crawl)",
+                        nargs='?', const=True, default=False)
+    group3_ex.add_argument("--probe",
+                        help="probe for extractable content (works best with target language)",
                         nargs='?', const=True, default=False)
     group3.add_argument('--archived',
                         help='try to fetch URLs from the Internet Archive if downloads fail',
@@ -279,7 +282,7 @@ def process_args(args):
 
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.sitemap]):
+    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.probe, not args.sitemap]):
         url_store = load_input_dict(args)
         error_caught = url_processing_pipeline(args, url_store)
 
@@ -313,6 +316,10 @@ def process_args(args):
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
+
+    # probe and print only
+    elif args.probe:
+        probe_homepage(args)
 
     # read files from an input directory
     elif args.input_dir:

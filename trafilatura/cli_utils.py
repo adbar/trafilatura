@@ -22,8 +22,9 @@ from courlan import extract_domain, get_base_url, UrlStore  # validate_url
 
 from trafilatura import spider
 
-from .core import extract
+from .core import extract, html2txt
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
@@ -56,6 +57,8 @@ def load_input_urls(args):
         input_urls = [args.crawl]
     elif args.explore:
         input_urls = [args.explore]
+    elif args.probe:
+        input_urls = [args.probe]
     elif args.feed:
         input_urls = [args.feed]
     elif args.sitemap:
@@ -283,6 +286,16 @@ def cli_crawler(args, n=30, url_store=None):
     # print results
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
     #return todo, known_links
+
+
+def probe_homepage(args):
+    "Probe websites for extractable content and print the fitting ones."
+    input_urls = load_input_urls(args)
+    for url, result in buffered_downloads(input_urls, args.parallel):
+        if result is not None:
+            result = html2txt(result)
+            if result and (not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language):
+                print(url, flush=True)
 
 
 def url_processing_pipeline(args, url_store):

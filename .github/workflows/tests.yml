@@ -24,9 +24,9 @@ jobs:
           - os: ubuntu-20.04
             python-version: 3.6
           - os: macos-latest
-            python-version: 3.7
+            python-version: 3.8
           - os: windows-latest
-            python-version: 3.7
+            python-version: 3.8
           - os: ubuntu-latest
             python-version: 3.9
           - os: ubuntu-latest

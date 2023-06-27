@@ -19,6 +19,7 @@ from courlan import UrlStore
 
 from trafilatura import cli, cli_utils, settings, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
+from trafilatura.filters import LANGID_FLAG
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -248,45 +249,6 @@ def test_cli_pipeline():
     # Force encoding to utf-8 for Windows in future processes spawned by multiprocessing.Pool
     os.environ['PYTHONIOENCODING'] = "utf-8"
 
-    # Crawling
-    testargs = ['', '--crawl', '']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    cli_utils.cli_crawler(args)
-
-    testargs = ['', '--crawl', ' ']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    cli_utils.cli_crawler(args)
-
-    testargs = ['', '--crawl', 'https://httpbun.org/html']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbun.org/html\n'
-
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    # links permitted
-    testargs = ['', '--crawl', 'https://httpbun.org/links/1/1', '--list', '--parallel', '1']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
-    # possibly a bug on Github actions, should be 2 URLs
-    assert f.getvalue() in ('https://httpbun.org/links/1/1\nhttps://httpbun.org/links/1/0\n', 'https://httpbun.org/links/1/1\n')
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    # 0 links permitted
-    args.crawl = 'https://httpbun.org/links/4/4'
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli_utils.cli_crawler(args, n=0)
-    ## should be 6 (5 URLs as output), possibly a bug on Actions CI/CD
-    assert len(f.getvalue().split('\n')) in (2, 6)
-    spider.URL_STORE = UrlStore(compressed=False, strict=False)
-
     # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
@@ -375,15 +337,6 @@ def test_cli_pipeline():
     print(result)
     assert '[link](testlink.html)' in result and 'test.jpg' in result
 
-    # Exploration (Sitemap + Crawl)
-    testargs = ['', '--explore', 'https://httpbun.org/html', '--list']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli.process_args(args)
-    assert f.getvalue().strip() == 'https://httpbun.org/html'
-
 
 def test_input_filtering():
     '''test internal functions to filter urls'''
@@ -446,6 +399,77 @@ def test_input_filtering():
     assert url_store.get_known_domains() == ["https://test.info"]
 
 
+def test_crawling():
+    "Test crawling and exploration functions."
+
+    testargs = ['', '--crawl', '']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.cli_crawler(args)
+
+    testargs = ['', '--crawl', ' ']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.cli_crawler(args)
+
+    testargs = ['', '--crawl', 'https://httpbun.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbun.org/html\n'
+
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # links permitted
+    testargs = ['', '--crawl', 'https://httpbun.org/links/1/1', '--list', '--parallel', '1']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    # possibly a bug on Github actions, should be 2 URLs
+    assert f.getvalue() in ('https://httpbun.org/links/1/1\nhttps://httpbun.org/links/1/0\n', 'https://httpbun.org/links/1/1\n')
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    # 0 links permitted
+    args.crawl = 'https://httpbun.org/links/4/4'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args, n=0)
+    ## should be 6 (5 URLs as output), possibly a bug on Actions CI/CD
+    assert len(f.getvalue().split('\n')) in (2, 6)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+    # Exploration (Sitemap + Crawl)
+    testargs = ['', '--explore', 'https://httpbun.org/html', '--list']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip() == 'https://httpbun.org/html'
+
+
+def test_probing():
+    "Test webpage probing functions."
+    url = 'https://httpbun.org/html'
+    testargs = ['', '--probe', url, '--target-language', 'de']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    if LANGID_FLAG:
+        assert f.getvalue().strip() == ''
+    else:
+        assert f.getvalue().strip() == url
+    args.target_language = 'en'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip() == url
+
+
 if __name__ == '__main__':
     test_parser()
     test_climain()
@@ -453,4 +477,6 @@ if __name__ == '__main__':
     test_input_filtering()
     test_sysoutput()
     test_cli_pipeline()
+    test_crawling()
     test_download()
+    test_probing()

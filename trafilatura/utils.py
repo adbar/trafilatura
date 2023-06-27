@@ -17,9 +17,10 @@ except ImportError:
     brotli = None
 
 from difflib import SequenceMatcher
-from gzip import decompress
 from functools import lru_cache
+from gzip import decompress
 from html import unescape
+from itertools import islice
 from unicodedata import normalize
 
 # CChardet is faster and can be more accurate
@@ -30,7 +31,6 @@ except ImportError:
 from charset_normalizer import from_bytes
 
 from lxml.html import HtmlElement, HTMLParser, fromstring
-# from lxml.html.soupparser import fromstring as fromsoup
 
 # response types
 from urllib3.response import HTTPResponse
@@ -212,20 +212,13 @@ def load_html(htmlobject):
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
-        fallback_parse = True
         tree = fromstring_bytes(htmlobject)
+        fallback_parse = True
     except Exception as err:
         LOGGER.error('lxml parsing failed: %s', err)
     # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 2) and fallback_parse is False:
+    if (tree is None or len(tree) < 1) and not fallback_parse:
         tree = fromstring_bytes(htmlobject)
-    # more robust option: try BeautifulSoup?
-    #if tree is None or not isinstance(tree, HtmlElement):
-    #    if isinstance(htmlobject, (bytes, str)):
-    #        try:
-    #            tree = fromsoup(htmlobject)
-    #        except Exception as err:
-    #            LOGGER.error('BS parser error: %s', err)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
@@ -381,3 +374,10 @@ def is_similar_domain(reference, new_string, threshold=0.5):
         if SequenceMatcher(None, reference, new_string).ratio() < threshold:
             return False
     return True
+
+
+def make_chunks(data, size):
+    "Chunk data into smaller pieces."
+    iterator = iter(data)
+    for _ in range(0, len(data), size):
+        yield list(islice(iterator, size))
