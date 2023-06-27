@@ -238,9 +238,13 @@ def download_queue_processing(url_store, args, counter, config):
 
 
 def cli_discovery(args):
+    "Group CLI functions dedicated to URL discovery."
     url_store = load_input_dict(args)
     func = find_feed_urls if args.feed else sitemap_search
     input_urls = url_store.dump_urls()
+    if args.list:
+        url_store.reset()
+
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
         for chunk in make_chunks(input_urls, 10000):
