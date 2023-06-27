@@ -58,8 +58,8 @@ def extract_json(schema, metadata):
                 metadata.pagetype = normalize_json(content_type)
 
             if content_type in JSON_PUBLISHER_SCHEMA:
-                candidate = next((content[candidate] for candidate in ("name", "alternateName") if content.get(candidate)), None)
-                if candidate:
+                candidate = next((content[candidate] for candidate in ("name", "legalName", "alternateName") if content.get(candidate)), None)
+                if candidate and isinstance(candidate, str):
                     if metadata.sitename is None or (len(metadata.sitename) < len(candidate) and content_type != "webpage"):
                         metadata.sitename = candidate
                     if metadata.sitename is not None and metadata.sitename.startswith('http') and not candidate.startswith('http'):
