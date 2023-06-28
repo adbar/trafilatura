@@ -376,8 +376,16 @@ def is_similar_domain(reference, new_string, threshold=0.5):
     return True
 
 
-def make_chunks(data, size):
+def make_chunks(iterable, n):
     "Chunk data into smaller pieces."
-    iterator = iter(data)
-    for _ in range(0, len(data), size):
-        yield list(islice(iterator, size))
+    # https://docs.python.org/3/library/itertools.html
+    it = iter(iterable)
+    while True:
+        chunk = tuple(islice(it, n))
+        if not chunk:
+            return
+        yield chunk
+    # Python 3.8+ with walrus operator
+    # it = iter(iterable)
+    # while batch := tuple(islice(it, n)):
+    #    yield batch

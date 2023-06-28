@@ -16,7 +16,6 @@ import traceback
 
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
-from itertools import islice
 from os import makedirs, path, walk
 
 from courlan import extract_domain, get_base_url, UrlStore  # validate_url
@@ -361,28 +360,15 @@ def url_processing_pipeline(args, url_store):
     return bool(errors)
 
 
-def batched(iterable, n):
-    # https://docs.python.org/3/library/itertools.html
-    it = iter(iterable)
-    while True:
-        chunk = tuple(islice(it, n))
-        if not chunk:
-            return
-        yield chunk
-    # Python 3.8+ with walrus operator
-    # it = iter(iterable)
-    # while batch := tuple(islice(it, n)):
-    #    yield batch
-
-
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
 
+    # max_tasks_per_child available in Python 3.11+
     with ProcessPoolExecutor(max_workers=processing_cores) as executor:
-        for filebatch in batched(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, config=config)
