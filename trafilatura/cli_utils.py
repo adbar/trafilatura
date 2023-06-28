@@ -159,9 +159,8 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     else:
         destination_directory = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
-        if new_filename is None:
-            new_filename = generate_hash_filename(content)
-        output_path = path.join(destination_directory, new_filename + extension)
+        filename = new_filename or generate_hash_filename(content)
+        output_path = path.join(destination_directory, filename + extension)
     return output_path, destination_directory
 
 
@@ -210,7 +209,6 @@ def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
     fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
-    # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
@@ -363,17 +361,32 @@ def url_processing_pipeline(args, url_store):
     return bool(errors)
 
 
+def batched(iterable, n):
+    # https://docs.python.org/3/library/itertools.html
+    it = iter(iterable)
+    while True:
+        chunk = tuple(islice(it, n))
+        if not chunk:
+            return
+        yield chunk
+    # Python 3.8+ with walrus operator
+    # it = iter(iterable)
+    # while batch := tuple(islice(it, n)):
+    #    yield batch
+
+
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
-    filebatch, filecounter = [], None
+    filecounter = None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
 
     with ProcessPoolExecutor(max_workers=processing_cores) as executor:
-        for filebatch in list(islice(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY)):
-            if len(filebatch) >= MAX_FILES_PER_DIRECTORY and filecounter is None:
+        for filebatch in batched(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+            if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            executor.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+            worker = partial(file_processing, args=args, counter=filecounter, config=config)
+            executor.map(worker, filebatch, chunksize=10)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
@@ -401,7 +414,6 @@ def examine(htmlstring, args, url=None, config=None):
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              favor_precision=args.precision, favor_recall=args.recall, config=config)
-            # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
