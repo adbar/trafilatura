@@ -27,6 +27,7 @@ from .downloads import add_to_compressed_dict, buffered_downloads, load_download
 from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
+from .meta import reset_caches
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
@@ -249,14 +250,12 @@ def cli_discovery(args):
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
             if future.result() is not None:
-                if args.list:
-                    print('\n'.join(future.result()))
-                else:
-                    url_store.add_urls(future.result())
+                url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
-                #if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
-                #    url_store.print_unvisited_urls()
-                #    url_store.reset()
+                if args.sitemap and args.list and len(url_store.get_known_domains()) >= args.parallel:
+                    url_store.print_unvisited_urls()
+                    url_store.reset()
+                    reset_caches()
 
     # process the (rest of the) links found
     error_caught = url_processing_pipeline(args, url_store)
