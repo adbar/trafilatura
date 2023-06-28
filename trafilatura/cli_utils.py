@@ -17,7 +17,6 @@ import traceback
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
 from os import makedirs, path, walk
-from threading import BoundedSemaphore
 
 from courlan import extract_domain, get_base_url, UrlStore  # validate_url
 
@@ -42,37 +41,6 @@ CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
-
-
-# https://github.com/mowshon/bounded_pool_executor/blob/master/bounded_pool_executor/__init__.py
-# https://gist.github.com/frankcleary/f97fe244ef54cd75278e521ea52a697a
-
-class BoundedExecutor:
-    """BoundedExecutor behaves as a ThreadPoolExecutor which will block on
-    calls to submit() once the limit given as "bound" work items are queued for
-    execution.
-    :param bound: Integer - the maximum number of items in the work queue
-    :param max_workers: Integer - the size of the thread pool
-    """
-    def __init__(self, bound, max_workers):
-        self.executor = ThreadPoolExecutor(max_workers=max_workers)
-        self.semaphore = BoundedSemaphore(bound + max_workers)
-
-    """See concurrent.futures.Executor#submit"""
-    def submit(self, fn, *args, **kwargs):
-        self.semaphore.acquire()
-        try:
-            future = self.executor.submit(fn, *args, **kwargs)
-        except:
-            self.semaphore.release()
-            raise
-        else:
-            future.add_done_callback(lambda x: self.semaphore.release())
-            return future
-
-    """See concurrent.futures.Executor#shutdown"""
-    def shutdown(self, wait=True):
-        self.executor.shutdown(wait)
 
 
 def load_input_urls(args):
@@ -275,17 +243,19 @@ def cli_discovery(args):
         url_store.reset()
 
     # link discovery and storage
-    with BoundedExecutor(1000, args.parallel) as executor:
+    with ThreadPoolExecutor(max_workers=args.parallel) as executor:
         futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
-            if future.result() is not None:
+            if args.list:
+                print(future.result())
+            elif future.result() is not None:
                 url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
-                if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
-                    url_store.print_unvisited_urls()
-                    url_store.reset()
+                #if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
+                #    url_store.print_unvisited_urls()
+                #    url_store.reset()
 
     # process the (rest of the) links found
     error_caught = url_processing_pipeline(args, url_store)
