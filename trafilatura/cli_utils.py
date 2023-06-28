@@ -248,10 +248,11 @@ def cli_discovery(args):
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
-            if args.list:
-                print(future.result())
-            elif future.result() is not None:
-                url_store.add_urls(future.result())
+            if future.result() is not None:
+                if args.list:
+                    print('\n'.join(future.result()))
+                else:
+                    url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
                 #if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
                 #    url_store.print_unvisited_urls()
