@@ -47,28 +47,32 @@ STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
 # https://github.com/mowshon/bounded_pool_executor/blob/master/bounded_pool_executor/__init__.py
 # https://gist.github.com/frankcleary/f97fe244ef54cd75278e521ea52a697a
 
-class _BoundedPoolExecutor:
+class BoundedExecutor:
+    """BoundedExecutor behaves as a ThreadPoolExecutor which will block on
+    calls to submit() once the limit given as "bound" work items are queued for
+    execution.
+    :param bound: Integer - the maximum number of items in the work queue
+    :param max_workers: Integer - the size of the thread pool
+    """
+    def __init__(self, bound, max_workers):
+        self.executor = ThreadPoolExecutor(max_workers=max_workers)
+        self.semaphore = BoundedSemaphore(bound + max_workers)
 
-    semaphore = None
-
-    def acquire(self):
+    """See concurrent.futures.Executor#submit"""
+    def submit(self, fn, *args, **kwargs):
         self.semaphore.acquire()
+        try:
+            future = self.executor.submit(fn, *args, **kwargs)
+        except:
+            self.semaphore.release()
+            raise
+        else:
+            future.add_done_callback(lambda x: self.semaphore.release())
+            return future
 
-    def release(self):
-        self.semaphore.release()
-
-    def submit(self, func, *args, **kwargs):
-        self.acquire()
-        future = super().submit(func, *args, **kwargs)
-        future.add_done_callback(self.release)
-        return future
-
-
-class BoundedThreadPoolExecutor(_BoundedPoolExecutor, ThreadPoolExecutor):
-
-    def __init__(self, max_workers=None):
-        super().__init__(max_workers)
-        self.semaphore = BoundedSemaphore(self._max_workers*2)
+    """See concurrent.futures.Executor#shutdown"""
+    def shutdown(self, wait=True):
+        self.executor.shutdown(wait)
 
 
 def load_input_urls(args):
@@ -271,7 +275,7 @@ def cli_discovery(args):
         url_store.reset()
 
     # link discovery and storage
-    with BoundedThreadPoolExecutor(max_workers=args.parallel) as executor:
+    with BoundedExecutor(1000, args.parallel) as executor:
         futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
