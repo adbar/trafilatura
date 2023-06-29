@@ -14,8 +14,8 @@ import string
 import sys
 import traceback
 
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
-from multiprocessing import Pool
 from os import makedirs, path, walk
 
 from courlan import extract_domain, get_base_url, UrlStore  # validate_url
@@ -24,11 +24,15 @@ from trafilatura import spider
 
 from .core import extract, html2txt
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
+from .meta import reset_caches
 from .utils import uniquify_list, URL_BLACKLIST_REGEX
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
+from .sitemaps import sitemap_search
+from .utils import make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -155,9 +159,8 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     else:
         destination_directory = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
-        if new_filename is None:
-            new_filename = generate_hash_filename(content)
-        output_path = path.join(destination_directory, new_filename + extension)
+        filename = new_filename or generate_hash_filename(content)
+        output_path = path.join(destination_directory, filename + extension)
     return output_path, destination_directory
 
 
@@ -206,7 +209,6 @@ def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
     fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
-    # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
@@ -231,6 +233,38 @@ def download_queue_processing(url_store, args, counter, config):
                 LOGGER.warning('No result for URL: %s', url)
                 errors.append(url)
     return errors, counter
+
+
+def cli_discovery(args):
+    "Group CLI functions dedicated to URL discovery."
+    url_store = load_input_dict(args)
+    func = find_feed_urls if args.feed else sitemap_search
+    input_urls = url_store.dump_urls()
+    if args.list:
+        url_store.reset()
+
+    # link discovery and storage
+    with ThreadPoolExecutor(max_workers=args.parallel) as executor:
+        futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
+        # process results from the parallel threads and add them
+        # to the compressed URL dictionary for further processing
+        for future in as_completed(futures):
+            if future.result() is not None:
+                url_store.add_urls(future.result())
+                # empty buffer in order to spare memory
+                if args.sitemap and args.list and len(url_store.get_known_domains()) >= args.parallel:
+                    url_store.print_unvisited_urls()
+                    url_store.reset()
+                    reset_caches()
+
+    # process the (rest of the) links found
+    error_caught = url_processing_pipeline(args, url_store)
+
+    # activate site explorer
+    if args.explore:
+        # add to compressed dict and crawl the remaining websites
+        control_dict = build_exploration_dict(url_store, input_urls, args)
+        cli_crawler(args, url_store=control_dict)
 
 
 def build_exploration_dict(url_store, input_urls, args):
@@ -329,26 +363,20 @@ def url_processing_pipeline(args, url_store):
 
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
-    filebatch, filecounter = [], None
+    filecounter = None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
-    # loop: iterate through file list
-    for filename in generate_filelist(args.input_dir):
-        filebatch.append(filename)
-        if len(filebatch) > MAX_FILES_PER_DIRECTORY:
-            if filecounter is None:
+
+    # max_tasks_per_child available in Python 3.11+
+    with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+            if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            # multiprocessing for the batch
-            with Pool(processes=processing_cores) as pool:
-                pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
-            filecounter += len(filebatch)
-            filebatch = []
-    # update counter
-    if filecounter is not None:
-        filecounter += len(filebatch)
-    # multiprocessing for the rest
-    with Pool(processes=processing_cores) as pool:
-        pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
+            worker = partial(file_processing, args=args, counter=filecounter, config=config)
+            executor.map(worker, filebatch, chunksize=10)
+            # update counter
+            if filecounter is not None:
+                filecounter += len(filebatch)
 
 
 def examine(htmlstring, args, url=None, config=None):
@@ -373,7 +401,6 @@ def examine(htmlstring, args, url=None, config=None):
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              favor_precision=args.precision, favor_recall=args.recall, config=config)
-            # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
