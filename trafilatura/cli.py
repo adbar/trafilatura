@@ -10,17 +10,14 @@ import logging
 import sys
 import warnings
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from platform import python_version
 
 from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict,
-                        build_exploration_dict, cli_crawler, probe_homepage,
+                        cli_crawler, cli_discovery, probe_homepage,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
-from .feeds import find_feed_urls
 from .settings import DOWNLOAD_THREADS
-from .sitemaps import sitemap_search
 
 
 # fix output encoding on some systems
@@ -288,30 +285,7 @@ def process_args(args):
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
-        url_store = load_input_dict(args)
-        func = find_feed_urls if args.feed else sitemap_search
-        input_urls = url_store.dump_urls()
-        # link discovery and storage
-        with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-            futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
-            # process results from the parallel threads and add them
-            # to the compressed URL dictionary for further processing
-            for future in as_completed(futures):
-                if future.result() is not None:
-                    url_store.add_urls(future.result())
-                    # empty buffer in order to spare memory
-                    if args.sitemap and args.list and len(url_store.get_known_domains()) > 100:
-                        url_store.print_unvisited_urls()
-                        url_store.reset()
-
-        # process the (rest of the) links found
-        error_caught = url_processing_pipeline(args, url_store)
-
-        # activate site explorer
-        if args.explore:
-            # add to compressed dict and crawl the remaining websites
-            control_dict = build_exploration_dict(url_store, input_urls, args)
-            cli_crawler(args, url_store=control_dict)
+        cli_discovery(args)
 
     # activate crawler/spider
     elif args.crawl:

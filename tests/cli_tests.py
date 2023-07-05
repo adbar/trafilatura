@@ -310,14 +310,13 @@ def test_cli_pipeline():
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # sitemaps: tested in --explore
-    #testargs = ['', '--sitemap', 'https://httpbun.org/', '--list']
-    #with patch.object(sys, 'argv', testargs):
-    #    args = cli.parse_args(testargs)
-    #f = io.StringIO()
-    #with redirect_stdout(f):
-    #    cli.process_args(args)
-    #returnval = f.getvalue().strip()
-    #assert len(returnval) == 0 or returnval == "https://httpbun.org/"
+    testargs = ['', '--sitemap', 'https://sitemaps.org/sitemap.xml', '--list', '--parallel', '1']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert f.getvalue().strip().endswith("https://www.sitemaps.org/zh_TW/terms.html")
     # config file
     testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
