@@ -147,7 +147,6 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
         _, known_num, i = crawl_page(i, base_url, lang=language, rules=rules, initial=True)
     else:
         known_num = len(URL_STORE.find_known_urls(base_url))
-    print("##", homepage, base_url)
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
     return base_url, i, known_num, rules, is_on
 
