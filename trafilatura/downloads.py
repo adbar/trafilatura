@@ -238,8 +238,7 @@ def load_download_buffer(url_store, sleep_time=5):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
     bufferlist = []
     while not bufferlist:
-        # todo: delete [] once courlan changed
-        bufferlist = url_store.get_download_urls(timelimit=sleep_time) or []
+        bufferlist = url_store.get_download_urls(timelimit=sleep_time)
         # add emptiness test or sleep?
         if not bufferlist:
             if url_store.done is True:
