@@ -366,14 +366,16 @@ def file_processing_pipeline(args):
     filecounter = None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
+    timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
 
-    # max_tasks_per_child available in Python 3.11+
+    # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+        # chunk input: https://github.com/python/cpython/issues/74028
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, config=config)
-            executor.map(worker, filebatch, chunksize=10)
+            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
