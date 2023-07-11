@@ -325,11 +325,15 @@ def cli_crawler(args, n=30, url_store=None):
 def probe_homepage(args):
     "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_urls(args)
+    config = use_config(filename=args.config_file)
+    min_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+
     for url, result in buffered_downloads(input_urls, args.parallel):
         if result is not None:
             result = html2txt(result)
-            if result and (not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language):
-                print(url, flush=True)
+            if result and len(result) > min_length and any(c.isalpha() for c in result):
+                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
+                    print(url, flush=True)
 
 
 def url_processing_pipeline(args, url_store):
