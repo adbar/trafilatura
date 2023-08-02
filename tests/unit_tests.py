@@ -1106,6 +1106,12 @@ print(p1.age) </code>'''
 from openai_function_call import openai_function</code>'''
     testresult = extract(pip, config=ZERO_CONFIG, output_format='xml')
     assert expected in testresult and 'quote' not in testresult
+    medium = '''<div><p>Code:</p>
+    <pre class="lw lx ly lz ma nq nr ns bo nt ba bj"><span id="fe48" class="nu mo ev nr b bf nv nw l nx ny" data-selectable-paragraph=""><span class="hljs-keyword">import</span> openai_function<br><br><span class="hljs-meta">@openai_function</span></span></pre>'''
+    expected = '''<code>import openai_function
+@openai_function</code>'''
+    testresult = extract(medium, config=ZERO_CONFIG, output_format='xml')
+    assert expected in testresult and 'quote' not in testresult
 
 
 if __name__ == '__main__':

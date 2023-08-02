@@ -208,7 +208,7 @@ def handle_lists(element, options):
 
 def get_code_block_element(element):
     # pip
-    if element.get('lang') is not None:
+    if element.get('lang') is not None or element.tag == 'code':
         return element
     # GitHub
     parent = element.getparent()
@@ -491,6 +491,13 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
         search_expr += '|.//div|.//lb|.//list'
     # prune
     search_tree = prune_unwanted_sections(tree, potential_tags, options)
+    # find hljs elements to detect that it's code
+    hljs_elems = search_tree.xpath("//span[starts-with(@class,'hljs')]")
+    if len(hljs_elems) > 0:
+        for e in hljs_elems:
+            parent = e.getparent().getparent()
+            if parent.tag == 'quote':
+                parent.tag = 'code'
     # decide if links are preserved
     if 'ref' not in potential_tags:
         strip_tags(search_tree, 'a', 'ref', 'span')
