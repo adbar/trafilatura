@@ -207,6 +207,9 @@ def handle_lists(element, options):
 
 
 def get_code_block_element(element):
+    # pip
+    if element.get('lang') is not None:
+        return element
     # GitHub
     parent = element.getparent()
     if parent is not None and 'highlight' in parent.get('class', default=''):

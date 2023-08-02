@@ -1061,7 +1061,6 @@ def test_code_blocks():
 <span class="hljs-keyword">highlighted</span> more <span class="hljs-keyword">code</span>
 </code></pre>
 </div>'''
-    ''
     testresult = extract(highlightjs, config=ZERO_CONFIG, output_format='xml')
     assert '<code>code\nhighlighted more code\n</code>' in testresult and 'quote' not in testresult
     github = '''<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
@@ -1099,6 +1098,13 @@ p1 = Person("John",
 36)
 print(p1.name)
 print(p1.age) </code>'''
+    assert expected in testresult and 'quote' not in testresult
+    pip = '''<div><p>Code:</p>
+    <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
+    <span class="kn">from</span> <span class="nn">openai_function_call</span> <span class="kn">import</span> <span class="n">openai_function</span></pre></div>'''
+    expected = '''<code>import openai
+from openai_function_call import openai_function</code>'''
+    testresult = extract(pip, config=ZERO_CONFIG, output_format='xml')
     assert expected in testresult and 'quote' not in testresult
 
 
