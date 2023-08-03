@@ -299,8 +299,16 @@ def convert_tags(tree, options, url=None):
         elif elem.tag in ('br', 'hr'):
             elem.tag = 'lb'
         # wbr
-        # blockquote, pre, q → quote
-        elif elem.tag in ('blockquote', 'pre', 'q'):
+        # pre
+        elif elem.tag == 'pre':
+            children = elem.getchildren()
+            # pre with a single span is more likely to be code
+            if len(children) == 1 and children[0].tag == 'span':
+                elem.tag = 'code'
+            else:
+                elem.tag = 'quote'
+        # blockquote, q → quote
+        elif elem.tag in ('blockquote', 'q'):
             elem.tag = 'quote'
         # del | s | strike → <del rend="overstrike">
         elif elem.tag in ('del', 's', 'strike'):

@@ -491,7 +491,7 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
         search_expr += '|.//div|.//lb|.//list'
     # prune
     search_tree = prune_unwanted_sections(tree, potential_tags, options)
-    # find hljs elements to detect that it's code
+    # find hljs elements to detect that if it's code
     hljs_elems = search_tree.xpath("//span[starts-with(@class,'hljs')]")
     if len(hljs_elems) > 0:
         for e in hljs_elems:
