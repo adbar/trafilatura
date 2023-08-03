@@ -164,7 +164,6 @@ def test_robotstxt():
 def test_whole():
     "Test whole process."
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
-    print(results)
     assert len(results) == 8
 
 
