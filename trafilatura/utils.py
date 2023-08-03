@@ -76,6 +76,7 @@ AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
+CODE_SPACE = ';cs;'
 
 
 def handle_compressed_file(filecontent):
@@ -270,6 +271,8 @@ def line_processing(line):
     # remove newlines that are not related to punctuation or markup
     # remove non-printable chars and normalize space characters (including Unicode spaces)
     line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
+    # replace unique code spaces with regular space
+    line = line.replace(CODE_SPACE, ' ')
     # prune empty lines
     if all(map(str.isspace, line)):
         line = None

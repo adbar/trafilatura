@@ -27,7 +27,7 @@ from .htmlprocessing import (convert_tags, handle_textnode, process_node,
                              prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
+from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, CODE_SPACE
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, remove_empty_elements, strip_double_tags, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
@@ -225,6 +225,13 @@ def handle_code_blocks(element):
     processed_element = deepcopy(element)
     for child in element.iter('*'):
         child.tag = 'done'
+
+    # encode code spaces differently to keep formatting
+    for child in processed_element.getchildren():
+        if child.text is not None:
+            child.text = child.text.replace(' ', CODE_SPACE)
+        if child.tail is not None:
+            child.tail = child.tail.replace(' ', CODE_SPACE)
     processed_element.tag = 'code'
     return processed_element
 
