@@ -222,8 +222,11 @@ def is_code_block_element(element):
 
 
 def handle_code_blocks(element):
-    element.tag = 'code'
-    return element
+    processed_element = deepcopy(element)
+    for child in element.iter('*'):
+        child.tag = 'done'
+    processed_element.tag = 'code'
+    return processed_element
 
 
 def handle_quotes(element, options):
