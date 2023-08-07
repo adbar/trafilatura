@@ -325,11 +325,15 @@ def cli_crawler(args, n=30, url_store=None):
 def probe_homepage(args):
     "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_urls(args)
+    config = use_config(filename=args.config_file)
+    min_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+
     for url, result in buffered_downloads(input_urls, args.parallel):
         if result is not None:
             result = html2txt(result)
-            if result and (not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language):
-                print(url, flush=True)
+            if result and len(result) > min_length and any(c.isalpha() for c in result):
+                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
+                    print(url, flush=True)
 
 
 def url_processing_pipeline(args, url_store):
@@ -366,14 +370,16 @@ def file_processing_pipeline(args):
     filecounter = None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
+    timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
 
-    # max_tasks_per_child available in Python 3.11+
+    # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+        # chunk input: https://github.com/python/cpython/issues/74028
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, config=config)
-            executor.map(worker, filebatch, chunksize=10)
+            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)

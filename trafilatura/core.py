@@ -14,13 +14,6 @@ import warnings
 
 from copy import deepcopy
 
-# SIGALRM isn't present on Windows, detect it
-try:
-    from signal import signal, alarm, SIGALRM
-    HAS_SIGNAL = True
-except ImportError:
-    HAS_SIGNAL = False
-
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
 
@@ -1078,13 +1071,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # configuration init
     config = use_config(settingsfile, config)
 
-    # put timeout signal in place
-    if HAS_SIGNAL is True:
-        timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
-        if timeout > 0:
-            signal(SIGALRM, timeout_handler)
-            alarm(timeout)
-
     # extraction
     try:
         document = bare_extraction(
@@ -1104,10 +1090,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     except RuntimeError:
         LOGGER.error('Processing timeout for %s', url)
         document = None
-
-    # deactivate alarm signal
-    if HAS_SIGNAL is True and timeout > 0:
-        alarm(0)
 
     # post-processing
     if document is None:
