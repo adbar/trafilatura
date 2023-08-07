@@ -81,7 +81,7 @@ def probe_alternative_homepage(homepage):
     return htmlstring, homepage, base_url
 
 
-def process_links(htmlstring, base_url, language=None, rules=None):
+def process_links(htmlstring, url="", language=None, rules=None):
     """Examine the HTML code and process the retrieved internal links.
        Extract and filter new internal links after an optional language check.
        Store the links in todo-list while prioritizing the navigation ones."""
@@ -93,7 +93,7 @@ def process_links(htmlstring, base_url, language=None, rules=None):
         if result != language:
             return
     # iterate through the links and filter them
-    for link in extract_links(pagecontent=htmlstring, base_url=base_url, external_bool=False, language=language, with_nav=True):
+    for link in extract_links(pagecontent=htmlstring, url=url, external_bool=False, language=language, with_nav=True):
         # check robots.txt rules
         if rules is not None and not rules.can_fetch("*", link):
             continue
@@ -165,7 +165,7 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
                 if homepage != url:
                     URL_STORE.add_urls([homepage])
                 # extract links on homepage
-                process_links(htmlstring, base_url, language=lang, rules=rules)
+                process_links(htmlstring, url=url, language=lang, rules=rules)
         else:
             response = fetch_url(url, decode=False)
             process_response(response, base_url, lang, rules=rules)

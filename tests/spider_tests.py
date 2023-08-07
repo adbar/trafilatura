@@ -87,7 +87,7 @@ def test_process_links():
     spider.process_links(htmlstring, base_url, language='en')
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert 'https://example.org/en/page1/' in todo and len(known_links) == 4
+    assert 'https://example.org/en/page1/' in todo and len(known_links) == 4  # TODO: remove slash?
     # wrong language
     htmlstring = '<html><body><a href="https://example.org/en/page2"/></body></html>'
     spider.process_links(htmlstring, base_url, language='de')
