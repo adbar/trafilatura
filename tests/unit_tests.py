@@ -1112,6 +1112,11 @@ from openai_function_call import openai_function</code>'''
     expected = '''<code>import openai_function<lb/><lb/>@openai_functiondef sum(a:int, b:int):<lb/>  """Sum description adds a + b"""</code>'''
     testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format='xml')
     assert expected in testresult and 'quote' not in testresult
+    code_el = '''<div><p>Code:</p>
+    <pre><code><span>my code</span></code></pre>'''
+    expected = '''<code>my code</code>'''
+    testresult = extract(code_el, config=ZERO_CONFIG, output_format='xml')
+    assert expected in testresult and 'quote' not in testresult
 
 
 if __name__ == '__main__':
