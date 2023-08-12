@@ -65,7 +65,7 @@ def test_atom_extraction():
         'example.org',
         'http://example.org/',
         'http://example.org',
-    ) == ['http://example.org/article1/']
+    ) == ['http://example.org/article1/']  # TODO: remove slash?
 
 
 def test_rss_extraction():
@@ -87,7 +87,7 @@ def test_rss_extraction():
         'example.org',
         'http://example.org/',
         '',
-    ) == ['http://example.org/article1/']
+    ) == ['http://example.org/article1/']  # TODO: remove slash?
     # spaces
     assert len(feeds.extract_links(XMLDECL + '<link>\r\n    https://www.ak-kurier.de/akkurier/www/artikel/108815-sinfonisches-blasorchester-spielt-1500-euro-fuer-kinder-in-drk-krankenhaus-kirchen-ein    </link>', 'ak-kurier.de', 'https://www.ak-kurier.de/', '')) == 1
     assert (
