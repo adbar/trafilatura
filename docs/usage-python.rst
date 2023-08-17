@@ -352,7 +352,7 @@ Feeds
 ^^^^^
 
 
-The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
+The function ``find_feed_urls`` is a all-in-one utility that attempt to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
 
 .. code-block:: python
 
