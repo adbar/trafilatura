@@ -3,6 +3,7 @@ import os
 import time
 
 from evaldata import EVAL_PAGES
+
 from trafilatura import bare_extraction
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -54,4 +55,3 @@ for item in EVAL_PAGES:
 print('exec. time:', '%.2f' % (time.time() - start))
 print('total, correct, percentage:')
 print(i, correct, '%.2f' % ((correct/i)*100))
-

@@ -5,7 +5,6 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
-
 from copy import deepcopy
 
 from courlan import extract_domain, get_base_url, normalize_url, validate_url
@@ -13,10 +12,12 @@ from htmldate import find_date
 from lxml.html import tostring
 
 from .htmlprocessing import prune_unwanted_nodes
-from .json_metadata import extract_json, extract_json_parse_error, normalize_json
-from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import line_processing, load_html, normalize_authors, normalize_tags, trim, unescape, uniquify_list
-
+from .json_metadata import (extract_json, extract_json_parse_error,
+                            normalize_json)
+from .metaxpaths import (author_discard_xpaths, author_xpaths,
+                         categories_xpaths, tags_xpaths, title_xpaths)
+from .utils import (line_processing, load_html, normalize_authors,
+                    normalize_tags, trim, unescape, uniquify_list)
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)

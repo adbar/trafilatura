@@ -5,11 +5,9 @@ Unit tests for feeds reading and parsing.
 import logging
 import os
 import sys
-
 from unittest.mock import patch
 
 from trafilatura import cli, feeds
-
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 

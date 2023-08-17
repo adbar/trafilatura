@@ -8,6 +8,7 @@ import re
 import time
 
 from lxml import html  # etree
+
 #from lxml.html.clean import Cleaner
 #HTML_CLEANER = Cleaner()
 
@@ -19,7 +20,6 @@ except ImportError:
 import html2text
 import html_text
 import justext
-
 from boilerpy3 import extractors
 from bs4 import BeautifulSoup
 #from dragnet import extract_content #, extract_content_and_comments
@@ -31,19 +31,19 @@ from newspaper import fulltext
 from newsplease import NewsPlease
 from readabilipy import simple_json_from_html_string
 from readability import Document
-
-from resiliparse.parse.encoding import detect_encoding, bytes_to_str
-from resiliparse.parse.html import HTMLTree
 from resiliparse.extract.html2text import extract_plain_text
+from resiliparse.parse.encoding import bytes_to_str, detect_encoding
+from resiliparse.parse.html import HTMLTree
 
 from trafilatura import extract
+
 try:
     from trafilatura.core import baseline
 except ImportError:
     baseline = None
-from trafilatura.utils import sanitize
-
 from evaldata import EVAL_PAGES
+
+from trafilatura.utils import sanitize
 
 ## TODO: time, best of 3
 

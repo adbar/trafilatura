@@ -11,28 +11,30 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re  # import regex as re
 import warnings
-
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
 
 # own
-from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
+from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
+                       try_readability)
 from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
                       language_filter, text_chars_test)
 from .hashing import content_fingerprint
-from .htmlprocessing import (convert_tags, handle_textnode, process_node,
-                             delete_by_link_density, link_density_test_tables,
-                             prune_unwanted_nodes, tree_cleaning)
-from .metadata import extract_metadata, Document
-from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
+from .htmlprocessing import (convert_tags, delete_by_link_density,
+                             handle_textnode, link_density_test_tables,
+                             process_node, prune_unwanted_nodes, tree_cleaning)
+from .metadata import Document, extract_metadata
+from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
-from .xml import (build_json_output, build_xml_output, build_tei_output,
-                  control_xml_output, remove_empty_elements, strip_double_tags, xmltotxt)
-from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     TEASER_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
+from .xml import (build_json_output, build_tei_output, build_xml_output,
+                  control_xml_output, remove_empty_elements, strip_double_tags,
+                  xmltotxt)
+from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
+                     DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
+                     PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     REMOVE_COMMENTS_XPATH, TEASER_DISCARD_XPATH)
 
 LOGGER = logging.getLogger(__name__)
 

@@ -8,18 +8,17 @@ All functions related to XML generation, processing and validation.
 
 import logging
 import lzma
-
-from json import dumps as json_dumps
 from html import unescape
+from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
-from lxml.etree import Element, RelaxNG, SubElement, XMLParser, fromstring, tostring
+from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
+                        tostring)
 
 from . import __version__
 from .filters import text_chars_test
 from .utils import sanitize
-
 
 LOGGER = logging.getLogger(__name__)
 # validation

@@ -8,19 +8,16 @@ import os
 import re
 import subprocess
 import sys
-
 from contextlib import redirect_stdout
 from datetime import datetime
 from unittest.mock import patch
 
 import pytest
-
 from courlan import UrlStore
 
 from trafilatura import cli, cli_utils, settings, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
 from trafilatura.filters import LANGID_FLAG
-
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')

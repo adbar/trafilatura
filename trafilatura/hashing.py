@@ -2,13 +2,11 @@
 
 import re
 import string
-
 from base64 import urlsafe_b64encode
 from functools import lru_cache
 from hashlib import blake2b
 from operator import add
 from typing import Any, List, Optional
-
 
 CLEAN_XML = re.compile(r"<[^<]+?>")
 

@@ -9,16 +9,14 @@ Functions grounding on third-party software.
 
 import logging
 import lzma
-
 from pathlib import Path
 from pickle import load as load_pickle
 
 # third-party
-from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revise_paragraph_classification
+from justext.core import (ParagraphMaker, classify_paragraphs, preprocessor,
+                          revise_paragraph_classification)
 from justext.utils import get_stoplist  # , get_stoplists
-
 from lxml.etree import Element, strip_tags
-
 
 # own
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
@@ -27,7 +25,6 @@ from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
 from .xpaths import PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
-
 
 LOGGER = logging.getLogger(__name__)
 

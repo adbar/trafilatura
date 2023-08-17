@@ -14,7 +14,8 @@ except ImportError:
 from lxml import html
 
 from trafilatura.json_metadata import normalize_json
-from trafilatura.metadata import check_authors, extract_metadata, extract_meta_json, extract_url
+from trafilatura.metadata import (check_authors, extract_meta_json,
+                                  extract_metadata, extract_url)
 from trafilatura.utils import normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -25,7 +26,7 @@ def test_titles():
     # too short/empty
     metadata = extract_metadata('<html><body><h3 class="title">T</h3><h3 id="title"></h3></body></html>')
     assert metadata.title is None
-    
+
     metadata = extract_metadata('<html><head><title>Test Title</title></head><body></body></html>')
     assert metadata.title == 'Test Title'
     metadata = extract_metadata('<html><body><h1>First</h1><h1>Second</h1></body></html>')
