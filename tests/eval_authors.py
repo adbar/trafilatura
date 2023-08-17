@@ -52,6 +52,6 @@ for item in EVAL_PAGES:
     if 'author' in result and result['author'] == author_gold:
         correct += 1
 
-print('exec. time:', '%.2f' % (time.time() - start))
+print('exec. time:', f'{time.time() - start:.2f}')
 print('total, correct, percentage:')
-print(i, correct, '%.2f' % ((correct/i)*100))
+print(i, correct, f'{correct / i * 100:.2f}')
