@@ -138,4 +138,4 @@ def text_chars_test(string):
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
-    return string not in (None, '') and not string.isspace()
+    return bool(string) and not string.isspace()
