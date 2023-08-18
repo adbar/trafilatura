@@ -43,16 +43,23 @@ CHAR_CLASS = string.ascii_letters + string.digits
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
 
+EXTENSION_MAPPING = {
+    'csv': '.csv',
+    'json': '.json',
+    'xml': '.xml',
+    'xmltei': '.xml',
+}
+
 
 def load_input_urls(args):
     '''Read list of URLs to process or derive one from command-line arguments'''
+    input_urls = []
+
     if args.input_file:
-        input_urls = []
         try:
             # optional: errors='strict', buffering=1
             with open(args.input_file, mode='r', encoding='utf-8') as inputfile:
-                for line in inputfile:
-                    input_urls.append(line.strip())
+                input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
     elif args.URL:
@@ -69,7 +76,7 @@ def load_input_urls(args):
         input_urls = [args.sitemap]
     else:
         LOGGER.warning('No input provided')
-        input_urls = []
+
     # uniq URLs while preserving order (important)
     return uniquify_list(input_urls)
 
@@ -140,28 +147,23 @@ def get_writable_path(destdir, extension):
 
 def determine_output_path(args, orig_filename, content, counter=None, new_filename=None):
     '''Pick a directory based on selected options and a file name based on output type'''
-    # determine extension
-    extension = '.txt'
-    if args.output_format in ('xml', 'xmltei'):
-        extension = '.xml'
-    elif args.output_format == 'csv':
-        extension = '.csv'
-    elif args.output_format == 'json':
-        extension = '.json'
-    # determine directory
-    if args.keep_dirs is True:
+    # determine extension, TXT by default
+    extension = EXTENSION_MAPPING.get(args.output_format, '.txt')
+
+    if args.keep_dirs:
         # strip directory
-        orig_directory = STRIP_DIR.sub('', orig_filename)
-        destination_directory = path.join(args.output_dir, orig_directory)
+        original_dir = STRIP_DIR.sub('', orig_filename)
+        destination_dir = path.join(args.output_dir, original_dir)
         # strip extension
         filename = STRIP_EXTENSION.sub('', orig_filename)
-        output_path = path.join(args.output_dir, filename + extension)
     else:
-        destination_directory = determine_counter_dir(args.output_dir, counter)
+        destination_dir = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
         filename = new_filename or generate_hash_filename(content)
-        output_path = path.join(destination_directory, filename + extension)
-    return output_path, destination_directory
+
+    output_path = path.join(destination_dir, filename + extension)
+    return output_path, destination_dir
+
 
 
 def archive_html(htmlstring, args, counter=None):
@@ -183,9 +185,9 @@ def write_result(result, args, orig_filename=None, counter=None, new_filename=No
     if args.output_dir is None:
         sys.stdout.write(result + '\n')
     else:
-        destination_path, destination_directory = determine_output_path(args, orig_filename, result, counter, new_filename)
+        destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
-        if check_outputdir_status(destination_directory) is True:
+        if check_outputdir_status(destination_dir) is True:
             with open(destination_path, mode='w', encoding='utf-8') as outputfile:
                 outputfile.write(result)
 
