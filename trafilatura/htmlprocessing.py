@@ -7,18 +7,16 @@ Functions to process nodes in HTML code.
 ## under GNU GPL v3 license
 
 import logging
-
 from collections import defaultdict
 from copy import deepcopy
 
-from courlan.urlutils import get_base_url, fix_relative_urls
+from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import strip_tags
 from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim, uniquify_list
-
 
 LOGGER = logging.getLogger(__name__)
 

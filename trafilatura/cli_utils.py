@@ -13,27 +13,26 @@ import re
 import string
 import sys
 import traceback
-
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from concurrent.futures import (ProcessPoolExecutor, ThreadPoolExecutor,
+                                as_completed)
 from functools import partial
 from os import makedirs, path, walk
 
-from courlan import extract_domain, get_base_url, UrlStore  # validate_url
+from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
 from trafilatura import spider
 
 from .core import extract, html2txt
-from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .downloads import (add_to_compressed_dict, buffered_downloads,
+                        load_download_buffer)
 from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .meta import reset_caches
-from .utils import uniquify_list, URL_BLACKLIST_REGEX
-from .settings import (use_config, FILENAME_LEN,
-                       FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
+from .settings import (FILE_PROCESSING_CORES, FILENAME_LEN,
+                       MAX_FILES_PER_DIRECTORY, use_config)
 from .sitemaps import sitemap_search
-from .utils import make_chunks
-
+from .utils import URL_BLACKLIST_REGEX, make_chunks, uniquify_list
 
 LOGGER = logging.getLogger(__name__)
 

@@ -5,10 +5,10 @@ Functions dedicated to website navigation and crawling/spidering.
 
 import logging
 import urllib.robotparser
-
 from time import sleep
 
-from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable, UrlStore
+from courlan import (UrlStore, extract_links, fix_relative_urls, get_hostinfo,
+                     is_navigation_page, is_not_crawlable)
 
 from .core import baseline
 from .downloads import fetch_url

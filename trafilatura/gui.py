@@ -8,10 +8,10 @@ This script implements a basic guided user interface (GUI).
 import sys
 
 from gooey import Gooey, GooeyParser
+
 from . import __version__
 from .cli import process_args
 from .settings import DOWNLOAD_THREADS
-
 
 DESCRIPTION = 'Web scraping tool for text discovery and extraction'
 
@@ -180,4 +180,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

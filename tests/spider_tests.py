@@ -5,11 +5,9 @@ Unit tests for the spidering part of the trafilatura library.
 
 import logging
 import sys
-
 from collections import deque
 
 import pytest
-
 from courlan import UrlStore
 
 from trafilatura import spider

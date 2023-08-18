@@ -5,6 +5,7 @@ https://github.com/adbar/trafilatura
 
 import re
 from pathlib import Path
+
 from setuptools import setup
 
 

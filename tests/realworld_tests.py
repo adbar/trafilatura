@@ -10,6 +10,7 @@ import os
 import sys
 
 import pytest
+
 # https://docs.pytest.org/en/latest/
 
 
@@ -20,7 +21,6 @@ except ImportError:
 
 from trafilatura import extract
 from trafilatura.metadata import extract_metadata
-
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -394,7 +394,7 @@ def test_extract(xmloutput):
     assert 'Brazil went dark.' in result and 'the highest number of deforestation warnings.”' in result and 'Tagged:' not in result and 'to the VICE newsletter.' not in result and 'Watch this next' not in result
 
     result = load_mock_page('https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html', xmloutput)
-    assert 'Die Ökobilanz von Elektroautos' in result and 'Nur die Folie bleibt zurück' in result and 'Forum zum Thema:' not in result  # and 'Highlights aus dem Heft:' not in result and 'TR 7/2019' not in result 
+    assert 'Die Ökobilanz von Elektroautos' in result and 'Nur die Folie bleibt zurück' in result and 'Forum zum Thema:' not in result  # and 'Highlights aus dem Heft:' not in result and 'TR 7/2019' not in result
 
     result = load_mock_page('https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact', xmloutput)
     assert 'Normally, video calls tend to' in result and 'across both the eyes and nose.' in result and 'Added ARKit explanation and tweet.' in result and 'Singapore’s public health program' not in result and 'Command Line delivers daily updates' not in result
@@ -708,7 +708,7 @@ def test_pages():
     url = "https://www.mercurynews.com/2023/01/16/letters-1119/"
     metadata = extract_metadata(load_mock_page(url, xml_flag=True))
 
-    
+
 if __name__ == '__main__':
     test_extract(False)
     test_extract(True)

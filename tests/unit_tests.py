@@ -8,7 +8,6 @@ import os
 import sys
 
 import pytest
-
 from lxml import etree, html
 
 try:
@@ -24,17 +23,17 @@ except ImportError:
     LANGID_FLAG = False
 
 import trafilatura.htmlprocessing
-
-from trafilatura import bare_extraction, baseline, extract, html2txt, process_record
-
-from trafilatura.core import Extractor, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, sanitize_tree, trim
+from trafilatura import (bare_extraction, baseline, extract, html2txt,
+                         process_record, utils, xml)
+from trafilatura.core import (Extractor, handle_formatting, handle_image,
+                              handle_lists, handle_paragraphs, handle_quotes,
+                              handle_table, handle_textelem, sanitize_tree,
+                              trim)
 from trafilatura.external import try_justext
 from trafilatura.filters import textfilter
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
-
-from trafilatura import utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 

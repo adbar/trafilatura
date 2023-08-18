@@ -27,7 +27,6 @@ from lxml.html import fragment_fromstring
 
 from .utils import trim
 
-
 LOGGER = logging.getLogger(__name__)
 
 

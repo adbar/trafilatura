@@ -7,6 +7,7 @@ import os
 import sys
 
 from courlan import get_hostinfo
+
 from trafilatura import sitemaps
 from trafilatura.utils import decode_response, is_similar_domain
 

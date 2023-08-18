@@ -29,12 +29,9 @@ try:
 except ImportError:
     cchardet_detect = None
 from charset_normalizer import from_bytes
-
 from lxml.html import HtmlElement, HTMLParser, fromstring
-
 # response types
 from urllib3.response import HTTPResponse
-
 
 LOGGER = logging.getLogger(__name__)
 

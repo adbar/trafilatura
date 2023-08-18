@@ -17,7 +17,6 @@ from .lru import LRUCache
 from .settings import LRU_SIZE
 from .utils import trim
 
-
 LOGGER = logging.getLogger(__name__)
 
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)

@@ -6,7 +6,6 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-
 from collections import namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
@@ -26,14 +25,13 @@ except ImportError:
     pycurl = None
 
 import urllib3
-
 from courlan import UrlStore
 from courlan.network import redirection_test
 
 from . import __version__
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, make_chunks, uniquify_list, URL_BLACKLIST_REGEX
-
+from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
+                    uniquify_list)
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
