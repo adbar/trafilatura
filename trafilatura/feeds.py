@@ -5,18 +5,17 @@ Examining feeds and extracting links for further processing.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-import logging
 import json
+import logging
 import re
-
 from itertools import islice
 
-from courlan import check_url, clean_url, filter_urls, fix_relative_urls, get_hostinfo, validate_url
+from courlan import (check_url, clean_url, filter_urls, fix_relative_urls,
+                     get_hostinfo, validate_url)
 
 from .downloads import fetch_url
 from .settings import MAX_LINKS
 from .utils import is_similar_domain, load_html
-
 
 LOGGER = logging.getLogger(__name__)
 

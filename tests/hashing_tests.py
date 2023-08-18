@@ -1,7 +1,7 @@
 
 
-from trafilatura.hashing import Simhash, content_fingerprint, generate_hash_filename
-
+from trafilatura.hashing import (Simhash, content_fingerprint,
+                                 generate_hash_filename)
 
 
 def test_hashes():

@@ -8,6 +8,7 @@ import re
 import time
 
 from lxml import html  # etree
+
 #from lxml.html.clean import Cleaner
 #HTML_CLEANER = Cleaner()
 
@@ -19,7 +20,6 @@ except ImportError:
 import html2text
 import html_text
 import justext
-
 from boilerpy3 import extractors
 from bs4 import BeautifulSoup
 #from dragnet import extract_content #, extract_content_and_comments
@@ -31,19 +31,19 @@ from newspaper import fulltext
 from newsplease import NewsPlease
 from readabilipy import simple_json_from_html_string
 from readability import Document
-
-from resiliparse.parse.encoding import detect_encoding, bytes_to_str
-from resiliparse.parse.html import HTMLTree
 from resiliparse.extract.html2text import extract_plain_text
+from resiliparse.parse.encoding import bytes_to_str, detect_encoding
+from resiliparse.parse.html import HTMLTree
 
 from trafilatura import extract
+
 try:
     from trafilatura.core import baseline
 except ImportError:
     baseline = None
-from trafilatura.utils import sanitize
-
 from evaldata import EVAL_PAGES
+
+from trafilatura.utils import sanitize
 
 ## TODO: time, best of 3
 
@@ -648,32 +648,32 @@ except ZeroDivisionError:
 print('html2text')
 print(html2text_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
-print("time diff.: %.2f" % (html2text_result['time'] / baseline_result['time']))
+print(f"time diff.: {html2text_result['time'] / baseline_result['time']:.2f}")
 
 print('html_text')
 print(html_text_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html_text_result)))
-print("time diff.: %.2f" % (html_text_result['time'] / baseline_result['time']))
+print(f"time diff.: {html_text_result['time'] / baseline_result['time']:.2f}")
 
 print('inscriptis')
 print(inscriptis_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
-print("time diff.: %.2f" % (inscriptis_result['time'] / baseline_result['time']))
+print(f"time diff.: {inscriptis_result['time'] / baseline_result['time']:.2f}")
 
 print('justext')
 print(justext_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(justext_result)))
-print("time diff.: %.2f" % (justext_result['time'] / baseline_result['time']))
+print(f"time diff.: {justext_result['time'] / baseline_result['time']:.2f}")
 
 print('goose')
 print(goose_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(goose_result)))
-print("time diff.: %.2f" % (goose_result['time'] / baseline_result['time']))
+print(f"time diff.: {goose_result['time'] / baseline_result['time']:.2f}")
 
 print('newspaper')
 print(newspaper_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
-print("time diff.: %.2f" % (newspaper_result['time'] / baseline_result['time']))
+print(f"time diff.: {newspaper_result['time'] / baseline_result['time']:.2f}")
 
 #print('dragnet')
 #print(dragnet_result)
@@ -683,7 +683,7 @@ print("time diff.: %.2f" % (newspaper_result['time'] / baseline_result['time']))
 print('boilerpipe')
 print(boilerpipe_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
-print("time diff.: %.2f" % (boilerpipe_result['time'] / baseline_result['time']))
+print(f"time diff.: {boilerpipe_result['time'] / baseline_result['time']:.2f}")
 
 #print('jparser')
 #print(jparser_result)
@@ -693,44 +693,44 @@ print("time diff.: %.2f" % (boilerpipe_result['time'] / baseline_result['time'])
 print('newsplease')
 print(newsplease_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
-print("time diff.: %.2f" % (newsplease_result['time'] / baseline_result['time']))
+print(f"time diff.: {newsplease_result['time'] / baseline_result['time']:.2f}")
 
 print('readability')
 print(readability_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
-print("time diff.: %.2f" % (readability_result['time'] / baseline_result['time']))
+print(f"time diff.: {readability_result['time'] / baseline_result['time']:.2f}")
 
 print('readabilipy')
 print(readabilipy_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
-print("time diff.: %.2f" % (readabilipy_result['time'] / baseline_result['time']))
+print(f"time diff.: {readabilipy_result['time'] / baseline_result['time']:.2f}")
 
 print('resiliparse')
 print(resiliparse_result)
-print("time diff.: %.2f" % (resiliparse_result['time'] / baseline_result['time']))
+print(f"time diff.: {resiliparse_result['time'] / baseline_result['time']:.2f}")
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(resiliparse_result)))
 
 print('bs4')
 print(bs4_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(bs4_result)))
-print("time diff.: %.2f" % (bs4_result['time'] / baseline_result['time']))
+print(f"time diff.: {bs4_result['time'] / baseline_result['time']:.2f}")
 
 print('trafilatura')
 print(trafilatura_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
-print("time diff.: %.2f" % (trafilatura_result['time'] / baseline_result['time']))
+print(f"time diff.: {trafilatura_result['time'] / baseline_result['time']:.2f}")
 
 print('trafilatura + X')
 print(trafilatura_fallback_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_fallback_result)))
-print("time diff.: %.2f" % (trafilatura_fallback_result['time'] / baseline_result['time']))
+print(f"time diff.: {trafilatura_fallback_result['time'] / baseline_result['time']:.2f}")
 
 print('trafilatura precision')
 print(trafilatura_precision)
-print("time diff.: %.2f" % (trafilatura_precision['time'] / baseline_result['time']))
+print(f"time diff.: {trafilatura_precision['time'] / baseline_result['time']:.2f}")
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_precision)))
 
 print('trafilatura recall')
 print(trafilatura_recall)
-print("time diff.: %.2f" % (trafilatura_recall['time'] / baseline_result['time']))
+print(f"time diff.: {trafilatura_recall['time'] / baseline_result['time']:.2f}")
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_recall)))

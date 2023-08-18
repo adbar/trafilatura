@@ -5,7 +5,6 @@ For reference, here is the list of all JSON-LD types: https://schema.org/docs/fu
 
 import json
 import re
-
 from html import unescape
 
 from .utils import normalize_authors, trim
