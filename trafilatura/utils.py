@@ -267,12 +267,11 @@ def line_processing(line):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
+    # unique code spaces
+    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0').replace(';cs;', ' ')
     # remove newlines that are not related to punctuation or markup
     # remove non-printable chars and normalize space characters (including Unicode spaces)
     line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
-    # replace unique code spaces with regular space
-    line = line.replace(CODE_SPACE, ' ')
     # prune empty lines
     if all(map(str.isspace, line)):
         line = None

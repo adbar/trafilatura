@@ -1090,10 +1090,10 @@ for name and age:</p>
 </div>'''
     testresult = extract(w3schools, config=ZERO_CONFIG, output_format='xml')
     expected = '''<code>
-class Person:<lb/>  def __init__(self, name, age):<lb/>  
-  self.name = name<lb/>  self.age = age<lb/><lb/>p1 = Person("John", 
-  36)<lb/>
-  <lb/>print(p1.name)<lb/>print(p1.age) </code>'''
+class Person:<lb/> def __init__(self, name, age):<lb/>
+self.name = name<lb/> self.age = age<lb/><lb/>p1 = Person("John",
+36)<lb/>
+<lb/>print(p1.name)<lb/>print(p1.age) </code>'''
     assert expected in testresult and 'quote' not in testresult
     pip = '''<div><p>Code:</p>
     <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
@@ -1109,7 +1109,7 @@ from openai_function_call import openai_function</code>'''
     assert expected in testresult and 'quote' not in testresult
     medium_ssr = '''<div><p>Code:</p>
     <pre class="lw lx ly lz ma nq nr ns bo nt ba bj"><span id="fe48" class="nu mo ev nr b bf nv nw l nx ny">import openai_function<br><br>@openai_functiondef sum(a:int, b:int):<br/>  &quot;&quot;&quot;Sum description adds a + b&quot;&quot;&quot;</span></pre>'''
-    expected = '''<code>import openai_function<lb/><lb/>@openai_functiondef sum(a:int, b:int):<lb/>  """Sum description adds a + b"""</code>'''
+    expected = '<code>import openai_function<lb/><lb/>@openai_functiondef sum(a:int, b:int):<lb/> """Sum description adds a + b"""</code>'
     testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format='xml')
     assert expected in testresult and 'quote' not in testresult
     code_el = '''<div><p>Code:</p>

@@ -309,7 +309,11 @@ def convert_tags(tree, options, url=None):
                 elem.tag = 'quote'
         # blockquote, q → quote
         elif elem.tag in ('blockquote', 'q'):
-            elem.tag = 'quote'
+            # find hljs elements to detect if it's code
+            if elem.xpath(".//span[starts-with(@class,'hljs')]"):
+                 elem.tag = 'code'
+            else:
+                 elem.tag = 'quote'
         # del | s | strike → <del rend="overstrike">
         elif elem.tag in ('del', 's', 'strike'):
             elem.tag = 'del'
