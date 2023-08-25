@@ -827,8 +827,8 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
     else:
         returnstring = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting)
-            returnstring = returnstring.strip()
+            comments_text = xmltotxt(document.commentsbody, include_formatting)
+            returnstring = f"{returnstring}\n{comments_text}".strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
 

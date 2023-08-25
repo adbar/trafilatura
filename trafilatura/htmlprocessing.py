@@ -43,6 +43,21 @@ HTML_CLEANER = Cleaner(
 )
 
 
+REND_TAG_MAPPING = {
+    'em': '#i',
+    'i': '#i',
+    'b': '#b',
+    'strong': '#b',
+    'u': '#u',
+    'kbd': '#t',
+    'samp': '#t',
+    'tt': '#t',
+    'var': '#t',
+    'sub': '#sub',
+    'sup': '#sup'
+}
+
+
 def tree_cleaning(tree, options):
     '''Prune the tree by discarding unwanted elements'''
     # determine cleaning strategy, use lists to keep it deterministic
@@ -117,19 +132,16 @@ def collect_link_info(links_xpath, favor_precision=False):
     # init
     shortelems, mylist = 0, []
     # longer strings impact recall in favor of precision
-    if favor_precision is False:
-        threshold = 10
-    else:
-        threshold = 50
+    threshold = 10 if not favor_precision else 50
     # examine the elements
     for subelem in links_xpath:
         subelemtext = trim(subelem.text_content())
-        if not subelemtext:
-            continue
-        mylist.append(subelemtext)
-    lengths = [len(text) for text in mylist]
-    shortelems = len([l for l in lengths if l < threshold])
-    return sum(lengths), len(mylist), shortelems, mylist
+        if subelemtext:
+            mylist.append(subelemtext)
+            if len(subelemtext) < threshold:
+                shortelems += 1
+    lengths = sum(len(text) for text in mylist)
+    return lengths, len(mylist), shortelems, mylist
 
 
 def link_density_test(element, text, favor_precision=False):
@@ -222,10 +234,9 @@ def convert_tags(tree, options, url=None):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # delete links for faster processing
     if options.links is False:
+        xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
         if options.tables is True:
-            xpath_expr = './/div//a|.//table//a|.//ul//a'  # .//p//a ?
-        else:
-            xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
+            xpath_expr += '|.//table//a'
         # necessary for further detection
         for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
@@ -246,32 +257,12 @@ def convert_tags(tree, options, url=None):
                 elem.set('target', target)
     # include_formatting
     if options.formatting is False:
-        strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
+        strip_tags(tree, *REND_TAG_MAPPING)
     else:
-        for elem in tree.iter('em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup'):
-            # italics
-            if elem.tag in ('em', 'i'):
-                elem.tag = 'hi'
-                elem.set('rend', '#i')
-            # bold font
-            elif elem.tag in ('b', 'strong'):
-                elem.tag = 'hi'
-                elem.set('rend', '#b')
-            # u (very rare)
-            elif elem.tag == 'u':
-                elem.tag = 'hi'
-                elem.set('rend', '#u')
-            # tt (very rare)
-            elif elem.tag in ('kbd', 'samp', 'tt', 'var'):
-                elem.tag = 'hi'
-                elem.set('rend', '#t')
-            # sub and sup (very rare)
-            elif elem.tag == 'sub':
-                elem.tag = 'hi'
-                elem.set('rend', '#sub')
-            elif elem.tag == 'sup':
-                elem.tag = 'hi'
-                elem.set('rend', '#sup')
+        for elem in tree.iter(list(REND_TAG_MAPPING)):
+            attribute = REND_TAG_MAPPING[elem.tag]
+            elem.tag = 'hi'
+            elem.set('rend', attribute)
     # iterate over all concerned elements
     for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
         # ul/ol → list / li → item
@@ -282,7 +273,7 @@ def convert_tags(tree, options, url=None):
             for subelem in elem.iter('dd', 'dt', 'li'):
                 # keep track of dd/dt items
                 if subelem.tag in ('dd', 'dt'):
-                    subelem.set('rend', subelem.tag + '-' + str(i))
+                    subelem.set('rend', f"{subelem.tag}-{i}")
                     # increment counter after <dd> in description list
                     if subelem.tag == 'dd':
                         i += 1
@@ -330,10 +321,9 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
     if element.text is None:
         # try the tail
         # LOGGER.debug('using tail for element %s', element.tag)
-        element.text = element.tail
-        element.tail = ''
+        element.text, element.tail = element.tail, ''
         # handle differently for br/lb
-        if comments_fix is True and element.tag == 'lb':
+        if comments_fix and element.tag == 'lb':
             element.tag = 'p'
     # trim
     if preserve_spaces is False:
@@ -341,9 +331,8 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
         if element.tail:
             element.tail = trim(element.tail)
     # filter content
-    if not element.text:  # or not re.search(r'\w', element.text):  # text_content()?
-        return None
-    if textfilter(element) is True:
+    # or not re.search(r'\w', element.text):  # text_content()?
+    if not element.text or textfilter(element) is True:  
         return None
     if options.dedup and duplicate_test(element, options.config) is True:
         return None
@@ -360,8 +349,7 @@ def process_node(element, options):
     element.text, element.tail = trim(element.text), trim(element.tail)
     # adapt content string
     if element.tag != 'lb' and not element.text and element.tail:
-        element.text = element.tail
-        element.tail = None
+        element.text, element.tail = element.tail, None
     # content checks
     if element.text or element.tail:
         if textfilter(element) is True:

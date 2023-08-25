@@ -27,29 +27,45 @@ TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head',
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
+TEI_REMOVE_TAIL = {"ab", "p"}
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+NEWLINE_ELEMS = {
+    'cell': '|',
+    'item': '\n- ',
+    **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
+}
 SPECIAL_FORMATTING = {'del', 'head', 'hi'}
 WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
+META_ATTRIBUTES = [
+    'sitename', 'title', 'author', 'date', 'url', 'hostname',
+    'description', 'categories', 'tags', 'license', 'id',
+    'fingerprint', 'language'
+]
+
+HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
+
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
     outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
-    outputdict['source'] = outputdict.pop('url')
-    outputdict['source-hostname'] = outputdict.pop('sitename')
-    outputdict['excerpt'] = outputdict.pop('description')
-    outputdict['categories'] = ';'.join(outputdict['categories'])
-    outputdict['tags'] = ';'.join(outputdict['tags'])
-    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False)
-    if outputdict['commentsbody'] is not None:
-        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False)
-    else:
-        del outputdict['commentsbody']
+    outputdict.update({
+        'source': outputdict.pop('url'),
+        'source-hostname': outputdict.pop('sitename'),
+        'excerpt': outputdict.pop('description'),
+        'categories': ';'.join(outputdict.pop('categories')),
+        'tags': ';'.join(outputdict.pop('tags')),
+        'text': xmltotxt(outputdict.pop('body'), include_formatting=False),
+    })
+
+    commentsbody = outputdict.pop('commentsbody')
+    if commentsbody is not None:
+        outputdict['comments'] = xmltotxt(commentsbody, include_formatting=False)
+
     return json_dumps(outputdict, ensure_ascii=False)
 
 
@@ -112,34 +128,10 @@ def control_xml_output(output_tree, output_format, tei_validation, docmeta):
 
 def add_xml_meta(output, docmeta):
     '''Add extracted metadata to the XML output tree'''
-    # metadata
-    if docmeta:
-        if docmeta.sitename is not None:
-            output.set('sitename', docmeta.sitename)
-        if docmeta.title is not None:
-            output.set('title', docmeta.title)
-        if docmeta.author is not None:
-            output.set('author', docmeta.author)
-        if docmeta.date is not None:
-            output.set('date', docmeta.date)
-        if docmeta.url is not None:
-            output.set('source', docmeta.url)
-        if docmeta.hostname is not None:
-            output.set('hostname', docmeta.hostname)
-        if docmeta.description is not None:
-            output.set('excerpt', docmeta.description)
-        if docmeta.categories is not None:
-            output.set('categories', ';'.join(docmeta.categories))
-        if docmeta.tags is not None:
-            output.set('tags', ';'.join(docmeta.tags))
-        if docmeta.license is not None:
-            output.set('license', docmeta.license)
-        if docmeta.id is not None:
-            output.set('id', docmeta.id)
-        if docmeta.fingerprint is not None:
-            output.set('fingerprint', docmeta.fingerprint)
-        if docmeta.language is not None:
-            output.set('language', docmeta.language)
+    for attribute in META_ATTRIBUTES:
+        value = getattr(docmeta, attribute, None)
+        if value is not None:
+            output.set(attribute, value if isinstance(value, str) else ';'.join(value))
     return output
 
 
@@ -168,13 +160,13 @@ def check_tei(xmldoc, url):
             _move_element_one_level_up(elem)
     # convert <lb/> when child of <div> to <p>
     for element in xmldoc.findall(".//text/body//div/lb"):
-        if element.tail is not None and element.tail.strip():
+        if element.tail and element.tail.strip():
             element.tag = 'p'
             element.text = element.tail
             element.tail = None
     # look for elements that are not valid
     for element in xmldoc.findall('.//text/body//*'):
-        if element.tag in {"ab", "p"} and element.tail and element.tail.strip():
+        if element.tag in TEI_REMOVE_TAIL and element.tail and element.tail.strip():
             _handle_unwanted_tails(element)
         # check elements
         if element.tag not in TEI_VALID_TAGS:
@@ -210,7 +202,6 @@ def validate_tei(xmldoc):  # , filename=""
 
 def replace_element_text(element, include_formatting):
     '''Determine element text based on text and tail'''
-    full_text = ''
     # handle formatting: convert to markdown
     if include_formatting is True and element.text is not None:
         if element.tag in ('del', 'head'):
@@ -219,53 +210,45 @@ def replace_element_text(element, include_formatting):
                     number = int(element.get('rend')[1])
                 except (TypeError, ValueError):
                     number = 2
-                element.text = ''.join(['#'*number, ' ', element.text])
+                element.text = f'{"#" * number} {element.text}'
             elif element.tag == 'del':
-                element.text = ''.join(['~~', element.text, '~~'])
+                element.text = f'~~{element.text}~~'
         elif element.tag == 'hi':
-            if element.get('rend') == '#b':
-                element.text = ''.join(['**', element.text, '**'])
-            elif element.get('rend') == '#i':
-                element.text = ''.join(['*', element.text, '*'])
-            elif element.get('rend') == '#u':
-                element.text = ''.join(['__', element.text, '__'])
-            elif element.get('rend') == '#t':
-                element.text = ''.join(['`', element.text, '`'])
+            rend = element.get('rend')
+            if rend in HI_FORMATTING:
+                element.text = f'{HI_FORMATTING[rend]}{element.text}{HI_FORMATTING[rend]}'
     # handle links
     if element.tag == 'ref':
         if element.text is not None:
+            link_text = f'[{element.text}]'
             if element.get('target') is not None:
-                element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
+                element.text = f"{link_text}({element.get('target')})"
             else:
                 LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-                element.text = ''.join(['[', element.text, ']'])
+                element.text = link_text
         else:
             LOGGER.warning('empty link: %s %s', element.text, element.attrib)
     # handle text
-    if element.text is not None and element.tail is not None:
-        full_text = ''.join([element.text, element.tail])
-    elif element.text is not None:
-        full_text = element.text
-    elif element.tail is not None:
-        full_text = element.tail
-    return full_text
+    return (element.text or '') + (element.tail or '')
 
 
 def merge_with_parent(element, include_formatting=False):
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
-    if parent is None:
+    if not parent:
         return
+
     full_text = replace_element_text(element, include_formatting)
+
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
         if previous.tail is not None:
-            previous.tail = ' '.join([previous.tail, full_text])
+            previous.tail = f'{previous.tail} {full_text}'
         else:
             previous.tail = full_text
     elif parent.text is not None:
-        parent.text = ' '.join([parent.text, full_text])
+        parent.text = f'{parent.text} {full_text}'
     else:
         parent.text = full_text
     parent.remove(element)
@@ -280,10 +263,8 @@ def xmltotxt(xmloutput, include_formatting):
         if element.text is None and element.tail is None:
             if element.tag == 'graphic':
                 # add source, default to ''
-                text = element.get('title', '')
-                if element.get('alt') is not None:
-                    text += ' ' + element.get('alt')
-                returnlist.extend(['![', text, ']', '(', element.get('src', ''), ')'])
+                text = f'{element.get("title", "")} {element.get("alt", "")}'
+                returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
             # newlines for textless elements
             if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
@@ -292,12 +273,7 @@ def xmltotxt(xmloutput, include_formatting):
         textelement = replace_element_text(element, include_formatting)
         # common elements
         if element.tag in NEWLINE_ELEMS:
-            returnlist.extend(['\n', textelement, '\n'])
-        # particular cases
-        elif element.tag == 'item':
-            returnlist.extend(['\n- ', textelement, '\n'])
-        elif element.tag == 'cell':
-            returnlist.extend(['|', textelement, '|'])
+            returnlist.extend([NEWLINE_ELEMS[element.tag], textelement, '\n'])
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
@@ -330,7 +306,7 @@ def write_teitree(docmeta):
 def _define_publisher_string(docmeta):
     '''Construct a publisher string to include in TEI header'''
     if docmeta.hostname and docmeta.sitename:
-        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+        publisherstring = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
     elif docmeta.hostname:
         publisherstring = docmeta.hostname
     elif docmeta.sitename:
@@ -425,19 +401,20 @@ def write_fullheader(teidoc, docmeta):
 
 
 def _handle_text_content_of_div_nodes(element):
-    if element.text is not None and element.text.strip():
+    if element.text and element.text.strip():
         if element.getchildren() and element[0].tag == 'p':
             p_text = element[0].text or ""
-            element[0].text = ' '.join([element.text, p_text]).strip()
+            element[0].text = f'{element.text} {p_text}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.text
             element.insert(0, new_child)
         element.text = None
-    if element.tail is not None and element.tail.strip():
+
+    if element.tail and element.tail.strip():
         if element.getchildren() and element[-1].tag == 'p':
             p_text = element[-1].text or ""
-            element[-1].text = ' '.join([p_text, element.tail]).strip()
+            element[-1].text = f'{p_text} {element.tail}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.tail
@@ -505,9 +482,10 @@ def _wrap_unwanted_siblings_of_div(div_element):
 def _move_element_one_level_up(element):
     parent = element.getparent()
     new_elem = Element("p")
-    for sibling in element.itersiblings():
-        new_elem.append(sibling)
+    new_elem.extend(sibling for sibling in element.itersiblings())
+
     parent.addnext(element)
+
     if element.tail is not None and element.tail.strip():
         new_elem.text = element.tail.strip()
         element.tail = None

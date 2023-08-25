@@ -448,7 +448,7 @@ def test_crawling():
 
 def test_probing():
     "Test webpage probing functions."
-    url = 'https://httpbun.org/html'
+    url = 'https://example.org/'
     testargs = ['', '--probe', url, '--target-language', 'de']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)

@@ -61,21 +61,15 @@ def check_html_lang(tree, target_language, strict=False):
     '''Check HTML meta-elements for language information and split
        the result in case there are several languages'''
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-    target_elements = tree.findall('.//meta[@http-equiv="content-language"][@content]')
-    if target_elements:
-        for elem in target_elements:
-            if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
-                return True
-        LOGGER.debug('HTML content-language failed')
-        return False
-    # locale
-    target_elements = tree.findall('.//meta[@property="og:locale"][@content]')
-    if target_elements:
-        for elem in target_elements:
-            if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
-                return True
-        LOGGER.debug('HTML og:locale failed')
-        return False
+    target_attrs = ['http-equiv="content-language"', 'property="og:locale"']
+    for attr in target_attrs:
+        target_elements = tree.findall(f'.//meta[@{attr}][@content]')
+        if target_elements:
+            for elem in target_elements:
+                if target_language in RE_HTML_LANG.split(elem.get('content', '').lower()):
+                    return True
+            LOGGER.debug('%s failed', attr)
+            return False
     # HTML lang attribute: sometimes a wrong indication
     if strict is True:
         target_elements = tree.xpath('//html[@lang]')
@@ -122,19 +116,13 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
 
 def textfilter(element):
     '''Filter out unwanted text'''
-    # print('#', element.text)
-    if element.text is None and element.tail is not None:
-        testtext = element.tail
-    else:
-        testtext = element.text
-    if text_chars_test(testtext) is False:
-        return True
+    testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5
-    return any(RE_FILTER.match(line) for line in testtext.splitlines())
+    return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
 
 
 def text_chars_test(string):
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
-    return string not in (None, '') and not string.isspace()
+    return bool(string) and not string.isspace()
