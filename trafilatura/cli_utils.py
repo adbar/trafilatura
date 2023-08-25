@@ -42,6 +42,8 @@ CHAR_CLASS = string.ascii_letters + string.digits
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
 
+INPUT_URLS_ARGS = ['URL', 'crawl', 'explore', 'probe', 'feed', 'sitemap']
+
 EXTENSION_MAPPING = {
     'csv': '.csv',
     'json': '.json',
@@ -61,19 +63,13 @@ def load_input_urls(args):
                 input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit('ERROR: system, file type or buffer encoding')
-    elif args.URL:
-        input_urls = [args.URL]
-    elif args.crawl:
-        input_urls = [args.crawl]
-    elif args.explore:
-        input_urls = [args.explore]
-    elif args.probe:
-        input_urls = [args.probe]
-    elif args.feed:
-        input_urls = [args.feed]
-    elif args.sitemap:
-        input_urls = [args.sitemap]
     else:
+        for arg in INPUT_URLS_ARGS:
+            if getattr(args, arg):
+                input_urls = [getattr(args, arg)]
+                break
+
+    if not input_urls:
         LOGGER.warning('No input provided')
 
     # uniq URLs while preserving order (important)
@@ -82,12 +78,9 @@ def load_input_urls(args):
 
 def load_blacklist(filename):
     '''Read list of unwanted URLs'''
-    blacklist = set()
-    with open(filename, mode='r', encoding='utf-8') as inputfh:
-        for line in inputfh:
-            url = line.strip()
-            # if validate_url(url)[0] is True:
-            blacklist.add(URL_BLACKLIST_REGEX.sub('', url))
+    with open(filename, 'r', encoding='utf-8') as inputfh:
+        # if validate_url(url)[0] is True:
+        blacklist = {URL_BLACKLIST_REGEX.sub('', line.strip()) for line in inputfh}
     return blacklist
 
 
@@ -270,8 +263,8 @@ def cli_discovery(args):
 
 def build_exploration_dict(url_store, input_urls, args):
     "Find domains for which nothing has been found and add info to the crawl dict."
-    input_domains = set(extract_domain(u) for u in input_urls)
-    known_domains = set(extract_domain(u) for u in url_store.get_known_domains())
+    input_domains = {extract_domain(u) for u in input_urls}
+    known_domains = {extract_domain(u) for u in url_store.get_known_domains()}
     still_to_crawl = input_domains - known_domains
     new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
     control_dict = add_to_compressed_dict(

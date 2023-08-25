@@ -206,28 +206,21 @@ def is_live_page(url):
 
 def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False, verbose=False):
     '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
-    # init
     if url_store is None:
         url_store = UrlStore(
                         compressed=compression,
                         strict=False,
                         verbose=verbose
                     )
-    # deduplicate while keeping order
+
     inputlist = uniquify_list(inputlist)
-    # filter
+
     if blacklist:
         inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub('', u) not in blacklist]
+
     if url_filter:
-        filtered_list = []
-        while inputlist:
-            u = inputlist.pop()
-            for f in url_filter:
-                if f in u:
-                    filtered_list.append(u)
-                    break
-        inputlist = filtered_list
-    # validate and store
+        inputlist = [u for u in inputlist if any(f in u for f in url_filter)]
+
     url_store.add_urls(inputlist)
     return url_store
 
