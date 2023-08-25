@@ -9,16 +9,14 @@ import argparse
 import logging
 import sys
 import warnings
-
 from platform import python_version
 
 from . import __version__
-from .cli_utils import (load_blacklist, load_input_dict,
-                        cli_crawler, cli_discovery, probe_homepage,
-                        file_processing_pipeline, url_processing_pipeline,
-                        examine, write_result)
+from .cli_utils import (cli_crawler, cli_discovery, examine,
+                        file_processing_pipeline, load_blacklist,
+                        load_input_dict, probe_homepage,
+                        url_processing_pipeline, write_result)
 from .settings import DOWNLOAD_THREADS
-
 
 # fix output encoding on some systems
 try:

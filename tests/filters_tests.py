@@ -13,16 +13,14 @@ except ImportError:
 
 from lxml import etree, html
 
-from trafilatura import extract
-
 import trafilatura.filters
-
+from trafilatura import extract
 from trafilatura.core import Extractor
-from trafilatura.filters import check_html_lang, duplicate_test, language_filter
+from trafilatura.filters import (check_html_lang, duplicate_test,
+                                 language_filter)
 from trafilatura.lru import LRUCache
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG
-
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'

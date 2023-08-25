@@ -18,19 +18,24 @@ except ImportError:
     brotli = None
 
 import gzip
-
 from time import sleep
 from unittest.mock import Mock, patch
 
 from courlan import UrlStore
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
+from trafilatura.cli_utils import (download_queue_processing,
+                                   url_processing_pipeline)
 from trafilatura.core import extract
-from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, is_live_page, load_download_buffer, _determine_headers, _handle_response, _parse_config, _pycurl_is_live_page, _send_request, _send_pycurl_request, _urllib3_is_live_page
+from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
+                                   _determine_headers, _handle_response,
+                                   _parse_config, _pycurl_is_live_page,
+                                   _send_pycurl_request, _send_request,
+                                   _urllib3_is_live_page,
+                                   add_to_compressed_dict, fetch_url,
+                                   is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
-
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 

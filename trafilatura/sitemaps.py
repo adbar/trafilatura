@@ -8,17 +8,21 @@ Deriving link info from sitemaps.
 
 import logging
 import re
-# import urllib.robotparser # Python >= 3.8
-# ROBOT_PARSER = urllib.robotparser.RobotFileParser()
-
 from itertools import islice
 from typing import List, Optional
 
-from courlan import clean_url, extract_domain, filter_urls, fix_relative_urls, get_hostinfo, lang_filter
+from courlan import (clean_url, extract_domain, filter_urls, fix_relative_urls,
+                     get_hostinfo, lang_filter)
 
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
 from .utils import is_similar_domain
+
+# import urllib.robotparser # Python >= 3.8
+# ROBOT_PARSER = urllib.robotparser.RobotFileParser()
+
+
+
 
 
 LOGGER = logging.getLogger(__name__)

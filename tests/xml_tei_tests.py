@@ -1,7 +1,7 @@
 """
 Test for transformation to TEI.
 """
-from lxml.etree import Element, fromstring, tostring, XMLParser
+from lxml.etree import Element, XMLParser, fromstring, tostring
 
 from trafilatura.metadata import Document
 from trafilatura.xml import check_tei, write_fullheader

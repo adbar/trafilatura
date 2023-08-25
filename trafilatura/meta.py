@@ -10,7 +10,8 @@ from justext.core import define_stoplist
 
 from .filters import LRU_TEST
 from .hashing import Simhash
-from .utils import is_similar_domain, line_processing, return_printables_and_spaces, trim
+from .utils import (is_similar_domain, line_processing,
+                    return_printables_and_spaces, trim)
 
 
 def reset_caches() -> None:

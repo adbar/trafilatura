@@ -11,14 +11,14 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re  # import regex as re
 import warnings
-
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
 
 # own
-from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
+from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
+                       try_readability)
 from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
                       language_filter, text_chars_test)
 from .hashing import content_fingerprint
@@ -828,8 +828,8 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
     else:
         returnstring = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting)
-            returnstring = returnstring.strip()
+            comments_text = xmltotxt(document.commentsbody, include_formatting)
+            returnstring = f"{returnstring}\n{comments_text}".strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
 

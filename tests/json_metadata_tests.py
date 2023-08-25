@@ -6,8 +6,8 @@ import logging
 import sys
 
 from lxml import html
-from trafilatura.metadata import extract_metadata, extract_meta_json, Document
 
+from trafilatura.metadata import Document, extract_meta_json, extract_metadata
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -697,7 +697,7 @@ def test_json_extraction():
     assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog' and metadata.pagetype == 'liveblogposting'
 
     metadata = Document()
-    metadata = extract_meta_json(html.fromstring('''
+    metadata = extract_meta_json(html.fromstring(r'''
 <html><body>
 <script type="application/ld+json">
 {
@@ -749,7 +749,7 @@ def test_json_extraction():
 
     metadata = Document()
     metadata.sitename = "https://bbcnews.com"
-    metadata = extract_meta_json(html.fromstring('''
+    metadata = extract_meta_json(html.fromstring(r'''
     <html><body>
     <script type="application/ld+json">
     {
@@ -900,7 +900,7 @@ def test_json_extraction():
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring(
-    """
+    r"""
     <html>
     <body>
         <script type="application/ld+json">

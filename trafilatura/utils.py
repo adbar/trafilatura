@@ -29,12 +29,9 @@ try:
 except ImportError:
     cchardet_detect = None
 from charset_normalizer import from_bytes
-
 from lxml.html import HtmlElement, HTMLParser, fromstring
-
 # response types
 from urllib3.response import HTTPResponse
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -247,9 +244,7 @@ def txttocsv(text, comments, docmeta):
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
 def return_printables_and_spaces(char):
     'Return a character if it belongs to certain classes'
-    if char.isprintable() or char.isspace():
-        return char
-    return ''
+    return char if char.isprintable() or char.isspace() else ''
 
 
 def remove_control_characters(string):
