@@ -10,7 +10,7 @@ html-text==0.5.2
 inscriptis==2.3.2
 justext==3.0.0
 newspaper3k==0.2.8
-news-please==1.5.22
+news-please==1.5.35
 readabilipy==0.2.0
 readability-lxml==0.8.1
 resiliparse==0.14.3
