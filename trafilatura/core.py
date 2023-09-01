@@ -932,6 +932,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                             include_comments, include_formatting, include_links,
                             include_images, include_tables, deduplicate,
                             target_language)
+        
+        # prune all xpath expressions that user specified
+        # no backup as this is unetre full control of the user
+        if prune_xpath is not None:
+            if isinstance(prune_xpath, str):
+                prune_xpath = [prune_xpath]
+            tree = prune_unwanted_nodes(tree, prune_xpath)
 
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None
@@ -940,12 +947,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, options)
         cleaned_tree_backup = deepcopy(cleaned_tree)
-
-        # prune unwanted sections
-        if prune_xpath is not None:
-            if isinstance(prune_xpath, str):
-                prune_xpath = [prune_xpath]
-            cleaned_tree = prune_unwanted_nodes(cleaned_tree, prune_xpath)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, url or document.url)

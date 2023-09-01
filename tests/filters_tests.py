@@ -14,7 +14,7 @@ except ImportError:
 from lxml import etree, html
 
 import trafilatura.filters
-from trafilatura import extract
+from trafilatura import extract, bare_extraction
 from trafilatura.core import Extractor
 from trafilatura.filters import (check_html_lang, duplicate_test,
                                  language_filter)
@@ -149,12 +149,15 @@ def test_lrucache():
 
 def test_prune_xpath():
     '''test xpath pruning (parameter in extract and bare_extraction)'''
-    #create random html
-    my_p = '<p>abc</p>'
-    doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
+    #create example html
+    def doc():
+        my_p = '<p>abc</p>'
+        return html.fromstring('<html><body>' + my_p*50 + '</body></html>')
+
     #test xpath pruning
-    assert extract(doc, prune_xpath='//p') is None
-    assert extract(doc) is not None
+    assert extract(doc(), prune_xpath='//p') == ''
+    # sanity check
+    assert extract(doc()) != ''
 
 
 if __name__ == '__main__':
