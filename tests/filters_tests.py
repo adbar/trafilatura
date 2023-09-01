@@ -147,6 +147,17 @@ def test_lrucache():
     assert lru_test.get('tralala') == -1
 
 
+def test_prune_xpath():
+    '''test xpath pruning (parameter in extract and bare_extraction)'''
+    #create random html
+    my_p = '<p>abc</p>'
+    doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
+    #test xpath pruning
+    assert extract(doc, prune_xpath='//p') is None
+    assert extract(doc) is not None
+
+
 if __name__ == '__main__':
     test_filters()
     test_lrucache()
+    test_prune_xpath()

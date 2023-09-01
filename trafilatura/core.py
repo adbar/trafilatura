@@ -841,7 +841,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     date_extraction_params=None,
                     only_with_metadata=False, with_metadata=False,
                     max_tree_size=None, url_blacklist=None, author_blacklist=None,
-                    as_dict=True, config=DEFAULT_CONFIG):
+                    as_dict=True, prune_xpath=None,
+                    config=DEFAULT_CONFIG):
     """Internal function for text extraction returning bare Python variables.
 
     Args:
@@ -868,6 +869,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
         as_dict: Legacy option, return a dictionary instead of a class with attributes.
+        prune_xpath: Provide an XPath expression to prune the tree before extraction.
+            can be str or list of str.
         config: Directly provide a configparser configuration.
 
     Returns:
@@ -937,6 +940,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, options)
         cleaned_tree_backup = deepcopy(cleaned_tree)
+
+        # prune unwanted sections
+        if prune_xpath is not None:
+            if isinstance(prune_xpath, str):
+                prune_xpath = [prune_xpath]
+            cleaned_tree = prune_unwanted_nodes(cleaned_tree, prune_xpath)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, url or document.url)
@@ -1021,7 +1030,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             date_extraction_params=None,
             only_with_metadata=False, with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
-            settingsfile=None, config=DEFAULT_CONFIG,
+            settingsfile=None, prune_xpath=None,
+            config=DEFAULT_CONFIG,
             **kwargs):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
@@ -1051,6 +1061,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
         settingsfile: Use a configuration file to override the standard settings.
+        prune_xpath: Provide an XPath expression to prune the tree before extraction.
+            can be str or list of str.
         config: Directly provide a configparser configuration.
 
     Returns:
@@ -1087,7 +1099,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             only_with_metadata=only_with_metadata, with_metadata=with_metadata,
             max_tree_size=max_tree_size, url_blacklist=url_blacklist,
             author_blacklist=author_blacklist,
-            as_dict=False, config=config,
+            as_dict=False, prune_xpath=prune_xpath,
+            config=config,
         )
     except RuntimeError:
         LOGGER.error('Processing timeout for %s', url)
