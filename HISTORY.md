@@ -1,6 +1,29 @@
 ## History / Changelog
 
 
+### 1.6.2
+
+Extraction:
+- more lenient HTML parsing (#370)
+- improved code block support by @idoshamun (#372)
+- convertion of relative links to absolute by @feltcat (#377)
+- remove use of signal from core functions (#384)
+
+Metadata:
+- JSON-LD fix for sitenames by @felipehertzer (#383)
+
+Command-line interface:
+- more robust batch processing (#381)
+- added `--probe` option to CLI to check for extractable content (#378, #392)
+
+Maintenance:
+- simplified code (#408)
+- support for Python 3.12
+- pinned LXML version for MacOS (#393)
+- updated dependencies and parameters
+- code cleaning by @marksmayo in #406
+
+
 ### 1.6.1
 
 Extraction:
