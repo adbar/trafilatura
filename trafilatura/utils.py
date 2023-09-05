@@ -73,7 +73,6 @@ AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
-CODE_SPACE = ';cs;'
 
 
 def handle_compressed_file(filecontent):
