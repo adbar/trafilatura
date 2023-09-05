@@ -208,33 +208,33 @@ def handle_lists(element, options):
     return None
 
 
-def get_code_block_element(element):
+def is_code_block_element(element):
+    # pip
+    if element.get('lang') is not None or element.tag == 'code':
+        return True
     # GitHub
     parent = element.getparent()
     if parent is not None and 'highlight' in parent.get('class', default=''):
-        return element
+        return True
     # highlightjs
     code = element.find('code')
     if code is not None and len(element.getchildren()) == 1:
-        return code
-    return None
+        return True
+    return False
 
 
-def handle_code_blocks(element, code):
-    processed_element = Element('code')
+def handle_code_blocks(element):
+    processed_element = deepcopy(element)
     for child in element.iter('*'):
-        if child.tag == 'lb':
-            child.text = '\n'
         child.tag = 'done'
-    processed_element.text = ''.join(code.itertext())
+    processed_element.tag = 'code'
     return processed_element
 
 
 def handle_quotes(element, options):
     '''Process quotes elements'''
-    code = get_code_block_element(element)
-    if code is not None:
-        return handle_code_blocks(element, code)
+    if is_code_block_element(element):
+        return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
     for child in element.iter('*'):
@@ -254,7 +254,7 @@ def handle_other_elements(element, potential_tags, options):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # handle w3schools code
     if element.tag == 'div' and 'w3-code' in element.get('class', default=''):
-        return handle_code_blocks(element, element)
+        return handle_code_blocks(element)
     # delete unwanted
     if element.tag not in potential_tags:
         if element.tag != 'done':
@@ -801,7 +801,8 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
         for element in document.body.iter('*'):
             if element.tag != 'graphic' and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
-                if parent is not None:
+                # do not remove elements inside <code> to preserve formatting
+                if parent is not None and parent.tag != 'code':
                     parent.remove(element)
         # build output trees
         strip_double_tags(document.body)
