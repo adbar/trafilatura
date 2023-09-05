@@ -5,7 +5,7 @@
 
 Extraction:
 - more lenient HTML parsing (#370)
-- improved code block support by @idoshamun (#372)
+- improved code block support with @idoshamun (#372, #401)
 - convertion of relative links to absolute by @feltcat (#377)
 - remove use of signal from core functions (#384)
 
@@ -20,8 +20,8 @@ Maintenance:
 - simplified code (#408)
 - support for Python 3.12
 - pinned LXML version for MacOS (#393)
-- updated dependencies and parameters
-- code cleaning by @marksmayo in #406
+- updated dependencies and parameters (notably `htmldate` and `courlan`)
+- code cleaning by @marksmayo (#406)
 
 
 ### 1.6.1
