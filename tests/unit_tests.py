@@ -1060,7 +1060,6 @@ def test_code_blocks():
 <span class="hljs-keyword">highlighted</span> more <span class="hljs-keyword">code</span>
 </code></pre>
 </div>'''
-    ''
     testresult = extract(highlightjs, config=ZERO_CONFIG, output_format='xml')
     assert '<code>code\nhighlighted more code\n</code>' in testresult and 'quote' not in testresult
     github = '''<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>$ pip install PyGithub</pre><div class="zeroclipboard-container position-absolute right-0 top-0">
@@ -1090,14 +1089,32 @@ for name and age:</p>
 </div>'''
     testresult = extract(w3schools, config=ZERO_CONFIG, output_format='xml')
     expected = '''<code>
-class Person:
-def __init__(self, name, age):
-self.name = name
-self.age = age
-p1 = Person("John",
-36)
-print(p1.name)
-print(p1.age) </code>'''
+class Person:<lb/> def __init__(self, name, age):<lb/>
+self.name = name<lb/> self.age = age<lb/><lb/>p1 = Person("John",
+36)<lb/>
+<lb/>print(p1.name)<lb/>print(p1.age) </code>'''
+    assert expected in testresult and 'quote' not in testresult
+    pip = '''<div><p>Code:</p>
+    <pre lang="python3"><span class="kn">import</span> <span class="nn">openai</span>
+    <span class="kn">from</span> <span class="nn">openai_function_call</span> <span class="kn">import</span> <span class="n">openai_function</span></pre></div>'''
+    expected = '''<code>import openai
+from openai_function_call import openai_function</code>'''
+    testresult = extract(pip, config=ZERO_CONFIG, output_format='xml')
+    assert expected in testresult and 'quote' not in testresult
+    medium_js = '''<div><p>Code:</p>
+    <pre class="lw lx ly lz ma nq nr ns bo nt ba bj"><span id="fe48" class="nu mo ev nr b bf nv nw l nx ny" data-selectable-paragraph=""><span class="hljs-keyword">import</span> openai_function<br><br><span class="hljs-meta">@openai_function</span></span></pre>'''
+    expected = '''<code>import openai_function<lb/><lb/>@openai_function</code>'''
+    testresult = extract(medium_js, config=ZERO_CONFIG, output_format='xml')
+    assert expected in testresult and 'quote' not in testresult
+    medium_ssr = '''<div><p>Code:</p>
+    <pre class="lw lx ly lz ma nq nr ns bo nt ba bj"><span id="fe48" class="nu mo ev nr b bf nv nw l nx ny">import openai_function<br><br>@openai_functiondef sum(a:int, b:int):<br/>  &quot;&quot;&quot;Sum description adds a + b&quot;&quot;&quot;</span></pre>'''
+    expected = '<code>import openai_function<lb/><lb/>@openai_functiondef sum(a:int, b:int):<lb/> """Sum description adds a + b"""</code>'
+    testresult = extract(medium_ssr, config=ZERO_CONFIG, output_format='xml')
+    assert expected in testresult and 'quote' not in testresult
+    code_el = '''<div><p>Code:</p>
+    <pre><code><span>my code</span></code></pre>'''
+    expected = '''<code>my code</code>'''
+    testresult = extract(code_el, config=ZERO_CONFIG, output_format='xml')
     assert expected in testresult and 'quote' not in testresult
 
 
