@@ -31,7 +31,7 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.18; python_version >= '3.11'",  # fix for build
-        "htmldate[speed] >= 1.5.0",
+        "htmldate[speed] >= 1.5.1",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.2",
     ],
@@ -111,7 +111,7 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
-        "courlan @ git+https://github.com/adbar/courlan",  # TODO: >= 0.9.4
+        "courlan >= 0.9.4",
         "htmldate >= 1.5.1",
         "justext >= 3.0.0",
         "lxml >= 4.9.3 ; platform_system != 'Darwin'",
