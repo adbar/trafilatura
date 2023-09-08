@@ -288,9 +288,29 @@ def convert_tags(tree, options, url=None):
         elif elem.tag in ('br', 'hr'):
             elem.tag = 'lb'
         # wbr
-        # blockquote, pre, q → quote
+        # pre
+        #elif elem.tag == 'pre':
+        #    else:
+        #        elem.tag = 'quote'
+        # blockquote, q → quote
         elif elem.tag in ('blockquote', 'pre', 'q'):
-            elem.tag = 'quote'
+            code_flag = False
+            if elem.tag == 'pre':
+                # detect if there could be code inside
+                children = elem.getchildren()
+                # pre with a single span is more likely to be code
+                if len(children) == 1 and children[0].tag == 'span':
+                    code_flag = True
+            # find hljs elements to detect if it's code
+            code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
+            if code_elems:
+                code_flag = True
+                for subelem in code_elems:
+                    subelem.attrib.clear()
+            if code_flag:
+                elem.tag = 'code'
+            else:
+                elem.tag = 'quote'
         # del | s | strike → <del rend="overstrike">
         elif elem.tag in ('del', 's', 'strike'):
             elem.tag = 'del'
@@ -332,7 +352,7 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
             element.tail = trim(element.tail)
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if not element.text or textfilter(element) is True:  
+    if not element.text or textfilter(element) is True:
         return None
     if options.dedup and duplicate_test(element, options.config) is True:
         return None
