@@ -19,13 +19,13 @@ The only required argument is the input document (here a downloaded HTML file), 
     >>> downloaded = fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
 
     # output main content and comments as plain text
-    >>> result = trafilatura.extract(downloaded)
+    >>> result = extract(downloaded)
 
     # change the output format to XML (allowing for preservation of document structure)
-    >>> result = trafilatura.extract(downloaded, output_format="xml")
+    >>> result = extract(downloaded, output_format="xml")
 
     # discard potential comment and change the output to JSON
-    >>> trafilatura.extract(downloaded, output_format="json", include_comments=False)
+    >>> extract(downloaded, output_format="json", include_comments=False)
 
 The use of fallback algorithms can also be bypassed in fast mode:
 
@@ -75,4 +75,3 @@ Extraction options are also available on the command-line, they can be combined:
 
 
 For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
-
