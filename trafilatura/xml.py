@@ -83,7 +83,8 @@ def remove_empty_elements(tree):
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
             parent = element.getparent()
             # not root element or element which is naturally empty
-            if parent is not None and element.tag != "graphic":
+            # do not remove elements inside <code> to preserve formatting
+            if parent is not None and element.tag != "graphic" and parent.tag != 'code':
                 element.getparent().remove(element)
     return tree
 
