@@ -153,11 +153,27 @@ def test_prune_xpath():
     def doc():
         my_p = '<p>abc</p>'
         return html.fromstring('<html><body>' + my_p*50 + '</body></html>')
+    
+    def doc2():
+        my_p = '<p>abc</p>'
+        my_h1 = '<h1>ABC</h1>'
+        return html.fromstring('<html><body>' + my_h1 + my_p*50 + '</body></html>')
+    
+    def doc3():
+        my_p = '<p>abc</p>'
+        my_h1 = '<h1>ABC</h1>'
+        my_h2 = '<h2>42</h2>'
+        return html.fromstring('<html><body>' + my_h1 + my_h2 + my_p*50 + '</body></html>')
 
     #test xpath pruning
     assert extract(doc(), prune_xpath='//p') == ''
+    assert extract(doc2(), prune_xpath='//p') == 'ABC'
+    assert extract(doc2(), prune_xpath=['//p', '//h1']) == ''
+    assert extract(doc3(), prune_xpath=['//p', '//h1']) == '42'
     # sanity check
     assert extract(doc()) != ''
+    assert extract(doc2()) != ''
+    assert extract(doc3()) != ''
 
 
 if __name__ == '__main__':
