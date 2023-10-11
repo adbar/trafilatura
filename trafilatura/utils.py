@@ -74,6 +74,8 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
+PRESERVE_SPACE_TAGS = ['code']
+
 
 def handle_compressed_file(filecontent):
     """Tell if a file's magic number corresponds to the GZip format
@@ -257,18 +259,19 @@ def normalize_unicode(string, unicodeform='NFC'):
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line):
+def line_processing(line, preserve_space=False):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0').replace(';cs;', ' ')
-    # remove newlines that are not related to punctuation or markup
-    # remove non-printable chars and normalize space characters (including Unicode spaces)
-    line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
-    # prune empty lines
-    if all(map(str.isspace, line)):
-        line = None
+    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
+    if not preserve_space:
+        # remove newlines that are not related to punctuation or markup
+        # remove non-printable chars and normalize space characters (including Unicode spaces)
+        line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
+        # prune empty lines
+        if all(map(str.isspace, line)):
+            line = None
     return line
 
 
@@ -278,6 +281,21 @@ def sanitize(text):
         return '\n'.join(filter(None, (line_processing(l) for l in text.splitlines())))
     except AttributeError:
         return None
+
+
+def sanitize_tree(tree):
+    '''Trims spaces, removes control characters and normalizes unicode'''
+    for element in tree.iter():
+        p = element.getparent()
+        # preserve space if the element or its parent is a specific tag, or if the element has text and children
+        # the last part is relevant for item elements with ref inside for example
+        preserve_space = element.tag in PRESERVE_SPACE_TAGS or (p and p.tag in PRESERVE_SPACE_TAGS)
+
+        if element.text:
+            element.text = line_processing(element.text, preserve_space=preserve_space)
+        if element.tail:
+            element.tail = line_processing(element.tail, preserve_space=preserve_space)
+    return tree
 
 
 @lru_cache(maxsize=1024)
