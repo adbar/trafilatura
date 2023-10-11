@@ -120,6 +120,9 @@ For more information please refer to `the documentation <https://trafilatura.rea
 - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
 - Python Notebook `Trafilatura Overview <docs/Trafilatura_Overview.ipynb>`_
 - `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
+   - `Text embedding for vector search <https://trafilatura.readthedocs.io/en/latest/tutorial-epsilla.html>`_
+   - `Custom web corpus <https://trafilatura.readthedocs.io/en/latest/tutorial0.html>`_
+   - `Word frequency list <https://trafilatura.readthedocs.io/en/latest/tutorial1.html>`_
 
 For video tutorials see this Youtube playlist:
 

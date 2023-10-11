@@ -8,6 +8,7 @@ Tutorials
    tutorial0
    tutorial1
    tutorial2
+   tutorial-epsilla
    tutorial-dwds
 
 
