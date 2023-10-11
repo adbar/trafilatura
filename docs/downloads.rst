@@ -85,14 +85,15 @@ The following variant of multi-threaded downloads with throttling is implemented
     # number of threads to use
     threads = 4
 
-    backoff_dict = dict() # has to be defined first
     # converted the input list to an internal format
-    dl_dict = add_to_compressed_dict(mylist)
+    url_store = add_to_compressed_dict(mylist)
     # processing loop
-    while dl_dict:
-        buffer, threads, dl_dict, backoff_dict = load_download_buffer(dl_dict, backoff_dict)
-        for url, result in buffered_downloads(buffer, threads):
+    while url_store.done is False:
+        bufferlist, url_store = load_download_buffer(url_store, sleep_time=5)
+        # process downloads
+        for url, result in buffered_downloads(bufferlist, threads):
             # do something here
+            print(url)
             print(result)
 
 
@@ -188,7 +189,7 @@ To prevent the execution of too many requests within too little time, the option
     from trafilatura.downloads import load_download_buffer
 
     # 30 seconds is a safe choice
-    mybuffer, threads, domain_dict, backoff_dict = load_download_buffer(dl_dict, backoff_dict, sleep_time=30)
+    mybuffer, threads, domain_dict, backoff_dict = load_download_buffer(url_store, sleep_time=30)
     # then proceed as instructed above...
 
 
