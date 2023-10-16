@@ -74,7 +74,7 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
-PRESERVE_SPACE_TAGS = ['code']
+PRESERVE_SPACE_TAGS = {'code'}
 
 
 def handle_compressed_file(filecontent):
@@ -291,10 +291,16 @@ def sanitize_tree(tree):
         # the last part is relevant for item elements with ref inside for example
         preserve_space = element.tag in PRESERVE_SPACE_TAGS or (p and p.tag in PRESERVE_SPACE_TAGS)
 
-        if element.text:
-            element.text = line_processing(element.text, preserve_space=preserve_space)
-        if element.tail:
-            element.tail = line_processing(element.tail, preserve_space=preserve_space)
+        if preserve_space:
+            if element.text:
+                element.text = line_processing(element.text, preserve_space=True)
+            if element.tail:
+                element.tail = line_processing(element.tail, preserve_space=True)
+        else:
+            if element.text:
+                element.text = sanitize(element.text)
+            if element.tail:
+                element.tail = sanitize(element.tail)
     return tree
 
 
