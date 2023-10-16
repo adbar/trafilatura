@@ -14,7 +14,7 @@ except ImportError:
 from lxml import etree, html
 
 import trafilatura.filters
-from trafilatura import extract
+from trafilatura import extract, bare_extraction
 from trafilatura.core import Extractor
 from trafilatura.filters import (check_html_lang, duplicate_test,
                                  language_filter)
@@ -147,6 +147,36 @@ def test_lrucache():
     assert lru_test.get('tralala') == -1
 
 
+def test_prune_xpath():
+    '''test xpath pruning (parameter in extract and bare_extraction)'''
+    #create example html
+    def doc():
+        my_p = '<p>abc</p>'
+        return html.fromstring('<html><body>' + my_p*50 + '</body></html>')
+    
+    def doc2():
+        my_p = '<p>abc</p>'
+        my_h1 = '<h1>ABC</h1>'
+        return html.fromstring('<html><body>' + my_h1 + my_p*50 + '</body></html>')
+    
+    def doc3():
+        my_p = '<p>abc</p>'
+        my_h1 = '<h1>ABC</h1>'
+        my_h2 = '<h2>42</h2>'
+        return html.fromstring('<html><body>' + my_h1 + my_h2 + my_p*50 + '</body></html>')
+
+    #test xpath pruning
+    assert extract(doc(), prune_xpath='//p') == ''
+    assert extract(doc2(), prune_xpath='//p') == 'ABC'
+    assert extract(doc2(), prune_xpath=['//p', '//h1']) == ''
+    assert extract(doc3(), prune_xpath=['//p', '//h1']) == '42'
+    # sanity check
+    assert extract(doc()) != ''
+    assert extract(doc2()) != ''
+    assert extract(doc3()) != ''
+
+
 if __name__ == '__main__':
     test_filters()
     test_lrucache()
+    test_prune_xpath()
