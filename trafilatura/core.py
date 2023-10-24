@@ -914,9 +914,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # extract metadata if necessary
         if output_format != 'txt':
 
-            extensive_htmldate = config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')
-            if not date_extraction_params and not extensive_htmldate:
-                date_extraction_params = {"extensive_search": False}
+            if not date_extraction_params:
+                date_extraction_params = {
+                    "extensive_search": config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'),
+                }
 
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
 
