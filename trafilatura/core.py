@@ -913,11 +913,19 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
         # extract metadata if necessary
         if output_format != 'txt':
+
+            if not date_extraction_params:
+                date_extraction_params = {
+                    "extensive_search": config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'),
+                }
+
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
+
             # cut short if extracted URL in blacklist
             if document.url in url_blacklist:
                 LOGGER.warning('blacklisted URL: %s', url)
                 raise ValueError
+
             # cut short if core elements are missing
             if only_with_metadata is True and any(
                     x is None for x in
@@ -925,6 +933,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             ):
                 LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
+
         else:
             document = Document()
 
