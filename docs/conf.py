@@ -52,7 +52,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx_sitemap'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -135,3 +136,5 @@ html_context = {
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
 }
+
+html_baseurl = 'https://trafilatura.readthedocs.io/'
