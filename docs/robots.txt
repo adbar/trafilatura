@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://trafilatura.readthedocs.io/en/latest/sitemap.xml

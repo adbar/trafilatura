@@ -139,3 +139,5 @@ intersphinx_mapping = {
 
 html_baseurl = 'https://trafilatura.readthedocs.io/'
 sitemap_url_scheme = "{lang}latest/{link}"
+
+html_extra_path = ['robots.txt']
