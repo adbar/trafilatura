@@ -15,6 +15,7 @@ from copy import deepcopy
 
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
 from lxml.html import tostring
+from lxml import etree
 
 # own
 from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
@@ -971,7 +972,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
         # extract content
         postbody, temp_text, len_text = extract_content(cleaned_tree, options)
-
+        document.raw_html = etree.tostring(postbody, encoding="utf-8").decode("utf-8")
+        
         # compare if necessary
         if no_fallback is False:
             postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, options)
