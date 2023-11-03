@@ -114,7 +114,7 @@ Diese Linkliste kann zunächst gefiltert werden, um deutschsprachige, inhaltsrei
 
 Die Ausgabe von *Trafilatura* erfolgt auf zweierlei Weise: die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
 
-``trafilatura --inputfile linkliste.txt --outputdir ausgabe/ --backup-dir html-quellen/``
+``trafilatura --input-file linkliste.txt --outputdir ausgabe/ --backup-dir html-quellen/``
 
 So werden TXT-Dateien ohne Metadaten ausgegeben. Wenn Sie ``--csv``, ``--json``, ``--xml`` oder ``--xmltei`` hinzufügen, werden Metadaten einbezogen und das entsprechende Format für die Ausgabe bestimmt. Zusätzliche Optionen sind verfügbar, siehe die passenden Dokumentationsseiten.
 

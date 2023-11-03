@@ -114,7 +114,7 @@ On the CLI the crawler automatically works its way through a website, stopping a
 
     $ trafilatura --crawl "https://www.example.org" > links.txt
 
-It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--inputfile`` option).
+It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--input-file`` option).
 
 .. note::
     The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This happens in order to give a chance to examine the collected URLs prior to further downloads.
