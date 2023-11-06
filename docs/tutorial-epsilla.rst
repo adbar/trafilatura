@@ -19,7 +19,7 @@ Text embedding involves converting text into numerical vectors, and is commonly 
 - Anomaly detection (identify outliers)
 
 In this tutorial, we will show you how to perform text embedding on results from Trafilatura. We will use
-`Epsilla <https://www.epsilla.com/?ref=trafilatura>`_, an open source vector database for storing and searching vector embeddings. It is 10x faster than regular relational databases for vector operations.
+`Epsilla <https://www.epsilla.com/?ref=trafilatura>`_, an open source vector database for storing and searching vector embeddings. It is 10x faster than regular vector databases for vector operations.
 
 .. note::
     For a hands-on version of this tutorial, try out the `Colab Notebook <https://colab.research.google.com/drive/1eFHO0dHyPhEF9Sm_HXcMFmJZnvP9a-aX?usp=sharing>`_.
