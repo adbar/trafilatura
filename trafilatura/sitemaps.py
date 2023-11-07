@@ -43,12 +43,13 @@ GUESSES = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
 
 class SitemapObject:
     "Store all necessary information on sitemap download and processing."
-    __slots__ = ["base_url", "content", "domain", "sitemap_url", "sitemap_urls", "target_lang", "urls"]
+    __slots__ = ["base_url", "content", "domain", "external", "sitemap_url", "sitemap_urls", "target_lang", "urls"]
 
-    def __init__(self, base_url: str, domain: str, sitemap_url: str, target_lang: Optional[str] = None) -> None:
+    def __init__(self, base_url: str, domain: str, sitemap_url: str, target_lang: Optional[str] = None, external: bool = False) -> None:
         self.base_url: str = base_url
         self.content: str = ""
         self.domain: str = domain
+        self.external: bool = external
         self.sitemap_url: str = sitemap_url
         self.sitemap_urls: List[str] = []
         self.target_lang: Optional[str] = target_lang
@@ -78,7 +79,7 @@ class SitemapObject:
 
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
-        if not is_similar_domain(self.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
+        if not self.external and not is_similar_domain(self.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
             LOGGER.warning('link discarded, diverging domain names: %s %s', self.domain, newdomain)
             return
 
@@ -128,14 +129,16 @@ class SitemapObject:
         self.extract_sitemap_links()
 
 
-def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
+def sitemap_search(url: str, target_lang: Optional[str] = None, external: bool = False) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
     Args:
         url: Webpage or sitemap URL as string.
              Triggers URL-based filter if the webpage isn't a homepage.
         target_lang: Define a language to filter URLs based on heuristics
-             (two-letter string, ISO 639-1 format).
+                     (two-letter string, ISO 639-1 format).
+        external: Similar hosts only or external URLs
+                  (boolean, defaults to False).
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -159,7 +162,7 @@ def sitemap_search(url: str, target_lang: Optional[str] = None) -> List[str]:
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurl, target_lang)
+    sitemap = SitemapObject(baseurl, domainname, sitemapurl, target_lang, external)
     sitemap.fetch()
     sitemap.process()
 

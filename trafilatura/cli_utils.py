@@ -236,10 +236,11 @@ def cli_discovery(args):
     input_urls = url_store.dump_urls()
     if args.list:
         url_store.reset()
+    ext = use_config(filename=args.config_file).getboolean('DEFAULT', 'EXTERNAL_URLS')
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-        futures = (executor.submit(func, url, target_lang=args.target_language) for url in input_urls)
+        futures = (executor.submit(func, url, target_lang=args.target_language, external=ext) for url in input_urls)
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):
