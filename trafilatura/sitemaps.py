@@ -79,7 +79,8 @@ class SitemapObject:
 
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
-        if not self.external and not is_similar_domain(self.domain, newdomain) and not WHITELISTED_PLATFORMS.search(newdomain):
+        if not self.external  and not WHITELISTED_PLATFORMS.search(newdomain) and \
+            not is_similar_domain(self.domain, newdomain):
             LOGGER.warning('link discarded, diverging domain names: %s %s', self.domain, newdomain)
             return
 

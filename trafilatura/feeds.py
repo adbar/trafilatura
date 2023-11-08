@@ -38,7 +38,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None, external=F
         # control output for validity
         checked = check_url(link, language=target_lang)
         if checked is not None:
-            if not external and not is_similar_domain(domainname, checked[1]) and not "feed" in link:
+            if not external and not "feed" in link and not is_similar_domain(domainname, checked[1]):
                 LOGGER.warning('Rejected, diverging domain names: %s %s', domainname, checked[1])
             else:
                 output_links.append(checked[0])
