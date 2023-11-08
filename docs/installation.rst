@@ -61,6 +61,9 @@ This project is under active development, please make sure you keep it up-to-dat
 
 On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
 
+.. hint::
+    Installation on MacOS is generally easier with `brew <https://formulae.brew.sh/formula/trafilatura>`_.
+
 
 Older Python versions
 ~~~~~~~~~~~~~~~~~~~~~
