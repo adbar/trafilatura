@@ -13,7 +13,7 @@ from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
-from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
+from lxml.etree import (Element, RelaxNG, SubElement, fromstring,
                         tostring)
 
 from . import __version__
@@ -28,8 +28,6 @@ TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head',
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
-
-CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {
     'cell': '|',

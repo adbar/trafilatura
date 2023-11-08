@@ -74,7 +74,8 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
-PRESERVE_SPACE_TAGS = {'code'}
+FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'td', 'hi', 'ref'}
+SPACING_PROTECTED = {'code'}
 
 
 def handle_compressed_file(filecontent):
@@ -259,19 +260,25 @@ def normalize_unicode(string, unicodeform='NFC'):
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line, preserve_space=False):
+def line_processing(line, preserve_space=False, keep_trailing_space=False):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
     line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
     if not preserve_space:
+        prev = line
         # remove newlines that are not related to punctuation or markup
         # remove non-printable chars and normalize space characters (including Unicode spaces)
         line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
         # prune empty lines
         if all(map(str.isspace, line)):
             line = None
+        elif keep_trailing_space:
+            if prev[0] == ' ':
+                line = ' ' + line
+            if prev[-1] == ' ':
+                line += ' '
     return line
 
 
@@ -289,13 +296,14 @@ def sanitize_tree(tree):
         p = element.getparent()
         # preserve space if the element or its parent is a specific tag, or if the element has text and children
         # the last part is relevant for item elements with ref inside for example
-        preserve_space = element.tag in PRESERVE_SPACE_TAGS or (p and p.tag in PRESERVE_SPACE_TAGS)
+        preserve_space = element.tag in SPACING_PROTECTED or (p and p.tag in SPACING_PROTECTED)
+        skip_sanitize = element.tag in FORMATTING_PROTECTED or (p and p.tag in FORMATTING_PROTECTED) or preserve_space
 
-        if preserve_space:
+        if skip_sanitize:
             if element.text:
-                element.text = line_processing(element.text, preserve_space=True)
+                element.text = line_processing(element.text, preserve_space=preserve_space, keep_trailing_space=True)
             if element.tail:
-                element.tail = line_processing(element.tail, preserve_space=True)
+                element.tail = line_processing(element.tail, preserve_space=preserve_space, keep_trailing_space=True)
         else:
             if element.text:
                 element.text = sanitize(element.text)
