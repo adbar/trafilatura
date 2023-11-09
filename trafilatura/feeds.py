@@ -8,7 +8,9 @@ Examining feeds and extracting links for further processing.
 import json
 import logging
 import re
+
 from itertools import islice
+from typing import Optional
 
 from courlan import (check_url, clean_url, filter_urls, fix_relative_urls,
                      get_hostinfo, validate_url)
@@ -20,26 +22,41 @@ from .utils import is_similar_domain, load_html
 LOGGER = logging.getLogger(__name__)
 
 FEED_TYPES = {'application/atom+xml', 'application/json', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/plain', 'text/rdf+xml', 'text/rss+xml', 'text/xml'}
+FEED_EXTENSIONS = {'.rss', '.rdf', '.xml'}
 FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
+
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
 LINK_ELEMENTS = re.compile(r'<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>')
+
 BLACKLIST = re.compile(r'\bcomments\b')  # no comment feed
 
 
-def handle_link_list(linklist, domainname, baseurl, target_lang=None, external=False):
+class FeedParameters:
+    "Store necessary information to proceed a feed."
+    __slots__ = ["base", "domain", "ext", "lang", "ref"]
+
+    def __init__(self, baseurl: str, domainname: str, reference: str, external: bool = False, target_lang: Optional[str] = None) -> None:
+        self.base: str = baseurl
+        self.domain: str = domainname
+        self.ext: bool = external
+        self.lang: Optional[str] = target_lang
+        self.ref: str = reference
+
+
+def handle_link_list(linklist, params):
     '''Examine links to determine if they are valid and
        lead to a web page'''
     output_links = []
     # sort and uniq
     for item in sorted(set(linklist)):
         # fix and check
-        link = fix_relative_urls(baseurl, item)
+        link = fix_relative_urls(params.base, item)
         # control output for validity
-        checked = check_url(link, language=target_lang)
+        checked = check_url(link, language=params.lang)
         if checked is not None:
-            if not external and not "feed" in link and not is_similar_domain(domainname, checked[1]):
-                LOGGER.warning('Rejected, diverging domain names: %s %s', domainname, checked[1])
+            if not params.ext and not "feed" in link and not is_similar_domain(params.domain, checked[1]):
+                LOGGER.warning('Rejected, diverging domain names: %s %s', params.domain, checked[1])
             else:
                 output_links.append(checked[0])
         # Feedburner/Google feeds
@@ -48,12 +65,12 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None, external=F
     return output_links
 
 
-def extract_links(feed_string, domainname, baseurl, reference, target_lang=None, external=False):
+def extract_links(feed_string, params):
     '''Extract links from Atom and RSS feeds'''
     feed_links = []
     # check if it's a feed
     if feed_string is None:
-        LOGGER.debug('Empty feed: %s', domainname)
+        LOGGER.debug('Empty feed: %s', params.domain)
         return feed_links
     feed_string = feed_string.strip()
     # typical first and second lines absent
@@ -65,15 +82,13 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None,
                 feed_dict = json.loads(feed_string)
                 if 'items' in feed_dict:
                     for item in feed_dict['items']:
-                        if 'url' in item:
-                            feed_links.append(item['url'])
                         # fallback: https://www.jsonfeed.org/version/1.1/
-                        elif 'id' in item:
-                            feed_links.append(item['id'])
+                        if 'url' in item or 'id' in item:
+                            feed_links.append(item.get('url') or item.get('id'))
             except json.decoder.JSONDecodeError:
-                LOGGER.debug('JSON decoding error: %s', domainname)
+                LOGGER.debug('JSON decoding error: %s', params.domain)
         else:
-            LOGGER.debug('Possibly invalid feed: %s', domainname)
+            LOGGER.debug('Possibly invalid feed: %s', params.domain)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
@@ -91,51 +106,47 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None,
         )
 
     # refine
-    output_links = handle_link_list(feed_links, domainname, baseurl, target_lang, external)
-    output_links = [l for l in output_links if l != reference and l.count('/') > 2]
+    output_links = handle_link_list(feed_links, params)
+    output_links = [l for l in output_links if l != params.ref and l.count('/') > 2]
     # log result
     if feed_links:
         LOGGER.debug('Links found: %s of which %s valid', len(feed_links), len(output_links))
     else:
-        LOGGER.debug('Invalid feed for %s', domainname)
+        LOGGER.debug('Invalid feed for %s', params.domain)
     return output_links
 
 
-def determine_feed(htmlstring, baseurl, reference):
+def determine_feed(htmlstring, params):
     '''Try to extract the feed URL from the home page.
        Adapted from http://www.aaronsw.com/2002/feedfinder/'''
     # parse the page to look for feeds
     tree = load_html(htmlstring)
     # safeguard
     if tree is None:
-        LOGGER.debug('Invalid HTML/Feed page: %s', baseurl)
+        LOGGER.debug('Invalid HTML/Feed page: %s', params.base)
         return []
     feed_urls = []
     for linkelem in tree.xpath('//link[@rel="alternate"]'):
         # discard elements without links
         if 'href' not in linkelem.attrib:
             continue
-        # most common case
-        if 'type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES:
-            feed_urls.append(linkelem.get('href'))
-        # websites like geo.de
-        elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
+        # most common case + websites like geo.de
+        if ('type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES) or \
+            'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
             feed_urls.append(linkelem.get('href'))
     # backup
     if not feed_urls:
         for linkelem in tree.xpath('//a[@href]'):
-            if linkelem.get('href')[-4:].lower() in ('.rss', '.rdf', '.xml'):
-                feed_urls.append(linkelem.get('href'))
-            elif linkelem.get('href')[-5:].lower() == '.atom':
-                feed_urls.append(linkelem.get('href'))
-            elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
+            if linkelem.get('href')[-4:].lower() in FEED_EXTENSIONS or \
+                linkelem.get('href')[-5:].lower() == '.atom' or \
+                'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
                 feed_urls.append(linkelem.get('href'))
     # refine
     output_urls = []
     for link in sorted(set(feed_urls)):
-        link = fix_relative_urls(baseurl, link)
+        link = fix_relative_urls(params.base, link)
         link = clean_url(link)
-        if link is None or link == reference or validate_url(link)[0] is False:
+        if link is None or link == params.ref or validate_url(link)[0] is False:
             continue
         if BLACKLIST.search(link):
             continue
@@ -164,16 +175,17 @@ def find_feed_urls(url, target_lang=None, external=False):
     if domainname is None:
         LOGGER.warning('Invalid URL: %s', url)
         return []
+    params = FeedParameters(baseurl, domainname, external, target_lang, url)
     urlfilter = None
     downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
-        feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang, external)
+        feed_links = extract_links(downloaded, params)
         if len(feed_links) == 0:
             # assume it's a web page
-            for feed in determine_feed(downloaded, baseurl, url):
+            for feed in determine_feed(downloaded, params):
                 feed_string = fetch_url(feed)
-                feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang, external))
+                feed_links.extend(extract_links(feed_string, params))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
@@ -193,7 +205,7 @@ def find_feed_urls(url, target_lang=None, external=False):
             f'https://news.google.com/rss/search?q=site:{baseurl}&hl={target_lang}&scoring=n&num=100'
         )
         if downloaded is not None:
-            feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang, external)
+            feed_links = extract_links(downloaded, params)
             feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s Google news links found for %s', len(feed_links), domainname)
             return feed_links
