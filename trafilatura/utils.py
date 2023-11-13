@@ -75,7 +75,7 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'td', 'hi', 'ref'}
-SPACING_PROTECTED = {'code'}
+SPACING_PROTECTED = {'code', 'pre'}
 
 
 def handle_compressed_file(filecontent):
