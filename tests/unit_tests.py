@@ -869,7 +869,17 @@ def test_table_processing():
 </tr>
     </table></article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '''<row><cell><hi>Present Tense</hi></cell><cell>I buy</cell><cell>you buy</cell><cell>he/she/it buys</cell><cell>we buy</cell><cell>you buy</cell><cell>they buy</cell></row>''' in my_result
+    assert '''<row>
+        <cell>
+          <hi>Present Tense</hi>
+        </cell>
+        <cell>I buy</cell>
+        <cell>you buy</cell>
+        <cell>he/she/it buys</cell>
+        <cell>we buy</cell>
+        <cell>you buy</cell>
+        <cell>they buy</cell>
+      </row>''' in my_result
     # table with links
     # todo: further tests and adjustsments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'

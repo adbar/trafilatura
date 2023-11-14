@@ -13,7 +13,7 @@ from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
-from lxml.etree import (Element, RelaxNG, SubElement, fromstring,
+from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
 
 from . import __version__
@@ -28,6 +28,8 @@ TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head',
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
+
+CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {
     'cell': '|',
@@ -116,6 +118,9 @@ def build_xml_output(docmeta):
 def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     '''Make sure the XML output is conform and valid if required'''
     output_tree = sanitize_tree(output_tree)
+    # necessary for cleaning
+    control_string = tostring(output_tree, encoding='unicode')
+    output_tree = fromstring(control_string, CONTROL_PARSER)
     # validate
     if output_format == 'xmltei' and tei_validation is True:
         result = validate_tei(output_tree)

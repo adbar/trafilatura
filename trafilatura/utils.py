@@ -294,10 +294,17 @@ def sanitize_tree(tree):
     '''Trims spaces, removes control characters and normalizes unicode'''
     for element in tree.iter():
         p = element.getparent()
+
         # preserve space if the element or its parent is a specific tag, or if the element has text and children
         # the last part is relevant for item elements with ref inside for example
-        preserve_space = element.tag in SPACING_PROTECTED or (p and p.tag in SPACING_PROTECTED)
-        skip_sanitize = element.tag in FORMATTING_PROTECTED or (p and p.tag in FORMATTING_PROTECTED) or preserve_space
+        #if p is not None:
+        #    preserve_space = p.tag in SPACING_PROTECTED
+        #    skip_sanitize = p.tag in FORMATTING_PROTECTED or preserve_space
+        #else:
+        #    preserve_space = element.tag in SPACING_PROTECTED
+        #    skip_sanitize = element.tag in FORMATTING_PROTECTED or preserve_space
+        preserve_space = element.tag in SPACING_PROTECTED or (p is not None and p.tag in SPACING_PROTECTED)
+        skip_sanitize = element.tag in FORMATTING_PROTECTED or (p is not None and p.tag in FORMATTING_PROTECTED) or preserve_space
 
         if skip_sanitize:
             if element.text:
