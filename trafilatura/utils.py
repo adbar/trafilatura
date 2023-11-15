@@ -74,7 +74,7 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
-FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'td', 'hi', 'ref'}
+FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
 
 
@@ -292,30 +292,25 @@ def sanitize(text):
 
 def sanitize_tree(tree):
     '''Trims spaces, removes control characters and normalizes unicode'''
-    for element in tree.iter():
-        p = element.getparent()
+    for elem in tree.iter():
+        parent = elem.getparent()
+        parent_tag = parent.tag if parent is not None else ""
 
         # preserve space if the element or its parent is a specific tag, or if the element has text and children
         # the last part is relevant for item elements with ref inside for example
-        #if p is not None:
-        #    preserve_space = p.tag in SPACING_PROTECTED
-        #    skip_sanitize = p.tag in FORMATTING_PROTECTED or preserve_space
-        #else:
-        #    preserve_space = element.tag in SPACING_PROTECTED
-        #    skip_sanitize = element.tag in FORMATTING_PROTECTED or preserve_space
-        preserve_space = element.tag in SPACING_PROTECTED or (p is not None and p.tag in SPACING_PROTECTED)
-        skip_sanitize = element.tag in FORMATTING_PROTECTED or (p is not None and p.tag in FORMATTING_PROTECTED) or preserve_space
+        preserve_space = elem.tag in SPACING_PROTECTED or parent_tag in SPACING_PROTECTED
+        skip_sanitize = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
 
         if skip_sanitize:
-            if element.text:
-                element.text = line_processing(element.text, preserve_space=preserve_space, keep_trailing_space=True)
-            if element.tail:
-                element.tail = line_processing(element.tail, preserve_space=preserve_space, keep_trailing_space=True)
+            if elem.text:
+                elem.text = line_processing(elem.text, preserve_space=preserve_space, keep_trailing_space=True)
+            if elem.tail:
+                elem.tail = line_processing(elem.tail, preserve_space=preserve_space, keep_trailing_space=True)
         else:
-            if element.text:
-                element.text = sanitize(element.text)
-            if element.tail:
-                element.tail = sanitize(element.tail)
+            if elem.text:
+                elem.text = sanitize(elem.text)
+            if elem.tail:
+                elem.tail = sanitize(elem.tail)
     return tree
 
 
