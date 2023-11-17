@@ -260,32 +260,34 @@ def normalize_unicode(string, unicodeform='NFC'):
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line, preserve_space=False, keep_trailing_space=False):
+def line_processing(line, preserve_space=False, trailing_space=False):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
+    new_line = remove_control_characters(line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0'))
     if not preserve_space:
-        prev = line
         # remove newlines that are not related to punctuation or markup
         # remove non-printable chars and normalize space characters (including Unicode spaces)
-        line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
+        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))
         # prune empty lines
-        if all(map(str.isspace, line)):
-            line = None
-        elif keep_trailing_space:
-            if prev[0] == ' ':
-                line = ' ' + line
-            if prev[-1] == ' ':
-                line += ' '
-    return line
+        if all(map(str.isspace, new_line)):
+            new_line = None
+        elif trailing_space:
+            space_before = " " if line[0] == " " else ""
+            space_after = " " if line[-1] == " " else ""
+            new_line = "".join([space_before, new_line, space_after])
+    return new_line
 
 
-def sanitize(text):
+def sanitize(text, preserve_space=False, trailing_space=False):
     '''Convert text and discard incompatible and invalid characters'''
+    # consider all text as a single line
+    if trailing_space:
+        return line_processing(text, preserve_space, trailing_space)
+    # process line by line
     try:
-        return '\n'.join(filter(None, (line_processing(l) for l in text.splitlines())))
+        return '\n'.join(filter(None, (line_processing(l, preserve_space, trailing_space) for l in text.splitlines())))
     except AttributeError:
         return None
 
@@ -299,18 +301,12 @@ def sanitize_tree(tree):
         # preserve space if the element or its parent is a specific tag, or if the element has text and children
         # the last part is relevant for item elements with ref inside for example
         preserve_space = elem.tag in SPACING_PROTECTED or parent_tag in SPACING_PROTECTED
-        skip_sanitize = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
+        trailing_space = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
 
-        if skip_sanitize:
-            if elem.text:
-                elem.text = line_processing(elem.text, preserve_space=preserve_space, keep_trailing_space=True)
-            if elem.tail:
-                elem.tail = line_processing(elem.tail, preserve_space=preserve_space, keep_trailing_space=True)
-        else:
-            if elem.text:
-                elem.text = sanitize(elem.text)
-            if elem.tail:
-                elem.tail = sanitize(elem.tail)
+        if elem.text:
+            elem.text = sanitize(elem.text, preserve_space, trailing_space)
+        if elem.tail:
+            elem.tail = sanitize(elem.tail, preserve_space, trailing_space)
     return tree
 
 
