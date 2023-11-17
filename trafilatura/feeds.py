@@ -23,7 +23,7 @@ from courlan import (
 
 from .downloads import fetch_url
 from .settings import MAX_LINKS
-from .utils import is_similar_domain, load_html
+from .utils import is_similar_domain, load_html, uniquify_list
 
 LOGGER = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ FEED_TYPES = {
     "text/rss+xml",
     "text/xml",
 }
-FEED_EXTENSIONS = {".rss", ".rdf", ".xml"}
+
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
@@ -50,6 +50,8 @@ LINK_ELEMENTS = re.compile(
 )
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
+
+LINK_VALIDATION_RE = re.compile(r"\.(?:atom|rdf|rss|xml)$|\b(?:atom|rss)\b")
 
 
 class FeedParameters:
@@ -167,30 +169,21 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
         LOGGER.debug("Invalid HTML/Feed page: %s", params.base)
         return []
     feed_urls = []
-    for linkelem in tree.xpath('//link[@rel="alternate"]'):
-        # discard elements without links
-        if "href" not in linkelem.attrib:
-            continue
+    for linkelem in tree.xpath('//link[@rel="alternate"][@href]'):
         # most common case + websites like geo.de
         if (
-            ("type" in linkelem.attrib and linkelem.get("type") in FEED_TYPES)
-            or "atom" in linkelem.get("href")
-            or "rss" in linkelem.get("href")
-        ):
+            "type" in linkelem.attrib and linkelem.get("type") in FEED_TYPES
+        ) or LINK_VALIDATION_RE.search(linkelem.get("href", "")):
             feed_urls.append(linkelem.get("href"))
     # backup
     if not feed_urls:
         for linkelem in tree.xpath("//a[@href]"):
-            if (
-                linkelem.get("href")[-4:].lower() in FEED_EXTENSIONS
-                or linkelem.get("href")[-5:].lower() == ".atom"
-                or "atom" in linkelem.get("href")
-                or "rss" in linkelem.get("href")
-            ):
-                feed_urls.append(linkelem.get("href"))
+            link = linkelem.get("href", "")
+            if LINK_VALIDATION_RE.search(link):
+                feed_urls.append(link)
     # refine
     output_urls = []
-    for link in sorted(set(feed_urls)):
+    for link in uniquify_list(feed_urls):
         link = fix_relative_urls(params.base, link)
         link = clean_url(link)
         if link is None or link == params.ref or validate_url(link)[0] is False:
