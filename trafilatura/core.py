@@ -27,7 +27,7 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
-from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv
+from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, FORMATTING_PROTECTED
 from .xml import (build_json_output, build_tei_output, build_xml_output,
                   control_xml_output, remove_empty_elements, strip_double_tags,
                   xmltotxt)
@@ -38,8 +38,6 @@ from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
 
 LOGGER = logging.getLogger(__name__)
 
-FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'td'}
-SPACING_PROTECTED = {'code', 'hi', 'ref'}
 P_FORMATTING = {'hi', 'ref'}
 TABLE_ELEMS = {'td', 'th'}
 TABLE_ALL = {'td', 'th', 'hi'}
@@ -942,7 +940,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                             include_comments, include_formatting, include_links,
                             include_images, include_tables, deduplicate,
                             target_language)
-        
+
         # prune all xpath expressions that user specified
         # no backup as this is unetre full control of the user
         if prune_xpath is not None:
