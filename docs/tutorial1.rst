@@ -26,8 +26,8 @@ For the collection and filtering of links see `this tutorial <tutorial0.html>`_ 
 
 Two major options are necessary here:
 
--  ``-i`` or ``--inputfile`` to select an input list to read links from
--  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+-  ``-i`` or ``--input-file`` to select an input list to read links from
+-  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
 
 The input list will be read sequentially, and only lines beginning with a valid URL will be read; any other information contained in the file will be discarded.
 

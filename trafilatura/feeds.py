@@ -27,7 +27,7 @@ LINK_ELEMENTS = re.compile(r'<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)
 BLACKLIST = re.compile(r'\bcomments\b')  # no comment feed
 
 
-def handle_link_list(linklist, domainname, baseurl, target_lang=None):
+def handle_link_list(linklist, domainname, baseurl, target_lang=None, external=False):
     '''Examine links to determine if they are valid and
        lead to a web page'''
     output_links = []
@@ -38,7 +38,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
         # control output for validity
         checked = check_url(link, language=target_lang)
         if checked is not None:
-            if not is_similar_domain(domainname, checked[1]) and not "feed" in link:
+            if not external and not "feed" in link and not is_similar_domain(domainname, checked[1]):
                 LOGGER.warning('Rejected, diverging domain names: %s %s', domainname, checked[1])
             else:
                 output_links.append(checked[0])
@@ -48,7 +48,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
     return output_links
 
 
-def extract_links(feed_string, domainname, baseurl, reference, target_lang=None):
+def extract_links(feed_string, domainname, baseurl, reference, target_lang=None, external=False):
     '''Extract links from Atom and RSS feeds'''
     feed_links = []
     # check if it's a feed
@@ -91,7 +91,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
         )
 
     # refine
-    output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
+    output_links = handle_link_list(feed_links, domainname, baseurl, target_lang, external)
     output_links = [l for l in output_links if l != reference and l.count('/') > 2]
     # log result
     if feed_links:
@@ -145,14 +145,16 @@ def determine_feed(htmlstring, baseurl, reference):
     return output_urls
 
 
-def find_feed_urls(url, target_lang=None):
+def find_feed_urls(url, target_lang=None, external=False):
     """Try to find feed URLs.
 
     Args:
         url: Webpage or feed URL as string.
              Triggers URL-based filter if the webpage isn't a homepage.
         target_lang: Define a language to filter URLs based on heuristics
-             (two-letter string, ISO 639-1 format).
+                     (two-letter string, ISO 639-1 format).
+        external: Similar hosts only or external URLs
+                  (boolean, defaults to False).
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -166,12 +168,12 @@ def find_feed_urls(url, target_lang=None):
     downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
-        feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+        feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang, external)
         if len(feed_links) == 0:
             # assume it's a web page
             for feed in determine_feed(downloaded, baseurl, url):
                 feed_string = fetch_url(feed)
-                feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
+                feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang, external))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
@@ -191,7 +193,7 @@ def find_feed_urls(url, target_lang=None):
             f'https://news.google.com/rss/search?q=site:{baseurl}&hl={target_lang}&scoring=n&num=100'
         )
         if downloaded is not None:
-            feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+            feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang, external)
             feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s Google news links found for %s', len(feed_links), domainname)
             return feed_links

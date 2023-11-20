@@ -711,6 +711,10 @@ def test_extraction_options():
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
 
+    my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
+    assert bare_extraction(my_html, config=ZERO_CONFIG)["date"] is not None
+    assert bare_extraction(my_html, config=NEW_CONFIG)["date"] is None
+
 
 def test_precision_recall():
     '''test precision- and recall-oriented settings'''
