@@ -7,7 +7,7 @@ import logging
 import re
 from copy import deepcopy
 
-from courlan import extract_domain, get_base_url, normalize_url, validate_url
+from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
 from lxml.html import tostring
 
@@ -173,7 +173,7 @@ def extract_opengraph(tree):
             title = elem.get('content')
         # orig URL
         elif elem.get('property') == 'og:url':
-            if validate_url(elem.get('content'))[0] is True:
+            if is_valid_url(elem.get('content')):
                 url = elem.get('content')
         # description
         elif elem.get('property') == 'og:description':
@@ -250,7 +250,7 @@ def examine_meta(tree):
                 backup_sitename = content_attr
             # url
             elif name_attr == 'twitter:url':
-                if url is None and validate_url(content_attr)[0] is True:
+                if url is None and is_valid_url(content_attr):
                     url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'

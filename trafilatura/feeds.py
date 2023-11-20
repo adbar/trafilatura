@@ -11,7 +11,7 @@ import re
 from itertools import islice
 
 from courlan import (check_url, clean_url, filter_urls, fix_relative_urls,
-                     get_hostinfo, validate_url)
+                     get_hostinfo, is_valid_url)
 
 from .downloads import fetch_url
 from .settings import MAX_LINKS
@@ -135,7 +135,7 @@ def determine_feed(htmlstring, baseurl, reference):
     for link in sorted(set(feed_urls)):
         link = fix_relative_urls(baseurl, link)
         link = clean_url(link)
-        if link is None or link == reference or validate_url(link)[0] is False:
+        if link is None or link == reference or not is_valid_url(link):
             continue
         if BLACKLIST.search(link):
             continue
