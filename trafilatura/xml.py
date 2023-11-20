@@ -18,7 +18,7 @@ from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
 
 from . import __version__
 from .filters import text_chars_test
-from .utils import sanitize
+from .utils import sanitize, sanitize_tree
 
 LOGGER = logging.getLogger(__name__)
 # validation
@@ -117,8 +117,9 @@ def build_xml_output(docmeta):
 
 def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     '''Make sure the XML output is conform and valid if required'''
-    control_string = sanitize(tostring(output_tree, encoding='unicode'))
+    output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
+    control_string = tostring(output_tree, encoding='unicode')
     output_tree = fromstring(control_string, CONTROL_PARSER)
     # validate
     if output_format == 'xmltei' and tei_validation is True:

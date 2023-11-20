@@ -74,6 +74,9 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
+FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
+SPACING_PROTECTED = {'code', 'pre'}
+
 
 def handle_compressed_file(filecontent):
     """Tell if a file's magic number corresponds to the GZip format
@@ -257,27 +260,54 @@ def normalize_unicode(string, unicodeform='NFC'):
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line):
+def line_processing(line, preserve_space=False, trailing_space=False):
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     # unique code spaces
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0').replace(';cs;', ' ')
-    # remove newlines that are not related to punctuation or markup
-    # remove non-printable chars and normalize space characters (including Unicode spaces)
-    line = trim(remove_control_characters(LINES_TRIMMING.sub(r' ', line)))
-    # prune empty lines
-    if all(map(str.isspace, line)):
-        line = None
-    return line
+    new_line = remove_control_characters(line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0'))
+    if not preserve_space:
+        # remove newlines that are not related to punctuation or markup
+        # remove non-printable chars and normalize space characters (including Unicode spaces)
+        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))
+        # prune empty lines
+        if all(map(str.isspace, new_line)):
+            new_line = None
+        elif trailing_space:
+            space_before = " " if line[0] == " " else ""
+            space_after = " " if line[-1] == " " else ""
+            new_line = "".join([space_before, new_line, space_after])
+    return new_line
 
 
-def sanitize(text):
+def sanitize(text, preserve_space=False, trailing_space=False):
     '''Convert text and discard incompatible and invalid characters'''
+    # consider all text as a single line
+    if trailing_space:
+        return line_processing(text, preserve_space, True)
+    # process line by line
     try:
-        return '\n'.join(filter(None, (line_processing(l) for l in text.splitlines())))
+        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines())))
     except AttributeError:
         return None
+
+
+def sanitize_tree(tree):
+    '''Trims spaces, removes control characters and normalizes unicode'''
+    for elem in tree.iter():
+        parent = elem.getparent()
+        parent_tag = parent.tag if parent is not None else ""
+
+        # preserve space if the element or its parent is a specific tag, or if the element has text and children
+        # the last part is relevant for item elements with ref inside for example
+        preserve_space = elem.tag in SPACING_PROTECTED or parent_tag in SPACING_PROTECTED
+        trailing_space = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
+
+        if elem.text:
+            elem.text = sanitize(elem.text, preserve_space, trailing_space)
+        if elem.tail:
+            elem.tail = sanitize(elem.tail, preserve_space, trailing_space)
+    return tree
 
 
 @lru_cache(maxsize=1024)
