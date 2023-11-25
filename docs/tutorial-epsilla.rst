@@ -1,4 +1,4 @@
-Text embedding
+Tutorial: Text embedding
 ===============
 
 .. meta::
