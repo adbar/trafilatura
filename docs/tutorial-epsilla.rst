@@ -41,7 +41,7 @@ Alternatively, you can start one locally with a `Docker <https://docs.docker.com
 
 See `Epsilla documentation <https://epsilla-inc.gitbook.io/epsilladb/quick-start>`_ for a full quick start guide.
 
-The rest of this guide will assume you are running a local Epsilla server on port 8888. If you are using the cloud version, replace the host and port with the cloud server address.
+The rest of this guide assumes you are running a local Epsilla server on port 8888. If you are using the cloud version, replace the host and port with the cloud server address.
 
 We need to install the database client. You can do this with pip:
 
