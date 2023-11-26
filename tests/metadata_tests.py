@@ -194,7 +194,7 @@ def test_dates():
     assert metadata.date == '2017-09-01'
     # behavior for fastmode=True changed in htmldate==1.6.0. On 1.5.2 and earlier, result was None
     metadata = extract_metadata(mystring, fastmode=True)
-    assert metadata.date is '2017-09-01'
+    assert metadata.date == '2017-09-01'
 
 
 def test_sitename():
