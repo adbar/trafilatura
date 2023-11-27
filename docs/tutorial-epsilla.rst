@@ -28,9 +28,9 @@ In this tutorial, we will show you how to perform text embedding on results from
 Setup Epsilla
 ------------------------------------------------
 
-In this tutorial, we will need an Epsilla databse server. There are two ways to get one: use the free cloud version or start one locally.
+In this tutorial, we will need an Epsilla database server. There are two ways to get one: use the free cloud version or start one locally.
 
-Epsill has a `cloud version <https://cloud.epsilla.com//?ref=trafilatura>`_ with a free tier. You can sign up and get a server running in a few steps.
+Epsilla has a `cloud version <https://cloud.epsilla.com//?ref=trafilatura>`_ with a free tier. You can sign up and get a server running in a few steps.
 
 Alternatively, you can start one locally with a `Docker <https://docs.docker.com/get-started/>`_ image.
 
