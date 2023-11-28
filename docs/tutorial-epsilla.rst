@@ -1,5 +1,5 @@
 Tutorial: Text embedding
-===============
+========================
 
 .. meta::
     :description lang=en:
