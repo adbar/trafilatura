@@ -18,7 +18,7 @@ from courlan import (
     filter_urls,
     fix_relative_urls,
     get_hostinfo,
-    validate_url,
+    is_valid_url,
 )
 
 from .downloads import fetch_url
@@ -186,7 +186,7 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
     for link in uniquify_list(feed_urls):
         link = fix_relative_urls(params.base, link)
         link = clean_url(link)
-        if link is None or link == params.ref or validate_url(link)[0] is False:
+        if link is None or link == params.ref or not is_valid_url(link):
             continue
         if BLACKLIST.search(link):
             continue

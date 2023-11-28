@@ -193,7 +193,7 @@ def test_dates():
     metadata = extract_metadata(mystring, fastmode=False)
     assert metadata.date == '2017-09-01'
     metadata = extract_metadata(mystring, fastmode=True)
-    assert metadata.date is None
+    assert metadata.date == '2017-09-01'
 
 
 def test_sitename():
