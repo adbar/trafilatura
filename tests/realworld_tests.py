@@ -700,8 +700,9 @@ def test_pages():
     assert metadata.url == url
 
     url = 'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html'
+    corrected_url = 'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html'
     metadata = extract_metadata(load_mock_page_meta(url), default_url=url)
-    assert metadata.url == url
+    assert metadata.url == corrected_url
     assert 'Korinna Hennig' in metadata.author
     assert 'Ältere Menschen' in str(metadata.tags)
 
