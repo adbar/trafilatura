@@ -192,6 +192,7 @@ def test_dates():
     mystring = '<html><body><p>Veröffentlicht am 1.9.17</p></body></html>'
     metadata = extract_metadata(mystring, fastmode=False)
     assert metadata.date == '2017-09-01'
+    # behavior for fastmode=True changed in htmldate==1.6.0. On 1.5.2 and earlier, result was None
     metadata = extract_metadata(mystring, fastmode=True)
     assert metadata.date == '2017-09-01'
 

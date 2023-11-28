@@ -1,5 +1,5 @@
-Text embedding
-===============
+Tutorial: Text embedding
+========================
 
 .. meta::
     :description lang=en:
@@ -28,7 +28,11 @@ In this tutorial, we will show you how to perform text embedding on results from
 Setup Epsilla
 ------------------------------------------------
 
-In this tutorial, we will run an Epsilla databse server. You can start one locally with a `Docker <https://docs.docker.com/get-started/>`_ image.
+In this tutorial, we will need an Epsilla database server. There are two ways to get one: use the free cloud version or start one locally.
+
+Epsilla has a `cloud version <https://cloud.epsilla.com//?ref=trafilatura>`_ with a free tier. You can sign up and get a server running in a few steps.
+
+Alternatively, you can start one locally with a `Docker <https://docs.docker.com/get-started/>`_ image.
 
 .. code-block:: bash
 
@@ -36,6 +40,8 @@ In this tutorial, we will run an Epsilla databse server. You can start one local
     $ docker run --pull=always -d -p 8888:8888 epsilla/vectordb
 
 See `Epsilla documentation <https://epsilla-inc.gitbook.io/epsilladb/quick-start>`_ for a full quick start guide.
+
+The rest of this guide assumes you are running a local Epsilla server on port 8888. If you are using the cloud version, replace the host and port with the cloud server address.
 
 We need to install the database client. You can do this with pip:
 
@@ -145,5 +151,7 @@ We can now perform a vector search to find the most relevant project based on a 
 
 You will see the returned response is React! That is the correct answer. React is a modern frontend library, but PyTorch and Tensorflow are not.
 
+.. image:: https://static.scarf.sh/a.png?x-pxid=51f549d1-aabf-473c-b971-f8d9c3ac8ac5
+    :alt: 
 
 
