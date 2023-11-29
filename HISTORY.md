@@ -1,6 +1,26 @@
 ## History / Changelog
 
 
+### 1.6.3
+
+Extraction:
+- preserve space in certain elements with @idoshamun (#429)
+- optional list of xPaths to prune by @HeLehm (#414)
+
+Metadata:
+- more precise date extraction (see [htmldate](https://github.com/adbar/htmldate/releases/tag/v1.6.0))
+- new `htmldate` extensive search parameter in config (#434)
+- changes in URLs: normalization, trackers removed (see [courlan](https://github.com/adbar/courlan/releases/tag/v0.9.5))
+
+Navigation:
+- reviewed code for feeds (#443)
+- new config option: external URLs for feeds/sitemaps (#441)
+
+Documentation:
+- update, add page on text embeddings with @tonyyanga (#428, #435, #447)
+- fix quickstart by @sashkab (#419)
+
+
 ### 1.6.2
 
 Extraction:
