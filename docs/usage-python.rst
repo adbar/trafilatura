@@ -248,7 +248,7 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
 
 `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
 
--  ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,
+-  ``extensive_search`` (boolean), to activate further heuristics (higher recall, lower precision)
 -  ``original_date`` (boolean) to look for the original publication date,
 -  ``outputformat`` (string), to provide a custom datetime format,
 -  ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).

@@ -112,6 +112,7 @@ Publications citing Trafilatura
 - Alhamzeh, A., Bouhaouel, M., Egyed-Zsigmond, E., & Mitrović, J. (2021). "DistilBERT-based Argumentation Retrieval for Answering Comparative Questions", Proceedings of CLEF 2021 – Conference and Labs of the Evaluation Forum.
 - Bender, M., Bubenhofer, N., Dreesen, P., Georgi, C., Rüdiger, J. O., & Vogel, F. (2022). Techniken und Praktiken der Verdatung. Diskurse–digital, 135-158.
 - Bevendorff, J., Gupta, S., Kiesel, J., & Stein, B. (2023). An Empirical Comparison of Web Content Extraction Algorithms.
+- Book, L. (2023). Evaluating and comparing different key phrase-based web scraping methods for training domain-specific fasttext models, Master's thesis, KTH Royal Institute of Technology.
 - Bozarth, L., & Budak, C. (2021). "An Analysis of the Partnership between Retailers and Low-credibility News Publishers", Journal of Quantitative Description: Digital Media, 1.
 - Brandon, C., Doherty, A. J., Kelly, D., Leddin, D., & Margaria, T. (2023). HIPPP: Health Information Portal for Patients and Public. Applied Sciences, 13(16), 9453.
 - Braun, D. (2021). "Automated Semantic Analysis, Legal Assessment, and Summarization of Standard Form Contracts", PhD Thesis, Technische Universität München.
@@ -127,7 +128,8 @@ Publications citing Trafilatura
 - Hunter, B., Mathews, F., & Weeds, J. (2023). Using hierarchical text classification to investigate the utility of machine learning in automating online analyses of wildlife exploitation. Ecological Informatics, 102076.
 - Indig, B., Sárközi-Lindner, Z., & Nagy, M. (2022). Use the Metadata, Luke!–An Experimental Joint Metadata Search and N-gram Trend Viewer for Personal Web Archives. In Proceedings of the 2nd International Workshop on Natural Language Processing for Digital Humanities (pp. 47-52).
 - Johannsen, B. (2023). Fußball und safety: Eine framesemantische Perspektive auf Diskurse über trans Sportler* innen. Queere Vielfalt im Fußball, 176.
-- Jung, G., Han, S., Kim, H., Kim, K., & Cha, J. (2022). Extracting the Main Content of Web Pages Using the First Impression Area. IEEE Access.
+- Jung, G., Han, S., Kim, H., Kim, K., & Cha, J. (2022). Extracting the Main Content of Web Pages Using the First Impression Area. IEEE Access, 10, 129958-129969
+- Jung, G., Cha, J. (2023). New Visual Features for HTML Main Content Extraction. Journal of Digital Contents Society.
 - Karabulut, M., & Mayda, İ. (2020). "Development of Browser Extension for HTML Web Page Content Extraction", In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
 - Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. "First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems", In CMCL (pp. 90-101).
 - Küehn, P., Relke, D. N., & Reuter, C. (2023). Common Vulnerability Scoring System Prediction based on Open Source Intelligence Information Sources. Computers & Security, 103286.
