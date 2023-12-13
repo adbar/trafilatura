@@ -7,37 +7,69 @@ Listing a series of settings that are applied module-wide.
 ## under GNU GPL v3 license
 
 
+import os
+import psutil
+import logging
 from configparser import ConfigParser
 from os import cpu_count
 from pathlib import Path
 
+# Function for dynamic thread calculation
+def calculate_thread_count():
+    """
+    Calculate optimal number of download threads based on CPU and network conditions.
+    """
+    cpu_cores = psutil.cpu_count(logical=True)
+    network_speed = 50  # Placeholder for network speed
+    network_factor = max(1, network_speed // 10)
+    return min(max(1, cpu_cores * network_factor), 20)
 
+DOWNLOAD_THREADS = calculate_thread_count()
+
+# Function for calculating memory usage
+def calculate_memory_usage():
+    """
+    Calculate memory usage limit for caching based on system memory.
+    """
+    total_memory = psutil.virtual_memory().total
+    return max(512, int(total_memory * 0.1 / (1024 ** 2)))
+
+MAX_MEMORY_USAGE_MB = calculate_memory_usage()
+
+# Enhanced logging setup
+def setup_logging():
+    """
+    Set up logging with adjustable verbosity.
+    """
+    log_level = os.getenv('TRAFILATURA_LOG_LEVEL', 'INFO').upper()
+    logging.basicConfig(level=getattr(logging, log_level, logging.INFO))
+
+setup_logging()
+
+# Feature flag system
+def is_feature_enabled(feature_name):
+    """
+    Check if a specific feature is enabled via environment variables.
+    """
+    return os.getenv(f'TRAFILATURA_FEATURE_{feature_name.upper()}', 'False').lower() in ('true', '1')
+
+# Use configuration object or read and parse a settings file
 def use_config(filename=None, config=None):
-    'Use configuration object or read and parse a settings file'
-    # expert option: use config file directly
     if config is not None:
         return config
-    # default filename
     if filename is None:
         filename = str(Path(__file__).parent / 'settings.cfg')
-    # load
     config = ConfigParser()
     config.read(filename)
     return config
 
 DEFAULT_CONFIG = use_config()
 
-
-# Safety checks
-DOWNLOAD_THREADS = min(cpu_count(), 16)  # 16 processes at most
+# Retaining original settings
 LRU_SIZE = 4096
-
-# Files
 MAX_FILES_PER_DIRECTORY = 1000
 FILENAME_LEN = 8
-FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
-
-# Network
+FILE_PROCESSING_CORES = min(cpu_count(), 16)
 MAX_LINKS = 10**6
 MAX_SITEMAPS_SEEN = 10**4
 

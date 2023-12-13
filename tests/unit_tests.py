@@ -1122,6 +1122,61 @@ from openai_function_call import openai_function</code>'''
     assert expected in testresult and 'quote' not in testresult
 
 
+def test_mixed_content_extraction():
+    """
+    Test extraction from HTML with mixed content.
+    """
+    html_content = '<html><body><p>Text here</p><img src="img.jpg"/><video src="video.mp4"/></body></html>'
+    expected = "Text here"
+    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
+    assert result.strip() == expected, "Mixed content extraction failed"
+
+
+def test_nonstd_html_entities():
+    """
+    Test handling non-standard HTML entities.
+    """
+    html_content = '<html><body><p>Text &customentity; more text</p></body></html>'
+    expected = "Text &customentity; more text"
+    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
+    assert result.strip() == expected, "Non-standard HTML entity handling failed"
+
+
+def test_large_doc_performance():
+    """
+    Performance test on large HTML documents.
+    """
+    large_html = '<html><body>' + '<p>Sample text</p>' * 10000 + '</body></html>'
+    start = time.time()
+    extract(large_html, no_fallback=False, config=ZERO_CONFIG)
+    end = time.time()
+    assert end - start < 5, "Large document performance issue"
+
+
+def test_lang_detection_accuracy():
+    """
+    Accuracy of language detection.
+    """
+    samples = [
+        {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
+        {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
+    ]
+    for sample in samples:
+        result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
+        detected = py3langid.classify(result)[0] if LANGID_FLAG else 'unknown'
+        assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
+
+
+def test_nested_element_extraction():
+    """
+    Text extraction from nested HTML elements.
+    """
+    html_content = '<div><span><p>Nested content</p></span></div>'
+    expected = "Nested content"
+    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
+    assert result.strip() == expected, "Nested element extraction failed"
+
+
 if __name__ == '__main__':
     test_trim()
     test_input()
@@ -1139,3 +1194,8 @@ if __name__ == '__main__':
     test_table_processing()
     test_list_processing()
     test_code_blocks()
+    test_mixed_content_extraction()
+    test_nonstd_html_entities()
+    test_large_doc_performance()
+    test_lang_detection_accuracy()
+    test_nested_element_extraction()
