@@ -27,16 +27,26 @@ from .utils import is_similar_domain, load_html, uniquify_list
 
 LOGGER = logging.getLogger(__name__)
 
+# https://www.iana.org/assignments/media-types/media-types.xhtml
+# standard + potential types
 FEED_TYPES = {
+    "application/atom",  # not IANA-compatible
     "application/atom+xml",
+    "application/feed+json",  # not IANA-compatible
     "application/json",
+    "application/rdf",  # not IANA-compatible
     "application/rdf+xml",
+    "application/rss",  # not IANA-compatible
     "application/rss+xml",
-    "application/x.atom+xml",
-    "application/x-atom+xml",
+    "application/x.atom+xml",  # not IANA-compatible
+    "application/x-atom+xml",  # not IANA-compatible
+    "application/xml",
+    "text/atom",  # not IANA-compatible
     "text/atom+xml",
     "text/plain",
+    "text/rdf",  # not IANA-compatible
     "text/rdf+xml",
+    "text/rss",  # not IANA-compatible
     "text/rss+xml",
     "text/xml",
 }
@@ -51,7 +61,14 @@ LINK_ELEMENTS = re.compile(
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
 
-LINK_VALIDATION_RE = re.compile(r"\.(?:atom|rdf|rss|xml)$|\b(?:atom|rss)\b")
+LINK_VALIDATION_RE = re.compile(
+    r"\.(?:atom|rdf|rss|xml)$|"
+    r"\b(?:atom|rss)\b|"
+    r"\?type=100$|"  # Typo3
+    r"feeds/posts/default/?$|"  # Blogger
+    r"\?feed=(?:atom|rdf|rss|rss2)|"
+    r"feed$"  # Generic
+)
 
 
 class FeedParameters:
