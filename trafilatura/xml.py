@@ -29,7 +29,7 @@ from .utils import sanitize, sanitize_tree
 
 LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
- 
+
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \

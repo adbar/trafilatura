@@ -39,6 +39,7 @@ from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
                     uniquify_list)
 
 
+LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
 
 NUM_CONNECTIONS = 50
@@ -50,10 +51,8 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-USER_AGENT = 'trafilatura/' + "123" + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + PKG_VERSION + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS['User-Agent'] = USER_AGENT
-
-LOGGER = logging.getLogger(__name__)
 
 RawResponse = namedtuple('RawResponse', ['data', 'status', 'url'])
 
