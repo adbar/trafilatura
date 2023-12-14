@@ -113,6 +113,7 @@ setup(
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
         "courlan >= 0.9.5",
         "htmldate >= 1.6.0",
+        "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
         "lxml >= 4.9.3 ; platform_system != 'Darwin'",
         "lxml == 4.9.2 ; platform_system == 'Darwin'",

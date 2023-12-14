@@ -8,19 +8,28 @@ All functions related to XML generation, processing and validation.
 
 import logging
 import lzma
+
 from html import unescape
 from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
 
-from . import __version__
+
 from .filters import text_chars_test
 from .utils import sanitize, sanitize_tree
 
+
 LOGGER = logging.getLogger(__name__)
+PKG_VERSION = version("trafilatura")
+
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
@@ -395,7 +404,7 @@ def write_fullheader(teidoc, docmeta):
             tags_list.text = ','.join(docmeta.tags)
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
-    application = SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
+    application = SubElement(appinfo, 'application', version=PKG_VERSION, ident='Trafilatura')
     label = SubElement(application, 'label')
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
