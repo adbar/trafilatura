@@ -14,8 +14,10 @@ from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
-from importlib.metadata import version
-PKG_VERSION = version("trafilatura")
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
 
 from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
@@ -26,6 +28,8 @@ from .utils import sanitize, sanitize_tree
 
 
 LOGGER = logging.getLogger(__name__)
+PKG_VERSION = version("trafilatura")
+ 
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \

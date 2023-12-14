@@ -28,13 +28,18 @@ import urllib3
 from courlan import UrlStore
 from courlan.network import redirection_test
 
-from importlib.metadata import version
-PKG_VERSION = version("trafilatura")
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 
 from .settings import DEFAULT_CONFIG
 from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
                     uniquify_list)
 
+
+PKG_VERSION = version("trafilatura")
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
