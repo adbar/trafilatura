@@ -8,17 +8,22 @@ All functions related to XML generation, processing and validation.
 
 import logging
 import lzma
+
 from html import unescape
 from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
 
+from importlib.metadata import version
+PKG_VERSION = version("trafilatura")
+
 from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
 
-from . import __version__
+
 from .filters import text_chars_test
 from .utils import sanitize, sanitize_tree
+
 
 LOGGER = logging.getLogger(__name__)
 # validation
@@ -395,7 +400,7 @@ def write_fullheader(teidoc, docmeta):
             tags_list.text = ','.join(docmeta.tags)
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
-    application = SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
+    application = SubElement(appinfo, 'application', version=PKG_VERSION, ident='Trafilatura')
     label = SubElement(application, 'label')
     label.text = 'Trafilatura'
     pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')

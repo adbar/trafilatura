@@ -28,10 +28,13 @@ import urllib3
 from courlan import UrlStore
 from courlan.network import redirection_test
 
-from . import __version__
+from importlib.metadata import version
+PKG_VERSION = version("trafilatura")
+
 from .settings import DEFAULT_CONFIG
 from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
                     uniquify_list)
+
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
@@ -42,7 +45,7 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + "123" + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
 LOGGER = logging.getLogger(__name__)
