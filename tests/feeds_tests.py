@@ -220,6 +220,7 @@ def test_feeds_helpers():
         )
         == 1
     )
+
     # no comments wanted
     assert (
         len(
@@ -254,6 +255,24 @@ def test_feeds_helpers():
     assert determine_feed(
         '<html><body><a href="https://example.org/rss"><body/></html>', params
     ) == ["https://example.org/rss"]
+    assert determine_feed(
+        '<html><body><a href="https://example.org/feeds/posts/default/"><body/></html>',
+        params,
+    ) == ["https://example.org/feeds/posts/default/"]
+    assert (
+        len(
+            determine_feed(
+                '<html><body><a href="https://www.test.org/cat/?feed=rss" /><body/></html>',
+                params,
+            )
+        )
+        == 1
+    )
+    assert determine_feed(
+        '<html><body><a href="?feed=rss" /><body/></html>',
+        params,
+    ) == ["https://example.org/?feed=rss"]
+
     # feed discovery
     assert not find_feed_urls("http://")
     assert not find_feed_urls("https://httpbun.com/status/404")
