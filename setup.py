@@ -112,7 +112,7 @@ setup(
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
         "courlan >= 0.9.5",
-        "htmldate @ git+https://github.com/adamh-oai/htmldate@unpin",
+        "htmldate @ git+https://github.com/adbar/htmldate",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
         # see tests on Github Actions
