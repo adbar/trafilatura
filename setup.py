@@ -115,7 +115,7 @@ setup(
         "htmldate >= 1.6.0",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
-        "lxml >= 4.9.3 ; platform_system != 'Darwin'",
+        "lxml >= 4.9.3, < 5 ; platform_system != 'Darwin'",
         "lxml == 4.9.2 ; platform_system == 'Darwin'",
         "urllib3 >= 1.26, < 2; python_version < '3.7'",
         "urllib3 >= 1.26, < 3; python_version >= '3.7'",
