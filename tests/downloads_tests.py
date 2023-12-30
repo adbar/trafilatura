@@ -33,7 +33,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
                                    _send_pycurl_request, _send_request,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
-                                   is_live_page, load_download_buffer)
+                                   is_live_page, load_download_buffer, _reset_global_objects)
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -94,7 +94,17 @@ def test_fetch():
     assert load_html(response) is not None
     # nothing to see here
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
-
+    # test handling redirects
+    res = fetch_url('https://httpbun.com/redirect/2')
+    assert len(res) > 100  # We followed redirects and downloaded something in the end
+    new_config = use_config()  # get a new config instance to avoid mutating the default one
+    # Patch max directs: limit to 0. We won't fetch any page as a result
+    new_config.set('DEFAULT', 'MAX_REDIRECTS', '0')
+    _reset_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
+    res = fetch_url('http://httpbin.org/redirect/1', config=new_config)
+    assert res is None
+    # Also test max redir implementation on pycurl
+    assert _send_pycurl_request('http://httpbin.org/redirect/1', True, new_config) is None
 
 def test_config():
     '''Test how configuration options are read and stored.'''
