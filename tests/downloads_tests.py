@@ -106,6 +106,7 @@ def test_fetch():
     # Also test max redir implementation on pycurl if available
     if pycurl is not None:
         assert _send_pycurl_request('http://httpbin.org/redirect/1', True, new_config) is None
+    _reset_global_objects()  # reset global objects again to avoid affecting other tests
 
 def test_config():
     '''Test how configuration options are read and stored.'''
