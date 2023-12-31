@@ -303,6 +303,12 @@ def sanitize_tree(tree):
         preserve_space = elem.tag in SPACING_PROTECTED or parent_tag in SPACING_PROTECTED
         trailing_space = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
 
+        for attrib_key in elem.attrib.keys():
+            # Remove invalid attributes
+            if ':' in attrib_key:  # colon is reserved for namespaces in XML
+                if not elem.attrib[attrib_key] or attrib_key.split(':')[0] not in tree.nsmap:
+                    elem.attrib.pop(attrib_key)
+
         if elem.text:
             elem.text = sanitize(elem.text, preserve_space, trailing_space)
         if elem.tail:
