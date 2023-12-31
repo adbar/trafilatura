@@ -70,8 +70,9 @@ def test_fetch():
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbun.com/status/200'
-    response = _send_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
-    assert response.data == b''
+    for no_ssl in (True, False):
+        response = _send_request('https://httpbun.com/status/200', no_ssl, DEFAULT_CONFIG)
+        assert response.data == b''
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
