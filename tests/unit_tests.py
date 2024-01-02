@@ -387,7 +387,10 @@ def test_external():
         teststring = f.read()
     assert extract(teststring, no_fallback=True, include_tables=False) == ''
     assert extract(teststring, no_fallback=False, include_tables=False) == ''
-
+    # invalid XML attributes: namespace colon in attribute key (issue #375). Those attributes should be stripped
+    bad_xml = 'Testing<ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
+    res = extract(bad_xml, output_format='xml')
+    assert "Features" in res
 
 def test_images():
     '''Test image extraction function'''
