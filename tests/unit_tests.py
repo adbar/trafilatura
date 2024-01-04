@@ -1162,14 +1162,15 @@ def test_lang_detection_accuracy():
     """
     Accuracy of language detection.
     """
-    samples = [
-        {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
-        {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
-    ]
-    for sample in samples:
-        result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
-        detected = py3langid.classify(result)[0] if LANGID_FLAG else 'unknown'
-        assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
+    if LANGID_FLAG:
+        samples = [
+            {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
+            {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
+        ]
+        for sample in samples:
+            result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
+            detected = py3langid.classify(result)[0]
+            assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
 # does not work
