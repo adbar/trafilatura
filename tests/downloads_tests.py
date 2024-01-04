@@ -52,7 +52,9 @@ def _reset_downloads_global_objects():
     """
     Force global objects to be re-created
     """
-    trafilatura.downloads.HTTP_POOL, trafilatura.downloads.NO_CERT_POOL, trafilatura.downloads.RETRY_STRATEGY = None, None, None
+    trafilatura.downloads.HTTP_POOL = None
+    trafilatura.downloads.NO_CERT_POOL = None
+    trafilatura.downloads.RETRY_STRATEGY = None
 
 def test_fetch():
     '''Test URL fetching.'''
