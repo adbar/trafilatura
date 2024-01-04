@@ -48,13 +48,6 @@ def setup_logging():
 setup_logging()
 
 
-def is_feature_enabled(feature_name):
-    """
-    Check if a specific feature is enabled via environment variables.
-    """
-    return os.getenv(f'TRAFILATURA_FEATURE_{feature_name.upper()}', 'False').lower() in ('true', '1')
-
-
 def use_config(filename=None, config=None):
     """
     Use configuration object or read and parse a settings file.
