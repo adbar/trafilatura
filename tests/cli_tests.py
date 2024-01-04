@@ -218,7 +218,7 @@ def test_download():
     #teststring = fetch_url(url)
     #assert teststring is not None
     #assert cli.examine(teststring, args, url) is None
-    url = 'https://httpbun.org/html'
+    url = 'https://httpbun.com/html'
     teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
@@ -408,27 +408,27 @@ def test_crawling():
         args = cli.parse_args(testargs)
     cli_utils.cli_crawler(args)
 
-    testargs = ['', '--crawl', 'https://httpbun.org/html']
+    testargs = ['', '--crawl', 'https://httpbun.com/html']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    assert f.getvalue() == 'https://httpbun.org/html\n'
+    assert f.getvalue() == 'https://httpbun.com/html\n'
 
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # links permitted
-    testargs = ['', '--crawl', 'https://httpbun.org/links/1/1', '--list', '--parallel', '1']
+    testargs = ['', '--crawl', 'https://httpbun.com/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
     # possibly a bug on Github actions, should be 2 URLs
-    assert f.getvalue() in ('https://httpbun.org/links/1/1\nhttps://httpbun.org/links/1/0\n', 'https://httpbun.org/links/1/1\n')
+    assert f.getvalue() in ('https://httpbun.com/links/1/1\nhttps://httpbun.com/links/1/0\n', 'https://httpbun.com/links/1/1\n')
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # 0 links permitted
-    args.crawl = 'https://httpbun.org/links/4/4'
+    args.crawl = 'https://httpbun.com/links/4/4'
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args, n=0)
@@ -437,13 +437,13 @@ def test_crawling():
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
 
     # Exploration (Sitemap + Crawl)
-    testargs = ['', '--explore', 'https://httpbun.org/html', '--list']
+    testargs = ['', '--explore', 'https://httpbun.com/html', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
-    assert f.getvalue().strip() == 'https://httpbun.org/html'
+    assert f.getvalue().strip() == 'https://httpbun.com/html'
 
 
 def test_probing():

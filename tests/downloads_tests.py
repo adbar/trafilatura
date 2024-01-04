@@ -53,27 +53,27 @@ def test_fetch():
     assert _send_request('', True, DEFAULT_CONFIG) is None
 
     # is_live general tests
-    assert _urllib3_is_live_page('https://httpbun.org/status/301') is True
-    assert _urllib3_is_live_page('https://httpbun.org/status/404') is False
-    assert is_live_page('https://httpbun.org/status/403') is False
+    assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
+    assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
+    assert is_live_page('https://httpbun.com/status/403') is False
     # is_live pycurl tests
     if pycurl is not None:
-        assert _pycurl_is_live_page('https://httpbun.org/status/301') is True
+        assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
 
     # fetch_url
     assert fetch_url('#@1234') is None
-    assert fetch_url('https://httpbun.org/status/404') is None
+    assert fetch_url('https://httpbun.com/status/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
     # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
-    url = 'https://httpbun.org/status/200'
-    response = _send_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
+    url = 'https://httpbun.com/status/200'
+    response = _send_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
     assert response.data == b''
     if pycurl is not None:
-        response1 = _send_pycurl_request('https://httpbun.org/status/200', True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
@@ -155,7 +155,7 @@ def test_queue():
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    inputurls = ['https://httpbun.org/status/301', 'https://httpbun.org/status/304', 'https://httpbun.org/status/200', 'https://httpbun.org/status/300', 'https://httpbun.org/status/400', 'https://httpbun.org/status/505']
+    inputurls = ['https://httpbun.com/status/301', 'https://httpbun.com/status/304', 'https://httpbun.com/status/200', 'https://httpbun.com/status/300', 'https://httpbun.com/status/400', 'https://httpbun.com/status/505']
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')

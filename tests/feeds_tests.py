@@ -220,6 +220,7 @@ def test_feeds_helpers():
         )
         == 1
     )
+
     # no comments wanted
     assert (
         len(
@@ -254,9 +255,27 @@ def test_feeds_helpers():
     assert determine_feed(
         '<html><body><a href="https://example.org/rss"><body/></html>', params
     ) == ["https://example.org/rss"]
+    assert determine_feed(
+        '<html><body><a href="https://example.org/feeds/posts/default/"><body/></html>',
+        params,
+    ) == ["https://example.org/feeds/posts/default/"]
+    assert (
+        len(
+            determine_feed(
+                '<html><body><a href="https://www.test.org/cat/?feed=rss" /><body/></html>',
+                params,
+            )
+        )
+        == 1
+    )
+    assert determine_feed(
+        '<html><body><a href="?feed=rss" /><body/></html>',
+        params,
+    ) == ["https://example.org/?feed=rss"]
+
     # feed discovery
     assert not find_feed_urls("http://")
-    assert not find_feed_urls("https://httpbun.org/status/404")
+    assert not find_feed_urls("https://httpbun.com/status/404")
     # Feedburner/Google links
     assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == [
         "https://feedproxy.google.com/ABCD"
@@ -271,7 +290,7 @@ def test_feeds_helpers():
 
 def test_cli_behavior():
     """Test command-line interface with respect to feeds"""
-    testargs = ["", "--list", "--feed", "https://httpbun.org/xml"]
+    testargs = ["", "--list", "--feed", "https://httpbun.com/xml"]
     with patch.object(sys, "argv", testargs):
         assert main() is None
 
