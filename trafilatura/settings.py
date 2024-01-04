@@ -6,15 +6,16 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-
-import os
-import psutil
 import logging
+import os
+
 from configparser import ConfigParser
 from os import cpu_count
 from pathlib import Path
 
-# Function for dynamic thread calculation
+import psutil
+
+
 def calculate_thread_count():
     """
     Calculate optimal number of download threads based on CPU and network conditions.
@@ -26,7 +27,7 @@ def calculate_thread_count():
 
 DOWNLOAD_THREADS = calculate_thread_count()
 
-# Function for calculating memory usage
+
 def calculate_memory_usage():
     """
     Calculate memory usage limit for caching based on system memory.
@@ -36,7 +37,7 @@ def calculate_memory_usage():
 
 MAX_MEMORY_USAGE_MB = calculate_memory_usage()
 
-# Enhanced logging setup
+
 def setup_logging():
     """
     Set up logging with adjustable verbosity.
@@ -46,15 +47,18 @@ def setup_logging():
 
 setup_logging()
 
-# Feature flag system
+
 def is_feature_enabled(feature_name):
     """
     Check if a specific feature is enabled via environment variables.
     """
     return os.getenv(f'TRAFILATURA_FEATURE_{feature_name.upper()}', 'False').lower() in ('true', '1')
 
-# Use configuration object or read and parse a settings file
+
 def use_config(filename=None, config=None):
+    """
+    Use configuration object or read and parse a settings file.
+    """
     if config is not None:
         return config
     if filename is None:
@@ -62,6 +66,7 @@ def use_config(filename=None, config=None):
     config = ConfigParser()
     config.read(filename)
     return config
+
 
 DEFAULT_CONFIG = use_config()
 
