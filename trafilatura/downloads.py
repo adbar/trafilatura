@@ -326,12 +326,3 @@ def _send_pycurl_request(url, no_ssl, config):
     # tidy up
     curl.close()
     return RawResponse(bufferbytes, respcode, effective_url)
-
-
-def _reset_global_objects():
-    """
-    Force global objects to be re-created
-    Currently only used during tests
-    """
-    global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
-    HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY = None, None, None

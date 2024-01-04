@@ -27,13 +27,14 @@ from trafilatura.cli import parse_args
 from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import extract
+import trafilatura.downloads
 from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
                                    _determine_headers, _handle_response,
                                    _parse_config, _pycurl_is_live_page,
                                    _send_pycurl_request, _send_request,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
-                                   is_live_page, load_download_buffer, _reset_global_objects)
+                                   is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -46,6 +47,12 @@ ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
 UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
+
+def _reset_downloads_global_objects():
+    """
+    Force global objects to be re-created
+    """
+    trafilatura.downloads.HTTP_POOL, trafilatura.downloads.NO_CERT_POOL, trafilatura.downloads.RETRY_STRATEGY = None, None, None
 
 def test_fetch():
     '''Test URL fetching.'''
@@ -101,13 +108,13 @@ def test_fetch():
     new_config = use_config()  # get a new config instance to avoid mutating the default one
     # Patch max directs: limit to 0. We won't fetch any page as a result
     new_config.set('DEFAULT', 'MAX_REDIRECTS', '0')
-    _reset_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
+    _reset_downloads_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
     res = fetch_url('http://httpbin.org/redirect/1', config=new_config)
     assert res is None
     # Also test max redir implementation on pycurl if available
     if pycurl is not None:
         assert _send_pycurl_request('http://httpbin.org/redirect/1', True, new_config) is None
-    _reset_global_objects()  # reset global objects again to avoid affecting other tests
+    _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
 def test_config():
     '''Test how configuration options are read and stored.'''
