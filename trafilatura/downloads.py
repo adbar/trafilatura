@@ -43,7 +43,6 @@ LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
 
 NUM_CONNECTIONS = 50
-MAX_REDIRECTS = 2
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
@@ -90,8 +89,8 @@ def _send_request(url, no_ssl, config):
     global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
     if not RETRY_STRATEGY:
         RETRY_STRATEGY = urllib3.util.Retry(
-            total=0,
-            redirect=MAX_REDIRECTS, # raise_on_redirect=False,
+            total=config.getint("DEFAULT", "MAX_REDIRECTS"),
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"), # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT')/2,
             status_forcelist=[
@@ -107,13 +106,13 @@ def _send_request(url, no_ssl, config):
             if not HTTP_POOL:
                 HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)  # cert_reqs='CERT_REQUIRED'
             # execute request
-            response = HTTP_POOL.request('GET', url, headers=_determine_headers(config))
+            response = HTTP_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
         else:
             # define pool
             if not NO_CERT_POOL:
                 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=NUM_CONNECTIONS)
             # execute request
-            response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
+            response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
     except urllib3.exceptions.SSLError:
         LOGGER.warning('retrying after SSLError: %s', url)
         return _send_request(url, True, config)
@@ -275,7 +274,7 @@ def _send_pycurl_request(url, no_ssl, config):
     curl.setopt(pycurl.HTTPHEADER, headerlist)
     # curl.setopt(pycurl.USERAGENT, '')
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
-    curl.setopt(pycurl.MAXREDIRS, MAX_REDIRECTS)
+    curl.setopt(pycurl.MAXREDIRS, config.getint('DEFAULT', 'MAX_REDIRECTS'))
     curl.setopt(pycurl.CONNECTTIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
     curl.setopt(pycurl.TIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
     curl.setopt(pycurl.NOSIGNAL, 1)

@@ -43,6 +43,7 @@ The default file included in the package is `settings.cfg <https://github.com/ad
    * ``EXTENSIVE_DATE_SEARCH = on`` set to ``off`` to deactivate ``htmldate``'s opportunistic search (lower recall, higher precision)
 - Navigation
    * ``EXTERNAL_URLS = off`` do not take URLs from other websites in feeds and sitemaps (CLI mode)
+   * ``MAX_REDIRECTS = 2``: maximum number of `URL redirections <https://en.wikipedia.org/wiki/URL_redirection>`_ to be followed. Set to 0 to not follow any redirection.
 
 
 Using a custom file on the command-line
