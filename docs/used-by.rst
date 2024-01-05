@@ -3,17 +3,22 @@ Uses & citations
 
 .. meta::
     :description lang=en:
-        Trafilatura is used at several institutions, included in other software packages and cited in research publications. This page lists projects and publications mentioning the library.
+        Trafilatura's versatility makes it ideal for a wide range of applications, it is included in other software packages and cited in research publications. Known uses and case studies are listed here.
 
 
-Trafilatura is used at several institutions, included in other software packages and cited in research publications, especially in linguistics and natural language processing, social science, information science, and in the context of large language models. This page lists projects and publications mentioning the library.
+Trafilatura is a gateway to understanding and leveraging web content for knowledge discovery and data-driven insights. The tool's versatility makes it ideal for a wide range of applications, from academic research in linguistics and social sciences to practical uses in SEO, business analytics, and cybersecurity. The tool has received accolades for its effectiveness, including being recognized as the most efficient open-source library in article extraction benchmarks and receiving praise in academic evaluations.
 
-To add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
+As such, it is used at several institutions, included in other software packages and cited in research publications, especially in linguistics and natural language processing, social science, information science, and in the context of large language models. This page lists projects and publications mentioning the library.
+
+If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
 
 
 
 Notable projects using this software
 ------------------------------------
+
+Trafilatura has been employed in a variety of contexts and projects. Some of the known uses include academic research (e.g. data-driven studies in linguistics and social sciences), refinement of large language models (LLMs), applications like business analytics and search engine optimization, and further inclusion in other open source packages.
+
 
 Known institutional users
 ^^^^^^^^^^^^^^^^^^^^^^^^^

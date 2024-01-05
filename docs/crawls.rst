@@ -3,8 +3,8 @@ Web crawling
 
 .. meta::
     :description lang=en:
-        This tutorial shows how to perform web crawling tasks with Python and on the command-line.
-        The Trafilatura package allows for easy focused crawling.
+        Dive deep into the web with Python and on the command-line. Trafilatura supports
+        focused crawling, enforces politeness rules, and navigates through websites.
 
 
 
@@ -15,13 +15,10 @@ Another use of web crawlers is in Web archiving, which involves large sets of we
 Other applications include data mining and text analytics, for example building web corpora for linguistic research.
 
 
-This page shows how to perform certain web crawling tasks with Python and on the command-line. The `trafilatura` package allows for easy focused crawling (see definition below).
+Dive deep into the web with crawling techniques. Trafilatura supports focused crawling, adhering to politeness rules, and efficiently navigates through sitemaps and feeds. This page shows how to perform certain web crawling tasks with Python and on the command-line. The `trafilatura` package allows for easy focused crawling (see definition below).
 
 ..
     Web crawlers require resources to run, so companies want to make sure they are using their resources as efficiently as possible, so they must be selective.
-
-
-*New in version 0.9. Still experimental.*
 
 
 Design decisions

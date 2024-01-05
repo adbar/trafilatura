@@ -1,13 +1,13 @@
-Default settings
-================
+Settings and customization
+==========================
 
 .. meta::
     :description lang=en:
-        This documentation page explains how to adjust Trafilatura's default settings
-        for downloads and text extraction, along with examples for Python and the command-line.
+        Tailor Trafilatura to your needs. Its modular design and configuration options allow for
+        extensive customization. See examples for Python and the command-line.
 
 
-There are two different files which can be edited in order to modify the default download and extraction settings:
+Tailor Trafilatura to your needs, its modular design and configuration options allow for extensive customization. In a nutshell, there are two main files which can be edited in order to modify the default download and extraction behavior:
 
 1. ``settings.cfg`` (values designed to be adapted by the user)
 2. ``settings.py`` (package-wide settings, advanced)

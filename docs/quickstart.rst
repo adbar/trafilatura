@@ -2,7 +2,10 @@ Quickstart
 ==========
 
 
-Primary installation method is with a Python package manager: ``pip install trafilatura``. See `installation documentation <installation.html>`_.
+Trafilatura simplifies the process of turning raw HTML into structured, meaningful data. Getting started with it is straightforward. This page offers a walkthrough through its main functions.
+
+
+Primary installation method is with a Python package manager: ``pip install trafilatura``. For more details see `installation documentation <installation.html>`_.
 
 
 With Python
@@ -74,4 +77,12 @@ Extraction options are also available on the command-line, they can be combined:
     $ < myfile.html trafilatura --json --no-tables
 
 
+
+Further steps
+-------------
+
+
 For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
+
+.. hint::
+     Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <Trafilatura_Overview.ipynb>`_
