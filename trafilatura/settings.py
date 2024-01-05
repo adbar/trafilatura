@@ -6,22 +6,11 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-import logging
 
 from configparser import ConfigParser
-from os import cpu_count, getenv
+from os import cpu_count
 from pathlib import Path
 
-
-
-def setup_logging():
-    """
-    Set up logging with adjustable verbosity.
-    """
-    log_level = getenv('TRAFILATURA_LOG_LEVEL', 'INFO').upper()
-    logging.basicConfig(level=getattr(logging, log_level, logging.INFO))
-
-setup_logging()
 
 
 def use_config(filename=None, config=None):
@@ -46,7 +35,7 @@ LRU_SIZE = 4096
 # Files
 MAX_FILES_PER_DIRECTORY = 1000
 FILENAME_LEN = 8
-FILE_PROCESSING_CORES = min(cpu_count(), 16)
+FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
 
 # Network
 MAX_LINKS = 10**6
