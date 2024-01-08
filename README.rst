@@ -1,11 +1,11 @@
-A Python package & command-line tool to gather text on the Web
-==============================================================
+Trafilatura: Discover and Extract Text Data on the Web
+======================================================
 
 
 .. image:: docs/trafilatura-logo.png
-    :alt: Logo as PNG image
-    :align: center
-    :width: 60%
+   :alt: Trafilatura Logo
+   :align: center
+   :width: 60%
 
 |
 
@@ -33,7 +33,6 @@ A Python package & command-line tool to gather text on the Web
     :target: https://aclanthology.org/2021.acl-demo.15/
     :alt: Reference DOI: 10.18653/v1/2021.acl-demo.15
 
-
 |
 
 .. image:: docs/trafilatura-demo.gif
@@ -43,45 +42,51 @@ A Python package & command-line tool to gather text on the Web
     :target: https://trafilatura.readthedocs.org/
 
 
-Description
------------
+Introduction
+------------
 
-Trafilatura is a **Python package and command-line tool** designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to various commonly used formats.
 
-Going from raw HTML to essential parts can alleviate many problems related to text quality, first by avoiding the **noise caused by recurring elements** (headers, footers, links/blogroll etc.) and second by including information such as author and date in order to **make sense of the data**. The extractor tries to strike a balance between limiting noise (precision) and including all valid parts (recall). It also has to be **robust and reasonably fast**, it runs in production on millions of documents.
+Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to multiple commonly used formats.
 
-This tool can be **useful for quantitative research** in corpus linguistics, natural language processing, computational social science and beyond: it is relevant to anyone interested in data science, information extraction, text mining, and scraping-intensive use cases like search engine optimization, business analytics or information security.
+Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, first by **focusing on the actual content**, second by **avoiding the noise** caused by recurring elements (headers, footers etc.), and third by **making sense of the data** with information such as author and publication date. The extractor tries to strike a balance between limiting noise and including all valid parts. It also has to be **robust and reasonably fast** as it runs in production on millions of documents.
+
+The tool's versatility makes it useful for a wide range of applications leveraging web content for knowledge discovery such as **quantitative and data-driven approaches**. It is relevant to anyone interested in language modeling, data mining, information extraction. Scraping-intensive use cases include search engine optimization, business analytics and information security. Trafilatura is used in the academic domain, chiefly for data acquisition in corpus linguistics, natural language processing, and computational social science.
 
 
 Features
 ~~~~~~~~
 
-- Web crawling and text discovery:
-   - Focused crawling and politeness rules
+- Advanced web crawling and text discovery:
+   - Focused crawling adhering to politeness rules
    - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - URL management (blacklists, filtering and de-duplication)
-- Seamless and parallel processing, online and offline:
-   - URLs, HTML files or parsed HTML trees usable as input
-   - Efficient and polite processing of download queues
-   - Conversion of previously downloaded files
-- Robust and efficient extraction:
-   - Main text (with LXML, common patterns and generic algorithms: jusText, fork of readability-lxml)
+   - Smart navigation and URL management (blacklists, filtering and deduplication)
+- Parallel processing of online and offline input:
+   - Live URLs, efficient and polite processing of download queues
+   - Previously downloaded HTML files and parsed HTML trees
+- Robust and customizable extraction of key elements:
+   - Main text (common patterns and generic algorithms like jusText and readability)
    - Metadata (title, author, date, site name, categories and tags)
-   - Formatting and structural elements: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-   - Comments (if applicable)
-- Output formats:
+   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+   - Optional elements: comments, links, images, tables
+   - Extensive configuration options
+- Multiple output formats:
    - Text (minimal formatting or Markdown)
-   - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
+   - CSV (with metadata, tab-separated values)
    - JSON (with metadata)
    - XML (with metadata, text formatting and page structure) and `TEI-XML <https://tei-c.org/>`_
-- Optional add-ons:
+- Add-ons:
    - Language detection on extracted content
    - Graphical user interface (GUI)
    - Speed optimizations
+- Actively maintained with support from the open-source community:
+   - Regular updates, feature additions, and optimizations
+   - Comprehensive documentation
 
 
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content.
 
 For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
@@ -113,59 +118,65 @@ Other evaluations:
 Usage and documentation
 -----------------------
 
-For more information please refer to `the documentation <https://trafilatura.readthedocs.io/>`_:
+`Getting started with Trafilatura <https://trafilatura.readthedocs.io/en/latest/quickstart.html>`_ is straightforward. For more information and detailed guides, visit `Trafilatura's documentation <https://trafilatura.readthedocs.io/>`_:
 
 - `Installation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_
 - Usage: `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_, `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_, `With R <https://trafilatura.readthedocs.io/en/latest/usage-r.html>`_
 - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
-- Python Notebook `Trafilatura Overview <docs/Trafilatura_Overview.ipynb>`_
-- `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
+- Interactive Python Notebook: `Trafilatura Overview <docs/Trafilatura_Overview.ipynb>`_
+- `Tutorials and use cases <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
    - `Text embedding for vector search <https://trafilatura.readthedocs.io/en/latest/tutorial-epsilla.html>`_
    - `Custom web corpus <https://trafilatura.readthedocs.io/en/latest/tutorial0.html>`_
    - `Word frequency list <https://trafilatura.readthedocs.io/en/latest/tutorial1.html>`_
 
 For video tutorials see this Youtube playlist:
 
-- `Web scraping how-tos and tutorials <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_
+- `Web scraping tutorials and how-tos <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_
 
 
 License
 -------
 
-*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
+*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. This license promotes collaboration in software development and ensures that Trafilatura's code remains publicly accessible.
 
-See also `GPL and free software licensing: What's in it for business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
+If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arm's length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, multi-licensing with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting the author <#author>`_ for more options.
 
+For insights into GPL and free software licensing with emphasis on a business context, see `GPL and Free Software Licensing: What's in it for Business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
+
+
+Contributing
+------------
+
+Contributions of all kinds are welcome. Visit the `Contributing page <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated issue page <https://github.com/adbar/trafilatura/issues>`_.
+
+Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who extended the docs or submitted bug reports, features and bugfixes!
 
 
 Context
 -------
 
+Developed with practical applications of academic research in mind, this software is part of a broader effort to derive information from web documents. Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. Web corpus construction involves numerous design decisions, this software package simplifies text data collection and enhances corpus quality. It is currently used to build `text databases for linguistic research <https://www.dwds.de/d/k-web>`_.
 
-Contributing
-~~~~~~~~~~~~
-
-Contributions are welcome! See `CONTRIBUTING.md <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_.
-
-Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
-
-
-Roadmap
-~~~~~~~
-
-For planned enhancements and relevant milestones see `issues page <https://github.com/adbar/trafilatura/milestones>`_.
+*Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the industrial-grade extraction, refinement and conversion process.
 
 
 Author
 ~~~~~~
 
-This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
+Reach out via the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also `Twitter/X <https://x.com/adbarbaresi>`_ for the latest updates.
 
+This work started as a PhD project at the crossroads of linguistics and NLP, this expertise has been instrumental in shaping Trafilatura over the years. It has first been released under its current form in 2019, its development is referenced in the following publications:
 
 - Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, Proceedings of ACL/IJCNLP 2021: System Demonstrations, 2021, p. 122-131.
 -  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
+
+Citing Trafilatura
+~~~~~~~~~~~~~~~~~~
+
+
+If you use Trafilatura in your research or projects, we kindly ask you to cite this work, here is how:
 
 .. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
     :target: https://aclanthology.org/2021.acl-demo.15/
@@ -174,7 +185,6 @@ This effort is part of methods to derive information from web documents in order
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
    :alt: Zenodo archive DOI: 10.5281/zenodo.3460969
-
 
 .. code-block:: shell
 
@@ -189,21 +199,21 @@ This effort is part of methods to derive information from web documents in order
     }
 
 
-You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or on `GitHub <https://github.com/adbar>`_.
-
-
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
+This software is part of a larger ecosystem. It is employed in a variety of academic and development projects, demonstrating its versatility and effectiveness. Case studies and publications are listed on the `Used By documentation page <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
+
+Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
+
 
 .. image:: docs/software-ecosystem.png
-    :alt: Software ecosystem 
+    :alt: Software ecosystem
     :align: center
     :width: 65%
 
 
-*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
-`Known uses of the software <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
+Corresponding posts can be found on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_. The blog covers a range of topics from technical how-tos, updates on new features, to discussions on text mining challenges and solutions.
 
-Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
+Impressive, you have reached the end of the page: Thank you for your interest!

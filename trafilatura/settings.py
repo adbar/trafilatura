@@ -12,21 +12,21 @@ from os import cpu_count
 from pathlib import Path
 
 
+
 def use_config(filename=None, config=None):
-    'Use configuration object or read and parse a settings file'
-    # expert option: use config file directly
+    """
+    Use configuration object or read and parse a settings file.
+    """
     if config is not None:
         return config
-    # default filename
     if filename is None:
         filename = str(Path(__file__).parent / 'settings.cfg')
-    # load
     config = ConfigParser()
     config.read(filename)
     return config
 
-DEFAULT_CONFIG = use_config()
 
+DEFAULT_CONFIG = use_config()
 
 # Safety checks
 DOWNLOAD_THREADS = min(cpu_count(), 16)  # 16 processes at most

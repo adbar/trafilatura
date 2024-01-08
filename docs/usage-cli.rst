@@ -3,14 +3,14 @@ On the command-line
 
 .. meta::
     :description lang=en:
-        This tutorial focuses on text extraction from HTML web pages without writing code.
-        Bulk parallel processing and data mining are also described.
+        Trafilatura offers a robust CLI.  Learn how to download and extract text from HTML web pages without writing code,
+        including parallel processing and data mining capabilities.
 
 
 Introduction
 ------------
 
-Trafilatura includes a `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ and can be conveniently used without writing code.
+Trafilatura offers a robust `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ and can be conveniently used without writing code. Learn how to perform various tasks and leverage the full power of the tool from the terminal.
 
 For the very first steps please refer to this multilingual, step-by-step `Introduction to the command-line interface <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and this `section of the Introduction to Cultural Analytics & Python <https://melaniewalsh.github.io/Intro-Cultural-Analytics/01-Command-Line/01-The-Command-Line.html>`_.
 

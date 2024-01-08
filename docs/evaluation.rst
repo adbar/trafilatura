@@ -3,9 +3,10 @@ Evaluation
 
 .. meta::
     :description lang=en:
-        This benchmark tests how Python tools work on extraction of text from HTML code. Trafilatura
-        performs significantly better than the other comparable libraries in internal and external
-        evaluations.
+        See how Python tools work on main text extraction from HTML pages (html2txt).
+        Trafilatura consistently outperforms other open-source libraries,
+        showcasing its accuracy in extracting web content.
+
 
 
 Although text is ubiquitous on the Web, extracting information from web pages can prove to be difficult. Should the tooling be adapted to particular news outlets or blogs that are targeted (which often amounts to the development of web scraping tools) or should the extraction be as generic as possible to provide opportunistic ways of gathering information?
@@ -50,7 +51,7 @@ Description
 
 **Errors**: The *boilerpy3*, *newspaper3k*, and *readabilipy* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
 
-**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions.
+**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions. Trafilatura consistently outperforms other open-source libraries, showcasing its efficiency and accuracy in extracting web content.
 
 **Roadmap**: Further evaluations will be run, including additional tools and languages. Comment extraction still has to be evaluated, although most libraries don not offer this functionality.
 

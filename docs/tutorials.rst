@@ -2,6 +2,9 @@ Tutorials
 =========
 
 
+Learn through practical examples. The following tutorials cover various scenarios, from text embedding for vector search to building custom web corpora and generating word frequency lists.
+
+
 .. toctree::
    :maxdepth: 2
 

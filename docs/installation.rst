@@ -1,6 +1,12 @@
 Installation
 ============
 
+.. meta::
+    :description lang=en:
+        Setting up Trafilatura is straightforward. This installation guide walks you through the process step-by-step.
+
+
+Setting up Trafilatura is straightforward. This installation guide walks you through the process step-by-step.
 
 
 Python

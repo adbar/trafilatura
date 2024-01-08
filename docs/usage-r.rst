@@ -1,12 +1,19 @@
 With R
 ======
 
+.. meta::
+    :description lang=en:
+        Trafilatura extends its download and extractions capabilities to the R community.
+        Discover how to use Trafilatura in your R projects with this dedicated guide.
+
 
 Introduction
 ------------
 
 
-`R <https://www.r-project.org/>`_ is a free software environment for statistical computing and graphics. The `reticulate <https://rstudio.github.io/reticulate>`_ package provides a comprehensive set of tools for seamless interoperability between Python and R. It basically allows for execution of Python code inside an R session, so that Python packages can be used with minimal adaptations, which is ideal for those who would rather operate from R than having to go back and forth between languages and environments.
+`R <https://www.r-project.org/>`_ is a free software environment for statistical computing and graphics. Trafilatura extends its capabilities to the R community. Discover how to use Trafilatura in your R projects with this dedicated guide.
+
+The `reticulate <https://rstudio.github.io/reticulate>`_ package provides a comprehensive set of tools for seamless interoperability between Python and R. It basically allows for execution of Python code inside an R session, so that Python packages can be used with minimal adaptations, which is ideal for those who would rather operate from R than having to go back and forth between languages and environments.
 
 The package provides several ways to integrate Python code into R projects:
 
