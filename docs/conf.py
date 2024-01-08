@@ -21,7 +21,7 @@ import trafilatura
 # -- Project information -----------------------------------------------------
 
 project = 'trafilatura'
-copyright = '2023, Adrien Barbaresi'
+copyright = '2024, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__

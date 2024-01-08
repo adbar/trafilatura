@@ -1,6 +1,21 @@
 ## History / Changelog
 
 
+### 1.6.4
+
+Maintenance:
+- MacOS: fix setup, update htmldate and add tests (#460)
+- drop invalid XML element attributes with @vbarbaresi in #462
+- remove cyclic imports (#458)
+
+Navigation:
+- introduce `MAX_REDIRECTS` config setting and fix urllib3 redirect handling by @vbarbaresi in #461
+- improve feed detection (#457)
+
+Documentation:
+- enhancements to documentation and testing with @Maddesea in #456
+
+
 ### 1.6.3
 
 Extraction:
