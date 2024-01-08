@@ -1158,7 +1158,7 @@ def test_large_doc_performance():
     assert end - start < 5, "Large document performance issue"
 
 
-def test_lang_detection_accuracy():
+def test_lang_detection():
     """
     Accuracy of language detection.
     """
@@ -1171,17 +1171,6 @@ def test_lang_detection_accuracy():
             result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
             detected = py3langid.classify(result)[0]
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
-
-
-# does not work
-#def test_nested_element_extraction():
-#    """
-#    Text extraction from nested HTML elements.
-#    """
-#    html_content = '<div><span><p>Nested content</p></span></div>'
-#    expected = "Nested content"
-#    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
-#    assert result.strip() == expected, "Nested element extraction failed"
 
 
 if __name__ == '__main__':
@@ -1204,5 +1193,4 @@ if __name__ == '__main__':
     test_mixed_content_extraction()
     test_nonstd_html_entities()
     test_large_doc_performance()
-    test_lang_detection_accuracy()
-    # test_nested_element_extraction()
+    test_lang_detection()

@@ -3,8 +3,9 @@ Evaluation
 
 .. meta::
     :description lang=en:
-        See how Python tools work on main text extraction from HTML pages (html2txt). Trafilatura consistently
-        outperforms other open-source libraries, showcasing its accuracy in extracting web content.
+        See how Python tools work on main text extraction from HTML pages (html2txt).
+        Trafilatura consistently outperforms other open-source libraries,
+        showcasing its accuracy in extracting web content.
 
 
 
