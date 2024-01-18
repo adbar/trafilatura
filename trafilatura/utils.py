@@ -134,8 +134,7 @@ def decode_response(content):
     """Read the urllib3 object corresponding to the server response,
        try to guess its encoding and decode it to return a unicode string"""
     warnings.warn(
-        """Raw response objects will be deprecated for fetch_url,
-           use fetch_response instead.""",
+        "decode_response() will be deprecated, use decode_file() on the content.",
          PendingDeprecationWarning
     )
     return decode_file(content)

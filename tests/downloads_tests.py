@@ -19,7 +19,7 @@ except ImportError:
 
 import gzip
 from time import sleep
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from courlan import UrlStore
 
@@ -28,7 +28,7 @@ from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import extract
 import trafilatura.downloads
-from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
+from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    _determine_headers, _handle_response,
                                    _parse_config, _pycurl_is_live_page,
                                    _send_pycurl_request, _send_urllib_request,
@@ -88,9 +88,10 @@ def test_fetch():
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
     # too large response object
-    response = Mock()
-    response.url = 'https://httpbin.org/encoding/utf8'
-    response.status = 200
+    data = ""
+    status = 200
+    url = 'https://httpbin.org/encoding/utf8'
+    response = Response(data, None, status, url)
     # too large
     response.data = b'ABC'*10000000
     assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
@@ -141,10 +142,8 @@ def test_config():
 def test_decode():
     '''Test how responses are being decoded.'''
     # response type
-    mock = Mock()
-    mock.data = b' '
-    assert decode_response(mock) is not None
-    assert decode_file(mock) is not None
+    data = b" "
+    assert decode_file(data) is not None
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     gz_string = gzip.compress(html_string.encode("utf-8"))

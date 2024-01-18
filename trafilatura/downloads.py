@@ -55,10 +55,12 @@ DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
 
 class Response:
-    __slots__ = ["data", "html", "status", "url"]
+    __slots__ = ["data", "headers", "html", "status", "url"]
+    # content_type ?
 
-    def __init__(self, data, status, url):
+    def __init__(self, data, headers, status, url):
         self.data = data
+        self.headers = headers  # urllib3 only
         self.html = None
         self.status = status
         self.url = url
@@ -128,21 +130,21 @@ def _send_urllib_request(url, no_ssl, config):
         LOGGER.error('download error: %s %s', url, err)  # sys.exc_info()[0]
     else:
         # necessary for standardization
-        return Response(response.data, response.status, response.geturl())
+        return Response(response.data, response.headers, response.status, response.geturl())
     # catchall
     return None
 
 
 def _handle_response(url, response, decode, config):
     'Internal function to run safety checks on response result.'
-    lentest = len(response.html or "") if decode else len(response.data or "")
+    lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif response.data is None or lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         LOGGER.error('too small/incorrect for URL %s', url)
         # raise error instead?
     elif lentest > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
-        LOGGER.error('too large: length %s for URL %s', len(response.data), url)
+        LOGGER.error('too large: length %s for URL %s', lentest, url)
         # raise error instead?
     else:
         return response.html if decode else response
@@ -307,8 +309,8 @@ def _send_pycurl_request(url, no_ssl, config):
     else:
         curl.setopt(pycurl.CAINFO, certifi.where())
     curl.setopt(pycurl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
-    #curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
-    #curl.setopt(pycurl.WRITEDATA, bufferbytes)
+    # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
+    # curl.setopt(pycurl.HEADERFUNCTION, headerbytes)
     # TCP_FASTOPEN
     # curl.setopt(pycurl.FAILONERROR, 1)
     # curl.setopt(pycurl.ACCEPT_ENCODING, '')
@@ -348,4 +350,4 @@ def _send_pycurl_request(url, no_ssl, config):
 
     # tidy up
     curl.close()
-    return Response(bufferbytes, respcode, effective_url)
+    return Response(bufferbytes, None, respcode, effective_url)
