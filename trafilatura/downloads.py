@@ -6,11 +6,13 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-from collections import namedtuple
+import warnings
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from time import sleep
 
 import certifi
+import urllib3
 
 try:
     import pycurl
@@ -24,7 +26,6 @@ try:
 except ImportError:
     pycurl = None
 
-import urllib3
 from courlan import UrlStore
 from courlan.network import redirection_test
 
@@ -35,12 +36,11 @@ except ImportError:
 
 
 from .settings import DEFAULT_CONFIG
-from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
-                    uniquify_list)
+from .utils import (URL_BLACKLIST_REGEX, decode_file,
+                    make_chunks, uniquify_list)
 
 
 LOGGER = logging.getLogger(__name__)
-PKG_VERSION = version("trafilatura")
 
 NUM_CONNECTIONS = 50
 
@@ -50,10 +50,18 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-USER_AGENT = 'trafilatura/' + PKG_VERSION + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + version("trafilatura") + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
-RawResponse = namedtuple('RawResponse', ['data', 'status', 'url'])
+
+class Response:
+    __slots__ = ["data", "html", "status", "url"]
+
+    def __init__(self, data, status, url):
+        self.data = data
+        self.html = None
+        self.status = status
+        self.url = url
 
 
 # caching throws an error
@@ -83,7 +91,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_request(url, no_ssl, config):
+def _send_urllib_request(url, no_ssl, config):
     "Internal function to robustly send a request (SSL or not) and return its result."
     # customize headers
     global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
@@ -115,57 +123,72 @@ def _send_request(url, no_ssl, config):
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
     except urllib3.exceptions.SSLError:
         LOGGER.warning('retrying after SSLError: %s', url)
-        return _send_request(url, True, config)
+        return _send_urllib_request(url, True, config)
     except Exception as err:
         LOGGER.error('download error: %s %s', url, err)  # sys.exc_info()[0]
     else:
         # necessary for standardization
-        return RawResponse(response.data, response.status, response.geturl())
+        return Response(response.data, response.status, response.geturl())
     # catchall
     return None
 
 
 def _handle_response(url, response, decode, config):
     'Internal function to run safety checks on response result.'
+    lentest = len(response.html or "") if decode else len(response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif response.data is None or lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         LOGGER.error('too small/incorrect for URL %s', url)
         # raise error instead?
-    elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+    elif lentest > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
         LOGGER.error('too large: length %s for URL %s', len(response.data), url)
         # raise error instead?
     else:
-        return decode_response(response.data) if decode is True else response
+        return response.html if decode else response
     # catchall
     return None
 
 
 def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
-    """Fetches page using urllib3 and decodes the response.
+    """Fetches page using urllib3 or pycurl and decodes the response.
 
     Args:
         url: URL of the page to fetch.
-        decode: Decode response instead of returning urllib3 response object (boolean).
+        decode: Decode response instead of returning response object (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
 
     Returns:
-        RawResponse object: data (headers + body), status (HTML code as string) and url
+        Response object: data (headers + body), status (HTML code as string) and url
         or None in case the result is invalid or there was a problem with the network.
 
     """
-    LOGGER.debug('sending request: %s', url)
-    if pycurl is None:
-        response = _send_request(url, no_ssl, config)
-    else:
-        response = _send_pycurl_request(url, no_ssl, config)
+    if not decode:
+        warnings.warn(
+            """Raw response objects will be deprecated for fetch_url,
+               use fetch_response instead.""",
+             PendingDeprecationWarning
+        )
+    response = fetch_response(url, decode, no_ssl, config)
     if response is not None and response != '':
         return _handle_response(url, response, decode, config)
         # return '' (useful do discard further processing?)
         # return response
-    LOGGER.debug('request failed: %s', url)
     return None
+
+
+def fetch_response(url, decode=False, no_ssl=False, config=DEFAULT_CONFIG):
+    "Fetches page using urllib3 or pycurl and returns a raw response object."
+    dl_function = _send_urllib_request if pycurl is None else _send_pycurl_request
+    LOGGER.debug('sending request: %s', url)
+    response = dl_function(url, no_ssl, config)  # Response
+    if not response:  # None or ""
+        LOGGER.debug('request failed: %s', url)
+        return None
+    if decode and response.data:
+        response.html = decode_file(response.data)
+    return response
 
 
 def _pycurl_is_live_page(url):
@@ -325,4 +348,4 @@ def _send_pycurl_request(url, no_ssl, config):
 
     # tidy up
     curl.close()
-    return RawResponse(bufferbytes, respcode, effective_url)
+    return Response(bufferbytes, respcode, effective_url)

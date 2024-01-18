@@ -31,12 +31,12 @@ import trafilatura.downloads
 from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
                                    _determine_headers, _handle_response,
                                    _parse_config, _pycurl_is_live_page,
-                                   _send_pycurl_request, _send_request,
+                                   _send_pycurl_request, _send_urllib_request,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, use_config
-from trafilatura.utils import decode_response, load_html
+from trafilatura.utils import decode_file, decode_response, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -59,7 +59,7 @@ def _reset_downloads_global_objects():
 def test_fetch():
     '''Test URL fetching.'''
     # logic: empty request?
-    assert _send_request('', True, DEFAULT_CONFIG) is None
+    assert _send_urllib_request('', True, DEFAULT_CONFIG) is None
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
@@ -74,13 +74,13 @@ def test_fetch():
     assert fetch_url('https://httpbun.com/status/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
-    # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # assert _send_urllib_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbun.com/status/200'
     for no_ssl in (True, False):
-        response = _send_request('https://httpbun.com/status/200', no_ssl, DEFAULT_CONFIG)
+        response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, DEFAULT_CONFIG)
         assert response.data == b''
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
@@ -144,14 +144,15 @@ def test_decode():
     mock = Mock()
     mock.data = b' '
     assert decode_response(mock) is not None
+    assert decode_file(mock) is not None
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     gz_string = gzip.compress(html_string.encode("utf-8"))
-    assert decode_response(gz_string) == html_string
+    assert decode_response(gz_string) == html_string == decode_file(gz_string)
     # Brotli
     if brotli is not None:
         brotli_string = brotli.compress(html_string.encode("utf-8"))
-        assert decode_response(brotli_string) == html_string
+        assert decode_file(brotli_string) == html_string
 
 
 def test_queue():
