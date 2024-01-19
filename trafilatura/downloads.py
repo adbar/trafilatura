@@ -61,7 +61,7 @@ class Response:
 
     def __init__(self, data, status, url):
         self.data = data
-        self.headers = None  # urllib3 only
+        self.headers = None
         self.html = None
         self.status = status
         self.url = url
@@ -350,8 +350,8 @@ def _send_pycurl_request(url, no_ssl, with_headers, config):
     # additional info
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
-    # standardize
     resp = Response(bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL))
+    curl.close()
 
     if with_headers:
         respheaders = {}
@@ -367,6 +367,4 @@ def _send_pycurl_request(url, no_ssl, with_headers, config):
             respheaders[name.strip()] = value.strip() # name.strip().lower() ?
         resp.store_headers(respheaders)
 
-    # tidy up
-    curl.close()
     return resp
