@@ -167,17 +167,15 @@ def _handle_response(url, response, decode, config):
 
 
 def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
-    """Fetches page using urllib3 or pycurl and decodes the response.
+    """Downloads a web page and seamlessly decodes the response.
 
     Args:
         url: URL of the page to fetch.
-        decode: Decode response instead of returning response object (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
 
     Returns:
-        Response object: data (headers + body), status (HTML code as string) and url
-        or None in case the result is invalid or there was a problem with the network.
+        Unicode string or None in case of failed downloads and invalid results.
 
     """
     if not decode:
@@ -195,7 +193,19 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
 
 
 def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, config=DEFAULT_CONFIG):
-    "Fetches page using urllib3 or pycurl and returns a raw response object."
+    """Downloads a web page and returns a full response object.
+
+    Args:
+        url: URL of the page to fetch.
+        decode: Use html attribute to decode the data (boolean).
+        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
+        with_headers: Keep track of the response headers.
+        config: Pass configuration values for output control.
+
+    Returns:
+        Response object or None in case of failed downloads and invalid results.
+
+    """
     dl_function = _send_urllib_request if pycurl is None else _send_pycurl_request
     LOGGER.debug('sending request: %s', url)
     response = dl_function(url, no_ssl, with_headers, config)  # Response

@@ -75,7 +75,10 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For detailed results see the `benchmark <evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
+
+For detailed results see the `benchmark <evaluation.html>`_. The results can be reproduced, see the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>_` for instructions.
+
 
 Other evaluations:
 ^^^^^^^^^^^^^^^^^^
@@ -117,17 +120,18 @@ For more information please refer to `usage documentation <usage.html>`_ and `tu
 License
 -------
 
-*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
+*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. This license promotes collaboration in software development and ensures that Trafilatura's code remains publicly accessible.
 
-See also `GPL and free software licensing: What's in it for business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
+If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, combining with `compatible licenses <https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses>`_, or `contacting the author https://adrien.barbaresi.eu>``_ for more options.
+
+For insights into GPL and free software licensing with emphasis on a business context, see `GPL and Free Software Licensing: What's in it for Business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 
 
 
 Context
 -------
 
-
-These documentation pages also provide information on `concepts behind data collection <background.html>`_ as well as practical tips on how to gather web texts (see `tutorials <tutorials.html>`_).
+Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. These documentation pages also provide information on `concepts behind data collection <background.html>`_ as well as practical tips on how to gather web texts (see `tutorials <tutorials.html>`_).
 
 
 
@@ -135,8 +139,6 @@ Contributing
 ~~~~~~~~~~~~
 
 Contributions are welcome! See `CONTRIBUTING.md <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_.
-
-Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
 Roadmap
@@ -148,7 +150,9 @@ For planned enhancements and relevant milestones see `issues page <https://githu
 Author
 ~~~~~~
 
-This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
+Reach out via the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also `Twitter/X <https://x.com/adbarbaresi>`_ for the latest updates.
+
+This work started as a PhD project at the crossroads of linguistics and NLP, this expertise has been instrumental in shaping Trafilatura over the years. It has first been released under its current form in 2019, its development is referenced in the following publications:
 
 
 - Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, Proceedings of ACL/IJCNLP 2021: System Demonstrations, 2021, p. 122-131.
@@ -184,16 +188,14 @@ You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or on `
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
+This software is part of a larger ecosystem. It is employed in a variety of academic and development projects, demonstrating its versatility and effectiveness. Case studies and publications are listed on the `Used By documentation page <used-by.html>`_.
+
+Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
 .. image:: software-ecosystem.png
     :alt: Software ecosystem 
     :align: center
     :width: 65%
-
-
-*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
-
-`Known uses of the software <used-by.html>`_.
 
 Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
 
