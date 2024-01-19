@@ -56,8 +56,8 @@ DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
 
 class Response:
+    "Store information gathered in a HTTP response object."
     __slots__ = ["data", "headers", "html", "status", "url"]
-    # content_type ?
 
     def __init__(self, data, status, url):
         self.data = data
@@ -65,6 +65,16 @@ class Response:
         self.html = None
         self.status = status
         self.url = url
+
+    def store_headers(self, headerdict):
+        "Store response headers if required."
+        # control or normalization here?
+        self.headers = headerdict
+
+    def decode_data(self, decode):
+        "Decode the bytestring in data and store a string in html."
+        if decode and self.data:
+            self.html = decode_file(self.data)
 
 
 # caching throws an error
@@ -133,7 +143,7 @@ def _send_urllib_request(url, no_ssl, with_headers, config):
         # necessary for standardization
         resp = Response(response.data, response.status, response.geturl())
         if with_headers:
-            resp.headers = response.headers
+            resp.store_headers(response.headers)
         return resp
     # catchall
     return None
@@ -192,8 +202,7 @@ def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, confi
     if not response:  # None or ""
         LOGGER.debug('request failed: %s', url)
         return None
-    if decode and response.data:
-        response.html = decode_file(response.data)
+    response.decode_data(decode)
     return response
 
 
@@ -356,7 +365,7 @@ def _send_pycurl_request(url, no_ssl, with_headers, config):
             name, value = line.split(':', 1)
             # Now we can actually record the header name and value.
             respheaders[name.strip()] = value.strip() # name.strip().lower() ?
-        resp.headers = respheaders
+        resp.store_headers(respheaders)
 
     # tidy up
     curl.close()
