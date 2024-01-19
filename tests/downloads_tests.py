@@ -59,7 +59,7 @@ def _reset_downloads_global_objects():
 def test_fetch():
     '''Test URL fetching.'''
     # logic: empty request?
-    assert _send_urllib_request('', True, DEFAULT_CONFIG) is None
+    assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
@@ -74,16 +74,18 @@ def test_fetch():
     assert fetch_url('https://httpbun.com/status/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
-    # assert _send_urllib_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # assert _send_urllib_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
-        assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+        assert _send_pycurl_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbun.com/status/200'
     for no_ssl in (True, False):
-        response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, DEFAULT_CONFIG)
+        response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, True, DEFAULT_CONFIG)
         assert response.data == b''
+        assert response.headers["X-Powered-By"].startswith("httpbun")
     if pycurl is not None:
-        response1 = _send_pycurl_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
+        assert response1.headers["x-powered-by"].startswith("httpbun")
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
@@ -91,7 +93,7 @@ def test_fetch():
     data = ""
     status = 200
     url = 'https://httpbin.org/encoding/utf8'
-    response = Response(data, None, status, url)
+    response = Response(data, status, url)
     # too large
     response.data = b'ABC'*10000000
     assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
@@ -116,7 +118,7 @@ def test_fetch():
     assert res is None
     # Also test max redir implementation on pycurl if available
     if pycurl is not None:
-        assert _send_pycurl_request('http://httpbin.org/redirect/1', True, new_config) is None
+        assert _send_pycurl_request('http://httpbin.org/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
 def test_config():
