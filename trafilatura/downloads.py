@@ -6,11 +6,14 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-from collections import namedtuple
+import warnings
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from io import BytesIO
 from time import sleep
 
 import certifi
+import urllib3
 
 try:
     import pycurl
@@ -24,7 +27,6 @@ try:
 except ImportError:
     pycurl = None
 
-import urllib3
 from courlan import UrlStore
 from courlan.network import redirection_test
 
@@ -35,12 +37,11 @@ except ImportError:
 
 
 from .settings import DEFAULT_CONFIG
-from .utils import (URL_BLACKLIST_REGEX, decode_response, make_chunks,
-                    uniquify_list)
+from .utils import (URL_BLACKLIST_REGEX, decode_file,
+                    make_chunks, uniquify_list)
 
 
 LOGGER = logging.getLogger(__name__)
-PKG_VERSION = version("trafilatura")
 
 NUM_CONNECTIONS = 50
 
@@ -50,10 +51,30 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-USER_AGENT = 'trafilatura/' + PKG_VERSION + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + version("trafilatura") + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
-RawResponse = namedtuple('RawResponse', ['data', 'status', 'url'])
+
+class Response:
+    "Store information gathered in a HTTP response object."
+    __slots__ = ["data", "headers", "html", "status", "url"]
+
+    def __init__(self, data, status, url):
+        self.data = data
+        self.headers = None
+        self.html = None
+        self.status = status
+        self.url = url
+
+    def store_headers(self, headerdict):
+        "Store response headers if required."
+        # control or normalization here?
+        self.headers = headerdict
+
+    def decode_data(self, decode):
+        "Decode the bytestring in data and store a string in html."
+        if decode and self.data:
+            self.html = decode_file(self.data)
 
 
 # caching throws an error
@@ -83,7 +104,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_request(url, no_ssl, config):
+def _send_urllib_request(url, no_ssl, with_headers, config):
     "Internal function to robustly send a request (SSL or not) and return its result."
     # customize headers
     global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
@@ -115,57 +136,74 @@ def _send_request(url, no_ssl, config):
             response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
     except urllib3.exceptions.SSLError:
         LOGGER.warning('retrying after SSLError: %s', url)
-        return _send_request(url, True, config)
+        return _send_urllib_request(url, True, with_headers, config)
     except Exception as err:
         LOGGER.error('download error: %s %s', url, err)  # sys.exc_info()[0]
     else:
         # necessary for standardization
-        return RawResponse(response.data, response.status, response.geturl())
+        resp = Response(response.data, response.status, response.geturl())
+        if with_headers:
+            resp.store_headers(response.headers)
+        return resp
     # catchall
     return None
 
 
 def _handle_response(url, response, decode, config):
     'Internal function to run safety checks on response result.'
+    lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         LOGGER.error('too small/incorrect for URL %s', url)
         # raise error instead?
-    elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
-        LOGGER.error('too large: length %s for URL %s', len(response.data), url)
+    elif lentest > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+        LOGGER.error('too large: length %s for URL %s', lentest, url)
         # raise error instead?
     else:
-        return decode_response(response.data) if decode is True else response
+        return response.html if decode else response
     # catchall
     return None
 
 
 def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
-    """Fetches page using urllib3 and decodes the response.
+    """Fetches page using urllib3 or pycurl and decodes the response.
 
     Args:
         url: URL of the page to fetch.
-        decode: Decode response instead of returning urllib3 response object (boolean).
+        decode: Decode response instead of returning response object (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
 
     Returns:
-        RawResponse object: data (headers + body), status (HTML code as string) and url
+        Response object: data (headers + body), status (HTML code as string) and url
         or None in case the result is invalid or there was a problem with the network.
 
     """
-    LOGGER.debug('sending request: %s', url)
-    if pycurl is None:
-        response = _send_request(url, no_ssl, config)
-    else:
-        response = _send_pycurl_request(url, no_ssl, config)
+    if not decode:
+        warnings.warn(
+            """Raw response objects will be deprecated for fetch_url,
+               use fetch_response instead.""",
+             PendingDeprecationWarning
+        )
+    response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
     if response is not None and response != '':
         return _handle_response(url, response, decode, config)
         # return '' (useful do discard further processing?)
         # return response
-    LOGGER.debug('request failed: %s', url)
     return None
+
+
+def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, config=DEFAULT_CONFIG):
+    "Fetches page using urllib3 or pycurl and returns a raw response object."
+    dl_function = _send_urllib_request if pycurl is None else _send_pycurl_request
+    LOGGER.debug('sending request: %s', url)
+    response = dl_function(url, no_ssl, with_headers, config)  # Response
+    if not response:  # None or ""
+        LOGGER.debug('request failed: %s', url)
+        return None
+    response.decode_data(decode)
+    return response
 
 
 def _pycurl_is_live_page(url):
@@ -254,12 +292,12 @@ def buffered_downloads(bufferlist, download_threads, decode=True):
                 yield future_to_url[future], future.result()
 
 
-def _send_pycurl_request(url, no_ssl, config):
+def _send_pycurl_request(url, no_ssl, with_headers, config):
     '''Experimental function using libcurl and pycurl to speed up downloads'''
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    # headerbytes = BytesIO()
+    headerbytes = BytesIO()
     headers = _determine_headers(config)
     headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
     for header, content in headers.items():
@@ -277,15 +315,18 @@ def _send_pycurl_request(url, no_ssl, config):
     curl.setopt(pycurl.MAXREDIRS, config.getint('DEFAULT', 'MAX_REDIRECTS'))
     curl.setopt(pycurl.CONNECTTIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
     curl.setopt(pycurl.TIMEOUT, config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'))
+    curl.setopt(pycurl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
     curl.setopt(pycurl.NOSIGNAL, 1)
+
     if no_ssl is True:
         curl.setopt(pycurl.SSL_VERIFYPEER, 0)
         curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     else:
         curl.setopt(pycurl.CAINFO, certifi.where())
-    curl.setopt(pycurl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
-    #curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
-    #curl.setopt(pycurl.WRITEDATA, bufferbytes)
+
+    if with_headers:
+        curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
+
     # TCP_FASTOPEN
     # curl.setopt(pycurl.FAILONERROR, 1)
     # curl.setopt(pycurl.ACCEPT_ENCODING, '')
@@ -301,28 +342,29 @@ def _send_pycurl_request(url, no_ssl, config):
         # additional error codes: 80, 90, 96, 98
         if no_ssl is False and err.args[0] in (35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91):
             LOGGER.debug('retrying after SSL error: %s %s', url, err)
-            return _send_pycurl_request(url, True, config)
+            return _send_pycurl_request(url, True, with_headers, config)
         # traceback.print_exc(file=sys.stderr)
         # sys.stderr.flush()
         return None
 
-    # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
-    #respheaders = dict()
-    #for header_line in headerbytes.getvalue().decode('iso-8859-1').splitlines(): # re.split(r'\r?\n',
-    #    # This will botch headers that are split on multiple lines...
-    #    if ':' not in header_line:
-    #        continue
-    #    # Break the header line into header name and value.
-    #    name, value = header_line.split(':', 1)
-    #    # Now we can actually record the header name and value.
-    #    respheaders[name.strip()] = value.strip() # name.strip().lower() ## TODO: check
-    # status
-    respcode = curl.getinfo(curl.RESPONSE_CODE)
-    # url
-    effective_url = curl.getinfo(curl.EFFECTIVE_URL)
     # additional info
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
-    # tidy up
+    resp = Response(bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL))
     curl.close()
-    return RawResponse(bufferbytes, respcode, effective_url)
+
+    if with_headers:
+        respheaders = {}
+        # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
+        for line in headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines():
+            # re.split(r'\r?\n') ?
+            # This will botch headers that are split on multiple lines...
+            if ':' not in line:
+                continue
+            # Break the header line into header name and value.
+            name, value = line.split(':', 1)
+            # Now we can actually record the header name and value.
+            respheaders[name.strip()] = value.strip() # name.strip().lower() ?
+        resp.store_headers(respheaders)
+
+    return resp

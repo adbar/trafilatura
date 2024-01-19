@@ -19,7 +19,7 @@ except ImportError:
 
 import gzip
 from time import sleep
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from courlan import UrlStore
 
@@ -28,15 +28,15 @@ from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import extract
 import trafilatura.downloads
-from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT,
+from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    _determine_headers, _handle_response,
                                    _parse_config, _pycurl_is_live_page,
-                                   _send_pycurl_request, _send_request,
+                                   _send_pycurl_request, _send_urllib_request,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, use_config
-from trafilatura.utils import decode_response, load_html
+from trafilatura.utils import decode_file, decode_response, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -59,7 +59,7 @@ def _reset_downloads_global_objects():
 def test_fetch():
     '''Test URL fetching.'''
     # logic: empty request?
-    assert _send_request('', True, DEFAULT_CONFIG) is None
+    assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
@@ -74,23 +74,26 @@ def test_fetch():
     assert fetch_url('https://httpbun.com/status/404') is None
     # test if the functions default to no_ssl
     # doesn't work?
-    # assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # assert _send_urllib_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
-        assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+        assert _send_pycurl_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbun.com/status/200'
     for no_ssl in (True, False):
-        response = _send_request('https://httpbun.com/status/200', no_ssl, DEFAULT_CONFIG)
+        response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, True, DEFAULT_CONFIG)
         assert response.data == b''
+        assert response.headers["X-Powered-By"].startswith("httpbun")
     if pycurl is not None:
-        response1 = _send_pycurl_request('https://httpbun.com/status/200', True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
+        assert response1.headers["x-powered-by"].startswith("httpbun")
         assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
     # too large response object
-    response = Mock()
-    response.url = 'https://httpbin.org/encoding/utf8'
-    response.status = 200
+    data = ""
+    status = 200
+    url = 'https://httpbin.org/encoding/utf8'
+    response = Response(data, status, url)
     # too large
     response.data = b'ABC'*10000000
     assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
@@ -115,7 +118,7 @@ def test_fetch():
     assert res is None
     # Also test max redir implementation on pycurl if available
     if pycurl is not None:
-        assert _send_pycurl_request('http://httpbin.org/redirect/1', True, new_config) is None
+        assert _send_pycurl_request('http://httpbin.org/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
 def test_config():
@@ -141,17 +144,16 @@ def test_config():
 def test_decode():
     '''Test how responses are being decoded.'''
     # response type
-    mock = Mock()
-    mock.data = b' '
-    assert decode_response(mock) is not None
+    data = b" "
+    assert decode_file(data) is not None
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     gz_string = gzip.compress(html_string.encode("utf-8"))
-    assert decode_response(gz_string) == html_string
+    assert decode_response(gz_string) == html_string == decode_file(gz_string)
     # Brotli
     if brotli is not None:
         brotli_string = brotli.compress(html_string.encode("utf-8"))
-        assert decode_response(brotli_string) == html_string
+        assert decode_file(brotli_string) == html_string
 
 
 def test_queue():

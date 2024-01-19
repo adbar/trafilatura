@@ -9,6 +9,7 @@ Module bundling functions related to HTML and text processing.
 # import csv
 import logging
 import re
+import warnings
 
 # if brotli is installed
 try:
@@ -129,17 +130,19 @@ def detect_encoding(bytesobject):
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_response(response):
+def decode_response(content):
     """Read the urllib3 object corresponding to the server response,
-       check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
-    # urllib3 response object / bytes switch
-    resp_content = response if isinstance(response, bytes) else response.data
-    return decode_file(resp_content)
+    warnings.warn(
+        "decode_response() will be deprecated, use decode_file() on the content.",
+         PendingDeprecationWarning
+    )
+    return decode_file(content)
 
 
 def decode_file(filecontent):
-    """Guess bytestring encoding and try to decode to Unicode string.
+    """Check if the bytestring could be GZip and eventually decompress it,
+       guess bytestring encoding and try to decode to Unicode string.
        Resort to destructive conversion otherwise."""
     # init
     if isinstance(filecontent, str):
