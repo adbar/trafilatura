@@ -449,7 +449,8 @@ def test_crawling():
 def test_probing():
     "Test webpage probing functions."
     url = 'https://example.org/'
-    testargs = ['', '--probe', url, '--target-language', 'de']
+    conf = os.path.join(RESOURCES_DIR, 'zerolength.cfg')
+    testargs = ['', '--probe', url, '--target-language', 'de', '--config-file', conf]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
 
@@ -458,15 +459,13 @@ def test_probing():
         cli.process_args(args)
     if LANGID_FLAG:
         assert f.getvalue().strip() == ''
+        args.target_language = 'en'
+        f2 = io.StringIO()
+        with redirect_stdout(f2):
+            cli.process_args(args)
+        assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
-
-    args.target_language = 'en'
-    args.config_file = os.path.join(RESOURCES_DIR, 'zerolength.cfg')
-    f = io.StringIO()
-    with redirect_stdout(f):
-        cli.process_args(args)
-    assert f.getvalue().strip() == url
 
 
 if __name__ == '__main__':
