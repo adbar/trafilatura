@@ -452,6 +452,7 @@ def test_probing():
     testargs = ['', '--probe', url, '--target-language', 'de']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
+
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -459,7 +460,9 @@ def test_probing():
         assert f.getvalue().strip() == ''
     else:
         assert f.getvalue().strip() == url
+
     args.target_language = 'en'
+    args.config_file = os.path.join(RESOURCES_DIR, 'zerolength.cfg')
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)

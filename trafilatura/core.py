@@ -26,7 +26,7 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              handle_textnode, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
-from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from .settings import DEFAULT_CONFIG, HTML2TXT_CLEAN, TAG_CATALOG, use_config
 from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, FORMATTING_PROTECTED
 from .xml import (build_json_output, build_tei_output, build_xml_output,
                   control_xml_output, remove_empty_elements, strip_double_tags,
@@ -787,8 +787,13 @@ def html2txt(content):
     """
     tree = load_html(content)
     if tree is None:
-        return ''
-    return ' '.join(tree.text_content().split()).strip()
+        return ""
+    body = tree.find(".//body")
+    if body is None:
+        return ""
+    for elem in tree.xpath(HTML2TXT_CLEAN):
+        elem.getparent().remove(elem)
+    return " ".join(body.text_content().split()).strip()
 
 
 def determine_returnstring(document, output_format, include_formatting, tei_validation):
