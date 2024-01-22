@@ -72,7 +72,7 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-HTML2TXT_CLEAN = ".//aside|.//footer|.//script|.//style"
+BASIC_CLEAN_XPATH = ".//aside|.//footer|.//script|.//style"
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # + list(CUT_EMPTY_ELEMS)
