@@ -29,7 +29,7 @@ from inscriptis import get_text
 # from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from newsplease import NewsPlease
-from readabilipy import simple_json_from_html_string
+# from readabilipy import simple_json_from_html_string
 from readability import Document
 from resiliparse.extract.html2text import extract_plain_text
 from resiliparse.parse.encoding import bytes_to_str, detect_encoding
@@ -290,7 +290,7 @@ def run_boilerpipe(htmlstring):
     try:
         content = boilerpipe_extractor.get_content(htmlstring)
         # sanitize(boilerpipe_extractor.get_content(htmlstring))
-    except Exception:
+    except Exception as e:
         #print('Boilerpipe exception:', err)
         content = ''
     return content
@@ -330,21 +330,24 @@ def run_newsplease(htmlstring):
 #    return sanitize(returnstring)
 
 
-def run_readabilipy(htmlstring):
-    '''try with the readability.py module'''
-    try:
-        article = simple_json_from_html_string(htmlstring, use_readability=True)
-        returnlist = [textelem['text'] for textelem in article['plain_text']]
-        return '\n'.join(returnlist) # sanitize(content)
-    except Exception as err:
-        #print('Readabilipy exception:', err)
-        return ''
+# def run_readabilipy(htmlstring):
+#     '''try with the readability.py module'''
+#     try:
+#         article = simple_json_from_html_string(htmlstring, use_readability=True)
+#         returnlist = [textelem['text'] for textelem in article['plain_text']]
+#         return '\n'.join(returnlist) # sanitize(content)
+#     except Exception as err:
+#         #print('Readabilipy exception:', err)
+#         return ''
 
 
 def run_resiliparse(htmlstring):
     '''try with the resiliparse package'''
-    decoded = bytes_to_str(htmlstring, detect_encoding(htmlstring))
-    tree = HTMLTree.parse(decoded)
+    if isinstance(htmlstring, bytes):
+        decoded = bytes_to_str(htmlstring, detect_encoding(htmlstring))
+        tree = HTMLTree.parse(decoded)
+    else:
+        tree = HTMLTree.parse(htmlstring)
     return extract_plain_text(tree, main_content=True)
 
 
@@ -427,7 +430,7 @@ html2text_result.update(template_dict)
 html_text_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
-readabilipy_result.update(template_dict)
+# readabilipy_result.update(template_dict)
 resiliparse_result.update(template_dict)
 bs4_result.update(template_dict)
 # jparser_result.update(template_dict)
@@ -600,14 +603,14 @@ for item in EVAL_PAGES:
     #jparser_result['true negatives'] += tn
     #jparser_result['false negatives'] += fn
     # readabilipy
-    start = time.time()
-    result = run_readabilipy(htmlstring)
-    readabilipy_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    readabilipy_result['true positives'] += tp
-    readabilipy_result['false positives'] += fp
-    readabilipy_result['true negatives'] += tn
-    readabilipy_result['false negatives'] += fn
+    # start = time.time()
+    # result = run_readabilipy(htmlstring)
+    # readabilipy_result['time'] += time.time() - start
+    # tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    # readabilipy_result['true positives'] += tp
+    # readabilipy_result['false positives'] += fp
+    # readabilipy_result['true negatives'] += tn
+    # readabilipy_result['false negatives'] += fn
     # resiliparse
     start = time.time()
     result = run_resiliparse(htmlstring)
@@ -700,10 +703,10 @@ print(readability_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
 print(f"time diff.: {readability_result['time'] / baseline_result['time']:.2f}")
 
-print('readabilipy')
-print(readabilipy_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
-print(f"time diff.: {readabilipy_result['time'] / baseline_result['time']:.2f}")
+# # print('readabilipy')
+# # print(readabilipy_result)
+# # print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
+# print(f"time diff.: {readabilipy_result['time'] / baseline_result['time']:.2f}")
 
 print('resiliparse')
 print(resiliparse_result)
