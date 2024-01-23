@@ -203,11 +203,11 @@ def load_html(htmlobject):
     if isinstance(htmlobject, HtmlElement):
         return htmlobject
     # use trafilatura or urllib3 responses directly
-    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, 'data'):
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
     # do not accept any other type after this point
     if not isinstance(htmlobject, (bytes, str)):
-        raise TypeError('incompatible input type', type(htmlobject))
+        raise TypeError("incompatible input type", type(htmlobject))
     # start processing
     tree = None
     # try to guess encoding and decode file: if None then keep original
@@ -223,8 +223,8 @@ def load_html(htmlobject):
         tree = fromstring(htmlobject, parser=HTML_PARSER)
     except ValueError:
         # "Unicode strings with encoding declaration are not supported."
-        fallback_parse = True
         tree = fromstring_bytes(htmlobject)
+        fallback_parse = True
     except Exception as err:  # pragma: no cover
         LOGGER.error("lxml parsing failed: %s", err)
     # second pass: try passing bytes to LXML
