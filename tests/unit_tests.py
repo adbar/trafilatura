@@ -114,13 +114,27 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
-    assert utils.is_dubious_html('This is a string.') is True
-    htmlstring = "<!DOCTYPE html PUBLIC />\n<html/>"
+    assert utils.is_dubious_html("This is a string.") is True
+
+    htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
     beginning = htmlstring[:50].lower()
-    assert utils.strip_faulty_doctypes(htmlstring, beginning) == "\n<html/>"
+    assert utils.repair_faulty_html(htmlstring, beginning) == "\n<html></html>"
+
     htmlstring = "<html>\n</html>"
     beginning = htmlstring[:50].lower()
-    assert utils.strip_faulty_doctypes(htmlstring, beginning) == htmlstring
+    assert utils.repair_faulty_html(htmlstring, beginning) == htmlstring
+
+    htmlstring = "<html/>\n</html>"
+    beginning = htmlstring[:50].lower()
+    assert utils.repair_faulty_html(htmlstring, beginning) == "<html>\n</html>"
+
+    htmlstring = '<!DOCTYPE html>\n<html lang="en-US"/>\n<head/>\n<body/>\n</html>'
+    beginning = htmlstring[:50].lower()
+    assert (
+        utils.repair_faulty_html(htmlstring, beginning)
+        == '<!DOCTYPE html>\n<html lang="en-US">\n<head/>\n<body/>\n</html>'
+    )
+
     with pytest.raises(TypeError) as err:
         assert utils.load_html(123) is None
     assert 'incompatible' in str(err.value)
@@ -354,6 +368,9 @@ def test_html2txt():
     assert html2txt(html.fromstring(mydoc)) == "Here is the body text"
     assert html2txt("") == ""
     assert html2txt("123") == ""
+    assert html2txt("<html></html>") == ""
+    assert html2txt("<html><body/></html>") == ""
+    assert html2txt("<html><body><style>font-size: 8pt</style><p>ABC</p></body></html>") == "ABC"
 
 
 def test_external():
