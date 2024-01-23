@@ -499,7 +499,10 @@ def _move_element_one_level_up(element):
     if element.tail is not None and element.tail.strip():
         new_elem.text = element.tail.strip()
         element.tail = None
-    if len(new_elem) != 0 or new_elem.text:
+    if parent.tail is not None and parent.tail.strip():
+        new_elem.tail = parent.tail.strip()
+        parent.tail = None
+    if len(new_elem) != 0 or new_elem.text or new_elem.tail:
         grand_parent.insert(grand_parent.index(element)+1, new_elem)
     if len(parent) == 0 and parent.text is None:
         grand_parent.remove(parent)
