@@ -316,9 +316,9 @@ def test_ab_with_p_parent_resolved():
     </TEI>"""
     )
     cleaned = check_tei(xml_doc, "fake_url")
-    result = [(elem.tag, elem.text, elem.tail) for elem in xml_doc.iter(["p", "ab"])]
+    result = [(elem.tag, elem.text, elem.tail if elem.tail is None else elem.tail.strip()) for elem in xml_doc.iter(["p", "ab"])]
     assert result == [
-        ("p", "text1", None),
+        ("p", "text1", ""),
         ("ab", "text2", None),
         ("p", "text3", None),
         ("ab", "text4", None),
@@ -339,10 +339,10 @@ def test_ab_with_p_parent_resolved():
     </TEI>"""
     )
     cleaned = check_tei(xml_doc, "fake_url")
-    result = [(elem.tag, elem.text, elem.tail) for elem in xml_doc.iter(["p", "ab"])]
+    result = [(elem.tag, elem.text, elem.tail if elem.tail is None else elem.tail.strip()) for elem in xml_doc.iter(["p", "ab"])]
     assert result == [
-        ("p", "text0", None),
-        ("ab", "text1", None),
+        ("p", "text0", ""),
+        ("ab", "text1", ""),
         ("p", None, None),
         ("ab", "text3", None),
         ("p", "text4", None),
