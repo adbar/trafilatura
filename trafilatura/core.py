@@ -26,7 +26,7 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              handle_textnode, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
-from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from .settings import BASIC_CLEAN_XPATH, DEFAULT_CONFIG, TAG_CATALOG, use_config
 from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, FORMATTING_PROTECTED
 from .xml import (build_json_output, build_tei_output, build_xml_output,
                   control_xml_output, remove_empty_elements, strip_double_tags,
@@ -712,6 +712,13 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     return body, text, len_text
 
 
+def basic_cleaning(tree):
+    "Remove a few section types from the document."
+    for elem in tree.xpath(BASIC_CLEAN_XPATH):
+        elem.getparent().remove(elem)
+    return tree
+
+
 def baseline(filecontent):
     """Use baseline extraction function targeting text paragraphs and/or JSON metadata.
 
@@ -735,9 +742,9 @@ def baseline(filecontent):
                 elem = SubElement(postbody, 'p')
                 elem.text = trim(mymatch[1].replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
-    # basic tree cleaning
-    for elem in tree.xpath('.//aside|.//footer|.//script|.//style'):
-        elem.getparent().remove(elem)
+
+    tree = basic_cleaning(tree)
+
     # scrape from article tag
     article_elem = tree.find('.//article')
     if article_elem is not None:
@@ -787,8 +794,12 @@ def html2txt(content):
     """
     tree = load_html(content)
     if tree is None:
-        return ''
-    return ' '.join(tree.text_content().split()).strip()
+        return ""
+    body = tree.find(".//body")
+    if body is None:
+        return ""
+    tree = basic_cleaning(tree)
+    return " ".join(body.text_content().split()).strip()
 
 
 def determine_returnstring(document, output_format, include_formatting, tei_validation):
