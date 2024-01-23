@@ -494,13 +494,12 @@ def _move_element_one_level_up(element):
     parent = element.getparent()
     new_elem = Element("p")
     new_elem.extend(sibling for sibling in element.itersiblings())
-
-    parent.addnext(element)
-
+    grand_parent= parent.getparent()
+    grand_parent.insert(grand_parent.index(parent)+1, element)
     if element.tail is not None and element.tail.strip():
         new_elem.text = element.tail.strip()
         element.tail = None
     if len(new_elem) != 0 or new_elem.text:
-        element.addnext(new_elem)
+        grand_parent.insert(grand_parent.index(element)+1, new_elem)
     if len(parent) == 0 and parent.text is None:
-        parent.getparent().remove(parent)
+        grand_parent.remove(parent)
