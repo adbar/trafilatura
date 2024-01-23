@@ -246,7 +246,7 @@ def replace_element_text(element, include_formatting):
 def merge_with_parent(element, include_formatting=False):
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
-    if not parent:
+    if parent is None:
         return
 
     full_text = replace_element_text(element, include_formatting)
@@ -491,16 +491,28 @@ def _wrap_unwanted_siblings_of_div(div_element):
 
 
 def _move_element_one_level_up(element):
+    """
+    Fix TEI compatibility issues by moving certain p-elems up in the XML tree.
+    There is always a n+2 nesting for p-elements with the minimal structure ./TEI/text/body/p
+    """
     parent = element.getparent()
+    grand_parent = parent.getparent()
+
     new_elem = Element("p")
     new_elem.extend(sibling for sibling in element.itersiblings())
 
-    parent.addnext(element)
+    grand_parent.insert(grand_parent.index(parent) + 1, element)
 
-    if element.tail is not None and element.tail.strip():
+    if element.tail and element.tail.strip():
         new_elem.text = element.tail.strip()
         element.tail = None
-    if len(new_elem) != 0 or new_elem.text:
-        element.addnext(new_elem)
+
+    if parent.tail and parent.tail.strip():
+        new_elem.tail = parent.tail.strip()
+        parent.tail = None
+
+    if len(new_elem) != 0 or new_elem.text or new_elem.tail:
+        grand_parent.insert(grand_parent.index(element) + 1, new_elem)
+
     if len(parent) == 0 and parent.text is None:
-        parent.getparent().remove(parent)
+        grand_parent.remove(parent)
