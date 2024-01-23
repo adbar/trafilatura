@@ -1,6 +1,19 @@
 ## History / Changelog
 
 
+### 1.7.0
+
+Extraction:
+- improved `html2txt()` function
+
+Downloads:
+- add advanced `fetch_response()` function
+→ pending deprecation for `fetch_url(decode=False)`
+
+Maintenance:
+- Support for LXML v5+ (#484 by @knit-bee, #485)
+
+
 ### 1.6.4
 
 Maintenance:

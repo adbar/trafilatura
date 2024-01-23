@@ -30,8 +30,8 @@ extras = {
     "all": [
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
-        "faust-cchardet >= 2.1.18; python_version >= '3.11'",  # fix for build
-        "htmldate[speed] >= 1.6.0",
+        "faust-cchardet >= 2.1.19; python_version >= '3.11'",
+        "htmldate[speed] >= 1.7.0",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.2",
     ],
@@ -112,12 +112,12 @@ setup(
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
         "courlan >= 0.9.5",
-        "htmldate >= 1.6.1",
+        "htmldate >= 1.7.0",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
         # see tests on Github Actions
         "lxml == 4.9.2 ; platform_system == 'Darwin' and python_version <= '3.8'",
-        "lxml == 4.9.4 ; platform_system != 'Darwin' or python_version > '3.8'",
+        "lxml >= 4.9.4, < 6; platform_system != 'Darwin' or python_version > '3.8'",
         "urllib3 >= 1.26, < 2; python_version < '3.7'",
         "urllib3 >= 1.26, < 3; python_version >= '3.7'",
     ],
