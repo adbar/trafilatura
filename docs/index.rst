@@ -122,7 +122,7 @@ License
 
 *Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. This license promotes collaboration in software development and ensures that Trafilatura's code remains publicly accessible.
 
-If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, combining with `compatible licenses <https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses>`_, or `contacting the author https://adrien.barbaresi.eu>``_ for more options.
+If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, combining with `compatible licenses <https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses>`_, or `contacting the author <https://adrien.barbaresi.eu>`_ for more options.
 
 For insights into GPL and free software licensing with emphasis on a business context, see `GPL and Free Software Licensing: What's in it for Business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 

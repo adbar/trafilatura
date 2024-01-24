@@ -78,12 +78,12 @@ Helpers
 .. autofunction:: trafilatura.fetch_url
 
 ``fetch_response()``
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 .. autofunction:: trafilatura.fetch_response
 
 ``decode_file()``
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
 
 .. autofunction:: trafilatura.utils.decode_file
 

@@ -61,7 +61,7 @@ Using the ``fetch_response()`` function instead provides access to more informat
     # headers and html attributes used
 
 .. note::
-    Introduced by version 1.7.0.
+    New in version 1.7.0.
 
 
 Trafilatura-backed parallel threads

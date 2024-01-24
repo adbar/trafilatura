@@ -2,7 +2,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 ======================================================
 
 
-.. image:: docs/trafilatura-logo.png
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-logo.png
    :alt: Trafilatura Logo
    :align: center
    :width: 60%
@@ -35,7 +35,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 
 |
 
-.. image:: docs/trafilatura-demo.gif
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-demo.gif
     :alt: Demo as GIF image
     :align: center
     :width: 85%
@@ -48,7 +48,7 @@ Introduction
 
 Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to multiple commonly used formats.
 
-Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, by **avoiding the noise** caused by recurring elements (headers, footers etc.), and by **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
+Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
 
 The tool's versatility makes it useful for a wide range of applications leveraging web content for knowledge discovery such as **quantitative and data-driven approaches**. Trafilatura is used in the academic domain and beyond (e.g. in NLP, SEO, business analytics).
 
@@ -111,7 +111,8 @@ Other evaluations:
 ^^^^^^^^^^^^^^^^^^
 
 - Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_
-- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French)
+- Best overall tool according to `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (Lejeune & Barbaresi 2020)
+- Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://webis.de/downloads/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
 
 
 Usage and documentation
@@ -205,7 +206,7 @@ This software is part of a larger ecosystem. It is employed in a variety of acad
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
 
-.. image:: docs/software-ecosystem.png
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png
     :alt: Software ecosystem
     :align: center
     :width: 65%
