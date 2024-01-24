@@ -2,7 +2,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 ======================================================
 
 
-.. image:: docs/trafilatura-logo.png
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-logo.png
    :alt: Trafilatura Logo
    :align: center
    :width: 60%
@@ -35,7 +35,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 
 |
 
-.. image:: docs/trafilatura-demo.gif
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-demo.gif
     :alt: Demo as GIF image
     :align: center
     :width: 85%
@@ -48,10 +48,9 @@ Introduction
 
 Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to multiple commonly used formats.
 
-Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, first by **focusing on the actual content**, second by **avoiding the noise** caused by recurring elements (headers, footers etc.), and third by **making sense of the data** with information such as author and publication date. The extractor tries to strike a balance between limiting noise and including all valid parts. It also has to be **robust and reasonably fast** as it runs in production on millions of documents.
+Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
 
-The tool's versatility makes it useful for a wide range of applications leveraging web content for knowledge discovery such as **quantitative and data-driven approaches**. It is relevant to anyone interested in language modeling, data mining, information extraction. Scraping-intensive use cases include search engine optimization, business analytics and information security. Trafilatura is used in the academic domain, chiefly for data acquisition in corpus linguistics, natural language processing, and computational social science.
-
+The tool's versatility makes it useful for a wide range of applications leveraging web content for knowledge discovery such as **quantitative and data-driven approaches**. Trafilatura is used in the academic domain and beyond (e.g. in NLP, SEO, business analytics).
 
 Features
 ~~~~~~~~
@@ -86,9 +85,9 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content.
+Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
 
-For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_. The results can be reproduced, see the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>_` for instructions.
 
 =============================== =========  ========== ========= ========= ======
 750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8
@@ -112,7 +111,8 @@ Other evaluations:
 ^^^^^^^^^^^^^^^^^^
 
 - Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_
-- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French)
+- Best overall tool according to `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (Lejeune & Barbaresi 2020)
+- Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://webis.de/downloads/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
 
 
 Usage and documentation
@@ -139,7 +139,7 @@ License
 
 *Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. This license promotes collaboration in software development and ensures that Trafilatura's code remains publicly accessible.
 
-If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arm's length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, multi-licensing with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting the author <#author>`_ for more options.
+If you wish to redistribute this library but are concerned about the license conditions, consider interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, combining with `compatible licenses <https://www.gnu.org/licenses/license-list.html#GPLCompatibleLicenses>`_, or `contacting the author <#author>`_ for more options.
 
 For insights into GPL and free software licensing with emphasis on a business context, see `GPL and Free Software Licensing: What's in it for Business? <https://web.archive.org/web/20230127221311/https://www.techrepublic.com/article/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 
@@ -175,8 +175,7 @@ This work started as a PhD project at the crossroads of linguistics and NLP, thi
 Citing Trafilatura
 ~~~~~~~~~~~~~~~~~~
 
-
-If you use Trafilatura in your research or projects, we kindly ask you to cite this work, here is how:
+Trafilatura is used in the academic domain, chiefly for data acquisition in corpus linguistics, natural language processing, and computational social science. Here is how to cite it:
 
 .. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
     :target: https://aclanthology.org/2021.acl-demo.15/
@@ -207,7 +206,7 @@ This software is part of a larger ecosystem. It is employed in a variety of acad
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
 
-.. image:: docs/software-ecosystem.png
+.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png
     :alt: Software ecosystem
     :align: center
     :width: 65%

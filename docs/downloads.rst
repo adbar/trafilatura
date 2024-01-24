@@ -13,9 +13,6 @@ This documentation page shows how to run simple downloads and how to configure a
 A main objective of data collection over the Internet such as web crawling is to efficiently gather as many useful web pages as possible. In order to retrieve multiples web pages at once it makes sense to retrieve as many domains as possible in parallel. However, particular rules apply then.
 
 
-*New in version 0.9: Functions exposed and made usable for convenience.*
-
-
 With Python
 -----------
 
@@ -43,25 +40,28 @@ Running simple downloads is straightforward with the ``fetch_url()`` fonction. T
 For efficiency reasons the function makes use of a connection pool where connections are kept open (unless too many websites are retrieved at once). You may see warnings in logs about it which you can safely ignore.
 
 
-``RawResponse`` object
-~~~~~~~~~~~~~~~~~~~~~~
+``Response`` object
+~~~~~~~~~~~~~~~~~~~
 
-The content (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
+The content retrieved by ``fetch_url()`` (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
 
-This default setting can be overriden using the ``decode=False`` parameter. ``fetch_url()`` then returns a `urllib3-like response object <https://urllib3.readthedocs.io/en/latest/user-guide.html#response-content>`_ providing additional information.
-
-This ``RawResponse`` object comprises the attributes ``data``, ``status``, and ``url`` which can be accessed as follows:
+Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (optinal dict), ``html`` (optional str), ``status``, and ``url``:
 
 .. code-block:: python
 
-    # RawResponse object instead of Unicode string
-    >>> response = fetch_url('https://www.example.org', decode=False)
+    # Response object instead of Unicode string
+    >>> response = fetch_response('https://www.example.org')
     >>> response.status
     200
     >>> response.url
     'https://www.example.org'
     >>> response.data
     # raw HTML in binary format
+    >>> response = fetch_response('https://www.example.org', decode=True, with_headers=True)
+    # headers and html attributes used
+
+.. note::
+    New in version 1.7.0.
 
 
 Trafilatura-backed parallel threads
