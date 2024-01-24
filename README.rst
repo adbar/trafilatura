@@ -2,7 +2,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 ======================================================
 
 
-.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-logo.png
+.. image:: https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-logo.png
    :alt: Trafilatura Logo
    :align: center
    :width: 60%
@@ -35,7 +35,7 @@ Trafilatura: Discover and Extract Text Data on the Web
 
 |
 
-.. image:: https://raw.githubusercontent.com/adbar/htmldate/master/docs/trafilatura-demo.gif
+.. image:: https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-demo.gif
     :alt: Demo as GIF image
     :align: center
     :width: 85%
