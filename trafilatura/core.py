@@ -14,7 +14,7 @@ import warnings
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, strip_elements, strip_tags
-from lxml.html import tostring
+from lxml.html import tostring, Element as HtmlElement
 
 # own
 from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
@@ -545,7 +545,16 @@ def extract_content(tree, options):
     for expr in BODY_XPATH:
         # select tree if the expression has been found
         try:
-            subtree = tree.xpath(expr)[0]
+            subtrees = tree.xpath(expr)
+            if len(subtrees) > 1 and options.recall is True:
+                new_subtree = HtmlElement(subtrees[0].tag)
+                for _subtree in subtrees:
+                    for child in _subtree:
+                        # if len(' '.join(child.itertext()).strip()) > MIN_EXTRACTED_SIZE ?
+                        new_subtree.append(child)
+                subtree = new_subtree
+            else:
+                subtree = subtrees[0]
         except IndexError:
             continue
         # prune the subtree
