@@ -87,7 +87,7 @@ Evaluation and alternatives
 
 Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
 
-For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_. The results can be reproduced, see the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>_` for instructions.
+For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_. The results can be reproduced, see the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ for instructions.
 
 =============================== =========  ========== ========= ========= ======
 750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8
