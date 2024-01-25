@@ -43,10 +43,13 @@ Downloads
 HTTP library
 ^^^^^^^^^^^^
 
-Using another download utility (see ``pycurl`` with Python and ``wget`` or ``curl`` on the command-line).
+In the default settings Trafilatura identifies itself in the `User-Agent header <https://en.wikipedia.org/wiki/User-Agent_header>`_. It may have been compromised by others on certain websites and thus blocked, see `this discussion <https://www.webmasterworld.com/search_engine_spiders/5090863.htm>`_.
+
+For various reasons, it is also possible that the standard download utility doesn't come through. Using another one is then an option (see ``pycurl`` with Python and ``wget`` or ``curl`` on the command-line).
 
 - Installing the additional download utility ``pycurl`` manually or using ``pip3 install trafilatura[all]`` can alleviate the problem: another download library is used, leading to different results.
 - Several alternatives are available on the command-line, e.g. ``wget -O - "my_url" | trafilatura`` instead of ``trafilatura -u "my_url"``.
+- Emulating a browser is also possible, see the information on headless browsing above.
 
 .. note::
     Downloads may fail because your IP or user agent are blocked. Trafilatura's crawling and download capacities do not bypass such restrictions.

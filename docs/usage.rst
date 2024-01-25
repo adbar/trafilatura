@@ -9,6 +9,7 @@ Usage
    usage-python
    usage-cli
    usage-r
+   usage-api
    usage-gui
    downloads
    crawls
