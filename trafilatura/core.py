@@ -550,11 +550,13 @@ def extract_content(tree, options):
                 new_subtree = HtmlElement(subtrees[0].tag)
                 for _subtree in subtrees:
                     for child in _subtree:
-                        # if len(' '.join(child.itertext()).strip()) > MIN_EXTRACTED_SIZE ?
-                        new_subtree.append(child)
+                        if len(''.join(child.itertext()).strip()) > options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+                            new_subtree.append(child)
                 subtree = new_subtree
-            else:
+            elif len(subtrees) == 1:
                 subtree = subtrees[0]
+            else:
+                continue
         except IndexError:
             continue
         # prune the subtree
