@@ -313,18 +313,18 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
 Raw HTTP response objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``fetch_url()`` function can pass a urllib3 response object straight to the extraction by setting the optional ``decode`` argument to ``False``.
+The ``fetch_response()`` function can pass a response object straight to the extraction.
 
 This can be useful to get the final redirection URL with ``response.url`` and then pass is directly as a URL argument to the extraction function:
 
 .. code-block:: python
 
     # necessary components
-    >>> from trafilatura import fetch_url, bare_extraction
+    >>> from trafilatura import fetch_response, bare_extraction
     # load an example
-    >>> response = fetch_url("https://www.example.org", decode=False)
+    >>> response = fetch_response("https://www.example.org")
     # perform extract() or bare_extraction() on Trafilatura's response object
-    >>> bare_extraction(response, url=response.url) # here is the redirection URL
+    >>> bare_extraction(response.data, url=response.url)  # here is the redirection URL
 
 
 LXML objects

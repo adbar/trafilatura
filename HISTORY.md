@@ -11,7 +11,8 @@ Downloads:
 → pending deprecation for `fetch_url(decode=False)`
 
 Maintenance:
-- Support for LXML v5+ (#484 by @knit-bee, #485)
+- support for LXML v5+ (#484 by @knit-bee, #485)
+- update [htmldate](https://github.com/adbar/htmldate/releases/tag/v1.7.0)
 
 
 ### 1.6.4
