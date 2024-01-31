@@ -38,7 +38,7 @@ def delete_element(element):
     "Remove the element from the LXML tree."
     try:
         element.drop_tree()  # faster when applicable
-    except AttributeError:
+    except AttributeError:  # pragma: no cover
         element.getparent().remove(element)
 
 
