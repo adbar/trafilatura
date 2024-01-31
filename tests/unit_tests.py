@@ -461,9 +461,9 @@ def test_links():
     assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), url='https://www.example.com/', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
-    assert '[Test link text.] This part of the text has to be long enough.' in extract(copy, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, no_fallback=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
-    result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    result = extract(copy(mydoc), output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
