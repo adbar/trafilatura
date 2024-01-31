@@ -8,6 +8,8 @@ import os
 import sys
 import time
 
+from copy import copy
+
 import pytest
 
 from lxml import etree, html
@@ -284,6 +286,7 @@ def test_formatting():
     my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<p>' in my_result and '<hi rend="#b">Wild text</hi>' in my_result  # no rend so far
+    my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
     my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == 'Wild text'
     # links
@@ -315,13 +318,15 @@ def test_formatting():
 
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
-    my_result = extract(my_document, no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
     # TXT: newline problem here
     assert my_result == 'bold, italics, tt,\ndeleted, underlined, link and additional text to bypass detection.'
-    my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+
+    my_result = extract(copy(my_document), output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
-    my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+
+    my_result = extract(copy(my_document), output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref> and additional text to bypass detection.</p>' in my_result
     my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
@@ -450,13 +455,13 @@ def test_links():
     assert extract(mydoc) is not None
     # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
-    assert 'testlink.html' not in extract(mydoc)
-    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert 'testlink.html' not in extract(copy(mydoc))
+    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # relative link conversion
-    assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(mydoc, url='https://www.example.com/', include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), url='https://www.example.com/', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
-    assert '[Test link text.] This part of the text has to be long enough.' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(copy, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
@@ -684,8 +689,8 @@ def test_htmlprocessing():
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
-    assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
-    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    assert '<head rend="h1">Test headline</head>' in extract(copy(mydoc), output_format='xml', config=ZERO_CONFIG, no_fallback=True)
+    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(copy(mydoc), output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
     # merge with parent function
     element = etree.Element('test')
     xml.merge_with_parent(element)

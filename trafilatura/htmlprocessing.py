@@ -12,36 +12,12 @@ from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import strip_tags
-from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim, uniquify_list
 
 LOGGER = logging.getLogger(__name__)
-
-# HTML_CLEANER config
-# https://lxml.de/api/lxml.html.clean.Cleaner-class.html
-# https://lxml.de/apidoc/lxml.html.clean.html
-HTML_CLEANER = Cleaner(
-    annoying_tags = False,  # True
-    comments = True,
-    embedded = False,  # True
-    forms = False,  # True
-    frames = False,  # True
-    javascript = False,
-    links = False,
-    meta = False,
-    page_structure = False,
-    processing_instructions = True,
-    remove_unknown_tags = False,
-    safe_attrs_only = False,
-    scripts = False,
-    style = False,
-    # remove_tags = MANUALLY_STRIPPED,
-    # kill_tags = MANUALLY_CLEANED,
-)
-
 
 REND_TAG_MAPPING = {
     'em': '#i',
@@ -58,8 +34,16 @@ REND_TAG_MAPPING = {
 }
 
 
+def delete_element(element):
+    "Remove the element from the LXML tree."
+    try:
+        element.drop_tree()  # faster when applicable
+    except AttributeError:
+        element.getparent().remove(element)
+
+
 def tree_cleaning(tree, options):
-    '''Prune the tree by discarding unwanted elements'''
+    "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
@@ -74,26 +58,25 @@ def tree_cleaning(tree, options):
         cleaning_list = [e for e in cleaning_list if e
                          not in ('figure', 'picture', 'source')]
         stripping_list.remove('img')
+
+    # strip targeted elements
+    strip_tags(tree, stripping_list)
+
     # delete targeted elements
     for expression in cleaning_list:
         for element in tree.getiterator(expression):
-            try:
-                element.drop_tree() # faster when applicable
-            except AttributeError:
-                element.getparent().remove(element)
-    HTML_CLEANER.kill_tags, HTML_CLEANER.remove_tags = cleaning_list, stripping_list
-    # save space and processing time
-    return HTML_CLEANER.clean_html(prune_html(tree))
+            delete_element(element)
+
+    return prune_html(tree)
 
 
 def prune_html(tree):
-    '''Delete selected empty elements'''
+    "Delete selected empty elements to save space and processing time."
+    # //processing-instruction()
+    # //comment() needed for date extraction
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
-            try:
-                element.drop_tree()
-            except AttributeError:
-                element.getparent().remove(element)
+            delete_element(element)
     return tree
 
 
