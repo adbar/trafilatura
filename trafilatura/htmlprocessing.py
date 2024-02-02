@@ -67,17 +67,16 @@ def tree_cleaning(tree, options):
         for element in tree.getiterator(expression):
             delete_element(element)
 
-    return prune_html(tree)
+    prune_html(tree)
+    return tree
 
 
 def prune_html(tree):
     "Delete selected empty elements to save space and processing time."
-    # //processing-instruction()
     # //comment() needed for date extraction
-    for element in tree.xpath(".//*[not(node())]"):
+    for element in tree.xpath("//processing-instruction()|//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             delete_element(element)
-    return tree
 
 
 def prune_unwanted_nodes(tree, nodelist, with_backup=False):
