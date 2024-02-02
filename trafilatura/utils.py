@@ -6,7 +6,7 @@ Module bundling functions related to HTML and text processing.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-# import csv
+import csv
 import logging
 import re
 import warnings
@@ -21,6 +21,7 @@ from difflib import SequenceMatcher
 from functools import lru_cache
 from gzip import decompress
 from html import unescape
+from io import StringIO
 from itertools import islice
 from unicodedata import normalize
 
@@ -242,18 +243,23 @@ def load_html(htmlobject):
 
 def txttocsv(text, comments, docmeta):
     '''Output the result in CSV format (tab-separated values)'''
-    # outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
-    # outputwriter.writerow()
-    # with newlines: '\\n'.join()
-    text = trim(' '.join(text.splitlines()))
-    if comments is not None:
-        comments = trim(' '.join(comments.splitlines()))
-    tsv_output = \
-        f'{docmeta.url}\t{docmeta.fingerprint}\t{docmeta.hostname}\t{docmeta.title}\t{docmeta.image}\t{docmeta.date}\t{text}\t{comments}\t{docmeta.license}\t{docmeta.pagetype}\n'
-    # add id up front if provided
-    if docmeta.id is not None:
-        tsv_output = docmeta.id + '\t' + tsv_output
-    return tsv_output
+    output = StringIO()
+    outputwriter = csv.writer(output, delimiter="\t", quoting=csv.QUOTE_MINIMAL)
+    data = [
+               docmeta.url or "null",
+               docmeta.id  or "null",
+               docmeta.fingerprint or "null",
+               docmeta.hostname or "null",
+               docmeta.title or "null",
+               docmeta.image or "null",
+               docmeta.date or "null",
+               trim("\n".join(text.splitlines())) or "null",
+               trim("\n".join(comments.splitlines())) if comments else "null",
+               docmeta.license or "null",
+               docmeta.pagetype or "null",
+           ]
+    outputwriter.writerow(data)
+    return output.getvalue()
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111

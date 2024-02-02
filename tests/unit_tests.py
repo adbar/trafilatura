@@ -161,7 +161,7 @@ def test_input():
 
 def test_txttocsv():
     mymeta = Document()
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\tNone\n'
+    assert utils.txttocsv('', '', mymeta) == 'null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n'
     mymeta.title = 'Test title'
     mymeta.url = 'https://example.org'
     mymeta.hostname = 'example.org'
@@ -169,15 +169,23 @@ def test_txttocsv():
     mymeta.license = 'CC BY-SA'
     mymeta.image = 'https://example.org/image.jpg'
     mymeta.pagetype = 'article'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\tarticle\n'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
-    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
+    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tnull\r\n')
+
+
+def test_tojson():
     # test json
+    mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
     assert result.endswith('}') and '"fingerprint":' in result and '"language":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
+
+
+def test_python_output():
     # bare extraction for python
+    mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
     assert isinstance(result, dict) and len(result) == 20
 
@@ -1207,6 +1215,8 @@ if __name__ == '__main__':
     test_precision_recall()
     test_baseline()
     test_txttocsv()
+    test_tojson()
+    test_python_output()
     test_external()
     test_tei()
     test_table_processing()
