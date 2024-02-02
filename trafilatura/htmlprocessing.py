@@ -67,8 +67,7 @@ def tree_cleaning(tree, options):
         for element in tree.getiterator(expression):
             delete_element(element)
 
-    prune_html(tree)
-    return tree
+    return prune_html(tree)
 
 
 def prune_html(tree):
@@ -77,6 +76,7 @@ def prune_html(tree):
     for element in tree.xpath("//processing-instruction()|//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             delete_element(element)
+    return tree
 
 
 def prune_unwanted_nodes(tree, nodelist, with_backup=False):
