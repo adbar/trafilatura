@@ -66,6 +66,8 @@ def test_response_object():
     assert "X-Header" in resp.headers
     resp.decode_data(True)
     assert my_html.decode("utf-8") == resp.html == str(resp)
+    my_dict = resp.as_dict()
+    assert sorted(my_dict) == ["data", "headers", "html", "status", "url"]
 
 
 def test_fetch():
