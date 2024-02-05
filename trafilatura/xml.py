@@ -230,9 +230,9 @@ def replace_element_text(element, include_formatting):
                 element.text = f'{HI_FORMATTING[rend]}{element.text}{HI_FORMATTING[rend]}'
         elif element.tag == 'code':
             if '\n' in element.text:
-                element.text = '```\n' + element.text + '\n```'
+                element.text = f'```\n{element.text}\n```'
             else:
-                element.text = '`' + element.text + '`'
+                element.text = f'`{element.text}`'
     # handle links
     if element.tag == 'ref':
         if element.text is not None:
