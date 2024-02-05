@@ -300,7 +300,7 @@ def sanitize(text, preserve_space=False, trailing_space=False):
         return line_processing(text, preserve_space, True)
     # process line by line
     try:
-        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines())))
+        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines()))).replace('\u2422', '')
     except AttributeError:
         return None
 

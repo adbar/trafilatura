@@ -283,7 +283,9 @@ def xmltotxt(xmloutput, include_formatting):
         # process text
         textelement = replace_element_text(element, include_formatting)
         # common elements
-        if element.tag in NEWLINE_ELEMS:
+        if element.tag == 'p' and include_formatting:
+            returnlist.extend([textelement, '\n\u2422\n'])  # TODO: check symbol
+        elif element.tag in NEWLINE_ELEMS:
             returnlist.extend([NEWLINE_ELEMS[element.tag], textelement, '\n'])
         elif element.tag == 'comments':
             returnlist.append('\n\n')
