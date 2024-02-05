@@ -56,6 +56,20 @@ def _reset_downloads_global_objects():
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
 
+
+def test_response_object():
+    "Test if the Response class is functioning as expected."
+    my_html = b"<html><body><p>ABC</p></body></html>"
+    resp = Response(my_html, 200, "https://example.org")
+    assert bool(resp) is True
+    resp.store_headers({"X-Header": "xyz"})
+    assert "X-Header" in resp.headers
+    resp.decode_data(True)
+    assert my_html.decode("utf-8") == resp.html == str(resp)
+    my_dict = resp.as_dict()
+    assert sorted(my_dict) == ["data", "headers", "html", "status", "url"]
+
+
 def test_fetch():
     '''Test URL fetching.'''
     # logic: empty request?
@@ -190,6 +204,7 @@ def test_queue():
 
 
 if __name__ == '__main__':
+    test_response_object()
     test_fetch()
     test_config()
     test_decode()

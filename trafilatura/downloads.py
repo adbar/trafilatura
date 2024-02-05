@@ -66,6 +66,15 @@ class Response:
         self.status = status
         self.url = url
 
+    def __bool__(self):
+        return self.data is not None
+
+    def __repr__(self):
+        return self.html if self.html else decode_file(self.data)
+
+    def __str__(self):
+        return self.__repr__()
+
     def store_headers(self, headerdict):
         "Store response headers if required."
         # control or normalization here?
@@ -75,6 +84,14 @@ class Response:
         "Decode the bytestring in data and store a string in html."
         if decode and self.data:
             self.html = decode_file(self.data)
+
+    def as_dict(self):
+        "Convert the response object to a dictionary."
+        return {
+            attr: getattr(self, attr)
+            for attr in self.__slots__
+            if hasattr(self, attr)
+        }
 
 
 # caching throws an error
