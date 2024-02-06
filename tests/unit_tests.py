@@ -159,9 +159,11 @@ def test_input():
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
 
-def test_txttocsv():
+def test_xmltocsv():
     doc = Document()
-    assert xml.txttocsv('', '', doc) == 'null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n'
+    doc.body = etree.fromstring('<xml/>')
+    doc.commentsbody = etree.fromstring('<xml/>')
+    assert xml.xmltocsv(doc, False) == 'null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n'
 
     doc.title = 'Test title'
     doc.url = 'https://example.org'
@@ -178,7 +180,6 @@ def test_txttocsv():
     target = 'https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n'
 
     assert xml.xmltocsv(doc, False) == target
-    assert xml.txttocsv(text, comments, doc) == target
     
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
@@ -1224,7 +1225,7 @@ if __name__ == '__main__':
     test_extraction_options()
     test_precision_recall()
     test_baseline()
-    test_txttocsv()
+    test_xmltocsv()
     test_tojson()
     test_python_output()
     test_external()

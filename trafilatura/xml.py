@@ -298,31 +298,33 @@ def xmltotxt(xmloutput, include_formatting):
 
 def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     "Convert the internal XML document representation to a CSV string."
+    # preprocessing
     posttext = xmltotxt(document.body, include_formatting)
     if document.commentsbody is not None:
         commentstext = xmltotxt(document.commentsbody, include_formatting)
     else:
         commentstext = ""
-    return txttocsv(posttext, commentstext, document, delim=delim, null=null)
 
-
-def txttocsv(text, comments, document, *, delim="\t", null="null"):
-    "Output the result as CSV (defaults to tab-separated values)."
+    # output config
     output = StringIO()
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
-    data = [
-               document.url or null,
-               document.id  or null,
-               document.fingerprint or null,
-               document.hostname or null,
-               document.title or null,
-               document.image or null,
-               document.date or null,
-               text or null,
-               comments or null,
-               document.license or null,
-               document.pagetype or null,
-           ]
+
+    # organize fields
+    data = [d or null for d in (
+                document.url,
+                document.id,
+                document.fingerprint,
+                document.hostname,
+                document.title,
+                document.image,
+                document.date,
+                posttext,
+                commentstext,
+                document.license,
+                document.pagetype,
+                )
+            ]
+
     outputwriter.writerow(data)
     return output.getvalue()
 
