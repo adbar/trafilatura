@@ -27,10 +27,10 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
 from .settings import BASIC_CLEAN_XPATH, DEFAULT_CONFIG, TAG_CATALOG, use_config
-from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, FORMATTING_PROTECTED
-from .xml import (build_json_output, build_tei_output, build_xml_output,
-                  control_xml_output, remove_empty_elements, strip_double_tags,
-                  xmltotxt)
+from .utils import (is_image_file, load_html, normalize_unicode, trim,
+                    FORMATTING_PROTECTED)
+from .xml import (build_json_output, build_tei_output, build_xml_output, control_xml_output,
+                  remove_empty_elements, strip_double_tags, xmltotxt, xmltocsv)
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
                      PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
@@ -824,12 +824,7 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
         returnstring = control_xml_output(output, output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
-        posttext = xmltotxt(document.body, include_formatting)
-        if document.commentsbody is not None:
-            commentstext = xmltotxt(document.commentsbody, include_formatting)
-        else:
-            commentstext = ''
-        returnstring = txttocsv(posttext, commentstext, document)
+        returnstring = xmltocsv(document, include_formatting)
     # JSON
     elif output_format == 'json':
         returnstring = build_json_output(document)
