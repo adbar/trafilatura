@@ -271,7 +271,7 @@ def _urllib3_is_live_page(url):
 def is_live_page(url):
     "Send a HTTP HEAD request without taking anything else into account."
     if pycurl is not None:
-        return _pycurl_is_live_page(url)
+        return _pycurl_is_live_page(url) or _urllib3_is_live_page(url)
     return _urllib3_is_live_page(url)
 
 
