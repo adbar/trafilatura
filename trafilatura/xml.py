@@ -6,10 +6,12 @@ All functions related to XML generation, processing and validation.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+import csv
 import logging
 import lzma
 
 from html import unescape
+from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
@@ -292,6 +294,39 @@ def xmltotxt(xmloutput, include_formatting):
                 LOGGER.debug('unprocessed element in output: %s', element.tag)
             returnlist.extend([textelement, ' '])
     return unescape(sanitize(''.join(returnlist)))
+
+
+def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
+    "Convert the internal XML document representation to a CSV string."
+    # preprocessing
+    posttext = xmltotxt(document.body, include_formatting)
+    if document.commentsbody is not None:
+        commentstext = xmltotxt(document.commentsbody, include_formatting)
+    else:
+        commentstext = ""
+
+    # output config
+    output = StringIO()
+    outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
+
+    # organize fields
+    data = [d or null for d in (
+                document.url,
+                document.id,
+                document.fingerprint,
+                document.hostname,
+                document.title,
+                document.image,
+                document.date,
+                posttext,
+                commentstext,
+                document.license,
+                document.pagetype,
+                )
+            ]
+
+    outputwriter.writerow(data)
+    return output.getvalue()
 
 
 def write_teitree(docmeta):
