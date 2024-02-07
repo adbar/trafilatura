@@ -8,6 +8,7 @@ import sys
 
 from courlan import get_hostinfo
 
+import trafilatura
 from trafilatura import sitemaps
 from trafilatura.utils import decode_file, is_similar_domain
 
@@ -30,6 +31,13 @@ def test_extraction():
     # link handling
     url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
     sitemap = sitemaps.SitemapObject(baseurl, domain, [])
+    sitemap.handle_link(url)
+    assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
+
+    # same URL
+    url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
+    sitemap = sitemaps.SitemapObject(baseurl, domain, [url])
+    sitemap.current_url = url
     sitemap.handle_link(url)
     assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
 
@@ -164,6 +172,7 @@ def test_robotstxt():
 
 def test_whole():
     "Test whole process."
+    trafilatura.settings.MAX_SITEMAPS_SEEN = 1
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
     assert len(results) == 8
 
