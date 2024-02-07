@@ -6,7 +6,6 @@ Module bundling functions related to HTML and text processing.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-# import csv
 import logging
 import re
 import warnings
@@ -33,6 +32,7 @@ from charset_normalizer import from_bytes
 from lxml.html import HtmlElement, HTMLParser, fromstring
 # response types
 from urllib3.response import HTTPResponse
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -238,22 +238,6 @@ def load_html(htmlobject):
         )
         tree = None
     return tree
-
-
-def txttocsv(text, comments, docmeta):
-    '''Output the result in CSV format (tab-separated values)'''
-    # outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
-    # outputwriter.writerow()
-    # with newlines: '\\n'.join()
-    text = trim(' '.join(text.splitlines()))
-    if comments is not None:
-        comments = trim(' '.join(comments.splitlines()))
-    tsv_output = \
-        f'{docmeta.url}\t{docmeta.fingerprint}\t{docmeta.hostname}\t{docmeta.title}\t{docmeta.image}\t{docmeta.date}\t{text}\t{comments}\t{docmeta.license}\t{docmeta.pagetype}\n'
-    # add id up front if provided
-    if docmeta.id is not None:
-        tsv_output = docmeta.id + '\t' + tsv_output
-    return tsv_output
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
