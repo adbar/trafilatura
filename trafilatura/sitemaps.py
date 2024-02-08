@@ -215,15 +215,14 @@ def sitemap_search(
 
     sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external)
 
-    # try sitemaps in robots.txt file
+    # try sitemaps in robots.txt file, additional URLs just in case
     if not sitemap.sitemap_urls:
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl)
-        # try additional URLs just in case
-        if not sitemap.sitemap_urls:
-            sitemap.sitemap_urls = ["".join([baseurl, "/", g]) for g in GUESSES]
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [
+            f"{baseurl}/{g}" for g in GUESSES
+        ]
 
     # iterate through nested sitemaps and results
-    while sitemap.sitemap_urls:
+    while sitemap.sitemap_urls and len(sitemap.seen) < MAX_SITEMAPS_SEEN:
         sitemap.current_url = sitemap.sitemap_urls.pop()
         sitemap.fetch()
         sitemap.process()
@@ -231,9 +230,6 @@ def sitemap_search(
         sitemap.sitemap_urls = [
             s for s in sitemap.sitemap_urls if s not in sitemap.seen
         ]
-        # counter and safeguard
-        if len(sitemap.seen) >= MAX_SITEMAPS_SEEN:
-            break
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
