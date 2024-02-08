@@ -232,7 +232,7 @@ def sitemap_search(
             s for s in sitemap.sitemap_urls if s not in sitemap.seen
         ]
         # counter and safeguard
-        if len(sitemap.seen) > MAX_SITEMAPS_SEEN:
+        if len(sitemap.seen) >= MAX_SITEMAPS_SEEN:
             break
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
