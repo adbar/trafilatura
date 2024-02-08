@@ -197,7 +197,7 @@ def sitemap_search(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
-        sleep_time: Wait between requests to the same website.
+        sleep_time: Wait between requests on the same website.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -231,7 +231,7 @@ def sitemap_search(
         ]
 
     # iterate through nested sitemaps and results
-    while sitemap.sitemap_urls:
+    while sitemap.sitemap_urls and len(sitemap.seen) < MAX_SITEMAPS_SEEN:
         sitemap.current_url = sitemap.sitemap_urls.pop()
         sitemap.fetch()
         sitemap.process()
@@ -242,8 +242,6 @@ def sitemap_search(
 
         if len(sitemap.seen) < MAX_SITEMAPS_SEEN:
             sleep(sleep_time)
-        else:
-            break
 
     if urlfilter:
         sitemap.urls = filter_urls(sitemap.urls, urlfilter)

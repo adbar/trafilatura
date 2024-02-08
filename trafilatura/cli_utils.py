@@ -231,20 +231,22 @@ def download_queue_processing(url_store, args, counter, config):
 
 def cli_discovery(args):
     "Group CLI functions dedicated to URL discovery."
-    func = find_feed_urls if args.feed else sitemap_search
-
     url_store = load_input_dict(args)
     input_urls = url_store.dump_urls()
     if args.list:
         url_store.reset()
 
     config = use_config(filename=args.config_file)
-    ext = config.getboolean('DEFAULT', 'EXTERNAL_URLS')
-    # sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    func = partial(
+               find_feed_urls if args.feed else sitemap_search,
+               target_lang=args.target_language,
+               external=config.getboolean('DEFAULT', 'EXTERNAL_URLS'),
+               sleep_time=config.getfloat('DEFAULT', 'SLEEP_TIME')
+           )
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-        futures = (executor.submit(func, url, target_lang=args.target_language, external=ext) for url in input_urls)
+        futures = (executor.submit(func, url) for url in input_urls)
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
         for future in as_completed(futures):

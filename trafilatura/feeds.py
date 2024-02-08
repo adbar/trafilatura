@@ -10,6 +10,7 @@ import logging
 import re
 
 from itertools import islice
+from time import sleep
 from typing import List, Optional
 
 from courlan import (
@@ -216,7 +217,7 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
 
 
 def find_feed_urls(
-    url: str, target_lang: Optional[str] = None, external: bool = False
+    url: str, target_lang: Optional[str] = None, external: bool = False, sleep_time: int = 2,
 ) -> List[str]:
     """Try to find feed URLs.
 
@@ -227,6 +228,7 @@ def find_feed_urls(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
+        sleep_time: Wait between requests on the same website.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -259,6 +261,7 @@ def find_feed_urls(
     else:
         LOGGER.error("Could not download web page: %s", url)
         if url.strip("/") != baseurl:
+            sleep(sleep_time)
             return try_homepage(baseurl, target_lang)
     # try alternative: Google News
     if target_lang is not None:
