@@ -231,12 +231,16 @@ def download_queue_processing(url_store, args, counter, config):
 
 def cli_discovery(args):
     "Group CLI functions dedicated to URL discovery."
-    url_store = load_input_dict(args)
     func = find_feed_urls if args.feed else sitemap_search
+
+    url_store = load_input_dict(args)
     input_urls = url_store.dump_urls()
     if args.list:
         url_store.reset()
-    ext = use_config(filename=args.config_file).getboolean('DEFAULT', 'EXTERNAL_URLS')
+
+    config = use_config(filename=args.config_file)
+    ext = config.getboolean('DEFAULT', 'EXTERNAL_URLS')
+    # sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
