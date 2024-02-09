@@ -8,12 +8,15 @@ Deriving link info from sitemaps.
 
 import logging
 import re
+
 from itertools import islice
+from time import sleep
 from typing import List, Set, Optional
 
 from courlan import (
     clean_url,
     extract_domain,
+    filter_urls,
     fix_relative_urls,
     get_hostinfo,
     lang_filter,
@@ -183,7 +186,7 @@ class SitemapObject:
 
 
 def sitemap_search(
-    url: str, target_lang: Optional[str] = None, external: bool = False
+    url: str, target_lang: Optional[str] = None, external: bool = False, sleep_time: int = 2
 ) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
@@ -194,6 +197,7 @@ def sitemap_search(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
+        sleep_time: Wait between requests on the same website.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -208,10 +212,15 @@ def sitemap_search(
         LOGGER.warning("base URL unreachable, dropping sitemap: %s", url)
         return []
 
+    urlfilter = None
+
     if url.endswith((".gz", "sitemap", ".xml")):
         sitemapurls = [url]
     else:
         sitemapurls = []
+        # set url filter to target subpages
+        if len(url) > len(baseurl) + 2:
+            urlfilter = url
 
     sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external)
 
@@ -230,6 +239,12 @@ def sitemap_search(
         sitemap.sitemap_urls = [
             s for s in sitemap.sitemap_urls if s not in sitemap.seen
         ]
+
+        if len(sitemap.seen) < MAX_SITEMAPS_SEEN:
+            sleep(sleep_time)
+
+    if urlfilter:
+        sitemap.urls = filter_urls(sitemap.urls, urlfilter)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
