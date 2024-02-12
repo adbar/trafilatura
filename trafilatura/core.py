@@ -13,7 +13,7 @@ import re  # import regex as re
 import warnings
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, strip_elements, strip_tags
+from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags
 from lxml.html import tostring
 
 # own
@@ -952,7 +952,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         if prune_xpath is not None:
             if isinstance(prune_xpath, str):
                 prune_xpath = [prune_xpath]
-            tree = prune_unwanted_nodes(tree, prune_xpath)
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None
