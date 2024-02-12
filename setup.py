@@ -31,6 +31,7 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.19; python_version >= '3.11'",
+        "feedparser >= 6.0.11",
         "htmldate[speed] >= 1.7.0",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.2",

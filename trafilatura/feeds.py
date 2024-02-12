@@ -13,6 +13,11 @@ from itertools import islice
 from time import sleep
 from typing import List, Optional
 
+try:
+    import feedparser
+except ImportError:
+    feedparser = None
+
 from courlan import (
     check_url,
     clean_url,
@@ -118,14 +123,9 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
     return output_links
 
 
-def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
-    """Extract links from Atom and RSS feeds"""
+def crude_extraction(feed_string, params):
+    "Extract links based on regular expressions."
     feed_links = []
-    # check if it's a feed
-    if feed_string is None:
-        LOGGER.debug("Empty feed: %s", params.domain)
-        return feed_links
-    feed_string = feed_string.strip()
     # typical first and second lines absent
     if not FEED_OPENING.match(feed_string) and not (
         "<rss" in feed_string[:100] or "<feed" in feed_string[:100]
@@ -163,6 +163,26 @@ def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
                 )
             ]
         )
+    return feed_links
+
+
+def feedparser_extraction(feed_string):
+    "Parse and extract entry links using external feedparser package."
+    data = feedparser.parse(feed_string)
+    return [entry.link for entry in data.entries]
+
+
+def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
+    """Extract links from Atom and RSS feeds"""
+    # check if it's a feed
+    if feed_string is None:
+        LOGGER.debug("Empty feed: %s", params.domain)
+        return []
+    feed_string = feed_string.strip()
+
+    feed_links = crude_extraction(feed_string, params)
+    if feedparser:
+        feed_links.extend(feedparser_extraction(feed_string))
 
     # refine
     output_links = handle_link_list(feed_links, params)
