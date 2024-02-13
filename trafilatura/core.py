@@ -13,7 +13,7 @@ import re  # import regex as re
 import warnings
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, strip_elements, strip_tags
+from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags
 from lxml.html import tostring
 
 # own
@@ -545,7 +545,7 @@ def extract_content(tree, options):
     for expr in BODY_XPATH:
         # select tree if the expression has been found
         try:
-            subtree = tree.xpath(expr)[0]
+            subtree = expr(tree)[0]
         except IndexError:
             continue
         # prune the subtree
@@ -624,7 +624,7 @@ def extract_comments(tree, options):
     # potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
-        subtree = tree.xpath(expr)
+        subtree = expr(tree)
         if not subtree:
             continue
         subtree = subtree[0]
@@ -714,7 +714,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
 
 def basic_cleaning(tree):
     "Remove a few section types from the document."
-    for elem in tree.xpath(BASIC_CLEAN_XPATH):
+    for elem in BASIC_CLEAN_XPATH(tree):
         elem.getparent().remove(elem)
     return tree
 
@@ -952,7 +952,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         if prune_xpath is not None:
             if isinstance(prune_xpath, str):
                 prune_xpath = [prune_xpath]
-            tree = prune_unwanted_nodes(tree, prune_xpath)
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None

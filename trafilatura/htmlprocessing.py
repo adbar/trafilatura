@@ -11,7 +11,7 @@ from collections import defaultdict
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import strip_tags
+from lxml.etree import XPath, strip_tags
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
@@ -84,8 +84,8 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     if with_backup is True:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
         backup = deepcopy(tree)
-    for expr in nodelist:
-        for subtree in tree.xpath(expr):
+    for expression in nodelist:
+        for subtree in expression(tree):
             # preserve tail text from deletion
             if subtree.tail is not None:
                 previous = subtree.getprevious()
