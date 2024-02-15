@@ -46,34 +46,33 @@ Introduction
 ------------
 
 
-Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to multiple commonly used formats.
+Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to commonly used formats.
 
-Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
+Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), and **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
 
-The tool's versatility makes it useful for a wide range of applications leveraging web content for knowledge discovery such as **quantitative and data-driven approaches**. Trafilatura is used in the academic domain and beyond (e.g. in NLP, SEO, business analytics).
+The tool's versatility makes it **useful for quantitative and data-driven approaches**. It is used in the academic domain and beyond (e.g. in natural language processing, computational social science, search engine optimization, and information security).
+
 
 Features
 ~~~~~~~~
 
 - Advanced web crawling and text discovery:
-   - Focused crawling adhering to politeness rules
    - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - Smart navigation and URL management (blacklists, filtering and deduplication)
+   - Smart crawling and URL management (filtering and deduplication)
 - Parallel processing of online and offline input:
    - Live URLs, efficient and polite processing of download queues
    - Previously downloaded HTML files and parsed HTML trees
-- Robust and customizable extraction of key elements:
+- Robust and configurable extraction of key elements:
    - Main text (common patterns and generic algorithms like jusText and readability)
    - Metadata (title, author, date, site name, categories and tags)
    - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
    - Optional elements: comments, links, images, tables
-   - Extensive configuration options
 - Multiple output formats:
    - Text (minimal formatting or Markdown)
-   - CSV (with metadata, tab-separated values)
+   - CSV (with metadata)
    - JSON (with metadata)
-   - XML (with metadata, text formatting and page structure) and `TEI-XML <https://tei-c.org/>`_
-- Add-ons:
+   - XML or `XML-TEI <https://tei-c.org/>`_ (with metadata, text formatting and page structure)
+- Optional add-ons:
    - Language detection on extracted content
    - Graphical user interface (GUI)
    - Speed optimizations
@@ -87,7 +86,8 @@ Evaluation and alternatives
 
 Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
 
-For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_. The results can be reproduced, see the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ for instructions.
+For more information see the `benchmark section <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ to reproduce the results.
+
 
 =============================== =========  ========== ========= ========= ======
 750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8
@@ -106,6 +106,7 @@ news-please 1.5.22              0.898      0.734      0.826     0.808     61x
 readabilipy 0.2.0               0.877      0.870      0.874     0.874     248x
 trafilatura 1.2.2 (standard)    0.914      0.904      **0.910** **0.909** 7.1x
 =============================== =========  ========== ========= ========= ======
+
 
 Other evaluations:
 ^^^^^^^^^^^^^^^^^^
@@ -153,15 +154,15 @@ Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/co
 Context
 -------
 
-Developed with practical applications of academic research in mind, this software is part of a broader effort to derive information from web documents. Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. Web corpus construction involves numerous design decisions, this software package simplifies text data collection and enhances corpus quality. It is currently used to build `text databases for linguistic research <https://www.dwds.de/d/k-web>`_.
+Developed with practical applications of academic research in mind, this software is part of a broader effort to derive information from web documents. Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. This software package simplifies text data collection and enhances corpus quality, it is currently used to build `text databases for linguistic research <https://www.dwds.de/d/k-web>`_.
 
-*Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the industrial-grade extraction, refinement and conversion process.
+*Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the refinement and conversion process. It is also the way shapes of pasta are formed.
 
 
 Author
 ~~~~~~
 
-Reach out via the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also `Twitter/X <https://x.com/adbarbaresi>`_ for the latest updates.
+Reach out via ia the software repository or the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also X or LinkedIn for the latest updates.
 
 This work started as a PhD project at the crossroads of linguistics and NLP, this expertise has been instrumental in shaping Trafilatura over the years. It has first been released under its current form in 2019, its development is referenced in the following publications:
 
@@ -173,7 +174,7 @@ This work started as a PhD project at the crossroads of linguistics and NLP, thi
 Citing Trafilatura
 ~~~~~~~~~~~~~~~~~~
 
-Trafilatura is used in the academic domain, chiefly for data acquisition in corpus linguistics, natural language processing, and computational social science. Here is how to cite it:
+Trafilatura is widely used in the academic domain, chiefly for data acquisition. Here is how to cite it:
 
 .. image:: https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue
     :target: https://aclanthology.org/2021.acl-demo.15/
@@ -199,7 +200,7 @@ Trafilatura is used in the academic domain, chiefly for data acquisition in corp
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
-This software is part of a larger ecosystem. It is employed in a variety of academic and development projects, demonstrating its versatility and effectiveness. Case studies and publications are listed on the `Used By documentation page <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
+This software is part of a larger ecosystem. Case studies and publications are listed on the `Used By documentation page <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
 
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
