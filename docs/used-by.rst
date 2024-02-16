@@ -24,6 +24,7 @@ Trafilatura has been employed in a variety of contexts and projects. Some of the
 Known institutional users
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+- Allen Institute for AI with the `Dolma toolkit <https://github.com/allenai/dolma>`_ used to pre-train the OLMo LLM
 - Falcon LLM (TII UAE) and its underlying `RefinedWeb Dataset <https://arxiv.org/abs/2306.01116>`_
 - `FinGPT <https://arxiv.org/abs/2311.05640>`_ (Finland)
 - `Media Cloud platform <https://mediacloud.org>`_ for media analysis, e.g. `Data against Feminicide <https://datoscontrafeminicidio.net/>`_
@@ -37,6 +38,7 @@ Various software repositories
 
 - `Benson <https://github.com/timoteostewart/benson>`_, to turn a list of URLs into mp3s of the contents of each web page
 - `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
+- `DataTrove <https://github.com/huggingface/datatrove>`_, to process, filter and deduplicate text data
 - `GLAM Workbench <https://glam-workbench.github.io/web-archives/>`_ for cultural heritage (web archives section)
 - `llama-hub <https://github.com/emptycrown/llama-hub>`_, a library of data loaders for large language models
 - `LlamaIndex <https://github.com/run-llama/llama_index>`_, a data framework for LLM applications
@@ -115,6 +117,7 @@ Publications citing Trafilatura
 
 
 - Alakukku, L. (2022). "Domain specific boilerplate removal from web pages with entropy and clustering", Master's thesis, University of Aalto.
+- Alexandrescu, A., & Butincu, C.N. (2023). Decentralized news-retrieval architecture using blockchain technology. Mathematics, 11(21), 4542.
 - Alhamzeh, A., Bouhaouel, M., Egyed-Zsigmond, E., & Mitrović, J. (2021). "DistilBERT-based Argumentation Retrieval for Answering Comparative Questions", Proceedings of CLEF 2021 – Conference and Labs of the Evaluation Forum.
 - Bender, M., Bubenhofer, N., Dreesen, P., Georgi, C., Rüdiger, J. O., & Vogel, F. (2022). Techniken und Praktiken der Verdatung. Diskurse–digital, 135-158.
 - Bevendorff, J., Gupta, S., Kiesel, J., & Stein, B. (2023). An Empirical Comparison of Web Content Extraction Algorithms.
@@ -147,12 +150,15 @@ Publications citing Trafilatura
 - Meier-Vieracker, S. (2022). "Fußballwortschatz digital–Korpuslinguistische Ressourcen für den Sprachunterricht." Korpora Deutsch als Fremdsprache (KorDaF), 2022/01 (pre-print).
 - Meng, K. (2021). "An End-to-End Computational System for Monitoring and Verifying Factual Claims" (pre-print).
 - Miquelina, N., Quaresma, P., & Nogueira, V. B. (2022). Generating a European Portuguese BERT Based Model Using Content from Arquivo. pt Archive. In International Conference on Intelligent Data Engineering and Automated Learning (pp. 280-288). Springer, Cham.
+- Naira, A. M., & Benelallam, I. (2023). Evaluating ESG Impacts in African Cities through Topic-Level Sentiment Analysis. In 2023 10th International Conference on Wireless Networks and Mobile Communications (WINCOM) (pp. 1-6). IEEE.
+- Nguyen, Q.C., et al. (2024). Rosie, a Health Education Question-and-Answer Chatbot for New Mothers: Randomized Pilot Study. JMIR Formative Research, 8(1), e51361.
 - Nissopoulou, T. X. (2023). Web content classification analysis, MSc thesis, International Hellenic University.
 - Nolda, A., Barbaresi, A., & Geyken, A. (2023). Korpora für die lexikographische Beschreibung diatopischer Variation in der deutschen Standardsprache. Korpora in der germanistischen Sprachwissenschaft: Mündlich, schriftlich, multimedial, 29.
 - Öhman, J., Verlinden, S., Ekgren, A., Gyllensten, A. C., Isbister, T., Gogoulou, E., ... & Sahlgren, M. (2023). The Nordic Pile: A 1.2 TB Nordic Dataset for Language Modeling. arXiv preprint arXiv:2303.17183.
 - Penedo, G., Malartic, Q., Hesslow, D., Cojocaru, R., Cappelli, A., Pannier, B., ... & Launay, J. The RefinedWeb Dataset for Falcon LLM: Outperforming Curated Corpora with Web Data, and Web Data Only.
 - Piskorski, J., Stefanovitch, N., Da San Martino, G., & Nakov, P. (2023). Semeval-2023 task 3: Detecting the category, the framing, and the persuasion techniques in online news in a multi-lingual setup. In Proceedings of the the 17th International Workshop on Semantic Evaluation (SemEval-2023) (pp. 2343-2361).
 - Pohlmann, J., Barbaresi, A., & Leinen, P. (2023). Platform regulation and “overblocking”–The NetzDG discourse in Germany. Communications, 48(3), 395-419.
+- Rastislav, K. (2024). Backend platformy pro sdílené ověřování faktů (Master's thesis, České vysoké učení technické v Praze. Vypočetní a informační centrum.)
 - Robertson, F., Lagus, J., & Kajava, K. (2021). "A COVID-19 news coverage mood map of Europe", Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
 - Salmela, A. (2022). "Distinguishing Noise and Main Text Content from Web-Sourced Plain Text Documents Using Sequential Neural Networks", Master's thesis, University of Turku.
 - Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). "Fact-checking: relevance assessment of references in the Polish political domain", Procedia Computer Science, 192, 1285-1293.
