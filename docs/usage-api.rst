@@ -32,17 +32,23 @@ Examples
 The API takes JSON as input and a corresponding header is required. It then returns a JSON string with the result.
 
 
+CLI
+~~~
+
 .. code-block:: bash
 
     $ curl -X POST "https://trafilatura.mooo.com/extract-demo" \
-         -H "content-type: application/json" \
-         --data '{
-                  "url": "https://example.org",
-                  "args": {
-                    "output_format": "xml"
-                   }
-                }'
+           -H "content-type: application/json" \
+           --data '{
+                    "url": "https://example.org",
+                    "args": {
+                      "output_format": "xml"
+                     }
+                  }'
 
+
+Python
+~~~~~~
 
 .. code-block:: python
 
@@ -67,5 +73,5 @@ The API takes JSON as input and a corresponding header is required. It then retu
 Further information
 -------------------
 
-The API is still an early-stage product and the code is currently not available under an open-source license.
+The API is still an early-stage product and the code is not available under an open-source license.
 

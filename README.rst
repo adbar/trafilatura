@@ -48,7 +48,7 @@ Introduction
 
 Trafilatura is a cutting-edge **Python package and command-line tool** designed to **gather text on the Web and simplify the process of turning raw HTML into structured, meaningful data**. It includes all necessary discovery and text processing components to perform **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to commonly used formats.
 
-Smart navigation and going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), and **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
+Going from HTML bulk to essential parts can alleviate many problems related to text quality, by **focusing on the actual content**, **avoiding the noise** caused by recurring elements (headers, footers etc.), and **making sense of the data** with selected information. The extractor is designed to be **robust and reasonably fast**, it runs in production on millions of documents.
 
 The tool's versatility makes it **useful for quantitative and data-driven approaches**. It is used in the academic domain and beyond (e.g. in natural language processing, computational social science, search engine optimization, and information security).
 
@@ -128,7 +128,7 @@ Usage and documentation
 - `Tutorials and use cases <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
 
 
-For video tutorials see this Youtube playlist:
+Youtube playlist with video tutorials in several languages:
 
 - `Web scraping tutorials and how-tos <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_
 
@@ -200,7 +200,7 @@ Trafilatura is widely used in the academic domain, chiefly for data acquisition.
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
-This software is part of a larger ecosystem. Case studies and publications are listed on the `Used By documentation page <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
+Case studies and publications are listed on the `Used By documentation page <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
 
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 

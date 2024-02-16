@@ -78,7 +78,7 @@ Evaluation and alternatives
 
 Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
 
-The `benchmark section <evaluation.html>`_ details alternatives and results and the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ describes how to reproduce the evaluation.
+The `benchmark section <evaluation.html>`_ details alternatives and results, the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ describes how to reproduce the evaluation.
 
 
 In a nutshell
@@ -102,7 +102,7 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
+For more see `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
 
 
 .. raw:: html
@@ -181,7 +181,7 @@ Trafilatura is widely used in the academic domain, chiefly for data acquisition.
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
-This software is part of a larger ecosystem. Case studies and publications are listed on the `Used By documentation page <used-by.html>`_.
+Case studies and publications are listed on the `Used By documentation page <used-by.html>`_.
 
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
