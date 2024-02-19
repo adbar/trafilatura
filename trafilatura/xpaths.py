@@ -158,7 +158,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@id, "akismet") or contains(@class, "akismet") or
     starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint")
-    or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"
+    or contains(@style, "display:none") or contains(@style, "display: none") or contains(@class, " hidden") or @aria-hidden="true"
     or contains(@class, "notloaded")]''',
 )]
 # conflicts:
