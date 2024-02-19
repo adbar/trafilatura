@@ -8,7 +8,7 @@ Tutorial: Text embedding
 
 
 Why perform text embedding with crawled data?
-------------------------------------------------
+---------------------------------------------
 
 If you are doing natural language research, you may want to perform text embeddings on text crawled with Trafilatura. 
 
@@ -19,14 +19,18 @@ Text embedding involves converting text into numerical vectors, and is commonly 
 - Anomaly detection (identify outliers)
 
 In this tutorial, we will show you how to perform text embedding on results from Trafilatura. We will use
-`Epsilla <https://www.epsilla.com/?ref=trafilatura>`_, an open source vector database for storing and searching vector embeddings. It is 10x faster than regular vector databases for vector operations.
+`Epsilla <https://www.epsilla.com/?ref=trafilatura>`_, an open source vector database for storing and searching vector embeddings.
+
+Alternatives include `Qdrant <https://github.com/qdrant/qdrant>`_, `Redis <https://redis.io/docs/get-started/vector-database/>`, and `ChromaDB <https://docs.trychroma.com/>`_. They mostly work in a similar way.
+
 
 .. note::
     For a hands-on version of this tutorial, try out the `Colab Notebook <https://colab.research.google.com/drive/1eFHO0dHyPhEF9Sm_HXcMFmJZnvP9a-aX?usp=sharing>`_.
 
 
+
 Setup Epsilla
-------------------------------------------------
+-------------
 
 In this tutorial, we will need an Epsilla database server. There are two ways to get one: use the free cloud version or start one locally.
 
@@ -87,7 +91,7 @@ We can now connect to the demo server.
 
 
 Crawl project homepages and store their vector embeddings in Epsilla
------------------------------------------------------------------------------------
+--------------------------------------------------------------------
 
 Suppose we want to find the most relevant open source project based on a query string.
 
@@ -132,7 +136,7 @@ Now the vector embeddings are stored in Epsilla. In the next section, we will pe
 
 
 Perform vector search
--------------------------
+---------------------
 
 We have stored the homepages of PyTorch, TensorFlow and React in the database. 
 We can now perform a vector search to find the most relevant project based on a query string.

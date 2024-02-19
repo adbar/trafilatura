@@ -135,8 +135,5 @@ Going further
 -------------
 
 - `Basic Text Processing in R <https://programminghistorian.org/en/lessons/basic-text-processing-in-r>`_
-- `Quanteda <https://quanteda.io>`_ is an R package for managing and analyzing text:
-   - `Quickstart <https://quanteda.io/articles/pkgdown/quickstart.html>`_
-   - `Quanteda tutorials <https://tutorials.quanteda.io/>`_
-   - `Advancing Text Mining with R and quanteda <https://www.r-bloggers.com/2019/10/advancing-text-mining-with-r-and-quanteda/>`_
+- `Quanteda <https://quanteda.io>`_ is an R package for managing and analyzing text
 
