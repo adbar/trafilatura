@@ -14,7 +14,7 @@ BODY_XPATH = [XPath(x) for x in (
     contains(@class, "post-text") or contains(@class, "post_text") or
     contains(@class, "post-body") or contains(@class, "post-entry") or contains(@class, "postentry") or
     contains(@class, "post-content") or contains(@class, "post_content") or
-    contains(@class, "postcontent") or contains(@class, "postContent") or
+    contains(@class, "postcontent") or contains(@class, "postContent") or contains(@class, "post_inner_wrapper") or
     contains(@class, "article-text") or contains(@class, "articletext") or contains(@class, "articleText")
     or contains(@id, "entry-content") or
     contains(@class, "entry-content") or contains(@id, "article-content") or
