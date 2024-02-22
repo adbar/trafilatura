@@ -149,7 +149,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@class, "message-container") or contains(@id, "message_container")
     or contains(@class, "yin") or contains(@class, "zlylin") or
     contains(@class, "xg1") or contains(@id, "bmdh")
-    or @data-lp-replacement-content or data-testid]''',
+    or @data-lp-replacement-content or @data-testid]''',
 
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
