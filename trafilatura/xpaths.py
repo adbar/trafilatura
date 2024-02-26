@@ -5,7 +5,10 @@ X-Path expressions needed to extract and filter the main text content
 ## under GNU GPL v3 license
 
 
-BODY_XPATH = [
+from lxml.etree import XPath
+
+
+BODY_XPATH = [XPath(x) for x in (
     '''.//*[(self::article or self::div or self::main or self::section)][
     @class="post" or @class="entry" or
     contains(@class, "post-text") or contains(@class, "post_text") or
@@ -46,7 +49,7 @@ BODY_XPATH = [
     or contains(translate(@class, "CP","cp"), "page-content") or
     @id="content" or @class="content"])[1]''',
     '(.//*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")])[1]|(.//main)[1]',
-]
+)]
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
 # starts-with(@class, "content ") or contains(@class, " content")
@@ -58,7 +61,7 @@ BODY_XPATH = [
 # './/span[@class=""]', # instagram?
 
 
-COMMENTS_XPATH = [
+COMMENTS_XPATH = [XPath(x) for x in (
     """.//*[(self::div or self::list or self::section)][contains(@id, 'commentlist')
     or contains(@class, 'commentlist') or contains(@class, 'comment-page') or
     contains(@id, 'comment-list') or contains(@class, 'comments-list') or
@@ -70,34 +73,34 @@ COMMENTS_XPATH = [
     """.//*[(self::div or self::section or self::list)][starts-with(@id, 'comol') or
     starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]""",
     ".//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]",
-]
+)]
 # or contains(@class, 'Comments')
 
 
-REMOVE_COMMENTS_XPATH = [
+REMOVE_COMMENTS_XPATH = [XPath(
     """.//*[(self::div or self::list or self::section)][
     starts-with(translate(@id, "C","c"), 'comment') or
     starts-with(translate(@class, "C","c"), 'comment') or
     contains(@class, 'article-comments') or contains(@class, 'post-comments')
     or starts-with(@id, 'comol') or starts-with(@id, 'disqus_thread')
     or starts-with(@id, 'dsq-comments')
-    ]""",
-]
+    ]"""
+)]
 # or self::span
 # or contains(@class, 'comment') or contains(@id, 'comment')
 
 
-PAYWALL_DISCARD_XPATH = [
+PAYWALL_DISCARD_XPATH = [XPath(
     '''.//*[(self::div or self::p)][
     contains(@id, "paywall") or contains(@id, "premium") or
     contains(@class, "paid-content") or contains(@class, "paidcontent") or
     contains(@class, "obfuscated") or contains(@class, "blurred") or
     contains(@class, "restricted") or contains(@class, "overlay")
-    ]''',
-]
+    ]'''
+)]
 
 
-OVERALL_DISCARD_XPATH = [
+OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     # navigation + footers, news outlets related posts, sharing, jp-post-flair jp-relatedposts
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
@@ -155,7 +158,7 @@ OVERALL_DISCARD_XPATH = [
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint")
     or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"
     or contains(@class, "notloaded")]''',
-]
+)]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
 # class contains "cats" (categories, also tags?)
@@ -166,15 +169,15 @@ OVERALL_DISCARD_XPATH = [
 
 
 # the following conditions focus on extraction precision
-TEASER_DISCARD_XPATH = [
+TEASER_DISCARD_XPATH = [XPath(
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
         contains(translate(@id, "T", "t"), "teaser") or contains(translate(@class, "T", "t"), "teaser")
-    ]''',
-]
+    ]'''
+)]
 
 
-PRECISION_DISCARD_XPATH = [
+PRECISION_DISCARD_XPATH = [XPath(x) for x in (
     './/header',
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
@@ -182,19 +185,19 @@ PRECISION_DISCARD_XPATH = [
         contains(@id, "link") or contains(@class, "link")
         or contains(@style, "border")
     ]''',
-]
+)]
 
 
-DISCARD_IMAGE_ELEMENTS = [
+DISCARD_IMAGE_ELEMENTS = [XPath(
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
              contains(@id, "caption") or contains(@class, "caption")
             ]
     '''
-]
+)]
 
 
-COMMENTS_DISCARD_XPATH = [
+COMMENTS_DISCARD_XPATH = [XPath(x) for x in (
     './/*[(self::div or self::section)][starts-with(@id, "respond")]',
     './/cite|.//quote',
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
@@ -202,4 +205,4 @@ COMMENTS_DISCARD_XPATH = [
     starts-with(@class, "reply-") or contains(@class, "-reply-") or contains(@class, "message")
     or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
-]
+)]

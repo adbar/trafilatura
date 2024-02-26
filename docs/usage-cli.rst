@@ -3,14 +3,13 @@ On the command-line
 
 .. meta::
     :description lang=en:
-        Trafilatura offers a robust CLI.  Learn how to download and extract text from HTML web pages without writing code,
-        including parallel processing and data mining capabilities.
+        Trafilatura offers a robust CLI. Learn how to download and extract text from HTML web pages without writing code, including parallel processing and data mining capabilities.
 
 
 Introduction
 ------------
 
-Trafilatura offers a robust `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ and can be conveniently used without writing code. Learn how to perform various tasks and leverage the full power of the tool from the terminal.
+Trafilatura offers a robust command-line interface and can be conveniently used without writing code. Learn how to perform various tasks and leverage the full power of the tool from the terminal.
 
 For the very first steps please refer to this multilingual, step-by-step `Introduction to the command-line interface <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and this `section of the Introduction to Cultural Analytics & Python <https://melaniewalsh.github.io/Intro-Cultural-Analytics/01-Command-Line/01-The-Command-Line.html>`_.
 
@@ -20,11 +19,6 @@ For instructions related to specific platforms see:
 - `Introduction to the Windows Command Line with PowerShell <https://programminghistorian.org/en/lessons/intro-to-powershell>`_
 - `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_
 - or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_
-
-As well as these compendia:
-
-- `Introduction to the Bash Command Line <https://programminghistorian.org/en/lessons/intro-to-bash>`_ (The Programming Historian)
-- `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_ (freeCodeCamp)
 
 
 Quickstart

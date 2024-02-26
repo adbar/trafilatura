@@ -15,7 +15,6 @@ Python can be easy to pick up whether you're a first time programmer or you're e
 
 -  Official `Python Tutorial <https://docs.python.org/3/tutorial/>`_
 -  `The Hitchhiker’s Guide to Python <https://docs.python-guide.org/>`_
--  `Learn Python Programming Step by Step <https://www.techbeamers.com/python-tutorial-step-by-step/>`_
 -  `The Best Python Tutorials (freeCodeCamp) <https://www.freecodecamp.org/news/best-python-tutorial/>`_
 
 

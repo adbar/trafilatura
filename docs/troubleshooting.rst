@@ -87,3 +87,4 @@ Download first and extract later
 
 Since the they have distinct characteristics it can be useful to separate the infrastructure needed for download from the extraction. Using a custom IP or network infrastructure can also prevent your usual IP from getting banned.
 
+For an approach using files from the Common Crawl and Trafilatura, see the external tool `datatrove/process_common_crawl_dump.py <https://github.com/huggingface/datatrove/blob/main/examples/process_common_crawl_dump.py>`_.
