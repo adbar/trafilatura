@@ -77,8 +77,8 @@ class Response:
 
     def store_headers(self, headerdict):
         "Store response headers if required."
-        # control or normalization here?
-        self.headers = headerdict
+        # further control steps here
+        self.headers = {k.lower(): v for k, v in headerdict.items()}
 
     def decode_data(self, decode):
         "Decode the bytestring in data and store a string in html."
