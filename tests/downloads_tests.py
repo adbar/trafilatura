@@ -63,7 +63,7 @@ def test_response_object():
     resp = Response(my_html, 200, "https://example.org")
     assert bool(resp) is True
     resp.store_headers({"X-Header": "xyz"})
-    assert "X-Header" in resp.headers
+    assert "x-header" in resp.headers
     resp.decode_data(True)
     assert my_html.decode("utf-8") == resp.html == str(resp)
     my_dict = resp.as_dict()
@@ -96,7 +96,7 @@ def test_fetch():
     for no_ssl in (True, False):
         response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, True, DEFAULT_CONFIG)
         assert response.data == b''
-        assert response.headers["X-Powered-By"].startswith("httpbun")
+        assert response.headers["x-powered-by"].startswith("httpbun")
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
