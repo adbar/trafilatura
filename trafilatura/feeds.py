@@ -169,7 +169,7 @@ def crude_extraction(feed_string, params):
 def feedparser_extraction(feed_string):
     "Parse and extract entry links using external feedparser package."
     data = feedparser.parse(feed_string)
-    return [entry.link for entry in data.entries]
+    return [entry.link for entry in data.entries if entry.link]
 
 
 def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
