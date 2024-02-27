@@ -154,7 +154,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
     contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
-    contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "-comments") or contains(@class, "-comments")
+    contains(@class, "-reply-") or contains(@class, "message")
     or contains(@id, "akismet") or contains(@class, "akismet") or
     starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint")
@@ -188,6 +188,7 @@ PRECISION_DISCARD_XPATH = [XPath(x) for x in (
         or contains(@style, "border")
     ]''',
 )]
+# or contains(@id, "-comments") or contains(@class, "-comments")
 
 
 DISCARD_IMAGE_ELEMENTS = [XPath(
