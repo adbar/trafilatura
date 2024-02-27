@@ -8,8 +8,10 @@ Deriving link info from sitemaps.
 
 import logging
 import re
+
 from itertools import islice
-from typing import List, Optional
+from time import sleep
+from typing import List, Set, Optional
 
 from courlan import (
     clean_url,
@@ -43,7 +45,13 @@ DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
 SCRUB_REGEX = re.compile(r"\?.*$|#.*$")
 POTENTIAL_SITEMAP = re.compile(r"\.xml\b")  # |\bsitemap\b
 
-GUESSES = ["sitemap.xml.gz", "sitemap", "sitemap_index.xml", "sitemap_news.xml"]
+GUESSES = [
+    "sitemap.xml",
+    "sitemap.xml.gz",
+    "sitemap",
+    "sitemap_index.xml",
+    "sitemap_news.xml",
+]
 
 
 class SitemapObject:
@@ -51,9 +59,10 @@ class SitemapObject:
     __slots__ = [
         "base_url",
         "content",
+        "current_url",
         "domain",
         "external",
-        "sitemap_url",
+        "seen",
         "sitemap_urls",
         "target_lang",
         "urls",
@@ -63,7 +72,7 @@ class SitemapObject:
         self,
         base_url: str,
         domain: str,
-        sitemap_url: str,
+        sitemapsurls: List[str],
         target_lang: Optional[str] = None,
         external: bool = False,
     ) -> None:
@@ -71,20 +80,22 @@ class SitemapObject:
         self.content: str = ""
         self.domain: str = domain
         self.external: bool = external
-        self.sitemap_url: str = sitemap_url
-        self.sitemap_urls: List[str] = []
+        self.current_url: str = ""
+        self.seen: Set[str] = set()
+        self.sitemap_urls: List[str] = sitemapsurls
         self.target_lang: Optional[str] = target_lang
         self.urls: List[str] = []
 
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
-        LOGGER.debug("fetching sitemap: %s", self.sitemap_url)
-        self.content = fetch_url(self.sitemap_url)
+        LOGGER.debug("fetching sitemap: %s", self.current_url)
+        self.content = fetch_url(self.current_url)
+        self.seen.add(self.current_url)
 
     def handle_link(self, link: str) -> None:
         """Examine a link and determine if it's valid and if it leads to
         a sitemap or a web page."""
-        if link == self.sitemap_url:  # safety check
+        if link == self.current_url:  # safety check
             return
         # fix, check, clean and normalize
         link = fix_relative_urls(self.base_url, link)
@@ -135,7 +146,7 @@ class SitemapObject:
             "%s sitemaps and %s links with hreflang found for %s",
             len(self.sitemap_urls),
             len(self.urls),
-            self.sitemap_url,
+            self.current_url,
         )
 
     def extract_sitemap_links(self) -> None:
@@ -150,12 +161,12 @@ class SitemapObject:
             "%s sitemaps and %s links found for %s",
             len(self.sitemap_urls),
             len(self.urls),
-            self.sitemap_url,
+            self.current_url,
         )
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
-        plausible = is_plausible_sitemap(self.sitemap_url, self.content)
+        plausible = is_plausible_sitemap(self.current_url, self.content)
         # safeguard
         if not plausible:
             return
@@ -175,7 +186,7 @@ class SitemapObject:
 
 
 def sitemap_search(
-    url: str, target_lang: Optional[str] = None, external: bool = False
+    url: str, target_lang: Optional[str] = None, external: bool = False, sleep_time: int = 2
 ) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
@@ -186,6 +197,7 @@ def sitemap_search(
                      (two-letter string, ISO 639-1 format).
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
+        sleep_time: Wait between requests on the same website.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -201,46 +213,39 @@ def sitemap_search(
         return []
 
     urlfilter = None
+
     if url.endswith((".gz", "sitemap", ".xml")):
-        sitemapurl = url
+        sitemapurls = [url]
     else:
-        sitemapurl = baseurl + "/sitemap.xml"
-        # filter triggered, prepare it
+        sitemapurls = []
+        # set url filter to target subpages
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurl, target_lang, external)
-    sitemap.fetch()
-    sitemap.process()
+    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external)
 
-    if not sitemap.sitemap_urls and sitemap.urls:
-        linklist = filter_urls(sitemap.urls, urlfilter)
-        LOGGER.debug("%s sitemap links found for %s", len(linklist), domainname)
-        return linklist
-
-    # try sitemaps in robots.txt file if nothing has been found
-    if not sitemap.sitemap_urls and not sitemap.urls:
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl)
-        # try additional URLs just in case
-        if not sitemap.sitemap_urls:
-            sitemap.sitemap_urls = ["".join([baseurl, "/", g]) for g in GUESSES]
+    # try sitemaps in robots.txt file, additional URLs just in case
+    if not sitemap.sitemap_urls:
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [
+            f"{baseurl}/{g}" for g in GUESSES
+        ]
 
     # iterate through nested sitemaps and results
-    seen = {sitemapurl}
-    i = 1
-    while sitemap.sitemap_urls:
-        sitemap.sitemap_url = sitemap.sitemap_urls.pop()
+    while sitemap.sitemap_urls and len(sitemap.seen) < MAX_SITEMAPS_SEEN:
+        sitemap.current_url = sitemap.sitemap_urls.pop()
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
-        seen.add(sitemap.sitemap_url)
-        sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in seen]
-        # counter and safeguard
-        i += 1
-        if i > MAX_SITEMAPS_SEEN:
-            break
+        sitemap.sitemap_urls = [
+            s for s in sitemap.sitemap_urls if s not in sitemap.seen
+        ]
 
-    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+        if len(sitemap.seen) < MAX_SITEMAPS_SEEN:
+            sleep(sleep_time)
+
+    if urlfilter:
+        sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
 

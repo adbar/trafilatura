@@ -287,7 +287,7 @@ def extract_metainfo(tree, expressions, len_limit=200):
     for expression in expressions:
         # examine all results
         i = 0
-        for elem in tree.xpath(expression):
+        for elem in expression(tree):
             content = trim(' '.join(elem.itertext()))
             if content and 2 < len(content) < len_limit:
                 return content
@@ -405,7 +405,7 @@ def extract_catstags(metatype, tree):
     for catexpr in xpath_expression:
         results.extend(
             elem.text_content()
-            for elem in tree.xpath(catexpr)
+            for elem in catexpr(tree)
             if re.search(regexpr, elem.attrib['href'])
         )
         if results:

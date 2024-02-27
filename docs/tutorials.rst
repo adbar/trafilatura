@@ -32,7 +32,7 @@ Blog posts
 Videos
 ^^^^^^
 
-Youtube playlist
+Youtube playlist with video tutorials in several languages
     `Web scraping how-tos and tutorials <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_.
 
 

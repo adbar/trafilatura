@@ -159,25 +159,44 @@ def test_input():
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
 
-def test_txttocsv():
-    mymeta = Document()
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\tNone\t\t\tNone\tNone\n'
-    mymeta.title = 'Test title'
-    mymeta.url = 'https://example.org'
-    mymeta.hostname = 'example.org'
-    mymeta.id = '1'
-    mymeta.license = 'CC BY-SA'
-    mymeta.image = 'https://example.org/image.jpg'
-    mymeta.pagetype = 'article'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\thttps://example.org/image.jpg\tNone\tTest text\tTest comment\tCC BY-SA\tarticle\n'
+def test_xmltocsv():
+    doc = Document()
+    doc.body = etree.fromstring('<xml/>')
+    doc.commentsbody = etree.fromstring('<xml/>')
+    assert xml.xmltocsv(doc, False) == 'null\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\tnull\r\n'
+
+    doc.title = 'Test title'
+    doc.url = 'https://example.org'
+    doc.hostname = 'example.org'
+    doc.id = '1'
+    doc.license = 'CC BY-SA'
+    doc.image = 'https://example.org/image.jpg'
+    doc.pagetype = 'article'
+    text = 'Test text'
+    comments = 'Test comment'
+    doc.body = etree.fromstring(f'<p>{text}</p>')
+    doc.commentsbody = etree.fromstring(f'<p>{comments}</p>')
+
+    target = 'https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n'
+
+    assert xml.xmltocsv(doc, False) == target
+    
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
-    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
+    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tnull\r\n')
+
+
+def test_tojson():
     # test json
+    mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
     assert result.endswith('}') and '"fingerprint":' in result and '"language":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
+
+
+def test_python_output():
     # bare extraction for python
+    mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
     assert isinstance(result, dict) and len(result) == 20
 
@@ -279,6 +298,21 @@ def test_formatting():
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result.endswith('Paragraph 1\n\nParagraph 2')
+
+    # code sections
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura</code></p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == """### Title
+Here is a code sample:
+`import trafilatura`"""
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura\ntrafilatura.extract("")</code></p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == """### Title
+Here is a code sample:
+```
+import trafilatura
+trafilatura.extract("")
+```"""
 
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
@@ -1212,7 +1246,9 @@ if __name__ == '__main__':
     test_extraction_options()
     test_precision_recall()
     test_baseline()
-    test_txttocsv()
+    test_xmltocsv()
+    test_tojson()
+    test_python_output()
     test_external()
     test_tei()
     test_table_processing()

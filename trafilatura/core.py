@@ -13,7 +13,7 @@ import re  # import regex as re
 import warnings
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, strip_elements, strip_tags
+from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags
 from lxml.html import tostring
 
 # own
@@ -27,10 +27,10 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
 from .settings import BASIC_CLEAN_XPATH, DEFAULT_CONFIG, TAG_CATALOG, use_config
-from .utils import is_image_file, load_html, normalize_unicode, trim, txttocsv, FORMATTING_PROTECTED
-from .xml import (build_json_output, build_tei_output, build_xml_output,
-                  control_xml_output, remove_empty_elements, strip_double_tags,
-                  xmltotxt)
+from .utils import (is_image_file, load_html, normalize_unicode, trim,
+                    FORMATTING_PROTECTED)
+from .xml import (build_json_output, build_tei_output, build_xml_output, control_xml_output,
+                  remove_empty_elements, strip_double_tags, xmltotxt, xmltocsv)
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
                      PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
@@ -545,7 +545,7 @@ def extract_content(tree, options):
     for expr in BODY_XPATH:
         # select tree if the expression has been found
         try:
-            subtree = tree.xpath(expr)[0]
+            subtree = expr(tree)[0]
         except IndexError:
             continue
         # prune the subtree
@@ -624,7 +624,7 @@ def extract_comments(tree, options):
     # potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
-        subtree = tree.xpath(expr)
+        subtree = expr(tree)
         if not subtree:
             continue
         subtree = subtree[0]
@@ -714,7 +714,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
 
 def basic_cleaning(tree):
     "Remove a few section types from the document."
-    for elem in tree.xpath(BASIC_CLEAN_XPATH):
+    for elem in BASIC_CLEAN_XPATH(tree):
         elem.getparent().remove(elem)
     return tree
 
@@ -824,12 +824,7 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
         returnstring = control_xml_output(output, output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
-        posttext = xmltotxt(document.body, include_formatting)
-        if document.commentsbody is not None:
-            commentstext = xmltotxt(document.commentsbody, include_formatting)
-        else:
-            commentstext = ''
-        returnstring = txttocsv(posttext, commentstext, document)
+        returnstring = xmltocsv(document, include_formatting)
     # JSON
     elif output_format == 'json':
         returnstring = build_json_output(document)
@@ -957,7 +952,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         if prune_xpath is not None:
             if isinstance(prune_xpath, str):
                 prune_xpath = [prune_xpath]
-            tree = prune_unwanted_nodes(tree, prune_xpath)
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None

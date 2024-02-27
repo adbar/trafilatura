@@ -11,6 +11,8 @@ from configparser import ConfigParser
 from os import cpu_count
 from pathlib import Path
 
+from lxml.etree import XPath
+
 
 
 def use_config(filename=None, config=None):
@@ -72,7 +74,7 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-BASIC_CLEAN_XPATH = ".//aside|.//footer|.//script|.//style"
+BASIC_CLEAN_XPATH = XPath(".//aside|.//footer|.//script|.//style")
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # + list(CUT_EMPTY_ELEMS)

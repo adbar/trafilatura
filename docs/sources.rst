@@ -62,7 +62,7 @@ Searching for URLs
 
 The Common Crawl is a good place to start looking for already known URLs, and possibly for the corresponding pages stored by the project. So is the Internet Archive (with a different focus):
 
-- `CommonCrawl index <https://commoncrawl.org/2015/04/announcing-the-common-crawl-index/>`_
+- `getallurls (gau) <https://github.com/lc/gau>`_ to fetch known URLs from the Wayback Machine and the Common Crawl (among others)
 - `cdx_toolkit <https://github.com/cocrawler/cdx_toolkit/>`_ (toolkit for CDX indices such as Common Crawl and the Internet Archive's Wayback Machine) & `Python example <https://github.com/cocrawler/cdx_toolkit/blob/master/examples/iter-and-warc.py>`_
 - `Python script <https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050>`_ to extract all URLs known by the Internet Archive for a given domain
 
