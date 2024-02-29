@@ -304,11 +304,13 @@ def test_formatting():
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 `import trafilatura`"""
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura\ntrafilatura.extract("")</code></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 ```
 import trafilatura
 trafilatura.extract("")
