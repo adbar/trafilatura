@@ -155,7 +155,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
     contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "reader-comments")
-    or contains(@id, "akismet") or contains(@class, "akismet") or
+    or contains(@id, "akismet") or contains(@class, "akismet") or contains(@class, "suggest-links") or
     starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint")
     or contains(@style, "display:none") or contains(@style, "display: none") or contains(@class, " hidden") or @aria-hidden="true"
