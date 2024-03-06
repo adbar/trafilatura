@@ -143,7 +143,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@id, "premium-") or contains(@id, "paywall")
     or contains(@class, "obfuscated") or contains(@class, "blurred")
     or contains(@class, " ad ")
-    or contains(@class, "next-post")
+    or contains(@class, "next-post") or contains(@class, "side-stories")
     or contains(@class, "related-stories") or contains(@class, "most-popular")
     or contains(@class, "mol-factbox") or starts-with(@class, "ZendeskForm")
     or contains(@class, "message-container") or contains(@id, "message_container")
