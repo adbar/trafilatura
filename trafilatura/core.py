@@ -916,7 +916,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 raise ValueError
 
         # extract metadata if necessary
-        if output_format != 'txt':
+        if output_format not in ['txt', 'xml']:
 
             if not date_extraction_params:
                 date_extraction_params = {
