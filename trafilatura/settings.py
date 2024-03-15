@@ -35,7 +35,7 @@ def use_config(filename=None, config=None):
 DEFAULT_CONFIG = use_config()
 
 # Safety checks
-PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count, 16)  # 16 processes at most
+PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count(), 16)  # 16 processes at most
 LRU_SIZE = 4096
 
 # Files
