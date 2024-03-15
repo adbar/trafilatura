@@ -8,7 +8,11 @@ Listing a series of settings that are applied module-wide.
 
 
 from configparser import ConfigParser
-from os import sched_getaffinity
+try:
+    from os import sched_getaffinity
+except ImportError:
+    sched_getaffinity = None
+    from os import cpu_count
 from pathlib import Path
 
 from lxml.etree import XPath
@@ -31,7 +35,7 @@ def use_config(filename=None, config=None):
 DEFAULT_CONFIG = use_config()
 
 # Safety checks
-PARALLEL_CORES = min(len(sched_getaffinity(0)), 16)  # 16 processes at most
+PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count, 16)  # 16 processes at most
 LRU_SIZE = 4096
 
 # Files
