@@ -13,7 +13,7 @@ import re
 import string
 import sys
 import traceback
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
 from os import makedirs, path, walk
 
@@ -244,11 +244,12 @@ def cli_discovery(args):
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
+        futures = (executor.submit(func, url) for url in input_urls)
         # process results from the parallel threads and add them
         # to the compressed URL dictionary for further processing
-        for result in executor.map(func, input_urls):
-            if result is not None:
-                url_store.add_urls(result)
+        for future in as_completed(futures):
+            if future.result() is not None:
+                url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
                 if args.sitemap and args.list and len(url_store.get_known_domains()) >= args.parallel:
                     url_store.print_unvisited_urls()
