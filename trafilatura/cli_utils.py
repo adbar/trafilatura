@@ -13,8 +13,7 @@ import re
 import string
 import sys
 import traceback
-from concurrent.futures import (ProcessPoolExecutor, ThreadPoolExecutor,
-                                as_completed)
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
 from os import makedirs, path, walk
 
@@ -29,8 +28,7 @@ from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .meta import reset_caches
-from .settings import (FILE_PROCESSING_CORES, FILENAME_LEN,
-                       MAX_FILES_PER_DIRECTORY, use_config)
+from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, use_config
 from .sitemaps import sitemap_search
 from .utils import URL_BLACKLIST_REGEX, make_chunks, uniquify_list
 
@@ -369,12 +367,11 @@ def url_processing_pipeline(args, url_store):
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
-    processing_cores = args.parallel or FILE_PROCESSING_CORES
     config = use_config(filename=args.config_file)
     timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
 
     # max_tasks_per_child available in Python >= 3.11
-    with ProcessPoolExecutor(max_workers=processing_cores) as executor:
+    with ProcessPoolExecutor(max_workers=args.parallel) as executor:
         # chunk input: https://github.com/python/cpython/issues/74028
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
