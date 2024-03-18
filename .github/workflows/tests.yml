@@ -18,7 +18,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-        python-version: ["3.9", "3.11", "3.13-dev"]
+        python-version: ["3.9", "3.11"]  # "3.13-dev"
         env: [{ MINIMAL: "true" }, { MINIMAL: "false" }]
         include:
           # custom python versions
