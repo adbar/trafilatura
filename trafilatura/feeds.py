@@ -2,9 +2,6 @@
 Examining feeds and extracting links for further processing.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import json
 import logging
 import re

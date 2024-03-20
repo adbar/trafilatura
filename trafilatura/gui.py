@@ -2,9 +2,6 @@
 This script implements a basic guided user interface (GUI).
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import sys
 
 from gooey import Gooey, GooeyParser

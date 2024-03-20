@@ -3,9 +3,6 @@
 All functions related to XML generation, processing and validation.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import csv
 import logging
 import lzma

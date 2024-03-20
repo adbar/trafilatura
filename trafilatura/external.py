@@ -3,10 +3,6 @@
 Functions grounding on third-party software.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
-
 import logging
 import lzma
 from pathlib import Path

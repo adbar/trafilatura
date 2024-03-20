@@ -1,9 +1,6 @@
 """
 X-Path expressions needed to extract and filter the main text content
 """
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 
 from lxml.etree import XPath
 

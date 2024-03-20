@@ -3,9 +3,6 @@
 Functions to process nodes in HTML code.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import logging
 from collections import defaultdict
 from copy import deepcopy
