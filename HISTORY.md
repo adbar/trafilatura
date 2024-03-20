@@ -1,6 +1,27 @@
 ## History / Changelog
 
 
+### 1.8.0
+
+Extraction:
+- Better precision by @felipehertzer (#509, #520)
+- Code formatting in TXT/Markdown output added (#498)
+- Improved CSV output (#496)
+- LXML: compile XPath expressions (#504)
+- Overall speedup about +5%
+
+Downloads and Navigation:
+- More robust scans with `is_live_page()` (#501)
+- Better sitemap start and safeguards (#503, #506)
+- Fix for headers in response object (#513)
+
+Maintenance:
+- License changed to Apache 2.0
+- `Response` class: convenience functions added (#497)
+- `lxml.html.Cleaner` removed (#491)
+- CLI fixes: parallel cores and processing (#524)
+
+
 ### 1.7.0
 
 Extraction:

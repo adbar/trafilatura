@@ -31,9 +31,9 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.19; python_version >= '3.11'",
-        "htmldate[speed] >= 1.7.0",
+        "htmldate[speed] >= 1.8.0",
         "py3langid >= 0.2.2",
-        "pycurl >= 7.45.2",
+        "pycurl >= 7.45.3",
     ],
     "gui": [
         "Gooey >= 1.0.1",
@@ -43,7 +43,7 @@ extras = {
 setup(
     name="trafilatura",
     version=get_version("trafilatura"),
-    description="Python package and command-line tool designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are web crawling, downloads, scraping, and extraction of main texts, metadata and comments.",
+    description="Python package and command-line tool designed to gather text on the Web, includes all necessary discovery and text processing components to perform web crawling, downloads, scraping, and extraction of main texts, metadata and comments.",
     long_description=get_long_description(),
     classifiers=[
         # As from https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -111,8 +111,8 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
-        "courlan >= 0.9.5",
-        "htmldate >= 1.7.0",
+        "courlan >= 1.0.0",
+        "htmldate >= 1.8.0",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
         # see tests on Github Actions
