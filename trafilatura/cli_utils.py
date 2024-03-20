@@ -2,10 +2,6 @@
 Functions dedicated to command-line processing.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
-
 import gzip
 import logging
 import random

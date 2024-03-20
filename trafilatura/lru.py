@@ -5,10 +5,6 @@ https://github.com/python/cpython/blob/3.9/Lib/functools.py#L524
 First adapted by https://github.com/vbarbaresi
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
-
 from threading import RLock
 
 PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
