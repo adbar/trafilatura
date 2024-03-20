@@ -1,0 +1,483 @@
+<!doctype html>
+<html class="no-js" dir="ltr" lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<title>Python 3 - simple HTTP Request with the Socket module | HackLAB</title>
+
+		<!-- All in One SEO 4.1.9.4 -->
+		<meta name="description" content="Python 3 - simple HTTP Request with the Socket module" />
+		<meta name="robots" content="max-image-preview:large" />
+		<meta name="keywords" content="python 3,socket,http,geexlab,demo,windows,linux" />
+		<link rel="canonical" href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/" />
+		<meta name="google" content="nositelinkssearchbox" />
+		<script type="application/ld+json" class="aioseo-schema">
+			{"@context":"https:\/\/schema.org","@graph":[{"@type":"WebSite","@id":"https:\/\/www.geeks3d.com\/hacklab\/#website","url":"https:\/\/www.geeks3d.com\/hacklab\/","name":"HackLAB","description":"3D Programming, Prototyping and Gamedev with GeeXLab","inLanguage":"en-US","publisher":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/#organization"}},{"@type":"Organization","@id":"https:\/\/www.geeks3d.com\/hacklab\/#organization","name":"HackLAB","url":"https:\/\/www.geeks3d.com\/hacklab\/","sameAs":["https:\/\/twitter.com\/geexlab\/"]},{"@type":"BreadcrumbList","@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#breadcrumblist","itemListElement":[{"@type":"ListItem","@id":"https:\/\/www.geeks3d.com\/hacklab\/#listItem","position":1,"item":{"@type":"WebPage","@id":"https:\/\/www.geeks3d.com\/hacklab\/","name":"Home","description":"Pixel Hacking, Creative Coding and Gamedev with GeeXLab","url":"https:\/\/www.geeks3d.com\/hacklab\/"},"nextItem":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#listItem"},{"@type":"ListItem","@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#listItem","position":2,"item":{"@type":"WebPage","@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/","name":"Python 3: simple HTTP Request with the Socket module","description":"Python 3 - simple HTTP Request with the Socket module","url":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/"},"previousItem":"https:\/\/www.geeks3d.com\/hacklab\/#listItem"}]},{"@type":"Person","@id":"https:\/\/www.geeks3d.com\/hacklab\/author\/jegx\/#author","url":"https:\/\/www.geeks3d.com\/hacklab\/author\/jegx\/","name":"JeGX","sameAs":["https:\/\/twitter.com\/geexlab\/"]},{"@type":"WebPage","@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#webpage","url":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/","name":"Python 3 - simple HTTP Request with the Socket module | HackLAB","description":"Python 3 - simple HTTP Request with the Socket module","inLanguage":"en-US","isPartOf":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/#website"},"breadcrumb":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#breadcrumblist"},"author":"https:\/\/www.geeks3d.com\/hacklab\/author\/jegx\/#author","creator":"https:\/\/www.geeks3d.com\/hacklab\/author\/jegx\/#author","datePublished":"2019-01-10T14:58:51+01:00","dateModified":"2020-03-06T11:49:13+01:00"},{"@type":"Article","@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#article","name":"Python 3 - simple HTTP Request with the Socket module | HackLAB","description":"Python 3 - simple HTTP Request with the Socket module","inLanguage":"en-US","headline":"Python 3: simple HTTP Request with the Socket module","author":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/author\/jegx\/#author"},"publisher":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/#organization"},"datePublished":"2019-01-10T14:58:51+01:00","dateModified":"2020-03-06T11:49:13+01:00","commentCount":1,"articleSection":"Demo, Python, demo, GeeXLab, http, linux, python 3, socket, windows","mainEntityOfPage":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#webpage"},"isPartOf":{"@id":"https:\/\/www.geeks3d.com\/hacklab\/20190110\/python-3-simple-http-request-with-the-socket-module\/#webpage"},"image":{"@type":"ImageObject","@id":"https:\/\/www.geeks3d.com\/hacklab\/#articleImage","url":"\/public\/jegx\/2019q1\/geexlab-python3-socket-simple-http-request2.jpg"}}]}
+		</script>
+		<!-- All in One SEO -->
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="HackLAB &raquo; Feed" href="https://www.geeks3d.com/hacklab/feed/" />
+<link rel="alternate" type="application/rss+xml" title="HackLAB &raquo; Comments Feed" href="https://www.geeks3d.com/hacklab/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="HackLAB &raquo; Python 3: simple HTTP Request with the Socket module Comments Feed" href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/feed/" />
+<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.geeks3d.com\/hacklab\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.9.3"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='opensans-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A300%2C700&#038;ver=6.4' type='text/css' media='all' />
+<link rel='stylesheet' id='source-sans-css'  href='//fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C900&#038;ver=6.4' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://www.geeks3d.com/hacklab/wp-includes/css/dist/block-library/style.min.css?ver=5.9.3' type='text/css' media='all' />
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='jegx_shortcodes-css'  href='https://www.geeks3d.com/hacklab/wp-content/plugins/jegx_shortcodes/shortcode/geeks3d-sc-styles.css?ver=5.9.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='https://www.geeks3d.com/hacklab/wp-content/plugins/wp-syntax/css/wp-syntax.css?ver=1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='fonts-css'  href='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/fonts/fonts.css?ver=6.4.3.3' type='text/css' media='all' />
+<link rel='stylesheet' id='foundation-css'  href='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/css/foundation.css?ver=6.4.3.3' type='text/css' media='all' />
+<link rel='stylesheet' id='motion_ui-css'  href='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/css/motion-ui.css?ver=6.4.3.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wpforge-css'  href='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/style.css?ver=6.4.3.3' type='text/css' media='all' />
+<link rel='stylesheet' id='customizer-css'  href='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/css/customizer.css?ver=6.4.3.3' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<link rel="https://api.w.org/" href="https://www.geeks3d.com/hacklab/wp-json/" /><link rel="alternate" type="application/json" href="https://www.geeks3d.com/hacklab/wp-json/wp/v2/posts/1403" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.geeks3d.com/hacklab/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.geeks3d.com/hacklab/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.9.3" />
+<link rel='shortlink' href='https://www.geeks3d.com/hacklab/?p=1403' />
+<link rel="alternate" type="application/json+oembed" href="https://www.geeks3d.com/hacklab/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.geeks3d.com%2Fhacklab%2F20190110%2Fpython-3-simple-http-request-with-the-socket-module%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.geeks3d.com/hacklab/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.geeks3d.com%2Fhacklab%2F20190110%2Fpython-3-simple-http-request-with-the-socket-module%2F&#038;format=xml" />
+<style type="text/css" id="wpforge-custom-header-css"></style>
+	<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #000000; }
+</style>
+	<style type="text/css" id="wpforge-customizer-css">.header_wrap{max-width:100rem;}.nav_wrap{max-width:100rem;}.contain-to-grid .top-bar{max-width:100rem;}.contain-to-grid .top-bar,.top-bar,.top-bar ul,.top-bar ul li,.contain-to-grid,.top-bar.title-bar,.title-bar{background-color:#020000;}.is-dropdown-submenu{border:1px solid #020000;}.content_wrap{max-width:100rem;}.entry-meta-categories{font-size:1;}.entry-meta-categories_bottom{font-size:1.2rem;}h2.entry-title-post{font-size:4.0rem;}.entry-content-post a{font-weight:bold;}.widget-title{font-size:1.2rem;}.widget-title{font-weight:bold;}#secondary p,#secondary li,#secondary .widget.widget_text{font-size:1.0rem;}#secondary a{font-weight:bold;}footer[role="contentinfo"]{max-width:100rem;}</style>
+
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/plugins/wp-spamshield/js/jscripts.php'></script> 
+</head>
+<body itemtype='http://schema.org/Blog' itemscope='itemscope' class="post-template-default single single-post postid-1403 single-format-standard custom-background has-site-title has-site-tagline has-header-info full-width front-page single-author"><a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+                        <div class="header_container">
+        <header id="header" class="header_wrap grid-container" itemtype="http://schema.org/WPHeader" itemscope="itemscope">
+            <div class="grid-x grid-padding-x">
+                <div class="site-header small-12 cell">
+                                                            <div class="header-info">
+                                                <p class="site-title">
+                            <a href="https://www.geeks3d.com/hacklab/" rel="home">HackLAB</a>
+                        </p><!-- .site-title -->
+                                                <p class="site-description">3D Programming, Prototyping and Gamedev with GeeXLab</p>
+                                            </div><!-- .header-info -->
+                </div><!-- .site-header -->
+            </div><!-- .grid-x .grid-margin-x -->
+        </header><!-- #header -->
+    </div><!-- end .header_container -->
+                        <div itemtype="http://schema.org/SiteNavigationElement" itemscope="itemscope" class="nav_container">
+   
+            <div class="nav_wrap grid-container">
+              <div class="title-bar" data-responsive-toggle="main-menu" data-hide-for="medium">
+          <button class="menu-icon" type="button" data-toggle="main-menu"></button>
+          <div class="title-bar-title">Menu</div>
+        </div><!-- end title-bar -->
+        <div class="top-bar" id="main-menu">
+          <div class="top-bar-left">
+            <ul class="menu vertical medium-horizontal" data-responsive-menu="accordion medium-dropdown" data-submenu-toggle="true" data-close-on-click-inside="false"><li id="menu-item-700" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-700"><a href="https://geeks3d.com/hacklab/">HOME</a></li>
+<li id="menu-item-771" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-771"><a href="https://www.geeks3d.com/hacklab/contact/">CONTACT</a></li>
+<li id="menu-item-772" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-772"><a href="https://www.geeks3d.com/hacklab/about/">ABOUT</a></li>
+</ul>          </div><!-- second end top-bar -->
+        </div><!-- end top-bar -->
+      </div><!-- .row -->
+  
+  
+  
+  </div><!-- end .nav_container -->                  <div class="content_container">
+
+
+    <section class="content_wrap  grid-container" role="document">
+
+        <div class="grid-x grid-padding-x">
+
+	<div id="content" class="small-12 large-8 cell" role="main">
+    							<article id="post-1403" class="post-1403 post type-post status-publish format-standard hentry category-demo category-python tag-demo tag-geexlab tag-http tag-linux tag-python-3 tag-socket tag-windows" itemtype='http://schema.org/CreativeWork' itemscope='itemscope'>
+		<header class="entry-header">
+																	<h1 class="entry-title-post" itemprop="headline">Python 3: simple HTTP Request with the Socket module</h1>						<div class="entry-meta-header">
+									<span class="entry-date updated"><span class="genericon genericon-month"></span><a href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/" rel="bookmark"><time class="entry-date" datetime="2019-01-10T15:58:51+01:00">January 10, 2019</time></a></span> <span class="byline"><span class="genericon genericon-user"></span><span class="author vcard"><a class="url fn n" href="https://www.geeks3d.com/hacklab/author/jegx/" rel="author">JeGX</a></span></span>													<span class="genericon genericon-comment"></span> <a href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/#comments">1 Comment</a>											</div><!-- end .entry-meta-header -->
+																<a href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/" title="Python 3: simple HTTP Request with the Socket module"></a>							</header><!-- .entry-header -->
+											
+
+<p>
+<center>  
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-5414276038817348"
+     data-ad-slot="3718802763"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center> 
+</p>
+
+
+
+
+		<div class="entry-content-post" itemprop="text">
+			<p><center><br />
+<img src="/public/jegx/2019q1/geexlab-python3-socket-simple-http-request2.jpg" alt="GeeXLab and Python 3 - simple HTTP request with the socket module"/><br />
+</center></p>
+<p><span id="more-1403"></span></p>
+<hr style="max-width:600px;">
+<ul>
+<li><a style="font-size:22px;" href="/dl/show/50043" target="_blank" rel="noopener noreferrer">PYTHON 3 DEMOPACK DOWNLOAD</a></li>
+<div style="font-size:12px;"><b>Demos</b>: <tt>geexlab-demopack-python3/socket/01-socket-http-request/main.xml</tt></div>
+<li><a style="font-size:18px;" href="/geexlab/downloads/" target="_blank" rel="noopener noreferrer">GeeXLab Downloads</a></li>
+<li><a href="/forums/index.php/topic,5819.0.html" target="_blank" rel="noopener noreferrer">Forum thread (EN)</a></li>
+</ul>
+<hr style="max-width:600px;">
+<p>Let&#8217;s look at one of the important modules that is included in the Python standard library: the <b>socket</b> module.</p>
+<blockquote><p>
+This module provides access to the BSD socket interface. It is available on all modern Unix systems, Windows, MacOS, and probably additional platforms.
+</p></blockquote>
+<p>The reference guide of the socket module is available here: <a href="https://docs.python.org/3/library/socket.html" target="_blank" rel="nofollow noopener noreferrer">socket — Low-level networking interface</a>.</p>
+<p>I prepared a demo that shows a simple use case of the socket module: how to send an <b>HTTP GET request</b> to get the content of a webpage.</p>
+<p>The demo requires <b>GeeXLab 0.27.2+</b>. Download the demopack, unzip it where you want and load into GeeXLab (drag an drop) the <tt><b>socket/01-socket-http-request/main.xml</b></tt> file.</p>
+<p>By default the target is <tt>www.google.com</tt>. But you can change it to any other target. Then click on the <tt>Send HTTP GET request - Port 80</tt> button. This operation will send the following request to google.com:</p>
+<pre>
+GET / HTTP/1.1\r\nHost:www.google.com\r\n\r\n
+</pre>
+<p>&nbsp;<br />
+And you will receive the following reply from Google server:<br />
+<center><br />
+<img src="/public/jegx/2019q1/geexlab-python3-socket-simple-http-request-demo.png" alt="GeeXLab and Python 3 - simple HTTP request with the socket module"/><br />
+</center></p>
+<p>&nbsp;<br />
+Here is the Python 3 code that executes the HTTP GET request (line 84 in the demo <tt>frame.py</tt> file):</p>
+
+<div class="wp_syntax" style="position:relative;"><table><tr><td class="code"><pre class="python" style="font-family:monospace;">target_host <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;www.google.com&quot;</span> 
+&nbsp;
+target_port <span style="color: #66cc66;">=</span> <span style="color: #ff4500;">80</span>  <span style="color: #808080; font-style: italic;"># create a socket object </span>
+client <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">socket</span>.<span style="color: #dc143c;">socket</span><span style="color: black;">&#40;</span><span style="color: #dc143c;">socket</span>.<span style="color: black;">AF_INET</span><span style="color: #66cc66;">,</span> <span style="color: #dc143c;">socket</span>.<span style="color: black;">SOCK_STREAM</span><span style="color: black;">&#41;</span>  
+&nbsp;
+<span style="color: #808080; font-style: italic;"># connect the client </span>
+client.<span style="color: black;">connect</span><span style="color: black;">&#40;</span><span style="color: black;">&#40;</span>target_host<span style="color: #66cc66;">,</span>target_port<span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>  
+&nbsp;
+<span style="color: #808080; font-style: italic;"># send some data </span>
+request <span style="color: #66cc66;">=</span> <span style="color: #483d8b;">&quot;GET / HTTP/1.1<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>Host:%s<span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span><span style="color: #000099; font-weight: bold;">\r</span><span style="color: #000099; font-weight: bold;">\n</span>&quot;</span> % target_host
+client.<span style="color: black;">send</span><span style="color: black;">&#40;</span>request.<span style="color: black;">encode</span><span style="color: black;">&#40;</span><span style="color: black;">&#41;</span><span style="color: black;">&#41;</span>  
+&nbsp;
+<span style="color: #808080; font-style: italic;"># receive some data </span>
+response <span style="color: #66cc66;">=</span> client.<span style="color: black;">recv</span><span style="color: black;">&#40;</span><span style="color: #ff4500;">4096</span><span style="color: black;">&#41;</span>  
+http_response <span style="color: #66cc66;">=</span> <span style="color: #dc143c;">repr</span><span style="color: black;">&#40;</span>response<span style="color: black;">&#41;</span>
+http_response_len <span style="color: #66cc66;">=</span> <span style="color: #008000;">len</span><span style="color: black;">&#40;</span>http_response<span style="color: black;">&#41;</span>
+&nbsp;
+<span style="color: #808080; font-style: italic;">#display the response</span>
+gh_imgui.<span style="color: black;">text</span><span style="color: black;">&#40;</span><span style="color: #483d8b;">&quot;[RECV] - length: %d&quot;</span> % http_response_len<span style="color: black;">&#41;</span>
+gh_imgui.<span style="color: black;">text_wrapped</span><span style="color: black;">&#40;</span>http_response<span style="color: black;">&#41;</span></pre></td></tr></table><p class="theCode" style="display:none;">target_host = &quot;www.google.com&quot; 
+
+target_port = 80  # create a socket object 
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
+
+# connect the client 
+client.connect((target_host,target_port))  
+
+# send some data 
+request = &quot;GET / HTTP/1.1\r\nHost:%s\r\n\r\n&quot; % target_host
+client.send(request.encode())  
+
+# receive some data 
+response = client.recv(4096)  
+http_response = repr(response)
+http_response_len = len(http_response)
+
+#display the response
+gh_imgui.text(&quot;[RECV] - length: %d&quot; % http_response_len)
+gh_imgui.text_wrapped(http_response)</p></div>
+
+<p>In the demo, the <tt>target_host</tt> variable has been filled up by the input text (ImGui function).</p>
+			
+
+
+		<br><br>
+<center> 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-5414276038817348"
+     data-ad-slot="9847007169"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</center>        
+    
+
+
+        <br/><br/>
+      <div class='yarpp yarpp-related yarpp-related-website yarpp-template-list'>
+<!-- YARPP List -->
+<p><b>Related posts:</b></p><ol>
+<li><a href="https://www.geeks3d.com/hacklab/20190114/python-3-stoppable-tcp-server-and-tcp-client-with-geexlab/" rel="bookmark" title="Python 3: stoppable TCP server (and TCP client) with GeeXLab">Python 3: stoppable TCP server (and TCP client) with GeeXLab </a></li>
+<li><a href="https://www.geeks3d.com/hacklab/20190110/python-3-reading-system-information-date-sys-platform-os/" rel="bookmark" title="Python 3: Reading System Information  (date, sys, platform, os)">Python 3: Reading System Information  (date, sys, platform, os) </a></li>
+<li><a href="https://www.geeks3d.com/hacklab/20200409/demo-how-to-read-up-to-date-covid-19-data-in-python-3/" rel="bookmark" title="(Demo) How to Read Up-to-Date COVID-19 Data in Python 3 (Updated: 2021.09.14)">(Demo) How to Read Up-to-Date COVID-19 Data in Python 3 (Updated: 2021.09.14) </a></li>
+<li><a href="https://www.geeks3d.com/hacklab/20190118/how-to-use-feedparser-and-atoma-to-read-rss-feeds-in-python-3/" rel="bookmark" title="How to use feedparser and Atoma to read RSS feeds in Python 3">How to use feedparser and Atoma to read RSS feeds in Python 3 </a></li>
+<li><a href="https://www.geeks3d.com/hacklab/20200718/demo-app-launcher/" rel="bookmark" title="(Demo) APP Launcher">(Demo) APP Launcher </a></li>
+</ol>
+</div>
+
+
+
+		</div><!-- .entry-content -->
+				<footer class="entry-meta">
+			<div class="entry-meta-footer">
+															<div class="entry-meta-categories_bottom"><span class="categories-links"><span class="genericon genericon-category"></span> <a href="https://www.geeks3d.com/hacklab/category/demo/" rel="category tag">Demo</a>, <a href="https://www.geeks3d.com/hacklab/category/python/" rel="category tag">Python</a></span></div>																		<div class="entry-meta-tags"><span class="genericon genericon-tag"></span> <span class="tags-links"><a href="https://www.geeks3d.com/hacklab/tag/demo/" rel="tag">demo</a>, <a href="https://www.geeks3d.com/hacklab/tag/geexlab/" rel="tag">GeeXLab</a>, <a href="https://www.geeks3d.com/hacklab/tag/http/" rel="tag">http</a>, <a href="https://www.geeks3d.com/hacklab/tag/linux/" rel="tag">linux</a>, <a href="https://www.geeks3d.com/hacklab/tag/python-3/" rel="tag">python 3</a>, <a href="https://www.geeks3d.com/hacklab/tag/socket/" rel="tag">socket</a>, <a href="https://www.geeks3d.com/hacklab/tag/windows/" rel="tag">windows</a></span></div>				
+
+			</div><!-- end .entry-meta-footer -->
+									</footer><!-- .entry-meta -->
+	</article><!-- #post -->
+			<nav class="nav-single">
+				<span class="nav-previous"><a href="https://www.geeks3d.com/hacklab/20190110/python-3-reading-system-information-date-sys-platform-os/" rel="prev"><span class="meta-nav">&laquo;</span> Python 3: Reading System Information  (date, sys, platform, os)</a></span>
+				<span class="nav-next"><a href="https://www.geeks3d.com/hacklab/20190114/python-3-stoppable-tcp-server-and-tcp-client-with-geexlab/" rel="next">Python 3: stoppable TCP server (and TCP client) with GeeXLab <span class="meta-nav">&raquo;</span></a></span>
+			</nav><!-- .nav-single -->
+			<div id="comments" class="comments-area">
+		<h2 class="comments-title">
+		One thought on &ldquo;Python 3: simple HTTP Request with the Socket module&rdquo;	</h2>
+	<ol class="comment-list">
+				<li class="comment even thread-even depth-1" id="li-comment-143">
+			<article id="comment-143" class="comment">
+				<header class="comment-meta comment-author vcard">
+					<cite class="fn">coulid </cite><a href="https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/#comment-143"><time datetime="2021-12-20T07:05:22+01:00">December 20, 2021 at 7:05 am</time></a>				</header><!-- .comment-meta -->
+								<section class="comment-content comment">
+					<p>It is very useful for me.<br />
+I am sending to google.com without format the request.</p>
+				</section><!-- .comment-content -->
+				<div class="reply">
+					<a rel='nofollow' class='comment-reply-link' href='https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/?replytocom=143#respond' data-commentid="143" data-postid="1403" data-belowelement="comment-143" data-respondelement="respond" data-replyto="Reply to coulid" aria-label='Reply to coulid'>Reply &raquo;</a>				</div><!-- .reply -->
+							</article><!-- #comment-## -->
+		</li><!-- #comment-## -->
+	</ol>
+							<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/#respond" style="display:none;">Cancel Reply</a></small></h3><form action="https://www.geeks3d.com/hacklab/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p><div class="grid container">
+			       <div class="grid-x grid-padding-x">
+			      	<p class="comment-form-author large-auto cell"><label for="author">Your Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="50" aria-required='true' /></p>
+<p class="comment-form-email large-auto cell"><label for="email">Your Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="50" aria-required='true' /></p>
+<p class="comment-form-url large-auto cell"><label for="url">Your Website</label><input id="url" name="url" type="text" value="" size="50" /></p></div></div>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='1403' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p>
+<noscript><input type="hidden" name="JS04X7" value="NS1" /></noscript>
+<noscript><p><strong>Currently you have JavaScript disabled. In order to post comments, please make sure JavaScript and Cookies are enabled, and reload the page.</strong> <a href="http://enable-javascript.com/" rel="nofollow external" >Click here for instructions on how to enable JavaScript in your browser.</a></p></noscript>
+</form>	</div><!-- #respond -->
+	</div>
+			</div><!-- #content -->
+		<div id="secondary" itemtype="http://schema.org/WPSideBar" itemscope="itemscope" class="small-12 large-4 cell widget-area" role="complementary">
+			<aside id="custom_html-2" class="widget_text widget widget_custom_html"><h6 class="widget-title">Searh</h6><div class="textwidget custom-html-widget"><form action="https://www.google.com/cse" id="cse-search-box" target="_blank">
+<div>
+<input type="hidden" name="cx" value="partner-pub-5414276038817348:adqsaw-po18" />
+<input type="hidden" name="ie" value="ISO-8859-1" />
+<table><tr><td><input type="text" name="q" size="31" /></td><td><input type="submit" name="sa" value="Search" /></td></tr></table>
+</div>
+</form>
+<script type="text/javascript" src="https://www.google.com/cse/brand?form=cse-search-box&amp;lang=en"></script></div></aside><aside id="custom_html-3" class="widget_text widget widget_custom_html"><h6 class="widget-title">Follow Us</h6><div class="textwidget custom-html-widget"><ul>
+<li>Twitter: <a href="https://twitter.com/geexlab" target="_blank" rel="noopener">@GeeXLab</a></li>
+<li>RSS: <a href="http://feeds.feedburner.com/geeks3d/hacklab" target="_blank" rel="noopener">HackLab Feed</a></li>
+</ul>
+</div></aside><aside id="custom_html-4" class="widget_text widget widget_custom_html"><h6 class="widget-title">GeeXLab Quick Links</h6><div class="textwidget custom-html-widget"><ul>
+<li><a href="/geexlab/" target="_blank" rel="noopener">Homepage (EN)</a></li>
+<li><a href="/geexlab/fr/" target="_blank" rel="noopener">Homepage (FR)</a></li>
+<li><a href="/geexlab/fr/gdr/" target="_blank" rel="noopener">Guide du Rootard GeeXLab (FR)</a></li>
+<li><a href="/geexlab/gdr/" target="_blank" rel="noopener">GeeXLab Rootard Guide (EN)</a></li>
+<li><a href="/geexlab/gdr/features_matrix.php" target="_blank" rel="noopener">GeeXLab Features Matrix</a></li>
+<li><a href="/geexlab/reference/" target="_blank" rel="noopener">Scripting API</a></li>
+<li><a href="/forums/index.php/board,5.0.html" target="_blank" rel="noopener">Forum (english)</a></li>
+<li><a href="/forums/index.php/board,6.0.html" target="_blank" rel="noopener">Forum (french)</a></li>
+<li><a href="/donate/" target="_blank" rel="noopener">Donate</a></li>
+</ul>
+</div></aside><aside id="custom_html-7" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+    style="display:inline-block;width:300px;height:600px"
+    data-ad-client="ca-pub-5414276038817348"
+    data-ad-slot="5775606132"></ins>
+<script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></aside><aside id="custom_html-5" class="widget_text widget widget_custom_html"><h6 class="widget-title">GeeXLab Downloads</h6><div class="textwidget custom-html-widget"><ul>
+<li><a href="/geexlab/downloads/" target="_blank" rel="noopener">All downloads</a></li>
+<li><a href="/dl/show/500" target="_blank" rel="noopener">GeeXLab win64</a></li>
+<li><a href="/dl/show/502" target="_blank" rel="noopener">GeeXLab Linux64</a></li>
+<li><a href="/dl/show/501" target="_blank" rel="noopener">GeeXLab macOS</a></li>
+<li><a href="/dl/show/505" target="_blank" rel="noopener">GeeXLab RPi OpenGL 2.1</a></li>
+<li><a href="/dl/show/508" target="_blank" rel="noopener">GeeXLab Tinker Board OpenGL ES 3.1</a></li>
+</ul></div></aside><aside id="custom_html-8" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+           style="display:inline-block;width:300px;height:250px"
+           data-ad-client="ca-pub-5414276038817348"
+           data-ad-slot="9847007169"></ins>
+<script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div></aside><aside id="better_rss_widget-4" class="widget widget_better_rss_widget"><h6 class="widget-title">NewZ</h6><ul><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=495" title="Tags: visual studio, programming, gamedev [&hellip;]"target="_blank">Visual Studio 2022 17.2 is now available</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=494" title="Tags: intel, arc, a370m, gpu, gaming [&hellip;]"target="_blank">Intel Arc A370M tested: Intel’s first discrete GPU to seriously battle NVIDIA and AMD</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=493" title="Tags: shellcode, hacking, security [&hellip;]"target="_blank">Shellcode Analysis</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=492" title="Tags: programming, gamedev, direct3d [&hellip;]"target="_blank">Derivatives in compute shader</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=491" title="Tags: windows, win3.1 [&hellip;]"target="_blank">Windows 3.1 is 30 years old!</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=490" title="Tags: python [&hellip;]"target="_blank">Modern Python performance considerations</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=489" title="Tags: [&hellip;]"target="_blank">GPU Hardware Video Encoders: How Good Are They?</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=488" title="Tags: gamedev, programming, webgpu [&hellip;]"target="_blank">(WebGPU) Stochastic Progressive Photon mapping using hash map</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=487" title="Tags: pcie 6, pci express [&hellip;]"target="_blank">PCI Express 6.0 Specification Released - Double the Bandwidth for Next-Gen Apps</a></li><li><a class="rsswidget" href="https://geeks3d.com/newz/item?id=486" title="Tags: blender, 3d, [&hellip;]"target="_blank">Blender 3.0 - Features Reel Showcase</a></li></ul></aside><aside id="better_rss_widget-2" class="widget widget_better_rss_widget"><h6 class="widget-title">Geeks3D&#8217;s News</h6><ul><li><a class="rsswidget" href="https://www.geeks3d.com/20220512/nvidia-geforce-512-77-whql-graphics-driver-released/" title="NVIDIA has released a new WHQL gaming driver for Windows 10 and Windows 11. This new GeForce 512.77 driver brings the following changes: Game Ready for Evil Dead: The Game This new Game Ready Driver... [&hellip;]"target="_blank">NVIDIA GeForce 512.77 WHQL Graphics Driv</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220510/intel-graphics-driver-30-0-101-1960-released-vulkan-1-3-211/" title="  Intel has released a new graphics driver for its GPUs from Intel 6th to latest 12th Gen (Alder Lake) and driver name: Intel Corporation -&gt; driver ID: VK_DRIVER_ID_INTEL_PROPRIETARY_WINDOWS_KHR... [&hellip;]"target="_blank">Intel Graphics Driver 30.0.101.1960 Rele</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220510/amd-radeon-software-adrenalin-22-5-1-released/" title="  AMD has published today a new version of its graphics driver for Radeon graphics cards. Here is the main changes: Support For – AMD Radeon RX 6650 XT Graphics – AMD Radeon RX 6750... [&hellip;]"target="_blank">AMD Radeon Software Adrenalin 22.5.1 Rel</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220510/amd-launches-a-batch-of-new-rdna2-graphics-cards-radeon-rx-6950-xt-rx-6750-xt-and-rx-6650-xt/" title="AMD has launched today three new graphics cards based on the RDNA2 architecture: – Radeon RX 6950 XT – Radeon RX 6750 XT – Radeon RX 6650 XT The Radeon RX 6950 XT is the new... [&hellip;]"target="_blank">AMD Launches a Batch of New RDNA2 Graphi</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220401/new-chinese-gpu-maker-moore-threads-unveils-the-mtt-s60-graphics-card-with-vulkan-opengl-and-direct3d-support/" title="  Moore Threads is a new Chinese GPU maker (founded in 2020). This new brand has unveiled two days ago the MTT S60, its first desktop graphics card. This graphics card supports all 3D APIs... [&hellip;]"target="_blank">New Chinese GPU maker Moore Threads Unve</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220401/amd-radeon-software-adrenalin-22-3-2-vulkan-1-3-206/" title="  AMD has published last week a new version of its March 2022 Radeon driver. I didn’t have the time to test it the day it was released, so here is a quick test. This driver brings the... [&hellip;]"target="_blank">AMD Radeon Software Adrenalin 22.3.2 (Vu</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220401/intel-graphics-driver-30-0-101-1660-released-vulkan-1-3-205/" title="  Intel has released a new graphics driver for its GPUs from Intel 6th to latest 12th Gen (Alder Lake) on Windows 10 and Windows 11. This new driver (version 30.0.101.1660) brings the following... [&hellip;]"target="_blank">Intel Graphics Driver 30.0.101.1660 Rele</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220330/intel-arc-alchemist-a350m-and-a370m-gpus-launched/" title="  Intel has officially revealed its mobile GPU lineup. Intel Arc Alchemist (announced in September 2021) is based on the Xe HPG (High Performance Graphics) architecture. The first Arc Alchemist... [&hellip;]"target="_blank">Intel Arc Alchemist A350M and A370M GPUs</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220324/intel-graphics-driver-30-0-101-1631-released-vulkan-1-2-205/" title="  Intel has released a new graphics driver for its GPUs from Intel 6th to latest 12th Gen (Alder Lake) on Windows 10 and Windows 11. This driver also supports Xe Dedicated GPUs. This new driver... [&hellip;]"target="_blank">Intel Graphics Driver 30.0.101.1631 Rele</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/20220318/amd-radeon-software-adrenalin-22-3-1-with-radeon-super-resolution-rsr-technology/" title="  AMD has published a new WHQL graphics driver for Radeon-based graphics cards on Windows 10 and Windows 11. Adrenalin 22.3.1 brings the following changes: Support For: – Radeon Super... [&hellip;]"target="_blank">AMD Radeon Software Adrenalin 22.3.1 wit</a></li></ul></aside><aside id="better_rss_widget-3" class="widget widget_better_rss_widget"><h6 class="widget-title">Support Forums</h6><ul><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7159.0.html" title="Hi,I was just wondering whether anyone tried prototyping something with GeeXLab, which shares lua/python code with a web- or android-runtime.This could be very interesting from a editor/runtime kind of perspective.In a sense GeeXLab is a runtime (an... [&hellip;]"target="_blank">shared-code examples with android or web targets?</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7103.0.html" title="Hi is there an archive with older versions which do still contain PhysX 3 engine? (latest come with PhysX4, right?)Where can I download a GeeXlab version with PhysX3 ?What&#039;s the latest version with Physix-3 at all?Thanks,KHP [&hellip;]"target="_blank">Where to download older Linux versions with PhysX3 ?</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7081.0.html" title="Hi everyone! :)This is my first post :DI need to read an adc (MCP3008) in my GeeXLab scene running on a Raspberry Pi 4. To do so, I tried using several python modules (spidev, mcp3008, Wiring Pi for python), but as soon as I add an im... [&hellip;]"target="_blank">Troubles with external Python modules for SPI communication</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7069.0.html" title="Release notes and download links:- https://www.geeks3d.com/20211203/h4shg3n-0-5-0-hash-code-generator-released-for-windows-and-linux/Homepage:- https://www.geeks3d.com/geexlab/apps/h4shg3n/[img alt=H4shG3n hash code ... [&hellip;]"target="_blank">H4shG3n 0.5.0 released</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7068.0.html" title="Release notes and download links:- https://www.geeks3d.com/20211203/yaffplayer-0-5-6-released-for-windows-and-linux/Homepage:- https://www.geeks3d.com/yaffplayer/[img alt=YAFFplayer video player]https://www.geeks3d.c... [&hellip;]"target="_blank">YAFFplayer 0.5.6 released:</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7067.0.html" title="Release notes:https://www.geeks3d.com/hacklab/20211202/geexlab-0-45-released-for-windows-and-linux/Downloads:https://www.geeks3d.com/geexlab/downloads/[img alt=GeeXLab scriptable engine, OpenGL, Vulkan]https://www.ge... [&hellip;]"target="_blank">GeeXLab 0.45 released</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,7019.0.html" title="Activate this realistic virtual PINBALL machine: Shots, collisions: effects managed via &#039;BulletPhysics&#039; software engineDownload: https://geeks3d.com/geexlab/games/flipper/. ... [&hellip;]"target="_blank">3D virtual Pinball machine</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6997.0.html" title="Shoot to burst: Big, easy bubbles, on 7 levels with variable panel of colors ; but with smaller bubbles it is more difficult!Download: https://geeks3d.com/geexlab/games/tirobulles/. Easy... [&hellip;]"target="_blank">Shoot, burst bubbles</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6983.0.html" title="How to create the greenish color of the Matrix movie:https://www.geeks3d.com/hacklab/20210923/matrix-greenish-color-formula-demo/[img alt=Matrix movie greenish color formula - GeeXLab demo - GLSL]https://www.geeks3d.com/public/jegx/20... [&hellip;]"target="_blank">Matrix Greenish Color Formula Demo</a></li><li><a class="rsswidget" href="https://www.geeks3d.com/forums/index.php/topic,6982.0.html" title="Twwet shader from twigl.app ported to GeeXLab:https://www.geeks3d.com/hacklab/20210923/cloudy-tunnel-tweet-shader/ [&hellip;]"target="_blank">Cloudy Tunnel Tweet Shader</a></li></ul></aside><aside id="categories-3" class="widget widget_categories"><h6 class="widget-title">Categories</h6>
+			<ul>
+					<li class="cat-item cat-item-417"><a href="https://www.geeks3d.com/hacklab/category/app/">app</a> (3)
+</li>
+	<li class="cat-item cat-item-297"><a href="https://www.geeks3d.com/hacklab/category/demo/">Demo</a> (90)
+</li>
+	<li class="cat-item cat-item-295"><a href="https://www.geeks3d.com/hacklab/category/direct3d/">Direct3D</a> (2)
+</li>
+	<li class="cat-item cat-item-589"><a href="https://www.geeks3d.com/hacklab/category/games/">Games</a> (4)
+</li>
+	<li class="cat-item cat-item-4"><a href="https://www.geeks3d.com/hacklab/category/geexlab/">GeeXLab</a> (116)
+</li>
+	<li class="cat-item cat-item-326"><a href="https://www.geeks3d.com/hacklab/category/lua/">Lua</a> (24)
+</li>
+	<li class="cat-item cat-item-8"><a href="https://www.geeks3d.com/hacklab/category/news/">News</a> (43)
+</li>
+	<li class="cat-item cat-item-152"><a href="https://www.geeks3d.com/hacklab/category/opengl/">OpenGL</a> (13)
+</li>
+	<li class="cat-item cat-item-394"><a href="https://www.geeks3d.com/hacklab/category/python/">Python</a> (12)
+</li>
+	<li class="cat-item cat-item-321"><a href="https://www.geeks3d.com/hacklab/category/raspberry-pi/">Raspberry Pi</a> (8)
+</li>
+	<li class="cat-item cat-item-223"><a href="https://www.geeks3d.com/hacklab/category/tutorial/">Tutorials</a> (33)
+</li>
+	<li class="cat-item cat-item-396"><a href="https://www.geeks3d.com/hacklab/category/vr/">vr</a> (2)
+</li>
+	<li class="cat-item cat-item-395"><a href="https://www.geeks3d.com/hacklab/category/vulkan/">Vulkan</a> (6)
+</li>
+			</ul>
+
+			</aside><aside id="archives-4" class="widget widget_archive"><h6 class="widget-title">Archives</h6>		<label class="screen-reader-text" for="archives-dropdown-4">Archives</label>
+		<select id="archives-dropdown-4" name="archive-dropdown">
+			
+			<option value="">Select Month</option>
+				<option value='https://www.geeks3d.com/hacklab/2021/12/'> December 2021 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2021/09/'> September 2021 &nbsp;(8)</option>
+	<option value='https://www.geeks3d.com/hacklab/2021/08/'> August 2021 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2021/03/'> March 2021 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2021/02/'> February 2021 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2021/01/'> January 2021 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/12/'> December 2020 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/09/'> September 2020 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/08/'> August 2020 &nbsp;(10)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/07/'> July 2020 &nbsp;(7)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/06/'> June 2020 &nbsp;(5)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/05/'> May 2020 &nbsp;(8)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/04/'> April 2020 &nbsp;(8)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/03/'> March 2020 &nbsp;(6)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/02/'> February 2020 &nbsp;(12)</option>
+	<option value='https://www.geeks3d.com/hacklab/2020/01/'> January 2020 &nbsp;(5)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/12/'> December 2019 &nbsp;(5)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/11/'> November 2019 &nbsp;(4)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/10/'> October 2019 &nbsp;(7)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/09/'> September 2019 &nbsp;(8)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/08/'> August 2019 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/07/'> July 2019 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/05/'> May 2019 &nbsp;(4)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/04/'> April 2019 &nbsp;(4)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/02/'> February 2019 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2019/01/'> January 2019 &nbsp;(5)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/12/'> December 2018 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/08/'> August 2018 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/07/'> July 2018 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/06/'> June 2018 &nbsp;(9)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/05/'> May 2018 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/04/'> April 2018 &nbsp;(6)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/03/'> March 2018 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/02/'> February 2018 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2018/01/'> January 2018 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/12/'> December 2017 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/11/'> November 2017 &nbsp;(8)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/10/'> October 2017 &nbsp;(4)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/09/'> September 2017 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/06/'> June 2017 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/05/'> May 2017 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2017/03/'> March 2017 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/11/'> November 2016 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/06/'> June 2016 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/05/'> May 2016 &nbsp;(3)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/04/'> April 2016 &nbsp;(2)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/02/'> February 2016 &nbsp;(5)</option>
+	<option value='https://www.geeks3d.com/hacklab/2016/01/'> January 2016 &nbsp;(13)</option>
+	<option value='https://www.geeks3d.com/hacklab/2015/12/'> December 2015 &nbsp;(10)</option>
+	<option value='https://www.geeks3d.com/hacklab/2015/06/'> June 2015 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2015/05/'> May 2015 &nbsp;(4)</option>
+	<option value='https://www.geeks3d.com/hacklab/2015/02/'> February 2015 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2014/12/'> December 2014 &nbsp;(1)</option>
+	<option value='https://www.geeks3d.com/hacklab/2014/11/'> November 2014 &nbsp;(11)</option>
+	<option value='https://www.geeks3d.com/hacklab/2009/11/'> November 2009 &nbsp;(3)</option>
+
+		</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-4" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+			</aside>		</div><!-- #secondary -->
+	            </div><!-- .grid-x .grid-margin-x -->
+	   </section><!-- end .content-wrap -->
+    </div><!-- end .content_container -->
+	    <div class="footer_container">
+    	<footer id="footer" itemtype="http://schema.org/WPFooter" itemscope="itemscope" class="footer_wrap grid-container" role="contentinfo">
+                    <div class=" small-12 large-12 cell">
+                            <div class="table mbl"><ul id="menu-mainmenu-1" class="menu navcntr"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-700"><a href="https://geeks3d.com/hacklab/">HOME</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-771"><a href="https://www.geeks3d.com/hacklab/contact/">CONTACT</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-772"><a href="https://www.geeks3d.com/hacklab/about/">ABOUT</a></li>
+</ul></div>             
+        </div><!-- .columns -->    
+        <div id="ftxt" class="site-info small-12 large-12 cell text-center">
+                             <p>Powered by <a href="https://themeawesome.com/responsive-wordpress-theme/" rel="follow" target="_blank" title="A Responsive WordPress Theme">WP-Forge</a> &amp; <a href="http://wordpress.org/" target="_blank" title="WordPress">WordPress</a></p>
+                    </div><!-- .site-info -->
+   
+        	    	</footer><!-- .row -->
+    </div><!-- end #footer_container -->
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+r3f5x9JS=escape(document['referrer']);
+hf4N='606ff293b3a0957b926f08363100f67e';
+hf4V='48cd4d544cb66e31582781c5f7138557';
+cm4S="form[action='https://www.geeks3d.com/hacklab/wp-comments-post.php']";
+jQuery(document).ready(function($){var e="#commentform, .comment-respond form, .comment-form, "+cm4S+", #lostpasswordform, #registerform, #loginform, #login_form, #wpss_contact_form";$(e).submit(function(){$("<input>").attr("type","hidden").attr("name","r3f5x9JS").attr("value",r3f5x9JS).appendTo(e);$("<input>").attr("type","hidden").attr("name",hf4N).attr("value",hf4V).appendTo(e);return true;});$("#comment").attr({minlength:"15",maxlength:"15360"})});
+/* ]]> */
+</script> 
+<div id="backtotop" class="hvr-fade"><span class="genericon genericon-collapse"></span></div><link rel='stylesheet' id='yarppRelatedCss-css'  href='https://www.geeks3d.com/hacklab/wp-content/plugins/yet-another-related-posts-plugin/style/related.css?ver=5.27.8' type='text/css' media='all' />
+<script type='text/javascript' id='wp-postviews-cache-js-extra'>
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/www.geeks3d.com\/hacklab\/wp-admin\/admin-ajax.php","post_id":"1403"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68' id='wp-postviews-cache-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/plugins/wp-syntax/js/wp-syntax.js?ver=1.1' id='wp-syntax-js-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/plugins/wp-spamshield/js/jscripts-ftr-min.js' id='wpss-jscripts-ftr-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/js/what-input.js?ver=6.4.3.3' id='what_input-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/js/foundation.js?ver=6.4.3.3' id='foundation-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-content/themes/wp-forge-6433/js/theme-functions.js?ver=6.4.3.3' id='load_foundation-js'></script>
+<script type='text/javascript' src='https://www.geeks3d.com/hacklab/wp-includes/js/comment-reply.min.js?ver=5.9.3' id='comment-reply-js'></script>
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.626 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2022-05-12 16:03:29 -->
+
+<!-- super cache -->
