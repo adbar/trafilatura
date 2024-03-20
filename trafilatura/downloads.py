@@ -3,7 +3,6 @@
 All functions needed to steer and execute downloads of web documents.
 """
 
-
 import logging
 import random
 import warnings

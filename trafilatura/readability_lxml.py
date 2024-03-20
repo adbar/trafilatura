@@ -15,9 +15,7 @@ https://github.com/timbertson/python-readability
 https://github.com/buriy/python-readability
 
 License of forked code: Apache-2.0 License
-This code: GPLv3+
 """
-
 
 import logging
 import re

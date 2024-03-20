@@ -54,7 +54,7 @@ setup(
         "Intended Audience :: Education",
         "Intended Audience :: Information Technology",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS",
         "Operating System :: Microsoft",
         "Operating System :: POSIX",
@@ -96,7 +96,7 @@ setup(
     },
     author="Adrien Barbaresi",
     author_email="barbaresi@bbaw.de",
-    license="GPLv3+",
+    license="Apache-2.0",
     packages=["trafilatura"],
     package_data={
         "trafilatura": [

@@ -2,9 +2,6 @@
 File containing XPath expressions to extract metadata.
 """
 
-# code available from https://github.com/adbar/trafilatura/
-# under GNU GPLv3+ license
-
 from lxml.etree import XPath
 
 
