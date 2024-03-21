@@ -8,7 +8,7 @@ import re  # import regex as re
 import warnings
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags
+from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
 from lxml.html import tostring
 
 # own
@@ -256,7 +256,7 @@ def handle_other_elements(element, potential_tags, options):
     if element.tag == 'div':
         # make a copy and prune it in case it contains sub-elements handled on their own?
         # divcopy = deepcopy(element)
-        processed_element = handle_textnode(element, options, comments_fix=False)
+        processed_element = handle_textnode(element, options, comments_fix=False, preserve_spaces=True)
         if processed_element is not None and text_chars_test(processed_element.text) is True:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
@@ -346,7 +346,8 @@ def handle_paragraphs(element, potential_tags, options):
         return processed_element
     if processed_element.text:
         return processed_element
-    LOGGER.debug('discarding p-child: %s', tostring(processed_element))
+    if LOGGER.isEnabledFor(logging.DEBUG):
+        LOGGER.debug('discarding p-child: %s', tostring(processed_element))
     return None
 
 
@@ -1019,6 +1020,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         document.text = xmltotxt(postbody, include_formatting)
         if include_comments is True:
             document.comments = xmltotxt(commentsbody, include_formatting)
+            document.commentsbody = commentsbody
+        document.raw_text = document.text
+        document.body = postbody
     else:
         document.raw_text, document.body, document.commentsbody = temp_text, postbody, commentsbody
     if as_dict is True:
@@ -1123,7 +1127,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         # add record ID to metadata
         document.id = record_id
         # calculate fingerprint
-        document.fingerprint = content_fingerprint(str(document.title) + " " + document.raw_text)
+        if document.raw_text is not None:
+            document.fingerprint = content_fingerprint(str(document.title) + " " + str(document.raw_text))
 
     # return
     return determine_returnstring(document, output_format, include_formatting, tei_validation)

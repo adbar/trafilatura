@@ -211,7 +211,8 @@ def validate_tei(xmldoc):  # , filename=""
 
 
 def replace_element_text(element, include_formatting):
-    '''Determine element text based on text and tail'''
+    '''Determine element text based on **just the text** of the element. You must deal with the tail separately.'''
+    elem_text = element.text
     # handle formatting: convert to markdown
     if include_formatting is True and element.text is not None:
         if element.tag in ('del', 'head'):
@@ -220,31 +221,31 @@ def replace_element_text(element, include_formatting):
                     number = int(element.get('rend')[1])
                 except (TypeError, ValueError):
                     number = 2
-                element.text = f'{"#" * number} {element.text}'
+                elem_text = f'{"#" * number} {elem_text}'
             elif element.tag == 'del':
-                element.text = f'~~{element.text}~~'
+                elem_text = f'~~{elem_text}~~'
         elif element.tag == 'hi':
             rend = element.get('rend')
             if rend in HI_FORMATTING:
-                element.text = f'{HI_FORMATTING[rend]}{element.text}{HI_FORMATTING[rend]}'
+                elem_text = f'{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}'
         elif element.tag == 'code':
             if '\n' in element.text:
-                element.text = f'```\n{element.text}\n```'
+                elem_text = f'```\n{elem_text}\n```'
             else:
-                element.text = f'`{element.text}`'
+                elem_text = f'`{elem_text}`'
     # handle links
     if element.tag == 'ref':
-        if element.text is not None:
-            link_text = f'[{element.text}]'
+        if elem_text is not None:
+            link_text = f'[{elem_text}]'
             if element.get('target') is not None:
-                element.text = f"{link_text}({element.get('target')})"
+                elem_text = f"{link_text}({element.get('target')})"
             else:
-                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-                element.text = link_text
+                LOGGER.warning('missing link attribute: %s %s', elem_text, element.attrib)
+                elem_text = link_text
         else:
-            LOGGER.warning('empty link: %s %s', element.text, element.attrib)
+            LOGGER.warning('empty link: %s %s', elem_text, element.attrib)
     # handle text
-    return (element.text or '') + (element.tail or '')
+    return (elem_text or '')
 
 
 def merge_with_parent(element, include_formatting=False):
@@ -254,6 +255,8 @@ def merge_with_parent(element, include_formatting=False):
         return
 
     full_text = replace_element_text(element, include_formatting)
+    if element.tail is not None:
+        full_text = f'{full_text}{element.tail}'
 
     previous = element.getprevious()
     if previous is not None:
@@ -269,34 +272,50 @@ def merge_with_parent(element, include_formatting=False):
     parent.remove(element)
 
 
+def process_element(element, returnlist, include_formatting):
+    # Process children recursively
+    if element.text is not None:
+        # this is the text that comes before the first child
+        textelement = replace_element_text(element, include_formatting)
+        returnlist.append(textelement)
+
+    for child in element:
+        if child is not None:
+            process_element(child, returnlist, include_formatting)
+
+    if element.text is None and element.tail is None:
+        if element.tag == 'graphic':
+            # add source, default to ''
+            text = f'{element.get("title", "")} {element.get("alt", "")}'
+            returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
+        # newlines for textless elements
+        if element.tag in ('graphic', 'row', 'table'):
+            returnlist.append('\n')
+        return  # Nothing more to do with textless elements
+
+    # Process text
+
+    # Common elements (Now processes end-tag logic correctly)
+    if element.tag in NEWLINE_ELEMS:
+        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+    elif element.tag == 'comments':
+        returnlist.append('\n\n')
+    else:
+        if element.tag not in SPECIAL_FORMATTING:
+            LOGGER.debug('unprocessed element in output: %s', element.tag)
+            returnlist.extend([' '])
+
+    # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
+    if element.tail is not None:
+        returnlist.append(element.tail)
+
 def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
-    # strip_tags(xmloutput, 'div', 'main', 'span')
-    # iterate and convert to list of strings
-    for element in xmloutput.iter('*'):
-        if element.text is None and element.tail is None:
-            if element.tag == 'graphic':
-                # add source, default to ''
-                text = f'{element.get("title", "")} {element.get("alt", "")}'
-                returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
-            # newlines for textless elements
-            if element.tag in ('graphic', 'row', 'table'):
-                returnlist.append('\n')
-            continue
-        # process text
-        textelement = replace_element_text(element, include_formatting)
-        # common elements
-        if element.tag in NEWLINE_ELEMS:
-            returnlist.extend([NEWLINE_ELEMS[element.tag], textelement, '\n'])
-        elif element.tag == 'comments':
-            returnlist.append('\n\n')
-        else:
-            if element.tag not in SPECIAL_FORMATTING:
-                LOGGER.debug('unprocessed element in output: %s', element.tag)
-            returnlist.extend([textelement, ' '])
-    return unescape(sanitize(''.join(returnlist)))
 
+    process_element(xmloutput, returnlist, include_formatting)
+
+    return unescape(sanitize(''.join(returnlist)))
 
 def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     "Convert the internal XML document representation to a CSV string."

@@ -312,7 +312,8 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
         return None
     # lb bypass
     if comments_fix is False and element.tag == 'lb':
-        element.tail = trim(element.tail)
+        if preserve_spaces is False:
+            element.tail = trim(element.tail)
         # if textfilter(element) is True:
         #     return None
         # duplicate_test(subelement)?
