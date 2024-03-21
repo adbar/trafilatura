@@ -137,12 +137,13 @@ MOCK_PAGES = {
     'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be': 'scmp.com.playbook.html',
     'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': 'faz.net.streaming.html',
     'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html': 'ndr.de.podcastcoronavirus140.html',
-    "https://www.mercurynews.com/2023/01/16/letters-1119/": "mercurynews.com.2023.01.16.letters-1119.html"
+    "https://www.mercurynews.com/2023/01/16/letters-1119/": "mercurynews.com.2023.01.16.letters-1119.html",
+    'http://www.pcgamer.com/2012/08/09/skyrim-part-1/': "pcgamer.com.skyrim.html"
 }
 # '': '', \
 
 
-def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, formatting=False):
+def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, formatting=False, links=False):
     '''load mock page from samples'''
     try:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='utf-8') as inputf:
@@ -170,7 +171,9 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, format
                    no_fallback=False,
                    output_format=output_format,
                    target_language=langcheck,
-                   include_formatting=formatting)
+                   include_formatting=formatting,
+                   include_links=links,
+                   )
 
 
 def load_mock_page_meta(url):
@@ -490,6 +493,8 @@ def test_extract(xmloutput, formatting):
     if xmloutput is False:
         assert 'Reuters files' not in result
 
+
+
     #result = load_mock_page('https://www.lanouvellerepublique.fr/indre-et-loire/commune/saint-martin-le-beau/family-park-la-derniere-saison-a-saint-martin-le-beau', xmloutput)
     #print(result)
     #assert result == '???'
@@ -504,6 +509,13 @@ def test_extract(xmloutput, formatting):
     #        pass
     #    else:
     #        raise AssertionError(err)
+
+def test_extract_links_formatting():
+    result = load_mock_page('http://www.pcgamer.com/2012/08/09/skyrim-part-1/', formatting=True, links=True)
+    assert 'In [Skyrim](https://www.pcgamer.com/best-skyrim-mods/), a mage' in result
+    # the original has the space at the end of the em tag
+    assert "*Legends *don't destroy *houses*." in result
+    print(result)
 
 
 def test_pages():
