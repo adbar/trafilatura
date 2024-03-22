@@ -268,7 +268,6 @@ def line_processing(line, preserve_space=False, trailing_space=False):
         if all(map(str.isspace, new_line)):
             new_line = None
         elif trailing_space:
-            # python isspace is:
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""
             new_line = "".join([space_before, new_line, space_after])
@@ -311,9 +310,6 @@ def sanitize_tree(tree):
     return tree
 
 
-_RE_COMBINE_WHITESPACE = re.compile(r"\s+")
-
-
 @lru_cache(maxsize=1024)
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
@@ -324,11 +320,7 @@ def trim(string):
         # remove newlines that are not related to punctuation or markup + proper trimming
         # return LINES_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
         # faster:
-        old = ' '.join(string.split()).strip()
-        out = _RE_COMBINE_WHITESPACE.sub(" ", string).strip()
-        if out != old:
-            LOGGER.debug("trimming: %s", string)
-        return out
+        return ' '.join(string.split()).strip()
     except (AttributeError, TypeError):
         return None
 
