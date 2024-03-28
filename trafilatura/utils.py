@@ -313,9 +313,6 @@ def sanitize_tree(tree):
 @lru_cache(maxsize=1024)
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
-    if string is None:
-        return None
-
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
         # return LINES_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')

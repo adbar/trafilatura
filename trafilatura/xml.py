@@ -280,8 +280,7 @@ def process_element(element, returnlist, include_formatting):
         returnlist.append(textelement)
 
     for child in element:
-        if child is not None:
-            process_element(child, returnlist, include_formatting)
+        process_element(child, returnlist, include_formatting)
 
     if element.text is None and element.tail is None:
         if element.tag == 'graphic':
@@ -309,6 +308,7 @@ def process_element(element, returnlist, include_formatting):
     if element.tail is not None:
         returnlist.append(element.tail)
 
+
 def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
@@ -316,6 +316,7 @@ def xmltotxt(xmloutput, include_formatting):
     process_element(xmloutput, returnlist, include_formatting)
 
     return unescape(sanitize(''.join(returnlist)))
+
 
 def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     "Convert the internal XML document representation to a CSV string."

@@ -346,8 +346,7 @@ def handle_paragraphs(element, potential_tags, options):
         return processed_element
     if processed_element.text:
         return processed_element
-    if LOGGER.isEnabledFor(logging.DEBUG):
-        LOGGER.debug('discarding p-child: %s', tostring(processed_element))
+    LOGGER.debug('discarding p-child: %s', tostring(processed_element))
     return None
 
 
