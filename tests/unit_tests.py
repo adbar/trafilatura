@@ -353,8 +353,13 @@ trafilatura.extract("")
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(copy(my_document), no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
-    # TXT: newline problem here
-    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link and additional text to bypass detection.'
+    assert my_result == 'bold, italics, tt, deleted, underlined, link and additional text to bypass detection.'
+
+    my_result = extract(copy(my_document), no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
+
+    my_result = extract(copy(my_document), no_fallback=True, include_links=True, include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, [link](test.html) and additional text to bypass detection.'
 
     my_result = extract(copy(my_document), output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result

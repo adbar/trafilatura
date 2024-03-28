@@ -268,8 +268,8 @@ def line_processing(line, preserve_space=False, trailing_space=False):
         if all(map(str.isspace, new_line)):
             new_line = None
         elif trailing_space:
-            space_before = " " if line[0] == " " else ""
-            space_after = " " if line[-1] == " " else ""
+            space_before = " " if line[0].isspace() else ""
+            space_after = " " if line[-1].isspace() else ""
             new_line = "".join([space_before, new_line, space_after])
     return new_line
 
