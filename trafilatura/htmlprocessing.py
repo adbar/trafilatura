@@ -308,7 +308,7 @@ def convert_tags(tree, options, url=None):
 
 def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
     '''Convert, format, and probe potential text elements'''
-    if element.text is None and element.tail is None:
+    if element.text is None and element.tail is None and len(element) == 0:
         return None
     # lb bypass
     if comments_fix is False and element.tag == 'lb':
@@ -318,7 +318,7 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
         #     return None
         # duplicate_test(subelement)?
         return element
-    if element.text is None:
+    if element.text is None and len(element) == 0:
         # try the tail
         # LOGGER.debug('using tail for element %s', element.tag)
         element.text, element.tail = element.tail, ''
@@ -332,7 +332,7 @@ def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
             element.tail = trim(element.tail)
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if not element.text or textfilter(element) is True:
+    if not element.text and textfilter(element) is True:
         return None
     if options.dedup and duplicate_test(element, options.config) is True:
         return None

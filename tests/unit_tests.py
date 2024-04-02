@@ -762,6 +762,19 @@ def test_htmlprocessing():
     trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "some text"
     assert node.tail == "tail"
+    node = etree.fromstring("<p><ref target='url'><hi rend='#b'>bold</hi>inner</ref>outer</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "outer"
+    node = etree.fromstring("<p><ref target='url'>text</ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "tail" and processed.text == "text"
+    node = etree.fromstring("<p><ref target='url'></ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "" and processed.text == "tail"
+    node = etree.fromstring("<p><ref target='url'>text<hi rend='#b'>bold</hi></ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "tail" and processed.text == "text"
+
 
 
 def test_extraction_options():
