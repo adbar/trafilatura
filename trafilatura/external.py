@@ -9,7 +9,7 @@ from pathlib import Path
 from pickle import load as load_pickle
 
 # third-party
-from justext.core import (ParagraphMaker, classify_paragraphs, preprocessor,
+from justext.core import (ParagraphMaker, classify_paragraphs,
                           revise_paragraph_classification)
 from justext.utils import get_stoplist  # , get_stoplists
 from lxml.etree import Element, strip_tags
@@ -56,8 +56,7 @@ def jt_stoplist_init():
 
 def custom_justext(tree, stoplist):
     'Customized version of JusText processing'
-    dom = preprocessor(tree)  # tree_cleaning(tree, True)
-    paragraphs = ParagraphMaker.make_paragraphs(dom)
+    paragraphs = ParagraphMaker.make_paragraphs(tree)
     classify_paragraphs(paragraphs, stoplist, 50, 200, 0.1, 0.2, 0.2, True)
     revise_paragraph_classification(paragraphs, 200)
     return paragraphs
