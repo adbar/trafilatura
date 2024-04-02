@@ -397,7 +397,7 @@ def handle_table(table_elem, potential_tags, options):
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
-                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
+                        subchildelem.text, subchildelem.tail = ''.join(processed_subchild.itertext()), processed_subchild.tail
                     child.tag = 'done'
             # add to tree
             if newchildelem.text or len(newchildelem) > 0:
