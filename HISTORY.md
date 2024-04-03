@@ -1,6 +1,17 @@
 ## History / Changelog
 
 
+### 1.8.1
+
+Maintenance:
+- Pin LXML to prevent broken dependency (#535)
+
+Extraction:
+- Improve extraction accuracy for major news outlets (#530)
+- Fix formatting by correcting order of element generation and space handling with @dlwh (#528)
+- Fix: prevent tail insertion before children in nested elements by @knit-bee (#536)
+
+
 ### 1.8.0
 
 Extraction:
