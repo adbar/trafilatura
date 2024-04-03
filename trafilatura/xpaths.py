@@ -144,17 +144,17 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@class, "related-stories") or contains(@class, "most-popular")
     or contains(@class, "mol-factbox") or starts-with(@class, "ZendeskForm")
     or contains(@class, "message-container") or contains(@id, "message_container")
-    or contains(@class, "yin") or contains(@class, "zlylin") or
-    contains(@class, "xg1") or contains(@id, "bmdh") or
+    or contains(@class, "yin") or contains(@class, "zlylin") or contains(@class, "permission") or
+    contains(@class, "xg1") or contains(@id, "bmdh") or contains(@class, "lightbox") or
     contains(@class, "slide") or contains(@class, "viewport") or
-    @data-lp-replacement-content or @data-testid]''',
+    @data-lp-replacement-content or @data-testid="AuthorCard"]''',
 
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
     contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "reader-comments")
     or contains(@id, "akismet") or contains(@class, "akismet") or contains(@class, "suggest-links") or
-    starts-with(@class, "hide-") or contains(@class, "-hide-") or contains(@class, "hide-print") or
+    starts-with(@class, "hide-") or contains(@class, "-hide-") or contains(@class, "hide-print") or contains(@class, " hide") or 
     contains(@id, "hidden") or contains(@style, "hidden") or contains(@class, " hidden") or
     contains(@class, "noprint") or contains(@style, "display:none") or contains(@style, "display: none")
     or @aria-hidden="true" or contains(@class, "notloaded")]''',
