@@ -9,7 +9,6 @@ import warnings
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
-from lxml.html import tostring
 
 # own
 from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
@@ -140,78 +139,89 @@ def handle_formatting(element, options):
     return processed_element
 
 
+def add_sub_element(new_child_elem, subelem, processed_subchild):
+    sub_child_elem = SubElement(new_child_elem, processed_subchild.tag)
+    sub_child_elem.text, sub_child_elem.tail = processed_subchild.text, processed_subchild.tail
+    for attr in subelem.attrib:
+        sub_child_elem.set(attr, subelem.get(attr))
+
+
+def process_nested_elements(child, new_child_elem, options):
+    new_child_elem.text = child.text
+    for subelem in child.iterdescendants("*"):
+        if subelem.tag == "list":
+            processed_subchild = handle_lists(subelem, options)
+            if processed_subchild is not None:
+                new_child_elem.append(processed_subchild)
+        else:
+            processed_subchild = handle_textnode(subelem, options, comments_fix=False)
+            if processed_subchild is not None:
+                add_sub_element(new_child_elem, subelem, processed_subchild)
+        subelem.tag = "done"
+
+
+def update_elem_rendition(elem, new_elem):
+    # set attribute
+    if elem.get("rend") is not None:
+        new_elem.set("rend", elem.get("rend"))
+
+
+def is_text_element(elem):
+    return len(elem) > 0 and text_chars_test(''.join(elem.itertext())) is True
+
+
 def handle_lists(element, options):
     '''Process lists elements'''
     processed_element = Element(element.tag)
+
     if element.text is not None and element.text.strip():
-        newchildelem = SubElement(processed_element, "item")
-        newchildelem.text = element.text
+        new_child_elem = SubElement(processed_element, "item")
+        new_child_elem.text = element.text
     # if element.tail is not None:
     #    processed_element.tail = element.text
-    for child in element.iter('item'):
-        newchildelem = Element('item')
+
+    for child in element.iter("item"):
+        new_child_elem = Element("item")
         if len(child) == 0:
             processed_child = process_node(child, options)
             if processed_child is not None:
-                newchildelem.text = processed_child.text
+                new_child_elem.text = processed_child.text
                 if processed_child.tail is not None and processed_child.tail.strip():
-                    newchildelem.text += " " + processed_child.tail
-                processed_element.append(newchildelem)
+                    new_child_elem.text += " " + processed_child.tail
+                processed_element.append(new_child_elem)
         else:
-            newchildelem.text = child.text
-            # proceed with iteration, fix for nested elements
-            for subelem in child.iterdescendants('*'):
-                # beware of nested lists
-                if subelem.tag == 'list':
-                    processed_subchild = handle_lists(subelem, options)
-                    if processed_subchild is not None:
-                        newchildelem.append(processed_subchild)
-                else:
-                    processed_subchild = handle_textnode(subelem, options, comments_fix=False)
-                    # add child element to processed_element
-                    if processed_subchild is not None:
-                        subchildelem = SubElement(newchildelem, processed_subchild.tag)
-                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                        # set attributes
-                        for attr in subelem.attrib:
-                            subchildelem.set(attr, subelem.get(attr))
-                # strip_tags(newchildelem, 'item')
-                subelem.tag = 'done'
+            process_nested_elements(child, new_child_elem, options)
             if child.tail is not None and child.tail.strip():
-                newchildelem_children = [el for el in newchildelem.getchildren() if el.tag != 'done']
-                if newchildelem_children:
-                    last_subchild = newchildelem_children[-1]
+                new_child_elem_children = [el for el in new_child_elem.getchildren() if el.tag != "done"]
+                if new_child_elem_children:
+                    last_subchild = new_child_elem_children[-1]
                     if last_subchild.tail is None or not last_subchild.tail.strip():
                         last_subchild.tail = child.tail
                     else:
                         last_subchild.tail += ' ' + child.tail
-        if newchildelem.text or len(newchildelem) > 0:
-            # set attribute
-            if child.get('rend') is not None:
-                newchildelem.set('rend', child.get('rend'))
-            processed_element.append(newchildelem)
-        child.tag = 'done'
-    element.tag = 'done'
+        if new_child_elem.text or len(new_child_elem) > 0:
+            update_elem_rendition(child, new_child_elem)
+            processed_element.append(new_child_elem)
+        child.tag = "done"
+    element.tag = "done"
     # test if it has children and text. Avoid double tags??
-    if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
-        # set attribute
-        if element.get('rend') is not None:
-            processed_element.set('rend', element.get('rend'))
+    if is_text_element(processed_element):
+        update_elem_rendition(element, processed_element)
         return processed_element
     return None
 
 
 def is_code_block_element(element):
     # pip
-    if element.get('lang') is not None or element.tag == 'code':
+    if element.get("lang") or element.tag == "code":
         return True
     # GitHub
     parent = element.getparent()
-    if parent is not None and 'highlight' in parent.get('class', default=''):
+    if parent is not None and "highlight" in parent.get("class", ""):
         return True
     # highlightjs
-    code = element.find('code')
-    if code is not None and len(element.getchildren()) == 1:
+    code = element.find("code")
+    if code is not None and len(element) == 1:
         return True
     return False
 
@@ -236,7 +246,7 @@ def handle_quotes(element, options):
             newsub = SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
         child.tag = 'done'
-    if len(processed_element) > 0 and text_chars_test(''.join(processed_element.itertext())) is True:
+    if is_text_element(processed_element):
         # avoid double/nested tags
         strip_tags(processed_element, 'quote')
         return processed_element
