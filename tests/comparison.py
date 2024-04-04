@@ -7,11 +7,6 @@ import os
 import re
 import time
 
-from lxml import html  # etree
-
-#from lxml.html.clean import Cleaner
-#HTML_CLEANER = Cleaner()
-
 try:
     from cchardet import detect
 except ImportError:
@@ -43,7 +38,7 @@ except ImportError:
     baseline = None
 from evaldata import EVAL_PAGES
 
-from trafilatura.utils import sanitize
+# from trafilatura.utils import sanitize
 
 ## TODO: time, best of 3
 
@@ -87,7 +82,7 @@ def load_document_string(filename):
     #if not os.path.isfile(mypath):
     #    mypath = os.path.join(TEST_DIR, 'additional', filename)
     try:
-        with open(mypath, 'r') as inputf:
+        with open(mypath, 'r', encoding="utf-8") as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
@@ -105,65 +100,9 @@ def load_document_string(filename):
     return htmlstring
 
 
-def run_baseline_2(htmlstring):
-    '''run bare text extraction within lxml'''
-    # binary/string as input tweak
-    try:
-        tree = html.fromstring(htmlstring)
-    except ValueError:
-        tree = html.fromstring(htmlstring.encode('utf8'))
-    result = None
-    # try json-ld
-    for elem in tree.xpath('//script[@type="application/ld+json"]'):
-        if elem.text and '"articleBody":' in elem.text:
-            mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
-            if mymatch:
-                result = mymatch.group(1)
-                result = result.replace('\\"', '"')
-                # result = trim(result)
-                break
-    if result is not None:
-        return result
-    #results = set()
-    resultlist = []
-    # iterate potentially relevant elements
-    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-        #if element.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-        #    if not element.text or len(element.text) < 20:
-        #        continue
-        #    entry = element.text
-        #else:
-        entry = element.text_content()
-        #if entry not in results and len(entry) > 10:
-        resultlist.append(entry)
-        #results.add(entry)
-    # if nothing has been found
-    #if len(resultlist) < 1:
-    #    for element in tree.iter('b', 'em', 'i', 'strong'):
-    #        entry = element.text_content()
-    #        #if entry not in results: # and len(entry) > 15:
-    #        resultlist.append(entry)
-    #        #results.add(entry)
-    #if len(resultlist) == 0:
-    #    cleaned_tree = HTML_CLEANER.clean_html(tree)
-    #    for element in tree.iter('div'):
-    #        entry = element.text_content()
-            #if len(entry) > 15:
-    #        resultlist.append(entry)
-    #        #results.add(entry)
-    #print(len(resultlist))
-    result = '\n'.join(resultlist)
-    # result = sanitize(result)
-    # print(result)
-    return result
-
-
 def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
-    if baseline is not None:
-        _, result, _ = baseline(htmlstring)
-        return result
-    result = run_baseline_2(htmlstring)
+    _, result, _ = baseline(htmlstring)
     return result
 
 
@@ -379,7 +318,7 @@ def evaluate_result(result, item):
     #elif type(result) is not str:
     #    print('not str', item['file'])
     # examine
-    if result is not None and type(result) is str:
+    if result is not None and isinstance(result, str):
         # expected output
         for to_include in item['with']:
             if to_include in result:
