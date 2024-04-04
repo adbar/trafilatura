@@ -170,8 +170,14 @@ def is_text_element(elem):
     return len(elem) > 0 and text_chars_test(''.join(elem.itertext())) is True
 
 
+def define_newelem(processed_elem, orig_elem):
+    if processed_elem is not None:
+        childelem = SubElement(orig_elem, processed_elem.tag)
+        childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
+
+
 def handle_lists(element, options):
-    '''Process lists elements'''
+    "Process lists elements including their descendants."
     processed_element = Element(element.tag)
 
     if element.text is not None and element.text.strip():
@@ -180,7 +186,7 @@ def handle_lists(element, options):
     # if element.tail is not None:
     #    processed_element.tail = element.text
 
-    for child in element.iter("item"):
+    for child in element.iterdescendants("item"):
         new_child_elem = Element("item")
         if len(child) == 0:
             processed_child = process_node(child, options)
@@ -198,7 +204,7 @@ def handle_lists(element, options):
                     if last_subchild.tail is None or not last_subchild.tail.strip():
                         last_subchild.tail = child.tail
                     else:
-                        last_subchild.tail += ' ' + child.tail
+                        last_subchild.tail += " " + child.tail
         if new_child_elem.text or len(new_child_elem) > 0:
             update_elem_rendition(child, new_child_elem)
             processed_element.append(new_child_elem)
@@ -212,6 +218,7 @@ def handle_lists(element, options):
 
 
 def is_code_block_element(element):
+    "Check if it is a code element according to common structural markers."
     # pip
     if element.get("lang") or element.tag == "code":
         return True
@@ -227,85 +234,86 @@ def is_code_block_element(element):
 
 
 def handle_code_blocks(element):
+    "Turn element into a properly tagged code block."
     processed_element = deepcopy(element)
-    for child in element.iter('*'):
-        child.tag = 'done'
-    processed_element.tag = 'code'
+    for child in element.iter("*"):
+        child.tag = "done"
+    processed_element.tag = "code"
     return processed_element
 
 
 def handle_quotes(element, options):
-    '''Process quotes elements'''
+    "Process quotes elements."
     if is_code_block_element(element):
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
-    for child in element.iter('*'):
+    for child in element.iter("*"):
         processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
-        if processed_child is not None:
-            newsub = SubElement(processed_element, child.tag)
-            newsub.text, newsub.tail = processed_child.text, processed_child.tail
-        child.tag = 'done'
+        define_newelem(processed_child, processed_element)
+        child.tag = "done"
     if is_text_element(processed_element):
         # avoid double/nested tags
-        strip_tags(processed_element, 'quote')
+        strip_tags(processed_element, "quote")
         return processed_element
     return None
 
 
 def handle_other_elements(element, potential_tags, options):
-    '''Handle diverse or unknown elements in the scope of relevant tags'''
+    "Handle diverse or unknown elements in the scope of relevant tags."
     # handle w3schools code
-    if element.tag == 'div' and 'w3-code' in element.get('class', default=''):
+    if element.tag == "div" and "w3-code" in element.get("class", ""):
         return handle_code_blocks(element)
+
     # delete unwanted
     if element.tag not in potential_tags:
-        if element.tag != 'done':
-            LOGGER.debug('discarding element: %s %s', element.tag, element.text)
+        if element.tag != "done":
+            LOGGER.debug("discarding element: %s %s", element.tag, element.text)
         return None
-    if element.tag == 'div':
+
+    if element.tag == "div":
         # make a copy and prune it in case it contains sub-elements handled on their own?
         # divcopy = deepcopy(element)
         processed_element = handle_textnode(element, options, comments_fix=False, preserve_spaces=True)
         if processed_element is not None and text_chars_test(processed_element.text) is True:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
-            if processed_element.tag == 'div':
-                processed_element.tag = 'p'
+            if processed_element.tag == "div":
+                processed_element.tag = "p"
             # insert
             return processed_element
     else:
-        LOGGER.debug('unexpected element seen: %s %s', element.tag, element.text)
+        LOGGER.debug("unexpected element seen: %s %s", element.tag, element.text)
+
     return None
 
 
 def handle_paragraphs(element, potential_tags, options):
-    '''Process paragraphs (p) elements along with their children,
-       trim and clean the content'''
-    element.attrib.clear()
+    "Process paragraphs along with their children, trim and clean the content."
+    element.attrib.clear()  # todo: test if necessary
     # strip_tags(element, 'p') # change in precision due to spaces?
+
     # no children
     if len(element) == 0:
         processed_element = process_node(element, options)
-        if processed_element is not None:
-            return processed_element
-        return None
+        return processed_element if processed_element is not None else None
+
     # children
     processed_element = Element(element.tag)
-    for child in element.iter('*'):
-        if child.tag not in potential_tags and child.tag != 'done':
-            LOGGER.debug('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
+    for child in element.iter("*"):
+        if child.tag not in potential_tags and child.tag != "done":
+            LOGGER.debug("unexpected in p: %s %s %s", child.tag, child.text, child.tail)
             continue
         # spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
         processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
         if processed_child is not None:
             # todo: needing attention!
-            if processed_child.tag == 'p':
-                LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text,
+            if processed_child.tag == "p":
+                LOGGER.debug("extra p within p: %s %s %s", processed_child.tag, processed_child.text,
                              processed_child.tail)
                 if processed_element.text:
-                    processed_element.text += ' ' + processed_child.text
+                    processed_element.text += " " + processed_child.text
                 else:
                     processed_element.text = processed_child.text
                 continue
@@ -316,14 +324,14 @@ def handle_paragraphs(element, potential_tags, options):
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
-                            item.text = ' ' + item.text
+                            item.text = " " + item.text
                         strip_tags(processed_child, item.tag)
                 # correct attributes
-                if child.tag == 'hi':
-                    newsub.set('rend', child.get('rend'))
-                elif child.tag == 'ref':
-                    if child.get('target') is not None:
-                        newsub.set('target', child.get('target'))
+                if child.tag == "hi":
+                    newsub.set("rend", child.get("rend"))
+                elif child.tag == "ref":
+                    if child.get("target") is not None:
+                        newsub.set("target", child.get("target"))
             # handle line breaks
             # elif processed_child.tag == 'lb':
             #    try:
@@ -344,79 +352,78 @@ def handle_paragraphs(element, potential_tags, options):
             #        newsub.tail = processed_child.text
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
             processed_element.append(newsub)
-        child.tag = 'done'
+        child.tag = "done"
     # finish
     if len(processed_element) > 0:
+        last_elem = processed_element[-1]
         # clean trailing lb-elements
-        if (
-                processed_element[-1].tag == 'lb'
-                and processed_element[-1].tail is None
-        ):
-            processed_element[-1].getparent().remove(processed_element[-1])
+        if last_elem.tag == "lb" and last_elem.tail is None:
+            last_elem.getparent().remove(last_elem)
         return processed_element
     if processed_element.text:
         return processed_element
-    LOGGER.debug('discarding p-child: %s', tostring(processed_element))
+    LOGGER.debug("discarding p-child: %s", tostring(processed_element))
     return None
 
 
 def define_cell_type(element):
-    '''Determine cell element type and mint new element'''
+    "Determine cell element type and mint new element."
     # define tag
-    cell_element = Element('cell')
-    if element.tag == 'th':
-        cell_element.set('role', 'head')
+    cell_element = Element("cell")
+    if element.tag == "th":
+        cell_element.set("role", "head")
     return cell_element
 
 
 def handle_table(table_elem, potential_tags, options):
-    '''Process single table element'''
-    newtable = Element('table')
-    newrow = Element('row')
+    "Process single table element."
+    newtable = Element("table")
+    newrow = Element("row")
+
     # strip these structural elements
-    strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
+    strip_tags(table_elem, "thead", "tbody", "tfoot")
+
     # explore sub-elements
     for subelement in table_elem.iterdescendants():
-        if subelement.tag == 'tr':
+        if subelement.tag == "tr":
             # process existing row
             if len(newrow) > 0:
                 newtable.append(newrow)
-                newrow = Element('row')
+                newrow = Element("row")
         elif subelement.tag in TABLE_ELEMS:
-            newchildelem = define_cell_type(subelement)
+            new_child_elem = define_cell_type(subelement)
             # process
             if len(subelement) == 0:
                 processed_cell = process_node(subelement, options)
                 if processed_cell is not None:
-                    newchildelem.text, newchildelem.tail = processed_cell.text, processed_cell.tail
+                    new_child_elem.text, new_child_elem.tail = processed_cell.text, processed_cell.tail
             else:
                 # proceed with iteration, fix for nested elements
-                newchildelem.text, newchildelem.tail = subelement.text, subelement.tail
+                new_child_elem.text, new_child_elem.tail = subelement.text, subelement.tail
                 subelement.tag = "done"
                 for child in subelement.iterdescendants():
                     if child.tag in TABLE_ALL:
                         # todo: define attributes properly
                         if child.tag in TABLE_ELEMS:
                             # subcell_elem = define_cell_type(subelement)
-                            child.tag = 'cell'
+                            child.tag = "cell"
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
                     else:
                         # subcell_elem = Element(child.tag)
-                        processed_subchild = handle_textelem(child, potential_tags.union(['div']), options)
+                        processed_subchild = handle_textelem(child, potential_tags.union(["div"]), options)
                     # add child element to processed_element
-                    if processed_subchild is not None:
-                        subchildelem = SubElement(newchildelem, processed_subchild.tag)
-                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                    child.tag = 'done'
+                    define_newelem(processed_subchild, new_child_elem)
+                    child.tag = "done"
             # add to tree
-            if newchildelem.text or len(newchildelem) > 0:
-                newrow.append(newchildelem)
+            if new_child_elem.text or len(new_child_elem) > 0:
+                newrow.append(new_child_elem)
         # beware of nested tables
-        elif subelement.tag == 'table':
+        elif subelement.tag == "table":
             break
         # cleanup
-        subelement.tag = 'done'
+        subelement.tag = "done"
+
     # end of processing
     if len(newrow) > 0:
         newtable.append(newrow)
