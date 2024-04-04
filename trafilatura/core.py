@@ -951,7 +951,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
         # backup (or not) for further processing
         tree_backup_1 = deepcopy(tree) if no_fallback is False else None
-        tree_backup_2 = deepcopy(tree)
+        tree_backup_2 = deepcopy(tree) if no_fallback is False else None
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, options)
@@ -974,11 +974,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # compare if necessary
         if no_fallback is False:
             postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, options)
-        # add baseline as additional fallback
-        # rescue: try to use original/dirty tree # and favor_precision is False=?
-        if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-            postbody, temp_text, len_text = baseline(tree_backup_2)
-            LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
+            # add baseline as additional fallback
+            # rescue: try to use original/dirty tree # and favor_precision is False=?
+            if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+                postbody, temp_text, len_text = baseline(tree_backup_2)
+                LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
         if max_tree_size is not None:
