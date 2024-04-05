@@ -126,10 +126,11 @@ class Document:
         Warning: It mutates internal DOM representation of the HTML document,
         so it is better to call other API methods before this one.
         """
+        for elem in self.doc.iter("script", "style"):
+            elem.drop_tree()
+
         ruthless = True
         while True:
-            for i in self.tags(self.doc, "script", "style"):
-                i.drop_tree()
             if ruthless:
                 self.remove_unlikely_candidates()
             self.transform_misused_divs_into_paragraphs()
@@ -157,7 +158,7 @@ class Document:
 
             cleaned_article = self.sanitize(article, candidates)
             article_length = len(cleaned_article or "")
-            if ruthless is True and article_length < self.retry_length:
+            if ruthless and article_length < self.retry_length:
                 ruthless = False
                 # Loop through and try again.
                 continue
@@ -218,13 +219,13 @@ class Document:
 
     def get_link_density(self, elem):
         total_length = text_length(elem) or 1
-        link_length = sum(text_length(elem) for elem in elem.findall(".//a"))
+        link_length = sum(text_length(link) for link in elem.findall(".//a"))
         return link_length / total_length
 
     def score_paragraphs(self):
         candidates = {}
-        ordered = []
-        for elem in self.tags(self.doc, "p", "pre", "td"):
+
+        for elem in self.doc.iter("p", "pre", "td"):
             parent_node = elem.getparent()
             if parent_node is None:
                 continue
@@ -239,11 +240,9 @@ class Document:
 
             if parent_node not in candidates:
                 candidates[parent_node] = self.score_node(parent_node)
-                ordered.append(parent_node)
 
             if grand_parent_node is not None and grand_parent_node not in candidates:
                 candidates[grand_parent_node] = self.score_node(grand_parent_node)
-                ordered.append(grand_parent_node)
 
             score = 1 + len(elem_text.split(",")) + min((elem_text_len / 100), 3)
             # if elem not in candidates:
@@ -256,8 +255,7 @@ class Document:
         # Scale the final candidates score based on link density. Good content
         # should have a relatively small link density (5% or less) and be
         # mostly unaffected by this operation.
-        for elem in ordered:
-            candidate = candidates[elem]
+        for elem, candidate in candidates.items():
             density = self.get_link_density(elem)
             candidate.score *= 1 - density
 
@@ -299,7 +297,7 @@ class Document:
                 elem.drop_tree()
 
     def transform_misused_divs_into_paragraphs(self):
-        for elem in self.tags(self.doc, "div"):
+        for elem in self.doc.findall(".//div"):
             # transform <div>s that do not contain other block elements into
             # <p>s
             # FIXME: The current implementation ignores all descendants that
@@ -313,7 +311,7 @@ class Document:
             ):
                 elem.tag = "p"
 
-        for elem in self.tags(self.doc, "div"):
+        for elem in self.doc.findall(".//div"):
             if elem.text and elem.text.strip():
                 p_elem = fragment_fromstring("<p/>")
                 p_elem.text = elem.text
@@ -329,23 +327,15 @@ class Document:
                 if child.tag == "br":
                     child.drop_tree()
 
-    def tags(self, node, *tag_names):
-        for tag_name in tag_names:
-            yield from node.findall(f".//{tag_name}")
-
-    def reverse_tags(self, node, *tag_names):
-        for tag_name in tag_names:
-            yield from reversed(node.findall(f".//{tag_name}"))
-
     def sanitize(self, node, candidates):
-        for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
+        for header in node.iter("h1", "h2", "h3", "h4", "h5", "h6"):
             if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
                 header.drop_tree()
 
-        for elem in self.tags(node, "form", "textarea"):
+        for elem in node.iter("form", "textarea"):
             elem.drop_tree()
 
-        for elem in self.tags(node, "iframe"):
+        for elem in node.iter("iframe"):
             if "src" in elem.attrib and REGEXES["videoRe"].search(elem.attrib["src"]):
                 elem.text = "VIDEO"  # ADD content to iframe text node to force <iframe></iframe> proper output
             else:
@@ -353,9 +343,7 @@ class Document:
 
         allowed = set()
         # Conditionally clean <table>s, <ul>s, and <div>s
-        for elem in self.reverse_tags(
-            node, "table", "ul", "div", "aside", "header", "footer", "section"
-        ):
+        for elem in reversed(node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")):
             if elem in allowed:
                 continue
             weight = self.class_weight(elem)
@@ -443,7 +431,7 @@ class Document:
                                 break
                     if siblings and sum(siblings) > 1000:
                         to_remove = False
-                        allowed.update(self.tags(elem, "table", "ul", "div", "section"))
+                        allowed.update(elem.iter("table", "ul", "div", "section"))
 
                 if to_remove:
                     elem.drop_tree()
