@@ -8,7 +8,7 @@ from gooey import Gooey, GooeyParser
 
 from . import __version__
 from .cli import process_args
-from .settings import DOWNLOAD_THREADS
+from .settings import PARALLEL_CORES
 
 DESCRIPTION = 'Web scraping tool for text discovery and extraction'
 

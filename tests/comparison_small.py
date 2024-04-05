@@ -23,7 +23,7 @@ from evaldata import EVAL_PAGES # ADDITIONAL_PAGES as EVAL_PAGES
 
 from trafilatura import extract
 try:
-    from trafilatura.core import baseline, html2txt
+    from trafilatura import baseline, html2txt
 except ImportError:
     baseline = None
     html2txt = None
@@ -155,8 +155,7 @@ def run_baseline(htmlstring):
     if baseline is not None:
         _, result, _ = baseline(htmlstring)
         return result
-    result = run_baseline_2(htmlstring)
-    return result
+    return run_baseline_2(htmlstring)
 
 
 def run_trafilatura(htmlstring):

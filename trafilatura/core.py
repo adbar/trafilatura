@@ -11,8 +11,8 @@ from copy import deepcopy
 from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
 
 # own
-from .external import (SANITIZED_XPATH, justext_rescue, sanitize_tree,
-                       try_readability)
+from .baseline import baseline
+from .external import compare_extraction
 from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
                       language_filter, text_chars_test)
 from .hashing import content_fingerprint
@@ -20,9 +20,8 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
                              handle_textnode, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import Document, extract_metadata
-from .settings import BASIC_CLEAN_XPATH, DEFAULT_CONFIG, TAG_CATALOG, use_config
-from .utils import (is_image_file, load_html, normalize_unicode, trim,
-                    FORMATTING_PROTECTED)
+from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from .utils import FORMATTING_PROTECTED, is_image_file, load_html, normalize_unicode
 from .xml import (build_json_output, build_tei_output, build_xml_output, control_xml_output,
                   remove_empty_elements, strip_double_tags, xmltotxt, xmltocsv)
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
@@ -38,8 +37,6 @@ TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
-
-JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
 
 
 class Extractor:
@@ -158,6 +155,7 @@ def process_nested_elements(child, new_child_elem, options):
             if processed_subchild is not None:
                 add_sub_element(new_child_elem, subelem, processed_subchild)
         subelem.tag = "done"
+        #subelem.getparent().remove(subelem)
 
 
 def update_elem_rendition(elem, new_elem):
@@ -167,7 +165,7 @@ def update_elem_rendition(elem, new_elem):
 
 
 def is_text_element(elem):
-    return len(elem) > 0 and text_chars_test(''.join(elem.itertext())) is True
+    return elem is not None and text_chars_test(''.join(elem.itertext())) is True
 
 
 def define_newelem(processed_elem, orig_elem):
@@ -295,8 +293,7 @@ def handle_paragraphs(element, potential_tags, options):
 
     # no children
     if len(element) == 0:
-        processed_element = process_node(element, options)
-        return processed_element if processed_element is not None else None
+        return process_node(element, options)
 
     # children
     processed_element = Element(element.tag)
@@ -316,6 +313,7 @@ def handle_paragraphs(element, potential_tags, options):
                     processed_element.text += " " + processed_child.text
                 else:
                     processed_element.text = processed_child.text
+                child.tag = "done"
                 continue
             # handle formatting
             newsub = Element(child.tag)
@@ -593,7 +591,7 @@ def extract_content(tree, options):
         if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
         # extract content
-        result_body.extend(filter(lambda x: x is not None, (handle_textelem(e, potential_tags, options) for e in subelems)))
+        result_body.extend([el for el in (handle_textelem(e, potential_tags, options) for e in subelems) if el is not None])
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
@@ -663,157 +661,6 @@ def extract_comments(tree, options):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
-    '''Decide whether to choose own or external extraction
-       based on a series of heuristics'''
-    min_target_length = options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
-    # bypass for recall
-    if options.recall is True and len_text > min_target_length * 10:
-        return body, text, len_text
-    algo_flag, jt_result = False, False
-    # prior cleaning
-    backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
-    if options.precision is True:
-        backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
-    # try with readability
-    temppost_algo = try_readability(backup_tree)
-    # unicode fix necessary on certain systems (#331)
-    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
-    len_algo = len(algo_text)
-    # compare
-    LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
-    # conditions to use alternative algorithms
-    if len_algo in (0, len_text):
-        algo_flag = False
-    elif len_text == 0 and len_algo > 0:
-        algo_flag = True
-    elif len_text > 2 * len_algo:
-        algo_flag = False
-    elif len_algo > 2 * len_text:
-        algo_flag = True
-    # borderline cases
-    elif not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
-        algo_flag = True
-    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
-        algo_flag = True
-    # https://github.com/adbar/trafilatura/issues/354
-    elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
-        algo_flag = True
-    else:
-        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-        algo_flag = False
-    # apply decision
-    if algo_flag:
-        body, text, len_text = temppost_algo, algo_text, len_algo
-        LOGGER.debug('using generic algorithm: %s', url)
-    else:
-        LOGGER.debug('using custom extraction: %s', url)
-    # override faulty extraction: try with justext
-    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
-    # or options.recall is True ?
-        LOGGER.debug('unclean document triggering justext examination: %s', url)
-        # tree = prune_unwanted_sections(tree, {}, options)
-        body2, text2, len_text2, jt_result = justext_rescue(tree, url, options.lang, body, 0, '')
-        # prevent too short documents from replacing the main text
-        if jt_result is True and not len_text > 4*len_text2:  # threshold could be adjusted
-            LOGGER.debug('using justext, length: %s', len_text2)
-            body, text, len_text = body2, text2, len_text2
-    # post-processing: remove unwanted sections
-    if algo_flag is True and jt_result is False:
-        body, text, len_text = sanitize_tree(body, options)
-    return body, text, len_text
-
-
-def basic_cleaning(tree):
-    "Remove a few section types from the document."
-    for elem in BASIC_CLEAN_XPATH(tree):
-        elem.getparent().remove(elem)
-    return tree
-
-
-def baseline(filecontent):
-    """Use baseline extraction function targeting text paragraphs and/or JSON metadata.
-
-    Args:
-        filecontent: HTML code as binary string or string.
-
-    Returns:
-        A LXML <body> element containing the extracted paragraphs,
-        the main text as string, and its length as integer.
-
-    """
-    tree = load_html(filecontent)
-    postbody = Element('body')
-    if tree is None:
-        return postbody, '', 0
-    # scrape from json text
-    for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
-        if elem.text and '"article' in elem.text:
-            mymatch = JSON_SEARCH.search(elem.text)
-            if mymatch:
-                elem = SubElement(postbody, 'p')
-                elem.text = trim(mymatch[1].replace('\\"', '"'))
-                return postbody, elem.text, len(elem.text)
-
-    tree = basic_cleaning(tree)
-
-    # scrape from article tag
-    article_elem = tree.find('.//article')
-    if article_elem is not None:
-        temp_text = trim(article_elem.text_content())
-        if len(temp_text) > 100:
-            elem = SubElement(postbody, 'p')
-            elem.text = temp_text
-            return postbody, temp_text, len(temp_text)
-    # scrape from text paragraphs
-    results = set()
-    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
-        entry = element.text_content()
-        if entry not in results:
-            elem = SubElement(postbody, 'p')
-            elem.text = entry
-            results.add(entry)
-    temp_text = trim('\n'.join(postbody.itertext()))
-    if len(temp_text) > 100:
-        return postbody, temp_text, len(temp_text)
-    # default strategy: clean the tree and take everything
-    postbody = Element('body')
-    body_elem = tree.find('.//body')
-    if body_elem is not None:
-        # elem.text = trim(body_elem.text_content())
-        text = '\n'.join([trim(e) for e in body_elem.itertext()])
-        if len(text) > 100:
-            elem = SubElement(postbody, 'p')
-            elem.text = text
-            return postbody, text, len(text)
-    # new fallback
-    text = html2txt(tree)
-    elem = SubElement(postbody, 'p')
-    elem.text = text
-    return postbody, text, len(text)
-    # old: return postbody, '', 0
-
-
-def html2txt(content):
-    """Run basic html2txt on a document.
-
-    Args:
-        content: HTML document as string or LXML element.
-
-    Returns:
-        The extracted text in the form of a string or an empty string.
-
-    """
-    tree = load_html(content)
-    if tree is None:
-        return ""
-    body = tree.find(".//body")
-    if body is None:
-        return ""
-    tree = basic_cleaning(tree)
-    return " ".join(body.text_content().split()).strip()
-
-
 def determine_returnstring(document, output_format, include_formatting, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
@@ -828,12 +675,9 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
         # build output trees
         strip_double_tags(document.body)
         remove_empty_elements(document.body)
-        if output_format == 'xml':
-            output = build_xml_output(document)
-        elif output_format == 'xmltei':
-            output = build_tei_output(document)
+        func = build_xml_output if output_format == "xml" else build_tei_output
         # can be improved
-        returnstring = control_xml_output(output, output_format, tei_validation, document)
+        returnstring = control_xml_output(func(document), output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
         returnstring = xmltocsv(document, include_formatting)
@@ -844,8 +688,7 @@ def determine_returnstring(document, output_format, include_formatting, tei_vali
     else:
         returnstring = xmltotxt(document.body, include_formatting)
         if document.commentsbody is not None:
-            comments_text = xmltotxt(document.commentsbody, include_formatting)
-            returnstring = f"{returnstring}\n{comments_text}".strip()
+            returnstring = f"{returnstring}\n{xmltotxt(document.commentsbody, include_formatting)}".strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
 
@@ -1038,17 +881,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             document.comments = xmltotxt(commentsbody, include_formatting)
             document.commentsbody = commentsbody
         document.raw_text = document.text
-        document.body = postbody
     else:
-        document.raw_text, document.body, document.commentsbody = temp_text, postbody, commentsbody
+        document.raw_text, document.commentsbody = temp_text, commentsbody
+    document.body = postbody
     if as_dict is True:
         document = {slot: getattr(document, slot, None) for slot in document.__slots__}
     return document
-
-
-def timeout_handler(signum, frame):
-    '''Raise a timeout exception to handle rare malicious files'''
-    raise RuntimeError('unusual file processing time, aborting')
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
@@ -1150,11 +988,10 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     return determine_returnstring(document, output_format, include_formatting, tei_validation)
 
 
-# for legacy and backwards compatibility
 def process_record(filecontent, url=None, record_id=None, no_fallback=False,
                    include_comments=True, target_language=None,
                    include_tables=True):
-    "Legacy extraction function, now deprecated."
+    "Legacy extraction function, now deprecated, for backwards compatibility only."
     # deprecation warning
     warnings.warn(
         "process_record() is deprecated, use extract() instead",

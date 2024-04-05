@@ -12,7 +12,7 @@ from lxml.etree import strip_tags
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
-from .utils import trim, uniquify_list
+from .utils import trim
 
 
 LOGGER = logging.getLogger(__name__)
@@ -202,7 +202,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
                 # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
-    for elem in uniquify_list(deletions):
+    for elem in dict.fromkeys(deletions):
         try:
             elem.getparent().remove(elem)
         except AttributeError:

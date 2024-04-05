@@ -36,6 +36,7 @@ TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head',
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
+TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
@@ -140,7 +141,7 @@ def add_xml_meta(output, docmeta):
     '''Add extracted metadata to the XML output tree'''
     for attribute in META_ATTRIBUTES:
         value = getattr(docmeta, attribute, None)
-        if value is not None:
+        if value:
             output.set(attribute, value if isinstance(value, str) else ';'.join(value))
     return output
 
@@ -169,30 +170,28 @@ def check_tei(xmldoc, url):
         if parent.tag == "p":
             _move_element_one_level_up(elem)
     # convert <lb/> when child of <div> to <p>
-    for element in xmldoc.findall(".//text/body//div/lb"):
-        if element.tail and element.tail.strip():
-            element.tag = 'p'
-            element.text = element.tail
-            element.tail = None
+    for elem in xmldoc.findall(".//text/body//div/lb"):
+        if elem.tail and elem.tail.strip():
+            elem.tag, elem.text, elem.tail = 'p', elem.tail, None
     # look for elements that are not valid
-    for element in xmldoc.findall('.//text/body//*'):
-        if element.tag in TEI_REMOVE_TAIL and element.tail and element.tail.strip():
-            _handle_unwanted_tails(element)
+    for elem in xmldoc.findall('.//text/body//*'):
+        if elem.tag in TEI_REMOVE_TAIL and elem.tail and elem.tail.strip():
+            _handle_unwanted_tails(elem)
         # check elements
-        if element.tag not in TEI_VALID_TAGS:
+        if elem.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
-            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
-            merge_with_parent(element)
+            LOGGER.warning('not a TEI element, removing: %s %s', elem.tag, url)
+            merge_with_parent(elem)
             continue
-        if element.tag == "div":
-            _handle_text_content_of_div_nodes(element)
-            _wrap_unwanted_siblings_of_div(element)
+        if elem.tag == "div":
+            _handle_text_content_of_div_nodes(elem)
+            _wrap_unwanted_siblings_of_div(elem)
         # check attributes
-        for attribute in element.attrib:
+        for attribute in elem.attrib:
             if attribute not in TEI_VALID_ATTRS:
-                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
-                element.attrib.pop(attribute)
+                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
+                elem.attrib.pop(attribute)
     return xmldoc
 
 
@@ -211,41 +210,41 @@ def validate_tei(xmldoc):  # , filename=""
 
 
 def replace_element_text(element, include_formatting):
-    '''Determine element text based on **just the text** of the element. You must deal with the tail separately.'''
-    elem_text = element.text
+    "Determine element text based on just the text of the element. One must deal with the tail separately."
+    elem_text = element.text or ""
     # handle formatting: convert to markdown
-    if include_formatting is True and element.text is not None:
-        if element.tag in ('del', 'head'):
-            if element.tag == 'head':
+    if include_formatting is True and element.text:
+        if element.tag in ("del", "head"):
+            if element.tag == "head":
                 try:
-                    number = int(element.get('rend')[1])
+                    number = int(element.get("rend")[1])
                 except (TypeError, ValueError):
                     number = 2
                 elem_text = f'{"#" * number} {elem_text}'
-            elif element.tag == 'del':
-                elem_text = f'~~{elem_text}~~'
-        elif element.tag == 'hi':
-            rend = element.get('rend')
+            elif element.tag == "del":
+                elem_text = f"~~{elem_text}~~"
+        elif element.tag == "hi":
+            rend = element.get("rend")
             if rend in HI_FORMATTING:
-                elem_text = f'{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}'
-        elif element.tag == 'code':
+                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
+        elif element.tag == "code":
             if '\n' in element.text:
-                elem_text = f'```\n{elem_text}\n```'
+                elem_text = f"```\n{elem_text}\n```"
             else:
-                elem_text = f'`{elem_text}`'
+                elem_text = f"`{elem_text}`"
     # handle links
-    if element.tag == 'ref':
-        if elem_text is not None:
-            link_text = f'[{elem_text}]'
-            if element.get('target') is not None:
-                elem_text = f"{link_text}({element.get('target')})"
+    if element.tag == "ref":
+        if elem_text:
+            link_text = f"[{elem_text}]"
+            target = element.get("target")
+            if target:
+                elem_text = f"{link_text}({target})"
             else:
-                LOGGER.warning('missing link attribute: %s %s', elem_text, element.attrib)
+                LOGGER.warning("missing link attribute: %s %s'", elem_text, element.attrib)
                 elem_text = link_text
         else:
-            LOGGER.warning('empty link: %s %s', elem_text, element.attrib)
-    # handle text
-    return (elem_text or '')
+            LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
+    return elem_text
 
 
 def merge_with_parent(element, include_formatting=False):
@@ -519,7 +518,7 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
-    if element.tail is not None and element.tail.strip():
+    if element.tail and element.tail.strip():
         new_element.tail = element.tail.strip()
     return new_element
 
@@ -532,18 +531,17 @@ def _wrap_unwanted_siblings_of_div(div_element):
     for sibling in div_element.itersiblings():
         if sibling.tag == "div":
             break
-        if sibling.tag in {"p", "list", "table", "quote", "ab"}:
-            if new_sibling_index is None:
-                new_sibling_index = parent.index(sibling)
+        if sibling.tag in TEI_DIV_SIBLINGS:
+            new_sibling_index = new_sibling_index or parent.index(sibling)
             new_sibling.append(sibling)
         # some elements (e.g. <lb/>) can appear next to div, but
         # order of elements should be kept, thus add and reset new_sibling
         else:
-            if new_sibling_index is not None and len(new_sibling) != 0:
+            if new_sibling_index and len(new_sibling) != 0:
                 parent.insert(new_sibling_index, new_sibling)
                 new_sibling = Element("div")
                 new_sibling_index = None
-    if new_sibling_index is not None and len(new_sibling) != 0:
+    if new_sibling_index and len(new_sibling) != 0:
         parent.insert(new_sibling_index, new_sibling)
 
 
