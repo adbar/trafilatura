@@ -431,30 +431,35 @@ def handle_table(table_elem, potential_tags, options):
 
 
 def handle_image(element):
-    '''Process image element'''
-    # image source
+    "Process image elements and their relevant attributes."
     processed_element = Element(element.tag)
-    if is_image_file(element.get('data-src')):
-        processed_element.set('src', element.get('data-src'))
-    elif is_image_file(element.get('src')):
-        processed_element.set('src', element.get('src'))
+
+    for attr in ("data-src", "src"):
+        src = element.get(attr)
+        if is_image_file(src):
+            processed_element.set("src", src)
+            break
     else:
         # take the first corresponding attribute
-        for attr in element.attrib:
-            if attr.startswith('data-src') and is_image_file(element.get(attr)):
-                processed_element.set('src', element.get(attr))
+        for attr, value in element.attrib.items():
+            if attr.startswith("data-src") and is_image_file(value):
+                processed_element.set("src", value)
                 break
+
     # additional data
-    if element.get('alt') is not None:
-        processed_element.set('alt', element.get('alt'))
-    if element.get('title') is not None:
-        processed_element.set('title', element.get('title'))
+    if element.get("alt") is not None:
+        processed_element.set("alt", element.get("alt"))
+    if element.get("title") is not None:
+        processed_element.set("title", element.get("title"))
+
     # don't return empty elements or elements without source, just None
-    if len(processed_element.attrib) == 0 or not processed_element.get('src'):
+    if not processed_element.attrib or not processed_element.get("src"):
         return None
+
     # post-processing: URLs
-    url = processed_element.get('src')
-    processed_element.set('src', re.sub(r'^//', 'http://', url))
+    if not processed_element.get("src").startswith("http"):
+        processed_element.set("src", re.sub(r"^//", "http://", processed_element.get("src")))
+
     return processed_element
 
 
@@ -554,9 +559,8 @@ def extract_content(tree, options):
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
-        try:
-            subtree = expr(tree)[0]
-        except IndexError:
+        subtree = next((s for s in expr(tree) if s is not None), None)
+        if subtree is None:
             continue
         # prune the subtree
         subtree = prune_unwanted_sections(subtree, potential_tags, options)
@@ -627,21 +631,20 @@ def process_comments_node(elem, potential_tags, options):
 
 
 def extract_comments(tree, options):
-    '''Try and extract comments out of potential sections in the HTML'''
-    comments_body = Element('body')
+    "Try and extract comments out of potential sections in the HTML."
+    comments_body = Element("body")
     # define iteration strategy
     potential_tags = set(TAG_CATALOG)  # 'span'
     # potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
-        subtree = expr(tree)
-        if not subtree:
+        subtree = next((s for s in expr(tree) if s is not None), None)
+        if subtree is None:
             continue
-        subtree = subtree[0]
         # prune
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
-        strip_tags(subtree, 'a', 'ref', 'span')
+        strip_tags(subtree, "a", "ref", "span")
         # extract content
         # for elem in subtree.xpath('.//*'):
         #    processed_elem = process_comments_node(elem, potential_tags)
@@ -649,7 +652,7 @@ def extract_comments(tree, options):
         #        comments_body.append(processed_elem)
         # processed_elems = (process_comments_node(elem, potential_tags, options) for elem in
         #                    subtree.xpath('.//*'))
-        comments_body.extend(filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath('.//*'))))
+        comments_body.extend(filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*"))))
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
@@ -657,7 +660,7 @@ def extract_comments(tree, options):
             subtree.getparent().remove(subtree)
             break
     # lengths
-    temp_comments = ' '.join(comments_body.itertext()).strip()
+    temp_comments = " ".join(comments_body.itertext()).strip()
     return comments_body, temp_comments, len(temp_comments), tree
 
 

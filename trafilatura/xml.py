@@ -213,22 +213,21 @@ def replace_element_text(element, include_formatting):
     "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
     # handle formatting: convert to markdown
-    if include_formatting is True and element.text:
-        if element.tag in ("del", "head"):
-            if element.tag == "head":
-                try:
-                    number = int(element.get("rend")[1])
-                except (TypeError, ValueError):
-                    number = 2
-                elem_text = f'{"#" * number} {elem_text}'
-            elif element.tag == "del":
-                elem_text = f"~~{elem_text}~~"
+    if include_formatting and element.text:
+        if element.tag == "head":
+            try:
+                number = int(element.get("rend")[1])
+            except (TypeError, ValueError):
+                number = 2
+            elem_text = f'{"#" * number} {elem_text}'
+        elif element.tag == "del":
+            elem_text = f"~~{elem_text}~~"
         elif element.tag == "hi":
             rend = element.get("rend")
             if rend in HI_FORMATTING:
                 elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
         elif element.tag == "code":
-            if '\n' in element.text:
+            if "\n" in element.text:
                 elem_text = f"```\n{elem_text}\n```"
             else:
                 elem_text = f"`{elem_text}`"
@@ -255,15 +254,12 @@ def merge_with_parent(element, include_formatting=False):
 
     full_text = replace_element_text(element, include_formatting)
     if element.tail is not None:
-        full_text = f'{full_text}{element.tail}'
+        full_text += element.tail
 
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
-        if previous.tail is not None:
-            previous.tail = f'{previous.tail} {full_text}'
-        else:
-            previous.tail = full_text
+        previous.tail = f'{previous.tail} {full_text}' if previous.tail else full_text
     elif parent.text is not None:
         parent.text = f'{parent.text} {full_text}'
     else:
@@ -331,22 +327,19 @@ def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
     # organize fields
-    data = [d or null for d in (
-                document.url,
-                document.id,
-                document.fingerprint,
-                document.hostname,
-                document.title,
-                document.image,
-                document.date,
-                posttext,
-                commentstext,
-                document.license,
-                document.pagetype,
-                )
-            ]
+    data = (document.url,
+            document.id,
+            document.fingerprint,
+            document.hostname,
+            document.title,
+            document.image,
+            document.date,
+            posttext,
+            commentstext,
+            document.license,
+            document.pagetype)
 
-    outputwriter.writerow(data)
+    outputwriter.writerow([d if d else null for d in data])
     return output.getvalue()
 
 
@@ -469,9 +462,8 @@ def write_fullheader(teidoc, docmeta):
 
 def _handle_text_content_of_div_nodes(element):
     if element.text and element.text.strip():
-        if element.getchildren() and element[0].tag == 'p':
-            p_text = element[0].text or ""
-            element[0].text = f'{element.text} {p_text}'.strip()
+        if element.getchildren() and element[0].tag == "p":
+            element[0].text = f'{element.text} {element[0].text or ""}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.text
@@ -479,9 +471,8 @@ def _handle_text_content_of_div_nodes(element):
         element.text = None
 
     if element.tail and element.tail.strip():
-        if element.getchildren() and element[-1].tag == 'p':
-            p_text = element[-1].text or ""
-            element[-1].text = f'{p_text} {element.tail}'.strip()
+        if element.getchildren() and element[-1].tag == "p":
+            element[-1].text = f'{element[-1].text or ""} {element.tail}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.tail
@@ -491,11 +482,8 @@ def _handle_text_content_of_div_nodes(element):
 
 def _handle_unwanted_tails(element):
     "Handle tail on p and ab elements"
-    if element.tag == 'p':
-        if element.text:
-            element.text += ' ' + element.tail.strip()
-        else:
-            element.text = element.tail
+    if element.tag == "p":
+        element.text = element.text + " " + element.tail.strip() if element.text else element.tail
     else:
         new_sibling = Element('p')
         new_sibling.text = element.tail.strip()

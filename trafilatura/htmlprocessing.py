@@ -45,13 +45,13 @@ def tree_cleaning(tree, options):
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
-    if options.tables is False:
+    if not options.tables:
         cleaning_list.extend(['table', 'td', 'th', 'tr'])
     else:
         # prevent this issue: https://github.com/adbar/trafilatura/issues/301
         for elem in tree.xpath('.//figure[descendant::table]'):
             elem.tag = 'div'
-    if options.images is True:
+    if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
                          not in ('figure', 'picture', 'source')]
@@ -79,7 +79,7 @@ def prune_html(tree):
 
 def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     '''Prune the HTML tree by removing unwanted sections.'''
-    if with_backup is True:
+    if with_backup:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
         backup = deepcopy(tree)
 
@@ -87,9 +87,8 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
         for subtree in expression(tree):
             # preserve tail text from deletion
             if subtree.tail is not None:
-                if subtree.getprevious() is not None:
-                    prev = subtree.getprevious()
-                else:
+                prev = subtree.getprevious()
+                if prev is None:
                     prev = subtree.getparent()
                 if prev is not None:
                     # There is a previous node, append text to its tail
@@ -112,7 +111,7 @@ def collect_link_info(links_xpath, favor_precision=False):
     # init
     shortelems, mylist = 0, []
     # longer strings impact recall in favor of precision
-    threshold = 10 if not favor_precision else 50
+    threshold = 50 if favor_precision else 10
     # examine the elements
     for subelem in links_xpath:
         subelemtext = trim(subelem.text_content())
@@ -129,7 +128,7 @@ def link_density_test(element, text, favor_precision=False):
     links_xpath, mylist = element.findall('.//ref'), []
     if links_xpath:
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
-            if favor_precision is False:
+            if not favor_precision:
                 if element.getnext() is None:
                     limitlen, threshold = 60, 0.8
                 else:
@@ -186,16 +185,13 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
-        if result is True:
+        if result:
             deletions.append(elem)
-        elif backtracking is True and len(templist) > 0:  # if?
+        elif backtracking and len(templist) > 0:  # if?
             myelems[elemtext].append(elem)
     # summing up
-    if backtracking is True:
-        if favor_precision is False:
-            threshold = 100
-        else:
-            threshold = 200
+    if backtracking:
+        threshold = 200 if favor_precision else 100
         for text, elem in myelems.items():
             if 0 < len(text) < threshold and len(elem) >= 3:
                 deletions.extend(elem)
@@ -203,10 +199,9 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
     for elem in dict.fromkeys(deletions):
-        try:
-            elem.getparent().remove(elem)
-        except AttributeError:
-            pass
+        parent = elem.getparent()
+        if parent is not None:
+            parent.remove(elem)
     return subtree
 
 
@@ -244,25 +239,25 @@ def convert_quotes(elem):
 
 
 def convert_headings(elem):
-    # head tags + delete attributes
+    "Add head tags and delete attributes."
     elem.attrib.clear()
     elem.set("rend", elem.tag)
     elem.tag = "head"
 
 
 def convert_line_breaks(elem):
-    # br → lb
+    "br → lb"
     elem.tag = "lb"
 
 
 def convert_deletions(elem):
-    # del | s | strike → <del rend="overstrike">
+    'del | s | strike → <del rend="overstrike">'
     elem.tag = "del"
     elem.set("rend", "overstrike")
 
 
 def convert_details(elem):
-    # details + summary
+    "Handle details and summary."
     elem.tag = "div"
     for subelem in elem.iter("summary"):
         subelem.tag = "head"
@@ -284,7 +279,7 @@ def convert_tags(tree, options, url=None):
     # delete links for faster processing
     if not options.links:
         xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
-        if options.tables is True:
+        if options.tables:
             xpath_expr += '|.//table//a'
         # necessary for further detection
         for elem in tree.xpath(xpath_expr):
@@ -299,14 +294,14 @@ def convert_tags(tree, options, url=None):
             # replace href attribute and delete the rest
             target = elem.get('href') # defaults to None
             elem.attrib.clear()
-            if target is not None:
+            if target:
                 # convert relative URLs
-                if base_url is not None:
+                if base_url:
                     target = fix_relative_urls(base_url, target)
                 elem.set('target', target)
 
     if options.formatting:
-        for elem in tree.iter(list(REND_TAG_MAPPING)):
+        for elem in tree.iter(REND_TAG_MAPPING.keys()):
             attribute = REND_TAG_MAPPING[elem.tag]
             elem.tag = 'hi'
             elem.set('rend', attribute)
@@ -314,7 +309,7 @@ def convert_tags(tree, options, url=None):
         strip_tags(tree, *REND_TAG_MAPPING)
 
     # iterate over all concerned elements
-    for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
+    for elem in tree.iter(CONVERSIONS.keys()):
         CONVERSIONS[elem.tag](elem)
         # wbr
         # pre
