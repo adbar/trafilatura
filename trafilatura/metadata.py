@@ -163,7 +163,7 @@ def extract_opengraph(tree):
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         # site name
         if elem.get('property') == 'og:site_name':
@@ -212,7 +212,7 @@ def examine_meta(tree):
     # skim through meta tags
     for elem in tree.iterfind('.//head/meta[@content]'):
         # content
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         content_attr = HTML_STRIP_TAG.sub('', elem.get('content'))
         # image info

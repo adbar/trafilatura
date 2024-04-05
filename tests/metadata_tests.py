@@ -26,7 +26,10 @@ def test_titles():
     # too short/empty
     metadata = extract_metadata('<html><body><h3 class="title">T</h3><h3 id="title"></h3></body></html>')
     assert metadata.title is None
-
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta property="og:title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta name="title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
     metadata = extract_metadata('<html><head><title>Test Title</title></head><body></body></html>')
     assert metadata.title == 'Test Title'
     metadata = extract_metadata('<html><body><h1>First</h1><h1>Second</h1></body></html>')
