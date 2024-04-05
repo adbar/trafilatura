@@ -391,13 +391,17 @@ def handle_table(table_elem, potential_tags, options):
                             child.tag = 'cell'
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
+                    elif child.tag == "list":
+                        if (processed_subchild := handle_lists(child, options)) is not None:
+                            newchildelem.append(processed_subchild)
+                            processed_subchild = None  # don't handle it anymore
                     else:
                         # subcell_elem = Element(child.tag)
                         processed_subchild = handle_textelem(child, potential_tags.union(['div']), options)
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = SubElement(newchildelem, processed_subchild.tag)
-                        subchildelem.text, subchildelem.tail = ''.join(processed_subchild.itertext()), processed_subchild.tail
+                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
                     child.tag = 'done'
             # add to tree
             if newchildelem.text or len(newchildelem) > 0:
