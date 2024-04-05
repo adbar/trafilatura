@@ -75,7 +75,7 @@ def main():
 
     group1.add_argument('--parallel',
                         help="specify a number of cores/threads for downloads and/or processing",
-                        type=int, default=DOWNLOAD_THREADS, widget='IntegerField')
+                        type=int, default=PARALLEL_CORES, widget='IntegerField')
     group1.add_argument('-b', '--blacklist',
                         help="file containing unwanted URLs to discard during processing",
                         widget='FileChooser')
