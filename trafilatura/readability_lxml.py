@@ -14,8 +14,9 @@ For list of contributors see
 https://github.com/timbertson/python-readability
 https://github.com/buriy/python-readability
 
-License of forked code: Apache-2.0 License
+License of forked code: Apache-2.0.
 """
+
 
 import logging
 import re
@@ -28,26 +29,7 @@ from .utils import trim
 LOGGER = logging.getLogger(__name__)
 
 
-BAD_ATTRS = "|".join(["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"])
-QUOTES = '\'[^\']+\'|"[^"]+"'
-NON_SPACE = "[^ \"'>]+"
-HTMLSTRIP = re.compile(
-    "<"  # open
-    "([^>]+) "  # prefix
-    " (?:{BAD_ATTRS}) *"
-    + "= *(?:{NON_SPACE}|{QUOTES})"  # undesirable attributes
-    + "([^>]*)"  # value  # postfix
-    ">",  # end
-    re.I,
-)
-
 DOT_SPACE = re.compile(r"\.( |$)")
-
-
-def clean_attributes(html):
-    while HTMLSTRIP.search(html):
-        html = HTMLSTRIP.sub("<\\1\\2>", html)
-    return html
 
 
 def _tostring(string):
@@ -74,7 +56,7 @@ REGEXES = {
         re.I,
     ),
     "negativeRe": re.compile(
-        r"combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
+        r"button|combx|comment|com-|contact|figure|foot|footer|footnote|form|input|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
         re.I,
     ),
     "divToPElementsRe": re.compile(
@@ -121,13 +103,6 @@ class Document:
         self.min_text_length = min_text_length
         self.retry_length = retry_length
 
-    def get_clean_html(self):
-        """
-        An internal method, which can be overridden in subclasses, for example,
-        to disable or to improve DOM-to-text conversion in .summary() method
-        """
-        return clean_attributes(_tostring(self.doc))
-
     def summary(self):
         """
         Given a HTML file, extracts the text of the article.
@@ -148,7 +123,7 @@ class Document:
 
             best_candidate = self.select_best_candidate(candidates)
 
-            if best_candidate is not None:
+            if best_candidate:
                 article = self.get_article(candidates, best_candidate)
             else:
                 if ruthless is True:
@@ -318,18 +293,16 @@ class Document:
             #hurts precision:
             #if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
             if not REGEXES["divToPElementsRe"].search(
-                ''.join([_tostring(e) for e in list(elem)])
+                "".join(map(_tostring, list(elem)))
             ):
                 elem.tag = "p"
 
         for elem in self.tags(self.doc, "div"):
-            if elem.text is not None:
-                elem_text = elem.text.strip()
-                if elem_text:
-                    p_elem = fragment_fromstring("<p/>")
-                    p_elem.text = elem.text
-                    elem.text = None
-                    elem.insert(0, p_elem)
+            if elem.text and elem.text.strip():
+                p_elem = fragment_fromstring("<p/>")
+                p_elem.text = elem.text
+                elem.text = None
+                elem.insert(0, p_elem)
 
             for pos, child in sorted(enumerate(elem), reverse=True):
                 if child.tail and child.tail.strip():
@@ -435,8 +408,7 @@ class Document:
                                 break
                     if siblings and sum(siblings) > 1000:
                         to_remove = False
-                        for desnode in self.tags(elem, "table", "ul", "div", "section"):
-                            allowed.add(desnode)
+                        allowed.update(self.tags(elem, "table", "ul", "div", "section"))
 
                 if to_remove:
                     LOGGER.debug("Removed %6.3f %s with weight %s cause it has %s.",
@@ -449,4 +421,4 @@ class Document:
                     )
 
         self.doc = node
-        return self.get_clean_html()
+        return _tostring(self.doc)
