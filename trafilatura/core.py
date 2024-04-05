@@ -392,7 +392,8 @@ def handle_table(table_elem, potential_tags, options):
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
                     elif child.tag == "list":
-                        if (processed_subchild := handle_lists(child, options)) is not None:
+                        processed_subchild = handle_lists(child, options)
+                        if processed_subchild is not None:
                             newchildelem.append(processed_subchild)
                             processed_subchild = None  # don't handle it anymore
                     else:
