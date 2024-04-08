@@ -147,7 +147,8 @@ def test_input():
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(SystemExit):
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()

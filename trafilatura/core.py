@@ -5,7 +5,9 @@ Module bundling all functions needed to extract the text in a webpage.
 
 import logging
 import re  # import regex as re
+import sys
 import warnings
+
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
@@ -991,15 +993,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     return determine_returnstring(document, output_format, include_formatting, tei_validation)
 
 
-def process_record(filecontent, url=None, record_id=None, no_fallback=False,
-                   include_comments=True, target_language=None,
-                   include_tables=True):
-    "Legacy extraction function, now deprecated, for backwards compatibility only."
-    # deprecation warning
-    warnings.warn(
-        "process_record() is deprecated, use extract() instead",
-        DeprecationWarning
-    )
-    return extract(filecontent, url=url, record_id=record_id, no_fallback=no_fallback,
-                   include_comments=include_comments, target_language=target_language,
-                   include_tables=include_tables)
+def process_record(content, *args, **kwargs):
+    "Deprecated extraction function."
+    sys.exit("process_record() is deprecated, use extract() instead")
