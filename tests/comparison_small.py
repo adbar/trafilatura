@@ -25,6 +25,7 @@ from trafilatura import extract
 try:
     from trafilatura import baseline, html2txt
 except ImportError:
+    print("Cannot import baseline, using simple version")
     baseline = None
     html2txt = None
 #from trafilatura.htmlprocessing import prune_html

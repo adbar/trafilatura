@@ -35,6 +35,7 @@ from trafilatura import extract
 try:
     from trafilatura import baseline
 except ImportError:
+    print("Cannot import baseline, using simple version")
     baseline = None
 from evaldata import EVAL_PAGES
 

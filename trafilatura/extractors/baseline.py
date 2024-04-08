@@ -3,8 +3,8 @@ import re
 
 from lxml.etree import Element, SubElement
 
-from .settings import BASIC_CLEAN_XPATH
-from .utils import load_html, trim
+from ..settings import BASIC_CLEAN_XPATH
+from ..utils import load_html, trim
 
 
 JSON_SEARCH = re.compile(r'"articlebody": *"(.+?)(?<!\\)"', re.I)
