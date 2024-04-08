@@ -290,7 +290,9 @@ def process_element(element, returnlist, include_formatting):
     # Process text
 
     # Common elements (Now processes end-tag logic correctly)
-    if element.tag in NEWLINE_ELEMS:
+    if element.tag == 'p' and include_formatting:
+        returnlist.append('\n\u2424\n')
+    elif element.tag in NEWLINE_ELEMS:
         returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
     elif element.tag == 'comments':
         returnlist.append('\n\n')
