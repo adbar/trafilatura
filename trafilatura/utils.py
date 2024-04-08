@@ -120,7 +120,12 @@ def detect_encoding(bytesobject):
         if cchardet_guess is not None:
             guesses.append(cchardet_guess.lower())
     # try charset_normalizer on first part, fallback on full document
-    detection_results = from_bytes(bytesobject[:15000]) or from_bytes(bytesobject)
+    if len(bytesobject) < 10000:
+        detection_results = from_bytes(bytesobject)
+    else:
+        detection_results = from_bytes(bytesobject[:5000] + bytesobject[-5000:])
+        if not detection_results:
+            detection_results = from_bytes(bytesobject)
     # return alternatives
     if len(detection_results) > 0:
         guesses.extend([r.encoding for r in detection_results])
