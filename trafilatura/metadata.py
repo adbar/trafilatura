@@ -17,7 +17,7 @@ from .json_metadata import (extract_json, extract_json_parse_error,
 from .metaxpaths import (author_discard_xpaths, author_xpaths,
                          categories_xpaths, tags_xpaths, title_xpaths)
 from .utils import (line_processing, load_html, normalize_authors,
-                    normalize_tags, trim, unescape, uniquify_list)
+                    normalize_tags, trim, unescape)
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -418,8 +418,7 @@ def extract_catstags(metatype, tree):
         #if not results:
         #    for elem in tree.xpath('.//a[@href]'):
         #        search for 'category'
-    results = [line_processing(x) for x in results if x is not None]
-    return uniquify_list([x for x in results if x is not None])
+    return [r for r in dict.fromkeys(line_processing(x) for x in results if x) if r]
 
 
 def parse_license_element(element, strict=False):

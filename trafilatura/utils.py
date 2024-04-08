@@ -381,16 +381,6 @@ def normalize_authors(current_authors, author_string):
     return '; '.join(new_authors).strip('; ')
 
 
-def uniquify_list(l):
-    """
-    Remove duplicates from a list while keeping order in an efficient way.
-    Dictionaries preserve insertion order since Python 3.6.
-
-    https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
-    """
-    return list(dict.fromkeys(l))
-
-
 @lru_cache(maxsize=1024)
 def is_similar_domain(reference, new_string, threshold=0.5):
     "Return the similarity ratio between two short strings, here domain names."
