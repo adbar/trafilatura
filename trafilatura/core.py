@@ -11,8 +11,8 @@ from copy import deepcopy
 from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
 
 # own
+from .baseline import baseline
 from .external import compare_extraction
-from .extractors.baseline import baseline
 from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
                       language_filter, text_chars_test)
 from .hashing import content_fingerprint

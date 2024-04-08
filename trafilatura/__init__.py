@@ -14,8 +14,7 @@ __version__ = '1.8.1'
 
 import logging
 
-from .extractors.baseline import baseline, html2txt
-
+from .baseline import baseline, html2txt
 from .core import bare_extraction, extract, process_record
 from .downloads import fetch_response, fetch_url
 from .metadata import extract_metadata

@@ -323,40 +323,40 @@ def convert_tags(tree, options, url=None):
     return tree
 
 
-def handle_textnode(element, options, comments_fix=True, preserve_spaces=False):
+def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
     "Convert, format, and probe potential text elements."
-    if element.text is None and element.tail is None and len(element) == 0:
+    if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
 
     # lb bypass
-    if not comments_fix and element.tag == "lb":
+    if not comments_fix and elem.tag == "lb":
         if not preserve_spaces:
-            element.tail = trim(element.tail)
-        # if textfilter(element) is True:
+            elem.tail = trim(elem.tail)
+        # if textfilter(elem) is True:
         #     return None
         # duplicate_test(subelement)?
-        return element
+        return elem
 
-    if not element.text and len(element) == 0:
+    if not elem.text and len(elem) == 0:
         # try the tail
-        # LOGGER.debug('using tail for element %s', element.tag)
-        element.text, element.tail = element.tail, ""
+        # LOGGER.debug('using tail for element %s', elem.tag)
+        elem.text, elem.tail = elem.tail, ""
         # handle differently for br/lb
-        if comments_fix and element.tag == "lb":
-            element.tag = 'p'
+        if comments_fix and elem.tag == "lb":
+            elem.tag = "p"
 
     # trim
     if not preserve_spaces:
-        element.text = trim(element.text)
-        if element.tail:
-            element.tail = trim(element.tail)
+        elem.text = trim(elem.text)
+        if elem.tail:
+            elem.tail = trim(elem.tail)
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if not element.text and textfilter(element) or \
-        (options.dedup and duplicate_test(element, options.config)):
+    if not elem.text and textfilter(elem) or \
+        (options.dedup and duplicate_test(elem, options.config)):
         return None
-    return element
+    return elem
 
 
 def process_node(elem, options):
