@@ -17,7 +17,7 @@ from .json_metadata import (extract_json, extract_json_parse_error,
 from .metaxpaths import (author_discard_xpaths, author_xpaths,
                          categories_xpaths, tags_xpaths, title_xpaths)
 from .utils import (line_processing, load_html, normalize_authors,
-                    normalize_tags, trim, unescape, uniquify_list)
+                    normalize_tags, trim, unescape)
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -163,7 +163,7 @@ def extract_opengraph(tree):
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         # site name
         if elem.get('property') == 'og:site_name':
@@ -212,7 +212,7 @@ def examine_meta(tree):
     # skim through meta tags
     for elem in tree.iterfind('.//head/meta[@content]'):
         # content
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         content_attr = HTML_STRIP_TAG.sub('', elem.get('content'))
         # image info
@@ -418,8 +418,7 @@ def extract_catstags(metatype, tree):
         #if not results:
         #    for elem in tree.xpath('.//a[@href]'):
         #        search for 'category'
-    results = [line_processing(x) for x in results if x is not None]
-    return uniquify_list([x for x in results if x is not None])
+    return [r for r in dict.fromkeys(line_processing(x) for x in results if x) if r]
 
 
 def parse_license_element(element, strict=False):

@@ -3,9 +3,6 @@
 All functions related to XML generation, processing and validation.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import csv
 import logging
 import lzma
@@ -39,6 +36,7 @@ TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head',
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
+TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
@@ -47,7 +45,7 @@ NEWLINE_ELEMS = {
     'item': '\n- ',
     **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
 }
-SPECIAL_FORMATTING = {'del', 'head', 'hi'}
+SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
 WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
@@ -143,7 +141,7 @@ def add_xml_meta(output, docmeta):
     '''Add extracted metadata to the XML output tree'''
     for attribute in META_ATTRIBUTES:
         value = getattr(docmeta, attribute, None)
-        if value is not None:
+        if value:
             output.set(attribute, value if isinstance(value, str) else ';'.join(value))
     return output
 
@@ -172,30 +170,28 @@ def check_tei(xmldoc, url):
         if parent.tag == "p":
             _move_element_one_level_up(elem)
     # convert <lb/> when child of <div> to <p>
-    for element in xmldoc.findall(".//text/body//div/lb"):
-        if element.tail and element.tail.strip():
-            element.tag = 'p'
-            element.text = element.tail
-            element.tail = None
+    for elem in xmldoc.findall(".//text/body//div/lb"):
+        if elem.tail and elem.tail.strip():
+            elem.tag, elem.text, elem.tail = 'p', elem.tail, None
     # look for elements that are not valid
-    for element in xmldoc.findall('.//text/body//*'):
-        if element.tag in TEI_REMOVE_TAIL and element.tail and element.tail.strip():
-            _handle_unwanted_tails(element)
+    for elem in xmldoc.findall('.//text/body//*'):
+        if elem.tag in TEI_REMOVE_TAIL and elem.tail and elem.tail.strip():
+            _handle_unwanted_tails(elem)
         # check elements
-        if element.tag not in TEI_VALID_TAGS:
+        if elem.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
-            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
-            merge_with_parent(element)
+            LOGGER.warning('not a TEI element, removing: %s %s', elem.tag, url)
+            merge_with_parent(elem)
             continue
-        if element.tag == "div":
-            _handle_text_content_of_div_nodes(element)
-            _wrap_unwanted_siblings_of_div(element)
+        if elem.tag == "div":
+            _handle_text_content_of_div_nodes(elem)
+            _wrap_unwanted_siblings_of_div(elem)
         # check attributes
-        for attribute in element.attrib:
+        for attribute in elem.attrib:
             if attribute not in TEI_VALID_ATTRS:
-                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
-                element.attrib.pop(attribute)
+                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
+                elem.attrib.pop(attribute)
     return xmldoc
 
 
@@ -214,40 +210,40 @@ def validate_tei(xmldoc):  # , filename=""
 
 
 def replace_element_text(element, include_formatting):
-    '''Determine element text based on text and tail'''
+    "Determine element text based on just the text of the element. One must deal with the tail separately."
+    elem_text = element.text or ""
     # handle formatting: convert to markdown
-    if include_formatting is True and element.text is not None:
-        if element.tag in ('del', 'head'):
-            if element.tag == 'head':
-                try:
-                    number = int(element.get('rend')[1])
-                except (TypeError, ValueError):
-                    number = 2
-                element.text = f'{"#" * number} {element.text}'
-            elif element.tag == 'del':
-                element.text = f'~~{element.text}~~'
-        elif element.tag == 'hi':
-            rend = element.get('rend')
+    if include_formatting and element.text:
+        if element.tag == "head":
+            try:
+                number = int(element.get("rend")[1])
+            except (TypeError, ValueError):
+                number = 2
+            elem_text = f'{"#" * number} {elem_text}'
+        elif element.tag == "del":
+            elem_text = f"~~{elem_text}~~"
+        elif element.tag == "hi":
+            rend = element.get("rend")
             if rend in HI_FORMATTING:
-                element.text = f'{HI_FORMATTING[rend]}{element.text}{HI_FORMATTING[rend]}'
-        elif element.tag == 'code':
-            if '\n' in element.text:
-                element.text = f'```\n{element.text}\n```'
+                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
+        elif element.tag == "code":
+            if "\n" in element.text:
+                elem_text = f"```\n{elem_text}\n```"
             else:
-                element.text = f'`{element.text}`'
+                elem_text = f"`{elem_text}`"
     # handle links
-    if element.tag == 'ref':
-        if element.text is not None:
-            link_text = f'[{element.text}]'
-            if element.get('target') is not None:
-                element.text = f"{link_text}({element.get('target')})"
+    if element.tag == "ref":
+        if elem_text:
+            link_text = f"[{elem_text}]"
+            target = element.get("target")
+            if target:
+                elem_text = f"{link_text}({target})"
             else:
-                LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
-                element.text = link_text
+                LOGGER.warning("missing link attribute: %s %s'", elem_text, element.attrib)
+                elem_text = link_text
         else:
-            LOGGER.warning('empty link: %s %s', element.text, element.attrib)
-    # handle text
-    return (element.text or '') + (element.tail or '')
+            LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
+    return elem_text
 
 
 def merge_with_parent(element, include_formatting=False):
@@ -257,14 +253,13 @@ def merge_with_parent(element, include_formatting=False):
         return
 
     full_text = replace_element_text(element, include_formatting)
+    if element.tail is not None:
+        full_text += element.tail
 
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
-        if previous.tail is not None:
-            previous.tail = f'{previous.tail} {full_text}'
-        else:
-            previous.tail = full_text
+        previous.tail = f'{previous.tail} {full_text}' if previous.tail else full_text
     elif parent.text is not None:
         parent.text = f'{parent.text} {full_text}'
     else:
@@ -272,34 +267,51 @@ def merge_with_parent(element, include_formatting=False):
     parent.remove(element)
 
 
+def process_element(element, returnlist, include_formatting):
+    # Process children recursively
+    if element.text is not None:
+        # this is the text that comes before the first child
+        textelement = replace_element_text(element, include_formatting)
+        returnlist.append(textelement)
+
+    for child in element:
+        process_element(child, returnlist, include_formatting)
+
+    if element.text is None and element.tail is None:
+        if element.tag == 'graphic':
+            # add source, default to ''
+            text = f'{element.get("title", "")} {element.get("alt", "")}'
+            returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
+        # newlines for textless elements
+        if element.tag in ('graphic', 'row', 'table'):
+            returnlist.append('\n')
+        return  # Nothing more to do with textless elements
+
+    # Process text
+
+    # Common elements (Now processes end-tag logic correctly)
+    if element.tag == 'p' and include_formatting:
+        returnlist.extend([textelement, '\n\u2424\n'])
+    elif element.tag in NEWLINE_ELEMS:
+        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+    elif element.tag == 'comments':
+        returnlist.append('\n\n')
+    else:
+        if element.tag not in SPECIAL_FORMATTING:
+            LOGGER.debug('unprocessed element in output: %s', element.tag)
+            returnlist.extend([' '])
+
+    # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
+    if element.tail is not None:
+        returnlist.append(element.tail)
+
+
 def xmltotxt(xmloutput, include_formatting):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
-    # strip_tags(xmloutput, 'div', 'main', 'span')
-    # iterate and convert to list of strings
-    for element in xmloutput.iter('*'):
-        if element.text is None and element.tail is None:
-            if element.tag == 'graphic':
-                # add source, default to ''
-                text = f'{element.get("title", "")} {element.get("alt", "")}'
-                returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
-            # newlines for textless elements
-            if element.tag in ('graphic', 'row', 'table'):
-                returnlist.append('\n')
-            continue
-        # process text
-        textelement = replace_element_text(element, include_formatting)
-        # common elements
-        if element.tag == 'p' and include_formatting:
-            returnlist.extend([textelement, '\n\u2424\n'])
-        elif element.tag in NEWLINE_ELEMS:
-            returnlist.extend([NEWLINE_ELEMS[element.tag], textelement, '\n'])
-        elif element.tag == 'comments':
-            returnlist.append('\n\n')
-        else:
-            if element.tag not in SPECIAL_FORMATTING:
-                LOGGER.debug('unprocessed element in output: %s', element.tag)
-            returnlist.extend([textelement, ' '])
+
+    process_element(xmloutput, returnlist, include_formatting)
+
     return unescape(sanitize(''.join(returnlist)))
 
 
@@ -317,22 +329,19 @@ def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
     # organize fields
-    data = [d or null for d in (
-                document.url,
-                document.id,
-                document.fingerprint,
-                document.hostname,
-                document.title,
-                document.image,
-                document.date,
-                posttext,
-                commentstext,
-                document.license,
-                document.pagetype,
-                )
-            ]
+    data = (document.url,
+            document.id,
+            document.fingerprint,
+            document.hostname,
+            document.title,
+            document.image,
+            document.date,
+            posttext,
+            commentstext,
+            document.license,
+            document.pagetype)
 
-    outputwriter.writerow(data)
+    outputwriter.writerow([d if d else null for d in data])
     return output.getvalue()
 
 
@@ -455,9 +464,8 @@ def write_fullheader(teidoc, docmeta):
 
 def _handle_text_content_of_div_nodes(element):
     if element.text and element.text.strip():
-        if element.getchildren() and element[0].tag == 'p':
-            p_text = element[0].text or ""
-            element[0].text = f'{element.text} {p_text}'.strip()
+        if element.getchildren() and element[0].tag == "p":
+            element[0].text = f'{element.text} {element[0].text or ""}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.text
@@ -465,9 +473,8 @@ def _handle_text_content_of_div_nodes(element):
         element.text = None
 
     if element.tail and element.tail.strip():
-        if element.getchildren() and element[-1].tag == 'p':
-            p_text = element[-1].text or ""
-            element[-1].text = f'{p_text} {element.tail}'.strip()
+        if element.getchildren() and element[-1].tag == "p":
+            element[-1].text = f'{element[-1].text or ""} {element.tail}'.strip()
         else:
             new_child = Element("p")
             new_child.text = element.tail
@@ -477,11 +484,8 @@ def _handle_text_content_of_div_nodes(element):
 
 def _handle_unwanted_tails(element):
     "Handle tail on p and ab elements"
-    if element.tag == 'p':
-        if element.text:
-            element.text += ' ' + element.tail.strip()
-        else:
-            element.text = element.tail
+    if element.tag == "p":
+        element.text = element.text + " " + element.tail.strip() if element.text else element.tail
     else:
         new_sibling = Element('p')
         new_sibling.text = element.tail.strip()
@@ -504,7 +508,7 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
-    if element.tail is not None and element.tail.strip():
+    if element.tail and element.tail.strip():
         new_element.tail = element.tail.strip()
     return new_element
 
@@ -517,18 +521,17 @@ def _wrap_unwanted_siblings_of_div(div_element):
     for sibling in div_element.itersiblings():
         if sibling.tag == "div":
             break
-        if sibling.tag in {"p", "list", "table", "quote", "ab"}:
-            if new_sibling_index is None:
-                new_sibling_index = parent.index(sibling)
+        if sibling.tag in TEI_DIV_SIBLINGS:
+            new_sibling_index = new_sibling_index or parent.index(sibling)
             new_sibling.append(sibling)
         # some elements (e.g. <lb/>) can appear next to div, but
         # order of elements should be kept, thus add and reset new_sibling
         else:
-            if new_sibling_index is not None and len(new_sibling) != 0:
+            if new_sibling_index and len(new_sibling) != 0:
                 parent.insert(new_sibling_index, new_sibling)
                 new_sibling = Element("div")
                 new_sibling_index = None
-    if new_sibling_index is not None and len(new_sibling) != 0:
+    if new_sibling_index and len(new_sibling) != 0:
         parent.insert(new_sibling_index, new_sibling)
 
 

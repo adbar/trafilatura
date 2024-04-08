@@ -20,12 +20,12 @@ Here are some important resources:
 
 ## Submitting changes
 
-Please send a [GitHub Pull Request to trafilatura](https://github.com/adbar/trafilatura/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)).
+Please send a [GitHub Pull Request to trafilatura](https://github.com/adbar/trafilatura/pull/new/master) with a clear list of what you have done (read more about [pull requests](http://help.github.com/pull-requests/)).
 
 **Working on your first Pull Request?** See this tutorial: [How To Create a Pull Request on GitHub](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github)
 
 
-A special thanks to all the [contributors](https://github.com/adbar/trafilatura/graphs/contributors) who have played a part in developing and enhancing Trafilatura.
+A special thanks to all the [contributors](https://github.com/adbar/trafilatura/graphs/contributors) who have played a part in Trafilatura.
 
 
 
@@ -34,7 +34,7 @@ A special thanks to all the [contributors](https://github.com/adbar/trafilatura/
 Here is how you can run the tests if you wish to correct the errors and further improve the code:
 
 - Run `pytest` from trafilatura's directory, or select a particular test suite, for example `realworld_tests.py`, and run `pytest realworld_tests.py` or simply `python3 realworld_tests.py`
-- Check how it performs on the benchmark in `tests/eval/` by running `tests/comparison.py`
+- Check how it performs on the benchmark in `tests/eval/` by running `tests/comparison_small.py`
 
 See also the [tests Readme](tests/README.rst) for more information on the evaluation.
 

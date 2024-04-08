@@ -2,9 +2,6 @@
 Implementing a basic command-line interface.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import argparse
 import logging
 import sys
@@ -16,7 +13,7 @@ from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
                         load_input_dict, probe_homepage,
                         url_processing_pipeline, write_result)
-from .settings import DOWNLOAD_THREADS
+from .settings import PARALLEL_CORES
 
 # fix output encoding on some systems
 try:
@@ -63,7 +60,7 @@ def parse_args(args):
 
     group1.add_argument('--parallel',
                         help="specify a number of cores/threads for downloads and/or processing",
-                        type=int, default=DOWNLOAD_THREADS)
+                        type=int, default=PARALLEL_CORES)
     group1.add_argument('-b', '--blacklist',
                         help="file containing unwanted URLs to discard during processing",
                         type=str)

@@ -2,9 +2,6 @@
 Examining feeds and extracting links for further processing.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import json
 import logging
 import re
@@ -24,7 +21,7 @@ from courlan import (
 
 from .downloads import fetch_url
 from .settings import MAX_LINKS
-from .utils import is_similar_domain, load_html, uniquify_list
+from .utils import is_similar_domain, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -201,7 +198,7 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
                 feed_urls.append(link)
     # refine
     output_urls = []
-    for link in uniquify_list(feed_urls):
+    for link in dict.fromkeys(feed_urls):
         link = fix_relative_urls(params.base, link)
         link = clean_url(link)
         if link is None or link == params.ref or not is_valid_url(link):

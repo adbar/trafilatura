@@ -3,9 +3,6 @@
 Module bundling functions related to HTML and text processing.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import logging
 import re
 import warnings
@@ -271,8 +268,8 @@ def line_processing(line, preserve_space=False, trailing_space=False):
         if all(map(str.isspace, new_line)):
             new_line = None
         elif trailing_space:
-            space_before = " " if line[0] == " " else ""
-            space_after = " " if line[-1] == " " else ""
+            space_before = " " if line[0].isspace() else ""
+            space_after = " " if line[-1].isspace() else ""
             new_line = "".join([space_before, new_line, space_after])
     return new_line
 
@@ -382,16 +379,6 @@ def normalize_authors(current_authors, author_string):
     if len(new_authors) == 0:
         return current_authors
     return '; '.join(new_authors).strip('; ')
-
-
-def uniquify_list(l):
-    """
-    Remove duplicates from a list while keeping order in an efficient way.
-    Dictionaries preserve insertion order since Python 3.6.
-
-    https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
-    """
-    return list(dict.fromkeys(l))
 
 
 @lru_cache(maxsize=1024)

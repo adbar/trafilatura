@@ -2,16 +2,13 @@
 This script implements a basic guided user interface (GUI).
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import sys
 
 from gooey import Gooey, GooeyParser
 
 from . import __version__
 from .cli import process_args
-from .settings import DOWNLOAD_THREADS
+from .settings import PARALLEL_CORES
 
 DESCRIPTION = 'Web scraping tool for text discovery and extraction'
 
@@ -78,7 +75,7 @@ def main():
 
     group1.add_argument('--parallel',
                         help="specify a number of cores/threads for downloads and/or processing",
-                        type=int, default=DOWNLOAD_THREADS, widget='IntegerField')
+                        type=int, default=PARALLEL_CORES, widget='IntegerField')
     group1.add_argument('-b', '--blacklist',
                         help="file containing unwanted URLs to discard during processing",
                         widget='FileChooser')

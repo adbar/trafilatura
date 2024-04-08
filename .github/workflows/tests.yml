@@ -18,7 +18,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-        python-version: ["3.9", "3.11"]
+        python-version: ["3.9", "3.11"]  # "3.13-dev"
         env: [{ MINIMAL: "true" }, { MINIMAL: "false" }]
         include:
           # custom python versions
@@ -41,7 +41,7 @@ jobs:
     steps:
     # Python and pip setup
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -54,7 +54,7 @@ jobs:
         echo "::set-output name=dir::$(pip cache dir)"
 
     - name: pip cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pip-cache.outputs.dir }}
         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -62,7 +62,7 @@ jobs:
           ${{ runner.os }}-pip-
 
     # package setup
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install dependencies
       run: python -m pip install -e "."
@@ -96,7 +96,9 @@ jobs:
     # coverage
     - name: Upload coverage to Codecov
       if: ${{ matrix.env.MINIMAL == 'false' }} # matrix.python-version == "3.11"
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         fail_ci_if_error: true
         files: ./coverage.xml

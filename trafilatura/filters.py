@@ -21,6 +21,8 @@ LOGGER = logging.getLogger(__name__)
 
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
+TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
 RE_HTML_LANG = re.compile(r'([a-z]{2})')
 
 # Mostly filters for social media
@@ -35,12 +37,8 @@ def put_in_cache(teststring):
     '''Implement LRU cache'''
     cacheval = LRU_TEST.get(teststring)
     # if the value is already defined
-    if cacheval != -1:
-        # print(cacheval, teststring[:10] + '...')
-        LRU_TEST.put(teststring, cacheval + 1)
-    else:
-        # print(0, teststring[:10] + '...')
-        LRU_TEST.put(teststring, 1)
+    value = cacheval + 1 if cacheval != -1 else 1
+    LRU_TEST.put(teststring, value)
 
 
 def duplicate_test(element, config):
@@ -58,28 +56,26 @@ def duplicate_test(element, config):
 
 
 def check_html_lang(tree, target_language, strict=False):
-    '''Check HTML meta-elements for language information and split
-       the result in case there are several languages'''
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-    target_attrs = ['http-equiv="content-language"', 'property="og:locale"']
-    for attr in target_attrs:
-        target_elements = tree.findall(f'.//meta[@{attr}][@content]')
-        if target_elements:
-            for elem in target_elements:
-                if target_language in RE_HTML_LANG.split(elem.get('content', '').lower()):
-                    return True
-            LOGGER.debug('%s failed', attr)
+    """Check HTML meta-elements for language information and split
+       the result in case there are several languages."""
+    for attr in TARGET_LANG_ATTRS:
+        elems = tree.findall(f'.//meta[@{attr}][@content]')
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("content", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("%s lang attr failed", attr)
             return False
+
     # HTML lang attribute: sometimes a wrong indication
-    if strict is True:
-        target_elements = tree.xpath('//html[@lang]')
-        if target_elements:
-            for elem in target_elements:
-                if target_language in RE_HTML_LANG.split(elem.get('lang').lower()):
-                    return True
-            LOGGER.debug('HTML lang failed')
+    if strict:
+        elems = tree.xpath("//html[@lang]")
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("lang", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("HTML lang failed")
             return False
-    LOGGER.debug('No relevant lang elements found')
+
+    LOGGER.debug("No relevant lang elements found")
     return True
 
 

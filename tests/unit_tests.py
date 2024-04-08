@@ -31,13 +31,13 @@ from trafilatura import (bare_extraction, baseline, extract, html2txt,
                          process_record, utils, xml)
 from trafilatura.core import (Extractor, handle_formatting, handle_image,
                               handle_lists, handle_paragraphs, handle_quotes,
-                              handle_table, handle_textelem, sanitize_tree,
-                              trim)
-from trafilatura.external import try_justext
+                              handle_table, handle_textelem)
+from trafilatura.external import sanitize_tree, try_justext
 from trafilatura.filters import textfilter
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.utils import trim
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -361,8 +361,13 @@ trafilatura.extract("")
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(copy(my_document), no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
-    # TXT: newline problem here
-    assert my_result == 'bold, italics, tt,\ndeleted, underlined, link and additional text to bypass detection.'
+    assert my_result == 'bold, italics, tt, deleted, underlined, link and additional text to bypass detection.'
+
+    my_result = extract(copy(my_document), no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
+
+    my_result = extract(copy(my_document), no_fallback=True, include_links=True, include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, [link](test.html) and additional text to bypass detection.'
 
     my_result = extract(copy(my_document), output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
@@ -765,6 +770,19 @@ def test_htmlprocessing():
     trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "some text"
     assert node.tail == "tail"
+    node = etree.fromstring("<p><ref target='url'><hi rend='#b'>bold</hi>inner</ref>outer</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "outer"
+    node = etree.fromstring("<p><ref target='url'>text</ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "tail" and processed.text == "text"
+    node = etree.fromstring("<p><ref target='url'></ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "" and processed.text == "tail"
+    node = etree.fromstring("<p><ref target='url'>text<hi rend='#b'>bold</hi></ref>tail</p>")[0]
+    processed = trafilatura.htmlprocessing.handle_textnode(node, options)
+    assert processed.tail == "tail" and processed.text == "text"
+
 
 
 def test_extraction_options():
