@@ -158,13 +158,16 @@ def parse_args(args):
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
                         help="determine output format",
-                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
+                        choices=['txt', 'csv', 'json', 'markdown', 'xml', 'xmltei'],
                         default='txt')
     group5_ex.add_argument("--csv",
                         help="shorthand for CSV output",
                         action="store_true")
     group5_ex.add_argument("--json",
                         help="shorthand for JSON output",
+                        action="store_true")
+    group5_ex.add_argument("--markdown",
+                        help="shorthand for MD output",
                         action="store_true")
     group5_ex.add_argument("--xml",
                         help="shorthand for XML output",
@@ -198,6 +201,8 @@ def map_args(args):
         args.output_format = 'csv'
     elif args.json:
         args.output_format = 'json'
+    elif args.markdown:
+        args.output_format = 'markdown'
     elif args.xml:
         args.output_format = 'xml'
     elif args.xmltei:

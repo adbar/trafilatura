@@ -43,6 +43,11 @@ def test_parser():
     assert args.output_format == 'csv'
     assert args.no_tables is False
     # test args mapping
+    testargs = ['', '--markdown']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    args = cli.map_args(args)
+    assert args.output_format == 'markdown'
     testargs = ['', '--xml', '--no-comments', '--precision', '--recall']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
