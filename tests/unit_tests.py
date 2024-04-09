@@ -1256,7 +1256,17 @@ def test_lang_detection():
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
+def test_config_loading():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
+    test_config_loading()
     test_trim()
     test_input()
     test_formatting()
