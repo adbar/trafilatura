@@ -4,11 +4,13 @@ Listing a series of settings that are applied module-wide.
 """
 
 from configparser import ConfigParser
+
 try:
     from os import sched_getaffinity
 except ImportError:
     sched_getaffinity = None
     from os import cpu_count
+
 from pathlib import Path
 
 from lxml.etree import XPath
@@ -21,8 +23,12 @@ def use_config(filename=None, config=None):
     """
     if config is not None:
         return config
+
     if filename is None:
-        filename = str(Path(__file__).parent / 'settings.cfg')
+        filename = str(Path(__file__).parent / "settings.cfg")
+    elif not Path(filename).is_file():
+        raise FileNotFoundError("The given config file does not exist")
+
     config = ConfigParser()
     config.read(filename)
     return config

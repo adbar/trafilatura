@@ -468,8 +468,18 @@ def test_probing():
         assert f.getvalue().strip() == url
 
 
+def test_wrong_config():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = settings.use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = settings.use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
     test_parser()
+    test_wrong_config()
     test_climain()
     test_input_type()
     test_input_filtering()
