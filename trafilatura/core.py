@@ -705,7 +705,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     only_with_metadata=False, with_metadata=False,
                     max_tree_size=None, url_blacklist=None, author_blacklist=None,
                     as_dict=True, prune_xpath=None,
-                    config=DEFAULT_CONFIG):
+                    config=DEFAULT_CONFIG, options=None):
     """Internal function for text extraction returning bare Python variables.
 
     Args:
@@ -735,6 +735,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         prune_xpath: Provide an XPath expression to prune the tree before extraction.
             can be str or list of str.
         config: Directly provide a configparser configuration.
+        options: Directly provide a whole extractor configuration.
 
     Returns:
         A Python dict() containing all the extracted information or None.
@@ -800,10 +801,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             document = Document()
 
         # regroup extraction options
-        options = Extractor(config, no_fallback, favor_precision, favor_recall,
-                            include_comments, include_formatting, include_links,
-                            include_images, include_tables, deduplicate,
-                            target_language)
+        if not options or not isinstance(options, Extractor):
+            options = Extractor(
+                          config, no_fallback, favor_precision, favor_recall,
+                          include_comments, include_formatting, include_links,
+                          include_images, include_tables, deduplicate,
+                          target_language
+                      )
 
         # prune all xpath expressions that user specified
         # no backup as this is unetre full control of the user
@@ -839,7 +843,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
-        if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+        if len_text < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
             postbody, temp_text, len_text = baseline(tree_backup_2)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
@@ -854,15 +858,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 LOGGER.debug('output tree too long: %s, discarding file', len(postbody))
                 raise ValueError
         # size checks
-        if len_comments < config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
+        if len_comments < options.config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
             LOGGER.debug('not enough comments %s', url)
-        if len_text < config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and len_comments < config.getint('DEFAULT',
-                                                                                                   'MIN_OUTPUT_COMM_SIZE'):
+        if len_text < options.config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and \
+           len_comments < options.config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE'):
             LOGGER.debug('text and comments not long enough: %s %s', len_text, len_comments)
             raise ValueError
 
         # check duplicates at body level
-        if deduplicate is True and duplicate_test(postbody, config) is True:
+        if deduplicate is True and duplicate_test(postbody, options.config) is True:
             LOGGER.debug('discarding duplicate document for URL %s', url)
             raise ValueError
 
@@ -902,7 +906,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             only_with_metadata=False, with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
             settingsfile=None, prune_xpath=None,
-            config=DEFAULT_CONFIG,
+            config=DEFAULT_CONFIG, options=None,
             **kwargs):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
@@ -935,6 +939,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         prune_xpath: Provide an XPath expression to prune the tree before extraction.
             can be str or list of str.
         config: Directly provide a configparser configuration.
+        options: Directly provide a whole extractor configuration.
 
     Returns:
         A string in the desired format or None.
@@ -953,8 +958,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             )
         # todo: add with_metadata later
 
-    # configuration init
-    config = use_config(settingsfile, config)
+    if not options:
+        config = use_config(settingsfile, config)
 
     # extraction
     try:
@@ -971,7 +976,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             max_tree_size=max_tree_size, url_blacklist=url_blacklist,
             author_blacklist=author_blacklist,
             as_dict=False, prune_xpath=prune_xpath,
-            config=config,
+            config=config, options=options,
         )
     except RuntimeError:
         LOGGER.error('Processing timeout for %s', url)

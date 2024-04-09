@@ -9,6 +9,7 @@ import re
 import string
 import sys
 import traceback
+
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import partial
 from os import makedirs, path, walk
@@ -18,7 +19,7 @@ from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 from trafilatura import spider
 
 from .baseline import html2txt
-from .core import extract
+from .core import Extractor, extract
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
@@ -186,20 +187,20 @@ def generate_filelist(inputdir):
             yield path.join(root, fname)
 
 
-def file_processing(filename, args, counter=None, config=None):
+def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    result = examine(htmlstring, args, url=args.URL, config=config)
+    result = examine(htmlstring, args, url=args.URL, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
 
-def process_result(htmlstring, args, url, counter, config):
+def process_result(htmlstring, args, url, counter, options):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
     fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
-    result = examine(htmlstring, args, url=url, config=config)
+    result = examine(htmlstring, args, url=url, options=options)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
     # increment written file counter
     if counter is not None and result is not None:
@@ -207,9 +208,9 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def download_queue_processing(url_store, args, counter, config):
+def download_queue_processing(url_store, args, counter, options):
     '''Implement a download queue consumer, single- or multi-threaded'''
-    sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
     errors = []
     while url_store.done is False:
         bufferlist, url_store = load_download_buffer(url_store, sleep_time)
@@ -217,7 +218,7 @@ def download_queue_processing(url_store, args, counter, config):
         for url, result in buffered_downloads(bufferlist, args.parallel):
             # handle result
             if result is not None:
-                counter = process_result(result, args, url, counter, config)
+                counter = process_result(result, args, url, counter, options)
             else:
                 LOGGER.warning('No result for URL: %s', url)
                 errors.append(url)
@@ -331,6 +332,16 @@ def probe_homepage(args):
                 if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
                     print(url, flush=True)
 
+def _args_to_extractor(args):
+    "Derive extractor configuration from CLI args."
+    config = use_config(filename=args.config_file)
+    return Extractor(
+               config, args.fast, args.precision, args.recall,
+               args.no_comments, args.formatting, args.links,
+               args.images, args.no_tables, args.deduplicate,
+               args.target_language
+           )
+
 
 def url_processing_pipeline(args, url_store):
     '''Aggregated functions to show a list and download and process an input list'''
@@ -338,22 +349,23 @@ def url_processing_pipeline(args, url_store):
     if args.list:
         url_store.print_unvisited_urls()  # and not write_result()
         return False  # and not sys.exit(0)
-    # parse config
-    config = use_config(filename=args.config_file)
+
+    options = _args_to_extractor(args)
+
     # initialize file counter if necessary
     if url_store.total_url_number() > MAX_FILES_PER_DIRECTORY:
         counter = 0
     else:
         counter = None
     # download strategy
-    errors, counter = download_queue_processing(url_store, args, counter, config)
+    errors, counter = download_queue_processing(url_store, args, counter, options)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
         url_store = UrlStore()
         url_store.add_urls(['https://web.archive.org/web/20/' + e for e in errors])
         if len(url_store.find_known_urls('https://web.archive.org')) > 0:
-            archived_errors, _ = download_queue_processing(url_store, args, counter, config)
+            archived_errors, _ = download_queue_processing(url_store, args, counter, options)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
             # pass information along if URLs are missing
             return bool(archived_errors)
@@ -364,8 +376,8 @@ def url_processing_pipeline(args, url_store):
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
-    config = use_config(filename=args.config_file)
-    timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
+    options = _args_to_extractor(args)
+    timeout = options.config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
 
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
@@ -373,35 +385,31 @@ def file_processing_pipeline(args):
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            worker = partial(file_processing, args=args, counter=filecounter, config=config)
+            worker = partial(file_processing, args=args, counter=filecounter, options=options)
             executor.map(worker, filebatch, chunksize=10, timeout=timeout)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
 
 
-def examine(htmlstring, args, url=None, config=None):
+def examine(htmlstring, args, url=None, options=None):
     """Generic safeguards and triggers"""
     result = None
-    if config is None:
-        config = use_config(filename=args.config_file)
+    if not options:
+        options = _args_to_extractor(args)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
-    elif len(htmlstring) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+    elif len(htmlstring) > options.config.getint('DEFAULT', 'MAX_FILE_SIZE'):
         sys.stderr.write('ERROR: file too large\n')
-    elif len(htmlstring) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif len(htmlstring) < options.config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:
         try:
-            result = extract(htmlstring, url=url, no_fallback=args.fast,
-                             include_comments=args.no_comments, include_tables=args.no_tables,
-                             include_formatting=args.formatting, include_links=args.links,
-                             include_images=args.images, only_with_metadata=args.only_with_metadata,
+            result = extract(htmlstring, url=url, only_with_metadata=args.only_with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
-                             target_language=args.target_language, deduplicate=args.deduplicate,
-                             favor_precision=args.precision, favor_recall=args.recall, config=config)
+                             options=options)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
