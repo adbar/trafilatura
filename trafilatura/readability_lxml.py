@@ -73,9 +73,9 @@ REGEXES = {
         re.I,
     ),
     "divToPElementsRe": re.compile(
-        r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I
+        r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I
     ),
-    "videoRe": re.compile(r"https?:\/\/(www\.)?(youtube|vimeo)\.com", re.I),
+    "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.I),
 }
 
 FRAME_TAGS = {"body", "html"}
@@ -214,7 +214,6 @@ class Document:
         if LOGGER.isEnabledFor(logging.DEBUG):
             for candidate in sorted_candidates[:5]:
                 LOGGER.debug("Top 5: %s %s", candidate.elem.tag, candidate.score)
-        # return best candidate
         return next(iter(sorted_candidates))
 
     def get_link_density(self, elem):
@@ -234,15 +233,13 @@ class Document:
             elem_text = trim(elem.text_content())
             elem_text_len = len(elem_text)
 
-            # don't count too short paragraphs
+            # discard too short paragraphs
             if elem_text_len < self.min_text_length:
                 continue
 
-            if parent_node not in candidates:
-                candidates[parent_node] = self.score_node(parent_node)
-
-            if grand_parent_node is not None and grand_parent_node not in candidates:
-                candidates[grand_parent_node] = self.score_node(grand_parent_node)
+            for node in (parent_node, grand_parent_node):
+                if node is not None and node not in candidates:
+                    candidates[node] = self.score_node(node)
 
             score = 1 + len(elem_text.split(",")) + min((elem_text_len / 100), 3)
             # if elem not in candidates:
@@ -256,8 +253,7 @@ class Document:
         # should have a relatively small link density (5% or less) and be
         # mostly unaffected by this operation.
         for elem, candidate in candidates.items():
-            density = self.get_link_density(elem)
-            candidate.score *= 1 - density
+            candidate.score *= 1 - self.get_link_density(elem)
 
         return candidates
 
@@ -314,15 +310,13 @@ class Document:
         for elem in self.doc.findall(".//div"):
             if elem.text and elem.text.strip():
                 p_elem = fragment_fromstring("<p/>")
-                p_elem.text = elem.text
-                elem.text = None
+                p_elem.text, elem.text = elem.text, None
                 elem.insert(0, p_elem)
 
             for pos, child in sorted(enumerate(elem), reverse=True):
                 if child.tail and child.tail.strip():
                     p_elem = fragment_fromstring("<p/>")
-                    p_elem.text = child.tail
-                    child.tail = None
+                    p_elem.text, child.tail = child.tail, None
                     elem.insert(pos + 1, p_elem)
                 if child.tag == "br":
                     child.drop_tree()
