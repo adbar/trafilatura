@@ -300,14 +300,6 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r', encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
-    # dry-run file processing pipeline
-    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    cli_utils.file_processing_pipeline(args)
-    # file processing pipeline on resources/
-    args.input_dir = RESOURCES_DIR
-    cli_utils.file_processing_pipeline(args)
     # sitemaps: tested in --explore
     testargs = ['', '--sitemap', 'https://sitemaps.org/sitemap.xml', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
@@ -324,6 +316,18 @@ def test_cli_pipeline():
         teststring = f.read()
     result = cli.examine(teststring, args)
     assert '[link](testlink.html)' in result and 'test.jpg' in result
+
+
+def test_file_processing():
+    "Test file processing pipeline on actual directories."
+    # dry-run file processing pipeline
+    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.file_processing_pipeline(args)
+    # file processing pipeline on resources/
+    args.input_dir = RESOURCES_DIR
+    cli_utils.file_processing_pipeline(args)
 
 
 def test_cli_config_file():
@@ -479,6 +483,7 @@ if __name__ == '__main__':
     test_input_filtering()
     test_sysoutput()
     test_cli_pipeline()
+    test_file_processing()
     test_cli_config_file()
     test_crawling()
     test_download()

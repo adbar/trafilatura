@@ -42,14 +42,23 @@ NOT_AT_THE_END = {'head', 'ref'}
 class Extractor:
     "Defines a class to store all extraction options."
     __slots__ = [
-    'config', 'fast', 'precision', 'recall', 'comments',
+    'config',
+    # general
+    'fast', 'precision', 'recall', 'comments',
     'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
+    # extraction size
+    'min_extracted_size', 'min_output_size',
+    'min_output_comm_size', 'min_extracted_comm_size',
+    # date
+    'extensive_date_search',
+    # deduplication
+    'min_duplcheck_size', 'max_repetitions'
     ]
     # consider dataclasses for Python 3.7+
-    def __init__(self, config, fast, precision, recall, comments,
-                 formatting, links, images, tables, deduplicate,
-                 target_language):
-        self.config = config
+    def __init__(self, *, config=DEFAULT_CONFIG, fast=False, precision=False, recall=False,
+                 comments=False, formatting=False, links=False, images=False,
+                 tables=False, dedup=False, lang=None):
+        self._add_config(config)
         self.fast = fast
         self.precision = precision
         self.recall = recall
@@ -58,8 +67,18 @@ class Extractor:
         self.links = links
         self.images = images
         self.tables = tables
-        self.dedup = deduplicate
-        self.lang = target_language
+        self.dedup = dedup
+        self.lang = lang
+
+    def _add_config(self, config):
+        self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+        self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
+        self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
+        self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
+        self.extensive_date_search = config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')
+        self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
+        self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
+        self.config = config  # todo: remove?
 
 
 def handle_titles(element, options):
@@ -581,7 +600,7 @@ def extract_content(tree, options):
             factor = 1
         else:
             factor = 3
-        if not ptest or len(''.join(ptest)) < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * factor:
+        if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:
             potential_tags.add('div')
         # polish list of potential tags
         if 'ref' not in potential_tags:
@@ -606,7 +625,7 @@ def extract_content(tree, options):
     temp_text = ' '.join(result_body.itertext()).strip()
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
@@ -779,7 +798,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
             if not date_extraction_params:
                 date_extraction_params = {
-                    "extensive_search": config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'),
+                    "extensive_search": options.extensive_date_search if options else config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'),
                 }
 
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
@@ -803,10 +822,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # regroup extraction options
         if not options or not isinstance(options, Extractor):
             options = Extractor(
-                          config, no_fallback, favor_precision, favor_recall,
-                          include_comments, include_formatting, include_links,
-                          include_images, include_tables, deduplicate,
-                          target_language
+                          config=config, fast=no_fallback, precision=favor_precision, recall=favor_recall,
+                          comments=include_comments, formatting=include_formatting, links=include_links,
+                          images=include_images, tables=include_tables,
+                          dedup=deduplicate, lang=target_language
                       )
 
         # prune all xpath expressions that user specified
@@ -843,7 +862,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
-        if len_text < options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+        if len_text < options.min_extracted_size:
             postbody, temp_text, len_text = baseline(tree_backup_2)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
@@ -858,15 +877,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 LOGGER.debug('output tree too long: %s, discarding file', len(postbody))
                 raise ValueError
         # size checks
-        if len_comments < options.config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
+        if len_comments < options.min_extracted_comm_size:
             LOGGER.debug('not enough comments %s', url)
-        if len_text < options.config.getint('DEFAULT', 'MIN_OUTPUT_SIZE') and \
-           len_comments < options.config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE'):
+        if len_text < options.min_output_size and \
+           len_comments < options.min_output_comm_size:
             LOGGER.debug('text and comments not long enough: %s %s', len_text, len_comments)
             raise ValueError
 
         # check duplicates at body level
-        if deduplicate is True and duplicate_test(postbody, options.config) is True:
+        if deduplicate is True and duplicate_test(postbody, options) is True:
             LOGGER.debug('discarding duplicate document for URL %s', url)
             raise ValueError
 

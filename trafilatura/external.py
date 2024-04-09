@@ -45,14 +45,13 @@ def try_readability(htmlinput):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    min_target_length = options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
     # bypass for recall
-    if options.recall is True and len_text > min_target_length * 10:
+    if options.recall and len_text > options.min_extracted_size * 10:
         return body, text, len_text
     algo_flag, jt_result = False, False
     # prior cleaning
     backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
-    if options.precision is True:
+    if options.precision:
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
     # try with readability
     temppost_algo = try_readability(backup_tree)
@@ -71,12 +70,12 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     elif len_algo > 2 * len_text:
         algo_flag = True
     # borderline cases
-    elif not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
+    elif not body.xpath('.//p//text()') and len_algo > options.min_extracted_size * 2:
         algo_flag = True
-    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
+    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > options.min_extracted_size * 2:
         algo_flag = True
     # https://github.com/adbar/trafilatura/issues/354
-    elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
+    elif options.recall and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
         algo_flag = True
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -88,7 +87,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
     else:
         LOGGER.debug('using custom extraction: %s', url)
     # override faulty extraction: try with justext
-    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
+    if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
     # or options.recall is True ?
         LOGGER.debug('unclean document triggering justext examination: %s', url)
         # tree = prune_unwanted_sections(tree, {}, options)

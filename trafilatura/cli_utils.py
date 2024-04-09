@@ -332,15 +332,17 @@ def probe_homepage(args):
                 if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
                     print(url, flush=True)
 
+
 def _args_to_extractor(args):
     "Derive extractor configuration from CLI args."
-    config = use_config(filename=args.config_file)
-    return Extractor(
-               config, args.fast, args.precision, args.recall,
-               args.no_comments, args.formatting, args.links,
-               args.images, args.no_tables, args.deduplicate,
-               args.target_language
-           )
+    options = Extractor(
+                  config=use_config(filename=args.config_file),
+                  comments=args.no_comments, tables=args.no_tables,
+                  dedup=args.deduplicate, lang=args.target_language
+              )
+    for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
+        setattr(options, attr, getattr(args, attr))
+    return options
 
 
 def url_processing_pipeline(args, url_store):
