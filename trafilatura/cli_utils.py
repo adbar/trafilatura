@@ -212,7 +212,7 @@ def download_queue_processing(url_store, args, counter, options):
     '''Implement a download queue consumer, single- or multi-threaded'''
     errors = []
     while url_store.done is False:
-        bufferlist, url_store = load_download_buffer(url_store, options.sleep_time)
+        bufferlist, url_store = load_download_buffer(url_store, options.config.getfloat('DEFAULT', 'SLEEP_TIME'))
         # process downloads
         for url, result in buffered_downloads(bufferlist, args.parallel):
             # handle result
@@ -378,6 +378,7 @@ def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
     options = _args_to_extractor(args)
+    timeout = options.config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
 
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
@@ -386,7 +387,7 @@ def file_processing_pipeline(args):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, options=options)
-            executor.map(worker, filebatch, chunksize=10, timeout=options.timeout)
+            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
