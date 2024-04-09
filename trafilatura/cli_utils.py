@@ -210,10 +210,9 @@ def process_result(htmlstring, args, url, counter, options):
 
 def download_queue_processing(url_store, args, counter, options):
     '''Implement a download queue consumer, single- or multi-threaded'''
-    sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
     errors = []
     while url_store.done is False:
-        bufferlist, url_store = load_download_buffer(url_store, sleep_time)
+        bufferlist, url_store = load_download_buffer(url_store, options.sleep_time)
         # process downloads
         for url, result in buffered_downloads(bufferlist, args.parallel):
             # handle result
@@ -379,7 +378,6 @@ def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
     options = _args_to_extractor(args)
-    timeout = options.config.getint('DEFAULT', 'EXTRACTION_TIMEOUT') or None
 
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
@@ -388,7 +386,7 @@ def file_processing_pipeline(args):
             if filecounter is None and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, options=options)
-            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
+            executor.map(worker, filebatch, chunksize=10, timeout=options.timeout)
             # update counter
             if filecounter is not None:
                 filecounter += len(filebatch)
@@ -402,9 +400,9 @@ def examine(htmlstring, args, url=None, options=None):
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
-    elif len(htmlstring) > options.config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+    elif len(htmlstring) > options.max_file_size:
         sys.stderr.write('ERROR: file too large\n')
-    elif len(htmlstring) < options.config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif len(htmlstring) < options.min_file_size:
         sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:

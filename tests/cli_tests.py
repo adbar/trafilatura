@@ -189,7 +189,6 @@ def test_sysoutput():
     cli_utils.write_result(result, args)
     # process with backup directory and no counter
     options = cli_utils._args_to_extractor(args)
-    options.config = settings.DEFAULT_CONFIG
     assert cli_utils.process_result('DADIDA', args, None, None, options) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']

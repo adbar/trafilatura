@@ -52,12 +52,15 @@ class Extractor:
     # date
     'extensive_date_search',
     # deduplication
-    'min_duplcheck_size', 'max_repetitions'
+    'min_duplcheck_size', 'max_repetitions',
+    # rest
+    'max_file_size', 'min_file_size', 'sleep_time', 'timeout',
+    'format', 'only_with_meta', 'validate'
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self, *, config=DEFAULT_CONFIG, fast=False, precision=False, recall=False,
                  comments=False, formatting=False, links=False, images=False,
-                 tables=False, dedup=False, lang=None):
+                 tables=False, dedup=False, lang=None, timeout=None):
         self._add_config(config)
         self.fast = fast
         self.precision = precision
@@ -69,8 +72,10 @@ class Extractor:
         self.tables = tables
         self.dedup = dedup
         self.lang = lang
+        self.timeout = timeout
 
     def _add_config(self, config):
+        "Store options loaded from config file."
         self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
         self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
         self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
@@ -78,6 +83,10 @@ class Extractor:
         self.extensive_date_search = config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')
         self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
         self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
+        self.timeout = config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
+        self.sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
+        self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
+        self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
         self.config = config  # todo: remove?
 
 
