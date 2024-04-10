@@ -19,7 +19,7 @@ from .hashing import content_fingerprint
 from .htmlprocessing import (convert_tags, delete_by_link_density,
                              handle_textnode, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
-from .metadata import Document, extract_metadata
+from .metadata import Document, extract_metadata, set_date_params
 from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 from .utils import FORMATTING_PROTECTED, is_image_file, load_html, normalize_unicode
 from .xml import (build_json_output, build_tei_output, build_xml_output, control_xml_output,
@@ -82,8 +82,7 @@ class Extractor:
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
-        self.date_params = date_params or \
-                           {"extensive_search": self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')}
+        self.date_params = set_date_params(date_params, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
 
     def _add_config(self, config):
         "Store options loaded from config file."
@@ -923,9 +922,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
     else:
         document.raw_text, document.commentsbody = temp_text, commentsbody
     document.body = postbody
-    if as_dict is True:
-        document = {slot: getattr(document, slot, None) for slot in document.__slots__}
-    return document
+
+    return document if not as_dict else document.as_dict()
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
