@@ -49,21 +49,21 @@ class Extractor:
     # extraction size
     'min_extracted_size', 'min_output_size',
     'min_output_comm_size', 'min_extracted_comm_size',
-    # date
-    'extensive_date_search',
     # deduplication
     'min_duplcheck_size', 'max_repetitions',
     # rest
-    'max_file_size', 'min_file_size',
+    'max_file_size', 'min_file_size', 'max_tree_size',
     # meta
-    'url', 'only_with_metadata', 'tei_validation'
+    'url', 'only_with_metadata', 'tei_validation', 'date_params',
+    'author_blacklist', 'url_blacklist'
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
                  fast=False, precision=False, recall=False,
-                 comments=False, formatting=False, links=False, images=False,
-                 tables=False, dedup=False, lang=None,
-                 url=None, only_with_metadata=False, tei_validation=False):
+                 comments=True, formatting=False, links=False, images=False,
+                 tables=True, dedup=False, lang=None, max_tree_size=None,
+                 url=None, only_with_metadata=False, tei_validation=False,
+                 author_blacklist=None, url_blacklist=None, date_params=None):
         self._add_config(config)
         self.format = output_format
         self.fast = fast
@@ -76,9 +76,14 @@ class Extractor:
         self.tables = tables
         self.dedup = dedup
         self.lang = lang
+        self.max_tree_size = max_tree_size
         self.url = url
         self.only_with_metadata = only_with_metadata
         self.tei_validation = tei_validation
+        self.author_blacklist = author_blacklist or set()
+        self.url_blacklist = url_blacklist or set()
+        self.date_params = date_params or \
+                           {"extensive_search": self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')}
 
     def _add_config(self, config):
         "Store options loaded from config file."
@@ -86,7 +91,6 @@ class Extractor:
         self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
         self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
         self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
-        self.extensive_date_search = config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')
         self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
         self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
         self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
@@ -775,9 +779,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
     Raises:
         ValueError: Extraction problem.
     """
-    # init
-    if url_blacklist is None:
-        url_blacklist = set()
 
     # deprecation warnings
     if with_metadata is True:
@@ -807,8 +808,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                           fast=no_fallback, precision=favor_precision, recall=favor_recall,
                           comments=include_comments, formatting=include_formatting, links=include_links,
                           images=include_images, tables=include_tables,
-                          dedup=deduplicate, lang=target_language,
-                          url=url, only_with_metadata=only_with_metadata
+                          dedup=deduplicate, lang=target_language, max_tree_size=max_tree_size,
+                          url=url, only_with_metadata=only_with_metadata,
+                          author_blacklist=author_blacklist, url_blacklist=url_blacklist,
+                          date_params=date_extraction_params
                       )
 
         # quick and dirty HTML lang check
@@ -820,15 +823,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # extract metadata if necessary
         if options.format != 'txt':
 
-            if not date_extraction_params:
-                date_extraction_params = {
-                    "extensive_search": options.extensive_date_search if options else config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'),
-                }
-
-            document = extract_metadata(tree, options.url, date_extraction_params, options.fast, author_blacklist)
+            document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist)
 
             # cut short if extracted URL in blacklist
-            if document.url in url_blacklist:
+            if document.url in options.url_blacklist:
                 LOGGER.warning('blacklisted URL: %s', document.url)
                 raise ValueError
 
@@ -882,13 +880,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
-        if max_tree_size is not None:
+        if options.max_tree_size:
             # strip tags
-            if len(postbody) > max_tree_size:
+            if len(postbody) > options.max_tree_size:
                 LOGGER.debug('output tree too long: %s', len(postbody))
                 strip_tags(postbody, 'hi')
             # still too long, raise an error
-            if len(postbody) > max_tree_size:
+            if len(postbody) > options.max_tree_size:
                 LOGGER.debug('output tree too long: %s, discarding file', len(postbody))
                 raise ValueError
         # size checks
@@ -900,7 +898,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             raise ValueError
 
         # check duplicates at body level
-        if deduplicate is True and duplicate_test(postbody, options) is True:
+        if options.dedup and duplicate_test(postbody, options) is True:
             LOGGER.debug('discarding duplicate document for URL %s', url)
             raise ValueError
 
@@ -999,19 +997,18 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                       fast=no_fallback, precision=favor_precision, recall=favor_recall,
                       comments=include_comments, formatting=include_formatting, links=include_links,
                       images=include_images, tables=include_tables,
-                      dedup=deduplicate, lang=target_language,
+                      dedup=deduplicate, lang=target_language, max_tree_size=max_tree_size,
                       url=url, only_with_metadata=only_with_metadata,
-                      tei_validation=tei_validation
+                      tei_validation=tei_validation,
+                      author_blacklist=author_blacklist, url_blacklist=url_blacklist,
+                      date_params=date_extraction_params
                   )
 
     # extraction
     try:
         document = bare_extraction(
             filecontent, options=options,
-            date_extraction_params=date_extraction_params,
             with_metadata=with_metadata,
-            max_tree_size=max_tree_size, url_blacklist=url_blacklist,
-            author_blacklist=author_blacklist,
             as_dict=False, prune_xpath=prune_xpath,
         )
     except RuntimeError:
