@@ -116,6 +116,12 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
+    teststring = "高山云雾出好茶".encode("utf-8")
+    assert utils.detect_encoding(teststring) == ["utf-8"]
+    teststring = "高山云雾出好茶".encode("gb18030")
+    assert "gb18030" in utils.detect_encoding(teststring)
+    assert "gb18030" in utils.detect_encoding(teststring*1000)
+
     assert utils.is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
