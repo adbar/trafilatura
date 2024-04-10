@@ -191,16 +191,16 @@ def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    result = examine(htmlstring, args, url=args.URL, options=options)
+    result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
 
-def process_result(htmlstring, args, url, counter, options):
+def process_result(htmlstring, args, counter, options):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
     fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
-    result = examine(htmlstring, args, url=url, options=options)
+    result = examine(htmlstring, args, options=options)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
     # increment written file counter
     if counter is not None and result is not None:
@@ -217,7 +217,8 @@ def download_queue_processing(url_store, args, counter, options):
         for url, result in buffered_downloads(bufferlist, args.parallel):
             # handle result
             if result is not None:
-                counter = process_result(result, args, url, counter, options)
+                options.url = url
+                counter = process_result(result, args, counter, options)
             else:
                 LOGGER.warning('No result for URL: %s', url)
                 errors.append(url)
@@ -332,12 +333,14 @@ def probe_homepage(args):
                     print(url, flush=True)
 
 
-def _args_to_extractor(args):
+def _args_to_extractor(args, url=None):
     "Derive extractor configuration from CLI args."
     options = Extractor(
-                  config=use_config(filename=args.config_file),
+                  config=use_config(filename=args.config_file), output_format=args.output_format,
                   comments=args.no_comments, tables=args.no_tables,
-                  dedup=args.deduplicate, lang=args.target_language
+                  dedup=args.deduplicate, lang=args.target_language,
+                  url=url, only_with_metadata=args.only_with_metadata,
+                  tei_validation=args.validate_tei
               )
     for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
         setattr(options, attr, getattr(args, attr))
@@ -397,7 +400,7 @@ def examine(htmlstring, args, url=None, options=None):
     """Generic safeguards and triggers"""
     result = None
     if not options:
-        options = _args_to_extractor(args)
+        options = _args_to_extractor(args, url)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
@@ -408,9 +411,7 @@ def examine(htmlstring, args, url=None, options=None):
     # proceed
     else:
         try:
-            result = extract(htmlstring, url=url, only_with_metadata=args.only_with_metadata,
-                             output_format=args.output_format, tei_validation=args.validate_tei,
-                             options=options)
+            result = extract(htmlstring, options=options)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write(f'ERROR: {str(err)}' + '\n' + traceback.format_exc() + '\n')
