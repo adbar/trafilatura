@@ -1038,13 +1038,21 @@ def test_table_processing():
     </td>
     </tr></table>
     """)
-    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
     ]
-    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+
+    options.recall = True
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", ("p", "a list"), 'list', ("item", "one"), ("item", "two"),]
+
     broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
