@@ -115,6 +115,12 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
+    teststring = "高山云雾出好茶".encode("utf-8")
+    assert utils.detect_encoding(teststring) == ["utf-8"]
+    teststring = "高山云雾出好茶".encode("gb18030")
+    assert "gb18030" in utils.detect_encoding(teststring)
+    assert "gb18030" in utils.detect_encoding(teststring*1000)
+
     assert utils.is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
@@ -146,7 +152,8 @@ def test_input():
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(SystemExit):
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
@@ -1030,13 +1037,21 @@ def test_table_processing():
     </td>
     </tr></table>
     """)
-    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
     ]
-    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+
+    options.recall = True
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", ("p", "a list"), 'list', ("item", "one"), ("item", "two"),]
+
     broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
@@ -1254,7 +1269,17 @@ def test_lang_detection():
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
+def test_config_loading():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
+    test_config_loading()
     test_trim()
     test_input()
     test_formatting()

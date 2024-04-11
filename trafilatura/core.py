@@ -5,7 +5,9 @@ Module bundling all functions needed to extract the text in a webpage.
 
 import logging
 import re  # import regex as re
+import sys
 import warnings
+
 from copy import deepcopy
 
 from lxml.etree import Element, SubElement, XPath, strip_elements, strip_tags, tostring
@@ -442,6 +444,11 @@ def handle_table(table_elem, potential_tags, options):
                             child.tag = "cell"
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
+                    elif child.tag == "list" and options.recall:
+                        processed_subchild = handle_lists(child, options)
+                        if processed_subchild is not None:
+                            new_child_elem.append(processed_subchild)
+                            processed_subchild = None  # don't handle it anymore
                     else:
                         # subcell_elem = Element(child.tag)
                         processed_subchild = handle_textelem(child, potential_tags.union(["div"]), options)
@@ -1027,15 +1034,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     return determine_returnstring(document, options)
 
 
-def process_record(filecontent, url=None, record_id=None, no_fallback=False,
-                   include_comments=True, target_language=None,
-                   include_tables=True):
-    "Legacy extraction function, now deprecated, for backwards compatibility only."
-    # deprecation warning
-    warnings.warn(
-        "process_record() is deprecated, use extract() instead",
-        DeprecationWarning
-    )
-    return extract(filecontent, url=url, record_id=record_id, no_fallback=no_fallback,
-                   include_comments=include_comments, target_language=target_language,
-                   include_tables=include_tables)
+def process_record(content, *args, **kwargs):
+    "Deprecated extraction function."
+    sys.exit("process_record() is deprecated, use extract() instead")
