@@ -127,9 +127,9 @@ EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
 def set_date_params(date_params, fastmode):
+    "Provide default parameters for date extraction."
     if not date_params:
-        date_params = {"original_date": True}
-        date_params["extensive_search"] = not fastmode
+        date_params = {"original_date": True, "extensive_search": not fastmode}
     return date_params
 
 
@@ -490,8 +490,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
-    if not date_config:
-        date_config = set_date_params(date_config, fastmode)
+    date_config = set_date_params(date_config, fastmode)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
