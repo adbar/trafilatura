@@ -412,7 +412,7 @@ def handle_table(table_elem, potential_tags, options):
                     elif child.tag == "list" and options.recall:
                         processed_subchild = handle_lists(child, options)
                         if processed_subchild is not None:
-                            newchildelem.append(processed_subchild)
+                            new_child_elem.append(processed_subchild)
                             processed_subchild = None  # don't handle it anymore
                     else:
                         # subcell_elem = Element(child.tag)
