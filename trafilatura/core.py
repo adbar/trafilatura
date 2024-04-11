@@ -24,8 +24,7 @@ from .htmlprocessing import (convert_tags, delete_by_link_density,
 from .metadata import Document, extract_metadata, set_date_params
 from .settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 from .utils import FORMATTING_PROTECTED, is_image_file, load_html, normalize_unicode
-from .xml import (build_json_output, build_tei_output, build_xml_output, control_xml_output,
-                  remove_empty_elements, strip_double_tags, xmltotxt, xmltocsv)
+from .xml import build_json_output, control_xml_output, xmltotxt, xmltocsv
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
                      PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
@@ -717,12 +716,8 @@ def determine_returnstring(document, options):
                 # do not remove elements inside <code> to preserve formatting
                 if parent is not None and parent.tag != 'code':
                     parent.remove(element)
-        # build output trees
-        strip_double_tags(document.body)
-        remove_empty_elements(document.body)
-        func = build_xml_output if options.format == "xml" else build_tei_output
-        # can be improved
-        returnstring = control_xml_output(func(document), options.format, options.tei_validation, document)
+        # build output tree
+        returnstring = control_xml_output(document, options)
     # CSV
     elif options.format == 'csv':
         returnstring = xmltocsv(document, options.formatting)
