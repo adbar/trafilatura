@@ -72,14 +72,10 @@ class Document:
     def as_dict(self):
         "Convert the document to a dictionary."
         return {
-            attr: getattr(self, attr)
+            attr: getattr(self, attr, None)
             for attr in self.__slots__
-            if hasattr(self, attr)
         }
 
-
-HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
-HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
@@ -128,6 +124,13 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 # also interesting: article:section
 
 EXTRA_META = {'charset', 'http-equiv', 'property'}
+
+
+def set_date_params(date_params, fastmode):
+    "Provide default parameters for date extraction."
+    if not date_params:
+        date_params = {"original_date": True, "extensive_search": not fastmode}
+    return date_params
 
 
 def check_authors(authors, author_blacklist):
@@ -487,6 +490,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
+    date_config = set_date_params(date_config, fastmode)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -524,12 +528,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata.image is None:
         metadata.image = extract_image(tree)
     # extract date with external module htmldate
-    if date_config is None:
-        # decide on fast mode
-        if fastmode is False:
-            date_config = HTMLDATE_CONFIG_EXTENSIVE
-        else:
-            date_config = HTMLDATE_CONFIG_FAST
     date_config['url'] = metadata.url
     metadata.date = find_date(tree, **date_config)
     # sitename

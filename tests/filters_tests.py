@@ -26,8 +26,7 @@ ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
-DEFAULT_OPTIONS = Extractor(*[False]*11)
-DEFAULT_OPTIONS.config = DEFAULT_CONFIG
+DEFAULT_OPTIONS = Extractor()
 
 SAMPLE_META = Document()
 
@@ -110,6 +109,7 @@ def test_lrucache():
     lru_test = LRUCache(maxsize=2)
     trafilatura.filters.LRU_TEST = lru_test
     my_body = etree.Element('body')
+    
     ### element too short
     #my_element = html.fromstring('<p>AAAA BBBB</p>')
     #my_body.append(my_element)
@@ -118,31 +118,31 @@ def test_lrucache():
     ### cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
-    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
-    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
-    assert duplicate_test(my_body, DEFAULT_CONFIG) is False
-    assert duplicate_test(my_element, DEFAULT_CONFIG) is True
+    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
+    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
+    assert duplicate_test(my_body, DEFAULT_OPTIONS) is False
+    assert duplicate_test(my_element, DEFAULT_OPTIONS) is True
     other_body = etree.Element('body')
     other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
     other_body.append(other_element)
-    assert duplicate_test(other_body, DEFAULT_CONFIG) is False
-    assert duplicate_test(other_element, DEFAULT_CONFIG) is False
-    assert duplicate_test(other_body, DEFAULT_CONFIG) is False
-    assert duplicate_test(other_element, DEFAULT_CONFIG) is True
+    assert duplicate_test(other_body, DEFAULT_OPTIONS) is False
+    assert duplicate_test(other_element, DEFAULT_OPTIONS) is False
+    assert duplicate_test(other_body, DEFAULT_OPTIONS) is False
+    assert duplicate_test(other_element, DEFAULT_OPTIONS) is True
     yet_another_body = etree.Element('body')
     yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
     yet_another_body.append(yet_another_element)
-    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
-    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
-    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
+    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
+    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
     # 2 elements in cache, original element has been cleared?
     # print(LRU_TEST.maxsize, LRU_TEST.full)
-    assert duplicate_test(other_element, DEFAULT_CONFIG) is True
-    assert duplicate_test(yet_another_element, DEFAULT_CONFIG) is True
-    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
+    assert duplicate_test(other_element, DEFAULT_OPTIONS) is True
+    assert duplicate_test(yet_another_element, DEFAULT_OPTIONS) is True
+    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
     # clear the cache
     lru_test.clear()
-    assert duplicate_test(other_element, DEFAULT_CONFIG) is False
+    assert duplicate_test(other_element, DEFAULT_OPTIONS) is False
     # get wrong key
     assert lru_test.get('tralala') == -1
 

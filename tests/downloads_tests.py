@@ -24,7 +24,8 @@ from unittest.mock import patch
 from courlan import UrlStore
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import (download_queue_processing,
+from trafilatura.cli_utils import (_args_to_extractor,
+                                   download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import extract
 import trafilatura.downloads
@@ -197,9 +198,9 @@ def test_queue():
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
-    config = use_config(filename=args.config_file)
-    config['DEFAULT']['SLEEP_TIME'] = '0.2'
-    results = download_queue_processing(url_store, args, None, config)
+    options = _args_to_extractor(args)
+    options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
+    results = download_queue_processing(url_store, args, None, options)
     assert len(results[0]) == 6 and results[1] is None
 
 

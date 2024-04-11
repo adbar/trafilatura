@@ -56,8 +56,7 @@ MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
 
-DEFAULT_OPTIONS = Extractor(*[False]*11)
-DEFAULT_OPTIONS.config = DEFAULT_CONFIG
+DEFAULT_OPTIONS = Extractor()
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
@@ -210,7 +209,7 @@ def test_python_output():
 
 def test_exotic_tags(xmloutput=False):
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
@@ -353,7 +352,7 @@ trafilatura.extract("")
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
@@ -501,7 +500,7 @@ def test_images():
 def test_links():
     '''Test link extraction function'''
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     assert handle_textelem(etree.Element('ref'), [], options) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
@@ -799,7 +798,7 @@ def test_extraction_options():
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
-    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
+    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
