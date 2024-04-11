@@ -36,8 +36,7 @@ except ImportError:
 
 
 from .settings import DEFAULT_CONFIG
-from .utils import (URL_BLACKLIST_REGEX, decode_file,
-                    make_chunks, uniquify_list)
+from .utils import URL_BLACKLIST_REGEX, decode_file, make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -283,7 +282,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
                         verbose=verbose
                     )
 
-    inputlist = uniquify_list(inputlist)
+    inputlist = list(dict.fromkeys(inputlist))
 
     if blacklist:
         inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub('', u) not in blacklist]

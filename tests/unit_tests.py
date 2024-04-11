@@ -31,13 +31,13 @@ from trafilatura import (bare_extraction, baseline, extract, html2txt,
                          process_record, utils, xml)
 from trafilatura.core import (Extractor, handle_formatting, handle_image,
                               handle_lists, handle_paragraphs, handle_quotes,
-                              handle_table, handle_textelem, sanitize_tree,
-                              trim)
-from trafilatura.external import try_justext
+                              handle_table, handle_textelem)
+from trafilatura.external import sanitize_tree, try_justext
 from trafilatura.filters import textfilter
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.utils import trim
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -116,6 +116,12 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
+    teststring = "高山云雾出好茶".encode("utf-8")
+    assert utils.detect_encoding(teststring) == ["utf-8"]
+    teststring = "高山云雾出好茶".encode("gb18030")
+    assert "gb18030" in utils.detect_encoding(teststring)
+    assert "gb18030" in utils.detect_encoding(teststring*1000)
+
     assert utils.is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
@@ -147,7 +153,8 @@ def test_input():
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(SystemExit):
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
@@ -293,21 +300,29 @@ def test_formatting():
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '### Title\n**This here is in bold font.**'
+
+    # space between paragraphs
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result.endswith('Paragraph 1\n\nParagraph 2')
+
     # code sections
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura</code></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 `import trafilatura`"""
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura\ntrafilatura.extract("")</code></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 ```
 import trafilatura
 trafilatura.extract("")
 ```"""
-    
+
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -1255,7 +1270,17 @@ def test_lang_detection():
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
+def test_config_loading():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
+    test_config_loading()
     test_trim()
     test_input()
     test_formatting()

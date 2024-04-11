@@ -33,8 +33,9 @@ from resiliparse.parse.html import HTMLTree
 from trafilatura import extract
 
 try:
-    from trafilatura.core import baseline
+    from trafilatura import baseline
 except ImportError:
+    print("Cannot import baseline, using simple version")
     baseline = None
 from evaldata import EVAL_PAGES
 

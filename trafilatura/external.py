@@ -12,7 +12,7 @@ from pickle import load as load_pickle
 from justext.core import (ParagraphMaker, classify_paragraphs,
                           revise_paragraph_classification)
 from justext.utils import get_stoplist  # , get_stoplists
-from lxml.etree import Element, strip_tags
+from lxml.etree import Element, strip_tags, tostring
 
 # own
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
@@ -20,7 +20,7 @@ from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
-from .xpaths import PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
+from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
@@ -40,6 +40,67 @@ def try_readability(htmlinput):
     except Exception as err:
         LOGGER.warning('readability_lxml failed: %s', err)
         return Element('div')
+
+
+def compare_extraction(tree, backup_tree, url, body, text, len_text, options):
+    '''Decide whether to choose own or external extraction
+       based on a series of heuristics'''
+    min_target_length = options.config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+    # bypass for recall
+    if options.recall is True and len_text > min_target_length * 10:
+        return body, text, len_text
+    algo_flag, jt_result = False, False
+    # prior cleaning
+    backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
+    if options.precision is True:
+        backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
+    # try with readability
+    temppost_algo = try_readability(backup_tree)
+    # unicode fix necessary on certain systems (#331)
+    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
+    len_algo = len(algo_text)
+    # compare
+    LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
+    # conditions to use alternative algorithms
+    if len_algo in (0, len_text):
+        algo_flag = False
+    elif len_text == 0 and len_algo > 0:
+        algo_flag = True
+    elif len_text > 2 * len_algo:
+        algo_flag = False
+    elif len_algo > 2 * len_text:
+        algo_flag = True
+    # borderline cases
+    elif not body.xpath('.//p//text()') and len_algo > min_target_length * 2:
+        algo_flag = True
+    elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > min_target_length * 2:
+        algo_flag = True
+    # https://github.com/adbar/trafilatura/issues/354
+    elif options.recall is True and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
+        algo_flag = True
+    else:
+        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+        algo_flag = False
+    # apply decision
+    if algo_flag:
+        body, text, len_text = temppost_algo, algo_text, len_algo
+        LOGGER.debug('using generic algorithm: %s', url)
+    else:
+        LOGGER.debug('using custom extraction: %s', url)
+    # override faulty extraction: try with justext
+    if body.xpath(SANITIZED_XPATH) or len_text < min_target_length:  # body.find(...)
+    # or options.recall is True ?
+        LOGGER.debug('unclean document triggering justext examination: %s', url)
+        # tree = prune_unwanted_sections(tree, {}, options)
+        body2, text2, len_text2, jt_result = justext_rescue(tree, url, options.lang, body, 0, '')
+        # prevent too short documents from replacing the main text
+        if jt_result is True and not len_text > 4*len_text2:  # threshold could be adjusted
+            LOGGER.debug('using justext, length: %s', len_text2)
+            body, text, len_text = body2, text2, len_text2
+    # post-processing: remove unwanted sections
+    if algo_flag is True and jt_result is False:
+        body, text, len_text = sanitize_tree(body, options)
+    return body, text, len_text
 
 
 def jt_stoplist_init():

@@ -17,7 +17,8 @@ from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
 from trafilatura import spider
 
-from .core import extract, html2txt
+from .baseline import html2txt
+from .core import extract
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
@@ -26,7 +27,7 @@ from .hashing import generate_hash_filename
 from .meta import reset_caches
 from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, use_config
 from .sitemaps import sitemap_search
-from .utils import URL_BLACKLIST_REGEX, make_chunks, uniquify_list
+from .utils import URL_BLACKLIST_REGEX, make_chunks
 
 LOGGER = logging.getLogger(__name__)
 
@@ -67,7 +68,7 @@ def load_input_urls(args):
         LOGGER.warning('No input provided')
 
     # uniq URLs while preserving order (important)
-    return uniquify_list(input_urls)
+    return list(dict.fromkeys(input_urls))
 
 
 def load_blacklist(filename):

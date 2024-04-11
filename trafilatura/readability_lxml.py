@@ -14,11 +14,14 @@ For list of contributors see
 https://github.com/timbertson/python-readability
 https://github.com/buriy/python-readability
 
-License of forked code: Apache-2.0 License
+License of forked code: Apache-2.0.
 """
+
 
 import logging
 import re
+
+from operator import attrgetter
 
 from lxml.etree import tostring
 from lxml.html import fragment_fromstring
@@ -28,33 +31,25 @@ from .utils import trim
 LOGGER = logging.getLogger(__name__)
 
 
-BAD_ATTRS = "|".join(["width", "height", "style", "[-a-z]*color", "background[-a-z]*", "on*"])
-QUOTES = '\'[^\']+\'|"[^"]+"'
-NON_SPACE = "[^ \"'>]+"
-HTMLSTRIP = re.compile(
-    "<"  # open
-    "([^>]+) "  # prefix
-    " (?:{BAD_ATTRS}) *"
-    + "= *(?:{NON_SPACE}|{QUOTES})"  # undesirable attributes
-    + "([^>]*)"  # value  # postfix
-    ">",  # end
-    re.I,
-)
-
 DOT_SPACE = re.compile(r"\.( |$)")
 
 
-def clean_attributes(html):
-    while HTMLSTRIP.search(html):
-        html = HTMLSTRIP.sub("<\\1\\2>", html)
-    return html
-
-
 def _tostring(string):
-    return tostring(string, encoding=str, method='xml')
+    return tostring(string, encoding=str, method="xml")
 
 
-DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
+DIV_TO_P_ELEMS = {
+    "a",
+    "blockquote",
+    "dl",
+    "div",
+    "img",
+    "ol",
+    "p",
+    "pre",
+    "table",
+    "ul",
+}
 
 DIV_SCORES = {"div", "article"}
 BLOCK_SCORES = {"pre", "td", "blockquote"}
@@ -74,26 +69,28 @@ REGEXES = {
         re.I,
     ),
     "negativeRe": re.compile(
-        r"combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
+        r"button|combx|comment|com-|contact|figure|foot|footer|footnote|form|input|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
         re.I,
     ),
     "divToPElementsRe": re.compile(
-        r"<(a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I
+        r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I
     ),
-    "videoRe": re.compile(r"https?:\/\/(www\.)?(youtube|vimeo)\.com", re.I),
+    "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.I),
 }
 
-FRAME_TAGS = {'body', 'html'}
+FRAME_TAGS = {"body", "html"}
 LIST_TAGS = {"ol", "ul"}
 # DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
 
+
 def text_length(elem):
+    "Return the length of the element with all its contents."
     return len(trim(elem.text_content()))
 
 
 class Candidate:
     "Defines a class to score candidate elements."
-    __slots__ = ['score', 'elem']
+    __slots__ = ["score", "elem"]
 
     def __init__(self, score, elem):
         self.score = score
@@ -102,7 +99,8 @@ class Candidate:
 
 class Document:
     """Class to build a etree document out of html."""
-    __slots__ = ['doc', 'min_text_length', 'retry_length']
+
+    __slots__ = ["doc", "min_text_length", "retry_length"]
 
     def __init__(self, doc, min_text_length=25, retry_length=250):
         """Generate the document
@@ -121,13 +119,6 @@ class Document:
         self.min_text_length = min_text_length
         self.retry_length = retry_length
 
-    def get_clean_html(self):
-        """
-        An internal method, which can be overridden in subclasses, for example,
-        to disable or to improve DOM-to-text conversion in .summary() method
-        """
-        return clean_attributes(_tostring(self.doc))
-
     def summary(self):
         """
         Given a HTML file, extracts the text of the article.
@@ -135,12 +126,11 @@ class Document:
         Warning: It mutates internal DOM representation of the HTML document,
         so it is better to call other API methods before this one.
         """
+        for elem in self.doc.iter("script", "style"):
+            elem.drop_tree()
+
         ruthless = True
         while True:
-            for i in self.tags(self.doc, "script", "style"):
-                i.drop_tree()
-            for i in self.tags(self.doc, "body"):
-                i.set("id", "readabilityBody")
             if ruthless:
                 self.remove_unlikely_candidates()
             self.transform_misused_divs_into_paragraphs()
@@ -148,23 +138,27 @@ class Document:
 
             best_candidate = self.select_best_candidate(candidates)
 
-            if best_candidate is not None:
+            if best_candidate:
                 article = self.get_article(candidates, best_candidate)
             else:
                 if ruthless is True:
                     ruthless = False
-                    LOGGER.debug("Ended up stripping too much - going for a safer parse")
+                    LOGGER.debug(
+                        "Ended up stripping too much - going for a safer parse"
+                    )
                     # try again
                     continue
                 # go ahead
-                LOGGER.debug("Ruthless and lenient parsing did not work. Returning raw html")
+                LOGGER.debug(
+                    "Ruthless and lenient parsing did not work. Returning raw html"
+                )
                 article = self.doc.find("body")
                 if article is None:
                     article = self.doc
 
             cleaned_article = self.sanitize(article, candidates)
             article_length = len(cleaned_article or "")
-            if ruthless is True and article_length < self.retry_length:
+            if ruthless and article_length < self.retry_length:
                 ruthless = False
                 # Loop through and try again.
                 continue
@@ -184,9 +178,7 @@ class Document:
             # if isinstance(sibling, NavigableString): continue
             append = False
             # conditions
-            if sibling == best_candidate.elem:
-                append = True
-            elif (
+            if sibling == best_candidate.elem or (
                 sibling in candidates
                 and candidates[sibling].score >= sibling_score_threshold
             ):
@@ -196,18 +188,20 @@ class Document:
                 node_content = sibling.text or ""
                 node_length = len(node_content)
 
-                if node_length > 80 and link_density < 0.25:
-                    append = True
-                elif (
-                    node_length <= 80
-                    and link_density == 0
-                    and DOT_SPACE.search(node_content)
+                if (
+                    node_length > 80
+                    and link_density < 0.25
+                    or (
+                        node_length <= 80
+                        and link_density == 0
+                        and DOT_SPACE.search(node_content)
+                    )
                 ):
                     append = True
             # append to the output div
             if append:
                 output.append(sibling)
-        #if output is not None:
+        # if output is not None:
         #    output.append(best_candidate.elem)
         return output
 
@@ -215,22 +209,22 @@ class Document:
         if not candidates:
             return None
         sorted_candidates = sorted(
-            candidates.values(), key=lambda x: x.score, reverse=True
+            candidates.values(), key=attrgetter("score"), reverse=True
         )
-        for candidate in sorted_candidates[:5]:
-            LOGGER.debug("Top 5: %s %s", candidate.elem.tag, candidate.score)
-        # return best candidate
-        return sorted_candidates[0]
+        if LOGGER.isEnabledFor(logging.DEBUG):
+            for candidate in sorted_candidates[:5]:
+                LOGGER.debug("Top 5: %s %s", candidate.elem.tag, candidate.score)
+        return next(iter(sorted_candidates))
 
     def get_link_density(self, elem):
         total_length = text_length(elem) or 1
-        link_length = sum(text_length(elem) for elem in elem.findall(".//a"))
+        link_length = sum(text_length(link) for link in elem.findall(".//a"))
         return link_length / total_length
 
     def score_paragraphs(self):
         candidates = {}
-        ordered = []
-        for elem in self.tags(self.doc, "p", "pre", "td"):
+
+        for elem in self.doc.iter("p", "pre", "td"):
             parent_node = elem.getparent()
             if parent_node is None:
                 continue
@@ -239,20 +233,16 @@ class Document:
             elem_text = trim(elem.text_content())
             elem_text_len = len(elem_text)
 
-            # don't count too short paragraphs
+            # discard too short paragraphs
             if elem_text_len < self.min_text_length:
                 continue
 
-            if parent_node not in candidates:
-                candidates[parent_node] = self.score_node(parent_node)
-                ordered.append(parent_node)
-
-            if grand_parent_node is not None and grand_parent_node not in candidates:
-                candidates[grand_parent_node] = self.score_node(grand_parent_node)
-                ordered.append(grand_parent_node)
+            for node in (parent_node, grand_parent_node):
+                if node is not None and node not in candidates:
+                    candidates[node] = self.score_node(node)
 
             score = 1 + len(elem_text.split(",")) + min((elem_text_len / 100), 3)
-            #if elem not in candidates:
+            # if elem not in candidates:
             #    candidates[elem] = self.score_node(elem)
 
             candidates[parent_node].score += score
@@ -262,13 +252,8 @@ class Document:
         # Scale the final candidates score based on link density. Good content
         # should have a relatively small link density (5% or less) and be
         # mostly unaffected by this operation.
-        for elem in ordered:
-            candidate = candidates[elem]
-            density = self.get_link_density(elem)
-            # LOGGER.debug("Branch %6.3f link density %.3f -> %6.3f",
-            #    candidate.score, density, candidate.score * (1 - density)
-            #)
-            candidate.score *= 1 - density
+        for elem, candidate in candidates.items():
+            candidate.score *= 1 - self.get_link_density(elem)
 
         return candidates
 
@@ -296,7 +281,7 @@ class Document:
 
     def remove_unlikely_candidates(self):
         for elem in self.doc.findall(".//*"):
-            attrs = ' '.join(filter(None, (elem.get("class"), elem.get("id"))))
+            attrs = " ".join(filter(None, (elem.get("class"), elem.get("id"))))
             if len(attrs) < 2:
                 continue
             if (
@@ -308,55 +293,43 @@ class Document:
                 elem.drop_tree()
 
     def transform_misused_divs_into_paragraphs(self):
-        for elem in self.tags(self.doc, "div"):
+        for elem in self.doc.findall(".//div"):
             # transform <div>s that do not contain other block elements into
             # <p>s
             # FIXME: The current implementation ignores all descendants that
             # are not direct children of elem
             # This results in incorrect results in case there is an <img>
             # buried within an <a> for example
-            #hurts precision:
-            #if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
+            # hurts precision:
+            # if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
             if not REGEXES["divToPElementsRe"].search(
-                ''.join([_tostring(e) for e in list(elem)])
+                "".join(map(_tostring, list(elem)))
             ):
                 elem.tag = "p"
 
-        for elem in self.tags(self.doc, "div"):
-            if elem.text is not None:
-                elem_text = elem.text.strip()
-                if elem_text:
-                    p_elem = fragment_fromstring("<p/>")
-                    p_elem.text = elem.text
-                    elem.text = None
-                    elem.insert(0, p_elem)
+        for elem in self.doc.findall(".//div"):
+            if elem.text and elem.text.strip():
+                p_elem = fragment_fromstring("<p/>")
+                p_elem.text, elem.text = elem.text, None
+                elem.insert(0, p_elem)
 
             for pos, child in sorted(enumerate(elem), reverse=True):
                 if child.tail and child.tail.strip():
                     p_elem = fragment_fromstring("<p/>")
-                    p_elem.text = child.tail
-                    child.tail = None
+                    p_elem.text, child.tail = child.tail, None
                     elem.insert(pos + 1, p_elem)
                 if child.tag == "br":
                     child.drop_tree()
 
-    def tags(self, node, *tag_names):
-        for tag_name in tag_names:
-            yield from node.findall(f".//{tag_name}")
-
-    def reverse_tags(self, node, *tag_names):
-        for tag_name in tag_names:
-            yield from reversed(node.findall(f".//{tag_name}"))
-
     def sanitize(self, node, candidates):
-        for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
+        for header in node.iter("h1", "h2", "h3", "h4", "h5", "h6"):
             if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
                 header.drop_tree()
 
-        for elem in self.tags(node, "form", "textarea"):
+        for elem in node.iter("form", "textarea"):
             elem.drop_tree()
 
-        for elem in self.tags(node, "iframe"):
+        for elem in node.iter("iframe"):
             if "src" in elem.attrib and REGEXES["videoRe"].search(elem.attrib["src"]):
                 elem.text = "VIDEO"  # ADD content to iframe text node to force <iframe></iframe> proper output
             else:
@@ -364,21 +337,24 @@ class Document:
 
         allowed = set()
         # Conditionally clean <table>s, <ul>s, and <div>s
-        for elem in self.reverse_tags(
-            node, "table", "ul", "div", "aside", "header", "footer", "section"
-        ):
+        for elem in reversed(node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")):
             if elem in allowed:
                 continue
             weight = self.class_weight(elem)
             score = candidates[elem].score if elem in candidates else 0
             if weight + score < 0:
-                LOGGER.debug("Removed %s with score %6.3f and weight %-3s",
-                    elem.tag, score, weight
+                LOGGER.debug(
+                    "Removed %s with score %6.3f and weight %-3s",
+                    elem.tag,
+                    score,
+                    weight,
                 )
                 elem.drop_tree()
             elif elem.text_content().count(",") < 10:
                 to_remove = False
-                counts = {kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS}
+                counts = {
+                    kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS
+                }
                 counts["li"] -= 100
                 counts["input"] -= len(elem.findall('.//input[@type="hidden"]'))
 
@@ -387,7 +363,11 @@ class Document:
                 link_density = self.get_link_density(elem)
                 parent_node = elem.getparent()
                 if parent_node is not None:
-                    score = candidates[parent_node].score if parent_node in candidates else 0
+                    score = (
+                        candidates[parent_node].score
+                        if parent_node in candidates
+                        else 0
+                    )
                 # if elem.tag == 'div' and counts["img"] >= 1:
                 #    continue
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
@@ -403,16 +383,26 @@ class Document:
                     reason = f"too short content length {content_length} without a single image"
                     to_remove = True
                 elif content_length < self.min_text_length and counts["img"] > 2:
-                    reason = f"too short content length {content_length} and too many images"
+                    reason = (
+                        f"too short content length {content_length} and too many images"
+                    )
                     to_remove = True
                 elif weight < 25 and link_density > 0.2:
-                    reason = f"too many links {link_density:.3f} for its weight {weight}"
+                    reason = (
+                        f"too many links {link_density:.3f} for its weight {weight}"
+                    )
                     to_remove = True
                 elif weight >= 25 and link_density > 0.5:
-                    reason = f"too many links {link_density:.3f} for its weight {weight}"
+                    reason = (
+                        f"too many links {link_density:.3f} for its weight {weight}"
+                    )
                     to_remove = True
-                elif (counts["embed"] == 1 and content_length < 75) or counts["embed"] > 1:
-                    reason = "<embed>s with too short content length, or too many <embed>s"
+                elif (counts["embed"] == 1 and content_length < 75) or counts[
+                    "embed"
+                ] > 1:
+                    reason = (
+                        "<embed>s with too short content length, or too many <embed>s"
+                    )
                     to_remove = True
                 elif not content_length:
                     reason = "no content"
@@ -435,18 +425,18 @@ class Document:
                                 break
                     if siblings and sum(siblings) > 1000:
                         to_remove = False
-                        for desnode in self.tags(elem, "table", "ul", "div", "section"):
-                            allowed.add(desnode)
+                        allowed.update(elem.iter("table", "ul", "div", "section"))
 
                 if to_remove:
-                    LOGGER.debug("Removed %6.3f %s with weight %s cause it has %s.",
-                        score, elem.tag, weight, reason or ""
-                    )
                     elem.drop_tree()
-                else:
-                    LOGGER.debug("Not removing %s of length %s",
-                        elem.tag, content_length
-                    )
+                    if LOGGER.isEnabledFor(logging.DEBUG):
+                        LOGGER.debug(
+                            "Removed %6.3f %s with weight %s cause it has %s.",
+                            score,
+                            elem.tag,
+                            weight,
+                            reason or "",
+                        )
 
         self.doc = node
-        return self.get_clean_html()
+        return _tostring(self.doc)
