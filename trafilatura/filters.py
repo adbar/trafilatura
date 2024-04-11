@@ -41,14 +41,14 @@ def put_in_cache(teststring):
     LRU_TEST.put(teststring, value)
 
 
-def duplicate_test(element, config):
+def duplicate_test(element, options):
     '''Check for duplicate text with LRU cache'''
     teststring = trim(' '.join(element.itertext()))
     # teststring = element.text
-    if len(teststring) > config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE'):
+    if len(teststring) > options.min_duplcheck_size:
         # retrieve value from cache
         cacheval = LRU_TEST.get(teststring)
-        if cacheval > config.getint('DEFAULT', 'MAX_REPETITIONS'):  # non-existent key will return -1
+        if cacheval > options.max_repetitions:  # non-existent key will return -1
             LRU_TEST.put(teststring, cacheval + 1)
             return True
     put_in_cache(teststring)

@@ -193,7 +193,8 @@ def test_sysoutput():
     result = 'DADIDA'
     cli_utils.write_result(result, args)
     # process with backup directory and no counter
-    assert cli_utils.process_result('DADIDA', args, None, None, settings.DEFAULT_CONFIG) is None
+    options = cli_utils._args_to_extractor(args)
+    assert cli_utils.process_result('DADIDA', args, None, options) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
     with patch.object(sys, 'argv', testargs):
@@ -303,14 +304,6 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r', encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
-    # dry-run file processing pipeline
-    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    cli_utils.file_processing_pipeline(args)
-    # file processing pipeline on resources/
-    args.input_dir = RESOURCES_DIR
-    cli_utils.file_processing_pipeline(args)
     # sitemaps: tested in --explore
     testargs = ['', '--sitemap', 'https://sitemaps.org/sitemap.xml', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
@@ -319,15 +312,6 @@ def test_cli_pipeline():
     with redirect_stdout(f):
         cli.process_args(args)
     assert f.getvalue().strip().endswith("https://www.sitemaps.org/zh_TW/terms.html")
-    # config file
-    testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r', encoding="utf-8") as f:
-        teststring = f.read()
-    args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
-    # config = use_config(filename=args.config_file)
-    assert cli.examine(teststring, args) is None
     # CLI options
     testargs = ['', '--links', '--images']
     with patch.object(sys, 'argv', testargs):
@@ -335,8 +319,31 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r', encoding="utf-8") as f:
         teststring = f.read()
     result = cli.examine(teststring, args)
-    print(result)
     assert '[link](testlink.html)' in result and 'test.jpg' in result
+
+
+def test_file_processing():
+    "Test file processing pipeline on actual directories."
+    # dry-run file processing pipeline
+    testargs = ['', '--parallel', '1', '--input-dir', '/dev/null']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.file_processing_pipeline(args)
+    # file processing pipeline on resources/
+    args.input_dir = RESOURCES_DIR
+    cli_utils.file_processing_pipeline(args)
+
+
+def test_cli_config_file():
+    "Test if the configuration file is loaded correctly from the CLI."
+    testargs = ['', '--input-dir', '/dev/null', '--config-file', 'newsettings.cfg']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r', encoding="utf-8") as f:
+        teststring = f.read()
+    args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
+    options = cli_utils._args_to_extractor(args)
+    assert cli.examine(teststring, args, options=options) is None
 
 
 def test_input_filtering():
@@ -480,6 +487,8 @@ if __name__ == '__main__':
     test_input_filtering()
     test_sysoutput()
     test_cli_pipeline()
+    test_file_processing()
+    test_cli_config_file()
     test_crawling()
     test_download()
     test_probing()

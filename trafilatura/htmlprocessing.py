@@ -354,7 +354,7 @@ def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
     if not elem.text and textfilter(elem) or \
-        (options.dedup and duplicate_test(elem, options.config)):
+        (options.dedup and duplicate_test(elem, options)):
         return None
     return elem
 
@@ -373,7 +373,7 @@ def process_node(elem, options):
 
     # content checks
     if elem.text or elem.tail:
-        if textfilter(elem) or (options.dedup and duplicate_test(elem, options.config)):
+        if textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
             return None
 
     return elem

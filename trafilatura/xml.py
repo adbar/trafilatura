@@ -124,16 +124,24 @@ def build_xml_output(docmeta):
     return output
 
 
-def control_xml_output(output_tree, output_format, tei_validation, docmeta):
+def control_xml_output(document, options):
     '''Make sure the XML output is conform and valid if required'''
+    strip_double_tags(document.body)
+    remove_empty_elements(document.body)
+
+    func = build_xml_output if options.format == "xml" else build_tei_output
+    output_tree = func(document)
+
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
     control_string = tostring(output_tree, encoding='unicode')
     output_tree = fromstring(control_string, CONTROL_PARSER)
+
     # validate
-    if output_format == 'xmltei' and tei_validation is True:
+    if options.format == 'xmltei' and options.tei_validation:
         result = validate_tei(output_tree)
-        LOGGER.debug('TEI validation result: %s %s %s', result, docmeta.id, docmeta.url)
+        LOGGER.debug('TEI validation result: %s %s', result, options.source)
+
     return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 

@@ -56,8 +56,7 @@ MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
 
-DEFAULT_OPTIONS = Extractor(*[False]*11)
-DEFAULT_OPTIONS.config = DEFAULT_CONFIG
+DEFAULT_OPTIONS = Extractor()
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
@@ -116,6 +115,12 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
+    teststring = "高山云雾出好茶".encode("utf-8")
+    assert utils.detect_encoding(teststring) == ["utf-8"]
+    teststring = "高山云雾出好茶".encode("gb18030")
+    assert "gb18030" in utils.detect_encoding(teststring)
+    assert "gb18030" in utils.detect_encoding(teststring*1000)
+
     assert utils.is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
@@ -147,7 +152,8 @@ def test_input():
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(SystemExit):
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
@@ -203,7 +209,7 @@ def test_python_output():
 
 def test_exotic_tags(xmloutput=False):
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
@@ -349,7 +355,7 @@ trafilatura.extract("")
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
@@ -497,7 +503,7 @@ def test_images():
 def test_links():
     '''Test link extraction function'''
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     assert handle_textelem(etree.Element('ref'), [], options) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
@@ -795,7 +801,7 @@ def test_extraction_options():
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
-    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
+    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
@@ -1034,13 +1040,21 @@ def test_table_processing():
     </td>
     </tr></table>
     """)
-    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
     ]
-    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+
+    options.recall = True
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", ("p", "a list"), 'list', ("item", "one"), ("item", "two"),]
+
     broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
@@ -1258,7 +1272,17 @@ def test_lang_detection():
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
+def test_config_loading():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
+    test_config_loading()
     test_trim()
     test_input()
     test_formatting()
