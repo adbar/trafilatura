@@ -55,7 +55,7 @@ class Extractor:
     # rest
     'max_file_size', 'min_file_size', 'max_tree_size',
     # meta
-    'url', 'only_with_metadata', 'tei_validation', 'date_params',
+    'source', 'url', 'only_with_metadata', 'tei_validation', 'date_params',
     'author_blacklist', 'url_blacklist'
     ]
     # consider dataclasses for Python 3.7+
@@ -63,7 +63,7 @@ class Extractor:
                  fast=False, precision=False, recall=False,
                  comments=True, formatting=False, links=False, images=False,
                  tables=True, dedup=False, lang=None, max_tree_size=None,
-                 url=None, only_with_metadata=False, tei_validation=False,
+                 url=None, source=None, only_with_metadata=False, tei_validation=False,
                  author_blacklist=None, url_blacklist=None, date_params=None):
         self._add_config(config)
         self.format = output_format
@@ -79,6 +79,7 @@ class Extractor:
         self.lang = lang
         self.max_tree_size = max_tree_size
         self.url = url
+        self.source = url or source
         self.only_with_metadata = only_with_metadata
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
@@ -799,7 +800,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
     try:
         tree = load_html(filecontent)
         if tree is None:
-            LOGGER.error('empty HTML tree for URL %s', url)
+            LOGGER.error('empty HTML tree: %s', url)
             raise ValueError
 
         # regroup extraction options
@@ -818,7 +819,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # quick and dirty HTML lang check
         if options.lang and (options.fast or LANGID_FLAG is False):
             if check_html_lang(tree, options.lang) is False:
-                LOGGER.error('wrong HTML meta language for URL %s', options.url)
+                LOGGER.error('wrong HTML meta language: %s', options.source)
                 raise ValueError
 
         # extract metadata if necessary
@@ -836,7 +837,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     x is None for x in
                     [document.date, document.title, document.url]
             ):
-                LOGGER.error('no metadata for URL %s', document.url)
+                LOGGER.error('no metadata: %s', options.source)
                 raise ValueError
 
         else:
@@ -888,30 +889,30 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 strip_tags(postbody, 'hi')
             # still too long, raise an error
             if len(postbody) > options.max_tree_size:
-                LOGGER.debug('output tree too long: %s, discarding file', len(postbody))
+                LOGGER.debug('output tree too long: %s, discarding %s', len(postbody), options.source)
                 raise ValueError
         # size checks
         if len_comments < options.min_extracted_comm_size:
-            LOGGER.debug('not enough comments %s', url)
+            LOGGER.debug('not enough comments: %s', options.source)
         if len_text < options.min_output_size and \
            len_comments < options.min_output_comm_size:
-            LOGGER.debug('text and comments not long enough: %s %s', len_text, len_comments)
+            LOGGER.debug('text and comments not long enough: %s %s %s', len_text, len_comments, options.source)
             raise ValueError
 
         # check duplicates at body level
         if options.dedup and duplicate_test(postbody, options) is True:
-            LOGGER.debug('discarding duplicate document for URL %s', url)
+            LOGGER.debug('discarding duplicate document: %s', options.source)
             raise ValueError
 
         # sanity check on language
         if options.lang:
             is_not_target_lang, document = language_filter(temp_text, temp_comments, options.lang, document)
             if is_not_target_lang is True:
-                LOGGER.debug('wrong language for URL %s', url)
+                LOGGER.debug('wrong language: %s', options.source)
                 raise ValueError
 
     except (TypeError, ValueError):
-        LOGGER.warning('discarding data for url: %s', url)  # document.url , record_id
+        LOGGER.warning('discarding data: %s', options.source)
         return None
 
     # special case: python variables

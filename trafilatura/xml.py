@@ -140,7 +140,7 @@ def control_xml_output(document, options):
     # validate
     if options.format == 'xmltei' and options.tei_validation:
         result = validate_tei(output_tree)
-        LOGGER.debug('TEI validation result: %s %s %s', result, document.id, document.url)
+        LOGGER.debug('TEI validation result: %s %s', result, options.source)
 
     return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 

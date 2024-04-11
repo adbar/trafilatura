@@ -191,6 +191,7 @@ def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
+    options.source = filename
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 

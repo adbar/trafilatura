@@ -78,18 +78,18 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     elif options.recall and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
         algo_flag = True
     else:
-        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, options.url)
+        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, options.source)
         algo_flag = False
     # apply decision
     if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
-        LOGGER.debug('using generic algorithm: %s', options.url)
+        LOGGER.debug('using generic algorithm: %s', options.source)
     else:
-        LOGGER.debug('using custom extraction: %s', options.url)
+        LOGGER.debug('using custom extraction: %s', options.source)
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
     # or options.recall is True ?
-        LOGGER.debug('unclean document triggering justext examination: %s', options.url)
+        LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
         body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, 0, '')
         # prevent too short documents from replacing the main text
