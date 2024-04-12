@@ -14,8 +14,8 @@ from lxml.html import tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (extract_json, extract_json_parse_error,
                             normalize_json)
-from .metaxpaths import (author_discard_xpaths, author_xpaths,
-                         categories_xpaths, tags_xpaths, title_xpaths)
+from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
+                     CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 from .utils import (line_processing, load_html, normalize_authors,
                     normalize_tags, trim, unescape)
 
@@ -323,7 +323,7 @@ def extract_title(tree):
         if len(title) > 0:
             return title
     # extract using x-paths
-    title = extract_metainfo(tree, title_xpaths)
+    title = extract_metainfo(tree, TITLE_XPATHS)
     if title is not None:
         return title
     # extract using title tag
@@ -345,8 +345,8 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    subtree = prune_unwanted_nodes(deepcopy(tree), author_discard_xpaths)
-    author = extract_metainfo(subtree, author_xpaths, len_limit=120)
+    subtree = prune_unwanted_nodes(deepcopy(tree), AUTHOR_DISCARD_XPATHS)
+    author = extract_metainfo(subtree, AUTHOR_XPATHS, len_limit=120)
     if author:
         author = normalize_authors(None, author)
     # copyright?
@@ -403,7 +403,7 @@ def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
     regexpr = '/' + metatype + '[s|ies]?/'
-    xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
+    xpath_expression = CATEGORIES_XPATHS if metatype == 'category' else TAGS_XPATHS
     # search using custom expressions
     for catexpr in xpath_expression:
         results.extend(
