@@ -76,7 +76,7 @@ class Extractor:
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
         self.filedate = datetime.now().strftime("%Y-%m-%d")
-        self.date_params = set_date_params(date_params, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'), self.filedate)
+        self._register_file_date(self.filedate)
 
     def _add_config(self, config):
         "Store options loaded from config file."
@@ -89,6 +89,13 @@ class Extractor:
         self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
         self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
         self.config = config  # todo: remove?
+
+    def _register_file_date(self, filedate):
+        self.filedate = filedate
+        if getattr(self, "date_params", None):
+            self.date_params["max_date"] = self.filedate
+        else:
+            self.date_params = set_date_params(None, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'), self.filedate)
 
 
 def determine_returnstring(document, options):

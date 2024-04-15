@@ -193,7 +193,7 @@ def file_processing(filename, args, counter=None, options=None):
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
     options.source = filename
-    options.filedate = datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
+    options._register_file_date(datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d"))
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
