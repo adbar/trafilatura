@@ -327,6 +327,10 @@ def test_file_processing():
     # file processing pipeline on resources/
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
+    # test manually
+    options = cli_utils._args_to_extractor(args)
+    for f in cli_utils.generate_filelist(args.input_dir):
+        cli_utils.file_processing(f, args, options=options)
 
 
 def test_cli_config_file():

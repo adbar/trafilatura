@@ -192,7 +192,8 @@ def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    options.source, options.filedate = filename, datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
+    options.source = filename
+    options.filedate = datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
