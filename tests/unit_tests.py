@@ -4,11 +4,11 @@ Unit tests for the trafilatura library.
 """
 
 import logging
-import os
 import sys
 import time
 
 from copy import copy
+from os import path
 
 import pytest
 
@@ -28,29 +28,31 @@ except ImportError:
 
 import trafilatura.htmlprocessing
 from trafilatura import (bare_extraction, baseline, extract, html2txt,
-                         process_record, utils, xml)
-from trafilatura.core import (Extractor, handle_formatting, handle_image,
-                              handle_lists, handle_paragraphs, handle_quotes,
-                              handle_table, handle_textelem)
+                         process_record, xml)
+from trafilatura.core import Extractor
 from trafilatura.external import sanitize_tree, try_justext
 from trafilatura.filters import textfilter
+from trafilatura.main_extractor import (handle_formatting, handle_image,
+                                        handle_lists, handle_paragraphs, handle_quotes,
+                                        handle_table, handle_textelem)
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
-from trafilatura.utils import trim
+from trafilatura.utils import (detect_encoding, is_dubious_html, is_image_file, load_html,
+                               normalize_unicode, repair_faulty_html, sanitize, trim)
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
+TEST_DIR = path.abspath(path.dirname(__file__))
+RESOURCES_DIR = path.join(TEST_DIR, 'resources')
 SAMPLE_META = Document()
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
-NEW_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
+NEW_CONFIG = use_config(filename=path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
@@ -62,12 +64,12 @@ DEFAULT_OPTIONS = Extractor()
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
     try:
-        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'r') as inputf:
+        with open(path.join(TEST_DIR, "resources", MOCK_PAGES[url]), "r", encoding="utf-8") as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'rb') as inputf:
+        with open(path.join(TEST_DIR, "resources", MOCK_PAGES[url]), "rb") as inputf:
             htmlbinary = inputf.read()
         guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
@@ -102,10 +104,10 @@ def test_trim():
     my_elem.text = '\t\t'
     assert textfilter(my_elem) is True
     # sanitize logic
-    assert utils.sanitize(None) is None
+    assert sanitize(None) is None
     # non-breaking spaces
-    print(utils.sanitize('Test&nbsp;Text'))
-    assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    print(sanitize('Test&nbsp;Text'))
+    assert sanitize('Test&nbsp;Text') == 'Test Text'
     # clear cache
     # reset caches: examine_date_elements used above
     old_values = trim.cache_info()
@@ -116,51 +118,51 @@ def test_trim():
 def test_input():
     '''test if loaded strings/trees are handled properly'''
     teststring = "高山云雾出好茶".encode("utf-8")
-    assert utils.detect_encoding(teststring) == ["utf-8"]
+    assert detect_encoding(teststring) == ["utf-8"]
     teststring = "高山云雾出好茶".encode("gb18030")
-    assert "gb18030" in utils.detect_encoding(teststring)
-    assert "gb18030" in utils.detect_encoding(teststring*1000)
+    assert "gb18030" in detect_encoding(teststring)
+    assert "gb18030" in detect_encoding(teststring*1000)
 
-    assert utils.is_dubious_html("This is a string.") is True
+    assert is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == "\n<html></html>"
+    assert repair_faulty_html(htmlstring, beginning) == "\n<html></html>"
 
     htmlstring = "<html>\n</html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == htmlstring
+    assert repair_faulty_html(htmlstring, beginning) == htmlstring
 
     htmlstring = "<html/>\n</html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == "<html>\n</html>"
+    assert repair_faulty_html(htmlstring, beginning) == "<html>\n</html>"
 
     htmlstring = '<!DOCTYPE html>\n<html lang="en-US"/>\n<head/>\n<body/>\n</html>'
     beginning = htmlstring[:50].lower()
     assert (
-        utils.repair_faulty_html(htmlstring, beginning)
+        repair_faulty_html(htmlstring, beginning)
         == '<!DOCTYPE html>\n<html lang="en-US">\n<head/>\n<body/>\n</html>'
     )
 
     with pytest.raises(TypeError) as err:
-        assert utils.load_html(123) is None
+        assert load_html(123) is None
     assert 'incompatible' in str(err.value)
-    assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
-    assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
-    assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
-    #assert utils.load_html(b'0'*int(10e3)) is None
+    assert load_html('<html><body>ÄÖÜ</body></html>') is not None
+    assert load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
+    assert load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
+    #assert load_html(b'0'*int(10e3)) is None
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
     with pytest.raises(SystemExit):
         assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
-    with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
+    with open(path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
     assert 'Long story short,' in extract(myinput)
 
     # unicode normalization
-    assert utils.normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
+    assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
@@ -186,7 +188,7 @@ def test_xmltocsv():
     target = 'https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n'
 
     assert xml.xmltocsv(doc, False) == target
-    
+
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tnull\r\n')
@@ -213,8 +215,8 @@ def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
-    filepath = os.path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
-    with open(filepath) as f:
+    filepath = path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
+    with open(filepath, "r", encoding="utf-8") as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
     assert etree.tostring(res).startswith(b'<html>\n<text>\n<body>\n<div>\n\n<hi rend="uppercase">Hello</hi>\n<p>Teletype text</p>')
@@ -456,11 +458,11 @@ def test_external():
         doc = html.fromstring('<html><body>' + '<p>Non è inglese.</p>'*20 + '</body></html>')
         assert extract(doc, no_fallback=False, target_language='en', deduplicate=False) is None
     # no tables
-    with open(os.path.join(RESOURCES_DIR, 'apache.html')) as f:
+    with open(path.join(RESOURCES_DIR, "apache.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert 'localhost:80' in extract(teststring, no_fallback=False, include_tables=True)
     assert 'localhost:80' not in extract(teststring, no_fallback=False, include_tables=False)
-    with open(os.path.join(RESOURCES_DIR, 'scam.html')) as f:
+    with open(path.join(RESOURCES_DIR, "scam.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert extract(teststring, no_fallback=True, include_tables=False) == ''
     assert extract(teststring, no_fallback=False, include_tables=False) == ''
@@ -472,15 +474,15 @@ def test_external():
 def test_images():
     '''Test image extraction function'''
     # file type
-    assert utils.is_image_file('test.jpg') is True
-    assert utils.is_image_file('test.txt') is False
+    assert is_image_file('test.jpg') is True
+    assert is_image_file('test.txt') is False
     # tag with attributes
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     # HTML conversion
     assert handle_textelem(etree.Element('graphic'), [], DEFAULT_OPTIONS) is None
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert '![Example image](test.jpg)' not in extract(teststring)
     assert '![Example image](test.jpg)' in extract(teststring, include_images=True, no_fallback=True)
@@ -518,7 +520,7 @@ def test_links():
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(copy(mydoc), output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
     assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
@@ -531,7 +533,7 @@ def test_links():
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
-    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result1 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
@@ -540,7 +542,7 @@ def test_tei():
     assert xml.validate_tei(etree.fromstring(result1)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
     # test with another file
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, include_comments=True, output_format='xmltei', tei_validation=False)
@@ -639,7 +641,7 @@ def test_tei():
         </html>"""
     )
     tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
-    result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    result = sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
     assert result == "<html><body><p><span>content</span></p></body></html>"
     tree = html.fromstring(
     """
@@ -1274,7 +1276,7 @@ def test_config_loading():
     with pytest.raises(FileNotFoundError):
         config = use_config(filename="/bogus-dir/bogus-file.txt")
 
-    config = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
+    config = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
     assert config is not None
 
 
