@@ -30,9 +30,9 @@ except AttributeError:
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-def parse_args(args):
-    """Define parser for command-line arguments"""
-    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+def add_args(parser):
+    "Add argument groups and arguments to parser."
+
     group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
     group1_ex = group1.add_mutually_exclusive_group()
     group2 = parser.add_argument_group('Output', 'Determines if and how files will be written')
@@ -189,7 +189,13 @@ def parse_args(args):
         version=f"Trafilatura {__version__} - Python {python_version()}",
     )
 
+    return parser
 
+
+def parse_args(args):
+    """Define parser for command-line arguments"""
+    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+    parser = add_args(parser)
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())
 

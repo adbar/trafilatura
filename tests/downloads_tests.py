@@ -123,17 +123,17 @@ def test_fetch():
     # nothing to see here
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
     # test handling redirects
-    res = fetch_url('http://httpbin.org/redirect/2')
+    res = fetch_url('https://httpbun.com/redirect/2')
     assert len(res) > 100  # We followed redirects and downloaded something in the end
     new_config = use_config()  # get a new config instance to avoid mutating the default one
     # Patch max directs: limit to 0. We won't fetch any page as a result
     new_config.set('DEFAULT', 'MAX_REDIRECTS', '0')
     _reset_downloads_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
-    res = fetch_url('http://httpbin.org/redirect/1', config=new_config)
+    res = fetch_url('https://httpbun.com/redirect/1', config=new_config)
     assert res is None
     # Also test max redir implementation on pycurl if available
     if pycurl is not None:
-        assert _send_pycurl_request('http://httpbin.org/redirect/1', True, False, new_config) is None
+        assert _send_pycurl_request('https://httpbun.com/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
 def test_config():
