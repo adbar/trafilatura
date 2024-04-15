@@ -8,6 +8,7 @@ import sys
 import warnings
 
 from copy import deepcopy
+from datetime import datetime
 
 from lxml.etree import XPath, strip_tags
 
@@ -44,7 +45,8 @@ class Extractor:
     # rest
     'max_file_size', 'min_file_size', 'max_tree_size',
     # meta
-    'source', 'url', 'only_with_metadata', 'tei_validation', 'date_params',
+    'source', 'url', 'only_with_metadata', 'tei_validation',
+    'date_params', 'filedate',
     'author_blacklist', 'url_blacklist'
     ]
     # consider dataclasses for Python 3.7+
@@ -73,7 +75,8 @@ class Extractor:
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
-        self.date_params = set_date_params(date_params, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
+        self.filedate = datetime.now().strftime("%Y-%m-%d")
+        self.date_params = set_date_params(date_params, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'), self.filedate)
 
     def _add_config(self, config):
         "Store options loaded from config file."
@@ -207,7 +210,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # extract metadata if necessary
         if options.format != 'txt':
 
-            document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist)
+            document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist, options.filedate)
 
             # cut short if extracted URL in blacklist
             if document.url in options.url_blacklist:

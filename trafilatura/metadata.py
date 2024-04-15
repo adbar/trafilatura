@@ -29,7 +29,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language', 'image', 'pagetype'  # 'locale'?
+    'language', 'image', 'pagetype', 'filedate'  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -126,10 +126,12 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
-def set_date_params(date_params, fastmode):
+def set_date_params(date_params, fastmode, filedate):
     "Provide default parameters for date extraction."
     if not date_params:
         date_params = {"original_date": True, "extensive_search": not fastmode}
+        if filedate:
+            date_params["max_date"] = filedate
     return date_params
 
 
@@ -474,7 +476,7 @@ def extract_image(tree):
     return None
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None, filedate=None):
     """Main process for metadata extraction.
 
     Args:
@@ -490,7 +492,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
-    date_config = set_date_params(date_config, fastmode)
+    date_config = set_date_params(date_config, fastmode, filedate)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -567,6 +569,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
+    metadata.filedate = filedate
     metadata.clean_and_trim()
     # return result
     return metadata

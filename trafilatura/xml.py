@@ -461,6 +461,9 @@ def write_fullheader(teidoc, docmeta):
         if len(docmeta.tags) > 0:
             tags_list = SubElement(keywords, 'term', type='tags')
             tags_list.text = ','.join(docmeta.tags)
+    creation = SubElement(profiledesc, 'creation')
+    date = SubElement(creation, 'date', type="download")
+    date.text = docmeta.filedate
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
     application = SubElement(appinfo, 'application', version=PKG_VERSION, ident='Trafilatura')

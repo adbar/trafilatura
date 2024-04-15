@@ -206,7 +206,7 @@ def test_python_output():
     # bare extraction for python
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 20
+    assert isinstance(result, dict) and len(result) == 21
 
 
 def test_exotic_tags(xmloutput=False):
