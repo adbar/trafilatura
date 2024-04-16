@@ -5,7 +5,9 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+
 from copy import deepcopy
+from datetime import datetime
 
 from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
@@ -126,13 +128,13 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
-def set_date_params(date_params, fastmode, filedate):
+def set_date_params(fastmode):
     "Provide default parameters for date extraction."
-    if not date_params:
-        date_params = {"original_date": True, "extensive_search": not fastmode}
-        if filedate:
-            date_params["max_date"] = filedate
-    return date_params
+    return {
+               "original_date": True,
+               "extensive_search": not fastmode,
+               "max_date": datetime.now().strftime("%Y-%m-%d")
+           }
 
 
 def check_authors(authors, author_blacklist):
@@ -476,7 +478,7 @@ def extract_image(tree):
     return None
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None, filedate=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
     """Main process for metadata extraction.
 
     Args:
@@ -492,7 +494,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
-    date_config = set_date_params(date_config, fastmode, filedate)
+    if not date_config:
+        date_config = set_date_params(fastmode)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -569,7 +572,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
-    metadata.filedate = filedate
+    metadata.filedate = date_config["max_date"]
     metadata.clean_and_trim()
     # return result
     return metadata

@@ -8,7 +8,6 @@ import sys
 import warnings
 
 from copy import deepcopy
-from datetime import datetime
 
 from lxml.etree import XPath, strip_tags
 
@@ -46,7 +45,7 @@ class Extractor:
     'max_file_size', 'min_file_size', 'max_tree_size',
     # meta
     'source', 'url', 'only_with_metadata', 'tei_validation',
-    'date_params', 'filedate',
+    'date_params',
     'author_blacklist', 'url_blacklist'
     ]
     # consider dataclasses for Python 3.7+
@@ -75,8 +74,7 @@ class Extractor:
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
-        self.filedate = datetime.now().strftime("%Y-%m-%d")
-        self._register_file_date(self.filedate)
+        self.date_params = date_params or set_date_params(not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
 
     def _add_config(self, config):
         "Store options loaded from config file."
@@ -89,13 +87,6 @@ class Extractor:
         self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
         self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
         self.config = config  # todo: remove?
-
-    def _register_file_date(self, filedate):
-        self.filedate = filedate
-        if getattr(self, "date_params", None):
-            self.date_params["max_date"] = self.filedate
-        else:
-            self.date_params = set_date_params(None, not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'), self.filedate)
 
 
 def determine_returnstring(document, options):
@@ -217,7 +208,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         # extract metadata if necessary
         if options.format != 'txt':
 
-            document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist, options.filedate)
+            document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist)
 
             # cut short if extracted URL in blacklist
             if document.url in options.url_blacklist:
