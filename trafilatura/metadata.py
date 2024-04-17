@@ -128,11 +128,11 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
-def set_date_params(fastmode):
+def set_date_params(extensive=True):
     "Provide default parameters for date extraction."
     return {
                "original_date": True,
-               "extensive_search": not fastmode,
+               "extensive_search": extensive,
                "max_date": datetime.now().strftime("%Y-%m-%d")
            }
 
@@ -478,7 +478,7 @@ def extract_image(tree):
     return None
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, extensive=True, author_blacklist=None):
     """Main process for metadata extraction.
 
     Args:
@@ -495,7 +495,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if author_blacklist is None:
         author_blacklist = set()
     if not date_config:
-        date_config = set_date_params(fastmode)
+        date_config = set_date_params(extensive)
     # load contents
     tree = load_html(filecontent)
     if tree is None:

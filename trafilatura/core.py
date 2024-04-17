@@ -74,7 +74,8 @@ class Extractor:
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
-        self.date_params = date_params or set_date_params(not self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
+        self.date_params = date_params or \
+                           set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
 
     def _add_config(self, config):
         "Store options loaded from config file."

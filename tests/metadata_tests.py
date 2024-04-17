@@ -193,10 +193,10 @@ def test_dates():
     metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
     assert metadata.date == '2017-09-01'
     mystring = '<html><body><p>Veröffentlicht am 1.9.17</p></body></html>'
-    metadata = extract_metadata(mystring, fastmode=False)
+    metadata = extract_metadata(mystring, extensive=True)
     assert metadata.date == '2017-09-01'
     # behavior for fastmode=True changed in htmldate==1.6.0. On 1.5.2 and earlier, result was None
-    metadata = extract_metadata(mystring, fastmode=True)
+    metadata = extract_metadata(mystring, extensive=False)
     assert metadata.date == '2017-09-01'
 
 
