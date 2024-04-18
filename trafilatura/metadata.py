@@ -5,7 +5,9 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+
 from copy import deepcopy
+from datetime import datetime
 
 from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
@@ -29,7 +31,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language', 'image', 'pagetype'  # 'locale'?
+    'language', 'image', 'pagetype', 'filedate'  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -126,11 +128,13 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
-def set_date_params(date_params, fastmode):
+def set_date_params(extensive=True):
     "Provide default parameters for date extraction."
-    if not date_params:
-        date_params = {"original_date": True, "extensive_search": not fastmode}
-    return date_params
+    return {
+               "original_date": True,
+               "extensive_search": extensive,
+               "max_date": datetime.now().strftime("%Y-%m-%d")
+           }
 
 
 def check_authors(authors, author_blacklist):
@@ -474,7 +478,7 @@ def extract_image(tree):
     return None
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, extensive=True, author_blacklist=None):
     """Main process for metadata extraction.
 
     Args:
@@ -490,7 +494,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
-    date_config = set_date_params(date_config, fastmode)
+    if not date_config:
+        date_config = set_date_params(extensive)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -567,6 +572,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
+    metadata.filedate = date_config["max_date"]
     metadata.clean_and_trim()
     # return result
     return metadata
