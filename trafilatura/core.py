@@ -61,7 +61,7 @@ class Extractor:
         self.precision = precision
         self.recall = recall
         self.comments = comments
-        self.formatting = formatting
+        self.formatting = formatting or output_format == "markdown"
         self.links = links
         self.images = images
         self.tables = tables
@@ -109,7 +109,7 @@ def determine_returnstring(document, options):
     # JSON
     elif options.format == 'json':
         returnstring = build_json_output(document)
-    # TXT
+    # Markdown and TXT
     else:
         returnstring = xmltotxt(document.body, options.formatting)
         if document.commentsbody is not None:
@@ -120,7 +120,7 @@ def determine_returnstring(document, options):
 
 def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     favor_precision=False, favor_recall=False,
-                    include_comments=True, output_format='python', target_language=None,
+                    include_comments=True, output_format="python", target_language=None,
                     include_tables=True, include_images=False, include_formatting=False,
                     include_links=False, deduplicate=False,
                     date_extraction_params=None,
@@ -139,7 +139,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
-            Other values: "txt", "csv", "json", "xml", or "xmltei".
+            Other values: "csv", "json", "markdown", "txt", "xml", and "xmltei".
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
@@ -207,7 +207,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 raise ValueError
 
         # extract metadata if necessary
-        if options.format != 'txt':
+        if options.format not in ("markdown", "txt"):
 
             document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist)
 
@@ -315,7 +315,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
             favor_precision=False, favor_recall=False,
-            include_comments=True, output_format='txt',
+            include_comments=True, output_format="txt",
             tei_validation=False, target_language=None,
             include_tables=True, include_images=False, include_formatting=False,
             include_links=False, deduplicate=False,
@@ -337,7 +337,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
-            'txt', 'csv', 'json', 'xml', or 'xmltei'.
+            "csv", "json", "markdown", "txt", "xml", and "xmltei".
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
@@ -389,6 +389,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                       date_params=date_extraction_params
                   )
 
+    # markdown switch
+    include_formatting = include_formatting or output_format == "markdown"
+
     # extraction
     try:
         document = bare_extraction(
@@ -403,7 +406,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # post-processing
     if document is None:
         return None
-    if options.format != 'txt':
+
+    if options.format not in ("markdown", "txt"):
         # add record ID to metadata
         document.id = record_id
         # calculate fingerprint

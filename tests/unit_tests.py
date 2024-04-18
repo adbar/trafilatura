@@ -298,9 +298,12 @@ def test_formatting():
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # titles as markdown
-    my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
+    my_string = '<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>'
+    my_document = html.fromstring(my_string)
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '### Title\n**This here is in bold font.**'
+    assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
+    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
 
     # space between paragraphs
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
