@@ -1,25 +1,23 @@
 # Trafilatura: Discover and Extract Text Data on the Web
 
+<br/>
 
 <img alt="Trafilatura Logo" src="https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-logo.png" align="center" width="60%"/>
 
 <br/>
 
 [![Python package](https://img.shields.io/pypi/v/trafilatura.svg)](https://pypi.python.org/pypi/trafilatura)
-
 [![Python versions](https://img.shields.io/pypi/pyversions/trafilatura.svg)](https://pypi.python.org/pypi/trafilatura)
-
 [![Documentation Status](https://readthedocs.org/projects/trafilatura/badge/?version=latest)](http://trafilatura.readthedocs.org/en/latest/?badge=latest)
-
 [![Code Coverage](https://img.shields.io/codecov/c/github/adbar/trafilatura.svg)](https://codecov.io/gh/adbar/trafilatura)
-
 [![Downloads](https://static.pepy.tech/badge/trafilatura/month)](https://pepy.tech/project/trafilatura)
-
 [![Reference DOI: 10.18653/v1/2021.acl-demo.15](https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue)](https://aclanthology.org/2021.acl-demo.15/)
 
 <br/>
 
-<img alt="Demo as GIF image" src="https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-demo.gif" align="center" width="85%"/>
+<img alt="Demo as GIF image" src="https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-demo.gif" align="center" width="80%"/>
+
+<br/>
 
 
 ## Introduction
@@ -88,7 +86,7 @@ For more information see the [benchmark section](https://trafilatura.readthedocs
 and the [evaluation readme](https://github.com/adbar/trafilatura/blob/master/tests/README.rst)
 to reproduce the results.
 
-750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8
+**750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8**
 
 | Python Package | Precision | Recall | Accuracy | F-Score | Diff. |
 |----------------|-----------|--------|----------|---------|-------|
@@ -191,13 +189,13 @@ its development is referenced in the following publications:
     Proceedings of the [10th Web as Corpus Workshop
     (WAC-X)](https://www.sigwac.org.uk/wiki/WAC-X), 2016.
 
+
 ### Citing Trafilatura
 
 Trafilatura is widely used in the academic domain, chiefly for data
 acquisition. Here is how to cite it:
 
 [![Reference DOI: 10.18653/v1/2021.acl-demo.15](https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue)](https://aclanthology.org/2021.acl-demo.15/)
-
 [![Zenodo archive DOI: 10.5281/zenodo.3460969](https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg)](https://doi.org/10.5281/zenodo.3460969)
 
 ``` shell
@@ -211,6 +209,7 @@ acquisition. Here is how to cite it:
   year = 2021,
 }
 ```
+
 
 ### Software ecosystem
 

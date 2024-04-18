@@ -17,7 +17,7 @@ def get_version(package):
 
 def get_long_description():
     "Return the README"
-    with open("README.md" "r", encoding="utf-8") as filehandle:
+    with open("README.md", "r", encoding="utf-8") as filehandle:
         long_description = filehandle.read()
     # long_description += "\n\n"
     # with open("CHANGELOG.md", encoding="utf8") as f:
