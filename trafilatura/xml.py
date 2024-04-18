@@ -41,7 +41,6 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {
-    'cell': '|',
     'item': '\n- ',
     **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
 }
@@ -291,7 +290,7 @@ def process_element(element, returnlist, include_formatting):
             text = f'{element.get("title", "")} {element.get("alt", "")}'
             returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
         # newlines for textless elements
-        if element.tag in ('graphic', 'row', 'table'):
+        if element.tag in NEWLINE_ELEMS:
             returnlist.append('\n')
         return  # Nothing more to do with textless elements
 
@@ -302,6 +301,8 @@ def process_element(element, returnlist, include_formatting):
         returnlist.append('\n\u2424\n')
     elif element.tag in NEWLINE_ELEMS:
         returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+    elif element.tag == 'cell':
+        returnlist.extend(" | ")
     elif element.tag == 'comments':
         returnlist.append('\n\n')
     else:
