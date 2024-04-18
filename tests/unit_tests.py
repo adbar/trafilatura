@@ -1069,6 +1069,9 @@ def test_table_processing():
     htmlstring = '<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     assert "1" in result and "2" in result
+    # table headers in non-XML formats
+    htmlstring = '<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>'
+    assert "---|---|" in extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
 
 
 def test_list_processing():
