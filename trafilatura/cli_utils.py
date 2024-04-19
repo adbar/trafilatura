@@ -217,7 +217,7 @@ def download_queue_processing(url_store, args, counter, options):
     while url_store.done is False:
         bufferlist, url_store = load_download_buffer(url_store, options.config.getfloat('DEFAULT', 'SLEEP_TIME'))
         # process downloads
-        for url, result in buffered_downloads(bufferlist, args.parallel):
+        for url, result in buffered_downloads(bufferlist, args.parallel, options=options):
             # handle result
             if result is not None:
                 options.url = url
@@ -282,7 +282,7 @@ def build_exploration_dict(url_store, input_urls, args):
     return control_dict
 
 
-def cli_crawler(args, n=30, url_store=None):
+def cli_crawler(args, n=30, url_store=None, options=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
@@ -307,7 +307,7 @@ def cli_crawler(args, n=30, url_store=None):
     while spider.URL_STORE.done is False:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
         # start several threads
-        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False):
+        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False, options=options):
             base_url = get_base_url(url)
             # handle result
             if result is not None:
@@ -322,20 +322,6 @@ def cli_crawler(args, n=30, url_store=None):
     #return todo, known_links
 
 
-def probe_homepage(args):
-    "Probe websites for extractable content and print the fitting ones."
-    input_urls = load_input_urls(args)
-    config = use_config(filename=args.config_file)
-    min_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
-
-    for url, result in buffered_downloads(input_urls, args.parallel):
-        if result is not None:
-            result = html2txt(result)
-            if result and len(result) > min_length and any(c.isalpha() for c in result):
-                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
-                    print(url, flush=True)
-
-
 def _args_to_extractor(args, url=None):
     "Derive extractor configuration from CLI args."
     options = Extractor(
@@ -348,6 +334,19 @@ def _args_to_extractor(args, url=None):
     for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
         setattr(options, attr, getattr(args, attr))
     return options
+
+
+def probe_homepage(args):
+    "Probe websites for extractable content and print the fitting ones."
+    input_urls = load_input_urls(args)
+    options = _args_to_extractor(args)
+
+    for url, result in buffered_downloads(input_urls, args.parallel, options=options):
+        if result is not None:
+            result = html2txt(result)
+            if result and len(result) > options.min_extracted_size and any(c.isalpha() for c in result):
+                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
+                    print(url, flush=True)
 
 
 def url_processing_pipeline(args, url_store):

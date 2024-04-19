@@ -8,6 +8,7 @@ import random
 import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import partial
 from io import BytesIO
 from time import sleep
 
@@ -307,11 +308,12 @@ def load_download_buffer(url_store, sleep_time=5):
     return bufferlist, url_store
 
 
-def buffered_downloads(bufferlist, download_threads, decode=True):
+def buffered_downloads(bufferlist, download_threads, decode=True, options=None):
     '''Download queue consumer, single- or multi-threaded.'''
+    worker = partial(fetch_url, decode=decode)  # options=options
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
-            future_to_url = {executor.submit(fetch_url, url, decode): url for url in chunk}
+            future_to_url = {executor.submit(worker, url): url for url in chunk}
             for future in as_completed(future_to_url):
                 # url and download result
                 yield future_to_url[future], future.result()
