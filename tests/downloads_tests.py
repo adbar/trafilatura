@@ -24,8 +24,7 @@ from unittest.mock import patch
 from courlan import UrlStore
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import (_args_to_extractor,
-                                   download_queue_processing,
+from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import Extractor, extract
 import trafilatura.downloads
@@ -36,7 +35,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
-from trafilatura.settings import DEFAULT_CONFIG, use_config
+from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, decode_response, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -200,7 +199,7 @@ def test_queue():
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
     options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(url_store, args, None, options)
     assert len(results[0]) == 6 and results[1] is None

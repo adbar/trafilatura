@@ -18,6 +18,7 @@ from courlan import UrlStore
 from trafilatura import cli, cli_utils, settings, spider
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
 from trafilatura.filters import LANGID_FLAG
+from trafilatura.settings import args_to_extractor
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
@@ -193,7 +194,7 @@ def test_sysoutput():
     result = 'DADIDA'
     cli_utils.write_result(result, args)
     # process with backup directory and no counter
-    options = cli_utils._args_to_extractor(args)
+    options = args_to_extractor(args)
     assert cli_utils.process_result('DADIDA', args, None, options) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
@@ -333,7 +334,7 @@ def test_file_processing():
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # test manually
-    options = cli_utils._args_to_extractor(args)
+    options = args_to_extractor(args)
     for f in cli_utils.generate_filelist(args.input_dir):
         cli_utils.file_processing(f, args, options=options)
 
@@ -346,7 +347,7 @@ def test_cli_config_file():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r', encoding="utf-8") as f:
         teststring = f.read()
     args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
-    options = cli_utils._args_to_extractor(args)
+    options = args_to_extractor(args)
     assert cli.examine(teststring, args, options=options) is None
 
 

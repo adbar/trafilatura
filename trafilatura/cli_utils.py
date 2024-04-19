@@ -20,16 +20,17 @@ from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 from trafilatura import spider
 
 from .baseline import html2txt
-from .core import Extractor, extract
+from .core import extract
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
 from .hashing import generate_hash_filename
 from .meta import reset_caches
-from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, use_config
+from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, args_to_extractor
 from .sitemaps import sitemap_search
 from .utils import URL_BLACKLIST_REGEX, make_chunks
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -235,12 +236,12 @@ def cli_discovery(args):
     if args.list:
         url_store.reset()
 
-    config = use_config(filename=args.config_file)
+    options = args_to_extractor(args)
     func = partial(
                find_feed_urls if args.feed else sitemap_search,
                target_lang=args.target_language,
-               external=config.getboolean('DEFAULT', 'EXTERNAL_URLS'),
-               sleep_time=config.getfloat('DEFAULT', 'SLEEP_TIME')
+               external=options.config.getboolean('DEFAULT', 'EXTERNAL_URLS'),
+               sleep_time=options.config.getfloat('DEFAULT', 'SLEEP_TIME')
            )
 
     # link discovery and storage
@@ -264,7 +265,7 @@ def cli_discovery(args):
     if args.explore:
         # add to compressed dict and crawl the remaining websites
         control_dict = build_exploration_dict(url_store, input_urls, args)
-        cli_crawler(args, url_store=control_dict)
+        cli_crawler(args, url_store=control_dict, options=options)
 
 
 def build_exploration_dict(url_store, input_urls, args):
@@ -285,8 +286,9 @@ def build_exploration_dict(url_store, input_urls, args):
 def cli_crawler(args, n=30, url_store=None, options=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
-    config = use_config(filename=args.config_file)
-    sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    if not options:
+        options = args_to_extractor(args)
+    sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
     # counter = None
     # load input URLs
     if url_store is None:
@@ -322,24 +324,10 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     #return todo, known_links
 
 
-def _args_to_extractor(args, url=None):
-    "Derive extractor configuration from CLI args."
-    options = Extractor(
-                  config=use_config(filename=args.config_file), output_format=args.output_format,
-                  comments=args.no_comments, tables=args.no_tables,
-                  dedup=args.deduplicate, lang=args.target_language,
-                  url=url, only_with_metadata=args.only_with_metadata,
-                  tei_validation=args.validate_tei
-              )
-    for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
-        setattr(options, attr, getattr(args, attr))
-    return options
-
-
 def probe_homepage(args):
     "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_urls(args)
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
 
     for url, result in buffered_downloads(input_urls, args.parallel, options=options):
         if result is not None:
@@ -356,7 +344,7 @@ def url_processing_pipeline(args, url_store):
         url_store.print_unvisited_urls()  # and not write_result()
         return False  # and not sys.exit(0)
 
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
 
     # initialize file counter if necessary
     if url_store.total_url_number() > MAX_FILES_PER_DIRECTORY:
@@ -382,7 +370,7 @@ def url_processing_pipeline(args, url_store):
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
     timeout = options.config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
 
     # max_tasks_per_child available in Python >= 3.11
@@ -402,7 +390,7 @@ def examine(htmlstring, args, url=None, options=None):
     """Generic safeguards and triggers"""
     result = None
     if not options:
-        options = _args_to_extractor(args, url)
+        options = args_to_extractor(args, url)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')

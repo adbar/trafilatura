@@ -35,8 +35,7 @@ try:  # Python 3.8+
 except ImportError:
     from importlib_metadata import version
 
-from .core import Extractor
-from .settings import DEFAULT_CONFIG
+from .settings import DEFAULT_CONFIG, Extractor
 from .utils import URL_BLACKLIST_REGEX, decode_file, make_chunks
 
 

@@ -4,6 +4,7 @@ Listing a series of settings that are applied module-wide.
 """
 
 from configparser import ConfigParser
+from datetime import datetime
 
 try:
     from os import sched_getaffinity
@@ -14,7 +15,6 @@ except ImportError:
 from pathlib import Path
 
 from lxml.etree import XPath
-
 
 
 def use_config(filename=None, config=None):
@@ -35,6 +35,91 @@ def use_config(filename=None, config=None):
 
 
 DEFAULT_CONFIG = use_config()
+
+
+class Extractor:
+    "Defines a class to store all extraction options."
+    __slots__ = [
+    'config',
+    # general
+    'format', 'fast', 'precision', 'recall', 'comments',
+    'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
+    # extraction size
+    'min_extracted_size', 'min_output_size',
+    'min_output_comm_size', 'min_extracted_comm_size',
+    # deduplication
+    'min_duplcheck_size', 'max_repetitions',
+    # rest
+    'max_file_size', 'min_file_size', 'max_tree_size',
+    # meta
+    'source', 'url', 'only_with_metadata', 'tei_validation',
+    'date_params',
+    'author_blacklist', 'url_blacklist'
+    ]
+    # consider dataclasses for Python 3.7+
+    def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
+                 fast=False, precision=False, recall=False,
+                 comments=True, formatting=False, links=False, images=False,
+                 tables=True, dedup=False, lang=None, max_tree_size=None,
+                 url=None, source=None, only_with_metadata=False, tei_validation=False,
+                 author_blacklist=None, url_blacklist=None, date_params=None):
+        self._add_config(config)
+        self.format = output_format
+        self.fast = fast
+        self.precision = precision
+        self.recall = recall
+        self.comments = comments
+        self.formatting = formatting or output_format == "markdown"
+        self.links = links
+        self.images = images
+        self.tables = tables
+        self.dedup = dedup
+        self.lang = lang
+        self.max_tree_size = max_tree_size
+        self.url = url
+        self.source = url or source
+        self.only_with_metadata = only_with_metadata
+        self.tei_validation = tei_validation
+        self.author_blacklist = author_blacklist or set()
+        self.url_blacklist = url_blacklist or set()
+        self.date_params = date_params or \
+                           set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
+
+    def _add_config(self, config):
+        "Store options loaded from config file."
+        self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+        self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
+        self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
+        self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
+        self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
+        self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
+        self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
+        self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
+        self.config = config  # todo: remove?
+
+
+def args_to_extractor(args, url=None):
+    "Derive extractor configuration from CLI args."
+    options = Extractor(
+                  config=use_config(filename=args.config_file), output_format=args.output_format,
+                  comments=args.no_comments, tables=args.no_tables,
+                  dedup=args.deduplicate, lang=args.target_language,
+                  url=url, only_with_metadata=args.only_with_metadata,
+                  tei_validation=args.validate_tei
+              )
+    for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
+        setattr(options, attr, getattr(args, attr))
+    return options
+
+
+def set_date_params(extensive=True):
+    "Provide default parameters for date extraction."
+    return {
+               "original_date": True,
+               "extensive_search": extensive,
+               "max_date": datetime.now().strftime("%Y-%m-%d")
+           }
+
 
 # Safety checks
 PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count(), 16)  # 16 processes at most

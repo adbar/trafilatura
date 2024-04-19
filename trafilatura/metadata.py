@@ -7,7 +7,6 @@ import logging
 import re
 
 from copy import deepcopy
-from datetime import datetime
 
 from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
@@ -16,10 +15,11 @@ from lxml.html import tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (extract_json, extract_json_parse_error,
                             normalize_json)
-from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
-                     CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
+from .settings import set_date_params
 from .utils import (line_processing, load_html, normalize_authors,
                     normalize_tags, trim, unescape)
+from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
+                     CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -126,15 +126,6 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 # also interesting: article:section
 
 EXTRA_META = {'charset', 'http-equiv', 'property'}
-
-
-def set_date_params(extensive=True):
-    "Provide default parameters for date extraction."
-    return {
-               "original_date": True,
-               "extensive_search": extensive,
-               "max_date": datetime.now().strftime("%Y-%m-%d")
-           }
 
 
 def check_authors(authors, author_blacklist):
