@@ -883,6 +883,7 @@ def test_table_processing():
     )
     result = processed.replace('\n', '').replace(' ', '')
     assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
+
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )
@@ -923,6 +924,7 @@ def test_table_processing():
     assert [
         (child.tag, child.attrib, child.text) for child in first_row.iterdescendants()
     ] == [("cell", {"role": "head"}, "Month"), ("cell", {"role": "head"}, "Days")]
+
     table_with_head_spanning_two_cols = html.fromstring(
         """<table>
       <tr>
@@ -982,6 +984,7 @@ def test_table_processing():
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
+    assert extract(htmlstring, no_fallback=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
     # table with links
     # todo: further tests and adjustsments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
@@ -1069,6 +1072,9 @@ def test_table_processing():
     htmlstring = '<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     assert "1" in result and "2" in result
+    # table headers in non-XML formats
+    htmlstring = '<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>'
+    assert "---|---|" in extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
 
 
 def test_list_processing():
