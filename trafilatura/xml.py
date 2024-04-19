@@ -293,8 +293,10 @@ def process_element(element, returnlist, include_formatting):
         if element.tag in NEWLINE_ELEMS:
             returnlist.append('\n')
             # add line after table head
-            if element.tag == "row" and element.xpath("./cell[@role='head']"):
-                returnlist.append("---|" * len(element.xpath(".//cell")) + "\n")
+            if element.tag == "row":
+                num_cells = len(element.xpath("./cell[@role='head']"))
+                if num_cells > 0:
+                    returnlist.append("---|" * len(element.xpath(".//cell")) + "\n")
         return  # Nothing more to do with textless elements
 
     # Process text
