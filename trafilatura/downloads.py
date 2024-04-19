@@ -35,7 +35,7 @@ try:  # Python 3.8+
 except ImportError:
     from importlib_metadata import version
 
-
+from .core import Extractor
 from .settings import DEFAULT_CONFIG
 from .utils import URL_BLACKLIST_REGEX, decode_file, make_chunks
 
@@ -165,15 +165,15 @@ def _send_urllib_request(url, no_ssl, with_headers, config):
     return None
 
 
-def _handle_response(url, response, decode, config):
+def _handle_response(url, response, decode, options):
     'Internal function to run safety checks on response result.'
     lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+    elif lentest < options.min_file_size:
         LOGGER.error('too small/incorrect for URL %s', url)
         # raise error instead?
-    elif lentest > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+    elif lentest > options.max_file_size:
         LOGGER.error('too large: length %s for URL %s', lentest, url)
         # raise error instead?
     else:
@@ -182,13 +182,14 @@ def _handle_response(url, response, decode, config):
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=None):
     """Downloads a web page and seamlessly decodes the response.
 
     Args:
         url: URL of the page to fetch.
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
+        options: Extraction options (supersedes config).
 
     Returns:
         Unicode string or None in case of failed downloads and invalid results.
@@ -202,7 +203,9 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         )
     response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
     if response is not None and response != '':
-        return _handle_response(url, response, decode, config)
+        if not options:
+            options = Extractor(config=config)
+        return _handle_response(url, response, decode, options)
         # return '' (useful do discard further processing?)
         # return response
     return None
@@ -310,7 +313,7 @@ def load_download_buffer(url_store, sleep_time=5):
 
 def buffered_downloads(bufferlist, download_threads, decode=True, options=None):
     '''Download queue consumer, single- or multi-threaded.'''
-    worker = partial(fetch_url, decode=decode)  # options=options
+    worker = partial(fetch_url, decode=decode, options=options)
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
             future_to_url = {executor.submit(worker, url): url for url in chunk}
