@@ -30,9 +30,9 @@ except AttributeError:
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-def parse_args(args):
-    """Define parser for command-line arguments"""
-    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+def add_args(parser):
+    "Add argument groups and arguments to parser."
+
     group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
     group1_ex = group1.add_mutually_exclusive_group()
     group2 = parser.add_argument_group('Output', 'Determines if and how files will be written')
@@ -158,13 +158,16 @@ def parse_args(args):
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
                         help="determine output format",
-                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
+                        choices=['txt', 'csv', 'json', 'markdown', 'xml', 'xmltei'],
                         default='txt')
     group5_ex.add_argument("--csv",
                         help="shorthand for CSV output",
                         action="store_true")
     group5_ex.add_argument("--json",
                         help="shorthand for JSON output",
+                        action="store_true")
+    group5_ex.add_argument("--markdown",
+                        help="shorthand for MD output",
                         action="store_true")
     group5_ex.add_argument("--xml",
                         help="shorthand for XML output",
@@ -186,7 +189,13 @@ def parse_args(args):
         version=f"Trafilatura {__version__} - Python {python_version()}",
     )
 
+    return parser
 
+
+def parse_args(args):
+    """Define parser for command-line arguments"""
+    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+    parser = add_args(parser)
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())
 
@@ -198,6 +207,8 @@ def map_args(args):
         args.output_format = 'csv'
     elif args.json:
         args.output_format = 'json'
+    elif args.markdown:
+        args.output_format = 'markdown'
     elif args.xml:
         args.output_format = 'xml'
     elif args.xmltei:

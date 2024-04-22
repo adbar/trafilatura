@@ -4,11 +4,11 @@ Unit tests for the trafilatura library.
 """
 
 import logging
-import os
 import sys
 import time
 
 from copy import copy
+from os import path
 
 import pytest
 
@@ -28,47 +28,48 @@ except ImportError:
 
 import trafilatura.htmlprocessing
 from trafilatura import (bare_extraction, baseline, extract, html2txt,
-                         process_record, utils, xml)
-from trafilatura.core import (Extractor, handle_formatting, handle_image,
-                              handle_lists, handle_paragraphs, handle_quotes,
-                              handle_table, handle_textelem, sanitize_tree,
-                              trim)
-from trafilatura.external import try_justext
+                         process_record, xml)
+from trafilatura.core import Extractor
+from trafilatura.external import sanitize_tree, try_justext
 from trafilatura.filters import textfilter
+from trafilatura.main_extractor import (handle_formatting, handle_image,
+                                        handle_lists, handle_paragraphs, handle_quotes,
+                                        handle_table, handle_textelem)
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.utils import (detect_encoding, is_dubious_html, is_image_file, load_html,
+                               normalize_unicode, repair_faulty_html, sanitize, trim)
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
-TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
+TEST_DIR = path.abspath(path.dirname(__file__))
+RESOURCES_DIR = path.join(TEST_DIR, 'resources')
 SAMPLE_META = Document()
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
-NEW_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
+NEW_CONFIG = use_config(filename=path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
 
-DEFAULT_OPTIONS = Extractor(*[False]*11)
-DEFAULT_OPTIONS.config = DEFAULT_CONFIG
+DEFAULT_OPTIONS = Extractor()
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
     try:
-        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'r') as inputf:
+        with open(path.join(TEST_DIR, "resources", MOCK_PAGES[url]), "r", encoding="utf-8") as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'rb') as inputf:
+        with open(path.join(TEST_DIR, "resources", MOCK_PAGES[url]), "rb") as inputf:
             htmlbinary = inputf.read()
         guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
@@ -103,10 +104,10 @@ def test_trim():
     my_elem.text = '\t\t'
     assert textfilter(my_elem) is True
     # sanitize logic
-    assert utils.sanitize(None) is None
+    assert sanitize(None) is None
     # non-breaking spaces
-    print(utils.sanitize('Test&nbsp;Text'))
-    assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    print(sanitize('Test&nbsp;Text'))
+    assert sanitize('Test&nbsp;Text') == 'Test Text'
     # clear cache
     # reset caches: examine_date_elements used above
     old_values = trim.cache_info()
@@ -116,45 +117,52 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
-    assert utils.is_dubious_html("This is a string.") is True
+    teststring = "高山云雾出好茶".encode("utf-8")
+    assert detect_encoding(teststring) == ["utf-8"]
+    teststring = "高山云雾出好茶".encode("gb18030")
+    assert "gb18030" in detect_encoding(teststring)
+    assert "gb18030" in detect_encoding(teststring*1000)
+
+    assert is_dubious_html("This is a string.") is True
 
     htmlstring = "<!DOCTYPE html PUBLIC />\n<html></html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == "\n<html></html>"
+    assert repair_faulty_html(htmlstring, beginning) == "\n<html></html>"
 
     htmlstring = "<html>\n</html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == htmlstring
+    assert repair_faulty_html(htmlstring, beginning) == htmlstring
 
     htmlstring = "<html/>\n</html>"
     beginning = htmlstring[:50].lower()
-    assert utils.repair_faulty_html(htmlstring, beginning) == "<html>\n</html>"
+    assert repair_faulty_html(htmlstring, beginning) == "<html>\n</html>"
 
     htmlstring = '<!DOCTYPE html>\n<html lang="en-US"/>\n<head/>\n<body/>\n</html>'
     beginning = htmlstring[:50].lower()
     assert (
-        utils.repair_faulty_html(htmlstring, beginning)
+        repair_faulty_html(htmlstring, beginning)
         == '<!DOCTYPE html>\n<html lang="en-US">\n<head/>\n<body/>\n</html>'
     )
 
     with pytest.raises(TypeError) as err:
-        assert utils.load_html(123) is None
+        assert load_html(123) is None
     assert 'incompatible' in str(err.value)
-    assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
-    assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
-    assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
-    #assert utils.load_html(b'0'*int(10e3)) is None
+    assert load_html('<html><body>ÄÖÜ</body></html>') is not None
+    assert load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
+    assert load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
+    #assert load_html(b'0'*int(10e3)) is None
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(SystemExit):
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
-    with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
+    with open(path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
     assert 'Long story short,' in extract(myinput)
 
     # unicode normalization
-    assert utils.normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
+    assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
@@ -180,7 +188,7 @@ def test_xmltocsv():
     target = 'https://example.org\t1\tnull\texample.org\tTest title\thttps://example.org/image.jpg\tnull\tTest text\tTest comment\tCC BY-SA\tarticle\r\n'
 
     assert xml.xmltocsv(doc, False) == target
-    
+
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tnull\r\n')
@@ -198,17 +206,17 @@ def test_python_output():
     # bare extraction for python
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 20
+    assert isinstance(result, dict) and len(result) == 21
 
 
 def test_exotic_tags(xmloutput=False):
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
-    filepath = os.path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
-    with open(filepath) as f:
+    filepath = path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
+    with open(filepath, "r", encoding="utf-8") as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
     assert etree.tostring(res).startswith(b'<html>\n<text>\n<body>\n<div>\n\n<hi rend="uppercase">Hello</hi>\n<p>Teletype text</p>')
@@ -290,24 +298,35 @@ def test_formatting():
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # titles as markdown
-    my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
+    my_string = '<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>'
+    my_document = html.fromstring(my_string)
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '### Title\n**This here is in bold font.**'
+    assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
+    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
+
+    # space between paragraphs
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result.endswith('Paragraph 1\n\nParagraph 2')
+
     # code sections
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura</code></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 `import trafilatura`"""
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura\ntrafilatura.extract("")</code></p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == """### Title
 Here is a code sample:
+
 ```
 import trafilatura
 trafilatura.extract("")
 ```"""
-    
+
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -338,7 +357,7 @@ trafilatura.extract("")
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
@@ -442,11 +461,11 @@ def test_external():
         doc = html.fromstring('<html><body>' + '<p>Non è inglese.</p>'*20 + '</body></html>')
         assert extract(doc, no_fallback=False, target_language='en', deduplicate=False) is None
     # no tables
-    with open(os.path.join(RESOURCES_DIR, 'apache.html')) as f:
+    with open(path.join(RESOURCES_DIR, "apache.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert 'localhost:80' in extract(teststring, no_fallback=False, include_tables=True)
     assert 'localhost:80' not in extract(teststring, no_fallback=False, include_tables=False)
-    with open(os.path.join(RESOURCES_DIR, 'scam.html')) as f:
+    with open(path.join(RESOURCES_DIR, "scam.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert extract(teststring, no_fallback=True, include_tables=False) == ''
     assert extract(teststring, no_fallback=False, include_tables=False) == ''
@@ -458,15 +477,15 @@ def test_external():
 def test_images():
     '''Test image extraction function'''
     # file type
-    assert utils.is_image_file('test.jpg') is True
-    assert utils.is_image_file('test.txt') is False
+    assert is_image_file('test.jpg') is True
+    assert is_image_file('test.txt') is False
     # tag with attributes
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     # HTML conversion
     assert handle_textelem(etree.Element('graphic'), [], DEFAULT_OPTIONS) is None
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert '![Example image](test.jpg)' not in extract(teststring)
     assert '![Example image](test.jpg)' in extract(teststring, include_images=True, no_fallback=True)
@@ -486,7 +505,7 @@ def test_images():
 def test_links():
     '''Test link extraction function'''
     options = DEFAULT_OPTIONS
-    options.config = ZERO_CONFIG
+    options._add_config(ZERO_CONFIG)
     assert handle_textelem(etree.Element('ref'), [], options) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
@@ -504,7 +523,7 @@ def test_links():
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
     result = extract(copy(mydoc), output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
     assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
@@ -517,7 +536,7 @@ def test_links():
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
-    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result1 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
@@ -526,7 +545,7 @@ def test_tei():
     assert xml.validate_tei(etree.fromstring(result1)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
     # test with another file
-    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, include_comments=True, output_format='xmltei', tei_validation=False)
@@ -625,7 +644,7 @@ def test_tei():
         </html>"""
     )
     tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
-    result = utils.sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    result = sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
     assert result == "<html><body><p><span>content</span></p></body></html>"
     tree = html.fromstring(
     """
@@ -784,7 +803,7 @@ def test_extraction_options():
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
-    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
+    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
@@ -864,6 +883,7 @@ def test_table_processing():
     )
     result = processed.replace('\n', '').replace(' ', '')
     assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
+
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
     )
@@ -904,6 +924,7 @@ def test_table_processing():
     assert [
         (child.tag, child.attrib, child.text) for child in first_row.iterdescendants()
     ] == [("cell", {"role": "head"}, "Month"), ("cell", {"role": "head"}, "Days")]
+
     table_with_head_spanning_two_cols = html.fromstring(
         """<table>
       <tr>
@@ -963,6 +984,7 @@ def test_table_processing():
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
+    assert extract(htmlstring, no_fallback=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
     # table with links
     # todo: further tests and adjustsments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
@@ -1023,13 +1045,21 @@ def test_table_processing():
     </td>
     </tr></table>
     """)
-    processed_table = handle_table(table_with_list, TAG_CATALOG, options)
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
         for el in processed_table.iter()
     ]
-    # assert result == ["table", "row", "cell", ("p", "a list"), "list", ("item", "one"), ("item", "two"),]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
+
+    options.recall = True
+    processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
+    result = [
+        (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
+        for el in processed_table.iter()
+    ]
+    assert result == ["table", "row", "cell", ("p", "a list"), 'list', ("item", "one"), ("item", "two"),]
+
     broken_table = html.fromstring("<table><td>cell1</td><tr><td>cell2</td></tr></table>")
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
@@ -1042,6 +1072,9 @@ def test_table_processing():
     htmlstring = '<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     assert "1" in result and "2" in result
+    # table headers in non-XML formats
+    htmlstring = '<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>'
+    assert "---|---|" in extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
 
 
 def test_list_processing():
@@ -1247,7 +1280,17 @@ def test_lang_detection():
             assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
 
 
+def test_config_loading():
+    "Check if the config file is read correctly."
+    with pytest.raises(FileNotFoundError):
+        config = use_config(filename="/bogus-dir/bogus-file.txt")
+
+    config = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
+    assert config is not None
+
+
 if __name__ == '__main__':
+    test_config_loading()
     test_trim()
     test_input()
     test_formatting()

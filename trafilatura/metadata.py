@@ -5,7 +5,9 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+
 from copy import deepcopy
+from datetime import datetime
 
 from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
@@ -14,10 +16,10 @@ from lxml.html import tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (extract_json, extract_json_parse_error,
                             normalize_json)
-from .metaxpaths import (author_discard_xpaths, author_xpaths,
-                         categories_xpaths, tags_xpaths, title_xpaths)
+from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
+                     CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 from .utils import (line_processing, load_html, normalize_authors,
-                    normalize_tags, trim, unescape, uniquify_list)
+                    normalize_tags, trim, unescape)
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -29,7 +31,7 @@ class Document:
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
     'body', 'comments', 'commentsbody', 'raw_text', 'text',
-    'language', 'image', 'pagetype'  # 'locale'?
+    'language', 'image', 'pagetype', 'filedate'  # 'locale'?
     ]
     # consider dataclasses for Python 3.7+
     def __init__(self):
@@ -72,14 +74,10 @@ class Document:
     def as_dict(self):
         "Convert the document to a dictionary."
         return {
-            attr: getattr(self, attr)
+            attr: getattr(self, attr, None)
             for attr in self.__slots__
-            if hasattr(self, attr)
         }
 
-
-HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
-HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
@@ -130,6 +128,15 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
+def set_date_params(extensive=True):
+    "Provide default parameters for date extraction."
+    return {
+               "original_date": True,
+               "extensive_search": extensive,
+               "max_date": datetime.now().strftime("%Y-%m-%d")
+           }
+
+
 def check_authors(authors, author_blacklist):
     "Check if the authors string correspond to expected values."
     author_blacklist = {a.lower() for a in author_blacklist}
@@ -163,7 +170,7 @@ def extract_opengraph(tree):
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         # site name
         if elem.get('property') == 'og:site_name':
@@ -212,7 +219,7 @@ def examine_meta(tree):
     # skim through meta tags
     for elem in tree.iterfind('.//head/meta[@content]'):
         # content
-        if not elem.get('content'):
+        if not elem.get('content') or elem.get('content').isspace():
             continue
         content_attr = HTML_STRIP_TAG.sub('', elem.get('content'))
         # image info
@@ -320,7 +327,7 @@ def extract_title(tree):
         if len(title) > 0:
             return title
     # extract using x-paths
-    title = extract_metainfo(tree, title_xpaths)
+    title = extract_metainfo(tree, TITLE_XPATHS)
     if title is not None:
         return title
     # extract using title tag
@@ -342,8 +349,8 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    subtree = prune_unwanted_nodes(deepcopy(tree), author_discard_xpaths)
-    author = extract_metainfo(subtree, author_xpaths, len_limit=120)
+    subtree = prune_unwanted_nodes(deepcopy(tree), AUTHOR_DISCARD_XPATHS)
+    author = extract_metainfo(subtree, AUTHOR_XPATHS, len_limit=120)
     if author:
         author = normalize_authors(None, author)
     # copyright?
@@ -400,7 +407,7 @@ def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
     regexpr = '/' + metatype + '[s|ies]?/'
-    xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
+    xpath_expression = CATEGORIES_XPATHS if metatype == 'category' else TAGS_XPATHS
     # search using custom expressions
     for catexpr in xpath_expression:
         results.extend(
@@ -418,8 +425,7 @@ def extract_catstags(metatype, tree):
         #if not results:
         #    for elem in tree.xpath('.//a[@href]'):
         #        search for 'category'
-    results = [line_processing(x) for x in results if x is not None]
-    return uniquify_list([x for x in results if x is not None])
+    return [r for r in dict.fromkeys(line_processing(x) for x in results if x) if r]
 
 
 def parse_license_element(element, strict=False):
@@ -472,7 +478,7 @@ def extract_image(tree):
     return None
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, extensive=True, author_blacklist=None):
     """Main process for metadata extraction.
 
     Args:
@@ -488,6 +494,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # init
     if author_blacklist is None:
         author_blacklist = set()
+    if not date_config:
+        date_config = set_date_params(extensive)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -525,12 +533,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata.image is None:
         metadata.image = extract_image(tree)
     # extract date with external module htmldate
-    if date_config is None:
-        # decide on fast mode
-        if fastmode is False:
-            date_config = HTMLDATE_CONFIG_EXTENSIVE
-        else:
-            date_config = HTMLDATE_CONFIG_FAST
     date_config['url'] = metadata.url
     metadata.date = find_date(tree, **date_config)
     # sitename
@@ -570,6 +572,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
+    metadata.filedate = date_config["max_date"]
     metadata.clean_and_trim()
     # return result
     return metadata

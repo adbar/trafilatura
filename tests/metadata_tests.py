@@ -26,7 +26,10 @@ def test_titles():
     # too short/empty
     metadata = extract_metadata('<html><body><h3 class="title">T</h3><h3 id="title"></h3></body></html>')
     assert metadata.title is None
-
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta property="og:title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta name="title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
     metadata = extract_metadata('<html><head><title>Test Title</title></head><body></body></html>')
     assert metadata.title == 'Test Title'
     metadata = extract_metadata('<html><body><h1>First</h1><h1>Second</h1></body></html>')
@@ -190,10 +193,10 @@ def test_dates():
     metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
     assert metadata.date == '2017-09-01'
     mystring = '<html><body><p>Veröffentlicht am 1.9.17</p></body></html>'
-    metadata = extract_metadata(mystring, fastmode=False)
+    metadata = extract_metadata(mystring, extensive=True)
     assert metadata.date == '2017-09-01'
     # behavior for fastmode=True changed in htmldate==1.6.0. On 1.5.2 and earlier, result was None
-    metadata = extract_metadata(mystring, fastmode=True)
+    metadata = extract_metadata(mystring, extensive=False)
     assert metadata.date == '2017-09-01'
 
 

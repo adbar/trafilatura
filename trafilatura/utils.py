@@ -120,7 +120,11 @@ def detect_encoding(bytesobject):
         if cchardet_guess is not None:
             guesses.append(cchardet_guess.lower())
     # try charset_normalizer on first part, fallback on full document
-    detection_results = from_bytes(bytesobject[:15000]) or from_bytes(bytesobject)
+    if len(bytesobject) < 10000:
+        detection_results = from_bytes(bytesobject)
+    else:
+        detection_results = from_bytes(bytesobject[:5000] + bytesobject[-5000:]) or \
+                            from_bytes(bytesobject)
     # return alternatives
     if len(detection_results) > 0:
         guesses.extend([r.encoding for r in detection_results])
@@ -281,7 +285,7 @@ def sanitize(text, preserve_space=False, trailing_space=False):
         return line_processing(text, preserve_space, True)
     # process line by line
     try:
-        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines())))
+        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines()))).replace('\u2424', '')
     except AttributeError:
         return None
 
@@ -379,16 +383,6 @@ def normalize_authors(current_authors, author_string):
     if len(new_authors) == 0:
         return current_authors
     return '; '.join(new_authors).strip('; ')
-
-
-def uniquify_list(l):
-    """
-    Remove duplicates from a list while keeping order in an efficient way.
-    Dictionaries preserve insertion order since Python 3.6.
-
-    https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
-    """
-    return list(dict.fromkeys(l))
 
 
 @lru_cache(maxsize=1024)
