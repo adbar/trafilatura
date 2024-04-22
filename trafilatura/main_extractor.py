@@ -518,14 +518,8 @@ def prune_unwanted_sections(tree, potential_tags, options):
     return tree
 
 
-def extract_content(tree, options):
-    '''Find the main content of a page using a set of XPath expressions,
-       then extract relevant elements, strip them of unwanted subparts and
-       convert them'''
-    # backup
-    backup_tree = deepcopy(tree)
+def _extract(tree, options):
     # init
-    result_body = Element('body')
     potential_tags = set(TAG_CATALOG)
     if options.tables is True:
         potential_tags.update(['table', 'td', 'th', 'tr'])
@@ -533,6 +527,7 @@ def extract_content(tree, options):
         potential_tags.add('graphic')
     if options.links is True:
         potential_tags.add('ref')
+    result_body = Element('body')
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
@@ -581,6 +576,20 @@ def extract_content(tree, options):
             LOGGER.debug(expr)
             break
     temp_text = ' '.join(result_body.itertext()).strip()
+    return result_body, temp_text, potential_tags
+
+
+def extract_content(tree_backup, cleaned_tree, options):
+    '''Find the main content of a page using a set of XPath expressions,
+       then extract relevant elements, strip them of unwanted subparts and
+       convert them'''
+    # backup
+    backup_tree = deepcopy(cleaned_tree)
+
+    result_body, temp_text, potential_tags = _extract(cleaned_tree, options)
+    #if len(result_body) == 0:
+    #    result_body, temp_text, potential_tags = _extract(tree_backup, options)
+
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:

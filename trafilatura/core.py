@@ -235,12 +235,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
         # backup (or not) for further processing
-        tree_backup_1 = deepcopy(tree) if not options.fast else None
-        tree_backup_2 = deepcopy(tree)
+        tree_backup = deepcopy(tree)
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, options)
-        cleaned_tree_backup = deepcopy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, options.url or document.url)
@@ -254,15 +252,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(cleaned_tree, options)
+        postbody, temp_text, len_text = extract_content(deepcopy(tree_backup), deepcopy(cleaned_tree), options)
 
         # compare if necessary
         if not options.fast:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, postbody, temp_text, len_text, options)
+            postbody, temp_text, len_text = compare_extraction(deepcopy(cleaned_tree), deepcopy(tree_backup), postbody, temp_text, len_text, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < options.min_extracted_size:
-            postbody, temp_text, len_text = baseline(tree_backup_2)
+            postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
