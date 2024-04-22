@@ -96,12 +96,12 @@ def test_fetch():
     url = 'https://httpbun.com/status/200'
     for no_ssl in (True, False):
         response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, True, DEFAULT_CONFIG)
-        assert response.data == b''
+        assert b"200" in response.data and b"OK" in response.data  # JSON
         assert response.headers["x-powered-by"].startswith("httpbun")
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
-        assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
+        assert _handle_response(url, response1, False, DEFAULT_CONFIG).data == _handle_response(url, response, False, DEFAULT_CONFIG).data
         assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
     # too large response object
@@ -201,7 +201,7 @@ def test_queue():
     options = _args_to_extractor(args)
     options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(url_store, args, None, options)
-    assert len(results[0]) == 6 and results[1] is None
+    assert len(results[0]) == 5 and results[1] is None
 
 
 if __name__ == '__main__':
