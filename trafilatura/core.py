@@ -7,7 +7,7 @@ import logging
 import sys
 import warnings
 
-from copy import deepcopy
+from copy import copy, deepcopy
 
 from lxml.etree import XPath, strip_tags
 
@@ -173,11 +173,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        # backup (or not) for further processing
-        tree_backup = deepcopy(tree)
+        # backup for further processing
+        tree_backup = copy(tree)
 
-        # clean + use LXML cleaner
+        # clean
         cleaned_tree = tree_cleaning(tree, options)
+        cleaned_tree_backup = copy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, options.url or document.url)
@@ -191,11 +192,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text = extract_content(deepcopy(tree_backup), deepcopy(cleaned_tree), options)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, options)
 
         # compare if necessary
         if not options.fast:
-            postbody, temp_text, len_text = compare_extraction(deepcopy(cleaned_tree), deepcopy(tree_backup), postbody, temp_text, len_text, options)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, deepcopy(tree_backup), postbody, temp_text, len_text, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < options.min_extracted_size:

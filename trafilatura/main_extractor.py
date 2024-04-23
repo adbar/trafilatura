@@ -580,7 +580,7 @@ def _extract(tree, options):
     return result_body, temp_text, potential_tags
 
 
-def extract_content(tree_backup, cleaned_tree, options):
+def extract_content(cleaned_tree, options):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
