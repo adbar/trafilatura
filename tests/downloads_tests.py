@@ -24,10 +24,9 @@ from unittest.mock import patch
 from courlan import UrlStore
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import (_args_to_extractor,
-                                   download_queue_processing,
+from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
-from trafilatura.core import extract
+from trafilatura.core import Extractor, extract
 import trafilatura.downloads
 from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    _determine_headers, _handle_response,
@@ -36,7 +35,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    _urllib3_is_live_page,
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
-from trafilatura.settings import DEFAULT_CONFIG, use_config
+from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, decode_response, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -47,6 +46,8 @@ ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
 RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
 UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
+
+DEFAULT_OPTS = Extractor(config=DEFAULT_CONFIG)
 
 
 def _reset_downloads_global_objects():
@@ -101,8 +102,8 @@ def test_fetch():
     if pycurl is not None:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
-        assert _handle_response(url, response1, False, DEFAULT_CONFIG).data == _handle_response(url, response, False, DEFAULT_CONFIG).data
-        assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
+        assert _handle_response(url, response1, False, DEFAULT_OPTS).data == _handle_response(url, response, False, DEFAULT_OPTS).data
+        assert _handle_response(url, response1, True, DEFAULT_OPTS) == _handle_response(url, response, True, DEFAULT_OPTS)
     # response object
     # too large response object
     data = ""
@@ -111,14 +112,14 @@ def test_fetch():
     response = Response(data, status, url)
     # too large
     response.data = b'ABC'*10000000
-    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
+    assert _handle_response(response.url, response, False, DEFAULT_OPTS) is None
     # too small
     response.data = b'ABC'
-    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is None
+    assert _handle_response(response.url, response, False, DEFAULT_OPTS) is None
     # straight handling of response object
     with open(os.path.join(RESOURCES_DIR, 'utf8.html'), 'rb') as filehandle:
         response.data = filehandle.read()
-    assert _handle_response(response.url, response, False, DEFAULT_CONFIG) is not None
+    assert _handle_response(response.url, response, False, DEFAULT_OPTS) is not None
     assert load_html(response) is not None
     # nothing to see here
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
@@ -198,7 +199,7 @@ def test_queue():
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
     options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(url_store, args, None, options)
     assert len(results[0]) == 5 and results[1] is None
