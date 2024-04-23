@@ -19,75 +19,14 @@ from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
 from .hashing import content_fingerprint
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import extract_comments, extract_content
-from .metadata import Document, extract_metadata, set_date_params
-from .settings import DEFAULT_CONFIG, use_config
+from .metadata import Document, extract_metadata
+from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import load_html, normalize_unicode
 from .xml import build_json_output, control_xml_output, xmltotxt, xmltocsv
 from .xpaths import REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-class Extractor:
-    "Defines a class to store all extraction options."
-    __slots__ = [
-    'config',
-    # general
-    'format', 'fast', 'precision', 'recall', 'comments',
-    'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
-    # extraction size
-    'min_extracted_size', 'min_output_size',
-    'min_output_comm_size', 'min_extracted_comm_size',
-    # deduplication
-    'min_duplcheck_size', 'max_repetitions',
-    # rest
-    'max_file_size', 'min_file_size', 'max_tree_size',
-    # meta
-    'source', 'url', 'only_with_metadata', 'tei_validation',
-    'date_params',
-    'author_blacklist', 'url_blacklist'
-    ]
-    # consider dataclasses for Python 3.7+
-    def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
-                 fast=False, precision=False, recall=False,
-                 comments=True, formatting=False, links=False, images=False,
-                 tables=True, dedup=False, lang=None, max_tree_size=None,
-                 url=None, source=None, only_with_metadata=False, tei_validation=False,
-                 author_blacklist=None, url_blacklist=None, date_params=None):
-        self._add_config(config)
-        self.format = output_format
-        self.fast = fast
-        self.precision = precision
-        self.recall = recall
-        self.comments = comments
-        self.formatting = formatting or output_format == "markdown"
-        self.links = links
-        self.images = images
-        self.tables = tables
-        self.dedup = dedup
-        self.lang = lang
-        self.max_tree_size = max_tree_size
-        self.url = url
-        self.source = url or source
-        self.only_with_metadata = only_with_metadata
-        self.tei_validation = tei_validation
-        self.author_blacklist = author_blacklist or set()
-        self.url_blacklist = url_blacklist or set()
-        self.date_params = date_params or \
-                           set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
-
-    def _add_config(self, config):
-        "Store options loaded from config file."
-        self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
-        self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
-        self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
-        self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
-        self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
-        self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
-        self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
-        self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
-        self.config = config  # todo: remove?
 
 
 def determine_returnstring(document, options):
