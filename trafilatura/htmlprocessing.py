@@ -62,15 +62,17 @@ def tree_cleaning(tree, options):
     strip_tags(tree, stripping_list)
 
     # prevent removal of paragraphs
-    if favor_recall:
+    run_p_test = False
+    if options.focus == "recall":
         tcopy = deepcopy(tree)
-        p_test = tree.xpath('.//p[1]')
+        if tree.find('.//p') is not None:
+            run_p_test = True
 
     # delete targeted elements
     for expression in cleaning_list:
         for element in tree.getiterator(expression):
             delete_element(element)
-            if favor_recall and p_test and not tree.xpath('.//p[1]'):
+            if run_p_test and tree.find('.//p') is None:
                 tree = tcopy
 
     return prune_html(tree)

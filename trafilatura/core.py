@@ -214,7 +214,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 LOGGER.debug('output tree too long: %s, discarding %s', len(postbody), options.source)
                 raise ValueError
         # size checks
-        if len_comments < options.min_extracted_comm_size:
+        if options.comments and len_comments < options.min_extracted_comm_size:
             LOGGER.debug('not enough comments: %s', options.source)
         if len_text < options.min_output_size and \
            len_comments < options.min_output_comm_size:
