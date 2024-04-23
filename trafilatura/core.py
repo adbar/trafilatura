@@ -187,7 +187,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-        if options.precision:
+        if options.focus == "precision":
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content

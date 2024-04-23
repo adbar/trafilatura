@@ -379,7 +379,7 @@ def handle_table(table_elem, potential_tags, options):
                             child.tag = "cell"
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
-                    elif child.tag == "list" and options.recall:
+                    elif child.tag == "list" and options.focus == "recall":
                         processed_subchild = handle_lists(child, options)
                         if processed_subchild is not None:
                             new_child_elem.append(processed_subchild)
@@ -475,7 +475,7 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     search_expr = './/blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table|.//div[contains(@class, \'w3-code\')]'
-    if options.recall is True:
+    if options.focus == "recall":
         potential_tags.update(['div', 'lb'])
         search_expr += '|.//div|.//lb|.//list'
     # prune
@@ -493,6 +493,7 @@ def recover_wild_text(tree, result_body, options, potential_tags=TAG_CATALOG):
 
 def prune_unwanted_sections(tree, potential_tags, options):
     'Rule-based deletion of targeted document sections'
+    favor_precision = options.focus == "precision"
     # prune the rest
     tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
     tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
@@ -500,21 +501,21 @@ def prune_unwanted_sections(tree, potential_tags, options):
     if 'graphic' not in potential_tags:
         tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
     # balance precision/recall
-    if options.recall is False:
+    if options.focus != "recall":
         tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
-        if options.precision is True:
+        if favor_precision:
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density
-    tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=options.precision)
-    tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=options.precision)
-    tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=options.precision)
+    tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
+    tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=favor_precision)
+    tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
     # also filter fw/head, table and quote elements?
-    if options.precision is True:
+    if favor_precision:
         # delete trailing titles
         while len(tree) > 0 and (tree[-1].tag == 'head'):
             tree[-1].getparent().remove(tree[-1])
-        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=options.precision
-        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=options.precision
+        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=favor_precision
+        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=favor_precision
     return tree
 
 
@@ -537,8 +538,8 @@ def _extract(tree, options):
         # prune the subtree
         subtree = prune_unwanted_sections(subtree, potential_tags, options)
         # second pass?
-        # subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.precision)
-        if 'table' in potential_tags or options.precision is True:
+        # subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.focus == "precision")
+        if 'table' in potential_tags or options.focus == "precision":
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
@@ -547,9 +548,9 @@ def _extract(tree, options):
             continue
         # no paragraphs containing text, or not enough
         ptest = subtree.xpath('//p//text()')
-        if options.recall is True:
+        if options.focus == "recall":
             factor = 5
-        elif options.precision is True:
+        elif options.focus == "precision":
             factor = 1
         else:
             factor = 3

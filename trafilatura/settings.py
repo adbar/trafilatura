@@ -42,7 +42,7 @@ class Extractor:
     __slots__ = [
     'config',
     # general
-    'format', 'fast', 'precision', 'recall', 'comments',
+    'format', 'fast', 'focus', 'comments',
     'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
     # extraction size
     'min_extracted_size', 'min_output_size',
@@ -66,8 +66,12 @@ class Extractor:
         self._add_config(config)
         self.format = output_format
         self.fast = fast
-        self.precision = precision
-        self.recall = recall
+        if recall:
+            self.focus = "recall"
+        elif precision:
+            self.focus = "precision"
+        else:
+            self.focus = "balanced"
         self.comments = comments
         self.formatting = formatting or output_format == "markdown"
         self.links = links
@@ -102,12 +106,13 @@ def args_to_extractor(args, url=None):
     "Derive extractor configuration from CLI args."
     options = Extractor(
                   config=use_config(filename=args.config_file), output_format=args.output_format,
+                  precision=args.precision, recall=args.recall,
                   comments=args.no_comments, tables=args.no_tables,
                   dedup=args.deduplicate, lang=args.target_language,
                   url=url, only_with_metadata=args.only_with_metadata,
                   tei_validation=args.validate_tei
               )
-    for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
+    for attr in ("fast", "formatting", "images", "links"):
         setattr(options, attr, getattr(args, attr))
     return options
 

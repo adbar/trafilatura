@@ -1061,7 +1061,7 @@ def test_table_processing():
     ]
     assert result == ['table', 'row', 'cell', ('p', 'a list'), 'list']
 
-    options.recall = True
+    options.focus = "recall"
     processed_table = handle_table(copy(table_with_list), TAG_CATALOG, options)
     result = [
         (el.tag, el.text) if el.text is not None and el.text.strip() else el.tag
