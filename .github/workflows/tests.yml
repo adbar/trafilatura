@@ -62,6 +62,13 @@ jobs:
     # package setup
     - uses: actions/checkout@v4
 
+    # only where prebuilt wheels do not exist
+    - name: Install LXML dependencies
+      if: ${{ matrix.python-version == '3.13-dev' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install libxml2-dev libxslt-dev
+
     - name: Install dependencies
       run: python -m pip install -e "."
 
