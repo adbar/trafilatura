@@ -43,6 +43,7 @@ def delete_element(element):
 def tree_cleaning(tree, options):
     "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
+    favor_recall = options.focus == "recall"
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if not options.tables:
@@ -60,10 +61,18 @@ def tree_cleaning(tree, options):
     # strip targeted elements
     strip_tags(tree, stripping_list)
 
+    # prevent removal of paragraphs
+    run_p_test = False
+    if options.focus == "recall" and tree.find('.//p') is not None:
+        tcopy = deepcopy(tree)
+        run_p_test = True
+
     # delete targeted elements
     for expression in cleaning_list:
         for element in tree.getiterator(expression):
             delete_element(element)
+    if run_p_test and tree.find('.//p') is None:
+        tree = tcopy
 
     return prune_html(tree)
 
