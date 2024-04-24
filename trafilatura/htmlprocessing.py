@@ -63,17 +63,16 @@ def tree_cleaning(tree, options):
 
     # prevent removal of paragraphs
     run_p_test = False
-    if options.focus == "recall":
+    if options.focus == "recall" and tree.find('.//p') is not None:
         tcopy = deepcopy(tree)
-        if tree.find('.//p') is not None:
-            run_p_test = True
+        run_p_test = True
 
     # delete targeted elements
     for expression in cleaning_list:
         for element in tree.getiterator(expression):
             delete_element(element)
-            if run_p_test and tree.find('.//p') is None:
-                tree = tcopy
+    if run_p_test and tree.find('.//p') is None:
+        tree = tcopy
 
     return prune_html(tree)
 

@@ -88,7 +88,6 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
         LOGGER.debug('using custom extraction: %s', options.source)
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
-    # or options.focus == "recall" is True ?
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
         body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, 0, '')

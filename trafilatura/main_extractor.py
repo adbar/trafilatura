@@ -548,9 +548,7 @@ def _extract(tree, options):
             continue
         # no paragraphs containing text, or not enough
         ptest = subtree.xpath('//p//text()')
-        if options.focus == "recall":
-            factor = 5
-        elif options.focus == "precision":
+        if options.focus == "precision":
             factor = 1
         else:
             factor = 3
