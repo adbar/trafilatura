@@ -3,6 +3,7 @@ Compare extraction results with other libraries of the same kind.
 """
 
 # import logging
+import csv
 import os
 import re
 import time
@@ -120,7 +121,8 @@ def run_trafilatura(htmlstring):
 
 def run_justext(htmlstring):
     '''try with the generic algorithm justext'''
-    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"), 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
+    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"),
+                                 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
     valid = [
         paragraph.text
         for paragraph in paragraphs
@@ -169,7 +171,7 @@ def run_goose(htmlstring):
     '''try with the goose algorithm'''
     try:
         article = g.extract(raw_html=htmlstring)
-        return article.cleaned_text # sanitize(article.cleaned_text)
+        return article.cleaned_text  # sanitize(article.cleaned_text)
     except ValueError:
         return ''
 
@@ -178,7 +180,7 @@ def run_readability(htmlstring):
     '''try with the Python3 port of readability.js'''
     try:
         doc = Document(htmlstring)
-        return doc.summary() # sanitize(doc.summary())
+        return doc.summary()  # sanitize(doc.summary())
     except Exception as err:
         print('Exception:', err)
         return ''
@@ -214,15 +216,10 @@ def run_html_text(htmlstring):
 def run_newspaper(htmlstring):
     '''try with the newspaper module'''
     try:
-        text = fulltext(htmlstring) # sanitize(fulltext(htmlstring))
+        text = fulltext(htmlstring)  # sanitize(fulltext(htmlstring))
     except AttributeError:
         return ''
     return text
-
-
-#def run_dragnet(htmlstring):
-#    '''try with the dragnet module'''
-#    return extract_content(htmlstring)  # sanitize(content)
 
 
 def run_boilerpipe(htmlstring):
@@ -231,7 +228,6 @@ def run_boilerpipe(htmlstring):
         content = boilerpipe_extractor.get_content(htmlstring)
         # sanitize(boilerpipe_extractor.get_content(htmlstring))
     except Exception:
-        #print('Boilerpipe exception:', err)
         content = ''
     return content
 
@@ -244,30 +240,6 @@ def run_newsplease(htmlstring):
     except Exception as err:
         #print('Newsplease exception:', err)
         return ''
-
-#def run_jparser(htmlstring):
-#    '''try with jparser'''
-#    try:
-#        pm = PageModel(htmlstring)
-#    except (TypeError, ValueError):
-#        return ''
-#    result = pm.extract()
-#    # old
-#    mylist = list()
-#    for x in result['content']:
-#        if x['type'] in ('text', 'html'):
-#            mylist.append(str(x['data']))
-#    # suggested
-#    #mylist = [
-#    #    str(x['data'])
-#    #    for x in result['content']
-#    #    if x['type'] in ('text', 'html')
-#    #]
-
-#    returnstring = ' '.join(mylist)
-#    # returnstring = re.sub(r'\s+', ' ', returnstring)
-#    returnstring = re.sub(r'\s+(p{P}+)', '\1', returnstring)
-#    return sanitize(returnstring)
 
 
 def run_readabilipy(htmlstring):
@@ -283,7 +255,10 @@ def run_readabilipy(htmlstring):
 
 def run_resiliparse(htmlstring):
     '''try with the resiliparse package'''
-    decoded = bytes_to_str(htmlstring, detect_encoding(htmlstring))
+    try:
+        decoded = bytes_to_str(htmlstring, detect_encoding(htmlstring))
+    except TypeError:  # already a string
+        decoded = htmlstring
     tree = HTMLTree.parse(decoded)
     return extract_plain_text(tree, main_content=True)
 
@@ -291,15 +266,6 @@ def run_resiliparse(htmlstring):
 def run_bs4(htmlstring):
     '''try with the BeautifulSoup module'''
     return BeautifulSoup(htmlstring, features='lxml').get_text(strip=True)
-
-
-#def run_libextract(htmlstring):
-#    '''try with the libextract module'''
-#    textlist = list()
-#    for textnode in list(lib_extract(htmlstring)):
-#        textlist.append(textnode.text_content())
-#    textcontent = '\n'.join(textlist)
-#    return contextcontenttent
 
 
 def evaluate_result(result, item):
@@ -313,11 +279,6 @@ def evaluate_result(result, item):
         print('counter', item)
     if len(item['without']) == 0 or len(item['without']) > 6:
         print('counter', item)
-    # internal report
-    #if result is None:
-    #    print('None', item['file'])
-    #elif type(result) is not str:
-    #    print('not str', item['file'])
     # examine
     if result is not None and isinstance(result, str):
         # expected output
@@ -341,7 +302,8 @@ def evaluate_result(result, item):
 
 def calculate_scores(mydict):
     '''output weighted result score'''
-    tp, fn, fp, tn = mydict['true positives'], mydict['false negatives'], mydict['false positives'], mydict['true negatives']
+    tp, fn, fp, tn = mydict['true positives'], mydict['false negatives'], \
+        mydict['false positives'], mydict['true negatives']
     precision = tp/(tp+fp)
     recall = tp/(tp+fn)
     accuracy = (tp+tn)/(tp+tn+fp+fn)
@@ -349,328 +311,159 @@ def calculate_scores(mydict):
     return precision, recall, accuracy, fscore
 
 
-template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result, resiliparse_result, bs4_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-nothing.update(template_dict)
-everything.update(template_dict)
-baseline_result.update(template_dict)
-trafilatura_result.update(template_dict)
-justext_result.update(template_dict)
-trafilatura_fallback_result.update(template_dict)
-trafilatura_precision.update(template_dict)
-trafilatura_recall.update(template_dict)
-goose_result.update(template_dict)
-readability_result.update(template_dict)
-inscriptis_result.update(template_dict)
-newspaper_result.update(template_dict)
-html2text_result.update(template_dict)
-html_text_result.update(template_dict)
-boilerpipe_result.update(template_dict)
-newsplease_result.update(template_dict)
-readabilipy_result.update(template_dict)
-resiliparse_result.update(template_dict)
-bs4_result.update(template_dict)
-# jparser_result.update(template_dict)
-#dragnet_result.update(template_dict)
-
-
-i = 0
-
-for item in EVAL_PAGES:
-    if len(EVAL_PAGES[item]['file']) == 0:
-        continue
-    # print(EVAL_PAGES[item]['file'])
-    htmlstring = load_document_string(EVAL_PAGES[item]['file'])
-    if htmlstring is None:
-        continue
-    # print(type(htmlstring))
-    # null hypotheses
-    tp, fn, fp, tn = evaluate_result('', EVAL_PAGES[item])
-    nothing['true positives'] += tp
-    nothing['false positives'] += fp
-    nothing['true negatives'] += tn
-    nothing['false negatives'] += fn
-    tp, fn, fp, tn = evaluate_result(htmlstring, EVAL_PAGES[item])
-    everything['true positives'] += tp
-    everything['false positives'] += fp
-    everything['true negatives'] += tn
-    everything['false negatives'] += fn
-    # html2text
+def compute_confusion_matrix(run_function, dict_result, htmlstring, item):
     start = time.time()
-    result = run_html2text(htmlstring)
-    html2text_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    html2text_result['true positives'] += tp
-    html2text_result['false positives'] += fp
-    html2text_result['true negatives'] += tn
-    html2text_result['false negatives'] += fn
-    # html_text
-    start = time.time()
-    result = run_html_text(htmlstring)
-    html_text_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    html_text_result['true positives'] += tp
-    html_text_result['false positives'] += fp
-    html_text_result['true negatives'] += tn
-    html_text_result['false negatives'] += fn
-    # inscriptis
-    start = time.time()
-    result = run_inscriptis(htmlstring)
-    inscriptis_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    inscriptis_result['true positives'] += tp
-    inscriptis_result['false positives'] += fp
-    inscriptis_result['true negatives'] += tn
-    inscriptis_result['false negatives'] += fn
-    # bare lxml
-    start = time.time()
-    result = run_baseline(htmlstring)
-    baseline_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    baseline_result['true positives'] += tp
-    baseline_result['false positives'] += fp
-    baseline_result['true negatives'] += tn
-    baseline_result['false negatives'] += fn
-    # trafilatura
-    start = time.time()
-    result = run_trafilatura(htmlstring)
-    trafilatura_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    trafilatura_result['true positives'] += tp
-    trafilatura_result['false positives'] += fp
-    trafilatura_result['true negatives'] += tn
-    trafilatura_result['false negatives'] += fn
-    # justext
-    start = time.time()
-    result = run_justext(htmlstring)
-    justext_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    justext_result['true positives'] += tp
-    justext_result['false positives'] += fp
-    justext_result['true negatives'] += tn
-    justext_result['false negatives'] += fn
-    # trafilatura + X
-    start = time.time()
-    result = run_trafilatura_fallback(htmlstring)
-    trafilatura_fallback_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    trafilatura_fallback_result['true positives'] += tp
-    trafilatura_fallback_result['false positives'] += fp
-    trafilatura_fallback_result['true negatives'] += tn
-    trafilatura_fallback_result['false negatives'] += fn
-    # trafilatura + precision
-    start = time.time()
-    result = run_trafilatura_precision(htmlstring)
-    trafilatura_precision['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    trafilatura_precision['true positives'] += tp
-    trafilatura_precision['false positives'] += fp
-    trafilatura_precision['true negatives'] += tn
-    trafilatura_precision['false negatives'] += fn
-    # trafilatura + recall
-    start = time.time()
-    result = run_trafilatura_recall(htmlstring)
-    trafilatura_recall['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    trafilatura_recall['true positives'] += tp
-    trafilatura_recall['false positives'] += fp
-    trafilatura_recall['true negatives'] += tn
-    trafilatura_recall['false negatives'] += fn
-    # readability
-    start = time.time()
-    result = run_readability(htmlstring)
-    readability_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    readability_result['true positives'] += tp
-    readability_result['false positives'] += fp
-    readability_result['true negatives'] += tn
-    readability_result['false negatives'] += fn
-    # goose
-    start = time.time()
-    result = run_goose(htmlstring)
-    goose_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    goose_result['true positives'] += tp
-    goose_result['false positives'] += fp
-    goose_result['true negatives'] += tn
-    goose_result['false negatives'] += fn
-    # newspaper
-    start = time.time()
-    result = run_newspaper(htmlstring)
-    newspaper_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    newspaper_result['true positives'] += tp
-    newspaper_result['false positives'] += fp
-    newspaper_result['true negatives'] += tn
-    newspaper_result['false negatives'] += fn
-    # dragnet
-    #start = time.time()
-    #result = run_dragnet(htmlstring)
-    #dragnet_result['time'] += time.time() - start
-    #tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    #dragnet_result['true positives'] += tp
-    #dragnet_result['false positives'] += fp
-    #dragnet_result['true negatives'] += tn
-    #dragnet_result['false negatives'] += fn
-    # boilerpipe
-    start = time.time()
-    result = run_boilerpipe(htmlstring)
-    boilerpipe_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    boilerpipe_result['true positives'] += tp
-    boilerpipe_result['false positives'] += fp
-    boilerpipe_result['true negatives'] += tn
-    boilerpipe_result['false negatives'] += fn
-    # newsplease
-    start = time.time()
-    result = run_newsplease(htmlstring)
-    newsplease_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    newsplease_result['true positives'] += tp
-    newsplease_result['false positives'] += fp
-    newsplease_result['true negatives'] += tn
-    newsplease_result['false negatives'] += fn
-    # jparser
-    #start = time.time()
-    #result = run_jparser(htmlstring)
-    #jparser_result['time'] += time.time() - start
-    #tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    #jparser_result['true positives'] += tp
-    #jparser_result['false positives'] += fp
-    #jparser_result['true negatives'] += tn
-    #jparser_result['false negatives'] += fn
-    # readabilipy
-    start = time.time()
-    result = run_readabilipy(htmlstring)
-    readabilipy_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    readabilipy_result['true positives'] += tp
-    readabilipy_result['false positives'] += fp
-    readabilipy_result['true negatives'] += tn
-    readabilipy_result['false negatives'] += fn
-    # resiliparse
-    start = time.time()
-    result = run_resiliparse(htmlstring)
-    resiliparse_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    resiliparse_result['true positives'] += tp
-    resiliparse_result['false positives'] += fp
-    resiliparse_result['true negatives'] += tn
-    resiliparse_result['false negatives'] += fn
-    # bs4
-    start = time.time()
-    result = run_bs4(htmlstring)
-    bs4_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    bs4_result['true positives'] += tp
-    bs4_result['false positives'] += fp
-    bs4_result['true negatives'] += tn
-    bs4_result['false negatives'] += fn
-    # counter
-    i += 1
+    result = run_function(htmlstring)
+    dict_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, item)
+    dict_result['true positives'] += tp
+    dict_result['false positives'] += fp
+    dict_result['true negatives'] += tn
+    dict_result['false negatives'] += fn
+    return dict_result
 
 
-print('number of documents:', i)
-print('nothing')
-print(nothing)
-# print(calculate_f_score(nothing))
-print('everything')
-print(everything)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(everything)))
+def run_comparison(small: bool = False, output_csv: bool = True,
+                   output_rst: bool = True):
+    # save all results to a dictionary
+    results_all = dict()
+    template_dict = {'true positives': 0,
+                    'false positives': 0,
+                    'true negatives': 0,
+                    'false negatives': 0,
+                    'time': 0}
+    # initialize result dictionaries
+    nothing, everything, baseline_result, trafilatura_result, justext_result, \
+        trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, \
+            goose_result, readability_result, inscriptis_result, \
+                newspaper_result, html2text_result, html_text_result, \
+                    boilerpipe_result, newsplease_result, readabilipy_result, \
+                        resiliparse_result, bs4_result = (template_dict.copy()
+                                                          for i in range(19)) 
 
-print('baseline')
-print(baseline_result)
-try:
-    print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(baseline_result)))
-except ZeroDivisionError:
-    pass
+    i = 0
 
-print('html2text')
-print(html2text_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
-print(f"time diff.: {html2text_result['time'] / baseline_result['time']:.2f}")
+    for item in EVAL_PAGES:
+        if len(EVAL_PAGES[item]['file']) == 0:
+            continue
+        htmlstring = load_document_string(EVAL_PAGES[item]['file'])
+        if htmlstring is None:
+            continue
+        # counter
+        i += 1
+        # null hypotheses
+        tp, fn, fp, tn = evaluate_result('', EVAL_PAGES[item])
+        nothing['true positives'] += tp
+        nothing['false positives'] += fp
+        nothing['true negatives'] += tn
+        nothing['false negatives'] += fn
+        tp, fn, fp, tn = evaluate_result(htmlstring, EVAL_PAGES[item])
+        everything['true positives'] += tp
+        everything['false positives'] += fp
+        everything['true negatives'] += tn
+        everything['false negatives'] += fn
+        # baseline, bare lxml
+        baseline_result = compute_confusion_matrix(run_baseline, baseline_result, htmlstring, EVAL_PAGES[item])
+        # trafilatura
+        trafilatura_result = compute_confusion_matrix(run_trafilatura, trafilatura_result, htmlstring, EVAL_PAGES[item])
+        # trafilatura + X
+        trafilatura_fallback_result = compute_confusion_matrix(run_trafilatura_fallback, trafilatura_fallback_result, htmlstring, EVAL_PAGES[item])
+        if small == True:  # only include null hypotheses, trafilatura
+            continue
 
-print('html_text')
-print(html_text_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html_text_result)))
-print(f"time diff.: {html_text_result['time'] / baseline_result['time']:.2f}")
+        # html2text
+        html2text_result = compute_confusion_matrix(run_html2text, html2text_result, htmlstring, EVAL_PAGES[item])
+        # html_text
+        html_text_result = compute_confusion_matrix(run_html_text, html_text_result, htmlstring, EVAL_PAGES[item])
+        # inscriptis
+        inscriptis_result = compute_confusion_matrix(run_inscriptis, inscriptis_result, htmlstring, EVAL_PAGES[item])
+        # justext
+        justext_result = compute_confusion_matrix(run_justext, justext_result, htmlstring, EVAL_PAGES[item])
+        # trafilatura + precision
+        trafilatura_precision = compute_confusion_matrix(run_trafilatura_precision, trafilatura_precision, htmlstring, EVAL_PAGES[item])
+        # trafilatura + recall
+        trafilatura_recall = compute_confusion_matrix(run_trafilatura_recall, trafilatura_recall, htmlstring, EVAL_PAGES[item])
+        # readability
+        readability_result = compute_confusion_matrix(run_readability, readability_result, htmlstring, EVAL_PAGES[item])
+        # goose
+        goose_result = compute_confusion_matrix(run_goose, goose_result, htmlstring, EVAL_PAGES[item])
+        # newspaper
+        newspaper_result = compute_confusion_matrix(run_newspaper, newspaper_result, htmlstring, EVAL_PAGES[item])
+        # boilerpipe
+        boilerpipe_result = compute_confusion_matrix(run_boilerpipe, boilerpipe_result, htmlstring, EVAL_PAGES[item])
+        # newsplease
+        newsplease_result = compute_confusion_matrix(run_newsplease, newsplease_result, htmlstring, EVAL_PAGES[item])
+        # readabilipy
+        readabilipy_result = compute_confusion_matrix(run_readabilipy, readabilipy_result, htmlstring, EVAL_PAGES[item])
+        # resiliparse
+        resiliparse_result = compute_confusion_matrix(run_resiliparse, resiliparse_result, htmlstring, EVAL_PAGES[item])
+        # bs4
+        bs4_result = compute_confusion_matrix(run_bs4, bs4_result, htmlstring, EVAL_PAGES[item])
 
-print('inscriptis')
-print(inscriptis_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
-print(f"time diff.: {inscriptis_result['time'] / baseline_result['time']:.2f}")
 
-print('justext')
-print(justext_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(justext_result)))
-print(f"time diff.: {justext_result['time'] / baseline_result['time']:.2f}")
+    print('number of documents:', i)
+    print('nothing')
+    print(nothing)
+    print('everything')
+    print(everything)
+    everything_scores = (calculate_scores(everything))
+    print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % everything_scores)
+    results_all['everything'] = everything_scores
 
-print('goose')
-print(goose_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(goose_result)))
-print(f"time diff.: {goose_result['time'] / baseline_result['time']:.2f}")
+    print('baseline')
+    print(baseline_result)
+    try:
+        baseline_scores = (calculate_scores(baseline_result))
+        print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % baseline_scores)
+        results_all['baseline'] = baseline_scores
+    except ZeroDivisionError:
+        pass
 
-print('newspaper')
-print(newspaper_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
-print(f"time diff.: {newspaper_result['time'] / baseline_result['time']:.2f}")
+    def print_scores(result_str, result_dict):
+        print(result_str)
+        print(result_dict)
+        print(f"time diff.: {result_dict['time'] / baseline_result['time']:.2f}")
+        scores = (calculate_scores(result_dict))
+        print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % scores)
+        results_all[result_str] = scores
 
-#print('dragnet')
-#print(dragnet_result)
-#print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
-#print("time diff.: %.2f" % (dragnet_result['time'] / baseline_result['time']))
+    print_scores('trafilatura', trafilatura_result)
+    print_scores('trafilatura + X', trafilatura_fallback_result)
+    if not small:
+        print_scores('html2text', html2text_result)
+        print_scores('html_text', html_text_result)
+        print_scores('inscriptis', inscriptis_result)
+        print_scores('justext', justext_result)
+        print_scores('goose', goose_result)
+        print_scores('newspaper', newspaper_result)
+        print_scores('boilerpipe', boilerpipe_result)
+        print_scores('newsplease', newsplease_result)
+        print_scores('readability', readability_result)
+        print_scores('readabilipy', readabilipy_result)
+        print_scores('resiliparse', resiliparse_result)
+        print_scores('bs4', bs4_result)
+        print_scores('trafilatura precision', trafilatura_precision)
+        print_scores('trafilatura recall', trafilatura_recall)
 
-print('boilerpipe')
-print(boilerpipe_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
-print(f"time diff.: {boilerpipe_result['time'] / baseline_result['time']:.2f}")
+    print(results_all)
+    column_names = ['algorithm', 'precision', 'recall', 'accuracy', 'f-score']
+    if output_csv:
+        with open('results.csv', 'w', encoding='utf-8') as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(column_names)
+            for algorithm, results in results_all.items():
+                writer.writerow([algorithm, results[0], results[1], results[2], results[3]])
+    if output_rst:
+        rst = '| ' + ' | '.join(column_names) + ' |\n'
+        rst += '|:---:|:---:|:---:|:---:|:---:|\n'
+        for algorithm, results in results_all.items():
+            rst += f'| {algorithm} | {results[0]} | {results[1]} | {results[2]} | {results[3]} |\n'
+        with open('results.md', 'w', encoding='utf-8') as f:
+            f.write(rst)
+        print(rst)
 
-#print('jparser')
-#print(jparser_result)
-#print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
-#print("time diff.: %.2f" % (jparser_result['time'] / baseline_result['time']))
 
-print('newsplease')
-print(newsplease_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
-print(f"time diff.: {newsplease_result['time'] / baseline_result['time']:.2f}")
-
-print('readability')
-print(readability_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
-print(f"time diff.: {readability_result['time'] / baseline_result['time']:.2f}")
-
-print('readabilipy')
-print(readabilipy_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
-print(f"time diff.: {readabilipy_result['time'] / baseline_result['time']:.2f}")
-
-print('resiliparse')
-print(resiliparse_result)
-print(f"time diff.: {resiliparse_result['time'] / baseline_result['time']:.2f}")
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(resiliparse_result)))
-
-print('bs4')
-print(bs4_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(bs4_result)))
-print(f"time diff.: {bs4_result['time'] / baseline_result['time']:.2f}")
-
-print('trafilatura')
-print(trafilatura_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
-print(f"time diff.: {trafilatura_result['time'] / baseline_result['time']:.2f}")
-
-print('trafilatura + X')
-print(trafilatura_fallback_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_fallback_result)))
-print(f"time diff.: {trafilatura_fallback_result['time'] / baseline_result['time']:.2f}")
-
-print('trafilatura precision')
-print(trafilatura_precision)
-print(f"time diff.: {trafilatura_precision['time'] / baseline_result['time']:.2f}")
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_precision)))
-
-print('trafilatura recall')
-print(trafilatura_recall)
-print(f"time diff.: {trafilatura_recall['time'] / baseline_result['time']:.2f}")
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_recall)))
+if __name__ == '__main__':
+    # TODO argparse for algorithm choice
+    small = False
+    run_comparison(small=small)
