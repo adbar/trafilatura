@@ -92,6 +92,7 @@ html_theme_options = {
   "external_links": [
       {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],
+  "navigation_with_keys": False,
 #  "use_edit_page_button": True,
 #  "navigation_depth": 3,
 #  "show_toc_level": 3,

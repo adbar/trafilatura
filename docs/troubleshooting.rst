@@ -7,6 +7,11 @@ Troubleshooting
         They include missing content, paywalls, cookies, and networks.
 
 
+
+.. hint::
+    Trafilatura evolves over time, make sure you have the latest version to benefit from all documentation pages. The software is thoroughly tested but rare problems remain difficult to replicate as they are linked to a particular setting/OS/IP. For the rest, see the `list of open issues <https://github.com/adbar/trafilatura/issues>`_
+
+
 Content extraction
 ------------------
 
@@ -19,7 +24,9 @@ The extractor uses several fallbacks to make sure enough text is returned. Conte
 - Changing the minimum acceptable length in the settings
 - Using the more basic `baseline <corefunctions.html#baseline>`_ or `html2txt <corefunctions.html#html2txt>`_ functions instead (which is also faster)
 
-(see also `reported issues with The New Yorker <https://github.com/adbar/trafilatura/issues?q=is%3Aissue+newyorker>`_)
+
+.. note::
+    Trafilatura is geared towards article pages, blog posts, main text parts, etc. Results vary wildly on link lists, galleries or catalogs.
 
 
 Beyond raw HTML
@@ -27,7 +34,10 @@ Beyond raw HTML
 
 While downloading and processing raw HTML documents is much faster, it can be necessary to fully render the web page before further processing, e.g. because a page makes exhaustive use of JavaScript or because content is injected from multiple sources.
 
-In such cases the way to go is to use a browser automation library like `Playwright <https://playwright.dev/python/>`_. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
+In such cases the way to go is to use a browser automation library like `Playwright <https://playwright.dev/python/docs/library/>`_. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
+
+For more refined masking and automation methods, see the `nodriver <https://github.com/ultrafunkamsterdam/nodriver>`_ and `browserforge <https://github.com/daijro/browserforge>`_ packages.
+
 
 
 Bypassing paywalls
@@ -63,8 +73,8 @@ The standard library `cookiejar <https://docs.python.org/3/library/http.cookieja
 Alternatively, cookies can be manually specified in a ``settings.cfg`` config file, separated by semicolons, e.g. ``COOKIE = yummy_cookie=choco; tasty_cookie=strawberry``.
 
 
-Web page no longer available on the Internet
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unavailable pages and link rot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Download issues can be addressed by retrieving the files somewhere else, i.e. from already existing internet archives like the Internet Archive or the CommonCrawl.
 
