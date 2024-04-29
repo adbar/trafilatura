@@ -26,7 +26,7 @@ The extractor uses several fallbacks to make sure enough text is returned. Conte
 
 
 .. note::
-    Trafilatura is geared towards article pages, blog posts, main text parts, etc. Results vary wildly on link lists or catalogs.
+    Trafilatura is geared towards article pages, blog posts, main text parts, etc. Results vary wildly on link lists, galleries or catalogs.
 
 
 Beyond raw HTML
@@ -34,7 +34,7 @@ Beyond raw HTML
 
 While downloading and processing raw HTML documents is much faster, it can be necessary to fully render the web page before further processing, e.g. because a page makes exhaustive use of JavaScript or because content is injected from multiple sources.
 
-In such cases the way to go is to use a browser automation library like `Playwright <https://playwright.dev/python/>`_. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
+In such cases the way to go is to use a browser automation library like `Playwright <https://playwright.dev/python/docs/library/>`_. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
 
 For more refined masking and automation methods, see the `nodriver <https://github.com/ultrafunkamsterdam/nodriver>`_ and `browserforge <https://github.com/daijro/browserforge>`_ packages.
 
@@ -73,8 +73,8 @@ The standard library `cookiejar <https://docs.python.org/3/library/http.cookieja
 Alternatively, cookies can be manually specified in a ``settings.cfg`` config file, separated by semicolons, e.g. ``COOKIE = yummy_cookie=choco; tasty_cookie=strawberry``.
 
 
-Web page no longer available on the Internet
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unavailable pages and link rot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Download issues can be addressed by retrieving the files somewhere else, i.e. from already existing internet archives like the Internet Archive or the CommonCrawl.
 

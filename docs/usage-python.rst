@@ -271,11 +271,11 @@ Even if the page to process has already been downloaded it can still be useful t
     >>> downloaded = fetch_url(url)
 
     # content discarded since necessary metadata couldn't be extracted
-    >>> bare_extraction(downloaded, with_metadata=True)
+    >>> bare_extraction(downloaded, only_with_metadata=True)
     >>>
 
     # date found in URL, extraction successful
-    >>> bare_extraction(downloaded, with_metadata=True, url=url)
+    >>> bare_extraction(downloaded, only_with_metadata=True, url=url)
 
 
 Memory use
