@@ -76,9 +76,9 @@ Further options:
     Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
 
 .. note::
-    Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
-    
-    Including extra elements works best with conversion to XML/XML-TEI. If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
+    Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Including extra elements works best with conversion to XML/XML-TEI.
+
+    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd removing a constraint (e.g. formatting) can greatly improve the result.
 
 
 Output format
@@ -86,19 +86,22 @@ Output format
 
 Output as TXT without metadata is the default, another format can be selected in two different ways:
 
--  ``--csv``, ``--json``, ``--xml`` or ``--xmltei``
--  ``-out`` or ``--output-format`` {txt,csv,json,xml,xmltei}
+-  ``--csv``, ``--json``, ``--markdown``, ``--xml`` or ``--xmltei``
+-  ``-out`` or ``--output-format`` {txt,csv,json,markdown,xml,xmltei}
 
 .. hint::
-    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
+    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format. Selecting markdown automatically includes text formatting.
 
 
 Optimizing for precision and recall
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The arguments ``--precision`` & ``--recall`` can be passed to the extractor.
+The arguments ``--precision`` & ``--recall`` can be passed to the extractor. They affect processing and volume of textual output:
 
-They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+1. By focusing precision/accuracy, i.e. more selective extraction, yielding less and more central elements.
+   If you believe the results are too noisy, try focusing on precision.
+2. By enhancing recall, i.e. more opportunistic extraction, taking more elements into account.
+   If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
 Language identification
@@ -107,7 +110,8 @@ Language identification
 Passing the argument ``--target-language`` along with a 2-letter code (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_) will trigger language filtering of the output if the identification component has been `installed <installation.html>`_ and if the target language is available.
 
 .. note::
-    Additional components are required: ``pip install trafilatura[all]``
+    Additional components are required: ``pip install trafilatura[all]``.
+    This feature currently uses the `py3langid package <https://github.com/adbar/py3langid>`_ and is dependent on language availability and performance of the original model.
 
 
 
@@ -179,9 +183,9 @@ There is a fair chance to find archived versions for larger websites, whereas pa
 Link discovery
 --------------
 
-Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS) or `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_.
+Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS, mostly for fresh content), `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_ for exhaustivity (all potential pages as listed by the owners), and discovery by web crawling (i.e. by following the internal links, more experimental).
 
-Both homepages and particular sitemaps or feed URLs can be used as input.
+Both the homepage and a particular page can be used as input depending on the selected options (e.g. a sitemap or feed URL).
 
 The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
@@ -236,6 +240,14 @@ For more information on sitemap use and filters for lists of links see this blog
 Youtube tutorial: `Listing all website contents with sitemaps <https://www.youtube.com/watch?v=uWUyhxciTOs&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=3&t=330s>`_
 
 
+Web crawling
+~~~~~~~~~~~~
+
+Selecting the ``--crawl`` option automatically looks for pages by following a fixed number of internal links on the website, starting from the given URL and returning a list of links.
+
+See the `page on web crawling <crawls.html>`_ for more information.
+
+
 URL inspection prior to download and processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -265,14 +277,15 @@ For all usage instructions see ``trafilatura -h``:
     trafilatura [-h] [-i INPUTFILE | --input-dir INPUTDIR | -u URL]
                    [--parallel PARALLEL] [-b BLACKLIST] [--list]
                    [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
-                   [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP] |
-                   --crawl [CRAWL] | --explore [EXPLORE]] [--archived]
+                   [--feed [FEED] | --sitemap [SITEMAP] | --crawl [CRAWL] |
+                   --explore [EXPLORE]] [--archived]
                    [--url-filter URL_FILTER [URL_FILTER ...]] [-f]
                    [--formatting] [--links] [--images] [--no-comments]
                    [--no-tables] [--only-with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
-                   [--config-file CONFIG_FILE]
-                   [-out {txt,csv,json,xml,xmltei} | --csv | --json | --xml | --xmltei]
+                   [--config-file CONFIG_FILE] [--precision] [--recall]
+                   [-out {txt,csv,json,markdown,xml,xmltei} | --csv | --json |
+                   --markdown | --xml | --xmltei]
                    [--validate-tei] [-v] [--version]
 
 
@@ -286,9 +299,10 @@ optional arguments:
 Input:
   URLs, files or directories to process
 
-  -i INPUTFILE, --input-file INPUTFILE
+  -i INPUT_FILE, --input-file INPUT_FILE
                         name of input file for batch processing
-  --input-dir INPUTDIR   read files from a specified directory (relative path)
+  --input-dir INPUT_DIR
+                        read files from a specified directory (relative path)
   -u URL, --URL URL     custom URL download
   --parallel PARALLEL   specify a number of cores/threads for downloads and/or
                         processing
@@ -300,30 +314,25 @@ Output:
   Determines if and how files will be written
 
   --list                display a list of URLs without downloading them
-  -o OUTPUTDIR, --output-dir OUTPUTDIR
+  -o OUTPUT_DIR, --output-dir OUTPUT_DIR
                         write results in a specified directory (relative path)
   --backup-dir BACKUP_DIR
                         preserve a copy of downloaded files in a backup
                         directory
   --keep-dirs           keep input directory structure and file names
-  --hash-as-name        use hash value as output file name instead of random
-                        default
 
 Navigation:
   Link discovery and web crawling
 
-  --feed URL            look for feeds and/or pass a feed URL as input
-  --sitemap URL         look for sitemaps for the given website and/or enter a
-                        sitemap URL
-  --crawl URL           crawl a fixed number of pages within a website
-                        starting from the given URL
-  --explore URL         explore the given websites (combination of sitemap and
-                        crawl)
-  --archived            try to fetch URLs from the Internet Archive if
-                        downloads fail
-  --url-filter URL_FILTER
-                        only process/output URLs containing these patterns
-                        (space-separated strings)
+.. code-block:: bash
+
+  --feed [FEED]         look for feeds and/or pass a feed URL as input
+  --sitemap [SITEMAP]   look for sitemaps for the given website and/or enter a sitemap URL
+  --crawl [CRAWL]       crawl a fixed number of pages within a website starting from the given URL
+  --explore [EXPLORE]   explore the given websites (combination of sitemap and crawl)
+  --probe [PROBE]       probe for extractable content (works best with target language)
+  --archived            try to fetch URLs from the Internet Archive if downloads fail
+  --url-filter URL_FILTER [URL_FILTER ...] only process/output URLs containing these patterns (space-separated strings)
 
 Extraction:
   Customization of text and metadata processing
@@ -347,16 +356,16 @@ Extraction:
   --recall              favor extraction recall (more text, possibly more
                         noise)
 
-
 Format:
   Selection of the output format
 
-  -out, --output-format
-                        determine output format, possible choices:
-                        txt, csv, json, xml, xmltei
-  --csv                 CSV output
-  --json                JSON output
-  --xml                 XML output
-  --xmltei              XML TEI output
+.. code-block:: bash
+
+  -out {txt,csv,json,markdown,xml,xmltei}, --output-format {txt,csv,json,markdown,xml,xmltei} determine output format
+  --csv                 shorthand for CSV output
+  --json                shorthand for JSON output
+  --markdown            shorthand for MD output
+  --xml                 shorthand for XML output
+  --xmltei              shorthand for XML TEI output
   --validate-tei        validate XML TEI output
 

@@ -109,7 +109,7 @@ Their inclusion can be activated or deactivated using paramaters passed to the `
 
 
 .. note::
-    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
+    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Selecting markdown automatically includes text formatting.
 
 
 ``include_formatting=True``
@@ -126,7 +126,7 @@ Only ``include_tables`` is activated by default.
 
 
 .. hint::
-    If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
+    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd removing a constraint (e.g. formatting) can greatly improve the result.
 
 
 Optimizing for precision and recall
@@ -138,8 +138,12 @@ The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``ext
 
     >>> result = extract(downloaded, url, favor_precision=True)
 
-They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+They affect processing and volume of textual output:
 
+1. By focusing precision/accuracy, i.e. more selective extraction, yielding less and more central elements.
+   If you believe the results are too noisy, try focusing on precision. Alternatively, you can supply a list of XPaths expressions to target precise HTML elements (``prune_xpath`` parameter of the extraction functions).
+2. By enhancing recall, i.e. more opportunistic extraction, taking more elements into account.
+   If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
 html2txt
@@ -163,7 +167,8 @@ The target language can also be set using 2-letter codes (`ISO 639-1 <https://en
     >>> result = extract(downloaded, url, target_language="de")
 
 .. note::
-    Additional components are required: ``pip install trafilatura[all]``
+    Additional components are required: ``pip install trafilatura[all]``.
+    This feature currently uses the `py3langid package <https://github.com/adbar/py3langid>`_ and is dependent on language availability and performance of the original model.
 
 
 Optimizing for speed
@@ -188,17 +193,6 @@ The following combination can lead to shorter processing times:
 Content hashing
 ^^^^^^^^^^^^^^^
 
-Functions used to build content hashes can be found in `hashing.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/hashing.py>`_.
-
-
-.. code-block:: python
-
-    # create a filename-safe string by hashing the given content
-    >>> from trafilatura.hashing import generate_hash_filename
-    >>> generate_hash_filename("This is a text.")
-    'qAgzZnskrcRgeftk'
-
-
 The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Charikar's hash) allows for near-duplicate detection. It implements a `locality-sensitive hashing <https://en.wikipedia.org/wiki/Locality-sensitive_hashing>`_ method based on a rolling hash and comparisons using the hamming distance. Overall it is reasonably fast and accurate for web texts and can be used to detect near duplicates by fixing a similarity threshold.
 
 
@@ -217,6 +211,17 @@ The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Chari
     1.0
 
 
+Other convenience functions include generation of file names based on their content. Two identical or nearly identical files will then get the exact same file name or close enough.
+
+
+.. code-block:: python
+
+    # create a filename-safe string by hashing the given content
+    >>> from trafilatura.hashing import generate_hash_filename
+    >>> generate_hash_filename("This is a text.")
+    'qAgzZnskrcRgeftk'
+
+
 Extraction settings
 -------------------
 
@@ -224,17 +229,10 @@ Extraction settings
     See also `settings page <settings.html>`_.
 
 
-Disabling ``signal``
-^^^^^^^^^^^^^^^^^^^^
+Function parameters
+^^^^^^^^^^^^^^^^^^^
 
-A timeout exit during extraction can be turned off if malicious data are not an issue or if you run into an error like `signal only works in main thread <https://github.com/adbar/trafilatura/issues/202>`_. In this case, the following code can be useful as it explicitly changes the required setting:
-
-.. code-block:: python
-
-    >>> from trafilatura.settings import use_config
-    >>> newconfig = use_config()
-    >>> newconfig.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
-    >>> extract(downloaded, config=newconfig)
+Starting from version 1.9, an object gathering necessary arguments and parameters can be passed to the extraction functions. See `settings.py` for an example.
 
 
 Metadata extraction
@@ -347,9 +345,11 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
 Navigation
 ----------
 
+Three potential navigation strategies are currently available: feeds (mostly for fresh content), sitemaps (for exhaustivity, all potential pages as listed by the owners) and discovery by web crawling (i.e. by following the internal links, more experimental).
+
+
 Feeds
 ^^^^^
-
 
 The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
 
@@ -412,3 +412,13 @@ Sitemaps
     >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
 
 The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
+
+
+Web crawling
+^^^^^^^^^^^^
+
+See the `documentation page on web crawling <crawls.html>`_ for more information.
+
+
+.. hint::
+    For more information on how to refine and filter a URL collection, see the underlying `courlan <https://github.com/adbar/courlan>`_ library. 
