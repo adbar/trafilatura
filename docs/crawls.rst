@@ -61,15 +61,15 @@ The ``focused_crawler()`` function integrates all necessary components and can b
 
 .. code-block:: python
 
-    from trafilatura.spider import focused_crawler
+    >>> from trafilatura.spider import focused_crawler
 
-    homepage = 'https://www.example.org'
+    >>> homepage = 'https://www.example.org'
 
     # perform the first iteration (will not work with this website, there are no internal links)
-    to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=1)
+    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=1)
 
     # perform another iteration using previously collected information
-    to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known=known_links)
+    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known=known_links)
 
 
 Here the crawler stops after seeing a maximum of 10 URLs or registering a total of 100000 URLs on the website, whichever comes first.
@@ -94,9 +94,9 @@ Navigation
 
 .. code-block:: python
 
-    from trafilatura.spider import is_still_navigation
+    >>> from trafilatura.spider import is_still_navigation
 
-    is_still_navigation(to_visit)
+    >>> is_still_navigation(to_visit)
     # returns True or False
 
 For more info please refer to the `core functions page <corefunctions.html>`_.

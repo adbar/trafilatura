@@ -86,7 +86,7 @@ Output format
 
 Output as TXT without metadata is the default, another format can be selected in two different ways:
 
--  ``--csv``, ``--json``, ``--markdown``, ``--xml`` or ``--xmltei``
+-  ``--csv``, ``--json``, ``--markdown`` (from version 1.9 onwards), ``--xml`` or ``--xmltei``
 -  ``-out`` or ``--output-format`` {txt,csv,json,markdown,xml,xmltei}
 
 .. hint::
