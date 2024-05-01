@@ -118,7 +118,7 @@ setup(
         "justext >= 3.0.0",
         # see tests on Github Actions
         "lxml == 4.9.2 ; platform_system == 'Darwin' and python_version <= '3.8'",
-        "lxml >= 4.9.4, < 5.2.0; platform_system != 'Darwin' or python_version > '3.8'",
+        "lxml >= 4.9.4, < 5.3.0; platform_system != 'Darwin' or python_version > '3.8'",
         "urllib3 >= 1.26, < 2; python_version < '3.7'",
         "urllib3 >= 1.26, < 3; python_version >= '3.7'",
     ],

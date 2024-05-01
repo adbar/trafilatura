@@ -5,15 +5,15 @@ beautifulsoup4==4.12.3
 boilerpy3==1.0.7
 #dragnet==2.0.4  # unmaintained!
 goose3==3.1.19
-html2text==2020.1.16
-html-text==0.5.2
+html2text==2024.2.26
+html-text==0.6.2
 inscriptis==2.5.0
 justext==3.0.0
 newspaper3k==0.2.8
 news-please==1.5.44
 readabilipy==0.2.0
 readability-lxml==0.8.1
-resiliparse==0.14.5
+resiliparse==0.14.7
 
 # additional data
 #jparser==0.0.20
