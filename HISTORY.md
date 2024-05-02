@@ -1,6 +1,32 @@
 ## History / Changelog
 
 
+### 1.9.0
+
+Extraction:
+- add markdown as explicit output (#550)
+- improve recall preset (#571)
+- speedup for readability-lxml (#547)
+- add global options object for extraction and use it in CLI (#552)
+- fix: better encoding detection (#548)
+- recall: fix for lists inside tables with @mikhainin (#534)
+- add symbol to preserve vertical spacing in Markdown (#499)
+- fix: table cell separators in non-XML output (#563)
+- slightly better accuracy and execution speed overall
+
+Metadata:
+- add file creation date (date extraction, JSON & XML-TEI) (#561)
+- fix: empty content in meta tag by @felipehertzer (#545)
+
+Maintenance:
+- restructure and simplify code (#543, #556)
+- CLI & downloads: revamp and use global options (#565)
+- eval: review code, add guidelines and small benchmark (#542)
+- fix: raise error if config file does not exist (#554)
+- deprecate `process_record()` (#549)
+- docs: convert readme to markdown and update info (#564, #578)
+
+
 ### 1.8.1
 
 Maintenance:

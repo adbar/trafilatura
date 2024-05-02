@@ -19,9 +19,6 @@ def get_long_description():
     "Return the README"
     with open("README.md", "r", encoding="utf-8") as filehandle:
         long_description = filehandle.read()
-    # long_description += "\n\n"
-    # with open("CHANGELOG.md", encoding="utf8") as f:
-    #    long_description += f.read()
     return long_description
 
 
