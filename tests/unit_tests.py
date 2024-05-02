@@ -1278,8 +1278,7 @@ def test_lang_detection():
     for sample in samples:
         result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
         detected = language_classifier(result, "")
-        assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}" or \
-               not LANGID_FLAG
+        assert detected == sample['expected'] or not LANGID_FLAG
 
 
 def test_config_loading():
