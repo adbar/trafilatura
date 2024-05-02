@@ -1271,15 +1271,15 @@ def test_lang_detection():
     """
     Accuracy of language detection.
     """
-    if LANGID_FLAG:
-        samples = [
-            {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
-            {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
-        ]
-        for sample in samples:
-            result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
-            detected = language_classifier(result, "")
-            assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
+    samples = [
+        {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
+        {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
+    ]
+    for sample in samples:
+        result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
+        detected = language_classifier(result, "")
+        assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}" or \
+               not LANGID_FLAG
 
 
 def test_config_loading():
