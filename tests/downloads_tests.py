@@ -18,10 +18,10 @@ try:
 except ImportError:
     brotli = None
 
-import pytest
-
 from time import sleep
 from unittest.mock import patch
+
+import pytest
 
 from courlan import UrlStore
 
@@ -76,8 +76,10 @@ def test_response_object():
 
 def test_fetch():
     '''Test URL fetching.'''
-    # logic: empty request?
+    # sanity check
     assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
+    with pytest.raises(ValueError):
+        fetch_url("https://example.org", decode=False)
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
@@ -138,6 +140,7 @@ def test_fetch():
     if pycurl is not None:
         assert _send_pycurl_request('https://httpbun.com/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
+
 
 def test_config():
     '''Test how configuration options are read and stored.'''

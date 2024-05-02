@@ -15,7 +15,7 @@ from unittest.mock import patch
 import pytest
 from courlan import UrlStore
 
-from trafilatura import cli, cli_utils, settings, spider
+from trafilatura import cli, cli_utils, spider  # settings
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
 from trafilatura.filters import LANGID_FLAG
 from trafilatura.settings import args_to_extractor
