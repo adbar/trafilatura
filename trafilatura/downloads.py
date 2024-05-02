@@ -5,7 +5,6 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
@@ -195,11 +194,9 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=Non
 
     """
     if not decode:
-        warnings.warn(
-            """Raw response objects will be deprecated for fetch_url,
-               use fetch_response instead.""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "Raw response objects are deprecated for fetch_url(), use fetch_response() instead."
+              )
     response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
     if response is not None and response != '':
         if not options:
@@ -312,7 +309,7 @@ def load_download_buffer(url_store, sleep_time=5):
 
 def buffered_downloads(bufferlist, download_threads, decode=True, options=None):
     '''Download queue consumer, single- or multi-threaded.'''
-    worker = partial(fetch_url, decode=decode, options=options)
+    worker = partial(fetch_url, options=options) if decode else fetch_response
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
             future_to_url = {executor.submit(worker, url): url for url in chunk}

@@ -3,6 +3,7 @@
 Unit tests for download functions from the trafilatura library.
 """
 
+import gzip
 import logging
 import os
 import sys
@@ -17,7 +18,8 @@ try:
 except ImportError:
     brotli = None
 
-import gzip
+import pytest
+
 from time import sleep
 from unittest.mock import patch
 
@@ -165,7 +167,9 @@ def test_decode():
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     gz_string = gzip.compress(html_string.encode("utf-8"))
-    assert decode_response(gz_string) == html_string == decode_file(gz_string)
+    assert decode_file(gz_string) == html_string
+    with pytest.raises(ValueError):
+        decode_response(gz_string)
     # Brotli
     if brotli is not None:
         brotli_string = brotli.compress(html_string.encode("utf-8"))
