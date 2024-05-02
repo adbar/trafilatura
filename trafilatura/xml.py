@@ -21,9 +21,7 @@ except ImportError:
 from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
 
-
-from .filters import text_chars_test
-from .utils import sanitize, sanitize_tree
+from .utils import sanitize, sanitize_tree, text_chars_test
 
 
 LOGGER = logging.getLogger(__name__)

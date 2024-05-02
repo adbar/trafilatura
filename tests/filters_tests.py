@@ -3,20 +3,13 @@
 Unit tests for the trafilatura's text filters.
 """
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
-
-
 from lxml import html
 
 from trafilatura import extract
-from trafilatura.filters import check_html_lang, language_filter
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
+
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
