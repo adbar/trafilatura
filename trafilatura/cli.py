@@ -5,10 +5,14 @@ Implementing a basic command-line interface.
 import argparse
 import logging
 import sys
-import warnings
+
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 from platform import python_version
 
-from . import __version__
 from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
                         load_input_dict, probe_homepage,
@@ -186,7 +190,7 @@ def add_args(parser):
         "--version",
         help="show version information and exit",
         action="version",
-        version=f"Trafilatura {__version__} - Python {python_version()}",
+        version=f"Trafilatura {version('trafilatura')} - Python {python_version()}",
     )
 
     return parser
@@ -215,53 +219,33 @@ def map_args(args):
         args.output_format = 'xmltei'
     # output configuration
     if args.nocomments is False:
-        args.no_comments = False
-        warnings.warn(
-            """--nocomments will be deprecated in a future version,
-               use --no-comments instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--nocomments is deprecated, use --no-comments instead",
+              )
     if args.notables is False:
-        args.no_tables = False
-        warnings.warn(
-            """--notables will be deprecated in a future version,
-               use --no-tables instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--notables is deprecated, use --no-tables instead",
+              )
     if args.with_metadata is True:
-        args.only_with_metadata = True
-        warnings.warn(
-            """--with-metadata will be deprecated in a future version,
-               use --only-with-metadata instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--with-metadata is deprecated, use --only-with-metadata instead",
+              )
     if args.inputfile:
-        args.input_file = args.inputfile
-        warnings.warn(
-            """--inputfile will be deprecated in a future version,
-               use --input-file instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--inputfile is deprecated, use --input-file instead",
+              )
     if args.inputdir:
-        args.input_dir = args.inputdir
-        warnings.warn(
-            """--inputdir will be deprecated in a future version,
-               use --input-dir instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--inputdir is deprecated, use --input-dir instead",
+              )
     if args.outputdir:
-        args.output_dir = args.outputdir
-        warnings.warn(
-            """--outputdir will be deprecated in a future version,
-               use --output-dir instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--outputdir is deprecated, use --output-dir instead",
+              )
     if args.hash_as_name:
-        warnings.warn(
-            """--hash-as-name will be deprecated in a future version,
-               hashes are now used by default.""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--hash-as-name is deprecated, hashes are used by default",
+              )
     return args
 
 
