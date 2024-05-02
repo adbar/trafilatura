@@ -6,12 +6,13 @@
 Extraction:
 - add markdown as explicit output (#550)
 - improve recall preset (#571)
-- speedup for readability-lxml by (#547)
+- speedup for readability-lxml (#547)
 - add global options object for extraction and use it in CLI (#552)
 - fix: better encoding detection (#548)
 - recall: fix for lists inside tables with @mikhainin (#534)
 - add symbol to preserve vertical spacing in Markdown (#499)
 - fix: table cell separators in non-XML output (#563)
+- slightly better accuracy and execution speed overall
 
 Metadata:
 - add file creation date (date extraction, JSON & XML-TEI) (#561)
