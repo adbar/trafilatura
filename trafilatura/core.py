@@ -13,10 +13,9 @@ from lxml.etree import XPath, strip_tags
 
 # own
 from .baseline import baseline
+from .deduplication import content_fingerprint, duplicate_test
 from .external import compare_extraction
-from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
-                      language_filter)
-from .hashing import content_fingerprint
+from .filters import LANGID_FLAG, check_html_lang, language_filter
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import extract_comments, extract_content
 from .metadata import Document, extract_metadata

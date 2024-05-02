@@ -13,13 +13,10 @@ try:
 except ImportError:
     LANGID_FLAG = False
 
-from .lru import LRUCache
-from .settings import LRU_SIZE
 from .utils import trim
 
-LOGGER = logging.getLogger(__name__)
 
-LRU_TEST = LRUCache(maxsize=LRU_SIZE)
+LOGGER = logging.getLogger(__name__)
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
 TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
@@ -31,28 +28,6 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
                         'WeChat|WeiBo|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$',
                        flags=re.IGNORECASE)
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
-
-
-def put_in_cache(teststring):
-    '''Implement LRU cache'''
-    cacheval = LRU_TEST.get(teststring)
-    # if the value is already defined
-    value = cacheval + 1 if cacheval != -1 else 1
-    LRU_TEST.put(teststring, value)
-
-
-def duplicate_test(element, options):
-    '''Check for duplicate text with LRU cache'''
-    teststring = trim(' '.join(element.itertext()))
-    # teststring = element.text
-    if len(teststring) > options.min_duplcheck_size:
-        # retrieve value from cache
-        cacheval = LRU_TEST.get(teststring)
-        if cacheval > options.max_repetitions:  # non-existent key will return -1
-            LRU_TEST.put(teststring, cacheval + 1)
-            return True
-    put_in_cache(teststring)
-    return False
 
 
 def check_html_lang(tree, target_language, strict=False):

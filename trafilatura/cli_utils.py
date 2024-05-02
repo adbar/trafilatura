@@ -21,11 +21,11 @@ from trafilatura import spider
 
 from .baseline import html2txt
 from .core import extract
+from .deduplication import generate_hash_filename
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
 from .filters import LANGID_FLAG, language_classifier
-from .hashing import generate_hash_filename
 from .meta import reset_caches
 from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, args_to_extractor
 from .sitemaps import sitemap_search
