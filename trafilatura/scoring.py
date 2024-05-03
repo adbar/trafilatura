@@ -61,9 +61,9 @@ def unique_words_markdown(markdown):
     return len(unique_words(plain))
 
 
-def confidence_score(html, markdown):
+def content_score(html, markdown):
     """
-    Calculate confidence score between HTML and Markdown
+    Calculate content score between HTML and Markdown
     """
     words_html = unique_words_html(html)
     words_markdown = unique_words_markdown(markdown)
