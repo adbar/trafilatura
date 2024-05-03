@@ -19,27 +19,20 @@ try:
 except ImportError:
     from charset_normalizer import detect
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
-
 import trafilatura.htmlprocessing
 from trafilatura import (bare_extraction, baseline, extract, html2txt,
                          process_record, xml)
 from trafilatura.core import Extractor
 from trafilatura.external import sanitize_tree, try_justext
-from trafilatura.filters import textfilter
 from trafilatura.main_extractor import (handle_formatting, handle_image,
                                         handle_lists, handle_paragraphs, handle_quotes,
                                         handle_table, handle_textelem)
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
-from trafilatura.utils import (detect_encoding, is_dubious_html, is_image_file, load_html,
-                               normalize_unicode, repair_faulty_html, sanitize, trim)
+from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
+                               language_classifier, load_html, normalize_unicode,
+                               repair_faulty_html, sanitize, textfilter, trim)
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -1280,15 +1273,14 @@ def test_lang_detection():
     """
     Accuracy of language detection.
     """
-    if LANGID_FLAG:
-        samples = [
-            {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
-            {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
-        ]
-        for sample in samples:
-            result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
-            detected = py3langid.classify(result)[0]
-            assert detected == sample['expected'], f"Lang detection failed for {sample['expected']}"
+    samples = [
+        {'html': '<html><body><p>Texto en español</p></body></html>', 'expected': 'es'},
+        {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
+    ]
+    for sample in samples:
+        result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
+        detected = language_classifier(result, "")
+        assert detected == sample['expected'] or not LANGID_FLAG
 
 
 def test_config_loading():

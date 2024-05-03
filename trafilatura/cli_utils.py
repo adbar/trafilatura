@@ -10,6 +10,7 @@ import string
 import sys
 import traceback
 
+from base64 import urlsafe_b64encode
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -21,15 +22,14 @@ from trafilatura import spider
 
 from .baseline import html2txt
 from .core import extract
+from .deduplication import generate_bow_hash
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
-from .filters import LANGID_FLAG, language_classifier
-from .hashing import generate_hash_filename
 from .meta import reset_caches
 from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, args_to_extractor
 from .sitemaps import sitemap_search
-from .utils import URL_BLACKLIST_REGEX, make_chunks
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, language_classifier, make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -39,6 +39,8 @@ CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
+
+CLEAN_XML = re.compile(r"<[^<]+?>")
 
 INPUT_URLS_ARGS = ['URL', 'crawl', 'explore', 'probe', 'feed', 'sitemap']
 
@@ -121,18 +123,22 @@ def determine_counter_dir(dirname, counter):
     return path.join(dirname, counter_dir)
 
 
-def generate_filename():
-    '''Generate a random filename of the desired length'''
-    return ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
-
-
 def get_writable_path(destdir, extension):
     '''Find a writable path and return it along with its random file name'''
     output_path = None
     while output_path is None or path.exists(output_path):
-        filename = generate_filename()
+        # generate a random filename of the desired length
+        filename = ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = path.join(destdir, filename + extension)
     return output_path, filename
+
+
+def generate_hash_filename(content: str) -> str:
+    """Create a filename-safe string by hashing the given content
+    after deleting potential XML tags."""
+    return urlsafe_b64encode(
+               generate_bow_hash(CLEAN_XML.sub("", content), 12)
+           ).decode()
 
 
 def determine_output_path(args, orig_filename, content, counter=None, new_filename=None):
@@ -153,7 +159,6 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
 
     output_path = path.join(destination_dir, filename + extension)
     return output_path, destination_dir
-
 
 
 def archive_html(htmlstring, args, counter=None):

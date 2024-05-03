@@ -10,18 +10,17 @@ from time import sleep
 from courlan import (UrlStore, extract_links, fix_relative_urls, get_hostinfo,
                      is_navigation_page, is_not_crawlable)
 
+try:
+    import py3langid
+except ImportError:
+    pass
+
 from .core import baseline
 from .downloads import fetch_response, fetch_url
 # from .feeds import find_feed_urls  # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import decode_file, load_html
+from .utils import LANGID_FLAG, decode_file, load_html
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
 
 LOGGER = logging.getLogger(__name__)
 

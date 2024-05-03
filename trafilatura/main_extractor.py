@@ -11,12 +11,11 @@ from copy import deepcopy
 from lxml.etree import Element, SubElement, strip_elements, strip_tags, tostring
 
 # own
-from .filters import text_chars_test
 from .htmlprocessing import (delete_by_link_density, handle_textnode,
                              link_density_test_tables, process_node,
                              prune_unwanted_nodes)
 from .settings import TAG_CATALOG
-from .utils import FORMATTING_PROTECTED, is_image_file
+from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
                      PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
