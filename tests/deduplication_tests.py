@@ -8,9 +8,10 @@ from lxml import etree, html
 import trafilatura.deduplication
 
 from trafilatura import extract
+from trafilatura.cli_utils import generate_hash_filename
 from trafilatura.core import Extractor
 from trafilatura.deduplication import (LRUCache, Simhash, content_fingerprint,
-                                       duplicate_test, generate_hash_filename)
+                                       duplicate_test)
 
 
 DEFAULT_OPTIONS = Extractor()

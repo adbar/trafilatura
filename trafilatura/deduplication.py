@@ -4,7 +4,6 @@
 import re
 import string
 
-from base64 import urlsafe_b64encode
 from difflib import SequenceMatcher
 from functools import lru_cache
 from hashlib import blake2b
@@ -15,8 +14,6 @@ from typing import Any, List, Optional
 from .settings import LRU_SIZE
 from .utils import trim
 
-
-CLEAN_XML = re.compile(r"<[^<]+?>")
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
@@ -53,13 +50,6 @@ def generate_bow_hash(inputstring: str, length: int = 24) -> bytes:
     teststring = " ".join(sample_tokens(inputstring)).strip()
     # perform hashing with limited size
     return blake2b(teststring.encode(), digest_size=length).digest()
-
-
-def generate_hash_filename(content: str) -> str:
-    "Create a filename-safe string by hashing the given content."
-    # delete potential XML tags first
-    content = CLEAN_XML.sub("", content)
-    return urlsafe_b64encode(generate_bow_hash(content, 12)).decode()
 
 
 class Simhash:
