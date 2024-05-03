@@ -5,7 +5,6 @@ Module bundling functions related to HTML and text processing.
 
 import logging
 import re
-import warnings
 
 # if brotli is installed
 try:
@@ -135,11 +134,7 @@ def detect_encoding(bytesobject):
 def decode_response(content):
     """Read the urllib3 object corresponding to the server response,
        try to guess its encoding and decode it to return a unicode string"""
-    warnings.warn(
-        "decode_response() will be deprecated, use decode_file() on the content.",
-         PendingDeprecationWarning
-    )
-    return decode_file(content)
+    raise ValueError("decode_response() is deprecated, use decode_file() instead.")
 
 
 def decode_file(filecontent):

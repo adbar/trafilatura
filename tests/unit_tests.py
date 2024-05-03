@@ -803,7 +803,9 @@ def test_extraction_options():
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
-    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is not None
+    with pytest.raises(ValueError):
+        extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG)
+    assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'

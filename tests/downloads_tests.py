@@ -3,6 +3,7 @@
 Unit tests for download functions from the trafilatura library.
 """
 
+import gzip
 import logging
 import os
 import sys
@@ -17,9 +18,10 @@ try:
 except ImportError:
     brotli = None
 
-import gzip
 from time import sleep
 from unittest.mock import patch
+
+import pytest
 
 from courlan import UrlStore
 
@@ -74,8 +76,10 @@ def test_response_object():
 
 def test_fetch():
     '''Test URL fetching.'''
-    # logic: empty request?
+    # sanity check
     assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
+    with pytest.raises(ValueError):
+        fetch_url("https://example.org", decode=False)
 
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
@@ -137,6 +141,7 @@ def test_fetch():
         assert _send_pycurl_request('https://httpbun.com/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
+
 def test_config():
     '''Test how configuration options are read and stored.'''
     # default config is none
@@ -165,7 +170,9 @@ def test_decode():
     # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     gz_string = gzip.compress(html_string.encode("utf-8"))
-    assert decode_response(gz_string) == html_string == decode_file(gz_string)
+    assert decode_file(gz_string) == html_string
+    with pytest.raises(ValueError):
+        decode_response(gz_string)
     # Brotli
     if brotli is not None:
         brotli_string = brotli.compress(html_string.encode("utf-8"))
