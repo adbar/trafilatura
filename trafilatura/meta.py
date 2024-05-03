@@ -8,9 +8,8 @@ from courlan.meta import clear_caches as reset_caches_courlan
 from htmldate.meta import reset_caches as reset_caches_htmldate
 from justext.core import define_stoplist
 
-from .deduplication import LRU_TEST, Simhash 
-from .utils import (is_similar_domain, line_processing,
-                    return_printables_and_spaces, trim)
+from .deduplication import LRU_TEST, Simhash, is_similar_domain
+from .utils import line_processing, return_printables_and_spaces, trim
 
 
 def reset_caches() -> None:

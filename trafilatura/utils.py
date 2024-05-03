@@ -7,7 +7,6 @@ content filtering and language detection.
 import logging
 import re
 
-from difflib import SequenceMatcher
 from functools import lru_cache
 from gzip import decompress
 from html import unescape
@@ -77,8 +76,6 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     "]+", flags=re.UNICODE)
 AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 CLEAN_META_TAGS = re.compile(r'["\']')
-
-STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
@@ -397,17 +394,6 @@ def normalize_authors(current_authors, author_string):
     if len(new_authors) == 0:
         return current_authors
     return '; '.join(new_authors).strip('; ')
-
-
-@lru_cache(maxsize=1024)
-def is_similar_domain(reference, new_string, threshold=0.5):
-    "Return the similarity ratio between two short strings, here domain names."
-    if new_string != reference:
-        new_string = STRIP_EXTENSION.sub("", new_string)
-        reference = STRIP_EXTENSION.sub("", reference)
-        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
-            return False
-    return True
 
 
 def make_chunks(iterable, n):

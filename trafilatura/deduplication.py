@@ -5,6 +5,7 @@ import re
 import string
 
 from base64 import urlsafe_b64encode
+from difflib import SequenceMatcher
 from functools import lru_cache
 from hashlib import blake2b
 from operator import add
@@ -17,7 +18,18 @@ from .utils import trim
 
 CLEAN_XML = re.compile(r"<[^<]+?>")
 
-PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
+STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
+
+
+@lru_cache(maxsize=1024)
+def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -> bool:
+    "Return the similarity ratio between two short strings, here domain names."
+    if new_string != reference:
+        new_string = STRIP_EXTENSION.sub("", new_string)
+        reference = STRIP_EXTENSION.sub("", reference)
+        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
+            return False
+    return True
 
 
 def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
@@ -144,6 +156,9 @@ def content_fingerprint(content: str) -> str:
     return Simhash(content).to_hex()
 
 
+PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
+
+
 class LRUCache:
     """
     Pure-Python Least Recently Used (LRU) cache using a circular doubly linked list
@@ -152,7 +167,7 @@ class LRUCache:
     First adapted by https://github.com/vbarbaresi
     """
 
-    def __init__(self, maxsize=128):
+    def __init__(self, maxsize: int = 128) -> None:
         # Constants shared by all lru cache instances:
         self.lock = RLock()  # because linkedlist updates aren't threadsafe
         # cache instance variables
@@ -163,7 +178,7 @@ class LRUCache:
         self.root[:] = [self.root, self.root, None, None]
         self.full = False
 
-    def _move_link(self, link):
+    def _move_link(self, link: Any) -> Any:
         # Move the link to the front of the circular queue
         link_prev, link_next, _key, result = link
         link_prev[NEXT], link_next[PREV] = link_next, link_prev
@@ -173,7 +188,7 @@ class LRUCache:
         link[NEXT] = self.root
         return result
 
-    def get(self, key):
+    def get(self, key) -> Any:
         """Tests if the key that is asked for is in the cache
            and retrieve its value from the linked list."""
         with self.lock:
@@ -182,7 +197,7 @@ class LRUCache:
                 return self._move_link(link)
         return -1
 
-    def put(self, key, value):
+    def put(self, key, value) -> None:
         "Stores a given key in the cache."
         # Size limited caching that tracks accesses by recency
         with self.lock:
@@ -219,7 +234,7 @@ class LRUCache:
                     # which could potentially be wrapped in an lru_cache itself.
                     self.full = len(self.cache) >= self.maxsize
 
-    def clear(self):
+    def clear(self) -> None:
         "Delete all cache content."
         with self.lock:
             self.cache.clear()
@@ -230,7 +245,7 @@ class LRUCache:
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 
-def put_in_cache(teststring):
+def put_in_cache(teststring: str) -> None:
     "Implement LRU cache."
     cacheval = LRU_TEST.get(teststring)
     # if the value is already defined
