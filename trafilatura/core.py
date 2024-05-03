@@ -5,7 +5,6 @@ Extraction configuration and processing functions.
 
 import logging
 import sys
-import warnings
 
 from copy import copy, deepcopy
 
@@ -103,13 +102,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         ValueError: Extraction problem.
     """
 
-    # deprecation warnings
+    # deprecations
     if with_metadata is True:
-        only_with_metadata = with_metadata
-        warnings.warn(
-            '"with_metadata" will be deprecated in a future version, use "only_with_metadata instead"',
-            PendingDeprecationWarning
-        )
+        raise ValueError('"with_metadata" is deprecated, use "only_with_metadata" instead')
     #if no_fallback is True:
     #    fast = no_fallback
         #warnings.warn(

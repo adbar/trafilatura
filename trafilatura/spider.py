@@ -16,10 +16,10 @@ except ImportError:
     pass
 
 from .core import baseline
-from .downloads import fetch_url
-# from .feeds import find_feed_urls # extract_links ad extract_feed_links
+from .downloads import fetch_response, fetch_url
+# from .feeds import find_feed_urls  # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, decode_response, load_html
+from .utils import LANGID_FLAG, decode_file, load_html
 
 
 LOGGER = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ def refresh_detection(htmlstring, homepage):
 
 def probe_alternative_homepage(homepage):
     "Check if the homepage is redirected and return appropriate values."
-    response = fetch_url(homepage, decode=False)
+    response = fetch_response(homepage, decode=False)
     if response is None or response == '':
         return None, None, None
     # get redirected URL here?
@@ -70,7 +70,7 @@ def probe_alternative_homepage(homepage):
         logging.info('followed redirect: %s', response.url)
         homepage = response.url
     # decode response
-    htmlstring = decode_response(response.data)
+    htmlstring = decode_file(response.data)
     # is there a meta-refresh on the page?
     htmlstring, homepage = refresh_detection(htmlstring, homepage)
     if homepage is None:  # malformed or malicious content
@@ -114,7 +114,7 @@ def process_response(response, base_url, language, rules=None):
         URL_STORE.add_urls([response.url], visited=True)
         if response.data is not None and response.data != '':
             # convert urllib3 response to string
-            htmlstring = decode_response(response.data)
+            htmlstring = decode_file(response.data)
             # proceed to link extraction
             process_links(htmlstring, base_url, language=language, rules=rules)
 
@@ -166,7 +166,7 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
                 # extract links on homepage
                 process_links(htmlstring, url=url, language=lang, rules=rules)
         else:
-            response = fetch_url(url, decode=False)
+            response = fetch_response(url, decode=False)
             process_response(response, base_url, lang, rules=rules)
     # optional backup of gathered pages without nav-pages ? ...
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
