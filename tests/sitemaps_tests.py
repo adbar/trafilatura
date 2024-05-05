@@ -10,7 +10,8 @@ from courlan import get_hostinfo
 
 import trafilatura
 from trafilatura import sitemaps
-from trafilatura.utils import decode_file, is_similar_domain
+from trafilatura.deduplication import is_similar_domain
+from trafilatura.utils import decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 

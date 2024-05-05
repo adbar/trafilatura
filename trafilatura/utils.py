@@ -1,11 +1,17 @@
 # pylint:disable-msg=E0611,I1101
 """
-Module bundling functions related to HTML and text processing.
+Module bundling functions related to HTML and text processing,
+content filtering and language detection.
 """
 
 import logging
 import re
-import warnings
+
+from functools import lru_cache
+from gzip import decompress
+from html import unescape
+from itertools import islice
+from unicodedata import normalize
 
 # if brotli is installed
 try:
@@ -13,12 +19,12 @@ try:
 except ImportError:
     brotli = None
 
-from difflib import SequenceMatcher
-from functools import lru_cache
-from gzip import decompress
-from html import unescape
-from itertools import islice
-from unicodedata import normalize
+# language detection
+try:
+    import py3langid
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
 
 # CChardet is faster and can be more accurate
 try:
@@ -71,10 +77,19 @@ AUTHOR_EMOJI_REMOVE = re.compile(
 AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 CLEAN_META_TAGS = re.compile(r'["\']')
 
-STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
-
 FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
+
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
+TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
+RE_HTML_LANG = re.compile(r'([a-z]{2})')
+
+# Mostly filters for social media
+RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|'
+                        'Linkedin|Mail|PDF|Pinterest|Pocket|Print|QQ|Reddit|Twitter|'
+                        'WeChat|WeiBo|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$',
+                       flags=re.IGNORECASE)
+# COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
 def handle_compressed_file(filecontent):
@@ -135,11 +150,7 @@ def detect_encoding(bytesobject):
 def decode_response(content):
     """Read the urllib3 object corresponding to the server response,
        try to guess its encoding and decode it to return a unicode string"""
-    warnings.warn(
-        "decode_response() will be deprecated, use decode_file() on the content.",
-         PendingDeprecationWarning
-    )
-    return decode_file(content)
+    raise ValueError("decode_response() is deprecated, use decode_file() instead.")
 
 
 def decode_file(filecontent):
@@ -385,17 +396,6 @@ def normalize_authors(current_authors, author_string):
     return '; '.join(new_authors).strip('; ')
 
 
-@lru_cache(maxsize=1024)
-def is_similar_domain(reference, new_string, threshold=0.5):
-    "Return the similarity ratio between two short strings, here domain names."
-    if new_string != reference:
-        new_string = STRIP_EXTENSION.sub("", new_string)
-        reference = STRIP_EXTENSION.sub("", reference)
-        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
-            return False
-    return True
-
-
 def make_chunks(iterable, n):
     """
     Chunk data into smaller pieces.
@@ -410,3 +410,72 @@ def make_chunks(iterable, n):
     # Python 3.8+ with walrus operator
     # while batch := tuple(islice(it, n)):
     #    yield batch
+
+
+def check_html_lang(tree, target_language, strict=False):
+    """Check HTML meta-elements for language information and split
+       the result in case there are several languages."""
+    for attr in TARGET_LANG_ATTRS:
+        elems = tree.findall(f'.//meta[@{attr}][@content]')
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("content", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("%s lang attr failed", attr)
+            return False
+
+    # HTML lang attribute: sometimes a wrong indication
+    if strict:
+        elems = tree.xpath("//html[@lang]")
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("lang", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("HTML lang failed")
+            return False
+
+    LOGGER.debug("No relevant lang elements found")
+    return True
+
+
+def language_classifier(temp_text, temp_comments):
+    '''Run external component (if installed) for language identification'''
+    if LANGID_FLAG is True:
+        result, _ = (
+            py3langid.classify(temp_text)
+            if len(temp_text) > len(temp_comments)
+            else py3langid.classify(temp_comments)
+        )
+    else:
+        LOGGER.warning('Language detector not installed, skipping detection')
+        result = None
+    return result
+
+
+def language_filter(temp_text, temp_comments, target_language, docmeta):
+    '''Filter text based on language detection and store relevant information'''
+    # todo: run and pass info along anyway?
+    if target_language is not None:
+        # more thorough: detection on actual text content
+        docmeta.language = language_classifier(temp_text, temp_comments)
+        # HTML lang check? sometimes contradicted by detection above
+        #if docmeta.language is None:
+        #    if check_html_lang(tree, target_language) is False:
+        #        LOGGER.error('wrong HTML meta language for URL %s', url)
+        #        raise ValueError
+        if docmeta.language is not None and docmeta.language != target_language:
+            LOGGER.warning('wrong language: %s %s', docmeta.language, docmeta.url)
+            return True, docmeta
+    return False, docmeta
+
+
+def textfilter(element):
+    '''Filter out unwanted text'''
+    testtext = element.tail if element.text is None else element.text
+    # to check: line len → continue if len(line) <= 5
+    return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
+
+
+def text_chars_test(string):
+    '''Determine if a string is only composed of spaces and/or control characters'''
+    # or not re.search(r'\w', string)
+    # return string is not None and len(string) != 0 and not string.isspace()
+    return bool(string) and not string.isspace()

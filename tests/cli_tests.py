@@ -15,10 +15,10 @@ from unittest.mock import patch
 import pytest
 from courlan import UrlStore
 
-from trafilatura import cli, cli_utils, settings, spider
+from trafilatura import cli, cli_utils, spider  # settings
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
-from trafilatura.filters import LANGID_FLAG
 from trafilatura.settings import args_to_extractor
+from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
@@ -101,15 +101,22 @@ def test_parser():
     assert e.type == SystemExit
     assert e.value.code == 0
     assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]', f.getvalue())
-    # test future deprecations
-    testargs = ['', '--inputfile', 'test.txt', '--with-metadata', '--nocomments', '--notables', '--hash-as-name']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.map_args(cli.parse_args(testargs))
-    assert args.no_comments is False and args.no_tables is False and args.only_with_metadata and args.input_file == 'test.txt'
-    testargs = ['', '--inputdir', 'test1', '--outputdir', 'test2', '-vv']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.map_args(cli.parse_args(testargs))
-    assert args.input_dir and args.output_dir
+
+    # test deprecations
+    with patch.object(sys, 'argv', ['', '--inputfile', 'test.txt']), pytest.raises(ValueError):
+        cli.map_args(cli.parse_args(testargs))
+
+    for arg in ('--with-metadata', '--nocomments', '--notables', '--hash-as-name'):
+        testargs = ['', arg]
+        with patch.object(sys, 'argv', testargs), pytest.raises(ValueError):
+            cli.map_args(cli.parse_args(testargs))
+
+    testargs = ['', '--inputdir', 'test1']
+    with patch.object(sys, 'argv', testargs), pytest.raises(ValueError):
+        cli.map_args(cli.parse_args(testargs))
+    testargs = ['', '--outputdir', 'test2']
+    with patch.object(sys, 'argv', testargs), pytest.raises(ValueError):
+        cli.map_args(cli.parse_args(testargs))
 
 
 def test_climain():

@@ -5,7 +5,6 @@ Extraction configuration and processing functions.
 
 import logging
 import sys
-import warnings
 
 from copy import copy, deepcopy
 
@@ -13,15 +12,13 @@ from lxml.etree import XPath, strip_tags
 
 # own
 from .baseline import baseline
+from .deduplication import content_fingerprint, duplicate_test
 from .external import compare_extraction
-from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
-                      language_filter)
-from .hashing import content_fingerprint
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import extract_comments, extract_content
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
-from .utils import load_html, normalize_unicode
+from .utils import LANGID_FLAG, check_html_lang, language_filter, load_html, normalize_unicode
 from .xml import build_json_output, control_xml_output, xmltotxt, xmltocsv
 from .xpaths import REMOVE_COMMENTS_XPATH
 
@@ -105,13 +102,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         ValueError: Extraction problem.
     """
 
-    # deprecation warnings
+    # deprecations
     if with_metadata is True:
-        only_with_metadata = with_metadata
-        warnings.warn(
-            '"with_metadata" will be deprecated in a future version, use "only_with_metadata instead"',
-            PendingDeprecationWarning
-        )
+        raise ValueError('"with_metadata" is deprecated, use "only_with_metadata" instead')
     #if no_fallback is True:
     #    fast = no_fallback
         #warnings.warn(

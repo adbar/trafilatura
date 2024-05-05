@@ -5,20 +5,17 @@ Unit tests for the spidering part of the trafilatura library.
 
 import logging
 import sys
+
 from collections import deque
 
 import pytest
+
 from courlan import UrlStore
 
 from trafilatura import spider
 from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.utils import LANGID_FLAG
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 

@@ -19,9 +19,6 @@ def get_long_description():
     "Return the README"
     with open("README.md", "r", encoding="utf-8") as filehandle:
         long_description = filehandle.read()
-    # long_description += "\n\n"
-    # with open("CHANGELOG.md", encoding="utf8") as f:
-    #    long_description += f.read()
     return long_description
 
 
@@ -31,7 +28,7 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.19; python_version >= '3.11'",
-        "htmldate[speed] >= 1.8.0",
+        "htmldate[speed] >= 1.8.1",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.3",
     ],
@@ -112,8 +109,8 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
-        "courlan >= 1.0.0",
-        "htmldate >= 1.8.0",
+        "courlan >= 1.1.0",
+        "htmldate >= 1.8.1",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.0",
         # see tests on Github Actions

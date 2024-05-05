@@ -10,9 +10,9 @@ from copy import deepcopy
 from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import strip_tags
 
-from .filters import duplicate_test, textfilter
+from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
-from .utils import trim
+from .utils import textfilter, trim
 
 
 LOGGER = logging.getLogger(__name__)
