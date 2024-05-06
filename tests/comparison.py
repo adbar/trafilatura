@@ -18,11 +18,8 @@ import html_text
 import justext
 from boilerpy3 import extractors
 from bs4 import BeautifulSoup
-#from dragnet import extract_content #, extract_content_and_comments
 from goose3 import Goose
 from inscriptis import get_text
-# from jparser import PageModel
-# from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from newsplease import NewsPlease
 from readabilipy import simple_json_from_html_string
@@ -56,9 +53,6 @@ g = Goose()
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
     if string is not None:
-        # delete newlines that are not related to punctuation or markup
-        # string = re.sub(r'(?<![p{P}>])\n', ' ', string)
-        # proper trimming
         string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
         string = string.strip()
     return string
@@ -69,8 +63,6 @@ def load_document_binary(filename):
     mypath = os.path.join(TEST_DIR, 'cache', filename)
     if not os.path.isfile(mypath):
         mypath = os.path.join(TEST_DIR, 'eval', filename)
-    #if not os.path.isfile(mypath):
-    #    mypath = os.path.join(TEST_DIR, 'additional', filename)
     with open(mypath, 'rb') as inputf:
         htmlstring = inputf.read()
     return htmlstring
@@ -268,6 +260,14 @@ def run_bs4(htmlstring):
     return BeautifulSoup(htmlstring, features='lxml').get_text(strip=True)
 
 
+def run_nothing(htmlstring):
+    return ''
+
+
+def run_everything(htmlstring):
+    return htmlstring
+
+
 def evaluate_result(result, item):
     '''evaluate result contents'''
     true_positives = 0
@@ -312,26 +312,34 @@ def calculate_scores(mydict):
 
 
 def compute_confusion_matrix(run_function, dict_result, htmlstring, item):
+    # TODO correlations between algorithms for instances?
     start = time.time()
     result = run_function(htmlstring)
     dict_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, item)
-    dict_result['true positives'] += tp
-    dict_result['false positives'] += fp
-    dict_result['true negatives'] += tn
-    dict_result['false negatives'] += fn
+    if result:  # empty string returned
+        tp, fn, fp, tn = evaluate_result(result, item)
+        dict_result['true positives'] += tp
+        dict_result['false positives'] += fp
+        dict_result['true negatives'] += tn
+        dict_result['false negatives'] += fn
+    else:
+        dict_result['skipped_instances'] += 1
     return dict_result
 
 
 def run_comparison(small: bool = False, output_csv: bool = True,
-                   output_rst: bool = True):
+                   output_md: bool = True):
+    algorithms = {'nothing': [],
+                  'everything': [],
+                  'baseline': [run_baseline]}
     # save all results to a dictionary
     results_all = dict()
     template_dict = {'true positives': 0,
                     'false positives': 0,
                     'true negatives': 0,
                     'false negatives': 0,
-                    'time': 0}
+                    'time': 0,
+                    'skipped_instances': 0}
     # initialize result dictionaries
     nothing, everything, baseline_result, trafilatura_result, justext_result, \
         trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, \
@@ -453,17 +461,17 @@ def run_comparison(small: bool = False, output_csv: bool = True,
             writer.writerow(column_names)
             for algorithm, results in results_all.items():
                 writer.writerow([algorithm, results[0], results[1], results[2], results[3]])
-    if output_rst:
-        rst = '| ' + ' | '.join(column_names) + ' |\n'
-        rst += '|:---:|:---:|:---:|:---:|:---:|\n'
+    if output_md:
+        md = '| ' + ' | '.join(column_names) + ' |\n'
+        md += '|:---:|:---:|:---:|:---:|:---:|\n'
         for algorithm, results in results_all.items():
-            rst += f'| {algorithm} | {results[0]} | {results[1]} | {results[2]} | {results[3]} |\n'
+            md += f'| {algorithm} | {results[0]} | {results[1]} | {results[2]} | {results[3]} |\n'
         with open('results.md', 'w', encoding='utf-8') as f:
-            f.write(rst)
-        print(rst)
+            f.write(md)
+        print(md)
 
 
 if __name__ == '__main__':
     # TODO argparse for algorithm choice
-    small = False
+    small = True
     run_comparison(small=small)
