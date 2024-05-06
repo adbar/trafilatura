@@ -491,11 +491,10 @@ def is_probably_readerable(
     """
     doc = load_html(html)
 
-    nodes = doc.xpath(".//p | .//pre | .//article")
+    nodes = doc.xpath(".//p | .//pre | .//article | .//div[.//br]")
+    # br_nodes = doc.xpath(".//div[br]")
 
-    # Adding divs that directly contain <br> tags
-    br_nodes = doc.xpath(".//div[br]")
-    node_set = set(nodes + br_nodes)
+    node_set = set(nodes)
 
     score = 0
     for node in node_set:
