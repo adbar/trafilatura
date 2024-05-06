@@ -93,7 +93,12 @@ class Evaluation():
                        'confusion_matrix': template_dict.copy()}
         }
 
-    def __init__(self, test_data, algorithms, metrics, output, metadata=False) -> None:
+    def __init__(self,
+                 test_data: str,
+                 algorithms: list,
+                 metrics: list=['precision', 'recall', 'accuracy', 'f1'],
+                 output: list=['csv', 'md'],
+                 metadata: bool=False) -> None:
         self.test_data = self.read_data(test_data)
         self.algorithms = algorithms
         self.metrics = metrics
@@ -104,7 +109,9 @@ class Evaluation():
         if 'csv' in output:
             self.output_csv()
         elif 'md' in output:
-            self.output_md
+            self.output_md()
+        # print scores
+        self.print_scores()
 
     @staticmethod
     def read_data(path):
@@ -237,7 +244,6 @@ class Evaluation():
 
     def create_df(self):
         """results to pandas dataframe"""
-
         columns = ['algorithm', 'version'] + self.metrics + ['time difference']
         rows = []
         for algo in self.algorithms:
@@ -248,10 +254,14 @@ class Evaluation():
                 algo_version = '-'
             print(self.results[algo])
             results = self.results[algo]['scores']
+            time_diff = self.results[algo]['confusion_matrix']['time'] / \
+                self.results['baseline']['confusion_matrix']['time']
             row = [algo, algo_version] + list(results) + \
-                [self.results[algo]['confusion_matrix']['time']]
+                [time_diff]
             rows.append(row)
         df = pd.DataFrame(rows, columns=columns)
+        # algorithm name as index
+        df.set_index('algorithm', inplace=True)
         return df
 
     def output_csv(self, path='results.csv'):
@@ -266,13 +276,14 @@ class Evaluation():
             f.write(md)
 
     def print_scores(self):
+        """print results"""
         for algo, infos in self.results.items():
-            print(result_str)
-            print(result_dict)
-            print(f"time diff.: {result_dict['time'] / baseline_result['time']:.2f}")
-            scores = (calculate_scores(result_dict))
-            print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % scores)
-            results_all[result_str] = scores
+            print(algo)
+            print(infos)
+            print(f"time diff.: {self.output_df.loc[algo]['time difference']:.2f}")
+            for m in self.metrics:
+                print(f"{m}: {self.output_df.loc[algo][m]:.2f}")
+
 
 def cmdparser():
     """Parse command line arguments"""
@@ -281,14 +292,14 @@ def cmdparser():
     parser = argparse.ArgumentParser(description='Run an evaluation benchmark')
     parser.add_argument('--small', action='store_true', help='Evaluate trafilatura and baselines only.')
     parser.add_argument('--all', action='store_true', help='Evaluate all available algorithms.')
-    # file paths as default
+    # file path, metrics and algorithms as default
     parser.add_argument('--testfile', default='evaldata.json', help='File path to the test data.')
     parser.add_argument('--metrics', nargs='+', default=['precision', 'recall', 'accuracy', 'f1'],
                         help='Evaluation metrics, implemented: precision, recall, accuracy, f-score.')
     parser.add_argument('--algorithms',
                         nargs='+',
                         default=['trafilatura', 'trafilatura + X', 'everything', 'nothing', 'baseline'],
-                        help='Further tools/algorithms to evaluate, implemented: precision, recall, accuracy, f-score.')
+                        help='Further tools/algorithms to evaluate, implemented: .')
     # Print help and exit if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help()
@@ -308,7 +319,6 @@ if __name__ == '__main__':
         algorithms = Evaluation.ALGORITHMS.keys()
     test_file = args.testfile
     metrics = args.metrics
-    print(algorithms, metrics)
     eval = Evaluation(test_data='evaldata.json', algorithms=algorithms,
                       metrics=metrics, output='results')
     print(eval.output_df)
