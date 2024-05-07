@@ -12,15 +12,6 @@ try:
 except ImportError:
     from charset_normalizer import detect
 
-from trafilatura import extract
-
-try:
-    from trafilatura import baseline
-except ImportError:
-    print("Cannot import baseline, using simple version")
-    baseline = None
-
-
 import comparison
 
 
@@ -98,6 +89,7 @@ class Evaluation():
                  algorithms: list,
                  metrics: list=['precision', 'recall', 'accuracy', 'f1'],
                  output: list=['csv', 'md'],
+                 output_dir: str='results/',
                  metadata: bool=False) -> None:
         self.test_data = self.read_data(test_data)
         self.algorithms = algorithms
@@ -106,9 +98,10 @@ class Evaluation():
         self.output = output
         self.results = self.compute_results()
         self.output_df = self.create_df()
+        self.output_dir = output_dir
         if 'csv' in output:
             self.output_csv()
-        elif 'md' in output:
+        if 'md' in output:
             self.output_md()
         # print scores
         self.print_scores()
@@ -266,13 +259,13 @@ class Evaluation():
 
     def output_csv(self, path='results.csv'):
         """save results to a csv file"""
-        self.output_df.to_csv(path)
+        self.output_df.to_csv(self.output_dir + path)
 
     def output_md(self, path='results.md'):
         """save and print results in markdown format"""
         md = self.output_df.to_markdown()
         print(md)
-        with open(path, 'w') as f:
+        with open(self.output_dir + path, 'w') as f:
             f.write(md)
 
     def print_scores(self):
@@ -320,5 +313,5 @@ if __name__ == '__main__':
     test_file = args.testfile
     metrics = args.metrics
     eval = Evaluation(test_data='evaldata.json', algorithms=algorithms,
-                      metrics=metrics, output='results')
+                      metrics=metrics, output=['csv', 'md'])
     print(eval.output_df)
