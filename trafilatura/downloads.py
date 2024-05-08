@@ -35,7 +35,7 @@ except ImportError:
     from importlib_metadata import version
 
 from .settings import DEFAULT_CONFIG, Extractor
-from .utils import URL_BLACKLIST_REGEX, decode_file, make_chunks
+from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -168,13 +168,8 @@ def _handle_response(url, response, decode, options):
     lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif lentest < options.min_file_size:
-        LOGGER.error('too small/incorrect for URL %s', url)
-        # raise error instead?
-    elif lentest > options.max_file_size:
-        LOGGER.error('too large: length %s for URL %s', lentest, url)
-        # raise error instead?
-    else:
+    # raise error instead?
+    elif is_acceptable_length(lentest, options):
         return response.html if decode else response
     # catchall
     return None

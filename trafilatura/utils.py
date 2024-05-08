@@ -412,6 +412,17 @@ def make_chunks(iterable, n):
     #    yield batch
 
 
+def is_acceptable_length(my_len, options):
+    "Check if the document length is within acceptable boundaries."
+    if my_len < options.min_file_size:
+        LOGGER.error("too small/incorrect for URL %s", options.url)
+        return False
+    if my_len > options.max_file_size:
+        LOGGER.error("too large: length %s for URL %s", my_len, options.url)
+        return False
+    return True
+
+
 def check_html_lang(tree, target_language, strict=False):
     """Check HTML meta-elements for language information and split
        the result in case there are several languages."""

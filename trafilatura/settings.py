@@ -99,7 +99,7 @@ class Extractor:
         self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
         self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
         self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
-        self.config = config  # todo: remove?
+        self.config = config
 
 
 def args_to_extractor(args, url=None):

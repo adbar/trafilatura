@@ -29,7 +29,7 @@ from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, args_to_extractor
 from .sitemaps import sitemap_search
-from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, language_classifier, make_chunks
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, is_acceptable_length, language_classifier, make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -399,10 +399,8 @@ def examine(htmlstring, args, url=None, options=None):
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
-    elif len(htmlstring) > options.max_file_size:
-        sys.stderr.write('ERROR: file too large\n')
-    elif len(htmlstring) < options.min_file_size:
-        sys.stderr.write('ERROR: file too small\n')
+    elif not is_acceptable_length(len(htmlstring), options):
+        sys.stderr.write('ERROR: file size\n')
     # proceed
     else:
         try:
