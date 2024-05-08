@@ -120,25 +120,27 @@ def process_response(response, base_url, language, rules=None):
 
 
 def init_crawl(homepage, todo, known_links, language=None, rules=None):
-    """Start crawl by initializing variables and potentially examining the starting page."""
+    "Start crawl by initializing variables and potentially examining the starting page."
     # config=DEFAULT_CONFIG
     _, base_url = get_hostinfo(homepage)
     if base_url is None or len(base_url) < 1:
-        raise ValueError(f'cannot crawl homepage: {homepage}')
+        raise ValueError(f"cannot crawl homepage: {homepage}")
     # TODO: just known or also visited?
     if known_links is not None:
         URL_STORE.add_urls(urls=known_links, visited=True)
     i = 0
     # fetch and parse robots.txt file if necessary
     if rules is None:
-        rules = urllib.robotparser.RobotFileParser()
-        rules.set_url(base_url + '/robots.txt')
-        # exceptions happening here
-        try:
-            rules.read()
-        except Exception as exc:
-            LOGGER.error('cannot read robots.txt: %s', exc)
-            rules = None
+        robots_url = base_url + "/robots.txt"
+        data = fetch_url(robots_url)
+        if data is not None:
+            rules = urllib.robotparser.RobotFileParser()
+            rules.set_url(robots_url)
+            # exceptions happening here
+            try:
+                rules.parse(data.splitlines())
+            except Exception as exc:
+                LOGGER.error("cannot read robots.txt: %s", exc)
     URL_STORE.store_rules(base_url, rules)
     # initialize crawl by visiting homepage if necessary
     if todo is None:
