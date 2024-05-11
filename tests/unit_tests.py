@@ -1339,7 +1339,7 @@ def test_is_probably_readerable():
 
     called = False
 
-    def visibility_checker_invisible():
+    def visibility_checker_invisible(node):
         nonlocal called
         called = True
         return False
@@ -1351,7 +1351,7 @@ def test_is_probably_readerable():
 
     called = False
 
-    def visibility_checker_visible():
+    def visibility_checker_visible(node):
         nonlocal called
         called = True
         return True
@@ -1360,6 +1360,18 @@ def test_is_probably_readerable():
     options = {"visibility_checker": visibility_checker_visible}
     assert is_probably_readerable(very_large_doc, options)
     assert called
+
+    # https://github.com/mozilla/readability/blob/main/test/test-pages/mozilla-2/source.html#L22
+    with open(
+        path.join(RESOURCES_DIR, "mozilla.org.firefox.developer.html"),
+        "r",
+        encoding="utf-8",
+    ) as f:
+        teststring = f.read()
+
+    doc = load_html(teststring)
+    assert not is_probably_readerable(doc)
+
 
 
 if __name__ == '__main__':
@@ -1386,3 +1398,4 @@ if __name__ == '__main__':
     test_nonstd_html_entities()
     test_large_doc_performance()
     test_lang_detection()
+    test_is_probably_readerable()

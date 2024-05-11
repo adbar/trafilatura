@@ -483,13 +483,15 @@ def is_node_visible(node):
     return True
 
 
-def is_probably_readerable(
-    html, min_score=20, min_content_length=140, visibility_checker=is_node_visible
-):
+def is_probably_readerable(html, options={}):
     """
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
     doc = load_html(html)
+
+    min_content_length = options.get("min_content_length", 140)
+    min_score = options.get("min_score", 20)
+    visibility_checker = options.get("visibility_checker", is_node_visible)
 
     nodes = doc.xpath(".//p | .//pre | .//article | .//div[.//br]")
     # br_nodes = doc.xpath(".//div[br]")
