@@ -14,6 +14,8 @@ import pytest
 
 from lxml import etree, html
 
+from trafilatura.readability_lxml import is_probably_readerable
+
 try:
     from cchardet import detect
 except ImportError:
@@ -1290,6 +1292,74 @@ def test_config_loading():
 
     config = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
     assert config is not None
+
+
+def test_is_probably_readerable():
+    """
+    Test is_probably_readerable function.
+    """
+    very_small_doc = load_html("<html><p id='main'>hello there</p></html>")
+    small_doc = load_html(f"<html><p id='main'>{'hello there ' * 11}</p></html>")
+    large_doc = load_html(f"<html><p id='main'>{'hello there ' * 12}</p></html>")
+    very_large_doc = load_html(f"<html><p id='main'>{'hello there ' * 50}</p></html>")
+
+    # should only declare large documents as readerable when default options
+    assert not is_probably_readerable(very_small_doc)
+    assert not is_probably_readerable(small_doc)
+    assert not is_probably_readerable(large_doc)
+    assert is_probably_readerable(very_large_doc)
+
+    # should declare small and large documents as readerable when lower min_content_length
+    options = {"min_content_length": 120, "min_score": 0}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should only declare largest document as readerable when higher min_content_length
+    options = {"min_content_length": 200, "min_score": 0}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert not is_probably_readerable(small_doc, options)
+    assert not is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should declare large documents as readerable when lower min_score
+    options = {"min_content_length": 0, "min_score": 4}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should declare large documents as readerable when higher min_score
+    options = {"min_content_length": 0, "min_score": 11.5}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert not is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    called = False
+
+    def visibility_checker_invisible():
+        nonlocal called
+        called = True
+        return False
+
+    # should use node visibility checker provided as option - not visible
+    options = {"visibility_checker": visibility_checker_invisible}
+    assert not is_probably_readerable(very_large_doc, options)
+    assert called
+
+    called = False
+
+    def visibility_checker_visible():
+        nonlocal called
+        called = True
+        return True
+
+    # should use node visibility checker provided as option - visible
+    options = {"visibility_checker": visibility_checker_visible}
+    assert is_probably_readerable(very_large_doc, options)
+    assert called
 
 
 if __name__ == '__main__':
