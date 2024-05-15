@@ -1298,10 +1298,29 @@ def test_is_probably_readerable():
     """
     Test is_probably_readerable function.
     """
-    very_small_doc = load_html("<html><p id='main'>hello there</p></html>")
-    small_doc = load_html(f"<html><p id='main'>{'hello there ' * 11}</p></html>")
-    large_doc = load_html(f"<html><p id='main'>{'hello there ' * 12}</p></html>")
-    very_large_doc = load_html(f"<html><p id='main'>{'hello there ' * 50}</p></html>")
+    very_small_str = "hello there"
+    small_str = "hello there " * 11
+    large_str = "hello there " * 12
+    very_large_str = "hello there " * 50
+
+    very_small_doc = load_html(f"<html><p id='main'>{very_small_str}</p></html>")
+    small_doc = load_html(f"<html><p id='main'>{small_str}</p></html>")
+    large_doc = load_html(f"<html><p id='main'>{large_str}</p></html>")
+    very_large_doc = load_html(f"<html><p id='main'>{very_large_str}</p></html>")
+    likely_doc = load_html(
+        f"<html><p id='main' class='header'>{very_large_str}</p><p id='header' class='article'>{very_large_str}</p><p id='footer' class='body'>{very_large_str}</p></html>"
+    )
+    unlikely_doc = load_html(
+        f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>"
+    )
+    visible_doc = load_html(
+        f"<html><p id='main' style='display: block'>{very_large_str}</p><p id='main'>{very_large_str}</p><p id='main' aria-hidden='false'>{very_large_str}</p></html>"
+    )
+    invisible_doc = load_html(
+        f"<html><p id='main' style='display: none'>{very_large_str}</p><p id='main' hidden>{very_large_str}</p><p id='main' aria-hidden='true'>{very_large_str}</p></html>"
+    )
+    linebreaks_doc = load_html(f"<html><div>{(large_str + "<br>") * 10}</div></html>")
+    no_linebreaks_doc = load_html(f"<html><div>{large_str * 10}</div></html>")
 
     # should only declare large documents as readerable when default options
     assert not is_probably_readerable(very_small_doc)
@@ -1337,6 +1356,14 @@ def test_is_probably_readerable():
     assert is_probably_readerable(large_doc, options)
     assert is_probably_readerable(very_large_doc, options)
 
+    # should check id and class attributes
+    assert is_probably_readerable(likely_doc)
+    assert not is_probably_readerable(unlikely_doc)
+
+    # should check linebreaks in div elements
+    assert is_probably_readerable(linebreaks_doc)
+    assert not is_probably_readerable(no_linebreaks_doc)
+
     called = False
 
     def visibility_checker_invisible(node):
@@ -1360,6 +1387,10 @@ def test_is_probably_readerable():
     options = {"visibility_checker": visibility_checker_visible}
     assert is_probably_readerable(very_large_doc, options)
     assert called
+
+    # should use default node visibility checker 
+    assert is_probably_readerable(visible_doc)
+    assert not is_probably_readerable(invisible_doc)
 
     # https://github.com/mozilla/readability/blob/main/test/test-pages/mozilla-2/source.html#L22
     with open(
