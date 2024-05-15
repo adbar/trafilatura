@@ -6,6 +6,7 @@ import sys
 import time
 
 import pandas as pd
+from rouge_score import rouge_scorer
 
 try:
     from cchardet import detect
@@ -86,17 +87,23 @@ class Evaluation():
 
     def __init__(self,
                  test_data: str,
+                 html_dir: str,
                  algorithms: list,
                  metrics: list=['precision', 'recall', 'accuracy', 'f1'],
                  output: list=['csv', 'md'],
                  output_dir: str='results/',
                  metadata: bool=False) -> None:
         self.test_data = self.read_data(test_data)
+        self.html_dir = html_dir
         self.algorithms = algorithms
         self.metrics = metrics
         self.metadata = metadata
         self.output = output
+        # store algorithm predictions
+        self.predictions = None  # TODO
+        # compute results
         self.results = self.compute_results()
+        # store results
         self.output_df = self.create_df()
         self.output_dir = output_dir
         if 'csv' in output:
@@ -106,25 +113,29 @@ class Evaluation():
         # print scores
         self.print_scores()
 
-    @staticmethod
-    def read_data(path):
+    def read_data(self, path):
         """read test data set from a file path"""
         if path.endswith('json'):  # json file
             with open(path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+            if 'with' in list(data.items())[0][1]:
+                self.evaltype = 'chunks'
+            # scrapinghub and andythefactory
+            elif 'articleBody' in list(data.items())[0][1]:
+                self.evaltype = 'fullstring'
         if type(data) == list:  # list of dicts
             pass
         elif type(data) == dict:  # nested dict
             pass
         return data
 
-    @staticmethod
-    def load_document_string(filename):
+    def load_document_string(self, filename, test_dir=''):
         '''load mock page from samples'''
-        TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-        mypath = os.path.join(TEST_DIR, 'cache', filename)
+        if not test_dir:
+            test_dir = os.path.abspath(os.path.dirname(__file__))
+        mypath = os.path.join(test_dir, 'cache', filename)
         if not os.path.isfile(mypath):
-            mypath = os.path.join(TEST_DIR, 'eval', filename)
+            mypath = os.path.join(test_dir, self.html_dir, filename)
         try:
             with open(mypath, 'r', encoding="utf-8") as inputf:
                 htmlstring = inputf.read()
@@ -143,44 +154,48 @@ class Evaluation():
                 print('Encoding error')
         return htmlstring
 
-    def compute_baselines(self):
-        """compute baseline results"""
+    @staticmethod
+    def load_html(directory, filename):
         pass
 
-    @staticmethod
-    def evaluate_result(result, item):
+    def evaluate_result(self, result, item):
         '''evaluate result contents'''
         true_positives = 0
         false_negatives = 0
         false_positives = 0
         true_negatives = 0
-        # report if problematic
-        if len(item['with']) == 0 or len(item['with']) > 6:
-            print('counter', item)
-        if len(item['without']) == 0 or len(item['without']) > 6:
-            print('counter', item)
-        # examine
-        if result is not None and isinstance(result, str):
-            # expected output
-            for to_include in item['with']:
-                if to_include in result:
-                    true_positives += 1
-                else:
-                    false_negatives += 1
-            # unwanted output
-            for to_exclude in item['without']:
-                if to_exclude in result:
-                    false_positives += 1
-                else:
-                    true_negatives += 1
-        # add up as bulk counts
-        else:
-            false_negatives += len(item['with'])
-            true_negatives += len(item['without'])
+
+        # handcrafted with/without strings
+        if self.evaltype == 'chunks':
+            # report if problematic
+            if len(item['with']) == 0 or len(item['with']) > 6:
+                print('counter', item)
+            if len(item['without']) == 0 or len(item['without']) > 6:
+                print('counter', item)
+            # examine
+            if result is not None and isinstance(result, str):
+                # expected output
+                for to_include in item['with']:
+                    if to_include in result:
+                        true_positives += 1
+                    else:
+                        false_negatives += 1
+                # unwanted output
+                for to_exclude in item['without']:
+                    if to_exclude in result:
+                        false_positives += 1
+                    else:
+                        true_negatives += 1
+            # add up as bulk counts
+            else:
+                false_negatives += len(item['with'])
+                true_negatives += len(item['without'])
+        # full article body in gold standard
+        elif self.evaltype == 'fullstring':
+            n_grams = None  # TODO ngram shingling
         return true_positives, false_negatives, false_positives, true_negatives
 
-    def compute_confusion_matrix(self, dict_result, htmlstring, item):
-        # TODO correlations between algorithms for instances?
+    def predict(self, dict_result, htmlstring):
         start = time.time()
         result = dict_result['function'](htmlstring)
         dict_result['confusion_matrix']['time'] += time.time() - start
@@ -188,12 +203,23 @@ class Evaluation():
         # in nothing null hypothesis always empty string
         if not result and (dict_result['library'] != '-'):
             dict_result['confusion_matrix']['skipped_instances'] += 1
+        return dict_result['confusion_matrix'], result
+
+    def compute_confusion_matrix(self, dict_result, result, item):
+        # TODO correlations between algorithms for instances?
         tp, fn, fp, tn = self.evaluate_result(result, item)
         dict_result['confusion_matrix']['true positives'] += tp
         dict_result['confusion_matrix']['false positives'] += fp
         dict_result['confusion_matrix']['true negatives'] += tn
         dict_result['confusion_matrix']['false negatives'] += fn
         return dict_result['confusion_matrix']
+
+    def compute_rouge(self, pred, gold):
+        # rouge longest common substring
+        scorer = rouge_scorer.RougeScorer(['rougeLsum'],
+                                          use_stemmer=False,
+                                          split_summaries=True)
+        return scorer.score(pred, gold)
 
     @staticmethod
     def calculate_scores(mydict):
@@ -217,14 +243,22 @@ class Evaluation():
         for _, item in self.test_data.items():
             if len(item['file']) == 0:
                 continue
-            htmlstring = self.load_document_string(item['file'])
+            htmlstring = self.load_document_string(item['file'],
+                                                   test_dir='')
             if htmlstring is None:
                 continue
             # counter
             i += 1
             for a in self.algorithms:
+                # run algorithm
+                results[a]['confusion_matrix'], result = self.predict(
+                    results[a], htmlstring)
+                # compute confusion matrix
                 results[a]['confusion_matrix'] = self.compute_confusion_matrix(
-                    results[a], htmlstring, item)
+                    results[a], result, item)
+                # rouge score
+                if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
+                    self.compute_rouge()
         #  compute scores
         for a in self.algorithms:
             try:
@@ -255,6 +289,9 @@ class Evaluation():
         df = pd.DataFrame(rows, columns=columns)
         # algorithm name as index
         df.set_index('algorithm', inplace=True)
+        # round floats
+        float_columns = df.select_dtypes(include=['float']).columns
+        df[float_columns] = df[float_columns].round(3)
         return df
 
     def output_csv(self, path='results.csv'):
@@ -312,6 +349,6 @@ if __name__ == '__main__':
         algorithms = Evaluation.ALGORITHMS.keys()
     test_file = args.testfile
     metrics = args.metrics
-    eval = Evaluation(test_data='evaldata.json', algorithms=algorithms,
+    eval = Evaluation(test_data='evaldata.json', html_dir='eval', algorithms=algorithms,
                       metrics=metrics, output=['csv', 'md'])
     print(eval.output_df)
