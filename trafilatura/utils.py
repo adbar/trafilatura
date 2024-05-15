@@ -113,13 +113,13 @@ def handle_compressed_file(filecontent):
         try:
             return gzip.decompress(filecontent)
         except Exception:  # EOFError, OSError, gzip.BadGzipFile
-            logging.warning('invalid GZ file')
+            LOGGER.warning("invalid GZ file")
     # try zstandard
     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
         try:
             return zstandard.decompress(filecontent)  # max_output_size=???
         except zstandard.ZstdError:
-            logging.warning("invalid ZSTD file")
+            LOGGER.warning("invalid ZSTD file")
     # try brotli
     if HAS_BROTLI:
         try:
