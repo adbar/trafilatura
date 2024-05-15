@@ -199,10 +199,8 @@ def test_decode():
         assert handle_compressed_file(zstd_string) == html_string.encode("utf-8")
         assert decode_file(zstd_string) == html_string
     # errors
-    bad_file = b"\x1f\x8b\x08abcdefg"
-    assert handle_compressed_file(bad_file) == bad_file
-    bad_file = b"\x28\xb5\x2f\xfdabcdefg"
-    assert handle_compressed_file(bad_file) == bad_file
+    for bad_file in ("äöüß", b"\x1f\x8b\x08abc", b"\x28\xb5\x2f\xfdabc"):
+        assert handle_compressed_file(bad_file) == bad_file
 
 
 def test_queue():
