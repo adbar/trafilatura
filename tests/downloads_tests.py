@@ -7,16 +7,25 @@ import gzip
 import logging
 import os
 import sys
+import zlib
 
 try:
     import pycurl
+    HAS_PYCURL = True
 except ImportError:
-    pycurl = None
+    HAS_PYCURL = False
 
 try:
     import brotli
+    HAS_BROTLI = True
 except ImportError:
-    brotli = None
+    HAS_BROTLI = False
+
+try:
+    import zstandard
+    HAS_ZSTD = True
+except ImportError:
+    HAS_ZSTD = False
 
 from time import sleep
 from unittest.mock import patch
@@ -38,7 +47,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
-from trafilatura.utils import decode_file, decode_response, load_html
+from trafilatura.utils import decode_file, decode_response, handle_compressed_file, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -86,7 +95,7 @@ def test_fetch():
     assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
     assert is_live_page('https://httpbun.com/status/403') is False
     # is_live pycurl tests
-    if pycurl is not None:
+    if HAS_PYCURL:
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
 
     # fetch_url
@@ -95,7 +104,7 @@ def test_fetch():
     # test if the functions default to no_ssl
     # doesn't work?
     # assert _send_urllib_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
-    if pycurl is not None:
+    if HAS_PYCURL:
         assert _send_pycurl_request('https://expired.badssl.com/', False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = 'https://httpbun.com/status/200'
@@ -103,7 +112,7 @@ def test_fetch():
         response = _send_urllib_request('https://httpbun.com/status/200', no_ssl, True, DEFAULT_CONFIG)
         assert b"200" in response.data and b"OK" in response.data  # JSON
         assert response.headers["x-powered-by"].startswith("httpbun")
-    if pycurl is not None:
+    if HAS_PYCURL:
         response1 = _send_pycurl_request('https://httpbun.com/status/200', True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
         assert _handle_response(url, response1, False, DEFAULT_OPTS).data == _handle_response(url, response, False, DEFAULT_OPTS).data
@@ -137,7 +146,7 @@ def test_fetch():
     res = fetch_url('https://httpbun.com/redirect/1', config=new_config)
     assert res is None
     # Also test max redir implementation on pycurl if available
-    if pycurl is not None:
+    if HAS_PYCURL:
         assert _send_pycurl_request('https://httpbun.com/redirect/1', True, False, new_config) is None
     _reset_downloads_global_objects()  # reset global objects again to avoid affecting other tests
 
@@ -147,10 +156,12 @@ def test_config():
     # default config is none
     assert _parse_config(DEFAULT_CONFIG) == (None, None)
     # default accept-encoding
-    if brotli is None:
-        assert DEFAULT_HEADERS['accept-encoding'].endswith(',deflate')
-    else:
-        assert DEFAULT_HEADERS['accept-encoding'].endswith(',br')
+    accepted = ['deflate', 'gzip']
+    if HAS_BROTLI:
+        accepted.append('br')
+    if HAS_ZSTD:
+        accepted.append('zstd')
+    assert sorted(DEFAULT_HEADERS['accept-encoding'].split(',')) == sorted(accepted)
     # default user-agent
     default = _determine_headers(DEFAULT_CONFIG)
     assert default['User-Agent'] == USER_AGENT
@@ -164,19 +175,34 @@ def test_config():
 
 def test_decode():
     '''Test how responses are being decoded.'''
-    # response type
-    data = b" "
-    assert decode_file(data) is not None
-    # GZip
     html_string = "<html><head/><body><div>ABC</div></body></html>"
+    # response type
+    assert decode_file(b" ") is not None
+    # GZip
     gz_string = gzip.compress(html_string.encode("utf-8"))
+    assert handle_compressed_file(gz_string) == html_string.encode("utf-8")
     assert decode_file(gz_string) == html_string
     with pytest.raises(ValueError):
         decode_response(gz_string)
+    # Deflate
+    deflate_string = zlib.compress(html_string.encode("utf-8"))
+    assert handle_compressed_file(deflate_string) == html_string.encode("utf-8")
+    assert decode_file(deflate_string) == html_string
     # Brotli
-    if brotli is not None:
+    if HAS_BROTLI:
         brotli_string = brotli.compress(html_string.encode("utf-8"))
+        assert handle_compressed_file(brotli_string) == html_string.encode("utf-8")
         assert decode_file(brotli_string) == html_string
+    # ZStandard
+    if HAS_ZSTD:
+        zstd_string = zstandard.compress(html_string.encode("utf-8"))
+        assert handle_compressed_file(zstd_string) == html_string.encode("utf-8")
+        assert decode_file(zstd_string) == html_string
+    # errors
+    bad_file = b"\x1f\x8b\x08abcdefg"
+    assert handle_compressed_file(bad_file) == bad_file
+    bad_file = b"\x28\xb5\x2f\xfdabcdefg"
+    assert handle_compressed_file(bad_file) == bad_file
 
 
 def test_queue():

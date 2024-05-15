@@ -4,20 +4,28 @@ Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
 
+import gzip
 import logging
 import re
+import zlib
 
 from functools import lru_cache
-from gzip import decompress
 from html import unescape
 from itertools import islice
 from unicodedata import normalize
 
-# if brotli is installed
+# response compression
 try:
     import brotli
+    HAS_BROTLI = True
 except ImportError:
-    brotli = None
+    HAS_BROTLI = False
+
+try:
+    import zstandard
+    HAS_ZSTD = True
+except ImportError:
+    HAS_ZSTD = False
 
 # language detection
 try:
@@ -98,18 +106,28 @@ def handle_compressed_file(filecontent):
        is installed."""
     if isinstance(filecontent, bytes):
         # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-        if filecontent[:2] == b'\x1f\x8b':
-            # decode GZipped data
+        if filecontent[:3] == b"\x1f\x8b\x08":
             try:
-                filecontent = decompress(filecontent)
-            except (EOFError, OSError):
+                return gzip.decompress(filecontent)
+            except (EOFError, OSError, gzip.BadGzipFile):
                 logging.warning('invalid GZ file')
-        # try brotli
-        elif brotli is not None:
+        # try zstandard
+        if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
             try:
-                filecontent = brotli.decompress(filecontent)
+                return zstandard.decompress(filecontent)  # max_output_size=???
+            except (zstandard.ZstdError):
+                logging.warning("invalid ZSTD file")
+        # try brotli
+        if HAS_BROTLI:
+            try:
+                return brotli.decompress(filecontent)
             except brotli.error:
                 pass  # logging.debug('invalid Brotli file')
+        # zlib/deflate
+        try:
+            return zlib.decompress(filecontent)
+        except zlib.error:
+            pass
     return filecontent
 
 
