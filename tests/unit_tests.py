@@ -1302,6 +1302,7 @@ def test_is_probably_readerable():
     small_str = "hello there " * 11
     large_str = "hello there " * 12
     very_large_str = "hello there " * 50
+    linebreaks_str = f"{large_str} <br>" * 10
 
     very_small_doc = load_html(f"<html><p id='main'>{very_small_str}</p></html>")
     small_doc = load_html(f"<html><p id='main'>{small_str}</p></html>")
@@ -1319,7 +1320,9 @@ def test_is_probably_readerable():
     invisible_doc = load_html(
         f"<html><p id='main' style='display: none'>{very_large_str}</p><p id='main' hidden>{very_large_str}</p><p id='main' aria-hidden='true'>{very_large_str}</p></html>"
     )
-    linebreaks_doc = load_html(f"<html><div>{f"{large_str}<br>" * 10}</div></html>")
+    linebreaks_doc = load_html(
+        f"<html><div>{linebreaks_str * 10}</div></html>"
+    )
     no_linebreaks_doc = load_html(f"<html><div>{large_str * 10}</div></html>")
 
     # should only declare large documents as readerable when default options

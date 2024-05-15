@@ -493,10 +493,12 @@ def is_probably_readerable(html, options={}):
     min_score = options.get("min_score", 20)
     visibility_checker = options.get("visibility_checker", is_node_visible)
 
-    nodes = doc.xpath(".//p | .//pre | .//article | .//div[br]")
-    # br_nodes = doc.xpath(".//div[br]")
-
+    nodes = doc.xpath(".//p | .//pre | .//article")
     node_set = set(nodes)
+
+    br_nodes = doc.xpath(".//div/br")
+    for node in br_nodes:
+        node_set.add(node.getparent())
 
     score = 0
     for node in node_set:
