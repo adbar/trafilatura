@@ -470,11 +470,10 @@ def is_node_visible(node):
     """
     Checks if the node is visible by considering style, attributes, and class.
     """
-    style = node.get("style")
 
-    if style and DISPLAY_NONE.search(style) is not None:
+    if "style" in node.attrib and DISPLAY_NONE.search(node.get("style")):
         return False
-    if node.get("hidden") is not None:
+    if "hidden" in node.attrib:
         return False
     if node.get("aria-hidden") == "true" and "fallback-image" not in node.get(
         "class", ""
@@ -493,15 +492,11 @@ def is_probably_readerable(html, options={}):
     min_score = options.get("min_score", 20)
     visibility_checker = options.get("visibility_checker", is_node_visible)
 
-    nodes = doc.xpath(".//p | .//pre | .//article")
-    node_set = set(nodes)
-
-    br_nodes = doc.xpath(".//div/br")
-    for node in br_nodes:
-        node_set.add(node.getparent())
+    nodes = set(doc.xpath(".//p | .//pre | .//article"))
+    nodes.update(node.getparent() for node in doc.xpath(".//div/br"))
 
     score = 0
-    for node in node_set:
+    for node in nodes:
         if not visibility_checker(node):
             continue
 
@@ -514,8 +509,7 @@ def is_probably_readerable(html, options={}):
         if node.xpath("./parent::li/p"):
             continue
 
-        text_content = node.text_content().strip()
-        text_content_length = len(text_content)
+        text_content_length = len(node.text_content().strip())
         if text_content_length < min_content_length:
             continue
 
