@@ -1083,6 +1083,10 @@ def test_table_processing():
 
 def test_list_processing():
     options = DEFAULT_OPTIONS
+    # basic lists
+    my_doc = "<html><body><article><p>P 1</p><ul><li>Item 1</li><li>Item 2</li></ul><p>P 2</p></article></body></html>"
+    my_result = extract(my_doc, no_fallback=True, output_format='txt', config=ZERO_CONFIG)
+    assert my_result == "P 1\n- Item 1\n- Item 2\nP 2"
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
     assert result.count(b'List item') == 3
