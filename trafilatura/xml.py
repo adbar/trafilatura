@@ -39,7 +39,6 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {
-    'item': '\n- ',
     **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
 }
 SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
@@ -248,6 +247,9 @@ def replace_element_text(element, include_formatting):
                 elem_text = link_text
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
+    # lists
+    elif element.tag == "item" and elem_text:
+        elem_text = f"- {elem_text}\n"
     return elem_text
 
 
