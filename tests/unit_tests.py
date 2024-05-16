@@ -14,7 +14,6 @@ import pytest
 
 from lxml import etree, html
 
-from trafilatura.readability_lxml import is_probably_readerable
 
 try:
     from cchardet import detect
@@ -31,6 +30,7 @@ from trafilatura.main_extractor import (handle_formatting, handle_image,
                                         handle_table, handle_textelem)
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
+from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
                                language_classifier, load_html, normalize_unicode,
