@@ -335,11 +335,11 @@ def handle_paragraphs(element, potential_tags, options):
     return None
 
 
-def define_cell_type(element):
+def define_cell_type(element, is_header):
     "Determine cell element type and mint new element."
     # define tag
     cell_element = Element("cell")
-    if element.tag == "th":
+    if is_header:
         cell_element.set("role", "head")
     return cell_element
 
@@ -353,6 +353,7 @@ def handle_table(table_elem, potential_tags, options):
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
     # explore sub-elements
+    seen_header = False
     for subelement in table_elem.iterdescendants():
         if subelement.tag == "tr":
             # process existing row
@@ -360,7 +361,9 @@ def handle_table(table_elem, potential_tags, options):
                 newtable.append(newrow)
                 newrow = Element("row")
         elif subelement.tag in TABLE_ELEMS:
-            new_child_elem = define_cell_type(subelement)
+            is_header = subelement.tag == "th" and not seen_header
+            seen_header = seen_header or is_header
+            new_child_elem = define_cell_type(subelement, is_header)
             # process
             if len(subelement) == 0:
                 processed_cell = process_node(subelement, options)
