@@ -347,19 +347,24 @@ def define_cell_type(element, is_header):
 def handle_table(table_elem, potential_tags, options):
     "Process single table element."
     newtable = Element("table")
-    newrow = Element("row")
 
     # strip these structural elements
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
+    # calculate maximum number of columns per row, includin colspan
+    max_cols = 0
+    for tr in table_elem.iter('tr'):
+        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
+
     # explore sub-elements
     seen_header = False
+    newrow = Element("row", span=str(max_cols))
     for subelement in table_elem.iterdescendants():
         if subelement.tag == "tr":
             # process existing row
             if len(newrow) > 0:
                 newtable.append(newrow)
-                newrow = Element("row")
+                newrow = Element("row", span=str(max_cols))
         elif subelement.tag in TABLE_ELEMS:
             is_header = subelement.tag == "th" and not seen_header
             seen_header = seen_header or is_header

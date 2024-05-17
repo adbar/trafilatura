@@ -31,7 +31,7 @@ PKG_VERSION = version("trafilatura")
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
-TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
+TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type', 'foo'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
@@ -42,7 +42,7 @@ NEWLINE_ELEMS = {
     **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
 }
 SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
-WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
@@ -295,12 +295,18 @@ def process_element(element, returnlist, include_formatting):
             returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
         # newlines for textless elements
         if element.tag in NEWLINE_ELEMS:
-            returnlist.append('\n')
             # add line after table head
             if element.tag == "row":
-                num_cells = len(element.xpath("./cell[@role='head']"))
-                if num_cells > 0:
-                    returnlist.append("---|" * len(element.xpath(".//cell")) + "\n")
+                max_span = int(element.get("span", 0))
+                cell_count = len(element.xpath(".//cell"))
+                # row ended so draw extra empty cells to match max_span
+                returnlist.append("|" * (max_span - cell_count) + "\n")
+                # if this is a head row, draw the separator below
+                is_head = bool(element.xpath("./cell[@role='head']"))
+                if is_head:
+                    returnlist.append("\n" + "---|" * max_span + "\n")
+            else:
+                returnlist.append('\n')
         return  # Nothing more to do with textless elements
 
     # Process text
