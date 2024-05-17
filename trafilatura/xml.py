@@ -31,7 +31,7 @@ PKG_VERSION = version("trafilatura")
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
-TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type', 'foo'}
+TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
@@ -307,7 +307,10 @@ def process_element(element, returnlist, include_formatting):
                     returnlist.append("\n" + "---|" * max_span + "\n")
             else:
                 returnlist.append('\n')
-        return  # Nothing more to do with textless elements
+        if element.tag != 'cell':
+            # cells still need to append vertical bars
+            # but nothing more to do with other textless elements
+            return
 
     # Process text
 
