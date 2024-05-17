@@ -161,7 +161,7 @@ Publications citing Trafilatura
 - Öhman, J., Verlinden, S., Ekgren, A., Gyllensten, A. C., Isbister, T., Gogoulou, E., ... & Sahlgren, M. (2023). The Nordic Pile: A 1.2 TB Nordic Dataset for Language Modeling. arXiv preprint arXiv:2303.17183.
 - Paster, K., Santos, M. D., Azerbayev, Z., & Ba, J. (2023). Openwebmath: An open dataset of high-quality mathematical web text. arXiv preprint arXiv:2310.06786.
 - Penedo, G., Malartic, Q., Hesslow, D., Cojocaru, R., Alobeidli, H., Cappelli, A., ... & Launay, J. (2024). The RefinedWeb dataset for Falcon LLM: Outperforming curated corpora with web data only. Advances in Neural Information Processing Systems, 36.
-- Piskorski, J., Stefanovitch, N., Da San Martino, G., & Nakov, P. (2023). Semeval-2023 task 3: Detecting the category, the framing, and the persuasion techniques in online news in a multi-lingual setup. In Proceedings of the the 17th International Workshop on Semantic Evaluation (SemEval-2023) (pp. 2343-2361).
+- Piskorski, J., Stefanovitch, N., Da San Martino, G., & Nakov, P. (2023). Semeval-2023 task 3: Detecting the category, the framing, and the persuasion techniques in online news in a multi-lingual setup. In Proceedings of the 17th International Workshop on Semantic Evaluation (SemEval-2023) (pp. 2343-2361).
 - Pohlmann, J., Barbaresi, A., & Leinen, P. (2023). Platform regulation and “overblocking”–The NetzDG discourse in Germany. Communications, 48(3), 395-419.
 - Rastislav, K. (2024). Backend platformy pro sdílené ověřování faktů (Master's thesis, České vysoké učení technické v Praze. Vypočetní a informační centrum.)
 - Reina, L. A. V. (2023). NLP Meets Agronomy: Document Classification for Plant Health Surveillance, Master's thesis.

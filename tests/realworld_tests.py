@@ -685,7 +685,7 @@ def test_pages():
     url = 'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html'
     metadata = extract_metadata(load_mock_page_meta(url))
     assert metadata.title == 'Nutzerbasierte Abrechnung: Musik-Stars fordern neues Streaming-Modell'
-    # author overriden from JSON-LD + double name
+    # author overridden from JSON-LD + double name
     assert 'Benjamin Fischer' in metadata.author
     assert metadata.sitename == 'Frankfurter Allgemeine Zeitung'
     assert metadata.url == 'https://www.faz.net/1.6604622'

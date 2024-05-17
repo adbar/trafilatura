@@ -66,7 +66,7 @@ Other useful functions include URL cleaning and validation:
 On the command-line
 ~~~~~~~~~~~~~~~~~~~
 
-Most fonctions are also available through a command-line utility:
+Most functions are also available through a command-line utility:
 
 .. code-block:: bash
 

@@ -204,7 +204,7 @@ JUSTEXT_LANGUAGES = {
     'sr': 'Serbian',
     'sv': 'Swedish',
     'tr': 'Turkish',
-    'uk': 'Ukranian',
+    'uk': 'Ukrainian',
     'ur': 'Urdu',
     'vi': 'Vietnamese',
     # 'zh': '',

@@ -88,7 +88,7 @@ def load_input_dict(args):
     '''Read input list of URLs to process and
        build a domain-aware dictionary'''
     inputlist = load_input_urls(args)
-    # deduplicate, filter and and convert to dict
+    # deduplicate, filter and convert to dict
     return add_to_compressed_dict(
         inputlist,
         blacklist=args.blacklist,

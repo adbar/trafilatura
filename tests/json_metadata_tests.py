@@ -896,7 +896,7 @@ def test_json_extraction():
 
     assert metadata is not None and metadata.title == "Find perfection in these places where land meets water." and metadata.sitename == "National Geographic" and metadata.author == "Kimberley Lovato" and metadata.pagetype == 'article'
 
-    # tests that "@type": [] in the JSON doesn't cause an exeption
+    # tests that "@type": [] in the JSON doesn't cause an exception
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring(
