@@ -217,6 +217,7 @@ def replace_element_text(element, include_formatting):
     "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
     # handle formatting: convert to markdown
+    children = element.getchildren()
     if include_formatting and element.text:
         if element.tag == "head":
             try:
@@ -247,6 +248,9 @@ def replace_element_text(element, include_formatting):
                 elem_text = link_text
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
+    # cells
+    if element.tag == "cell" and elem_text and children and children[0].tag == 'p':
+        elem_text = f"{elem_text} "
     # lists
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
