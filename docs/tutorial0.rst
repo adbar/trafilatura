@@ -197,7 +197,7 @@ The second and third instructions create a collection of `XML files <https://en.
 
 
 .. hint::
-    Trafilatura automatically throttles the requests made to a given server, making it the prefered method if you do not want to worry about downloads.
+    Trafilatura automatically throttles the requests made to a given server, making it the preferred method if you do not want to worry about downloads.
 
     See `documentation page on downloads <downloads.html>`_ for more information.
 

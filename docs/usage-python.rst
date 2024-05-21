@@ -92,7 +92,7 @@ Several elements can be included or discarded:
 * Text elements: comments, tables
 * Structural elements: formatting, images, links
 
-Their inclusion can be activated or deactivated using paramaters passed to the ``extract()`` function:
+Their inclusion can be activated or deactivated using parameters passed to the ``extract()`` function:
 
 
 .. code-block:: python
@@ -351,7 +351,7 @@ Three potential navigation strategies are currently available: feeds (mostly for
 Feeds
 ^^^^^
 
-The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
+The function ``find_feed_urls`` is a all-in-one utility that attempts to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
 
 .. code-block:: python
 

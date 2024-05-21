@@ -6526,11 +6526,11 @@ EVAL_PAGES = {
     'description': 'FIFA 21 Game Settings guide and instructions.',
     'categories': [],
     'tags': [],
-    'with': ['You are able to customise and adjust the settings', 'Your Default Game Lanaguage', 'By setting this to Default, attributes are', 'CPU GAMEPLAY CUSTOMISATION'],  # 3 segments
-    'without': ['FIFA 21 Camera Settings', 'Post Your Comments', 'Shortcuts'],  # 3 segments
-    'comments': ['Please i want you to teach me how to start'],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['You are able to customise and adjust the settings', 'Your Default Game Lanaguage', 'By setting this to Default, attributes are', 'CPU GAMEPLAY CUSTOMISATION'],  # typo in original file: Lanaguage
+    'without': ['FIFA 21 Camera Settings', 'Post Your Comments', 'Shortcuts'],
+    'comments': ['Please i want you to teach me how to start'],
+    'license': '',
+    'region': '',
 },
 'https://www.duengebehoerde-niedersachsen.de/duengebehoerde/news/38853_Sperrfristende_01._Februar_-_Rechtliche_Hinweise_zur_N-D%C3%BCngung': {
     'file': 'duengebehoerde-niedersachsen.de-Sperrfristen.html',
