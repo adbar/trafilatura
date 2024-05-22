@@ -153,6 +153,8 @@ def test_authors():
     assert metadata.author == 'Ian Shive'
     metadata = extract_metadata('<html><body><div class="ArticlePage-authors"><div class="ArticlePage-authorName" itemprop="name"><span class="ArticlePage-authorBy">By&nbsp;</span><a aria-label="Ben Coxworth" href="https://newatlas.com/author/ben-coxworth/"><span>Ben Coxworth</span></a></div></div></body></html>')
     assert metadata.author == 'Ben Coxworth'
+    metadata = extract_metadata('<html><body><div><strong><a class="d1dba0c3091a3c30ebd6" data-testid="AuthorURL" href="/by/p535y1">AUTHOR NAME</a></strong></div></body></html>')
+    assert metadata.author == 'AUTHOR NAME'
 
     # check authors string
     blacklist = {"A", "b"}
