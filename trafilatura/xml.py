@@ -297,7 +297,7 @@ def process_element(element, returnlist, include_formatting):
         if element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                max_span = int(element.get("span", 0))
+                max_span = int(element.get("span", 1))
                 cell_count = len(element.xpath(".//cell"))
                 # row ended so draw extra empty cells to match max_span
                 returnlist.append("|" * (max_span - cell_count) + "\n")

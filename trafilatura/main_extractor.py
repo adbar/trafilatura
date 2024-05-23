@@ -357,16 +357,19 @@ def handle_table(table_elem, potential_tags, options):
         max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
 
     # explore sub-elements
+    seen_header_row = False
     seen_header = False
-    newrow = Element("row", span=str(max_cols))
+    row_attrs = {"span": str(max_cols)} if max_cols > 1 else {}
+    newrow = Element("row", **row_attrs)
     for subelement in table_elem.iterdescendants():
         if subelement.tag == "tr":
             # process existing row
             if len(newrow) > 0:
                 newtable.append(newrow)
-                newrow = Element("row", span=str(max_cols))
+                newrow = Element("row", **row_attrs)
+                seen_header_row = seen_header_row or seen_header
         elif subelement.tag in TABLE_ELEMS:
-            is_header = subelement.tag == "th" and not seen_header
+            is_header = subelement.tag == "th" and not seen_header_row
             seen_header = seen_header or is_header
             new_child_elem = define_cell_type(subelement, is_header)
             # process
