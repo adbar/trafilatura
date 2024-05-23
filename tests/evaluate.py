@@ -136,6 +136,10 @@ class Evaluation():
         mypath = os.path.join(test_dir, 'cache', filename)
         if not os.path.isfile(mypath):
             mypath = os.path.join(test_dir, self.html_dir, filename)
+        # html file missing
+        if not os.path.exists(mypath):
+            print('HTML file not found:', mypath)
+            return None
         try:
             with open(mypath, 'r', encoding="utf-8") as inputf:
                 htmlstring = inputf.read()
@@ -251,8 +255,12 @@ class Evaluation():
             i += 1
             for a in self.algorithms:
                 # run algorithm
-                results[a]['confusion_matrix'], result = self.predict(
-                    results[a], htmlstring)
+                try:
+                    results[a]['confusion_matrix'], result = self.predict(
+                        results[a], htmlstring)
+                except Exception as e:
+                    print(item['file'], e)
+                    continue
                 # compute confusion matrix
                 results[a]['confusion_matrix'] = self.compute_confusion_matrix(
                     results[a], result, item)
