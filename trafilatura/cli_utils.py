@@ -196,10 +196,16 @@ def generate_filelist(inputdir):
 
 def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
+    if not options:
+        options = args_to_extractor(args)
+    options.source = filename
+
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    options.source = filename
-    options.date_params["max_date"] = datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
+
+    ref_date = min(path.getctime(filename), path.getmtime(filename))
+    options.date_params["max_date"] = datetime.fromtimestamp(ref_date).strftime("%Y-%m-%d")
+
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 

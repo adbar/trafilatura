@@ -8,11 +8,14 @@ import os
 import re
 import subprocess
 import sys
+
 from contextlib import redirect_stdout
 from datetime import datetime
+from os import path
 from unittest.mock import patch
 
 import pytest
+
 from courlan import UrlStore
 
 from trafilatura import cli, cli_utils, spider  # settings
@@ -21,7 +24,7 @@ from trafilatura.settings import args_to_extractor
 from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources")
+RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
 
 
 def test_parser():
@@ -70,7 +73,7 @@ def test_parser():
     # process_args
     args.input_dir = "/dev/null"
     args.verbose = 1
-    args.blacklist = os.path.join(RESOURCES_DIR, "list-discard.txt")
+    args.blacklist = path.join(RESOURCES_DIR, "list-discard.txt")
     cli.process_args(args)
     assert len(args.blacklist) == 3
     # filter
@@ -86,8 +89,8 @@ def test_parser():
         args = cli.parse_args(testargs)
     assert args.input_file == "resources/list-discard.txt"
     assert args.url_filter == ["test1", "test2"]
-    args.input_file = os.path.join(RESOURCES_DIR, "list-discard.txt")
-    args.blacklist = os.path.join(RESOURCES_DIR, "list-discard.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-discard.txt")
+    args.blacklist = path.join(RESOURCES_DIR, "list-discard.txt")
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -135,15 +138,15 @@ def test_climain():
     # exit status required: 0
     # Windows platforms
     if os.name == "nt":
-        trafilatura_bin = os.path.join(sys.prefix, "Scripts", "trafilatura")
+        trafilatura_bin = path.join(sys.prefix, "Scripts", "trafilatura")
     # other platforms
     else:
         trafilatura_bin = "trafilatura"
     # help display
-    assert subprocess.run([trafilatura_bin, "--help"]).returncode == 0
+    assert subprocess.run([trafilatura_bin, "--help"], check=True).returncode == 0
     # piped input
     empty_input = b"<html><body></body></html>"
-    assert subprocess.run([trafilatura_bin], input=empty_input).returncode == 0
+    assert subprocess.run([trafilatura_bin], input=empty_input, check=True).returncode == 0
     # input directory walking and processing
     env = os.environ.copy()
     if os.name == "nt":
@@ -151,7 +154,7 @@ def test_climain():
         env["PYTHONIOENCODING"] = "utf-8"
     assert (
         subprocess.run(
-            [trafilatura_bin, "--input-dir", RESOURCES_DIR], env=env
+            [trafilatura_bin, "--input-dir", RESOURCES_DIR], env=env, check=True
         ).returncode
         == 0
     )
@@ -287,7 +290,7 @@ def test_cli_pipeline():
     assert cli_utils.url_processing_pipeline(args, UrlStore()) is False
 
     # test inputlist + blacklist
-    testargs = ["", "-i", os.path.join(RESOURCES_DIR, "list-process.txt")]
+    testargs = ["", "-i", path.join(RESOURCES_DIR, "list-process.txt")]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     my_urls = cli_utils.load_input_urls(args)
@@ -295,9 +298,9 @@ def test_cli_pipeline():
     testargs = [
         "",
         "-i",
-        os.path.join(RESOURCES_DIR, "list-process.txt"),
+        path.join(RESOURCES_DIR, "list-process.txt"),
         "--blacklist",
-        os.path.join(RESOURCES_DIR, "list-discard.txt"),
+        path.join(RESOURCES_DIR, "list-discard.txt"),
         "--archived",
     ]
     with patch.object(sys, "argv", testargs):
@@ -324,7 +327,7 @@ def test_cli_pipeline():
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     with open(
-        os.path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
+        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
     ) as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
@@ -332,7 +335,7 @@ def test_cli_pipeline():
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     with open(
-        os.path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
+        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
     ) as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
@@ -341,7 +344,7 @@ def test_cli_pipeline():
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     with open(
-        os.path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
+        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
     ) as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
@@ -365,7 +368,7 @@ def test_cli_pipeline():
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     with open(
-        os.path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8"
+        path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8"
     ) as f:
         teststring = f.read()
     result = cli.examine(teststring, args)
@@ -383,7 +386,10 @@ def test_file_processing():
     args.input_dir = RESOURCES_DIR
     cli_utils.file_processing_pipeline(args)
     # test manually
+    for f in cli_utils.generate_filelist(args.input_dir):
+        cli_utils.file_processing(f, args)
     options = args_to_extractor(args)
+    args.output_dir = "/dev/null"
     for f in cli_utils.generate_filelist(args.input_dir):
         cli_utils.file_processing(f, args, options=options)
 
@@ -394,10 +400,10 @@ def test_cli_config_file():
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     with open(
-        os.path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
+        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
     ) as f:
         teststring = f.read()
-    args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
+    args.config_file = path.join(RESOURCES_DIR, args.config_file)
     options = args_to_extractor(args)
     assert cli.examine(teststring, args, options=options) is None
 
@@ -409,10 +415,10 @@ def test_input_filtering():
         args = cli.parse_args(testargs)
 
     # load dictionary
-    args.input_file = os.path.join(RESOURCES_DIR, "list-process.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     url_store = cli.load_input_dict(args)
     assert len(url_store.find_known_urls("https://httpbin.org")) == 3
-    args.input_file = os.path.join(RESOURCES_DIR, "list-process.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     args.blacklist = {"httpbin.org/status/404"}
     url_store = cli.load_input_dict(args)
     assert len(url_store.find_known_urls("https://httpbin.org")) == 2
@@ -436,22 +442,22 @@ def test_input_filtering():
     ]
 
     # URL in blacklist
-    args.input_file = os.path.join(RESOURCES_DIR, "list-process.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(
-        os.path.join(RESOURCES_DIR, "list-discard.txt")
+        path.join(RESOURCES_DIR, "list-discard.txt")
     )
     url_store = add_to_compressed_dict(my_urls, blacklist=my_blacklist)
     assert len(url_store.dump_urls()) == 0
     # other method
-    args.input_file = os.path.join(RESOURCES_DIR, "list-process.txt")
-    args.blacklist = os.path.join(RESOURCES_DIR, "list-discard.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
+    args.blacklist = path.join(RESOURCES_DIR, "list-discard.txt")
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     url_store = cli_utils.load_input_dict(args)
     assert len(url_store.dump_urls()) == 0
 
     # URL filter
-    args.input_file = os.path.join(RESOURCES_DIR, "list-process.txt")
+    args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     my_urls = cli_utils.load_input_urls(args)
     url_store = add_to_compressed_dict(
         my_urls, blacklist=None, url_filter=["status"], url_store=None
@@ -471,7 +477,7 @@ def test_input_filtering():
     assert len(url_store.urldict) == 1
 
     # double URLs
-    args.input_file = os.path.join(RESOURCES_DIR, "redundant-urls.txt")
+    args.input_file = path.join(RESOURCES_DIR, "redundant-urls.txt")
     my_urls = cli_utils.load_input_urls(args)
     url_store = add_to_compressed_dict(my_urls)
     assert len(url_store.find_known_urls("https://example.org")) == 1
@@ -549,7 +555,7 @@ def test_crawling():
 def test_probing():
     "Test webpage probing functions."
     url = "https://example.org/"
-    conf = os.path.join(RESOURCES_DIR, "zerolength.cfg")
+    conf = path.join(RESOURCES_DIR, "zerolength.cfg")
     testargs = ["", "--probe", url, "--target-language", "de", "--config-file", conf]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
