@@ -14,7 +14,7 @@ from base64 import urlsafe_b64encode
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
-from os import makedirs, path, walk
+from os import makedirs, path, stat, walk
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
@@ -196,10 +196,17 @@ def generate_filelist(inputdir):
 
 def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
+    if not options:
+        options = args_to_extractor(args)
+    options.source = filename
+
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    options.source = filename
-    options.date_params["max_date"] = datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
+
+    file_stat = stat(filename)
+    ref_timestamp = min(file_stat.st_ctime, file_stat.st_mtime)
+    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).strftime("%Y-%m-%d")
+
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
