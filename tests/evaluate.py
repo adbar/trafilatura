@@ -6,6 +6,7 @@ import sys
 import time
 
 import pandas as pd
+# TODO include rouge
 from rouge_score import rouge_scorer
 
 try:
@@ -99,8 +100,6 @@ class Evaluation():
         self.metrics = metrics
         self.metadata = metadata
         self.output = output
-        # store algorithm predictions
-        self.predictions = None  # TODO
         # compute results
         self.results = self.compute_results()
         # store results
@@ -112,6 +111,9 @@ class Evaluation():
             self.output_md()
         # print scores
         self.print_scores()
+        # evaluate metadata
+        if self.evaltype == 'chunks':
+            self.evaluate_authors()
 
     def read_data(self, path):
         """read test data set from a file path"""
@@ -127,6 +129,7 @@ class Evaluation():
             pass
         elif type(data) == dict:  # nested dict
             pass
+        print('Dataset:', len(data), 'instances')
         return data
 
     def load_document_string(self, filename, test_dir=''):
@@ -157,10 +160,6 @@ class Evaluation():
             else:
                 print('Encoding error')
         return htmlstring
-
-    @staticmethod
-    def load_html(directory, filename):
-        pass
 
     def evaluate_result(self, result, item):
         '''evaluate result contents'''
@@ -200,6 +199,7 @@ class Evaluation():
         return true_positives, false_negatives, false_positives, true_negatives
 
     def predict(self, dict_result, htmlstring):
+        """parse an html string with the algorithm"""
         start = time.time()
         result = dict_result['function'](htmlstring)
         dict_result['confusion_matrix']['time'] += time.time() - start
@@ -210,6 +210,7 @@ class Evaluation():
         return dict_result['confusion_matrix'], result
 
     def compute_confusion_matrix(self, dict_result, result, item):
+        """compute tp, fn, fp, tn for a dataset instance"""
         # TODO correlations between algorithms for instances?
         tp, fn, fp, tn = self.evaluate_result(result, item)
         dict_result['confusion_matrix']['true positives'] += tp
@@ -219,6 +220,8 @@ class Evaluation():
         return dict_result['confusion_matrix']
 
     def compute_rouge(self, pred, gold):
+        """compute rouge score between prediction and gold answer"""
+        # TODO
         # rouge longest common substring
         scorer = rouge_scorer.RougeScorer(['rougeLsum'],
                                           use_stemmer=False,
@@ -279,7 +282,8 @@ class Evaluation():
 
     def create_df(self):
         """results to pandas dataframe"""
-        columns = ['algorithm', 'version'] + self.metrics + ['time difference']
+        columns = ['algorithm', 'version'] + self.metrics + ['time difference',
+                                                             'skipped instances']
         rows = []
         for algo in self.algorithms:
             # package version
@@ -287,12 +291,12 @@ class Evaluation():
                 algo_version = version(Evaluation.ALGORITHMS[algo]['library'])
             else:  # no library listed
                 algo_version = '-'
-            print(self.results[algo])
             results = self.results[algo]['scores']
             time_diff = self.results[algo]['confusion_matrix']['time'] / \
                 self.results['baseline']['confusion_matrix']['time']
             row = [algo, algo_version] + list(results) + \
-                [time_diff]
+                [time_diff,
+                 self.results[algo]['confusion_matrix']['skipped_instances']]
             rows.append(row)
         df = pd.DataFrame(rows, columns=columns)
         # algorithm name as index
@@ -322,11 +326,16 @@ class Evaluation():
             for m in self.metrics:
                 print(f"{m}: {self.output_df.loc[algo][m]:.2f}")
 
+    def evaluate_authors(self):
+        # TODO
+        pass
 
 def cmdparser():
     """Parse command line arguments"""
     # Command line arguments
-    # script usage: python evaluate.py
+    # script usage:
+    # Trafilatura evaluation: python evaluate.py --small
+    # full evaluation: python evaluate.py --all 
     parser = argparse.ArgumentParser(description='Run an evaluation benchmark')
     parser.add_argument('--small', action='store_true', help='Evaluate trafilatura and baselines only.')
     parser.add_argument('--all', action='store_true', help='Evaluate all available algorithms.')
@@ -338,7 +347,7 @@ def cmdparser():
                         nargs='+',
                         default=['trafilatura', 'trafilatura + X', 'everything', 'nothing', 'baseline'],
                         help='Further tools/algorithms to evaluate, implemented: .')
-    # Print help and exit if no arguments are given
+    # print help and exit if no arguments are given
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -359,4 +368,3 @@ if __name__ == '__main__':
     metrics = args.metrics
     eval = Evaluation(test_data='evaldata.json', html_dir='eval', algorithms=algorithms,
                       metrics=metrics, output=['csv', 'md'])
-    print(eval.output_df)

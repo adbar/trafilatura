@@ -44,7 +44,7 @@ A comparison with similar software is run periodically. As the packages tend to 
 
 
 1. Install the packages specified in ``eval-requirements.txt``
-2. Run the script ``comparison.py`` (some packages are slow, it can be a while)
+2. Run the script ``evaluate.py --all`` (some packages are slow, it can be a while)
 
 
 Sources
@@ -60,4 +60,5 @@ HTML archives
 -------------
 
 - Additional German news sites: diskursmonitor.de, courtesy of Jan Oliver Rüdiger.
+
 
