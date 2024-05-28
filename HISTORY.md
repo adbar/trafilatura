@@ -113,7 +113,7 @@ Documentation:
 Extraction:
 - more lenient HTML parsing (#370)
 - improved code block support with @idoshamun (#372, #401)
-- convertion of relative links to absolute by @feltcat (#377)
+- conversion of relative links to absolute by @feltcat (#377)
 - remove use of signal from core functions (#384)
 
 Metadata:

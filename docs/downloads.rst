@@ -20,7 +20,7 @@ Simple downloads
 ~~~~~~~~~~~~~~~~
 
 
-Running simple downloads is straightforward with the ``fetch_url()`` fonction. This method is also known as single-threaded downloads as they are processed sequentially.
+Running simple downloads is straightforward with the ``fetch_url()`` function. This method is also known as single-threaded downloads as they are processed sequentially.
 
 
 .. code-block:: python
@@ -45,7 +45,7 @@ For efficiency reasons the function makes use of a connection pool where connect
 
 The content retrieved by ``fetch_url()`` (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
 
-Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (optinal dict), ``html`` (optional str), ``status``, and ``url``:
+Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (optional dict), ``html`` (optional str), ``status``, and ``url``:
 
 .. code-block:: python
 

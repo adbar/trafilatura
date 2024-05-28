@@ -14,6 +14,7 @@ import pytest
 
 from lxml import etree, html
 
+
 try:
     from cchardet import detect
 except ImportError:
@@ -29,6 +30,7 @@ from trafilatura.main_extractor import (handle_formatting, handle_image,
                                         handle_table, handle_textelem)
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
+from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
                                language_classifier, load_html, normalize_unicode,
@@ -990,7 +992,7 @@ def test_table_processing():
       </row>''' in my_result
     assert extract(htmlstring, no_fallback=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
     # table with links
-    # todo: further tests and adjustsments
+    # todo: further tests and adjustments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
     assert 'ABCD' not in result
@@ -1083,6 +1085,10 @@ def test_table_processing():
 
 def test_list_processing():
     options = DEFAULT_OPTIONS
+    # basic lists
+    my_doc = "<html><body><article><p>P 1</p><ul><li>Item 1</li><li>Item 2</li></ul><p>P 2</p></article></body></html>"
+    my_result = extract(my_doc, no_fallback=True, output_format='txt', config=ZERO_CONFIG)
+    assert my_result == "P 1\n- Item 1\n- Item 2\nP 2"
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
     assert result.count(b'List item') == 3
@@ -1292,6 +1298,120 @@ def test_config_loading():
     assert config is not None
 
 
+def test_is_probably_readerable():
+    """
+    Test is_probably_readerable function.
+    """
+    very_small_str = "hello there"
+    small_str = "hello there " * 11
+    large_str = "hello there " * 12
+    very_large_str = "hello there " * 50
+    linebreaks_str = f"{large_str} <br>" * 10
+
+    very_small_doc = load_html(f"<html><p id='main'>{very_small_str}</p></html>")
+    small_doc = load_html(f"<html><p id='main'>{small_str}</p></html>")
+    large_doc = load_html(f"<html><p id='main'>{large_str}</p></html>")
+    very_large_doc = load_html(f"<html><p id='main'>{very_large_str}</p></html>")
+    likely_doc = load_html(
+        f"<html><p id='main' class='header'>{very_large_str}</p><p id='header' class='article'>{very_large_str}</p><p id='footer' class='body'>{very_large_str}</p></html>"
+    )
+    unlikely_doc = load_html(
+        f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>"
+    )
+    visible_doc = load_html(
+        f"<html><p id='main' style='display: block'>{very_large_str}</p><p id='main'>{very_large_str}</p><p id='main' aria-hidden='false'>{very_large_str}</p></html>"
+    )
+    invisible_doc = load_html(
+        f"<html><p id='main' style='display: none'>{very_large_str}</p><p id='main' hidden>{very_large_str}</p><p id='main' aria-hidden='true'>{very_large_str}</p></html>"
+    )
+    linebreaks_doc = load_html(
+        f"<html><div>{linebreaks_str * 10}</div></html>"
+    )
+    no_linebreaks_doc = load_html(f"<html><div>{large_str * 10}</div></html>")
+
+    # should only declare large documents as readerable when default options
+    assert not is_probably_readerable(very_small_doc)
+    assert not is_probably_readerable(small_doc)
+    assert not is_probably_readerable(large_doc)
+    assert is_probably_readerable(very_large_doc)
+
+    # should declare small and large documents as readerable when lower min_content_length
+    options = {"min_content_length": 120, "min_score": 0}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should only declare largest document as readerable when higher min_content_length
+    options = {"min_content_length": 200, "min_score": 0}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert not is_probably_readerable(small_doc, options)
+    assert not is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should declare large documents as readerable when lower min_score
+    options = {"min_content_length": 0, "min_score": 4}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should declare large documents as readerable when higher min_score
+    options = {"min_content_length": 0, "min_score": 11.5}
+    assert not is_probably_readerable(very_small_doc, options)
+    assert not is_probably_readerable(small_doc, options)
+    assert is_probably_readerable(large_doc, options)
+    assert is_probably_readerable(very_large_doc, options)
+
+    # should check id and class attributes
+    assert is_probably_readerable(likely_doc)
+    assert not is_probably_readerable(unlikely_doc)
+
+    # should check linebreaks in div elements
+    assert is_probably_readerable(linebreaks_doc)
+    assert not is_probably_readerable(no_linebreaks_doc)
+
+    called = False
+
+    def visibility_checker_invisible(node):
+        nonlocal called
+        called = True
+        return False
+
+    # should use node visibility checker provided as option - not visible
+    options = {"visibility_checker": visibility_checker_invisible}
+    assert not is_probably_readerable(very_large_doc, options)
+    assert called
+
+    called = False
+
+    def visibility_checker_visible(node):
+        nonlocal called
+        called = True
+        return True
+
+    # should use node visibility checker provided as option - visible
+    options = {"visibility_checker": visibility_checker_visible}
+    assert is_probably_readerable(very_large_doc, options)
+    assert called
+
+    # should use default node visibility checker 
+    assert is_probably_readerable(visible_doc)
+    assert not is_probably_readerable(invisible_doc)
+
+    # https://github.com/mozilla/readability/blob/main/test/test-pages/mozilla-2/source.html#L22
+    with open(
+        path.join(RESOURCES_DIR, "mozilla.org.firefox.developer.html"),
+        "r",
+        encoding="utf-8",
+    ) as f:
+        teststring = f.read()
+
+    doc = load_html(teststring)
+    assert not is_probably_readerable(doc)
+
+
+
 if __name__ == '__main__':
     test_config_loading()
     test_trim()
@@ -1316,3 +1436,4 @@ if __name__ == '__main__':
     test_nonstd_html_entities()
     test_large_doc_performance()
     test_lang_detection()
+    test_is_probably_readerable()

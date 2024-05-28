@@ -17,16 +17,16 @@ https://github.com/buriy/python-readability
 License of forked code: Apache-2.0.
 """
 
-
 import logging
 import re
 
+from math import sqrt
 from operator import attrgetter
 
 from lxml.etree import tostring
 from lxml.html import fragment_fromstring
 
-from .utils import trim
+from .utils import load_html, trim
 
 LOGGER = logging.getLogger(__name__)
 
@@ -90,6 +90,7 @@ def text_length(elem):
 
 class Candidate:
     "Defines a class to score candidate elements."
+
     __slots__ = ["score", "elem"]
 
     def __init__(self, score, elem):
@@ -337,7 +338,9 @@ class Document:
 
         allowed = set()
         # Conditionally clean <table>s, <ul>s, and <div>s
-        for elem in reversed(node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")):
+        for elem in reversed(
+            node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")
+        ):
             if elem in allowed:
                 continue
             weight = self.class_weight(elem)
@@ -440,3 +443,78 @@ class Document:
 
         self.doc = node
         return _tostring(self.doc)
+
+
+"""
+Port of isProbablyReaderable from mozilla/readability.js to Python.
+
+https://github.com/mozilla/readability
+
+License of forked code: Apache-2.0.
+"""
+
+REGEXPS = {
+    "unlikelyCandidates": re.compile(
+        r"-ad-|ai2html|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|footer|gdpr|header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote",
+        re.I,
+    ),
+    "okMaybeItsACandidate": re.compile(
+        r"and|article|body|column|content|main|shadow", re.I
+    ),
+}
+
+DISPLAY_NONE = re.compile(r"display:\s*none", re.I)
+
+
+def is_node_visible(node):
+    """
+    Checks if the node is visible by considering style, attributes, and class.
+    """
+
+    if "style" in node.attrib and DISPLAY_NONE.search(node.get("style")):
+        return False
+    if "hidden" in node.attrib:
+        return False
+    if node.get("aria-hidden") == "true" and "fallback-image" not in node.get(
+        "class", ""
+    ):
+        return False
+    return True
+
+
+def is_probably_readerable(html, options={}):
+    """
+    Decides whether or not the document is reader-able without parsing the whole thing.
+    """
+    doc = load_html(html)
+
+    min_content_length = options.get("min_content_length", 140)
+    min_score = options.get("min_score", 20)
+    visibility_checker = options.get("visibility_checker", is_node_visible)
+
+    nodes = set(doc.xpath(".//p | .//pre | .//article"))
+    nodes.update(node.getparent() for node in doc.xpath(".//div/br"))
+
+    score = 0
+    for node in nodes:
+        if not visibility_checker(node):
+            continue
+
+        class_and_id = f"{node.get('class', '')} {node.get('id', '')}"
+        if REGEXPS["unlikelyCandidates"].search(class_and_id) and not REGEXPS[
+            "okMaybeItsACandidate"
+        ].search(class_and_id):
+            continue
+
+        if node.xpath("./parent::li/p"):
+            continue
+
+        text_content_length = len(node.text_content().strip())
+        if text_content_length < min_content_length:
+            continue
+
+        score += sqrt(text_content_length - min_content_length)
+        if score > min_score:
+            return True
+
+    return False

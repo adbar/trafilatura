@@ -615,7 +615,7 @@ def process_comments_node(elem, potential_tags, options):
 
 
 def extract_comments(tree, options):
-    "Try and extract comments out of potential sections in the HTML."
+    "Try to extract comments out of potential sections in the HTML."
     comments_body = Element("body")
     # define iteration strategy
     potential_tags = set(TAG_CATALOG)  # 'span'

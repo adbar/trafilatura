@@ -31,6 +31,7 @@ extras = {
         "htmldate[speed] >= 1.8.1",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.3",
+        "zstandard >= 0.20.0",
     ],
     "gui": [
         "Gooey >= 1.0.1",
