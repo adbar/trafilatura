@@ -163,7 +163,7 @@ def test_climain(capfd):
         compressed_input = inputf.read()
     assert subprocess.run([trafilatura_bin], input=compressed_input, check=True).returncode == 0
     captured = capfd.readouterr()
-    assert captured.out.endswith("in deep-red West Virginia.\n")
+    assert captured.out.strip().endswith("in deep-red West Virginia.")
 
 
 def test_input_type():
