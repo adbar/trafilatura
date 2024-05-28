@@ -296,13 +296,7 @@ def process_args(args):
 
     # read input on STDIN directly
     else:
-        # file type and unicode check
-        try:
-            htmlstring = sys.stdin.read()
-        except UnicodeDecodeError:
-            sys.exit('ERROR: system, file type or buffer encoding')
-        # process
-        result = examine(htmlstring, args, url=args.URL)
+        result = examine(sys.stdin.buffer.read(), args, url=args.URL)
         write_result(result, args)
 
     # change exit code if there are errors

@@ -133,7 +133,7 @@ def test_parser():
         cli.map_args(cli.parse_args(testargs))
 
 
-def test_climain():
+def test_climain(capfd):
     """test arguments and main CLI entrypoint"""
     # exit status required: 0
     # Windows platforms
@@ -158,6 +158,12 @@ def test_climain():
         ).returncode
         == 0
     )
+    # compressed file
+    with open(path.join(RESOURCES_DIR, "webpage.html.gz"), "rb") as inputf:
+        compressed_input = inputf.read()
+    assert subprocess.run([trafilatura_bin], input=compressed_input, check=True).returncode == 0
+    captured = capfd.readouterr()
+    assert captured.out.strip().endswith("in deep-red West Virginia.")
 
 
 def test_input_type():
