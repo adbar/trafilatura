@@ -157,6 +157,17 @@ This function emulates the behavior of similar functions in other packages, it i
     >>> html2txt(downloaded)
 
 
+Guessing if text can be found
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The function ``is_probably_readerable()`` has been ported from Mozilla's Readability.js, it is available from version 1.10.0 onwards and provides a way to guess if a page probably has a main text to extract.
+
+.. code-block:: python
+
+    >>> from trafilatura.readability_lxml import is_probably_readerable
+    >>> is_probably_readerable(html)  # HTML string or already parsed tree
+
+
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -199,7 +210,7 @@ The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Chari
 .. code-block:: python
 
     # create a Simhash for near-duplicate detection
-    >>> from trafilatura.hashing import Simhash
+    >>> from trafilatura.deduplication import Simhash
     >>> first = Simhash("This is a text.")
     >>> second = Simhash("This is a test.")
     >>> second.similarity(first)
@@ -217,9 +228,13 @@ Other convenience functions include generation of file names based on their cont
 .. code-block:: python
 
     # create a filename-safe string by hashing the given content
-    >>> from trafilatura.hashing import generate_hash_filename
+    >>> from trafilatura.deduplication import generate_hash_filename
     >>> generate_hash_filename("This is a text.")
     'qAgzZnskrcRgeftk'
+
+
+.. note::
+    The ``trafilatura.hashing`` submodule has been changed to ``trafilatura.deduplication`` in version 1.10.0.
 
 
 Extraction settings

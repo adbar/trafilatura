@@ -121,6 +121,8 @@ py3langid
     Language detection on extracted main text
 pycurl
     Faster downloads, possibly less robust though
+zstandard
+    Additional compression algorithm for downloads
 
 
 

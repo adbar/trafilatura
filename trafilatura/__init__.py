@@ -9,7 +9,7 @@ __title__ = 'trafilatura'
 __author__ = 'Adrien Barbaresi and contributors'
 __license__ = "Apache-2.0"
 __copyright__ = 'Copyright 2019-2024, Adrien Barbaresi'
-__version__ = '1.9.0'
+__version__ = '1.10.0'
 
 
 import logging
