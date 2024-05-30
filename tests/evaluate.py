@@ -1,13 +1,13 @@
 import argparse
-from importlib.metadata import version
 import json
 import os
 import sys
 import time
 
+from importlib.metadata import version
+
 import pandas as pd
-# TODO include rouge
-from rouge_score import rouge_scorer
+# from rouge_score import rouge_scorer
 
 try:
     from cchardet import detect
@@ -125,9 +125,8 @@ class Evaluation():
             # scrapinghub and andythefactory
             elif 'articleBody' in list(data.items())[0][1]:
                 self.evaltype = 'fullstring'
-        if type(data) == list:  # list of dicts
-            pass
-        elif type(data) == dict:  # nested dict
+        # list of dicts or nested dict (?)
+        if isinstance(data, (list, dict)):
             pass
         print('Dataset:', len(data), 'instances')
         return data
@@ -219,14 +218,14 @@ class Evaluation():
         dict_result['confusion_matrix']['false negatives'] += fn
         return dict_result['confusion_matrix']
 
-    def compute_rouge(self, pred, gold):
-        """compute rouge score between prediction and gold answer"""
-        # TODO
-        # rouge longest common substring
-        scorer = rouge_scorer.RougeScorer(['rougeLsum'],
-                                          use_stemmer=False,
-                                          split_summaries=True)
-        return scorer.score(pred, gold)
+    #def compute_rouge(self, pred, gold):
+    #    """compute rouge score between prediction and gold answer"""
+    #    # TODO
+    #    # rouge longest common substring
+    #    scorer = rouge_scorer.RougeScorer(['rougeLsum'],
+    #                                      use_stemmer=False,
+    #                                      split_summaries=True)
+    #    return scorer.score(pred, gold)
 
     @staticmethod
     def calculate_scores(mydict):
@@ -243,7 +242,7 @@ class Evaluation():
         """compute results of all algorithms on the test dataset"""
         i = 0
         # intialize results dictionary
-        results = dict()
+        results = {}
         for a in self.algorithms:
             results[a] = Evaluation.ALGORITHMS[a].copy()
         # iterate data, count true/false positives/negatives
@@ -268,8 +267,8 @@ class Evaluation():
                 results[a]['confusion_matrix'] = self.compute_confusion_matrix(
                     results[a], result, item)
                 # rouge score
-                if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
-                    self.compute_rouge()
+                #if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
+                #    self.compute_rouge()
         #  compute scores
         for a in self.algorithms:
             try:
@@ -314,7 +313,7 @@ class Evaluation():
         """save and print results in markdown format"""
         md = self.output_df.to_markdown()
         print(md)
-        with open(self.output_dir + path, 'w') as f:
+        with open(self.output_dir + path, 'w', encoding="utf-8") as f:
             f.write(md)
 
     def print_scores(self):
@@ -335,7 +334,7 @@ def cmdparser():
     # Command line arguments
     # script usage:
     # Trafilatura evaluation: python evaluate.py --small
-    # full evaluation: python evaluate.py --all 
+    # full evaluation: python evaluate.py --all
     parser = argparse.ArgumentParser(description='Run an evaluation benchmark')
     parser.add_argument('--small', action='store_true', help='Evaluate trafilatura and baselines only.')
     parser.add_argument('--all', action='store_true', help='Evaluate all available algorithms.')
@@ -366,5 +365,7 @@ if __name__ == '__main__':
         algorithms = Evaluation.ALGORITHMS.keys()
     test_file = args.testfile
     metrics = args.metrics
-    eval = Evaluation(test_data='evaldata.json', html_dir='eval', algorithms=algorithms,
-                      metrics=metrics, output=['csv', 'md'])
+    evaluation = Evaluation(
+                     test_data='evaldata.json', html_dir='eval', algorithms=algorithms,
+                     metrics=metrics, output=['csv', 'md']
+                 )

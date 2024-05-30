@@ -3,15 +3,8 @@ Compare extraction results with other libraries of the same kind.
 """
 
 # import logging
-import csv
-import os
-import re
-import time
+# logging.basicConfig(level=logging.DEBUG)
 
-try:
-    from cchardet import detect
-except ImportError:
-    from charset_normalizer import detect
 
 import html2text
 import html_text
@@ -22,7 +15,7 @@ from goose3 import Goose
 from inscriptis import get_text
 from newspaper import fulltext
 from newsplease import NewsPlease
-from readabilipy import simple_json_from_html_string
+# from readabilipy import simple_json_from_html_string
 from readability import Document
 from resiliparse.extract.html2text import extract_plain_text
 from resiliparse.parse.encoding import bytes_to_str, detect_encoding
@@ -181,15 +174,15 @@ def run_newsplease(htmlstring):
         return ''
 
 
-def run_readabilipy(htmlstring):
-    '''try with the readability.py module'''
-    try:
-        article = simple_json_from_html_string(htmlstring, use_readability=True)
-        returnlist = [textelem['text'] for textelem in article['plain_text']]
-        return '\n'.join(returnlist) # sanitize(content)
-    except Exception as err:
-        #print('Readabilipy exception:', err)
-        return ''
+#def run_readabilipy(htmlstring):
+#    '''try with the readability.py module'''
+#    try:
+#        article = simple_json_from_html_string(htmlstring, use_readability=True)
+#        returnlist = [textelem['text'] for textelem in article['plain_text']]
+#        return '\n'.join(returnlist) # sanitize(content)
+#    except Exception as err:
+#        #print('Readabilipy exception:', err)
+#        return ''
 
 
 def run_resiliparse(htmlstring):
@@ -213,4 +206,3 @@ def run_nothing(htmlstring):
 
 def run_everything(htmlstring):
     return htmlstring
-
