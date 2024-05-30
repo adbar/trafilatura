@@ -42,6 +42,9 @@ Full evaluation
 
 A comparison with similar software is run periodically. As the packages tend to evolve the script may not always be up-to-date and all packages may not be available. If that happens, commenting out the corresponding sections is the most efficient solution. Fixes to the file can be submitted as pull requests.
 
+Note: As numerous packages are installed it is recommended to create a virtual environment, for example with with ``pyenv`` or ``venv``.
+
+Running the evaluation:
 
 1. Install the packages specified in ``eval-requirements.txt``
 2. Run the script ``evaluate.py --all`` (some packages are slow, it can be a while)
@@ -61,4 +64,7 @@ HTML archives
 
 - Additional German news sites: diskursmonitor.de, courtesy of Jan Oliver Rüdiger.
 
+Evaluation scripts
+------------------
 
+Adrien Barbaresi, Lydia Körber.

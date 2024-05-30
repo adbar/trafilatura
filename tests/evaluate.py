@@ -7,6 +7,7 @@ import time
 from importlib.metadata import version
 
 import pandas as pd
+import tqdm
 # from rouge_score import rouge_scorer
 
 try:
@@ -36,10 +37,10 @@ class Evaluation():
         'baseline': {'library': '-',
                        'function': comparison.run_baseline,
                        'confusion_matrix': template_dict.copy()},
-        'trafilatura': {'library': 'trafilatura',
+        'trafilatura fast': {'library': 'trafilatura',
                        'function': comparison.run_trafilatura,
                        'confusion_matrix': template_dict.copy()},
-        'trafilatura + X': {'library': 'trafilatura',
+        'trafilatura': {'library': 'trafilatura',
                        'function': comparison.run_trafilatura_fallback,
                        'confusion_matrix': template_dict.copy()},
         'html2text': {'library': 'html2text',
@@ -69,9 +70,9 @@ class Evaluation():
         'readability': {'library': 'readability-lxml',
                        'function': comparison.run_readability,
                        'confusion_matrix': template_dict.copy()},
-        'readabilipy': {'library': 'readabilipy',
-                       'function': comparison.run_readabilipy,
-                       'confusion_matrix': template_dict.copy()},
+        #'readabilipy': {'library': 'readabilipy',
+        #               'function': comparison.run_readabilipy,
+        #               'confusion_matrix': template_dict.copy()},
         'resiliparse': {'library': 'resiliparse',
                        'function': comparison.run_resiliparse,
                        'confusion_matrix': template_dict.copy()},
@@ -105,6 +106,7 @@ class Evaluation():
         # store results
         self.output_df = self.create_df()
         self.output_dir = output_dir
+        os.makedirs(self.output_dir, exist_ok=True)
         if 'csv' in output:
             self.output_csv()
         if 'md' in output:
@@ -128,7 +130,6 @@ class Evaluation():
         # list of dicts or nested dict (?)
         if isinstance(data, (list, dict)):
             pass
-        print('Dataset:', len(data), 'instances')
         return data
 
     def load_document_string(self, filename, test_dir=''):
@@ -246,29 +247,31 @@ class Evaluation():
         for a in self.algorithms:
             results[a] = Evaluation.ALGORITHMS[a].copy()
         # iterate data, count true/false positives/negatives
-        for _, item in self.test_data.items():
-            if len(item['file']) == 0:
-                continue
-            htmlstring = self.load_document_string(item['file'],
-                                                   test_dir='')
-            if htmlstring is None:
-                continue
-            # counter
-            i += 1
-            for a in self.algorithms:
-                # run algorithm
-                try:
-                    results[a]['confusion_matrix'], result = self.predict(
-                        results[a], htmlstring)
-                except Exception as e:
-                    print(item['file'], e)
+        with tqdm.tqdm(total=len(self.test_data)) as pbar:
+            for _, item in self.test_data.items():
+                if len(item['file']) == 0:
                     continue
-                # compute confusion matrix
-                results[a]['confusion_matrix'] = self.compute_confusion_matrix(
-                    results[a], result, item)
-                # rouge score
-                #if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
-                #    self.compute_rouge()
+                htmlstring = self.load_document_string(item['file'],
+                                                       test_dir='')
+                if htmlstring is None:
+                    continue
+                # counter
+                i += 1
+                for a in self.algorithms:
+                    # run algorithm
+                    try:
+                        results[a]['confusion_matrix'], result = self.predict(
+                            results[a], htmlstring)
+                    except Exception as e:
+                        print(item['file'], e)
+                        continue
+                    # compute confusion matrix
+                    results[a]['confusion_matrix'] = self.compute_confusion_matrix(
+                        results[a], result, item)
+                    # rouge score
+                    #if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
+                    #    self.compute_rouge()
+                pbar.update(1)
         #  compute scores
         for a in self.algorithms:
             try:
@@ -312,22 +315,24 @@ class Evaluation():
     def output_md(self, path='results.md'):
         """save and print results in markdown format"""
         md = self.output_df.to_markdown()
-        print(md)
         with open(self.output_dir + path, 'w', encoding="utf-8") as f:
             f.write(md)
 
     def print_scores(self):
         """print results"""
+        print()
+        separator = " | "
         for algo, infos in self.results.items():
             print(algo)
-            print(infos)
-            print(f"time diff.: {self.output_df.loc[algo]['time difference']:.2f}")
-            for m in self.metrics:
-                print(f"{m}: {self.output_df.loc[algo][m]:.2f}")
+            # print(infos)
+            result = separator.join([f"{m}: {self.output_df.loc[algo][m]:.3f}" for m in self.metrics])
+            print(result, f"time: {self.output_df.loc[algo]['time difference']:.2f}", sep=separator)
+            print()
 
     def evaluate_authors(self):
         # TODO
         pass
+
 
 def cmdparser():
     """Parse command line arguments"""
@@ -344,7 +349,7 @@ def cmdparser():
                         help='Evaluation metrics, implemented: precision, recall, accuracy, f-score.')
     parser.add_argument('--algorithms',
                         nargs='+',
-                        default=['trafilatura', 'trafilatura + X', 'everything', 'nothing', 'baseline'],
+                        default=['trafilatura fast', 'trafilatura', 'everything', 'nothing', 'baseline'],
                         help='Further tools/algorithms to evaluate, implemented: .')
     # print help and exit if no arguments are given
     if len(sys.argv) == 1:
@@ -357,7 +362,7 @@ def cmdparser():
 if __name__ == '__main__':
     args = cmdparser()
     # minimum number of algorithms
-    algorithms = ['trafilatura', 'trafilatura + X', 'everything', 'nothing',
+    algorithms = ['trafilatura fast', 'trafilatura', 'everything', 'nothing',
                   'baseline']
     if not args.small:  # more algorithms given
         algorithms += args.algorithms
