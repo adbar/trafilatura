@@ -111,7 +111,7 @@ def test_parser():
     assert e.type == SystemExit
     assert e.value.code == 0
     assert re.match(
-        r"Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue()
+        r"Trafilatura [0-9]\.[0-9]+\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue()
     )
 
     # test deprecations

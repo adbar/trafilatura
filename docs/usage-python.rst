@@ -234,7 +234,7 @@ Other convenience functions include generation of file names based on their cont
 
 
 .. note::
-    The ``trafilatura.hashing`` submodule has been changed to ``trafilatura.deduplication`` in version 1.10.0.
+    The ``trafilatura.hashing`` submodule has been renamed ``trafilatura.deduplication`` in version 1.10.0.
 
 
 Extraction settings
