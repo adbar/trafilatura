@@ -1,6 +1,33 @@
 ## History / Changelog
 
 
+### 1.10.0
+
+Breaking changes:
+- raise errors on deprecated CLI and function arguments (#581)
+- regroup classes and functions linked to deduplication (#582)
+``trafilatura.hashing`` → ``trafilatura.deduplication``
+
+Extraction:
+- port of is_probably_readerable from readability.js by @zirkelc in #587
+- Markdown table fixes by @naktinis in #601
+- fix list spacing in TXT output (#598)
+- CLI fixes: file processing options, mtime, and tests (#605)
+- CLI fix: read standard input as binary (#607)
+
+Downloads:
+- fix deflate and add optional zstd to accepted encodings (#594)
+- spider fix: use internal download utilities for robots.txt (#590)
+
+Maintenance:
+- add author XPaths (#567)
+- update justext and lxml dependencies (#593)
+- simplify code: unique function for length tests (#591)
+
+Docs:
+- fix typos by @RainRat in #603
+
+
 ### 1.9.0
 
 Extraction:

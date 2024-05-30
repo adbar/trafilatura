@@ -60,7 +60,8 @@ search engine optimization, and information security).
    - Optional elements: comments, links, images, tables
 
 - Multiple output formats:
-   - Text (minimal formatting or Markdown)
+   - Text
+   - Markdown (with formatting)
    - CSV (with metadata)
    - JSON (with metadata)
    - XML or [XML-TEI](https://tei-c.org/) (with metadata, text formatting and page structure)
