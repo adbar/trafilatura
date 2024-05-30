@@ -888,7 +888,7 @@ def test_table_processing():
         htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
-    assert """<table><rowspan="2"><cell>text<head>more_text</head></cell></row></table>""" in result
+    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
 
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
@@ -979,7 +979,7 @@ def test_table_processing():
 </tr>
     </table></article></body></html>'''
     my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '''<row span="7">
+    assert '''<row>
         <cell>
           <hi>Present Tense</hi>
         </cell>

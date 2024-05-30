@@ -409,6 +409,9 @@ def handle_table(table_elem, potential_tags, options):
         # cleanup
         subelement.tag = "done"
 
+    # clean up row attributes
+    newrow.attrib.pop("span", None)
+
     # end of processing
     if len(newrow) > 0:
         newtable.append(newrow)
