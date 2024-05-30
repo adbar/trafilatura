@@ -335,11 +335,11 @@ def handle_paragraphs(element, potential_tags, options):
     return None
 
 
-def define_cell_type(element):
+def define_cell_type(element, is_header):
     "Determine cell element type and mint new element."
     # define tag
     cell_element = Element("cell")
-    if element.tag == "th":
+    if is_header:
         cell_element.set("role", "head")
     return cell_element
 
@@ -347,20 +347,31 @@ def define_cell_type(element):
 def handle_table(table_elem, potential_tags, options):
     "Process single table element."
     newtable = Element("table")
-    newrow = Element("row")
 
     # strip these structural elements
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
+    # calculate maximum number of columns per row, includin colspan
+    max_cols = 0
+    for tr in table_elem.iter('tr'):
+        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
+
     # explore sub-elements
+    seen_header_row = False
+    seen_header = False
+    row_attrs = {"span": str(max_cols)} if max_cols > 1 else {}
+    newrow = Element("row", **row_attrs)
     for subelement in table_elem.iterdescendants():
         if subelement.tag == "tr":
             # process existing row
             if len(newrow) > 0:
                 newtable.append(newrow)
-                newrow = Element("row")
+                newrow = Element("row", **row_attrs)
+                seen_header_row = seen_header_row or seen_header
         elif subelement.tag in TABLE_ELEMS:
-            new_child_elem = define_cell_type(subelement)
+            is_header = subelement.tag == "th" and not seen_header_row
+            seen_header = seen_header or is_header
+            new_child_elem = define_cell_type(subelement, is_header)
             # process
             if len(subelement) == 0:
                 processed_cell = process_node(subelement, options)
@@ -397,6 +408,9 @@ def handle_table(table_elem, potential_tags, options):
             break
         # cleanup
         subelement.tag = "done"
+
+    # clean up row attributes
+    newrow.attrib.pop("span", None)
 
     # end of processing
     if len(newrow) > 0:
