@@ -2,9 +2,8 @@
 Compare extraction results with other libraries of the same kind.
 """
 
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-
+#import logging
+#logging.basicConfig(level=logging.DEBUG)
 
 import html2text
 import html_text
@@ -21,13 +20,7 @@ from resiliparse.extract.html2text import extract_plain_text
 from resiliparse.parse.encoding import bytes_to_str, detect_encoding
 from resiliparse.parse.html import HTMLTree
 
-from trafilatura import extract
-
-try:
-    from trafilatura import baseline
-except ImportError:
-    print("Cannot import baseline, using simple version")
-    baseline = None
+from trafilatura import baseline, extract
 
 boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
