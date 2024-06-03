@@ -52,7 +52,7 @@ class Extractor:
     # rest
     'max_file_size', 'min_file_size', 'max_tree_size',
     # meta
-    'source', 'url', 'only_with_metadata', 'tei_validation',
+    'source', 'url', 'with_metadata', 'only_with_metadata', 'tei_validation',
     'date_params',
     'author_blacklist', 'url_blacklist'
     ]
@@ -61,7 +61,7 @@ class Extractor:
                  fast=False, precision=False, recall=False,
                  comments=True, formatting=False, links=False, images=False,
                  tables=True, dedup=False, lang=None, max_tree_size=None,
-                 url=None, source=None, only_with_metadata=False, tei_validation=False,
+                 url=None, source=None, with_metadata=False, only_with_metadata=False, tei_validation=False,
                  author_blacklist=None, url_blacklist=None, date_params=None):
         self._add_config(config)
         self.format = output_format
@@ -82,6 +82,7 @@ class Extractor:
         self.max_tree_size = max_tree_size
         self.url = url
         self.source = url or source
+        self.with_metadata = with_metadata or only_with_metadata or url_blacklist or output_format == "xmltei"
         self.only_with_metadata = only_with_metadata
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
@@ -108,8 +109,8 @@ def args_to_extractor(args, url=None):
                   config=use_config(filename=args.config_file), output_format=args.output_format,
                   precision=args.precision, recall=args.recall,
                   comments=args.no_comments, tables=args.no_tables,
-                  dedup=args.deduplicate, lang=args.target_language,
-                  url=url, only_with_metadata=args.only_with_metadata,
+                  dedup=args.deduplicate, lang=args.target_language, url=url,
+                  with_metadata=args.with_metadata, only_with_metadata=args.only_with_metadata,
                   tei_validation=args.validate_tei
               )
     for attr in ("fast", "formatting", "images", "links"):

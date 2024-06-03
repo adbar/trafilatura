@@ -226,10 +226,6 @@ def map_args(args):
         raise ValueError(
               "--notables is deprecated, use --no-tables instead",
               )
-    if args.with_metadata is True:
-        raise ValueError(
-              "--with-metadata is deprecated, use --only-with-metadata instead",
-              )
     if args.inputfile:
         raise ValueError(
               "--inputfile is deprecated, use --input-file instead",

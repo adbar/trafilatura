@@ -120,7 +120,7 @@ def test_parser():
     ):
         cli.map_args(cli.parse_args(testargs))
 
-    for arg in ("--with-metadata", "--nocomments", "--notables", "--hash-as-name"):
+    for arg in ("--nocomments", "--notables", "--hash-as-name"):
         testargs = ["", arg]
         with patch.object(sys, "argv", testargs), pytest.raises(ValueError):
             cli.map_args(cli.parse_args(testargs))
