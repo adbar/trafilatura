@@ -42,6 +42,10 @@ ALGORITHMS = {
         'library': '-',
         'function': comparison.run_baseline
     },
+    'html2txt': {
+        'library': '-',
+        'function': comparison.run_html2txt
+    },
     'trafilatura fast': {
         'library': 'trafilatura',
         'function': comparison.run_trafilatura

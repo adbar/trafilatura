@@ -28,8 +28,8 @@ Running the code
 The results and a list of comparable benchmarks are available on the `evaluation page of the docs <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_.
 
 
-Trafilatura evaluation
-----------------------
+Evaluation
+----------
 
 The following allows for comparing changes made to Trafilatura, for example in a new version or pull request:
 
@@ -37,17 +37,20 @@ The following allows for comparing changes made to Trafilatura, for example in a
 2. Run the script ``comparison_small.py``
 
 
-Full evaluation
----------------
-
 A comparison with similar software is run periodically. As the packages tend to evolve the script may not always be up-to-date and all packages may not be available. If that happens, commenting out the corresponding sections is the most efficient solution. Fixes to the file can be submitted as pull requests.
 
 Note: As numerous packages are installed it is recommended to create a virtual environment, for example with with ``pyenv`` or ``venv``.
 
-Running the evaluation:
-
 1. Install the packages specified in ``eval-requirements.txt``
-2. Run the script ``evaluate.py --all`` (some packages are slow, it can be a while)
+2. Run the script ``evaluate.py``
+
+Options:
+
+- ``--all``: Run all the supported algorithms (some packages are slow, it can be a while)
+- ``--small``: Run Trafilatura-based components
+- ``--algorithms "html2txt" "html_text"``: Compare Trafilatura's ``html2txt`` extractor with the ``html_text`` package
+
+For a list of algorithms and further options: ``python3 evaluate.py --help``.
 
 
 Sources

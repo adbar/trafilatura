@@ -20,7 +20,7 @@ from resiliparse.extract.html2text import extract_plain_text
 from resiliparse.parse.encoding import bytes_to_str, detect_encoding
 from resiliparse.parse.html import HTMLTree
 
-from trafilatura import baseline, extract
+from trafilatura import baseline, extract, html2txt
 
 boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
@@ -31,6 +31,11 @@ def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
     _, result, _ = baseline(htmlstring)
     return result
+
+
+def run_html2txt(htmlstring):
+   '''run Trafilatura's html2txt function'''
+   return html2txt(htmlstring)
 
 
 def run_trafilatura(htmlstring):

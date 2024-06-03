@@ -84,7 +84,7 @@ limiting noise and including all valid parts.
 
 For more information see the [benchmark section](https://trafilatura.readthedocs.io/en/latest/evaluation.html)
 and the [evaluation readme](https://github.com/adbar/trafilatura/blob/master/tests/README.rst)
-to reproduce the results.
+to run the evaluation with the latest data and packages.
 
 **750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8**
 
