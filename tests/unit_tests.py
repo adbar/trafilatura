@@ -302,6 +302,10 @@ def test_formatting():
     assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
     assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
 
+    meta_string = '<html><head><title>Test</title></head><body><p>ABC.</p></body></html>'
+    meta_result = extract(meta_string, output_format='markdown', config=ZERO_CONFIG, with_metadata=True)
+    assert " ".join(meta_result.split()) == "--- title: Test --- ABC."
+
     # space between paragraphs
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)

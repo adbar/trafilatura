@@ -53,7 +53,8 @@ def determine_returnstring(document, options):
                     'title', 'author', 'url', 'hostname', 'description', 'sitename',
                     'date', 'categories', 'tags', 'fingerprint', 'id', 'license'
                 ):
-                header += f"{attr: str(getattr(document, attr))}\n"
+                if getattr(document, attr):
+                    header += f"{attr}: {str(getattr(document, attr))}\n"
             header += "---\n"
         else:
             header = ""
