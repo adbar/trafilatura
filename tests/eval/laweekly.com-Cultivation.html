@@ -1,0 +1,2233 @@
+<style>
+  /*NEW STYLE*/
+  .visible-media-boxes-by-filter {
+      opacity: 1;
+      transform: translate3d(0px, 0px, 0px) !important;
+      transition-property: transform, opacity;
+      transition-duration: 0.4s;
+  }
+
+  .hidden-media-boxes-by-filter {
+      opacity: 0;
+      transform: scale(0.001);
+      transition-property: transform, opacity;
+      transition-duration: 0.4s;
+  }
+
+
+  div.grid {
+      display: grid;
+      gap: 10px 10px;
+      grid-template-columns: repeat(auto-fill, minmax(250PX, 1fr));
+      grid-auto-rows: 20px;
+      margin-left: 0;
+      height: auto !important;
+  }
+
+  .media-boxes-grid-sizer-load {
+      display: none;
+  }
+
+  .media-box-load {
+      position: relative !important;
+      left: 0 !important;
+      right: 0 !important;
+      top: 0 !important;
+      bottom: 0 !important;
+  }
+
+  div#evr-grid {
+      color: white;
+  }
+
+  div#my-button {
+      cursor: pointer;
+      width: 150px;
+      text-align: center;
+      color: white;
+      background-color: #333333;
+      font-size: 14px !important;
+      height: 15px;
+      padding: 10px 15px 10px 15px;
+      margin: 0px auto;
+      line-height: 15px;
+      -webkit-box-shadow: 0 1px 1px rgba(34,25,25,0.2);
+      -moz-box-shadow: 0 1px 1px rgba(34,25,25,0.2);
+      -o-box-shadow: 0 1px 1px rgba(34,25,25,0.2);
+      -ms-box-shadow: 0 1px 1px rgba(34,25,25,0.2);
+      box-shadow: 0 1px 1px rgba(34,25,25,0.2);
+      -webkit-box-sizing: content-box !important;
+      -moz-box-sizing: content-box !important;
+      box-sizing: content-box !important;
+  }
+
+  .media-boxes-load-more-button.media-boxes-no-more-entries {
+      display: none;
+  }
+
+  .hidden-media-boxes-by-filter {
+      display: none;
+  }
+
+  .media-boxes-grid-sizer {
+      display: none !important;
+  }
+
+
+  .loader,
+  .loader:before,
+  .loader:after {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation: load7 1.8s infinite ease-in-out;
+    animation: load7 1.8s infinite ease-in-out;
+  }
+  .loader {
+    display: none;
+    color: #333333;
+    font-size: 10px;
+    margin: 80px auto;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+  .loader:before,
+  .loader:after {
+    content: '';
+    position: absolute;
+    top: 0;
+  }
+  .loader:before {
+    left: -3.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+  .loader:after {
+    left: 3.5em;
+  }
+  @-webkit-keyframes load7 {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 2.5em 0 -1.3em;
+    }
+    40% {
+      box-shadow: 0 2.5em 0 0;
+    }
+  }
+  @keyframes load7 {
+    0%,
+    80%,
+    100% {
+      box-shadow: 0 2.5em 0 -1.3em;
+    }
+    40% {
+      box-shadow: 0 2.5em 0 0;
+    }
+  }
+
+  .loader.loadEventseffs {
+     position: fixed;
+     left: 35%;
+     z-index: 1000;
+     top: 50%;
+  }
+
+  .gridSectionLoad{
+      opacity: 0.5;
+  }
+
+
+
+  .grid-section.gridloadsec .media-boxes-load-more-button.media-boxes-loading {
+      display: none;
+  }
+
+  div#nomore-evnts {
+      text-align: center;
+      display: none;
+  }
+
+  .nomoreload div#my-button {
+      background-color: #a5a2a2;
+      cursor: no-drop;
+  }
+
+  .content.grid-container.eventplus-list div#evr-grid {
+      display: block;
+  }
+
+  section.cb-entry-content>.grid-section.gridloadsec>.content.grid-container {
+      color: white;
+  }
+
+
+
+  .loader_2 {
+    margin: 100px auto;
+    font-size: 25px;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-animation: load5 1.1s infinite ease;
+    animation: load5 1.1s infinite ease;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  @-webkit-keyframes load5 {
+    0%,
+    100% {
+      box-shadow: 0em -2.6em 0em 0em red, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+    }
+    12.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em red, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+    }
+    25% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em red, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    37.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em red, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    50% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em red, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    62.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em red, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    75% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em red, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    87.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em red;
+    }
+  }
+  @keyframes load5 {
+    0%,
+    100% {
+      box-shadow: 0em -2.6em 0em 0em red, 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.5), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+    }
+    12.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7), 1.8em -1.8em 0 0em red, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+    }
+    25% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em red, 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    37.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5), 2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em red, 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    50% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.5), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em red, -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2), -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    62.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5), 0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em red, -2.6em 0em 0 0em rgba(255, 255, 255, 0.2), -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    75% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.5), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em red, -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+    }
+    87.5% {
+      box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2), 1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2), 2.5em 0em 0 0em rgba(255, 255, 255, 0.2), 1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2), 0em 2.5em 0 0em rgba(255, 255, 255, 0.2), -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5), -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em red;
+    }
+  }
+
+
+  span.note_min {
+    font-size: 11px;
+    letter-spacing: 0;
+    display: block;
+  }
+
+  div#cb-featured-image .cb-byline span.cb-separator:nth-child(4) {
+    display: none !important;
+  }
+
+  div#cb-featured-image .cb-byline span.cb-views.cb-element {
+    display: none !important;
+  }
+
+  .cb-post-wrap.cb-wrap-pad.wrap .cb-entry-header span.cb-separator:nth-child(6) {
+      display: none;
+  }
+
+  .cb-post-wrap.cb-wrap-pad.wrap .cb-entry-header span.cb-views.cb-element {
+    display: none !important;
+  }
+
+  /*@media ( max-width:998px) {
+
+  }*/
+
+  a.sponsor-wrap span {
+      width: 20%;
+  }
+
+  a.sponsor-wrap img {
+      height: auto;
+      max-height: 80px;
+      width: auto;
+      margin: 0 auto;
+      max-width: 55%;
+  }
+
+  span#zone144306006 {
+      margin-bottom: 100px;
+  }
+
+  a.onclickdinamicGA {
+      display: none;
+  }
+
+
+  /*NEW STYLE*/
+  @media ( max-width:998px) {
+    .media-box {
+        position: relative !important;
+        width: 100% !important;
+        top: 0 !important;
+    }
+    .media-box-image {
+        width: 100% !important;
+    }
+    .media-box-thumbnail-container {
+        width: 100% !important;
+    }
+    body .eventplus-gl-toggle {
+        padding-right: 0 !important;
+    }
+    .eventplus-date-filter-bar ul.day-list li a {
+        font-size: 13px;
+        height: 58px;
+        width: 19px;
+    }
+    a.sponsor-wrap span {
+        width: 33%;
+    }
+    a.sponsor-wrap img {
+        /*width: 57%;*/
+    }
+  }
+
+  @media ( max-width:767px) {
+    .media-box {
+        width: 100% !important;
+    }
+    .media-box-image {
+        width: 100% !important;
+    }
+    .media-box-thumbnail-container {
+        width: 100% !important;
+    }
+    .eventplus-list .media-box-content {
+        margin-left: 0%;
+        height: 100%;
+        padding-left: 20px;
+    }
+
+    span#zone144306006 {
+        margin-bottom: 260px;
+        width: 100%;
+        max-width: 100%;
+    }
+    span#zone144306006 iframe {
+        width: 100% !important;
+    }
+  }
+
+  @media ( max-width:600px) {
+    a.sponsor-wrap {
+        display: block;
+        text-align: center;
+    }
+    a.sponsor-wrap span {
+        width: 100%;
+        display: block;
+    }
+    a.sponsor-wrap img {
+        /*width: 90%;*/
+        margin-left: 0;
+    }
+
+  }
+
+  @media ( max-width:420px) {
+    .eventplus-date-filter-bar ul.day-list li a {
+        font-size: 12px !important;
+        width: 24px !important;
+    }
+    a#P2014945707 {
+        display: none;
+    }
+    span#zone144306006 {
+        margin-bottom: 340px;
+    }
+  }
+
+  @media ( max-width:340px) {
+    .eventplus-date-filter-bar ul.day-list li a {
+        font-size: 12px !important;
+        width: 20px !important;
+    }
+  }
+
+</style>
+		<script>	
+		var ga_dimension1 = 'November 6, 2023'; 
+		</script>
+		<script>	
+			var ga_dimension2 = 'arts'; 
+			</script>
+<!-- Search Engine Optimization by Rank Math - https://rankmath.com/ -->
+<title>Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly</title>
+<meta name="description" content="Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. Her experiential and sculptural"/>
+<meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+<link rel="canonical" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly" />
+<meta property="og:description" content="Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. Her experiential and sculptural" />
+<meta property="og:url" content="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/" />
+<meta property="og:site_name" content="LA Weekly" />
+<meta property="article:publisher" content="https://www.facebook.com/LAWeekly/" />
+<meta property="article:section" content="Arts" />
+<meta property="og:updated_time" content="2023-11-06T10:00:09-08:00" />
+<meta property="og:image" content="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg" />
+<meta property="og:image:secure_url" content="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg" />
+<meta property="og:image:width" content="1500" />
+<meta property="og:image:height" content="1000" />
+<meta property="og:image:alt" content="Alexandria Douziech" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="article:published_time" content="2023-11-06T08:00:15-08:00" />
+<meta property="article:modified_time" content="2023-11-06T10:00:09-08:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly" />
+<meta name="twitter:description" content="Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. Her experiential and sculptural" />
+<meta name="twitter:site" content="@laweekly" />
+<meta name="twitter:creator" content="@laweekly" />
+<meta name="twitter:image" content="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Shana Nys Dambrot" />
+<meta name="twitter:label2" content="Time to read" />
+<meta name="twitter:data2" content="5 minutes" />
+<script type="application/ld+json" class="rank-math-schema">{"@context":"https://schema.org","@graph":[{"@type":["NewsMediaOrganization","Organization"],"@id":"https://www.laweekly.com/#organization","name":"LA Weekly","url":"https://www.laweekly.com","sameAs":["https://www.facebook.com/LAWeekly/","https://twitter.com/laweekly","https://www.instagram.com/laweekly/"],"logo":{"@type":"ImageObject","@id":"https://www.laweekly.com/#logo","url":"https://www.laweekly.com/wp-content/uploads/2019/03/law-logo.png","contentUrl":"https://www.laweekly.com/wp-content/uploads/2019/03/law-logo.png","caption":"LA Weekly","inLanguage":"en-US","width":"252","height":"65"}},{"@type":"WebSite","@id":"https://www.laweekly.com/#website","url":"https://www.laweekly.com","name":"LA Weekly","publisher":{"@id":"https://www.laweekly.com/#organization"},"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg","url":"https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg","width":"1500","height":"1000","caption":"Alexandria Douziech","inLanguage":"en-US"},{"@type":"WebPage","@id":"https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/#webpage","url":"https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/","name":"Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly","datePublished":"2023-11-06T08:00:15-08:00","dateModified":"2023-11-06T10:00:09-08:00","isPartOf":{"@id":"https://www.laweekly.com/#website"},"primaryImageOfPage":{"@id":"https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg"},"inLanguage":"en-US"},{"@type":"Person","@id":"https://www.laweekly.com/author/sndambrot/","name":"Shana Nys Dambrot","url":"https://www.laweekly.com/author/sndambrot/","image":{"@type":"ImageObject","@id":"https://secure.gravatar.com/avatar/d36be3600806f1a77da69787039b85b1?s=96&amp;d=mm&amp;r=g","url":"https://secure.gravatar.com/avatar/d36be3600806f1a77da69787039b85b1?s=96&amp;d=mm&amp;r=g","caption":"Shana Nys Dambrot","inLanguage":"en-US"},"worksFor":{"@id":"https://www.laweekly.com/#organization"}},{"@type":"NewsArticle","headline":"Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly","keywords":"Alexandria Douziech","datePublished":"2023-11-06T08:00:15-08:00","dateModified":"2023-11-06T10:00:09-08:00","author":{"@id":"https://www.laweekly.com/author/sndambrot/","name":"Shana Nys Dambrot"},"publisher":{"@id":"https://www.laweekly.com/#organization"},"description":"Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. Her experiential and sculptural","name":"Meet Cultural Cultivation Artist Alexandria Douziech - LA Weekly","@id":"https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/#richSnippet","isPartOf":{"@id":"https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/#webpage"},"image":{"@id":"https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg"},"inLanguage":"en-US","mainEntityOfPage":{"@id":"https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/#webpage"}}]}</script>
+<!-- /Rank Math WordPress SEO plugin -->
+
+<link rel='dns-prefetch' href='//www.google.com' />
+<link rel='dns-prefetch' href='//stats.wp.com' />
+<link rel='dns-prefetch' href='//maxcdn.bootstrapcdn.com' />
+<link rel='dns-prefetch' href='//unpkg.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="LA Weekly &raquo; Feed" href="https://www.laweekly.com/feed/" />
+		<!-- This site uses the Google Analytics by MonsterInsights plugin v8.20.1 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+							<script src="//www.googletagmanager.com/gtag/js?id=G-HM7YVDE60T"  data-cfasync="false" data-wpfc-render="false" type="text/javascript" async></script>
+			<script data-cfasync="false" data-wpfc-render="false" type="text/javascript">
+				var mi_version = '8.20.1';
+				var mi_track_user = true;
+				var mi_no_track_reason = '';
+				
+								var disableStrs = [
+										'ga-disable-G-HM7YVDE60T',
+									];
+
+				/* Function to detect opted out users */
+				function __gtagTrackerIsOptedOut() {
+					for (var index = 0; index < disableStrs.length; index++) {
+						if (document.cookie.indexOf(disableStrs[index] + '=true') > -1) {
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				/* Disable tracking if the opt-out cookie exists. */
+				if (__gtagTrackerIsOptedOut()) {
+					for (var index = 0; index < disableStrs.length; index++) {
+						window[disableStrs[index]] = true;
+					}
+				}
+
+				/* Opt-out function */
+				function __gtagTrackerOptout() {
+					for (var index = 0; index < disableStrs.length; index++) {
+						document.cookie = disableStrs[index] + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+						window[disableStrs[index]] = true;
+					}
+				}
+
+				if ('undefined' === typeof gaOptout) {
+					function gaOptout() {
+						__gtagTrackerOptout();
+					}
+				}
+								window.dataLayer = window.dataLayer || [];
+
+				window.MonsterInsightsDualTracker = {
+					helpers: {},
+					trackers: {},
+				};
+				if (mi_track_user) {
+					function __gtagDataLayer() {
+						dataLayer.push(arguments);
+					}
+
+					function __gtagTracker(type, name, parameters) {
+						if (!parameters) {
+							parameters = {};
+						}
+
+						if (parameters.send_to) {
+							__gtagDataLayer.apply(null, arguments);
+							return;
+						}
+
+						if (type === 'event') {
+														parameters.send_to = monsterinsights_frontend.v4_id;
+							var hookName = name;
+							if (typeof parameters['event_category'] !== 'undefined') {
+								hookName = parameters['event_category'] + ':' + name;
+							}
+
+							if (typeof MonsterInsightsDualTracker.trackers[hookName] !== 'undefined') {
+								MonsterInsightsDualTracker.trackers[hookName](parameters);
+							} else {
+								__gtagDataLayer('event', name, parameters);
+							}
+							
+						} else {
+							__gtagDataLayer.apply(null, arguments);
+						}
+					}
+
+					__gtagTracker('js', new Date());
+					__gtagTracker('set', {
+						'developer_id.dZGIzZG': true,
+											});
+										__gtagTracker('config', 'G-HM7YVDE60T', {"forceSSL":"true","anonymize_ip":"true","link_attribution":"true"} );
+															window.gtag = __gtagTracker;										(function () {
+						/* https://developers.google.com/analytics/devguides/collection/analyticsjs/ */
+						/* ga and __gaTracker compatibility shim. */
+						var noopfn = function () {
+							return null;
+						};
+						var newtracker = function () {
+							return new Tracker();
+						};
+						var Tracker = function () {
+							return null;
+						};
+						var p = Tracker.prototype;
+						p.get = noopfn;
+						p.set = noopfn;
+						p.send = function () {
+							var args = Array.prototype.slice.call(arguments);
+							args.unshift('send');
+							__gaTracker.apply(null, args);
+						};
+						var __gaTracker = function () {
+							var len = arguments.length;
+							if (len === 0) {
+								return;
+							}
+							var f = arguments[len - 1];
+							if (typeof f !== 'object' || f === null || typeof f.hitCallback !== 'function') {
+								if ('send' === arguments[0]) {
+									var hitConverted, hitObject = false, action;
+									if ('event' === arguments[1]) {
+										if ('undefined' !== typeof arguments[3]) {
+											hitObject = {
+												'eventAction': arguments[3],
+												'eventCategory': arguments[2],
+												'eventLabel': arguments[4],
+												'value': arguments[5] ? arguments[5] : 1,
+											}
+										}
+									}
+									if ('pageview' === arguments[1]) {
+										if ('undefined' !== typeof arguments[2]) {
+											hitObject = {
+												'eventAction': 'page_view',
+												'page_path': arguments[2],
+											}
+										}
+									}
+									if (typeof arguments[2] === 'object') {
+										hitObject = arguments[2];
+									}
+									if (typeof arguments[5] === 'object') {
+										Object.assign(hitObject, arguments[5]);
+									}
+									if ('undefined' !== typeof arguments[1].hitType) {
+										hitObject = arguments[1];
+										if ('pageview' === hitObject.hitType) {
+											hitObject.eventAction = 'page_view';
+										}
+									}
+									if (hitObject) {
+										action = 'timing' === arguments[1].hitType ? 'timing_complete' : hitObject.eventAction;
+										hitConverted = mapArgs(hitObject);
+										__gtagTracker('event', action, hitConverted);
+									}
+								}
+								return;
+							}
+
+							function mapArgs(args) {
+								var arg, hit = {};
+								var gaMap = {
+									'eventCategory': 'event_category',
+									'eventAction': 'event_action',
+									'eventLabel': 'event_label',
+									'eventValue': 'event_value',
+									'nonInteraction': 'non_interaction',
+									'timingCategory': 'event_category',
+									'timingVar': 'name',
+									'timingValue': 'value',
+									'timingLabel': 'event_label',
+									'page': 'page_path',
+									'location': 'page_location',
+									'title': 'page_title',
+								};
+								for (arg in args) {
+																		if (!(!args.hasOwnProperty(arg) || !gaMap.hasOwnProperty(arg))) {
+										hit[gaMap[arg]] = args[arg];
+									} else {
+										hit[arg] = args[arg];
+									}
+								}
+								return hit;
+							}
+
+							try {
+								f.hitCallback();
+							} catch (ex) {
+							}
+						};
+						__gaTracker.create = newtracker;
+						__gaTracker.getByName = newtracker;
+						__gaTracker.getAll = function () {
+							return [];
+						};
+						__gaTracker.remove = noopfn;
+						__gaTracker.loaded = true;
+						window['__gaTracker'] = __gaTracker;
+					})();
+									} else {
+										console.log("");
+					(function () {
+						function __gtagTracker() {
+							return null;
+						}
+
+						window['__gtagTracker'] = __gtagTracker;
+						window['gtag'] = __gtagTracker;
+					})();
+									}
+			</script>
+				<!-- / Google Analytics by MonsterInsights -->
+		<script type="text/javascript">
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/14.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.laweekly.com\/wp-includes\/js\/wp-emoji-release.min.js"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83e\udef1\ud83c\udffb\u200d\ud83e\udef2\ud83c\udfff","\ud83e\udef1\ud83c\udffb\u200b\ud83e\udef2\ud83c\udfff")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='bootsrap-css-css' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='sbi_styles-css' href='https://www.laweekly.com/wp-content/plugins/instagram-feed/css/sbi-styles.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css' href='https://www.laweekly.com/wp-includes/css/dist/block-library/style.min.css' type='text/css' media='all' />
+<style id='wp-block-library-inline-css' type='text/css'>
+.has-text-align-justify{text-align:justify;}
+</style>
+<link rel='stylesheet' id='mediaelement-css' href='https://www.laweekly.com/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-mediaelement-css' href='https://www.laweekly.com/wp-includes/js/mediaelement/wp-mediaelement.min.css' type='text/css' media='all' />
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}body .is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}body .is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}body .is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}body .is-layout-flex{flex-wrap: wrap;align-items: center;}body .is-layout-flex > *{margin: 0;}body .is-layout-grid{display: grid;}body .is-layout-grid > *{margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+.wp-block-navigation a:where(:not(.wp-element-button)){color: inherit;}
+:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}
+:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}
+.wp-block-pullquote{font-size: 1.5em;line-height: 1.6;}
+</style>
+<link rel='stylesheet' id='dropdown-content-css' href='https://www.laweekly.com/wp-content/plugins/dropdown-content//css/dropdowncontent.css' type='text/css' media='all' />
+<link rel='stylesheet' id='guest_author_styles-css' href='https://www.laweekly.com/wp-content/plugins/guest-author-name-premium/assets/guest-author.css' type='text/css' media='all' />
+<link rel='stylesheet' id='mfcf7_zl_button_style-css' href='https://www.laweekly.com/wp-content/plugins/multiline-files-for-contact-form-7/css/style.css?12' type='text/css' media='all' />
+<link rel='stylesheet' id='cb-main-stylesheet-css' href='https://www.laweekly.com/wp-content/themes/15zine-child/library/css/style.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cb-15zine-child-css' href='https://www.laweekly.com/wp-content/themes/15zine-child/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cb-15zine-child-datapicker-3-css' href='https://unpkg.com/bootstrap-datepicker@1.9.0/dist/css/bootstrap-datepicker3.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='newsletter-css' href='https://www.laweekly.com/wp-content/plugins/newsletter/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-notice-front-css' href='https://www.laweekly.com/wp-content/plugins/cookie-notice/css/front.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cf7cf-style-css' href='https://www.laweekly.com/wp-content/plugins/cf7-conditional-fields/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-mediabox-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/css/mediaBoxes.css' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-popup-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/css/magnific-popup.css' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-default-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/css/default.css' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-defaultdate-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/css/default.date.css' type='text/css' media='all' />
+<link rel='stylesheet' id='stylesheet-defaulttime-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/css/default.time.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cb-font-stylesheet-css' href='//fonts.googleapis.com/css?family=Montserrat%3A400%2C700%7COpen+Sans%3A400%2C700%2C400italic' type='text/css' media='all' />
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='cb-ie-only-css' href='https://www.laweekly.com/wp-content/themes/15zine/library/css/ie.css' type='text/css' media='all' />
+<![endif]-->
+<link rel='stylesheet' id='social-logos-css' href='https://www.laweekly.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css' href='https://www.laweekly.com/wp-content/plugins/jetpack/css/jetpack.css' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/google-analytics-for-wordpress/assets/js/frontend-gtag.min.js' id='monsterinsights-frontend-script-js'></script>
+<script data-cfasync="false" data-wpfc-render="false" type="text/javascript" id='monsterinsights-frontend-script-js-extra'>/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","download_extensions":"doc,pdf,ppt,zip,xls,docx,pptx,xlsx","inbound_paths":"[]","home_url":"https:\/\/www.laweekly.com","hash_tracking":"false","v4_id":"G-HM7YVDE60T"};/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-includes/js/jquery/jquery.min.js' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-includes/js/jquery/jquery-migrate.min.js' id='jquery-migrate-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/multiline-files-for-contact-form-7/js/zl-multine-files.js' id='mfcf7_zl_multiline_files_script-js'></script>
+<script async id="cookie-notice-front-js-before" type="text/javascript">
+var cnArgs = {"ajaxUrl":"https:\/\/www.laweekly.com\/wp-admin\/admin-ajax.php","nonce":"e4cc6e579a","hideEffect":"fade","position":"top","onScroll":false,"onScrollOffset":700,"onClick":false,"cookieName":"cookie_notice_accepted","cookieTime":31536000,"cookieTimeRejected":604800,"globalCookie":false,"redirection":false,"cache":true,"revokeCookies":false,"revokeCookiesOpt":"automatic"};
+</script>
+<script async type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/cookie-notice/js/front.min.js' id='cookie-notice-front-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/js/modernizr.custom.min.js' id='cb-modernizr-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/js/lightbox.js' id='lightbox-js'></script>
+<link rel="https://api.w.org/" href="https://www.laweekly.com/wp-json/" /><link rel="alternate" type="application/json" href="https://www.laweekly.com/wp-json/wp/v2/posts/589546" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.laweekly.com/xmlrpc.php?rsd" />
+<link rel='shortlink' href='https://www.laweekly.com/?p=589546' />
+<link rel="alternate" type="application/json+oembed" href="https://www.laweekly.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.laweekly.com%2Fmeet-cultural-cultivation-artist-alexandria-douziech%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.laweekly.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.laweekly.com%2Fmeet-cultural-cultivation-artist-alexandria-douziech%2F&#038;format=xml" />
+<script type="text/javascript">//<![CDATA[
+  function external_links_in_new_windows_loop() {
+    if (!document.links) {
+      document.links = document.getElementsByTagName('a');
+    }
+    var change_link = false;
+    var force = '';
+    var ignore = '';
+
+    for (var t=0; t<document.links.length; t++) {
+      var all_links = document.links[t];
+      change_link = false;
+      
+      if(document.links[t].hasAttribute('onClick') == false) {
+        // forced if the address starts with http (or also https), but does not link to the current domain
+        if(all_links.href.search(/^http/) != -1 && all_links.href.search('www.laweekly.com') == -1 && all_links.href.search(/^#/) == -1) {
+          // console.log('Changed ' + all_links.href);
+          change_link = true;
+        }
+          
+        if(force != '' && all_links.href.search(force) != -1) {
+          // forced
+          // console.log('force ' + all_links.href);
+          change_link = true;
+        }
+        
+        if(ignore != '' && all_links.href.search(ignore) != -1) {
+          // console.log('ignore ' + all_links.href);
+          // ignored
+          change_link = false;
+        }
+
+        if(change_link == true) {
+          // console.log('Changed ' + all_links.href);
+          document.links[t].setAttribute('onClick', 'javascript:window.open(\'' + all_links.href.replace(/'/g, '') + '\', \'_blank\', \'noopener\'); return false;');
+          document.links[t].removeAttribute('target');
+        }
+      }
+    }
+  }
+  
+  // Load
+  function external_links_in_new_windows_load(func)
+  {  
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function'){
+      window.onload = func;
+    } else {
+      window.onload = function(){
+        oldonload();
+        func();
+      }
+    }
+  }
+
+  external_links_in_new_windows_load(external_links_in_new_windows_loop);
+  //]]></script>
+
+	<style>img#wpstats{display:none}</style>
+		<style type="text/css"> .cb-stuck #cb-nav-bar .cb-main-nav #cb-nav-logo, #cb-nav-bar .cb-main-nav #cb-nav-logo img { width: 110px; }#cb-nav-bar .cb-mega-menu-columns .cb-sub-menu > li > a { color: #f2c231; }.cb-review-box .cb-bar .cb-overlay span { background: #f9db32; }.cb-review-box i { color: #f9db32; }.cb-meta-style-1 .cb-article-meta { background: rgba(0, 0, 0, 0.25); }@media only screen and (min-width: 768px) {
+                .cb-module-block .cb-meta-style-1:hover .cb-article-meta { background: rgba(0, 0, 0, 0.75); }
+                .cb-module-block .cb-meta-style-2:hover img, .cb-module-block .cb-meta-style-4:hover img, .cb-grid-x .cb-grid-feature:hover img, .cb-grid-x .cb-grid-feature:hover .cb-fi-cover, .cb-slider li:hover img { opacity: 0.25; }
+            }</style><!-- end custom css --><style type="text/css">body, #respond, .cb-font-body { font-family: 'Open Sans', sans-serif; } h1, h2, h3, h4, h5, h6, .cb-font-header, #bbp-user-navigation, .cb-byline{ font-family:'Montserrat', sans-serif; }</style><meta property="og:image" content="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg"><link rel="icon" href="https://www.laweekly.com/wp-content/uploads/2020/07/cropped-law-logo2x-b-759x500-1-100x100.png" sizes="32x32" />
+<link rel="icon" href="https://www.laweekly.com/wp-content/uploads/2020/07/cropped-law-logo2x-b-759x500-1-300x300.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.laweekly.com/wp-content/uploads/2020/07/cropped-law-logo2x-b-759x500-1-300x300.png" />
+<meta name="msapplication-TileImage" content="https://www.laweekly.com/wp-content/uploads/2020/07/cropped-law-logo2x-b-759x500-1-300x300.png" />
+		<style type="text/css" id="wp-custom-css">
+			.cb-sub-menu.cb-sub-bg {
+	position: absolute;
+	background: transparent;
+	float: none;
+	margin: 0;
+	padding: 0;
+}
+
+@media only screen and (min-width: 1200px) {
+	#cb-nav-bar {
+    letter-spacing: 1px;
+	}
+}
+
+.cn-button.bootstrap, .cn-button.wp-default {
+    min-height: 0px;
+}
+
+.cb-video-overlay-icon {
+    padding-top: 26px;
+    padding-left: 5px;
+}
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
+
+h1 {
+  font-size: 1.8em;
+}
+h2 {
+  font-size: 1.6em;
+}
+h3 {
+  font-size: 1.4em;
+}
+h4 {
+  font-size: 1.3em;
+}
+h5 {
+  font-size: 1.2em;
+  text-transform: unset;
+  letter-spacing: unset;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.os-cta-block .cta-content {
+	max-width: 650px;
+	color: rgba(255,255,255,.7);
+	display: inline-block;
+	font-size: 1.2rem;
+	margin: 25px;
+}
+
+.btn-rounded {
+	border-radius: 50px;
+}
+
+.btn-white {
+	background-color: #fff;
+	color: #111;
+	font-weight: 700;
+}
+
+.btn-lg, .btn-group-lg>.btn {
+	padding: .75rem 1.5rem;
+	font-size: 1.25rem;
+	border-radius: .3rem;
+}
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .5rem 1rem;
+	font-size: 1rem;
+	border-radius: .25rem;
+	transition: all 0.2s ease-in-out;
+}
+
+.cta-widget-title {
+  text-align: center;
+	margin-bottom: 3rem;
+	position: relative;
+	margin-top: 0;
+	font-size: 1.5rem;
+}
+
+.cta-widget-title h3 {
+	color: #fff !important;
+}
+
+.cta-content {
+	text-align: center;
+}
+
+#cb-footer .cb-footer-lower .cb-footer-links ul li::before {    content: '';}
+
+#cb-header {
+	margin-bottom: 0em;
+}
+
+#cb-footer-logo img {
+	max-width: 100%;
+	display: block;
+  margin: auto;
+}		</style>
+		<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="en-US" prefix="og: https://ogp.me/ns#" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html lang="en-US" prefix="og: https://ogp.me/ns#" class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html lang="en-US" prefix="og: https://ogp.me/ns#" class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en-US" prefix="og: https://ogp.me/ns#" class="no-js">
+<!--<![endif]-->
+
+<head>
+
+	<meta charset="utf-8">
+	<!-- Google Chrome Frame for IE -->
+	<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
+	<!-- mobile meta -->
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<link rel="pingback" href="https://www.laweekly.com/xmlrpc.php">
+	<script>
+		var old = alert;
+
+		alert = function() {
+			console.log(new Error().stack);
+			old.apply(window, arguments);
+		};
+	</script>
+
+	
+		<!-- Next Millennium
+		<script async src="https://powerad.ai/script.js"></script> -->
+		<script type="text/javascript">
+			var infolinks_pid = 3100830;
+			var infolinks_wsid = 0;
+		</script>
+		<script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+
+	
+		<style>
+		.cb-top-menu-wrap .cb-icon-search {
+			display: block !important;
+		}
+
+		.cb-stuck #cb-nav-bar .cb-nav-bar-wrap li a {
+			padding: 8px 6px;
+			font-size: 14px;
+		}
+
+		.cb-slider-image a {
+			display: block;
+		}
+
+
+
+		@media only screen and (max-width: 1080px) {
+			.cb-stuck #cb-nav-bar .cb-nav-bar-wrap li a {
+				padding: 8px 7px;
+				font-size: 13px;
+			}
+		}
+
+		@media only screen and (max-width: 998px) {
+			#cb-nav-bar .cb-main-nav>li>a {
+				padding-left: 4px;
+				padding-right: 4px;
+			}
+
+			.cb-stuck #cb-nav-bar .cb-nav-bar-wrap li a {
+				padding: 8px 4px;
+				font-size: 11px;
+			}
+
+		}
+	</style>
+
+	<!-- wp_head extras -->
+		<!-- end wp_head extras -->
+
+	
+	<!-- Flipp Controller Tag -->
+	<script async src="https://cdn-gateflipp.flippback.com/tag/js/flipptag.js?site_id=1183842"></script>
+	<script>
+		window.flippxp = window.flippxp || {
+			run: []
+		};
+		window.flippxp.run.push(function() {
+			window.flippxp.registerSlot("#flipp-ux-slot-fa7e146", "Village_Voice", 1183842, [257132]);
+		});
+	</script>
+</head>
+
+
+<body class="post-template-default single single-post postid-589546 single-format-standard guest-author-post  cb-sticky-mm cb-nav-logo-on cb-logo-nav-sticky cb-sticky-sb-on  cb-tm-dark cb-body-light cb-menu-light cb-mm-dark cb-footer-dark   cb-m-logo-off cb-m-sticky cb-sw-tm-fw cb-sw-header-fw cb-sw-menu-fw cb-sw-footer-fw cb-menu-al-left  cb-fis-b-standard  cb-fis-tl-st-below cookies-not-set">
+	
+	<div id="cb-outer-container" >
+
+		
+			<div id="cb-top-menu" class="clearfix cb-font-header ">
+				<div class="wrap clearfix cb-site-padding cb-top-menu-wrap">
+
+											<div class="cb-left-side cb-mob">
+
+							<a href="#" id="cb-mob-open" class="cb-link"><i class="fa fa-bars"></i></a>
+													</div>
+										<ul class="cb-top-nav cb-left-side"><li id="menu-item-140655" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children cb-has-children menu-item-140655"><a href="https://www.laweekly.com/about/">About</a>
+<ul class="sub-menu">
+	<li id="menu-item-723" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-723"><a href="https://www.laweekly.com/staff/">Staff</a></li>
+</ul>
+</li>
+<li id="menu-item-396244" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-396244"><a href="https://www.laweekly.com/contact-page/">Contact</a></li>
+<li id="menu-item-458025" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children cb-has-children menu-item-458025"><a href="https://www.laweekly.com/e_editions/2023/">E-Edition</a>
+<ul class="sub-menu">
+	<li id="menu-item-523514" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-523514"><a href="https://www.laweekly.com/e_editions/2023/">2023</a></li>
+	<li id="menu-item-489334" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-489334"><a href="https://www.laweekly.com/e_editions/2022/">2022</a></li>
+	<li id="menu-item-458024" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-458024"><a href="https://www.laweekly.com/e_editions/2021/">2021</a></li>
+	<li id="menu-item-397506" class="menu-item menu-item-type-post_type menu-item-object-e-edition menu-item-397506"><a href="https://www.laweekly.com/e_editions/2020/">2020</a></li>
+	<li id="menu-item-387764" class="menu-item menu-item-type-post_type menu-item-object-e-edition menu-item-387764"><a href="https://www.laweekly.com/e_editions/2019/">2019</a></li>
+	<li id="menu-item-384963" class="menu-item menu-item-type-post_type menu-item-object-e-edition menu-item-384963"><a href="https://www.laweekly.com/e_editions/2018/">2018</a></li>
+	<li id="menu-item-384964" class="menu-item menu-item-type-post_type menu-item-object-e-edition menu-item-384964"><a href="https://www.laweekly.com/e_editions/2017/">2017</a></li>
+	<li id="menu-item-384965" class="menu-item menu-item-type-post_type menu-item-object-e-edition menu-item-384965"><a href="https://www.laweekly.com/e_editions/2016/">2016</a></li>
+</ul>
+</li>
+</ul>										<ul class="cb-top-nav cb-right-side"><li class="cb-icon-search cb-menu-icons-extra"><a href="#"  title="Search" id="cb-s-trigger-gen"><i class="fa fa-search"></i> <span class="cb-search-title">Search</span></a></li><li class="cb-menu-icons-extra cb-social-icons-extra"><a href="http://www.twitter.com/@laweekly"  target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a></li><li class="cb-menu-icons-extra cb-social-icons-extra"><a href="http://www.facebook.com/laweekly"  target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><li class="cb-menu-icons-extra cb-social-icons-extra"><a href="http://www.instagram.com/laweekly"  target="_blank"><i class="fa fa-instagram" aria-hidden="true"></i></a></li></ul>				</div>
+			</div>
+
+			<div id="cb-mob-menu" class="cb-mob-menu">
+				<div class="cb-mob-close-wrap">
+
+					<a href="#" id="cb-mob-close" class="cb-link"><i class="fa cb-times"></i></a>
+									</div>
+
+				<div class="cb-mob-menu-wrap">
+					<ul id="cb-mob-ul" class="cb-mobile-nav cb-top-nav cb-mob-ul-show"><li id="menu-item-402908" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-402908"><a href="https://www.laweekly.com/category/news/">News</a></li>
+<li id="menu-item-375704" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-375704"><a href="https://www.laweekly.com/category/food/">Food</a></li>
+<li id="menu-item-375705" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-375705"><a href="https://www.laweekly.com/category/music/">Music</a></li>
+<li id="menu-item-375711" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-375711"><a href="https://www.laweekly.com/category/entertainment/">Entertainment</a></li>
+<li id="menu-item-386423" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-386423"><a href="https://www.laweekly.com/category/entertainment/film/">&#8212; Film</a></li>
+<li id="menu-item-386424" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-386424"><a href="https://www.laweekly.com/category/entertainment/tv/">&#8212; TV</a></li>
+<li id="menu-item-375706" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-375706"><a href="https://www.laweekly.com/category/arts/">Arts</a></li>
+<li id="menu-item-375707" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-375707"><a href="https://www.laweekly.com/category/culture/">Culture</a></li>
+<li id="menu-item-386425" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-386425"><a href="https://www.laweekly.com/category/podcast/">Podcasts</a></li>
+<li id="menu-item-450302" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-450302"><a href="https://www.laweekly.com/category/health-wellness/">Health and Wellness</a></li>
+<li id="menu-item-450303" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-450303"><a href="https://www.laweekly.com/category/lifestyle/">Lifestyle</a></li>
+<li id="menu-item-375708" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-375708"><a href="https://www.laweekly.com/category/cannabis/">Cannabis</a></li>
+<li id="menu-item-402075" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-402075"><a href="https://www.laweekly.com/category/cbd/">CBD</a></li>
+<li id="menu-item-455759" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-455759"><a href="https://www.laweekly.com/category/education/">Education</a></li>
+<li id="menu-item-498756" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-498756"><a href="https://www.laweekly.com/category/after-dark/">After Dark</a></li>
+<li id="menu-item-573008" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-573008"><a href="https://www.laweekly.com/category/onlyfans/">OnlyFans</a>
+<ul class="sub-menu">
+	<li id="menu-item-573009" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573009"><a href="https://www.laweekly.com/18-year-old-onlyfans/">18 Year Old OnlyFans</a></li>
+	<li id="menu-item-573010" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573010"><a href="https://www.laweekly.com/arab-onlyfans/">Arab OnlyFans</a></li>
+	<li id="menu-item-573011" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573011"><a href="https://www.laweekly.com/asian-onlyfans/">Asian OnlyFans</a></li>
+	<li id="menu-item-573012" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573012"><a href="https://www.laweekly.com/attendant-flight-onlyfans/">Flight Attendant OnlyFans</a></li>
+	<li id="menu-item-573013" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573013"><a href="https://www.laweekly.com/australian-onlyfans/">Australian OnlyFans</a></li>
+	<li id="menu-item-573014" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573014"><a href="https://www.laweekly.com/bdsm-onlyfans/">BDSM OnlyFans</a></li>
+	<li id="menu-item-573015" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573015"><a href="https://www.laweekly.com/best-onlyfans-2023/">Best OnlyFans</a></li>
+	<li id="menu-item-573016" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573016"><a href="https://www.laweekly.com/best-onlyfans-2023/">Big Ass OnlyFans</a></li>
+	<li id="menu-item-573017" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573017"><a href="https://www.laweekly.com/big-tits-onlyfans/">Big Tits OnlyFans</a></li>
+	<li id="menu-item-573018" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573018"><a href="https://www.laweekly.com/british-onlyfans/">British OnlyFans</a></li>
+	<li id="menu-item-573019" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573019"><a href="https://www.laweekly.com/college-girl-onlyfans/">College Girl OnlyFans</a></li>
+	<li id="menu-item-573020" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573020"><a href="https://www.laweekly.com/cosplay-onlyfans/">Cosplay OnlyFans</a></li>
+	<li id="menu-item-573021" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573021"><a href="https://www.laweekly.com/countrygirl-onlyfans/">Countrygirl OnlyFans</a></li>
+	<li id="menu-item-573022" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573022"><a href="https://www.laweekly.com/onlyfans-couples/">Couple OnlyFans</a></li>
+	<li id="menu-item-573023" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573023"><a href="https://www.laweekly.com/cuckold-onlyfans/">Cuckold OnlyFans</a></li>
+	<li id="menu-item-573024" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573024"><a href="https://www.laweekly.com/ebony-onlyfans/">Ebony OnlyFans</a></li>
+	<li id="menu-item-573025" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573025"><a href="https://www.laweekly.com/egirl-onlyfans/">Egirl OnlyFans</a></li>
+	<li id="menu-item-573026" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573026"><a href="https://www.laweekly.com/free-femdom-onlyfans/">Free Femdom OnlyFans</a></li>
+	<li id="menu-item-573027" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573027"><a href="https://www.laweekly.com/best-free-onlyfans/">Free OnlyFans</a></li>
+	<li id="menu-item-573028" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573028"><a href="https://www.laweekly.com/pornstar-onlyfans/">Pornstars OnlyFans</a></li>
+	<li id="menu-item-573029" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573029"><a href="https://www.laweekly.com/free-trans-onlyfans/">Free Trans OnlyFans</a></li>
+	<li id="menu-item-573030" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573030"><a href="https://www.laweekly.com/hardcore-onlyfans/">Hardcore OnlyFans</a></li>
+	<li id="menu-item-573031" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573031"><a href="https://www.laweekly.com/hijab-onlyfans/">Hijab OnlyFans</a></li>
+	<li id="menu-item-573032" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573032"><a href="https://www.laweekly.com/indian-onlyfans/">Indian OnlyFans</a></li>
+	<li id="menu-item-573033" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573033"><a href="https://www.laweekly.com/ladyboy-onlyfans/">Ladyboy OnlyFans</a></li>
+	<li id="menu-item-573034" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573034"><a href="https://www.laweekly.com/male-youtubers-with-onlyfans/">Male Youtubers OnlyFans</a></li>
+	<li id="menu-item-573035" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573035"><a href="https://www.laweekly.com/mature-onlyfans/">Mature OnlyFans</a></li>
+	<li id="menu-item-573036" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573036"><a href="https://www.laweekly.com/midget-onlyfans/">Midget OnlyFans</a></li>
+	<li id="menu-item-573037" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573037"><a href="https://www.laweekly.com/milf-onlyfans/">MILF OnlyFans</a></li>
+	<li id="menu-item-573038" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573038"><a href="https://www.laweekly.com/mom-and-daughter-onlyfans/">Mom and Daughter OnlyFans</a></li>
+	<li id="menu-item-573039" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573039"><a href="https://www.laweekly.com/muscle-onlyfans/">Muscle OnlyFans</a></li>
+	<li id="menu-item-573040" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573040"><a href="https://www.laweekly.com/onlyfans-blowjob/">Blowjob OnlyFans</a></li>
+	<li id="menu-item-573061" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-573061"><a href="https://www.laweekly.com/onlyfans-nudes/">Nudes OnlyFans</a></li>
+</ul>
+</li>
+<li id="menu-item-375716" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-375716"><a href="https://www.laweekly.com/about/">About</a></li>
+<li id="menu-item-528034" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children cb-has-children menu-item-528034"><a href="https://www.laweekly.com/e_editions/2023/">E-Edition</a>
+<ul class="sub-menu">
+	<li id="menu-item-528035" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-528035"><a href="https://www.laweekly.com/e_editions/2023/">2023</a></li>
+	<li id="menu-item-528036" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-528036"><a href="https://www.laweekly.com/e_editions/2022/">2022</a></li>
+	<li id="menu-item-528037" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-528037"><a href="https://www.laweekly.com/e_editions/2021/">2021</a></li>
+	<li id="menu-item-528038" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-528038"><a href="https://www.laweekly.com/e_editions/2020/">2020</a></li>
+</ul>
+</li>
+<li id="menu-item-375717" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-375717"><a href="https://www.laweekly.com/pick-us-up/">Pick Us Up</a></li>
+<li id="menu-item-396248" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-396248"><a href="https://www.laweekly.com/contact-page/">Contact</a></li>
+</ul>									</div>
+
+			</div>
+		
+		<div id="cb-container" class="clearfix" >
+							<header id="cb-header" class="cb-header  ">
+					<div id="cb-logo-box" class="cb-logo-left wrap">
+						                <div id="logo">
+                                        <a href="https://www.laweekly.com">
+                        <img src="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo-b-790689.png" alt="LA Weekly" data-at2x="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo2x-b-900905.png">
+                    </a>
+                                    </div>
+            											</div>
+				</header>
+				<!--<div style="background: white; width: 100% !important;" data-ratio="0.417">-->
+				<div class='law_center_ad'><!-- AdGlare: Arts Dynamic Billboard --><span id=zone740002969></span><script>(function(r,d,u) {var s = d.createElement(r); s.async = true; u += '&cb=' + Date.now() + Math.random(); s.src = u; var n = d.getElementsByTagName(r)[0]; n.parentNode.insertBefore(s, n);})('script',document,'//engine.laweekly.com/?740002969');</script></div><script>setTimeout(function(){ jQuery('#cb-header').css('margin-bottom','0px'); }, 600);</script>				<!--</div>-->
+		</div>
+
+	</div>
+
+<div id="cb-menu-search" class="cb-s-modal cb-modal"><div class="cb-close-m cb-ta-right"><i class="fa cb-times"></i></div><div class="cb-s-modal-inner cb-pre-load cb-light-loader cb-modal-inner cb-font-header cb-mega-three cb-mega-posts clearfix"><script async src="https://cse.google.com/cse.js?cx=a0e63df9032c24ffa">
+</script>
+<div class="gcse-search"></div>
+<div id="cb-s-results"></div></div></div>
+	<nav id="cb-nav-bar" class="clearfix ">
+		<div class="cb-nav-bar-wrap cb-site-padding clearfix cb-font-header  cb-menu-fw">
+			<ul class="cb-main-nav wrap clearfix"><li id="menu-item-402909" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-402909"><a href="https://www.laweekly.com/category/news/" -cvDcs2SSCVVC-3>News</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf50"><h2>News</h2><a href="https://www.laweekly.com/category/news/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-590072 post type-post status-publish format-standard has-post-thumbnail category-news category-uncategorized"><div class="cb-mask cb-img-fw" style="background-color: #222;"><a href="https://www.laweekly.com/actors-strike-over-with-tentative-agreement-reached/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231108_214924-360x240.png" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Screenshot 20231108 214924" decoding="async" fetchpriority="high" title="Actors Strike Over As Tentative Agreement Reached 2"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/actors-strike-over-with-tentative-agreement-reached/">Actors Strike Over As Tentative Agreement Reached</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-589672 post type-post status-publish format-standard has-post-thumbnail category-news category-uncategorized"><div class="cb-mask cb-img-fw" style="background-color: #222;"><a href="https://www.laweekly.com/sag-aftra-strike-ai-holding-up-contract-negotiations/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231107-093809_Instagram-360x240.png" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Screenshot 20231107 093809 Instagram" decoding="async" title="SAG-AFTRA Strike: AI Holding Up Contract Negotiations 4"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/sag-aftra-strike-ai-holding-up-contract-negotiations/">SAG-AFTRA Strike: AI Holding Up Contract Negotiations</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-07">November 7, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-589665 post type-post status-publish format-standard has-post-thumbnail category-news"><div class="cb-mask cb-img-fw" style="background-color: #222;"><a href="https://www.laweekly.com/wendy-carrillo-declares-city-council-bid-days-after-dui-investigation/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter-360x240.jpeg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="wendy carrillo twitter" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter-360x240.jpeg 360w, https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter-300x200.jpeg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter-1024x683.jpeg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter-768x512.jpeg 768w, https://www.laweekly.com/wp-content/uploads/2023/11/wendy-carrillo-twitter.jpeg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="Wendy Carrillo Declares City Council Bid, Days After DUI Investigation 6"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/wendy-carrillo-declares-city-council-bid-days-after-dui-investigation/">Wendy Carrillo Declares City Council Bid, Days After DUI Investigation</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-06">November 6, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-377137" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-377137"><a href="https://www.laweekly.com/category/food/" -cvDcs2SSCVVC-3>Food</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf2"><h2>Food</h2><a href="https://www.laweekly.com/category/food/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-589746 post type-post status-publish format-standard has-post-thumbnail category-food"><div class="cb-mask cb-img-fw" style="background-color: #d05245;"><a href="https://www.laweekly.com/thanksgiving-talking-turkey-and-beyond/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/CrossroadsThanksgiving-2-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Thanksgiving" decoding="async" title="Thanksgiving: Talking Turkey And Beyond 8"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/thanksgiving-talking-turkey-and-beyond/">Thanksgiving: Talking Turkey And Beyond</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 7, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-589563 post type-post status-publish format-standard has-post-thumbnail category-food"><div class="cb-mask cb-img-fw" style="background-color: #d05245;"><a href="https://www.laweekly.com/legendary-chef-alice-waters-comes-to-la-for-dinner-and-a-movie/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2021/11/110821_JC_99210546-38_R1-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Alice Waters" decoding="async" title="Legendary Chef Alice Waters Comes To LA For Dinner And A Movie 10"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/legendary-chef-alice-waters-comes-to-la-for-dinner-and-a-movie/">Legendary Chef Alice Waters Comes To LA For Dinner And A Movie</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-06">November 6, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-589028 post type-post status-publish format-standard has-post-thumbnail category-food"><div class="cb-mask cb-img-fw" style="background-color: #d05245;"><a href="https://www.laweekly.com/whats-popping-up-veterans-day-deals-and-a-hot-air-balloon-festival-in-the-desert/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Veterans Day" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404-360x240.jpg 360w, https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404-300x200.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404-1024x683.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404-768x512.jpg 768w, https://www.laweekly.com/wp-content/uploads/2023/11/0J0A1404.jpg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="What’s Popping Up? Veterans Day Deals And A Hot Air Balloon Festival In The Desert 12"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/whats-popping-up-veterans-day-deals-and-a-hot-air-balloon-festival-in-the-desert/">What’s Popping Up? Veterans Day Deals And A Hot Air Balloon Festival In The Desert</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-02">November 2, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-270409" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-270409"><a href="https://www.laweekly.com/category/music/" -cvDcs2SSCVVC-3>Music</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf4"><h2>Music</h2><a href="https://www.laweekly.com/category/music/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-589762 post type-post status-publish format-standard has-post-thumbnail category-music"><div class="cb-mask cb-img-fw" style="background-color: #236190;"><a href="https://www.laweekly.com/queen-bia-headlines-big-belasco-show/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/1780961418-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="1780961418" decoding="async" title="Queen Bia Headlines Big Belasco Show 14"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/queen-bia-headlines-big-belasco-show/">Queen Bia Headlines Big Belasco Show</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-07">November 8, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-588712 post type-post status-publish format-standard has-post-thumbnail category-music"><div class="cb-mask cb-img-fw" style="background-color: #236190;"><a href="https://www.laweekly.com/pan-pot-feels-forte/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/PanPot-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Pan-Pot Feels Forte" decoding="async" title="Pan-Pot Feels Forte 16"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/pan-pot-feels-forte/">Pan-Pot Feels Forte</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-588146 post type-post status-publish format-standard has-post-thumbnail category-music"><div class="cb-mask cb-img-fw" style="background-color: #236190;"><a href="https://www.laweekly.com/raye-and-her-21st-century-blues/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson-360x240.jpeg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Raye and Her 21st Century Blues" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson-360x240.jpeg 360w, https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson-300x200.jpeg 300w, https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson-1024x683.jpeg 1024w, https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson-768x512.jpeg 768w, https://www.laweekly.com/wp-content/uploads/2023/10/CREDIT_-Luke-Dyson.jpeg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="Raye and Her 21st Century Blues 18"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/raye-and-her-21st-century-blues/">Raye and Her 21st Century Blues</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-26">November 7, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-14" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14"><a href="https://www.laweekly.com/category/entertainment/" -cvDcs2SSCVVC-3>Entertainment</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf7"><h2>Entertainment</h2><a href="https://www.laweekly.com/category/entertainment/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-588436 post type-post status-publish format-standard has-post-thumbnail category-entertainment category-film"><div class="cb-mask cb-img-fw" style="background-color: #4e4298;"><a href="https://www.laweekly.com/review-five-nights-at-freddys/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large-360x240.jpeg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Five Nights at Freddy&#039;s - Photo by Courtesy of Universal Pictures - © Universal Pictures" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large-360x240.jpeg 360w, https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large-300x201.jpeg 300w, https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large-1024x686.jpeg 1024w, https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large-768x514.jpeg 768w, https://www.laweekly.com/wp-content/uploads/2023/10/Five-Nights-at-Freddys-Photo-by-Courtesy-of-Universal-Pictures-©-Universal-Pictures-Large.jpeg 1280w" sizes="(max-width: 360px) 100vw, 360px" title="Review: Five Nights at Freddy&#039;s 20"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/review-five-nights-at-freddys/">Review: Five Nights at Freddy&#8217;s</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-27">October 27, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-586272 post type-post status-publish format-standard has-post-thumbnail category-entertainment category-film"><div class="cb-mask cb-img-fw" style="background-color: #4e4298;"><a href="https://www.laweekly.com/scorseses-western-killers-of-the-flower-moon/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/killers_of_the_flower_moon_photo_0101-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Killers of the Flower Moon" decoding="async" title="Scorsese&#039;s Revisionist Western Epic &lt;i&gt;Killers of the Flower Moon&lt;/i&gt; Earns its Length 22"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/scorseses-western-killers-of-the-flower-moon/">Scorsese&#8217;s Revisionist Western Epic <i>Killers of the Flower Moon</i> Earns its Length</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-17">October 16, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-585318 post type-post status-publish format-standard has-post-thumbnail category-entertainment category-film"><div class="cb-mask cb-img-fw" style="background-color: #4e4298;"><a href="https://www.laweekly.com/dark-harvest-children-of-the-gore/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/Dark-Harvest-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Dark Harvest" decoding="async" title="&lt;i&gt;Dark Harvest&lt;/i&gt;: Children of the Gore 24"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/dark-harvest-children-of-the-gore/"><i>Dark Harvest</i>: Children of the Gore</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-11">October 12, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-683" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-683"><a href="https://www.laweekly.com/category/arts/" -cvDcs2SSCVVC-3>Arts</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf6"><h2>Arts</h2><a href="https://www.laweekly.com/category/arts/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-589954 post type-post status-publish format-standard has-post-thumbnail category-arts"><div class="cb-mask cb-img-fw" style="background-color: #a22fa6;"><a href="https://www.laweekly.com/longer-nights-arts-calendar-november-9-15/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/Feros-Walk-after-the-eclipse-2023-e1699478615407-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="arts calendar longer nights" decoding="async" title="Longer Nights: Arts Calendar November 9-15 26"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/longer-nights-arts-calendar-november-9-15/">Longer Nights: Arts Calendar November 9-15</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-589546 post type-post status-publish format-standard has-post-thumbnail category-arts"><div class="cb-mask cb-img-fw" style="background-color: #a22fa6;"><a href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Alexandria Douziech" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-360x240.jpg 360w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-300x200.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-1024x683.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-768x512.jpg 768w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="Meet Cultural Cultivation Artist Alexandria Douziech 28"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/">Meet Cultural Cultivation Artist Alexandria Douziech</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-06">November 6, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-588759 post type-post status-publish format-standard has-post-thumbnail category-arts"><div class="cb-mask cb-img-fw" style="background-color: #a22fa6;"><a href="https://www.laweekly.com/phrancs-queer-cardboard-fashion-sense/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/Phranc-at-Craig-Krull-Gallery_-installation-view-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Phranc (Courtesy of Craig Krull Gallery)" decoding="async" title="Phranc’s Queer Cardboard Fashion Sense 30"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/phrancs-queer-cardboard-fashion-sense/">Phranc’s Queer Cardboard Fashion Sense</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-02">November 2, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-270410" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-270410"><a href="https://www.laweekly.com/category/culture/" -cvDcs2SSCVVC-3>Culture</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf3"><h2>Culture</h2><a href="https://www.laweekly.com/category/culture/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-589024 post type-post status-publish format-standard has-post-thumbnail category-culture"><div class="cb-mask cb-img-fw" style="background-color: #0d8a89;"><a href="https://www.laweekly.com/needling-through-how-body-electrics-brian-keith-thompson-took-piercing-to-the-next-level/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="piercing" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w-360x240.jpg 360w, https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w-300x200.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w-1024x683.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w-768x513.jpg 768w, https://www.laweekly.com/wp-content/uploads/2023/11/RAY-2014_1008_briant_0512-b_w.jpg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="Needling Through: How Body Electric’s Brian Keith Thompson Took Piercing to the Next Level 32"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/needling-through-how-body-electrics-brian-keith-thompson-took-piercing-to-the-next-level/">Needling Through: How Body Electric’s Brian Keith Thompson Took Piercing to the Next Level</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-03">November 3, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-585481 post type-post status-publish format-standard has-post-thumbnail category-culture"><div class="cb-mask cb-img-fw" style="background-color: #0d8a89;"><a href="https://www.laweekly.com/jessabelle-thunder-and-brown-sugar-burlesque/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/JessThunder1434web-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Jessabelle Thunder" decoding="async" title="The Soulful Sex Appeal of Jessabelle Thunder and Brown Sugar Burlesque 34"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/jessabelle-thunder-and-brown-sugar-burlesque/">The Soulful Sex Appeal of Jessabelle Thunder and Brown Sugar Burlesque</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-13">October 13, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-585047 post type-post status-publish format-standard has-post-thumbnail category-culture"><div class="cb-mask cb-img-fw" style="background-color: #0d8a89;"><a href="https://www.laweekly.com/this-is-halloween-2023-our-ghoul-guide-to-la/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/SFMM_Fright-Fest_ghoul-1-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="Halloween" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/10/SFMM_Fright-Fest_ghoul-1-360x240.jpg 360w, https://www.laweekly.com/wp-content/uploads/2023/10/SFMM_Fright-Fest_ghoul-1-300x200.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/10/SFMM_Fright-Fest_ghoul-1.jpg 544w" sizes="(max-width: 360px) 100vw, 360px" title="This is Halloween 2023: Our Annual LA Ghoul Guide 36"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/this-is-halloween-2023-our-ghoul-guide-to-la/">This is Halloween 2023: Our Annual LA Ghoul Guide</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-15">October 13, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-264431" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-264431"><a href="https://www.laweekly.com/category/cannabis/" -cvDcs2SSCVVC-3>Cannabis</a><div class="cb-menu-drop cb-bg cb-mega-menu cb-big-menu clearfix"><div class="cb-mega-three cb-mega-posts  clearfix"><div class="cb-upper-title svg-Csf12"><h2>Cannabis</h2><a href="https://www.laweekly.com/category/cannabis/" class="cb-see-all">See all</a></div><ul class="cb-sub-posts"> <li class="cb-looper cb-article-1 cb-mm-posts-count-3 cb-style-1 clearfix post-589402 post type-post status-publish format-standard has-post-thumbnail category-cannabis"><div class="cb-mask cb-img-fw" style="background-color: #597437;"><a href="https://www.laweekly.com/new-report-covers-racial-disparities-in-crime-and-policing/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="michael muthee 8bPqxyodoUk unsplash" decoding="async" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash-360x240.jpg 360w, https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash-300x200.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash-1024x683.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash-768x512.jpg 768w, https://www.laweekly.com/wp-content/uploads/2023/11/michael-muthee-8bPqxyodoUk-unsplash.jpg 1500w" sizes="(max-width: 360px) 100vw, 360px" title="New Report Covers Racial Disparities in Crime and Policing 38"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/new-report-covers-racial-disparities-in-crime-and-policing/">New Report Covers Racial Disparities in Crime and Policing</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-03">November 3, 2023</time></span></div></div></li> <li class="cb-looper cb-article-2 cb-mm-posts-count-3 cb-style-1 clearfix post-589204 post type-post status-publish format-standard has-post-thumbnail category-cannabis"><div class="cb-mask cb-img-fw" style="background-color: #597437;"><a href="https://www.laweekly.com/la-hosts-lemon-cherry-gelato-battle/"><img width="1" height="1" src="https://www.laweekly.com/wp-content/uploads/2023/11/IMG_8321.heic" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="IMG 8321" decoding="async" title="LA Hosts Lemon Cherry Gelato Battle  40"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/la-hosts-lemon-cherry-gelato-battle/">LA Hosts Lemon Cherry Gelato Battle </a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-02">November 2, 2023</time></span></div></div></li> <li class="cb-looper cb-article-3 cb-mm-posts-count-3 cb-style-1 clearfix post-588446 post type-post status-publish format-standard has-post-thumbnail category-cannabis"><div class="cb-mask cb-img-fw" style="background-color: #597437;"><a href="https://www.laweekly.com/full-moon-sesh-la-a-hit-despite-moon-only-being-93-full/"><img width="360" height="240" src="https://www.laweekly.com/wp-content/uploads/2023/10/20231026_201125-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="20231026 201125" decoding="async" title="Full Moon Sesh LA a Hit Despite Moon Only Being 93% Full 42"></a></div><div class="cb-meta"><h2 class="cb-post-title"><a href="https://www.laweekly.com/full-moon-sesh-la-a-hit-despite-moon-only-being-93-full/">Full Moon Sesh LA a Hit Despite Moon Only Being 93% Full</a></h2><div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-10-27">October 27, 2023</time></span></div></div></li></ul></div></div></li>
+<li id="menu-item-464288" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-464288"><a href="https://www.laweekly.com/category/health-wellness/" -cvDcs2SSCVVC-1>Wellness</a></li>
+<li id="cb-nav-logo" class="cb-logo-nav-sticky-type" style="padding-top: 10px"><a href="https://www.laweekly.com"><img src="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo-b-790689.png" alt="site logo" data-at2x="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo2x-b-900905.png" ></a></li></ul>		</div>
+	</nav>
+
+
+<style>
+	.cb-post-wrap.cb-wrap-pad.wrap.cb-sidebar-right .cb-main.clearfix>article>.cb-social-sharing.cb-color-buttons {
+		display: none;
+	}
+
+	/*new style ajax*/
+	.cb-entire-post>div>article iframe {
+		width: 100%;
+	}
+
+	.alm-reveal {
+		border-top: 2px solid #e6e6e6;
+	}
+
+	.alm-reveal div#cb-featured-image {
+		width: 100%;
+	}
+
+	.alm-reveal .cb-post-wrap.cb-wrap-pad.wrap.clearfix {
+		width: 100%;
+		padding-left: 0;
+	}
+
+	.alm-reveal>.cb-post-wrap.cb-wrap-pad.wrap.clearfix {
+		display: none;
+	}
+
+	@media (max-width:768px) {
+		.alm-reveal {
+			border-top: 9px solid #e6e6e6;
+		}
+	}
+</style>
+<div id="cb-content" class="wrap clearfix">
+
+	
+	<div class="cb-entire-post cb-first-alp clearfix" >
+
+		
+		<div class="cb-post-wrap cb-wrap-pad wrap clearfix cb-sidebar-right">
+
+			
+					
+    <meta itemprop="datePublished" content="2023-11-06T08:00:15-08:00">
+    <meta itemprop="dateModified" content="2023-11-06T10:00:09-08:00">
+    <meta itemscope itemprop="mainEntityOfPage" itemtype="https://schema.org/WebPage" itemid="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/">
+    <span class="cb-hide" itemscope itemprop="publisher" itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="LA Weekly">
+        <meta itemprop="url" content="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo-b-790689.png">
+        <span class="cb-hide" itemscope itemprop="logo" itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="https://www.laweekly.com/wp-content/uploads/2019/03/law-logo-b-790689.png">
+        </span>
+    </span>
+    <span class="cb-hide" itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Shana Nys Dambrot"></span>
+
+
+    <meta itemprop="headline" content="Meet Cultural Cultivation Artist Alexandria Douziech">
+
+      <span class="cb-hide" itemscope itemtype="http://schema.org/ImageObject" itemprop="image" >
+        <meta itemprop="url" content="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_.jpg">
+        <meta itemprop="width" content="1500">
+        <meta itemprop="height" content="1000">
+    </span>
+
+
+					<div class="cb-main clearfix">
+
+						
+						<article id="post-589546" class="clearfix post-589546 post type-post status-publish format-standard has-post-thumbnail category-arts">
+							
+							<div id="cb-featured-image" class="cb-fis cb-fis-block-standard"><div class="cb-mask"><img width="759" height="500" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-759x500.jpg" class="attachment-cb-759-500 size-cb-759-500 wp-post-image" alt="Alexandria Douziech" decoding="async" loading="lazy" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-759x500.jpg 759w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-100x65.jpg 100w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_Headshot_-260x170.jpg 260w" sizes="(max-width: 759px) 100vw, 759px" title="Meet Cultural Cultivation Artist Alexandria Douziech 44"><span class="cb-credit-line">Alexandria Douziech</span></div><div class="cb-entry-header hentry cb-meta clearfix"><h1 class="entry-title cb-entry-title entry-title cb-title">Meet Cultural Cultivation Artist Alexandria Douziech</h1><div class="cb-byline"><span class="cb-author vcard author"><span class="fn"><a href="https://www.laweekly.com/author/sndambrot/"><img alt='' src='https://secure.gravatar.com/avatar/d36be3600806f1a77da69787039b85b1?s=20&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/d36be3600806f1a77da69787039b85b1?s=40&#038;d=mm&#038;r=g 2x' class='avatar avatar-20 photo' height='20' width='20' loading='lazy' decoding='async'/>Shana Nys Dambrot</a></span></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time class="updated" datetime="2023-11-06">November 6, 2023</time></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-category cb-element"><a href="" title="View all posts in "></a></span></div><div class="cb-social-sharing cb-color-buttons cb-on-color clearfix"><div class="cb-color-sharing-buttons"><a href="https://www.facebook.com/sharer/sharer.php?u=https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/" target="_blank" class="cb-social-fb cb-tip-bot" data-cb-tip="Share"><i class="fa fa-facebook" aria-hidden="true"></i></a><a href="https://twitter.com/share?url=https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/" target="_blank" class="cb-social-tw cb-tip-bot" data-cb-tip="Tweet"><i class="fa fa-twitter" aria-hidden="true"></i></a><a href="/cdn-cgi/l/email-protection#0d326f626974306579797d7e3722227a7a7a23616c7a6868666174236e62602260686879206e786179787f6c61206e786179647b6c79646263206c7f79647e79206c6168756c63697f646c206962787764686e6522" class="cb-social-em cb-tip-bot" data-cb-tip="Email"><i class="fa fa-envelope" aria-hidden="true"></i></a></div></div></div></div>
+							
+							<section class="cb-entry-content clearfix" itemprop="articleBody">
+
+								<span class="cb-itemprop" itemprop="reviewBody"><p><img decoding="async" loading="lazy" class="size-full wp-image-459607 alignleft" src="https://www.laweekly.com/wp-content/uploads/2021/02/MAAM.png" alt="meet an artist monday" width="147" height="154" title="Meet Cultural Cultivation Artist Alexandria Douziech 45">Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. Her experiential and sculptural installations do more than document the diasporic histories of healing plants and the cultural legacies to which they belong—though they do this in engaging abundance. But crucially, Douziech performs and embodies her archive of knowledge, both broadly and from within her own family history, in organic botanical works and actions. The founder of the <a href="https://www.instagram.com/plants.and.culture/" target="_blank" rel="noopener">Center for Plants &amp; Culture</a>, a BIPOC educational platform dedicated to exploring societal narratives through the study of plants, as Douziech highlights and recreates both the power and warmth of botanical healing formulas and ceremonies with gravitas and grace, she also interrogates the contested lore and colonial erasure and appropriation of many of these same traditions.</p>
+<p>&nbsp;</p>
+<p>Douziech is the current Artist In Residence at <a href="https://www.artsatblueroof.org/air-1/project-one-exs6a-lnnk6-3a4y5-pkz4r-5wbha" target="_blank" rel="noopener">Blue Roof Studios</a> in South LA, where her solo project <i>For protection, with love</i> opens this weekend—an exploration of a plant ritual preserved by Caribbean matriarchs for generations. A large-scale atmospheric installation conceptualizes and evokes her memories of her own Guyanese auntie burning camphor resin over charcoal to protect against the evil eye. Camphor branches line an aromatically infused space also filled with the sound of Douziech recounting the many instances of her family employing this medicinal protective blessing—and along the way, unpacking the threads of her diasporic ancestral journeys and the traditions they preserved and mingled through generations.</p>
+<div id="attachment_589549" style="width: 540px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-589549" decoding="async" loading="lazy" class="wp-image-589549" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Jatropha-curcas.jpg" alt="Alexandria Douziech " width="530" height="405" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Jatropha-curcas.jpg 1500w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Jatropha-curcas-300x229.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Jatropha-curcas-1024x783.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Jatropha-curcas-768x587.jpg 768w" sizes="(max-width: 530px) 100vw, 530px" title="Meet Cultural Cultivation Artist Alexandria Douziech 46"><p id="caption-attachment-589549" class="wp-caption-text">Alexandria Douziech: Jatropha curcas</p></div>
+<h4><b>L.A. WEEKLY: What is your short answer to people who ask what your work is about?</b></h4>
+<p><b>ALEXANDRIA DOUZIECH:</b> I try to position plants as storytellers—living archives that reflect the legacy of colonialism, as well as the power of human resilience. I should also mention that my art is heavily influenced by my parents’ journey. My mother was born on a Guyanese sugarcane plantation and my father grew up on a canola farm in Canada. So while I use plants to discuss issues of labor and exploitation, my work is also about family and the lived lives behind plants and plant-based commodities.</p>
+<p>&nbsp;</p>
+<h4><b>What would you be doing if you weren’t an artist?</b></h4>
+<p>I’d probably dive even deeper into education. Currently, I teach art history and Critical Race Theory at a performing arts college. I also founded the BIPOC educational platform, the <a href="https://www.instagram.com/plants.and.culture/" target="_blank" rel="noopener">Center for Plants &amp; Culture</a>. I’m passionate about teaching the relevancy and “presentness” of history—how the traumas of the past speak so directly to the issues we face today.</p>
+<div id="attachment_589551" style="width: 540px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-589551" decoding="async" loading="lazy" class="wp-image-589551" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022-.jpg" alt="Alexandria Douziech Whitewashed Botany 2022" width="530" height="383" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022-.jpg 1500w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022--300x217.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022--1024x740.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022--768x555.jpg 768w" sizes="(max-width: 530px) 100vw, 530px" title="Meet Cultural Cultivation Artist Alexandria Douziech 47"><p id="caption-attachment-589551" class="wp-caption-text">Alexandria Douziech: Whitewashed Botany, 2022</p></div>
+<h4><b>Did you go to art school? Why/Why not?</b></h4>
+<p>I went to the Pennsylvania Academy of Fine Arts for undergrad and the School of the Art Institute of Chicago for graduate school. Honestly, I believed I had to attend art school to be taken seriously as an artist. There might be less pressure to do that today, but seven years ago, it felt like an inescapable rite of passage. I was also excited by the prospect of dedicating so much uninterrupted time and effort towards my art. I loved being fully focused and selfish! Even with a mountain of debt, the community I built—and the relationships I made with my peers—have meant the world to me.</p>
+<p>&nbsp;</p>
+<h4><b>Why do you live and work in L.A., and not elsewhere?</b></h4>
+<p>I love L.A!…but it’s complicated. I was born and raised in L.A., so it’s absolutely home—but damn, it’s an expensive city to be an artist! It’s got its ups and downs and contradictory elements…the immense beauty with the simultaneous injustice. It’s such a loud and famous city, but it’s undeniably nuanced.</p>
+<div id="attachment_589552" style="width: 540px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-589552" decoding="async" loading="lazy" class="wp-image-589552" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022.jpg" alt="Alexandria Douziech Whitewashed Botany 2022" width="530" height="326" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022.jpg 1500w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022-300x184.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022-1024x629.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-Whitewashed-Botany-2022-768x472.jpg 768w" sizes="(max-width: 530px) 100vw, 530px" title="Meet Cultural Cultivation Artist Alexandria Douziech 48"><p id="caption-attachment-589552" class="wp-caption-text">Alexandria Douziech: Whitewashed Botany, 2022</p></div>
+<h4><b>When is/was your current/most recent/next show or project?</b></h4>
+<p>Right now, I’m an artist-in-residence at <a href="https://www.artsatblueroof.org/air-1/project-one-exs6a-lnnk6-3a4y5-pkz4r-5wbha" target="_blank" rel="noopener">Arts at Blue Roof</a> and I’ll be having a solo exhibition at Blue Roof Studios from November 11 &#8211; December 13, with an opening reception on Saturday, November 11, 5-8pm. Entitled, <i>For protection, with love, </i>my large-scale installation explores the plant rituals, love, and resilience of Caribbean matriarchs. It’s also about home and the creation of a “protected” space. I’m so excited to share this project with the public…this one has been a long time coming!</p>
+<p>&nbsp;</p>
+<h4><b>What artist living or dead would you most like to show or work with?</b></h4>
+<p>After seeing “between a whisper and a cry” at the ICA LA, <a href="https://www.theicala.org/en/exhibitions/131-alberta-whittle-between-a-whisper-and-a-cry" target="_blank" rel="noopener">Alberta Whittle</a> is on the top of my list. That was one of the most inspiring exhibitions I’ve seen in a while. It was so incredibly profound to see a Caribbean artist collapse time and present the “ghosts of colonialism” with imagery of hurricanes and the effects of our current climate crisis. Whittle tackles many themes I’m interested in and presents them in such an honest, poignant, and complex way.</p>
+<div id="attachment_589548" style="width: 432px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-589548" decoding="async" loading="lazy" class="size-full wp-image-589548" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech-at-Blue-Roof-Studios.png" alt="Alexandria Douziech at Blue Roof Studios" width="422" height="280" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech-at-Blue-Roof-Studios.png 422w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech-at-Blue-Roof-Studios-300x199.png 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech-at-Blue-Roof-Studios-100x65.png 100w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech-at-Blue-Roof-Studios-360x240.png 360w" sizes="(max-width: 422px) 100vw, 422px" title="Meet Cultural Cultivation Artist Alexandria Douziech 49"><p id="caption-attachment-589548" class="wp-caption-text">Alexandria Douziech at Arts at Blue Roof</p></div>
+<h4><b>Do you listen to music while you work? If so, what?</b></h4>
+<p>I do! I use music to bring me into a specific mental state. And while songs come in and out, I seem to always return to Alice Coltrane, Erykah Badu…and Betty Davis when I’m feelin’ funky.</p>
+<p>&nbsp;</p>
+<h4><b>Website and social media handles, please!</b></h4>
+<p><a href="https://alexandriadouziech.com" target="_blank" rel="noopener">alexandriadouziech.com</a></p>
+<p>IG: @<a href="https://www.instagram.com/alexandriadouziech/" target="_blank" rel="noopener">alexandriadouziech</a></p>
+<p>IG: @<a href="https://www.instagram.com/plants.and.culture/" target="_blank" rel="noopener">plants.and.culture</a></p>
+<p>&nbsp;</p>
+<div id="attachment_589550" style="width: 540px" class="wp-caption aligncenter"><img aria-describedby="caption-attachment-589550" decoding="async" loading="lazy" class="wp-image-589550" src="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-RetracingNarratives.jpg" alt="Alexandria Douziech RetracingNarratives" width="530" height="371" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-RetracingNarratives.jpg 1500w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-RetracingNarratives-300x210.jpg 300w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-RetracingNarratives-1024x717.jpg 1024w, https://www.laweekly.com/wp-content/uploads/2023/11/Alexandria-Douziech_-RetracingNarratives-768x538.jpg 768w" sizes="(max-width: 530px) 100vw, 530px" title="Meet Cultural Cultivation Artist Alexandria Douziech 50"><p id="caption-attachment-589550" class="wp-caption-text">Alexandria Douziech: Retracing Narratives</p></div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><i>/Editor&#8217;s note: The disclaimer below refers to advertising posts and does not apply to this or any other editorial stories.</i></p>
+<p>&nbsp;</p>
+<p class="ad-disclosure">Advertising disclosure: We may receive compensation for some of the links in our stories. Thank you for supporting LA Weekly and our advertisers.</p>
+</span><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-589546" class="share-twitter sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=twitter" target="_blank" title="Click to share on Twitter" ><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-589546" class="share-facebook sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=facebook" target="_blank" title="Click to share on Facebook" ><span>Facebook</span></a></li><li class="share-linkedin"><a rel="nofollow noopener noreferrer" data-shared="sharing-linkedin-589546" class="share-linkedin sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=linkedin" target="_blank" title="Click to share on LinkedIn" ><span>LinkedIn</span></a></li><li class="share-reddit"><a rel="nofollow noopener noreferrer" data-shared="" class="share-reddit sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=reddit" target="_blank" title="Click to share on Reddit" ><span>Reddit</span></a></li><li><a href="#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-pinterest"><a rel="nofollow noopener noreferrer" data-shared="sharing-pinterest-589546" class="share-pinterest sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=pinterest" target="_blank" title="Click to share on Pinterest" ><span>Pinterest</span></a></li><li class="share-pocket"><a rel="nofollow noopener noreferrer" data-shared="" class="share-pocket sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=pocket" target="_blank" title="Click to share on Pocket" ><span>Pocket</span></a></li><li class="share-telegram"><a rel="nofollow noopener noreferrer" data-shared="" class="share-telegram sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=telegram" target="_blank" title="Click to share on Telegram" ><span>Telegram</span></a></li><li class="share-jetpack-whatsapp"><a rel="nofollow noopener noreferrer" data-shared="" class="share-jetpack-whatsapp sd-button share-icon" href="https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/?share=jetpack-whatsapp" target="_blank" title="Click to share on WhatsApp" ><span>WhatsApp</span></a></li><li class="share-end"></li></ul></div></div></div></div></div>								
+							</section> <!-- end article section -->
+
+							<!-- Public Good -->
+							<div class="publicgood_wrapper">
+								<div class="pgs-dpg-flex" data-pgs-partner-id="streetmedia"></div>
+								<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script async type="text/JavaScript" src="https://assets.publicgood.com/pgm/v1/dpg.js"></script>
+							</div>
+
+							<div class='law_center_ad_728'><!-- AdGlare: Arts 728 x 90 --><span id=zone167508214></span><script async src='//engine.laweekly.com/?167508214'></script></div>
+							<!-- Flipp Anchor Tag-->
+							<div id="flipp-ux-slot-fa7e146">
+								<div class="flipp-ux-header" style="display: none">
+									<h3 class="cb-sidebar-widget-title cb-widget-title">Featured Local Savings</h3>
+								</div>
+							</div>
+
+						</article> <!-- end article -->
+					</div> <!-- end .cb-main -->
+
+				
+			
+			<div class="cb-sticky-sidebar">
+<aside class="cb-sidebar clearfix"><div id="custom_html-2" class="widget_text cb-sidebar-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class='law_center_ad_300'><!-- AdGlare: Arts 300 x 250 Top --><span id=zone843486765></span><script async src='//engine.laweekly.com/?843486765'></script></div></div></div><div id="block-3" class="cb-sidebar-widget widget_block"><div id="newsletterwidget-2" class="cb-sidebar-widget widget_newsletterwidget">
+   <h3 class="cb-sidebar-widget-title cb-widget-title">Subscribe To Our Newsletter</h3>
+   <div class="tnp tnp-widget">
+      <form action="https://api.elasticemail.com/contact/add?version=2" data-id="MNUOZWFCtH" method="post" id="ewf_subscriptionForm_MNUOZWFCtH" class="ElasticEmailForm__form Inline">
+         <input type="hidden" name="nlang" value="">
+         <input type="hidden" name="nr" value="widget">
+         <input type="hidden" name="nl[]" value="0">
+         <input type="hidden" name="publicaccountid" value="1707ba04-060d-403f-9d33-1c8f15bfbf8d">
+         <input type="hidden" name="publicformid" value="607f299a-67b9-40fb-9f0a-80a721c622b4">
+         <input type="hidden" name="returnUrl" value="">
+         <input type="hidden" name="activationReturnUrl" value="">
+         <input type="hidden" name="alreadyactiveurl" value="">
+         <input type="hidden" name="activationTemplate" value="">
+         <input type="hidden" name="source" value="WebForm">
+         <input type="hidden" id="ewf_captcha" name="captcha" value="false">
+         <input type="hidden" name="notifyEmail" value="">
+
+         <div class="tnp-field tnp-field-firstname"><label>Full Name</label>
+<input maxlength="60" class="tnp-firstname form-control webform__form-control" name="field_firstname" size="20" type="text" placeholder="">
+<input maxlength="60" class="form-control webform__form-control" name="field_lastname" size="20" type="hidden" placeholder=""></div>
+         <div class="tnp-field tnp-field-email requiredInput" for="email"><label>Email</label>
+<input maxlength="60" class="tnp-email form-control webform__form-control" name="email" size="20" type="email" required="" placeholder="">
+            </div>
+         <fieldset style="border:none;" class="webform-custominputs">
+         <div class="tnp-lists">
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="FcJNsJHQ" value="83efbeb3-17bb-4e27-9add-33ff2c888a83">&nbsp;Food + Drink</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="OGviTWAJ" value="3b956246-44e5-42d5-b627-653c9bed209a">&nbsp;Music</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="szgWWhvF" value="83efbeb3-17bb-4e27-9add-33ff2c888a83">&nbsp;Arts</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="efUFHuSS" value="126f7e7a-13f5-40cd-989e-db84af5ee22b">&nbsp;Entertainment</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="fyzxsoyW" value="95df3050-3fa3-4fea-a00c-30dd1443d4ab">&nbsp;Events</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="XqIsdxgT" value="5c6483b1-f7f3-4b62-9556-3b69a72ee88d">&nbsp;Cannabis</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="SCqLCVpZ" value="0f75ff51-79c4-4288-801d-34b2b0eaf07d">&nbsp;Things To Do This Week</label></div>
+            <div class="tnp-field tnp-field-list"><label><input type="checkbox" class="tnp-preference" name="publiclistid" id="gcBPwlDf" value="5c3c9be5-150e-4147-a51e-a3b6d2f146c4">&nbsp;This Week's Top Stories</label></div>
+         </div>
+         </fieldset>
+         <div class="tnp-field tnp-field-button"><input type="submit" name="submit" value="Subscribe" id="eesubmit" class="tnp-submit ElasticEmailForm__subscribe"></div>
+      </form>
+   </div>
+</div></div><div id="custom_html-4" class="widget_text cb-sidebar-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class='law_center_ad_300'><!-- AdGlare: Arts 300 x 250 Middle --><span id=zone583659837></span><script async src='//engine.laweekly.com/?583659837'></script></div></div></div><div id="cb-recent-posts-2" class="cb-sidebar-widget cb-widget-latest-articles"><h3 class="cb-sidebar-widget-title cb-widget-title">Latest Articles</h3>
+    		<div class="cb-module-block cb-small-margin">
+    		                <article class="cb-looper cb-article clearfix cb-article-small  cb-separated">
+                    <div class="cb-mask cb-img-fw" >
+                        <a href="https://www.laweekly.com/actors-strike-over-with-tentative-agreement-reached/"><img width="100" height="65" src="https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231108_214924-100x65.png" class="attachment-cb-100-65 size-cb-100-65 wp-post-image" alt="Screenshot 20231108 214924" decoding="async" loading="lazy" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231108_214924-100x65.png 100w, https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231108_214924-260x170.png 260w, https://www.laweekly.com/wp-content/uploads/2023/11/Screenshot_20231108_214924-759x500.png 759w" sizes="(max-width: 100px) 100vw, 100px" title="Actors Strike Over As Tentative Agreement Reached 48"></a>                                            </div>
+                    <div class="cb-meta cb-article-meta">
+                        <h4 class="cb-post-title"><a href="https://www.laweekly.com/actors-strike-over-with-tentative-agreement-reached/">Actors Strike Over As Tentative Agreement Reached</a></h4>
+                        <div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div>                    </div>
+                                    </article>
+    		                <article class="cb-looper cb-article clearfix cb-article-small  cb-separated">
+                    <div class="cb-mask cb-img-fw" >
+                        <a href="https://www.laweekly.com/longer-nights-arts-calendar-november-9-15/"><img width="100" height="65" src="https://www.laweekly.com/wp-content/uploads/2023/11/Feros-Walk-after-the-eclipse-2023-e1699478615407-100x65.jpg" class="attachment-cb-100-65 size-cb-100-65 wp-post-image" alt="arts calendar longer nights" decoding="async" loading="lazy" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/Feros-Walk-after-the-eclipse-2023-e1699478615407-100x65.jpg 100w, https://www.laweekly.com/wp-content/uploads/2023/11/Feros-Walk-after-the-eclipse-2023-e1699478615407-260x170.jpg 260w, https://www.laweekly.com/wp-content/uploads/2023/11/Feros-Walk-after-the-eclipse-2023-e1699478615407-759x500.jpg 759w" sizes="(max-width: 100px) 100vw, 100px" title="Longer Nights: Arts Calendar November 9-15 50"></a>                                            </div>
+                    <div class="cb-meta cb-article-meta">
+                        <h4 class="cb-post-title"><a href="https://www.laweekly.com/longer-nights-arts-calendar-november-9-15/">Longer Nights: Arts Calendar November 9-15</a></h4>
+                        <div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div>                    </div>
+                                    </article>
+    		                <article class="cb-looper cb-article clearfix cb-article-small  cb-separated">
+                    <div class="cb-mask cb-img-fw" >
+                        <a href="https://www.laweekly.com/queen-bia-headlines-big-belasco-show/"><img width="100" height="65" src="https://www.laweekly.com/wp-content/uploads/2023/11/1780961418-100x65.jpg" class="attachment-cb-100-65 size-cb-100-65 wp-post-image" alt="1780961418" decoding="async" loading="lazy" srcset="https://www.laweekly.com/wp-content/uploads/2023/11/1780961418-100x65.jpg 100w, https://www.laweekly.com/wp-content/uploads/2023/11/1780961418-260x170.jpg 260w, https://www.laweekly.com/wp-content/uploads/2023/11/1780961418-759x500.jpg 759w" sizes="(max-width: 100px) 100vw, 100px" title="Queen Bia Headlines Big Belasco Show 52"></a>                                            </div>
+                    <div class="cb-meta cb-article-meta">
+                        <h4 class="cb-post-title"><a href="https://www.laweekly.com/queen-bia-headlines-big-belasco-show/">Queen Bia Headlines Big Belasco Show</a></h4>
+                        <div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-07">November 8, 2023</time></span></div>                    </div>
+                                    </article>
+    		                <article class="cb-looper cb-article clearfix cb-article-small  cb-separated">
+                    <div class="cb-mask cb-img-fw" >
+                        <a href="https://www.laweekly.com/pan-pot-feels-forte/"><img width="100" height="65" src="https://www.laweekly.com/wp-content/uploads/2023/10/PanPot-100x65.jpg" class="attachment-cb-100-65 size-cb-100-65 wp-post-image" alt="Pan-Pot Feels Forte" decoding="async" loading="lazy" srcset="https://www.laweekly.com/wp-content/uploads/2023/10/PanPot-100x65.jpg 100w, https://www.laweekly.com/wp-content/uploads/2023/10/PanPot-260x170.jpg 260w, https://www.laweekly.com/wp-content/uploads/2023/10/PanPot-759x500.jpg 759w" sizes="(max-width: 100px) 100vw, 100px" title="Pan-Pot Feels Forte 54"></a>                                            </div>
+                    <div class="cb-meta cb-article-meta">
+                        <h4 class="cb-post-title"><a href="https://www.laweekly.com/pan-pot-feels-forte/">Pan-Pot Feels Forte</a></h4>
+                        <div class="cb-byline cb-byline-short cb-byline-date"><span class="cb-date"><time class="entry-date updated" datetime="2023-11-08">November 8, 2023</time></span></div>                    </div>
+                                    </article>
+    		    		</div>
+    		</div>    <div id="custom_html-3" class="widget_text cb-sidebar-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class='law_center_ad_300'><!-- AdGlare: Arts 300 x 250 Bottom --><span id=zone214239782></span><script async src='//engine.laweekly.com/?214239782'></script></div></div></div></aside>
+</div>
+		</div>
+
+	</div>
+
+</div> <!-- end #cb-content -->
+
+</div> <!-- end #cb-container -->
+
+<footer id="cb-footer" >
+
+            <div id="cb-widgets" class="cb-footer-x cb-footer-e wrap clearfix cb-site-padding">
+
+                            <div class="cb-one cb-column clearfix">
+                    <div id="search-2" class="cb-footer-widget clearfix widget_search"><h3 class="cb-footer-widget-title cb-widget-title">Search LA Weekly</h3><script async src="https://cse.google.com/cse.js?cx=a0e63df9032c24ffa">
+</script>
+<div class="gcse-search"></div>
+</div><div id="block-2" class="cb-footer-widget clearfix widget_block">
+<div id="sb_instagram"  class="sbi sbi_mob_col_1 sbi_tab_col_2 sbi_col_4 sbi_width_resp" style="padding-bottom: 10px;width: 80%;" data-feedid="*1"  data-res="auto" data-cols="4" data-colsmobile="1" data-colstablet="2" data-num="4" data-nummobile="" data-shortcode-atts="{&quot;feed&quot;:&quot;1&quot;}"  data-postid="589546" data-locatornonce="cfa6cc400d" data-sbi-flags="favorLocal,gdpr">
+	<div class="sb_instagram_header  sbi_medium"  style="padding: 5px;padding-bottom: 0; margin-bottom: 10px;"  >
+	<a href="https://www.instagram.com/laweekly/" target="_blank" rel="nofollow noopener"  title="@laweekly" class="sbi_header_link">
+		<div class="sbi_header_text">
+			
+			<h3 style="color: rgb(255,255,255);">laweekly</h3>
+							<p class="sbi_bio" style="color: rgb(255,255,255);">LAWeekly Instagram: Featuring the culture of LA since 1978 ✌️</p>
+					</div>
+
+					<div class="sbi_header_img">
+									<div class="sbi_header_img_hover"  ><svg class="sbi_new_logo fa-instagram fa-w-14" aria-hidden="true" data-fa-processed="" aria-label="Instagram" data-prefix="fab" data-icon="instagram" role="img" viewBox="0 0 448 512">
+	                <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+	            </svg></div>
+					<img  src="https://www.laweekly.com/wp-content/plugins/instagram-feed/img/thumb-placeholder.png" alt="laweekly" width="50" height="50">
+											</div>
+		
+	</a>
+</div>
+
+    <div id="sbi_images"  style="padding: 5px;">
+		<div class="sbi_item sbi_type_image sbi_new sbi_transition" id="sbi_18258454147187288" data-date="1670259740">
+    <div class="sbi_photo_wrap">
+        <a class="sbi_photo" href="https://www.instagram.com/p/ClyzsfYt6La/" target="_blank" rel="noopener nofollow" data-full-res="https://scontent-ord5-2.cdninstagram.com/v/t51.2885-15/318247863_876459543706354_7929797458330740767_n.jpg?_nc_cat=110&#038;ccb=1-7&#038;_nc_sid=8ae9d6&#038;_nc_ohc=eoMtPhT5OvUAX9OvNSc&#038;_nc_oc=AQkDGU65OYwNi2lO0eopczsHVwbJRNZRModslPR-GqhmDZcnsa7DZJyt490B6M2bMzs&#038;_nc_ht=scontent-ord5-2.cdninstagram.com&#038;edm=ANo9K5cEAAAA&#038;oh=00_AfD1ssd8NAH75cNCLJZGTbtShPPgr2LV-_8wdoC9-AQW_w&#038;oe=639471AB" data-img-src-set="{&quot;d&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318247863_876459543706354_7929797458330740767_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=eoMtPhT5OvUAX9OvNSc&amp;_nc_oc=AQkDGU65OYwNi2lO0eopczsHVwbJRNZRModslPR-GqhmDZcnsa7DZJyt490B6M2bMzs&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfD1ssd8NAH75cNCLJZGTbtShPPgr2LV-_8wdoC9-AQW_w&amp;oe=639471AB&quot;,&quot;150&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318247863_876459543706354_7929797458330740767_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=eoMtPhT5OvUAX9OvNSc&amp;_nc_oc=AQkDGU65OYwNi2lO0eopczsHVwbJRNZRModslPR-GqhmDZcnsa7DZJyt490B6M2bMzs&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfD1ssd8NAH75cNCLJZGTbtShPPgr2LV-_8wdoC9-AQW_w&amp;oe=639471AB&quot;,&quot;320&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318247863_876459543706354_7929797458330740767_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=eoMtPhT5OvUAX9OvNSc&amp;_nc_oc=AQkDGU65OYwNi2lO0eopczsHVwbJRNZRModslPR-GqhmDZcnsa7DZJyt490B6M2bMzs&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfD1ssd8NAH75cNCLJZGTbtShPPgr2LV-_8wdoC9-AQW_w&amp;oe=639471AB&quot;,&quot;640&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318247863_876459543706354_7929797458330740767_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=eoMtPhT5OvUAX9OvNSc&amp;_nc_oc=AQkDGU65OYwNi2lO0eopczsHVwbJRNZRModslPR-GqhmDZcnsa7DZJyt490B6M2bMzs&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfD1ssd8NAH75cNCLJZGTbtShPPgr2LV-_8wdoC9-AQW_w&amp;oe=639471AB&quot;}">
+            <span class="sbi-screenreader">Ciel Spa ✨aka @CielSpaBH located the SLS Hotel i</span>
+            	                    <img src="https://www.laweekly.com/wp-content/plugins/instagram-feed/img/placeholder.png" alt="Ciel Spa ✨aka @CielSpaBH located the SLS Hotel in Beverly Hills welcomes UK based brand @oto_wellbeing to bring the Los Angeles area the best in #CBD! 📣 They are now offering luxury quality and ethically sourced 🌱 CBD massages &amp; sound baths for total relaxation and utter rejuvenation of the mind &amp; body! 
+
+Book online with the code: LAWEEKLYCIEL for 15% off! [LINK IN BIO]">
+        </a>
+    </div>
+</div><div class="sbi_item sbi_type_image sbi_new sbi_transition" id="sbi_17995172812579929" data-date="1670043626">
+    <div class="sbi_photo_wrap">
+        <a class="sbi_photo" href="https://www.instagram.com/p/ClsXpi2ODgS/" target="_blank" rel="noopener nofollow" data-full-res="https://scontent-ord5-2.cdninstagram.com/v/t51.2885-15/318101160_174764465160055_8096396736469443545_n.jpg?_nc_cat=111&#038;ccb=1-7&#038;_nc_sid=8ae9d6&#038;_nc_ohc=AHAXY9AQe60AX9dgN8p&#038;_nc_ht=scontent-ord5-2.cdninstagram.com&#038;edm=ANo9K5cEAAAA&#038;oh=00_AfDs8PgOAY27TNfDjeMrRRtk3Oe0HNBQMVQs1_WsV9arIA&#038;oe=6395774A" data-img-src-set="{&quot;d&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318101160_174764465160055_8096396736469443545_n.jpg?_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=AHAXY9AQe60AX9dgN8p&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfDs8PgOAY27TNfDjeMrRRtk3Oe0HNBQMVQs1_WsV9arIA&amp;oe=6395774A&quot;,&quot;150&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318101160_174764465160055_8096396736469443545_n.jpg?_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=AHAXY9AQe60AX9dgN8p&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfDs8PgOAY27TNfDjeMrRRtk3Oe0HNBQMVQs1_WsV9arIA&amp;oe=6395774A&quot;,&quot;320&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318101160_174764465160055_8096396736469443545_n.jpg?_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=AHAXY9AQe60AX9dgN8p&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfDs8PgOAY27TNfDjeMrRRtk3Oe0HNBQMVQs1_WsV9arIA&amp;oe=6395774A&quot;,&quot;640&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/318101160_174764465160055_8096396736469443545_n.jpg?_nc_cat=111&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=AHAXY9AQe60AX9dgN8p&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfDs8PgOAY27TNfDjeMrRRtk3Oe0HNBQMVQs1_WsV9arIA&amp;oe=6395774A&quot;}">
+            <span class="sbi-screenreader">Welcoming over 100,000 people every year, what beg</span>
+            	                    <img src="https://www.laweekly.com/wp-content/plugins/instagram-feed/img/placeholder.png" alt="Welcoming over 100,000 people every year, what began as a drive-thru experience during the pandemic, has grown significantly and is now the premiere holiday attraction and immersive walking experience in LA. Guests will be transported into a winter wonderland complete with everything from the North Pole, Elf Village, Gingerbread Lane, light tunnels, Christmas tree forests, and much more!
+
+For more information visiti #linkinbio
+
+#holidayroad">
+        </a>
+    </div>
+</div><div class="sbi_item sbi_type_image sbi_new sbi_transition" id="sbi_17940733223520883" data-date="1669665720">
+    <div class="sbi_photo_wrap">
+        <a class="sbi_photo" href="https://www.instagram.com/p/ClhGy_zBXBz/" target="_blank" rel="noopener nofollow" data-full-res="https://scontent-ord5-2.cdninstagram.com/v/t51.2885-15/317381745_139210065573726_5618852286686442343_n.jpg?_nc_cat=102&#038;ccb=1-7&#038;_nc_sid=8ae9d6&#038;_nc_ohc=e-zmG2eAgfgAX-T-Uqb&#038;_nc_ht=scontent-ord5-2.cdninstagram.com&#038;edm=ANo9K5cEAAAA&#038;oh=00_AfCvXopi0BZf4RS3w05bYgIBm4ucfg1g3R9ytExK1gVn9Q&#038;oe=6394BBAD" data-img-src-set="{&quot;d&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/317381745_139210065573726_5618852286686442343_n.jpg?_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=e-zmG2eAgfgAX-T-Uqb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCvXopi0BZf4RS3w05bYgIBm4ucfg1g3R9ytExK1gVn9Q&amp;oe=6394BBAD&quot;,&quot;150&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/317381745_139210065573726_5618852286686442343_n.jpg?_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=e-zmG2eAgfgAX-T-Uqb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCvXopi0BZf4RS3w05bYgIBm4ucfg1g3R9ytExK1gVn9Q&amp;oe=6394BBAD&quot;,&quot;320&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/317381745_139210065573726_5618852286686442343_n.jpg?_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=e-zmG2eAgfgAX-T-Uqb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCvXopi0BZf4RS3w05bYgIBm4ucfg1g3R9ytExK1gVn9Q&amp;oe=6394BBAD&quot;,&quot;640&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/317381745_139210065573726_5618852286686442343_n.jpg?_nc_cat=102&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=e-zmG2eAgfgAX-T-Uqb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCvXopi0BZf4RS3w05bYgIBm4ucfg1g3R9ytExK1gVn9Q&amp;oe=6394BBAD&quot;}">
+            <span class="sbi-screenreader">The holiday season is a time of giving! One lucky </span>
+            	                    <img src="https://www.laweekly.com/wp-content/plugins/instagram-feed/img/placeholder.png" alt="The holiday season is a time of giving! One lucky #LAWeekly follower will win two opening night tickets to L.A.&#039;s most magical Nutcracker. Dec 12th, DTLA. 
+
+LA&#039;s favorite and most magical Nutcracker is back, and already selling out.  Win tickets to this immersive snow-globe fantasy of a ballet that delights adults and children alike. Visit a secret Land of Sweets high above the city and return with your sense of wonder restored and a holiday memory you&#039;ll treasure forever. 
+
+For more information, visit #linkinbio
+
+✨A winner will be chosen on 12/4 and contacted via DM. Winner must respond within 24 hours of being contacted to receive their prize.
+
+✨For a chance to win:
+
+- Follow us
+- Like and save this post
+- Comment who you&#039;d take with you
+- 1 tag = 1 entry
+. 
+.
+. 
+.
+.
+#linkinbio #win #entertowin #contest #giveaway #likeandshare #laweekly #laweeklygiveaway #gettickets #wintickets #halloween #supportlocal #supportlocalart #supportlocalartists #liveshow #freetickets #LA #thenutcrackersuite #AmericanContemporaryBallet #ballet">
+        </a>
+    </div>
+</div><div class="sbi_item sbi_type_image sbi_new sbi_transition" id="sbi_18324725545044205" data-date="1668812501">
+    <div class="sbi_photo_wrap">
+        <a class="sbi_photo" href="https://www.instagram.com/p/ClHrbGQLyW9/" target="_blank" rel="noopener nofollow" data-full-res="https://scontent-ord5-2.cdninstagram.com/v/t51.2885-15/315796125_696768671870237_2973149795465849826_n.jpg?_nc_cat=110&#038;ccb=1-7&#038;_nc_sid=8ae9d6&#038;_nc_ohc=n8YZy9O9N_EAX_P8-Zb&#038;_nc_ht=scontent-ord5-2.cdninstagram.com&#038;edm=ANo9K5cEAAAA&#038;oh=00_AfCV6DTlA9mn0Oxx7bxavdWjhlH4rXWDyG40mOzelX6Fzw&#038;oe=6393E0AF" data-img-src-set="{&quot;d&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/315796125_696768671870237_2973149795465849826_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=n8YZy9O9N_EAX_P8-Zb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCV6DTlA9mn0Oxx7bxavdWjhlH4rXWDyG40mOzelX6Fzw&amp;oe=6393E0AF&quot;,&quot;150&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/315796125_696768671870237_2973149795465849826_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=n8YZy9O9N_EAX_P8-Zb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCV6DTlA9mn0Oxx7bxavdWjhlH4rXWDyG40mOzelX6Fzw&amp;oe=6393E0AF&quot;,&quot;320&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/315796125_696768671870237_2973149795465849826_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=n8YZy9O9N_EAX_P8-Zb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCV6DTlA9mn0Oxx7bxavdWjhlH4rXWDyG40mOzelX6Fzw&amp;oe=6393E0AF&quot;,&quot;640&quot;:&quot;https:\/\/scontent-ord5-2.cdninstagram.com\/v\/t51.2885-15\/315796125_696768671870237_2973149795465849826_n.jpg?_nc_cat=110&amp;ccb=1-7&amp;_nc_sid=8ae9d6&amp;_nc_ohc=n8YZy9O9N_EAX_P8-Zb&amp;_nc_ht=scontent-ord5-2.cdninstagram.com&amp;edm=ANo9K5cEAAAA&amp;oh=00_AfCV6DTlA9mn0Oxx7bxavdWjhlH4rXWDyG40mOzelX6Fzw&amp;oe=6393E0AF&quot;}">
+            <span class="sbi-screenreader">FAMILY AFFAIR: INSIDE SNOOP DOGG AND HIS BOSS LADY</span>
+            	                    <img src="https://www.laweekly.com/wp-content/plugins/instagram-feed/img/placeholder.png" alt="FAMILY AFFAIR: INSIDE SNOOP DOGG AND HIS BOSS LADY’S BUSINESS EMPIRE.
+
+Check out our latest cover story by @linalecaro on  @Snoopdogg, @bosslady_ent, @cbroadus, @princessbroadus #linkinbio
+.
+.
+.
+.
+.
+#snoopdogg #cbroadus #artist #laweekly #la #losangeles #tvshows #news #article #music #story #cover">
+        </a>
+    </div>
+</div>    </div>
+
+	<div id="sbi_load" >
+
+			<a class="sbi_load_btn" href="javascript:void(0);">
+			<span class="sbi_btn_text">Load More...</span>
+			<span class="sbi_loader sbi_hidden" style="background-color: rgb(255, 255, 255);" aria-hidden="true"></span>
+		</a>
+	
+			<span class="sbi_follow_btn">
+        <a href="https://www.instagram.com/laweekly/" target="_blank" rel="nofollow noopener">
+            <svg class="svg-inline--fa fa-instagram fa-w-14" aria-hidden="true" data-fa-processed="" aria-label="Instagram" data-prefix="fab" data-icon="instagram" role="img" viewBox="0 0 448 512">
+	                <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path>
+	            </svg>            <span>Follow on Instagram</span>
+        </a>
+    </span>
+	
+</div>
+
+	    <span class="sbi_resized_image_data" data-feed-id="*1" data-resized="{&quot;18324725545044205&quot;:{&quot;id&quot;:&quot;315796125_696768671870237_2973149795465849826_n&quot;,&quot;ratio&quot;:&quot;1.00&quot;,&quot;sizes&quot;:{&quot;full&quot;:640,&quot;low&quot;:320,&quot;thumb&quot;:150}},&quot;17940733223520883&quot;:{&quot;id&quot;:&quot;317381745_139210065573726_5618852286686442343_n&quot;,&quot;ratio&quot;:&quot;1.00&quot;,&quot;sizes&quot;:{&quot;full&quot;:640,&quot;low&quot;:320,&quot;thumb&quot;:150}},&quot;17995172812579929&quot;:{&quot;id&quot;:&quot;318101160_174764465160055_8096396736469443545_n&quot;,&quot;ratio&quot;:&quot;1.50&quot;,&quot;sizes&quot;:{&quot;full&quot;:640,&quot;low&quot;:320,&quot;thumb&quot;:150}},&quot;18258454147187288&quot;:{&quot;id&quot;:&quot;318247863_876459543706354_7929797458330740767_n&quot;,&quot;ratio&quot;:&quot;1.00&quot;,&quot;sizes&quot;:{&quot;full&quot;:640,&quot;low&quot;:320,&quot;thumb&quot;:150}}}">
+	</span>
+	</div>
+
+</div><div id="cb-social-media-widget-2" class="cb-footer-widget clearfix cb-widget-social-media clearfix"><div class="cb-social-media-icons cb-white"><a href="https://www.instagram.com/laweekly/" target="_blank" class="cb-instagram cb-icon-1"></a><a href="https://www.facebook.com/LAWeekly/" target="_blank" class="cb-facebook cb-icon-2"></a><a href="https://twitter.com/@laweekly" target="_blank" class="cb-twitter cb-icon-3"></a></div></div>                </div>
+                                                
+        </div>
+
+    
+    
+        <div class="cb-under-footer clearfix">
+            <div id="instagram-feed-widget-2" class="cb-footer-widget clearfix widget_instagram-feed-widget"></div>        </div>
+
+
+    
+    
+        <div class="cb-footer-lower cb-font-header clearfix">
+
+            <div class="wrap clearfix">
+
+                                    <div id="cb-footer-logo">
+                        <a href="https://www.laweekly.com">
+                            <img width="395" height="102" src="https://www.laweekly.com/wp-content/uploads/2019/03/law_logo-bottom-2.png" alt=" logo"  data-at2x="https://www.laweekly.com/wp-content/uploads/2019/03/law_logo-bottom-2.png" >
+                        </a>
+                    </div>
+                
+                <div class="cb-footer-links clearfix"><ul id="menu-footer-menu" class="nav cb-footer-nav clearfix"><li id="menu-item-361422" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-361422"><a href="https://www.laweekly.com/pick-us-up/">Pick Us Up</a></li>
+<li id="menu-item-496378" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-496378"><a href="https://www.laweekly.com/contact-page/">Contact</a></li>
+<li id="menu-item-145749" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-145749"><a href="https://www.laweekly.com/policies/">Policies</a></li>
+</ul></div>
+                <div class="cb-copyright">COPYRIGHT LA WEEKLY</div>
+
+                                    <div class="cb-to-top"><a href="#" id="cb-to-top"><i class="fa fa-angle-up cb-circle"></i></a></div>
+                
+            </div>
+
+        </div>
+    
+    <script src="https://js.adsrvr.org/up_loader.1.1.0.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        ttd_dom_ready( function() {
+            if (typeof TTDUniversalPixelApi === 'function') {
+                var universalPixelApi = new TTDUniversalPixelApi();
+                universalPixelApi.init("eac6kka", ["sxhm4qb"], "https://insight.adsrvr.org/track/up");
+            }
+        });
+    </script>
+
+</footer> <!-- end footer -->
+
+</div> <!-- end #cb-outer-container -->
+
+
+<span id="cb-overlay"></span>
+<input type="hidden" id="_zinenonce" name="_zinenonce" value="a94b0763da" /><input type="hidden" name="_wp_http_referer" value="/meet-cultural-cultivation-artist-alexandria-douziech/" /><!-- Instagram Feed JS -->
+<script type="text/javascript">
+var sbiajaxurl = "https://www.laweekly.com/wp-admin/admin-ajax.php";
+</script>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/www.laweekly.com\/meet-cultural-cultivation-artist-alexandria-douziech\/":589546};
+	</script>
+						<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/dropdown-content//js/dropdowncontent.js' id='dropdown-content-js'></script>
+<script type='text/javascript' src='https://www.google.com/recaptcha/api.js?render=6Lc5Q_gUAAAAAIIyXr58s94AwUpUax_g2I5XY9jA' id='google-recaptcha-js'></script>
+<script type='text/javascript' id='wpcf7-recaptcha-js-extra'>
+/* <![CDATA[ */
+var wpcf7_recaptcha = {"sitekey":"6Lc5Q_gUAAAAAIIyXr58s94AwUpUax_g2I5XY9jA","actions":{"homepage":"homepage","contactform":"contactform"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/contact-form-7/modules/recaptcha/script.js' id='wpcf7-recaptcha-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine-child/library/js/cb-scripts.source.js' id='cb-15zine-child-scripts-source-js'></script>
+<script type='text/javascript' id='wpcf7cf-scripts-js-extra'>
+/* <![CDATA[ */
+var wpcf7cf_global_settings = {"ajaxurl":"https:\/\/www.laweekly.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/cf7-conditional-fields/js/scripts.js' id='wpcf7cf-scripts-js'></script>
+<script defer type='text/javascript' src='https://stats.wp.com/e-202345.js' id='jetpack-stats-js'></script>
+<script id="jetpack-stats-js-after" type="text/javascript">
+_stq = window._stq || [];
+_stq.push([ "view", {v:'ext',blog:'167025452',post:'589546',tz:'-8',srv:'www.laweekly.com',j:'1:12.8'} ]);
+_stq.push([ "clickTrackerInit", "167025452", "589546" ]);
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/picker.js' id='picker-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/picker.date.js' id='picker-date-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.easing.js' id='jquery-easing-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.imagesLoaded.min.js' id='images-loaded-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.isotope.min.js' id='isotope-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.magnific-popup.min.js' id='magnific-popup-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.mediaBoxes.js' id='media-box-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/front/evrplus_grid.js' id='evplug-grid-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/jquery.transit.min.js' id='jquery-transit-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/modernizr.custom.min.js' id='modernizer-custom-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/waypoints.min.js' id='waypoints-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/event-assets/scripts/gridview/js/legacy.js' id='legacy-js'></script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/js/cookie.min.js' id='cb-cookie-js'></script>
+<script type='text/javascript' id='cb-js-ext-js-extra'>
+/* <![CDATA[ */
+var cbExt = {"cbLb":"on"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/js/cb-ext.js' id='cb-js-ext-js'></script>
+<script type='text/javascript' id='cb-js-js-extra'>
+/* <![CDATA[ */
+var cbScripts = {"cbUrl":"https:\/\/www.laweekly.com\/wp-admin\/admin-ajax.php","cbPostID":"589546","cbFsClass":"cb-embed-fs","cbSlider":["600",true,"12000",true],"cbALlNonce":"a0a2d25bf7","cbPlURL":"https:\/\/www.laweekly.com\/wp-content\/plugins","cbShortName":null};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/themes/15zine/library/js/cb-scripts.source.js' id='cb-js-js'></script>
+<script type='text/javascript' id='sbi_scripts-js-extra'>
+/* <![CDATA[ */
+var sb_instagram_js_options = {"font_method":"svg","resized_url":"https:\/\/www.laweekly.com\/wp-content\/uploads\/sb-instagram-feed-images\/","placeholder":"https:\/\/www.laweekly.com\/wp-content\/plugins\/instagram-feed\/img\/placeholder.png","ajax_url":"https:\/\/www.laweekly.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/instagram-feed/js/sbi-scripts.min.js' id='sbi_scripts-js'></script>
+<script type='text/javascript' id='sharing-js-js-extra'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.laweekly.com/wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js' id='sharing-js-js'></script>
+<script id="sharing-js-js-after" type="text/javascript">
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-twitter' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-twitter' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-linkedin' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-linkedin' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-pocket' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-pocket' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcompocket', 'menubar=1,resizable=1,width=450,height=450' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-telegram' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-telegram' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomtelegram', 'menubar=1,resizable=1,width=450,height=450' );
+						return false;
+					}
+				} );
+			} )();
+</script>
+
+		<!-- Cookie Notice plugin v2.4.11 by Hu-manity.co https://hu-manity.co/ -->
+		<div id="cookie-notice" role="dialog" class="cookie-notice-hidden cookie-revoke-hidden cn-position-top" aria-label="Cookie Notice" style="background-color: rgba(50,50,58,0.85);"><div class="cookie-notice-container" style="color: #fff"><span id="cn-notice-text" class="cn-text-container">By continuing to use our site, you agree to our <a href="https://www.laweekly.com/policies/" style="color:#eded89">Terms of Service and Privacy Policy</a>. You can learn more about how we use cookies by reviewing our <a href="https://www.laweekly.com/policies/" style="color:#eded89">Privacy Policy</a>.</span><span id="cn-notice-buttons" class="cn-buttons-container"><a href="#" id="cn-accept-cookie" data-cookie-set="accept" class="cn-set-cookie cn-button" aria-label="Ok" style="background-color: #00a99d">Ok</a></span><span id="cn-close-notice" data-cookie-set="accept" class="cn-close-icon" title="No"></span></div>
+			
+		</div>
+		<!-- / Cookie Notice plugin -->
+<!-- AdGlare: Sticky Zone -->
+<script async src='//engine.laweekly.com/?277464119'></script>
+
+    <!-- Infolinks -->
+    <script type="text/javascript">
+        var infolinks_pid = 3100830;
+        var infolinks_wsid = 0;
+    </script>
+    <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+</body>
+<script>
+    jQuery(document).ready(function() {
+        jQuery('.wpcf7-file').change(function(e) {
+            var fileName = e.target.files[0].name;
+            jQuery(".fileName").html(fileName + ' has been uploaded.');
+
+        });
+        jQuery('.slick-cloned a').removeAttr('data-lightbox');
+        jQuery('.datepicker-here').pickadate();
+
+    });
+</script>
+<script>
+    jQuery('.open-popup-link').magnificPopup({
+        type: 'inline',
+        midClick: true
+    });
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+<script type="text/javascript">
+    function initialize() {
+        var input = document.getElementById('event_location');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+<!-- :::::::::::::: CALENDAR PAYMENT SCRIPTS :::::::::::::::-->
+<script src="https://unpkg.com/bootstrap-datepicker@1.9.0/dist/js/bootstrap-datepicker.min.js"></script>
+<script>
+    jQuery(document).ready(function() {
+
+        // INITIAL CALNEDAR
+        jQuery(".datepicker-payment-init").datepicker({
+            todayBtn: 1,
+            autoclose: true,
+        }).on('changeDate', function(selected) {
+            // get date select for user primary calendar
+            var minDate = new Date(selected.date.valueOf());
+            var minDateEnd = new Date(selected.date.valueOf());
+            // increment day select user day
+            minDate.setDate(minDate.getDate() + 1);
+            // date end 90 days by event
+            minDateEnd.setDate(minDate.getDate() + 89);
+            // asignate date initial event
+            jQuery('.datepicker-payment-initialw').datepicker('setStartDate', minDate);
+            jQuery('.datepicker-payment-initialw').datepicker('setEndDate', minDateEnd);
+
+        }).on('show', function(selected) {
+            // add overlay modal and button close
+            jQuery('body').addClass('active_picker');
+            jQuery('.active_picker .close-picker-pyment').show();
+        }).on('hide', function(selected) {
+            // hide overlay modal and button close
+            jQuery('body').removeClass('active_picker');
+            jQuery('.close-picker-pyment').hide();
+        });
+
+        // END DATES SECOND CALENDAR
+        jQuery(".datepicker-payment-initialw").datepicker({
+            todayBtn: 1,
+            clearBtn: true,
+            multidate: true,
+        }).on('changeDate', function(selected) {
+            // asignate date initial of primary calendar
+            var minDate = new Date(selected.date.valueOf());
+            jQuery('.datepicker-payment-init').datepicker('setEndDate', minDate);
+        }).on('show', function(selected) {
+            // add overlay modal and button close
+            jQuery('body').addClass('active_picker');
+            jQuery('.datepicker-days thead tr:nth-child(2) th.datepicker-switch span').remove();
+            jQuery('.datepicker-days thead tr:nth-child(2) th.datepicker-switch').append('<span class="add_chosenine">Choose as many dates as apply up to 90 days from start date</span>');
+            jQuery('.active_picker .close-picker-pyment').show();
+        }).on('hide', function(selected) {
+            // / hide overlay modal and button close
+            jQuery('body').removeClass('active_picker');
+            jQuery('.datepicker-days thead tr:nth-child(2) th.datepicker-switch span').remove();
+            console.log('se remove');
+            jQuery('.close-picker-pyment').hide();
+        });
+
+        // close ico
+        jQuery('.close-picker-pyment').click(function(event) {
+            jQuery(this).hide();
+            jQuery('body').removeClass('active_picker');
+        });
+
+    });
+    //
+
+
+
+    // preview img
+    jQuery(document).ready(function($) {
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    jQuery('.previewIMg').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        jQuery("span.wpcf7-form-control-wrap.UploadEventImage>input").change(function() {
+            readURL(this);
+        });
+    });
+    //
+
+
+    // MODAL SCRIPT
+
+    jQuery(document).ready(function($) {
+
+
+
+        jQuery(".preview-buttom-modla").click(function() {
+            // event data preview
+            var title_event = jQuery('.Titleofevent>input').val();
+            var description_short = jQuery('.textarea-shortdescription>textarea').val();
+            var description_long = jQuery('span.wpcf7-form-control-wrap.Description>textarea').val();
+            var time_event = jQuery('span.wpcf7-form-control-wrap.Time>input').val();
+            var fee_evnt = jQuery('span.wpcf7-form-control-wrap.Fee>input').val();
+            var age_event = jQuery("span.wpcf7-form-control-wrap.Age>span>span>input[name='Age']:checked").val();
+            var genre_event = jQuery("span.wpcf7-form-control-wrap.Genre>span>span>input[name='Genre']:checked").val();
+            var link_event = jQuery("span.wpcf7-form-control-wrap.Eventlink>input").val();
+
+            var tipeEvent = jQuery("span.wpcf7-form-control-wrap.DateOptions span.wpcf7-list-item.first>input[name='DateOptions']:checked").val();
+            console.log(tipeEvent);
+            if (tipeEvent == 'One day') {
+                console.log('ONEDAY');
+                jQuery('.caption-date-pv-event>div>div#eventplus_event_date>.d3sc h5').hide();
+            } else {
+                jQuery('.caption-date-pv-event>div>div#eventplus_event_date>.d3sc h5').fadeIn();
+            }
+
+
+            // format date initial
+            var date_initial_event = jQuery(".datepicker-payment-init").val();
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            console.log('date_initial_event');
+            const d = new Date(date_initial_event);
+            var month_initial_event = monthNames[d.getMonth()];
+            var day_initial_event = d.getDate();
+            var year_initial_event = d.getFullYear();
+            console.log(month_initial_event + ' ' + day_initial_event + ', ' + year_initial_event);
+
+
+            jQuery('.caption-title-pv-event>span').text(title_event);
+            jQuery('.caption-description-pv-even').text('');
+            jQuery('.caption-description-pv-even').append('<p>' + description_short + '</p>');
+            jQuery('.caption-description-pv-even').append('<p>' + description_long + '</p>');
+            jQuery('.caption-date-pv-event div#eventplus_event_time .d3sc h4.timeget').text(time_event);
+            jQuery('.caption-option-pv-evnt>div>div#eventplus_event_fees .row .col-xs-12').text(fee_evnt);
+            jQuery('.caption-option-pv-evnt>div>div.eventplus_event_age .d3sc>span').text(age_event);
+            jQuery('.caption-option-pv-evnt>div>div.eventplus_event_genre .d3sc>span').text(genre_event);
+            jQuery('div#eventplus_actions_registration_btns>a').attr('href', link_event);
+            jQuery('.caption-date-pv-event>div>div#eventplus_event_date>.d3sc h4').text(month_initial_event + ' ' + day_initial_event + ', ' + year_initial_event);
+
+
+            // get location user
+            var geocoder = new google.maps.Geocoder();
+            var address = jQuery('span.wpcf7-form-control-wrap.Location>input').val();
+            jQuery('.caption-option-pv-evnt>div>div#eventplus_event_location .d3sc>span').text(address);
+            geocoder.geocode({
+                'address': address
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+
+                    var res = address.replace(" ", "+");
+                    jQuery('.caption-map-pv-event iframe').attr('src', 'https://maps.google.com/maps?q=' + res + '&hl=en&z=16&output=embed');
+                }
+            });
+
+        });
+    });
+    //
+
+
+    // ajax add cart product[
+    function customCheckout(event) {
+        var wp_ajax_url = "https://www.laweekly.com/wp-admin/admin-ajax.php";
+        var data = {
+            action: 'getCheckoutPageContent',
+            product_id: jQuery(event.target).data('productid'),
+            quantity: 1
+        };
+
+        jQuery.post(wp_ajax_url, data, function(content) {
+            jQuery("#checkOutPageContent").html(content);
+            jQuery("#pay-popup").click();
+        });
+    }
+    //
+
+
+    // ACTIVE AUTOCLICK EVENT SINGLE add cart
+    jQuery(document).ready(function($) {
+        // https://www.laweekly.com/checkout/
+        var url = window.location.href;
+        console.log('url');
+        console.log(url);
+        if (url != 'https://www.laweekly.com/checkout/') {
+            jQuery('.row_demo_products .initial_events_active').click();
+            console.log('AUTOCLIC2');
+        } else {
+            console.log('ckec4');
+            var dataEventIdCheckout = jQuery('#dataPostE').text();
+            console.log(dataEventIdCheckout);
+            jQuery('input#event_file_post_id').val(dataEventIdCheckout);
+
+            var textNameEvent = jQuery('tr.cart_item td.product-name').text();
+            setTimeout(function() {
+                jQuery('tr.cart_item td.product-name>strong').text('- plus 3.95% transaction fee');
+            }, 200);
+        }
+    });
+    //
+
+
+    // show/hide end date
+    jQuery(document).ready(function($) {
+        jQuery('input.dat_option_one').click(function() {
+            jQuery('label.end_dat').parent().removeClass('acti_date_select').addClass('wpcf7cf-hidden');
+            jQuery('input.datepicker-payment-initialw').val('');
+        });
+        jQuery('input.dat_option_recurrent').click(function() {
+            jQuery('label.end_dat').parent().addClass('acti_date_select').removeClass('wpcf7cf-hidden');
+        });
+    });
+    //
+
+    // Success save form payment, active modal payment event
+    jQuery(function() {
+        jQuery(".contact-form-payment-hub").submit(function(e) {
+            e.preventDefault();
+
+            document.addEventListener('wpcf7invalid', function(event) {
+                console.log("Fire!");
+            }, false);
+            document.addEventListener('wpcf7mailsent', function(event) {
+                console.log("SUCCESS5!");
+
+                customLastPostId();
+
+                setTimeout(function() {
+                    jQuery('.wpcf7-response-output.wpcf7-display-none.wpcf7-mail-sent-ok').text('Thank you! Your event has been saved successfully. At this time please make the payment and it will be published in the next 24 hours');
+                    jQuery('.pay-buttom-modla').addClass('active_payment_action');
+                }, 200);
+                setTimeout(function() {
+                    window.location.href = "https://www.laweekly.com/checkout/";
+                    console.log("activo_autoclick");
+                    // jQuery('.wpcf7-response-output.wpcf7-display-none.wpcf7-mail-sent-ok').fadeOut();
+                }, 2000);
+            }, false);
+        });
+    });
+    //
+
+    // ajax add cart product[
+    function customLastPostId() {
+        var wp_ajax_url = "https://www.laweekly.com/wp-admin/admin-ajax.php";
+        var data = {
+            action: 'getLatsEvent'
+        };
+
+        jQuery.post(wp_ajax_url, data, function(content) {
+            console.log('LAT POST EVENT4');
+            jQuery('.eventpost_id input').val(content);
+            // jQuery('.eventpost_id input').prop('disabled', true);
+            console.log(content);
+        });
+    }
+    //
+
+    jQuery('p.woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received').text('Thank you for you payment. A payment confirmation will be sent to the email you provided. Your posting will go live within 24 hours. All events will be moderated and LA Weekly reserves the right to edit for clarity or remove and refund payment for inappropriate content.');
+
+    // change value input radio - form contact events
+    setTimeout(function() {
+        jQuery('form.wpcf7-form.contact-form-payment span.wpcf7-form-control-wrap.Genre>span span.wpcf7-list-item:nth-child(4)>span').text('ENTERTAINMENT - FILM + TV');
+    }, 2000);
+</script>
+
+<!-- :::::::::::::: END CALENDAR PAYMENT SCRIPTS :::::::::::::::-->
+
+
+
+<script>
+    var titlePost = jQuery('h1.entry-title.cb-entry-title.entry-title').text();
+    var data_initial_onclick_GA = jQuery('#cb-gallery-post').attr('onclick');
+
+    jQuery(document).ready(function($) {
+        jQuery('#cb-gallery-post').attr('onclick', '')
+        console.log('atr_con3');
+    });
+    jQuery('#cb-gallery-post').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+        console.log(nextSlide);
+        console.log('change_9_2');
+
+        jQuery('#cb-gallery-post').attr('onclick', 'gaTrack("click_gallery","Image Slider ' + nextSlide + ' ","/' + titlePost + '")');
+        // gaTrack("click_gallery","Image Slider "+nextSlide+"", "/"+titlePost+"");
+    });
+
+
+    // jQuery('.cb-slider-image>a').lightbox("open", function(){
+    //     console.log('ABRIP');
+    // });
+
+    // jQuery('.cb-slider-image>a').on("open.lightbox", function() {
+    //   console.log('ABRISSP');
+    // })
+
+    jQuery('.cb-slider-image>a').click(function() {
+        var sliderPosition = jQuery(this).parent().data('slick-index');
+        jQuery('#cb-gallery-post').attr('onclick', 'gaTrack("click_gallery","Image Slider Pop Up ' + sliderPosition + ' ","/' + titlePost + '")');
+        jQuery('#cb-gallery-post').attr('data-lightga', sliderPosition);
+        console.log('INITIAL');
+    });
+
+
+    jQuery(document).ready(function($) {
+        jQuery("div#lightbox .lb-nav a.lb-next").on("click", function() {
+            var sliderPositionOpen = parseInt(jQuery('#cb-gallery-post').attr('data-lightga'));
+            var sliderPositionOpen2 = sliderPositionOpen + 1;
+            console.log(sliderPositionOpen2);
+            jQuery('#cb-gallery-post').attr('onclick', 'gaTrack("click_gallery","Image Slider Pop Up ' + sliderPositionOpen2 + ' ","/' + titlePost + '")');
+            jQuery('#cb-gallery-post').attr('data-lightga', sliderPositionOpen2);
+            console.log('INITIAL2_2_2');
+            jQuery('#cb-gallery-post').click();
+        });
+
+        jQuery("div#lightbox .lb-nav a.lb-prev").on("click", function() {
+            var sliderPositionOpenmin = parseInt(jQuery('#cb-gallery-post').attr('data-lightga'));
+            var sliderPositionOpenmin2 = sliderPositionOpenmin - 1;
+            jQuery('#cb-gallery-post').attr('onclick', 'gaTrack("click_gallery","Image Slider Pop Up ' + sliderPositionOpenmin2 + ' ","/' + titlePost + '")');
+            jQuery('#cb-gallery-post').attr('data-lightga', sliderPositionOpenmin2);
+            console.log('INITIAL3_3_3');
+            jQuery('#cb-gallery-post').click();
+        });
+    });
+
+
+
+    function gaTrack(eventCategory, title, path) {
+        console.log(eventCategory);
+        console.log(title);
+        console.log(path);
+        // __gaTracker('set', { page: path, title: title });
+        // __gaTracker('send', {
+        //     hitType: 'pageview',
+        //     screenName: eventCategory,
+        //     page: path,
+        //     title: title
+        //   });
+
+        __gaTracker('send', {
+            hitType: 'pageview',
+            screenName: eventCategory,
+            title: title,
+            page: path
+        });
+
+        // __gaTracker('send', 'pageview');
+        console.log('ente223e2_#2');
+    }
+</script>
+
+
+<script>
+    window.almOnLoad = function(alm) {
+        console.log("Ajax Load More is now loaded");
+        // console.log(alm);
+        // console.log(alm['slug']);
+        // jQuery('div#cb-content').attr('onclick','gaTrack("load_article","Name article: '+nextSlide+' ","/'+titlePost+'")');
+    };
+
+    // jQuery('div#cb-content').attr('onclick','gaTrack("click_gallery","Image Slider '+nextSlide+' ","/'+titlePost+'")');
+</script>
+
+
+</html> <!-- The End. what a ride! -->

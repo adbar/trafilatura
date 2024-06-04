@@ -17,6 +17,10 @@ build/
 .tox/
 .coverage
 
+# evaluation
+results/
+venv/
+
 # docs
 docs/_autosummary/
 docs/_build/
