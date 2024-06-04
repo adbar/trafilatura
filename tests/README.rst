@@ -11,6 +11,8 @@ The multilingual evaluation features a wide array of different websites: news ou
 
 The benchmark focuses on decisive text parts, mostly at the beginning and the end of the main text where errors often happen. Other difficult segments throughout the document are chosen to enhance detection of false positives, and segments in particular sections (e.g. quotes or lists) are taken to see if all necessary parts of a document are present in the output.
 
+These decisions are prompted by the need to find cost-efficient ways to define a gold standard and annotate a series of documents.
+
 
 Caveats
 -------
@@ -18,8 +20,6 @@ Caveats
 This type of evaluation does not probe for duplicate segments, but Trafilatura features a LRU cache for detection of duplicate text parts.
 
 It is not evaluated whether the extracted segments are in the right order, although they are generally few and far apart.
-
-These decisions are prompted by the need to find cost-efficient ways to define a gold standard and annotate a series of documents. More comprehensive evaluations are available, mostly focusing on English and/or a particular text type.
 
 
 Running the code
@@ -48,9 +48,11 @@ Options:
 
 - ``--all``: Run all the supported algorithms (some packages are slow, it can be a while)
 - ``--small``: Run Trafilatura-based components
-- ``--algorithms "html2txt" "html_text"``: Compare Trafilatura's ``html2txt`` extractor with the ``html_text`` package
+- ``--algorithms "html2txt" "html_text"`` (for example): Compare Trafilatura's ``html2txt`` extractor with the ``html_text`` package
 
-For a list of algorithms and further options: ``python3 evaluate.py --help``.
+``python3 evaluate.py --help``: Display all algorithms and further options.
+
+More comprehensive evaluations are available, mostly focusing on English and/or a particular text type. With minimal adaptations, the evaluation can support the use gold standard files in JSON format.
 
 
 Sources

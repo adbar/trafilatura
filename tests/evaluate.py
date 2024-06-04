@@ -189,15 +189,6 @@ def run_newspaper(htmlstring):
     return text
 
 
-def run_newspaper4k(htmlstring):
-    '''try with the newspaper module'''
-    try:
-        text = fulltext4k(htmlstring)
-    except AttributeError:
-        return ''
-    return text
-
-
 def run_boilerpipe(htmlbinary):
     '''try with the boilerpipe algorithm'''
     # conversion necessary
