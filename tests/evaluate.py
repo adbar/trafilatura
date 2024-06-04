@@ -1,3 +1,7 @@
+"""
+Make extraction results comparable with other libraries of the same kind.
+"""
+
 import argparse
 import json
 import logging
@@ -7,6 +11,9 @@ import time
 
 from importlib.metadata import version
 
+import html2text
+import html_text
+import justext
 import pandas as pd
 import tqdm
 # from rouge_score import rouge_scorer
@@ -16,7 +23,235 @@ try:
 except ImportError:
     from charset_normalizer import detect
 
-import comparison
+from boilerpy3 import extractors
+from bs4 import BeautifulSoup
+from goose3 import Goose
+from inscriptis import get_text
+from newspaper import fulltext
+from newsplease import NewsPlease
+# from readabilipy import simple_json_from_html_string
+from readability import Document
+from resiliparse.extract.html2text import extract_plain_text
+from resiliparse.parse.encoding import bytes_to_str, detect_encoding
+from resiliparse.parse.html import HTMLTree
+
+from trafilatura import baseline, extract, html2txt
+from trafilatura.external import jt_stoplist_init
+
+
+boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
+
+g = Goose()
+
+JT_STOPLIST = jt_stoplist_init()
+
+
+def convert_to_str(htmlbinary):
+    "Conversion and encoding fix for the tests."
+    try:
+        guessed_encoding = detect(htmlbinary)['encoding']
+        htmlstring = htmlbinary.decode(guessed_encoding)
+    except (TypeError, UnicodeDecodeError):
+        htmlstring = htmlbinary
+    return htmlstring
+
+
+def run_baseline(htmlbinary):
+    '''run bare text extraction within lxml'''
+    _, result, _ = baseline(htmlbinary)
+    return result
+
+
+def run_html2txt(htmlbinary):
+    '''run Trafilatura's html2txt function'''
+    return html2txt(htmlbinary)
+
+
+def run_trafilatura(htmlbinary):
+    '''run trafilatura (without fallback) on content'''
+    return extract(
+        htmlbinary,
+        no_fallback=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
+
+
+def run_justext(htmlbinary):
+    '''try with the generic algorithm justext'''
+    paragraphs = justext.justext(
+                     htmlbinary, JT_STOPLIST,
+                     50, 200, 0.1, 0.2, 0.2, 200, True
+                 )  # stop_words
+    valid = [
+        paragraph.text
+        for paragraph in paragraphs
+        if not paragraph.is_boilerplate
+    ]
+
+    return ' '.join(valid)
+
+
+def run_trafilatura_fallback(htmlbinary):
+    '''run trafilatura (with fallback) on content'''
+    return extract(
+        htmlbinary,
+        no_fallback=False,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
+
+
+def run_trafilatura_precision(htmlbinary):
+    '''run trafilatura with preference for precision'''
+    return extract(
+        htmlbinary,
+        no_fallback=False,
+        favor_precision=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
+
+
+def run_trafilatura_recall(htmlbinary):
+    '''run trafilatura with preference for recall'''
+    return extract(
+        htmlbinary,
+        no_fallback=False,
+        favor_recall=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
+
+
+def run_goose(htmlbinary):
+    '''try with the goose algorithm'''
+    try:
+        article = g.extract(raw_html=htmlbinary)
+        return article.cleaned_text
+    except ValueError:
+        return ''
+
+
+def run_readability(htmlbinary):
+    '''try with the Python3 port of readability.js'''
+    try:
+        doc = Document(htmlbinary)
+        return doc.summary()
+    except Exception as err:
+        print('Exception:', err)
+        return ''
+
+
+def run_inscriptis(htmlbinary):
+    '''try with the inscriptis module'''
+    # conversion necessary
+    htmlstring = convert_to_str(htmlbinary)
+    try:
+        text = get_text(htmlstring)
+    except TypeError:
+        text = ''
+    return text
+
+
+def run_html2text(htmlbinary):
+    '''try with the html2text module'''
+    # conversion necessary
+    htmlstring = convert_to_str(htmlbinary)
+    try:
+        text = html2text.html2text(htmlstring)
+    except TypeError:
+        text = ''
+    return text
+
+
+def run_html_text(htmlbinary):
+    '''try with the html2text module'''
+    # conversion necessary
+    htmlstring = convert_to_str(htmlbinary)
+    try:
+        text = html_text.extract_text(htmlstring, guess_layout=False)
+    except TypeError:
+        text = ''
+    return text
+
+
+def run_newspaper(htmlstring):
+    '''try with the newspaper module'''
+    try:
+        text = fulltext(htmlstring)
+    except AttributeError:
+        return ''
+    return text
+
+
+def run_newspaper4k(htmlstring):
+    '''try with the newspaper module'''
+    try:
+        text = fulltext4k(htmlstring)
+    except AttributeError:
+        return ''
+    return text
+
+
+def run_boilerpipe(htmlbinary):
+    '''try with the boilerpipe algorithm'''
+    # conversion necessary
+    htmlstring = convert_to_str(htmlbinary)
+    try:
+        content = boilerpipe_extractor.get_content(htmlstring)
+    except Exception:
+        content = ''
+    return content
+
+
+def run_newsplease(htmlbinary):
+    '''try with newsplease'''
+    try:
+        article = NewsPlease.from_html(htmlbinary, url=None)
+        return article.maintext
+    except Exception as err:
+        #print('Newsplease exception:', err)
+        return ''
+
+
+#def run_readabilipy(htmlstring):
+#    '''try with the readability.py module'''
+#    try:
+#        article = simple_json_from_html_string(htmlstring, use_readability=True)
+#        returnlist = [textelem['text'] for textelem in article['plain_text']]
+#        return '\n'.join(returnlist)
+#    except Exception as err:
+#        #print('Readabilipy exception:', err)
+#        return ''
+
+
+def run_resiliparse(htmlbinary):
+    '''try with the resiliparse package'''
+    # necessary
+    try:
+        htmlstring = bytes_to_str(htmlbinary, detect_encoding(htmlbinary))
+    except TypeError:  # already a string
+        htmlstring = htmlbinary
+    tree = HTMLTree.parse(htmlstring)
+    return extract_plain_text(tree, main_content=True)
+
+
+def run_bs4(htmlbinary):
+    '''try with the BeautifulSoup module'''
+    return BeautifulSoup(htmlbinary, features='lxml').get_text(strip=True)
+
+
+def run_nothing(htmlstring):
+    return ''
+
+
+def run_everything(htmlbinary):
+    return convert_to_str(htmlbinary)
 
 
 TEMPLATE_DICT = {
@@ -32,79 +267,79 @@ TEMPLATE_DICT = {
 ALGORITHMS = {
     'everything': {
         'library': '-',
-        'function': comparison.run_everything
+        'function': run_everything
     },
     'nothing': {
         'library': '-',
-        'function': comparison.run_nothing
+        'function': run_nothing
     },
     'baseline': {
         'library': '-',
-        'function': comparison.run_baseline
+        'function': run_baseline
     },
     'html2txt': {
         'library': '-',
-        'function': comparison.run_html2txt
+        'function': run_html2txt
     },
     'trafilatura fast': {
         'library': 'trafilatura',
-        'function': comparison.run_trafilatura
+        'function': run_trafilatura
     },
     'trafilatura': {
         'library': 'trafilatura',
-        'function': comparison.run_trafilatura_fallback
+        'function': run_trafilatura_fallback
     },
     'html2text': {
         'library': 'html2text',
-        'function': comparison.run_html2text
+        'function': run_html2text
     },
     'html_text': {
         'library': 'html_text',
-        'function': comparison.run_html_text
+        'function': run_html_text
     },
     'inscriptis': {
         'library': 'inscriptis',
-        'function': comparison.run_inscriptis
+        'function': run_inscriptis
     },
     'justext': {
         'library': 'justext',
-        'function': comparison.run_justext
+        'function': run_justext
     },
     'goose': {
         'library': 'goose3',
-        'function': comparison.run_goose
+        'function': run_goose
     },
     'newspaper': {
         'library': 'newspaper3k',
-        'function': comparison.run_newspaper
+        'function': run_newspaper
     },
     'boilerpipe': {
         'library': 'boilerpy3',
-        'function': comparison.run_boilerpipe
+        'function': run_boilerpipe
     },
     'newsplease': {
         'library': 'news-please',
-        'function': comparison.run_newsplease
+        'function': run_newsplease
     },
     'readability': {
         'library': 'readability-lxml',
-        'function': comparison.run_readability
+        'function': run_readability
     },
     'resiliparse': {
         'library': 'resiliparse',
-        'function': comparison.run_resiliparse
+        'function': run_resiliparse
     },
     'bs4': {
         'library': 'beautifulsoup4',
-        'function': comparison.run_bs4
+        'function': run_bs4
     },
     'trafilatura precision': {
         'library': 'trafilatura',
-        'function': comparison.run_trafilatura_precision
+        'function': run_trafilatura_precision
     },
     'trafilatura recall': {
         'library': 'trafilatura',
-        'function': comparison.run_trafilatura_recall
+        'function': run_trafilatura_recall
     }
 }
 
@@ -164,7 +399,7 @@ class Evaluation():
             pass
         return data
 
-    def load_document_string(self, filename, test_dir=''):
+    def load_document_binary(self, filename, test_dir=''):
         '''load mock page from samples'''
         if not test_dir:
             test_dir = os.path.abspath(os.path.dirname(__file__))
@@ -177,13 +412,7 @@ class Evaluation():
             return None
         with open(mypath, 'rb') as inputf:
             htmlbinary = inputf.read()
-        # encoding fix for the tests
-        try:
-            guessed_encoding = detect(htmlbinary)['encoding']
-            htmlstring = htmlbinary.decode(guessed_encoding)
-        except (TypeError, UnicodeDecodeError):
-            htmlstring = htmlbinary
-        return htmlstring
+        return htmlbinary
 
     def evaluate_result(self, result, item):
         '''evaluate result contents'''
@@ -266,21 +495,19 @@ class Evaluation():
                 pbar.update(1)
                 if not item['file']:
                     continue
-                htmlstring = self.load_document_string(item['file'], test_dir='')
-                if not htmlstring:
+                htmlbinary = self.load_document_binary(item['file'], test_dir='')
+                if not htmlbinary:
                     continue
                 i += 1
                 for a in self.algorithms:
                     # run algorithm
                     try:
-                        results[a]['confusion_matrix'], result = self.predict(
-                            results[a], htmlstring)
+                        results[a]['confusion_matrix'], result = self.predict(results[a], htmlbinary)
                     except Exception as e:
                         print(item['file'], e)
                         continue
                     # compute confusion matrix
-                    results[a]['confusion_matrix'] = self.compute_confusion_matrix(
-                        results[a], result, item)
+                    results[a]['confusion_matrix'] = self.compute_confusion_matrix(results[a], result, item)
                     # rouge score
                     #if self.evaltype == 'fullstring' and 'rouge' in self.metrics:
                     #    self.compute_rouge()

@@ -15,12 +15,8 @@ html-text==0.6.2
 inscriptis==2.5.0
 justext==3.0.1
 newspaper3k==0.2.8
-# newspaper4k?
+# newspaper4k==0.9.3.1  # replaces newspaper3k if installed
 news-please==1.5.44
 # readabilipy==0.2.0  # unmaintained!
 readability-lxml==0.8.1
 resiliparse==0.14.7
-
-# additional data
-#jparser==0.0.20
-#git+https://github.com/adbar/jparser.git
