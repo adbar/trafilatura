@@ -1426,6 +1426,37 @@ def test_is_probably_readerable():
     assert not is_probably_readerable(doc)
 
 
+def test_html_conversion():
+    "Test conversion from internal XML to HTML output."
+    xml = '''<xml>
+    <list>
+        <item>Item 1</item>
+        <item>Item 2</item>
+    </list>
+    <p>Text</p>
+    <head rend="h1">Heading 1</head>
+    <head rend="h2">Heading 2</head>
+    <hi rend="#i">Italic</hi>
+    <hi rend="#b">Bold</hi>
+    <ref target="https://example.com">Link</ref>
+</xml>'''
+    tree = etree.fromstring(xml)
+    html_tree = trafilatura.htmlprocessing.convert_to_html(tree)
+    expected_html = '''<html>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+    </ul>
+    <p>Text</p>
+    <h1>Heading 1</h1>
+    <h2>Heading 2</h2>
+    <i>Italic</i>
+    <strong>Bold</strong>
+    <a href="https://example.com">Link</a>
+</html>'''
+    print(etree.tostring(html_tree, method='html').decode())
+    assert etree.tostring(html_tree, method='html').decode() == expected_html
+
 
 if __name__ == '__main__':
     test_config_loading()
@@ -1452,3 +1483,4 @@ if __name__ == '__main__':
     test_large_doc_performance()
     test_lang_detection()
     test_is_probably_readerable()
+    test_html_conversion()
