@@ -3,13 +3,14 @@ URL management
 
 .. meta::
     :description lang=en:
-        This page shows how to filter a list of URLs, with Python and on the command-line,
+        This page shows how to filter and refine a list of URLs, with Python and on the command-line,
         using the functions provided by the included courlan package.
 
 
-This page shows how to filter a list of URLs, with Python and on the command-line, using the functions provided by the ``courlan`` package which is included with Trafilatura.
+It is essential to filter out unwanted or noisy URLs to ensure that only relevant and useful URLs are processed. This page shows how to do it with Python and on the command-line, using the functions provided by the ``courlan`` package which is included with Trafilatura.
 
-Filtering of input URLs is useful to avoid hodgepodges like ``.../tags/abc`` or "internationalized" rubrics like ``.../en/....``. It is best used on URL lists, before retrieving all pages and especially before massive downloads.
+
+Filtering input URLs is essential to avoid unwanted URLs, such as those with unnecessary tags (e.g. ``.../tags/abc``) or internationalized rubrics (e.g. ``.../en/....``). It is recommended to filter URLs before retrieving all pages and especially before performing massive downloads. This can help you save time and resources by only processing the URLs that are relevant to your needs.
 
 
 .. hint::
@@ -22,7 +23,7 @@ Filtering a list of URLs
 With Python
 ~~~~~~~~~~~
 
-The  function ``check_url()`` returns a URL and a domain name if everything is fine:
+The  function ``check_url()`` returns a URL and a domain name if everything is fine. This function is particularly useful for filtering out URLs with specific characteristics, removing unnecessary query parameters, and targeting web pages in specific languages.
 
 .. code-block:: python
 
@@ -43,18 +44,25 @@ The  function ``check_url()`` returns a URL and a domain name if everything is f
     >>> url, domain_name = check_url(my_url, language='de')
 
 
-Other useful functions include URL cleaning and validation:
+The ``courlan`` package provides several other helper functions dedicated to URL cleaning and validation which can help removing unnecessary parts and converting URLs to a conform and standard representation.
+
+
+Cleaning URLs removes unnecessary characters and normalizes them to a standard format, preventing errors and inconsistencies that can arise from malformed or duplicate URLs.
 
 .. code-block:: python
 
-    # helper function to clean URLs
     >>> from courlan import clean_url
 
     >>> clean_url('HTTPS://WWW.DWDS.DE:80/')
     'https://www.dwds.de'
 
-    # URL validation
+
+Validation checks whether a URL conforms to the expected format, preventing errors further down the line:
+
+.. code-block:: python
+
     >>> from courlan import validate_url
+
     >>> validate_url('http://1234')
     (False, None)
     >>> validate_url('http://www.example.org/')
@@ -66,12 +74,15 @@ Other useful functions include URL cleaning and validation:
 On the command-line
 ~~~~~~~~~~~~~~~~~~~
 
-Most functions are also available through a command-line utility:
+The package provides a command-line utility that allows you to perform most filtering and normalization operations. This utility takes advantage of multiprocessing by default, making it particularly useful for batch processing large lists of URLs.
+
+
+To get started with the command-line utility, you can use the ``--help`` option to display a message listing all available options and parameters: ``courlan --help``.
+
+
+The following examples show how to read from a file, filter and refine its contents, and write the results to another file.
 
 .. code-block:: bash
-
-    # display a message listing all options
-    $ courlan --help
 
     # simple filtering and normalization
     $ courlan --inputfile url-list.txt --outputfile cleaned-urls.txt
@@ -89,12 +100,15 @@ Sampling by domain name
 -----------------------
 
 
-This sampling methods allows for restricting the number of URLs to keep per host, for example:
+URL sampling involves selecting a subset from a larger collection of URLs to analyze or crawl. It can improve data quality by reducing biases and outliers, alleviating issues related to overrepresentation (certain websites or domains dominate the dataset) and noise (duplicate or irrelevant URLs clutter the dataset).
 
-Before
+
+Sampling by domain name allows you to control the number of URLs from each website:
+
+Before sampling
     ``website1.com``: 1000 URLs; ``website2.net``: 50 URLs
 
-After
+After sampling
     ``website1.com``: 50 URLs; ``website2.net``: 50 URLs
 
 

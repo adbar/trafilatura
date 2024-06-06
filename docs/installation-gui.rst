@@ -2,7 +2,9 @@ Installation of graphical user interface
 ========================================
 
 
-The graphical user interface (GUI) is recommended for users who prefer not to write scripts or type commands in a terminal window.
+For users who prefer a visual interface over writing scripts or typing commands, a graphical user interface (GUI) is the recommended option.
+
+Note that the GUI was a feature in Trafilatura until version 1.8.1, but it is currently available in a limited capacity and is no longer actively being developed. Get in touch if you are interested in working towards a more robust or feature-complete version.
 
 
 Installation
@@ -15,7 +17,7 @@ Installation
     - Enter ``python3 --version`` (or if doesn't work ``python --version``) in the terminal window to see if it's already installed (the answer should read ``Python 3.X.X`` where X is a number)
     - `Python installation <https://tutorial.djangogirls.org/en/python_installation/#python-installation>`_
 3. Install the necessary software versions straight from the repositories by copying the following instructions into the terminal window (use ``pip3`` or ``pip`` otherwise):
-    - ``pip3 install -U trafilatura[gui]``
+    - ``pip3 install -U trafilatura==1.8.1[gui]``
 
 All instructions for the terminal window are followed by pressing the `enter key <https://en.wikipedia.org/wiki/Enter_key>`_.
 
@@ -64,5 +66,3 @@ Screenshot
     :alt: Screenshot of the interface
     :align: center
     :width: 65%
-
-

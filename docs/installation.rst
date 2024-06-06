@@ -26,8 +26,8 @@ Then you need a version of Python to interact with as well as the Python package
 
 .. code-block:: bash
 
-    $ python3 --version
-    Python 3.8.6 # version 3.6 or higher is fine
+    $ python3 --version  # python can also work
+    Python 3.10.12 # version 3.6 or higher is fine
 
 In case Python is not installed, please refer to the excellent `Djangogirls tutorial: Python installation <https://tutorial.djangogirls.org/en/python_installation/>`_.
 
@@ -36,7 +36,7 @@ In case Python is not installed, please refer to the excellent `Djangogirls tuto
 Trafilatura package
 -------------------
 
-Trafilatura is packaged as a software library available from the package repository `PyPI <https://pypi.org/>`_. As such it can notably be installed with ``pip`` or ``pipenv``.
+Trafilatura is packaged as a software library available from the package repository `PyPI <https://pypi.org/>`_. As such it can notably be installed with a package manager like ``pip`` or ``pipenv``.
 
 
 Installing Python packages
@@ -50,22 +50,21 @@ Installing Python packages
 Basics
 ~~~~~~
 
-Please refer to `this section <usage-cli.html#introduction>`_ for an introduction on command-line usage.
+Here is how to install Trafilatura using pip:
 
-.. code-block:: bash
-
-    $ pip install trafilatura # pip3 where applicable
+1. Open a terminal or command prompt. Please refer to `this section <usage-cli.html#introduction>`_ for an introduction on command-line usage.
+2. Type the following command: ``pip install trafilatura`` (``pip3`` where applicable)
+3. Press Enter: pip will download and install Trafilatura and its dependencies.
 
 This project is under active development, please make sure you keep it up-to-date to benefit from latest improvements:
 
 .. code-block:: bash
 
     # to make sure you have the latest version
-    $ pip install -U trafilatura
+    $ pip install --upgrade trafilatura
     # latest available code base
     $ pip install --force-reinstall -U git+https://github.com/adbar/trafilatura
 
-On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
 
 .. hint::
     Installation on MacOS is generally easier with `brew <https://formulae.brew.sh/formula/trafilatura>`_.
@@ -80,7 +79,6 @@ Older Python versions
 
 Command-line tool
 ~~~~~~~~~~~~~~~~~
-
 
 If you installed the library successfully but cannot start the command-line tool, try adding the user-level ``bin`` directory to your ``PATH`` environment variable.
 If you are using a Unix derivative (e.g. Linux, OS X), you can achieve this by running the following command: ``export PATH="$HOME/.local/bin:$PATH"``.

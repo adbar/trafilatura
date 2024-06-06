@@ -74,4 +74,3 @@ Generic NLP solutions
 ---------------------
 
 For natural language processing see this list of open-source/off-the-shelf `NLP tools for German <https://github.com/adbar/German-NLP>`_ and `further lists for other languages <https://github.com/adbar/German-NLP#Comparable-lists>`_.
-

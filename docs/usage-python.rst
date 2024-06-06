@@ -25,31 +25,11 @@ Step-by-step
 Quickstart
 ^^^^^^^^^^
 
-.. code-block:: python
-
-    # load necessary components
-    >>> from trafilatura import fetch_url, extract
-
-    # download a web page
-    >>> url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
-    >>> downloaded = fetch_url(url)
-    >>> downloaded is None  # assuming the download was successful
-    False
-
-    # extract information from HTML
-    >>> result = extract(downloaded)
-    >>> print(result)
-    # newlines preserved, TXT output ...
-
-The only required argument is the input document (here a downloaded HTML file), the rest is optional.
+For the basics see `quickstart documentation page <quickstart.html>`_.
 
 .. note::
     For a hands-on tutorial see also the Python Notebook `Trafilatura Overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_.
 
-
-
-Formats
-^^^^^^^
 
 Default output is set to TXT (bare text) without metadata.
 
@@ -59,28 +39,11 @@ The following formats are available: bare text, Markdown (from version 1.9 onwar
 .. hint::
     Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
 
-The variables from the example above can be used further:
-
 
 .. code-block:: python
 
-    # newlines preserved, TXT output
-    >>> extract(downloaded)
-
-    # TXT/Markdown output
-    >>> extract(downloaded, include_links=True)
-
     # some formatting preserved in basic XML structure
     >>> extract(downloaded, output_format='xml')
-
-    # source URL provided for inclusion in metadata
-    >>> extract(downloaded, output_format='xml', url=url)
-
-    # links preserved in XML, converting relative links to absolute where possible
-    >>> extract(downloaded, output_format='xml', include_links=True)
-
-    # source URL must be provided to convert relative links to absolute with TXT output
-    >>> extract(downloaded, include_links=True, url=url)
 
 
 
@@ -105,7 +68,9 @@ Their inclusion can be activated or deactivated using parameters passed to the `
 
     # output with links
     >>> result = extract(downloaded, include_links=True)
-    # and so on...
+
+    # converting relative links to absolute where possible with url parameter
+    >>> extract(downloaded, output_format='xml', include_links=True, url=url)
 
 
 .. note::
@@ -199,42 +164,6 @@ The following combination can lead to shorter processing times:
 .. code-block:: python
 
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
-
-
-Content hashing
-^^^^^^^^^^^^^^^
-
-The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Charikar's hash) allows for near-duplicate detection. It implements a `locality-sensitive hashing <https://en.wikipedia.org/wiki/Locality-sensitive_hashing>`_ method based on a rolling hash and comparisons using the hamming distance. Overall it is reasonably fast and accurate for web texts and can be used to detect near duplicates by fixing a similarity threshold.
-
-
-.. code-block:: python
-
-    # create a Simhash for near-duplicate detection
-    >>> from trafilatura.deduplication import Simhash
-    >>> first = Simhash("This is a text.")
-    >>> second = Simhash("This is a test.")
-    >>> second.similarity(first)
-    0.84375
-
-    # use existing Simhash
-    >>> first_copy = Simhash(existing_hash=first.hash)
-    >>> first_copy.similarity(first)
-    1.0
-
-
-Other convenience functions include generation of file names based on their content. Two identical or nearly identical files will then get the exact same file name or close enough.
-
-
-.. code-block:: python
-
-    # create a filename-safe string by hashing the given content
-    >>> from trafilatura.deduplication import generate_hash_filename
-    >>> generate_hash_filename("This is a text.")
-    'qAgzZnskrcRgeftk'
-
-
-.. note::
-    The ``trafilatura.hashing`` submodule has been renamed ``trafilatura.deduplication`` in version 1.10.0.
 
 
 Extraction settings
@@ -355,6 +284,22 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
     # extract from the already loaded LXML tree
     >>> extract(mytree)
     'Here is the main text.'
+
+
+Interaction with BeautifulSoup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here is how to convert a BS4 object to LXML format in order to use it with Trafilatura:
+
+.. code-block:: python
+
+    >>> from bs4 import BeautifulSoup
+    >>> from lxml.html.soupparser import convert_tree
+    >>> from trafilatura import extract
+
+    >>> soup = BeautifulSoup("<html><body><time>The date is Feb 2, 2024</time></body></html>", "lxml")
+    >>> lxml_tree = convert_tree(soup)[0]
+    >>> extract(lxml_tree)
 
 
 Navigation
