@@ -2,82 +2,59 @@
 EVAL_PAGES = {
 
 'https://advertising.jodel.com/': {
-    'file': 'index.html.5',
+    'file': 'jodel.com.advertising.html',
     'with': ['Was sorgt dafür, dass deine Marke auf Jodel sicher ist?', 'Visuelle und Text-Posts werden in einer 2. Stufe von den Jodler*innen selbst durch Downvotes oder Melden unpassender Beiträge kontrolliert.', 'Lass dich inspirieren und starte deine Erfolgsgeschichte heute'],
     'without': ['Welche Unternehmen bereits Jodel vertrauen', 'Termin wählen', 'The Jodel Venture GmbH. All Rights Reserved.'],
 },
-
-
-
-
 'https://www.geeks3d.com/hacklab/20190110/python-3-simple-http-request-with-the-socket-module/': {
-    'file': 'index.html.3',
+    'file': 'geeks3d.com.hacklab.html',
     'with': ['Python 3: simple HTTP Request with the Socket module', 'This module provides access to the BSD socket interface. It is available on all modern Unix systems, Windows, MacOS, and probably additional platforms. ', 'GET / HTTP/1.1\r\nHost:www.google.com\r\n\r\n'],
     'without': ['Twitter: @GeeXLab', 'Demos: geexlab-demopack-python3/socket/01-socket-http-request/main.xml', 'Your email address will not be published. Required fields are marked'],
 },
 
 'https://github.com/golemfactory/yapapi': {
-    'file': 'yapapi',
+    'file': 'github.com.yapapi.html',
     'with': ['What\'s Golem and yapapi?', 'pip install yapapi', 'Write your own app with yapapi:'],
     'without': ['Contact GitHub', '2022 GitHub, Inc.', 'Python high-level API for Golem.'],
 },
 
 'https://www.vabali.de/online/reservierung/': {
-    'file': 'index.html.4',
+    'file': 'vabali.de.reservierung.html',
     'with': ['Für die Aufenthaltsdauer entscheiden Sie sich vor Ort.', 'Reservierungen können bis zu vier Wochen im Voraus vorgenommen werden.', 'Name, Adresse und Telefonnummer aller Personen werden dabei erhoben und nach vier Wochen gelöscht.'],
     'without': ['Wählen Sie bitte das Wunschdatum Ihres Besuches', 'Registrieren Sie sich für unseren kostenlosen Newsletter', 'Vabali Spa Berlin GmbH & Co. KG'],
 },
-
 'https://www.oreilly.com/library/view/aws-certified-solutions/9781119138556/ftoc.xhtml': {
-    'file': 'ftoc.xhtml',
+    'file': 'oreilly.com.aws.html',
     'with': ['About the Authors', 'Chapter 3 Amazon Elastic Compute Cloud (Amazon EC2) and Amazon Elastic Block Store (Amazon EBS)', 'AWS Certified Solutions Architect Official Study Guide'],
     'without': ['CONTENT SPONSORSHIP', 'START YOUR FREE TRIAL', 'Teach/write/train'],
 },
-
 'https://www.telegraph.co.uk/news/uknews/law-and-order/9209302/Plumber-jailed-after-boiler-killed-millionaires-daughter.html': {
-    'file': 'Plumber-jailed-after-boiler-killed-millionaires-daughter.html',
+    'file': 'telegraph.co.uk.plumber.html',
     'with': ['Plumber jailed after boiler killed millionaire\'s daughter ', 'A plumber who killed the "dazzling" daughter of a multi-millionaire publishing boss when lethal gas from a botched boiler installation filled a bathroom was jailed for three years.', 'Gas fitter Andrew Hartley was jailed for the manslaughter of a millionaire\'s daughter who died from carbon monoxide poisoning following his botched installation of a boiler'],
     'without': ['Enjoy unlimited access to all articles', 'Already a subscriber? Log in', 'Syndication and Commissioning'],
 },
-
-
-
-
-
-
-
-
-
-
-
 'https://german.stackexchange.com/questions/10376/when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau': {
-    'file': 'when-to-use-wurde-versus-war-eg-ich-wurde-ausgeraubt-vs-ich-war-ausgerau.1',
+    'file': 'german.stackexchange.com.ausgeraubt.html',
     'with': ['Ich wurde ausgeraubt', 'I don\'t quite agree with the other two answers.', '(This is active, not passive)'],
     'without': ['Asked 8 years, 2 months ago', 'asked Feb 6, 2014 at 20:37', 'The moose must flow, but how?'],
     'comments': ['Exactly, "Ich war ausgeraubt" is simply not correct.', 'Unless of what?', 'Daher gebe ich hier -1'],
 },
-
 'https://www.kickstarter.com/': {
-    'file': 'index.html.1',
+    'file': 'kickstarter.com.html',
     'with': ['Beiträge für kreative Arbeiten', 'Plant Light Nº1', 'Craighton Bermans Ratschläge für einfache, kreative Kampagnen'],
     'without': ['Kunst:', 'Über uns', 'Von Jeffrey & Jill Dalton', 'Starte ein Projekt'],
 },
-
-
 'https://docs.docker.com/engine/install/': {
-    'file': 'index.html',
+    'file': 'docs.docker.com.install.html',
     'tags': ['docker','installation', 'install'],
     'with': ['0.0.0-YYYYmmddHHMMSS-abcdefabcdef', 'Docker Desktop for Windows', 'For more information, see Docker Desktop for Linux.'],
     'without': ['Installation per distro', 'On this page:', 'What is a Container?'],
 },
-
 'https://www.thebalance.com/coinbase-vs-coinbase-pro-5116733': {
-    'file': 'coinbase-vs-coinbase-pro-5116733',
+    'file': 'thebalance.com.coinbase.html',
     'with': ['Coinbase vs. Coinbase Pro', 'How do they compare?', 'Buy/sell with debit cards'],
     'without': ['The Balance is part of the Dotdash Meredith publishing family.', 'Kraken vs. Coinbase: How Do They compare?', 'the balance', 'FOLLOW US'],
 },
-
-
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': {
     'file': 'die-partei.net.luebeck.html',
     'with': ['Die GEMA dreht völlig am Zeiger!', 'http://www.openpetition.de'],
