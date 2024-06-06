@@ -4,7 +4,7 @@ Functions to process nodes in HTML code.
 """
 
 import logging
-from collections import defaultdict
+
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
@@ -32,6 +32,9 @@ REND_TAG_MAPPING = {
 }
 
 
+PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
+
+
 def delete_element(element):
     "Remove the element from the LXML tree."
     try:
@@ -43,7 +46,6 @@ def delete_element(element):
 def tree_cleaning(tree, options):
     "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
-    favor_recall = options.focus == "recall"
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if not options.tables:
@@ -55,24 +57,25 @@ def tree_cleaning(tree, options):
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
-                         not in ('figure', 'picture', 'source')]
+                         not in PRESERVE_IMG_CLEANING]
         stripping_list.remove('img')
 
     # strip targeted elements
     strip_tags(tree, stripping_list)
 
     # prevent removal of paragraphs
-    run_p_test = False
     if options.focus == "recall" and tree.find('.//p') is not None:
         tcopy = deepcopy(tree)
-        run_p_test = True
-
+        for expression in cleaning_list:
+            for element in tree.getiterator(expression):
+                delete_element(element)
+        if tree.find('.//p') is None:
+            tree = tcopy
     # delete targeted elements
-    for expression in cleaning_list:
-        for element in tree.getiterator(expression):
-            delete_element(element)
-    if run_p_test and tree.find('.//p') is None:
-        tree = tcopy
+    else:
+        for expression in cleaning_list:
+            for element in tree.getiterator(expression):
+                delete_element(element)
 
     return prune_html(tree)
 
@@ -101,24 +104,21 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
                     prev = subtree.getparent()
                 if prev is not None:
                     # There is a previous node, append text to its tail
-                    prev.tail = " ".join([prev.tail, subtree.tail]) if prev.tail else subtree.tail
+                    prev.tail = (prev.tail or "") + " " + subtree.tail
             # remove the node
             subtree.getparent().remove(subtree)
 
-    if not with_backup:
-        return tree
-
-    new_len = len(tree.text_content())
-    # todo: adjust for recall and precision settings
-    if new_len > old_len/7:
-        return tree
-    return backup
+    if with_backup:
+        new_len = len(tree.text_content())
+        # todo: adjust for recall and precision settings
+        return tree if new_len > old_len/7 else backup
+    return tree
 
 
 def collect_link_info(links_xpath, favor_precision=False):
     '''Collect heuristics on link text'''
     # init
-    shortelems, mylist = 0, []
+    mylist = []
     # longer strings impact recall in favor of precision
     threshold = 50 if favor_precision else 10
     # examine the elements
@@ -126,8 +126,7 @@ def collect_link_info(links_xpath, favor_precision=False):
         subelemtext = trim(subelem.text_content())
         if subelemtext:
             mylist.append(subelemtext)
-            if len(subelemtext) < threshold:
-                shortelems += 1
+    shortelems = sum(1 for text in mylist if len(text) < threshold)
     lengths = sum(len(text) for text in mylist)
     return lengths, len(mylist), shortelems, mylist
 
@@ -179,8 +178,7 @@ def link_density_test_tables(element):
             if elemnum == 0:
                 return True
             LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-            if (elemlen < 1000 and linklen > 0.8*elemlen) or (elemlen > 1000 and linklen > 0.5*elemlen):
-                return True
+            return linklen > 0.8*elemlen if elemlen < 1000 else linklen > 0.5*elemlen
             # does more harm than good (issue #76)
             #if shortelems > len(links_xpath) * 0.66:
             #    return True
@@ -190,27 +188,26 @@ def link_density_test_tables(element):
 def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
-    myelems, deletions = defaultdict(list), []
+    deletions = []
+    threshold = 200 if favor_precision else 100
+
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result:
             deletions.append(elem)
-        elif backtracking and len(templist) > 0:  # if?
-            myelems[elemtext].append(elem)
-    # summing up
-    if backtracking:
-        threshold = 200 if favor_precision else 100
-        for text, elem in myelems.items():
-            if 0 < len(text) < threshold and len(elem) >= 3:
+        elif backtracking and templist:  # if?
+            if 0 < len(elemtext) < threshold and len(elem) >= 3:
                 deletions.extend(elem)
                 # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
+
     for elem in dict.fromkeys(deletions):
         parent = elem.getparent()
         if parent is not None:
             parent.remove(elem)
+
     return subtree
 
 
