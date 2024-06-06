@@ -95,7 +95,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Extract metadata fields and add them to the output.
+        with_metadata: Extract metadata fields and add them to the output (available soon).
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
@@ -288,7 +288,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Extract metadata fields and add them to the output.
+        with_metadata: Extract metadata fields and add them to the output (available soon).
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
@@ -315,7 +315,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         raise NameError(
             'Deprecated argument: use output_format instead, e.g. output_format="xml"'
             )
-        # todo: add with_metadata later
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):

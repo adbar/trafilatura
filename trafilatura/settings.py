@@ -36,6 +36,17 @@ def use_config(filename=None, config=None):
 
 DEFAULT_CONFIG = use_config()
 
+CONFIG_MAPPING = {
+    'min_extracted_size': 'MIN_EXTRACTED_SIZE',
+    'min_output_size': 'MIN_OUTPUT_SIZE',
+    'min_output_comm_size': 'MIN_OUTPUT_COMM_SIZE',
+    'min_extracted_comm_size': 'MIN_EXTRACTED_COMM_SIZE',
+    'min_duplcheck_size': 'MIN_DUPLCHECK_SIZE',
+    'max_repetitions': 'MAX_REPETITIONS',
+    'max_file_size': 'MAX_FILE_SIZE',
+    'min_file_size': 'MIN_FILE_SIZE'
+}
+
 
 class Extractor:
     "Defines a class to store all extraction options."
@@ -66,12 +77,7 @@ class Extractor:
         self._add_config(config)
         self.format = output_format
         self.fast = fast
-        if recall:
-            self.focus = "recall"
-        elif precision:
-            self.focus = "precision"
-        else:
-            self.focus = "balanced"
+        self.focus = "recall" if recall else "precision" if precision else "balanced"
         self.comments = comments
         self.formatting = formatting or output_format == "markdown"
         self.links = links
@@ -82,24 +88,19 @@ class Extractor:
         self.max_tree_size = max_tree_size
         self.url = url
         self.source = url or source
-        self.with_metadata = with_metadata or only_with_metadata or url_blacklist or output_format == "xmltei"
         self.only_with_metadata = only_with_metadata
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
         self.url_blacklist = url_blacklist or set()
-        self.date_params = date_params or \
-                           set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
+        self.with_metadata = (with_metadata or only_with_metadata or
+                              url_blacklist or output_format == "xmltei")
+        self.date_params = (date_params or
+                            set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')))
 
     def _add_config(self, config):
         "Store options loaded from config file."
-        self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
-        self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
-        self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
-        self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
-        self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
-        self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
-        self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
-        self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
+        for key, value in CONFIG_MAPPING.items():
+            setattr(self, key, config.getint('DEFAULT', value))
         self.config = config
 
 
