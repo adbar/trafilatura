@@ -1,0 +1,528 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="de">
+<head>
+    <title>Transformationslabor Ernährung</title>
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="-1">    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta http-equiv=expires content=86400>
+    <meta name="Content-Language" content="de">
+    <meta name="revisited-after" content="3 days">
+    <meta name="robots" content="index, follow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+    <script src="/global/js/jquery-1.9.1.js" type="text/javascript"></script>
+    <script src="/global/js/jquery.bxslider.min.js" type="text/javascript"></script>
+    <script src="/global/js/superfish.js" type="text/javascript"></script>
+    <script src="/global/js/jquery.fancybox.js" type="text/javascript"></script>
+    <script src="/global/js/jquery-ui.js" type="text/javascript"></script>
+
+
+    <link href="/global/styles/Struktur.css" type="text/css" rel="stylesheet" media="screen,projection">
+    <liNK href="/global/styles/UserStyles.css" type="text/css" rel="stylesheet" media="all">
+    <liNK href="/global/styles/print.css" type="text/css" rel="stylesheet" media="print">
+    <liNK href="/global/styles/jquery.bxslider.css" type="text/css" rel="stylesheet" media="print">
+	<link href="/global/styles/jquery.fancybox.css" type="text/css" rel="stylesheet" media="all">
+
+ 
+
+    <script language="javascript" type="text/javascript">
+function cycleImages1(){
+      var $active = $('#cycler1 .active');
+      var $next = ($active.next().length> 0) ? $active.next() : $('#cycler1 img:first');
+      $next.css('z-index', 2);
+      $active.fadeOut(3000, function () {
+          $active.css('z-index', 1).show().removeClass('active');
+          $next.css('z-index', 3).addClass('active');
+      });
+    }
+
+function cycleImages() {
+    var $active = $('#cycler .active');
+    var $next = ($active.next().length> 0) ? $active.next() : $('#cycler div:first');
+    $next.css('z-index', 2);
+    $active.fadeOut(3000, function () {
+        $active.css('z-index', 1).show().removeClass('active');
+        $next.css('z-index', 3).addClass('active');
+    });
+}
+
+
+    function toggleZoomScreen() {
+        document.body.style.zoom = "125%"
+    }
+</script>
+
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $("a[rel$=largeimage]").fancybox();
+        setInterval('cycleImages()', 10000);
+        setInterval('cycleImages1()', 5000);
+        $("a[rel$=playvideo]").fancybox({ type: 'iframe', arrows: false, showNavArrows: false, height: 400, width: 700, margin: 0, padding: 10 });
+        $("a[rel$=Newsletter]").fancybox({ type: 'iframe', arrows: false, showNavArrows: false, height: 500, width: 500, margin: 0, padding: 10 });
+        $("a[rel$=Anmeldung]").fancybox({ type: 'iframe', iframe: { preload: false }, arrows: false, showNavArrows: false });
+        var MenueMain = $('#MenueMain').superfish({});
+
+        $('.firmenlogos').bxSlider({ minSlides: 4, maxSlides: 99, slideWidth: 70, slideMargin: 10, ticker: true, speed: 35000, randomStart: true });
+
+        $(".accordion").accordion({
+            active: false,
+            heightStyle: "content", 
+            collapsible: true, 
+            header: ".AccHead", 
+            // Called when the widget instance is created.
+            create: function( e, ui ) {
+
+                // The accordion DOM element.
+                var $this = $( this );
+
+                // Triggered when the browser hash changes.
+                $( window ).on( "hashchange", function( e ) {
+
+                    // The selector string used to find all accordion headers.
+                    var headers = $this.accordion( "option", "header" ),
+
+                        // The header we're looking for, based on the location hash.
+                        header = $( location.hash ),
+
+                        // The index of the header we're looking for.
+                        index = $this.find( headers ).index( header );
+
+                    // If there's a valid index, activate the accordion section.
+                    // Otherwise, do nothing.
+                    if ( index >= 0 ) {
+                        $this.accordion( "option", "active", index );    
+                    }
+
+                });
+
+                // Make sure this works on initial page load.
+                $( window ).trigger( "hashchange" );
+
+            }
+
+        });
+
+
+
+        $('#large img').each(function () {
+            var image = $(this);
+            var caption = image.attr('alt');
+            if (caption != null) {
+                if (caption != '') {
+                    var imagealign = image.css('float');
+                    var imagemarginleft = image.css('margin-left');
+                    var imagemarginright = image.css('margin-right');
+                    image.after('<span class="caption">' + caption + '</span>');
+                    image.next('span.caption').andSelf().wrapAll('<div>');
+                    image.parent('div').css({ 'margin-left': imagemarginleft, 'margin-right': imagemarginright, 'width': image.outerWidth(false), 'float': imagealign, 'position': 'relative', 'overflow': 'visible', 'text-align': 'justify', 'margin-bottom': '10px' });
+                }
+            }
+        });
+    });
+</script>
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+        <meta property="og:image" content="https://www.baumev.de/global/images/cms/Icons_Buttons/getreide.png" >    <meta property="og:title" content="Transformationslabor Ern&#228;hrung" >    <meta property="og:description" content="Die Ern&#228;hrungswirtschaft birgt mit ihren sehr diversen, globalen Lieferketten entscheidendes Potenzial zur Erreichung des 1,5-Grad-Ziels. Wir wollen Vorreiter:innen best&#228;rken und weitere Stakeholder der Lebensmittelindustrie ermutigen, konkrete Ma&#223;nahmen f&#252;r umweltfreundliches Management zu ergreifen. Ziel ist die Transformation der Ern&#228;hrungswirtschaft zu einer klimaneutralen und nachhaltigen Industrie auf Grundlage der SDGs." >    <meta property="og:url" content="https://www.baumev.de/News/10365/TransformationslaborErnhrung.html" >
+</head>
+<body>
+<div id="PrintHeader"><img src="https://www.baumev.de/global/images/logo_Klein.gif" alt=""></div>
+<div id="main">
+
+    <div id="HeaderMobil">
+
+        <a href="https://www.baumev.de/"><img src="/global/images/logo.png" border=0 style="float: left;z-index: 999; position: absolute;margin-left: 20px;" alt=""></a>
+
+        <div id="MenuMobil" style="padding-right: 30px;  width: 50px; float: right; text-align: left; margin-top: 20px; height: 26px;">
+                <ul class="sf-menu sf-vertical">
+                <li><img src="/global/images/btn_menu.png" alt="Menue" title="Menue">
+                    <ul>
+                    <li><a href="https://www.baumev.de/Home.html">Home</a></li>
+                    <li><a href="https://www.baumev.de/Mitgliedschaft.html">Mitgliedschaft</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Mitglied_werden.html">Mitglied werden</a></li>
+                        <li><a href="https://www.baumev.de/Kodex.html">Kodex</a></li>
+                        <li><a href="https://www.baumev.de/Mitgliederverzeichnis.html">Mitglieder</a></li>
+                        <li><a href="https://www.baumev.de/Referenzen.html">Referenzen</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Ueber_uns.html">Über uns</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Wer_wir_sind.html">Wer wir sind</a></li>
+                        <li><a href="https://www.baumev.de/Gremien.html">Gremien</a></li>
+                        <li><a href="https://www.baumev.de/Transparenz.html">Transparenz</a></li>
+                        <li><a href="https://www.baumev.de/Publikationen.html">Publikationen</a>
+                       <ul>
+                            <li><a href="https://www.baumev.de/weitere_Publikationen.html">weitere Publikationen</a></li>
+
+                      </ul>
+</li>
+                        <li><a href="https://www.baumev.de/Mitwirkung.html">Mitwirkung</a></li>
+                        <li><a href="https://www.baumev.de/Auszeichnungen.html">Auszeichnungen</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Neuigkeiten.html">Neuigkeiten</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Neuigkeiten_BAUM.html">Neues von B.A.U.M.</a></li>
+                        <li><a href="https://www.baumev.de/BAUM_Medien.html">B.A.U.M. in den Medien</a></li>
+                        <li><a href="https://www.baumev.de/Neuigkeiten_Netzwerk.html">Neues aus dem Netzwerk</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Themen.html">Themen</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/SDG.html">Nachhaltige Entwicklung</a></li>
+                        <li><a href="https://www.baumev.de/Klima_Energie.html">Klima & Energie</a></li>
+                        <li><a href="https://www.baumev.de/Mobilitaet.html">Mobilität</a>
+                       <ul>
+                            <li><a href="https://www.baumev.de/LandMobil.html">LandMobil</a></li>
+
+                      </ul>
+</li>
+                        <li><a href="https://www.baumev.de/Nachhaltiges_Wirtschaften.html">Nachhaltiges Wirtschaften</a></li>
+                        <li><a href="https://www.baumev.de/Kreislaufwirtschaft.html">Kreislaufwirtschaft</a></li>
+                        <li><a href="https://www.baumev.de/Digitalisierung.html">Digitalisierung</a></li>
+                        <li><a href="https://www.baumev.de/Biodiversitaet_Wald.html">Wald & Biodiversität</a></li>
+                        <li><a href="https://www.baumev.de/Projektrueckschau.html">Rückschau</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Preis.html">B.A.U.M.-Preis</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/preistraegerinnen.html">Preisträger:innen 2022</a></li>
+                        <li><a href="https://www.baumev.de/Auszeichnung.html">Auszeichnung</a></li>
+                        <li><a href="https://www.baumev.de/Rueckschau_Preistraeger.html">Rückschau</a>
+                       <ul>
+                            <li><a href="https://www.baumev.de/2021.html">2021</a></li>
+                            <li><a href="https://www.baumev.de/2020.html">2020</a></li>
+                            <li><a href="https://www.baumev.de/2019.html">2019</a></li>
+                            <li><a href="https://www.baumev.de/2018.html">2018</a></li>
+                            <li><a href="https://www.baumev.de/2017.html">2017</a></li>
+                            <li><a href="https://www.baumev.de/2016.html">2016</a></li>
+                            <li><a href="https://www.baumev.de/2015.html">2015</a></li>
+                            <li><a href="https://www.baumev.de/2014.html">2014</a></li>
+                            <li><a href="https://www.baumev.de/2013.html">2013</a></li>
+                            <li><a href="https://www.baumev.de/2012.html">2012</a></li>
+                            <li><a href="https://www.baumev.de/2011.html">2011</a></li>
+                            <li><a href="https://www.baumev.de/2010.html">2010</a></li>
+                            <li><a href="https://www.baumev.de/2009.html">2009</a></li>
+                            <li><a href="https://www.baumev.de/2008.html">2008</a></li>
+
+                      </ul>
+</li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Jahrestagung.html">Jahrestagung</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Programm.html">Programm</a></li>
+                        <li><a href="https://www.baumev.de/preistraegerinnen_2022.html">Preisträger:innen</a></li>
+                        <li><a href="https://www.baumev.de/Grussworte.html">Grußworte</a></li>
+                        <li><a href="https://www.baumev.de/Partner.html">Partner</a></li>
+                        <li><a href="https://www.baumev.de/Green_Event.html">Green Event</a></li>
+                        <li><a href="https://www.baumev.de/Jahrestagung_Vorjahre.html">Vorjahre</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Presse.html">Presse</a></li>
+                    <li><a href="https://www.baumev.de/Kontakt.html">Kontakt</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Geschaeftsstelle.html">Geschäftsstelle</a></li>
+                        <li><a href="https://www.baumev.de/Regionalbueros.html">Regionalbüros</a></li>
+                        <li><a href="https://www.baumev.de/Praktikum_bei_BAUM.html">Praktikum bei B.A.U.M.</a></li>
+                  </ul>
+</li>
+                    <li><a href="https://www.baumev.de/Service.html">Service</a>
+                  <ul>
+                        <li><a href="https://www.baumev.de/Buchtipps.html">Buchtipps</a></li>
+                        <li><a href="https://www.baumev.de/Jobs.html">Grüne Jobs</a></li>
+                  </ul>
+</li>
+          </ul>             
+        </ul>
+        </div>
+
+        <div id="mitgliedwerden" style="background-image: url(https://www.baumev.de/global/images/PfeilDown.png); background-repeat: no-repeat; padding-left: 30px; padding-top: 10px; width: 162px; float: right; text-align: left; margin-top: 35px; height: 26px;"><a style="color: #000000; font-size: 0.9em;" href="/Mitglied_werden.html" title="Mitglied werden">MITGLIED WERDEN</a></div>
+        <div id="newsletterbestellen" style="background-image: url(https://www.baumev.de/global/images/PfeilDown.png); background-repeat: no-repeat; padding-left: 30px; padding-top: 10px; width: 162px; float: right; text-align: left; margin-top: 35px; height: 26px;"><a style="color: #000000; font-size: 0.9em;" rel="Newsletter" target=_blank href="/subscribe.asp" title="Newsletter abonnieren">NEWSLETTER ABONNIEREN</a></div>
+
+        <br class="cb">
+    </div>
+
+
+    <div id="header2">
+
+        <a href="https://www.baumev.de/"><img src="/global/images/logo.png" border=0 style="float: left;z-index: 999; position: absolute;margin-left: 20px;" alt=""></a>
+
+        <div id="suche" style="padding-bottom: 2px; width: 162px; float: right; text-align: right; margin-top: 35px;"><form method="post" action="https://www.baumev.de/Suche.html" style="padding-top: 7px;"><input type="hidden" name="Funktion" value="SUCHE"><input type="text" name="keyword" style="border:0; background-color:#f5f5f5; width: 132px; float: left; height: 19px; font-size: 0.9em; padding: 2px; margin: 0px; border-right: 0;" placeholder="SUCHBEGRIFF"><input type="image" src="https://www.baumev.de/global/images/Plus.png" style="height: 21px; height: 23px;"></form>
+
+        </div>
+        <div style="padding-top: 10px; width: 80px; float: right; text-align: left; margin-top: 25px;"><a href="https://twitter.com/BAUMeV" target="_blank"><img src="/global/images/btnTwitter.png" alt="Logo Twitter" /></a></div>
+
+        <div style="background-image: url(https://www.baumev.de/global/images/PfeilDown.png); background-repeat: no-repeat; padding-left: 30px; padding-top: 10px; width: 132px; float: right; text-align: left; margin-top: 35px; height: 26px;"><a style="color: #000000; font-size: 0.9em;" href="/Mitglied_werden.html" title="Mitglied werden">MITGLIED WERDEN</a></div>
+        <div style="background-image: url(https://www.baumev.de/global/images/PfeilDown.png); background-repeat: no-repeat; padding-left: 30px; padding-top: 10px; width: 162px; float: right; text-align: left; margin-top: 35px; height: 26px;"><a style="color: #000000; font-size: 0.9em;" rel="Newsletter" target=_blank href="/subscribe.asp" title="Newsletter abonnieren">NEWSLETTER ABONNIEREN</a></div>
+
+        <br class="cb">
+    </div>
+
+  	<div id="header">
+        <div id="header3">
+             <div id="cycler1">
+                <img class="active" src="/global/images/Header/Header1.jpg" alt="">
+                <img src="/global/images/Header/Header2.jpg" alt="">	
+                <img src="/global/images/Header/Header3.jpg" alt="">	
+            </div>
+            <DIV ID="Menue">
+                <ul class="sf-menu sf-vertical" id="MenueMain">
+                    <li><a class="a_menue" href="https://www.baumev.de/Home.html">Home</a></li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Mitgliedschaft.html">Mitgliedschaft</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Mitglied_werden.html">Mitglied werden</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Kodex.html">Kodex</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Mitgliederverzeichnis.html">Mitglieder</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Referenzen.html">Referenzen</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Ueber_uns.html">Über uns</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Wer_wir_sind.html">Wer wir sind</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Gremien.html">Gremien</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Transparenz.html">Transparenz</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Publikationen.html">Publikationen</a>
+                       <ul>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/weitere_Publikationen.html">weitere Publikationen</a></li>
+
+                      </ul>
+</li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Mitwirkung.html">Mitwirkung</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Auszeichnungen.html">Auszeichnungen</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Neuigkeiten.html">Neuigkeiten</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Neuigkeiten_BAUM.html">Neues von B.A.U.M.</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/BAUM_Medien.html">B.A.U.M. in den Medien</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Neuigkeiten_Netzwerk.html">Neues aus dem Netzwerk</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue_selected" href="https://www.baumev.de/Themen.html">Themen</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/SDG.html">Nachhaltige Entwicklung</a></li>
+                        <li><a class="a_submenue_selected" href="https://www.baumev.de/Klima_Energie.html">Klima & Energie</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Mobilitaet.html">Mobilität</a>
+                       <ul>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/LandMobil.html">LandMobil</a></li>
+
+                      </ul>
+</li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Nachhaltiges_Wirtschaften.html">Nachhaltiges Wirtschaften</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Kreislaufwirtschaft.html">Kreislaufwirtschaft</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Digitalisierung.html">Digitalisierung</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Biodiversitaet_Wald.html">Wald & Biodiversität</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Projektrueckschau.html">Rückschau</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Preis.html">B.A.U.M.-Preis</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/preistraegerinnen.html">Preisträger:innen 2022</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Auszeichnung.html">Auszeichnung</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Rueckschau_Preistraeger.html">Rückschau</a>
+                       <ul>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2021.html">2021</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2020.html">2020</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2019.html">2019</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2018.html">2018</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2017.html">2017</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2016.html">2016</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2015.html">2015</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2014.html">2014</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2013.html">2013</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2012.html">2012</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2011.html">2011</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2010.html">2010</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2009.html">2009</a></li>
+                            <li><a class="a_subsubmenue" href="https://www.baumev.de/2008.html">2008</a></li>
+
+                      </ul>
+</li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Jahrestagung.html">Jahrestagung</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Programm.html">Programm</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/preistraegerinnen_2022.html">Preisträger:innen</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Grussworte.html">Grußworte</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Partner.html">Partner</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Green_Event.html">Green Event</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Jahrestagung_Vorjahre.html">Vorjahre</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Presse.html">Presse</a></li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Kontakt.html">Kontakt</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Geschaeftsstelle.html">Geschäftsstelle</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Regionalbueros.html">Regionalbüros</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Praktikum_bei_BAUM.html">Praktikum bei B.A.U.M.</a></li>
+                  </ul>
+</li>
+                    <li><a class="a_menue" href="https://www.baumev.de/Service.html">Service</a>
+                  <ul>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Buchtipps.html">Buchtipps</a></li>
+                        <li><a class="a_submenue" href="https://www.baumev.de/Jobs.html">Grüne Jobs</a></li>
+                  </ul>
+</li>
+                </ul>             
+            </div>
+        </div>
+	</div>
+        <div id="header4"></div>
+
+    <div id="content">
+
+
+        <div id = "large">
+            <h1>TRANSFORMATIONSLABOR ERNÄHRUNG</h1>
+            <p style="font-style: italic;">Die Ernährungswirtschaft birgt mit ihren sehr diversen, globalen Lieferketten entscheidendes Potenzial zur Erreichung des 1,5-Grad-Ziels. Wir wollen Vorreiter:innen bestärken und weitere Stakeholder der Lebensmittelindustrie ermutigen, konkrete Maßnahmen für umweltfreundliches Management zu ergreifen. Ziel ist die Transformation der Ernährungswirtschaft zu einer klimaneutralen und nachhaltigen Industrie auf Grundlage der SDGs.</P>
+
+<p>Ausschlaggebend für die Initiative zum Transformationslabor
+Ernährung waren die ehrgeizigen Ziele aus dem Maßnahmenpaket "Fit for 55"
+der Europäischen Kommission zur Umsetzung des Green Deal (Reduzierung der
+Netto-Treibhausgasemissionen bis 2030 um 55% im Vergleich zu 1990 sowie ein
+klimaneutrales Europa bis 2050). Das Transformationslabor Ernährung untersucht
+zunächst den Status quo etablierter Messmethoden und Beiträge zu einem
+nachhaltigen Ernährungssystem sowie den möglichen Beitrag der unterschiedlichen
+Stakeholder dazu. Im Fokus des Projekts steht die Frage, welche
+Transformationsindikatoren geeignet sind, Schritte in Richtung Klimaneutralität
+und Anpassung zu messen und zu bewerten und gleichzeitig das
+Informationsinteresse der Finanzmarktakteure abzudecken.</p>
+<p><a href="https://www.wirtschaftproklima.de/ernaehrung" target="_blank">www.wirtschaftproklima.de/ernaehrung</a></p>
+<p></p>
+<div style="background-color: rgb(255, 255, 255);">&nbsp;</div>
+<div style="background-color: rgb(255, 255, 255);">Kontakt:</div>
+<p style="background-color: rgb(255, 255, 255);"><span style="font-weight: bold;">Jan Koch<br />
+		</span>Telefon +49 (0)40 / 49 07 11 06<br />
+	<a href="mailto:jan.koch@baumev.de">jan.koch@baumev.de</a>&nbsp;</p>
+<div><br />
+	</div><br />
+
+<p>&nbsp;</p>
+
+            <br style="clear: both;">
+        </div>
+
+
+
+        <div id = "right">
+            <br>
+
+<h2>Ansprechpartnerin zum Thema:</h2>
+<div><span style="font-weight: bold;">Antonia Thiele</span></div>
+<p>Telefon +49 (0)40 / 49 07 11 05<br />
+	<a href="mailto:antonia.thiele@baumev.de">antonia.thiele@baumev.de</a></p>
+<p><br />
+	</p>
+<p><a href="https://www.baumev.de/Down.asp?Name={WUMQEKHLEL-81820218524-NZBMNCYRVV}" title="" style="margin-top:0px;margin-right:0px;margin-bottom:0px;margin-left:0px;"><img src="/global/images/cms/Fotos_BAUM/baum_insights_klimaneutralitaet.png" alt="" border="0" style="float: none; margin: 0px; width: 150px; height: 212px;" /></a></p><br />
+
+
+       <div id="LinkBoxUnten">
+           <p>KLIMANEUTRALITÄT VON UNTERNEHMEN<br></p>
+           <div class="ximgLinkBox" style="width: 220px; height: 110px; background-image: url(https://www.baumev.de//global/images/cms/Icons_Buttons/co2.png); background-position: 50% 50%; background-size: contain; background-repeat: no-repeat;"></div>
+           <div class="txtBoxKlein" style="margin-top: 10px;">Voraussetzungen zur Einstufung der Klimaneutralität von Unternehmen gemäß B.A.U.M.-Definition 2021</div>
+           <div style="padding-top: 10px;padding-left: 20px; background-image: url(/global/images/pfeil.png); background-repeat: no-repeat; background-position: 0% 90%;"><a  target=_blank href="http://www.wirtschaftproklima.de/klimaneutralitaet">Mehr...</a></div>       </div>
+
+        </div>
+        <br style="clear: both;">
+        <br style="clear: both;">
+   </div>
+ 
+    <br style="clear: both;">
+  
+    <div id="footer">
+
+        <div style="width: 292px; float: left; text-align: left; font-size: 0.9em; padding: 10px; color: #586265;">Zahlreiche renommierte Firmen sind bereits Teil des B.A.U.M.-Netzwerks und haben den <a href="/kodex.html">B.A.U.M.-Kodex f&uuml;r nachhaltiges Wirtschaften</a> unterzeichnet.<br /><a style="font-weight: bold;" href="/Mitglied_werden.html" title="Mitglied werden">Mitglied werden</a></div>
+
+            <div id="xslider" class="slider">
+                <ul class="firmenlogos" style="border: 0; margin: 0;  padding: 0;">
+                  <li><div style="background-image: url('/global/images/logos/4880.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/6072.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/15659.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/14294.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/16015.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/8426.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/333.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/8328.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/15821.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/2121.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/16212.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/8926.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/3200.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/15731.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/14658.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/959.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/960.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/1885.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/7619.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/13505.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/7875.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/13229.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/940.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/16313.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/930.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/8228.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/9227.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/476.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/9541.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+                  <li><div style="background-image: url('/global/images/logos/13526.png'); background-position: 50% 50%; height: 30px; width: 70px; background-repeat: no-repeat; background-size: contain;">&nbsp;</div></li>
+
+
+                </ul>
+</div>
+        <div id="PrintFooter" style="width: 400px; float: right; padding: 5px; padding-right: 10px; color: #181716; text-align: right;"><form id="PrintForm" method="post" action="/pdf.asp"><input type="hidden" name="content" value=""></form>
+
+            <a href="https://www.baumev.de/Datenschutz.html" title="Datenschutz">Datenschutz</a> | <a href="https://www.baumev.de/Impressum.html" title="Impressum">Impressum</a> | <a href="Javascript:window.print();">Drucken</a> | <a href="Javascript:PrintForm.content.value = document.getElementById('large').innerHTML;PrintForm.submit();">PDF erstellen</a>
+
+        </div>
+        <br style="clear: both;">        
+    </div>
+
+    <div id="MobilFooter">
+
+        <a href="https://www.baumev.de/Datenschutz.html" title="Datenschutz">Datenschutz</a> | <a href="https://www.baumev.de/Impressum.html" title="Impressum">Impressum</a>
+
+    </div>
+
+
+</div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        
+
+        });
+    document.getElementById('xslider').style.display = 'inline';
+
+    </script>
+
+
+<!-- Matomo -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDomains", ["*.www.baumev.de"]]);
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//matomo.baumev.de/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//themis.devinitiv.de/piwik.php?idsite=2&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+<!-- End Matomo Code -->
+</body>
+</HTML>
