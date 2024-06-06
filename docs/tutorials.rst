@@ -2,12 +2,16 @@ Tutorials
 =========
 
 
+Learn through practical examples. The following tutorials cover various scenarios, from text embedding for vector search to building custom web corpora and generating word frequency lists.
+
+
 .. toctree::
    :maxdepth: 2
 
    tutorial0
    tutorial1
    tutorial2
+   tutorial-epsilla
    tutorial-dwds
 
 
@@ -28,7 +32,7 @@ Blog posts
 Videos
 ^^^^^^
 
-Youtube playlist
+Youtube playlist with video tutorials in several languages
     `Web scraping how-tos and tutorials <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_.
 
 

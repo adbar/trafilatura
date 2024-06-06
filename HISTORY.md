@@ -1,6 +1,262 @@
 ## History / Changelog
 
 
+### 1.10.0
+
+Breaking changes:
+- raise errors on deprecated CLI and function arguments (#581)
+- regroup classes and functions linked to deduplication (#582)
+``trafilatura.hashing`` → ``trafilatura.deduplication``
+
+Extraction:
+- port of is_probably_readerable from readability.js by @zirkelc in #587
+- Markdown table fixes by @naktinis in #601
+- fix list spacing in TXT output (#598)
+- CLI fixes: file processing options, mtime, and tests (#605)
+- CLI fix: read standard input as binary (#607)
+
+Downloads:
+- fix deflate and add optional zstd to accepted encodings (#594)
+- spider fix: use internal download utilities for robots.txt (#590)
+
+Maintenance:
+- add author XPaths (#567)
+- update justext and lxml dependencies (#593)
+- simplify code: unique function for length tests (#591)
+
+Docs:
+- fix typos by @RainRat in #603
+
+
+### 1.9.0
+
+Extraction:
+- add markdown as explicit output (#550)
+- improve recall preset (#571)
+- speedup for readability-lxml (#547)
+- add global options object for extraction and use it in CLI (#552)
+- fix: better encoding detection (#548)
+- recall: fix for lists inside tables with @mikhainin (#534)
+- add symbol to preserve vertical spacing in Markdown (#499)
+- fix: table cell separators in non-XML output (#563)
+- slightly better accuracy and execution speed overall
+
+Metadata:
+- add file creation date (date extraction, JSON & XML-TEI) (#561)
+- fix: empty content in meta tag by @felipehertzer (#545)
+
+Maintenance:
+- restructure and simplify code (#543, #556)
+- CLI & downloads: revamp and use global options (#565)
+- eval: review code, add guidelines and small benchmark (#542)
+- fix: raise error if config file does not exist (#554)
+- deprecate `process_record()` (#549)
+- docs: convert readme to markdown and update info (#564, #578)
+
+
+### 1.8.1
+
+Maintenance:
+- Pin LXML to prevent broken dependency (#535)
+
+Extraction:
+- Improve extraction accuracy for major news outlets (#530)
+- Fix formatting by correcting order of element generation and space handling with @dlwh (#528)
+- Fix: prevent tail insertion before children in nested elements by @knit-bee (#536)
+
+
+### 1.8.0
+
+Extraction:
+- Better precision by @felipehertzer (#509, #520)
+- Code formatting in TXT/Markdown output added (#498)
+- Improved CSV output (#496)
+- LXML: compile XPath expressions (#504)
+- Overall speedup about +5%
+
+Downloads and Navigation:
+- More robust scans with `is_live_page()` (#501)
+- Better sitemap start and safeguards (#503, #506)
+- Fix for headers in response object (#513)
+
+Maintenance:
+- License changed to Apache 2.0
+- `Response` class: convenience functions added (#497)
+- `lxml.html.Cleaner` removed (#491)
+- CLI fixes: parallel cores and processing (#524)
+
+
+### 1.7.0
+
+Extraction:
+- improved `html2txt()` function
+
+Downloads:
+- add advanced `fetch_response()` function
+→ pending deprecation for `fetch_url(decode=False)`
+
+Maintenance:
+- support for LXML v5+ (#484 by @knit-bee, #485)
+- update [htmldate](https://github.com/adbar/htmldate/releases/tag/v1.7.0)
+
+
+### 1.6.4
+
+Maintenance:
+- MacOS: fix setup, update htmldate and add tests (#460)
+- drop invalid XML element attributes with @vbarbaresi in #462
+- remove cyclic imports (#458)
+
+Navigation:
+- introduce `MAX_REDIRECTS` config setting and fix urllib3 redirect handling by @vbarbaresi in #461
+- improve feed detection (#457)
+
+Documentation:
+- enhancements to documentation and testing with @Maddesea in #456
+
+
+### 1.6.3
+
+Extraction:
+- preserve space in certain elements with @idoshamun (#429)
+- optional list of xPaths to prune by @HeLehm (#414)
+
+Metadata:
+- more precise date extraction (see [htmldate](https://github.com/adbar/htmldate/releases/tag/v1.6.0))
+- new `htmldate` extensive search parameter in config (#434)
+- changes in URLs: normalization, trackers removed (see [courlan](https://github.com/adbar/courlan/releases/tag/v0.9.5))
+
+Navigation:
+- reviewed code for feeds (#443)
+- new config option: external URLs for feeds/sitemaps (#441)
+
+Documentation:
+- update, add page on text embeddings with @tonyyanga (#428, #435, #447)
+- fix quickstart by @sashkab (#419)
+
+
+### 1.6.2
+
+Extraction:
+- more lenient HTML parsing (#370)
+- improved code block support with @idoshamun (#372, #401)
+- conversion of relative links to absolute by @feltcat (#377)
+- remove use of signal from core functions (#384)
+
+Metadata:
+- JSON-LD fix for sitenames by @felipehertzer (#383)
+
+Command-line interface:
+- more robust batch processing (#381)
+- added `--probe` option to CLI to check for extractable content (#378, #392)
+
+Maintenance:
+- simplified code (#408)
+- support for Python 3.12
+- pinned LXML version for MacOS (#393)
+- updated dependencies and parameters (notably `htmldate` and `courlan`)
+- code cleaning by @marksmayo (#406)
+
+
+### 1.6.1
+
+Extraction:
+- minor fixes: tables in figures (#301), headings (#354) and lists (#318)
+
+Metadata:
+- simplify and fully test JSON parsing code, with @felipehertzer (#352, #368)
+- authors, JSON and unicode fixes by @felipehertzer in #365
+- fix for authors without `additionalName` by @awwitecki in #363
+
+Navigation:
+- reviewed link processing in feeds and sitemaps (#340, #350)
+- more robust spider (#359)
+- updated underlying courlan package (#360)
+
+
+### 1.6.0
+
+Extraction:
+- new content hashes and default file names (#314)
+- fix deprecation warning with @sdondley in #321
+- fix for metadata image by @andremacola in #328
+- fix potential unicode issue in third-party extraction with @Korben00 in #331 
+- review logging levels (#347)
+
+Command-line interface:
+- more efficient sitemap processing (#326)
+- more efficient downloads (#338)
+- fix for single URL processing (#324) and URL blacklisting (#339)
+
+Navigation:
+- additional safety check on domain similarity for feeds and sitemaps
+- new function ``is_live test()`` using HTTP HEAD request (#327)
+- code parts supported by new courlan version
+
+Maintenance:
+- allow ``urllib3`` version 2.0+
+- minor code simplification and fixes
+
+
+### 1.5.0
+
+Extraction:
+- fixes for metadata extraction with @felipehertzer (#295, #296),  @andremacola (#282, #310), and @edkrueger (#303)
+- pagetype and image urls added to metadata by @andremacola (#282, #310)
+- add as_dict method to Document class with @edkrueger in #306
+- XML output fix with @knit-bee in #315
+- various smaller fixes: lists (#309), XPaths, metadata hardening
+
+Navigation:
+- transfer URL management to courlan.UrlStore (#232, #312)
+- fixes for spider module
+
+Maintenance:
+- simplify code and extend tests
+- underlying packages htmldate and courlan, update setup and docs
+
+
+### 1.4.1
+
+Extraction:
+- XML output improvements with @knit-bee (#273, #274)
+- extraction bugs fixed (#263, #266), more robust HTML doctype parsing
+- adjust thresholds for link density in paragraphs
+
+Metadata:
+- improved title and sitename detection (#284)
+- faster author, categories, domain name, and tags extraction
+- fixes to author emoji regexes by @felipehertzer (#269)
+
+Command-line interface:
+- review argument consistency and add deprecation warnings (#261)
+
+Setup:
+- make download timeout configurable (#263)
+- updated dependencies, use of faust-cchardet for Python 3.11
+
+
+### 1.4.0
+
+Impact on extraction and output format:
+- better extraction (#233, #243 & #250 with @knit-bee, #246 with @mrienstra, #258)
+- XML: preserve list type as attribute (#229)
+- XML TEI: better conformity with @knit-bee (#238, #242, #253, #254)
+- faster text cleaning and shorter code (#237 with @deedy5, #245)
+- metadata: add language when detector is activated (#224)
+- metadata: extend fallbacks and test coverage for json_metadata functions by @felipehertzer (#235)
+- TXT: change markdown formatting of headers by @LaundroMat (#257)
+
+Smaller changes in convenience functions:
+- add function to clear caches (#219)
+- CLI: change exit code if download fails (#223)
+- settings: use "\n" for multiple user agents by @k-sareen (#241)
+
+Updates:
+- docs updated (and #244 by @dsgibbons)
+- package dependencies updated
+
+
 ### 1.3.0
 - fast and robust `html2txt()` function added (#221)
 - more robust parsing (#228)

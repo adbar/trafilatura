@@ -2,34 +2,22 @@
 Implementing a basic command-line interface.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import argparse
-import atexit
 import logging
 import sys
-import warnings
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 from platform import python_version
-from threading import Lock
 
-from . import __version__
-from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        cli_crawler,
-                        file_processing_pipeline, url_processing_pipeline,
-                        examine, write_result)
-from .downloads import add_to_compressed_dict
-from .feeds import find_feed_urls
-from .settings import DOWNLOAD_THREADS
-from .sitemaps import sitemap_search
-
-
-LOGGER = logging.getLogger(__name__)
-
-INPUTDICT = None
-THREAD_LOCK = Lock()
+from .cli_utils import (cli_crawler, cli_discovery, examine,
+                        file_processing_pipeline, load_blacklist,
+                        load_input_dict, probe_homepage,
+                        url_processing_pipeline, write_result)
+from .settings import PARALLEL_CORES
 
 # fix output encoding on some systems
 try:
@@ -46,9 +34,9 @@ except AttributeError:
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-def parse_args(args):
-    """Define parser for command-line arguments"""
-    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+def add_args(parser):
+    "Add argument groups and arguments to parser."
+
     group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
     group1_ex = group1.add_mutually_exclusive_group()
     group2 = parser.add_argument_group('Output', 'Determines if and how files will be written')
@@ -58,19 +46,25 @@ def parse_args(args):
     group5 = parser.add_argument_group('Format', 'Selection of the output format')
     group5_ex = group5.add_mutually_exclusive_group()
 
-    group1_ex.add_argument("-i", "--inputfile",
+    group1_ex.add_argument("-i", "--input-file",
                         help="name of input file for batch processing",
                         type=str)
-    group1_ex.add_argument("--inputdir",
+    group1_ex.add_argument("--inputfile",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
+    group1_ex.add_argument("--input-dir",
                         help="read files from a specified directory (relative path)",
                         type=str)
+    group1_ex.add_argument("--inputdir",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
     group1_ex.add_argument("-u", "--URL",
                         help="custom URL download",
                         type=str)
 
     group1.add_argument('--parallel',
                         help="specify a number of cores/threads for downloads and/or processing",
-                        type=int, default=DOWNLOAD_THREADS)
+                        type=int, default=PARALLEL_CORES)
     group1.add_argument('-b', '--blacklist',
                         help="file containing unwanted URLs to discard during processing",
                         type=str)
@@ -78,9 +72,12 @@ def parse_args(args):
     group2.add_argument("--list",
                         help="display a list of URLs without downloading them",
                         action="store_true")
-    group2.add_argument("-o", "--outputdir",
+    group2.add_argument("-o", "--output-dir",
                         help="write results in a specified directory (relative path)",
                         type=str)
+    group2.add_argument("--outputdir",
+                        help=argparse.SUPPRESS,
+                        type=str)   # will be deprecated
     group2.add_argument('--backup-dir',
                         help="preserve a copy of downloaded files in a backup directory",
                         type=str)
@@ -88,8 +85,8 @@ def parse_args(args):
                         help="keep input directory structure and file names",
                         action="store_true")
     group2.add_argument('--hash-as-name',
-                        help="use hash value as output file name instead of random default",
-                        action="store_true")
+                        help=argparse.SUPPRESS,
+                        action="store_true")   # will be deprecated
 
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",
@@ -102,6 +99,9 @@ def parse_args(args):
                         nargs='?', const=True, default=False)
     group3_ex.add_argument("--explore",
                         help="explore the given websites (combination of sitemap and crawl)",
+                        nargs='?', const=True, default=False)
+    group3_ex.add_argument("--probe",
+                        help="probe for extractable content (works best with target language)",
                         nargs='?', const=True, default=False)
     group3.add_argument('--archived',
                         help='try to fetch URLs from the Internet Archive if downloads fail',
@@ -162,13 +162,16 @@ def parse_args(args):
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
                         help="determine output format",
-                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
+                        choices=['txt', 'csv', 'json', 'markdown', 'xml', 'xmltei'],
                         default='txt')
     group5_ex.add_argument("--csv",
                         help="shorthand for CSV output",
                         action="store_true")
     group5_ex.add_argument("--json",
                         help="shorthand for JSON output",
+                        action="store_true")
+    group5_ex.add_argument("--markdown",
+                        help="shorthand for MD output",
                         action="store_true")
     group5_ex.add_argument("--xml",
                         help="shorthand for XML output",
@@ -187,10 +190,16 @@ def parse_args(args):
         "--version",
         help="show version information and exit",
         action="version",
-        version=f"Trafilatura {__version__} - Python {python_version()}",
+        version=f"Trafilatura {version('trafilatura')} - Python {python_version()}",
     )
 
+    return parser
 
+
+def parse_args(args):
+    """Define parser for command-line arguments"""
+    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+    parser = add_args(parser)
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())
 
@@ -202,32 +211,41 @@ def map_args(args):
         args.output_format = 'csv'
     elif args.json:
         args.output_format = 'json'
+    elif args.markdown:
+        args.output_format = 'markdown'
     elif args.xml:
         args.output_format = 'xml'
     elif args.xmltei:
         args.output_format = 'xmltei'
     # output configuration
     if args.nocomments is False:
-        args.no_comments = False
-        warnings.warn(
-            """--nocomments will be deprecated in a future version,
-               use --no-comments instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--nocomments is deprecated, use --no-comments instead",
+              )
     if args.notables is False:
-        args.no_tables = False
-        warnings.warn(
-            """--notables will be deprecated in a future version,
-               use --no-tables instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--notables is deprecated, use --no-tables instead",
+              )
     if args.with_metadata is True:
-        args.only_with_metadata = True
-        warnings.warn(
-            """--with-metadata will be deprecated in a future version,
-               use --only-with-metadata instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--with-metadata is deprecated, use --only-with-metadata instead",
+              )
+    if args.inputfile:
+        raise ValueError(
+              "--inputfile is deprecated, use --input-file instead",
+              )
+    if args.inputdir:
+        raise ValueError(
+              "--inputdir is deprecated, use --input-dir instead",
+              )
+    if args.outputdir:
+        raise ValueError(
+              "--outputdir is deprecated, use --output-dir instead",
+              )
+    if args.hash_as_name:
+        raise ValueError(
+              "--hash-as-name is deprecated, hashes are used by default",
+              )
     return args
 
 
@@ -237,33 +255,9 @@ def main():
     process_args(args)
 
 
-def dump_on_exit(inputdict=None):
-    """Write all remaining URLs still in the input/processing list
-       to standard output before exiting."""
-    if inputdict:
-        for hostname in inputdict:
-            for urlpath in inputdict[hostname]:
-                sys.stdout.write(f'todo: {hostname}{urlpath}' + '\n')
-
-atexit.register(dump_on_exit, INPUTDICT)
-
-
-def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
-    """Process results from the parallel threads and add them
-       to the compressed URL dictionary for further processing."""
-    for future in as_completed(future_to_url):
-        if future.result() is not None:
-            inputdict = add_to_compressed_dict(
-                        future.result(), blacklist=blacklist,
-                        url_filter=url_filter, inputdict=inputdict
-                        )
-    return inputdict
-
-
 def process_args(args):
     """Perform the actual processing according to the arguments"""
     # init
-    global INPUTDICT
     error_caught = False
     # verbosity
     if args.verbose == 1:
@@ -275,63 +269,34 @@ def process_args(args):
 
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
-        INPUTDICT = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, INPUTDICT)
+    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.probe, not args.sitemap]):
+        url_store = load_input_dict(args)
+        error_caught = url_processing_pipeline(args, url_store)
 
     # fetch urls from a feed or a sitemap
     elif args.explore or args.feed or args.sitemap:
-        input_urls = load_input_urls(args)
-        # link discovery and storage
-        with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-            if args.feed:
-                future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
-            elif args.explore or args.sitemap:
-                future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
-            # process results
-            with THREAD_LOCK:
-                INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
-                # list all links found to free memory
-                if args.list:
-                    error_caught = url_processing_pipeline(args, INPUTDICT)
-
-        # process the links found
-        error_caught = url_processing_pipeline(args, INPUTDICT)
-
-        # activate site explorer
-        if args.explore:
-            # find domains for which nothing has been found and crawl
-            control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-            still_to_crawl = {
-                key: control_dict[key]
-                for key in control_dict
-                if key not in INPUTDICT
-            }
-            # add to compressed dict and crawl the remaining websites
-            cli_crawler(args, n=100, domain_dict=still_to_crawl)
+        cli_discovery(args)
 
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
 
+    # probe and print only
+    elif args.probe:
+        probe_homepage(args)
+
     # read files from an input directory
-    elif args.inputdir:
+    elif args.input_dir:
         file_processing_pipeline(args)
 
     # process input URL
     elif args.URL:
-        INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
-        error_caught = url_processing_pipeline(args, INPUTDICT)  # process single url
+        url_store = load_input_dict(args)
+        error_caught = url_processing_pipeline(args, url_store)  # process single url
 
     # read input on STDIN directly
     else:
-        # file type and unicode check
-        try:
-            htmlstring = sys.stdin.read()
-        except UnicodeDecodeError:
-            sys.exit('ERROR: system, file type or buffer encoding')
-        # process
-        result = examine(htmlstring, args, url=args.URL)
+        result = examine(sys.stdin.buffer.read(), args, url=args.URL)
         write_result(result, args)
 
     # change exit code if there are errors

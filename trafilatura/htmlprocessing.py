@@ -3,130 +3,132 @@
 Functions to process nodes in HTML code.
 """
 
-## This file is available from https://github.com/adbar/trafilatura
-## under GNU GPL v3 license
-
 import logging
 
-from collections import defaultdict
 from copy import deepcopy
 
+from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import strip_tags
-from lxml.html.clean import Cleaner
 
-from .filters import duplicate_test, textfilter
-from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
-from .utils import trim, uniquify_list
+from .deduplication import duplicate_test
+from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
+from .utils import textfilter, trim
 
 
 LOGGER = logging.getLogger(__name__)
 
-# HTML_CLEANER config
-# https://lxml.de/api/lxml.html.clean.Cleaner-class.html
-# https://lxml.de/apidoc/lxml.html.clean.html
-HTML_CLEANER = Cleaner(
-    annoying_tags = False,  # True
-    comments = True,
-    embedded = False,  # True
-    forms = False,  # True
-    frames = False,  # True
-    javascript = False,
-    links = False,
-    meta = False,
-    page_structure = False,
-    processing_instructions = True,
-    remove_unknown_tags = False,
-    safe_attrs_only = False,
-    scripts = False,
-    style = False,
-    # remove_tags = MANUALLY_STRIPPED,
-    # kill_tags = MANUALLY_CLEANED,
-)
+REND_TAG_MAPPING = {
+    'em': '#i',
+    'i': '#i',
+    'b': '#b',
+    'strong': '#b',
+    'u': '#u',
+    'kbd': '#t',
+    'samp': '#t',
+    'tt': '#t',
+    'var': '#t',
+    'sub': '#sub',
+    'sup': '#sup'
+}
 
 
-def tree_cleaning(tree, include_tables, include_images=False):
-    '''Prune the tree by discarding unwanted elements'''
+PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
+
+
+def delete_element(element):
+    "Remove the element from the LXML tree."
+    try:
+        element.drop_tree()  # faster when applicable
+    except AttributeError:  # pragma: no cover
+        element.getparent().remove(element)
+
+
+def tree_cleaning(tree, options):
+    "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
-    if include_tables is False:
+    if not options.tables:
         cleaning_list.extend(['table', 'td', 'th', 'tr'])
-    if include_images is True:
+    else:
+        # prevent this issue: https://github.com/adbar/trafilatura/issues/301
+        for elem in tree.xpath('.//figure[descendant::table]'):
+            elem.tag = 'div'
+    if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e
-                         not in ('figure', 'picture', 'source')]
+                         not in PRESERVE_IMG_CLEANING]
         stripping_list.remove('img')
+
+    # strip targeted elements
+    strip_tags(tree, stripping_list)
+
+    # prevent removal of paragraphs
+    if options.focus == "recall" and tree.find('.//p') is not None:
+        tcopy = deepcopy(tree)
+        for expression in cleaning_list:
+            for element in tree.getiterator(expression):
+                delete_element(element)
+        if tree.find('.//p') is None:
+            tree = tcopy
     # delete targeted elements
-    for expression in cleaning_list:
-        for element in tree.getiterator(expression):
-            try:
-                element.drop_tree() # faster when applicable
-            except AttributeError:
-                element.getparent().remove(element)
-    HTML_CLEANER.kill_tags, HTML_CLEANER.remove_tags = cleaning_list, stripping_list
-    # save space and processing time
-    return HTML_CLEANER.clean_html(prune_html(tree))
+    else:
+        for expression in cleaning_list:
+            for element in tree.getiterator(expression):
+                delete_element(element)
+
+    return prune_html(tree)
 
 
 def prune_html(tree):
-    '''Delete selected empty elements'''
-    for element in tree.xpath(".//*[not(node())]"):
+    "Delete selected empty elements to save space and processing time."
+    # //comment() needed for date extraction
+    for element in tree.xpath("//processing-instruction()|//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
-            try:
-                element.drop_tree()
-            except AttributeError:
-                element.getparent().remove(element)
+            delete_element(element)
     return tree
 
 
 def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     '''Prune the HTML tree by removing unwanted sections.'''
-    if with_backup is True:
+    if with_backup:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
         backup = deepcopy(tree)
-    for expr in nodelist:
-        for subtree in tree.xpath(expr):
+
+    for expression in nodelist:
+        for subtree in expression(tree):
             # preserve tail text from deletion
             if subtree.tail is not None:
-                previous = subtree.getprevious()
-                if previous is None:
-                    previous = subtree.getparent()
-                if previous is not None:
+                prev = subtree.getprevious()
+                if prev is None:
+                    prev = subtree.getparent()
+                if prev is not None:
                     # There is a previous node, append text to its tail
-                    if previous.tail is not None:
-                        previous.tail = ' '.join([previous.tail, subtree.tail])
-                    else:
-                        previous.tail = subtree.tail
+                    prev.tail = (prev.tail or "") + " " + subtree.tail
             # remove the node
             subtree.getparent().remove(subtree)
-    if with_backup is False:
-        return tree
-    # else:
-    new_len = len(tree.text_content())
-    # todo: adjust for recall and precision settings
-    if new_len > old_len/7:
-        return tree
-    return backup
+
+    if with_backup:
+        new_len = len(tree.text_content())
+        # todo: adjust for recall and precision settings
+        return tree if new_len > old_len/7 else backup
+    return tree
 
 
 def collect_link_info(links_xpath, favor_precision=False):
     '''Collect heuristics on link text'''
     # init
-    shortelems, mylist = 0, []
+    mylist = []
     # longer strings impact recall in favor of precision
-    if favor_precision is False:
-        threshold = 10
-    else:
-        threshold = 50
+    threshold = 50 if favor_precision else 10
     # examine the elements
     for subelem in links_xpath:
         subelemtext = trim(subelem.text_content())
-        if not subelemtext:
-            continue
-        mylist.append(subelemtext)
-    lengths = [len(text) for text in mylist]
-    shortelems = len([l for l in lengths if l < threshold])
-    return sum(lengths), len(mylist), shortelems, mylist
+        if subelemtext:
+            mylist.append(subelemtext)
+    shortelems = sum(1 for text in mylist if len(text) < threshold)
+    lengths = sum(len(text) for text in mylist)
+    return lengths, len(mylist), shortelems, mylist
 
 
 def link_density_test(element, text, favor_precision=False):
@@ -134,13 +136,13 @@ def link_density_test(element, text, favor_precision=False):
     links_xpath, mylist = element.findall('.//ref'), []
     if links_xpath:
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
-            #if element.getnext() is None:
-            #    limitlen, threshold = 100, 0.8
-            #else:
-            if favor_precision is False:
-                limitlen, threshold = 25, 0.8
+            if not favor_precision:
+                if element.getnext() is None:
+                    limitlen, threshold = 60, 0.8
+                else:
+                    limitlen, threshold = 30, 0.8
             else:
-                limitlen, threshold = 100, 0.8
+                limitlen, threshold = 200, 0.8
             #if 'hi' in list(element):
             #    limitlen, threshold = 100, 0.8
         #elif element.tag == 'head':
@@ -159,7 +161,7 @@ def link_density_test(element, text, favor_precision=False):
                 return True, mylist
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
             # (elemnum > 1 and shortelems/elemnum > 0.8):
-            if linklen > threshold*elemlen or shortelems/elemnum > 0.8:
+            if linklen > threshold*elemlen or (elemnum > 1 and shortelems/elemnum > 0.8):
                 return True, mylist
     return False, mylist
 
@@ -176,8 +178,7 @@ def link_density_test_tables(element):
             if elemnum == 0:
                 return True
             LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-            if (elemlen < 1000 and linklen > 0.8*elemlen) or (elemlen > 1000 and linklen > 0.5*elemlen):
-                return True
+            return linklen > 0.8*elemlen if elemlen < 1000 else linklen > 0.5*elemlen
             # does more harm than good (issue #76)
             #if shortelems > len(links_xpath) * 0.66:
             #    return True
@@ -187,167 +188,198 @@ def link_density_test_tables(element):
 def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
-    myelems, deletions = defaultdict(list), []
+    deletions = []
+    threshold = 200 if favor_precision else 100
+
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
-        if result is True:
+        if result:
             deletions.append(elem)
-        elif backtracking is True and len(templist) > 0:  # if?
-            myelems[elemtext].append(elem)
-    # summing up
-    if backtracking is True:
-        if favor_precision is False:
-            threshold = 100
-        else:
-            threshold = 200
-        for text, elem in myelems.items():
-            if 0 < len(text) < threshold and len(elem) >= 3:
+        elif backtracking and templist:  # if?
+            if 0 < len(elemtext) < threshold and len(elem) >= 3:
                 deletions.extend(elem)
                 # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
-    for elem in uniquify_list(deletions):
-        try:
-            elem.getparent().remove(elem)
-        except AttributeError:
-            pass
+
+    for elem in dict.fromkeys(deletions):
+        parent = elem.getparent()
+        if parent is not None:
+            parent.remove(elem)
+
     return subtree
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
+def convert_lists(elem):
+    # ul/ol → list / li → item
+    elem.set("rend", elem.tag)
+    elem.tag = "list"
+    i = 1
+    for subelem in elem.iter("dd", "dt", "li"):
+        # keep track of dd/dt items
+        if subelem.tag in ("dd", "dt"):
+            subelem.set("rend", f"{subelem.tag}-{i}")
+            # increment counter after <dd> in description list
+            if subelem.tag == "dd":
+                i += 1
+        # convert elem tag
+        subelem.tag = "item"
+
+
+def convert_quotes(elem):
+    code_flag = False
+    if elem.tag == "pre":
+        # detect if there could be code inside
+        children = elem.getchildren()
+        # pre with a single span is more likely to be code
+        if len(children) == 1 and children[0].tag == "span":
+            code_flag = True
+        # find hljs elements to detect if it's code
+        code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
+        if code_elems:
+            code_flag = True
+            for subelem in code_elems:
+                subelem.attrib.clear()
+    elem.tag = "code" if code_flag else "quote"
+
+
+def convert_headings(elem):
+    "Add head tags and delete attributes."
+    elem.attrib.clear()
+    elem.set("rend", elem.tag)
+    elem.tag = "head"
+
+
+def convert_line_breaks(elem):
+    "br → lb"
+    elem.tag = "lb"
+
+
+def convert_deletions(elem):
+    'del | s | strike → <del rend="overstrike">'
+    elem.tag = "del"
+    elem.set("rend", "overstrike")
+
+
+def convert_details(elem):
+    "Handle details and summary."
+    elem.tag = "div"
+    for subelem in elem.iter("summary"):
+        subelem.tag = "head"
+
+
+CONVERSIONS = {
+    "dl": convert_lists, "ol": convert_lists, "ul": convert_lists,
+    "h1": convert_headings, "h2": convert_headings, "h3": convert_headings,
+    "h4": convert_headings, "h5": convert_headings, "h6": convert_headings,
+    "br": convert_line_breaks, "hr": convert_line_breaks,
+    "blockquote": convert_quotes, "pre": convert_quotes, "q": convert_quotes,
+    "del": convert_deletions, "s": convert_deletions, "strike": convert_deletions,
+    "details": convert_details,
+}
+
+
+def convert_tags(tree, options, url=None):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # delete links for faster processing
-    if include_links is False:
-        if include_tables is True:
-            xpath_expr = './/div//a|.//table//a|.//ul//a'  # .//p//a ?
-        else:
-            xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
+    if not options.links:
+        xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
+        if options.tables:
+            xpath_expr += '|.//table//a'
         # necessary for further detection
         for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
         # strip the rest
         strip_tags(tree, 'a')
     else:
+        # get base URL for converting relative URLs
+        base_url = url and get_base_url(url)
         for elem in tree.iter('a', 'ref'):
             elem.tag = 'ref'
             # replace href attribute and delete the rest
             target = elem.get('href') # defaults to None
             elem.attrib.clear()
-            if target is not None:
+            if target:
+                # convert relative URLs
+                if base_url:
+                    target = fix_relative_urls(base_url, target)
                 elem.set('target', target)
-    # include_formatting
-    if include_formatting is False:
-        strip_tags(tree, 'em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup')
+
+    if options.formatting:
+        for elem in tree.iter(REND_TAG_MAPPING.keys()):
+            attribute = REND_TAG_MAPPING[elem.tag]
+            elem.tag = 'hi'
+            elem.set('rend', attribute)
     else:
-        for elem in tree.iter('em', 'i', 'b', 'strong', 'u', 'kbd', 'samp', 'tt', 'var', 'sub', 'sup'):
-            # italics
-            if elem.tag in ('em', 'i'):
-                elem.tag = 'hi'
-                elem.set('rend', '#i')
-            # bold font
-            elif elem.tag in ('b', 'strong'):
-                elem.tag = 'hi'
-                elem.set('rend', '#b')
-            # u (very rare)
-            elif elem.tag == 'u':
-                elem.tag = 'hi'
-                elem.set('rend', '#u')
-            # tt (very rare)
-            elif elem.tag in ('kbd', 'samp', 'tt', 'var'):
-                elem.tag = 'hi'
-                elem.set('rend', '#t')
-            # sub and sup (very rare)
-            elif elem.tag == 'sub':
-                elem.tag = 'hi'
-                elem.set('rend', '#sub')
-            elif elem.tag == 'sup':
-                elem.tag = 'hi'
-                elem.set('rend', '#sup')
+        strip_tags(tree, *REND_TAG_MAPPING)
+
     # iterate over all concerned elements
-    for elem in tree.iter('blockquote', 'br', 'del', 'details', 'dl', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'ol', 'pre', 'q', 's', 'strike', 'ul'):
-        # ul/ol → list / li → item
-        if elem.tag in ('dl', 'ol', 'ul'):
-            elem.tag = 'list'
-            for subelem in elem.iter('dd', 'dt', 'li'):
-                subelem.tag = 'item'
-        # head tags + delete attributes
-        elif elem.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-            elem.attrib.clear()
-            elem.set('rend', elem.tag)
-            elem.tag = 'head'
-        # br → lb
-        elif elem.tag in ('br', 'hr'):
-            elem.tag = 'lb'
+    for elem in tree.iter(CONVERSIONS.keys()):
+        CONVERSIONS[elem.tag](elem)
         # wbr
-        # blockquote, pre, q → quote
-        elif elem.tag in ('blockquote', 'pre', 'q'):
-            elem.tag = 'quote'
-        # del | s | strike → <del rend="overstrike">
-        elif elem.tag in ('del', 's', 'strike'):
-            elem.tag = 'del'
-            elem.set('rend', 'overstrike')
-        # details + summary
-        elif elem.tag == 'details':
-            elem.tag = 'div'
-            for subelem in elem.iter('summary'):
-                subelem.tag = 'head'
+        # pre
+        #elif elem.tag == 'pre':
+        #    else:
+        #        elem.tag = 'quote'
     # images
-    if include_images is True:
+    if options.images:
         for elem in tree.iter('img'):
             elem.tag = 'graphic'
     return tree
 
 
-def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_spaces=False, config=DEFAULT_CONFIG):
-    '''Convert, format, and probe potential text elements'''
-    if element.text is None and element.tail is None:
+def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
+    "Convert, format, and probe potential text elements."
+    if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
+
     # lb bypass
-    if comments_fix is False and element.tag == 'lb':
-        element.tail = trim(element.tail)
-        # if textfilter(element) is True:
+    if not comments_fix and elem.tag == "lb":
+        if not preserve_spaces:
+            elem.tail = trim(elem.tail)
+        # if textfilter(elem) is True:
         #     return None
         # duplicate_test(subelement)?
-        return element
-    if element.text is None:
+        return elem
+
+    if not elem.text and len(elem) == 0:
         # try the tail
-        # LOGGER.debug('using tail for element %s', element.tag)
-        element.text = element.tail
-        element.tail = ''
+        # LOGGER.debug('using tail for element %s', elem.tag)
+        elem.text, elem.tail = elem.tail, ""
         # handle differently for br/lb
-        if comments_fix is True and element.tag == 'lb':
-            element.tag = 'p'
+        if comments_fix and elem.tag == "lb":
+            elem.tag = "p"
+
     # trim
-    if preserve_spaces is False:
-        element.text = trim(element.text)
-        if element.tail:
-            element.tail = trim(element.tail)
+    if not preserve_spaces:
+        elem.text = trim(elem.text)
+        if elem.tail:
+            elem.tail = trim(elem.tail)
+
     # filter content
-    if not element.text:  # or not re.search(r'\w', element.text):  # text_content()?
+    # or not re.search(r'\w', element.text):  # text_content()?
+    if not elem.text and textfilter(elem) or \
+        (options.dedup and duplicate_test(elem, options)):
         return None
-    if textfilter(element) is True:
-        return None
-    if deduplicate is True and duplicate_test(element, config) is True:
-        return None
-    return element
+    return elem
 
 
-def process_node(element, deduplicate=True, config=DEFAULT_CONFIG):
-    '''Convert, format, and probe potential text elements (light format)'''
-    if element.tag == 'done':
+def process_node(elem, options):
+    "Convert, format, and probe potential text elements (light format)."
+    if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
-    if len(element) == 0 and not element.text and not element.tail:
-        return None
+
     # trim
-    element.text, element.tail = trim(element.text), trim(element.tail)
+    elem.text, elem.tail = trim(elem.text), trim(elem.tail)
+
     # adapt content string
-    if element.tag != 'lb' and not element.text and element.tail:
-        element.text = element.tail
+    if elem.tag != "lb" and not elem.text and elem.tail:
+        elem.text, elem.tail = elem.tail, None
+
     # content checks
-    if element.text or element.tail:
-        if textfilter(element) is True:
+    if elem.text or elem.tail:
+        if textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
             return None
-        if deduplicate is True and duplicate_test(element, config) is True:
-            return None
-    return element
+
+    return elem

@@ -1,6 +1,12 @@
 Installation
 ============
 
+.. meta::
+    :description lang=en:
+        Setting up Trafilatura is straightforward. This installation guide walks you through the process step-by-step.
+
+
+Setting up Trafilatura is straightforward. This installation guide walks you through the process step-by-step.
 
 
 Python
@@ -57,9 +63,12 @@ This project is under active development, please make sure you keep it up-to-dat
     # to make sure you have the latest version
     $ pip install -U trafilatura
     # latest available code base
-    $ pip install -U git+https://github.com/adbar/trafilatura.git
+    $ pip install --force-reinstall -U git+https://github.com/adbar/trafilatura
 
 On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
+
+.. hint::
+    Installation on MacOS is generally easier with `brew <https://formulae.brew.sh/formula/trafilatura>`_.
 
 
 Older Python versions
@@ -102,16 +111,18 @@ A few additional libraries can be installed for extended functionality and faste
     You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
 
-cchardet
+brotli
+    Additional compression algorithm for downloads
+cchardet / faust-cchardet (Python >= 3.11)
     Faster encoding detection, also possibly more accurate (especially for encodings used in Asia)
-htmldate[all]
+htmldate[all] / htmldate[speed]
     Faster and more precise date extraction with a series of dedicated packages
 py3langid
     Language detection on extracted main text
 pycurl
     Faster downloads, possibly less robust though
-urllib3[brotli]
-    Potentially faster file downloads (not essential)
+zstandard
+    Additional compression algorithm for downloads
 
 
 

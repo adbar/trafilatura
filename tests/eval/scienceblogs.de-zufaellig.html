@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html class="no-js" lang="de-DE">
+<head>
+	<meta charset="UTF-8" />
+	<title>Münzwürfe sind nicht zufällig &#8211; Mathlog</title>
+
+
+		<meta property="fb:admins" content="10200068" />
+
+  
+    <meta property="og:title" content="Münzwürfe sind nicht zufällig"/>
+    <meta property="og:type" content="article"/>
+        <meta property="og:image" content="" />
+    <meta property="og:url" content="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/" />
+    <meta property="og:description" content="In Vorlesungen über Wahrscheinlichkeitstheorie oder Statistik erzähle ich den Studenten, dass es Zufall ausserhalb der Mikrowelt der Quantenphysik nicht gibt. Alles ist im Prinzip berechenbar, Zufall entsteht nur durch unvollständige Information. Der Wurf einer Münze ist nicht zufällig, sondern deterministisch &#8211; wenn man Ausgangsposition, Ausgangsgeschwindigkeit und wirkende Kräfte kennt, kann man ihn berechnen. Das hält&#8230;" />
+    <meta property="og:site_name" content="Mathlog" />
+
+
+
+  
+  <meta name="pinterest" content="nopin" />
+
+  <meta name="viewport" content="width=device-width, height=device-height, user-scalable=yes" />
+
+  
+        	<!-- InteractiveMedia and IVW (INFOnline) -->
+      	<!-- entferne infoline und tagmanagement für cmp integration
+<script src="//cdn.interactivemedia.net/live/scienceblogs.de/live/globalAdTag.min.js?v=2" type="text/javascript"></script> -->
+
+        <!-- Interactive Media -->
+        <!--<script type="text/javascript">
+          IM.GlobalAdTag.setZone('naturwissenschaft');
+          IM.GlobalAdTag.setPageType('rubrik');
+          if (window.location.protocol == 'https:') {
+            IM.GlobalAdTag.activateSecureProtocol();
+          }
+        </script>-->
+
+<!-- IOM -->
+<!-- begin preload of IOM web manager -->
+<link rel='preload' href='//data-f13c34cd1a.scienceblogs.de/iomm/latest/manager/base/es6/bundle.js' as='script' id='IOMmBundle'>
+<link rel='preload' href='//data-f13c34cd1a.scienceblogs.de/iomm/latest/bootstrap/loader.js' as='script' data-cmp-ab="2">
+<!-- end preload of IOM web manager -->
+<!-- begin loading of IOMm bootstrap code -->
+<script type='text/javascript' src="//data-f13c34cd1a.scienceblogs.de/iomm/latest/bootstrap/loader.js"></script>
+<!-- end loading of IOMm bootstrap code -->
+    
+    <!-- sourcepoint
+    
+   <script type="text/javascript">
+    !function () { var e = function () { var e, t = "__tcfapiLocator", a = [], n = window; for (; n;) { try { if (n.frames[t]) { e = n; break } } catch (e) { } if (n === window.top) break; n = n.parent } e || (!function e() { var a = n.document, r = !!n.frames[t]; if (!r) if (a.body) { var i = a.createElement("iframe"); i.style.cssText = "display:none", i.name = t, a.body.appendChild(i) } else setTimeout(e, 5); return !r }(), n.__tcfapi = function () { for (var e, t = arguments.length, n = new Array(t), r = 0; r < t; r++)n[r] = arguments[r]; if (!n.length) return a; if ("setGdprApplies" === n[0]) n.length > 3 && 2 === parseInt(n[1], 10) && "boolean" == typeof n[3] && (e = n[3], "function" == typeof n[2] && n[2]("set", !0)); else if ("ping" === n[0]) { var i = { gdprApplies: e, cmpLoaded: !1, cmpStatus: "stub" }; "function" == typeof n[2] && n[2](i) } else a.push(n) }, n.addEventListener("message", (function (e) { var t = "string" == typeof e.data, a = {}; try { a = t ? JSON.parse(e.data) : e.data } catch (e) { } var n = a.__tcfapiCall; n && window.__tcfapi(n.command, n.version, (function (a, r) { var i = { __tcfapiReturn: { returnValue: a, success: r, callId: n.callId } }; t && (i = JSON.stringify(i)), e.source.postMessage(i, "*") }), n.parameter) }), !1)) }; "undefined" != typeof module ? module.exports = e : e() }();
+</script> 
+ 
+<script>
+window._sp_ = {
+    config: {
+        accountId: 692,
+        baseEndpoint: 'https://cdn.privacy-mgmt.com',
+    }
+}
+
+</script>
+<script src="https://cdn.privacy-mgmt.com/wrapperMessagingWithoutDetection.js"></script>
+
+    
+    	sourcepoint end -->
+        <script type="text/javascript">
+          <!--
+          if (window.sessionStorage && sessionStorage.getItem('nomobile') === 'true') {
+            var docElement = document.documentElement;
+            docElement.className = docElement.className + " mobile-fullsize";
+          }
+          //-->
+        </script>
+      
+  <!-- WP Head -->
+	
+<!-- Development by Crowd Favorite - http://crowdfavorite.com/ -->
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//secure.gravatar.com' />
+<link rel='dns-prefetch' href='//s7.addthis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Mathlog &raquo; Feed" href="https://scienceblogs.de/mathlog/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Mathlog &raquo; Kommentar-Feed" href="https://scienceblogs.de/mathlog/comments/feed/" />
+
+            <script type="text/javascript">//<![CDATA[
+
+            var gaProperty = 'UA-3161034-1';
+
+				    // Disable tracking if the opt-out cookie exists.
+				    var disableStr = 'ga-disable-' + gaProperty;
+				    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+				      window[disableStr] = true;
+				    }
+
+				    // Opt-out function
+				    function gaOptout() {
+				      document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+				      window[disableStr] = true;
+				    }
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-3161034-1']);
+				            _gaq.push(['_trackPageview']);
+            (function () {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+            //]]></script>
+			<link rel="alternate" type="application/rss+xml" title="Mathlog &raquo; Münzwürfe sind nicht zufällig Kommentar-Feed" href="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/feed/" />
+<link rel='stylesheet' id='ngssb-base-css'  href='https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-base/css/compiled.css?ver=1.7.7' type='text/css' media='screen' />
+<link rel='stylesheet' id='ngs-scienceblogs-css'  href='https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-individual-de/style.css?ver=1.7.7' type='text/css' media='screen' />
+<link rel='stylesheet' id='jetpack_css-css'  href='https://scienceblogs.de/mathlog/wp-content/plugins/jetpack/css/jetpack.css?ver=7.1.1' type='text/css' media='all' />
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-base/js/jquery-cookie/jquery.cookie.min.js?ver=1.7.7'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-base/js/jquery-placeholder/jquery.placeholder.js?ver=1.7.7'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-base/js/master.js?ver=1.7.7'></script>
+<script type="text/javascript">
+	jQuery(function ($) {
+		var widget = $(".widget-ngs-collapsible");
+		if (widget.length < 1) { return; };
+		widget.find(".widget-title").click(function () {
+			var widget = $(this).parent(),
+				content = widget.find(".textwidget"),
+				isVisible = content.is(":visible"),
+				f = isVisible ? "slideUp" : "slideDown",
+				c = isVisible ? "removeClass" : "addClass";
+			widget[c]("widget-ngs-collapsible-open");
+			content[f]("fast");
+		});
+	});
+</script><link rel='https://api.w.org/' href='https://scienceblogs.de/mathlog/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://scienceblogs.de/mathlog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://scienceblogs.de/mathlog/wp-includes/wlwmanifest.xml" /> 
+<link rel="canonical" href="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/" />
+<link rel='shortlink' href='https://wp.me/p2KJPy-55q' />
+<link rel="alternate" type="application/json+oembed" href="https://scienceblogs.de/mathlog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fscienceblogs.de%2Fmathlog%2F2023%2F11%2F06%2Fmuenzwuerfe-sind-nicht-zufaellig%2F" />
+<script type="text/javascript" src="https://scienceblogs.de/mathlog/wp-content/plugins/audio-player/assets/audio-player.js?ver=2.0.4.6"></script>
+<script type="text/javascript">AudioPlayer.setup("https://scienceblogs.de/mathlog/wp-content/plugins/audio-player/assets/player.swf?ver=2.0.4.6", {width:"290",animation:"yes",encode:"yes",initialvolume:"60",remaining:"no",noinfo:"no",buffer:"5",checkpolicy:"no",rtl:"no",bg:"E5E5E5",text:"333333",leftbg:"CCCCCC",lefticon:"333333",volslider:"666666",voltrack:"FFFFFF",rightbg:"B4B4B4",rightbghover:"999999",righticon:"333333",righticonhover:"FFFFFF",track:"FFFFFF",loader:"009900",border:"CCCCCC",tracker:"DDDDDD",skip:"666666",pagebg:"FFFFFF",transparentpagebg:"yes"});</script>
+
+<link rel='dns-prefetch' href='//v0.wordpress.com'/>
+<link rel='dns-prefetch' href='//i0.wp.com'/>
+<link rel='dns-prefetch' href='//i1.wp.com'/>
+<link rel='dns-prefetch' href='//i2.wp.com'/>
+<link rel="icon" type="image/x-icon" href="https://scienceblogs.de/mathlog/wp-content/themes/ngs-science-blogs/ngs-science-blogs-base/img/sbfavicon.ico" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+			<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Münzwürfe sind nicht zufällig" />
+<meta property="og:url" content="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/" />
+<meta property="og:description" content="In Vorlesungen über Wahrscheinlichkeitstheorie oder Statistik erzähle ich den Studenten, dass es Zufall ausserhalb der Mikrowelt der Quantenphysik nicht gibt. Alles ist im Prinzip berechenbar, Zufa…" />
+<meta property="article:published_time" content="2023-11-06T10:32:11+00:00" />
+<meta property="article:modified_time" content="2023-11-06T10:54:00+00:00" />
+<meta property="og:site_name" content="Mathlog" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="de_DE" />
+<meta name="twitter:text:title" content="Münzwürfe sind nicht zufällig" />
+<meta name="twitter:card" content="summary" />
+
+<!-- End Jetpack Open Graph Tags -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9823582564948576"
+     crossorigin="anonymous"></script>
+     
+     <script>
+      console.log("AdInserter check!");
+      </script>
+      
+<!-- CMP - Sourcepoint START -->
+<script type="text/javascript">
+    !function () { var e = function () { var e, t = "__tcfapiLocator", a = [], n = window; for (; n;) { try { if (n.frames[t]) { e = n; break } } catch (e) { } if (n === window.top) break; n = n.parent } e || (!function e() { var a = n.document, r = !!n.frames[t]; if (!r) if (a.body) { var i = a.createElement("iframe"); i.style.cssText = "display:none", i.name = t, a.body.appendChild(i) } else setTimeout(e, 5); return !r }(), n.__tcfapi = function () { for (var e, t = arguments.length, n = new Array(t), r = 0; r < t; r++)n[r] = arguments[r]; if (!n.length) return a; if ("setGdprApplies" === n[0]) n.length > 3 && 2 === parseInt(n[1], 10) && "boolean" == typeof n[3] && (e = n[3], "function" == typeof n[2] && n[2]("set", !0)); else if ("ping" === n[0]) { var i = { gdprApplies: e, cmpLoaded: !1, cmpStatus: "stub" }; "function" == typeof n[2] && n[2](i) } else a.push(n) }, n.addEventListener("message", (function (e) { var t = "string" == typeof e.data, a = {}; try { a = t ? JSON.parse(e.data) : e.data } catch (e) { } var n = a.__tcfapiCall; n && window.__tcfapi(n.command, n.version, (function (a, r) { var i = { __tcfapiReturn: { returnValue: a, success: r, callId: n.callId } }; t && (i = JSON.stringify(i)), e.source.postMessage(i, "*") }), n.parameter) }), !1)) }; "undefined" != typeof module ? module.exports = e : e() }();
+</script> 
+ 
+<script>
+window._sp_ = {
+    config: {
+        accountId: 692,
+        baseEndpoint: 'https://cdn.privacy-mgmt.com',
+    }
+}
+
+</script>
+<script src="https://cdn.privacy-mgmt.com/wrapperMessagingWithoutDetection.js"></script>
+
+<!-- CMP - Sourcepoint END -->
+<script id="plista-highimpact" type="text/javascript" src=https://highimpact.plista.com/plista-integration.js data-gc="%%CLICK_URL_UNESC%%" data-gi="%%VIEW_URL_UNESC%%" data-tagId="29337606"></script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5CSCDTN');</script>
+<!-- End Google Tag Manager -->  <!-- WP Head End -->
+
+  <!-- <script>
+    window.addEventListener("load", function(){
+    window.cookieconsent.initialise({
+      "palette": {
+        "popup": {
+          "background": "#252e39"
+        },
+        "button": {
+          "background": "#14a7d0"
+        }
+      },
+      "content": {
+        "message": "Cookies erleichtern die Bereitstellung unserer Dienste. Durch die Nutzung unseres Angebots erklären Sie sich damit einverstanden, dass wir Cookies verwenden.",
+        "dismiss": "Einverstande",
+        "link": "Mehr anzeigen",
+        "href": "/privacy/"
+      }
+    })});
+  </script> -->
+    
+<!-- iqd start -->
+    <script data-cmp-ab="1">
+ (function() {
+ window.AdController = {
+ i: null, // page info
+ q: [], // render queue
+ f: false, // is finalized
+ s: false, // is staged
+ n: false, // is initialized
+ r: null, // ready function
+ c: [], // command queue
+ setPageInfo: function(i) {
+ window.AdController.i = i;
+ },
+ stage: function() {
+ window.AdController.s = true;
+ },
+ initialize: function() {
+ window.AdController.n = true;
+ },
+ render: function(n, c) {
+ window.AdController.q.push([n, c]);
+ },
+ finalize: function() {
+ window.AdController.f = true;
+ },
+ ready: function(callback) {
+ window.AdController.r = callback;
+ },
+ startLoadCycle: function() {
+ window.AdController.c.push(['startLoadCycle']);
+ },
+ reload: function(p, t) {
+ window.AdController.c.push(['reload', p, t]);
+ },
+ reinitialize: function(i) {
+ window.AdController.c.push(['reinitialize', i]);
+ }
+ };
+ })();
+</script>
+<script data-cmp-ab="1">
+ function IQSLoader(url) {
+ var script = document.createElement("script")
+ script.type = "text/javascript";
+ script.src = url;
+ document.getElementsByTagName("head")[0].appendChild(script);
+ }
+ var iqd_mode = (function() {
+ var dm = window.location.href.toLowerCase();
+ return (dm.indexOf('iqdeployment=') > 1) ? dm.split('iqdeployment=')[1].split('&')[0] : 'live';
+ })();
+ IQSLoader("https://s3.eu-central-1.amazonaws.com/prod.iqdcontroller.iqdigital/cdn_scienceblogs/" + iqd_mode + "/iqadcontroller.js.gz");
+</script>
+
+<!-- ########### handle ############# -->    
+<script type="text/javascript" data-cmp-ab="1">
+        var iqad_handle = 'index';
+        if(window.innerWidth<=1220){ iqad_handle = 'index_tablet'; }
+        if(window.innerWidth<768){ iqad_handle = 'index_small'; }
+</script>
+<!-- ########### handle ############# -->
+    
+<script data-cmp-ab="1">
+<!-- ########### CMS-MANDANTEN-OBJECT ############# -->
+ var cmsObject = {};
+ cmsObject = {
+ $handle: iqad_handle,
+ level2: "",
+ level3: "",
+ level4: "",
+ keywords: "",
+ tma: ""
+ };
+ AdController && AdController.setPageInfo(cmsObject);
+</script>
+<script data-cmp-ab="1">
+ AdController.stage();
+</script>
+<script data-cmp-ab="1">
+ AdController.initialize();
+</script>
+</head>
+<body class="post-template-default single single-post postid-19556 single-format-standard science-blogs">
+<!-- Consentmanager START -->
+<!-- Consentmanager END -->
+
+	<div id="partner-nav-wrapper">
+
+        <div class='center-content'>
+	    <!--
+            <ul class=''>
+	    	<li><a href="http://www.wissen.de" target="_blank">wissen.de</a></li>
+	    	<li><a href="http://www.wissenschaft.de" target="_blank">wissenschaft.de</a></li>
+	    	<li><a href="http://www.scinexx.de" target="_blank">scinexx.de</a></li>
+	    	<li class='active'><a href="http://www.scienceblogs.de">scienceblogs.de</a></li>
+	    	<li><a href="http://www.damals.de" target="_blank">damals.de</a></li>
+	    	<li><a href="http://www.natur.de" target="_blank">natur.de</a></li>
+	   	</ul>
+	   	-->
+	  </div>
+  </div>
+
+	<div id="body">
+
+		<div class="center-content">
+			<div id="layout-switch"></div>
+			<div class="header-wrapper">
+				<!--<div id="ad-sb-wrapper">
+					<div id='ad-sb' style=''></div>				</div>-->
+
+<!-- IOM --> 
+<script type='text/javascript' data-cmp-ab="1">
+	var iam_site = 'wissende';
+	var iam_code= 'science_wissenschaft';
+	var iam_sv = 'in';
+	var iam_dn = 'data-f13c34cd1a.scienceblogs.de';
+
+	IOMm('configure', { st: iam_site, dn: iam_dn, mh:5 });
+	IOMm('pageview', { cp: iam_code });
+	IOMm('3p', 'qds');
+</script>
+     
+
+
+<style type="text/css">
+
+	@media screen and (max-width: 640px) {
+
+		#iqadtile1-wrapper{
+			min-height: 416px;
+		}
+
+		#iqadtile3-wrapper{
+			min-height: 600px;
+		}
+
+		#iqadtile8-wrapper{
+			min-height: 320px;
+		}
+		
+	}
+
+</style>
+<!-- iqad top-banner -->
+<div id="iqd_mainAd">
+    <div id="iqd_align_Ad">
+        <div id="iqd_topAd">
+			<div id="iqadtile1-wrapper">
+				<div id="iqadtile1">
+					<script data-cmp-ab="1">
+						AdController.render('iqadtile1');
+					</script>
+				</div>
+			</div>
+        </div>
+        <div id="iqd_leftAd">
+            <div id="iqadtile20">
+                <script data-cmp-ab="1">
+                    AdController.render('iqadtile20');
+                </script>
+            </div>
+        </div>
+        <div id="iqd_rightAd">
+            <div id="iqadtile2">
+                <script data-cmp-ab="1">
+                    AdController.render('iqadtile2');
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- iqad top-banner END -->
+
+			<div id="header">
+				<!--<div id='ad-pres' style=''></div>-->
+
+				<!-- <a href="https://scienceblogs.de/"><h1>Science Blogs</h1></a> -->
+				<div class="go-to-blog">
+					<form action="" method="" id="blog-nav">
+						<label for="blog-list">Wechseln zu</label>
+						<select id="blog-list">
+			<option value="0">Blog auswählen...</option>
+
+			<option value="https://scienceblogs.de/">ScienceBlogs-Hauptseite</option>
+			<optgroup label="ScienceBlogs"><option value="https://scienceblogs.de/alles-was-lebt/">Alles was lebt</option><option value="https://scienceblogs.de/alpha-cephei/">Alpha Cephei</option><option value="https://scienceblogs.de/and-the-water-seems-inviting/">And the water seems inviting</option><option value="https://scienceblogs.de/astrodicticum-simplex/">Astrodicticum Simplex</option><option value="https://scienceblogs.de/bioastronomie/">Bioastronomie²</option><option value="https://scienceblogs.de/bioinfowelten/">BioInfoWelten</option><option value="https://scienceblogs.de/bloodnacid/">blooDNAcid</option><option value="https://scienceblogs.de/chevoja/">Chevoja</option><option value="https://scienceblogs.de/klausis-krypto-kolumne/">Cipherbrain</option><option value="https://scienceblogs.de/dasuniversumnebenan/">Das Universum nebenan</option><option value="https://scienceblogs.de/diekleinendinge/">Die kleinen Dinge</option><option value="https://scienceblogs.de/10jahrescienceblogs/">Ein Jahrzehnt mit ScienceBlogs.de</option><option value="https://scienceblogs.de/erklaerfix/">ErklärFix</option><option value="https://scienceblogs.de/evolvimus/">evolvimus</option><option value="https://scienceblogs.de/frischer-wind/">Frischer Wind</option><option value="https://scienceblogs.de/gedenken-an-tobias/">Gedenken an Tobias Cronert</option><option value="https://scienceblogs.de/genau/">GENau</option><option value="https://scienceblogs.de/geograffitico/">Geograffitico</option><option value="https://scienceblogs.de/gesundheits-check/">Gesundheits-Check</option><option value="https://scienceblogs.de/gori/">GORI - German Office of Research Integrity</option><option value="https://scienceblogs.de/hier-wohnen-drachen/">Hier wohnen Drachen</option><option value="https://scienceblogs.de/ihrefrage/">Ihre Frage </option><option value="https://scienceblogs.de/wissens-ecke/">Konradin Wissens-Ecke</option><option value="https://scienceblogs.de/kritisch-gedacht/">Kritisch gedacht</option><option value="https://scienceblogs.de/lichte-ideen/">Lichte Ideen</option><option value="https://scienceblogs.de/mathlog/">Mathlog</option><option value="https://scienceblogs.de/meertext/">Meertext</option><option value="https://scienceblogs.de/naklar/">naklar</option><option value="https://scienceblogs.de/panorama/">Panorama</option><option value="https://scienceblogs.de/phantasie-und-kritik/">Phantasie und Kritik</option><option value="https://scienceblogs.de/plazeboalarm/">Plazeboalarm</option><option value="https://scienceblogs.de/primaklima/">Primaklima</option><option value="https://scienceblogs.de/quovadis/">Quo Vadis</option><option value="https://scienceblogs.de/rupture-de-catenaire/">rupture de caténaire</option><option value="https://scienceblogs.de/wissenschaft-zum-mitnehmen/">ScienceBlogs Podcast - Wissenschaft zum Mitnehmen</option><option value="https://scienceblogs.de/science_meets_society/">Science meets Society</option><option value="https://scienceblogs.de/scienceslam/">Science Slam</option><option value="https://scienceblogs.de/sociokommunikativ/">SocioKommunikativ</option><option value="https://scienceblogs.de/technik-kummerkasten/">Technik-Kummerkasten</option><option value="https://scienceblogs.de/theworldissmall/">The World is small</option><option value="https://scienceblogs.de/von_bits_und_bytes/">Von Bits und Bytes</option><option value="https://scienceblogs.de/wasgeht/">Was geht?</option><option value="https://scienceblogs.de/weatherlog/">weatherlog</option><option value="https://scienceblogs.de/wissen-schafft-kommunikation/">Wissen schafft Kommunikation</option><option value="https://scienceblogs.de/wissenschaftsfeuilleton/">Wissenschaftsfeuilleton</option><option value="https://scienceblogs.de/zoonpolitikon/">zoon politikon</option><option value="https://scienceblogs.de/sic/">[sic] -- Wissenschaftskommunikation</option></optgroup><optgroup label="Archiv"><option value="https://scienceblogs.de/3vor10/">3vor10</option><option value="https://scienceblogs.de/alles-was-fliegt/">Alles was fliegt</option><option value="https://scienceblogs.de/amerikanischebegegnungen/">Amerikanische Begegnungen</option><option value="https://scienceblogs.de/andererseits/">Andererseits</option><option value="https://scienceblogs.de/arte-fakten/">Arte-Fakten</option><option value="https://scienceblogs.de/beauty-full-science/">Beauty full Science</option><option value="https://scienceblogs.de/chemisch-gesehen/">Chemisch gesehen</option><option value="https://scienceblogs.de/columbus/">Columbus Gastblog</option><option value="https://scienceblogs.de/darwinjahr/">Darwinjahr</option><option value="https://scienceblogs.de/labortagebuch/">Das Labortagebuch</option><option value="https://scienceblogs.de/deutsches-museum/">Deutsches Museum</option><option value="https://scienceblogs.de/diaxs-rake/">Diax&#039;s Rake</option><option value="https://scienceblogs.de/andere-bildung/">Die andere Bildung</option><option value="https://scienceblogs.de/durchschaut/">Durchschaut</option><option value="https://scienceblogs.de/e-mobility/">E-Mobility</option><option value="https://scienceblogs.de/echolot/">Echolot</option><option value="https://scienceblogs.de/ein-bisschen-dunkel/">Ein bisschen dunkel</option><option value="https://scienceblogs.de/epigoesgender/">Epi goes Gender</option><option value="https://scienceblogs.de/flugundzeit/">Flug und Zeit</option><option value="http://scienceblogs.de/for-women-in-science/">For Women in Science</option><option value="https://scienceblogs.de/geo_logisch/">Geo? Logisch!</option><option value="https://scienceblogs.de/heureka/">Heureka</option><option value="https://scienceblogs.de/planeten/">Hinterm Mond gleich links</option><option value="https://scienceblogs.de/historikertag/">Historikertag</option><option value="https://scienceblogs.de/iconic-turn/">Iconic Turn Gastblog</option><option value="https://scienceblogs.de/ihre-forschungsfrage/">Ihre Forschungsfrage</option><option value="https://scienceblogs.de/kommunikation-der-zukunft/">Kommunikation der Zukunft</option><option value="https://scienceblogs.de/komplett-komplex/">Komplett Komplex</option><option value="https://scienceblogs.de/kritische-masse/">Kritische Masse</option><option value="https://scienceblogs.de/kulisse/">Kulisse</option><option value="https://scienceblogs.de/kunst-en-blog/">Kunst-en-Blog</option><option value="http://scienceblogs.de/lob-der-krankheit/">Lob der Krankheit</option><option value="https://scienceblogs.de/mahlzeit/">Mahlzeit</option><option value="https://scienceblogs.de/medlog/">Medlog</option><option value="https://scienceblogs.de/mutterwitz/">Mutterwitz</option><option value="https://scienceblogs.de/nanojugend/">Nanojugend</option><option value="http://scienceblogs.de/neurons/">Neurons</option><option value="https://scienceblogs.de/neuropaedagogik/">Neuropädagogik</option><option value="https://scienceblogs.de/nobel-faces/">Nobel Faces</option><option value="http://scienceblogs.de/lindaunobel/">Nobelpreisträgertreffen</option><option value="https://scienceblogs.de/nucular/">Nucular</option><option value="https://scienceblogs.de/openskies/">Open Skies</option><option value="https://scienceblogs.de/personagrata/">persona grata</option><option value="https://scienceblogs.de/schule-macht-zukunft/">Schule macht Zukunft</option><option value="https://scienceblogs.de/sciencepicture/">SciencePicture</option><option value="https://scienceblogs.de/stromtierchen/">Stromtierchen</option><option value="https://scienceblogs.de/tiefes-leben/">Tiefes Leben</option><option value="https://scienceblogs.de/twopinion/">TwOpinion</option><option value="https://scienceblogs.de/vde-medtech/">VDE MedTech</option><option value="https://scienceblogs.de/weitergen/">WeiterGen</option><option value="https://scienceblogs.de/wissenschaft-und-wiedervereinigung/">Wissenschaft und Wiedervereinigung</option><option value="https://scienceblogs.de/zahlenbilder/">Zahlenbilder</option><option value="https://scienceblogs.de/zeittaucher/">Zeittaucher</option><option value="https://scienceblogs.de/zukunftstechnologien/">Zukunftstechnologien</option></optgroup></select>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		var ngssbBLDropdown = document.getElementById("blog-list");
+		function ngssbBLChange() {
+				location.href = ngssbBLDropdown.options[ngssbBLDropdown.selectedIndex].value;
+		}
+		ngssbBLDropdown.onchange = ngssbBLChange;
+	/* ]]> */
+	</script>					</form>
+				</div>
+
+
+
+
+				<div class="blog-nav-wrapper">
+					<a id='logo' href='/'></a>
+
+					<ul class="nav">
+						<li class='blogs overlay-trigger' data-id='#blogs'><a href='#'>Blogs</a></li>
+
+						<li id="menu-item-752" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-752 first-child"><a href="https://scienceblogs.de/blogger/" >Blogger</a></li>
+<li id="menu-item-839" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-839"><a href="https://scienceblogs.de/emagazines/" >eMagazines</a></li>
+<li id="menu-item-732" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-732"><a href="https://scienceblogs.de/jobs/" >Jobs</a></li>
+<li id="menu-item-926" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-926"><a target="_blank" href="https://www.wissenschaft-shop.de/startseite/?mskwakz=WISB32-002&#038;utm_campaign=WISB32-002" onclick="javascript:_gaq.push(['_trackEvent','outbound-menu','http://www.wissenschaft-shop.de']);">Shop</a></li>
+
+						<!-- <li><a>Blogger</a></li> -->
+						<!-- <li class='half-gap'><a href='/jobs/'>Jobs</a></li> -->
+						<li class='contains-input half-gap'>
+
+							<form role="search" method="get" id="header_search" class='action input' action="https://scienceblogs.de/">
+								<!-- google search parameters -->
+									<button type="submit" id="header_search_submit" class="hiddenText"></button>
+									<input type="text" value="" name="s" id="s" placeholder='Suchen'>
+							</form><!-- #header_search -->
+
+						</li>
+					</ul>
+
+					<div class='overlay blogs' id='blogs'>
+						<div class='active-blogs'>
+							<a href="https://scienceblogs.de/alles-was-lebt/">Alles was lebt</a><a href="https://scienceblogs.de/alpha-cephei/">Alpha Cephei</a><a href="https://scienceblogs.de/and-the-water-seems-inviting/">And the water seems inviting</a><a href="https://scienceblogs.de/astrodicticum-simplex/">Astrodicticum Simplex</a><a href="https://scienceblogs.de/bioastronomie/">Bioastronomie²</a><a href="https://scienceblogs.de/bioinfowelten/">BioInfoWelten</a><a href="https://scienceblogs.de/bloodnacid/">blooDNAcid</a><a href="https://scienceblogs.de/chevoja/">Chevoja</a><a href="https://scienceblogs.de/klausis-krypto-kolumne/">Cipherbrain</a><a href="https://scienceblogs.de/dasuniversumnebenan/">Das Universum nebenan</a><a href="https://scienceblogs.de/diekleinendinge/">Die kleinen Dinge</a><a href="https://scienceblogs.de/10jahrescienceblogs/">Ein Jahrzehnt mit ScienceBlogs.de</a><a href="https://scienceblogs.de/erklaerfix/">ErklärFix</a><a href="https://scienceblogs.de/evolvimus/">evolvimus</a><a href="https://scienceblogs.de/frischer-wind/">Frischer Wind</a><a href="https://scienceblogs.de/gedenken-an-tobias/">Gedenken an Tobias Cronert</a><a href="https://scienceblogs.de/genau/">GENau</a><a href="https://scienceblogs.de/geograffitico/">Geograffitico</a><a href="https://scienceblogs.de/gesundheits-check/">Gesundheits-Check</a><a href="https://scienceblogs.de/gori/">GORI - German Office of Research Integrity</a><a href="https://scienceblogs.de/hier-wohnen-drachen/">Hier wohnen Drachen</a><a href="https://scienceblogs.de/ihrefrage/">Ihre Frage </a><a href="https://scienceblogs.de/wissens-ecke/">Konradin Wissens-Ecke</a><a href="https://scienceblogs.de/kritisch-gedacht/">Kritisch gedacht</a><a href="https://scienceblogs.de/lichte-ideen/">Lichte Ideen</a><a href="https://scienceblogs.de/mathlog/">Mathlog</a><a href="https://scienceblogs.de/meertext/">Meertext</a><a href="https://scienceblogs.de/naklar/">naklar</a><a href="https://scienceblogs.de/panorama/">Panorama</a><a href="https://scienceblogs.de/phantasie-und-kritik/">Phantasie und Kritik</a><a href="https://scienceblogs.de/plazeboalarm/">Plazeboalarm</a><a href="https://scienceblogs.de/primaklima/">Primaklima</a><a href="https://scienceblogs.de/quovadis/">Quo Vadis</a><a href="https://scienceblogs.de/rupture-de-catenaire/">rupture de caténaire</a><a href="https://scienceblogs.de/wissenschaft-zum-mitnehmen/">ScienceBlogs Podcast - Wissenschaft zum Mitnehmen</a><a href="https://scienceblogs.de/science_meets_society/">Science meets Society</a><a href="https://scienceblogs.de/scienceslam/">Science Slam</a><a href="https://scienceblogs.de/sociokommunikativ/">SocioKommunikativ</a><a href="https://scienceblogs.de/technik-kummerkasten/">Technik-Kummerkasten</a><a href="https://scienceblogs.de/theworldissmall/">The World is small</a><a href="https://scienceblogs.de/von_bits_und_bytes/">Von Bits und Bytes</a><a href="https://scienceblogs.de/wasgeht/">Was geht?</a><a href="https://scienceblogs.de/weatherlog/">weatherlog</a><a href="https://scienceblogs.de/wissen-schafft-kommunikation/">Wissen schafft Kommunikation</a><a href="https://scienceblogs.de/wissenschaftsfeuilleton/">Wissenschaftsfeuilleton</a><a href="https://scienceblogs.de/zoonpolitikon/">zoon politikon</a><a href="https://scienceblogs.de/sic/">[sic] -- Wissenschaftskommunikation</a>						</div>
+
+						<div class='divider'>
+							<a href='#'>Archivierte Blogs</a>
+						</div>
+
+						<div class='archived-blogs'>
+							<a href="https://scienceblogs.de/3vor10/">3vor10</a><a href="https://scienceblogs.de/alles-was-fliegt/">Alles was fliegt</a><a href="https://scienceblogs.de/amerikanischebegegnungen/">Amerikanische Begegnungen</a><a href="https://scienceblogs.de/andererseits/">Andererseits</a><a href="https://scienceblogs.de/arte-fakten/">Arte-Fakten</a><a href="https://scienceblogs.de/beauty-full-science/">Beauty full Science</a><a href="https://scienceblogs.de/chemisch-gesehen/">Chemisch gesehen</a><a href="https://scienceblogs.de/columbus/">Columbus Gastblog</a><a href="https://scienceblogs.de/darwinjahr/">Darwinjahr</a><a href="https://scienceblogs.de/labortagebuch/">Das Labortagebuch</a><a href="https://scienceblogs.de/deutsches-museum/">Deutsches Museum</a><a href="https://scienceblogs.de/diaxs-rake/">Diax&#039;s Rake</a><a href="https://scienceblogs.de/andere-bildung/">Die andere Bildung</a><a href="https://scienceblogs.de/durchschaut/">Durchschaut</a><a href="https://scienceblogs.de/e-mobility/">E-Mobility</a><a href="https://scienceblogs.de/echolot/">Echolot</a><a href="https://scienceblogs.de/ein-bisschen-dunkel/">Ein bisschen dunkel</a><a href="https://scienceblogs.de/epigoesgender/">Epi goes Gender</a><a href="https://scienceblogs.de/flugundzeit/">Flug und Zeit</a><a href="http://scienceblogs.de/for-women-in-science/">For Women in Science</a><a href="https://scienceblogs.de/geo_logisch/">Geo? Logisch!</a><a href="https://scienceblogs.de/heureka/">Heureka</a><a href="https://scienceblogs.de/planeten/">Hinterm Mond gleich links</a><a href="https://scienceblogs.de/historikertag/">Historikertag</a><a href="https://scienceblogs.de/iconic-turn/">Iconic Turn Gastblog</a><a href="https://scienceblogs.de/ihre-forschungsfrage/">Ihre Forschungsfrage</a><a href="https://scienceblogs.de/kommunikation-der-zukunft/">Kommunikation der Zukunft</a><a href="https://scienceblogs.de/komplett-komplex/">Komplett Komplex</a><a href="https://scienceblogs.de/kritische-masse/">Kritische Masse</a><a href="https://scienceblogs.de/kulisse/">Kulisse</a><a href="https://scienceblogs.de/kunst-en-blog/">Kunst-en-Blog</a><a href="http://scienceblogs.de/lob-der-krankheit/">Lob der Krankheit</a><a href="https://scienceblogs.de/mahlzeit/">Mahlzeit</a><a href="https://scienceblogs.de/medlog/">Medlog</a><a href="https://scienceblogs.de/mutterwitz/">Mutterwitz</a><a href="https://scienceblogs.de/nanojugend/">Nanojugend</a><a href="http://scienceblogs.de/neurons/">Neurons</a><a href="https://scienceblogs.de/neuropaedagogik/">Neuropädagogik</a><a href="https://scienceblogs.de/nobel-faces/">Nobel Faces</a><a href="http://scienceblogs.de/lindaunobel/">Nobelpreisträgertreffen</a><a href="https://scienceblogs.de/nucular/">Nucular</a><a href="https://scienceblogs.de/openskies/">Open Skies</a><a href="https://scienceblogs.de/personagrata/">persona grata</a><a href="https://scienceblogs.de/schule-macht-zukunft/">Schule macht Zukunft</a><a href="https://scienceblogs.de/sciencepicture/">SciencePicture</a><a href="https://scienceblogs.de/stromtierchen/">Stromtierchen</a><a href="https://scienceblogs.de/tiefes-leben/">Tiefes Leben</a><a href="https://scienceblogs.de/twopinion/">TwOpinion</a><a href="https://scienceblogs.de/vde-medtech/">VDE MedTech</a><a href="https://scienceblogs.de/weitergen/">WeiterGen</a><a href="https://scienceblogs.de/wissenschaft-und-wiedervereinigung/">Wissenschaft und Wiedervereinigung</a><a href="https://scienceblogs.de/zahlenbilder/">Zahlenbilder</a><a href="https://scienceblogs.de/zeittaucher/">Zeittaucher</a><a href="https://scienceblogs.de/zukunftstechnologien/">Zukunftstechnologien</a>						</div>
+					</div>
+
+				</div>
+
+				<div class="social-nav-wrapper">
+					<a class='fb' target='_blank' title='ScienceBlogs auf Facebook' href='https://www.facebook.com/ScienceBlogsde-58125970221/'></a>
+					<a class='tw' target='_blank' title='ScienceBlogs auf Twitter' href='https://twitter.com/ScienceBlogs_de'></a>
+
+
+					<!-- <a class='partner' href='http://wissen.de' target='_blank' title='Partner von wissen.de'><img src='/grafiken/wissen-de-partner.png' /></a> -->
+				</div>
+
+				<div class="topic-nav-wrapper">
+					<ul class="nav main-nav">
+						<li id="nav-item2"><a href="https://scienceblogs.de/channel/naturwissenschaften/">Naturwissenschaften</a></li><li id="nav-item3"><a href="https://scienceblogs.de/channel/medizin/">Medizin</a></li><li id="nav-item4"><a href="https://scienceblogs.de/channel/kultur/">Kultur</a></li><li id="nav-item5"><a href="https://scienceblogs.de/channel/geistes-sozialwissenschaften/">Geistes- &amp; Sozialwissenschaften</a></li><li id="nav-item6"><a href="https://scienceblogs.de/channel/politik/">Politik</a></li><li id="nav-item7"><a href="https://scienceblogs.de/channel/technik/">Technik</a></li><li id="nav-item8"><a href="https://scienceblogs.de/channel/umwelt/">Umwelt</a></li>					</ul>
+				</div><!--/main-nav-wrapper-->
+
+
+
+				<a id="mobile-logo" href='/'></a>
+
+				<div id="mobile-nav-wrapper">
+					<div class='triggers'>
+						<div class='main-nav-trigger'>
+							MENÜ						</div>
+						<div class='search-nav-trigger'>Suchen</div>
+
+						<div class='indicator main-indicator'></div>
+						<div class='indicator search-indicator'></div>
+					</div>
+
+					<div class='mobile-main-nav-wrapper'>
+						<div class='mobile-main-nav'>
+							<ul >
+								<li id="nav-item2"><a href="https://scienceblogs.de/channel/naturwissenschaften/">Naturwissenschaften</a></li><li id="nav-item3"><a href="https://scienceblogs.de/channel/medizin/">Medizin</a></li><li id="nav-item4"><a href="https://scienceblogs.de/channel/kultur/">Kultur</a></li><li id="nav-item5"><a href="https://scienceblogs.de/channel/geistes-sozialwissenschaften/">Geistes- &amp; Sozialwissenschaften</a></li><li id="nav-item6"><a href="https://scienceblogs.de/channel/politik/">Politik</a></li><li id="nav-item7"><a href="https://scienceblogs.de/channel/technik/">Technik</a></li><li id="nav-item8"><a href="https://scienceblogs.de/channel/umwelt/">Umwelt</a></li><li><a href='#'></a></li><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-752 first-child"><a href="https://scienceblogs.de/blogger/" >Blogger</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-839"><a href="https://scienceblogs.de/emagazines/" >eMagazines</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-732"><a href="https://scienceblogs.de/jobs/" >Jobs</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-926"><a target="_blank" href="https://www.wissenschaft-shop.de/startseite/?mskwakz=WISB32-002&#038;utm_campaign=WISB32-002" onclick="javascript:_gaq.push(['_trackEvent','outbound-menu','http://www.wissenschaft-shop.de']);">Shop</a></li>
+
+							</ul>
+							<div class="mobile-go-to-blog">
+								<form action="" method="" class="blog-nav">
+									<label for="blog-list">Wechseln zu ... </label>
+									<select id="mobile-blog-list">
+			<option value="0">Blog auswählen...</option>
+
+			<option value="https://scienceblogs.de/">ScienceBlogs-Hauptseite</option>
+			<optgroup label="ScienceBlogs"><option value="https://scienceblogs.de/alles-was-lebt/">Alles was lebt</option><option value="https://scienceblogs.de/alpha-cephei/">Alpha Cephei</option><option value="https://scienceblogs.de/and-the-water-seems-inviting/">And the water seems inviting</option><option value="https://scienceblogs.de/astrodicticum-simplex/">Astrodicticum Simplex</option><option value="https://scienceblogs.de/bioastronomie/">Bioastronomie²</option><option value="https://scienceblogs.de/bioinfowelten/">BioInfoWelten</option><option value="https://scienceblogs.de/bloodnacid/">blooDNAcid</option><option value="https://scienceblogs.de/chevoja/">Chevoja</option><option value="https://scienceblogs.de/klausis-krypto-kolumne/">Cipherbrain</option><option value="https://scienceblogs.de/dasuniversumnebenan/">Das Universum nebenan</option><option value="https://scienceblogs.de/diekleinendinge/">Die kleinen Dinge</option><option value="https://scienceblogs.de/10jahrescienceblogs/">Ein Jahrzehnt mit ScienceBlogs.de</option><option value="https://scienceblogs.de/erklaerfix/">ErklärFix</option><option value="https://scienceblogs.de/evolvimus/">evolvimus</option><option value="https://scienceblogs.de/frischer-wind/">Frischer Wind</option><option value="https://scienceblogs.de/gedenken-an-tobias/">Gedenken an Tobias Cronert</option><option value="https://scienceblogs.de/genau/">GENau</option><option value="https://scienceblogs.de/geograffitico/">Geograffitico</option><option value="https://scienceblogs.de/gesundheits-check/">Gesundheits-Check</option><option value="https://scienceblogs.de/gori/">GORI - German Office of Research Integrity</option><option value="https://scienceblogs.de/hier-wohnen-drachen/">Hier wohnen Drachen</option><option value="https://scienceblogs.de/ihrefrage/">Ihre Frage </option><option value="https://scienceblogs.de/wissens-ecke/">Konradin Wissens-Ecke</option><option value="https://scienceblogs.de/kritisch-gedacht/">Kritisch gedacht</option><option value="https://scienceblogs.de/lichte-ideen/">Lichte Ideen</option><option value="https://scienceblogs.de/mathlog/">Mathlog</option><option value="https://scienceblogs.de/meertext/">Meertext</option><option value="https://scienceblogs.de/naklar/">naklar</option><option value="https://scienceblogs.de/panorama/">Panorama</option><option value="https://scienceblogs.de/phantasie-und-kritik/">Phantasie und Kritik</option><option value="https://scienceblogs.de/plazeboalarm/">Plazeboalarm</option><option value="https://scienceblogs.de/primaklima/">Primaklima</option><option value="https://scienceblogs.de/quovadis/">Quo Vadis</option><option value="https://scienceblogs.de/rupture-de-catenaire/">rupture de caténaire</option><option value="https://scienceblogs.de/wissenschaft-zum-mitnehmen/">ScienceBlogs Podcast - Wissenschaft zum Mitnehmen</option><option value="https://scienceblogs.de/science_meets_society/">Science meets Society</option><option value="https://scienceblogs.de/scienceslam/">Science Slam</option><option value="https://scienceblogs.de/sociokommunikativ/">SocioKommunikativ</option><option value="https://scienceblogs.de/technik-kummerkasten/">Technik-Kummerkasten</option><option value="https://scienceblogs.de/theworldissmall/">The World is small</option><option value="https://scienceblogs.de/von_bits_und_bytes/">Von Bits und Bytes</option><option value="https://scienceblogs.de/wasgeht/">Was geht?</option><option value="https://scienceblogs.de/weatherlog/">weatherlog</option><option value="https://scienceblogs.de/wissen-schafft-kommunikation/">Wissen schafft Kommunikation</option><option value="https://scienceblogs.de/wissenschaftsfeuilleton/">Wissenschaftsfeuilleton</option><option value="https://scienceblogs.de/zoonpolitikon/">zoon politikon</option><option value="https://scienceblogs.de/sic/">[sic] -- Wissenschaftskommunikation</option></optgroup><optgroup label="Archiv"><option value="https://scienceblogs.de/3vor10/">3vor10</option><option value="https://scienceblogs.de/alles-was-fliegt/">Alles was fliegt</option><option value="https://scienceblogs.de/amerikanischebegegnungen/">Amerikanische Begegnungen</option><option value="https://scienceblogs.de/andererseits/">Andererseits</option><option value="https://scienceblogs.de/arte-fakten/">Arte-Fakten</option><option value="https://scienceblogs.de/beauty-full-science/">Beauty full Science</option><option value="https://scienceblogs.de/chemisch-gesehen/">Chemisch gesehen</option><option value="https://scienceblogs.de/columbus/">Columbus Gastblog</option><option value="https://scienceblogs.de/darwinjahr/">Darwinjahr</option><option value="https://scienceblogs.de/labortagebuch/">Das Labortagebuch</option><option value="https://scienceblogs.de/deutsches-museum/">Deutsches Museum</option><option value="https://scienceblogs.de/diaxs-rake/">Diax&#039;s Rake</option><option value="https://scienceblogs.de/andere-bildung/">Die andere Bildung</option><option value="https://scienceblogs.de/durchschaut/">Durchschaut</option><option value="https://scienceblogs.de/e-mobility/">E-Mobility</option><option value="https://scienceblogs.de/echolot/">Echolot</option><option value="https://scienceblogs.de/ein-bisschen-dunkel/">Ein bisschen dunkel</option><option value="https://scienceblogs.de/epigoesgender/">Epi goes Gender</option><option value="https://scienceblogs.de/flugundzeit/">Flug und Zeit</option><option value="http://scienceblogs.de/for-women-in-science/">For Women in Science</option><option value="https://scienceblogs.de/geo_logisch/">Geo? Logisch!</option><option value="https://scienceblogs.de/heureka/">Heureka</option><option value="https://scienceblogs.de/planeten/">Hinterm Mond gleich links</option><option value="https://scienceblogs.de/historikertag/">Historikertag</option><option value="https://scienceblogs.de/iconic-turn/">Iconic Turn Gastblog</option><option value="https://scienceblogs.de/ihre-forschungsfrage/">Ihre Forschungsfrage</option><option value="https://scienceblogs.de/kommunikation-der-zukunft/">Kommunikation der Zukunft</option><option value="https://scienceblogs.de/komplett-komplex/">Komplett Komplex</option><option value="https://scienceblogs.de/kritische-masse/">Kritische Masse</option><option value="https://scienceblogs.de/kulisse/">Kulisse</option><option value="https://scienceblogs.de/kunst-en-blog/">Kunst-en-Blog</option><option value="http://scienceblogs.de/lob-der-krankheit/">Lob der Krankheit</option><option value="https://scienceblogs.de/mahlzeit/">Mahlzeit</option><option value="https://scienceblogs.de/medlog/">Medlog</option><option value="https://scienceblogs.de/mutterwitz/">Mutterwitz</option><option value="https://scienceblogs.de/nanojugend/">Nanojugend</option><option value="http://scienceblogs.de/neurons/">Neurons</option><option value="https://scienceblogs.de/neuropaedagogik/">Neuropädagogik</option><option value="https://scienceblogs.de/nobel-faces/">Nobel Faces</option><option value="http://scienceblogs.de/lindaunobel/">Nobelpreisträgertreffen</option><option value="https://scienceblogs.de/nucular/">Nucular</option><option value="https://scienceblogs.de/openskies/">Open Skies</option><option value="https://scienceblogs.de/personagrata/">persona grata</option><option value="https://scienceblogs.de/schule-macht-zukunft/">Schule macht Zukunft</option><option value="https://scienceblogs.de/sciencepicture/">SciencePicture</option><option value="https://scienceblogs.de/stromtierchen/">Stromtierchen</option><option value="https://scienceblogs.de/tiefes-leben/">Tiefes Leben</option><option value="https://scienceblogs.de/twopinion/">TwOpinion</option><option value="https://scienceblogs.de/vde-medtech/">VDE MedTech</option><option value="https://scienceblogs.de/weitergen/">WeiterGen</option><option value="https://scienceblogs.de/wissenschaft-und-wiedervereinigung/">Wissenschaft und Wiedervereinigung</option><option value="https://scienceblogs.de/zahlenbilder/">Zahlenbilder</option><option value="https://scienceblogs.de/zeittaucher/">Zeittaucher</option><option value="https://scienceblogs.de/zukunftstechnologien/">Zukunftstechnologien</option></optgroup></select>
+	<script type="text/javascript">
+	/* <![CDATA[ */
+		var mobilengssbBLDropdown = document.getElementById("mobile-blog-list");
+		function mobilengssbBLChange() {
+				location.href = mobilengssbBLDropdown.options[mobilengssbBLDropdown.selectedIndex].value;
+		}
+		mobilengssbBLDropdown.onchange = mobilengssbBLChange;
+	/* ]]> */
+	</script>								</form>
+							</div>
+						</div>
+					</div>
+
+					<div class='mobile-search-nav-wrapper'>
+						<div class='mobile-search-nav'>
+							<form role="search" method="get" action="https://scienceblogs.de/">
+
+								<!-- google search parameters -->
+								<div class="input">
+									<input type="search" value="" name="s" id="s" placeholder="Suchbegriff eingeben">
+									<!-- <button type="submit" id="header_search_submit" class="hiddenText">Abschicken</button> -->
+								</div>
+							</form><!-- #header_search -->
+						</div>
+					</div>
+				</div>
+
+			</div><!--/header-->
+
+			<!--<div id='ad-bb' style='width:960px;'></div>-->
+            <div id="iqadtile3-wrapper">    
+				<div id="iqadtile3">
+					<script data-cmp-ab="1">
+					if (typeof AdController !== "undefined") {
+					AdController.render("iqadtile3");
+					}
+					</script>
+				</div>  
+			</div>  
+
+		</div><!--/header-wrapper-->
+            
+	</div>
+
+<!-- base/single/single-default -->
+
+<div id="main">
+	<div class="str-inside clearfix">
+		<div id="content">
+
+			<div class='breadcrumbs'><a href='/'>Startseite</a><span class='separator'></span><a href='https://scienceblogs.de/mathlog/' class='blog'>Mathlog</a></div>
+		<a class="sub-blog-logo" href="https://scienceblogs.de/mathlog/">
+			<img src="https://scienceblogs.de/mathlog/files/2012/06/cropped-228-headermathlog-e1347203750829.jpg" width="610" height="90" alt="" />
+		</a><div id="post-19556" class="post-full clearfix post-19556 post type-post status-publish format-standard hentry category-naturwissenschaften tag-muenzwurf tag-praezession tag-wahrscheinlichkeit science_blog-naturwissenschaften">
+
+	
+<div class="header">
+
+	
+  <h1 class="entry-title"><a rel="bookmark" href="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/">Münzwürfe sind nicht zufällig</a></h1>
+
+</div><!--/header-->
+
+	
+<div class="content entry-meta">
+  Von <span class="fn"><a href="https://scienceblogs.de/mathlog/author/tkuessner/" title="Artikel von Thilo" rel="author">Thilo</a></span> / 6. November  2023 / <a href="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/#respond" rev="post-19556" class="to-comments">Keine Kommentare</a>
+<div class="box-share">
+	<label>Teilen:</label>
+	<div class="addthis_toolbox addthis_default_style" addthis:url="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/" addthis:title="Münzwürfe sind nicht zufällig">
+		<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="opacity:1;"></a>
+		<a class="addthis_button_tweet" tw:via="Scienceblogs"></a>
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		<a class="addthis_button_email"></a>
+		<a class="addthis_button_expanded"><span></span>Mehr</a>
+	</div>
+</div>
+
+  </div><!--/byline-->
+
+	
+
+	<div class="main">
+		<div class="content entry-content">
+			<p>In Vorlesungen über Wahrscheinlichkeitstheorie oder Statistik erzähle ich den Studenten, dass es Zufall ausserhalb der Mikrowelt der Quantenphysik nicht gibt. Alles ist im Prinzip berechenbar, Zufall entsteht nur durch unvollständige Information. Der Wurf einer Münze ist nicht zufällig, sondern deterministisch &#8211; wenn man Ausgangsposition, Ausgangsgeschwindigkeit und wirkende Kräfte kennt, kann man ihn berechnen. Das hält mich freilich nicht davon ab, den Münzwurf als einfachstes Beispiel für ein Zufallsexperiment in Lehrveranstaltungen zu verwenden.</p>
+<div class='code-block code-block-1' style='margin: 8px 0; clear: both;'>
+<div id="iqadtile4_wrapper">
+<div id="iqadtile4">
+    <script>
+        AdController.render('iqadtile4');
+    </script>
+</div>
+</div>
+</div>
+<p>Ein am 6. Oktober auf dem ArXiv erschienener Artikel <a href="https://arxiv.org/abs/2310.04153" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://arxiv.org']);">Fair coins tend to land on the same side they started: Evidence from 350,757 flips</a> zeigt nun, dass der Münzwurf nicht nur nicht zufällig, sondern noch nicht einmal gleichverteilt ist. Die Münze landet mit 50,8% Wahrscheinlichkeit auf der vor dem Münzwurf oben liegenden Seite. Grund ist die Präzession. Ein letzte Woche in der Süddeutschen erschienener Artikel erklärt es so:</p>
+<blockquote><p>Im Fall des Münzwurfs kommt es zur Präzession, wenn die Münze nicht genau mittig geschnippt wird. Dann eiert sie in der Flugphase, und das führt dazu, dass sie etwas mehr Zeit in der ursprünglichen Ausrichtung verbringt und demzufolge häufiger so landet, wie sie geschnipst wurde. Das Eiern der Münze ist mit bloßem Auge kaum zu sehen &#8211; was von Zauberern und Trickbetrügern ausgenutzt wird, die eine Münze so schnipsen können, dass sie sich überhaupt nicht um sich selbst dreht, sondern nur wackelt.</p></blockquote>
+<p>Das bestätigt experimentell eine Vorhersage aus der 2007 in SIAM Reviews erschienenen Arbeit &#8220;Dynamical bias in the coin toss&#8221; von Persi Diaconis, Susan Holmes und Richard Montgomery.</p>
+<p class="wp-flattr-button"></p><!-- AI CONTENT END 3 -->
+		</div>
+	</div>
+
+	<div id="ad-mrec_pos2" class="ad-mrec_pos2"></div>    
+    <!--- iqdigital iqadtile --->
+
+	<div class="footer">
+		<div class="tags"><span class="label">Stichworte:</span> <a href="https://scienceblogs.de/mathlog/tag/muenzwurf/" rel="tag">Münzwurf</a><span class="delimiter">,</span> <a href="https://scienceblogs.de/mathlog/tag/praezession/" rel="tag">Präzession</a><span class="delimiter">,</span> <a href="https://scienceblogs.de/mathlog/tag/wahrscheinlichkeit/" rel="tag">wahrscheinlichkeit</a></div>
+<div class="box-share">
+	<label>Teilen:</label>
+	<div class="addthis_toolbox addthis_default_style" addthis:url="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/" addthis:title="Münzwürfe sind nicht zufällig">
+		<a class="addthis_button_facebook_like" fb:like:layout="button_count" style="opacity:1;"></a>
+		<a class="addthis_button_tweet" tw:via="Scienceblogs"></a>
+		<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+		<a class="addthis_button_email"></a>
+		<a class="addthis_button_expanded"><span></span>Mehr</a>
+	</div>
+</div>
+
+  	</div>
+</div><!-- .excerpt -->
+<div id='ad-momrec' style=''></div><div id="comments"><ol class="reply-list"></ol>
+		<div id="respond">
+		<form action="https://scienceblogs.de/mathlog/wp-comments-post.php" method="post">
+			<label class='title' for="comment">Kommentieren</label>
+
+			
+
+				<p class='input'>
+					<!-- <label for="author">Name:<em><abbr title="Erforderlich">*</abbr></em></label> -->
+					<input type="text" class="type-text" name="author" id="author" value="" placeholder='Name*' size="22" />
+				</p>
+
+
+				<p class='input'>
+					<!-- <label for="email">E-Mail-Adresse:<em><abbr title="Müssen wir wissen, aber wir verraten's nie weiter">*</abbr></em></label>-->
+					<input type="text" class="type-text" name="email" id="email" value="" placeholder='E-Mail-Adresse*' size="22" />
+				</p>
+
+
+				<p class='input'>
+					<!-- <label for="url">Ort:</label> -->
+					<input type="text" class="type-text" name="ngs-location" id="ngs-location" value="" placeholder='Ort' size="22" />
+				</p>
+			
+
+
+			<p class='input'>
+				<!-- <label for="comment">Kommentar:</label> -->
+				<textarea class="type-text" name="comment" id="comment" rows="6" cols="60" placeholder='Kommentar'></textarea>
+			</p>
+
+			<input type='hidden' name='comment_post_ID' value='19556' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+			<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="e83731a6b9" /></p><script src="https://scienceblogs.de/mathlog/?live-comment-preview.js" type="text/javascript"></script><div id="commentPreview"></div><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="155"/></p>
+
+			<p class="last-child">
+				<input class="button" name="submit" type="submit" id="submit" value="Kommentar abschicken" />
+				<a rel="nofollow" id="cancel-comment-reply-link" href="/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/#respond" style="display:none;">Antwort löschen</a>			</p>
+
+
+
+
+
+		</form>
+		</div>
+</div><!--/comments-->
+		</div><!--/content-->
+
+		<div id="sidebar">
+			
+<div id="search-subblog" class="widget clearfix widget_search">
+	<form role="search" method="get" id="searchform" action="https://scienceblogs.de/mathlog/">
+		<div class='action input'>
+			<input type="text" value="" name="s" placeholder="In diesem Blog suchen">
+			<input type="submit" id="searchsubmit" value="">
+		</div>
+	</form>
+</div>
+
+
+<div id="ngs_subscribe-2" class="widget clearfix widget-ngs-subscribe">
+	<h2 class="widget-title">Abonnieren</h2>
+	<span class="accessibility">Abonnieren mit:</span>
+	<ul class="nav">
+		<li>
+			<a class="imr imr-rss" href="https://scienceblogs.de/mathlog/feed/">RSS2</a>
+		</li>
+		<li>
+			<a class="imr imr-atom" href="https://scienceblogs.de/mathlog/feed/atom/">Atom</a>
+		</li>
+		<li class="help">
+			Mit einem Feedreader abonnieren		</li>
+	</ul>
+</div>
+
+<div class="sb-ad sb-sponsor"><!--<span class='ad-hint'>Anzeige</span>-->
+<div id="sidebar-ad-top" class="widget_text widget clearfix widget_custom_html">
+    <div class="textwidget custom-html-widget"><div id="iqadtile8">
+            <script>
+                if (typeof AdController !== "undefined") {
+                    AdController.render("iqadtile8");
+                }
+            </script>
+        </div></div></div>
+</div><div id="text-2" class="widget clearfix widget_text"><h2 class="widget-title">Mathlog</h2>			<div class="textwidget"><a href="https://newton.kias.re.kr/~kuessner/kuessner.html" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://newton.kias.re.kr']);">&#53272;&#32;&#49828;&#32;&#45320;&#32;&#54008;&#32;&#47196;</a> wohnt nicht mehr in <a href="https://www.google.de/search?q=seoul&hl=de&prmd=imvnsl&tbm=isch&tbo=u&source=univ&sa=X&ei=f0RLUKORMOWciAfpzYDoCA&ved=0CD0QsAQ&biw=1267&bih=821#" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.google.de']);">Seoul</a>, sondern jetzt in Augsburg. Er ist Mathematiker mit Schwerpunkt in der <a href="https://de.wikipedia.org/wiki/Kategorie:Geometrische_Topologie" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://de.wikipedia.org']);">Geometrischen Topologie</a>.
+</div>
+		</div>		<div id="recent-posts-2" class="widget clearfix widget_recent_entries">		<h2 class="widget-title">Neueste Beiträge</h2>		<ul>
+				<li class="teaser">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/">Münzwürfe sind nicht zufällig</a></h3>
+			<div class="content"><p>In Vorlesungen über Wahrscheinlichkeitstheorie oder Statistik erzähle ich den Studenten, dass es Zufall ausserhalb der Mikrowelt&hellip;</p>
+</div>
+		</li>
+				<li class="teaser">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/10/29/zahlenfreunde/">Zahlenfreunde</a></h3>
+			<div class="content"><p>1+2+3+4+5+&#8230;=-1/12<br />
+Im Januar 2014 wies mich ein Leser meines Blogs per e-Mail auf einen Artikel im Blog&hellip;</p>
+</div>
+		</li>
+				<li class="teaser teaser-has-img">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/09/29/numberphile-ueber-das-langlands-programm/">Numberphile über das Langlands-Programm</a></h3>
+			<div class="content"><p>Im neuen Numberphile-Video spricht Edward Frenkel über das Langlands-Programm. Wir hatten vor acht Jahren mal über&hellip;</p>
+</div>
+		</li>
+				<li class="teaser teaser-has-img">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/08/21/die-macht-der-nostalgie/">Die Macht der Nostalgie</a></h3>
+			<div class="content"><p>Die Mondsonde ist abgestürzt, wir wissen nicht warum. Man kann vermuten, dass da unbedingt etwas bewiesen&hellip;</p>
+</div>
+		</li>
+				<li class="teaser">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/07/03/parkplatzsuche/">Parkplatzsuche</a></h3>
+			<div class="content"><p>Rund zehn Prozent des Autoverkehrs in Innenstädten sollen auf die Parkplatzsuche entfallen. Eine Forschergruppe aus Lyon&hellip;</p>
+</div>
+		</li>
+				<li class="teaser teaser-has-img">
+
+			<h3 class="title"><a href="https://scienceblogs.de/mathlog/2023/06/11/mathe-abitur-abschaffen/">Mathe-Abitur abschaffen?</a></h3>
+			<div class="content"><p>In Mecklenburg-Vorpommern wird aktuell über eine Abschaffung der Mathematik als Pflichtfach für die Abitur-Prüfung diskutiert. Die&hellip;</p>
+</div>
+		</li>
+				</ul>
+		</div><div id="recent-comments-2" class="widget clearfix widget_recent_comments"><h2 class="widget-title">Letzte Kommentare</h2><ul id="recentcomments"><li class="recentcomments">casper bei <a href="https://scienceblogs.de/mathlog/2023/08/21/die-macht-der-nostalgie/#comment-276296">Die Macht der Nostalgie</a></li><li class="recentcomments">Jack bei <a href="https://scienceblogs.de/mathlog/2023/10/29/zahlenfreunde/#comment-276280">Zahlenfreunde</a></li><li class="recentcomments">geometry dash online bei <a href="https://scienceblogs.de/mathlog/2023/09/29/numberphile-ueber-das-langlands-programm/#comment-276279">Numberphile über das Langlands-Programm</a></li><li class="recentcomments">Gudrun L. bei <a href="https://scienceblogs.de/mathlog/2020/07/13/historische-darstellung-einer-gescheiterten-unterrichtsreform/#comment-276264">Historische Darstellung einer gescheiterten Unterrichtsreform</a></li><li class="recentcomments">Frank Wappler bei <a href="https://scienceblogs.de/mathlog/2023/10/29/zahlenfreunde/#comment-276262">Zahlenfreunde</a></li></ul></div><div id="cf_top_posts-4" class="widget clearfix widget-cf-top-posts"><h2 class="widget-title">Top Posts from WordPress stats</h2><ul><li><a href="https://scienceblogs.de/mathlog/?p=19533">Zahlenfreunde</a></li><li><a href="https://scienceblogs.de/mathlog/?p=19556">Münzwürfe sind nicht zufällig</a></li><li><a href="https://scienceblogs.de/mathlog/?p=17119">Reelle Zahlen als verdichtete Menge</a></li><li><a href="http://scienceblogs.de/mathlog/?p=15388">Historische Darstellung einer gescheiterten Unterrichtsreform</a></li><li><a href="https://scienceblogs.de/mathlog/?p=19556">Münzwürfe sind nicht zufällig</a></li><li><a href="http://scienceblogs.de/mathlog/2009/09/29/irrationalitat/">Irrationalität</a></li><li><a href="https://scienceblogs.de/mathlog/?p=19526">Numberphile über das Langlands-Programm</a></li><li><a href="http://scienceblogs.de/mathlog/?p=12490">8:2(2+2) bringt es in die New York Times</a></li><li><a href="http://scienceblogs.de/mathlog/2008/07/26/mehr-gewinn-als-umsatz/">Mehr Gewinn als Umsatz</a></li><li><a href="https://scienceblogs.de/mathlog/?p=16081">Theorema Magnum MCMLXII: der Satz von Feit-Thompson</a></li></ul></div><div id="archives-2" class="widget clearfix widget_archive"><h2 class="widget-title">Archive</h2>		<ul>
+			<li><a href='https://scienceblogs.de/mathlog/2023/11/'>November 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/10/'>Oktober 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/09/'>September 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/08/'>August 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/07/'>Juli 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/06/'>Juni 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/05/'>Mai 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/04/'>April 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/03/'>März 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/02/'>Februar 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2023/01/'>Januar 2023</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/12/'>Dezember 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/10/'>Oktober 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/09/'>September 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/08/'>August 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/07/'>Juli 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/06/'>Juni 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/05/'>Mai 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/04/'>April 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/03/'>März 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/02/'>Februar 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2022/01/'>Januar 2022</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/12/'>Dezember 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/11/'>November 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/10/'>Oktober 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/09/'>September 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/08/'>August 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/07/'>Juli 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/06/'>Juni 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/05/'>Mai 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/04/'>April 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/03/'>März 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/02/'>Februar 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2021/01/'>Januar 2021</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/12/'>Dezember 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/11/'>November 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/10/'>Oktober 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/09/'>September 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/08/'>August 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/07/'>Juli 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/06/'>Juni 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/05/'>Mai 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/04/'>April 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/03/'>März 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/02/'>Februar 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2020/01/'>Januar 2020</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/12/'>Dezember 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/11/'>November 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/10/'>Oktober 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/09/'>September 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/08/'>August 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/07/'>Juli 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/06/'>Juni 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/05/'>Mai 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/04/'>April 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/03/'>März 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/02/'>Februar 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2019/01/'>Januar 2019</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/12/'>Dezember 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/11/'>November 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/10/'>Oktober 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/09/'>September 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/08/'>August 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/07/'>Juli 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/06/'>Juni 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/05/'>Mai 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/04/'>April 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/03/'>März 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/02/'>Februar 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2018/01/'>Januar 2018</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/12/'>Dezember 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/11/'>November 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/10/'>Oktober 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/09/'>September 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/08/'>August 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/07/'>Juli 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/06/'>Juni 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/05/'>Mai 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/04/'>April 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/03/'>März 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/02/'>Februar 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2017/01/'>Januar 2017</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/12/'>Dezember 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/11/'>November 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/10/'>Oktober 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/09/'>September 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/08/'>August 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/07/'>Juli 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/06/'>Juni 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/05/'>Mai 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/04/'>April 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/03/'>März 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/02/'>Februar 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2016/01/'>Januar 2016</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/12/'>Dezember 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/11/'>November 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/10/'>Oktober 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/09/'>September 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/08/'>August 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/07/'>Juli 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/06/'>Juni 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/05/'>Mai 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/04/'>April 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/03/'>März 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/02/'>Februar 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2015/01/'>Januar 2015</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/12/'>Dezember 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/11/'>November 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/10/'>Oktober 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/09/'>September 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/08/'>August 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/07/'>Juli 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/06/'>Juni 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/05/'>Mai 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/04/'>April 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/03/'>März 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/02/'>Februar 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2014/01/'>Januar 2014</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/12/'>Dezember 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/11/'>November 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/10/'>Oktober 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/09/'>September 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/08/'>August 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/07/'>Juli 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/06/'>Juni 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/05/'>Mai 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/04/'>April 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/03/'>März 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/02/'>Februar 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2013/01/'>Januar 2013</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/12/'>Dezember 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/11/'>November 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/10/'>Oktober 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/09/'>September 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/08/'>August 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/07/'>Juli 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/06/'>Juni 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/05/'>Mai 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/04/'>April 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/03/'>März 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/02/'>Februar 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2012/01/'>Januar 2012</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/12/'>Dezember 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/11/'>November 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/10/'>Oktober 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/09/'>September 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/08/'>August 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/07/'>Juli 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/06/'>Juni 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/05/'>Mai 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/04/'>April 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/03/'>März 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/02/'>Februar 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2011/01/'>Januar 2011</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/12/'>Dezember 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/11/'>November 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/10/'>Oktober 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/09/'>September 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/08/'>August 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/07/'>Juli 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/06/'>Juni 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/05/'>Mai 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/04/'>April 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/03/'>März 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/02/'>Februar 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2010/01/'>Januar 2010</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/12/'>Dezember 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/11/'>November 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/10/'>Oktober 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/09/'>September 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/08/'>August 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/07/'>Juli 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/06/'>Juni 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/05/'>Mai 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/04/'>April 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/03/'>März 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/02/'>Februar 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2009/01/'>Januar 2009</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/12/'>Dezember 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/11/'>November 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/10/'>Oktober 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/09/'>September 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/08/'>August 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/07/'>Juli 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/06/'>Juni 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/05/'>Mai 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/04/'>April 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/03/'>März 2008</a></li>
+	<li><a href='https://scienceblogs.de/mathlog/2008/02/'>Februar 2008</a></li>
+		</ul>
+		</div><div id="categories-2" class="widget clearfix widget_categories"><h2 class="widget-title">Kategorien</h2>		<ul>
+	<li class="cat-item cat-item-4"><a href="https://scienceblogs.de/mathlog/category/geistes_sozialwissenschaften/" >Geistes- &amp; Sozialwissenschaften</a>
+</li>
+	<li class="cat-item cat-item-5"><a href="https://scienceblogs.de/mathlog/category/kultur/" >Kultur</a>
+</li>
+	<li class="cat-item cat-item-4101"><a href="https://scienceblogs.de/mathlog/category/l/" >L</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://scienceblogs.de/mathlog/category/medizin/" >Medizin</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://scienceblogs.de/mathlog/category/naturwissenschaften/" >Naturwissenschaften</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="https://scienceblogs.de/mathlog/category/politik/" >Politik</a>
+</li>
+	<li class="cat-item cat-item-3"><a href="https://scienceblogs.de/mathlog/category/rubrik/" >ScienceBlogs Kategorien</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="https://scienceblogs.de/mathlog/category/technik/" >Technik</a>
+</li>
+	<li class="cat-item cat-item-11"><a href="https://scienceblogs.de/mathlog/category/themenwoche/" >Themenwoche</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="https://scienceblogs.de/mathlog/category/umwelt/" >Umwelt</a>
+</li>
+	<li class="cat-item cat-item-1"><a href="https://scienceblogs.de/mathlog/category/uncategorized/" >Uncategorized</a>
+</li>
+		</ul>
+</div><div id="meta-2" class="widget clearfix widget_meta"><h2 class="widget-title">Meta</h2>			<ul>
+						<li><a href="https://scienceblogs.de/mathlog/wp-login.php">Anmelden</a></li>
+			<li><a href="https://scienceblogs.de/mathlog/feed/">Artikel-Feed (<abbr title="Really Simple Syndication">RSS</abbr>)</a></li>
+			<li><a href="https://scienceblogs.de/mathlog/comments/feed/">Kommentare als <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</div><div class="sb-ad"><div id="sidebar-ad-bottom" class="widget_text widget clearfix widget_custom_html">
+    <div class="textwidget custom-html-widget"><div id="iqadtile9">
+            <script>
+                if (typeof AdController !== "undefined") {
+                    AdController.render("iqadtile9");
+                }
+            </script>
+        </div></div></div></div>		<div class='sb-sponsor'>
+		  <span class='ad-hint'>Anzeige</span>
+		  <iframe scrolling="no" width="300" height="250" frameborder="0" style="width:300px; height: 250px; border: none; overflow: hidden;" src="https://www.wissenschaft-shop.de/index.php?cl=msk_feaffiliates_iframe&content=scblogs&mskwakz=WISB30-001&utm_campaign=WISB30-001"></iframe>
+		</div>
+		
+
+
+
+		</div><!--/sidebar-->
+
+	</div><!--/str-inside-->
+</div><!--/main-->
+
+    
+    <div class='center-content'>    
+    <div id="iqadtile16">
+    <script data-cmp-ab="1">
+        if (typeof AdController !== "undefined") {
+        AdController.render("iqadtile16");
+        }
+    </script>
+    </div>
+
+          
+
+
+
+
+	<div class="footer-wrapper">
+		<div id="footer" class='clearfix'>
+      <div id='footer-links'>
+        <div class="menu-footer-container"><ul id="footer-nav-1" class="footer-links-1"><li id="menu-item-51" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-51 first-child"><a href="https://scienceblogs.de/aboutcontact/" >Kontakt &#038; Impressum</a></li>
+<li id="menu-item-50" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50"><a href="https://scienceblogs.de/about/" >Über ScienceBlogs.de</a></li>
+<li id="menu-item-47" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-47"><a href="https://scienceblogs.de/code/" >Netiquette</a></li>
+<li id="menu-item-572" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-572"><a href="https://scienceblogs.de/jobs/" >Jobs</a></li>
+</ul></div><div class="menu-footer-2-container"><ul id="footer-nav-2" class="footer-links-2"><li id="menu-item-733" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-733 first-child"><a href="https://scienceblogs.de/terms/" >Allgemeine Nutzungsbedingungen</a></li>
+<li id="menu-item-734" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-734"><a href="https://scienceblogs.de/privacy/" >Datenschutzbestimmungen</a></li>
+<li id="menu-item-735" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-735"><a href="https://www.interactivemedia.net/de/portfolio-onlinewerbung/" onclick="javascript:_gaq.push(['_trackEvent','outbound-menu','http://www.interactivemedia.net']);">Mediadaten</a></li>
+<li id="menu-item-1380" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1380"><a href="#">Datenschutzeinstellungen</a></li>
+</ul></div>          <div class='menu-footer-container'>
+            <ul class=' topic-menu'>
+              <li id="nav-item2"><a href="https://scienceblogs.de/channel/naturwissenschaften/">Naturwissenschaften</a></li><li id="nav-item3"><a href="https://scienceblogs.de/channel/medizin/">Medizin</a></li><li id="nav-item4"><a href="https://scienceblogs.de/channel/kultur/">Kultur</a></li><li id="nav-item5"><a href="https://scienceblogs.de/channel/geistes-sozialwissenschaften/">Geistes- &amp; Sozialwissenschaften</a></li><li id="nav-item6"><a href="https://scienceblogs.de/channel/politik/">Politik</a></li><li id="nav-item7"><a href="https://scienceblogs.de/channel/technik/">Technik</a></li><li id="nav-item8"><a href="https://scienceblogs.de/channel/umwelt/">Umwelt</a></li>            </ul>
+          </div>
+      </div>
+
+ 			<div id="copyright">
+        <p>&copy; 2023 Konradin Medien GmbH.</p><p>ScienceBlogs ist ein geschütztes Markenzeichen.<br/> Alle Rechte vorbehalten.</p>      </div>
+    </div><!--/footer-->
+  </div><!--/footer-wrapper-->
+</div><!--/body-->
+
+<!-- start wp_footer -->
+	<div style="display:none">
+	</div>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/plugins/akismet/_inc/form.js?ver=3.1.7'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/plugins/jetpack/_inc/build/photon/photon.min.js?ver=20130122'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=202345'></script>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js?ver=2023Novaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-content/plugins/jetpack/modules/wpgroho.js?ver=4.9.8'></script>
+<script type='text/javascript' src='//s7.addthis.com/js/250/addthis_widget.js?ver=1.7.7#pubid=ng-dmg'></script>
+<script type='text/javascript' src='https://scienceblogs.de/mathlog/wp-includes/js/wp-embed.min.js?ver=4.9.8'></script>
+<script type="text/javascript">
+          (function() {
+            var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://api.flattr.com/js/0.6/load.js?mode=auto';
+            t.parentNode.insertBefore(s, t);
+          })();
+        </script><script type='text/javascript' src='https://stats.wp.com/e-202345.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:7.1.1',blog:'40691936',post:'19556',tz:'9',srv:'scienceblogs.de'} ]);
+	_stq.push([ 'clickTrackerInit', '40691936', '19556' ]);
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5CSCDTN"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+      <!-- SZM VERSION="2.0" -->
+      <script type="text/javascript">
+        var iam_data = {
+          "st":"wissende", // site/domain
+          "cp":"science_wissenschaft", // code
+          "oc":"", // old code KAT 1.2
+          "mg":"yes", // migration-mode
+          "sv":"i2", // Es wird eine Befragungseinladung ausgeliefert.
+          "co":"kommentar" // comment
+        }
+        iom.c(iam_data);
+      </script>
+      <!--/SZM -->
+    </body>
+<!-- iqd finalize -->
+<script data-cmp-ab="1">
+ AdController.finalize(); //Signalisiert dem AdController, dass keine weiteren AdCall -Aufrufe auf dieser Seite folgen
+</script>
+<script type="text/javascript" data-cmp-ab="1">
+ var IQDComplete = {
+ init: function() {
+ return true;
+ }
+ };
+</script>
+<!-- iqd finalize END -->
+
+
+<script data-cmp-ab="1">
+
+ var _paq = window._paq = window._paq || []; 
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */ 
+  _paq.push(["setExcludedQueryParams", ["p","preview_id","post_format","_thumbnail_id","preview_none","refresh","xing_share","src"]]);
+
+  _paq.push(['trackPageView']); 
+  _paq.push(['enableLinkTracking']); 
+  (function() { 
+    var u="https://statistik.konradin.de/"; 
+    _paq.push(['setTrackerUrl', u+'matomo.php']); 
+    _paq.push(['setSiteId', '43']); 
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; 
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s); 
+  })();
+
+</script>
+
+
+</html>
+

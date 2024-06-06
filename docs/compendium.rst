@@ -18,7 +18,7 @@ In linguistics, a text corpus (plural corpora) is a language resource consisting
     “A corpus is simply described as a large body of linguistic evidence typically composed of attested language use. […] The term corpus should properly only be applied to a well-organized collection of data.” (McEnery 2003, p. 449)
 
 
-How well defined corpora should be, depends on research tradition and practices. Web corpora are the heirs of established corpora and they mostly undergo the same construction process, with necessary adapations and novelties (see Barbaresi 2015, chapter 1).
+How well defined corpora should be, depends on research tradition and practices. Web corpora are the heirs of established corpora and they mostly undergo the same construction process, with necessary adaptations and novelties (see Barbaresi 2015, chapter 1).
 
 For Baroni & Ueyama (2006), corpora bring “actual usage evidence”, “collections of language samples produced in natural contexts and without experimental interference”. They distinguish four main cases where such evidence is needed: theoretical and applied linguistic questions, simulations of language acquisition, lexicography, and a large number of tasks in natural language processing.
 
@@ -63,7 +63,7 @@ Specialized corpora
 ~~~~~~~~~~~~~~~~~~~
 
 
-On the second hand, there are specialized corpora which focus on a particular genre or or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open ended-corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
+On the second hand, there are specialized corpora which focus on a particular genre or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open ended-corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
 
 The purpose of focused web corpora is to complement existing collections, as they allow for better coverage of specific written text types and genres, especially the language evolution seen through the lens of user-generated content, which gives access to a number of variants, socio- and idiolects, for example in the case of blogs (Barbaresi 2019).
 
@@ -232,13 +232,15 @@ That is why web texts can and should be further examined and prepared for inclus
 
 A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain texts types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Kilgarriff & Suchomel (2013), Schäfer et al. (2013). For work on corpus description in terms of genres see Sharoff (2018).
 
+Quality assessments can also be made in the context of distributional semantics, for example by creating vectors of co-occurring lemmas (Versley & Panchenko 2012). Evert (2015) lists the following approaches: statistical properties, corpus comparison, use as training data in NLP, and linguistic evaluation (e.g. frequency comparisons).
+
 
 
 Methodological issues
 ---------------------
 
 
-Limited time or ressources
+Limited time or resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Creating a corpus means finding a “balance academic integrity with practical realities, accuracy with expediency and size with efficiency” (Nelson 2010).
@@ -271,7 +273,7 @@ Technical problems are mostly related to communications over the network and tex
 Access and ownership
 ~~~~~~~~~~~~~~~~~~~~
 
-The growing digitization of text production and processing leaves us with remaining leagal issues:
+The growing digitization of text production and processing leaves us with remaining legal issues:
 
    “The speed of technological advance has left us with an ethical and legal confusion over the ownership of information, which is hindering the acquisition of text.” (Clear 1987)
 
@@ -297,6 +299,7 @@ References
 * Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. *Computer networks and ISDN systems*, 30(1-7), 161–172.
 * Clear, J. (1987). Trawling the language: monitor corpora. ZURILEX Proceedings. Tübingen: Francke.
 * Edwards, J., McCurley, K. S., and Tomlin, J. A. (2001). "An adaptive model for optimizing performance of an incremental web crawler". In *Proceedings of the 10th international conference on World Wide Web - WWW '01*, pp. 106–113.
+* Evert, S. (2015). An NLP approach to the evaluation of Web Corpora. Evaluation, (1/64).
 * Fairon, C. (2006). Corporator: A tool for creating RSS-based specialized corpora. In Proceedings of the 2nd International Workshop on Web as Corpus.
 * Good, J. (2022). "The Scope of Linguistic Data", In *The Open Handbook of Linguistic Data Management*, MIT Press, 27-47.
 * Gries, S. T., & Newman, J. (2014). Creating and using corpora. In *Research methods in linguistics*, Podesva, R.J., & Sharma, D. (eds.), 257-287.
@@ -314,4 +317,5 @@ References
 * Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
 * Suchomel, V. (2020). Better Web Corpora For Corpus Linguistics And NLP (Doctoral dissertation, PhD thesis, Masaryk University).
 * Tanguy, L. (2013). La ruée linguistique vers le Web. *Texto! Textes et Cultures*, 18(4).
+* Versley, Y., & Panchenko, Y. (2012). Not just bigger: Towards better-quality Web corpora. In *Proceedings of the seventh Web as Corpus Workshop (WAC7)*, pp. 44-52.
 

@@ -13,15 +13,15 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('.'))
 
 import trafilatura
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'trafilatura'
-copyright = '2022, Adrien Barbaresi'
+copyright = '2024, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__
@@ -52,7 +52,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx_sitemap'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -91,10 +92,14 @@ html_theme_options = {
   "external_links": [
       {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],
-  "google_analytics_id": "G-K3R5QCVDF1",
+  "navigation_with_keys": False,
 #  "use_edit_page_button": True,
 #  "navigation_depth": 3,
 #  "show_toc_level": 3,
+}
+html_theme_options["analytics"] = {
+  "google_analytics_id": "G-K3R5QCVDF1",
+  "analytics_anonymize_ip": True,
 }
 
 html_logo = "trafilatura-logo.png"
@@ -132,3 +137,8 @@ html_context = {
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
 }
+
+html_baseurl = 'https://trafilatura.readthedocs.io/'
+sitemap_url_scheme = "{lang}latest/{link}"
+
+html_extra_path = ['robots.txt']

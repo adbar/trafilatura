@@ -14,7 +14,8 @@ except ImportError:
 from lxml import html
 
 from trafilatura.json_metadata import normalize_json
-from trafilatura.metadata import extract_metadata, extract_meta_json
+from trafilatura.metadata import (check_authors, extract_meta_json,
+                                  extract_metadata, extract_url)
 from trafilatura.utils import normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -22,11 +23,20 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 def test_titles():
     '''Test the extraction of titles'''
+    # too short/empty
+    metadata = extract_metadata('<html><body><h3 class="title">T</h3><h3 id="title"></h3></body></html>')
+    assert metadata.title is None
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta property="og:title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
+    metadata = extract_metadata('<html><head><title>Test Title</title><meta name="title" content=" " /></head><body><h1>First</h1></body></html>')
+    assert metadata.title == 'First'
     metadata = extract_metadata('<html><head><title>Test Title</title></head><body></body></html>')
     assert metadata.title == 'Test Title'
     metadata = extract_metadata('<html><body><h1>First</h1><h1>Second</h1></body></html>')
     assert metadata.title == 'First'
     metadata = extract_metadata('<html><body><h1>   </h1><div class="post-title">Test Title</div></body></html>')
+    assert metadata.title == 'Test Title'
+    metadata = extract_metadata('<html><body><h2 class="block-title">Main menu</h2><h1 class="article-title">Test Title</h1></body></html>')
     assert metadata.title == 'Test Title'
     metadata = extract_metadata('<html><body><h2>First</h2><h1>Second</h1></body></html>')
     assert metadata.title == 'Second'
@@ -39,6 +49,8 @@ def test_titles():
     assert metadata.title == 'Semantic satiation'
     metadata = extract_metadata('<html><head><title> - Home</title></head><body/></html>')
     assert metadata.title == '- Home'
+    metadata = extract_metadata('<html><head><title>My Title » My Website</title></head><body/></html>')
+    assert metadata.title == "My Title"  # TODO: and metadata.sitename == "My Website"
 
 
 def test_authors():
@@ -48,9 +60,10 @@ def test_authors():
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
     assert normalize_json('Test \\nthis') == 'Test this'
+    assert normalize_json("Seán Federico O'Murchú") == "Seán Federico O'Murchú"
     # blacklist
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>', author_blacklist={'Jenny Smith'})
-    assert metadata.author == None
+    assert metadata.author is None
     # extraction
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
     assert metadata.author == 'Jenny Smith'
@@ -120,6 +133,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny Smith</span></body></html>')
     assert metadata.author == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><span id="author">Jenny Smith – The Moon</span></body></html>')
+    assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny_Smith</span></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span itemprop="author name">Shannon Deery, Mitch Clarke, Susie O’Brien, Laura Placella, Kara Irving, Jordy Atkinson, Suzan Delibasic</span></body></html>')
@@ -128,6 +143,8 @@ def test_authors():
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><author>Jenny Smith</author></body></html>')
     assert metadata.author == 'Jenny Smith'
+    metadata = extract_metadata('<html><head><meta data-rh="true" property="og:author" content="By &lt;a href=&quot;/profiles/amir-vera&quot;&gt;Amir Vera&lt;/a&gt;, Seán Federico O&#x27;Murchú, &lt;a href=&quot;/profiles/tara-subramaniam&quot;&gt;Tara Subramaniam&lt;/a&gt; and Adam Renton, CNN"/></head><body></body></html>')
+    assert metadata.author == "Amir Vera; Seán Federico O'Murchú; Tara Subramaniam; Adam Renton; CNN"
     metadata = extract_metadata('<html><body><div class="author"><span class="profile__name"> Jenny Smith </span> <a href="https://twitter.com/jenny_smith" class="profile__social" target="_blank"> @jenny_smith </a> <span class="profile__extra lg:hidden"> 11:57AM </span> </div></body></html>')
     assert metadata.author == 'Jenny Smith'
     metadata = extract_metadata('<html><body><p class="author-section byline-plain">By <a class="author" rel="nofollow">Jenny Smith For Daily Mail Australia</a></p></body></html>')
@@ -136,6 +153,13 @@ def test_authors():
     assert metadata.author == 'Ian Shive'
     metadata = extract_metadata('<html><body><div class="ArticlePage-authors"><div class="ArticlePage-authorName" itemprop="name"><span class="ArticlePage-authorBy">By&nbsp;</span><a aria-label="Ben Coxworth" href="https://newatlas.com/author/ben-coxworth/"><span>Ben Coxworth</span></a></div></div></body></html>')
     assert metadata.author == 'Ben Coxworth'
+    metadata = extract_metadata('<html><body><div><strong><a class="d1dba0c3091a3c30ebd6" data-testid="AuthorURL" href="/by/p535y1">AUTHOR NAME</a></strong></div></body></html>')
+    assert metadata.author == 'AUTHOR NAME'
+
+    # check authors string
+    blacklist = {"A", "b"}
+    assert check_authors("a; B; c; d", blacklist) == "c; d"
+    assert check_authors("a;B;c;d", blacklist) == "c; d"
 
 
 def test_url():
@@ -150,6 +174,8 @@ def test_url():
     assert metadata.url == 'https://example.org'
     metadata = extract_metadata('<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>', default_url="https://example.org")
     assert metadata.url == 'https://example.org'
+    url = extract_url(html.fromstring('<html><head><link rel="canonical" href="/article/medical-record"/><meta name="twitter:url" content="https://example.org"/></head><body></body></html>'))
+    assert url == 'https://example.org/article/medical-record'
 
 
 def test_description():
@@ -169,14 +195,17 @@ def test_dates():
     metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
     assert metadata.date == '2017-09-01'
     mystring = '<html><body><p>Veröffentlicht am 1.9.17</p></body></html>'
-    metadata = extract_metadata(mystring, fastmode=False)
+    metadata = extract_metadata(mystring, extensive=True)
     assert metadata.date == '2017-09-01'
-    metadata = extract_metadata(mystring, fastmode=True)
-    assert metadata.date is None
+    # behavior for fastmode=True changed in htmldate==1.6.0. On 1.5.2 and earlier, result was None
+    metadata = extract_metadata(mystring, extensive=False)
+    assert metadata.date == '2017-09-01'
 
 
 def test_sitename():
     '''Test extraction of site name'''
+    metadata = extract_metadata('<html><head><meta name="article:publisher" content="@"/></head><body/></html>')
+    assert metadata.sitename is None
     metadata = extract_metadata('<html><head><meta name="article:publisher" content="The Newspaper"/></head><body/></html>')
     assert metadata.sitename == 'The Newspaper'
     metadata = extract_metadata('<html><head><meta property="article:publisher" content="The Newspaper"/></head><body/></html>')
@@ -186,7 +215,8 @@ def test_sitename():
 
 def test_meta():
     '''Test extraction out of meta-elements'''
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
+    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/><meta property="og:type" content="Open Graph Type"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
+    assert metadata.pagetype == 'Open Graph Type'
     assert metadata.title == 'Open Graph Title'
     assert metadata.author == 'Jenny Smith'
     assert metadata.description == 'This is an Open Graph description'
@@ -213,6 +243,8 @@ def test_catstags():
     '''Test extraction of categories and tags'''
     metadata = extract_metadata('<html><body><p class="entry-categories"><a href="https://example.org/category/cat1/">Cat1</a>, <a href="https://example.org/category/cat2/">Cat2</a></p></body></html>')
     assert metadata.categories == ['Cat1', 'Cat2']
+    metadata = extract_metadata('<html><body><div class="postmeta"><a href="https://example.org/category/cat1/">Cat1</a></div></body></html>')
+    assert metadata.categories == ['Cat1']
     metadata = extract_metadata('<html><body><p class="entry-tags"><a href="https://example.org/tags/tag1/">Tag1</a>, <a href="https://example.org/tags/tag2/">Tag2</a></p></body></html>')
     assert metadata.tags == ['Tag1', 'Tag2']
     metadata = extract_metadata('<html><head><meta name="keywords" content="sodium, salt, paracetamol, blood, pressure, high, heart, &amp;quot, intake, warning, study, &amp;quot, medicine, dissolvable, cardiovascular" /></head></html>')
@@ -252,6 +284,59 @@ def test_license():
     assert metadata.license == 'CC BY-NC'
 
 
+def test_images():
+    '''Image extraction from meta SEO tags'''
+    metadata = extract_metadata('<html><head><meta property="image" content="https://example.org/example.jpg"></html>')
+    assert metadata.image == 'https://example.org/example.jpg'
+    metadata = extract_metadata('<html><head><meta property="og:image" content="https://example.org/example-opengraph.jpg" /><body/></html>')
+    assert metadata.image == 'https://example.org/example-opengraph.jpg'
+    metadata = extract_metadata('<html><head><meta property="twitter:image" content="https://example.org/example-twitter.jpg"></html>')
+    assert metadata.image == 'https://example.org/example-twitter.jpg'
+    '''Without Image'''
+    metadata = extract_metadata('<html><head><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" /></html>')
+    assert metadata.image == None
+
+def test_Document_as_dict():
+    """Tests that the dict serialization works and preserves data."""
+
+    html = """
+    <html>
+    <head>
+        <title>Test Title</title>
+        <meta itemprop="author" content="Jenny Smith" />
+        <meta property="og:url" content="https://example.org" />
+        <meta itemprop="description" content="Description" />
+        <meta property="og:published_time" content="2017-09-01" />
+        <meta name="article:publisher" content="The Newspaper" />
+        <meta property="image" content="https://example.org/example.jpg" />
+    </head>
+    <body>
+        <p class="entry-categories">
+        <a href="https://example.org/category/cat1/">Cat1</a>,
+        <a href="https://example.org/category/cat2/">Cat2</a>
+        </p>
+        <p>
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license"
+            >CC BY-SA</a
+        >
+        </p>
+    </body>
+    </html>
+    """
+
+    document = extract_metadata(html)
+
+    dict_ = document.as_dict()
+
+    assert dict_["title"] == "Test Title"
+    assert dict_["author"] == "Jenny Smith"
+    assert dict_["url"] == "https://example.org"
+    assert dict_["description"] == "Description"
+    assert dict_["sitename"] == "The Newspaper"
+    assert dict_["date"] == "2017-09-01"
+    assert dict_["categories"] == ["Cat1", "Cat2"]
+    assert dict_["license"] == "CC BY-SA 4.0"
+    assert dict_["image"] == "https://example.org/example.jpg"
 
 if __name__ == '__main__':
     test_titles()
@@ -263,3 +348,4 @@ if __name__ == '__main__':
     test_catstags()
     test_sitename()
     test_license()
+    test_images()

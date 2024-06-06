@@ -3,14 +3,28 @@ Evaluation
 
 .. meta::
     :description lang=en:
-        This benchmark tests how Python tools work on extraction of text from HTML code. Trafilatura
-        performs significantly better than the other comparable libraries in internal and external
-        evaluations.
+        See how Python tools work on main text extraction from HTML pages (html2txt).
+        Trafilatura consistently outperforms other open-source libraries,
+        showcasing its accuracy in extracting web content.
+
 
 
 Although text is ubiquitous on the Web, extracting information from web pages can prove to be difficult. Should the tooling be adapted to particular news outlets or blogs that are targeted (which often amounts to the development of web scraping tools) or should the extraction be as generic as possible to provide opportunistic ways of gathering information?
 
 The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and (optionally) comments. This task is also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
+
+
+.. hint::
+    To run the evaluation with the latest data and packages see the `corresponding readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ .
+
+
+External evaluations
+--------------------
+
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_
+- Best overall tool according to `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (Lejeune & Barbaresi 2020)
+- Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_ (now integrated in the internal benchmark, Trafilatura has improved since)
+- Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://webis.de/downloads/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
 
 
 Alternatives
@@ -50,7 +64,7 @@ Description
 
 **Errors**: The *boilerpy3*, *newspaper3k*, and *readabilipy* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
 
-**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions.
+**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions. Trafilatura consistently outperforms other open-source libraries, showcasing its efficiency and accuracy in extracting web content.
 
 **Roadmap**: Further evaluations will be run, including additional tools and languages. Comment extraction still has to be evaluated, although most libraries don not offer this functionality.
 
@@ -82,13 +96,6 @@ trafilatura 1.2.2 (precision)   **0.932**  0.874      0.905     0.902     9.4x
 trafilatura 1.2.2 (standard)    0.914      0.904      **0.910** **0.909** 7.1x
 =============================== =========  ========== ========= ========= ======
 
-
-External evaluations
---------------------
-
-- Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
-- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, in French).
-- Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_.
 
 
 Older results

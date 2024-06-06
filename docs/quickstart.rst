@@ -2,7 +2,10 @@ Quickstart
 ==========
 
 
-Primary installation method is with a Python package manager: ``pip install trafilatura``. See `installation documentation <installation.html>`_.
+Trafilatura simplifies the process of turning raw HTML into structured, meaningful data. Getting started with it is straightforward. This page offers a walkthrough through its main functions.
+
+
+Primary installation method is with a Python package manager: ``pip install trafilatura``. For more details see `installation documentation <installation.html>`_.
 
 
 With Python
@@ -12,29 +15,37 @@ The only required argument is the input document (here a downloaded HTML file), 
 
 .. code-block:: python
 
-    >>> import trafilatura
-    >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
-    >>> trafilatura.extract(downloaded)
-    # outputs main content and comments as plain text ...
-    >>> result = trafilatura.extract(downloaded, output_format="xml")
-    >>> print(result)
-    # formatting preserved in XML structure ...
-    >>> trafilatura.extract(downloaded, xml_output=True, include_comments=False)
-    # outputs main content without comments as XML ...
+    # import the necessary functions
+    >>> from trafilatura import fetch_url, extract
 
+    # grab a HTML file to extract data from
+    >>> downloaded = fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
+
+    # output main content and comments as plain text
+    >>> result = extract(downloaded)
+
+    # change the output format to XML (allowing for preservation of document structure)
+    >>> result = extract(downloaded, output_format="xml")
+
+    # discard potential comment and change the output to JSON
+    >>> extract(downloaded, output_format="json", include_comments=False)
 
 The use of fallback algorithms can also be bypassed in fast mode:
 
 .. code-block:: python
 
-    >>> result = trafilatura.extract(downloaded, no_fallback=True)
+    # faster mode without backup extraction
+    >>> result = extract(downloaded, no_fallback=True)
 
+
+For a full list of options see `Python usage <usage-python.html>`_.
+
+The extraction targets the main text part of a webpage. To extract all text content in a ``html2txt`` manner use this function:
 
 .. code-block:: python
 
-    # shorter alternative to import and use the functions
-    >>> from trafilatura import fetch_url, extract
-    >>> extract(fetch_url('...'))
+    >>> from trafilatura import html2txt
+    >>> html2txt(downloaded)
 
 
 On the command-line
@@ -45,10 +56,11 @@ URLs can be used directly (-u/--URL):
 
 .. code-block:: bash
 
+    # outputs main content and comments as plain text
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
-    # outputs main content and comments as plain text ...
+
+    # displays help message with all possible options
     $ trafilatura -h
-    # displays help message
 
 You can also pipe a HTML document (and response body) to trafilatura:
 
@@ -58,5 +70,19 @@ You can also pipe a HTML document (and response body) to trafilatura:
     $ < myfile.html trafilatura # same here
 
 
+Extraction options are also available on the command-line, they can be combined:
+
+.. code-block:: bash
+
+    $ < myfile.html trafilatura --json --no-tables
+
+
+
+Further steps
+-------------
+
+
 For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
 
+.. hint::
+     Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <Trafilatura_Overview.ipynb>`_

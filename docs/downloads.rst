@@ -13,9 +13,6 @@ This documentation page shows how to run simple downloads and how to configure a
 A main objective of data collection over the Internet such as web crawling is to efficiently gather as many useful web pages as possible. In order to retrieve multiples web pages at once it makes sense to retrieve as many domains as possible in parallel. However, particular rules apply then.
 
 
-*New in version 0.9: Functions exposed and made usable for convenience.*
-
-
 With Python
 -----------
 
@@ -23,7 +20,7 @@ Simple downloads
 ~~~~~~~~~~~~~~~~
 
 
-Running simple downloads is straightforward with the ``fetch_url()`` fonction. This method is also known as single-threaded downloads as they are processed sequentially.
+Running simple downloads is straightforward with the ``fetch_url()`` function. This method is also known as single-threaded downloads as they are processed sequentially.
 
 
 .. code-block:: python
@@ -43,9 +40,28 @@ Running simple downloads is straightforward with the ``fetch_url()`` fonction. T
 For efficiency reasons the function makes use of a connection pool where connections are kept open (unless too many websites are retrieved at once). You may see warnings in logs about it which you can safely ignore.
 
 
-.. note::
-    The content (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string. This default setting can be bypassed. With the ``decode=False`` parameter ``fetch_url()`` will return a `urllib3 response object <https://urllib3.readthedocs.io/en/latest/user-guide.html#response-content>`_ which can then be processed in a custom fashion.
+``Response`` object
+~~~~~~~~~~~~~~~~~~~
 
+The content retrieved by ``fetch_url()`` (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
+
+Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (optional dict), ``html`` (optional str), ``status``, and ``url``:
+
+.. code-block:: python
+
+    # Response object instead of Unicode string
+    >>> response = fetch_response('https://www.example.org')
+    >>> response.status
+    200
+    >>> response.url
+    'https://www.example.org'
+    >>> response.data
+    # raw HTML in binary format
+    >>> response = fetch_response('https://www.example.org', decode=True, with_headers=True)
+    # headers and html attributes used
+
+.. note::
+    New in version 1.7.0.
 
 
 Trafilatura-backed parallel threads
@@ -69,14 +85,15 @@ The following variant of multi-threaded downloads with throttling is implemented
     # number of threads to use
     threads = 4
 
-    backoff_dict = dict() # has to be defined first
     # converted the input list to an internal format
-    dl_dict = add_to_compressed_dict(mylist)
+    url_store = add_to_compressed_dict(mylist)
     # processing loop
-    while dl_dict:
-        buffer, threads, dl_dict, backoff_dict = load_download_buffer(dl_dict, backoff_dict)
-        for url, result in buffered_downloads(buffer, threads):
+    while url_store.done is False:
+        bufferlist, url_store = load_download_buffer(url_store, sleep_time=5)
+        # process downloads
+        for url, result in buffered_downloads(bufferlist, threads):
             # do something here
+            print(url)
             print(result)
 
 
@@ -89,15 +106,6 @@ Asynchronous downloads
 Asynchronous processing in probably even more efficient in the context of file downloads from a variety of websites. See for instance the `AIOHTTP library <https://docs.aiohttp.org/>`_.
 
 
-Managing cookies
-~~~~~~~~~~~~~~~~
-
-The standard library `cookiejar <https://docs.python.org/3/library/http.cookiejar.html>`_ can be used along ``urllib3`` in order to use cookies along with HTTP requests, see this `documentation pull request <https://github.com/urllib3/urllib3/pull/2474/files>`_.
-
-Alternatively, cookies (ideally not many) can be manually specified in ``settings.cfg``.
-
-
-
 On the command-line
 -------------------
 
@@ -108,19 +116,10 @@ Downloads on the command-line are automatically run with threads and domain-awar
     # basic output as raw text with backup directory
     $ trafilatura -i list.txt -o txtfiles/ --backup-dir htmlbackup/
 
+.. hint::
+    To check for download errors you can use the exit code (0 if all pages could be downloaded, 1 otherwise) and sift through the logs if necessary.
+
 For more information, see `page on command-line use <usage-cli.html>`_.
-
-
-Troubleshooting
----------------
-
-Download issues can be addressed by retrieving the files somewhere else (i.e. from already existing internet archives) or by using another download utility (see ``pycurl`` with Python and ``wget`` or ``curl`` on the command-line), and another IP or network infrastructure.
-
-- Installing the additional download utility ``pycurl`` manually or using ``pip3 install trafilatura[all]`` can alleviate the problem: another download library is used, leading to different results.
-- Several alternatives are available on the command-line, e.g. ``wget -O - "my_url" | trafilatura`` instead of ``trafilatura -u "my_url"``.
-
-.. note::
-    Downloads may fail because your IP or user agent are blocked. Trafilatura's crawling and download capacities do not bypass such restrictions.
 
 
 Enforcing politeness rules
@@ -190,7 +189,7 @@ To prevent the execution of too many requests within too little time, the option
     from trafilatura.downloads import load_download_buffer
 
     # 30 seconds is a safe choice
-    mybuffer, threads, domain_dict, backoff_dict = load_download_buffer(dl_dict, backoff_dict, sleep_time=30)
+    mybuffer, threads, domain_dict, backoff_dict = load_download_buffer(url_store, sleep_time=30)
     # then proceed as instructed above...
 
 
@@ -241,4 +240,4 @@ Here is the simplest way to stay polite while taking all potential constraints i
 1. Read ``robots.txt`` files, filter your URL list accordingly and care for crawl delay
 2. Use the framework described above and set the throttling variable to a safe value (your main bottleneck is your connection speed anyway)
 3. Optional: for longer crawls, keep track of the throttling info and revisit ``robots.txt`` regularly
-
+4. See also `page on troubleshooting <troubleshooting.html>`_.

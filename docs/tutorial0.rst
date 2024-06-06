@@ -171,8 +171,8 @@ Seamless download and processing
 
 Two major command line arguments are necessary here:
 
--  ``-i`` or ``--inputfile`` to select an input list to read links from
--  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+-  ``-i`` or ``--input-file`` to select an input list to read links from
+-  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
 
 An additional argument can be useful in this context:
 
@@ -197,7 +197,7 @@ The second and third instructions create a collection of `XML files <https://en.
 
 
 .. hint::
-    Trafilatura automatically throttles the requests made to a given server, making it the prefered method if you do not want to worry about downloads.
+    Trafilatura automatically throttles the requests made to a given server, making it the preferred method if you do not want to worry about downloads.
 
     See `documentation page on downloads <downloads.html>`_ for more information.
 
@@ -213,6 +213,6 @@ Alternatively, you can download a series of web documents with generic command-l
     # download if necessary
     $ wget --directory-prefix=download/ --wait 5 --input-file=mylist.txt
     # process a directory with archived HTML files
-    $ trafilatura --inputdir download/ --outputdir corpus/ --xmltei --nocomments
+    $ trafilatura --input-dir download/ --output-dir corpus/ --xmltei --no-comments
 
 

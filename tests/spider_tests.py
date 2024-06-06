@@ -8,67 +8,85 @@ import sys
 
 from collections import deque
 
-from trafilatura import spider
-from trafilatura.settings import DEFAULT_CONFIG
+import pytest
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
+from courlan import UrlStore
+
+from trafilatura import spider
+# from trafilatura.utils import LANGID_FLAG
+
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def test_redirections():
     "Test redirection detection."
-    _, _, baseurl = spider.probe_alternative_homepage('1234')
+    _, _, baseurl = spider.probe_alternative_homepage('xyz')
     assert baseurl is None
-    _, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/gzip')
-    assert baseurl == 'https://httpbin.org'
+    _, _, baseurl = spider.probe_alternative_homepage('https://httpbun.com/redirect-to?url=https://example.org')
+    assert baseurl == 'https://example.org'
     #_, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
 
 
 def test_meta_redirections():
     "Test redirection detection using meta tag."
-    htmlstring, homepage = '<html></html>', 'https://httpbin.org/'
+    # empty
+    htmlstring, homepage = '"refresh"', 'https://httpbun.com/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 == htmlstring and homepage2 == homepage
-    htmlstring, homepage = '<html>REDIRECT!</html>', 'https://httpbin.org/'
+    htmlstring, homepage = '<html></html>', 'https://httpbun.com/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 == htmlstring and homepage2 == homepage
-    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=1234"/></html>', 'https://httpbin.org/'
+
+    # unusable
+    htmlstring, homepage = '<html>REDIRECT!</html>', 'https://httpbun.com/'
+    htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert htmlstring2 == htmlstring and homepage2 == homepage
+
+    # malformed
+    htmlstring, homepage = '<html><meta http-equiv="refresh" content="3600\n&lt;meta http-equiv=" content-type=""></html>', 'https://httpbun.com/'
+    htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
+    assert htmlstring2 == htmlstring and homepage2 == homepage
+
+    # wrong URL
+    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=1234"/></html>', 'https://httpbun.com/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
     assert htmlstring2 is None and homepage2 is None
-    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=https://httpbin.org/status/200"/></html>', 'http://test.org/'
+
+    # normal
+    htmlstring, homepage = '<html><meta http-equiv="refresh" content="0; url=https://httpbun.com/html"/></html>', 'http://test.org/'
     htmlstring2, homepage2 = spider.refresh_detection(htmlstring, homepage)
-    assert htmlstring2 == '' and homepage2 == 'https://httpbin.org/status/200'
+    assert htmlstring2 is not None and homepage2 == 'https://httpbun.com/html'
 
 
 def test_process_links():
     "Test link extraction procedures."
-    todo, known_links = deque(), set()
     base_url = 'https://example.org'
     htmlstring = '<html><body><a href="https://example.org/page1"/><a href="https://example.org/page1/"/><a href="https://test.org/page1"/></body></html>'
     # 1 internal link in total
-    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
-    assert len(todo) == 1 and len(known_links) == 1
-    # same with URL already seen + todo is None
-    todo = None
-    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
-    assert len(todo) == 0 and len(known_links) == 1
+    spider.process_links(htmlstring, base_url)
+    assert len(spider.URL_STORE.find_known_urls(base_url)) == 1
+    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1
+    # same with content already seen
+    spider.process_links(htmlstring, base_url)
+    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1 and len(spider.URL_STORE.find_known_urls(base_url)) == 1
     # test navigation links
     htmlstring = '<html><body><a href="https://example.org/tag/number1"/><a href="https://example.org/page2"/></body></html>'
-    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
+    spider.process_links(htmlstring, base_url)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert todo[0] == 'https://example.org/tag/number1' and len(known_links) == 3
-    # test language
-    htmlstring = '<html><body><a href="https://example.org/en/page1"/></body></html>'
-    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo, language='en')
-    assert 'https://example.org/en/page1' in todo and len(known_links) == 4
+    # test cleaning and language
+    htmlstring = '<html><body><a href="https://example.org/en/page1/?"/></body></html>'
+    spider.process_links(htmlstring, base_url, language='en')
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert 'https://example.org/en/page1/' in todo and len(known_links) == 4  # TODO: remove slash?
+    # wrong language
     htmlstring = '<html><body><a href="https://example.org/en/page2"/></body></html>'
-    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo, language='de')
-    # wrong language, doesn't get stored anywhere (?)
+    spider.process_links(htmlstring, base_url, language='de')
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert 'https://example.org/en/page2' not in todo and len(known_links) == 4
     # test queue evaluation
     todo = deque()
@@ -79,47 +97,77 @@ def test_process_links():
     assert spider.is_still_navigation(todo) is True
 
 
-def test_crawl_page():
-    "Test page-by-page processing."
-    todo, known_links = deque(['https://httpbin.org/links/2/2']), set()
-    base_url, i = 'https://httpbin.org', 0
-    todo, known_urls, i, _ = spider.crawl_page(i, base_url, todo, known_links)
-    assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
-    assert len(known_urls) == 3 and i == 1
-    # initial page
-    todo, known_links, i, _ = spider.crawl_page(0, 'https://httpbin.org', deque(['https://httpbin.org/html']),  set(), initial=True)
-    assert len(todo) == 0 and len(known_links) == 1 and i == 1
-    # test language detection
-    if LANGID_FLAG is True:
-        todo, known_links = deque(['https://httpbin.org/html']), set()
-        ## TODO: find a better page
-        todo, known_links, i, _ = spider.crawl_page(i, 'https://httpbin.org', todo, known_links, lang='de')
-        assert len(todo) == 0 and len(known_links) == 1 and i == 2
-
-
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
+    url = 'https://httpbun.com/html'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
     # erroneous webpage
-    todo, known_links, base_url, i, rules = spider.init_crawl('https://h', None, None)
-    assert todo == deque([]) and rules is None
+    with pytest.raises(ValueError):
+        base_url, i, known_num, rules, is_on = spider.init_crawl('xyz', None, None)
+    assert len(spider.URL_STORE.urldict) == 0
+    # already visited
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, None, [url,])
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     # normal webpage
-    todo, known_links, base_url, i, rules = spider.init_crawl('https://httpbin.org/html', None, None)
-    assert todo == deque([]) and known_links == {'https://httpbin.org/html'} and base_url == 'https://httpbin.org' and i == 1
-    # keeping track of known URLs
-    known_links = 'https://test.org'
-    assert spider.is_known_link('https://test.org', known_links) is True
-    assert spider.is_known_link('http://test.org', known_links) is True
-    assert spider.is_known_link('http://test.org/', known_links) is True
-    assert spider.is_known_link('https://test.org/', known_links) is True
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, None, None)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert todo == [] and known_links == [url,] and base_url == 'https://httpbun.com' and i == 1
     # delay between requests
-    assert spider.get_crawl_delay(None) == 5
-    assert spider.get_crawl_delay(rules) == 5
-    assert spider.get_crawl_delay(rules, default=2.0) == 2.0
+    assert spider.URL_STORE.get_crawl_delay('https://httpbun.com') == 5
+    assert spider.URL_STORE.get_crawl_delay('https://httpbun.com', default=2.0) == 2.0
+    # existing todo
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    base_url, i, known_num, rules, is_on = spider.init_crawl(url, [url,], None)
+    assert base_url == 'https://httpbun.com' and i == 0
+
+
+def test_crawl_page():
+    "Test page-by-page processing."
+    base_url = 'https://httpbun.com'
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(['https://httpbun.com/links/2/2'])
+    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbun.com')
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert sorted(todo) == ['https://httpbun.com/links/2/0', 'https://httpbun.com/links/2/1']
+    assert len(known_links) == 3 and visited_num == 1
+    # initial page
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(['https://httpbun.com/html'])
+    # if LANGID_FLAG is True:
+    is_on, known_num, visited_num = spider.crawl_page(0, 'https://httpbun.com', initial=True, lang='de')
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert len(todo) == 0 and len(known_links) == 1 and visited_num == 1
+    ## TODO: find a better page for language tests
+
+
+def test_focused_crawler():
+    "Test the whole focused crawler mechanism."
+    spider.URL_STORE = UrlStore()
+    todo, known_links = spider.focused_crawler("https://httpbun.com/links/1/1", max_seen_urls=1)
+    ## fails on Github Actions
+    ## assert sorted(known_links) == ['https://httpbun.com/links/1/0', 'https://httpbun.com/links/1/1']
+    ## assert sorted(todo) == ['https://httpbun.com/links/1/0']
+
+
+def test_robots():
+    "Test robots.txt parsing"
+    robots_url = "https://example.org/robots.txt"
+    assert spider.parse_robots(robots_url, None) is None
+    assert spider.parse_robots(robots_url, 123) is None
+    assert spider.parse_robots(robots_url, b"123") is None
+    assert spider.parse_robots(robots_url, "Allow: *") is not None
 
 
 if __name__ == '__main__':
     test_redirections()
     test_meta_redirections()
     test_process_links()
-    test_crawl_page()
     test_crawl_logic()
+    test_crawl_page()
+    test_focused_crawler()
+    test_robots()

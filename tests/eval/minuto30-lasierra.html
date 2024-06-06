@@ -1,0 +1,1286 @@
+	<!DOCTYPE html>
+<!--[if IE 8]>
+<html class="no-js g1-off-outside lt-ie10 lt-ie9" id="ie8" lang="es" prefix="og: https://ogp.me/ns#"><![endif]-->
+<!--[if IE 9]>
+<html class="no-js g1-off-outside lt-ie10" id="ie9" lang="es" prefix="og: https://ogp.me/ns#"><![endif]-->
+<!--[if !IE]><!-->
+<html class="no-js g1-off-outside" lang="es" prefix="og: https://ogp.me/ns#"><!--<![endif]-->
+<head><meta charset="UTF-8"/><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(){this.triggerEvents=["keydown","mousedown","mousemove","touchmove","touchstart","touchend","wheel"],this.userEventHandler=this._triggerListener.bind(this),this.touchStartHandler=this._onTouchStart.bind(this),this.touchMoveHandler=this._onTouchMove.bind(this),this.touchEndHandler=this._onTouchEnd.bind(this),this.clickHandler=this._onClick.bind(this),this.interceptedClicks=[],window.addEventListener("pageshow",(e=>{this.persisted=e.persisted})),window.addEventListener("DOMContentLoaded",(()=>{this._preconnect3rdParties()})),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){document.hidden?e._triggerListener():(this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventHandler,{passive:!0}))),window.addEventListener("touchstart",e.touchStartHandler,{passive:!0}),window.addEventListener("mousedown",e.touchStartHandler),document.addEventListener("visibilitychange",e.userEventHandler))}_removeUserInteractionListener(){this.triggerEvents.forEach((e=>window.removeEventListener(e,this.userEventHandler,{passive:!0}))),document.removeEventListener("visibilitychange",this.userEventHandler)}_onTouchStart(e){"HTML"!==e.target.tagName&&(window.addEventListener("touchend",this.touchEndHandler),window.addEventListener("mouseup",this.touchEndHandler),window.addEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.addEventListener("mousemove",this.touchMoveHandler),e.target.addEventListener("click",this.clickHandler),this._renameDOMAttribute(e.target,"onclick","rocket-onclick"))}_onTouchMove(e){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler),e.target.removeEventListener("click",this.clickHandler),this._renameDOMAttribute(e.target,"rocket-onclick","onclick")}_onTouchEnd(e){window.removeEventListener("touchend",this.touchEndHandler),window.removeEventListener("mouseup",this.touchEndHandler),window.removeEventListener("touchmove",this.touchMoveHandler,{passive:!0}),window.removeEventListener("mousemove",this.touchMoveHandler)}_onClick(e){e.target.removeEventListener("click",this.clickHandler),this._renameDOMAttribute(e.target,"rocket-onclick","onclick"),this.interceptedClicks.push(e),e.preventDefault(),e.stopPropagation(),e.stopImmediatePropagation()}_replayClicks(){window.removeEventListener("touchstart",this.touchStartHandler,{passive:!0}),window.removeEventListener("mousedown",this.touchStartHandler),this.interceptedClicks.forEach((e=>{e.target.dispatchEvent(new MouseEvent("click",{view:e.view,bubbles:!0,cancelable:!0}))}))}_renameDOMAttribute(e,t,n){e.hasAttribute&&e.hasAttribute(t)&&(event.target.setAttribute(n,event.target.getAttribute(t)),event.target.removeAttribute(t))}_triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}_preconnect3rdParties(){let e=[];document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((t=>{if(t.hasAttribute("src")){const n=new URL(t.src).origin;n!==location.origin&&e.push({src:n,crossOrigin:t.crossOrigin||"module"===t.getAttribute("data-rocket-type")})}})),e=[...new Map(e.map((e=>[JSON.stringify(e),e]))).values()],this._batchInjectResourceHints(e,"preconnect")}async _loadEverythingNow(){this.lastBreath=Date.now(),this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async);try{await this._triggerDOMContentLoaded(),await this._triggerWindowLoad()}catch(e){}window.dispatchEvent(new Event("rocket-allScriptsLoaded")),this._replayClicks()}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._littleBreath(),new Promise((t=>{const n=document.createElement("script");[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type"),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t());try{e.parentNode.replaceChild(n,e)}catch(e){t()}}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){this._batchInjectResourceHints([...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async],"preload")}_batchInjectResourceHints(e,t){var n=document.createDocumentFragment();e.forEach((e=>{if(e.src){const i=document.createElement("link");i.href=e.src,i.rel=t,"preconnect"!==t&&(i.as="script"),e.getAttribute&&"module"===e.getAttribute("data-rocket-type")&&(i.crossOrigin=!0),e.crossOrigin&&(i.crossOrigin=e.crossOrigin),n.appendChild(i)}})),document.head.appendChild(n)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(i){e["rocket"+t]=n=i}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._littleBreath(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._littleBreath(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._littleBreath(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._littleBreath(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._littleBreath(),window.dispatchEvent(new Event("rocket-load")),await this._littleBreath(),window.rocketonload&&window.rocketonload(),await this._littleBreath(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),await this._littleBreath();const e=new Event("rocket-pageshow");e.persisted=this.persisted,window.dispatchEvent(e),await this._littleBreath(),window.rocketonpageshow&&window.rocketonpageshow({persisted:this.persisted})}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,i=document.createRange(),r=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const s=document.createDocumentFragment();i.setStart(s,0),s.appendChild(i.createContextualFragment(t)),r.insertBefore(s,o)}}async _littleBreath(){Date.now()-this.lastBreath>45&&(await this._requestAnimFrame(),this.lastBreath=Date.now())}async _requestAnimFrame(){return document.hidden?new Promise((e=>setTimeout(e))):new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts;e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();</script>
+	
+	<link rel="profile" href="http://gmpg.org/xfn/11"/>
+	<link rel="pingback" href="https://www.minuto30.com/xmlrpc.php"/>
+
+	
+<meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0, height=device-height, width=device-width" />
+
+<!-- Optimización en motores de búsqueda por Rank Math PRO - https://s.rankmath.com/home -->
+<title>La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector |Minuto30</title><style id="rocket-critical-css">article,aside,body,div,h1,h2,h3,header,html,img,li,nav,p,span,strong,time,ul{margin:0;padding:0;border-width:0;border-style:solid;outline:0;font-size:100%;vertical-align:baseline;background:0 0}article,aside,header,nav{display:block}body{line-height:1}ul{list-style:none}:focus{outline:0}:root{--g1-rtxt-color:#333;--g1-itxt-color:#000;--g1-mtxt-color:#999;--g1-border-color:#e6e6e6;--g1-bg-color:#fff;--g1-bg-color-r:255;--g1-bg-color-g:255;--g1-bg-color-b:255;--g1-bg-tone-color:#f2f2f2;--g1-bg-alt-color:#ededed;--g1-cat-border-color:#fff;--g1-cat-bg-color:#fff;--g1-cat-txt-color:#000;--g1-reverse-border-color:#333;--g1-reverse-bg-color:#1a1a1a;--g1-reverse-itxt-color:#fff}body{background-color:#fff;color:#333;background-color:var(--g1-bg-color);color:var(--g1-rtxt-color)}ul{padding-left:2em;list-style-type:circle}a{text-decoration:none;border-width:0;border-style:solid}strong{font-weight:700}img{max-width:100%;height:auto}button::-moz-focus-inner{border:0;padding:0}button{box-sizing:border-box;max-width:100%;margin:0;padding:7px;border-width:1px;border-style:solid;border-color:#e6e6e6;border-color:var(--g1-border-color);background-color:transparent;color:inherit;border-radius:0}button{width:auto;padding:5px 23px;border-width:2px;border-radius:0;-webkit-appearance:none;-moz-appearance:none;appearance:none}::-webkit-input-placeholder{color:inherit;opacity:.33}::-moz-placeholder{color:inherit;opacity:.33}:-ms-input-placeholder{color:inherit;opacity:.33}.g1-row{clear:both;box-sizing:border-box;position:relative;width:100%;margin:0 auto}.g1-row:after{display:table;clear:both;content:""}.g1-row-layout-page>.g1-row-background{background-color:#fff;background-color:var(--g1-bg-color)}.g1-row-inner{display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-wrap:wrap;-webkit-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:stretch;-webkit-align-items:stretch;align-items:stretch;max-width:1182px;margin:0 auto;position:relative;z-index:1;font-size:0}.g1-row-background{overflow:hidden;margin:0 auto;position:absolute;z-index:-2;left:0;right:0;top:0;bottom:0}.g1-column{display:block;box-sizing:border-box;width:100%;padding:0 10px;margin:0 auto;position:relative;vertical-align:top;font-size:1rem}@media only screen and (max-width:800px){.g1-column+.g1-sidebar{margin-top:30px}}@media only screen and (min-width:801px){.g1-row-inner{-ms-flex-wrap:none;-webkit-flex-wrap:nowrap;flex-wrap:nowrap}.g1-column-2of3{width:66.66667%}.g1-column-1of3{width:33.33333%}.g1-sidebar-padded{padding-left:20px}}@media only screen and (min-width:1025px){.g1-column{padding-left:15px;padding-right:15px}.g1-sidebar-padded{padding-left:45px}}.g1-row-padding-m{padding-top:30px;padding-bottom:0}body,button,html{font:400 14px/20px serif;font-family:Roboto,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.g1-mega{font:500 37px/1.11111 serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;color:#000;color:var(--g1-itxt-color);text-transform:none}h1{font:500 31px/1.067 serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;text-transform:none;color:#000;color:var(--g1-itxt-color)}h2{font:500 26px/1.125 serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;text-transform:none;color:#000;color:var(--g1-itxt-color)}.g1-gamma,h3{font:500 22px/1.10526 serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;text-transform:none;color:#000;color:var(--g1-itxt-color)}.g1-delta{font:500 18px/1.09524 serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;text-transform:none;color:#000;color:var(--g1-itxt-color)}.g1-epsilon{font:500 15px/18px serif;font-family:Montserrat,Roboto,sans-serif;letter-spacing:0;text-transform:none;color:#000;color:var(--g1-itxt-color)}@media only screen and (min-width:601px){.g1-delta{font-size:17px}.g1-gamma,h3{font-size:20px}h2{font-size:23px}h1{font-size:26px}.g1-mega{font-size:30px}}@media only screen and (min-width:1025px){.g1-delta{font-size:18px}.g1-gamma,h3{font-size:21px}h2{font-size:24px}h1{font-size:33px}.g1-mega{font-size:38px}}.g1-delta-2nd{font-family:Montserrat,Roboto,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:normal}.g1-delta-2nd{margin-bottom:20px}.g1-delta-2nd>span{display:block;padding-bottom:5px;border-width:0 0 1px;border-style:solid}.g1-gamma-3rd{font-weight:300;letter-spacing:-.025em;opacity:.5}h1,h2,h3,p,ul{margin-bottom:20px}.g1-typography-xl{font-size:18px;line-height:30px}.g1-meta{font:400 12px/16px serif;font-family:Montserrat,Roboto,sans-serif;text-transform:none;letter-spacing:normal;color:#999;color:var(--g1-mtxt-color)}.g1-meta a{color:#000;color:var(--g1-itxt-color)}.g1-meta strong{font-weight:inherit}.g1-meta-m{font-size:14px;line-height:18px}button{box-sizing:border-box;display:inline-block;margin-right:.2px;position:relative;z-index:0;text-decoration:none;text-align:center;vertical-align:middle;zoom:1;font:400 13px/22px serif;font-family:Montserrat,Roboto,sans-serif;text-transform:uppercase;letter-spacing:.1em;border-radius:0}.g1-button-none{padding:0;border-width:0;box-shadow:none;text-align:inherit;border-color:transparent;background-color:transparent;color:inherit}.g1-drop{display:inline-block;margin-bottom:1.5rem}.g1-drop-nojs{visibility:hidden}.g1-drop-toggle{display:none;position:relative;z-index:2}.g1-drop-toggle-icon{display:inline-block;width:32px;margin-right:6px;font:32px/50px bimber;text-align:center;vertical-align:middle}.g1-drop-toggle-icon:before{display:block;content:"\e01f"}.g1-drop-toggle-text{display:inline-block;font-size:10px;font-family:Montserrat,Roboto,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;vertical-align:middle}.g1-drop-toggle-arrow{display:none;position:absolute;z-index:2;left:50%;right:auto;bottom:0;width:0;height:0;margin-left:-6px;border-width:6px;border-style:solid;border-color:transparent transparent #fff;border-color:transparent transparent var(--g1-bg-color);content:""}.g1-drop-icon .g1-drop-toggle-icon{margin-right:0}.g1-drop-icon .g1-drop-toggle-text{overflow:hidden;width:1px;height:1px;position:absolute;clip:rect(1px,1px,1px,1px)}.g1-drop-content{display:block;box-sizing:border-box;border-radius:0}.g1-dropable .g1-drop{margin-left:10px;vertical-align:top}.g1-dropable .g1-drop-toggle{display:inline-block}.g1-dropable .g1-drop-content{display:none;position:absolute;z-index:8;left:0;right:0;background-color:#fff;background-color:var(--g1-bg-color);box-shadow:0 15px 45px 15px rgba(0,0,0,.07)}@media only screen and (min-width:1025px){.g1-dropable .g1-drop{position:relative}.g1-dropable .g1-drop-content{width:320px;left:0;right:auto;top:100%}.g1-dropable .g1-drop-before .g1-drop-content{right:0;left:auto}}.g1-drop-m .g1-drop-toggle-icon{width:24px;font-size:24px;line-height:40px}.g1-drop-the-socials .g1-drop-toggle-icon:before{content:"\e011"}.g1-drop-the-skin{display:block;visibility:hidden}.g1-drop-the-skin .g1-drop-toggle-icon{overflow:hidden;position:relative}.g1-drop-the-skin .g1-drop-toggle-icon:after,.g1-drop-the-skin .g1-drop-toggle-icon:before{content:"\e062"}.g1-drop-the-skin .g1-drop-toggle-icon:after{display:block;position:absolute;top:0;bottom:0;left:0;right:0;content:"\e063"}.g1-drop-the-skin .g1-skinmode-desc:last-child{display:none}.g1-drop-the-skin .g1-drop-content{padding:1.5rem 30px 0}@supports (--css:variables){.g1-drop-the-skin{visibility:visible}}.g1-drop-the-skin-light .g1-drop-toggle-icon:after{-webkit-transform:translateY(100%) rotate(90deg);-moz-transform:translateY(100%) rotate(90deg);-ms-transform:translateY(100%) rotate(90deg);-o-transform:translateY(100%) rotate(90deg);transform:translateY(100%) rotate(90deg)}.g1-dropable .g1-drop-the-socials{position:relative}.g1-dropable .g1-drop-the-socials>.g1-drop-content{left:50%;right:auto;width:60px;padding:6px;margin-left:-30px}.g1-dropable .g1-drop-the-socials .g1-socials-items{margin:0}.g1-dropable .g1-drop-with-anim>.g1-drop-content,.g1-dropable .g1-drop-with-anim>.g1-drop-toggle>.g1-drop-toggle-arrow{display:block;visibility:hidden;opacity:0;-webkit-transform:translate(0,20px);-moz-transform:translate(0,20px);-ms-transform:translate(0,20px);-o-transform:translate(0,20px);transform:translate(0,20px);-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden}.entry-featured-media{margin-bottom:1.5rem}.entry-featured-media .g1-frame{background-color:#e6e6e6;background-color:var(--g1-border-color)}.entry-featured-media img{width:100%}.entry-author{display:block;margin-right:10px}.entry-category{display:inline-block;position:relative;padding:2px 8px 2px 8px;border-width:0;margin-right:0;font-size:12px;line-height:16px;font-family:Montserrat,Roboto,sans-serif;font-weight:700;letter-spacing:normal;text-transform:uppercase;vertical-align:middle;border-style:solid;text-shadow:none;border-color:#fff;background-color:#fff;color:#000;border-color:var(--g1-cat-border-color);background-color:var(--g1-cat-bg-color);color:var(--g1-cat-txt-color)}.entry-categories{display:inline-block;margin:0 0 16px}.entry-categories-label{display:none}.entry-date{display:inline-block;margin-right:10px;vertical-align:top}.entry-byline{margin-bottom:4px}.entry-byline:after{clear:both;display:table;content:""}.entry-stats{display:inline-block;clear:both;position:relative;z-index:6;margin-bottom:.25rem;padding:2px 10px 2px 0}.g1-meta-m strong{font-weight:600}.entry-meta-m{display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-wrap:wrap;-webkit-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:center;-webkit-align-items:center;align-items:center;-ms-flex-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;margin-bottom:10px}.entry-meta-m .entry-byline{-webkit-flex:1 1 auto;-ms-flex:1 1 auto;flex:1 1 auto}.entry-meta-m .entry-date{white-space:nowrap}.entry-flag{display:block;box-sizing:border-box;position:relative;top:0;width:40px;height:40px;vertical-align:top;font-size:0;line-height:40px;text-align:center;border-style:solid;border-radius:50%;border-color:#ff0036;background-color:#ff0036;color:#fff}.entry-flag:before{display:block;position:absolute;left:0;right:0;top:50%;margin-top:-.5em;text-align:center;font-size:24px;line-height:1;font-family:bimber;font-weight:400;content:""}.entry-flag-latest{border-color:grey;background-color:grey;color:#fff}.entry-flag-latest:before{content:"\e017"}.menu-item>a .entry-flag{width:50px;height:50px;line-height:50px;margin:0 auto 12px;border-radius:50%}.entry-before-title .entry-categories{vertical-align:middle}.entry-title>a{color:inherit}.entry-content{overflow-wrap:break-word;word-wrap:break-word;word-break:break-word}.entry-content::after{clear:both;display:table;content:""}.g1-content-narrow{box-sizing:border-box}.g1-content-narrow>p{max-width:662px;margin-left:auto;margin-right:auto}.g1-content-narrow>[style]{margin-left:auto!important;margin-right:auto!important}.entry-tpl-txtlist{padding-left:20px}.entry-tpl-txtlist:after{display:block;height:0;margin-top:10px;content:""}.entry-tpl-txtlist .entry-title{margin-bottom:6px;position:relative}.entry-tpl-txtlist .entry-title:before{position:absolute;left:-20px;right:auto;font-size:16px;font-family:bimber;font-weight:400;font-style:normal;content:""}.g1-collection-item-txtlist+.g1-collection-item-txtlist{padding-top:10px;border-top:1px solid #e6e6e6}.entry-header-01 .entry-before-title{display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-wrap:wrap;-webkit-flex-wrap:wrap;flex-wrap:wrap;-ms-flex-align:end;-webkit-align-items:flex-end;align-items:flex-end;-ms-flex-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;font-size:0}.entry-header-01 .entry-categories{display:inline-block;margin-bottom:16px;vertical-align:middle}.g1-collection{clear:both;margin:0 auto}.g1-collection:after{clear:both;display:table;content:""}.g1-collection-viewport{clear:both;margin-left:-10px;margin-right:-10px}.g1-collection-items{clear:both;margin:0;padding:0;list-style:none;font-size:0;counter-reset:g1-collection-item-counter}.g1-collection-item{display:inline-block;box-sizing:border-box;width:100%;margin:0;padding:0 10px;vertical-align:top;font-size:1rem}@media only screen and (min-width:1025px){.g1-collection-viewport{margin-left:-15px;margin-right:-15px}.g1-collection-item{padding:0 15px}}.g1-collection-txtlist{margin-left:auto;margin-right:auto}.g1-collection-txtlist .g1-collection-viewport{margin-left:0;margin-right:0}.g1-collection-txtlist .g1-collection-item{padding-left:0;padding-right:0}.g1-sidebar .widget{margin-bottom:45px}.g1-frame{display:block}.g1-frame-inner{display:block;overflow:hidden;width:100%;position:relative}.g1-frame-inner img{display:block}.g1-frame-icon{display:none;box-sizing:border-box;width:60px;height:60px;margin-top:-30px;margin-left:-30px;position:absolute;z-index:1;left:50%;right:auto;top:50%;font-size:18px;line-height:60px;font-weight:500;text-align:center;letter-spacing:-.05em;border-radius:50%;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.2)}.g1-frame-icon:before{display:block;position:absolute;z-index:-1;left:0;right:0;top:0;bottom:0;font-size:60px;font-family:bimber;font-style:normal;text-shadow:0 0 40px rgba(0,0,0,.666);opacity:.8}.entry-featured-media-main{margin-left:auto;margin-right:auto}.entry-featured-media-main .g1-frame-inner{overflow:visible}.g1-hamburger{display:block;float:left;padding:4px 0;margin-right:20px;z-index:1;color:inherit}.g1-hamburger-icon{display:block;font:32px/1 bimber;text-align:center}.g1-hamburger-icon:before{display:inline;content:"\e018"}.g1-hamburger-label{display:block;font-size:13px;line-height:15px}.g1-hamburger-label-hidden{overflow:hidden;width:1px;height:1px;position:absolute;clip:rect(1px,1px,1px,1px)}.g1-hamburger-s .g1-hamburger-icon{width:32px;font-size:16px;line-height:16px}.menu-item{position:relative}.menu-item>a{display:block;position:relative;line-height:1.25;color:inherit}.menu-item>a:before{display:none}.menu-item-has-children>a{padding-right:20px;position:relative}.menu-item-has-children>a:after{display:inline-block;margin-top:-.5em;vertical-align:middle;position:absolute;right:0;left:auto;top:50%;font:16px/1 bimber;text-transform:none;letter-spacing:normal;content:"\e000"}.sub-menu{margin:0;padding:15px 0;list-style:none}.sub-menu>.menu-item>a{display:block;padding:4px 20px;padding-right:26px;border-width:0;font-size:13px;font-family:Montserrat,Roboto,sans-serif;font-weight:400;text-transform:none;letter-spacing:normal;box-shadow:none}.g1-canvas .sub-menu{display:none}.g1-dropable .menu-item-g1-standard .sub-menu{display:none;box-sizing:border-box;position:absolute;z-index:10;left:0;right:auto;width:240px;padding:20px 0;box-shadow:0 15px 45px 15px rgba(0,0,0,.07)}.g1-dropable .menu-item-g1-standard .sub-menu{display:block;visibility:hidden;opacity:0;-webkit-transform:translate(0,30px);-moz-transform:translate(0,30px);-ms-transform:translate(0,30px);-o-transform:translate(0,30px);transform:translate(0,30px);-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden}html{height:100%}.g1-body-inner{position:relative;z-index:1}.g1-canvas-overlay{display:block;visibility:hidden;width:100%;position:absolute;z-index:998;top:0;bottom:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;background-color:#000;opacity:0}.g1-canvas{width:0;position:fixed;z-index:3;top:0;bottom:0;left:0;right:auto;overscroll-behavior:contain;background-color:#fff}.g1-canvas-inner{width:320px;position:absolute;z-index:1;left:auto;right:0;top:0;bottom:0}.g1-canvas-content{padding:48px 30px 30px;position:absolute;z-index:3;left:0;right:0;top:0;bottom:0;overflow-y:auto;-ms-overflow-style:none;-ms-overflow-style:-ms-autohiding-scrollbar}.g1-canvas-background{overflow:hidden;margin:0 auto;position:absolute;z-index:1;left:0;right:0;top:0;bottom:0}.g1-canvas-toggle{box-sizing:border-box;display:block;width:44px;height:28px;margin-left:-22px;position:absolute;z-index:4;left:50%;right:auto;top:10px;font-size:0;line-height:0;text-align:center;border-radius:0;color:#000;-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;backface-visibility:hidden}.g1-canvas-toggle:before{display:inline-block;position:absolute;left:0;right:auto;top:50%;width:100%;margin-top:-.5em;font:24px/26px bimber;content:"\e01b"}.g1-canvas .g1-quick-nav{margin-bottom:1.5rem}.g1-primary-nav{margin-bottom:1.5rem}.g1-primary-nav-menu{margin:0;padding:0;list-style:none}.g1-primary-nav-menu>.menu-item{display:block;font-size:1rem;text-align:left}.g1-primary-nav-menu>.menu-item>a{display:block;padding:4px 0;font-size:14px;line-height:1;font-family:Montserrat,Roboto,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:normal}.g1-quick-nav{clear:both}.g1-quick-nav-menu>.menu-item>a{font-size:12px;font-family:Montserrat,sans-serif;font-weight:500;line-height:1.125;text-transform:uppercase;letter-spacing:normal}#page .g1-quick-nav-menu{display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-wrap:wrap;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin:0;padding:0;list-style:none;text-align:center}#page .g1-quick-nav-menu>.menu-item{display:inline-block;margin:6px 0;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto}#page .g1-quick-nav-menu>.menu-item>a{display:block;padding:0 5px}#page .g1-quick-nav-short .menu-item .entry-flag{width:1em;height:1em;margin-bottom:.2em;font-size:16px;line-height:1;border-color:transparent;background-color:transparent;background-image:none;color:currentColor}#page .g1-quick-nav-short .menu-item .entry-flag:before{font-size:inherit;opacity:.25}@media only screen and (min-width:1025px){#page .g1-quick-nav{display:block;clear:none;float:right;padding-top:0;padding-bottom:0}#page .g1-quick-nav .g1-quick-nav-menu{display:block}#page .g1-quick-nav .g1-quick-nav-menu>.menu-item>a{padding:0 10px}#page .g1-quick-nav-short .menu-item .entry-flag{font-size:32px}}@media only screen and (min-width:1025px){#page{display:-ms-flexbox;display:-webkit-flex;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;-ms-flex-wrap:none;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;min-height:100vh}}.g1-sticky-top-wrapper{clear:both;position:static;position:-webkit-sticky;position:sticky;left:0;right:0;top:0}.site-title{margin-bottom:0;color:inherit}.site-title>a{color:inherit}.g1-logo-wrapper{display:block;position:relative}.g1-logo-wrapper .g1-logo{display:block}picture.g1-logo{line-height:0}.g1-id{margin:15px auto;z-index:1}.g1-logo-wrapper .g1-logo-inverted{display:none}.g1-hb-row{position:relative;z-index:50;box-sizing:border-box;width:100%}.g1-hb-row>.g1-row-inner{position:static}.g1-hb-row>.g1-row-inner>.g1-column{position:static}.g1-hb-row>.g1-row-inner:after{display:table;clear:both;content:""}.g1-hb-row .g1-hamburger{margin-right:10px}.g1-hb-row .g1-drop{margin-bottom:0}.g1-hb-row .g1-socials-items{margin:0 0 0 20px}.g1-hb-row .g1-drop .g1-socials-item-link{color:#333}.g1-hb-row .g1-quick-nav{float:none}.g1-hb-row .g1-primary-nav{margin-bottom:0}.g1-hb-row .g1-primary-nav-menu>.menu-item{display:inline-block;vertical-align:top}.g1-hb-row .g1-primary-nav-menu>.menu-item>a{padding:7px 10px;line-height:16px}.g1-hb-row .g1-primary-nav-menu>.menu-item-has-children>a{padding-right:16px}.g1-hb-row-3{z-index:55}.g1-hb-row-2{z-index:60}.g1-hb-row-1{z-index:65}.g1-hb-row .g1-column{width:100%;display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-wrap:none;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;-ms-flex-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;-ms-flex-align:center;-webkit-align-items:center;align-items:center}.g1-bin{display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-align:center;-webkit-align-items:center;align-items:center}.g1-bin-align-left{-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start}.g1-bin-align-center{-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center}.g1-bin-align-right{-ms-flex-pack:end;-webkit-justify-content:flex-end;justify-content:flex-end}.g1-bin-align-center .g1-logo{margin-left:auto;margin-right:auto}.g1-bin-grow-on{-webkit-flex:1 1 0;-ms-flex:1 1 0;flex:1 1 0}.g1-bin-grow-off{-webkit-flex:0 0 auto;-ms-flex:0 0 auto;flex:0 0 auto}.g1-bin-1 .g1-id,.g1-bin-1 .g1-primary-nav{margin-right:20px;margin-left:0}.g1-bin-1 .g1-hamburger{margin-right:10px;margin-left:0}.g1-bin-2 .g1-id,.g1-bin-2 .g1-quick-nav{margin-right:10px;margin-left:10px}.g1-bin-3 .g1-quick-nav{margin-right:0;margin-left:20px}.g1-bin-3 .g1-drop{margin-right:0;margin-left:10px}.g1-hb-row-normal{display:none}@media only screen and (min-width:1025px){.g1-hb-row-mobile{display:none}.g1-hb-row-normal{display:block}}.g1-hb-row-mobile .g1-id{text-align:center}.g1-hb-row-mobile .g1-quick-nav{width:100%}.g1-hb-row .g1-drop-content .g1-socials-items-tpl-grid{display:block}.g1-hb-row .g1-dropable .g1-bin-3 .g1-drop-content{left:auto;right:0}.g1-hb-row .g1-socials-items-tpl-grid .g1-socials-item{display:inline-block;vertical-align:top}#primary,#secondary{font-size:1rem;text-align:left}.g1-back-to-top{display:block;visibility:hidden;width:28px;height:28px;border-width:1px;overflow:hidden;position:fixed;right:10px;left:auto;bottom:10px;z-index:999;text-indent:100%;white-space:nowrap;border-style:solid;border-color:transparent;background-color:#000;color:#fff;opacity:.5;border-radius:0}.g1-back-to-top:before{display:block;position:absolute;top:50%;left:0;right:auto;width:100%;margin-top:-.5em;text-indent:0;text-align:center;font:16px/1 bimber;content:"\e00f"}@media only screen and (min-width:801px){.g1-back-to-top{width:34px;height:34px}}.g1-socials-items-tpl-grid{font-size:0}body .g1-socials-item-tooltip{visibility:visible;overflow:hidden;width:1px;height:1px;position:absolute;clip:rect(1px,1px,1px,1px);-webkit-transform:none;-moz-transform:none;-ms-transform:none;-o-transform:none;transform:none}.g1-socials-item-link{color:inherit}.g1-advertisement{margin-top:3rem;margin-bottom:3rem}@media only screen and (max-width:800px){.g1-advertisement>.g1-row-inner>.g1-column{padding-left:0;padding-right:0}}.g1-advertisement-before-header-theme-area{margin-top:0;margin-bottom:0}.g1-advertisement-before-header-theme-area>.g1-row-background{background-color:#252525!important}.g1-menu{padding-left:0;padding-right:0;list-style:none}.g1-menu-v{text-align:left}.g1-menu-v>.menu-item{display:block}.g1-menu-v>.menu-item>a{display:block;padding:4px 0;position:relative}.g1-menu-v>.menu-item>a:after{position:absolute;right:0;left:auto}.g1-menu-v>.menu-item>a .entry-flag{display:inline-block;margin:0 8px 0 0}.g1-menu-v>.menu-item>a .entry-flag:before{opacity:.5}.g1-menu-v .sub-menu>.menu-item>a{padding-left:10px}.g1-menu-with-icons>.menu-item>a{padding-left:30px}.g1-menu-with-icons>.menu-item>a:before{display:inline-block;position:absolute;left:0;right:auto;font-size:16px;font-weight:400;vertical-align:middle;opacity:.5}.g1-menu-with-icons>.menu-item>a .entry-flag{position:absolute;top:auto;left:0;right:auto;width:20px;height:20px;line-height:inherit;border-color:transparent;background-color:transparent;color:inherit}.g1-menu-with-icons>.menu-item>a .entry-flag:before{font-size:16px}.wp-block-media-text .wp-block-media-text__media{grid-area:media-text-media;margin:0}.wp-block-media-text .wp-block-media-text__content{word-break:break-word;grid-area:media-text-content;padding:0 8% 0 8%}:root{--cace-gif-src:url(https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/images/powered-by-light.png);--cace-gif-src-2x:url(https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/images/powered-by-light@2x.png)}:root{--g1-layout-bg-color:#e6e6e6}a{color:#80af00}button{border-color:#ad0028;background-color:#ad0028;color:#ffffff}@media only screen and (min-width:801px){.g1-hb-row-normal .g1-id{margin-top:20px;margin-bottom:20px}.g1-hb-row-normal .g1-quick-nav{margin-top:32px;margin-bottom:14px}}.g1-hb-row-mobile .g1-id{margin-top:10px;margin-bottom:10px}.g1-hb-row-normal .g1-primary-nav{margin-top:0px;margin-bottom:0px}:root{--g1-hba-itxt-color:#bababa;--g1-hba-atxt-color:#80af00;--g1-hba-bg-color:#ffffff;--g1-hba-gradient-color:#ffffff;--g1-hba-border-color:#e6e6e6;--g1-hba-2-itxt-color:#ffffff;--g1-hba-2-bg-color:#000000;--g1-hba-2-border-color:#000000}.g1-hb-row-a .g1-row-background{border-bottom:1px solid #e6e6e6;border-color:#e6e6e6;border-color:var(--g1-hba-border-color);background-color:#ffffff;background-color:var(--g1-hba-bg-color);background-image:linear-gradient(to right,#ffffff,#ffffff);background-image:linear-gradient(to right,var(--g1-hba-bg-color),var(--g1-hba-gradient-color))}.g1-hb-row-a .site-title{color:#80af00;color:var(--g1-hba-atxt-color)}:root{--g1-hbb-itxt-color:#8c8c8c;--g1-hbb-atxt-color:#ad0028;--g1-hbb-bg-color:#ffffff;--g1-hbb-gradient-color:#ffffff;--g1-hbb-border-color:#ff0000;--g1-hbb-2-itxt-color:#ffffff;--g1-hbb-2-bg-color:#000000;--g1-hbb-2-border-color:#000000}.g1-hb-row-b .menu-item>a{color:#8c8c8c;color:var(--g1-hbb-itxt-color)}.g1-hb-row-b .g1-row-background{background-color:#ffffff;background-color:var(--g1-hbb-bg-color);background-image:linear-gradient(to right,#ffffff,#ffffff);background-image:linear-gradient(to right,var(--g1-hbb-bg-color),var(--g1-hbb-gradient-color))}.g1-hb-row-b .site-title{color:#ad0028;color:var(--g1-hbb-atxt-color)}:root{--g1-hbc-itxt-color:#ffffff;--g1-hbc-atxt-color:#80af00;--g1-hbc-bg-color:#1a1a1a;--g1-hbc-gradient-color:#1a1a1a;--g1-hbc-border-color:#ff0000;--g1-hbc-2-itxt-color:#ffffff;--g1-hbc-2-bg-color:#000000;--g1-hbc-2-border-color:#000000}.g1-hb-row-c .menu-item>a,.g1-hb-row-c .g1-hamburger,.g1-hb-row-c .g1-drop-toggle,.g1-hb-row-c .g1-socials-item-link{color:#ffffff;color:var(--g1-hbc-itxt-color)}.g1-hb-row-c .g1-row-background{background-color:#1a1a1a;background-color:var(--g1-hbc-bg-color);background-image:linear-gradient(to right,#1a1a1a,#1a1a1a);background-image:linear-gradient(to right,var(--g1-hbc-bg-color),var(--g1-hbc-gradient-color))}:root{--g1-canvas-itxt-color:#ffffff;--g1-canvas-atxt-color:#80af00;--g1-canvas-bg-color:#0a0a0a;--g1-canvas-2-itxt-color:#ffffff;--g1-canvas-2-bg-color:#80af00;--g1-canvas-bg-image:url();--g1-canvas-bg-size:auto;--g1-canvas-bg-repeat:no-repeat;--g1-canvas-bg-position:top left;--g1-canvas-bg-opacity:1}.g1-canvas-content,.g1-canvas-toggle,.g1-canvas-content .menu-item>a,.g1-canvas-content .g1-socials-item-link{color:#ffffff;color:var(--g1-canvas-itxt-color)}.g1-canvas-global{background-color:#0a0a0a;background-color:var(--g1-canvas-bg-color)}.g1-canvas-background{background-image:url();background-image:var(--g1-canvas-bg-image);background-size:auto;background-size:var(--g1-canvas-bg-size);background-repeat:no-repeat;background-repeat:var(--g1-canvas-bg-repeat);background-position:top left;background-position:var(--g1-canvas-bg-position);opacity:1;opacity:var(--g1-canvas-bg-opacity)}:root{--g1-submenu-rtxt-color:#666666;--g1-submenu-atxt-color:#80af00;--g1-submenu-bg-color:#ffffff}.g1-hb-row .sub-menu{border-color:#ffffff;border-color:var(--g1-submenu-bg-color);background-color:#ffffff;background-color:var(--g1-submenu-bg-color)}.g1-hb-row .sub-menu .menu-item>a{color:#666666;color:var(--g1-submenu-rtxt-color)}:root{--g1-footer-itxt-color:#000000;--g1-footer-rtxt-color:#999999;--g1-footer-mtxt-color:#666666;--g1-footer-atxt-color:#d3d3d3;--g1-footer-bg-color:#ffffff}.g1-mega{letter-spacing:-0.025em;text-transform:none;font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){.g1-mega{font-size:30px;font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){.g1-mega{font-size:30px;font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){.g1-mega{font-size:30px;font-weight:700;font-family:'Lora',serif}}h1{letter-spacing:-0.025em;font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){h1{font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){h1{font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){h1{font-weight:700;font-family:'Lora',serif}}h2{letter-spacing:-0.025em;font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){h2{font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){h2{font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){h2{font-weight:700;font-family:'Lora',serif}}.g1-gamma,h3{letter-spacing:-0.025em;text-transform:none;font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){.g1-gamma,h3{font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){.g1-gamma,h3{font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){.g1-gamma,h3{font-weight:700;font-family:'Lora',serif}}.g1-delta{letter-spacing:-0.025em;text-transform:none;font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){.g1-delta{font-size:17px;font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){.g1-delta{font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){.g1-delta{font-weight:700;font-family:'Lora',serif}}.g1-epsilon{font-weight:700;font-family:'Lora',serif}@media only screen and (min-width:1025px){.g1-epsilon{font-weight:700;font-family:'Lora',serif}}@media only screen and (min-width:768px) and (max-width:1023px){.g1-epsilon{font-weight:700;font-family:'Lora',serif}}@media only screen and (max-width:767px){.g1-epsilon{font-weight:700;font-family:'Lora',serif}}@font-face{font-family:essb;src:url(https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/fonts/essb.eot);src:url(https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/fonts/essb.eot?#iefix) format("embedded-opentype"),url(https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/fonts/essb.woff) format("woff"),url(https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/fonts/essb.ttf) format("truetype"),url(https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/fonts/essb.svg#essb) format("svg");font-weight:400;font-style:normal;font-display:swap}[class*=" essb_icon_"]:before{font-family:essb!important;font-style:normal!important;font-weight:400!important;font-variant:normal!important;text-transform:none!important;speak:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.essb_icon_facebook:before{content:"\61"}.essb_icon_twitter:before{content:"\64"}.essb_icon_pinterest:before{content:"\68"}.essb_icon_linkedin:before{content:"\6b"}.essb_icon_whatsapp:before{content:"\4a"}.essb_icon_telegram:before{content:"\22"}.essb_links{word-wrap:normal!important;clear:both;margin:1em 0}.essb_links li,.essb_links li a,.essb_links li a .essb_icon,.essb_links li a .essb_network_name,.essb_links ul{font-size:100%;background-image:none;line-height:1em;text-transform:none;font-weight:400;margin:0;padding:0;border:0;outline:0;-webkit-box-sizing:content-box;box-sizing:content-box;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0);-webkit-font-smoothing:antialiased}.essb_links li,.essb_links ul{padding:0!important;margin:0!important;list-style:none!important}.essb_links li,.essb_links li a,.essb_links li a .essb_icon,.essb_links li a .essb_network_name{display:inline-block;vertical-align:middle}.essb_links li a{margin:2px 5px 2px 0;color:#fff!important;text-decoration:none;font-size:100%;background-clip:padding-box}.essb_links .essb_icon{width:36px;height:36px;background-position:center;background-repeat:no-repeat}.essb_links .essb_force_hide_name .essb_network_name{display:none}.essb_links .essb_force_hide_name .essb_icon{margin-right:0!important}.essb_links .essb_icon:before{font-size:18px!important;text-align:center;position:absolute;top:9px;left:9px}.essb_links li a .essb_network_name{margin-right:15px;font-size:14px}.essb_links li a .essb_network_name.essb_noname{margin-right:0}.essb_links.essb_links_center,.essb_links.essb_links_center li,.essb_links.essb_links_center li a{text-align:center}.essb_links.essb_width_flex ul{display:flex;flex-direction:row;-webkit-flex-direction:row;align-items:stretch;-webkit-align-items:stretch}.essb_links.essb_width_flex li{flex:1;-webkit-flex:1}.essb_links.essb_width_flex li:not(.essb_totalcount_item){margin-right:8px!important}.essb_links.essb_width_flex li:last-of-type{margin-right:0!important}.essb_links.essb_width_flex li a{width:100%;white-space:nowrap!important}.essb_links .essb_link_whatsapp a{background-color:#1d9e11!important}.essb_links .essb_link_twitter a{background-color:#00abf0!important}.essb_links .essb_link_facebook a{background-color:#3a579a!important}.essb_links .essb_link_pinterest a{background-color:#cd1c1f!important}.essb_links .essb_link_linkedin a{background-color:#127bb6!important}.essb_links .essb_link_telegram a{background-color:#08c!important}.essb_links.essb_size_xs .essb_icon{width:24px!important;height:24px!important}.essb_links.essb_size_xs .essb_icon:before{font-size:14px!important;top:5px!important;left:5px!important}.essb_links.essb_size_xs li a .essb_network_name{font-size:11px!important;text-transform:uppercase!important;font-weight:400!important;line-height:12px!important}.essb_links li a{margin:3px 6px 3px 0}.essb_links li a .essb_network_name{font-family:Montserrat,Roboto,sans-serif;font-weight:400!important;text-transform:uppercase;letter-spacing:.1em}.essb_links.essb_width_flex ul{-ms-flex-wrap:wrap;-webkit-flex-wrap:wrap;flex-wrap:wrap}.essb_links.essb_width_flex li{-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;width:auto}.essb_links.essb_width_flex li a{display:block;width:auto}.essb_template_bimber .essb_item>a{border-radius:0}@media only screen and (max-width:1025px){.essb_template_bimber .essb_item>a>.essb_network_name{display:none}}.essb_displayed_bimber_top{margin-top:0;margin-bottom:21px;padding-top:9px;border-width:1px 0 0;border-style:solid;border-color:#e6e6e6;border-color:var(--g1-border-color)}@font-face{font-family:g1-socials;src:url(https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.eot);src:url(https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.eot?#iefix) format("embedded-opentype"),url(https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.woff) format("woff"),url(https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.ttf) format("truetype"),url(https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.svg#g1-socials) format("svg");font-weight:400;font-style:normal;font-display:swap}.g1-socials-item-link{display:block;position:relative;margin:side-values(0);padding:side-values(0);border:0!important;text-decoration:none}.g1-socials-item-icon{display:inline-block;width:32px;height:32px;font:16px/32px g1-socials;text-align:center;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;transform:translate(0,0);color:#fff}.g1-socials-item-icon-48{width:48px;height:48px;font-size:28px;line-height:48px}.g1-socials-item-icon-facebook:before{content:"\e007"}.g1-socials-item-icon-instagram:before{content:"\e011"}.g1-socials-item-icon-linkedin:before{content:"\e014"}.g1-socials-item-icon-pinterest:before{content:"\e015"}.g1-socials-item-icon-telegram:before{content:"\e031"}.g1-socials-item-icon-tiktok:before{content:"\e029"}.g1-socials-item-icon-twitter:before{content:"\e021"}.g1-socials-item-icon-facebook{background-color:#3b5998}.g1-socials-item-icon-instagram{background-color:#3f729b}.g1-socials-item-icon-linkedin{background-color:#007fb1}.g1-socials-item-icon-pinterest{background-color:#cb2027}.g1-socials-item-icon-telegram{background-color:#26a5e4}.g1-socials-item-icon-tiktok{background-color:#000}.g1-socials-item-icon-twitter{background-color:#39a9e0}.g1-socials-item-icon-text{background-color:transparent;color:inherit}.g1-socials-item-tooltip{display:block;visibility:hidden;position:absolute;bottom:100%;left:50%;width:260px;margin-bottom:10px;font:12px/1.2 sans-serif;text-align:center;-webkit-transform:translate(0,-20px);-moz-transform:translate(0,-20px);-ms-transform:translate(0,-20px);-o-transform:translate(0,-20px);transform:translate(0,-20px)}.g1-socials-item-tooltip-inner{display:inline-block;position:relative;left:-50%;padding:6px 8px;white-space:nowrap;border-color:#000;border-color:rgba(0,0,0,.666);background-color:#000;background-color:rgba(0,0,0,.666);color:#fff}.g1-socials-item-tooltip-inner:after{display:block;position:absolute;top:100%;left:50%;width:0;height:0;margin-left:-6px;border-width:6px;content:"";border-style:solid;border-color:transparent;border-top-color:inherit}.g1-socials-items{max-width:100%;margin:side-values(0 0 1.5rem);padding:side-values(0);list-style:none}.g1-socials-items-tpl-grid{font-size:0}.g1-socials-items-tpl-grid .g1-socials-item{display:inline-block;font-size:1rem}</style><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Montserrat%3A400%2C500%2C700&#038;subset=&#038;display=swap" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat%3A400%2C500%2C700&#038;subset=&#038;display=swap" media="print" onload="this.media='all'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat%3A400%2C500%2C700&#038;subset=&#038;display=swap" /></noscript>
+<meta name="description" content="En este sector de Medellín varios ciudadanos cerraron sus negocios y se dejaron intimidar por el anuncio del paro armado de los &#039;gaitanistas&#039;."/>
+<meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+<link rel="canonical" href="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector" />
+<meta property="og:description" content="En este sector de Medellín varios ciudadanos cerraron sus negocios y se dejaron intimidar por el anuncio del paro armado de los &#039;gaitanistas&#039;." />
+<meta property="og:url" content="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" />
+<meta property="og:site_name" content="Minuto30.com" />
+<meta property="article:publisher" content="https://www.facebook.com/Minuto30com/" />
+<meta property="article:author" content="https://www.facebook.com/Minuto30com" />
+<meta property="article:tag" content="La Sierra" />
+<meta property="article:tag" content="Medellín" />
+<meta property="article:tag" content="paro armado" />
+<meta property="article:tag" content="Policía" />
+<meta property="article:section" content="Noticias de Medellín" />
+<meta property="fb:app_id" content="898577736938225" />
+<meta property="og:image" content="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg" />
+<meta property="og:image:secure_url" content="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg" />
+<meta property="og:image:width" content="1280" />
+<meta property="og:image:height" content="720" />
+<meta property="og:image:alt" content="La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="article:published_time" content="2022-05-05T18:12:54-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector" />
+<meta name="twitter:description" content="En este sector de Medellín varios ciudadanos cerraron sus negocios y se dejaron intimidar por el anuncio del paro armado de los &#039;gaitanistas&#039;." />
+<meta name="twitter:site" content="@minuto30com" />
+<meta name="twitter:creator" content="@minuto30com" />
+<meta name="twitter:image" content="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg" />
+<meta name="twitter:label1" content="Escrito por" />
+<meta name="twitter:data1" content="Juliet Jimenez" />
+<meta name="twitter:label2" content="Tiempo de lectura" />
+<meta name="twitter:data2" content="1 minuto" />
+<script type="application/ld+json" class="rank-math-schema-pro">{"@context":"https://schema.org","@graph":[{"@type":"Place","@id":"https://www.minuto30.com/#place","address":{"@type":"PostalAddress","addressLocality":"Medell\u00edn","addressRegion":"Antioquia","postalCode":"050022","addressCountry":"Colombia"}},{"@type":["NewsMediaOrganization","Organization"],"@id":"https://www.minuto30.com/#organization","name":"Minuto30.com","url":"https://www.minuto30.com","email":"info@minuto30.com","address":{"@type":"PostalAddress","addressLocality":"Medell\u00edn","addressRegion":"Antioquia","postalCode":"050022","addressCountry":"Colombia"},"logo":{"@type":"ImageObject","@id":"https://www.minuto30.com/#logo","url":"https://www.minuto30.com/wp-content/uploads/2017/03/logo-ampm30-1.png","caption":"Minuto30.com","inLanguage":"es","width":"238","height":"60"},"contactPoint":[{"@type":"ContactPoint","telephone":"+57 448 97 30","contactType":"sales"}],"location":{"@id":"https://www.minuto30.com/#place"}},{"@type":"WebSite","@id":"https://www.minuto30.com/#website","url":"https://www.minuto30.com","name":"Minuto30.com","publisher":{"@id":"https://www.minuto30.com/#organization"},"inLanguage":"es"},{"@type":"ImageObject","@id":"https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg","url":"https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg","width":"1280","height":"720","caption":"La Polic\u00eda dice que todo 'tranqui' en La Sierra, reforzaron los uniformados en el sector","inLanguage":"es"},{"@type":"Person","@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#author","name":"Juliet Jimenez","image":{"@type":"ImageObject","@id":"https://secure.gravatar.com/avatar/77dcc55df6535941394612cad428b6e2?s=96&amp;d=mm&amp;r=g","url":"https://secure.gravatar.com/avatar/77dcc55df6535941394612cad428b6e2?s=96&amp;d=mm&amp;r=g","caption":"Juliet Jimenez","inLanguage":"es"},"sameAs":["https://www.minuto30.com","https://www.facebook.com/Minuto30com"],"worksFor":{"@id":"https://www.minuto30.com/#organization"}},{"@type":"WebPage","@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#webpage","url":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/","name":"La Polic\u00eda dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector |Minuto30","datePublished":"2022-05-05T18:12:54-05:00","dateModified":"2022-05-05T18:12:54-05:00","author":{"@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#author"},"isPartOf":{"@id":"https://www.minuto30.com/#website"},"primaryImageOfPage":{"@id":"https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg"},"inLanguage":"es"},{"@type":"NewsArticle","headline":"La Polic\u00eda dice que todo 'tranqui' en La Sierra, reforzaron los uniformados en el sector | Minuto30.com","keywords":"Sierra","datePublished":"2022-05-05T18:12:54-05:00","dateModified":"2022-05-05T18:12:54-05:00","author":{"@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#author"},"publisher":{"@id":"https://www.minuto30.com/#organization"},"description":"En este sector de Medell\u00edn varios ciudadanos cerraron sus negocios y se dejaron intimidar por el anuncio del paro armado de los &#039;gaitanistas&#039;.","copyrightYear":"2022","copyrightHolder":{"@id":"https://www.minuto30.com/#organization"},"name":"La Polic\u00eda dice que todo 'tranqui' en La Sierra, reforzaron los uniformados en el sector | Minuto30.com","@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#richSnippet","isPartOf":{"@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#webpage"},"image":{"@id":"https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg"},"inLanguage":"es","mainEntityOfPage":{"@id":"https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/#webpage"}}]}</script>
+<!-- /Plugin Rank Math WordPress SEO -->
+
+<link rel='dns-prefetch' href='//www.googletagmanager.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='preconnect' href='https://fonts.gstatic.com' />
+<link rel="alternate" type="application/rss+xml" title="Minuto30.com &raquo; Feed" href="https://www.minuto30.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Minuto30.com &raquo; Historias Feed" href="https://www.minuto30.com/web-stories/feed/"><style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<style id='global-styles-inline-css' type='text/css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/css/style.min.css?ver=1.3.26' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/css/shoppable-images-front.min.css?ver=1.3.26' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/gs-facebook-comments/public/css/wpfc-public.css?ver=1.7.2' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/media-ace/includes/gallery/css/gallery.min.css?ver=5.9.3' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/all-light.min.css?ver=9.2.1' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/single-light.min.css?ver=9.2.1' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/comments-light.min.css?ver=9.2.1' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+
+<link rel='preload'   href='https://www.minuto30.com/wp-content/uploads/dynamic-style-1651177695.css' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/modules/subscribe-forms.min.css?ver=5.9.3' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/css/easy-social-share-buttons.min.css?ver=5.9.3' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<style id='easy-social-share-buttons-inline-css' type='text/css'>
+.essb_topbar .essb_topbar_inner{max-width:1152px;margin:0 auto;padding-left:0;padding-right:0;}.essb_topbar{margin-top:-200px;}.essb-mobile-sharebar{opacity:1!important;}
+</style>
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/css/styles.min.css?ver=211' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/css/s3bubble.min.css?ver=211' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/essb-light.min.css?ver=9.2.1' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/mashshare-light.min.css?ver=9.2.1' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/js/slot-slideup.js?ver=1.3.26' id='adace-slot-slideup-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/ad-ace/includes/shoppable-images/assets/js/shoppable-images-front.js?ver=1.3.26' id='shoppable-images-js-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/js/coupons.js?ver=1.3.26' id='adace-coupons-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/gs-facebook-comments/public/js/wpfc-public.js?ver=1.7.2' id='wpfc-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/modernizr/modernizr-custom.min.js?ver=3.3.0' id='modernizr-js'></script>
+
+<!-- Fragmento de código de Google Analytics añadido por Site Kit -->
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.googletagmanager.com/gtag/js?id=UA-36047587-1' id='google_gtagjs-js' async></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='google_gtagjs-js-after'>
+window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}
+gtag('set', 'linker', {"domains":["www.minuto30.com"]} );
+gtag("js", new Date());
+gtag("set", "developer_id.dZTNiMT", true);
+gtag("config", "UA-36047587-1", {"anonymize_ip":true});
+gtag("config", "G-VSF827BJET");
+</script>
+
+<!-- Final del fragmento de código de Google Analytics añadido por Site Kit -->
+<link rel="https://api.w.org/" href="https://www.minuto30.com/wp-json/" /><link rel="alternate" type="application/json" href="https://www.minuto30.com/wp-json/wp/v2/posts/1331134" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.minuto30.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.minuto30.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='shortlink' href='https://www.minuto30.com/?p=1331134' />
+<link rel="alternate" type="application/json+oembed" href="https://www.minuto30.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.minuto30.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&#038;format=xml" />
+<link rel="preload" href="https://www.minuto30.com/wp-content/plugins/g1-socials/css/iconfont/fonts/g1-socials.woff" as="font" type="font/woff" crossorigin="anonymous"><meta name="generator" content="Site Kit by Google 1.73.0" /><meta property="fb:app_id" content="1528507260734296" />	<style>
+	@font-face {
+		font-family: "bimber";
+					src:url("https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/bunchy/fonts/bimber.eot");
+			src:url("https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/bunchy/fonts/bimber.eot?#iefix") format("embedded-opentype"),
+			url("https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/bunchy/fonts/bimber.woff") format("woff"),
+			url("https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/bunchy/fonts/bimber.ttf") format("truetype"),
+			url("https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/bunchy/fonts/bimber.svg#bimber") format("svg");
+						font-weight: normal;
+		font-style: normal;
+		font-display: block;
+	}
+	</style>
+	
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">var essb_settings = {"ajax_url":"https:\/\/www.minuto30.com\/wp-admin\/admin-ajax.php","essb3_nonce":"d9f188d7c0","essb3_plugin_url":"https:\/\/www.minuto30.com\/wp-content\/plugins\/easy-social-share-buttons3","essb3_stats":false,"essb3_ga":false,"essb3_ga_ntg":false,"blog_url":"https:\/\/www.minuto30.com\/","post_id":"1331134"};</script><link rel="icon" href="https://staticprd.minuto30.com/wp-content/uploads/2021/10/logos-Minuto30-para-webstorie-01-96x96.png" sizes="32x32" />
+<link rel="icon" href="https://staticprd.minuto30.com/wp-content/uploads/2021/10/logos-Minuto30-para-webstorie-01.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://staticprd.minuto30.com/wp-content/uploads/2021/10/logos-Minuto30-para-webstorie-01.png" />
+<meta name="msapplication-TileImage" content="https://staticprd.minuto30.com/wp-content/uploads/2021/10/logos-Minuto30-para-webstorie-01.png" />
+<meta name="g1:switch-skin-css" content="https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/mode-dark.min.css" />	<script type="rocketlazyloadscript">if("undefined"!=typeof localStorage){var skinItemId=document.getElementsByName("g1:skin-item-id");skinItemId=skinItemId.length>0?skinItemId[0].getAttribute("content"):"g1_skin",window.g1SwitchSkin=function(e,t){if(e){var n=document.getElementById("g1-switch-skin-css");if(n){n.parentNode.removeChild(n),document.documentElement.classList.remove("g1-skinmode");try{localStorage.removeItem(skinItemId)}catch(e){}}else{t?document.write('<link id="g1-switch-skin-css" rel="stylesheet" type="text/css" media="all" href="'+document.getElementsByName("g1:switch-skin-css")[0].getAttribute("content")+'" />'):((n=document.createElement("link")).id="g1-switch-skin-css",n.href=document.getElementsByName("g1:switch-skin-css")[0].getAttribute("content"),n.rel="stylesheet",n.media="all",document.head.appendChild(n)),document.documentElement.classList.add("g1-skinmode");try{localStorage.setItem(skinItemId,e)}catch(e){}}}};try{var mode=localStorage.getItem(skinItemId);window.g1SwitchSkin(mode,!0)}catch(e){}}</script>
+		<script type="rocketlazyloadscript">if("undefined"!=typeof localStorage){var nsfwItemId=document.getElementsByName("g1:nsfw-item-id");nsfwItemId=nsfwItemId.length>0?nsfwItemId[0].getAttribute("content"):"g1_nsfw_off",window.g1SwitchNSFW=function(e){e?(localStorage.setItem(nsfwItemId,1),document.documentElement.classList.add("g1-nsfw-off")):(localStorage.removeItem(nsfwItemId),document.documentElement.classList.remove("g1-nsfw-off"))};try{var nsfwmode=localStorage.getItem(nsfwItemId);window.g1SwitchNSFW(nsfwmode)}catch(e){}}</script>
+	<script type="rocketlazyloadscript">
+/*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
+(function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
+var rp=loadCSS.relpreload={};rp.support=(function(){var ret;try{ret=w.document.createElement("link").relList.supports("preload")}catch(e){ret=!1}
+return function(){return ret}})();rp.bindMediaToggle=function(link){var finalMedia=link.media||"all";function enableStylesheet(){link.media=finalMedia}
+if(link.addEventListener){link.addEventListener("load",enableStylesheet)}else if(link.attachEvent){link.attachEvent("onload",enableStylesheet)}
+setTimeout(function(){link.rel="stylesheet";link.media="only x"});setTimeout(enableStylesheet,3000)};rp.poly=function(){if(rp.support()){return}
+var links=w.document.getElementsByTagName("link");for(var i=0;i<links.length;i++){var link=links[i];if(link.rel==="preload"&&link.getAttribute("as")==="style"&&!link.getAttribute("data-loadcss")){link.setAttribute("data-loadcss",!0);rp.bindMediaToggle(link)}}};if(!rp.support()){rp.poly();var run=w.setInterval(rp.poly,500);if(w.addEventListener){w.addEventListener("load",function(){rp.poly();w.clearInterval(run)})}else if(w.attachEvent){w.attachEvent("onload",function(){rp.poly();w.clearInterval(run)})}}
+if(typeof exports!=="undefined"){exports.loadCSS=loadCSS}
+else{w.loadCSS=loadCSS}}(typeof global!=="undefined"?global:this))
+</script>      <!-- Start Gravitec Push -->
+    <script type="rocketlazyloadscript" src="https://cdn.gravitec.net/storage/8dcb17813476a39c3f4a87ff11aed3b3/client.js" async></script>
+        <!-- End Gravitec Push -->
+       <!-- Start Alexa Certify Javascript -->
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+_atrk_opts = { atrk_acct:"LuBai1aoZM00Wq", domain:"minuto30.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=LuBai1aoZM00Wq" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
+<!-- Tag AdeqMedia -->
+<script type="rocketlazyloadscript" async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script type="rocketlazyloadscript">
+window.googletag = window.googletag || {cmd: []};
+googletag.cmd.push(function() {
+
+googletag.defineSlot('/21820527814/minuto30_video_outstream_ADEQ', [1, 1], 'div-gpt-ad-1617891882983-0').addService(googletag.pubads());
+
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
+});
+</script>
+ <!-- End AdeqMedia --> 
+<!-- Tag pabidding -->	
+	<script type="rocketlazyloadscript" src="https://cdn.pabidding.io/c/minuto30.com.min.js"></script>
+<!-- Tag pabidding -->	
+	<!-- Start GPT Tag -->
+<script type="rocketlazyloadscript" async src='https://securepubads.g.doubleclick.net/tag/js/gpt.js'></script>
+<script type="rocketlazyloadscript">
+  window.googletag = window.googletag || {cmd: []};
+  googletag.cmd.push(function() {
+    var mapping1 = googletag.sizeMapping()
+                            .addSize([992, 0], [[970, 90], [ 728, 90], [ 468, 90], [ 1, 1]])
+                            .addSize([728, 0], [[728, 90], [ 468, 90], [ 1, 1]])
+                            .addSize([320, 0], [[320, 100], [ 320, 50], [ 300, 250], [ 1, 1]])
+                            .addSize([0, 0], [[320, 50], [ 1, 1]])
+                            .build();
+
+    var mapping2 = googletag.sizeMapping()
+                            .addSize([992, 0], [[300, 600], [ 300, 250], [ 336, 280], [ 160, 600], [ 1, 1]])
+                            .addSize([728, 0], [[300, 600],[300, 250], [ 336, 280], [ 320, 100], [ 320, 50], [ 1, 1]])
+                            .addSize([320, 0], [[300, 600],[300, 250], [ 320, 100], [ 320, 50], [ 1, 1]])
+                            .addSize([0, 0], [[320, 50], [ 1, 1]])
+                            .build();
+
+    var mapping3 = googletag.sizeMapping()
+                            .addSize([992, 0], [[728, 90], [ 448, 60], [ 1, 1]])
+                            .addSize([728, 0], [[728, 90], [ 468, 60], [ 1, 1]])
+                            .addSize([320, 0], [[320, 100], [ 320, 50], [ 300, 250], [ 1, 1]])
+                            .addSize([0, 0], [[320, 50], [ 1, 1]])
+                            .build();
+	  
+	var mapping4 = googletag.sizeMapping()
+                            .addSize([992, 0], [[300, 250], [ 1, 1]])
+                            .addSize([728, 0], [[300, 250], [ 1, 1]])
+                            .addSize([320, 0], [[320, 100], [ 320, 50], [ 300, 250], [ 1, 1]])
+                            .addSize([0, 0], [[320, 50], [ 1, 1]])
+                            .build();  
+
+    googletag.defineSlot('/17359792/M30_MegaTopBanner_Header', [[728,90],[468,60],[320,100],[320,250]], 'div-gpt-ad-1043561-1')
+             .defineSizeMapping(mapping1)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/AdsHome1', [[320,100],[320,50],[300,250]], 'div-gpt-ad-1043561-2')
+             .defineSizeMapping(mapping4)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/Home_Antioquia', [[728,90],[468,60],[336,280],[320,100],[320,50],[300,250]], 'div-gpt-ad-1043561-3')
+             .defineSizeMapping(mapping3)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/Home_Bogota', [[300,600],[320,100],[320,50]], 'div-gpt-ad-1043561-4')
+             .defineSizeMapping(mapping2)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/Home_Deportes', [[728,90],[468,60],[336,280],[320,100],[320,50],[300,250]], 'div-gpt-ad-1043561-5')
+             .defineSizeMapping(mapping3)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/Home_Economia', [[728,90],[468,60],[336,280],[320,100],[320,50],[300,250]], 'div-gpt-ad-1043561-6')
+             .defineSizeMapping(mapping3)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/inRead1', [[728,90],[468,60],[336,280],[320,100],[320,50],[300,250],[300,600]], 'div-gpt-ad-1043561-7')
+             .defineSizeMapping(mapping2)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/M30_SidebarTop_inner', [[320,100],[320,50],[300,250],[300,600],[160,600]], 'div-gpt-ad-1043561-8')
+             .defineSizeMapping(mapping2)
+             .addService(googletag.pubads());
+    googletag.defineSlot('/17359792/Sidebar3', [[320,100],[320,50],[300,250],[300,600],[160,600]], 'div-gpt-ad-1043561-9')
+             .defineSizeMapping(mapping2)
+             .addService(googletag.pubads());
+	googletag.defineSlot('/17359792/brand_safe', [[300,250],[300,600]], 'div-gpt-ad-1464935-1')
+             .addService(googletag.pubads());    
+
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().setCentering(true);
+    googletag.enableServices();
+  });
+</script>
+<!-- End GPT Tag -->	
+<!-- Start OptAd -->
+    <script async src="//get.optad360.io/sf/2bc0c0cf-646a-4d8c-92d0-23212cedb422/plugin.min.js"></script>
+<!-- End OptAd -->
+<!-- Tag Adman -->
+    <script type="rocketlazyloadscript" src="https://pub.admanmedia.com/go?id=2454" async></script>
+    <script type="rocketlazyloadscript" src="https://pub.admanmedia.com/go?id=2460" async></script>
+<!-- End Adman -->
+<!-- Tag unbloquia -->
+<script type="rocketlazyloadscript" defer src="https://cdn.unblockia.com/h.js"></script>
+<!-- Tag unbloquia -->
+<!-- Facebook SDK Plugin -->
+<div id="fb-root"></div>
+<script type="rocketlazyloadscript" async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v13.0&appId=1528507260734296&autoLogAppEvents=1" nonce="P5WaPqYv"></script>
+<!-- End Facebook SDK Plugin -->
+<!-- Facebook SDK -->
+<div id="fb-root"></div>
+<script type="rocketlazyloadscript">(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.2&appId=1528507260734296&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>	
+<!-- End Facebook SDK -->
+</head>
+
+<body class="post-template-default single single-post postid-1331134 single-format-video wp-embed-responsive g1-layout-stretched g1-hoverable g1-has-mobile-logo g1-sidebar-normal essb-8.4 elementor-default elementor-kit-1304470" itemscope="" itemtype="http://schema.org/WebPage" >
+
+<div class="g1-body-inner">
+
+	<div id="page">
+		
+
+		
+	<div class="g1-row g1-row-layout-page g1-advertisement g1-advertisement-before-header-theme-area">
+		<div class="g1-row-inner">
+			<div class="g1-column">
+
+				<div class="adace-slot-wrapper bimber_before_header_theme_area adace-align-center adace-slot-wrapper-main" style="min-width:100px;max-width:990px;text-align:center;">
+	<div class="adace-disclaimer">
+			</div>
+	<div class="adace-slot">
+			<div class="adace-loader adace-loader-6274e5b37c1f6">
+		<script type="rocketlazyloadscript">
+			(function ($) {
+			var $self = $('.adace-loader-6274e5b37c1f6');
+			var $wrapper = $self.closest('.adace-slot-wrapper');
+
+			"use strict";
+			var adace_load_6274e5b37c1f6 = function(){
+				var viewport = $(window).width();
+				var tabletStart = 601;
+				var landscapeStart = 801;
+				var tabletEnd = 961;
+				var content = '%09%3Cdiv%20class%3D%22adace_ad_6274e5b37c00c%22%3E%0A%0A%09%09%0A%09%09%09%0A%09%09%09%3C%21--%20GPT%20AdSlot%201%20for%20Ad%20unit%20%27M30_MegaTopBanner_Header%27%20%23%23%23%20Size%3A%20%5B%5B970%2C90%5D%2C%5B728%2C90%5D%2C%5B468%2C60%5D%2C%5B320%2C100%5D%2C%5B320%2C50%5D%5D%20--%3E%0D%0A%3Cdiv%20id%3D%27div-gpt-ad-1043561-1%27%3E%3Cscript%3Egoogletag.cmd.push%28function%28%29%20%7B%20googletag.display%28%27div-gpt-ad-1043561-1%27%29%3B%20%7D%29%3B%3C%2Fscript%3E%3C%2Fdiv%3E%0D%0A%3C%21--%20End%20AdSlot%201%20--%3E%0A%09%09%09%09%09%3C%2Fa%3E%0A%09%09%09%3C%2Fdiv%3E%0A%09';
+				var unpack = true;
+				if(viewport<tabletStart){
+										if ($wrapper.hasClass('.adace-hide-on-mobile')){
+						$wrapper.remove();
+					}
+				}
+				if(viewport>=tabletStart && viewport<landscapeStart){
+										if ($wrapper.hasClass('.adace-hide-on-portrait')){
+						$wrapper.remove();
+					}
+				}
+				if(viewport>=landscapeStart && viewport<tabletEnd){
+										if ($wrapper.hasClass('.adace-hide-on-landscape')){
+						$wrapper.remove();
+					}
+				}
+				if(viewport>=tabletStart && viewport<tabletEnd){
+										if ($wrapper.hasClass('.adace-hide-on-tablet')){
+						$wrapper.remove();
+					}
+				}
+				if(viewport>=tabletEnd){
+										if ($wrapper.hasClass('.adace-hide-on-desktop')){
+						$wrapper.remove();
+					}
+				}
+				if(unpack) {
+					$self.replaceWith(decodeURIComponent(content));
+				}
+			}
+			if($wrapper.css('visibility') === 'visible' ) {
+				adace_load_6274e5b37c1f6();
+			} else {
+				//fire when visible.
+				var refreshIntervalId = setInterval(function(){
+					if($wrapper.css('visibility') === 'visible' ) {
+						adace_load_6274e5b37c1f6();
+						clearInterval(refreshIntervalId);
+					}
+				}, 999);
+			}
+
+
+			})(jQuery);
+		</script>
+	</div>
+		</div>
+</div>
+
+
+
+
+			</div>
+		</div>
+		<div class="g1-row-background"></div>
+							<style>
+						.g1-advertisement-before-header-theme-area .g1-row-background{
+							background-color:#f9f9f9!important;
+						}
+					</style>
+					</div>
+
+					<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-normal g1-hb-row-a g1-hb-row-1 g1-hb-boxed g1-hb-sticky-off g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-center">
+															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+			<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-normal g1-hb-row-b g1-hb-row-2 g1-hb-boxed g1-hb-sticky-off g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+																	<div class="g1-id g1-id-desktop">
+			<p class="g1-mega g1-mega-1st site-title">
+	
+			<a class="g1-logo-wrapper"
+			   href="https://www.minuto30.com/" rel="home">
+									<picture class="g1-logo g1-logo-default">
+						<source media="(min-width: 1025px)" srcset="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro402x-2.png 2x,https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro402x-3.png 1x">
+						<source media="(max-width: 1024px)" srcset="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%200%27%2F%3E">
+						<img
+							src="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro402x-3.png"
+							width="200"
+							height="0"
+							alt="Minuto30.com" />
+					</picture>
+
+											<picture class="g1-logo g1-logo-inverted">
+							<source id="g1-logo-inverted-source" media="(min-width: 1025px)" srcset="https://staticprd.minuto30.com/wp-content/uploads/2021/12/m30-white.png" data-srcset="https://staticprd.minuto30.com/wp-content/uploads/2021/12/m30-white.png">
+							<source media="(max-width: 1024px)" srcset="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%200%27%2F%3E">
+							<img
+								id="g1-logo-inverted-img"
+								class=""
+								src="https://staticprd.minuto30.com/wp-content/uploads/2021/12/m30-white.png"
+								data-src=""
+								width="200"
+								height="0"
+								alt="" />
+						</picture>
+												</a>
+
+			</p>
+	
+    
+	</div>															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-center">
+															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+																		<nav class="g1-quick-nav g1-quick-nav-short">
+		<ul class="g1-quick-nav-menu">
+															<li class="menu-item menu-item-type-g1-latest ">
+						<a href="https://www.minuto30.com/ultimas-noticias/">
+							<span class="entry-flag entry-flag-latest"></span>
+							Últimas Noticias						</a>
+					</li>
+																					</ul>
+	</nav>
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+			<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-normal g1-hb-row-c g1-hb-row-3 g1-hb-boxed g1-hb-sticky-off g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+																	<!-- BEGIN .g1-primary-nav -->
+<nav id="g1-primary-nav" class="g1-primary-nav"><ul id="g1-primary-nav-menu" class="g1-primary-nav-menu g1-menu-h"><li id="menu-item-311675" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-g1-standard menu-item-311675"><a href="https://www.minuto30.com/medellin/">Medellín</a></li>
+<li id="menu-item-310690" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310690"><a href="https://www.minuto30.com/bogota/">Bogotá</a></li>
+<li id="menu-item-310689" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310689"><a href="https://www.minuto30.com/antioquia/">Antioquia</a></li>
+<li id="menu-item-310692" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310692"><a href="https://www.minuto30.com/colombia/">Colombia</a></li>
+<li id="menu-item-310697" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310697"><a href="https://www.minuto30.com/internacional/">Internacional</a></li>
+<li id="menu-item-310694" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310694"><a href="https://www.minuto30.com/politica/">Política</a></li>
+<li id="menu-item-310698" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310698"><a href="https://www.minuto30.com/deportes/">Deporte</a></li>
+<li id="menu-item-310700" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-g1-standard menu-item-310700"><a href="https://www.minuto30.com/economia/">Economía</a></li>
+<li id="menu-item-1176787" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-g1-standard menu-item-1176787"><a href="https://play.minuto30.com/">Minuto30Play</a></li>
+<li id="menu-item-1232076" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-g1-standard menu-item-1232076"><a href="#">Más</a>
+<ul class="sub-menu">
+	<li id="menu-item-1234625" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1234625"><a href="https://www.minuto30.com/liga-betplay/">Liga BetPlay</a></li>
+	<li id="menu-item-1232077" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1232077"><a href="https://www.minuto30.com/atletico-nacional/">Atlético Nacional</a></li>
+	<li id="menu-item-347502" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-347502"><a href="https://www.minuto30.com/entretenimiento/">Entretenimiento</a></li>
+	<li id="menu-item-1232435" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1232435"><a href="https://www.minuto30.com/farandula-2/">Farándula</a></li>
+</ul>
+</li>
+</ul></nav><!-- END .g1-primary-nav -->
+															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-center">
+																		<div class="g1-drop g1-drop-with-anim g1-drop-before g1-drop-the-search  g1-drop-m g1-drop-icon ">
+		<a class="g1-drop-toggle" href="https://www.minuto30.com/?s=">
+			<span class="g1-drop-toggle-icon"></span><span class="g1-drop-toggle-text">Search</span>
+			<span class="g1-drop-toggle-arrow"></span>
+		</a>
+		<div class="g1-drop-content">
+			<div class="gcse-searchbox-only" data-resultsUrl="https://www.minuto30.com/search_gcse/"></div>		</div>
+	</div>
+															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+																	<div class="g1-drop g1-drop-nojs g1-drop-with-anim g1-drop-before g1-drop-the-skin g1-drop-the-skin-light g1-drop-m g1-drop-icon">
+	<button class="g1-button-none g1-drop-toggle">
+		<span class="g1-drop-toggle-icon"></span><span class="g1-drop-toggle-text">Switch skin</span>
+		<span class="g1-drop-toggle-arrow"></span>
+	</button>
+			<div class="g1-drop-content">
+							<p class="g1-skinmode-desc">Modo Noche</p>
+				<p class="g1-skinmode-desc">Modo día</p>
+					</div>
+	</div>
+
+																		<div class="g1-drop g1-drop-with-anim g1-drop-the-socials g1-drop-m g1-drop-icon ">
+		<a class="g1-drop-toggle" href="#" title="Síguenos">
+			<span class="g1-drop-toggle-icon"></span><span class="g1-drop-toggle-text">Síguenos</span>
+			<span class="g1-drop-toggle-arrow"></span>
+		</a>
+		<div class="g1-drop-content">
+			<ul id="g1-social-icons-1" class="g1-socials-items g1-socials-items-tpl-grid">
+			<li class="g1-socials-item g1-socials-item-facebook">
+	   <a class="g1-socials-item-link" href="https://www.facebook.com/Minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-facebook"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Facebook</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-instagram">
+	   <a class="g1-socials-item-link" href="https://www.instagram.com/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-instagram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">instagram</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-twitter">
+	   <a class="g1-socials-item-link" href="https://twitter.com/minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-twitter"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Twitter</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-linkedin">
+	   <a class="g1-socials-item-link" href="https://www.linkedin.com/in/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-linkedin"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">linkedin</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-pinterest">
+	   <a class="g1-socials-item-link" href="https://co.pinterest.com/minuto30/_created/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-pinterest"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">pinterest</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-tiktok">
+	   <a class="g1-socials-item-link" href="https://www.tiktok.com/@minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-tiktok"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">tiktok</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-telegram">
+	   <a class="g1-socials-item-link" href="https://t.me/s/Minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-telegram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">telegram</span>
+		   </span>
+	   </a>
+	</li>
+	</ul>
+		</div>
+	</div>
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+				<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-mobile g1-hb-row-a g1-hb-row-1 g1-hb-boxed g1-hb-sticky-off g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-on">
+							<div class="g1-bin g1-bin-align-center">
+																	<div class="g1-id g1-id-mobile">
+			<p class="g1-mega g1-mega-1st site-title">
+	
+		<a class="g1-logo-wrapper"
+		   href="https://www.minuto30.com/" rel="home">
+							<picture class="g1-logo g1-logo-default">
+					<source media="(max-width: 1024px)" srcset="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro-13.png">
+					<source media="(min-width: 1025px)" srcset="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%200%27%2F%3E">
+					<img
+						src="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro-13.png"
+						width="200"
+						height="0"
+						alt="Minuto30.com" />
+				</picture>
+
+									<picture class="g1-logo g1-logo-inverted">
+						<source id="g1-logo-mobile-inverted-source" media="(max-width: 1024px)" srcset="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-blanco402x-2.png 2x,https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-blanco-4.png 1x" data-srcset="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-blanco-4.png">
+						<source media="(min-width: 1025px)" srcset="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20200%200%27%2F%3E">
+						<img
+							id="g1-logo-mobile-inverted-img"
+							class=""
+							src="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-blanco-4.png"
+							data-src=""
+							width="200"
+							height="0"
+							alt="" />
+					</picture>
+									</a>
+
+			</p>
+	
+    
+	</div>															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+			<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-mobile g1-hb-row-b g1-hb-row-2 g1-hb-boxed g1-hb-sticky-off g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-on">
+							<div class="g1-bin g1-bin-align-center">
+															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+				<div class="g1-sticky-top-wrapper g1-hb-row-3">
+				<div class="g1-row g1-row-layout-page g1-hb-row g1-hb-row-mobile g1-hb-row-c g1-hb-row-3 g1-hb-boxed g1-hb-sticky-on g1-hb-shadow-off">
+			<div class="g1-row-inner">
+				<div class="g1-column g1-dropable">
+											<div class="g1-bin-1 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-left">
+																		<a class="g1-hamburger g1-hamburger-show g1-hamburger-s  " href="#">
+		<span class="g1-hamburger-icon"></span>
+			<span class="g1-hamburger-label
+			g1-hamburger-label-hidden			">Menu</span>
+	</a>
+															</div>
+						</div>
+											<div class="g1-bin-2 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-center">
+																		<nav class="g1-quick-nav g1-quick-nav-short">
+		<ul class="g1-quick-nav-menu">
+															<li class="menu-item menu-item-type-g1-latest ">
+						<a href="https://www.minuto30.com/ultimas-noticias/">
+							<span class="entry-flag entry-flag-latest"></span>
+							Últimas Noticias						</a>
+					</li>
+																					</ul>
+	</nav>
+															</div>
+						</div>
+											<div class="g1-bin-3 g1-bin-grow-off">
+							<div class="g1-bin g1-bin-align-right">
+																		<div class="g1-drop g1-drop-with-anim g1-drop-before g1-drop-the-search  g1-drop-m g1-drop-icon ">
+		<a class="g1-drop-toggle" href="https://www.minuto30.com/?s=">
+			<span class="g1-drop-toggle-icon"></span><span class="g1-drop-toggle-text">Search</span>
+			<span class="g1-drop-toggle-arrow"></span>
+		</a>
+		<div class="g1-drop-content">
+			<div class="gcse-searchbox-only" data-resultsUrl="https://www.minuto30.com/search_gcse/"></div>		</div>
+	</div>
+																	<div class="g1-drop g1-drop-nojs g1-drop-with-anim g1-drop-before g1-drop-the-skin g1-drop-the-skin-light g1-drop-m g1-drop-icon">
+	<button class="g1-button-none g1-drop-toggle">
+		<span class="g1-drop-toggle-icon"></span><span class="g1-drop-toggle-text">Switch skin</span>
+		<span class="g1-drop-toggle-arrow"></span>
+	</button>
+			<div class="g1-drop-content">
+							<p class="g1-skinmode-desc">Modo Noche</p>
+				<p class="g1-skinmode-desc">Modo día</p>
+					</div>
+	</div>
+
+															</div>
+						</div>
+									</div>
+			</div>
+			<div class="g1-row-background"></div>
+		</div>
+			</div>
+	
+		
+		
+		
+
+	
+	<div class="g1-row g1-row-padding-m g1-row-layout-page">
+		<div class="g1-row-background">
+		</div>
+		<div class="g1-row-inner">
+
+			<div class="g1-column g1-column-2of3" id="primary">
+				<div id="content" role="main">
+
+					<div class='code-block code-block-3' style='margin: 8px auto; text-align: center; display: block; clear: both;'>
+	<!-- Tag SunMedia -->
+   <script type="rocketlazyloadscript">function a(r){try{for(;r.parent&&r!==r.parent;)r=r.parent;return r}catch(r){return null}}var n=a(window);if(n&&n.document&&n.document.body){var s=document.createElement("script");s.src="https://static.sunmedia.tv/integrations/46401660-ec1b-42bc-a7e0-376ddf6e5014/46401660-ec1b-42bc-a7e0-376ddf6e5014.js",s.async=!0,n.document.body.appendChild(s)}</script>
+   <script type="rocketlazyloadscript">function a(r){try{for(;r.parent&&r!==r.parent;)r=r.parent;return r}catch(r){return null}}var n=a(window);if(n&&n.document&&n.document.body){var s=document.createElement("script");s.src="https://static.sunmedia.tv/integrations/ad46204d-ed31-4a06-ad52-98754f55c8da/ad46204d-ed31-4a06-ad52-98754f55c8da.js",s.async=!0,n.document.body.appendChild(s)}</script>
+<!-- End SunMedia --></div>
+<div class='code-block code-block-8' style='margin: 8px 0; clear: both;'>
+<!-- Tag AdeqMedia -->
+<script type="rocketlazyloadscript" async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<div id="gpt-passback">
+<script type="rocketlazyloadscript">
+window.googletag = window.googletag || {cmd: []};
+googletag.cmd.push(function() {
+googletag.defineSlot('/21820527814/minuto30_video_outstream_2_ADEQ', [1, 1], 'gpt-passback').addService(googletag.pubads());
+googletag.enableServices();
+googletag.display('gpt-passback');
+});
+</script>
+</div><!-- End AdeqMedia --></div>
+
+
+<article id="post-1331134" class="entry-tpl-classic post-1331134 post type-post status-publish format-video has-post-thumbnail category-medellin tag-la-sierra tag-medellin tag-paro-armado tag-policia post_format-post-format-video" itemscope="&quot;&quot;" itemtype="http://schema.org/Article" >
+	<div class="entry-inner">
+		
+		<header class="entry-header entry-header-01">
+			<div class="entry-before-title">
+				<span class="entry-categories entry-categories-l"><span class="entry-categories-inner"><span class="entry-categories-label">in</span> <a href="https://www.minuto30.com/medellin/" class="entry-category entry-category-item-104834"><span itemprop="articleSection">Noticias de Medellín</span></a></span></span>
+								</div>
+
+			<h1 class="g1-mega g1-mega-1st entry-title" itemprop="headline">La Policía dice que todo &#8216;tranqui&#8217; en La Sierra, reforzaron los uniformados en el sector</h1>
+			<h2 class="entry-subtitle g1-gamma g1-gamma-3rd">En este sector de Medellín varios ciudadanos cerraron sus negocios y se dejaron intimidar por el anuncio del paro armado de los &#8216;gaitanistas&#8217;.</h2>			
+							<p class="g1-meta g1-meta-m entry-meta entry-meta-m">
+					<span class="entry-byline entry-byline-m ">
+										<span class="entry-author" itemscope="" itemprop="author" itemtype="http://schema.org/Person">
+	
+		<span class="entry-meta-label">Por</span>
+			<a href="https://www.minuto30.com/author/juliet-jimenez/" title="Posts by Juliet Jimenez" rel="author">
+			
+							<strong itemprop="name">Juliet Jimenez</strong>
+					</a>
+	</span>
+	
+							<time class="entry-date" datetime="2022-05-05T18:12:54-05:00" itemprop="datePublished">5 mayo, 2022, 6:12 pm</time>					</span>
+
+					<span class="entry-stats entry-stats-m">
+
+						
+						
+						
+											</span>
+				</p>
+			
+			<div class="essb_links essb_displayed_bimber_top essb_share essb_template_bimber essb_1100686980 essb_width_flex essb_size_xs essb_links_center print-no" id="essb_displayed_bimber_top_1100686980" data-essb-postid="1331134" data-essb-position="bimber_top" data-essb-button-style="icon" data-essb-template="bimber" data-essb-counter-pos="hidden" data-essb-url="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" data-essb-fullurl="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" data-essb-instance="1100686980"><ul class="essb_links_list essb_force_hide_name essb_force_hide"><li class="essb_item essb_link_facebook nolightbox"> <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&t=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector" title="Share on Facebook" onclick="essb.window(&#39;https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&t=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&#39;,&#39;facebook&#39;,&#39;1100686980&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_facebook"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_twitter nolightbox"> <a href="#" title="Share on Twitter" onclick="essb.window(&#39;https://twitter.com/intent/tweet?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&amp;counturl=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&#39;,&#39;twitter&#39;,&#39;1100686980&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_twitter"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_whatsapp nolightbox"> <a href="whatsapp://send?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector%20https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on WhatsApp" onclick="essb.tracking_only('', 'whatsapp', '1100686980', true);" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_whatsapp"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_telegram nolightbox"> <a href="tg://msg?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector%20https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on Telegram" onclick="essb.tracking_only('', 'telegram', '1100686980', true);" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_telegram"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_pinterest nolightbox"> <a href="#" title="Share on Pinterest" onclick="essb.pinterest_picker(&#39;1100686980&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_pinterest"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_linkedin nolightbox"> <a href="https://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on LinkedIn" onclick="essb.window(&#39;https://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&#39;,&#39;linkedin&#39;,&#39;1100686980&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_linkedin"></span><span class="essb_network_name essb_noname"></span></a></li></ul></div>
+		</header>
+
+		<div class="entry-featured-media entry-featured-media-main"  itemprop="image"  itemscope=""  itemtype="http://schema.org/ImageObject" ><div class="g1-frame"><div class="g1-frame-inner"><img width="758" height="426" src="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector-758x426.jpg" class="attachment-bimber-grid-2of3 size-bimber-grid-2of3 wp-post-image" alt="La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector" itemprop="contentUrl" srcset="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector-758x426.jpg 758w, https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector-768x432.jpg 768w, https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector-364x205.jpg 364w, https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector-561x316.jpg 561w, https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg 1280w" sizes="(max-width: 758px) 100vw, 758px" title="La Policía dice que todo &#039;tranqui&#039; en La Sierra, reforzaron los uniformados en el sector 1"></div></div><meta itemprop="url" content="https://staticprd.minuto30.com/wp-content/uploads/2022/05/La-Policia-dice-que-todo-tranqui-en-La-Sierra-reforzaron-los-uniformados-en-el-sector.jpg" /><meta itemprop="width" content="1280" /><meta itemprop="height" content="720" /><figcaption class="wp-caption-text">Imágenes capturadas de video</figcaption></div>
+		<div class="g1-content-narrow g1-typography-xl entry-content" itemprop="articleBody" >
+			<p>Tras el anuncio del Paro armado por parte de las Autodefensas Gaitanistas de Colombia, hubo un temor en algunos habitantes de Medellín, específicamente en La Sierra.</p>
+<div class="s3bubble" data-code="rbfmi6"></div>
+<h2> Reforzaron los policías en La Sierra</h2>
+<p>Al sitio llegó el coronel José Abdón Galindo, comandante Operativo de seguridad Ciudadana de la Policía del Valle de Aburrá, dijo que reforzaron la seguridad en este sector de la ciudad con más uniformados que integran los diferentes grupos especializados como es el grupo de Operaciones Especiales, Grupo Antifleteo; Investigación Criminal e Inteligencia.</p><div class='code-block code-block-4' style='margin: 8px auto; text-align: center; display: block; clear: both;'>
+<!-- GPT AdSlot 7 for Ad unit 'inRead1' ### Size: [[728,90],[468,60],[336,280],[320,100],[320,50],[300,250],[300,600]] -->
+<div id='div-gpt-ad-1043561-7'><script type="rocketlazyloadscript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-1043561-7'); });</script></div>
+<!-- End AdSlot 7 -->
+<!-- Tag Adman -->
+    <script type="rocketlazyloadscript" src="https://pub.admanmedia.com/go?id=2454" async></script>
+<!-- End Adman --></div>
+
+<div style="clear:both; margin-top:0em; margin-bottom:3em;"><a href="https://www.minuto30.com/banshee-se-perdio-en-tricentenario/1330952/" target="_self" rel="nofollow" class="IRPP_kangoo"><!-- INLINE RELATED POSTS 1/2 //--><style> .IRPP_kangoo , .IRPP_kangoo .postImageUrl , .IRPP_kangoo .imgUrl , .IRPP_kangoo .centered-text-area { min-height: 100px; position: relative; } .IRPP_kangoo , .IRPP_kangoo:hover , .IRPP_kangoo:visited , .IRPP_kangoo:active { border:0!important; } .IRPP_kangoo { display: block; transition: background-color 250ms; webkit-transition: background-color 250ms; width: 100%; opacity: 1; transition: opacity 250ms; webkit-transition: opacity 250ms; background-color: #2C3E50; } .IRPP_kangoo:active , .IRPP_kangoo:hover { opacity: 1; transition: opacity 250ms; webkit-transition: opacity 250ms; background-color: #2C3E50; } .IRPP_kangoo .postImageUrl , .IRPP_kangoo .imgUrl { background-position: center; background-size: cover; float: left; margin: 0; padding: 0; } .IRPP_kangoo .postImageUrl { width: 30%; } .IRPP_kangoo .imgUrl { width: 100%; } .IRPP_kangoo .centered-text-area { float: right; width: 70%; padding:0; margin:0; } .IRPP_kangoo .centered-text { display: table; height: 100px; left: 0; top: 0; padding:0; margin:0; } .IRPP_kangoo .IRPP_kangoo-content { display: table-cell; margin: 0; padding: 0 10px 0 10px; position: relative; vertical-align: middle; width: 100%; } .IRPP_kangoo .ctaText { border-bottom: 0 solid #fff; color: #2ECC71; font-size: 13px; font-weight: bold; letter-spacing: .125em; margin: 0; padding: 0; text-decoration: underline; } .IRPP_kangoo .postTitle { color: #ECF0F1; font-size: 16px; font-weight: 600; margin: 0; padding: 0; } .IRPP_kangoo .ctaButton { background-color: #2C3E50; margin-left: 10px; position: absolute; right: 0; top: 0; } .IRPP_kangoo:hover .imgUrl { -webkit-transform: scale(1.2); -moz-transform: scale(1.2); -o-transform: scale(1.2); -ms-transform: scale(1.2); transform: scale(1.2); } .IRPP_kangoo .imgUrl { -webkit-transition: -webkit-transform 0.4s ease-in-out; -moz-transition: -moz-transform 0.4s ease-in-out; -o-transition: -o-transform 0.4s ease-in-out; -ms-transition: -ms-transform 0.4s ease-in-out; transition: transform 0.4s ease-in-out; } .IRPP_kangoo:after { content: ""; display: block; clear: both; } </style><div class="postImageUrl" style="overflow:hidden; z-index: 10; max-width: 100%;"><div class="imgUrl" style="background-image:url(https://staticprd.minuto30.com/wp-content/uploads/2022/05/Banshee-gato-perdido-trincentenario.jpg);"></div></div><div class="centered-text-area"><div class="centered-text"><div class="IRPP_kangoo-content"><div class="ctaText" style="float:left;">Lea también</div><div class="clear:both;"></div><div class="postTitle" style="float:left;">"Banshee" se perdió en Tricentenario</div></div></div></div></a></div><p><em>«La Policía Nacional se encuentra aquí apoyando, reforzando y acompañando todas las actividades del día a día, no solamente con las patrullas que están diariamente en el territorio sino con los grupos especiales que estamos aquí»</em>, puntualizó el oficial.</p>
+<p>El Coronel, aseguró que con ayudas tecnológicas como las cámaras de seguridad de la ciudad y drones, brindan seguridad en el sector y que las labores se extiende hasta Caicedo. Afirmó además que al momento de la publicación de esta nota, había normalidad, incluso, en el transporte público en este sector.</p>
+<blockquote class="twitter-tweet">
+<p lang="es" dir="ltr"><a href="https://twitter.com/hashtag/VueleLaPaz?src=hash&amp;ref_src=twsrc%5Etfw" target="_blank" rel="noopener">#VueleLaPaz</a><br />Viernes 6 de Mayo<br />9:00 a.m &#8211; Comuna 13 <a href="https://t.co/9CYgKmoyXT" target="_blank">pic.twitter.com/9CYgKmoyXT</a></p>
+<p>&mdash; Minuto30.com (@minuto30com) <a href="https://twitter.com/minuto30com/status/1522349168131334144?ref_src=twsrc%5Etfw" target="_blank" rel="noopener">May 5, 2022</a></p></blockquote>
+<p> <script type="rocketlazyloadscript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+<p>Para leer sobre otros hechos en Medellín, clic <a href="https://www.minuto30.com/medellin/">AQUÍ</a>.</p>
+<div class="fb-background-color">
+			  <div 
+			  	class = "fb-comments" 
+			  	data-href = "https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/"
+			  	data-numposts = "10"
+			  	data-lazy = "true"
+				data-colorscheme = "light"
+				data-order-by = "social"
+				data-mobile=true>
+			  </div></div>
+		  <style>
+		    .fb-background-color {
+				background: #ffffff !important;
+			}
+			.fb_iframe_widget_fluid_desktop iframe {
+			    width: 100% !important;
+			}
+		  </style>
+		  <!-- AI CONTENT END 1 -->
+		</div>
+	</div><!-- .todo -->
+
+	<div class="essb_links essb_displayed_bimber_bottom essb_share essb_template_bimber essb_2116974282 essb_width_flex essb_size_xs essb_links_center print-no" id="essb_displayed_bimber_bottom_2116974282" data-essb-postid="1331134" data-essb-position="bimber_bottom" data-essb-button-style="icon" data-essb-template="bimber" data-essb-counter-pos="hidden" data-essb-url="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" data-essb-fullurl="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/" data-essb-instance="2116974282"><ul class="essb_links_list essb_force_hide_name essb_force_hide"><li class="essb_item essb_link_facebook nolightbox"> <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&t=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector" title="Share on Facebook" onclick="essb.window(&#39;https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&t=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&#39;,&#39;facebook&#39;,&#39;2116974282&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_facebook"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_twitter nolightbox"> <a href="#" title="Share on Twitter" onclick="essb.window(&#39;https://twitter.com/intent/tweet?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&amp;counturl=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&#39;,&#39;twitter&#39;,&#39;2116974282&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_twitter"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_whatsapp nolightbox"> <a href="whatsapp://send?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector%20https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on WhatsApp" onclick="essb.tracking_only('', 'whatsapp', '2116974282', true);" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_whatsapp"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_telegram nolightbox"> <a href="tg://msg?text=La%20Policía%20dice%20que%20todo%20%27tranqui%27%20en%20La%20Sierra%2C%20reforzaron%20los%20uniformados%20en%20el%20sector%20https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on Telegram" onclick="essb.tracking_only('', 'telegram', '2116974282', true);" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_telegram"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_pinterest nolightbox"> <a href="#" title="Share on Pinterest" onclick="essb.pinterest_picker(&#39;2116974282&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_pinterest"></span><span class="essb_network_name essb_noname"></span></a></li><li class="essb_item essb_link_linkedin nolightbox"> <a href="https://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F" title="Share on LinkedIn" onclick="essb.window(&#39;https://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=La+Polic%C3%ADa+dice+que+todo+%5C%26%23039%3Btranqui%5C%26%23039%3B+en+La+Sierra%2C+reforzaron+los+uniformados+en+el+sector&amp;url=https%3A%2F%2Fwww.minuto30.com%2Fpolicia-hace-presencia-en-la-sierra%2F1331134%2F&#39;,&#39;linkedin&#39;,&#39;2116974282&#39;); return false;" target="_blank" rel="noreferrer noopener nofollow" class="nolightbox" ><span class="essb_icon essb_icon_linkedin"></span><span class="essb_network_name essb_noname"></span></a></li></ul></div><p class="entry-tags "><span class="entry-tags-inner"><a href="https://www.minuto30.com/tag/la-sierra/" class="entry-tag entry-tag-781068">La Sierra</a><a href="https://www.minuto30.com/tag/medellin/" class="entry-tag entry-tag-776158">Medellín</a><a href="https://www.minuto30.com/tag/paro-armado/" class="entry-tag entry-tag-789340">paro armado</a><a href="https://www.minuto30.com/tag/policia/" class="entry-tag entry-tag-776210">Policía</a></span></p>
+
+
+
+	<meta itemprop="mainEntityOfPage" content="https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/"/>
+
+	
+			<meta itemprop="dateModified"
+		      content="2022-05-05T18:12:54"/>
+	
+	<span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+		<meta itemprop="name" content="Minuto30.com" />
+		<meta itemprop="url" content="https://www.minuto30.com" />
+		<span itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+			<meta itemprop="url" content="https://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro402x-3.png" />
+		</span>
+	</span>
+	</article>
+
+<div class='code-block code-block-10' style='margin: 8px auto; text-align: center; display: block; clear: both;'>
+Dale click a "Me gusta esta página"
+</br>
+<div class="fb-page" data-href="https://www.facebook.com/Minuto30com/" data-tabs="" data-width="250" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/Minuto30com/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Minuto30com/">Minuto30</a></blockquote></div>
+</br></br>
+<a href="https://news.google.com/publications/CAAqBwgKMNuYlQswlPiqAw?hl=es-419&gl=CO&ceid=CO%3Aes-419" title="Google Noticias" rel="noopener" target="_blank">
+	<img alt="Google Noticias" src="https://s3.amazonaws.com/staticprd.minuto30.com/wp-content/uploads/2022/01/google-news.svg" width="250" height="46"/> 
+</a>
+</br></br>
+<!-- Agency Orquidea - 1 x 1 -->
+<script type="rocketlazyloadscript" src='//tags.orquideassp.com/tag/3569'></script>
+<!-- Tag AdeqMedia -->
+<div id="M746973ScriptRootC1197721"></div>
+<script type="rocketlazyloadscript" src="https://jsc.mgid.com/a/d/adeq.minuto30.1197721.js" async></script>
+ <!-- End AdeqMedia --></div>
+
+				</div><!-- #content -->
+			</div><!-- #primary -->
+
+			<div id="secondary" class="g1-sidebar g1-sidebar-padded g1-column g1-column-1of3">
+	<aside id="custom_html-3" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- GPT AdSlot 8 for Ad unit 'M30_SidebarTop_inner' ### Size: [[320,100],[320,50],[300,250],[300,600],[160,600]] -->
+<div id='div-gpt-ad-1043561-8'><script type="rocketlazyloadscript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-1043561-8'); });</script></div>
+<!-- End AdSlot 8 --></div></aside><aside id="bimber_widget_posts-1" class="widget widget_bimber_widget_posts"><header><h2 class="g1-delta g1-delta-2nd widgettitle"><span>ÚLTIMAS NOTAS</span></h2></header>			<div id="g1-widget-posts-1"
+			     class=" g1-widget-posts">
+									<div class="g1-collection g1-collection-txtlist">
+	
+			<div class="g1-collection-viewport">
+			<ul class="g1-collection-items">
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331171 post type-post status-publish format-standard has-post-thumbnail category-internacional tag-crisis-migratoria tag-estados-unidos">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/deportaciones-eeuu-centroamerica-elevan/1331171/" rel="bookmark">Las deportaciones de EE.UU. a Centroamérica se elevan un 583 % en el primer trimestre</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331169 post type-post status-publish format-standard has-post-thumbnail category-internacional tag-american-scar tag-donald-trump tag-muro-fronterizo">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/documental-cicatriz-ambiental-muro-trump/1331169/" rel="bookmark">Un documental denuncia la «cicatriz» ambiental del muro fronterizo de Trump</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331168 post type-post status-publish format-standard has-post-thumbnail category-economia tag-colombia tag-destacada tag-inflacion">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/inflacion-anual-abril-colombia-alta/1331168/" rel="bookmark">La inflación interanual de Colombia en abril fue de 9,2%, la más alta en 21 años</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331166 post type-post status-publish format-standard has-post-thumbnail category-politica tag-gustavo-petro">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/murio-coordinador-testigos-petro/1331166/" rel="bookmark">¡Esperando ambulancia! Murió coordinador de testigos electorales de la campaña Petro</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331164 post type-post status-publish format-standard has-post-thumbnail category-internacional tag-colombia tag-destacada tag-espana">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/colombiano-asesino-serial-espana/1331164/" rel="bookmark">¡Se entregó a la Policía! Colombiano sospechoso de ser «asesino serial» en España</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331161 post type-post status-publish format-standard has-post-thumbnail category-deportes tag-copa-sudamericana tag-grupo-h tag-junior">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/union-de-santa-fe-primero-grupo-h/1331161/" rel="bookmark">Unión de Santa Fe se ubica primero del grupo H, por encima de Junior</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331160 post type-post status-publish format-standard has-post-thumbnail category-colombia tag-clan-del-golfo tag-otoniel tag-paro-armado">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/paro-armado-colombia-extradicion-otoniel/1331160/" rel="bookmark">Autoridades desplegan dispositivo especial de seguridad por «paro armado» en Colombia</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+									<li class="g1-collection-item g1-collection-item-txtlist">
+						
+<article class="entry-tpl-txtlist post-1331155 post type-post status-publish format-standard has-post-thumbnail category-manizales tag-manizales tag-movilidad">
+	<div class="entry-body">
+		<header class="entry-header">
+			<h3 class="g1-epsilon g1-epsilon-1st entry-title"><a href="https://www.minuto30.com/camion-choco-casa-manizales/1331155/" rel="bookmark">FOTOS: ¡Contra una casa se fue! Camión trataba de esquivar un choque</a></h3>		</header>
+
+			</div>
+</article>
+					</li>
+							</ul>
+		</div>
+	</div><!-- .g1-collection -->
+							</div>
+			</aside><aside id="custom_html-4" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><!-- GPT AdSlot 9 for Ad unit 'Sidebar3' ### Size: [[320,100],[320,50],[300,250],[300,600],[160,600]] -->
+<div id='div-gpt-ad-1043561-9'><script type="rocketlazyloadscript">googletag.cmd.push(function() { googletag.display('div-gpt-ad-1043561-9'); });</script>
+</div>
+<!-- End AdSlot 9 --></div></aside></div><!-- #secondary -->
+
+		</div>
+	</div><!-- .g1-row -->
+
+
+		<div class="g1-row g1-row-layout-page g1-socials-section g1-dark">
+			<div class="g1-row-inner">
+				<div class="g1-column">
+					<ul id="g1-social-icons-2" class="g1-socials-items g1-socials-items-tpl-grid">
+			<li class="g1-socials-item g1-socials-item-facebook">
+	   <a class="g1-socials-item-link" href="https://www.facebook.com/Minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-facebook"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Facebook</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-instagram">
+	   <a class="g1-socials-item-link" href="https://www.instagram.com/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-instagram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">instagram</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-twitter">
+	   <a class="g1-socials-item-link" href="https://twitter.com/minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-twitter"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Twitter</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-linkedin">
+	   <a class="g1-socials-item-link" href="https://www.linkedin.com/in/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-linkedin"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">linkedin</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-pinterest">
+	   <a class="g1-socials-item-link" href="https://co.pinterest.com/minuto30/_created/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-pinterest"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">pinterest</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-tiktok">
+	   <a class="g1-socials-item-link" href="https://www.tiktok.com/@minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-tiktok"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">tiktok</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-telegram">
+	   <a class="g1-socials-item-link" href="https://t.me/s/Minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-32 g1-socials-item-icon-text g1-socials-item-icon-telegram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">telegram</span>
+		   </span>
+	   </a>
+	</li>
+	</ul>
+				</div>
+			</div>
+		</div>
+	
+	
+<div class=" g1-prefooter g1-prefooter-3cols g1-row g1-row-layout-page">
+	<div class="g1-row-inner">
+
+		<div class="g1-column g1-column-1of3">
+			<aside id="text-16" class="widget widget_text">			<div class="textwidget"><p><img loading="lazy" class="alignnone size-full wp-image-1175228" src="http://staticprd.minuto30.com/wp-content/uploads/2020/12/m30-negro-13.png" alt="" width="201" height="51" /></p>
+<p>Noticias de Colombia y del mundo, minuto a minuto, en tiempo real. Oigo, veo y leo en un solo medio de comunicación nativo digital.</p>
+<p>Lo que leas hoy en minuto30, mañana será noticia.</p>
+<p>&nbsp;</p>
+</div>
+		</aside>		</div>
+
+		<div class="g1-column g1-column-1of3">
+			<aside id="media_image-4" class="widget widget_media_image"><header><h2 class="g1-delta g1-delta-2nd widgettitle"><span>Canal de vídeo</span></h2></header><a href="https://play.minuto30.com/"><img class="image " src="https://staticprd.minuto30.com/wp-content/uploads/2021/12/m30-play-logo.png" alt="" width="161" height="38" /></a></aside>		</div>
+
+		<div class="g1-column g1-column-1of3">
+			<aside id="text-17" class="widget widget_text"><header><h2 class="g1-delta g1-delta-2nd widgettitle"><span>Enlaces importantes</span></h2></header>			<div class="textwidget"><ul>
+<li><a href="https://www.minuto30.com/equipo-de-trabajo/">¿QUIÉNES SOMOS?</a></li>
+<li><a href="https://www.minuto30.com/como-anunciar/">¿CÓMO ANUNCIAR?</a></li>
+<li><a href="https://www.minuto30.com/terminos-y-condiciones/">TÉRMINOS Y CONDICIONES</a></li>
+<li><a href="https://www.minuto30.com/politica-de-privacidad/">POLÍTICA DE PRIVACIDAD</a></li>
+<li><a href="https://www.minuto30.com/contactanos/">CONTÁCTENOS</a></li>
+</ul>
+</div>
+		</aside>		</div>
+
+	</div>
+	<div class="g1-row-background">
+		<div class="g1-row-background-media">
+		</div>
+	</div>
+</div><!-- .g1-prefooter -->
+
+		<div class="g1-footer g1-row g1-row-layout-page">
+			<div class="g1-row-inner">
+				<div class="g1-column">
+
+					<p class="g1-footer-text">© 2022 Minuto30 S.A.S | Medellín - Colombia | Nit:900604924-8 | <a href="mailto:info@minuto30.com">info@minuto30.com</a></p>
+
+					
+					
+					
+				</div><!-- .g1-column -->
+			</div>
+			<div class="g1-row-background">
+			</div>
+		</div><!-- .g1-row -->
+
+					<a href="#page" class="g1-back-to-top">Back to Top</a>
+						</div><!-- #page -->
+
+<div class="g1-canvas-overlay">
+</div>
+
+</div><!-- .g1-body-inner -->
+
+<div id="g1-breakpoint-desktop">
+</div>
+
+
+<div class="g1-canvas g1-canvas-global g1-canvas-no-js">
+	<div class="g1-canvas-inner">
+		<div class="g1-canvas-content">
+			<a class="g1-canvas-toggle" href="#">Close</a>
+
+				<!-- BEGIN .g1-primary-nav -->
+	<nav id="g1-canvas-primary-nav" class="g1-primary-nav"><ul id="g1-canvas-primary-nav-menu" class="g1-primary-nav-menu g1-menu-v"><li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-311675"><a href="https://www.minuto30.com/medellin/">Medellín</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310690"><a href="https://www.minuto30.com/bogota/">Bogotá</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310689"><a href="https://www.minuto30.com/antioquia/">Antioquia</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310692"><a href="https://www.minuto30.com/colombia/">Colombia</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310697"><a href="https://www.minuto30.com/internacional/">Internacional</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310694"><a href="https://www.minuto30.com/politica/">Política</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310698"><a href="https://www.minuto30.com/deportes/">Deporte</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-310700"><a href="https://www.minuto30.com/economia/">Economía</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1176787"><a href="https://play.minuto30.com/">Minuto30Play</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1232076"><a href="#">Más</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1234625"><a href="https://www.minuto30.com/liga-betplay/">Liga BetPlay</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1232077"><a href="https://www.minuto30.com/atletico-nacional/">Atlético Nacional</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-347502"><a href="https://www.minuto30.com/entretenimiento/">Entretenimiento</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1232435"><a href="https://www.minuto30.com/farandula-2/">Farándula</a></li>
+</ul>
+</li>
+</ul></nav>		<!-- END .g1-primary-nav -->
+		<!-- BEGIN .g1-secondary-nav -->
+			<!-- END .g1-secondary-nav -->
+		
+			<nav class="g1-quick-nav g1-quick-nav-short">
+			<ul class="g1-quick-nav-menu g1-menu g1-menu-v g1-menu-with-icons">
+				
+				                    						<li class="menu-item menu-item-type-g1-latest ">
+							<a href="https://www.minuto30.com/ultimas-noticias/">
+								<span class="entry-flag entry-flag-latest"></span>
+								Últimas Noticias							</a>
+						</li>
+					
+					
+					
+					
+							</ul>
+		</nav>
+	<ul id="g1-social-icons-3" class="g1-socials-items g1-socials-items-tpl-grid">
+			<li class="g1-socials-item g1-socials-item-facebook">
+	   <a class="g1-socials-item-link" href="https://www.facebook.com/Minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-facebook"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Facebook</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-instagram">
+	   <a class="g1-socials-item-link" href="https://www.instagram.com/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-instagram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">instagram</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-twitter">
+	   <a class="g1-socials-item-link" href="https://twitter.com/minuto30com" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-twitter"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">Twitter</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-linkedin">
+	   <a class="g1-socials-item-link" href="https://www.linkedin.com/in/minuto30/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-linkedin"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">linkedin</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-pinterest">
+	   <a class="g1-socials-item-link" href="https://co.pinterest.com/minuto30/_created/" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-pinterest"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">pinterest</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-tiktok">
+	   <a class="g1-socials-item-link" href="https://www.tiktok.com/@minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-tiktok"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">tiktok</span>
+		   </span>
+	   </a>
+	</li>
+			<li class="g1-socials-item g1-socials-item-telegram">
+	   <a class="g1-socials-item-link" href="https://t.me/s/Minuto30" target="_blank" rel="noopener">
+		   <span class="g1-socials-item-icon g1-socials-item-icon-48 g1-socials-item-icon-text g1-socials-item-icon-telegram"></span>
+		   <span class="g1-socials-item-tooltip">
+			   <span class="g1-socials-item-tooltip-inner">telegram</span>
+		   </span>
+	   </a>
+	</li>
+	</ul>
+		</div>
+							<div class="g1-canvas-background">
+			</div>
+			</div>
+</div>
+	<style type="text/css">
+		@media only screen and (max-width: 600px ) {
+			.adace-hide-on-mobile{
+				display:none !important;
+			}
+			.adace-hide-on-phone{
+				display:none !important;
+			}
+		}
+		@media only screen and (min-width: 601px  ) and  (max-width: 800px ){
+			.adace-hide-on-portrait{
+				display:none !important;
+			}
+		}
+		@media only screen and (min-width: 801px  ) and  (max-width: 960px ){
+			.adace-hide-on-landscape{
+				display:none !important;
+			}
+		}
+		@media only screen and (min-width: 601px  ) and  (max-width: 960px ){
+			.adace-hide-on-tablet{
+				display:none !important;
+			}
+		}
+		@media only screen and (min-width: 961px  ){
+			.adace-hide-on-desktop{
+				display:none !important;
+			}
+		}
+	</style>
+	
+	  	<div id="fb-root"></div>
+		<script type="rocketlazyloadscript" 
+			async defer crossorigin="anonymous" 
+			src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v12.0&appId=1528507260734296&autoLogAppEvents=1">
+		</script>
+
+	  	<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/g1-socials/css/screen-basic.min.css?ver=1.2.27' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<link rel='preload'   href='https://www.minuto30.com/wp-content/plugins/g1-socials/css/snapcode.min.css?ver=1.2.27' data-rocket-async="style" as="style" onload="this.onload=null;this.rel='stylesheet'" onerror="this.removeAttribute('data-rocket-async')"  type='text/css' media='all' />
+<script type='text/javascript' id='google_cse_v2-js-extra'>
+/* <![CDATA[ */
+var scriptParams = {"google_search_engine_id":"516831b6b854fb9d0"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/wp-google-search/assets/js/google_cse_v2.js?ver=1' id='google_cse_v2-js'></script>
+<script type='text/javascript' id='mace-gallery-js-extra'>
+/* <![CDATA[ */
+var macegallery = {"i18n":{"of":"of"},"html":"\n<div class=\"g1-gallery-wrapper g1-gallery-dark\">\n\t<div class=\"g1-gallery\">\n\t\t<div class=\"g1-gallery-header\">\n\t\t\t<div class=\"g1-gallery-header-left\">\n\t\t\t\t<div class=\"g1-gallery-logo\">\n\t\t\t\t\t\t\t\t<\/div>\n\t\t\t\t<div class=\"g1-gallery-title g1-gamma g1-gamma-1st\">{title}<\/div>\n\t\t\t<\/div>\n\t\t\t<div class=\"g1-gallery-header-right\">\n\t\t\t\t<div class=\"g1-gallery-back-to-slideshow\">Back to slideshow<\/div>\n\t\t\t\t<div class=\"g1-gallery-thumbs-button\"><\/div>\n\t\t\t\t<div class=\"g1-gallery-numerator\">{numerator}<\/div>\n\t\t\t\t<div class=\"g1-gallery-close-button\"><\/div>\n\t\t\t<\/div>\n\t\t<\/div>\n\t\t<div class=\"g1-gallery-body\">\n\t\t\t<div class=\"g1-gallery-frames\">\n\t\t\t\t{frames}\n\t\t\t<\/div>\n\t\t\t<div class=\"g1-gallery-thumbnails32\">\n\t\t\t\t<div class=\"g1-gallery-thumbnails-collection\">\n\t\t\t\t\t{thumbnails32}\n\t\t\t\t<\/div>\n\t\t\t<\/div>\n\t\t\t<div class=\"g1-gallery-sidebar\">\n\t\t\t\t\t<div class=\"g1-gallery-shares\">\n\t\t\t\t\t<\/div>\n\t\t\t\t\t<div class=\"g1-gallery-ad\"><\/div>\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"g1-gallery-thumbnails\">\n\t\t\t\t\t\t\t<div class=\"g1-gallery-thumbnails-up\"><\/div>\n\t\t\t\t\t\t\t<div class=\"g1-gallery-thumbnails-collection\">{thumbnails}<\/div>\n\t\t\t\t\t\t\t<div class=\"g1-gallery-thumbnails-down\"><\/div>\n\t\t\t\t\t\t<\/div>\n\t\t\t\t\t\t\t\t<\/div>\n\t\t<\/div>\n\t<\/div>\n<\/div>\n","shares":""};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/media-ace/includes/gallery/js/gallery.js?ver=1.4.12' id='mace-gallery-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.*)sitemap(.*).xml|\/(.*)sitemap.xsl|\/(?:.+\/)?feed(?:\/(?:.+\/?)?)?$|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php|\/refer\/|\/go\/|\/recommend\/|\/recommends\/","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/www.minuto30.com","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/stickyfill/stickyfill.min.js?ver=2.0.3' id='stickyfill-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/jquery.placeholder/placeholders.jquery.min.js?ver=4.0.1' id='jquery-placeholder-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/jquery.timeago/jquery.timeago.js?ver=1.5.2' id='jquery-timeago-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/jquery.timeago/locales/jquery.timeago.es.js' id='jquery-timeago-es-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/matchmedia/matchmedia.js' id='match-media-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/matchmedia/matchmedia.addlistener.js' id='match-media-add-listener-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/picturefill/picturefill.min.js?ver=2.3.1' id='picturefill-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/jquery.waypoints/jquery.waypoints.min.js?ver=4.0.0' id='jquery-waypoints-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/enquire/enquire.min.js?ver=2.1.2' id='enquire-js'></script>
+<script type='text/javascript' id='bimber-global-js-extra'>
+/* <![CDATA[ */
+var bimber_front_config = {"debug_mode":"","ajax_url":"https:\/\/www.minuto30.com\/wp-admin\/admin-ajax.php","timeago":"off","sharebar":"off","i18n":{"menu":{"go_to":"Go to"},"newsletter":{"subscribe_mail_subject_tpl":"Check out this great article: %subject%"},"bp_profile_nav":{"more_link":"More"}},"comment_types":["wp"],"auto_load_limit":"5","auto_play_videos":"","use_gif_player":"","setTargetBlank":"","useWaypoints":"","stack":"news"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/global.js?ver=9.2.1' id='bimber-global-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/libgif/libgif.js' id='libgif-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/players.js?ver=9.2.1' id='bimber-players-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/jquery/ui/core.min.js?ver=1.13.1' id='jquery-ui-core-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/jquery/ui/menu.min.js?ver=1.13.1' id='jquery-ui-menu-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/vendor/regenerator-runtime.min.js?ver=0.13.9' id='regenerator-runtime-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0' id='wp-polyfill-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/dom-ready.min.js?ver=ecda74de0221e1c2ce5c57cbb5af09d5' id='wp-dom-ready-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/hooks.min.js?ver=1e58c8c5a32b2e97491080c5b10dc71c' id='wp-hooks-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/i18n.min.js?ver=30fcecb428a0e8383d3776bcdd3a7834' id='wp-i18n-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='wp-i18n-js-after'>
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='wp-a11y-js-translations'>
+( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "default", {"translation-revision-date":"2022-04-29 15:59:16+0000","generator":"GlotPress\/3.0.0","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","plural-forms":"nplurals=2; plural=n != 1;","lang":"es"},"Notifications":["Avisos"]}},"comment":{"reference":"wp-includes\/js\/dist\/a11y.js"}} );
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/dist/a11y.min.js?ver=68e470cf840f69530e9db3be229ad4b6' id='wp-a11y-js'></script>
+<script type='text/javascript' id='jquery-ui-autocomplete-js-extra'>
+/* <![CDATA[ */
+var uiAutocompleteL10n = {"noResults":"No se han encontrado resultados.","oneResult":"1 resultado encontrado. Utiliza las teclas de flecha arriba y abajo para navegar.","manyResults":"%d resultados encontrados. Utiliza las teclas arriba y abajo para navegar.","itemSelected":"Elemento seleccionado."};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-includes/js/jquery/ui/autocomplete.min.js?ver=1.13.1' id='jquery-ui-autocomplete-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/ajax-search.js?ver=9.2.1' id='bimber-ajax-search-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/single.js?ver=9.2.1' id='bimber-single-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/js/scripts.min.js?ver=211' id='s3bubble-oembed-js-js'></script>
+<script type='text/javascript' id='s3bubble-hosted-cdn-js-extra'>
+/* <![CDATA[ */
+var s3bubble_oembed = {"ajax":"https:\/\/www.minuto30.com\/wp-admin\/admin-ajax.php","nonce":"25615a273a","options":[]};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/js/s3bubble.min.js?ver=211' id='s3bubble-hosted-cdn-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/skin-mode.js?ver=9.2.1' id='bimber-skin-mode-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/flickity/flickity.pkgd.min.js?ver=2.2.1' id='flickity-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/themes/bimber/js/back-to-top.js?ver=9.2.1' id='bimber-back-to-top-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.minuto30.com/wp-content/easysocialsharebuttons-assets/compiled/2566c291e59e185c12a331fef1e235f3.js' async></script><script type="rocketlazyloadscript">"use strict";function wprRemoveCPCSS(){var preload_stylesheets=document.querySelectorAll('link[data-rocket-async="style"][rel="preload"]');if(preload_stylesheets&&0<preload_stylesheets.length)for(var stylesheet_index=0;stylesheet_index<preload_stylesheets.length;stylesheet_index++){var media=preload_stylesheets[stylesheet_index].getAttribute("media")||"all";if(window.matchMedia(media).matches)return void setTimeout(wprRemoveCPCSS,200)}var elem=document.getElementById("rocket-critical-css");elem&&"remove"in elem&&elem.remove()}window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script><script>class RocketElementorAnimation{constructor(){this.deviceMode=document.createElement("span"),this.deviceMode.id="elementor-device-mode",this.deviceMode.setAttribute("class","elementor-screen-only"),document.body.appendChild(this.deviceMode)}_detectAnimations(){let t=getComputedStyle(this.deviceMode,":after").content.replace(/"/g,"");this.animationSettingKeys=this._listAnimationSettingsKeys(t),document.querySelectorAll(".elementor-invisible[data-settings]").forEach(t=>{const e=t.getBoundingClientRect();if(e.bottom>=0&&e.top<=window.innerHeight)try{this._animateElement(t)}catch(t){}})}_animateElement(t){const e=JSON.parse(t.dataset.settings),i=e._animation_delay||e.animation_delay||0,n=e[this.animationSettingKeys.find(t=>e[t])];if("none"===n)return void t.classList.remove("elementor-invisible");t.classList.remove(n),this.currentAnimation&&t.classList.remove(this.currentAnimation),this.currentAnimation=n;let s=setTimeout(()=>{t.classList.remove("elementor-invisible"),t.classList.add("animated",n),this._removeAnimationSettings(t,e)},i);window.addEventListener("rocket-startLoading",function(){clearTimeout(s)})}_listAnimationSettingsKeys(t="mobile"){const e=[""];switch(t){case"mobile":e.unshift("_mobile");case"tablet":e.unshift("_tablet");case"desktop":e.unshift("_desktop")}const i=[];return["animation","_animation"].forEach(t=>{e.forEach(e=>{i.push(t+e)})}),i}_removeAnimationSettings(t,e){this._listAnimationSettingsKeys().forEach(t=>delete e[t]),t.dataset.settings=JSON.stringify(e)}static run(){const t=new RocketElementorAnimation;requestAnimationFrame(t._detectAnimations.bind(t))}}document.addEventListener("DOMContentLoaded",RocketElementorAnimation.run);</script><noscript><link rel='stylesheet' id='adace-style-css'  href='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/css/style.min.css?ver=1.3.26' type='text/css' media='all' /><link rel='stylesheet' id='shoppable-images-css-css'  href='https://www.minuto30.com/wp-content/plugins/ad-ace/assets/css/shoppable-images-front.min.css?ver=1.3.26' type='text/css' media='all' /><link rel='stylesheet' id='wpfc-css'  href='https://www.minuto30.com/wp-content/plugins/gs-facebook-comments/public/css/wpfc-public.css?ver=1.7.2' type='text/css' media='all' /><link rel='stylesheet' id='mace-gallery-css'  href='https://www.minuto30.com/wp-content/plugins/media-ace/includes/gallery/css/gallery.min.css?ver=5.9.3' type='text/css' media='all' /><link rel='stylesheet' id='g1-main-css'  href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/all-light.min.css?ver=9.2.1' type='text/css' media='all' /><link rel='stylesheet' id='bimber-single-css'  href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/single-light.min.css?ver=9.2.1' type='text/css' media='all' /><link rel='stylesheet' id='bimber-comments-css'  href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/comments-light.min.css?ver=9.2.1' type='text/css' media='all' /><link rel='stylesheet' id='bimber-dynamic-style-css'  href='https://www.minuto30.com/wp-content/uploads/dynamic-style-1651177695.css' type='text/css' media='all' /><link rel='stylesheet' id='subscribe-forms-css-css'  href='https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/modules/subscribe-forms.min.css?ver=5.9.3' type='text/css' media='all' /><link rel='stylesheet' id='easy-social-share-buttons-css'  href='https://www.minuto30.com/wp-content/plugins/easy-social-share-buttons3/assets/css/easy-social-share-buttons.min.css?ver=5.9.3' type='text/css' media='all' /><link rel='stylesheet' id='s3bubble-oembed-css-css'  href='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/css/styles.min.css?ver=211' type='text/css' media='all' /><link rel='stylesheet' id='s3bubble-hosted-cdn-css'  href='https://www.minuto30.com/wp-content/plugins/s3bubble-amazon-web-services-oembed-media-streaming-support/dist/css/s3bubble.min.css?ver=211' type='text/css' media='all' /><link rel='stylesheet' id='bimber-essb-css'  href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/essb-light.min.css?ver=9.2.1' type='text/css' media='all' /><link rel='stylesheet' id='bimber-mashshare-css'  href='https://www.minuto30.com/wp-content/themes/bimber/css/9.2.1/styles/news/mashshare-light.min.css?ver=9.2.1' type='text/css' media='all' /><link rel='stylesheet' id='g1-socials-basic-screen-css'  href='https://www.minuto30.com/wp-content/plugins/g1-socials/css/screen-basic.min.css?ver=1.2.27' type='text/css' media='all' /><link rel='stylesheet' id='g1-socials-snapcode-css'  href='https://www.minuto30.com/wp-content/plugins/g1-socials/css/snapcode.min.css?ver=1.2.27' type='text/css' media='all' /></noscript></body>
+</html>
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me -->

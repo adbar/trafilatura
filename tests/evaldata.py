@@ -495,7 +495,7 @@ EVAL_PAGES = {
     'region': 'DE',
 },
 'https://www.travanto.de/ferienhaus/lierfeld/40222/ferienhaus-feinen.php': {
-    'file': 'travanto.de.ferienhaus-feinen.php',
+    'file': 'travanto.de.ferienhaus-feinen.html',
     'author': '',
     'title': 'Ferienhaus Feinen',
     'date': '',
@@ -705,7 +705,7 @@ EVAL_PAGES = {
     'region': '',
 },
 'https://www.reisen-mit-dem-internet.de/europa/deutschland/niedersachsen/ostfriesland/emden-21416': {
-    'file': 'reisen-mit-dem-internet.de.emden-21416',
+    'file': 'reisen-mit-dem-internet.de.emden-21416.html',
     'author': '',
     'title': 'Emden',
     'date': '',
@@ -873,7 +873,7 @@ EVAL_PAGES = {
     'region': '',
 },
 'http://www.colours-of-the-soul.alhelm.net': {
-    'file': 'colours-of-the-soul.alhelm.net',
+    'file': 'colours-of-the-soul.alhelm.net.html',
     'author': '',
     'title': 'trnd-Projekt “G Data InternetSecurity 2009”',
     'date': '2009-02-18',
@@ -9030,4 +9030,2767 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
+'https://www.iwrpressedienst.de/energie-themen/pm-7663-iwes-und-nordex-group-intensivieren-zusammenarbeit-bei-netzintegration-von-windenergieanlagen':{
+    'file': 'iwr.de.IWRpressedienst.Nordex.html',
+    'author': 'Nordex SE',
+    'title': 'IWES und Nordex Group intensivieren Zusammenarbeit bei Netzintegration von Windenergieanlagen',
+    'date': '2022-11-22', 
+    'with': ["Gemeinsam entwickelter Versuchsstand", "Michael Franke, Vice President", "Die Nordex Group im Profil"],  # 3 segments
+    'without': ["Telefon:", "Online-Pressemappe", "- alle Pressemitteilungen der"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.bmbf.de/bmbf/de/forschung/energiewende-und-nachhaltiges-wirtschaften/energiewende-und-nachhaltiges-wirtschaften_node.html': {
+    'file': 'bmf.de.energiewende.html',
+    'author': '',
+    'title': ': Energiewende, Mobilität und nachhaltiges Wirtschaften',
+    'date': '',  # YYYY-MM-DD
+    'with': ["Erneuerbare Energien", "Die Bundesregierung investiert", "Es geht aber nicht nur"],  # 3 segments
+    'without': ["Forschung", "Mehr Informationen", "Bildung Forschung Europa und die Welt"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.zfk.de/energie/waerme/waermepumpenmarkt-waechst-um-42-prozent-gegenueber-dem-vorjahr': {
+    'file': 'zfk.de.waermepumpen.html',
+    'author': '',
+    'title': 'Wärmepumpenmarkt wächst um 42 Prozent gegenüber dem Vorjahr',
+    'date': '2022-12-06', 
+    'with': ["Wärmepumpen boomen", "Trotz schwieriger", "Gas rückläufig"],  # 3 segments
+    'without': ["Mehr zum Thema", "ZfK.de > Energie > Wärme", "AGB Impressum Datenschutz"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://internetchemie.info/news/2021/jan21/heliumkerne-in-zinn-atomen-entdeckt.php': {
+    'file': 'internetchemie.info.Heliumkerne.html',
+    'author': '',
+    'title': 'Heliumkerne in Zinn-Atomen entdeckt',
+    'date': '2021-01-17', 
+    'with': ["Darmstadt - Januar 2021", "Im Detail:", "Die von Tanaka et al"],  # 3 segments
+    'without': ["Zusatzinformationen:", "About", "Aktualisiert am"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.enbw.com/unternehmen/presse/buergerbeteiligung-fuer-den-windpark-steinheim-startet.html' : {
+    'file': 'enwb.com.windpark.steinheim.html',
+    'author': 'EnBW Energie Baden-Württemberg AG',
+    'title': 'Umweltfreundliche Geldanlage: Bürgerbeteiligung am Windpark Steinheim',
+    'date': '2022-12-06',  
+    'with': ["Steinheim, Nordrhein-Westfalen/Stuttgart", "Mit der Bürgerbeteiligung", "Über die digitale"], # 3 segments
+    'without': ["Die EnBW Energie Baden-Württemberg AG ist:", "Das könnte Sie auch interessieren", "Zurück zum Newsroom"], # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.oekologisch-bauen.info/haustechnik/elektro-fotovoltaik/initiative-energieeffizienz/': {
+    'file': 'oekologisch-bauen.info.energieeffizienz.html',
+    'author': 'Oekologisch-bauen',
+    'title': 'Kostenloser Stromcheck für private Haushalte',
+    'date': '',  # YYYY-MM-DD
+    'with': ["Mit der Initiative EnergieEffizienz", "Der Stromcheck",  "Weitere Informationen rund um das Thema"], # 3 segments
+    'without': ["RATGEBER FIRMEN NEWS FORUM", "KURZ NOTIERT", "Impressum"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+
+'https://orsted.de/gruene-energie/gruener-wasserstoff/potenzial': {
+    'file': 'orsted.de.gruener-Wasserstoff.html',
+    'author': 'Ørsted',
+    'title': 'Das Potenzial von grünem Wasserstoff',
+    'date': '',  # YYYY-MM-DD
+    'with': ["Das „erneuerbare Molekül“:", "Wasserstoff als Energieträger", "E-Fuels als Lösung"],  # 3 segments
+    'without': ["Folgen Sie uns auf", "Ørsted glaubt an eine Welt", "Home"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.offshore-stiftung.de/offshore-windenergie': {
+    'file': 'offshore-stiftung.de.offshore-windenergie.html',
+    'author': 'Offshore-Stiftung ',
+    'title': 'OFFSHORE-WINDENERGIE SAUBERER STROM VOM MEER',
+    'date': '',  # YYYY-MM-DD
+    'with': ["Windparks in Nord- und Ostsee", "EXTREME BEDINGUNGEN AUF SEE", "OFFSHORE-WINDENERGIE ALS BUNDESWEITER JOBMOTOR"], # 3 segments
+    'without': ["VERANSTALTUNGEN", "PROJEKTE", "BLEIBEN SIE INFORMIERT"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://battery-news.de/index.php/2022/12/06/ultium-cells-erhoeht-gigafactory-kapazitaet-in-tennessee/': {
+    'file': 'battery-news.de.ultium-cells.html',
+    'author': 'Die Redaktion von Battery News',
+    'title': 'Ultium Cells erhöht Gigafactory-Kapazität in Tennessee',
+    'date': '2022-12-06',  
+    'with': ["Ultium Cells investiert", "Weitere US-Zellprojekte im Aufbau", "Gesamtvolumen über 130 Gigawattstunden"],  # 3 segments
+    'without': ["Artikel teilen", "SUCHE", "NEUESTE BEITRÄGE"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.techfieber.de/green/2022/12/06/energiesparen-bei-cern-teilchenbeschleuniger-macht-winterpause/ ': {
+    'file': 'greentech.live.energiesparen bei cern.html',
+    'author': 'Greentech.LIVE Redaktion',
+    'title': 'Energiesparen bei Cern: Teilchenbeschleuniger macht Winterpause',
+    'date': '2022-12-06',  
+    'with': ["Um Strom zu sparen", "Einschränkung ist «verschmerzbar»", "Sparen durch Wartung"],  # 3 segments
+    'without': ["Greentech.LIVE c/o Innoport RT", "Name *", "Kontakt & Impressum"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.forstpraxis.de/pilotprojekt-heizen-mit-pellets-aus-laub-so-funktioniert-es-21677':{
+    'file': 'forstpraxis.de.palletsauslaub.html',
+    'author': 'Amelie Siekmann',
+    'title': 'Pilotprojekt Heizen mit Pellets aus Laub: So funktioniert es',
+    'date': '2022-12-04',  
+    'with': ["In Reichenbach in der Lausitz", "Ein Antrag für Fördermittel ist gestellt", "„Man kann diese Pellets genauso" ],  # 3 segments
+    'without': ["AUCH INTERESSANT", "FORST&TECHNIK", "KLEINANZEIGEN"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.chemietechnik.de/sicherheit-umwelt/covestro-startet-neue-forschungsgruppe-fuer-biotechnologie-843.html' : {
+    'file': 'chemietechnik.de.forschungsgruppe fuer biotechnologie.html',
+    'author': 'Jona Göbelbecker',
+    'title': 'Covestro startet neue Biotechnologie-Forschungsgruppe',
+    'date': '2022-12-01', 
+    'with': ["Der Kunststoff-Hersteller Covestro will", "Neues Labor in Leverkusen eingerichtet", "Auch HDMA mithilfe von Biotechnologie produziert"],  # 3 segments
+    'without': ["Auch interessant", "Diskutieren Sie mit", "Aktuellste Beiträge"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.unendlich-viel-energie.de/themen/strom/umfrage-zur-strompreisbremse-oekostromkundinnen-besonders-sensibel-fuers-stromsparen': {
+    'file': 'unendlich-viel-energie-strompreisbremse.html',
+    'author': 'Dr. Tim Loppe',
+    'title': 'Umfrage zur Strompreisbremse: Ökostromkund*innen besonders sensibel fürs Stromsparen',
+    'date': '2022-11-22',  
+    'with': ["Düsseldorf, 22. November 2022 -", "„Die große Mehrheit der Bevölkerung", "Das Marktforschungsunternehmen YouGov"],  # 3 segments
+    'without': ["Diesen Artikel teilen", "Newsletter November", "Suche"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.solarserver.de/2022/12/01/groesstes-solarthermisches-kraftwerk-der-welt-entsteht-in-dubai/ ': {
+    'file': 'Solarserver.de.solarthermisches kraftwerk dubai.html',
+    'author': 'SolarServer',
+    'title': 'Größtes solarthermisches Kraftwerk der Welt entsteht in Dubai',
+    'date': '2022-12-01',  
+    'with': ["Shanghai Electric baut", "Die PV-Module mit insgesamt 250", "Für das Projekt werden etwa 560.000 Tonnen"],  # 3 segments
+    'without': ["Solarserver Newsletter", "Solarserver Stellenmarkt", "teilen twittern E-Mail"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.iass-potsdam.de/de/forschungsbereich/energiewende-und-gesellschaftlicher-wandel ': {
+    'file': 'iass-potsdam.de.energiewende.html',
+    'author': 'Dr. Rainer Quitzow',
+    'title': 'Energiewende und gesellschaftlicher Wandel',
+    'date': '',  # YYYY-MM-DD
+    'with': ["Die Dekarbonisierung der Energieversorgung", "Vision", "Mission"],  # 3 segments
+    'without': ["FORSCHUNGSGRUPPEN", "Weitere Beiträge anzeigen", "NEWSLETTER"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.zvei.org/presse-medien/pressebereich/messstellenbetriebsgesetz-endlich-klarheit-geschaffen ': {
+    'file': 'zvei.org.messestellenbetriebsgesetz.html',
+    'author': 'Zvei',
+    'title': 'Messstellenbetriebsgesetz: Endlich Klarheit geschaffen',
+    'date': '2022-12-02',  
+    'with': ["Wolfgang Weber, Vorsitzender", "Insbesondere ist hervorzuheben", "Der Entwurf kommt dennoch"],  # 3 segments
+    'without': ["Weiterführende Informationen", "Folgen Sie uns", "Zurück zur Übersicht"],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+},
+'https://www.energiezukunft.eu/erneuerbare-energien/biomasse/bundesregierung-drosselt-bioenergie-branche-protestiert/': {
+    'file': 'energiezukunft.eu.bioenergie.html',
+    'author': '',
+    'title': 'Bundesregierung drosselt Bioenergie, Branche protestiert',
+    'date': '2022-11-29', 
+    'with': ['Am vergangenen Freitag', 'Die Abschöpfung von Erlösen', ' Die Bioenergieverbände im Hauptstadtbüro'],  # 3 segments
+    'without': ['Mehr zum Thema', 'TOP-THEMEN', 'Magazine'],  # 3 segments
+    'comments': ['Ich bin schon vor Wochen', 'Entweder ist es die Unfähigkeit', 'Ein Tip: Es sollten'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.erneuerbareenergien.de/technologie/offshore-wind/usa-kalifornien-verpachtet-seeboden-zur-entwicklung-von-floating-offshore-windfarmen.': {
+    'file': 'erneuerbareenergien.de.seeboden.html',
+    'author': 'Tilman Weber',
+    'title': 'Kalifornien verpachtet Seeboden zur Entwicklung von Floating-Offshore-Windfarmen',
+    'date': '2022-12-10',  
+    'with': ['Bei den siegreichen Bietern', 'Wo die Windfarmentwickler', 'Außer in den Vereinigten Staaten'],  # 3 segments
+    'without': ['Autoren:', 'Tags', 'ANMELDUNG UND REGISTRIERUNG'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.wind-energie.de/presse/pressemitteilungen/detail/endlich-mehr-beschleunigung-wagen/': {
+    'file': 'wind-energie.de.beschleunigung.html',
+    'author': '',
+    'title': 'Endlich mehr Beschleunigung wagen!',
+    'date': '2022-12-08',  
+    'with': ['Innerhalb ihres ersten Jahres hat', 'Eine Erhebung der Fachagentur Windenergie an Land', 'Zu weiteren Komplikationen trägt'],  # 3 segments
+    'without': ['Ihr Ansprechpartner für Pressefragen', 'Tel.:', 'EUREF-Campus 16'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.dvfg.de/presse/pressemeldung/2022/11/29/verbrauchertipp-an-oder-aus-so-heizen-sie-waehrend-des-weihnachtsurlaubs-effizient': {
+    'file': 'dvg.de.weihnachtsurlaub.html',
+    'author': '',
+    'title': 'An oder aus? So heizen Sie während des Weihnachtsurlaubs effizient',
+    'date': '2022-29-11',  
+    'with': ['Weihnachten ist Reisezeit', 'Thermostate runterdrehen,', ' Smarten Thermostaten die Steuerung überlassen'],  # 3 segments
+    'without': ['zurück zur Listenansicht', ' 2022 Deutscher Verband Flüssiggas e.V.', 'Kontakt'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.cleanthinking.de/oranger-wasserstoff-erdkruste/': {
+    'file': 'cleanthinking.de.oranger-wasserstoff.html',
+    'author': 'Martin Jendrischik',
+    'title': 'Oranger Wasserstoff: Der Traum vom erneuerbaren Gas aus der Erdkruste',
+    'date': '2022-12-12',  
+    'with': ['Französische Forscher wollen', 'Grüner Wasserstoff und seine erneuerbaren', 'Oranger Wasserstoff aus der Erdkruste:'],  # 3 segments
+    'without': ['HINTERLASSE EINE ANTWORT', 'Diese Website verwendet Akismet', 'Buch-Tipp:'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://reset.org/du-wirst-nicht-glauben-wie-viel-co2-clickbait-websites-produzieren/': {
+    'file': 'reset.org.clickbait.html',
+    'author': 'Mark Newton',
+    'title': 'Du wirst nicht glauben, wie viel CO2 Clickbait-Websites produzieren!',
+    'date': '2022-12-12',  
+    'with': ['Schlagzeilen wie die dieses Artikels', 'Die Studie von Ebiquity und Scope3 legt', 'Im Gegensatz dazu lag der CO2PM für'],  # 3 segments
+    'without': ['MARKIERT MIT', 'DAS KÖNNTE DICH AUCH INTERESSIEREN', 'MEIST GELESEN'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://mpimet.mpg.de/kommunikation/aktuelles/single-news/neuer-blick-auf-das-blue-marble-foto-icon-simuliert-das-gekoppelte-klimasystem-mit-1-km-aufloesung.': {
+    'file': 'mpimet.de.klimasystem.html',
+    'author': '',
+    'title': 'Neuer Blick auf das „Blue Marble“-Foto: ICON simuliert das gekoppelte Klimasystem mit 1 km-Auflösung',
+    'date': '2022-12-07', 
+    'with': ['Die frühen 1970er Jahre werden oft', 'Während wir über die Ursprünge', 'Die Daten werden mithilfe von NVIDIA'],  # 3 segments
+    'without': ['Weitere Informationen:', 'Kontakt:', 'MPI Website /Kommunikation /Aktuelles /Single News'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.recyclingmagazin.de/2022/12/12/europas-erste-lithium-rueckgewinnungsanlage-in-nrw/': {
+    'file': 'recyclingmagazin.de.lithium.html',
+    'author': '',
+    'title': 'Europas erste Lithium-Rückgewinnungsanlage in NRW',
+    'date': '2022-12-12',  
+    'with': ['Die Anlage mit einem geplanten', 'Seit etwa 8 Jahren', 'Accurec wird mit der HydroLiC-Technologie'],  # 3 segments
+    'without': ['TEILEN', 'VERWANDTE ARTIKEL', 'Letzte Meldungen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.helmholtz-klima.de/aktuelles/kein-kipppunkt-zugunsten-des-klimaschutzes': {
+    'file': 'helmholtz-klima.de.kipppunkt.html',
+    'author': 'Christian Mihatsch',
+    'title': 'Kein Kipppunkt zugunsten des Klimaschutzes',
+    'date': '',  # YYYY-MM-DD
+    'with': ['„Die multilaterale Diplomatie', 'Der Fonds hat', 'Christoph Bals von der Umweltorganisation'],  # 3 segments
+    'without': ['MEHR ZUM THEMA', 'NEWSLETTERANMELDUNG', 'AUF DEM LAUFENDEN BLEIBEN!'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.baumev.de/News/10365/TransformationslaborErnhrung.html': {
+    'file': 'baumev.de.Transformationslabor.html',
+    'author': 'Jan Koch',
+    'title': 'TRANSFORMATIONSLABOR ERNÄHRUNG',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Die Ernährungswirtschaft birgt', 'Ausschlaggebend für die Initiative', 'Im Fokus des Projekts steht die Frage'],  # 3 segments
+    'without': ['Kontakt:', 'Ansprechpartnerin zum', 'KLIMANEUTRALITÄT VON UNTERNEHMEN'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://daheim-solar.de/lexikon/batteriespeicher/': {
+    'file': 'daheim-solar.de.batteriespeicher.html',
+    'author': 'Daheim Solar',
+    'title': 'Batteriespeicher',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Der am häufigsten für Solarbatterien', 'Dies ist vor allem im stationären Betrieb', 'Lithium-Ionen-Akkumulatoren werden'],  # 3 segments
+    'without': ['Zurück zum Lexikon', 'Zu allen Beiträgen', 'Kontakt'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.dvgw.de/blog/gas/welche-heizung-ist-klimafreundlich-und-zukunftstauglich': {
+    'file': 'dvgw.de.heizug.html',
+    'author': '',
+    'title': 'Welche Heizung ist klimafreundlich und zukunftstauglich?',
+    'date': '2021-11-19',  
+    'with': ['In den Heizungen unserer', 'Von den verschiedenen Heizsystemen im Haus', 'Dazu kommt, dass nicht jedes Gebäude für'],  # 3 segments
+    'without': ['Weitere Informationen', 'Ansprechpartner', 'Bleiben Sie auf dem Laufenden'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://fluessiggas.de/aktuelles/dimethylether/': {
+    'file': 'fluessiggas.de.dimethylether.html',
+    'author': 'Fluessiggas.de',
+    'title': 'DIMETHYLETHER: ALTERNATIVE FÜR DAS HEIZEN DER ZUKUNFT',
+    'date': '2022-10-24',  
+    'with': ['Die Nachfrage nach erneuerbaren Energien', 'Verbraucher in Deutschland können bereits', 'Die Aussicht, dass erneuerbarer Dimethylether'],  # 3 segments
+    'without': ['Verwandte Themenbereiche', 'Highlights aus dem Bereich:', 'Beitrag teilen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.energieverbraucher.de/de/preise__312/NewsDetail__18725/.': {
+    'file': 'energieverbraucher.de.energie.html',
+    'author': 'Leonora Holling',
+    'title': 'Energiepreiskrise: Entlastungen und Rechte auf einen Blick',
+    'date': '2022-11-21',  
+    'with': ['(21. November 2022) Energieverbraucher erhalten', 'Zwei weitere Umlagen treffen Verbraucher', 'Auf Grundlage von § 3 der Allgemeinen Bedingungen'],  # 3 segments
+    'without': ['weitere Inhalte zu »Preise«', 'MITGLIED WERDEN', 'ÜBER UNS'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.sonnenenergie.de//index.php?id=30&no_cache=1&tx_ttnews%5Btt_news%5D=477': {
+    'file': 'sonnenernergie.de.Windrebell.html',
+    'author': 'Götz Warnke',
+    'title': 'Der WindRebell',
+    'date': '',  # YYYY-MM-DD
+    'with': ['MIT KLEINWINDKRAFT ZU MEHR AUTARKIE:', 'Ebenso wichtig wie die großräumige', 'Ob eine Kleinwindenergieanlage'],  # 3 segments
+    'without': ['Von:', 'Meist gesucht:', 'Copyright 2018 - '],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://vorangedacht.de/umwelt-und-klima/ueber-kohleausstieg-kernkraftwerke-und-erneuerbare-energien/': {
+    'file': 'vorangedacht.de.kohleausstieg.html',
+    'author': '',
+    'title': 'Über Kohleausstieg, Kernkraftwerke und Erneuerbare Energien',
+    'date': '2022-10-13',  
+    'with': ['Bundeswirtschaftsminister Habeck kündigte', 'Erneuerbare Energien sind volatil', 'Eine überwältigende Mehrzahl der Klimaschützer'],  # 3 segments
+    'without': ['Mehr zum Thema:', 'Zum Newsletter anmelden', 'Gründe für Atomkraftwerke'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.verbaende.com/news/pressemitteilung/das-aendert-sich-im-jahr-2023-die-wichtigsten-aenderungen-fuer-verbraucherinnen-im-ueberblick-151642/': {
+    'file': 'verbaende.com.2023.html',
+    'author': 'VZS',
+    'title': 'Das ändert sich im Jahr 2023: Die wichtigsten Änderungen für Verbraucher*innen im Überblick',
+    'date': '2022-12-12',  
+    'with': ['(Leipzig) - Von Preisbremsen', 'Private Solaranlagen:', 'Mehrwegpflicht fürs Essen zum Mitnehmen:'],  # 3 segments
+    'without': ['Weitere Pressemitteilungen dieses Verbands', 'Folgen Sie uns', 'NEWS TEILEN:'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.agrarheute.com/energie/heizen-abfallholz-erfindung-funktioniert-601129': {
+    'file': 'agrarheute.com.abfallholz.html',
+    'author': 'Amelie Siekmann',
+    'title': 'Heizen mit Abfallholz: Mit dieser Erfindung funktioniert es',
+    'date': '2022-12-11',  
+    'with': ['Auch dünne Äste,', 'Zunächst steckt er die ', 'Die Hydraulikpresse im Inneren'],  # 3 segments
+    'without': ['Mehr zum Thema', 'Hier ist Ihre Meinung gefragt', ''],  # 3 segments
+    'comments': ['Moin vom Fjord', 'Zum andern ist', 'Gerne Nachfragen'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.proplanta.de/agrar-nachrichten/energie/bayern-fordert-hoehere-erloesobergrenzen-fuer-bioenergie_article1670823962.html': {
+    'file': 'proplanta.de.erloesobergrenze.html',
+    'author': '',
+    'title': 'Bayern fordert höhere Erlösobergrenzen für Bioenergie',
+    'date': '2022-12-12',  
+    'with': ['Wie der Ressortchef am Dienstag ', 'Unterdessen pochte die Leiterin', 'Derweil würde die vorgeschlagene'],  # 3 segments
+    'without': ['Weitere Artikel zum Thema', 'Kommentierte Artikel', 'Mehr zum Thema'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.heizung.de/waermepumpe/wissen/eignet-sich-eine-waermepumpe-im-altbau.html': {
+    'file': 'heizung.de.waermepumpen.html',
+    'author': 'Alexander Rosenkranz',
+    'title': 'Eignet sich eine Wärmepumpe im Altbau?',
+    'date': '2022-03-09',  
+    'with': ['Wärmepumpenheizungen setzen', 'Wärmepumpenanlagen gelten als', 'Erreichen lässt sich eine niedrige Vorlauftemperatur'],  # 3 segments
+    'without': ['Mehr zu Wärmepumpe', 'Neueste Artikel', 'Heizung.de Top Themen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.chemie.de/news/1178836/empa-spin-off-revolutioniert-die-messung-von-treibhausgasen-und-luftschadstoffen.html': {
+    'file': 'chemie.de.spin-off.html',
+    'author': 'Empa',
+    'title': 'Empa-Spin-off revolutioniert die Messung von Treibhausgasen und Luftschadstoffen',
+    'date': '2022-12-12',  # 
+    'with': ['Das im Februar 2018 als Spin-off der Empa ', 'Die von Hundt und Aseev', 'Und im Oktober verlieh Innosuisse'],  # 3 segments
+    'without': ['Fakten, Hintergründe, Dossiers', 'Start-ups', 'Empa (Eidgenössische Materialprüfungs- und Forschungsanstalt)'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.scinexx.de/news/energie/ammoniak-spaltung-durch-leds-statt-hitze/': {
+    'file': 'scinexx.com.ammoniak.html',
+    'author': 'Nadja Podbregar',
+    'title': 'Ammoniak-Spaltung durch LEDs statt Hitze',
+    'date': '2022-11-28',  
+    'with': ['Wegbereiter zu „grünem“ Wasserstoff?', 'Eine günstigere Alternative', '„Dies ist der erste Bericht in der Fachliteratur,'],  # 3 segments
+    'without': ['Zurück zur Startseite', 'Das könnte Sie auch interessieren', 'In den Schlagzeilen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.ingenieur.de/technik/fachbereiche/energie/kernfusion-kann-die-energiequelle-der-sterne-energieprobleme-aus-der-welt-schaffen/': {
+    'file': 'ingenieur.de.kernfusion.html',
+    'author': 'Alexandra Illina',
+    'title': 'Kernfusion: Kann „die Energiequelle der Sterne“ Energieprobleme aus der Welt schaffen?',
+    'date': '2022-12-12',  
+    'with': ['Überall auf der Welt forscht man', 'Das NIF-Team hat', 'Kleiner Schritt zu einer grünen Energiequelle'],  # 3 segments
+    'without': ['THEMEN IM ARTIKEL', 'TOP 5 ENERGIE', '12.12.2022, 08:30 Uhr'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.greenpeace.de/engagieren/nachhaltiger-leben': {
+    'file': 'greenpeace.de.nachhaltigleben.html',
+    'author': 'Greenpeace',
+    'title': 'Nachhaltig leben',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Jede:r Deutsche kauft im Schnitt ', 'Für vier große industriell-genutzten Materialströme', 'Als Gesellschaft können wir die Verantwortung'],  # 3 segments
+    'without': ['PETITION', 'Mehr zu Klima und Konsum', 'Zum Weiterlesen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.topagrar.com/energie/news/schnee-belastet-module-10558804.html': {
+    'file': 'topagrar.com.schnee.solat.html',
+    'author': 'Hinrich Neumann',
+    'title': 'Schnee belastet Solarmodule - Warum nur Profis zum Entfernen ran sollten',
+    'date': '2022-12-10',  
+    'with': ['Eine Schneedecke auf der', 'Das Gewicht belastet', 'Verschiedene Experten warnen '],  # 3 segments
+    'without': ['DIE REDAKTION EMPFIEHLT', 'Meistgelesene Artikel', 'Meistdiskutierte Artikel'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.bund.net/themen/aktuelles/detail-aktuelles/news/akw-neubau-in-polen-gefaehrlich-unwirtschaftlich-und-ohne-zukunft/': {
+    'file': 'bund.net.akw.html',
+    'author': 'Bund',
+    'title': 'AKW-Neubau in Polen: gefährlich, unwirtschaftlich und ohne Zukunft',
+    'date': '2022-12-12',
+    'with': ['Antje von Broock, BUND-Geschäftsführerin:', 'Sämtliche Probleme der Atomkraft, ', 'Mehrere Studien zeigen, dass bei '],  # 3 segments
+    'without': ['Mehr Informationen:', 'Zur Übersicht', 'Fan werden'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://mitvergnuegen.com/2022/ausflug-herbst-um-berlin/': {
+    'file': 'mitvergnuegen.de.herbst.html',
+    'author': 'Marina Beuerle',
+    'title': '11 schöne Ausflugsziele für den Herbst rund um Berlin',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Zugegeben, wir', 'Am Werbellinsee gibt', 'Raus aus den Klamotten und rein'],  # 3 segments
+    'without': ['DIESE ARTIKEL KÖNNTEN DICH INTERESSIEREN', 'ZURÜCK ZUR STARTSEITE', 'Kategorien'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://goodnight.at/magazin/kultur/3017-konzert-highlights-im-november-2022': {
+    'file': 'goodnight.at.konzert.html',
+    'author': 'Johanna Kropfitsch',
+    'title': 'Konzert-Highlights im November 2022',
+    'date': '2022-11-02', 
+    'with': ['Mit dem im August 2022', 'Seit 2012 bringen Kraftklub', 'Ein bisschen Old-School Hip-Hop,'],  # 3 segments
+    'without': ['Beliebteste Artikel', 'Facebook', 'Mediadaten'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'AT', 
+},
+'https://www.thisisjanewayne.com/news/2022/09/14/von-bauchgeburten-und-falschen-gefuehlen-im-richtigen-sein/': {
+    'file': 'thisisjanewayne.com.bauch.html',
+    'author': 'Nike Jane',
+    'title': 'Warum ich lieber „Bauchgeburt“ statt Kaiserschnitt sage.',
+    'date': '2022-09-14', 
+    'with': ['„Geht los!“, schrie', 'Benötigen Sie psychologische', 'Während der Französischen Revolution'],  # 3 segments
+    'without': ['TAGS:', 'Mehr von', '11 KOMMENTARE'],  # 3 segments
+    'comments': ['Hab Rotz und', ' Ich finde es komisch, dass', 'Tolle Worte.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://frolleinherr.com/thoughts/kolumne-lost-aber-immer-noch-da/ ': {
+    'file': 'frolleinherr.com.lost.html',
+    'author': 'Karoline Herr',
+    'title': 'SUNDAY THOUGHTS: EIN WENIG LOST, ABER IMMER NOCH DA!',
+    'date': '2022-11-20',  
+    'with': ['Einige sehr aufmerksame', 'Es ist so: Mein', 'An dieser Stelle sei gesagt:'],  # 3 segments
+    'without': ['11 Antworten zu', 'Impressum', 'Schon gelesen?'],  # 3 segments
+    'comments': ['danke für deine Ehrlichkeit!', 'Ich bin so froh,', 'selten hat mich ein Kommentar so gefreut'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.amazedmag.de/white-passing-oder-mein-leben-irgendwo-dazwischen/': {
+    'file': 'amazedmag.de.meinleben.html',
+    'author': 'Fatima',
+    'title': 'White Passing oder (m)ein Leben irgendwo dazwischen',
+    'date': '2022-12-06',  
+    'with': ['Ich wollte diesen Text schon', 'Heute sehe ich das anders.', '„Da wo du herkommst, bin ich zu weiß'],  # 3 segments
+    'without': ['Sharing is caring', 'Ähnliche Artikel', 'ABOUT'],  # 3 segments
+    'comments': ['', '', ''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.refinery29.com/de-de/single-weihnachten-fragen': {
+    'file': 'refinery29.com.single.html',
+    'author': "SADHBH O'SULLIVAN, ELISABETH KOCHAN",
+    'title': 'Ich habe es satt, an Weihnachten gefragt zu werden, wieso ich Single bin',
+    'date': '2022-12-12',
+    'with': ['„Meine letzte ernste Beziehung ging ', 'Wenn dir Leute Fragen zum Dating', 'Während der Feiertage gibt es zahlreiche'],  # 3 segments
+    'without': ['Lust auf mehr?', 'The Conversation', 'More from Relationships'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://rosa-mag.de/sheila-atim-the-woman-king-zeigt-weibliche-staerke-in-all-ihren-facetten/': {
+    'file': 'rosa-mag.de.womanking.html',
+    'author': 'Celia Parbey',
+    'title': 'Sheila Atim: „The Woman King zeigt weibliche Stärke in all ihren Facetten“',
+    'date': '2022-10-06',
+    'with': ['Gerade ist der Hollywood Blockbuster', 'Atim: The Woman King zeigt weibliche Stärke', 'Die Stunt-Szenen im Film sind'],  # 3 segments
+    'without': ['Unterstütze RosaMag ', 'Wähle deine Mitgliedschaft', 'RELATED POSTS'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://theoriginalcopy.de/editors-letter-baby/': {
+    'file': 'theoriginalcopy.de.baby.html',
+    'author': 'Swantje Bernsmann',
+    'title': 'Editor’s Letter: bye OC Baby, hi Bernsi Baby!',
+    'date': '2022-08-11',  
+    'with': ['Lange habe ich diesen', 'Während ich diese Wort', 'Bis dahin halte ich Euch auf Instagram '],  # 3 segments
+    'without': ['Teilen', 'Schreibe einen Kommentar', 'Copyright 2022'],  # 3 segments
+    'comments': ['Dir und Timo alles Gute', 'Hach Swantje.', 'Wow so toll geschrieben!'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.galore.de/kultur/artikel/30-11-buch-der-woche-nikole-hannah-jones-hrsg-o-1619': {
+    'file': 'galore.de.buch.html',
+    'author': 'Marina Mucha',
+    'title': '30.11. | Buch der Woche',
+    'date': '2022-11-30', 
+    'with': ['Was als Sonderausgabe der', 'Die fundierten wie komplexen', 'Nikole Hannah-Jones (Hrsg.)'],  # 3 segments
+    'without': ['Abo', 'Facebook', 'Interviews'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://beige.de/artikel/reisen-travel-provence-suedfrankreich-tipps': {
+    'file': 'beige.de.suedfrankreich.html',
+    'author': 'Marie Jaster',
+    'title': 'Provence Travel Guide',
+    'date': '2022-11-07',  
+    'with': ['Die Provence kann etwas,', 'Als wir uns spontan entschieden,', 'Dementsprechend haben wir'],  # 3 segments
+    'without': ['Die Karte zum Abspeichern:', 'Newsletter', 'Datenschutz'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.urania.de/die-freiheit-der-planung': {
+    'file': 'urania.de.freiheit.html',
+    'author': 'Reiner Nagel',
+    'title': 'Die Freiheit der Planung',
+    'date': '2022-25-10', 
+    'with': ['Was haben fahrerlose Autos und Pakete ', 'Öffentliche Räume sind', 'Städtebau ist planungsrechtlich die Art'],  # 3 segments
+    'without': ['Diese Seite teilen', 'Blog', 'Cookie-Einstellungen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.wmn.de/health/body-fitness/staendig-muede-an-diesen-krankheiten-koennte-es-liegen-id459844': {
+    'file': 'wmn.de.krankheit.html',
+    'author': 'Nadja Demel',
+    'title': '',
+    'date': '2022-12-13',  
+    'with': ['Leidest du an ständiger Müdigkeit', 'Ständige Müdigkeit kann belastend sein', 'um eine Diagnose zu bekommen,'],  # 3 segments
+    'without': ['Markiert:', 'Kontakt', 'BODY & FITNESS'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+
+},
+'https://www.gofeminin.de/horoskop/liebeshoroskop-januar-2023-s4055611.html': {
+    'file': 'gofeminin.de.horoskop.html',
+    'author': 'Sonia Mevißen',
+    'title': 'Liebeshoroskop Januar 2023: Das sagen die Sterne über euer Liebesglück',
+    'date': '2023-01-01',
+    'with': ['Zeit für große Gefühle?', 'Im Januar sind Sie verträumt', 'Ab 27.01. bietet Venus bessere Vibes'],  # 3 segments
+    'without': ['Folge uns überall!', 'Nichts mehr verpassen!', 'Alle Rubriken'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.fitforfun.de/news/studie-zeigt-zwei-beliebte-lebensmittel-koennen-gegen-soziale-aengste-helfen-531297.html': {
+    'file': 'fitforfun.de.sozialeaengste.html',
+    'author': 'Mathilda Trausch',
+    'title': 'Studie zeigt: Zwei beliebte Lebensmittel können gegen soziale Ängste helfen',
+    'date': '2022-12-26',  # YYYY-MM-DD
+    'with': ['Schon länger ist bekannt:', 'Da der Darm und die Psyche eng', 'Fermantation ist die chemische Umwandlung'],  # 3 segments
+    'without': ['Quellen ausblenden', 'Top-Themen bei FIT FOR FUN', 'Meistgelesen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.womenshealth.de/abnehmen/weihnachten-nicht-zunehmen/': {
+    'file': 'womenshealth.de.weihnachten.html',
+    'author': 'Tina Klostermeier',
+    'title': 'Weihnachten nicht zunehmen: 10 Tipps für ein schlankes Fest',
+    'date': '2022-12-15',  # YYYY-MM-DD
+    'with': ['Durchschnittlich ein Kilo mehr', 'In der Folge testeten die', 'Normalerweise ist es nicht ratsam'],  # 3 segments
+    'without': ['Meist gelesen', 'Abnehmen', 'Zur Startseite'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.madymorrison.com/yoga/energy-rising': {
+    'file': 'madymorrsion.com.energy.html',
+    'author': 'Mady',
+    'title': 'Energy Rising – 33 Tage Yoga Challenge',
+    'date': '2022-04-03',  # YYYY-MM-DD
+    'with': ['Der Frühling steht bevor,', 'Für die Energy Rising – Challenge nutzen wir', 'Nun wünsch ich dir aber ganz viel Spaß'],  # 3 segments
+    'without': ['YOU MAY ALSO LIKE', 'YOGA', 'FOOD'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.emotion.de/psychologie-partnerschaft/persoenlichkeit/selfcare-fuer-faule-99-wege-dein-selbstbewusstsein-aufzupaeppeln': {
+    'file': 'emotion.de.selfcare.html',
+    'author': 'Emotion',
+    'title': 'Tut so gut: 99 Wege, heute Selfcare zu betreiben',
+    'date': '2022-12-23',  # YYYY-MM-DD
+    'with': ['Jeden Morgen eine stundenlange Beauty-Routine', '"Ich nehme mir regelmäßig Zeit und Ruhe', 'Dir selbst Blumen'],  # 3 segments
+    'without': ['Mehr Themen:', 'BELIEBTE THEMEN ENTDECKEN', 'ÜBER'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://greator.com/innere-zufriedenheit/': {
+    'file': 'greator.com.innerezufriedenheit.html',
+    'author': 'Greator',
+    'title': 'Glück kommt von innen: Wie du deine innere Zufriedenheit steigern kannst',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Innere Zufriedenheit ist ein wichtiger Faktor ', '10 Tipps für innere Zufriedenheit:', 'Fazit'],  # 3 segments
+    'without': ['Themen', 'Greator Newsletter', 'Artikel gefallen? Vergiss nicht zu teilen!'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.impulse.de/recht-steuern/rechtsratgeber/kind-krank/7297147.html': {
+    'file': 'impulse.de.eltern.html',
+    'author': 'Julia Müller',
+    'title': 'Was Arbeitgeber über die Rechte von Eltern wissen müssen',
+    'date': '2022-12-28',  # YYYY-MM-DD
+    'with': ['Wie viele Tage im Jahr dürfen Mitarbeiter', 'Gibt es dabei eine Altersgrenze für die Kinder?', 'Man kann den Anspruch auf Kinderkrankentage'],  # 3 segments
+    'without': ['TERMINE FÜR UNTERNEHMER', '2023 nichts mehr versäumen!', 'Das könnte Sie auch interessieren'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.fem.com/beauty-lifestyle/warum-wir-anfangen-muessen-mehr-ueber-gehaelter-zu-sprechen': {
+    'file': 'fem.com.gehaelter.html',
+    'author': '',
+    'title': 'Warum wir anfangen müssen, mehr über Gehälter zu sprechen',
+    'date': '2019-01-17',  # YYYY-MM-DD
+    'with': ['Es ist schon sehr deutsch,', 'Offenheit gegen ungleiche Gehälter', 'Weil Chefs das natürlich gar'],  # 3 segments
+    'without': ['MEHR ZUM THEMA JOB UND KARRIERE', 'INSTAGRAM', 'AM HÄUFIGSTEN GELESEN'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.business-punk.com/2022/12/netflix-and-dont-chill-netflix-nimmt-fitness-reihe-ins-programm-auf/': {
+    'file': 'business-punk.com.fitness.html',
+    'author': 'Business Punk Redaktion',
+    'title': 'Netflix and DON’T chill: Netflix nimmt Fitness-Reihe ins Programm auf',
+    'date': '2022-12-22',  # YYYY-MM-DD
+    'with': ['Insgesamt werde es über 30', 'In der ersten Staffel', 'Die Kollaboration ist'],  # 3 segments
+    'without': ['BUSINESS PUNK NEWSLETTER', 'Blick ins Heft', 'Mediadaten'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.7mind.de/magazin/so-lernen-wir-grenzen-zu-setzen': {
+    'file': '7mind.de.grenzen.html',
+    'author': 'Daniela Obers',
+    'title': 'So lernen wir Grenzen zu setzten',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Sie sind das Fundament der', 'So erkennst du', 'Übung, Übung, Übung'],  # 3 segments
+    'without': ['Das könnte dich auch interessieren', 'Unsere Inhalte', 'Einloggen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.brandeins.de/magazine/brand-eins-wirtschaftsmagazin/2023/keine-panik/unser-wahres-ich': {
+    'file': 'brandeins.de.wahresIch.html',
+    'author': 'Brand eins',
+    'title': 'Unser wahres Ich',
+    'date': '',  # YYYY-MM-DD
+    'with': ['brand eins: „Im Grunde gut“', 'Sie wollen ein populäres', 'Ist das Ihr ultimatives'],  # 3 segments
+    'without': ['Ausgabe kaufen', 'Rechtliches', 'Über uns'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.arbeit-und-arbeitsrecht.de/news/verjaehrung-von-urlaubsanspruechen.html': {
+    'file': 'arbeit-und-arbeitsrecht.de.urlaub.html',
+    'author': '',
+    'title': 'Verjährung von Urlaubsansprüchen',
+    'date': '2022-12-20',  # YYYY-MM-DD
+    'with': ['Der Beklagte beschäftigte', 'Der Senat hat damit die', 'Pressemitteilung Nr. 48/22'],  # 3 segments
+    'without': ['Jetzt zum kostenlosen Newsletter anmelden', 'Recherche im Archiv', 'Redaktions-Newsletter'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://erfolg-magazin.de/mit-der-richtigen-konfliktkultur-zum-erfolg/': {
+    'file': 'erfolg-magazin.de.konfliktkultur.html',
+    'author': 'Redaktion',
+    'title': 'Mit der richtigen Konfliktkultur zum Erfolg',
+    'date': '2022-12-19',  # YYYY-MM-DD
+    'with': ['Unternehmen setzen alles', 'Unser ganzes Leben geht es', 'Und was am wichtigsten ist: '],  # 3 segments
+    'without': ['Will Smith: Selbsthilfebücher als Teil seines Erfolgsgeheimnisses', 'Impressum', '»Wir brauchen Leute, die Entscheidungen treffen«'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.humanresourcesmanager.de/future-of-work/gender-diversity-revolution-im-reallabor-women-digit-praxislaboratorien-atruvia/': {
+    'file': 'humanresourcesmanager.de.diversity.html',
+    'author': 'Jörg Staff',
+    'title': 'Gender-Diversity: Revolution im Reallabor',
+    'date': '2022-12-15',  # YYYY-MM-DD
+    'with': ['Bulgarien hat uns einiges voraus,', 'In Praxislabs die Zukunft', 'Agilität wirkt.'],  # 3 segments
+    'without': ['Weitere Beiträge aus der Kolumne:', 'Unser Newsletter', 'Verwandte Artikel'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.strive-magazine.de/post/das-dating-dilemma-erfolgreicher-frauen': {
+    'file': 'strive-magazin.de.dating.html',
+    'author': 'Bianca Praetorius',
+    'title': 'Das Dating-Dilemma erfolgreicher Frauen',
+    'date': '2022-10-02',  # YYYY-MM-DD
+    'with': ['Je erfolgreicher, klüger, smarter', 'Oha, steile These, Frau Praetorius!', 'Für jene, die damit ein '],  # 3 segments
+    'without': ['Ähnliche Beiträge', 'Kiosk finden', 'Log In'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://nwx.new-work.se/themenwelten/gesellschaft/umfrage-zur-digitalisierung-am-arbeitsplatz-mitbestimmung-und-vertrauen-reduziert-digitalen-stress': {
+    'file': 'nwx.new-work.se.digitaler-stress.html',
+    'author': 'nwx',
+    'title': 'Vertrauen und Mitbestimmung helfen gegen digitalen Stress',
+    'date': '2022-12-26',  # YYYY-MM-DD
+    'with': ['Die Potenziale der Digitalisierung', '„Corona hatte einen regelrechten', '*Mit der repräsentativen Befragung'],  # 3 segments
+    'without': ['Weitere aktuelle Themen aus der Arbeitswelt', 'Schwerpunkte', 'Magazin'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.bewusster-leben.de/hope/': {
+    'file': 'bewusster-leben.de.hope.html',
+    'author': 'Claudia Duwe',
+    'title': 'Hope!',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Ein grauer Wintermorgen ', 'Dem Wunder die Hand reichen', 'In ihrem Buch „Krafttiere'],  # 3 segments
+    'without': ['Diesen Artikel teilen', 'Weitere Beiträge', 'Startseite'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://wirtschaftspsychologie-aktuell.de/magazin/fuehrung/staerkenorientierte-fuehrung ': {
+    'file': 'wirtschaftspsychologie-aktuell.de.starken.html',
+    'author': 'Christian Thiele',
+    'title': 'Warum Sie die Stärken Ihrer Mitarbeitenden stärken sollten',
+    'date': '2022-12-07',  # YYYY-MM-DD
+    'with': ['Stärkenorientierte Führung', 'Rund zwei Millionen Stellen', 'Positive Leadership lässt sich s'],  # 3 segments
+    'without': ['Zum Weiterlesen:', 'Shared, Plural oder Dual Leadership:', '2022 Deutscher Psychologen Verlag GmbH'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.courage-online.de/erfinderinnen-ann-kiessling-und-ihre-forschung-im-kampf-gegen-das-hiv-virus/': {
+    'file': 'courgage-online.de.HIV.html',
+    'author': 'Matthias Lauerer',
+    'title': 'Erfinderinnen: Ann Kiessling und ihre Forschung im Kampf gegen das HIV-Virus',
+    'date': '2022-12-25',  # YYYY-MM-DD
+    'with': ['Ann Kiessling hat viele wichtige', 'Tausende von Texten zum Thema', 'IVF vor über'],  # 3 segments
+    'without': ['Dir hat der Artikel gefallen? Jetzt teilen...', 'Das eigene Limit infrage stellen', 'Noch mehr Infos für dich'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.she-works.de/aktuelles/5-inspirierende-frauen-aus-der-sportwelt/2022/12/29/ ': {
+    'file': 'she-works.de.sport.html',
+    'author': 'she works',
+    'title': '5 inspirierende Frauen aus der Sportwelt',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Die amerikanische Profi-Surferin', 'Wenn wir schon beim Snowboarden', 'Diese Legende und Powerfrau darf wohl'],  # 3 segments
+    'without': ['Schlagwörter', 'E-Magazin', 'SHE!'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.coaching-magazin.de/konzepte/transgenerationales-coaching': {
+    'file': 'coaching-magazin.de.transgenerationales-coaching.html',
+    'author': 'Julia Kern',
+    'title': 'Transgenerationales Coaching',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Wer bin ich wirklich?', 'Der Einfluss der Vererbung', 'Entwicklungsreise'],  # 3 segments
+    'without': ['Themen:', 'Dieser Artikel gefällt Ihnen?', 'Haben Sie Fragen zum Coaching-Magazin?'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.hrjournal.de/fuenf-hr-trends-2023/': {
+    'file': 'hrjournal.de.trends.html',
+    'author': 'Arne Sjöström',
+    'title': 'Fünf HR-Trends 2023',
+    'date': '2022-12-30',  # YYYY-MM-DD
+    'with': ['Auch wenn Mitarbeitende Zuschüsse', 'Doch sollten Arbeitgeber nicht selbstgefällig', 'Unternehmen, ganz gleich welcher'],  # 3 segments
+    'without': ['Lesen Sie auch die folgenden Beiträge:', 'Zur Person', 'Die Zusammenarbeit und Führung von Teams'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.ad-magazin.de/artikel/wellness-hotels': {
+    'file': 'ad-magazin.de.wellness.html',
+    'author': 'Fiona Bornhöft und Mariam Hofbeck',
+    'title': 'Diese Wellness-Hotels versprechen einen traumhaften Kurzurlaub',
+    'date': '2023-01-01',  # YYYY-MM-DD
+    'with': ['Diese Wellness-Hotels sind genau richtig', 'Ein Infinity-Pool, ein Onsen-Pool,', 'Zwei Jahre lang restaurierte Elisabeth'],  # 3 segments
+    'without': ['Ob Chalet, Öko-Resort oder', 'Tropische Reiseziele:', 'Mehr von AD'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.journelles.de/gift-guide-westwing-22/': {
+    'file': 'journelles.de.westwing.html',
+    'author': 'Jessie',
+    'title': 'Mein cosy Home Gift Guide bei Westwing Collection',
+    'date': '2022-12-16',  # YYYY-MM-DD
+    'with': ['Geschenke für die Liebsten aussuchen,', 'Buchstützen:', 'All diese schönen Produkte und'],  # 3 segments
+    'without': ['Tags:', 'Anzeige, enthält Affiliate Links', 'Das ist Liebe in deinem Posteingang:'],  # 3 segments
+    'comments': ['Lena', 'Die Buchstützen', 'Liebe Grüße'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.herzundblut.com/blog-1/kebbqe4kcwbrx62pr60i7gkd6mvlf7': {
+    'file': 'herzundblut.com.Besuch.html',
+    'author': 'Herz und Blut',
+    'title': 'Zu Besuch bei Véronique Lacaze',
+    'date': '2022-11-1',  # YYYY-MM-DD
+    'with': ['In einer wunderschönen Penthousewohnung', 'Durch kulturelle Ausflüge,', 'Wie feiert es sich auf eurer 360'],  # 3 segments
+    'without': ['Share', 'Tags Homestory, Interior design, Berlin', 'Everything i like..People, Photography, Interior'],  # 3 segments
+    'comments': ['Lisa', 'Sehr schöne', 'Ist der Hersteller'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.couchstyle.de/living/homestory/vintage-flair-mit-sehr-viel-gruen--1597': {
+    'file': 'couchstyle.de.vintage.html',
+    'author': 'fri.juli',
+    'title': 'Vintage-Flair mit viel Grün',
+    'date': '2022-09-23',  # YYYY-MM-DD
+    'with': ['Vintage trifft Urban Jungle', 'Am alten Küchentisch', 'Der Barschrank aus den 50er Jahre'],  # 3 segments
+    'without': ['Entdecke weitere Homestorys', 'Community', 'Abo'],  # 3 segments
+    'comments': ['Mayakoenigin', 'Wunderschön, aber', 'grünen Daumen'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.urlaubsarchitektur.de/de/das-glashaus-in-der-uckermark/ ': {
+    'file': 'urlaubsarchitektur.de.glashaus.html',
+    'author': '',
+    'title': 'Das Glashaus in der Uckermark',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Mit dem Glashaus hat der dänische Architekt', 'Das Zusammenspiel aus Holz, Glas, poliertem Estrich', 'Die Fernwärme kommt aus'],  # 3 segments
+    'without': ['Übersichtakarte', 'Lesezeichen hinzufügen', 'weiterlesen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://iconmagazine.de/story/interview-mit-sharon-stone/': {
+    'file': 'iconmagazine.de.sharonstone.html',
+    'author': 'Sven Michaelsen',
+    'title': 'Davor und Danach',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Es gibt Ereignisse, die', 'In welchem seelischen Zustand', 'Ich war zehn Jahre lang'],  # 3 segments
+    'without': ['INTERVIEW SVEN MICHAELSEN', 'Kontakt', 'Impressum'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.baumeister.de/sportzentrum-kerenzerberg-filzbach/': {
+    'file': 'baumeister.de.sportzentrum.html',
+    'author': 'Arian Schlichenmayer',
+    'title': 'Sportzentrum Kerenzberg in Filzbach erweitert',
+    'date': '2022-12-21',  # YYYY-MM-DD
+    'with': ['Am Südufer des Walensees', 'Das Sportzentrum erhielt auch', 'Im Bestand liegt der Schwerpunkt'],  # 3 segments
+    'without': ['Nicht aus den Siebzigern', 'NAPURS MUSEUM OF ETHNOGRAPHY BUDAPEST, FOTO: PALKÓ GYÖRGY - ', 'Napur Marcel Ferencz Kultur'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.decohome.de/farbe-des-jahres-2023-viva-magenta/': {
+    'file': 'decohome.de.magenta.html',
+    'author': 'Katharina Volkwein',
+    'title': 'Viva Magenta: „Eine unkonventionelle Farbe für eine unkonventionelle Zeit“',
+    'date': '',  # YYYY-MM-DD
+    'with': ['Als „Faust im Samthandschuh“ ', 'Pulsierend, mutig, fröhlich,', 'Ob nun als Akzent oder All-over Look'],  # 3 segments
+    'without': [' Wie finde ich das richtige Möbel?', 'Marsala, Terrakotta, Ochsenblut, Curry und Co', 'Hat das Sammel-Gen von ihrem Opa geerbt'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.familie.de/kleinkind/montessori-spielzeug-13-paedagogisch-wertvolle-ideen-fuer-babys-und-kleinkinder/': {
+    'file': 'familie.de.montessori.html',
+    'author': 'Gesine Engels-Krone',
+    'title': 'Montessori-Spielzeug: 13 pädagogisch wertvolle Ideen für Babys und Kleinkinder',
+    'date': '2023-01-02',  # YYYY-MM-DD
+    'with': ['Es ist schön, bunt, unkaputtbar.', 'Montessori Spielzeug fördert', '#3 Nanchen-Pupen'],  # 3 segments
+    'without': ['Du willst nichts mehr verpassen?', 'Lies auch', 'Teste dich'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://heavenlynnhealthy.de/lieblingslabel-faire-swimwear-von-mymarini-interview-mit-gruenderin-mareen-burk/': {
+    'file': 'heavenlynnhealthy.de.mareenburk.html',
+    'author': 'heavenlynnhealthy',
+    'title': 'Lieblingslabel: Faire Swimwear von MYMARINI + Interview mit Gründerin Mareen Burk',
+    'date': '2022-06-15',  # YYYY-MM-DD
+    'with': ['Dies ist vielleicht ein Food Blog, ', 'Meine Gründergeschichte', 'Wir bei MYMARINI gehen von daher aus einer'],  # 3 segments
+    'without': ['Kategorie:', 'Folge mir', 'Hallo!'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://peppermynta.de/guides/fair-fashion-basics-minimalismus-kleiderschrank-nachhaltige-capsule-wardrobe/': {
+    'file': 'peppermynta.de.fairfashion.html',
+    'author': 'Laura Keuthen',
+    'title': 'FAIR FASHION BASICS, DIE DU UNBEDINGT FÜR DEINE CAPSULE WARDROBE BRAUCHST',
+    'date': '2022-12-07',  # YYYY-MM-DD
+    'with': ['Back to basics!', 'Das deutsche Fair Fashion Label', 'ROTHOLZ – Minimalistische Designs'],  # 3 segments
+    'without': ['Hier gibt’s noch mehr Fair Fashion Basics:', 'Kennt ihr schon unseren Brandfinder?', 'Tags'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://fogsmagazin.com/outdoor-bekleidung/': {
+    'file': 'fogsmagazin.com.outdoor.html',
+    'author': 'Jennifer Koutni',
+    'title': 'Schnee-Vergnügen ohne Fussabdruck',
+    'date': '2022-12-29',  # YYYY-MM-DD
+    'with': ['Egal, ob man ein Outdoor-Fan', 'Dass Outdoor-Bekleidung immer leistungsfähiger wird', 'Pflegen und Reparieren'],  # 3 segments
+    'without': ['Schlagworte:', 'Immer mehr Schmucklabels setzen auf faire Produktionsbedingungen', 'Alles über nachhaltige Wanderschuhe'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.infobae.com/america/mundo/2022/05/03/el-nobel-de-la-paz-ruso-dmitry-muratov-advirtio-que-el-regimen-de-vladimir-putin-podria-utilizar-armas-nucleares-en-ucrania/': {
+    'file': 'infobae.com-ucrania.html',
+    'author': '',
+    'title': 'El Nobel de la Paz ruso, Dmitry Muratov, advirtió que el régimen de Vladimir Putin podría utilizar armas nucleares en Ucrania',
+    'date': '2022-05-03',
+    'with': ['El periodista sostuvo que eso supondría “el fin', 'advirtiendo que eso supondría“', 'un poder absoluto y sin restricciones”.'],  # 3 segments
+    'without': ['TEMAS RELACIONADOS', 'Muratov, tras el ataque sufrido a principios', 'Premio Nobel de la Paz (REUTERS/Denis Balibouse)'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.eltiempo.com/colombia/medellin/elecciones-2022-candidatos-presidenciales-en-la-universidad-eafit-669594': {
+    'file': 'eltiempo.com-candidatos.html',
+    'author': 'MEDELLÍN',
+    'title': 'Candidatos se enfrentaron a las preguntas de estudiantes',
+    'date': '2022-05-04',
+    'with': ['enmarcado en 6 ejes temáticos relacionados', 'que se llama Neobanco con un billón', 'colectivamente, de acabar con este sistema'],  # 3 segments
+    'without': ['Necesitamos una renovación', 'llenó de empresas de webcam', 'noticias para ti'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.clarin.com/politica/tension-alberto-fernandez-cristina-kirchner-escalo-maximo-nivel_0_h7svjXlK9z.html': {
+    'file': 'clarin.com-albertofernandez.html',
+    'author': 'Federico Mayol',
+    'title': 'La interna oficial Aumenta la ofensiva K sobre Alberto Fernández: Cristina Kirchner puso en duda la legitimidad de su gestión',
+    'date': '2022-05-03',
+    'with': ['embestida que sumó por estas horas', 'La Cámpora en declaraciones radiales', 'cuenta administrada por su'],  # 3 segments
+    'without': ['Mirá también', 'Cristina Kirchner y Alberto Fernández,', 'Lo que tenés que saber hoy'],  # 3 segments
+    'comments': ['altura de los acontecimientos se puede', 'peleitas?!!!...cuando gobiernan?', 'Con mucho respeto esa cara señora'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ARG',  # if obvious: DE, CH, AT
+},
+'https://www.lanacion.com.ar/politica/jugada-del-oficialismo-para-evitar-que-jxc-avance-con-la-boleta-unica-en-diputados-nid03052022/': {
+    'file': 'lanacion.com.ar-jugada.html',
+    'author': '',
+    'title': 'Jugada del oficialismo para evitar que JxC avance con la boleta única en Diputados',
+    'date': '2022-05-03',
+    'with': ['elecciones nacionales. Lo hizo por medio', 'la infección por el', 'función de esta comisión no es tratar la ley'],  # 3 segments
+    'without': ['una causa por cohecho', 'a una sesión para', 'Sergio Massa, el presidente'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ARG',  # if obvious: DE, CH, AT
+},
+'https://www.ambito.com/politica/paritarias/al-rojo-gremios-la-alimentacion-marcan-inflacion-53-abril-y-amenazan-paro-n5431248': {
+    'file': 'ambito.com-paritarias.html',
+    'author': 'Mariano Martín',
+    'title': 'Paritarias al rojo: gremios de la alimentación marcan inflación de 5,3% en abril y amenazan con paro',
+    'date': '2022-05-04',
+    'with': ['sindicato irá hoy a una audiencia', 'cerró en 52,7% y en base', 'Se trata de un informe interno que'],  # 3 segments
+    'without': ['Temas', 'Suscribite a nuestro', 'Informate más'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ARG',  # if obvious: DE, CH, AT
+},
+'https://www.pagina12.com.ar/419327-la-corte-suprema-no-imparte-justicia-sino-injusticia': {
+    'file': 'pagina12.com.ar-suprema.html',
+    'author': 'Luciana Bertoia',
+    'title': '"La Corte Suprema no imparte justicia sino injusticia"',
+    'date': '2022-05-04',
+    'with': ['Organismos de derechos', 'entendió como un desafío a los poderes', 'desactivada durante el gobierno de Mauricio'],  # 3 segments
+    'without': ['INGRESAR', 'Imagen: Télam', 'Corte Suprema'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ARG',  # if obvious: DE, CH, AT
+},
+'https://www.losandes.com.ar/sociedad/el-ano-de-las-evaluaciones-las-escuelas-de-mendoza-tendran-tres-relevamientos-de-calidad-educativa/': {
+    'file': 'losandes.com-mendoza.html',
+    'author': 'Verónica De Vita',
+    'title': 'El año de las evaluaciones: las escuelas de Mendoza tendrán tres relevamientos de calidad educativa',
+    'date': '2022-05-04',
+    'with': ['escuelas mendocinas. El gobierno', 'que se realizará en mayo,', 'Evaluación Internacional de Alumnos de'],  # 3 segments
+    'without': ['TEMAS RELACIONADOS', 'El mendocino que suma su ayuda', 'Los exámenes PISA en Mendoza se realizarán'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ARG',  # if obvious: DE, CH, AT
+},
+'https://24ora.com/minister-president-presente-ne-trashion-fashion-show-di-international-school/': {
+    'file': '24ora.com-internationalschol.html',
+    'author': '',
+    'title': 'MINISTER-PRESIDENT PRESENTE N’E “TRASHION FASHION SHOW” DI INTERNATIONAL SCHOOL',
+    'date': '2022-05-03',
+    'with': ['studiantenan a presenta trahenan traha', 'fatal pa e animalnan. Tambe', 'amor pa nos planeta.'],  # 3 segments
+    'without': ['MAS FOR DI E AUTOR', 'MINISTERIO DI HUSTICIA NO LO TOLERA NINGUN ACTO', 'AFECTA ARUBA TAMBE'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'ABW',  # if obvious: DE, CH, AT
+},
+'https://eldeber.com.bo/santa-cruz/investigador-chileno-asegura-que-no-publico-todo-su-material-el-90-de-los-autos-robados-estan-en-pos_276757': {
+    'file': 'eldeber.com.bo-autos.html',
+    'author': 'Ariel Melgar Cabrera',
+    'title': 'Investigador chileno asegura que no publicó todo su material: "El 90% de los autos robados están en posesión de autoridades bolivianas"',
+    'date': '2022-05-03',
+    'with': ['coronel Raúl Cabezas Pantoja,', 'recuperación de la vagoneta. Comentó', 'devolver los vehículos.'],  # 3 segments
+    'without': ['Recomendado para ti', 'ESCUCHA ESTA NOTA AQUÍ', 'TE PUEDE INTERESAR'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BOL',  # if obvious: DE, CH, AT
+},
+'https://www.paginasiete.bo/seguridad/2022/5/3/policia-anuncia-coordinacion-con-carabineros-para-investigar-otros-casos-de-robo-de-vehiculos-330199.html': {
+    'file': 'paginasiete.bo-carabineros.html',
+    'author': 'Redacción Diario Pagina Siete',
+    'title': 'Policía anuncia coordinación con Carabineros para investigar otros casos de robo de vehículos',
+    'date': '',
+    'with': ['coordinación con Carabineros de Chile para', 'Tribunal Supremo Disciplinario, teniente', 'por el director nacional de Diprove”.'],  # 3 segments
+    'without': ['OTRAS NOTICIAS', 'Investigan muerte de un', 'SEGURIDAD'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BOL',  # if obvious: DE, CH, AT
+},
+'https://www.lostiempos.com/actualidad/pais/20220503/juicio-caso-golpe-ii-entra-recta-final-sentencia-podria-dictarse-este': {
+    'file': 'lostiempos.com-juicio.html',
+    'author': 'Jeanine Áñez',
+    'title': 'Juicio por el caso golpe II entra en la recta final; sentencia podría dictarse este miércoles',
+    'date': '2022-05-03',
+    'with': ['La audiencia que podría ser decisiva', 'de Sentencia Anticorrupción de La Paz fijó', 'condena de tres años de cárcel'],  # 3 segments
+    'without': ['Valora esta noticia', 'sentencia y presenta recurso al TCP', 'abogados en el juicio por el caso “golpe”.'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BOL',  # if obvious: DE, CH, AT
+},
+'https://www.correiobraziliense.com.br/politica/2022/05/5005250-de-novo-em-busca-da-tregua-institucional.html': {
+    'file': 'correiobraziliense.com.br-poderes.html',
+    'author': 'Luana Patriolino', 'Raphael Felice'
+    'title': 'Pacheco e Fux tentam uma trégua institucional entre os Poderes',
+    'date': '2022-05-04',
+    'with': ['do Senado, Rodrigo Pacheco (PSD-MG)', 'o Supremo Tribunal Federal', 'Com o mesmo repertório das manifestações'],  # 3 segments
+    'without': ['(crédito: Minervino Júnior', 'urgência para barrar', 'Pela Web'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BRA',  # if obvious: DE, CH, AT
+},
+'https://www.brasil247.com/regionais/brasilia/militares-enviaram-88-questoes-ao-tse-sobre-eleicoes-e-urnas-eletronicas': {
+    'file': 'brasil247.com-militares.html',
+    'author': '',
+    'title': 'Militares enviaram 88 questões ao TSE sobre eleições e urnas eletrônicas',
+    'date': '2022-05-04',
+    'with': ['supostos riscos e fragilidades', 'votação ainda era em cédula de papel', 'levantadas apesar de os órgãos'],  # 3 segments
+    'without': ['MAIS POPULAR', '(Foto: ABr)', 'Fique por dentro do 247'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BRA',  # if obvious: DE, CH, AT
+},
+'https://www.gazetadopovo.com.br/republica/o-que-pacheco-pretende-acenos-ao-stf-e-propor-limites-ao-indulto-presidencial/': {
+    'file': 'gazetadopovo.com.br-pacheco.html',
+    'author': 'Rodolfo Costa.',
+    'title': 'O que Pacheco pretende ao fazer acenos ao STF e propor limites ao indulto presidencial',
+    'date': '2022-05-03',
+    'with': ['e nas faixas de manifestantes', 'Esplanada dos Ministérios como', 'dos Poderes, não só com manifestações'],  # 3 segments
+    'without': ['VEJA TAMBÉM:', 'indulto em outras ações', 'a batalha dos palanques em São Paulo'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BRA',  # if obvious: DE, CH, AT
+},
+'https://www.correio24horas.com.br/noticia/nid/lider-do-grupo-de-sequestradores-que-tinha-pms-foi-morto-em-confronto-policial/': {
+    'file': 'correio24horas.com.br-PMS.html',
+    'author': 'Bruno Wendel',
+    'title': 'Líder do grupo de sequestradores que tinha PMs foi morto em confronto policial',
+    'date': '2022-05-04',
+    'with': ['mediante sequestro, e que', 'lotados na Rondesp Atlântico', 'Ele também era investigado'],  # 3 segments
+    'without': ['Em tempos de coronavírus e desinformação', '(Foto: Tony Silva/Ascom-PC)', 'Polícia faz operação de combate a'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BRA',  # if obvious: DE, CH, AT
+},
+'https://www.campograndenews.com.br/cidades/interior/adolescente-encontrada-morta-em-vala-estava-gravida-de-3-meses-confirma-irma': {
+    'file': 'campograndenews.com.br-adolescente.html',
+    'author': 'Adriano Fernandes',
+    'title': 'Adolescente encontrada morta em vala estava grávida de 3 meses, confirma irmã',
+    'date': '2022-05-03',
+    'with': ['intrigante. Conforme a irmã', 'no momento em que a menina teria', 'Luana na mesma noite do'],  # 3 segments
+    'without': ['VEJA TAMBÉM', 'Adolescente morta na', 'Nos siga no'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BRA',  # if obvious: DE, CH, AT
+},
+'https://www.caymancompass.com/2022/05/04/prison-official-anyone-could-escape-from-northward/': {
+    'file': 'caymancompass.com-prison.html',
+    'author': 'James Whittaker',
+    'title': 'Prison official: ‘Anyone’ could escape from Northward',
+    'date': '2022-05-04',
+    'with': ['The evidence was given in support of a decision', 'provided by the most dangerous and high risk offenders.”', 'added that the prison estate was not considered'],  # 3 segments
+    'without': ['The prison official’s affidavit highlights security', 'You have 4 free articles left this month', 'Previous article'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CYM',  # if obvious: DE, CH, AT
+},
+'https://www.biobiochile.cl/noticias/nacional/region-de-los-rios/2022/05/04/gremios-de-los-camioneros-no-descartan-nueva-movilizacion-realizaran-consulta-nacional.shtml': {
+    'file': 'biobiochile.cl-gremios.html',
+    'author': 'Alberto González',
+    'title': 'Gremios de los camioneros no descartan nueva movilización: realizarán consulta nacional',
+    'date': '2022-05-04',
+    'with': ['En este contexto, la tarde', 'consulta que se hará este jueves', 'suma protección a la infraestructura'],  # 3 segments
+    'without': ['"A ver si se atreve a viajar":', 'visto ahora', 'Hector Andrade'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+},
+'https://www.latercera.com/politica/noticia/la-agenda-con-que-interior-busca-contener-la-crisis-de-seguridad-y-el-dilema-del-oficialismo/DHCHJTT5TNETPCHCIYLXWMQOBA/': {
+    'file': 'latercera.com-laagenda.html',
+    'author': 'Isabel Caro, Rocío Latorre, José Miguel Wilson',
+    'title': 'La agenda con que Interior busca contener la crisis de seguridad y el dilema del oficialismo',
+    'date': '2022-05-04',
+    'with': ['La estrategia contempla, entre otras acciones,', 'efundidos “sobre fortalecimiento de la persecución', 'Yáñez. Y agregó: “Nosotros permanentemente estamos evaluando a las autoridades'],  # 3 segments
+    'without': ['Más sobre La Tercera AM', 'de terrenos adquiridos por celebridades', '$636 millones del cambio de mando?'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+
+},
+'https://www.cooperativa.cl/noticias/pais/presidente-boric/presidente-boric-vuelve-a-su-casa-magallanes-este-miercoles-realiza-su/2022-05-04/074527.html': {
+    'file': 'cooperativa.cl-presidente.html',
+    'author': '',
+    'title': 'Presidente Boric vuelve a su casa, Magallanes: Este miércoles realiza su segunda visita a regiones',
+    'date': '2022-05-04',
+    'with': ['Punta Arenas, con las autoridades', 'territorio amigo", al que representó durante dos', 'Arenas, Boric se desplazará a Puerto'],  # 3 segments
+    'without': ['Suscríbete a nuestro newsletter', 'Este sitio está protegido por', 'Foto: ATON'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+},
+'https://www.lacuarta.com/espectaculos/noticia/va-y-agarra-las-llaves-de-su-cartera-destapan-pelea-a-grito-pelado-entre-loreto-aravena-y-pancha-merino-en-pasillos-de-canal-13/I7QCHL6HAZCBBIROIOUNHFGB5I/': {
+    'file': 'lacuarta.com-loretoaravena.html',
+    'author': 'Juan Carlos Muñoz C.',
+    'title': '“Va y agarra las llaves de su cartera…”: destapan pelea a “grito pelado” entre Loreto Aravena y Pancha Merino en pasillos de Canal 13',
+    'date': '2022-05-04',
+    'with': ['protagonizó Loreto Aravena y Pancha', 'hasta el camarín del Bienvenidos.', 'alegando que le ocupan el estacionamiento”'],  # 3 segments
+    'without': ['COMPARTIR NOTA', 'TEMAS RELACIONADOS', 'Stella a Francisca en Pobre Novio'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+},
+'https://www.elmostrador.cl/destacado/2022/05/04/las-trabas-del-congreso-discusion-parlamentaria-sobre-normas-de-una-nueva-constitucion-podria-tardar-decadas/': {
+    'file': 'elmostrador.cl-congreso.html',
+    'author': 'Raúl Espina',
+    'title': 'Las trabas del Congreso: discusión parlamentaria sobre normas de una nueva Constitución podría tardar décadas',
+    'date': '2022-05-04',
+    'with': ['en el caso de que la opción Apruebo se imponga', 'Lo cierto es que, para que las nuevas', 'constituidos, y en particular los partidos'],  # 3 segments
+    'without': ['Nueva Constitución', 'Comprensión del Derecho', 'Directora Ejecutiva de Fundación'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+},
+'https://www.24horas.cl/politica/presidente-boric-inicia-gira-por-magallanes-este-miercoles-5287894': {
+    'file': '24horas.cl-segundo.html',
+    'author': 'Agencia EFE',
+    'title': 'Segundo viaje oficial fuera de Santiago: Presidente Boric inicia gira por Magallanes este miércoles',
+    'date': '2022-05-04',
+    'with': ['joven jefe del Estado, al que apenas se', 'mundial, arrastrada por la guerra en Europa', 'Armada por el "Mes del Mar", retomar el pulso'],  # 3 segments
+    'without': ['condonación progresiva del CAE', 'Kiss se presentó por', 'MÁS SEÑALES EN VIVO'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+
+},
+'https://www.publimetro.cl/noticias/2022/05/04/ministra-de-la-mujer-por-berrios-que-la-justicia-penal-investigue-no-la-canonica/': {
+    'file': 'publimetro.cl-ministra.html',
+    'author': 'Rodrigo Mejías',
+    'title': 'Ministra de la Mujer por Berrios: “Que la justicia penal investigue, no la canónica”',
+    'date': '2022-05-04',
+    'with': ['a la denuncia que recae en contra', 'en declaraciones a T13 Noche.', 'mayor celeridad posible”, añadió.'],  # 3 segments
+    'without': ['Síguenos en', 'LO ÚLTIMO', '“Nos pilló de sorpresa”'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CHL',  # if obvious: DE, CH, AT
+},
+'https://www.elespectador.com/judicial/asi-seran-los-tres-macrocasos-que-abrira-la-jep/':{
+    'file': 'elespectador.com-orion.html',
+    'author': 'Felipe Morales Sierra',
+    'title': 'Operación Orión, tomas guerrilleras de pueblos y más hechos que investigará la JEP',
+    'date': '2022-05-06',
+    'with': ['contra la naturaleza serán parte de las investigaciones', 'El 09, en las violencias que sufrieron los pueblos étnicos', 'macrocaso, pero se apartó de exigencias más duras'],  # 3 segments
+    'without': ['Desvinculan al general (r) Leonardo Barrero', 'Le puede interesar', 'Mejor calidad de vida con gas natural'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'COL',  # if obvious: DE, CH, AT
+},
+'https://www.elcolombiano.com/antioquia/polemica-por-buses-de-la-alcaldia-en-casa-de-gustavo-petro-en-la-floresta-EN17385450': {
+    'file': 'elcolumbiano.com-alcaldia.html',
+    'author': 'JACOBO BETANCUR PELÁEZ',
+    'title': '¿Buses de la Alcaldía al servicio de Petro?',
+    'date': '2022-05-06',
+    'with': ['encenderse esta semana, justo', 'que el pasado 30 de abril los vehículos', 'una de las cuotas de Quintero en el Pacto Histórico'],  # 3 segments
+    'without': ['CONTEXTO DE LA NOTICIA', 'ENLACES PATROCINADOS', 'Porque entre varios ojos vemos más, queremos construir'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'COL',  # if obvious: DE, CH, AT
+},
+'https://www.minuto30.com/policia-hace-presencia-en-la-sierra/1331134/': {
+    'file': 'minuto30-lasierra.html',
+    'author': 'Juliet Jimenez',
+    'title': 'La Policía dice que todo ‘tranqui’ en La Sierra, reforzaron los uniformados en el sector',
+    'date': '2022-05-05',
+    'with': ['Tras el anuncio del Paro armado por parte', 'El Coronel, aseguró que con ayudas', 'del día a día, no solamente con las patrullas'],  # 3 segments
+    'without': ['Imágenes capturadas de video', 'CONTENIDO PATROCINADO', 'se elevan un 583 % en el primer trimestre'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'COL',  # if obvious: DE, CH, AT
+  
+},
+'https://www.kaieteurnewsonline.com/2022/05/06/essequibo-hunter-found-dead-with-gunshot-wounds/': {
+    'file': 'kaieteurnewsonline.com-essequibo.html',
+    'author': '',
+    'title': 'Essequibo hunter found dead with gunshot wounds',
+    'date': '2022-05-06',
+    'with': ['they had heard when', 'Ramdehol had told them to', 'was removed and taken to Suddie'],  # 3 segments
+    'without': ['Guyanese killed', 'Coalition Govt ‘short-changed’ judiciary in 2018', 'Club 40overs cricket...'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'GUY',  # if obvious: DE, CH, AT
+},
+'https://www.ultimahora.com/tribunal-apelacion-confirma-la-ejecucion-la-condena-la-secretaria-vip-n2999922.html': {
+    'file': 'ultimahora.com-apelacion.html',
+    'author': '',
+    'title': 'Tribunal de Apelación confirma la ejecución de la condena a la secretaria vip',
+    'date': '2022-05-05',
+    'with': ['la Corte Suprema de Justicia,', 'el pedido y esto fue apelado por la defensa', 'de honorarios a 23 meses con la suspensión'],  # 3 segments
+    'without': ['Asunción: Tras ola', ' marihuana que', 'Dejá tu comentario'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PRY',  # if obvious: DE, CH, AT
+},
+'https://www.hoy.com.py/nacionales/daran-bendicion-a-vehiculos-este-sabado': {
+    'file': 'hoy.com-daran.html',
+    'author': '',
+    'title': 'Darán bendición a vehículos este sábado',
+    'date': '2022-05-06',
+    'with': ['a ocasión también para entregar una', 'cuidado que se debe tener con respecto a la', 'Hermanos Franciscanos Capuchinos realizarán'],  # 3 segments
+    'without': ['Etiquetas:', 'La bendición se realizará mañana. Foto: LN', 'Bebé muere electrocutado al'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PRY',  # if obvious: DE, CH, AT
+},
+'https://elcomercio.pe/politica/justicia/kenji-fujimori-juicio-contra-excongresista-por-presunta-compra-de-votos-continuara-el-18-de-mayo-pedro-pablo-kuczynski-ppk-fiscalia-rmmn-noticia/':{
+    'file': 'elcomercio.pe-kenjifujimori.html',
+    'author': '',
+    'title': 'Kenji Fujimori: juicio por presunta compra de votos continuará el 18 de mayo',
+    'date': '2022-05-07',
+    'with': ['de oficio (Milton Hinojoza y Luis Loyola)', 'demostrarían que los acusados habrían', 'PPK y Kenji Fujimori por'],  # 3 segments
+    'without': ['VIDEO RECOMENDADO', 'Fiscalía de la Nación abre investigación', 'Este juicio comprende también a'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PER',  # if obvious: DE, CH, AT
+},
+'https://larepublica.pe/datos-lr/respuestas/2022/05/02/cronograma-minedu-2022-cuando-seran-las-vacaciones-escolares-atmp/': {
+    'file': 'larepublica.pe-minedu.html',
+    'author': '',
+    'title': '¿Cuándo serán las primeras vacaciones escolares del 2022, según el cronograma del Minedu?',
+    'date': '2022-05-08',
+    'with': ['y semipresencial el último 28 de marzo', 'a fin de mejorar las estadísticas vinculadas al avance', 'compartir alimentos ni utensilios.'],  # 3 segments
+    'without': ['Quiniela de HOY, sábado 7 de mayo: resultados', 'Son tres los periodos de vacaciones durante', 'PUEDES VER: ¿Qué es la Sunedu,'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PER',  # if obvious: DE, CH, AT
+},
+'https://trome.pe/espectaculos/dia-de-la-madre-trome-celebro-con-las-mamitas-de-chollywood-magaly-medina-janet-barboza-noticia/': {
+    'file': 'trome.pe-chollywood.html',
+    'author': 'Carla Chevez',
+    'title': 'Día de la Madre: Trome celebró con las mamitas de Chollywood',
+    'date': '2022-05-08',
+    'with': ['porque siempre fui muy estudiosa,', 'descubriría, pues no iba así nomás a mi', 'culpé a mi hermano, pero finalmente'],  # 3 segments
+    'without': ['Silvia Núñez del Arco: “Jaime', 'y origen de su apodo', 'contó la historia de un flan, que se comió en su infancia.'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PER',  # if obvious: DE, CH, AT
+},
+'https://libero.pe/futbol-internacional/2022/05/06/manchester-united-vs-brighton-en-vivo-via-star-plus-fox-sports-sky-sports-espn-2-premier-league-2022-cristiano-ronaldo-56304':{
+    'file': 'libero.pe-ronaldo.html',
+    'author': 'Edilson La Rosa',
+    'title': 'Cristiano Ronaldo lo sufre: Brighton goleó 4-0 a Manchester United y lo alejó de la Champions',
+    'date': '2022-05-07',
+    'with': ['cinco del Arsenal. Eso sí, la desventaja', 'Así fue el gol de Moisés Caicedo que', 'siendo una tarea muy difícil, los dirigidos'],  # 3 segments #schwierig zu erkennen, was zum Text gehört und was nicht
+    'without': ['Barcelona: el día que Ter Stegen', 'Brighton goleó al Manchester United por', 'Manchester United vs. Brighton, en vivo: minuto'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PER',  # if obvious: DE, CH, AT
+},
+'https://elperuano.pe/noticia/152832-logran-evacuar-a-otros-50-civiles': {
+    'file': 'elperuanoa.pe-logran.html',
+    'author': '2022-05-07',
+    'title': 'Logran evacuar a otros 50 civiles',
+    'date': '',
+    'with': ['niños y ancianos”, informó la', 'se iniciaron el fin de semana pasado y', 'el cese el fuego, por lo'],  # 3 segments
+    'without': ['Algunos se acuerdan de su madre', '(05:45) Senamhi: DANA “Bernardo”', 'Ser madre en el Perú'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PER',  # if obvious: DE, CH, AT
+},
+'https://www.elnuevodia.com/noticias/politica/notas/lider-de-la-organizacion-mujeres-populares-denuncia-intentos-del-ppd-de-silenciarla/': {
+    'file': 'elnuevodia.com-mujeres.html',
+    'author': 'Gloria Ruiz Kuilan',
+    'title': 'Líder de la organización Mujeres Populares denuncia intentos del PPD de silenciarla',
+    'date': '2022-05-11',
+    'with': ['José Luis Dalmau relacionadas al aborto', 'posturas públicas en contra de la', 'que se han practicado un aborto.'],  # 3 segments
+    'without': ['José Luis Dalmau indica que el', 'Carlos Delgado Altieri', 'Ada Álvarez Conde anticipó que renunciará'],  # 3 segments
+    'comments': ['exactamente lo que diga Manuel', 'Dalmau será el sepulturero.¿Por', 'de Rafael Hernández y su hijo al defender'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PRI',  # if obvious: DE, CH, AT
+},
+'https://www.elpais.com.uy/informacion/sociedad/gobierno-acusa-montecon-aliarse-sindicato-fomentar-conflicto-portuario.html': {
+    'file': 'elpais.com.uy-gobierno.html',
+    'author': 'E. BARRENECHE / J. I. DA SILVA',
+    'title': 'Gobierno acusa a Montecon de aliarse con el sindicato y fomentar conflicto portuario',
+    'date': '2022-05-11',
+    'with': ['ahora enviaría a 125 trabajadores', 'previstos para fin de mes. Horas más tarde', 'causó a la firma que dirige la pérdida de dos'],  # 3 segments
+    'without': ['Por último, se ofreció que la ANP tome en cuenta', 'LAS MÁS VISTAS', 'Puerto de Montevideo. Foto: Archivo'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'URY',  # if obvious: DE, CH, AT
+},
+'https://ladiaria.com.uy/ambiente/articulo/2022/5/productor-fumigo-con-glifosato-predio-lindero-a-escuela-rural-ubicada-dentro-del-area-protegida-paso-centurion-y-sierra-de-rios/': {
+    'file': 'ladiaria.com.uy-productor.html',
+    'author': 'Camila Méndez en Territorio',
+    'title': 'Productor fumigó con glifosato predio lindero a escuela rural ubicada dentro del área protegida Paso Centurión y Sierra de Ríos',
+    'date': '2022-05-11',
+    'with': ['consideran “excesivo” su tamaño.', ' Ministerio de Ganadería, Agricultura y Pesca, autoridad', 'en las zonas rurales lo que pasa muchas veces es que no'],  # 3 segments
+    'without': ['Comentar este artículo', 'La asociación civil de rescate y', 'Predio fumigado lindero a escuela dentro'],  # 3 segments
+    'comments': ['conversaciones saludables y constructivas'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'URY',  # if obvious: DE, CH, AT
+},
+'https://viconsortium.com/vi-crime/virgin-islands-vessel-returning-to-puerto-rico-from-st-thomas-with-475-pounds-of-cocaine-intercepted-by-federal-agents-cbp-says': {
+    'file': 'viconsortium.com-cocaine.html',
+    'author': '',
+    'title': 'Vessel Returning to Puerto Rico From St. Thomas With 475 Pounds of Cocaine Intercepted by Federal Agents, CBP Says',
+    'date': '2022-05-10',
+    'with': ['U.S. Customs and Border Protection', 'AMO agents requested assistance from a Puerto', 'awareness in the air and maritime environments,”'],  # 3 segments
+    'without': ['phone with the VI Consortium app.', 'AMO found Sunday 475 pounds of cocaine', 'By U.S. CUSTOMS AND BORDER PROTECTION'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'VIR',  # if obvious: DE, CH, AT
+},
+'https://www.elnacional.com/venezuela/carta-abierta-un-nuevo-espacio-donde-el-nacional-recibira-las-denuncias-de-sus-lectores/': {
+    'file': 'elenacional.com-carta.html',
+    'author': 'Williams Perdomo',
+    'title': 'Carta abierta, un nuevo espacio donde El Nacional recibirá las denuncias de sus lectores',
+    'date': '2022-05-11',
+    'with': ['«Queremos contar las historias desde', 'gente, crear vínculos y sobre todo', 'voz del venezolano», resaltó Makriniotis.'],  # 3 segments
+    'without': ['El Nacional recibirá cartas', 'MINUTO A MINUTO', 'desapariciones forzadas en Brasil'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'VEN',  # if obvious: DE, CH, AT
+},
+'https://www.eluniversal.com/internacional/125703/senador-republicano-califica-a-biden-de-incapacitado': {
+    'file': 'eluniversal.com-senador.html',
+    'author': '',
+    'title': 'Senador republicano califica a Biden de "incapacitado"',
+    'date': '2022-05-11',
+    'with': ['y confundido. No sabe dónde está la mitad del tiempo.', 'en alusión a la marca Make America', 'sobre la declaración de Scott, Biden sonrió y dijo'],  # 3 segments
+    'without': ['Siguenos en Telegram, Instagram, Facebook y Twitter', 'Lluvias en Colombia dejan 47 fallecidos', 'Emmanuel presentará en'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'VEN',  # if obvious: DE, CH, AT
+},
+'https://ultimasnoticias.com.ve/noticias/mundo/ucrania-interrumpe-paso-de-gas-ruso-a-europa-por-su-territorio/': {
+    'file': 'ultimasnoticias.com.ve-ucraina.html',
+    'author': 'VÍCTOR CASTELLANOS',
+    'title': 'Ucrania interrumpe paso de gas ruso a Europa por su territorio',
+    'date': '2022-05-10',
+    'with': ['por «causas de fuerza mayor», arguyendo', 'Emmanuel Macron dijo que la entrada', 'ucraniana es muy consciente de ello'],  # 3 segments
+    'without': ['Deja un comentario', 'causan más hambre en el mundo', 'Ucrania interrumpe paso de gas ruso a Europa por su territorio'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'VEN',  # if obvious: DE, CH, AT
+},
+'https://dawo-dresden.de/2023/10/30/drei-haselnuesse-fuer-aschenbroedel-jetzt-tickets-sichern-fuer-winterausstellung/':{
+'file': 'dawo-dresden.de-Winterausstellung.html',
+'author': 'Carola Pönisch',
+'title': 'Drei Haselnüsse für Aschenbrödel: Jetzt Tickets sichern für Winterausstellung',
+'date': '2023-10-30',
+'description': 'Die Winterausstellung „Drei Haselnüsse für Aschenbrödel“ zum tschechisch-deutschen Märchenkultfilm öffnet am 22. November 2023 auf Schloss Moritzburg. ',
+'categories':['KULTUR'],
+'tags':[],
+'with':['Genau 50 Jahre ist es her', 'das der Film im Januar 1973 in Moritzburg', 'in den Kulissen der Filmstudios Babelsberg'],
+'without':['Mehr Nachrichten aus Dresden', 'Noch mehr lokale Fundstücke', 'MEHR AUSFLUGSTIPPS'],
+'comments':['Die Ausstellung besuchen und gleichzeitig in Moritzburg', 'ein bisschen wandern gehen das wäre doch schön', 'wir kommen gerne'],
+'license':'',
+'region':'DE',
+}, 
+'https://de.cointelegraph.com/news/cme-second-largest-bitcoin-futures-exchange-open-interest-surges':{
+'file': 'de.cointelegraph.com-CME.html',
+'author': 'PRASHANT JHA',
+'title': 'CME nun zweitgrößte Bitcoin (BTC)-Futures-Börse: Open Interest steigt sehr stark',
+'date': '2023-10-31',
+'description': 'Der Anstieg des Open Interest bei den Bitcoin-Futures der CME hat der regulierten Derivateplattform einen Marktanteil von 25 Prozent gesichert. ',
+'categories':[],
+'tags':['Bitcoin', 'Kryptowährungen', 'Wirtschaft', 'Akzeptanz', 'Bitcoin-Futures', 'CME', 'Futures'],
+'with':['Die Chicago Mercantile Exchange (CME)', 'eine regulierte Derivatbörse', 'liegt nun in Bezug auf das Open'],
+'without':['AUCH INTERESSANT', 'CT EMPFIEHLT', 'WERBEN SIE BEI UNS'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://der-farang.com/de/pages/frei-erfunden-grab-bote-fliegt-nach-singapur':{
+'file': 'der-farang.com-Grab-Bote.html',
+'author': 'Björn Jahner',
+'title': 'Frei erfunden: Grab-Bote fliegt nach Singapur',
+'date': '2023-10-31',
+'description': 'BANGKOK: Ein TikTok-Video, in dem behauptet wird, dass ein Grab-Lieferbote nach Singapur fliegt, um Hühnerreis für seinen Kunden in Thailand zu kaufen, ist frei erfunden, sagte ein Grab-Sprecher am Montag (30. Oktober 2023). ',
+'categories':['BANGKOK'],
+'tags':[],
+'with':['das inzwischen mehr als', 'drei Millionen Aufrufe verzeichnet', 'ist ein thailändischer Grab-Lieferfahrer zu sehen'],
+'without':['Lesen Sie auch', 'Die Regierung braucht einen Notfallplan: Pita', 'Than On beantragt Thai-ID-Card und Reisepass'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://de.starsinsider.com/gesundheit/588409/this-is-what-happens-to-your-brain-and-body-when-you-get-scared':{
+'file': 'de.starsinsider.com-Angst.html',
+'author': '',
+'title': 'Das passiert mit Ihrem Gehirn und Körper, wenn Sie Angst haben',
+'date': '2023-10-30',
+'description': 'Die Wissenschaft der Angst verstehen ',
+'categories':['GESUNDHEIT'],
+'tags':[],
+'with':['Angst ist ein unausweichlicher Bestandteil', 'der menschlichen Erfahrung', 'Obwohl sie in der Regel als eine unerwünschte Emotion'],
+'without':['MEIST GELESEN', 'FÜR DICH EMPFOHLEN', 'Wie gefährlich ist Scharlach?'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://deutsche-wirtschafts-nachrichten.de/706332/industriestrompreis-kein-ende-der-debatte?src=live':{
+'file': 'deutsche-wirtschafts-nachrichten.de-Industriestrompreis.html',
+'author': '',
+'title': 'Habeck, BDI und Gewerkschaft dringen auf raschen Industrie-Strompreis',
+'date': '2023-10-31',
+'description': 'Die Ampel streitet über einen subventionierten Strompreis. Industrie- und Gewerkschaftsvertreter fordern endlich Klarheit. ',
+'categories':[],
+'tags':['Industrie', 'Deutschland', 'Energie-Krise'],
+'with':['Bundeswirtschaftsminister Robert Habeck', ' die Industrie und die Gewerkschaft IG Metall', 'dringen auf ein schnelles Ja für einen verbilligten Strompreis'],
+'without':['Experte: Energiepreise werden weiter steigen', 'Standort Deutschland – zu großes Geschäftsrisiko?', 'Unverbindliches aus dem Hause Habeck'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://dietagespresse.com/halloween-bizarrer-horrorclown-versetzt-oesterreich-in-angst-und-schrecken/':{
+'file': 'dietagespresse.com-halloween.html',
+'author': '',
+'title': 'Halloween: Bizarrer Horrorclown versetzt Österreich in Angst und Schrecken',
+'date': '2023-10-31',
+'description': 'Halloween lockt offenbar die bizarrsten Gestalten aus ihren Löchern. Die Polizei warnt aktuell vor einem Horrorclown, der das ganze Land in Angst und Schrecken versetzt. Er droht, Kindern die Süßigkeiten wegzunehmen. Zielfahnder vermuten ihn in Oberösterreich. ',
+'categories':['LEBEN'],
+'tags':[],
+'with':['kichert der irre Horrorclown im 10-sekündigen Gruselclip', 'Das bizarre Drohvideo', 'das auf sozialen Medien seine Runden dreht'],
+'without':['Kostenlos registrieren und weiterlesen', 'Schon registriert? Hier einloggen', 'Was passiert mit meinen Daten?'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://digitalcourage.de/blog/2023/buch-digitale-muendigkeit':{
+'file': 'digitalcourage.de-Muendigkeit.html',
+'author': 'Leena Simon',
+'title': 'Mit Digitaler Mündigkeit die Welt retten',
+'date': '2023-10-06',
+'description': 'Leena Simon will die Welt retten. Sie findet, das geht nur, indem wir alle gemeinsam unsere Haltung gegenüber digitaler Technik ändern und mehr Verantwortung übernehmen. ',
+'categories':[],
+'tags':[],
+'with':['Haben auch Sie den Eindruck', 'dass unsere Welt gerade aus den Fugen gerät', 'Unser achtloser Umgang mit digitalen Medien'],
+'without':['Buch bestellen', 'Ist Ihnen beim Betreten dieser Seite etwas aufgefallen?', 'Wir haben Sie nicht mit einer Cookieabfrage genervt.'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://dubisthalle.de/intendanten-wechsel-beim-mdr':{
+'file': 'dubisthalle.de-Intendanten-Wechsel.html',
+'author': 'ESEPPELT',
+'title': 'Intendanten-Wechsel beim MDR',
+'date': '2023-10-31',
+'description': 'An der Spitze des Mitteldeutschen Rundfunks steht ein Wechsel bevor: Am heutigen 31. Oktober endet die Amtszeit von Intendantin Karola Wille, ab 1. November ist Ralf Ludwig neuer Intendant. ',
+'categories':[],
+'tags':['AfD', 'Bahn', 'Basketball', 'Baustelle', 'Bildung', 'Brand', 'CDU', 'Corona', 'Diebstahl', 'Drogen', 'Einbruch', 'Eishockey', 'Fahrrad', 'Feuerwehr', 'Flughafen', 'Fußball', 'Handwerkskammer', 'HAVAG', 'HFC', 'Impfung', 'Kita', 'Klima', 'Körperverletzung', 'Laternenfest', 'Lions', 'Neustadt', 'Polizei', 'Raub', 'Rechtsextremismus', 'Saale', 'Bulls', 'Schule', 'Silberhöhe', 'Spd', 'Stadtrat', 'Stadtwerke', 'Statistik', 'Straßenbahn', 'Streik', 'SV', 'Halle', 'Terroranschlag', 'Ukraine', 'Unfall', 'Uniklinik', 'Universität', 'Zoo'],
+'with':['Von ihren 32 Jahren im MDR', 'war Karola Wille 27 Jahre in leitenden Funktionen tätig', 'Im November 1991 begann sie als Referentin'],
+'without':['MELDUNGEN AUS DER POLITIK', 'AKTUELLE POLIZEI-MELDUNGEN', 'NEUESTE KOMMENTARE'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://ebike-mtb.com/advanced-offroad-pro-race-mtb-fs-test/':{
+'file': 'ebike-mtb.com-OFFROAD.html',
+'author': 'Rudolf Fischer, Simon Kohler',
+'title': 'Das neue Advanced OFFROAD Pro Race MTB FS im ersten Test – Newcomer mit Renn-Ambitionen',
+'date': '2023-10-31',
+'description': 'Das neue Advanced OFFROAD Pro Race MTB FS soll nicht gebaut worden sein, um Rennen zu fahren, sondern um sie zu gewinnen. Ist das abfahrtsorientierte E-MTB nur was für Rennfahrer oder kommen Hobbypiloten damit auch auf ihre Kosten? Wir haben das E-Mountainbike mit kraftvollem Bosch Performance Line CX Race-Motor für euch getestet. ',
+'categories':['News', 'Test'],
+'tags':[],
+'with':['Ihr habt von der deutschen E-Bike-Brand Advanced noch nie etwas gehört?', 'Macht nix, wir klären euch auf.', 'Im City- und Trekking-Bereich ist Advanced bereits gut etabliert.'],
+'without':['Der Artikel gefällt dir?', 'Melde dich für unseren Newsletter an!', 'Empfohlen für dich'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://elavegan.com/peanut-butter-truffles/':{
+'file': 'elavegan.com-Peanut.html',
+'author': 'Ela',
+'title': 'PEANUT BUTTER TRUFFLES',
+'date': '2023-10-31',
+'description': 'These peanut butter truffles contain a creamy sweet PB center, coated with a dark chocolate shell, perfect as a high-protein, bite-sized snack. Plus, this recipe uses just a few ingredients and is dairy-free, gluten-free, vegan, with a refined sugar-free filling! ',
+'categories':['Vegan Desserts'],
+'tags':[],
+'with':['If you’re obsessed with peanut butter', 'and looking for a treat that will stop you', 'from sticking your spoon directly into the jar (guilty!)'],
+'without':['AMAZON ASSOCIATES DISCLOSURE', '5 Secrets to Healthy Vegan Cooking', 'EXPLORE MORE'],
+'comments':['Wow, deliciousThank you for sharing your work with us! Much love from Portugal', 'So glad you like it, Julia! Sending love to Portugal.', 'It called for crushed Graham crackers,'],
+'license':'',
+'region':'',
+}, 
+'https://exxpress.at/zaehne-zusammenbeissen-festspiel-reisen-von-van-der-bellen-kosteten-57-000-euro/':{
+'file': 'exxpress.at-zaehne.html',
+'author': 'Redaktion',
+'title': 'Zähne zusammenbeißen: Festspiel-Reisen von Van der Bellen kosteten 57.000 Euro',
+'date': '2023-11-01',
+'description': 'Während viele österreichische Steuerzahler wegen der enormen Teuerung die Zähne zusammenbeißen mussten, ging Alexander Van der Bellen samt “Hofstaat” auf Festspiel-Tour. Der Bundespräsident fuhr um insgesamt 57.000 Euro nach Salzburg, Bregenz, Erl und Mörbisch. ',
+'categories':['Politik'],
+'tags':[],
+'with':['Die Kosten für Festspielbesuche des Bundespräsidenten', 'finden vor allem die Freiheitlichen zum Zähneknirschen', 'Grund: Die Ausflüge von Van der Bellen zu den vier Kulturevents haben unfassbare 57.000 Euro gekostet'],
+'without':['Das könnte Sie auch interessieren', 'Ihr Beitrag hilft, unsere Berichterstattung noch', 'weiter auszubauen und diese weiterhin kostenlos'],
+'comments':['Er zeigt Österreich immer wieder', 'wie dankbar er dafür ist', 'dass es ihn dereinst aufgenommen hat!'],
+'license':'',
+'region':'AT',
+}, 
+'https://finanzmarktwelt.de/signa-rene-benko-daten-berater-289554/':{
+'file': 'finanzmarktwelt.de-Benko-Firma.html',
+'author': 'Claudio Kummerfeld',
+'title': 'Rene Benko-Firma Signa in Sorge – Finanzdaten und Berater-Auftrag',
+'date': '2023-11-01',
+'description': 'Das Signa-Immobilienimperium von Rene Benko ist angeschlagen. Jetzt zeigen Finanzdaten die Liquiditätssorgen. ',
+'categories':['IMMOBILIEN'],
+'tags':['Rene Benko', 'Signa', 'Top'],
+'with':['In Hamburg kommt man aktuell', 'kaum an dem Thema vorbei', 'Bei mehreren Prestigeprojekten'],
+'without':['Dax und Gold: Szenarien für heutiges Fed Mega-Event', 'LESEN SIE AUCH', 'HINTERLASSEN SIE EINE ANTWORT'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://freshideen.com/rezepte/dresdner-stollenfest.html':{
+'file': 'freshideen.com-Stollenfest.html',
+'author': 'Julia Steinhoff',
+'title': 'Dresdner Stollenfest, wo jahrhundertelange Tradition auf handwerkliches Können trifft',
+'date': '2023-10-25',
+'description': 'Können Sie sich Weihnachten ohne einen leckeren Christstollen vorstellen? ',
+'categories':[],
+'tags':[],
+'with':['Wir eher nicht!', 'Denn der berühmte Kuchen mit Rosinen', 'Marzipan oder Schokolade gehört einfach zum Fest'],
+'without':['Verwandte Artikel', 'Kalorienarmes Tiramisu mit viel Protein für sportich aktive Personen', 'Schnelles Abendessen – 2 Blitzrezepte für einen angenehmen Feierabend'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.badische-zeitung.de/viele-studierende-sind-noch-verzweifelt-auf-wohnungssuche-in-freiburg':{
+'file': 'badische-zeitung.de-Wohnungssuche.html',
+'author': 'Lisa Petrich',
+'title': 'Viele Studierende sind noch verzweifelt auf Wohnungssuche in Freiburg',
+'date': '2023-10-18',
+'description': 'Die Vorlesungen an der Uni und den Hochschulen starten. Aber nicht alle, die fürs Studium nach Freiburg kommen, haben schon ein Zimmer. Manchen bleibt nur die Notunterkunft des Studierendenwerks. ',
+'categories':['LOKALES'],
+'tags':[],
+'with':['Gesine aus Tübingen läuft die Zeit davon', 'Die 18-Jährige hat sich', 'an der Uni Freiburg für ein Jurastudium eingeschrieben'],
+'without':['Weitere Artikel', 'Abonnement hier kündigen', 'Kinder helfen Kindern'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://ga.de/bonn/beuel/mural-in-bonn-graffiti-an-stiftung-gemeindepsychatrie-in-beuel_aid-99369101':{
+'file': 'ga.de-Graffiti.html',
+'author': 'Anna Müller',
+'title': 'Was hinter dem neuen Wandgraffiti in Beuel steckt',
+'date': '2023-11-01',
+'description': 'Beuel · Seit kurzem schmücken die Wände des Gebäudes der Stiftung Gemeindepsychatrie ein buntes Graffitigemälde. Die Graffiti-Agentur „Highlightz“ hat die Außenwände neugestaltet – was hinter dem Motiv steckt. ',
+'categories':['Bonn', 'Beuel'],
+'tags':[],
+'with':['Riesengroße Köpfe im Profil', 'ein Mann mit rotem Hut ist schemenhaft über den Kopf', 'einer Frau mit geflochtenem Zopf in Blau gelegt'],
+'without':['Jetzt weiterlesen mit', 'Wir liefern mit anspruchsvollem, modernem Journalismus die Informationen', 'die für Menschen in unserer Region wichtig sind.'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://groove.de/2023/10/31/anti-a100-aktivist-tobias-trommer-es-wird-an-der-zeit-dass-die-clubs-verantwortung-nehmen/':{
+'file': 'groove.de-Anti-A100-Aktivist.html',
+'author': 'Charlotte Elsen',
+'title': 'Anti-A100-Aktivist Tobias Trommer: „Es wird Zeit, dass Clubs Verantwortung übernehmen”',
+'date': '2023-10-31',
+'description': 'Anfang September fand der Demorave „A100 Wegbassen” gegen den Ausbau der Autobahn A100 statt. ',
+'categories':[],
+'tags':[],
+'with':['Treffpunkt ist Berlin-Friedrichshain', 'direkt vor der Renate', 'einem der fünf Clubs, die vom Bau der A100 gefährdet sind'],
+'without':['TikTok-Techno 2.0: Ist die Blase geplatzt?', 'Das Phänomen Stella Bossi: Ein nebulöser Sehnsuchtsort, massentauglich gemacht', 'Die Konkurrenz ist gnadenlos hart geworden'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://hildesheimer-presse.de/2023/11/01/hund-vertreibt-einbrecher-zeugenaufruf/':{
+'file': 'hildesheimer-presse.de-hund.html',
+'author': '',
+'title': 'Hund vertreibt Einbrecher – Zeugenaufruf',
+'date': '2023-11-01',
+'description': 'Am 31.10.2023, gegen 23:40 Uhr, kam es in der Nordstraße in 31167 Bockenem zu einem versuchten Wohnungseinbruchsdiebstahl. ',
+'categories':[],
+'tags':['Bockenem', 'Nordstraße', 'Polizei'],
+'with':['Nach aktuellem Kenntnisstand', 'schlug der Hund des Hausbewohners zur o. g. Zeit plötzlich an', 'Als der Bewohner nach dem Rechten schauen wollte'],
+'without':['Beliebte Artikel', 'Ambulante Notfallpraxis der KVN Hildesheim', 'Nummer gegen Kummer'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://hpd.de/artikel/sie-wissen-nicht-sie-tun-identitaetspolitische-linke-unterschlaegt-den-homosexuellenhass-neuer-21664':{
+'file': 'hpd.de-Homosexuellenhass.html',
+'author': 'Moritz Pieczewski-Freimuth',
+'title': 'Sie wissen (nicht), was sie tun: Identitätspolitische Linke unterschlägt den Homosexuellenhass neuer Qualität',
+'date': '2023-10-18',
+'description': 'Ohrenbetäubende Stille herrschte in der Queer-Community. ',
+'categories':['GESELLSCHAFT'],
+'tags':['Homophobie', 'Homosexualität', 'Gewalt', 'Identitätslinke', 'Islam'],
+'with':['die traurige Nachricht über den Tod des Transmannes Malte C', 'in Folge der Verletzungen nach einem Faustangriff', 'auf der Parade des Christopher Street Days (CSD)'],
+'without':['Israels Überlebenskampf gegen den Terror', 'Politischer Islam durch die Hintertür', 'Unterdrückte (Homo-)Sexualität: Ein Risikofaktor für islamistische Gewalt'],
+'comments':['trifft auf alle extremen Denkungsarten zu und macht deutlich', 'Hass und Hetze, fernab jeglicher Vernunft entsteht', 'aber teilweise etwas unausgegoren'],
+'license':'',
+'region':'DE',
+}, 
+'https://idw-online.de/de/news823175':{
+'file': 'idw-online.de-Hybridbatterie.html',
+'author': 'Dr. Karin J. Schmitz Abteilung Öffentlichkeitsarbeit',
+'title': 'Effiziente Hybridbatterie',
+'date': '2023-11-01',
+'description': 'Schnell ladende mikrobielle Brennstoffzelle und CO2-Elektrolyseur auf der Basis von Ameisensäure ',
+'categories':[],
+'tags':[],
+'with':['In mikrobiellen Brennstoffzellen verstoffwechseln Bakterien', 'Energieträgermoleküle und erzeugen dadurch Strom', 'Wenn die Bakterien energiereiche Moleküle als Energieträger'],
+'without':['Die semantisch ähnlichsten Pressemitteilungen im idw', 'TUB: Kohlendioxid als Rohstoff für die Umwandlung von Solarstrom in wertvolle chemische Produkte', '»Strom als Rohstoff« auf ACHEMA 2018: Grüne Energie für eine nachhaltige Chemie'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'http://simmentalzeitung.ch/Simmental/Boltigen/Trinkwasser-in-Schwarzenmatt-belastet-43157.html':{
+'file': 'simmeltalzeitung.ch-Trinkwasser.html',
+'author': '',
+'title': 'Trinkwasser in Schwarzenmatt belastet',
+'date': '2023-11-01',
+'description': 'Am Samstag, 29. Oktober warnte die Gemeinde Boltigen vor belastetem Leitungswasser in Schwarzenmatt. ',
+'categories':['Aktuelles', 'Archiv', 'Boltigen'],
+'tags':[],
+'with':['Auf Nachfrage führte die Gemeinde weiter aus', 'dass «geringe Mengen» des Bakteriums Escherichia coli im Rahmen', 'von routinemässigen Probenuntersuchungen gefunden wurden'],
+'without':['INTERESSANTE ARTIKEL', 'Artikel bewerten', 'Cookies erleichtern die Bereitstellung unserer Dienste'],
+'comments':[],
+'license':'',
+'region':'CH',
+}, 
+'https://industriemagazin.at/news/luftfahrtbranche-hebt-nach-corona-ab-und-facc-profitiert/':{
+'file': 'industriemagazin.at-Luftfahrtbranche.html',
+'author': 'Tom Arnold',
+'title': 'Luftfahrtbranche hebt nach Corona ab - und FACC profitiert',
+'date': '2023-10-31',
+'description': 'Der heimische Luftfahrtzulieferer FACC produziert von der starken Luftfahrt: "Wir haben einen gewaltigen Auftragseingang", sagte Konzernchef Robert Machtlinger. Welche Neuerungen FACC in den nächsten Jahren plant und warum der Fachkräftemangel für das Unternehmen kein Problem ist. ',
+'categories':['NEWS'],
+'tags':['Maschinenbau', 'FACC', 'FACC AG', 'Robert Machtlinger'],
+'with':['In der Luftfahrt geht es nach der Pandemie wieder rasant bergauf.', 'Davon ist auch der oberösterreichische Luftfahrtzulieferer FACC deutlich betroffen.', 'Wir haben einen gewaltigen Auftragseingang'],
+'without':['Entdecken Sie jetzt', 'Sie wollen mehr von uns?', 'Weitere interessante Artikel'],
+'comments':[],
+'license':'',
+'region':'AT',
+}, 
+'https://www.infosperber.ch/politik/madagaskar-wo-francafrique-endet/':{
+'file': 'infosperber.ch-Madagaskar.html',
+'author': '',
+'title': 'Madagaskar: Wo Françafrique endet',
+'date': '2023-10-31',
+'description': 'Die ehemalige französische Kolonie steht vor dem Niedergang. Das wird auch eine Niederlage für Frankreich sein. ',
+'categories':[],
+'tags':[],
+'with':['Der Insel Madagaskar wurde einst', 'eine blühende Zukunft vorausgesagt', 'Nun droht das Land wegen Misswirtschaft und Korruption unterzugehen'],
+'without':['SEIT 10 TAGEN AM MEISTEN GELESEN', 'AKTUELLE DOSSIERS', 'SEIT 10 TAGEN AM MEISTEN REAKTIONEN'],
+'comments':['Auf «Telepolis» erschien dieser Tage', 'ein zweiteiliger Artikel, der sich mit der globalen Hegemonie der USA befasst und erklärt', 'warum diese schlicht kolonialistisch ist'],
+'license':'',
+'region':'CH',
+}, 
+'https://sw1.news/fussball/fussball-kreisklassen/wenn-man-in-der-heimat-verliert-dann-tuts-in-abwesendheit-vielleicht-ein-bisschen-weniger-weh/':{
+'file': 'SW1.News-Heimat.html',
+'author': 'mh',
+'title': 'Wenn man in der Heimat verliert, dann tut´s in Abwesendheit vielleicht ein bisschen weniger weh',
+'date': '2023-10-15',
+'description': 'AUGSFELD – Zuhause verlieren ist nicht unbedingt schön. Und deshalb freute sich Thomas Häußinger zwar insgeheim ein kleines bisschen auch für den Erfolg des FC Augsfeld, weniger aber, dass das Team aus seinem Wohnort ausgerechnet seine eigene Mannschaft besiegte. ',
+'categories':['fuSWball', 'FB-Rhön Hassberge'],
+'tags':[],
+'with':['Der VfB Humprechtshausen spielte', 'bislang eine recht ordentliche Saison', 'brachte der SG Abersfeld bisher deren einzige Niederlage bei'],
+'without':['Das könnte Dich auch interessieren:', 'ANZEIGE - Heute mal ausgehen/bestellen? Wie wäre es mit:', 'Wie erwartet machen die beiden Strahlunger Spielertrainer über die Saison hinaus weiter'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://journalistenwatch.com/2023/11/01/ladensterben-immer-dramatischer/':{
+'file': 'Journalistenwatch.com-Ladensterben.html',
+'author': 'Rasender Reporter',
+'title': 'Ladensterben immer dramatischer',
+'date': '2023-11-01',
+'description': 'Das giftgrüne Wirtschaftswunder hinterlässt seine ersten Spuren, der Mittelstand wird durch Habeck & Genossen zerstört, die einst florierende deutsche Industrie zur leichten Beute multinationaler Konzerne, bald ist hier alles in amerikanischer und chinesischer Hand, ',
+'categories':[],
+'tags':[],
+'with':['Der Handelsverband Deutschland (HDE)', 'rechnet jetzt auch noch mit einem beschleunigten Ladensterben', 'Ein Drittel der Mittelständler will sein Geschäft lieber morgen als übermorgen aufgeben'],
+'without':['Schützt Annalena Baerbock weiterhin iranische Terrorbanden?', 'Das ist die Totenglocke dieser Regierung!', 'Hupkonzerte und Rufe der Demonstranten in den Innenstädten'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://jungle.world/artikel/2023/43/diskussion-begriff-imperialismus-das-phantom':{
+'file': 'jungle.world-Imperialismus-Phantom.html',
+'author': 'Ernst Lohoff',
+'title': 'Das Imperialismus-Phantom',
+'date': '2023-10-26',
+'description': 'Die heutigen Konflikte zwischen autoritären und westlichen Staaten lassen sich mit dem Begriff Imperialismus nicht erklären. Sie sind Teil eines Weltbürgerkriegs, bei dem die Grenze zwischen Außen- und Innenpolitik verschwimmt. ',
+'categories':['Disko'],
+'tags':['Russland', 'Antiimperialismus', 'Kolonialismus', 'Ukrainekrieg'],
+'with':['In den vergangenen 100 Jahren', 'war noch nie so viel von Imperialismus die Rede wie heute', 'und zwar quer durch die politischen Lager'],
+'without':['Artikel zum Thema', 'Die Hamas und die blinden Flecken der Linken', 'Imperialismustheorie statt Antiimperialismus'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://katapult-magazin.de/de/artikel/anzahl-zugelassener-parteien':{
+'file': 'KATAPULT-Magazin.de-parteien.html',
+'author': 'Tim Ehlers',
+'title': 'Anzahl zugelassener Parteien',
+'date': '2023-10-26',
+'description': 'Nach einer Wahl werden in den Nachrichten (verständlicherweise) meist nur die Gewinner bzw. die Ergebnisse der großen Volksparteien veröffentlicht. ',
+'categories':[],
+'tags':[],
+'with':['es zu viele sind und viele auch nur', 'in wenigen Bundesländern mit einer Landesliste antreten', 'haben wir uns auf die größten beschränkt.'],
+'without':['Neueste Artikel', 'Rechte in MV nötigen KATAPULT', 'Rechte, Rechtsextreme und Querdenker aus MV versuchen, KATAPULT einzuschüchtern. Mit erstem Erfolg. Die Lage ist kritisch. Wir wollen das nicht hinnehmen.'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://apolut.net/interview-mit-schriftstellerin-sonja-silberhorn/':{
+'file': 'apolut.net-Sonja-Silberhorn.html',
+'author': 'Eugen Zentner',
+'title': 'Interview mit Schriftstellerin Sonja Silberhorn',
+'date': '2023-10-28',
+'description': '„Es gibt offensichtlich mehr krimilesende Kritiker der Pandemiepolitik als bisher vermutet.“ ',
+'categories':['apolut Artikel'],
+'tags':['Cancel Culture', 'Corona-Krise', 'COVID-Impfung', 'Eugen Zentner', 'gesellschaftliche Verwerfungen', 'herrschende Mehrheitsmeinung', 'Konformitätsdruck', 'Kriminalroman', 'Leitmedien', 'Maßnahmenkritiker', 'menschenverachtend', 'nachdenkseiten', 'Pandemie', 'parallele Kulturindustrie', 'Schriftstellerin', 'Schwurbler', 'Sonja Silberhorn', 'tendenziöser Journalist'],
+'with':['Die deutsche Autorin Sonja Silberhorn', 'hat die Corona-Krise und ihre gesellschaftlichen Folgen in einem Kriminalroman verarbeitet', 'Den legte sie einem mittelgroßen'],
+'without':['Auch interessant...', 'Leuchtturm ARD ORF SRG – Initiative zur Beitragsbefreiung', 'Mein Leben als Monster'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://kinzig.news/23578/das-steckt-dahinter-nachhaltigkeit-bei-der-spessart-tourismus-gmbh':{
+'file': 'kinzig.news-Nachhaltigkeit.html',
+'author': 'MORITZ PAPPERT',
+'title': 'Interview mit Bernhard Mosbacher und Franziska Weber',
+'date': '2023-11-01',
+'description': 'Das steckt dahinter: Nachhaltigkeit bei der Spessart Tourismus GmbH ',
+'categories':[],
+'tags':[],
+'with':['Auf den Tourismus bezogen ist Nachhaltigkeit für uns', 'dass wir die Entwicklung in der Region mit allen Leistungsträgern', 'die an der touristischen Wertschöpfungskette beteiligt sind'],
+'without':['MEHR ZUM THEMA', 'Digitalisierung im Forst: Das sind die Chancen und Herausforderungen', 'Naturschutzbeamter Lukas Rippl und Revierleiterin Manuela Gebhard zeigen'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://kulturnews.de/fensterputzen-mit-den-ratboys-the-window-live/':{
+'file': 'kulturnews.de-Deutschland-Tour.html',
+'author': 'Felix Eisenreich',
+'title': 'Fensterputzen mit den Ratboys: „The Window“ live',
+'date': '2023-11-01',
+'description': 'Die Postcountryband nimmt sich dem Tod als Blick durchs Fenster an und lüftet auf Tour einmal ordentlich durch. ',
+'categories':['Musik'],
+'tags':['Ratboys', 'Postcountry', 'Indierock'],
+'with':['Für Julia Steiner, Sängerin und Frontfrau der Ratboys', 'war eines unausweichlich', 'Das neue Album der Postcountryband musste den Titel'],
+'without':['Brecht Reloaded: „Wie der Schnee“ – die neue Single von Soeckers', 'Gefühle wie Rohdiamanten: „strawberry picking“ – die neue Single von being anne', 'Befreite Beats: „Kalter Rauch“ – das Singledebüt von HUND'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://kyffhaeuser-nachrichten.de/news/news_lang.php?ArtNr=335614':{
+'file': 'kyffhaeuser-nachrichten.de-Regen.html',
+'author': '',
+'title': 'So viel Regen gab es lange nicht',
+'date': '2023-10-31',
+'description': 'Das Wetter eignet sich ja bekanntermaßen exzellent dazu, behäbige Konversation zu beleben. ',
+'categories':['NEWS'],
+'tags':[],
+'with':['Statt herkömmlichem Herbstwetter brachte', 'der Oktober 2023 sehr viel Regen und eine äußerst milde Witterung mit sommerlichen Nuancen', 'Die Vegetation kleidete sich nur zögerlich herbstlich'],
+'without':['Am meisten gelesen...', 'Letzte Kommentare', 'NACHRICHTEN AUS DEM KYFFHÄUSERKREIS - REGIONAL, SCHNELL, KOSTENLOS, SUPER DIGITAL'],
+'comments':['es gab dieses Jahr echt Regen', 'Schön so. Ja. Jetzt gleicht sich die Natur wieder aus', 'So isses halt.'],
+'license':'',
+'region':'DE',
+}, 
+'https://lebensmittelpraxis.de/handel-aktuell/38519-olympische-spiele-in-paris-getraenke-per-schiff-ins-stadtzentrum.html':{
+'file': 'Lebensmittelpraxis.de-Stadtzentrum.html',
+'author': '',
+'title': 'Getränke per Schiff ins Stadtzentrum',
+'date': '2023-11-01',
+'description': 'Im Anlauf zu den Olympischen Spielen im kommenden Sommer in Paris wird eine Belieferung mit Getränken über die Seine getestet, insbesondere um den Transport von Getränken möglichst umweltfreundlich zu organisieren und den Verkehr zu entlasten. Die Supermarktkette Franprix hat damit bereits Erfahrung. ',
+'categories':['HANDEL'],
+'tags':['ALKOHOLFREIE GETRÄNKE', 'LOGISTIK UND VERPACKUNG', 'LOGISTIK', 'FRANKEICH', 'GETRÄNKEWIRTSCHAFT'],
+'with':['Dazu werden die Getränke per Schiff', 'von einem Lager im Umland zu einem Kai gegenüber dem Eiffelturm geliefert', 'teilte die Pariser Hafengesellschaft mit'],
+'without':['Das könnte Sie auch interessieren', 'Viel gelesen in Handel', 'Supermarkt des Jahres 2023'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://literaturkritik.de/franke-cotten-die-anleitungen-der-vorfahren,30063.html':{
+'file': 'literaturkritik.de-Ann-Cotten.html',
+'author': 'Vanessa Franke',
+'title': 'Vom Boden aus gedacht',
+'date': '2023-11-01',
+'description': 'Ann Cotten verwebt in „Die Anleitungen der Vorfahren“ Lokales und Globales ',
+'categories':[],
+'tags':[],
+'with':['Es braucht ein wenig Zeit', 'um sich auf diesen Text einzulassen', 'Weder Lyrikband noch ethnologischer Bericht noch Erzählung'],
+'without':['Ergebnisse einer internationalen Tagung zu einem Forschungsprojekt', 'über Heimat, Raum und Emotion in der Literatur seit 1945 bis zur Gegenwart', 'Ich habe die Portraits mit großem Vergnügen gelesen'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://lokalo.de/artikel/310144/weinbergsbahnen-in-erden-nicht-manipuliert-ermittlungen-zu-trittenheimer-fall-gehen-weiter/':{
+'file': 'lokalo.de-Weinbergsbahnen.html',
+'author': '',
+'title': 'Weinbergsbahnen in Erden nicht manipuliert – Ermittlungen zu Trittenheimer Fall gehen weiter',
+'date': '2023-11-01',
+'description': 'ERDEN. Wie von lokalo.de berichtet, meldete die Polizei Anfang Oktober, dass an zwei Zahnradbahnen in der Weinlage “Erdener Prälat” an der B53 zwischen Ürzig und Kinheim technische Manipulationen zur Anzeige gebracht worden waren. Vermutet wurde damals bewusste Sabotage an den Monorackbahnen. ',
+'categories':['Blaulicht'],
+'tags':['Blaulicht', 'Trier & Region', 'Trier-Saarburg', 'Bernkastel-Wittlich'],
+'with':['Vorausgegangen war ein Fall in Trittenheim', 'bei dem sich ein 21-jähriger Winzersohn', 'aus dem Ort am 25.9.2023 nur durch einen beherzten Sprung retten konnte'],
+'without':['++ Wetter in der Region: Aussichten bis Freitag mild, aber ungemütlich ++', 'FDP-Landes- und Kommunalpolitiker stellen Bundes-Ampel infrage – sieben aus RLP', 'VOLKSWAGEN ZENTRUM TRIER'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://makronom.de/warum-es-ein-ressourcenschutzgesetz-braucht-45273':{
+'file': 'makronom.de-Ressourcenschutzgesetz.html',
+'author': 'CLARA LÖW, SIDDHARTH PRAKASH & KLAUS JACOB',
+'title': 'Warum es ein Ressourcenschutzgesetz braucht',
+'date': '2023-10-26',
+'description': 'Der jährliche Rohstoffkonsum in Deutschland muss bis Mitte des Jahrhunderts mindestens halbiert werden. Dafür braucht es eine Verbindlichkeit, die in einem Ressourcenschutzgesetz analog zum Klimaschutzgesetz festgehalten werden sollte. ',
+'categories':['ENERGIE & UMWELT'],
+'tags':[],
+'with':['Es besteht ein direkter Zusammenhang', 'zwischen Rohstoffnutzung und Auswirkungen', 'auf den Zustand der Umwelt und Ökosysteme'],
+'without':['MEHR ZUM THEMA', 'CIRCULAR ECONOMY UND NACHHALTIGE SOZIALE MARKTWIRTSCHAFT', 'Unser kostenloser Newsletter informiert Sie über unsere neuesten Beiträge.'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://mein-mmo.de/silkroad-online-erstes-mmorpg-cringe-dieb/':{
+'file': 'mein-mmo.de-MMORPG.html',
+'author': 'Cortyn',
+'title': 'Mein 1. MMORPG Silkroad Online hat mich zum Cringe-Dieb gemacht und zu Hentai geführt',
+'date': '2023-11-01',
+'description': 'MeinMMO-Dämon Cortyn erzählt vom ersten MMORPG. In Silkroad Online war die Welt noch in Ordnung – oder so ähnlich. Denn die erste Gilde wollte viel und konnte gar nichts. ',
+'categories':[],
+'tags':[],
+'with':['Die erste große MMORPG-Liebe ist etwas ganz besonderes', 'Selbst wenn viele Erinnerungen inzwischen ein wenig verschwommen sind', 'weiß ich noch sehr gut'],
+'without':['MEHR KOLUMNEN AUF MEINMMO', 'KOMMENDE SPIELE', 'NEUESTE ARTIKEL'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://missy-magazine.de/blog/2023/10/30/interabled-sex-education/':{
+'file': 'missy-magazine.de-interabled.html',
+'author': 'Evan Tepest',
+'title': 'Interabled Sex Education',
+'date': '2023-10-30',
+'description': 'Evan Tepest und Selma Kay Matter beschreiben, wie Dating zwischen chronisch kranker und able-bodied Person aussehen kann. ',
+'categories':['Kolumnen'],
+'tags':[],
+'with':['Sex ist immer schon etwas anderes als es selbst.', 'Müssen wir verstehen, was wir begehren?', 'Wo fängt die Lust an und wer entscheidet'],
+'without':['Verträge kündigen', 'weitere Artikel', 'Körper&Sex'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://nachtkritik.de/kolumnen-georg-kasch/kolumne-queer-royal-ueber-dragqueens-und-dragkings-auf-und-jenseits-der-buehne':{
+'file': 'nachtkritik.de-Dragqueens.html',
+'author': 'Georg Kasch',
+'title': 'Im Schlepptau',
+'date': '2023-10-31',
+'description': 'Dragqueens sind Kunstfiguren aus Make-Up und Glitter, auf Partys und in Shows, auch in der Freien Szene und im Stadttheater. Jetzt finden sie sich zunehmend in den Schusslinien der Identitätsdebatten wieder. ',
+'categories':['kolumnen'],
+'tags':[],
+'with':['Woher kommt eigentlich der Hass auf Dragqueens?', 'Früher, als Travestiekünstler wie Georg Preuße', 'und Reiner Kohler noch als Mary und Gordy die Bühnen beherrschten'],
+'without':['neueste kommentare', 'mehr Kolumnen', 'impressum & kontakt'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://nh24.de/2023/11/06/mitarbeiter-fordern-bundeswehr-auftraege-fuer-deutsche-unternehmen/#more-244202':{
+'file': 'nh24.de-Bundeswehr.html',
+'author': '',
+'title': 'Mitarbeiter fordern Bundeswehr-Aufträge für deutsche Unternehmen',
+'date': '2023-11-06',
+'description': 'In Sorge um ihre Arbeitsplätze demonstrierten am Montag etwa 500 Mitarbeiter von Airbus Helicopters Technik und Airbus Helicopters Deutschland in Calden vor dem Werkstor unter dem Motto „Für unsere Sicherheit“. ',
+'categories':['Panorama'],
+'tags':['CALDENIG', 'METALL', 'LANDKREIS KASSEL'],
+'with':['Die Befürchtung der Beschäftigten resultiert', 'aus der vermehrten Beschaffung von Flugzeugen', 'und Hubschraubern für die Bundeswehr aus US-Produktion'],
+'without':['PLAG-ADVENTS-ANGEBOT', 'BESTATTUNGSHAUS WILLE IN KNÜLLWALD', 'SCHUHHAUS HERCHE RÄUMUNGSVERKAUF'],
+'comments':['Seit Bestehen der Bundeswehr 1956 starben 3.387', 'Im Straßenverkehr starben in manche Jahren 11.300 Verkehrsteilnehmer', 'In der heutigen Zeit ist es sehr wichtig in ein schlagkräftiges Militär zu investieren'],
+'license':'',
+'region':'DE',
+}, 
+'https://n-land.de/top-story/74-jaehriger-stirbt-nach-unfall-in-simmelsdorf':{
+'file': 'n-land.de-Simmelsdorf.html',
+'author': '',
+'title': '74-Jähriger stirbt nach Unfall in Simmelsdorf',
+'date': '2023-11-06',
+'description': 'Am Samstag, 4. November, gegen 17.50 Uhr, ist ein 74-Jähriger mit seinem PKW in Simmelsdorf in Richtung Ortsmitte gefahren. ',
+'categories':[],
+'tags':['Unfall', 'Rettungsdienst', 'Simmelsdorf', 'Polizei'],
+'with':['Gegenüber einer Verkehrsteilnehmerin', 'die sich mit ihrem Fahrzeug hinter dem Pkw-Fahrer befand', 'gab er gesundheitliche Probleme an und verlor das Bewusstsein'],
+'without':['Das könnte Sie auch interessieren', 'Unbekannter stiehlt mehrere E-Bikes aus Kellerabteilen in Altdorf', 'Über drei Promille: Alkoholisierter Fahrer baut Unfall in Lauf'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://nnz-online.de/news/news_lang.php?ArtNr=335853':{
+'file': 'nnz-online.de-Quantensprung.html',
+'author': '',
+'title': 'Ein Quantensprung für Nordhausen Nord',
+'date': '2023-11-06',
+'description': 'In Nord wurde am Freitag die neue Spiel- und Freizeitanlage, der "Nordpark" eröffnet. Für das Quartier sei die neue Mehrgenerationenanlage ein "Quantensprung", hieß es aus dem Rathaus… ',
+'categories':['NEWS'],
+'tags':[],
+'with':['Gemeinsam mit Kindern der Kindertageseinrichtung', 'des Jugendclubs Mitte sowie Jugendlichen des Kinder- und Jugendstadtrates', 'eröffnete Oberbürgermeister Kai Buchmann am vergangenen Freitag'],
+'without':['Am meisten gelesen...', 'Letzte Kommentare', 'Top 10 Artikel der letzten 10 Tage als RSS'],
+'comments':['Quantensprung? Wohl eher ein kleiner Schritt.', 'Ich will den Nordhäusern ihre neue "Attraktion" gar nicht madig machen', 'und es ist auch schön, dass man daran arbeitet'],
+'license':'',
+'region':'DE',
+}, 
+'https://omr.com/de/daily/cowboyboots-und-crocs':{
+'file': 'omr.com-Schuhbrand.html',
+'author': 'TANJA KARRASCH',
+'title': 'Jetzt auch noch Cowboyboots: Crocs erzielt Milliardenumsätze durch verrückte Releases und Kollaborationen',
+'date': '2023-11-03',
+'description': 'Für 2023 rechnet das US-Unternehmen aus Colorado mit 3,9 Milliarden US-Dollar Umsatz. Aber nicht alle Geschäftsbereiche laufen gut ',
+'categories':['Daily'],
+'tags':['Social', 'Commerce'],
+'with':['Während Birkenstocks aber im Vergleich zum Crocs', 'der gewisse Funfaktor fehle', 'sagt Landowski, bringe man Crocs nicht mit den typischen Birkenstocks-Attributen'],
+'without':['Empfohlener redaktioneller Inhalt', 'Aktuelle Stories und die wichtigsten News für Marketeers direkt in dein Postfach!', 'OMR Family Member'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://onlinemarketing.de/social-media-marketing/instagram-neue-videofunktion-stories':{
+'file': 'OnlineMarketing.de-Instagram.html',
+'author': 'Swantje Schemmerling',
+'title': 'Instagram arbeitet an neuer Videofunktion für Stories',
+'date': '2023-11-06',
+'description': 'Das Meta-Unternehmen Instagram arbeitet an einem neuen Feature für die Stories. Dieses ist vor allem für Creator interessant. ',
+'categories':['Social Media Marketing'],
+'tags':[],
+'with':['Nutzer:innen haben die Möglichkeit', 'ein bis zu 15 Sekunden langes Video mit ihrem Smartphone aufzunehmen', 'und danach über Instagram in ihren Stories hochzuladen.'],
+'without':['Dein personalisierter Newsletter', 'Whitepaper kostenlos downloaden', 'Webinare zu digitalen Themen'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://ostbelgiendirekt.be/tv-tipp-loriot-100-367167':{
+'file': 'Ostbelgiendirekt.be-ARD-Doku.html',
+'author': '',
+'title': 'TV-TIPP – „Loriot 100“: ARD-Doku zum 100. Geburtstag des größten deutschen Humoristen',
+'date': '2023-11-06',
+'description': 'Mit seinen Figuren, Sketchen und Filmen voller Wortwitz und skurriler Komik schrieb Vicco von Bülow alias Loriot im deutschsprachigen Raum TV-Geschichte. Die ARD feiert seinen Hundertsten – am 12. November – unter anderem mit einer liebevollen Doku. ',
+'categories':['Nachrichten'],
+'tags':[],
+'with':['Die ARD hat für ihre Mediathek', 'eine umfangreiche Schau mit Loriots bekanntesten Werken', 'Das Widget mit den ikonischen Sketch- und Cartoon-Klassikern von SWR'],
+'without':['Populäre Artikel der letzten 7 Tage', 'Aktuelle Kommentare', 'Alles nur Satire'],
+'comments':['LORIOT hätte es heutzutage schwer im Fernsehen', 'besser gesagt, man würde ihn für politisch inkorrekt erklären', 'und auf die rote Liste von Künstlern setzen, die man diffamieren kann und muss'],
+'license':'',
+'region':'DE',
+}, 
+'https://osthessen-news.de/n11752374/claudia-brandes-und-ihr-links-gruenes-buendnis-muessen-jetzt-liefern.html':{
+'file': 'Osthessen-news.de-Buergermeisterwahl.html',
+'author': 'Christian P. Stadtfeld',
+'title': 'Claudia Brandes und ihr links-grünes Bündnis müssen jetzt liefern',
+'date': '2023-11-06',
+'description': 'Sensation in der schwarzen Hochburg Petersberg bei Fulda! Aus dem Stand heraus wird die 32 Jahre alte Claudia Brandes Bürgermeisterin der wirtschaftlich und strukturell bestens aufgestellten Großgemeinde und erreicht damit einen Höhepunkt in ihrem abwechslungsreichen Leben. ',
+'categories':['NACHRICHTEN'],
+'tags':[],
+'with':['Zunächst ist festzustellen', 'dass die CDU in Petersberg und ihr Bürgermeister', 'in den vergangenen sechs Jahren nicht unbedingt einen harmonischen Eindruck hinterlassen haben'],
+'without':['DEIN HEIMATPODCAST', 'Petersberg Bürgermeisterwahl - weitere Artikel', 'DEN RICHTIGEN FINDEN'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://peppermynta.de/fashion-guides/fair-fashion-strick-nachhaltige-strickmode-mulesingfrei-knitwear/':{
+'file': 'peppermynta.de-Strickmode.html',
+'author': 'JULIA ESDAR',
+'title': 'FAIR FASHION STRICK – UNSERE LIEBSTEN LABELS FÜR NACHHALTIGE STRICKMODE',
+'date': '2023-11-06',
+'description': 'Was wäre Wintermode ohne kuschelige Knitwear? Ob grob oder fein gestrickt, in Form von flauschigen Pullovern oder schicken Strickkleidern: Von fairer Strickmode können wir gerade im Herbst und Winter nicht genug bekommen. Wir stellen euch heute unsere liebsten Fair Fashion Strick Labels vor, bei denen ihr nachhaltige Strickmode findet – schön eingekuschelt sind wir gewappnet für die kalte Jahreszeit. ',
+'categories':[],
+'tags':["achiy","alpakawolle","cashmere","chiengora","claudia-lanius","eco-knitwear","edelziege","faible-and-failure","fair-fashion-cardigan","fair-fashion-pullover","fair-fashion-strick","fair-fashion-strickjacke","fair-fashion-strickpullover","fair-produzierte-strickmode","handarbeit","handgestrickt","handgestrickte-knitwear","handgestrickte-pullover","handmade","hanishken","hessnatur","hundewolle","isabelle-mann","jann-june","kaschmir","kaschmirwolle","knitwear","kontrolliert-biologische-tierhaltung","lanius","living-crafts","maiami","merino-wolle","merinowolle","merz-b-schwanen","mila-vert","modus-intarsia","mulesing","mulesingfree","mulesingfrei","mulesingfreie-merinowolle","nachhaltige-strickmode","naturfasern","recolution","wolle","wunderwerk","yak-wolle"],
+'with':['Leider hat die Wollproduktion aber auch ihre Schattenseiten', 'und ist gerade in der konventionellen Tierhaltung oftmals mit viel Tierleid verbunden', 'Bei Merinoschafen, die für ihre besonders weiche Wolle bekannt sind, ist vor allem das Mulesing ein Pr'],
+'without':['Das könnte Dich auch noch interessieren', 'FRAUENGESUNDHEIT: NATÜRLICHE PRODUKTE FÜR DIE WECHSELJAHRE, PERIODE & CO.', 'NACHHALTIGE BETTWÄSCHE – DIE BESTEN MARKEN FÜR BIO BETTWÄSCHE OHNE SCHADSTOFFE'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://pinkstinks.de/das-patriarchat-als-kulturtechnik/':{
+'file': 'pinkstinks.de-Kulturtechnik.html',
+'author': 'Nils Pickert',
+'title': 'DAS PATRIARCHAT ALS KULTURTECHNIK',
+'date': '2023-10-25',
+'description': 'Für gewöhnlich beginne ich Texte nicht mit Zitaten aus Max Webers Wirtschaft und Gesellschaft. ',
+'categories':['Allgemein'],
+'tags':[],
+'with':['Zum einen sind wir hier nicht in einem Proseminar Soziologie.', 'Zum anderen haben Soziologinnen wie Eva Cyba mit Geschlecht und soziale Ungleichheit', 'Existenz und Wirkweise des Patriarchats sehr viel deutlicher herausgearbeitet als Max Weber'],
+'without':['FOLGT UNS!', 'AKTUELLE BEITRÄGE', 'ÄHNLICHE BEITRÄGE'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://polizeiticker.ch/artikel/studen-be-a6-nach-toedlichem-unfall-fuer-mehrere-stunden-gesperrt-219645':{
+'file': 'polizeiticker.ch-Unfall.html',
+'author': 'Redaktion Polizeiticker Schweiz',
+'title': 'Studen BE - A6 nach tödlichem Unfall für mehrere Stunden gesperrt',
+'date': '2023-11-06',
+'description': 'Am Sonntagabend kam es auf der A6 bei Studen zu einem schweren Verkehrsunfall. Ein Autofahrer verstarb noch auf der Unfallstelle. Eine weitere Autofahrerin wurde verletzt ins Spital gebracht. Die A6 zwischen Brügg und Lyss Nord war für mehrere Stunden gesperrt. Der Unfall wird untersucht. ',
+'categories':['Polizeiticker Bern', 'Unfälle (Unfälle heute, Unfall mit Todesfolge heute, Arbeitsunfälle, Freizeitunfälle) ', 'Verkehr (Staumeldungen, Radarwarnungen, Geschwindigkeitskontrollen, Strassensperrungen)'],
+'tags':[],
+'with':['Am Sonntag, 5. November 2023, kurz nach 21.25 Uhr', 'wurde der Kantonspolizei Bern auf der A6 bei Studen ein schwerer Verkehrsunfall gemeldet', 'Aus ungeklärten Gründen fuhr ein Autolenker im Bereich der Ausfahrt'],
+'without':['KANTONS-SUDOKU', 'KANTONSÜBERSICHT', 'FAHNDUNGEN'],
+'comments':[],
+'license':'',
+'region':'CH',
+}, 
+'https://popkultur.de/homosexuelle-schauspieler/':{
+'file': 'Popkultur.de-Schauspieler.html',
+'author': 'Lisa Borch',
+'title': 'Die 25 erfolgreichsten homosexuellen Schauspieler aller Zeiten',
+'date': '2023-05-06',
+'description': 'Tauche ein in die beeindruckenden Karrieren der erfolgreichsten homosexuellen Schauspieler aller Zeiten. Diese Stars haben die Filmwelt nachhaltig geprägt. ',
+'categories':['Filme & Serien', 'Schauspieler/innen'],
+'tags':['featured', 'Top-Thema'],
+'with':['Über die Jahre hinweg haben homosexuelle Schauspieler', 'ihren unverwechselbaren Stempel auf die Welt des Entertainments gesetzt.', 'Trotz Hindernissen und Vorurteilen'],
+'without':['Neue Beiträge', 'Die zehn besten & schönsten Smartwatches für Frauen', 'Die 25 erfolgreichsten schwedischen Sänger & Sängerinnen'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://presse-augsburg.de/augsburger-verkehrs-und-tarifverbund-avv-erhoeht-die-oepnv-preise-deutlich/909665/':{
+'file': 'presse-ausburg.de-Tarifverbund.html',
+'author': 'Presse Augsburg',
+'title': 'Augsburger Verkehrs- und Tarifverbund AVV erhöht die ÖPNV-Preise deutlich',
+'date': '2023-11-06',
+'description': 'Die Ticketpreise im AVV werden ab 1. Januar 2024 um durchschnittlich 12,7 Prozent angehoben. ',
+'categories':[],
+'tags':['Thema', 'Wirtschaft', 'Region', 'News', 'Newsletter'],
+'with':['Wir müssen insbesondere die stark gestiegenen Kosten', 'für Energie und Kraftstoff an die Verkehrsunternehmer ausgleichen', 'um die Grundlage zu schaffen'],
+'without':['Jetzt Singles finden', 'Nachrichten für Augsburg und Bayerisch-Schwaben.', 'Pro Asyl nennt EU-Migrationsdeal „historischen Tiefpunkt“'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://public.spot-on-news.de/neue-traumfrau-bei-sturm-der-liebe-so-geht-es-am-fuerstenhof-weiter/':{
+'file': 'public.spot-on-news.de-Traumfrau.html',
+'author': '',
+'title': 'Neue Traumfrau bei „Sturm der Liebe“: So geht es am Fürstenhof weiter',
+'date': '2023-11-06',
+'description': 'Seit 2005 läuft die beliebte ARD-Telenovela „Sturm der Liebe“ bereits im TV ',
+'categories':['TV'],
+'tags':[],
+'with':['Und jetzt steht die 20. Staffel der Erfolgsserie', 'rund um die Geschehnisse am Fürstenhof in den Startlöchern', 'Wie die Macher bekannt gaben'],
+'without':['Mehr über TV', 'Judith Williams als Rategast im „The Masked Singer“-Finale', 'Lindholm zurück in Hannover: „Tatort“-Ende für das Göttinger Team'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://publikum.net/japan-und-die-hpv-impfungen/':{
+'file': 'publikum.net-HPV-Impfungen.html',
+'author': 'Der Spendenteddy',
+'title': 'Japan und die HPV-Impfungen',
+'date': '2023-07-30',
+'description': 'Die unglaubliche Geschichte eines Verbotes, das es nie gab ',
+'categories':['IMPFEN'],
+'tags':[],
+'with':['Vor langer, langer Zeit hatte ich schon einmal', 'die Behauptung aufgegriffen', 'Japan hätte die HPV-Impfungen verboten'],
+'without':['Werde teil der Community!', 'Melde dich jetzt an, um selbst Artikel zu verfassen', 'zu kommentieren und mitzubestimmen'],
+'comments':['Anonym', 'was soll dieser', 'faschistische dreck?'],
+'license':'',
+'region':'',
+}, 
+'https://raptastisch.net/2023/11/06/bushido-antwortet-auf-seitenhieb-von-azad-und-erklaert-ihn-fuer-finished/':{
+'file': 'Raptastisch.net-Seitenhieb.html',
+'author': 'Octavius Hallenstein',
+'title': 'Bushido antwortet auf Seitenhieb von Azad und erklärt ihn für „finished“',
+'date': '2023-11-06',
+'description': 'Deutschrap befindet sich weiterhin im Diss-Modus. Mit seinen „Knaben Bars“ meldete sich kürzlich Animus wieder zurück und droppte seinen ersten Track seit seinem Umzug nach Deutschland. In dem Song wird scharf gegen verschiedenste Interpreten geschossen. Darunter auch Legenden wie Kool Savas und Azad. ',
+'categories':['Raptastisch', 'Allgemein', 'Diss', 'Information'],
+'tags':['Azad', 'Bushido', 'finished', 'Seitenhieb'],
+'with':['Azad war mein Vorbild, doch ist innerlich am Sack', 'Weil er mit fünfzig Jahren nichts außer Erinnerungen hat', 'Ich half ihm bis zum letzten Satz wie einem Onkel'],
+'without':['Kranke Zahlen – Bushido führt im privaten Verkaufsbattle gegen Bonez MC', 'Nie wieder – Fard gibt Statement zu Farid Bang ab', 'Raptastisch auf Facebook'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://reitschuster.de/post/tagesschau-unterschlaegt-hass-demo-in-essen/':{
+'file': 'reitschuster.de-Hass-Demo.html',
+'author': 'Daniel Weinmann',
+'title': 'Tagesschau unterschlägt Hass-Demo in Essen',
+'date': '2023-11-06',
+'description': 'Sie ist nicht nur – nach eigenen Angaben – die erfolgreichste Nachrichtensendung Deutschlands. ',
+'categories':['Antisemitismus', 'Öffentlich-Rechtliche'],
+'tags':['ARD', 'Demonstrationen', 'Tagesschau'],
+'with':['Auch die Tagesschau-Verantwortlichen drehten bei', 'In der 20 Uhr-Ausgabe vom Sonntagabend präsentierte man', 'doch einen Bericht über die Großdemonstration in Essen vom Vorabend'],
+'without':['Mein Tweet des Tages', 'Meine aktuellen Videos', 'Besuchen Sie unseren Fan-Shop!'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://report24.news/so-nah-kam-eine-iranische-drohne-einem-us-flugzeugtraeger/':{
+'file': 'report24.news-Drohne.html',
+'author': 'Heinz Steiner',
+'title': 'So nah kam eine iranische Drohne einem US-Flugzeugträger',
+'date': '2023-11-06',
+'description': 'Die iranische Nachrichtenagentur Tasnim hat Videoaufnahmen einer Drohne veröffentlicht, die unbehelligt über den US-amerikanischen Flugzeugträger USS Eisenhower flog. Ein Angriff wäre problemlos möglich gewesen. ',
+'categories':[],
+'tags':[],
+'with':['Wie das nachfolgende auf X verbreitete', 'Video der iranischen Nachrichtenagentur', 'Tasnim News verdeutlicht'],
+'without':['Neueste Artikel', 'EHRUNG FÜR WIDERSTÄNDIGE - JETZT BESTELLEN!', 'JETZT VORSORGEN - SPAREN SIE BIS ZU 500 EURO!'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://scienceblogs.de/mathlog/2023/11/06/muenzwuerfe-sind-nicht-zufaellig/':{
+'file': 'scienceblogs.de-zufaellig.html',
+'author': 'Thilo',
+'title': 'Münzwürfe sind nicht zufällig',
+'date': '2023-11-06',
+'description': 'In Vorlesungen über Wahrscheinlichkeitstheorie oder Statistik erzähle ich den Studenten, dass es Zufall ausserhalb der Mikrowelt der Quantenphysik nicht gibt. ',
+'categories':[],
+'tags':['Münzwurf', 'Präzession', 'wahrscheinlichkeit'],
+'with':['Alles ist im Prinzip berechenbar', 'Zufall entsteht nur durch unvollständige Information', 'Der Wurf einer Münze ist nicht zufällig'],
+'without':['Neueste Beiträge', 'Top Posts from WordPress stats', 'ScienceBlogs ist ein geschütztes Markenzeichen.'],
+'comments':['Aber ist der makroskopische', 'scheinbare Zufall letztlich nicht auch durch den quantenmechanischen Zufall bedingt', 'Die Molekülbewegungen in der Luft'],
+'license':'',
+'region':'DE',
+}, 
+'https://winfuture.de/news,139377.html':{
+'file': 'winfuture.de-NASA.html',
+'author': 'Christian Kahle',
+'title': 'NASA+ startet: Streaming ohne Gebühren, Werbung oder Registrierung',
+'date': '2023-11-03',
+'description': 'Die Weltraumorganisation NASA hat ebenso spektakuläre und span­nende Dinge zu bieten wie große Medienkonzerne. Davon können sich Nutzer bald selbst überzeugen: Am Mittwoch startet man mit NASA+ einen eigenen Streaming-Dienst und eine passende App. ',
+'categories':[],
+'tags':['NASA'],
+'with':['Wir starten mehr als Raketen', 'Der Start der Plattform ist Bestandteil einer weitgehenden Überarbeitung', 'der digitalen Plattformen, die die NASA im Sommer angekündigt hatte'],
+'without':['Neue NASA-Fotos', 'Videos zum Thema', 'Beiträge aus dem Forum'],
+'comments':['Finde ich spannend', 'ich bin auch mit der NASA zum Mars geflogen', 'O,k,, nicht physisch, aber auf dem Mars liegt nun ein USB-Stick mit meinen'],
+'license':'',
+'region':'DE',
+}, 
+'https://t3n.de/news/apple-eigener-iphone-akku-1587177/':{
+'file': 't3n.de-Laufzeit.html',
+'author': 'Andreas Floemer',
+'title': 'Apple arbeitet angeblich an eigenen iPhone-Akkus für mehr Laufzeit',
+'date': '2023-11-06',
+'description': 'Apple arbeitet einem Bericht aus Südkorea zufolge an eigenen Akkus, die zunächst in iPhones verbaut werden sollen. Dank einer neuen Zellchemie soll der Energiespeicher länger halten und schneller laden. ',
+'categories':['News', 'Hardware & Gadgets'],
+'tags':['Apple', 'iPhone'],
+'with':['Laut ET-News ziele Apple darauf ab', 'innovative Batterien zu entwickeln, die bisher weltweit noch nicht kommerzialisiert wurden', 'Die Nachfrage nach Hochleistungsbatterien ist mit der Erweiterung'],
+'without':['Spreading knowledge & future optimism.', 'Verpasse keine News zu Hardware & Gadgets', 'Foldables von Apple? Der Fokus soll derzeit noch woanders liegen'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://tageswoche.ch/gesellschaft/wir-sind-dann-mal-weg-und-dieser-titel-muss-auch-weg-oder/index.html':{
+'file': 'Tageswoche.ch-weg.html',
+'author': 'Ronja Beck',
+'title': 'Wir sind dann mal weg (und dieser Titel muss auch weg! Oder?)',
+'date': '2018-11-16',
+'description': 'Wie ist das, wenn das Ende kurz bevorsteht? Ein Einblick in die letzten Tage der TagesWoche-Redaktion. ',
+'categories':[],
+'tags':['Gesellschaft', 'Medien', 'TagesWoche'],
+'with':['Sportredaktor Samuel ist es nach etwas Dramatik', 'singt er halblaut, aber mit Leidenschaft hinter seinem Bildschirm', 'seufzt Catherine eine Pult-Insel entfernt'],
+'without':['Nächster Artikel', 'Liebe Verkehrspolitiker, traut euch bitte endlich was!', 'Parkplatzgebühren, Fahrverbote, Velowege'],
+'comments':[],
+'license':'',
+'region':'CH',
+}, 
+'https://tarnkappe.info/artikel/empfehlungen/happy-halloween-hide-me-senkt-kurzfristig-die-preise-282156.html':{
+'file': 'tarnkappe.info-Black.html',
+'author': 'Lars Sobiraj',
+'title': 'Black Friday Deal jetzt schon sichern: hide.me senkt kurzfristig die Preise!',
+'date': '2023-11-01',
+'description': 'Der verschwiegene VPN-Anbieter hide.me senkt anlässlich von Black Friday die Abo-Preise. Das Angebot gilt aber nur für exakt einen Monat. ',
+'categories':['Artikel', 'Empfehlungen'],
+'tags':[],
+'with':['Das zweijährige Abo kostet ab den 1. November pro Monat nur 2,22 Euro', 'Insgesamt werden für 27 Monate folglich knapp 60 Euro fällig', 'Zumindest was die Verschleierung der eigenen IP-Adresse betrifft'],
+'without':['Kein Bock auf Werbung?', 'Wir auch nicht. Dennoch kannst Du Dir', 'sicher vorstellen, dass hinter dieser Webseite viel Zeit und Arbeit steckt.'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://tegernseerstimme.de/klimavorreiter-oberland-energie-effizienz-netzwerktreffen-in-egling/':{
+'file': 'tegernseerstimme.de-Klimavorreiter.html',
+'author': 'Birgit Posselt',
+'title': 'Klimavorreiter Oberland?',
+'date': '2018-11-16',
+'description': 'Welchen Weg schlägt die kommunale Wärmeplanung ein? Was hat das mit kalter Nahwärme zu tun? ',
+'categories':['Aktuelles', 'Allgemein', 'Energie'],
+'tags':[],
+'with':['Die Vertreter der Gemeinden und Fachleute diskutierten', 'auch über die sogenannte energieeffiziente', 'welche in Neubaugebieten gut genutzt werden kann'],
+'without':['Autounfall in St. QuirinAutounfall in St. Quirin', 'MVV-Beitritt bringt Touristen auf die Schienen', 'Diskutieren Sie mit uns'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://teslamag.de/news/musk-firma-xai-modell-nutzung-tesla-computer-moeglich-62317':{
+'file': 'teslamag.de-Musk.html',
+'author': '',
+'title': 'Musk-Firma xAI veröffentlicht für Tests erstes Modell, Nutzung auf Tesla-Computern möglich',
+'date': '2023-11-06',
+'description': 'In diesem Frühjahr gehörte Tesla-CEO Elon Musk zu mehreren hundert Fachleuten, die wegen Gefahren dieser Technologie ein Moratorium bei der Entwicklung von leistungsfähigen KI-Sprachmodellen wie GPT forderten, aber viel geholfen hat das nicht. ',
+'categories':[],
+'tags':['Elon Musk', 'KI', 'Tesla', 'Twitter'],
+'with':['Grok sei als künstliche Intelligenz dem Buch', 'Per Anhalter durch die Galaxis', 'also dazu gedacht, fast jegliche Fragen zu beantworten und sogar selbst Fragen vorzuschlagen'],
+'without':['NEUESTE BEITRÄGE', 'Widersprüchliche Daten: Tesla-Fahrer haben', 'laut Auswertung in USA die meisten Unfälle'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://uebermedien.de/89676/gute-tabus-schlechte-tabus-die-vertauschten-rollen-in-der-debatte-ueber-israel/':{
+'file': 'uebermedien.de-Israel.html',
+'author': 'Stefan Niggemeier',
+'title': 'Gute Tabus, schlechte Tabus: Die vertauschten Rollen in der Debatte über Israel',
+'date': '2023-11-03',
+'description': ' ',
+'categories':[],
+'tags':['Antisemitismus', 'Gaza', 'Israel', 'Meinungsfreiheit', 'Nahost'],
+'with':['Was folgt aus diesen Beobachtungen?', 'Natürlich könnte man sich wünschen', 'dass es Verständnis für das Gegenüber weckt'],
+'without':['Aus Solidarität mit Israel verzichtet „Bild“ darauf', 'über palästinensische Opfer in Gaza zu berichten', 'Die Magie der Zuschauer-Call-ins'],
+'comments':['Ich finde, Sie vermengen hier zwei Dinge', 'die nicht zusammengehören. Das eine ist inhaltlich', 'dass ich die antisemitische Hetze von FFF-international verteidigen wollte'],
+'license':'',
+'region':'DE',
+}, 
+'https://uncutnews.ch/digitale-id-diktat-un-und-gates-stiftung-setzen-auf-totale-kontrolle/':{
+'file': 'uncutnews.ch-ID-Diktat.html',
+'author': 'uncut-news.ch',
+'title': 'Digitale ID-Diktat: UN und Gates-Stiftung setzen auf totale Kontrolle!',
+'date': '2023-11-06',
+'description': 'Das UN-Programm fördert digitale öffentliche Infrastruktur, während die EU und die Gates-Stiftung bis 2030 für digitale IDs werben ',
+'categories':[],
+'tags':['Geheimdienste', 'NSA', 'Überwachung', 'BigData'],
+'with':['Im besten Fall sollen DPIs die Entwicklung auf vielfältige Weise fördern', 'Kritiker, die jedoch hinter die Fassade aus Plattitüden', 'entlarven den Begriff und die dahinterstehende Politik als Vorwand'],
+'without':['UNMANIPULIERTE & FREIE MEDIEN', 'Wir werden nicht von Vereinen, Verbänden, Parteien oder sonstigen Lobbygruppen unterstützt.', 'Wir schalten keine Werbung, wir belästigen auch nicht mit lästigen Pop-ups oder nötigen unsere Besucher'],
+'comments':[],
+'license':'',
+'region':'CH',
+}, 
+'https://unzensuriert.at/209302-von-der-leyen-will-kriegsland-ukraine-in-eu-holen-oesterreich-zahlt-die-zeche/':{
+'file': 'unzensuriert.at-Zeche.html',
+'author': '',
+'title': 'Von der Leyen will Kriegsland Ukraine in EU holen – Österreich zahlt die Zeche',
+'date': '2023-11-06',
+'description': 'EU-Kommissionspräsidentin Ursula von der Leyen will die Ukraine lieber heute als morgen in die EU holen und Nettozahler wie Österreich die Rechnungen von Präsident Wolodymyr Selenskyj bezahlen lassen. ',
+'categories':[],
+'tags':[],
+'with':['Die Aussage von EU-Kommissionspräsidentin Ursula von der Leyen', 'dass die Ukraine den Weg für Beitrittsgespräche fast geschafft hätte', 'lässt bei FPÖ-Europasprecherin Petra Steger die Alarmglocken läuten.'],
+'without':['Alle Politik-Artikel lesen', 'Bidens Bruder teilt trotz Freundin...', 'Wenn Sie dieses Youtube-Video sehen möchten, müssen Sie die externen YouTube-cookies akzeptieren.'],
+'comments':[],
+'license':'',
+'region':'AT',
+}, 
+'https://utopia.de/news/was-haben-bhs-mit-eisbergen-zu-tun-kim-kardashian-polarisiert-mit-werbung-nippel/':{
+'file': 'utopia.de-Werbung.html',
+'author': 'Katharina Schmidt',
+'title': 'Polarisierende BH-Werbung: Kim Kardashian, Eisberge und falsche Nippel',
+'date': '2023-11-06',
+'description': 'Auf Instagram zeigt Milliardärin Kim Kardashian sich besorgt um die Klimakrise – um mit viel Ironie Werbung für ein neues Produkt zu machen. Nicht alle finden das lustig. ',
+'categories':['Mode'],
+'tags':['Greenwashing', 'Kleidung', 'Konsum', 'News', 'Promis'],
+'with':['Kim Kardashian hat 2019 die inklusive Shapewear-Marke', 'mitgegründet und macht nun Werbung für ein neues Produkt', 'Auf Instagram erschien vor kurzem ein Spot'],
+'without':['Aktuelle News', 'Beliebte Beiträge', 'Beliebte Bestenlisten'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://vipflash.de/contents/176739-ehezoff-der-pochers-eskaliert-jetzt-schiesst-olli-gegen-amira-und-ihren-neuen?locale=en':{
+'file': 'vipflash.de-Ehezoff.html',
+'author': 'Olga',
+'title': 'Ehezoff der Pochers eskaliert - Jetzt schießt Olli gegen Amira und ihren Neuen',
+'date': '2023-11-06',
+'description': 'Die Situation im Pocher-Ehedrama ist aktuell ziemlich angespannt. ',
+'categories':['Stars'],
+'tags':[],
+'with':['Oliver Pocher sieht die Dinge jedoch anders und äußert sich recht deutlich', 'Exclusiv Weekend Spezial: Die Stars im NFL-Fieber', 'sagt Pocher in einem Live-Interview mit Moderatorin Frauke Ludowig'],
+'without':['Blaulicht', 'Datenschutz', 'Kontakt'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://volksblatt.at/chronik/oesterreich/oesterreich-tranken-pro-kopf-111-liter-alkohol-im-jahr-822151/':{
+'file': 'volksblatt.at-Alkoholkonsum.html',
+'author': 'Jens Büttner',
+'title': 'Österreich erneut im Spitzenfeld bei Alkoholkonsum',
+'date': '2023-11-07',
+'description': 'Die Österreicherinnen und Österreicher sind ein trinkfreudiges Volk: Das zeigt der aktuelle umfassende OECD-Gesundheitsbericht „Health at a Glance“. ',
+'categories':[],
+'tags':[],
+'with':['Spitzenreiter Lettland führt das Ranking dabei mit 12,2 Litern pro Kopf an', 'Der OECD-Schnitt liegt dagegen bei 8,6 Litern pro Kopf', 'Der OECD-Bericht „Health at a Glance“ erfasst regelmäßig zahlreiche Daten zum Zustand'],
+'without':['DAS KÖNNTE SIE AUCH INTERESSIEREN', 'OMV verliert Beteiligung an russischem Gasfeld', 'Signa verkauft Chrysler Building und Medienbeteiligungen'],
+'comments':[],
+'license':'',
+'region':'AT',
+}, 
+'https://www.volksstimme.ch/gute-loehne-alleine-reichen-nicht':{
+'file': 'Volksstimme.ch-loehne.html',
+'author': 'Baselbiet, Ormalingen',
+'title': 'Gute Löhne alleine reichen nicht',
+'date': '2023-11-07',
+'description': 'So bleibt man als Arbeitgeber attraktiv ',
+'categories':[],
+'tags':[],
+'with':['Das Zentrum Ergolz lud zur Gesprächsrunde ein', 'Die Teilnehmenden sprachen darüber', 'wie Arbeitgeber in Zeiten des Fachkräftemangels genügend Personal finden'],
+'without':['Möchten Sie weiterlesen?', 'Ja. Ich bin Abonnent.', 'Ja. Ich benötige ein Abo.'],
+'comments':[],
+'license':'',
+'region':'CH',
+}, 
+'https://world.kbs.co.kr/service/news_view.htm?lang=e&Seq_Code=181595':{
+'file': 'world.kbs.co.kr-Temperatures.html',
+'author': '',
+'title': 'Colder Temperatures Forecast for Wed. after Cold Wave Alert Tues.',
+'date': '2023-11-07',
+'description': 'Anchor: After heavy downpours on Monday, Tuesday morning was met with strong, cold winds that brought early winter temperatures. ',
+'categories':['Domestic'],
+'tags':[],
+'with':['Although the first cold wave alerts of the season were issued in anticipation of frigid morning lows on Tuesday', 'Wednesday is forecast to be even colder.', 'People out on the streets were seen wearing layers throughout the day as Tuesday’s temperatures'],
+'without':['Most Viewed News', 'Headline News', 'Most Viewed Content'],
+'comments':[],
+'license':'',
+'region':'KR',
+}, 
+'https://www.1000things.at/blog/wellnessoasen-thermen-vulkanland/':{
+'file': '1000things.at-Wellnessoasen.html',
+'author': 'Evgenia Karp',
+'title': '6 Wellnessoasen für eure Auszeit im Thermen- & Vulkanland',
+'date': '2023-11-06',
+'description': 'Was hilft am besten gegen die niedrigen Temperaturen? Richtig: dampfendes Thermalwasser, kristallklare Luft und richtig gutes Essen. All das bekommt ihr im Thermen- & Vulkanland in der Steiermark. Wo genau? Das erfahrt ihr hier. ',
+'categories':['ERHOLUNG', 'ANZEIGE'],
+'tags':['HOTEL', 'MASSAGE', 'URLAUB', 'WELLNESS', 'WINTER', 'WINTERURLAUB', 'STEIERMARK', 'SÜDOSTSTEIERMARK'],
+'with':['Wusstest ihr, dass die stressabbauende Wirkung von Thermalwasser', 'im Thermen- & Vulkanland wissenschaftlich belegt ist?', 'Kein Wunder also, dass schon ein paar Tage Urlaub im Winter hier die reinste Energieladung sind.'],
+'without':['Ein Roadtrip entlang der Route 66 im Thermen- & Vulkanland', 'Herbstlicher Wochenend-Ausflug in die Südoststeiermark', 'Mehr von 1000things'],
+'comments':[],
+'license':'',
+'region':'AT',
+}, 
+'https://www1.wdr.de/nachrichten/correctiv-recherche-deutsche-waffen-fuer-russland-100.html':{
+'file': 'www1.wdr.de-Correctiv-Recherche.html',
+'author': '',
+'title': 'Correctiv-Recherche: Deutsche Waffen für Russland',
+'date': '2023-11-07',
+'description': 'Seit Beginn des russischen Angriffskriegs auf die Ukraine gelangen weiter Waffen und Munition westlicher Hersteller nach Russland – auch aus Deutschland. Das ist das Ergebnis einer Recherche von "Correctiv". ',
+'categories':['Wirtschaft', 'Nachrichten', 'Ukraine'],
+'tags':[],
+'with':['Die Hersteller dürfen sie demnach ins Ausland verkaufen', 'weil sie offiziell als Jagd- oder Sportwaffen gelten', 'und deshalb nicht unter das Kriegswaffen-Kontrollgesetz fallen'],
+'without':["WDR aktuell Whatsapp-Kanal abonnieren - so geht's", 'App-Symbol: WDR aktuellDie App WDR aktuell begleitet Sie durch den Tag', 'Wie wir mit Gendern umgehen'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://www.5min.at/5lokales/villachs-meister-proper-expandiert-nach-wien/':{
+'file': '5min.at-Villachs.html',
+'author': '',
+'title': 'Villachs „Meister Proper“ expandiert nach Wien',
+'date': '2023-11-05',
+'description': 'Saubere Sache: Filana - euer Top-Ansprechpartner für Reinigungs- und Hausmeisterdienste - wächst nun über die Grenzen Kärntens hinaus und expandiert bis in die Bundeshauptstadt. ',
+'categories':[],
+'tags':[],
+'with':['Chef Boris Dujakovic gründete Filana', 'vor über vier Jahren als Hausmeisterservice', 'In den letzten 2 Jahren hat er sich aber vor allem auf Grundreinigung'],
+'without':['Mehr Interessantes', 'Wetter aktuell', 'Meistgeklickt'],
+'comments':[],
+'license':'',
+'region':'AT',
+}, 
+'https://www.90min.de/posts/bundesliga-tabelle-2023-24-ohne-fehlentscheidungen-01hdgzyyg1b1':{
+'file': '90min.de-Bundesliga-Tabelle.html',
+'author': 'Jan Kupitz',
+'title': 'So sähe die Bundesliga-Tabelle 23/24 nach dem 10. Spieltag ohne Fehlentscheidungen aus',
+'date': '2023-10-24',
+'description': 'Die ersten zehn Spieltage der Bundesliga sind gespielt. Wie sähe die Tabelle ohne Fehlentscheidungen aus? ',
+'categories':[],
+'tags':['Bundesliga', 'Eintracht Frankfurt', 'SC Freiburg', 'VfL Wolfsburg'],
+'with':['Mittlerweile vergeht kein Wochenende mehr', 'an dem nicht über den Schiedsrichter und/oder den VAR diskutiert wird', 'Auch am 10. Spieltag der Bundesliga gab es gleich mehrere strittige Entscheidungen'],
+'without':['So sähe die Tabelle der Bundesliga', '2023/24 nach dem 14. Spieltag ohne Fehlentscheidungen aus', 'Das Fußball-Portal wahretabelle.de nimmt strittige'],
+'comments':[],
+'license':'',
+'region':'DE',
+}, 
+'https://theintercept.com/2023/11/08/gaza-hospitals-babies-doctors-patients/':{
+'file': 'theintercept.com-Gaza.html',
+'author': 'Ibtisam Mahdi, Ruwaida Kamal Amer',
+'title': 'WHAT IT’S LIKE TO GIVE BIRTH IN GAZA',
+'date': '2023-11-08',
+'description': 'With most hospitals closed, Gaza’s doctors struggle to care for premature babies — often without power. ',
+'categories':[],
+'tags':[],
+'with':['The shortages led to what in the West', 'would be unthinkable decisions', 'choosing between patients who'],
+'without':['U.S. Weapons Transfers to Israel Shrouded in Secrecy — but Not Ukraine', 'Inside the Biden White House, Doubts About Gaza War Are Beginning to Creep In', 'GOP Representative Denies Existence'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://abc13.com/aishas-salon-and-spa-houston-lewd-act-man-pleasures-himself-on-camera-harris-county-sheriffs-office/14030671/':{
+'file': 'abc13.com-Copperfield.html',
+'author': 'Alex Bozarjian',
+'title': "Aisha's Salon and Spa chain bans men from entering any of its 25 locations after man's lewd act",
+'date': '2023-11-09',
+'description': 'HOUSTON, Texas (KTRK) -- A Houston-area beauty business is taking drastic measures after the owner said a man entered one of their salons on Tuesday and inappropriately touched himself. ',
+'categories':['Lewdness'],
+'tags':['HARRIS COUNTY', 'LEWDNESS', 'CAUGHT ON TAPE', 'CAUGHT ON VIDEO', 'SEX CRIME', 'HARRIS COUNTY SHERIFFS OFFICE', 'CAUGHT ON CAMERA', 'SEX CRIMES'],
+'with':["The Harris County Sheriff's Office is now", "investigating the incident at the salon chain's location in the Copperfield area.", 'According to the owner, only female stylists are employed there'],
+'without':['Man admits to taking violating pics of women for months, police say', 'Man was pleasuring himself inside HCC library, woman says', 'Suspects robbed shoe store before chase ended in fiery crash, HPD says'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.kxan.com/news/texas/voters-pass-increase-for-retired-public-education-workers-but-future-shortfalls-likely-to-emerge/':{
+'file': 'kxan.com-Voters.html',
+'author': 'Cora Neas',
+'title': 'Voters pass increase for retired public education workers, but future shortfalls likely to emerge',
+'date': '2023-11-08',
+'description': 'AUSTIN (KXAN) — Texas voters approved an amendment to the state constitution on Tuesday that will grant billions of dollars to the Teacher Retirement System for a cost-of-living adjustment. ',
+'categories':[],
+'tags':[],
+'with':['So many of our retirees', 'been living in this high-inflation environment', 'are living on credit cards'],
+'without':['AUSTIN WEATHER', 'TRENDING STORIES', 'APD addresses Kaitlin Armstrong’s online searches'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://gothamist.com/news/rezoning-plan-plagues-bronx-city-councilmembers-re-election-bid':{
+'file': 'gothamist.com-plagues.html',
+'author': 'David Brand and Ramsey Khalifeh',
+'title': 'Rezoning plan plagued Bronx re-election bid for city councilmember',
+'date': '2023-11-08',
+'description': 'A controversial rezoning proved to be a central issue in a heated City Council race in the East Bronx, where Democratic incumbent Marjorie Velázquez trailed her Republican challenger Kristy Marmorato by more than 700 votes on Wednesday. ',
+'categories':['NEWS'],
+'tags':[],
+'with':['pitch to build a casino at the foot of the Whitestone Bridge', 'buying the contract to operate Trump Golf Links Ferry Point', 'earlier this year is also sparking opposition.'],
+'without':['We rely on your support to make local news available to all', 'NYC election results: A surprisingly tight race in the Bronx as incumbents lead elsewhere', 'Early Addition: Big year for sleeping with tape over your mouth'],
+'comments':['see why the rezoning was so controversial', 'This building is no more bulky with a larger FAR', 'than others nearby like the office parks off of the Hutchinson River'],
+'license':'',
+'region':'',
+}, 
+'https://www.laweekly.com/meet-cultural-cultivation-artist-alexandria-douziech/':{
+'file': 'laweekly.com-Cultivation.html',
+'author': 'SHANA NYS DAMBROT',
+'title': 'MEET CULTURAL CULTIVATION ARTIST ALEXANDRIA DOUZIECH',
+'date': '2023-11-06',
+'description': 'Cultivation is more than a metaphor for creativity in the plant-forward work of artist and educator Alexandria Douziech. ',
+'categories':[],
+'tags':[],
+'with':['I try to position plants as storytellers', 'living archives that reflect the legacy of colonialism', 'as well as the power of human resilience'],
+'without':['SUBSCRIBE TO OUR NEWSLETTER', 'LATEST ARTICLES', 'SEARCH LA WEEKLY'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://observer.com/2023/11/bernard-arnault-lvmh-louvre-chardin/':{
+'file': 'observer.com-LVMH.html',
+'author': 'Alexandra Tremayne-Pengelly',
+'title': 'Bernard Arnault’s LVMH Gives the Louvre a $16M Boost to Acquire a Chardin Masterpiece',
+'date': '2023-11-08',
+'description': 'The still life is the seventh French national treasure LVMH has helped purchase. ',
+'categories':['ARTS'],
+'tags':[],
+'with':['For over a year, the Louvre has fought to acquire', 'an 18th-century painting by Jean Siméon Chardin for its national collection', 'Now, the museum is receiving help in the form of 15 million euros'],
+'without':['Advertising Guidelines', 'Editorial Ethics', 'Do not sell my data'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.bostonherald.com/2023/11/08/brothel-catering-to-politicians-doctors-lawyers-busted-in-boston/':{
+'file': 'bostonherald.com-Brothel-catering.html',
+'author': 'GRACE ZOKOVITCH',
+'title': 'Brothel catering to politicians, doctors, lawyers busted in Boston',
+'date': '2023-11-08',
+'description': 'Johns paid up to $600 an hour for sex services ',
+'categories':[],
+'tags':[],
+'with':['sex ring catering to wealthy doctors', 'lawyers, politicians, and military officers who paid up to $600 an hour', 'prostitutes was busted in Boston, the feds announced'],
+'without':['MOST POPULAR', 'TRENDING NATIONALLY', 'MORE IN LOCAL NEWS'],
+'comments':[],
+'license':'',
+'region':'US',
+}, 
+'https://abc7news.com/camp-margaritaville-resort-napa-county-lake-berryessa-hotel-jimmy-buffett/14031465/':{
+'file': 'abc7news.com-Napa.html',
+'author': 'J.R. Stone',
+'title': 'Napa Co. enters exclusive agreement that could bring Margaritaville Resort to Lake Berryessa',
+'date': '2023-11-09',
+'description': 'NAPA COUNTY, Calif. (KGO) -- A plan to bring a Margaritaville Resort, made popular by the late Jimmy Buffett, to the Bay Area is one step closer. ',
+'categories':['BUSINESS'],
+'tags':['BUSINESS', 'NAPA COUNTY', 'HOTEL', 'ECONOMY', 'DEVELOPMENT'],
+'with':['so I think anyone that wants to do business in this area', 'as an incredible opportunity to make sure', 'it is done fair responsibly'],
+'without':['Top Stories', 'LIVE STREAMS', 'Building A Better Bay Area'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.phillyvoice.com/sixers-76ers-score-record-news-analysis-celtics-joel-embiid-tyrese-maxey-jayson-tatum/':{
+'file': 'phillyvoice.com-Sixers.html',
+'author': 'ADAM AARONSON',
+'title': 'Sixers game notes: Joel Embiid leads Sixers to statement victory over Celtics',
+'date': '2023-11-08',
+'description': 'The Sixers captured their biggest win of the year Wednesday night. ',
+'categories':[],
+'tags':[],
+'with':['It was an underwhelming first quarter on both sides', 'as the Sixers and Celtics each struggled mightily to knock down shots', 'The Sixers went 0-for-9 from three-point range in the period'],
+'without':['Certain personality traits', 'like being an extrovert', 'may lower risk for dementia'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.villagevoice.com/party-like-its-1923-will-donald-trump-write-his-own-mein-kampf-in-jail/':{
+'file': 'villagevoice.com-Party.html',
+'author': 'R.C. BAKER',
+'title': 'Party Like It’s 1923: Will Donald Trump Write His Own ‘Mein Kampf’ in Jail?',
+'date': '2023-11-05',
+'description': 'After his failed Beer Hall Putsch, in Munich 100 years ago, Adolf Hitler dictated his racist bestseller in the slammer. ',
+'categories':['POLITICS'],
+'tags':[],
+'with':['Trump has been known to contradict himself', 'in depositions, and when being grilled by the New York Attorney', 'office on business fraud charges earlier this year'],
+'without':['The advertising disclaimer below does not apply to this article', 'nor any originating from the Village Voice editorial department', 'Advertising disclosure: We may receive compensation'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://wsvn.com/news/local/miami-dade/15-year-old-driver-killed-14-year-old-passenger-critical-in-sw-miami-dade-crash/':{
+'file': 'wsvn.com-crash.html',
+'author': 'JESSICA HOLLY, GAIL LEVY, 7 NEWS WSVN',
+'title': '15-year-old driver killed, 14-year-old passenger critical in SW Miami-Dade crash',
+'date': '2023-11-08',
+'description': 'SOUTHWEST MIAMI-DADE, FLA. (WSVN) - An overnight crash in Southwest Miami-Dade resulted in the death of a 15-year-old boy who was behind the wheel and critical injuries to a 14-year-old girl in the passenger seat, officials said. ',
+'categories':[],
+'tags':[],
+'with':['Investigators said a patrol unit turned on its lights', 'with plans to attempt a traffic stop in the area of Southwest 118th Avenue.', 'the driver lost control of the vehicle'],
+'without':['Join our Newsletter', 'for the latest news right to your inbox', 'CHILDRENS PROGRAMMING'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.twincities.com/2023/11/08/st-louis-park-elects-a-new-mayor-apparently-the-first-somali-american-to-lead-a-u-s-city/':{
+'file': 'twincities.com-mayor.html',
+'author': 'STAFF AND NEWS SERVICE REPORTS',
+'title': 'St. Louis Park elects a new mayor, apparently the first Somali American to lead a U.S. city',
+'date': '2023-11-08',
+'description': 'Nadia Mohamed, 27, won with 58% of the vote in Tuesday’s municipal election, defeating Dale Anderson, who got 41% of the vote. She has served on the City Council since she was elected at age 23 in 2019. ',
+'categories':['NEWS', 'POLITICS'],
+'tags':[],
+'with':[' What I had learned the first time is that this is just a milestone.', 'It is not the destination', 'Mohamed told the Sahan Journal.'],
+'without':['MOST POPULAR', 'RELATED ARTICLES', 'TRENDING NATIONALLY'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.metrotimes.com/food-drink/detroits-mezcal-restaurant-goes-beyond-familiar-mexican-fare-34565910':{
+'file': 'metrotimes.com-Mezcal.html',
+'author': 'Jane Slaughter',
+'title': 'Detroit’s Mezcal restaurant goes beyond familiar Mexican fare',
+'date': '2023-11-09',
+'description': 'The second location opened in Midtown following the first in Ferndale ',
+'categories':['RESTAURANT REVIEWS'],
+'tags':['Mexican restaurants in Detroit', 'Mexican restaurants in Ferndale', 'mezcal bars in metro Detroit', 'Mezcal Mexican Bar & Kitchen', 'Mezcal Mexican Bar & Kitchen'],
+'with':['The Mariachi Mexico 2020 quartet', 'plays every other Sunday and they are a treat', 'really good voices, and they take requests.'],
+'without':['Join Detroit Metro Times Newsletters', 'Scroll to read more Restaurant reviews articles', 'The Red Sea in Dearborn is a great catch'],
+'comments':[],
+'license':'',
+'region':'US',
+}, 
+'https://citylimits.org/2023/11/08/video-voting-on-nychas-future/':{
+'file': 'citylimits.org-Nycha.html',
+'author': 'Tatyana Turner',
+'title': 'VIDEO: Voting on NYCHA’s Future',
+'date': '2023-11-08',
+'description': 'This City Limits video delves into the complexities of a vote that will impact Nostrand Houses tenants in the near term, and explores the choices thousands of additional public housing tenants will have to make in the coming years. ',
+'categories':[],
+'tags':[],
+'with':['Wednesday is a monumental day for the New York City', 'Housing Authority and residents at the Nostrand Houses in Sheepshead Bay, Brooklyn', 'For the first time, tenants will begin to vote'],
+'without':['LATEST ARTICLES', 'more stories', 'City Limits uses investigative journalism through the prism'],
+'comments':['My comment is this all the lower class', 'as we call them middle class apartments in NYCHA buildings are', 'going to the upper and upper class people if you'],
+'license':'',
+'region':'',
+}, 
+'https://www.publishedreporter.com/2023/11/08/scientists-confirm-2023-as-hottest-year-ever-in-the-making/':{
+'file': 'publishedreporter.com-Hottest.html',
+'author': 'Alejandro Villamor',
+'title': 'Scientists Confirm 2023 As Hottest Year Ever In The Making',
+'date': '2023-11-08',
+'description': 'According to scientists, 2023 is slated to be the hottest year on record as the Earth continues its relentless climb in temperature. ',
+'categories':['Health', 'Science', 'U.S. News'],
+'tags':['Climate Change', 'El Niño', 'Global warming', 'Newsbreak', 'Scientist', 'US News'],
+'with':['From the Copernicus Climate Change Service', 'Samantha Burgess confirms with high certainty', 'that the global temperature has surpassed pre-industrial averages'],
+'without':['Advertising Disclosure', 'This site participates in the Amazon Associate program', 'and earns revenue from qualifying purchases'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://www.miamitodaynews.com/2023/11/07/transit-tax-trust-rejects-countys-south-dade-transitway-data/':{
+'file': 'miamitodaynews.com-Transitway.html',
+'author': 'Miami Today',
+'title': 'Transit tax trust rejects county’s South Dade Transitway data',
+'date': '2023-11-07',
+'description': ' ',
+'categories':['Transportation '],
+'tags':[],
+'with':['Also delaying the response, Mr. Cueto said', 'was that the county made the video presentation and then briefed', 'accurate and is aligned with those funding partners'],
+'without':['South Dade rapid transit will be rapid in only one direction', 'Send South Dade Transitway back to square one, trust urged', 'County vowed a transit Rolls Royce; we’re getting a Ford'],
+'comments':['Enough with the buses', 'start laying down rails and stringing electric', 'catenary for fixed dedicated right of way streetcars, trolleys and trams'],
+'license':'',
+'region':'US',
+}, 
+'https://www.heartlandnewsfeed.com/2023/10/27/christian-county-police-blotters/':{
+'file': 'heartlandnewsfeed.com-Christian.html',
+'author': 'HLNF Staff Report',
+'title': 'Christian County police blotters',
+'date': '2023-10-27',
+'description': 'TAYLORVILLE — The following are arrest and accident reports as recorded by the Taylorville Police Department and the Christian County Sheriff’s Department. The blotter is as follows: ',
+'categories':['Illinois', 'Local'],
+'tags':[],
+'with':['A vehicle driven by Kimberly Carrell, no age or address reported', 'was southbound on 1600E Road near 400N Road when a deer entered the roadway', 'The vehicle was unable to avoid striking the deer'],
+'without':['a subsidiary partnership by Heartland Internet Media Networks', 'Heartland Media Group of Central Illinois', 'published by Heartland Newsfeed staff is covered by the BipCot NoGov license'],
+'comments':[],
+'license':'',
+'region':'',
+}, 
+'https://roughdraftatlanta.com/2023/11/08/brookhaven-village-closed-due-to-gas-leak/':{
+'file': 'reporternewspapers.net-Brookhaven.html',
+'author': 'Logan C. Ritchie',
+'title': 'UPDATE: Brookhaven Village closed a second time for gas leak',
+'date': '2023-11-08',
+'description': 'Dresden Drive is experiencing a gas leak for the second time in 24 hours. There are no evacuations as of 2:30 p.m. on Thursday, Nov. 9. ',
+'categories':['BROOKHAVEN', 'DEKALB', 'NEWS'],
+'tags':['Brookhaven', 'gas leak'],
+'with':['Brookhaven Police Department is reporting', 'a construction company struck another gas line in the area of Dresden Drive', 'near Parkside Drive. Road closure signs have been placed to shut the roadway down.'],
+'without':['TRENDING ON ROUGH DRAFT', 'RECENT STORIES', 'PROUDLY POWERED BY NEWSPACK BY AUTOMATTIC'],
+'comments':[],
+'license':'',
+'region':'',
+},
+'https://www.springer.com/de/acht-produkte-mit-sustainable-award-in-finance-praemiert/19837156': {
+    'file': 'springer.com-produkte.html',
+    'author': '',
+    'title': 'Acht Produkte mit Sustainable Award in Finance prämiert',
+    'date': '2021-11-11',
+    'with': ['Corona-Verordnung des Landes Hessen statt.', 'AG sowie die Berlin Hyp', 'Wiesbaden werden Fachzeitschriften,'],  # 3 segments
+    'without': ['Kontakt', 'Logo des Sustainable Award in Finance', 'Rechtliches'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.kulturkaufhaus.de/de/kultur-magazin/blogDetail/DIY-Farbbuch-artcBlog?bpmctrl=bpmrownr.1%7Cforeign.323438-1-0-267787': {
+    'file': 'kulturkaufhaus.de-basteln.html',
+    'author': '',
+    'title': 'Kreatives Basteln mit Kids',
+    'date': '2022-02-09',
+    'with': ['wie man ein Büchlein aus einem A3', '1 Wasserglas mit Wasser', 'wenn ihr unser DIY nachbastelt'],  # 3 segments
+    'without': ['Kategorien', 'Du möchtest in Ruhe nachbasteln?', 'Zuletzt besuchte Seiten'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.juraforum.de/recht-gesetz/ohne-ernsthafte-bewerbungsbemuehungen-kein-wohngeld-722430': {
+    'file': 'juraforum.de-Wohngeld.html',
+    'author': 'Sebastian Einbock',
+    'title': 'Ohne ernsthafte Bewerbungsbemühungen kein Wohngeld',
+    'date': '2022-02-18',
+    'with': ['Verwaltungsgericht hielt die ablehnenden Wohngeldentscheidung', 'Standort abgelehnt, ohne jedoch', 'Er habe aber keinerlei ernsthaften'],  # 3 segments
+    'without': ['KOMMENTAR SCHREIBEN', 'Lexware für Unternehmer', 'BISHERIGE KOMMENTARE ZUR'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.haufe.de/recht/kanzleimanagement/buss-und-ordnungsgeld-gegen-anwalt-wegen-maskenverweigerung_222_560754.html': {
+    'file': 'haufe.de-ordnungsgeld.html',
+    'author': '',
+    'title': 'Buß- und Ordnungsgeld gegen Anwalt wegen Maskenverweigerung',
+    'date': '2022-02-06',
+    'with': ['auf Norderney erhielt er wegen', 'Aufforderungen des Vorsitzenden zum Anlegen', 'der Corona-Pandemie allgemein für zulässig'],  # 3 segments
+    'without': ['Schlagworte zum Thema', 'Produktempfehlung', 'Verweigert der Anwalt die Maske,'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.datev-magazin.de/archiv/sichere-und-digitale-mandantenkommunikation-73813': {
+    'file': 'datev-magazin.de-kommunikation.html',
+    'author': '',
+    'title': 'Sichere und digitale Mandantenkommunikation',
+    'date': '2022-02-15',
+    'with': ['Vorteilen eines sicheren und durchgängig', 'Registrierung ist die WebAkte innerhalb', 'weitere Informationen erhalten'],  # 3 segments
+    'without': ['Ähnliche Beiträge', 'Meistgelesene Artikel', 'Aktuelle Meldungen'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+
 }

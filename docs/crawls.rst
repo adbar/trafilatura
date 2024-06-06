@@ -3,8 +3,8 @@ Web crawling
 
 .. meta::
     :description lang=en:
-        This tutorial shows how to perform web crawling tasks with Python and on the command-line.
-        The Trafilatura package allows for easy focused crawling.
+        Dive deep into the web with Python and on the command-line. Trafilatura supports
+        focused crawling, enforces politeness rules, and navigates through websites.
 
 
 
@@ -15,13 +15,10 @@ Another use of web crawlers is in Web archiving, which involves large sets of we
 Other applications include data mining and text analytics, for example building web corpora for linguistic research.
 
 
-This page shows how to perform certain web crawling tasks with Python and on the command-line. The `trafilatura` package allows for easy focused crawling (see definition below).
+Dive deep into the web with crawling techniques. Trafilatura supports focused crawling, adhering to politeness rules, and efficiently navigates through sitemaps and feeds. This page shows how to perform certain web crawling tasks with Python and on the command-line. The `trafilatura` package allows for easy focused crawling (see definition below).
 
 ..
     Web crawlers require resources to run, so companies want to make sure they are using their resources as efficiently as possible, so they must be selective.
-
-
-*New in version 0.9. Still experimental.*
 
 
 Design decisions
@@ -60,26 +57,31 @@ With Python
 Focused crawler
 ~~~~~~~~~~~~~~~
 
-The ``focused_crawler()`` function integrates all necessary components. It can be adjusted by a series of arguments:
+The ``focused_crawler()`` function integrates all necessary components and can be adjusted by a series of arguments. The following lines explain how to set up a focused crawler which will explore a given website to extract internal links.
 
 .. code-block:: python
 
     >>> from trafilatura.spider import focused_crawler
 
-    homepage = 'https://www.example.org'
-    # starting a crawl
-    >>> to_visit, known_urls = focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000)
-    # resuming a crawl
-    >>> to_visit, known_urls = focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_urls)
+    >>> homepage = 'https://www.example.org'
+
+    # perform the first iteration (will not work with this website, there are no internal links)
+    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=1)
+
+    # perform another iteration using previously collected information
+    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known=known_links)
+
 
 Here the crawler stops after seeing a maximum of 10 URLs or registering a total of 100000 URLs on the website, whichever comes first.
 
-The collected links can then be downloaded and processed. The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both can also be converted to a list if necessary:
+The collected links can then be downloaded and processed. The ``to_visit`` variable keeps track of what's ahead of the exploration. Using ``known_links`` makes sure the same pages are not visited twice.  The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both can also be converted to a list if necessary:
 
 .. code-block:: python
 
     to_visit, known_urls = list(to_visit), sorted(known_urls)
 
+
+As this requirement can vary depending on the use case (e.g. checking new pages every day on a homepage) these variables are optional. Other parameters include ``lang`` (target language), ``config`` (see settings file), and ``rules`` (politeness rules, defaults to the ones provided by the website or safe values).
 
 You can also use a custom configuration and pass politeness rules to the crawler. For more information see the `documentation of the function <corefunctions.html#trafilatura.spider.focused_crawler>`_.
 
@@ -92,9 +94,9 @@ Navigation
 
 .. code-block:: python
 
-    from trafilatura.spider import is_still_navigation
+    >>> from trafilatura.spider import is_still_navigation
 
-    is_still_navigation(to_visit)
+    >>> is_still_navigation(to_visit)
     # returns True or False
 
 For more info please refer to the `core functions page <corefunctions.html>`_.
@@ -114,10 +116,10 @@ On the CLI the crawler automatically works its way through a website, stopping a
 
     $ trafilatura --crawl "https://www.example.org" > links.txt
 
-It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--inputfile`` option).
+It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--input-file`` option).
 
 .. note::
-    The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This happens in order to give a chance to examine the collected URLs prior to further downloads.
+    The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This happens in order to give a chance to examine the collected URLs prior to further downloads. For more information on how to refine and filter a URL collection, see the underlying `courlan package <https://github.com/adbar/courlan>`_. 
 
 
 References
