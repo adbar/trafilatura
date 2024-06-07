@@ -14,5 +14,6 @@ Usage
    downloads
    crawls
    settings
+   deduplication
    troubleshooting
    url-management

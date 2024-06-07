@@ -9,20 +9,19 @@ On the command-line
 Introduction
 ------------
 
-Trafilatura offers a robust command-line interface and can be conveniently used without writing code. Learn how to perform various tasks and leverage the full power of the tool from the terminal.
+Trafilatura offers a robust command-line interface and can be conveniently used without writing code.
 
-For the very first steps please refer to this multilingual, step-by-step `Introduction to the command-line interface <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and this `section of the Introduction to Cultural Analytics & Python <https://melaniewalsh.github.io/Intro-Cultural-Analytics/01-Command-Line/01-The-Command-Line.html>`_.
+For the very first steps:
 
-For instructions related to specific platforms see:
-
-- `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems)
-- `Introduction to the Windows Command Line with PowerShell <https://programminghistorian.org/en/lessons/intro-to-powershell>`_
-- `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_
-- or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_
+- Multilingual `Introduction to the command-line interface <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_
+- Section of the `Introduction to Cultural Analytics & Python <https://melaniewalsh.github.io/Intro-Cultural-Analytics/01-Command-Line/01-The-Command-Line.html>`_
 
 
 Quickstart
 ----------
+
+All instructions for the terminal window are followed by pressing the enter key.
+
 
 URLs can be used directly (``-u/--URL``):
 

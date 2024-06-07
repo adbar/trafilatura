@@ -11,46 +11,47 @@ Introduction
 ------------
 
 
-`R <https://www.r-project.org/>`_ is a free software environment for statistical computing and graphics. Trafilatura extends its capabilities to the R community. Discover how to use Trafilatura in your R projects with this dedicated guide.
+R is a free software environment for statistical computing and graphics. Trafilatura extends its capabilities to the R community. Discover how to use Trafilatura in your R projects with this dedicated page.
 
-The `reticulate <https://rstudio.github.io/reticulate>`_ package provides a comprehensive set of tools for seamless interoperability between Python and R. It basically allows for execution of Python code inside an R session, so that Python packages can be used with minimal adaptations, which is ideal for those who would rather operate from R than having to go back and forth between languages and environments.
+`Reticulate <https://rstudio.github.io/reticulate>`_ is an R package that enables easy interoperability between R and Python. With Reticulate, you can import Python modules as if they were R packages and call Python functions from R.
 
-The package provides several ways to integrate Python code into R projects:
-
-- Python in R Markdown
-- Importing Python modules
-- Sourcing Python scripts
-- An interactive Python console within R.
-
-Complete vignette: `Calling Python from R <https://rstudio.github.io/reticulate/articles/calling_python.html>`_.
-
-
-This tutorial shows how to import a Python scraper straight from R and use the results directly with the usual R syntax: `Web scraping with R: Text and metadata extraction  <https://adrien.barbaresi.eu/blog/web-scraping-text-metadata-r.html>`_.
+This allows R users to leverage the vast array of Python packages and tools and basically allows for execution of Python code inside an R session. Python packages can then be used with minimal adaptations, which is ideal for those who would rather operate from R than having to go back and forth between languages and environments.
 
 
 Installation
 ------------
 
+Both R and Python installed on your system, for the latter see `installation page <installation.html>`_.
 
-The reticulate package can be easily installed from CRAN as follows:
+
+Reticulate
+^^^^^^^^^^
+
+The reticulate package can be easily installed from CRAN and then loaded into your R session:
 
 .. code-block:: R
 
     > install.packages("reticulate")
+    > library(reticulate)
 
 
-A recent version of Python 3 is necessary. Some systems already have such an environment installed, to check it just run the following command in a terminal window:
+A recent version of Python is necessary. Some systems already have such an environment installed, to check it just run the following command in a terminal window:
 
 .. code-block:: bash
 
     $ python3 --version
-    Python 3.8.6 # version 3.6 or higher is fine
-
-In case Python is not installed, please refer to the excellent `Djangogirls tutorial: Python installation <https://tutorial.djangogirls.org/en/python_installation/>`_.
+    Python 3.10.12 # version 3.6 or higher is fine
 
 
+By default, reticulate will use the Python executable found on your system's PATH. You can use the ``use_python()`` function to set the Python version and path that you want to use: ``use_python("/path/to/python/executable")``.
 
-``Trafilatura`` has to be installed with `pip <installation.html>`_, `conda <https://docs.conda.io/en/latest/>`_, or `py_install <https://rstudio.github.io/reticulate/reference/py_install.html>`_. Skip the installation of  Miniconda if it doesn't seem necessary, you should only be prompted once; or see `Installing Python Packages <https://rstudio.github.io/reticulate/articles/python_packages.html>`_.
+You can also use the ``py_config()`` function to check your current Python configuration.
+
+
+Trafilatura
+^^^^^^^^^^^
+
+The most convenient way to install Python packages is to use the `reticulate::py_install() <https://rstudio.github.io/reticulate/reference/py_install.html>`_ function. Of course ``Trafilatura`` can also be installed with `pip <installation.html>`_ as any other Python package. Skip the installation of Miniconda if it doesn't seem necessary, you should only be prompted once; or see `Installing Python Packages <https://rstudio.github.io/reticulate/articles/python_packages.html>`_.
 
 Here is a simple example using the ``py_install()`` function included in ``reticulate``:
 
@@ -59,10 +60,21 @@ Here is a simple example using the ``py_install()`` function included in ``retic
     > library(reticulate)
     > py_install("trafilatura")
 
+Here is how to do it with the ``pip`` Python package manager:
+
+.. code-block:: bash
+
+    $ pip install trafilatura
+
+
+Once you have installed a Python package, you can use it from R with the ``import()`` function.
 
 
 Download and extraction
 -----------------------
+
+R syntax
+^^^^^^^^
 
 Text extraction from HTML documents (including downloads) is available in a straightforward way:
 
@@ -71,14 +83,17 @@ Text extraction from HTML documents (including downloads) is available in a stra
     # getting started
     > install.packages("reticulate")
     > library(reticulate)
+
+    # loading the Trafilatura module
     > trafilatura <- import("trafilatura")
 
-    # get a HTML document as string
+    # fetching a web page
     > url <- "https://example.org/"
     > downloaded <- trafilatura$fetch_url(url)
 
-    # extraction
-    > trafilatura$extract(downloaded)
+    # extracting the text content
+    > text <- trafilatura$extract(downloaded)
+    > cat(text)
     [1] "This domain is for use in illustrative examples in documents. You may use this domain in literature without prior coordination or asking for permission.\nMore information..."
 
     # extraction with arguments
@@ -94,6 +109,20 @@ The ``html2txt`` function extracts all possible text on the webpage, it can be u
 .. code-block:: R
 
     > trafilatura$html2txt(downloaded)
+
+
+Python syntax
+^^^^^^^^^^^^^
+
+You can also use Python functions and objects from R. For example:
+
+
+.. code-block:: R
+
+    > py_run_string("import trafilatura")
+    > url <- "https://www.example.com"
+    > py_df <- py_run_string("trafilatura.extract(url)")
+    > df <- py_to_r(py_df)
 
 
 Other functions
@@ -134,6 +163,16 @@ Specific parts of the package can also be imported on demand, which provides acc
 Going further
 -------------
 
+By combining the web scraping capabilities of Trafilatura with the data analysis capabilities of R, you can create powerful workflows for extracting and analyzing data from web pages.
+
+
+Further resources:
+
+- Complete vignette: `Calling Python from R <https://rstudio.github.io/reticulate/articles/calling_python.html>`_.
+- Tutorial showing how to import a Python scraper and use the results directly with the usual R syntax: `Web scraping with R: Text and metadata extraction  <https://adrien.barbaresi.eu/blog/web-scraping-text-metadata-r.html>`_.
+
+
+Working with the content:
+
 - `Basic Text Processing in R <https://programminghistorian.org/en/lessons/basic-text-processing-in-r>`_
 - `Quanteda <https://quanteda.io>`_ is an R package for managing and analyzing text
-
