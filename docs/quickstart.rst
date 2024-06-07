@@ -14,7 +14,10 @@ With Python
 Basic extraction
 ^^^^^^^^^^^^^^^^
 
-One of Trafilatura's main functions is extracting text from a web page. The only required argument is the input document (here a downloaded HTML file), the rest is optional. This code snippet demonstrates the basic extraction process, where we fetch a URL and process the content.
+One of Trafilatura's main functions is extracting text from a web page. The only required argument is the input document (here a downloaded HTML file), the rest is optional.
+
+This code snippet demonstrates the basic extraction process, where we fetch a URL and process the content.
+
 
 .. code-block:: python
 
@@ -28,7 +31,8 @@ One of Trafilatura's main functions is extracting text from a web page. The only
     >>> result = extract(downloaded)
     >>> print(result)
 
-This code will extract the text from the specified URL and print it to the console.
+
+This will extract the text from the specified URL and print it to the console.
 
 
 Customizing output
