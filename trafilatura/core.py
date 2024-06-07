@@ -143,7 +143,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                       )
 
         # quick and dirty HTML lang check
-        if options.lang and (options.fast or LANGID_FLAG is False):
+        if options.lang and (options.fast or not LANGID_FLAG):
             if check_html_lang(tree, options.lang) is False:
                 LOGGER.error('wrong HTML meta language: %s', options.source)
                 raise ValueError
@@ -159,10 +159,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 raise ValueError
 
             # cut short if core elements are missing
-            if options.only_with_metadata and any(
-                    x is None for x in
-                    [document.date, document.title, document.url]
-            ):
+            if options.only_with_metadata and not (document.date and document.title and document.url):
                 LOGGER.error('no metadata: %s', options.source)
                 raise ValueError
 
