@@ -1441,8 +1441,8 @@ def test_html_conversion():
     <ref target="https://example.com">Link</ref>
 </xml>'''
     tree = etree.fromstring(xml)
-    html_tree = trafilatura.htmlprocessing.convert_to_html(tree)
-    expected_html = '''<html>
+    html_tree = trafilatura.htmlprocessing.convert_to_html(copy(tree))
+    expected_html = '''<html><body>
     <ul>
         <li>Item 1</li>
         <li>Item 2</li>
@@ -1453,9 +1453,18 @@ def test_html_conversion():
     <i>Italic</i>
     <strong>Bold</strong>
     <a href="https://example.com">Link</a>
-</html>'''
-    print(etree.tostring(html_tree, method='html').decode())
+</body></html>'''
     assert etree.tostring(html_tree, method='html').decode() == expected_html
+
+    html = "<html><body><article><h1>Title</h1><p>Text.</p></article></body></html>"
+    excepted_html = """<html>
+  <body>
+    <h1>Title</h1>
+    <p>Text.</p>
+  </body>
+</html>"""
+    result = extract(html, output_format="html", config=ZERO_CONFIG)
+    assert result == excepted_html
 
 
 if __name__ == '__main__':

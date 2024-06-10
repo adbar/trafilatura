@@ -379,6 +379,12 @@ def test_cli_pipeline():
         teststring = f.read()
     result = cli.examine(teststring, args)
     assert "[link](testlink.html)" in result and "test.jpg" in result
+    # HTML format as option
+    testargs = ["", "--html"]
+    with patch.object(sys, "argv", testargs):
+        args = cli.parse_args(testargs)
+    result = cli.examine(teststring, args)
+    assert result.startswith("<html") and result.endswith("</html>")
 
 
 def test_file_processing():

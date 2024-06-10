@@ -8,7 +8,7 @@ from collections import defaultdict
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import strip_tags
+from lxml.etree import Element, strip_tags, tostring
 
 from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
@@ -413,5 +413,12 @@ def convert_to_html(tree):
             elem.attrib.pop("target")
         else:
             elem.attrib.clear()
-    tree.tag = "html"
-    return tree
+    tree.tag = "body"
+    root = Element("html")
+    root.append(tree)
+    return root
+
+
+def build_html_output(document):
+    "Convert the document to HTML and return a string."
+    return tostring(convert_to_html(document.body), pretty_print=True, encoding='unicode').strip()
