@@ -47,7 +47,7 @@ def determine_returnstring(document, options):
         returnstring = build_json_output(document, options.with_metadata)
     # HTML
     elif options.format == 'html':
-        returnstring = build_html_output(document)
+        returnstring = build_html_output(document, options.with_metadata)
     # Markdown and TXT
     else:
         if options.with_metadata:
@@ -332,6 +332,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
     # markdown switch
     include_formatting = include_formatting or output_format == "markdown"
+
     # extraction
     try:
         document = bare_extraction(

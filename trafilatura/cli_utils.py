@@ -403,7 +403,6 @@ def examine(htmlstring, args, url=None, options=None):
     result = None
     if not options:
         options = args_to_extractor(args, url)
-    print("#", options)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')

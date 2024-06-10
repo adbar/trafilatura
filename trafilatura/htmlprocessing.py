@@ -13,6 +13,7 @@ from lxml.etree import Element, strip_tags, tostring
 from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import textfilter, trim
+from .xml import META_ATTRIBUTES
 
 
 LOGGER = logging.getLogger(__name__)
@@ -416,6 +417,18 @@ def convert_to_html(tree):
     return root
 
 
-def build_html_output(document):
+def build_html_output(document, with_metadata=False):
     "Convert the document to HTML and return a string."
-    return tostring(convert_to_html(document.body), pretty_print=True, encoding='unicode').strip()
+    html_tree = convert_to_html(document.body)
+
+    if with_metadata:
+        head = Element("head")
+        for item in META_ATTRIBUTES:
+            if getattr(document, item, None):
+                meta_elem = Element("meta")
+                meta_elem.set("name", item)
+                meta_elem.set("content", getattr(document, item))
+                head.append(meta_elem)
+        html_tree.insert(0, head)
+
+    return tostring(html_tree, pretty_print=True, encoding='unicode').strip()

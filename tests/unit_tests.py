@@ -1471,6 +1471,20 @@ def test_html_conversion():
     result = extract(html, output_format="html", config=ZERO_CONFIG)
     assert result == excepted_html
 
+    html = "<html><body><article><h1>Title 1</h1><p>Text.</p></article></body></html>"
+    excepted_html = """<html>
+  <head>
+    <meta name="title" content="Title 1"/>
+    <meta name="fingerprint" content="f6fd180b8fbe3670"/>
+  </head>
+  <body>
+    <h1>Title 1</h1>
+    <p>Text.</p>
+  </body>
+</html>"""
+    result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
+    assert result == excepted_html
+
 
 if __name__ == '__main__':
     test_config_loading()
