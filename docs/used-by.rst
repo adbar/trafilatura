@@ -6,11 +6,12 @@ Uses & citations
         Trafilatura's versatility makes it ideal for a wide range of applications, it is included in other software packages and cited in research publications. Known uses and case studies are listed here.
 
 
-The tool has received accolades for its effectiveness, including being recognized as the most efficient open-source library in article extraction benchmarks and receiving praise in academic evaluations. As such, it is used at several institutions, included in other software packages and cited in research publications, especially in linguistics and natural language processing, social science, information science, and in the context of large language models. This page lists projects and publications mentioning the library.
 
-The tool's versatility makes it ideal for a wide range of applications. Scraping-intensive use cases include search engine optimization, business analytics and information security. It is relevant to anyone interested in language modeling, data mining, and information extraction. practical uses in SEO, business analytics, and cybersecurity.
+Trafilatura is widely recognized for its effectiveness in article extraction, earning accolades as the most efficient open-source library in various benchmarks and academic evaluations. As such, it is used by numerous institutions, integrated into other software packages and cited in research publications, across fields such as linguistics, natural language processing, social science, information science, and large language models. This page compiles projects and publications that reference the library.
 
-If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes.
+It is versatile and can be useful for a wide range of applications. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
+
+If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes (i.e. fork the repository and submit a pull request).
 
 
 
@@ -27,9 +28,9 @@ Known institutional users
 - Allen Institute for AI with the `Dolma toolkit <https://github.com/allenai/dolma>`_ used to pre-train the OLMo LLM
 - Falcon LLM (TII UAE) and its underlying `RefinedWeb Dataset <https://arxiv.org/abs/2306.01116>`_
 - `FinGPT <https://arxiv.org/abs/2311.05640>`_ (Finland)
-- `Media Cloud platform <https://mediacloud.org>`_ for media analysis, e.g. `Data against Feminicide <https://datoscontrafeminicidio.net/>`_
-- `SciencesPo médialab <https://medialab.sciencespo.fr>`_ through its `Minet <https://github.com/medialab/minet>`_ webmining package
-- `Teclis component <https://teclis.com/>`_ of the Kagi search engine
+- `Media Cloud platform <https://mediacloud.org>`_ for media analysis
+- SciencesPo médialab through its `Minet <https://github.com/medialab/minet>`_ webmining package
+- `Teclis search engine <https://teclis.com/>`_ (related to Kagi)
 - The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web for the `Fatcat catalog <https://fatcat.wiki/>`_ of research publications
 
 
@@ -190,5 +191,3 @@ Ports
 
 Go port
     `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
-
-

@@ -39,7 +39,7 @@ The following allows for comparing changes made to Trafilatura, for example in a
 
 A comparison with similar software is run periodically. As the packages tend to evolve the script may not always be up-to-date and all packages may not be available. If that happens, commenting out the corresponding sections is the most efficient solution. Fixes to the file can be submitted as pull requests.
 
-Note: As numerous packages are installed it is recommended to create a virtual environment, for example with with ``pyenv`` or ``venv``.
+Note: As numerous packages are installed it is recommended to create a virtual environment, for example with ``pyenv`` or ``venv``.
 
 1. Install the packages specified in ``eval-requirements.txt``
 2. Run the script ``evaluate.py``

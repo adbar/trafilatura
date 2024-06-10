@@ -193,6 +193,8 @@ def test_tojson():
     # test json
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
+    assert "Ä" in result and result.endswith('}')
+    result = extract(mystring, output_format='json', config=ZERO_CONFIG, with_metadata=True)
     assert result.endswith('}') and '"fingerprint":' in result and '"language":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
 
@@ -299,6 +301,10 @@ def test_formatting():
     assert my_result == '### Title\n**This here is in bold font.**'
     assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
     assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
+
+    meta_string = '<html><head><title>Test</title></head><body><p>ABC.</p></body></html>'
+    meta_result = extract(meta_string, output_format='markdown', config=ZERO_CONFIG, with_metadata=True)
+    assert " ".join(meta_result.split()) == "--- title: Test --- ABC."
 
     # space between paragraphs
     my_document = html.fromstring('<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>')
@@ -525,7 +531,7 @@ def test_links():
     assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
     # test license link
     mydoc = html.fromstring('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
-    assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG, with_metadata=True)
 
 
 def test_tei():
@@ -798,8 +804,6 @@ def test_extraction_options():
         extract(my_html, json_output=True)
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
-    with pytest.raises(ValueError):
-        extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG)
     assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
@@ -807,8 +811,9 @@ def test_extraction_options():
     # assert extract(my_html) is None
 
     my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
-    assert bare_extraction(my_html, config=ZERO_CONFIG)["date"] is not None
-    assert bare_extraction(my_html, config=NEW_CONFIG)["date"] is None
+    assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True)["date"] is not None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True)["date"] is None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False)["date"] is None
 
 
 def test_precision_recall():
