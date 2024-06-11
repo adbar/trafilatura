@@ -424,11 +424,9 @@ def build_html_output(document, with_metadata=False):
     if with_metadata:
         head = Element("head")
         for item in META_ATTRIBUTES:
-            if getattr(document, item, None):
-                meta_elem = Element("meta")
-                meta_elem.set("name", item)
-                meta_elem.set("content", getattr(document, item))
-                head.append(meta_elem)
+            value = getattr(document, item)
+            if value:
+                head.append(Element("meta", name=item, content=value))
         html_tree.insert(0, head)
 
     return tostring(html_tree, pretty_print=True, encoding='unicode').strip()
