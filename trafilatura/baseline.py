@@ -45,10 +45,8 @@ def baseline(filecontent):
             except Exception:  # JSONDecodeError or 'list' object has no attribute 'get'
                 json_body = ""
             if json_body:
-                if "<p>" in json_body:
-                    json_body = trim(load_html(json_body).text_content())
                 elem = SubElement(postbody, 'p')
-                elem.text = trim(json_body)
+                elem.text = trim(load_html(json_body).text_content()) if "<p>" in json_body else trim(json_body)
                 temp_text += " " + json_body
                 # return postbody, elem.text, len(elem.text)
     temp_text = temp_text.strip()
@@ -86,14 +84,6 @@ def baseline(filecontent):
     if len(temp_text) > 100:
         return postbody, temp_text, len(temp_text)
 
-    #postbody = Element('body')
-    #for element in tree.iter('div'):
-    #    elem = SubElement(postbody, 'p')
-    #    elem.text = trim(element.text_content())
-    #temp_text = trim('\n'.join(postbody.itertext()))
-    #if len(temp_text) > 100:
-    #    return postbody, temp_text, len(temp_text)
-
     # default strategy: clean the tree and take everything
     postbody = Element('body')
     body_elem = tree.find('.//body')
@@ -127,5 +117,5 @@ def html2txt(content, clean=True):
     if body is None:
         return ""
     if clean:
-        tree = basic_cleaning(tree)
+        body = basic_cleaning(body)
     return " ".join(body.text_content().split()).strip()
