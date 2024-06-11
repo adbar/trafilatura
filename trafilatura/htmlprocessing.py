@@ -8,11 +8,12 @@ import logging
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import strip_tags
+from lxml.etree import Element, strip_tags, tostring
 
 from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import textfilter, trim
+from .xml import META_ATTRIBUTES
 
 
 LOGGER = logging.getLogger(__name__)
@@ -30,6 +31,8 @@ REND_TAG_MAPPING = {
     'sub': '#sub',
     'sup': '#sup'
 }
+
+HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 
 PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
@@ -211,124 +214,6 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     return subtree
 
 
-def convert_lists(elem):
-    # ul/ol → list / li → item
-    elem.set("rend", elem.tag)
-    elem.tag = "list"
-    i = 1
-    for subelem in elem.iter("dd", "dt", "li"):
-        # keep track of dd/dt items
-        if subelem.tag in ("dd", "dt"):
-            subelem.set("rend", f"{subelem.tag}-{i}")
-            # increment counter after <dd> in description list
-            if subelem.tag == "dd":
-                i += 1
-        # convert elem tag
-        subelem.tag = "item"
-
-
-def convert_quotes(elem):
-    code_flag = False
-    if elem.tag == "pre":
-        # detect if there could be code inside
-        children = elem.getchildren()
-        # pre with a single span is more likely to be code
-        if len(children) == 1 and children[0].tag == "span":
-            code_flag = True
-        # find hljs elements to detect if it's code
-        code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
-        if code_elems:
-            code_flag = True
-            for subelem in code_elems:
-                subelem.attrib.clear()
-    elem.tag = "code" if code_flag else "quote"
-
-
-def convert_headings(elem):
-    "Add head tags and delete attributes."
-    elem.attrib.clear()
-    elem.set("rend", elem.tag)
-    elem.tag = "head"
-
-
-def convert_line_breaks(elem):
-    "br → lb"
-    elem.tag = "lb"
-
-
-def convert_deletions(elem):
-    'del | s | strike → <del rend="overstrike">'
-    elem.tag = "del"
-    elem.set("rend", "overstrike")
-
-
-def convert_details(elem):
-    "Handle details and summary."
-    elem.tag = "div"
-    for subelem in elem.iter("summary"):
-        subelem.tag = "head"
-
-
-CONVERSIONS = {
-    "dl": convert_lists, "ol": convert_lists, "ul": convert_lists,
-    "h1": convert_headings, "h2": convert_headings, "h3": convert_headings,
-    "h4": convert_headings, "h5": convert_headings, "h6": convert_headings,
-    "br": convert_line_breaks, "hr": convert_line_breaks,
-    "blockquote": convert_quotes, "pre": convert_quotes, "q": convert_quotes,
-    "del": convert_deletions, "s": convert_deletions, "strike": convert_deletions,
-    "details": convert_details,
-}
-
-
-def convert_tags(tree, options, url=None):
-    '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # delete links for faster processing
-    if not options.links:
-        xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
-        if options.tables:
-            xpath_expr += '|.//table//a'
-        # necessary for further detection
-        for elem in tree.xpath(xpath_expr):
-            elem.tag = 'ref'
-        # strip the rest
-        strip_tags(tree, 'a')
-    else:
-        # get base URL for converting relative URLs
-        base_url = url and get_base_url(url)
-        for elem in tree.iter('a', 'ref'):
-            elem.tag = 'ref'
-            # replace href attribute and delete the rest
-            target = elem.get('href') # defaults to None
-            elem.attrib.clear()
-            if target:
-                # convert relative URLs
-                if base_url:
-                    target = fix_relative_urls(base_url, target)
-                elem.set('target', target)
-
-    if options.formatting:
-        for elem in tree.iter(REND_TAG_MAPPING.keys()):
-            attribute = REND_TAG_MAPPING[elem.tag]
-            elem.tag = 'hi'
-            elem.set('rend', attribute)
-    else:
-        strip_tags(tree, *REND_TAG_MAPPING)
-
-    # iterate over all concerned elements
-    for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)
-        # wbr
-        # pre
-        #elif elem.tag == 'pre':
-        #    else:
-        #        elem.tag = 'quote'
-    # images
-    if options.images:
-        for elem in tree.iter('img'):
-            elem.tag = 'graphic'
-    return tree
-
-
 def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
     "Convert, format, and probe potential text elements."
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
@@ -383,3 +268,165 @@ def process_node(elem, options):
             return None
 
     return elem
+
+
+def convert_lists(elem):
+    "Convert <ul> and <ol> to <list> and underlying <li> elements to <item>."
+    elem.set("rend", elem.tag)
+    elem.tag = "list"
+    i = 1
+    for subelem in elem.iter("dd", "dt", "li"):
+        # keep track of dd/dt items
+        if subelem.tag in ("dd", "dt"):
+            subelem.set("rend", f"{subelem.tag}-{i}")
+            # increment counter after <dd> in description list
+            if subelem.tag == "dd":
+                i += 1
+        # convert elem tag (needs to happen after the rest)
+        subelem.tag = "item"
+
+def convert_quotes(elem):
+    "Convert quoted elements while accounting for nested structures."
+    code_flag = False
+    if elem.tag == "pre":
+        # detect if there could be code inside
+        children = elem.getchildren()
+        # pre with a single span is more likely to be code
+        if len(children) == 1 and children[0].tag == "span":
+            code_flag = True
+        # find hljs elements to detect if it's code
+        code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
+        if code_elems:
+            code_flag = True
+            for subelem in code_elems:
+                subelem.attrib.clear()
+    elem.tag = "code" if code_flag else "quote"
+
+
+def convert_headings(elem):
+    "Add head tags and delete attributes."
+    elem.attrib.clear()
+    elem.set("rend", elem.tag)
+    elem.tag = "head"
+
+
+def convert_line_breaks(elem):
+    "Convert <br> and <hr> to <lb>"
+    elem.tag = "lb"
+
+
+def convert_deletions(elem):
+    'Convert <del>, <s>, <strike> to <del rend="overstrike">'
+    elem.tag = "del"
+    elem.set("rend", "overstrike")
+
+
+def convert_details(elem):
+    "Handle details and summary."
+    elem.tag = "div"
+    for subelem in elem.iter("summary"):
+        subelem.tag = "head"
+
+
+CONVERSIONS = {
+    "dl": convert_lists, "ol": convert_lists, "ul": convert_lists,
+    "h1": convert_headings, "h2": convert_headings, "h3": convert_headings,
+    "h4": convert_headings, "h5": convert_headings, "h6": convert_headings,
+    "br": convert_line_breaks, "hr": convert_line_breaks,
+    "blockquote": convert_quotes, "pre": convert_quotes, "q": convert_quotes,
+    "del": convert_deletions, "s": convert_deletions, "strike": convert_deletions,
+    "details": convert_details,
+    # wbr
+}
+
+
+def convert_tags(tree, options, url=None):
+    "Simplify markup and convert relevant HTML tags to an XML standard."
+    # delete links for faster processing
+    if not options.links:
+        xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
+        if options.tables:
+            xpath_expr += '|.//table//a'
+        # necessary for further detection
+        for elem in tree.xpath(xpath_expr):
+            elem.tag = 'ref'
+        # strip the rest
+        strip_tags(tree, 'a')
+    else:
+        # get base URL for converting relative URLs
+        base_url = url and get_base_url(url)
+        for elem in tree.iter('a', 'ref'):
+            elem.tag = 'ref'
+            # replace href attribute and delete the rest
+            target = elem.get('href') # defaults to None
+            elem.attrib.clear()
+            if target:
+                # convert relative URLs
+                if base_url:
+                    target = fix_relative_urls(base_url, target)
+                elem.set('target', target)
+
+    if options.formatting:
+        for elem in tree.iter(REND_TAG_MAPPING.keys()):
+            elem.attrib.clear()
+            elem.set('rend', REND_TAG_MAPPING[elem.tag])
+            elem.tag = 'hi'
+    else:
+        strip_tags(tree, *REND_TAG_MAPPING.keys())
+
+    # iterate over all concerned elements
+    for elem in tree.iter(CONVERSIONS.keys()):
+        CONVERSIONS[elem.tag](elem)
+    # images
+    if options.images:
+        for elem in tree.iter('img'):
+            elem.tag = 'graphic'
+    return tree
+
+
+HTML_CONVERSIONS = {
+    "list": "ul",
+    "item": "li",
+    "code": "pre",
+    "quote": "blockquote",
+    "head": lambda elem: f"h{int(elem.get('rend')[1:])}",
+    "lb": "br",
+    "img": "graphic",
+    "ref": "a",
+    "hi": lambda elem: HTML_TAG_MAPPING[elem.get('rend')]
+}
+
+
+def convert_to_html(tree):
+    "Convert XML to simplified HTML."
+    for elem in tree.iter(HTML_CONVERSIONS.keys()):
+        # apply function or straight conversion
+        if callable(HTML_CONVERSIONS[elem.tag]):
+            elem.tag = HTML_CONVERSIONS[elem.tag](elem)
+        else:
+            elem.tag = HTML_CONVERSIONS[elem.tag]
+        # handle attributes
+        if elem.tag == "a":
+            elem.set("href", elem.get("target"))
+            elem.attrib.pop("target")
+        else:
+            elem.attrib.clear()
+    tree.tag = "body"
+    root = Element("html")
+    root.append(tree)
+    return root
+
+
+def build_html_output(document, with_metadata=False):
+    "Convert the document to HTML and return a string."
+    html_tree = convert_to_html(document.body)
+
+    if with_metadata:
+        head = Element("head")
+        for item in META_ATTRIBUTES:
+            value = getattr(document, item)
+            if value:
+                head.append(Element("meta", name=item, content=value))
+        html_tree.insert(0, head)
+
+    return tostring(html_tree, pretty_print=True, encoding='unicode').strip()

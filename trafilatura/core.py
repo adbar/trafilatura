@@ -14,7 +14,7 @@ from lxml.etree import XPath, strip_tags
 from .baseline import baseline
 from .deduplication import content_fingerprint, duplicate_test
 from .external import compare_extraction
-from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
+from .htmlprocessing import build_html_output, convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import extract_comments, extract_content
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
@@ -45,6 +45,9 @@ def determine_returnstring(document, options):
     # JSON
     elif options.format == 'json':
         returnstring = build_json_output(document, options.with_metadata)
+    # HTML
+    elif options.format == 'html':
+        returnstring = build_html_output(document, options.with_metadata)
     # Markdown and TXT
     else:
         if options.with_metadata:
