@@ -21,8 +21,12 @@ from .utils import (line_processing, load_html, normalize_authors,
 from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
                      CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 
+
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
+
+META_URL = re.compile(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)')
+
 
 
 class Document:
@@ -64,9 +68,7 @@ class Document:
             if isinstance(value, str):
                 # length
                 if len(value) > 10000:
-                    new_value = value[:9999] + '…'
-                    setattr(self, slot, new_value)
-                    value = new_value
+                    value = value[:9999] + '…'
                 # HTML entities, remove spaces and control characters
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
@@ -157,44 +159,32 @@ def extract_meta_json(tree, metadata):
 
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
-    title, author, url, description, site_name, image, pagetype = (None,) * 7
+    og_properties = {
+        'og:title': 'title',
+        'og:description': 'description',
+        'og:site_name': 'site_name',
+        'og:image': 'image',
+        'og:image:url': 'image',
+        'og:image:secure_url': 'image',
+        'og:type': 'pagetype',
+    }
+    result = dict.fromkeys(("title", "author", "url", "description", "site_name", "image", "pagetype"))
+
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
+        property_name, content = elem.get('property'), elem.get('content')
         # safeguard
-        if not elem.get('content') or elem.get('content').isspace():
-            continue
-        # site name
-        if elem.get('property') == 'og:site_name':
-            site_name = elem.get('content')
-        # blog title
-        elif elem.get('property') == 'og:title':
-            title = elem.get('content')
-        # orig URL
-        elif elem.get('property') == 'og:url':
-            if is_valid_url(elem.get('content')):
-                url = elem.get('content')
-        # description
-        elif elem.get('property') == 'og:description':
-            description = elem.get('content')
-        # og:author
-        elif elem.get('property') in OG_AUTHOR:
-            author = normalize_authors(None, elem.get('content'))
-        # image default
-        elif elem.get('property') == 'og:image':
-            image = elem.get('content')
-        # image url
-        elif elem.get('property') == 'og:image:url':
-            image = elem.get('content')
-        # image secure url
-        elif elem.get('property') == 'og:image:secure_url':
-            image = elem.get('content')
-        # og:type
-        elif elem.get('property') == 'og:type':
-            pagetype = elem.get('content')
+        if content and not content.isspace():
+            if property_name in og_properties:
+                result[og_properties[property_name]] = content
+            elif property_name == 'og:url' and is_valid_url(content):
+                result['url'] = content
+            elif property_name in OG_AUTHOR:
+                result['author'] = normalize_authors(None, content)
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return title, author, url, description, site_name, image, pagetype
+    return tuple(result.values())
 
 
 def examine_meta(tree):
@@ -244,7 +234,7 @@ def examine_meta(tree):
             elif name_attr in METANAME_PUBLISHER:
                 site_name = site_name or content_attr
             # twitter
-            elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in elem.get('name'):
+            elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in name_attr:
                 backup_sitename = content_attr
             # url
             elif name_attr == 'twitter:url':
@@ -290,7 +280,7 @@ def extract_metainfo(tree, expressions, len_limit=200):
             if content and 2 < len(content) < len_limit:
                 return content
             i += 1
-        if i > 1:
+        if i > 1 and LOGGER.isEnabledFor(logging.DEBUG):
             LOGGER.debug('more than one invalid result: %s %s', expression, i)
     return None
 
@@ -323,10 +313,9 @@ def extract_title(tree):
         return title
     # extract using title tag
     title, first, second = examine_title_element(tree)
-    if first is not None and '.' not in first:
-        return first
-    if second is not None and '.' not in second:
-        return second
+    for t in (first, second):
+        if t and '.' not in t:
+            return t
     # take first h1-title
     if h1_results:
         return h1_results[0].text_content()
@@ -362,15 +351,11 @@ def extract_url(tree, default_url=None):
             if element.attrib['hreflang'] == 'x-default':
                 LOGGER.debug(tostring(element, pretty_print=False, encoding='unicode').strip())
                 url = element.attrib['href']
+                break
     # add domain name if it's missing
     if url is not None and url.startswith('/'):
         for element in tree.iterfind('.//head//meta[@content]'):
-            if 'name' in element.attrib:
-                attrtype = element.attrib['name']
-            elif 'property' in element.attrib:
-                attrtype = element.attrib['property']
-            else:
-                continue
+            attrtype = element.get('name') or element.get('property') or ''
             if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
                 base_url = get_base_url(element.attrib['content'])
                 if base_url:
@@ -387,10 +372,9 @@ def extract_url(tree, default_url=None):
 def extract_sitename(tree):
     '''Extract the name of a site from the main title (if it exists)'''
     _, first, second = examine_title_element(tree)
-    if first is not None and '.' in first:
-        return first
-    if second is not None and '.' in second:
-        return second
+    for t in (first, second):
+        if t and '.' in t:
+            return t
     return None
 
 
@@ -425,35 +409,31 @@ def parse_license_element(element, strict=False):
    # look for Creative Commons elements
     match = LICENSE_REGEX.search(element.get('href'))
     if match:
-        return 'CC ' + match[1].upper() + ' ' + match[2]
-    if element.text is not None:
-        # just return the anchor text without further ado
-        if strict is False:
-            return trim(element.text)
-        # else: check if it could be a CC license
-        match = TEXT_LICENSE_REGEX.search(element.text)
-        if match:
-            return match[0]
+        return f'CC {match[1].upper()} {match[2]}'
+    if element.text:
+        # check if it could be a CC license
+        if strict:
+            match = TEXT_LICENSE_REGEX.search(element.text)
+            return match[0] if match else None
+        return trim(element.text)
     return None
 
 
 def extract_license(tree):
     '''Search the HTML code for license information and parse it.'''
-    result = None
     # look for links labeled as license
     for element in tree.findall('.//a[@rel="license"][@href]'):
         result = parse_license_element(element, strict=False)
         if result is not None:
-            break
+            return result
     # probe footer elements for CC links
-    if result is None:
-        for element in tree.xpath(
-            './/footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
-        ):
-            result = parse_license_element(element, strict=True)
-            if result is not None:
-                break
-    return result
+    for element in tree.xpath(
+        './/footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
+    ):
+        result = parse_license_element(element, strict=True)
+        if result is not None:
+            return result
+    return None
 
 
 def extract_image(tree):
@@ -484,7 +464,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, extensive=
     """
     # init
     if author_blacklist is None:
-        author_blacklist = set()
+        author_blacklist = author_blacklist or set()
     if not date_config:
         date_config = set_date_params(extensive)
     # load contents
@@ -494,13 +474,12 @@ def extract_metadata(filecontent, default_url=None, date_config=None, extensive=
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
     # to check: remove it and replace with author_blacklist in test case
-    if metadata.author is not None and ' ' not in metadata.author:
+    if metadata.author and ' ' not in metadata.author:
         metadata.author = None
     # fix: try json-ld metadata and override
     try:
         metadata = extract_meta_json(tree, metadata)
-    # todo: fix bugs in json_metadata.py
-    except TypeError as err:
+    except TypeError as err:  # bugs in json_metadata.py
         LOGGER.warning('error in JSON metadata extraction: %s', err)
     # title
     if metadata.title is None:
@@ -536,9 +515,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, extensive=
         # hotfix: probably an error coming from json_metadata (#195)
         elif isinstance(metadata.sitename, dict):
             metadata.sitename = str(metadata.sitename)
-        if metadata.sitename.startswith('@'):
-            # scrap Twitter ID
-            metadata.sitename = re.sub(r'^@', '', metadata.sitename)
+        # scrap Twitter ID
+        metadata.sitename = metadata.sitename.lstrip('@')
         # capitalize
         try:
             if (
@@ -551,7 +529,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, extensive=
             LOGGER.warning('error in sitename extraction: %s', err)
     # use URL
     elif metadata.url:
-        mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url)
+        mymatch = META_URL.match(metadata.url)
         if mymatch:
             metadata.sitename = mymatch[1]
     # categories
