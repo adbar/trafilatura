@@ -946,5 +946,6 @@ def test_json_extraction():
 
     assert metadata.pagetype == 'website'
 
+
 if __name__ == '__main__':
     test_json_extraction()
