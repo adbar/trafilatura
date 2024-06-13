@@ -209,8 +209,7 @@ def examine_meta(tree: HtmlElement) -> Document:
             LOGGER.debug('unknown attribute: %s',
                          tostring(elem, pretty_print=False, encoding='unicode').strip())
     # backups
-    if metadata.sitename is None and backup_sitename is not None:
-        metadata.sitename = backup_sitename
+    metadata.sitename = metadata.sitename or backup_sitename
     # copy
     metadata.set_attributes(tags=tags)
     return metadata
@@ -234,16 +233,15 @@ def extract_metainfo(tree: HtmlElement, expressions: List[Any], len_limit: int =
 
 def examine_title_element(tree: HtmlElement) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     '''Extract text segments out of main <title> element.'''
-    title, first, second = None, None, None
-    try:
-        title = trim(tree.xpath('.//head//title')[0].text_content())
-        mymatch = HTMLTITLE_REGEX.match(title)
-        if mymatch is not None:
-            first = mymatch[1] or None
-            second = mymatch[2] or None
-    except IndexError:
-        LOGGER.debug('no main title found')
-    return title, first, second
+    title = None
+    title_element = tree.find('.//head//title')
+    if title_element is not None:
+        title = trim(title_element.text_content())
+        match = HTMLTITLE_REGEX.match(title)
+        if match:
+            return title, match[1], match[2]
+    LOGGER.debug('no main title found')
+    return title, None, None
 
 
 def extract_title(tree: HtmlElement) -> Optional[str]:
@@ -317,11 +315,8 @@ def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optiona
 
 def extract_sitename(tree: HtmlElement) -> Optional[str]:
     '''Extract the name of a site from the main title (if it exists)'''
-    _, first, second = examine_title_element(tree)
-    for t in (first, second):
-        if t and '.' in t:
-            return t
-    return None
+    _, *parts = examine_title_element(tree)
+    return next((part for part in parts if part and '.' in part), None)
 
 
 def extract_catstags(metatype, tree: HtmlElement) -> List[str]:
