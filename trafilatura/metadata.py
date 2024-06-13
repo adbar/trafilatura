@@ -109,13 +109,13 @@ def extract_opengraph(tree: HtmlElement) -> Any:
     og_properties = {
         'og:title': 'title',
         'og:description': 'description',
-        'og:site_name': 'site_name',
+        'og:site_name': 'sitename',
         'og:image': 'image',
         'og:image:url': 'image',
         'og:image:secure_url': 'image',
         'og:type': 'pagetype',
     }
-    result = dict.fromkeys(("title", "author", "url", "description", "site_name", "image", "pagetype"))
+    result = dict.fromkeys(("title", "author", "url", "description", "sitename", "image", "pagetype"))
 
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
@@ -131,18 +131,16 @@ def extract_opengraph(tree: HtmlElement) -> Any:
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return tuple(result.values())
+    return result
 
 
 def examine_meta(tree: HtmlElement) -> Document:
     '''Search meta tags for relevant information'''
     metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
-    # metadata = Document().from_dict(extract_opengraph(tree)
-    title, author, url, description, site_name, image, pagetype = extract_opengraph(tree)
+    metadata = Document().from_dict(extract_opengraph(tree))
     # test if all values not assigned in the following have already been assigned
-    if all((title, author, url, description, site_name, image)):
-        metadata.set_attributes(title=title, author=author, url=url, description=description, sitename=site_name, image=image, pagetype=pagetype)  # tags
+    if all((metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.image)):   # tags
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -162,43 +160,43 @@ def examine_meta(tree: HtmlElement) -> Document:
             if property_attr == 'article:tag':
                 tags.append(normalize_tags(content_attr))
             elif property_attr in PROPERTY_AUTHOR:
-                author = normalize_authors(author, content_attr)
+                metadata.author = normalize_authors(metadata.author, content_attr)
             elif property_attr == 'article:publisher':
-                site_name = site_name or content_attr
+                metadata.sitename = metadata.sitename or content_attr
             elif property_attr in METANAME_IMAGE:
-                image = image or content_attr
+                metadata.image = metadata.image or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name', '').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                author = normalize_authors(author, content_attr)
+                metadata.author = normalize_authors(metadata.author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:
-                title = title or content_attr
+                metadata.title = metadata.title or content_attr
             # description
             elif name_attr in METANAME_DESCRIPTION:
-                description = description or content_attr
+                metadata.description = metadata.description or content_attr
             # site name
             elif name_attr in METANAME_PUBLISHER:
-                site_name = site_name or content_attr
+                metadata.sitename = metadata.sitename or content_attr
             # twitter
             elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in name_attr:
                 backup_sitename = content_attr
             # url
             elif name_attr == 'twitter:url':
-                if url is None and is_valid_url(content_attr):
-                    url = content_attr
+                if metadata.url is None and is_valid_url(content_attr):
+                    metadata.url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'
                 tags.append(normalize_tags(content_attr))
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                author = normalize_authors(author, content_attr)
+                metadata.author = normalize_authors(metadata.author, content_attr)
             elif elem.get('itemprop') == 'description':
-                description = description or content_attr
+                metadata.description = metadata.description or content_attr
             elif elem.get('itemprop') == 'headline':
-                title = title or content_attr
+                metadata.title = metadata.title or content_attr
             # to verify:
             # elif elem.get('itemprop') == 'name':
             #    if title is None:
@@ -211,10 +209,10 @@ def examine_meta(tree: HtmlElement) -> Document:
             LOGGER.debug('unknown attribute: %s',
                          tostring(elem, pretty_print=False, encoding='unicode').strip())
     # backups
-    if site_name is None and backup_sitename is not None:
-        site_name = backup_sitename
+    if metadata.sitename is None and backup_sitename is not None:
+        metadata.sitename = backup_sitename
     # copy
-    metadata.set_attributes(title=title, author=author, url=url, description=description, sitename=site_name, image=image, pagetype=pagetype, tags=tags)
+    metadata.set_attributes(tags=tags)
     return metadata
 
 
