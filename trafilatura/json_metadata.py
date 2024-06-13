@@ -57,7 +57,9 @@ def extract_json(schema: Union[list, dict], metadata: Document) -> Document:
         else:
             parent = schema
 
-        for content in filter(None, parent):
+        for content in parent:
+            if content is None:
+                continue
             # try to extract publisher
             if 'publisher' in content and 'name' in content['publisher']:
                 metadata.sitename = content['publisher']['name']

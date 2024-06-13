@@ -142,8 +142,8 @@ class Document:  # consider dataclasses for Python 3.7+
         for slot in self.__slots__:
             setattr(self, slot, None)
 
-    def __getattr__(self, name: str):
-        return getattr(self, name)
+    def __getattr__(self, name: str) -> None:
+        raise AttributeError("% attribute not present in Document", name)
 
     def __setattr__(self, name: str, value) -> None:
         if name in self.__slots__:
