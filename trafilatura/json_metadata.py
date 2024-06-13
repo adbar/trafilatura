@@ -7,7 +7,9 @@ import json
 import re
 
 from html import unescape
+from typing import Any, Optional, Union
 
+from .settings import Document
 from .utils import normalize_authors, trim
 
 
@@ -32,7 +34,7 @@ JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_SEQ = [('"name"', JSON_NAME), ('"headline"', JSON_HEADLINE)]
 
 
-def is_plausible_sitename(metadata, candidate, content_type=None):
+def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Optional[str] = None) -> bool:
     '''Determine if the candidate should be used as sitename.'''
     if candidate and isinstance(candidate, str):
         if not metadata.sitename or (len(metadata.sitename) < len(candidate) and content_type != "webpage"):
@@ -42,7 +44,7 @@ def is_plausible_sitename(metadata, candidate, content_type=None):
     return False
 
 
-def extract_json(schema, metadata):
+def extract_json(schema: Union[list, dict], metadata: Document) -> Document:
     '''Parse and extract metadata from JSON-LD data'''
     if isinstance(schema, dict):
         schema = [schema]
@@ -130,7 +132,7 @@ def extract_json(schema, metadata):
     return metadata
 
 
-def extract_json_author(elemtext, regular_expression):
+def extract_json_author(elemtext: str, regular_expression: Any) -> Optional[str]:
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
@@ -141,7 +143,7 @@ def extract_json_author(elemtext, regular_expression):
     return authors or None
 
 
-def extract_json_parse_error(elem, metadata):
+def extract_json_parse_error(elem: Any, metadata: Document) -> Document:
     '''Crudely extract metadata from JSON-LD data'''
     # author info
     element_text_author = JSON_AUTHOR_REMOVE.sub('', elem)
@@ -183,7 +185,7 @@ def extract_json_parse_error(elem, metadata):
     return metadata
 
 
-def normalize_json(string):
+def normalize_json(string: str) -> str:
     'Normalize unicode strings and trim the output'
     if '\\' in string:
         string = string.replace('\\n', '').replace('\\r', '').replace('\\t', '')
