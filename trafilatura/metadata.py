@@ -19,7 +19,7 @@ from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (extract_json, extract_json_parse_error,
                             normalize_authors, normalize_json)
 from .settings import Document, set_date_params
-from .utils import line_processing, load_html, trim
+from .utils import HTML_STRIP_TAGS, line_processing, load_html, trim
 from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
                      CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 
@@ -32,7 +32,7 @@ META_URL = re.compile(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)')
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$')  # part without dots?
-HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
+
 CLEAN_META_TAGS = re.compile(r'["\']')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
@@ -154,7 +154,7 @@ def examine_meta(tree: HtmlElement) -> Document:
     # skim through meta tags
     for elem in tree.iterfind('.//head/meta[@content]'):
         # content
-        content_attr = HTML_STRIP_TAG.sub('', elem.get('content', ''))
+        content_attr = HTML_STRIP_TAGS.sub('', elem.get('content', ''))
         if not content_attr or content_attr.isspace():
             continue
         # image info

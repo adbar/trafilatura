@@ -50,6 +50,7 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
 DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
+HTML_STRIP_TAGS = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True

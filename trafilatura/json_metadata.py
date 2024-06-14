@@ -10,7 +10,7 @@ from html import unescape
 from typing import Any, Dict, List, Optional, Pattern, Union
 
 from .settings import Document
-from .utils import trim
+from .utils import HTML_STRIP_TAGS, trim
 
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
@@ -44,15 +44,14 @@ AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["
-    u"\U00002700-\U000027BF"  # Dingbats
-    u"\U0001F600-\U0001F64F"  # Emoticons
-    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
-    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
-    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
-    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
-    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+    "\U00002700-\U000027BE"  # Dingbats
+    "\U0001F600-\U0001F64F"  # Emoticons
+    "\U00002600-\U000026FF"  # Miscellaneous Symbols
+    "\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+    "\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+    "\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+    "\U0001F680-\U0001F6FF"  # Transport and Map Symbols
     "]+", flags=re.UNICODE)
-AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
 
 
 def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Optional[str] = None) -> bool:
@@ -238,7 +237,7 @@ def normalize_authors(current_authors: Optional[str], author_string: str) -> Opt
     if '&#' in author_string or '&amp;' in author_string:
         author_string = unescape(author_string)
     # remove html tags
-    author_string = AUTHOR_REMOVE_HTML.sub('', author_string)
+    author_string = HTML_STRIP_TAGS.sub('', author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
         author = trim(author)
