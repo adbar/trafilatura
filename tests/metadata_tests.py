@@ -8,9 +8,8 @@ import sys
 
 from lxml import html
 
-from trafilatura.json_metadata import normalize_json
+from trafilatura.json_metadata import normalize_authors, normalize_json
 from trafilatura.metadata import check_authors, extract_metadata, extract_url
-from trafilatura.utils import normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -349,7 +348,7 @@ def test_images():
         assert metadata.image == expected_image
 
 
-def test_Document_as_dict():
+def test_document_as_dict():
     """Tests that the dict serialization works and preserves data."""
 
     htmldoc = """
@@ -401,3 +400,4 @@ if __name__ == '__main__':
     test_sitename()
     test_license()
     test_images()
+    test_document_as_dict()

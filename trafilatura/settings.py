@@ -5,6 +5,7 @@ Listing a series of settings that are applied module-wide.
 
 from configparser import ConfigParser
 from datetime import datetime
+from html import unescape
 
 try:
     from os import sched_getaffinity
@@ -16,7 +17,7 @@ from pathlib import Path
 
 from lxml.etree import XPath
 
-from .utils import line_processing, unescape
+from .utils import line_processing
 
 
 def use_config(filename=None, config=None):

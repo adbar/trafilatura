@@ -7,10 +7,10 @@ import json
 import re
 
 from html import unescape
-from typing import Any, Optional, Union
+from typing import Any, Dict, List, Optional, Pattern, Union
 
 from .settings import Document
-from .utils import normalize_authors, trim
+from .utils import trim
 
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
@@ -33,6 +33,27 @@ JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 JSON_SEQ = [('"name"', JSON_NAME), ('"headline"', JSON_HEADLINE)]
 
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) ', flags=re.IGNORECASE)
+AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_TWITTER = re.compile(r'@[\w]+')
+AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
+AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘({\[’\'][^"]+?[‘’"\')\]}]')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~¿]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
+AUTHOR_EMOJI_REMOVE = re.compile(
+    "["
+    u"\U00002700-\U000027BF"  # Dingbats
+    u"\U0001F600-\U0001F64F"  # Emoticons
+    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+    "]+", flags=re.UNICODE)
+AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
+
 
 def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Optional[str] = None) -> bool:
     '''Determine if the candidate should be used as sitename.'''
@@ -46,7 +67,7 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Opti
 
 def process_parent(parent: Any, metadata: Document) -> Document:
     "Find and extract selected metadata from JSON parts."
-    for content in filter(None, parent):
+    for content in filter(None, parent):  # type: Dict[str, Any]
         # try to extract publisher
         if 'publisher' in content and 'name' in content['publisher']:
             metadata.sitename = content['publisher']['name']
@@ -118,7 +139,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
     return metadata
 
 
-def extract_json(schema: Union[list, dict], metadata: Document) -> Document:
+def extract_json(schema: Union[List[Any], Dict[str, str]], metadata: Document) -> Document:
     '''Parse and extract metadata from JSON-LD data'''
     if isinstance(schema, dict):
         schema = [schema]
@@ -140,7 +161,7 @@ def extract_json(schema: Union[list, dict], metadata: Document) -> Document:
     return metadata
 
 
-def extract_json_author(elemtext: str, regular_expression: Any) -> Optional[str]:
+def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> Optional[str]:
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
@@ -151,7 +172,7 @@ def extract_json_author(elemtext: str, regular_expression: Any) -> Optional[str]
     return authors or None
 
 
-def extract_json_parse_error(elem: Any, metadata: Document) -> Document:
+def extract_json_parse_error(elem: str, metadata: Document) -> Document:
     '''Crudely extract metadata from JSON-LD data'''
     # author info
     element_text_author = JSON_AUTHOR_REMOVE.sub('', elem)
@@ -200,4 +221,49 @@ def normalize_json(string: str) -> str:
         string = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match[1], 16)), string)
         string = ''.join(c for c in string if ord(c) < 0xD800 or ord(c) > 0xDFFF)
         string = unescape(string)
-    return trim(JSON_REMOVE_HTML.sub('', string))
+    return trim(JSON_REMOVE_HTML.sub('', string))  # type: ignore[no-any-return]
+
+
+def normalize_authors(current_authors: Optional[str], author_string: str) -> Optional[str]:
+    '''Normalize author info to focus on author names only'''
+    new_authors = []
+    if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):
+        return current_authors
+    if current_authors is not None:
+        new_authors = current_authors.split('; ')
+    # fix to code with unicode
+    if '\\u' in author_string:
+        author_string = author_string.encode().decode('unicode_escape')
+    # fix html entities
+    if '&#' in author_string or '&amp;' in author_string:
+        author_string = unescape(author_string)
+    # remove html tags
+    author_string = AUTHOR_REMOVE_HTML.sub('', author_string)
+    # examine names
+    for author in AUTHOR_SPLIT.split(author_string):
+        author = trim(author)
+        # remove emoji
+        author = AUTHOR_EMOJI_REMOVE.sub('', author)
+        # remove @username
+        author = AUTHOR_TWITTER.sub('', author)
+        # replace special characters with space
+        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
+        author = AUTHOR_REMOVE_NICKNAME.sub('', author)
+        # remove special characters
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        author = AUTHOR_PREFIX.sub('', author)
+        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
+        # skip empty or improbably long strings
+        # simple heuristics, regex or vowel tests also possible
+        if not author or (len(author) >= 50 and ' ' not in author and '-' not in author):
+            continue
+        # title case
+        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+            author = author.title()
+        # safety checks
+        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
+            new_authors.append(author)
+    if len(new_authors) == 0:
+        return current_authors
+    return '; '.join(new_authors).strip('; ')

@@ -7,18 +7,19 @@ import logging
 import re
 
 from copy import deepcopy
-from typing import Any, List, Optional, Set, Tuple
+from html import unescape
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from courlan import extract_domain, get_base_url, is_valid_url, normalize_url, validate_url
 from htmldate import find_date
+from lxml.etree import XPath
 from lxml.html import HtmlElement, tostring
 
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (extract_json, extract_json_parse_error,
-                            normalize_json)
+                            normalize_authors, normalize_json)
 from .settings import Document, set_date_params
-from .utils import (line_processing, load_html, normalize_authors,
-                    normalize_tags, trim)
+from .utils import line_processing, load_html, trim
 from .xpaths import (AUTHOR_DISCARD_XPATHS, AUTHOR_XPATHS,
                      CATEGORIES_XPATHS, TAGS_XPATHS, TITLE_XPATHS)
 
@@ -32,6 +33,7 @@ JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$')  # part without dots?
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
+CLEAN_META_TAGS = re.compile(r'["\']')
 
 LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
 TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
@@ -77,6 +79,12 @@ TWITTER_ATTRS = {'twitter:site', 'application-name'}
 EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
+def normalize_tags(tags: str) -> str:
+    '''Remove special characters of tags'''
+    tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
+    return ", ".join(filter(None, tags.split(", ")))
+
+
 def check_authors(authors: str, author_blacklist: Set[str]) -> Optional[str]:
     "Check if the authors string correspond to expected values."
     author_blacklist = {a.lower() for a in author_blacklist}
@@ -104,7 +112,7 @@ def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
     return metadata
 
 
-def extract_opengraph(tree: HtmlElement) -> Any:
+def extract_opengraph(tree: HtmlElement) -> Dict[str, Optional[str]]:
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     og_properties = {
         'og:title': 'title',
@@ -215,7 +223,7 @@ def examine_meta(tree: HtmlElement) -> Document:
     return metadata
 
 
-def extract_metainfo(tree: HtmlElement, expressions: List[Any], len_limit: int = 200) -> Optional[str]:
+def extract_metainfo(tree: HtmlElement, expressions: List[XPath], len_limit: int = 200) -> Optional[str]:
     '''Extract meta information'''
     # try all XPath expressions
     for expression in expressions:
@@ -319,7 +327,7 @@ def extract_sitename(tree: HtmlElement) -> Optional[str]:
     return next((part for part in parts if part and '.' in part), None)
 
 
-def extract_catstags(metatype, tree: HtmlElement) -> List[str]:
+def extract_catstags(metatype: str, tree: HtmlElement) -> List[str]:
     '''Find category and tag information'''
     results: List[str] = []
     regexpr = '/' + metatype + '[s|ies]?/'
@@ -344,11 +352,11 @@ def extract_catstags(metatype, tree: HtmlElement) -> List[str]:
     return [r for r in dict.fromkeys(line_processing(x) for x in results if x) if r]
 
 
-def parse_license_element(element, strict=False) -> Optional[str]:
+def parse_license_element(element: HtmlElement, strict: bool = False) -> Optional[str]:
     '''Probe a link for identifiable free license cues.
        Parse the href attribute first and then the link text.'''
    # look for Creative Commons elements
-    match = LICENSE_REGEX.search(element.get('href'))
+    match = LICENSE_REGEX.search(element.get('href', ''))
     if match:
         return f'CC {match[1].upper()} {match[2]}'
     if element.text:
@@ -390,7 +398,7 @@ def extract_image(tree: HtmlElement) -> Optional[str]:
     return None
 
 
-def extract_metadata(filecontent: str, default_url: Optional[str] = None, date_config=None, extensive: bool = True, author_blacklist: Optional[Set[str]] = None) -> Optional[Document]:
+def extract_metadata(filecontent: str, default_url: Optional[str] = None, date_config: Optional[Any] = None, extensive: bool = True, author_blacklist: Optional[Set[str]] = None) -> Optional[Document]:
     """Main process for metadata extraction.
 
     Args:
