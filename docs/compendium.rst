@@ -18,7 +18,7 @@ In linguistics, a text corpus (plural corpora) is a language resource consisting
     “A corpus is simply described as a large body of linguistic evidence typically composed of attested language use. […] The term corpus should properly only be applied to a well-organized collection of data.” (McEnery 2003, p. 449)
 
 
-How well defined corpora should be, depends on research tradition and practices. Web corpora are the heirs of established corpora and they mostly undergo the same construction process, with necessary adapations and novelties (see Barbaresi 2015, chapter 1).
+How well defined corpora should be, depends on research tradition and practices. Web corpora are the heirs of established corpora and they mostly undergo the same construction process, with necessary adaptations and novelties (see Barbaresi 2015, chapter 1).
 
 For Baroni & Ueyama (2006), corpora bring “actual usage evidence”, “collections of language samples produced in natural contexts and without experimental interference”. They distinguish four main cases where such evidence is needed: theoretical and applied linguistic questions, simulations of language acquisition, lexicography, and a large number of tasks in natural language processing.
 
@@ -63,7 +63,7 @@ Specialized corpora
 ~~~~~~~~~~~~~~~~~~~
 
 
-On the second hand, there are specialized corpora which focus on a particular genre or or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open ended-corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
+On the second hand, there are specialized corpora which focus on a particular genre or a particular source. They can be opportunistic in nature but they mostly involve prior knowledge of the contents and also a certain amount of control over what comes into the corpus. Contrarily to open ended-corpora, the goal for linguists is to get a better coverage of particular linguistic settings or phenomena:
 
 The purpose of focused web corpora is to complement existing collections, as they allow for better coverage of specific written text types and genres, especially the language evolution seen through the lens of user-generated content, which gives access to a number of variants, socio- and idiolects, for example in the case of blogs (Barbaresi 2019).
 
@@ -240,7 +240,7 @@ Methodological issues
 ---------------------
 
 
-Limited time or ressources
+Limited time or resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Creating a corpus means finding a “balance academic integrity with practical realities, accuracy with expediency and size with efficiency” (Nelson 2010).
@@ -273,7 +273,7 @@ Technical problems are mostly related to communications over the network and tex
 Access and ownership
 ~~~~~~~~~~~~~~~~~~~~
 
-The growing digitization of text production and processing leaves us with remaining leagal issues:
+The growing digitization of text production and processing leaves us with remaining legal issues:
 
    “The speed of technological advance has left us with an ethical and legal confusion over the ownership of information, which is hindering the acquisition of text.” (Clear 1987)
 

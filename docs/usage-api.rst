@@ -9,31 +9,55 @@ API
 Introduction
 ------------
 
-Simplify the process of turning URLs and HTML into structured, meaningful data. Use the last version of the software straight from the application programming interface.  The Trafilatura API gives you access to add its capabilities to your projects and apps.
+Simplify the process of turning URLs and HTML into structured, meaningful data!
 
-This is especially useful if you want to try out Trafilatura without installing it or if you want to support the project while saving time.
+Use the last version of the software straight from the application programming interface. The API allows you to access the capabilities of Trafilatura, a web scraping and data extraction library, directly from your applications and projects.
 
-- Download URLs or provide your own data, web scraping included
-- Configurable output with conversion to supported formats
+With the Trafilatura API, you can:
+
+- Download URLs or provide your own data, including web scraping capabilities
+- Configure the output format to suit your needs, with support for multiple use cases
+
+
+This is especially useful if you want to try out the software without installing it or if you want to support the project while saving time.
 
 
 Endpoints
 ---------
 
-The official API comes in two versions, available from two different gateways:
+The Trafilatura API comes in two versions, available from two different gateways:
 
 - `Free for demonstration purposes <https://trafilatura.mooo.com>`_ (including documentation page)
 - `For a larger volume of requests <https://rapidapi.com/trafapi/api/trafilatura>`_ (documentation with code snippets and plans)
 
 
+Making JSON requests
+--------------------
+
+
+To use the API, you will need to send a JSON request with the required headers. The API will then return a JSON string with the result.
+
+A JSON (JavaScript Object Notation) request is a type of HTTP request that sends data in the JSON format, a lightweight, human-readable data interchange format that is widely used in web development.
+
+Headers are sent with an HTTP request or response. They provide additional information about it, such as the type of data being sent or the authentication credentials. Common headers include ``content-type`` (format) or ``authorization`` (API key or token).
+
+When you make a JSON request, you are sending a JSON object as the payload. This object typically contains key-value pairs that represent the data you want to process.
+
+
 Examples
 --------
 
-The API takes JSON as input and a corresponding header is required. It then returns a JSON string with the result.
+
+Here are some examples of the Trafilatura API to get you started:
 
 
-CLI
-~~~
+Command-line
+~~~~~~~~~~~~
+
+This example demonstrates how to send a POST request to the API on the command-line interface. The request specifies the URL of the webpage to extract text from and the output format as XML.
+
+To run this example, you need to have ``curl`` installed on your system.
+
 
 .. code-block:: bash
 
@@ -49,6 +73,11 @@ CLI
 
 Python
 ~~~~~~
+
+This Python code snippet sends a POST request to the API to extract data from a webpage. The response is returned in JSON format.
+
+To run this code, you need to have Python installed on your system, along with the ``requests`` library.
+
 
 .. code-block:: python
 
@@ -73,5 +102,6 @@ Python
 Further information
 -------------------
 
-The API is still an early-stage product and the code is not available under an open-source license.
+Please note that the underlying code is not currently open-sourced, feel free to reach out for specific use cases or collaborations.
 
+With the API, you can focus on building your applications and projects, while leaving the heavy lifting to Trafilatura.

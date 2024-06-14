@@ -1,0 +1,1117 @@
+
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="de"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="de"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="de"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de"> <!--<![endif]-->
+        
+<head>
+
+            <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+            <meta name="viewport" content="width=device-width" />
+
+        
+<!-- Included CSS Files -->
+<link rel="stylesheet" type="text/css" href="/stylesheets/basic.css?v=1" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/app.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/kickstart-icons.css" />
+<link rel="stylesheet" type="text/css" href="/stylesheets/print.css" media="print" />
+<script type="text/javascript">idw_lang='de_DE';idw_logged_in=false;</script>
+<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+<script type="text/javascript" src="/javascripts/idw.js"></script>
+<script type="text/javascript" src="/javascripts/bookmark.js"></script>
+
+        <!--BRAINSUM <script src="/javascripts/cookieconsent.js"></script>-->
+        
+        <link rel="stylesheet" href="/stylesheets/klaro.css" />
+        <!--<script defer type="application/javascript" src="/javascripts/config.js"></script>-->
+        <script defer type="application/javascript">
+            var klaroConfig = {
+                //testing: false,
+                elementID: 'klaro',
+                storageMethod: 'cookie',
+                cookieName: 'klaro',
+                //htmlTexts: false,
+                //cookieDomain: '.idw-online.de',
+                cookieExpiresAfterDays: 365,
+                default: false,
+                mustConsent: false,
+                acceptAll: true,
+                hideDeclineAll: true,
+                //hideLearnMore: false,
+                //noticeAsModal: false,
+                lang: 'de',
+                translations: {
+                    zz: {
+                        privacyPolicyUrl: '/de/dataconfidentiality',
+            
+                    },
+                    de: {
+                        privacyPolicyUrl: '/de/dataconfidentiality',
+                        consentNotice: {
+                            description: 'Diese Website verwendet Cookies, um die Bereitstellung unserer Dienste zu optimieren.',
+                            learnMore: 'Cookie-Einstellungen',
+                        },
+                        ok: "Alle Cookies akzeptieren",
+                        consentModal: {
+                            title: 'Cookie-Einstellungen',
+                            description: "Cookies sind Textdateien, die von einer Website gesendet und vom Webbrowser des Benutzers auf dem Computer des Benutzers gespeichert werden, während der Benutzer surft. Ihr Browser speichert jede Nachricht in einer kleinen Datei namens Cookie. Wenn Sie eine andere Seite vom Server anfordern, sendet Ihr Browser das Cookie an den Server zurück. Cookies wurden entwickelt, um Websites einen zuverlässigen Mechanismus zum Speichern von Informationen oder zum Aufzeichnen der Browsing-Aktivitäten des Benutzers zu bieten.",
+                        },
+                        privacyPolicy: {name: 'Datenschutzerklärung', text: 'Um mehr zu erfahren, lesen Sie bitte unsere {privacyPolicy}.'},
+                        acceptAll: 'Alle Cookies akzeptieren und schließen',
+                        acceptSelected: 'Einstellungen speichern',
+                        close: 'Schließen',
+                        purposes: {
+                            necessary: {
+                                title: 'Notwendige Cookies'
+                            },
+                            analytics: {
+                                title: 'Statistik Cookies'
+                            },
+                        },
+                        purposeItem: {service: 'Dienst', services: 'Dienste'},
+                    },
+                    en: {
+                        privacyPolicyUrl: '/en/dataconfidentiality',
+                        consentNotice: {
+                            description: 'This website uses cookies to optimize the provision of our services.',
+                            learnMore: 'Cookie Settings',
+                        },
+                        ok: 'Accept all cookies',
+                        consentModal: {
+                            title: 'Cookie Settings',
+                            description: "Cookies are text files sent from a website and stored on the user's computer by the user's web browser while the user is browsing. Your browser stores each message in a small file, called cookie. When you request another page from the server, your browser sends the cookie back to the server. Cookies were designed to be a reliable mechanism for websites to remember information or to record the user's browsing activity.",
+                        },
+                        privacyPolicy: {name: 'privacy policy', text: 'To learn more, please read our {privacyPolicy}.'},
+                        acceptAll: 'Accept all cookies and close',
+                        acceptSelected: 'Save current settings',
+                        close: 'Close',
+                        purposes: {
+                            necessary: {
+                                title: 'Necessary Cookies'
+                            },
+                            analytics: {
+                                title: 'Statistics Cookies'
+                            },
+                        },
+                        purposeItem: {service: 'service', services: 'services'},
+                    },
+                },
+                services: [
+                    {
+                        name: 'necessarycookies',
+                        translations: {
+                            de: {
+                                title: 'Notwendige Cookies',
+                                description: 'Technisch notwendige Cookies tragen dazu bei, grundlegende Funktionalitäten dieser Website zu gewährleisten.',
+                            },
+                            en: {
+                                title: 'Necessary Cookies',
+                                description: 'Technically necessary cookies help ensure the basic functionality of this website.',
+                            },
+                        },
+                        purposes: ['necessary'],
+                        cookies: ['necessarycookies'],
+                        required: true,
+                        optOut: false,
+                    },
+                    {
+                        name: 'matomo',
+                        default: true,
+                        translations: {
+                            zz: {
+                                title: 'Matomo Analytics'
+                            },
+                            de: {
+                                description: 'Statistik Cookies helfen uns zu verstehen, wie unsere Website verwendet wird und wie wir sie verbessern können.'
+                            },
+                            en: {
+                                description: 'Statistics cookies help us to understand how our website is used and how we can improve it.'
+                            },
+                        },
+                        purposes: ['analytics'],
+                        cookies: [
+                            [/^_pk_.*$/, '/', 'idw-online.de'],
+                            [/^_pk_.*$/, '/', 'localhost'],
+                            'piwik_ignore',
+                        ],
+                        callback: function(consent, service) {
+                            console.log(
+                                'User consent for service ' + service.name + ': consent=' + consent
+                            );
+                        },
+                        required: false,
+                        optOut: false,
+                        onlyOnce: true,
+                    },
+                ],
+                callback: function(consent, service) {
+                    console.log(
+                        'User consent for service ' + service.name + ': consent=' + consent
+                    );
+                },
+            };
+        </script>
+        <script defer data-config="idwklaroConfig" type="application/javascript" src="/javascripts/klaro.js"></script>
+        
+        <!--[if lt IE 9]>
+         <link rel="stylesheet" href="/stylesheets/ie.css">
+        <![endif]-->
+        <meta data-embetty-server="https://proxy.idw-online.de:443">
+        <script async src="/javascripts/embetty.js"></script>
+        <script src="/javascripts/modernizr.foundation.js"></script>
+       
+        <!-- Included JS Files -->
+          <script src="/javascripts/jquery.min.js"></script>
+          <script src="/javascripts/jquery.reveal.js"></script>
+          <script src="/javascripts/jquery.orbit-1.4.0.js"></script>
+          <script src="/javascripts/jquery.customforms.js"></script>
+          <script src="/javascripts/jquery.placeholder.min.js"></script>
+          <script src="/javascripts/jquery.tooltips-1.js"></script>
+          <script src="/javascripts/app.js"></script>
+          <script src="/javascripts/jquery-dateformat.min.js"></script>
+          <script src="/javascripts/cal.js"></script>
+          <script src="/javascripts/twitter-text-3.0.1.min.js"></script>
+          
+          <script>
+              function set_search_fields(field1, field2)
+              {
+                document.getElementById(field1).value = document.getElementById(field2).value;
+              }
+              
+              function toggle_checkboxes(source, id) {              
+                  checkboxes = $('input[name="'+id+'"]');
+                  for(var i in checkboxes) {
+                      if(checkboxes[i].type == "checkbox"){
+                          checkboxes[i].checked = source.checked;
+                      }
+                  }
+              }
+              
+              check_field_length = function(field_id, notarea_id, lower_limit, upper_limit, max_limit)
+                {
+                    if (field_id == "input_field_twitter_text") {
+                        check_field_length_twitter(field_id, notarea_id, lower_limit, upper_limit, max_limit);
+                    }
+                    else {
+                        check_field_length_notwitter(field_id, notarea_id, lower_limit, upper_limit, max_limit);
+                    }
+                };
+              
+              check_field_length_twitter = function(field_id, notarea_id, lower_limit, upper_limit, max_limit)
+                {
+                    //strlen = twttr.txt.parseTweet(document.getElementById(field_id).value).weightedLength;
+                    twittertext = document.getElementById(field_id).value.replace(/\n/gi, "  ");
+                    strlen = twttr.txt.parseTweet(twittertext).weightedLength;
+                    notparsedstrlen = document.getElementById(field_id).value.length;
+                    diff = strlen - notparsedstrlen;
+                    
+                    if (strlen<lower_limit)
+                        {
+                        color = "";
+                        }
+                    else if (strlen<upper_limit)
+                        {
+                        color = "#FFFF80";
+                        }
+                    else if (strlen<max_limit)
+                        {
+                        color = "#FF8040";
+                        }
+                    else
+                        {
+                        color = "#FF0000";
+                        }
+                    document.getElementById(field_id).style.backgroundColor = color;
+                    if(upper_limit > 0) {
+                        //document.getElementById(notarea_id).innerHTML = notparsedstrlen + " / " +(upper_limit - diff);
+                        document.getElementById(notarea_id).innerHTML = "<p style='margin-top:-10px;' align='right'>Verbleibende Zeichen: " + (upper_limit - diff - notparsedstrlen) + "</p>";
+                    }
+                };
+              
+              check_field_length_notwitter = function(field_id, notarea_id, lower_limit, upper_limit, max_limit)
+                {
+                    strlen = document.getElementById(field_id).value.length;
+                
+                    if (strlen<lower_limit)
+                        {
+                        color = "";
+                        }
+                    else if (strlen<upper_limit)
+                        {
+                        color = "#FFFF80";
+                        }
+                    else if (strlen<max_limit)
+                        {
+                        color = "#FF8040";
+                        }
+                    else
+                        {
+                        color = "#FF0000";
+                        }
+                    document.getElementById(field_id).style.backgroundColor = color;
+                    if(upper_limit > 0) {
+                        document.getElementById(notarea_id).innerHTML = "<p style='margin-top:-10px;' align='right'>" + strlen + " / " +upper_limit + "</p>";
+                    }
+                };
+              
+              check_field_characters = function(field_id, notarea_id)
+                {
+                    const specialChars = /[`$&'"\\|<>\/?%]/;
+                    if (specialChars.test(document.getElementById(field_id).value)) {
+                        color = "#FF0000";
+                        document.getElementById(notarea_id).innerHTML = "<p style='margin-top:-10px;' align='right'>Bitte vermeiden Sie die Benutzung der Zeichen \"<>?'\/%$&</p>";
+                        document.getElementsByName('submit')[0].disabled = true;
+                        document.getElementsByName('submit')[0].style.opacity = "0.5";
+                    }
+                    else {
+                        color = "";
+                        document.getElementById(notarea_id).innerHTML = "";
+                        document.getElementsByName('submit')[0].disabled = false;
+                        document.getElementsByName('submit')[0].style.opacity = "1.0";
+                    }
+                    document.getElementById(field_id).style.backgroundColor = color;
+                };
+          </script>
+          
+        <!-- IE Fix for HTML5 Tags -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        
+<link rel="SHORTCUT ICON" href="/favicon.ico" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+<link rel="apple-touch-icon" href="/apple-touch-icon-precomposed.png"/>
+
+        <link rel="alternate" title="idw Veranstaltungen"
+          href="/pages/de/eventsrss" type="application/rss+xml" />
+        <link rel="alternate" title="idw Pressemitteilungen"
+          href="/pages/de/pressreleasesrss" type="application/rss+xml" />
+        
+
+        <script>
+  
+  document.addEventListener("DOMContentLoaded", function(event) {
+     $(".cc-text").append(' <a href="/de/dataconfidentiality">Datenschutzerklärung</a>');
+  });
+  </script>
+                   <!-- Matomo -->
+    <script type="text/plain" data-type="application/javascript" data-name="matomo">
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(["disableCookies"]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u = "https://statistiken.idw-online.de/";
+        _paq.push(['setTrackerUrl', u + 'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d = document,
+            g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+        g.type = 'text/javascript';
+        g.async = true;
+        g.src = u + 'piwik.js';
+        s.parentNode.insertBefore(g, s);
+    })();
+    </script>
+    <!-- End Matomo Code -->
+			
+
+            <title>Effiziente Hybridbatterie</title>
+
+</head>
+
+          <body >
+          <header class="container blueborder DontPrint">
+          
+          <div class="row">
+            <div class="twelve columns">
+            <div class=" DontPrint">
+            
+      <!-- start service navigation -->
+      <nav id="servicenavi" class="hide-for-small">
+        <ul class="nav-bar no-margin right" style="position: absolute;
+            right: 0;">
+          <li><a href="/en/news823175">English</a></li>
+
+          <li>
+          <a id="hide" href="#hidden" class="signin">Login</a>
+          <div id="hidden" class="hidden flyout greenline-bottom" style="display: none;">
+            <form action="https://idw-online.de/de/login" name="login" class="nice" method="post">
+              <input type="hidden" name="login_url" value="/de/news?id=823175&amp;path_lang=de" />
+
+              <input type="text" placeholder="Benutzername" class="small"
+                     id="smallNiceInput" name="idw_userid" />
+              <input type="password" placeholder="Passwort" class="small"
+                     id="smallNiceInput" name="idw_password" />
+              <input type="submit" value="OK" class="small secondary button" />
+            <span style="margin-left: 10px;">
+                <a href="forgottenpassword">Passwort vergessen?</a>
+            </span>
+            </form>
+          </div>
+          </li>
+          
+<li><a href="/de/register">Registrieren</a></li>
+<li><a href="/de/team">Kontakt</a></li>
+<li><a href="https://nachrichten.idw-online.de" target="_blank" style="padding-top:4px; width: 85px; height: 20px;"><img src="/images/Magazin.png"/></a></li>
+        </ul>
+      </nav>
+      
+            </div>
+            <h2 class="hide">idw &ndash; Informationsdienst Wissenschaft</h2>
+            <p class="hide">Nachrichten, Termine, Experten</p>
+            <a title="Zur Startseite" href="/">
+            <img width="833" height="134" alt="Grafik: idw-Logo" src="/images/idw_logo_blau.png" style="margin-bottom: -3px;">
+            </a>
+            </div>
+          </div>
+          </header>
+          <div class="row show-for-small">
+<div class="twelve columns">
+<nav id="navi-for-mobile">
+<form>
+<select ONCHANGE="location = this.options[this.selectedIndex].value;" class="twelve secondary">
+    <option selected="" disabled class="main">Navigation</option>
+    <option disabled value="#">--- Angebote ---</option><option value="/de/">Nachrichten</option><option value="/de/calendar">Termine</option><option value="/de/expert">Experten</option><option value="http://idw-bilder.de">Bilder</option><option value="/de/channeloverview">Social Media</option><option disabled class="divider" value="#"></option><option disabled value="#">--- Mein idw ---</option><option value="/de/loginform">Login</option><option value="/de/register">Registrieren</option><option disabled class="divider" value="#"></option><option disabled value="#">--- Über den idw ---</option><option value="/de/aboutus">Wer wir sind</option><option value="/de/associationinfo">Mitgliedschaft</option><option value="/de/addressbook">Mitgliederverzeichnis</option><option value="/de/quality">Qualitätssicherung</option><option value="/de/idwaward">idw-Preis</option><option disabled class="divider" value="#"></option><option disabled value="#">--- Service ---</option><option value="/de/contact">Kontakt</option><option value="/de/introduction">Einführung</option><option value="/en/news823175">English</option><option value="/de/faq">FAQ</option><option value="/de/imprint">Impressum</option><option disabled class="divider" value="#"></option>
+</select>
+</form>
+</nav>
+</div>
+</div>
+          
+     
+
+<!-- mainnavigation -->
+<div class="row hide-for-small DontPrint">
+<div class="twelve columns DontPrint">
+    
+      <nav id="mainnav">
+        <ul class="nav-bar graybox">
+          
+      <li class="has-flyout">
+        <a class="main" href="#">Erste Schritte</a>
+        <a class="flyout-toggle" href="#"><span></span></a>
+        <ul class="flyout small">
+          <li><a href="/de/introduction">Einführung</a></li>
+<li><a href="/de/journalistoffers">Recherche</a></li>
+<li><a href="/de/piooffers">Publizieren</a></li>
+<li><a href="/de/faq">FAQ</a></li>
+        </ul>
+	  </li>
+      
+
+      <li class="has-flyout">
+        <a class="main" href="#">Über den idw</a>
+        <a class="flyout-toggle" href="#"><span></span></a>
+        <ul class="flyout small">
+          <li><a href="/de/aboutus">Wer wir sind</a></li>
+<li><a href="/de/associationinfo">Mitgliedschaft</a></li>
+<li><a href="/de/addressbook">Mitgliederverzeichnis</a></li>
+<li><a href="/de/idwnews">In eigener Sache</a></li>
+<li><a href="/de/channeloverview">idw-Kanäle</a></li>
+<li><a href="/de/quality">Qualitätssicherung</a></li>
+<li><a href="/de/idwaward">idw-Preis</a></li>
+<li><a href="/de/api">Reichweitenpartner</a></li>
+<li><a href="/de/wnvproject">Wissenschaftsvideo</a></li>
+<li><a href="/de/cooperation">Partner</a></li>
+<li><a href="/de/team">Kontakt/Team</a></li>
+        </ul>
+	  </li>
+      
+
+          
+      </ul></nav>
+</div>
+</div>
+
+<!-- searchmodul -->
+
+<div id="search-modul" class="row DontPrint">
+
+<div class="twelve columns">
+<div class="graybox add-padding">
+<div class="row">
+<div class="eight columns">
+<form action="simplesearch" style="margin:0;">
+    <input type="text" id="search_field" class="ten" style="display: inline;margin-bottom:0;" placeholder="Nachrichten und Termine durchsuchen" 
+    onfocus="this.placeholder=''" onblur="this.placeholder='Nachrichten und Termine durchsuchen'" name="words"  onkeyup="set_search_fields('extended_search_field', 'search_field')">
+    <input type="hidden" name="_form_" value="InputForm">
+     <input type="hidden" name="scope" value="press_release">
+     <input type="hidden" name="scope" value="event">
+    <input type="submit" class="small blue button" value="">
+    </form>
+    </div>
+<div class="four columns hide-for-small">
+<a href="#" class="secondary button" data-reveal-id="erweiterte_suche_n">Erweiterte Suche</a>
+<a class="secondary button" style="background-image:none;" data-reveal-id="ews_hilfe" href="#">?</a>
+</div>
+    </div>
+    </div>
+    </div>
+    
+</div>
+
+<!-- Breadcrumbnavigation -->
+<div class="row">
+<div class="two columns"></div>
+    
+    <div class="seven columns">
+      <dl class="sub-nav breadcrumbs">
+       <a href="/de/">Home</a> &gt; Pressemitteilung: Effiziente Hybridbatterie
+      </dl> 
+    </div>
+  
+<div class="three columns"></div>
+</div>
+              
+        
+
+        <div class="row">
+        
+
+        <div class="two columns hide-for-small DontPrint">
+        <nav class="graybox blueline-top DontPrint">
+        <!-- Subnavigation -->
+        <ul class="side-nav">
+        <li class="active">
+            <a href="/">Nachrichten</a>
+            <ul class="off">
+                <li><a href="https://nachrichten.idw-online.de/ticker" target="_blank">Ticker</a></li>
+                <li><a href="https://nachrichten.idw-online.de" target="_blank">Magazin</a></li>
+            </ul>
+        </li>
+        <li><a href="calendar">Termine</a></li>
+        <li><a href="expert">Experten</a></li>
+        <li><a href="http://idw-bilder.de" target="_blank">Bilder</a></li>
+        </ul>
+        </nav>
+        
+        
+
+         <!-- start socialmedia links -->
+                    <style = type="text/css">
+                    .mastodon_side {
+                        width:20px;
+                        height:20px;
+                        background: url("/images/mastodon_mbsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        display: inline-block;
+                        position: relative;
+                        top: 4px;
+                    }
+                    .mastodon_side:hover {
+                        background: url("/images/mastodon_mrsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        cursor: pointer;
+                    }
+                    .x_side {
+                        width:20px;
+                        height:20px;
+                        background: url("/images/x_mbsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        display: inline-block;
+                        position: relative;
+                        top: 4px;
+                    }
+                    .x_side:hover {
+                        background: url("/images/x_mrsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        cursor: pointer;
+                    }
+                    .linkedin_side {
+                        width:20px;
+                        height:20px;
+                        background: url("/images/linkedin_mbsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        display: inline-block;
+                        position: relative;
+                        top: 4px;
+                    }
+                    .linkedin_side:hover {
+                        background: url("/images/linkedin_mrsw.svg") no-repeat;
+                        background-size: 20px 20px;
+                        cursor: pointer;
+                    }
+                    </style>
+                  <div class="graybox blueline-bottom DontPrint">
+                      <div class="add-padding">
+                      <span class="glyph social facebook" style="margin-left:-1px;"><a href="http://www.facebook.com/idwonline" target="_blank" title="facebook">d</a></span>
+                      <a href="http://twitter.com/#!/idw_online_de" target="_blank" title="X"><span style="margin-left:2px;" class="x_side"></span></a>
+                       <span class="glyph social rss" style="margin-left:1px;"><a href="rsssubscription" target="" title="RSS-Feed">c</a></span>
+                       <a href="https://wisskomm.social/" target="_blank" title="Mastodon"><span style="margin-left:3px;" class="mastodon_side"></span></a>
+                       <a href="https://de.linkedin.com/company/informationsdienst-wissenschaft---idw" target="_blank" title="LinkedIn"><span style="margin-left:5px;" class="linkedin_side"></span></a>
+                      </div>
+                  </div>
+                  
+                  <!-- start socialshareprivacy -->
+                  <!--<div class="graybox blueline-bottom" id="social-media">
+                  <h6>Social Media</h6>
+                  <div id="socialshareprivacy"></div>
+                  </div>-->
+                  <!-- end socialshareprivacy -->
+                  
+      <!-- end socialmedia links -->
+    <!--  
+    <div class="DontPrint" style="margin-top:0px">
+          1000. idw-Mitglied!
+      <br/>
+      <a href="/de/news683278" target="_blank"><img src="/images/1000members.jpg" style="margin-top: 5px" alt="1000 Mitglieder"/></a>
+      </div>
+    -->
+    <!--  
+    <div class="DontPrint">
+          <a href="https://idw-online.de/de/simplesearch?words=corona+OR+SARS-CoV-2+OR+coronavirus+OR+covid-19&scope=press_release&category_ids=7&category_ids=1&category_ids=5&tracking=coronacampaign"><img src="https://files.idw-online.de/corona_idw.png" alt="Thema Corona"/></a> <br/>
+<br>
+    </div>
+    -->
+       <div class="DontPrint" >
+     <a href="https://videos.idw-online.de" target="_blank"><img src="https://files.idw-online.de/wnv/idw-Logo-Wissenschaft-bewegt.png" alt="Science Video Project"/></a> 
+
+</div>
+  <div class="DontPrint" style="margin-top:10px" >
+      <a href="register"><img src="/images/idw-abo.png" alt="idw-Abo"/></a>
+      </div>
+<hr>
+
+
+<div class="DontPrint">
+<h6>idw-News App:</h6><br/>
+     <a href="https://apps.apple.com/de/app/idw-news/id1540062025" target="_blank"><img src="https://files.idw-online.de/Icons/apple_app_store_de_DE.png" alt="AppStore"/></a> <br/><br/>
+     <a href="https://play.google.com/store/apps/details?id=de.idwapp.idwnews" target="_blank"><img src="https://files.idw-online.de/Icons/google-play-badge_de_DE.png" alt="Google Play Store"/></a> 
+<br/><br/>
+    <!-- Matomo Image Tracker-->
+   <img referrerpolicy="no-referrer-when-downgrade" src="https://statistiken.idw-online.de/matomo.php?idsite=2&amp;rec=1" style="border:0" alt="" />
+   <!-- End Matomo -->
+      <!--
+	Medienpartner:
+      <br/>
+      <a href="https://www.wissenschaftsjahr.de/2019/" target="_blank"><img src="/images/wj_logo.png" style="margin-top: 5px" alt="Wissenschaftsjahr"/></a>
+      -->
+      </div>
+       
+      </div> 
+      
+<div class="seven columns"><div class="blueline-top add-padding-h">
+
+
+    <script>idw_current_document_type='press_release'; idw_current_document_id=823175;</script>
+    <div class="DontPrint">
+    
+    
+     
+    
+    </div>
+    <div class="row">
+    
+    <div class="three columns">
+    <div class="iePrInstitutionLogo"><a href="https://www.gdch.de/" target="_new"><img class="EmbeddedImage"  style="max-height:200px; max-width: 200px;" src="/de/institutionlogo29539" border="0" alt="institution logo" /></a></div>
+    </div>
+    <div class="nine columns">
+    </div>
+    </div>
+    <hr class="DontPrint">
+        <div class="seven columns" style="padding: 0px; margin: 0px;">
+        <nav class="DontPrint">    
+                <dl class="sub-nav green maincontent">
+    <dd class="active">
+    <a href="javascript:history.back()">Zur&uuml;ck</a>
+    </dd>
+    </dl>
+    </nav>
+        </div>
+        <div class="five columns" style="padding: 0px;margin: 0px;">
+            <nav class="DontPrint">    
+                <dl class="sub-nav green"  >
+                <dd class="active" style="text-align:right;width:100%;">
+                <a href="#semanticsearch" style="margin-top:-5px; padding-top:5px; padding-bottom: 4px; margin-bottom: -5px; margin-left:0;margin-right:0;padding-left:0;display:block;text-align:center;">Ähnliche Pressemitteilungen</a>
+                </dd>
+                </dl>
+                </nav>
+        </div>
+        <hr>
+    <p>
+    <!--<div style='float:right; margin:5px;'><a href='https://nachrichten.idw-online.de/2023/11/01/effiziente-hybridbatterie/' target='_blank'>Magazin</a></div>-->
+    
+        <script src="/javascripts/sharer.min.js"></script>
+          <style = type="text/css">
+                    .flipboard {
+                        width:20px;
+                        height:20px;
+                        background: url("/images/flipboard_mbsw.png") no-repeat;
+                        background-size: 20px 20px;
+                        display: inline-block;
+                        position: relative;
+                        top: -1px;
+                    }
+                    .flipboard:hover {
+                        background: url("/images/flipboard_mrsw.png") no-repeat;
+                        background-size: 20px 20px;
+                        cursor: pointer;
+                    }
+                    </style>
+        <div style="float: right; margin: 5px;" class="DontPrint">
+        <span class="flipboard" data-sharer="flipboard" data-title="Effiziente+Hybridbatterie" data-url="http://www.idw-online.de/-DI.HAA"></span>
+        </div>
+    
+    
+        <style = type="text/css">
+            .x {
+                width:20px;
+                height:20px;
+                background: url("/images/x_mbsw.svg") no-repeat;
+                background-size: 20px 20px;
+                display: inline-block;
+                position: relative;
+                top: -1px;
+            }
+            .x:hover {
+                background: url("/images/x_mrsw.svg") no-repeat;
+                background-size: 20px 20px;
+                cursor: pointer;
+            }
+        </style>
+        <div style="float: right; margin: 5px;" class="DontPrint">
+        <span class="x"><a title="Twitter" href="#" onClick="window.open('https://twitter.com/share?url=http://www.idw-online.de/-DI.HAA&text=Effiziente+Hybridbatterie','Share on Twitter', 'status=1, width=600, height=300, resizable=0, top=100, left=100')"><img style='width:20px;height:20px;visibility:hidden;' src='/images/x_mbsw.svg'/></a></span>
+        </div>
+    
+    
+          <meta property="og:image" content="http://www.idw-online.de/de/institutionlogo29539"/>
+          <style>
+          .socialvisitedfb a:visited {
+            color: #000 !important;  
+          }
+           .socialvisitedfb a:hover {
+            color: #3C5A99 !important;  
+          }
+          </style>
+          <div style="float: right; margin: 5px;" class="DontPrint">
+          <span class="glyph social facebook socialvisitedfb"><a title="Facebook" href="#" onClick="window.open('http://www.facebook.com/sharer.php?u=http://www.idw-online.de/-DI.HAA','Share on Facebook',status=1,width=600,height=300,resizable=0, top=100,left=100)">d</a></span>
+        </div>
+        
+    
+        <style = type="text/css">
+            .mastodon {
+                width:20px;
+                height:20px;
+                background: url("/images/mastodon_mbsw.svg") no-repeat;
+                background-size: 20px 20px;
+                display: inline-block;
+                position: relative;
+                top: -1px;
+            }
+            .mastodon:hover {
+                background: url("/images/mastodon_mrsw.svg") no-repeat;
+                background-size: 20px 20px;
+                cursor: pointer;
+            }
+        </style>
+        <div style="float: right; margin: 3px;" class="DontPrint">
+            <div class="mast-share mast-share-sm">
+                <input type="checkbox" class="mast-check-toggle">
+                <div class="mast-instance">
+                    <span>Instanz: </span>
+                    <input type="textbox" name="mast-instance-input" placeholder="mastodon.social">
+                    <button class="mast-share-button">Teilen</button>
+                </div>
+                <label class="mast-top mast-check-label">
+                    <span class="mastodon"></span>
+                </label>
+            </div>
+        </div>
+        <div style="float: right; margin-top: 7px;" class="DontPrint">
+            Teilen:&nbsp;
+        </div>
+        <script>Array.prototype.forEach||(Array.prototype.forEach=function(r){var o,t;if(null==this)throw new TypeError("this is null or not defined");var n=Object(this),e=n.length>>>0;if("function"!=typeof r)throw new TypeError(r+" is not a function");for(arguments.length>1&&(o=arguments[1]),t=0;t<e;){var i;t in n&&(i=n[t],r.call(o,i,t,n)),t++}});document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".mast-share").forEach(function(e,t){e.querySelector(".mast-check-toggle").id="mast-check-toggle-"+t,e.querySelector(".mast-check-label").htmlFor="mast-check-toggle-"+t,e.querySelector(".mast-share-button").addEventListener("click",function(t){var a=new RegExp("^(?:(?:https?|ftp)://)?(?:\S+(?::\S*)?@|\d{1,3}(?:\.\d{1,3}){3}|(?:(?:[a-z\d\u00a1-\uffff]+-?)*[a-z\d\u00a1-\uffff]+)(?:\.(?:[a-z\d\u00a1-\uffff]+-?)*[a-z\d\u00a1-\uffff]+)*(?:\.[a-z\u00a1-\uffff]{2,6}))(?::\d+)?(?:[^\s]*)?$","i"),n=e.querySelector('input[name="mast-instance-input"]');if(a.test(n.value)){var o=`http://${n.value.replace(/(^\w+:|^)\/\//,"")}/share?text=${encodeURIComponent(document.title)} ${encodeURIComponent(location.href)}`;window.open(o,"new","toolbar=no,location=no,status=yes,resizable=yes,scrollbars=yes,height=600,width=400")}else n.classList.add("invalid"),setTimeout(function(){n.classList.remove("invalid")},300)}),e.addEventListener("mouseleave",function(t){e.querySelector(".mast-check-toggle").checked=!1})})});</script>
+        <style>.mast-check-toggle{height:0;width:0;padding:0;margin:0;visibility:hidden;display:none}.mast-check-toggle:checked+.mast-instance{display:block!important}.mast-check-toggle:not(:checked)+.mast-instance{display:none}.mast-share.active{padding-bottom:10px}.mast-share-lg .mast-top{cursor:pointer;position:absolute;width:142px;top:0;left:0;padding:4px 8px;z-index:1}.mast-share-md .mast-top,.mast-share-sm .mast-top{cursor:pointer;position:absolute;width:18px;height:15px;top:0;left:0;padding:4px 8px;z-index:1}.mast-share-lg,.mast-share-md,.mast-share-sm{color:#fff;display:inline-block;height:23px;background-color:#ffffff;border-radius:3px;position:relative}.mast-share-lg{width:158px}.mast-share-md{width:92px}.mast-share-sm{width:34px}.mast-share-md .mast-instance,.mast-share-sm .mast-instance{border-radius:0 3px 3px;z-index:0}.mast-instance{background-color:#292D37;padding:8px;position:absolute;top:24px;left:0;margin:0 auto;border-radius:0 0 3px 3px}.mast-share span{vertical-align:top;font-family:sans-serif;font-weight:700;font-size:14px}.mast-share img{max-height:19px;margin-top:1px}.mast-instance input[name="mast-instance-input"]{background-color:#00000000;border:none;color:#fff;border-bottom:2px solid #3087D5;font-size:14px;font-weight:700;max-width:130px}.mast-instance input[name="mast-instance-input"][class="invalid"]{border-bottom:2px solid red;animation-name:shake;animation-duration:.1s;animation-timing-function:ease-in-out;animation-iteration-count:infinite}@-webkit-keyframes shake{41%,8%{-webkit-transform:translateX(-10px)}25%,58%{-webkit-transform:translateX(10px)}75%{-webkit-transform:translateX(-5px)}92%{-webkit-transform:translateX(5px)}0%,100%{-webkit-transform:translateX(0)}}.mast-share input::placeholder{color:#C7C7CD}.mast-share input:focus{outline:0}.mast-share button{background-color:#00000000;color:#fff;border:none;font-size:14px;font-weight:700;padding:0;margin:8px 0 0;cursor:pointer}.mast-share button:hover{color:#3087d5}</style>
+    
+    <em>
+    01.11.2023 11:35
+    </em>
+    </p>
+    <h4>Effiziente Hybridbatterie</h4> 
+    <h5 class="subheader">
+    Dr. Karin  J. Schmitz <em>Abteilung Öffentlichkeitsarbeit</em><br/>
+    <a href="/de/institution122">Gesellschaft Deutscher Chemiker e.V.</a>
+    </h5>
+    <ul class="no-bullet"></ul>
+    <p><em>
+    Schnell ladende mikrobielle Brennstoffzelle und CO2-Elektrolyseur auf der Basis von Ameisensäure<br />
+Ameisensäure gilt als vielversprechender Energieträger, da sie aus Kohlendioxid elektrochemisch erzeugt und vielfältig eingesetzt werden kann. Ein chinesisches Forschungsteam stellt in der Fachzeitschrift Angewandte Chemie ein Batteriesystem vor, das die elektrochemische Gewinnung der Ameisensäure als Energieträger mit einer mikrobiellen Brennstoffzelle verknüpft. Das Hybridsystem könnte unter anderem zur Toxizitätsüberwachung von Trinkwasser verwendet werden.
+    </em>
+    </p>
+    <p>
+    In mikrobiellen Brennstoffzellen verstoffwechseln Bakterien Energieträgermoleküle und erzeugen dadurch Strom. Wenn die Bakterien energiereiche Moleküle als Energieträger unter Stromzufuhr (Ladevorgang) sogar selbst erzeugen können, liegt eine mikrobielle Vollbatterie vor. Bislang ist jedoch, neben anderen Nachteilen, der Ladevorgang bei solchen Batterien zu langsam und ineffizient.<br />
+<br />
+Die Forschungsgruppe um Yong Jiang von der Fujian Agriculture and Forestry University in Fuzhou (China) hat nun ein neuartiges zweistufiges mikrobielles Batteriesystem entwickelt, das durch die Kopplung einer rein anorganischen elektrochemischen Erzeugung des Energieträgers mit einer mikrobiellen Brennstoffzelle viele Herausforderungen von mikrobiellen Vollbatterien lösen kann.<br />
+<br />
+Als weiteres Ziel wollte das Team möglichst einfache und preisgünstige Komponenten verwenden, um ein preisgünstiges, nachhaltiges mikrobielles Batteriesystem zum Beispiel für die Anwendung in der Wasserüberwachung zu erstellen. Dafür verwendeten sie Ameisensäure als Energieträger, weil dieser Stoff elektrokatalytisch aus Kohlendioxid erzeugt werden kann und dann für die mikrobielle Brennstoffzelle zur Verfügung steht.<br />
+<br />
+Mit kommerziell erhältlichen Komponenten entwickelten die Forschenden eine Elektrolysezelle, in der anorganische Katalysatoren Kohlendioxidgas binnen weniger Minuten zu Ameisensäure umsetzen. Die produzierte und aus dem Festelektrolyt extrahierte Ameisensäure wird dann in ein zweites Bauteil – die mikrobielle Brennstoffzelle – eingespeist und dort von Bakterien in einem längeren Entladevorgang an der negativen Elektrode zu Kohlendioxid und elektrischem Strom umgesetzt.<br />
+<br />
+Dieses zweistufige System erzeugte nach dem schnellen Aufladen 25 Stunden lang Strom und kann somit vielfältig eingesetzt werden. Den Stromfluss verwendeten die Forschenden beispielhaft für die Wasserüberwachung auf Toxine. So stellten sie fest, dass sich das Stromsignal bei Zugabe von Umweltgiften wie Formaldehyd und Kupfer änderte. Als weitere Anwendungsmöglichkeiten schlagen Forschenden nachhaltige Abwasserbehandlungen oder Wasserentsalzungen vor.<br />
+<br />
+Angewandte Chemie: Presseinfo 46/2023<br />
+<br />
+Autor/-in: Yong Jiang, Fujian Agriculture and Forestry University (China), mailto:jiangyongchange@fafu.edu.cn<br />
+<br />
+Angewandte Chemie, Postfach 101161, 69451 Weinheim, Germany.<br />
+Die &quot;Angewandte Chemie&quot; ist eine Publikation der GDCh.
+    </p>
+    
+    <hr/><h5>Originalpublikation:</h5><p><a href="https://doi.org/10.1002/ange.202312147" target="_new">https://doi.org/10.1002/ange.202312147</a></p>
+    <hr/><h5>Weitere Informationen:</h5><p><a href="http://presse.angewandte.de">http://presse.angewandte.de</a><br/></p>
+    <hr class="widescreenhide"><div class="widescreenhide" style="margin-bottom:8px;"><b>Bilder</b></div><p class="widescreenhide"><a class="main" data-reveal-id="imgModal1" href="#"><img src="https://idw-online.de/de/newsimage?id=385013&size=thumbnail" width="180" height="169" alt="Effiziente Hybridbatterie" title="Effiziente Hybridbatterie" border="0" id="image_385013_thumb"/></a>
+<span style="display: inline-block;" class="icon medium" data-icon="&lt;" title="Details"><span style="top: -69%;" aria-hidden="true"><a class="main" data-reveal-id="imgModal"><a href="/de/image?id=385013&amp;size=screen">&lt;</a></span></span><br/>Effiziente Hybridbatterie<br/><br/>(c) Wiley-VCH</p>
+    <hr>
+    
+    
+    
+    <p>
+    <strong>Merkmale dieser Pressemitteilung: <br/></strong>
+     Journalisten, Studierende, Wissenschaftler<br/>
+     Chemie, Energie, Werkstoffwissenschaften<br/>
+     überregional<br/>
+     Forschungsergebnisse, Wissenschaftliche Publikationen<br/> Deutsch  
+    </p>
+    <hr/>
+    
+    &nbsp;
+        <nav class="DontPrint">    
+                <dl class="sub-nav green maincontent">
+    <dd class="active">
+    <a href="javascript:history.back()">Zur&uuml;ck</a>
+    </dd>
+    </dl>
+    </nav>
+    <div id="semanticsearch"></div>
+    <div class="semanticsearch_results"><div class="twelve columns text-center"><img src="https://files.idw-online.de/loading.gif" width="128" height="128"/></div></div>
+
+    <script type="text/javascript">     
+        $(document).ready(function() {
+            $.ajax({
+                url: "https://api.idw-online.de/public/semanticsearch/pressreleases/823175",
+                context: document.body,
+                type: "GET",
+                dataType: "json",
+                timeout: 5000,
+                success: function(data) {
+                    var items = data['_embedded'];
+                    var pm_html = ""
+                    if(items.length > 0) {
+                        pm_html += '<div class="row"><div class="nine columns"><h5 style="margin-top: 3px; margin-bottom:30px;">Die semantisch ähnlichsten Pressemitteilungen im idw</h5></div><div class="three columns text-right" "><a href="https://www.dfki.de/web/forschung/forschungsbereiche/sprachtechnologie-und-multilingualitaet/qaie-team/3sc" target="_blank" title="DFKI"><img src="https://files.idw-online.de/Icons/powered-by-dfki-wide.jpg" width="126" height="25"/></a></div></div>';
+                        items.forEach(function(item){
+                            var timestring = item['datetime'].split(" ")
+                            var date = timestring[0]
+                            var time = timestring[1]
+                            date = date.split("-")
+                            time = time.split(":")
+                            var dateFormat = {
+                                "de_DE": "dd.MM.yyyy HH:mm",
+                                "en_US": "MM/dd/yyyy HH:mm"
+                            }
+                            var jsDate = new Date(date[0], Number(date[1]) - 1, date[2], time[0], time[1])
+                            pm_html += '<div class="row"> <div class="two columns"><p>' +$.format.date(jsDate, dateFormat['de_DE'])+ '</p></div> <div class="nine columns"> <h6><a href="/de/news?id='+item['id']+ '&type=semanticsearch">' + item['title'] + '</a></h6> <p><em>' + item['institution'] + '</em></p> <p text-align="justify"></p> </div> <div class="one columns">'
+                            if(item['images'].length > 0) {
+                                pm_html += '<span style="display: inline-block;" class="icon medium" data-icon="1" title="Foto"><span aria-hidden="true"><span class="has-tip tip-left noradius" data-width="250" title="'
+
+                                item['images'].every(function(image){
+                                        pm_html += "<img src='" + image + "' border='0' alt='image' />"
+                                        return false
+                                })
+                                pm_html += '"style=""><a href="/de/news'+item['id']+'">1</a></span>'
+                                pm_html += '</span></span>'
+                            } 
+                            pm_html += '</div> </div><hr>'
+                        })
+                    }
+                    $(".semanticsearch_results").html(pm_html);                    
+                },
+                error: function(xmlhttprequest, textstatus, message) {
+                    console.log(textstatus)
+                }
+                });
+        });
+    </script>
+   
+    </div></div>
+        <div class="three columns" id="sidebar">
+         <div class="blueline-top blueline-bottom add-padding-h" >
+         
+        <div class="icons-base">
+        
+            <span style="display: inline-block;" class="icon medium" data-icon="b" title="Merkfunktion"><span aria-hidden="true"><a href="/de/bookmarks">b</a></span></span>
+            
+        <span style="display: inline-block;" class="icon active medium" data-icon="P" title="Druckansicht"><span aria-hidden="true"><a href="/de/news?print=1&id=823175">P</a></span></span>
+        <span style="display: inline-block;" class="icon active medium" data-icon="_" title="Kurzlink"><span aria-hidden="true"><a onclick="window.prompt ('Copy: Ctrl+C, Enter','http://idwf.de/-DI.HAA')" href="#">_</a></span></span>
+        <span style="display: inline-block;" class="icon active medium" data-icon="." title="PDF"><span aria-hidden="true"><a href="/de/pdfnews823175" >.</a></span></span>
+        <span style="display: inline-block;" class="icon medium" data-icon="A" title="Weiterleiten"><span aria-hidden="true"><a href="/de/forwarddocument?document_type=press_release&document_id=823175">A</a></span></span>
+        
+        </div>
+        
+         
+         <hr>
+         <p class="smallscreenhide"><a class="main" data-reveal-id="imgModal1" href="#"><img src="https://idw-online.de/de/newsimage?id=385013&size=thumbnail" width="180" height="169" alt="Effiziente Hybridbatterie" title="Effiziente Hybridbatterie" border="0" id="image_385013_thumb"/></a>
+<span style="display: inline-block;" class="icon medium" data-icon="&lt;" title="Details"><span style="top: -69%;" aria-hidden="true"><a class="main" data-reveal-id="imgModal"><a href="/de/image?id=385013&amp;size=screen">&lt;</a></span></span><br/>Effiziente Hybridbatterie<br/><br/>(c) Wiley-VCH</p>
+         </div>
+        </div> 
+        </div>
+        
+        <div id="hidden_modals">
+        
+        <div class="reveal-modal" id="imgModal1">
+        <h4>Effiziente Hybridbatterie</h4>
+        <div style="background-color: #CCCCCC; width: 100%; min-height: 200px; ">
+        <img src='https://idw-online.de/de/newsimage?id=385013&size=screen'/>
+        </div><br/>
+        <p><a href="/de/image?id=385013&amp;size=screen">Zum Download</a></p>
+        <a class="close-reveal-modal">x</a>
+       </div>
+        
+        </div>
+     <footer class="DontPrint">
+     <div class="row hide-for-small ">
+            <div class="two columns ">
+             <h6>Erste Schritte</h6>
+            <ul><li><a href="/de/introduction">Einführung</a></li><li><a href="/de/journalistoffers">Recherche</a></li><li><a href="/de/piooffers">Publizieren</a></li><li><a href="/de/faq">FAQ</a></li></ul>
+            </div>
+            <div class="two columns ">
+             <h6>Über den idw</h6>
+            <ul><li><a href="/de/aboutus">Wer wir sind</a></li><li><a href="/de/associationinfo">Mitgliedschaft</a></li><li><a href="/de/addressbook">Mitgliederverzeichnis</a></li><li><a href="/de/idwnews">In eigener Sache</a></li><li><a href="/de/idwaward">idw-Preis</a></li><li><a href="/de/cooperation">Partner</a></li><li><a href="/de/idwjobs">Stellenangebote</a></li><li><a href="/de/team">Kontakt/Team</a></li></ul>
+            </div>
+            <div class="two columns ">
+            
+            </div>
+            <div class="two columns ">
+             
+            </div>
+            <div class="two columns ">&nbsp;</div>
+            <div class="two columns ">
+             <h6>Weitere</h6>
+            <ul><li><a href="/de/team">Kontakt</a></li><li><a href="/de/imprint">Impressum</a></li><li><a href="/de/termsofuse">Nutzungsbedingungen</a></li><li><a href="/de/dataconfidentiality">Datenschutzerklärung</a></li></ul>
+            </div>
+        </div>
+        <div class="row hide-for-small ">
+            <hr class="DontPrint">
+        </div>
+        <div class="row hide-for-small ">
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Nachrichten</h6>
+            <ul class="off">
+                <li><a href="#">Mein Ticker</a></li>
+                <li><a href="#">Merkliste</a></li>
+                </ul>--> &nbsp;
+            </div>
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Termine</h6>
+            <ul class="off">
+                <li><a href="#">Mein Kalender</a></li>
+                <li><a href="#">Merkliste</a></li>
+            </ul>--> &nbsp;
+            </div>
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Experten</h6>
+            <ul class="off">
+                <li><a href="#">Hendi quam</a></li>
+                <li><a href="#">Secaecto bearum</a></li>
+                <li><a href="#">Invende lendebis</a></li>
+                <li><a href="#">Magnatiurmo</a></li>
+                <li><a href="#">Berovolorem</a></li>
+                <li><a href="#">Corabipsandam</a></li>
+            </ul>-->
+            </div>
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Bilder/Videos</h6>
+            <ul class="off">
+                <li><a href="#">Meine Bilder/Videos</a></li>
+                <li><a href="#">Merkliste</a></li>
+            </ul>--> &nbsp;
+            </div>
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Literatur</h6>
+            <ul>
+                <li><a href="#">Hendi quam</a></li>
+                <li><a href="#">Secaecto bearum</a></li>
+                <li><a href="#">Invende lendebis</a></li>
+            </ul>--> &nbsp;
+            </div>
+            <div class="two columns ">
+            <!--<h6 class="uppercase">Weiterbildung</h6>
+            <ul>
+                <li><a href="#">Hendi quam</a></li>
+                <li><a href="#">Secaecto bearum</a></li>
+                <li><a href="#">Berovolorem</a></li>
+            </ul>--> &nbsp;
+            </div>
+        </div><div class="row hide-for-small ">
+      <hr class="DontPrint" style="border-color: #E0E0E0;">
+        </div>
+        <div class="row ">
+            <div class="twelve columns DontPrint">
+           &copy; 1995-2023 Informationsdienst Wissenschaft e. V.
+          - <a href="/de/imprint">Impressum</a>
+           | <a href="/de/termsofuse">Nutzungsbedingungen</a> 
+            | <a href="/de/dataconfidentiality">Datenschutzerklärung</a></div>
+        </div>
+    </footer>
+              
+<div id="erweiterte_suche_n" class="reveal-modal ews" style="top: 104px; opacity: 1; visibility: hidden; display: none;">
+    <form action="simplesearch" method="get">
+        <h3>Erweiterte Suche</h3>
+            <dl class="tabs" style="margin-bottom: 0px;">
+                <dd class="active">
+                    <a href="#simple1">Erweiterte Suche</a>
+                </dd>
+                <dd>
+                    <a href="#simple2">Regionen</a>
+                </dd>
+                <dd>
+                    <a href="#simple3">weitere Optionen</a>
+                </dd>
+                <dd class="search">  
+                    <input id="extended_search_field" type="text" class="ten"  style="display: inline;margin-bottom:0;" placeholder="Suchbegriff(e)" onfocus="this.placeholder=''" onblur="this.placeholder='Suchbegriff(e)'" name="words" onkeyup="set_search_fields('search_field', 'extended_search_field')">
+                </dd>
+        </dl>
+        <hr>
+        <ul class="tabs-content" style="margin-top: 30px;">
+              <li class="active" id="simple1Tab">
+                                <div class="row">
+                                      <div class="two columns">
+                                          <h6 style="margin-bottom: 18px;">Umfang der Suche</h6>
+                                          <p><input type="hidden" name="scope" value="[ALWAYS_THERE]" /><label><input checked="checked" type="checkbox" name="scope" value="press_release" /> Suche in Pressemitteilungen</label><label><input checked="checked" type="checkbox" name="scope" value="event" /> Suche in Terminen</label></p>
+                                      </div>
+                                      
+                                      <div class="eight columns">
+                                          <dl class="tabs contained">                                         
+                                                      <dd class="active"><a href="#simpleContained1">Art der Pressemitteilung</a></dd>
+                                                      <dd ><a href="#simpleContained2">Arten der Veranstaltung</a></dd>
+                                                      <dd ><a href="#simpleContained3">Sachgebiete</a></dd>                                          
+                                            </dl>
+                                            <ul class="tabs-content contained">                                  
+                                                <li class="active"  id="simpleContained1Tab">
+                           <div class="row"><input type="hidden" name="category_ids" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="category_ids" value="4" /> Buntes aus der Wissenschaft <span class="has-tip tip-left noradius" data-width="300" title="z. B. Tag der offenen Tür, Ring-/Gastvorlesung, Messen mit Begleitprogramm, Vorträge &rarr; Termine bitte auch in den idw-Wissenschaftskalender eintragen!">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="10" /> Forschungs- / Wissenstransfer <span class="has-tip tip-left noradius" data-width="300" title="z. B. Beratung, Gründung, Patente, Entwicklungen, Messebeteiligung, Neue Methoden">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="7" /> Forschungsergebnisse <span class="has-tip tip-left noradius" data-width="300" title="Neues aus der Forschung; konkrete Ergebnisse von Studien, Untersuchungsreihen, (Modell-)  Versuchen; belastbare Belege und Aussagen;  DOI-Angabe;<br/>
+N I C H T: Auszeichnungen, geplante Studien oder Tests, Vorträge, Veröffentlichungen oder Messebeteiligungen, denen Forschungsergebnisse zugrunde liegen. ">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="1" /> Forschungsprojekte <span class="has-tip tip-left noradius" data-width="300" title="z. B. Projektinitiierung, Zwischenbericht oder Abschluss">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="13" /> Kooperationen <span class="has-tip tip-left noradius" data-width="300" title="z. B. mit anderen Einrichtungen aus der Wissenschaft, der Wirtschaft oder sonstigen Partnern (nicht werblich), Internationales">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="6" /> Organisatorisches <span class="has-tip tip-left noradius" data-width="300" title="z. B. Neugründungen, Neubauten, anstehende Wahlen, Umstrukturierung, Fristen, Fusion">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="2" /> Personalia <span class="has-tip tip-left noradius" data-width="300" title="z. B. Berufungen, Wahlergebnisse, Jubiläen">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="14" /> Pressetermine <span class="has-tip tip-left noradius" data-width="300" title="Einladungen an Journalisten/Redaktionen">[i]</span></label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="category_ids" value="12" /> Schule und Wissenschaft <span class="has-tip tip-left noradius" data-width="300" title="z. B. Schnuppertage, Kinderuni, Schüler-Labor, Girl's/Boy's Day, Kooperation mit Schulen/Kindergärten">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="8" /> Studium und Lehre <span class="has-tip tip-left noradius" data-width="300" title="z. B. Details zu Studienfächern/(Aufbau-)Studiengängen, Ausbildungskonzepte, E-Learning, Akkreditierungen">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="11" /> Wettbewerbe / Auszeichnungen <span class="has-tip tip-left noradius" data-width="300" title="Auszeichnungen für Institutionen und (Einzel-) Personen, Hochschul-Rankings">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="5" /> Wissenschaftliche Publikationen <span class="has-tip tip-left noradius" data-width="300" title="bitte geben Sie den 'Digital Object Identifier' (DOI) an, sofern vorhanden - siehe <a href='http://de.wikipedia.org/wiki/Digital_Object_Identifier' target='_blank'>http://de.wikipedia.org/wiki/Digital_Object_Identifier</a>">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="3" /> Wissenschaftliche Tagungen <span class="has-tip tip-left noradius" data-width="300" title="z. B. Konferenzen, Symposien, Jahrestagungen">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="15" /> wissenschaftliche Weiterbildung <span class="has-tip tip-left noradius" data-width="300" title="z. B. lebenslanges Lernen, Angebote mit Zertifikat für Wissenschaftler, Akademiker, Studenten">[i]</span></label></li><li><label><input type="checkbox" name="category_ids" value="9" /> Wissenschaftspolitik <span class="has-tip tip-left noradius" data-width="300" title="z. B. Wissenschaftsfinanzierung, Evaluationen, Wissenschaftsförderung, neue Regelungen">[i]</span></label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'category_ids')" /> Alles auswählen</li></ul></div></div></li>
+                                                <li  id="simpleContained2Tab">
+                           <div class="row"><input type="hidden" name="eventcategory_ids" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="eventcategory_ids" value="500" /> (studentische) Informationsveranstaltung / Messe <span class="has-tip tip-left noradius" data-width="300" title="Jobmesse, Tag der offenen Tür">[i]</span></label></li><li><label><input type="checkbox" name="eventcategory_ids" value="300" /> Angebote für Kinder + Jugendliche <span class="has-tip tip-left noradius" data-width="300" title="Kinderuni, Uni-Schnuppertag, Girls' day">[i]</span></label></li><li><label><input type="checkbox" name="eventcategory_ids" value="600" /> Ausstellung / kulturelle Veranstaltung / Fest <span class="has-tip tip-left noradius" data-width="300" title="Konzert, Ausstellung, akad. Abschlussfeier, Preisverleihung, Hochschulfest">[i]</span></label></li><li><label><input type="checkbox" name="eventcategory_ids" value="700" /> Exkursion</label></li><li><label><input type="checkbox" name="eventcategory_ids" value="100" /> Konferenz / Symposion / (Jahres-)Tagung</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="eventcategory_ids" value="800" /> Pressetermine <span class="has-tip tip-left noradius" data-width="300" title="Pressetermine, Pressekonferenzen">[i]</span></label></li><li><label><input type="checkbox" name="eventcategory_ids" value="200" /> Seminar / Workshop / Diskussion <span class="has-tip tip-left noradius" data-width="300" title="Sommeruni, Podiumsdiskussion">[i]</span></label></li><li><label><input type="checkbox" name="eventcategory_ids" value="400" /> Vortrag / Kolloquium / Vorlesung <span class="has-tip tip-left noradius" data-width="300" title="Antritts- oder Ringvorlesung, Autorenlesung">[i]</span></label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'eventcategory_ids')" /> Alles auswählen</li></ul></div></div></li>
+                                                <li  id="simpleContained3Tab">
+                           <div class="row"><input type="hidden" name="field_ids" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="field_ids" value="205" /> Bauwesen / Architektur <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>Hoch-/Tiefbau, Straßen-/Brückenbau, Tunnelbau, Holz-/Stahlbau, Ingenieurbau, Bautechnik, Bauwirtschaft, Gebäudetechnik,</li> <li>Städtebau, Bauwerke, Landschaftsarchitektur, Baukunst</li></ul>">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="100" /> Biologie <span class="has-tip tip-left noradius" data-width="300" title="z. B. Botanik, Zoologie, Molekularbiologie, Zellbiologie (Cytologie), Entwicklungsbiologie, Physiologie, Verhaltensbiologie, Evolutionsbiologie, Biotechnologie, Biochemie, Bionik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="101" /> Chemie <span class="has-tip tip-left noradius" data-width="300" title="z. B. allgemeine Chemie, Anorganische Chemie, Organische Chemie, Physikalische Chemie, Biochemie, Theoretische Chemie, Analytische Chemie, Technische Chemie, Lebensmittelchemie">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="302" /> Elektrotechnik <span class="has-tip tip-left noradius" data-width="300" title="z. B. Gebäudetechnik, Steuer-/Mess-/Regelungstechnik, Nachrichten-/Computertechnik, technische Informatik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="301" /> Energie <span class="has-tip tip-left noradius" data-width="300" title="z. B. Energieforschung, erneuerbare/alternative Energieen, Energietechnik, Energiegewinnung/-nutzung, Energiequellen/-träger">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="401" /> Ernährung / Gesundheit / Pflege <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>Lebensmittel-Monitoring/-Recht/-Kennzeichnung, Nahrungsergänzung, Functional Food - Krankheitsverhütung, Lebensverlängerung,</li> <li>Gesundheitsförderung,</li> <li>Kinderkrankenpflege, Altenpflege, Heilerziehungspflege, Psychiatrische Pflege</li><li>Lebensmittelwissenschaften</li></ul>">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="203" /> Geowissenschaften <span class="has-tip tip-left noradius" data-width="300" title="z. B. Geografie, Tourismus, Erdforschung zu Rohstoffen/Steinen und Erden/Wärme/Wetter/Klima/Vulkanen/Tektonik, Angewandte Geologie, Geotechnik, Geoinformatik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="602" /> Geschichte / Archäologie</label></li><li><label><input type="checkbox" name="field_ids" value="603" /> Gesellschaft <span class="has-tip tip-left noradius" data-width="300" title="z. B. Soziologie, Demografie, Migration, soziale Arbeit, Gender/Gleichstellung, Geschlechterforschung">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="300" /> Informationstechnik <span class="has-tip tip-left noradius" data-width="300" title="z. B. Informatik, Informations- und Datenverarbeitung, Technikfolgeabschätzung, Automatisierung, Mensch-Maschine-Schnittstelle, Künstliche Intelligenz, Digitalisierung">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="604" /> Kulturwissenschaften <span class="has-tip tip-left noradius" data-width="300" title="z. B. Ethnologie, Anthropologie, interkulturelle Kommunikation">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="701" /> Kunst / Design <span class="has-tip tip-left noradius" data-width="300" title="z. B. Kunstpädagogik, Restaurierung, Textildesign">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="304" /> Maschinenbau <span class="has-tip tip-left noradius" data-width="300" title="z. B. Thermodynamik, Werkstoffwissenschaften, (technische) Mechanik, Konstruktion, Mess- und Regelungstechnik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="200" /> Mathematik <span class="has-tip tip-left noradius" data-width="300" title="z. B. formale Logik, Technomathematik, Wirtschaftsmathematik, Computermathematik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="600" /> Medien- und Kommunikationswissenschaften <span class="has-tip tip-left noradius" data-width="300" title="z. B. Publizistik, Journalistik, Film- und Fernsehwissenschaften, Nutzungs- und Wirkungsforschung">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="400" /> Medizin <span class="has-tip tip-left noradius" data-width="300" title="z.B. evidenzbasierte Medizin, Heilkunde, Zahnmedizin, Neurowissenschaft, Alternativmedizin, Medizintechnik, Pharmazie">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="103" /> Meer / Klima <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>Ozeanologie, Hydrologie, Glaziologie, Polarforschung,</li> <li>Klimatologie, Meteorologie, Klima auf anderen Planeten, Klimafaktoren, Klimawandel,  Mikro-,  Meso-, Makroklima, Klimafaktor Mensch, Globale Erwärmung, Wetter</li></ul>">[i]</span></label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="field_ids" value="700" /> Musik / Theater <span class="has-tip tip-left noradius" data-width="300" title="auch Tanz">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="605" /> Pädagogik / Bildung <span class="has-tip tip-left noradius" data-width="300" title="z. B. Erwachsenenbildung, Berufspädagogik, Integration">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="608" /> Philosophie / Ethik <span class="has-tip tip-left noradius" data-width="300" title="z. B. interkulturelle Philosophie">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="201" /> Physik / Astronomie <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>theoretische Physik, Experimentalphysik, Atom- und Molekülphysik, Quantentheorie,</li> <li>Astrophysik, Raumfahrt, Kosmologie</li></ul>">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="501" /> Politik <span class="has-tip tip-left noradius" data-width="300" title="z. B. Verwaltungswissenschaften, politische Theorie, Ideengeschichte, vergleichende Politikwissenschaft, Internationale Beziehungen">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="606" /> Psychologie <span class="has-tip tip-left noradius" data-width="300" title="z. B. Arbeitswissenschaften, Verhaltensforschung, Kognitionswissenschaft">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="502" /> Recht <span class="has-tip tip-left noradius" data-width="300" title="z. B. Rechtsphilosophie/-soziologie, Kriminologie, Rechtsgeschichte">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="607" /> Religion <span class="has-tip tip-left noradius" data-width="300" title="z. B. Religionen, Religiösität, Religionskritik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="402" /> Sportwissenschaft <span class="has-tip tip-left noradius" data-width="300" title="z. B. Biomechanik, Bewegungswissenschaft, Sportdidaktik/-medizin/-pädagogik/-ökonomie, Trainingswissenschaft">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="601" /> Sprache / Literatur <span class="has-tip tip-left noradius" data-width="300" title="z. B. Spracherwerb, Sprecherziehung, Künstliche Intelligenz, Philologien, Linguistik, Literaturwissenschaft, Komparatistik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="204" /> Tier / Land / Forst <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>Veterinärmedizin,</li> <li>Agrarökonomie, nachwachsende Rohstoffe, ökologischer Landbau, Pflanzen-/Tierproduktion, Agrartechnik,</li> <li>Waldökologie, Bodenkultur, Bewirtschaftung von Wald und Landschaft</li></ul>">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="102" /> Umwelt / Ökologie <span class="has-tip tip-left noradius" data-width="300" title="z. B. <ul><li>Umweltbelastung/-schäden, Folgenabschätzung, Umwelt- und Naturschutz, Kreislauf- und Abfallwirtschaft, Lärmschutz,</li> <li>(Elektro-) Smog, Verkehr- und Bauwesen, Energie- und Wasserwirtschaft, Geoökologie</li></ul>">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="306" /> Verkehr / Transport <span class="has-tip tip-left noradius" data-width="300" title="z. B. Straßen-/Luft-/Schiffsverkehr, Infrastruktur, Mobilität, Verkehrsplanung, Stauforschung, Personen-/Güterverkehr, Logistik, Verkehrswirtschaft ">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="305" /> Werkstoffwissenschaften <span class="has-tip tip-left noradius" data-width="300" title="z. B. Materialwissenschaft, Werkstoffprüfung/-strukturen/-eigenschaften, Textiltechnik">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="500" /> Wirtschaft <span class="has-tip tip-left noradius" data-width="300" title="z. B. VWL, BWL, Wirtschaftsgeschichte">[i]</span></label></li><li><label><input type="checkbox" name="field_ids" value="999999" /> fachunabhängig <span class="has-tip tip-left noradius" data-width="300" title="z. B. Themen der Wissenschaftspolitik, allgemeine Wissenschaftsorganisation/-administration oder Studienthemen, evtl. Personalien">[i]</span></label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'field_ids')" /> Alles auswählen</li></ul></div></div></li>
+                                            </ul>
+                                                <p><input type="submit" name="suchen" value="suchen »" class="secondary button"></p>
+                                        </div>
+                                            
+                                        <div class="two columns">
+                                             <h6 style="margin-bottom: 18px;">Datum der Veröffentlichung</h6>
+                                              <p><span>Anfangsdatum</span><br><input name="start_date" value="" onkeyup="check_field_length('input_field_start_date', 'not_area_start_date', 1000, 2000, 3000);" onchange="check_field_length('input_field_start_date', 'not_area_start_date', 1000, 2000, 3000);" type="text" id="input_field_start_date" size="20" /></p>
+                                              <p><span>Enddatum</span><br><input name="end_date" value="" onkeyup="check_field_length('input_field_end_date', 'not_area_end_date', 1000, 2000, 3000);" onchange="check_field_length('input_field_end_date', 'not_area_end_date', 1000, 2000, 3000);" type="text" id="input_field_end_date" size="20" /></p>
+                                        </div>
+                                    </div>
+              </li>
+              <li id="simple2Tab" style="display: none;">
+                  <div class="row">
+                      <div class="two columns"></div>
+                          <div class="seven columns">
+                              <dl class="tabs contained">
+                                  <dd class="active"><a href="#simpleContained6">Länder</a></dd>
+                                  <dd ><a href="#simpleContained7">Sprachen</a></dd>
+                                   <dd><a href="#simpleContained8">Deutschland</a></dd><dd><a href="#simpleContained9">Österreich</a></dd><dd><a href="#simpleContained10">Schweiz</a></dd>
+                               </dl>
+                               <ul class="tabs-content contained">
+                                    <li class="active"  id="simpleContained6Tab">
+                           <div class="row"><input type="hidden" name="country_ids" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="country_ids" value="35" /> Dänemark</label></li><li><label><input type="checkbox" name="country_ids" value="36" /> Deutschland</label></li><li><label><input type="checkbox" name="country_ids" value="46" /> Frankreich</label></li><li><label><input type="checkbox" name="country_ids" value="188" /> Großbritannien</label></li><li><label><input type="checkbox" name="country_ids" value="65" /> Israel</label></li><li><label><input type="checkbox" name="country_ids" value="66" /> Italien</label></li><li><label><input type="checkbox" name="country_ids" value="68" /> Japan</label></li><li><label><input type="checkbox" name="country_ids" value="95" /> Liechtenstein</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="country_ids" value="97" /> Luxemburg</label></li><li><label><input type="checkbox" name="country_ids" value="121" /> Niederlande</label></li><li><label><input type="checkbox" name="country_ids" value="126" /> Österreich</label></li><li><label><input type="checkbox" name="country_ids" value="146" /> Schweden</label></li><li><label><input type="checkbox" name="country_ids" value="147" /> Schweiz</label></li><li><label><input type="checkbox" name="country_ids" value="180" /> Ungarn</label></li><li><label><input type="checkbox" name="country_ids" value="999999" /> sonstiges</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'country_ids')" /> Alles auswählen</li></ul></div></div></li>
+                                    <li  id="simpleContained7Tab">
+                           <div class="row"><input type="hidden" name="langs" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="langs" value="de_DE" /> Deutsch</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="langs" value="en_US" /> Englisch</label></li></ul></div></div></li>
+                                    <li  id="simpleContained8Tab">
+                           <div class="row"><input type="hidden" name="provinces_36" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_36" value="1" /> Baden-Württemberg</label></li><li><label><input type="checkbox" name="provinces_36" value="2" /> Bayern</label></li><li><label><input type="checkbox" name="provinces_36" value="3" /> Berlin</label></li><li><label><input type="checkbox" name="provinces_36" value="4" /> Brandenburg</label></li><li><label><input type="checkbox" name="provinces_36" value="5" /> Bremen</label></li><li><label><input type="checkbox" name="provinces_36" value="6" /> Hamburg</label></li><li><label><input type="checkbox" name="provinces_36" value="7" /> Hessen</label></li><li><label><input type="checkbox" name="provinces_36" value="8" /> Mecklenburg-Vorpommern</label></li><li><label><input type="checkbox" name="provinces_36" value="9" /> Niedersachsen</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_36" value="10" /> Nordrhein-Westfalen</label></li><li><label><input type="checkbox" name="provinces_36" value="11" /> Rheinland-Pfalz</label></li><li><label><input type="checkbox" name="provinces_36" value="12" /> Saarland</label></li><li><label><input type="checkbox" name="provinces_36" value="13" /> Sachsen</label></li><li><label><input type="checkbox" name="provinces_36" value="14" /> Sachsen-Anhalt</label></li><li><label><input type="checkbox" name="provinces_36" value="15" /> Schleswig-Holstein</label></li><li><label><input type="checkbox" name="provinces_36" value="16" /> Thüringen</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'provinces_36')" /> Alles auswählen</li></ul></div></div></li><li  id="simpleContained9Tab">
+                           <div class="row"><input type="hidden" name="provinces_126" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_126" value="126001" /> Burgenland</label></li><li><label><input type="checkbox" name="provinces_126" value="126002" /> Kärnten</label></li><li><label><input type="checkbox" name="provinces_126" value="126003" /> Niederösterreich</label></li><li><label><input type="checkbox" name="provinces_126" value="126004" /> Oberösterreich</label></li><li><label><input type="checkbox" name="provinces_126" value="126005" /> Salzburg</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_126" value="126006" /> Steiermark</label></li><li><label><input type="checkbox" name="provinces_126" value="126007" /> Tirol</label></li><li><label><input type="checkbox" name="provinces_126" value="126008" /> Vorarlberg</label></li><li><label><input type="checkbox" name="provinces_126" value="126009" /> Wien</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'provinces_126')" /> Alles auswählen</li></ul></div></div></li><li  id="simpleContained10Tab">
+                           <div class="row"><input type="hidden" name="provinces_147" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_147" value="147001" /> Aargau</label></li><li><label><input type="checkbox" name="provinces_147" value="147002" /> Appenzell Ausserrhoden</label></li><li><label><input type="checkbox" name="provinces_147" value="147003" /> Appenzell Innerrhoden</label></li><li><label><input type="checkbox" name="provinces_147" value="147004" /> Basel-Landschaft</label></li><li><label><input type="checkbox" name="provinces_147" value="147005" /> Basel-Stadt</label></li><li><label><input type="checkbox" name="provinces_147" value="147006" /> Bern</label></li><li><label><input type="checkbox" name="provinces_147" value="147007" /> Freiburg</label></li><li><label><input type="checkbox" name="provinces_147" value="147008" /> Genf</label></li><li><label><input type="checkbox" name="provinces_147" value="147009" /> Glarus</label></li><li><label><input type="checkbox" name="provinces_147" value="147010" /> Graubünden</label></li><li><label><input type="checkbox" name="provinces_147" value="147011" /> Jura</label></li><li><label><input type="checkbox" name="provinces_147" value="147012" /> Luzern</label></li><li><label><input type="checkbox" name="provinces_147" value="147013" /> Neuenburg</label></li><li><label><input type="checkbox" name="provinces_147" value="147014" /> Nidwalden</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="provinces_147" value="147015" /> Obwalden</label></li><li><label><input type="checkbox" name="provinces_147" value="147016" /> Schaffhausen</label></li><li><label><input type="checkbox" name="provinces_147" value="147017" /> Schwyz</label></li><li><label><input type="checkbox" name="provinces_147" value="147018" /> Solothurn</label></li><li><label><input type="checkbox" name="provinces_147" value="147019" /> St. Gallen</label></li><li><label><input type="checkbox" name="provinces_147" value="147020" /> Tessin</label></li><li><label><input type="checkbox" name="provinces_147" value="147021" /> Thurgau</label></li><li><label><input type="checkbox" name="provinces_147" value="147022" /> Uri</label></li><li><label><input type="checkbox" name="provinces_147" value="147023" /> Waadt</label></li><li><label><input type="checkbox" name="provinces_147" value="147024" /> Wallis</label></li><li><label><input type="checkbox" name="provinces_147" value="147025" /> Zug</label></li><li><label><input type="checkbox" name="provinces_147" value="147026" /> Zürich</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'provinces_147')" /> Alles auswählen</li></ul></div></div></li>
+                               </ul>
+                                <p><input type="submit" name="suchen" value="suchen »" class="secondary button"></p>
+                          </div>
+                          <div class="three columns"></div>
+                    </div>
+                </li>
+                <li id="simple3Tab" style="display: none;">
+                    <div class="row">
+                        <div class="two columns"></div>
+                        <div class="seven columns">
+                            <dl class="tabs contained">
+                                <dd class="active" ><a href="#simpleContained4">Bei der Veröffentlichung gewählte Reichweite</a></dd>
+                                <dd ><a href="#simpleContained5">Zielgruppen</a></dd>
+                            </dl>
+                            <ul class="tabs-content contained">
+                                <li class="active"  id="simpleContained4Tab">
+                           <div class="row"><input type="hidden" name="relevance_id" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="relevance_id" value="3" /> lokal</label></li><li><label><input type="checkbox" name="relevance_id" value="5" /> regional</label></li><li><label><input type="checkbox" name="relevance_id" value="10" /> überregional</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="relevance_id" value="20" /> international</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'relevance_id')" /> Alles auswählen</li></ul></div></div></li>
+                                <li  id="simpleContained5Tab">
+                           <div class="row"><input type="hidden" name="audience_ids" value="[ALWAYS_THERE]" /><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="audience_ids" value="1" /> Journalisten</label></li><li><label><input type="checkbox" name="audience_ids" value="5" /> Lehrer/Schüler</label></li><li><label><input type="checkbox" name="audience_ids" value="3" /> Studierende</label></li><li><label><input type="checkbox" name="audience_ids" value="4" /> Wirtschaftsvertreter</label></li></ul></div><div class="six columns">
+                                          <ul><li><label><input type="checkbox" name="audience_ids" value="2" /> Wissenschaftler</label></li><li><label><input type="checkbox" name="audience_ids" value="999999" /> jedermann</label></li><li><input type="checkbox" name="toggler" onClick="toggle_checkboxes(this, 'audience_ids')" /> Alles auswählen</li></ul></div></div></li>                                    
+                            </ul>
+                            <p><input type="submit" name="suchen" value="suchen »" class="secondary button"></p>
+                        </div>
+                        <div class="three columns"></div>
+                    </div>
+                </li>
+        </ul>
+        <a class="close-reveal-modal">×</a>
+    </form>
+</div>      
+
+    <!-- end footer -->
+    <div id="ews_hilfe" class="reveal-modal">
+     <h2>Hilfe</h2>
+        <h5 class="subheader">Die Suche / Erweiterte Suche im idw-Archiv</h5>
+
+
+<h5>Verknüpfungen</h5>
+<p>Sie können Suchbegriffe mit und, oder und / oder nicht verknüpfen, 
+z. B. Philo nicht logie.</p>
+
+<h5>Klammern</h5>
+<p>Verknüpfungen können Sie mit Klammern voneinander trennen, 
+z. B. (Philo nicht logie) oder (Psycho und logie).</p> 
+
+<h5>Wortgruppen</h5>
+<p>Zusammenhängende Worte werden als Wortgruppe gesucht, wenn Sie sie in Anführungsstriche setzen, 
+z. B. „Bundesrepublik Deutschland“. </p>
+
+<h5>Auswahlkriterien</h5>
+<p>Die Erweiterte Suche können Sie auch nutzen, ohne Suchbegriffe einzugeben. Sie orientiert sich dann an den Kriterien, die Sie ausgewählt haben (z. B. nach dem Land oder dem Sachgebiet).</p>
+
+<p>Haben Sie in einer Kategorie kein Kriterium ausgewählt, wird die gesamte Kategorie durchsucht (z.B. alle Sachgebiete oder alle Länder). </p>
+
+      
+       <script type="text/javascript">
+        $('.hidden').hide();
+        $('a#hide').live("click", function(){
+            $('.hidden').toggle();
+            return false;
+        });
+      </script> 
+      </div>
+      
+  </div>
+</div>
+
+</body>
+        
+</html>

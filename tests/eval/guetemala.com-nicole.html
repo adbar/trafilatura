@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="es-ES" prefix="og: http://ogp.me/ns#">
+<head>
+    <!-- METAS -->
+    <meta charset="UTF-8"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam-cell.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={xpid:"VQcHV1BbDRABVFlQBQcPX1w=",licenseKey:"5b898c3193",applicationID:"108226898"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{s.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(28),s={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,i.indexOf("dev")!==-1&&(s.dev=!0),i.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&o.on("internal-error",function(t){r(t.stack)}),s.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,s){try{p?p-=1:i(s||new UncaughtException(t,e,n),!0)}catch(f){try{o("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:c.now();o("err",[t,n])}var o=t("handle"),a=t(29),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError";if(!c.disabled){var p=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(10),t(9),"addEventListener"in window&&t(6),c.xhrWrappable&&t(11),d=!0)}s.on("fn-start",function(t,e,n){d&&(p+=1)}),s.on("fn-err",function(t,e,n){d&&!n[l]&&(f(n,l,function(){return!0}),this.thrown=!0,i(n))}),s.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),s.on("internal-error",function(t){o("ierr",[t,c.now(),!0])})}},{}],3:[function(t,e,n){var r=t("loader");r.disabled||(r.features.ins=!0)},{}],4:[function(t,e,n){function r(){var t=new PerformanceObserver(function(t,e){var n=t.getEntries();s(v,[n])});try{t.observe({entryTypes:["resource"]})}catch(e){}}function i(t){if(s(v,[window.performance.getEntriesByType(w)]),window.performance["c"+l])try{window.performance[h](m,i,!1)}catch(t){}else try{window.performance[h]("webkit"+m,i,!1)}catch(t){}}function o(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var a=t("ee"),s=t("handle"),c=t(10),f=t(9),u=t(5),d=t(19),l="learResourceTimings",p="addEventListener",h="removeEventListener",m="resourcetimingbufferfull",v="bstResource",w="resource",g="-start",y="-end",x="fn"+g,b="fn"+y,E="bstTimer",R="pushState",S=t("loader");if(!S.disabled){S.features.stn=!0,t(8),"addEventListener"in window&&t(6);var O=NREUM.o.EV;a.on(x,function(t,e){var n=t[0];n instanceof O&&(this.bstStart=S.now())}),a.on(b,function(t,e){var n=t[0];n instanceof O&&s("bst",[n,e,this.bstStart,S.now()])}),c.on(x,function(t,e,n){this.bstStart=S.now(),this.bstType=n}),c.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),this.bstType])}),f.on(x,function(){this.bstStart=S.now()}),f.on(b,function(t,e){s(E,[e,this.bstStart,S.now(),"requestAnimationFrame"])}),a.on(R+g,function(t){this.time=S.now(),this.startPath=location.pathname+location.hash}),a.on(R+y,function(t){s("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),u()?(s(v,[window.performance.getEntriesByType("resource")]),r()):p in window.performance&&(window.performance["c"+l]?window.performance[p](m,i,d(!1)):window.performance[p]("webkit"+m,i,d(!1))),document[p]("scroll",o,d(!1)),document[p]("keypress",o,d(!1)),document[p]("click",o,d(!1))}}},{}],5:[function(t,e,n){e.exports=function(){return"PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver}},{}],6:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){s.inPlace(t,[u,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(i(window),i(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1];if(null!==n&&("function"==typeof n||"object"==typeof n)){var r=c(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?s(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],7:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var s=r.apply(this,t);return i.emit(n+"start",[t,a],s),s.then(function(t){return i.emit(n+"end",[null,t],s),t},function(t){throw i.emit(n+"end",[t],s),t})})}var i=t("ee").get("fetch"),o=t(29),a=t(28);e.exports=i;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,l=s.Response,p=s.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,e){r(d[h],e,f),r(l[h],e,f)}),r(s,"fetch",c),i.on(c+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(c+"done",[null,e],n)}else i.emit(c+"done",[t],n)}))},{}],8:[function(t,e,n){var r=t("ee").get("history"),i=t("wrap-function")(r);e.exports=r;var o=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;o&&o.pushState&&o.replaceState&&(a=o),i.inPlace(a,["pushState","replaceState"],"-")},{}],9:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],10:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";e.exports=o,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),o.on(c+u,r),o.on(s+u,i)},{}],11:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",s)}function i(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,y,"fn-",s)}function o(t){x.push(t),m&&(E?E.then(a):w?w(a):(R=-R,S.data=R))}function a(){for(var t=0;t<x.length;t++)r([],x[t]);x.length&&(x=[])}function s(t,e){return e}function c(t,e){for(var n in t)e[n]=t[n];return e}t(6);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=t(19),p=NREUM.o,h=p.XHR,m=p.MO,v=p.PR,w=p.SI,g="readystatechange",y=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],x=[];e.exports=u;var b=window.XMLHttpRequest=function(t){var e=new h(t);try{u.emit("new-xhr",[e],e),e.addEventListener(g,i,l(!1))}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(c(h,b),b.prototype=h.prototype,d.inPlace(b.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,e){r(t,e),o(e)}),u.on("open-xhr-start",r),m){var E=v&&v.resolve();if(!w&&!v){var R=1,S=document.createTextNode(R);new m(a).observe(S,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===g||a()})},{}],12:[function(t,e,n){function r(t){if(!s(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),v=Date.now(),w={spanId:h,traceId:m,timestamp:v};return(t.sameOrigin||c(t)&&l())&&(w.traceContextParentHeader=i(h,m),w.traceContextStateHeader=o(h,v,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&c(t)&&d())&&(w.newrelicHeader=a(h,m,v,n,r,f)),w}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",s=1,c="",f="";return i+"@nr="+o+"-"+s+"-"+n+"-"+r+"-"+t+"-"+a+"-"+c+"-"+f+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(s.d.tk=o),btoa(JSON.stringify(s))}function s(t){return f()&&c(t)}function c(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(25),h=t(14);e.exports={generateTracePayload:r,shouldGenerateTrace:s}},{}],13:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);return e.protocol&&"data"===e.protocol?void g("Ajax/DataUrl/Excluded"):void(e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,s("xhr",[e,n,this.startTime,this.endTime,"xhr"],this)))}}function i(t,e){var n=c(e),r=t.params;r.hostname=n.hostname,r.port=n.port,r.protocol=n.protocol,r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=n,t.sameOrigin=n.sameOrigin}function o(t,e){t.params.status=e.status;var n=v(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable&&!a.disabled){var s=t("handle"),c=t(14),f=t(12).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(20),m=t(18),v=t(15),w=t(19),g=t(21).recordSupportability,y=NREUM.o.REQ,x=window.XMLHttpRequest;a.features.xhr=!0,t(11),t(7),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,e.params=this.params||{},e.metrics=this.metrics||{},t.addEventListener("load",function(n){o(e,t)},w(!1)),h&&(h>34||h<10)||t.addEventListener("progress",function(t){e.lastSize=t.loaded},w(!1))}),u.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var s=0;s<l;s++)e.addEventListener(d[s],this.listener,w(!1))}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("xhr-resolved",function(){this.endTime=a.now()}),u.on("addEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof x&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof x&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=c(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=f(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)}),u.on("fetch-start",function(t,e){this.params={},this.metrics={},this.startTime=a.now(),this.dt=e,t.length>=1&&(this.target=t[0]),t.length>=2&&(this.opts=t[1]);var n,r=this.opts||{},o=this.target;if("string"==typeof o?n=o:"object"==typeof o&&o instanceof y?n=o.url:window.URL&&"object"==typeof o&&o instanceof URL&&(n=o.href),i(this,n),"data"!==this.params.protocol){var s=(""+(o&&o instanceof y&&o.method||r.method||"GET")).toUpperCase();this.params.method=s,this.txSize=m(r.body)||0}}),u.on("fetch-done",function(t,e){if(this.endTime=a.now(),this.params||(this.params={}),"data"===this.params.protocol)return void g("Ajax/DataUrl/Excluded");this.params.status=e?e.status:0;var n;"string"==typeof this.rxSize&&this.rxSize.length>0&&(n=+this.rxSize);var r={txSize:this.txSize,rxSize:n,duration:a.now()-this.startTime};s("xhr",[this.params,r,this.startTime,this.endTime,"fetch"],this)})}},{}],14:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];if(0===(t||"").indexOf("data:"))return{protocol:"data"};var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,s=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||s),"/"===i.pathname&&(r[t]=i),i}},{}],15:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(18);e.exports=r},{}],16:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return u.recordSupportability("API/"+e+"/called"),o(t+e,[f.now()].concat(s(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(28),s=t(29),c=t("ee").get("tracer"),f=t("loader"),u=t(21),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var l=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",h=p+"ixn-";a(l,function(t,e){d[e]=i(p,e,!0,"api")}),d.addPageAction=i(p,"addPageAction",!0),d.setCurrentRouteName=i(p,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(h+"tracer",[f.now(),t,n],r),function(){if(c.emit((i?"":"no-")+"fn-start",[f.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(h,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),u.recordSupportability("API/noticeError/called"),o("err",[t,f.now(),!1,e])}},{}],17:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],18:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],19:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],20:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],21:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[s,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",s="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:s},recordSupportability:r,recordCustom:i}},{}],22:[function(t,e,n){function r(){return s.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,s=t(30);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],23:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],24:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?p("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&p("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(f&&f<r.startTime)return;var i=[r],o=a({});o&&i.push(o),p("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||p("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function s(t){if(t instanceof w&&!y){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=h.now()?n.fid=h.now()-e:e>h.offset&&e<=Date.now()?(e-=h.offset,n.fid=h.now()-e):e=h.now(),y=!0,p("timing",["fi",e,n])}}function c(t){"hidden"===t&&(f=h.now(),p("pageHide",[f]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,d,l,p=t("handle"),h=t("loader"),m=t(27),v=t(19),w=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){u=new PerformanceObserver(r);try{u.observe({entryTypes:["paint"]})}catch(g){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(g){}l=new PerformanceObserver(o);try{l.observe({type:"layout-shift",buffered:!0})}catch(g){}}if("addEventListener"in document){var y=!1,x=["click","keydown","mousedown","pointerdown","touchstart"];x.forEach(function(t){document.addEventListener(t,s,v(!1))})}m(c)}},{}],25:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<o.length;s++)i=o[s],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(31)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],26:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}e.exports={agent:i,version:o,match:r}},{}],27:[function(t,e,n){function r(t){function e(){t(s&&document[s]?document[s]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(19);e.exports=r;var o,a,s;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",s="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",s="webkitVisibilityState")},{}],28:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],29:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],30:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?f(t,c,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!p.aborted||o){t&&a&&t(n,r,i);for(var s=e(i),c=m(n),f=c.length,u=0;u<f;u++)c[u].apply(s,r);var l=d[y[n]];return l&&l.push([x,n,r,s]),s}}function o(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function v(t){return l[t]=l[t]||i(n)}function w(t,e){p.aborted||u(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var g={},y={},x={on:o,addEventListener:o,removeEventListener:h,emit:n,get:v,listeners:m,context:e,buffer:w,abort:s,aborted:!1};return x}function o(t){return f(t,c,a)}function a(){return new r}function s(){(d.api||d.feature)&&(p.aborted=!0,d=p.backlog={})}var c="nr@context",f=t("gos"),u=t(28),d={},l={},p=e.exports=i();e.exports.getOrSetContext=o,p.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!T++){var t=O.info=NREUM.info,e=v.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();c(R,function(e,n){t[e]||(t[e]=n)});var n=a();s("mark",["onload",n+O.offset],null,"api"),s("timing",["load",n]);var r=v.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=h+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===v.readyState&&o()}function o(){s("mark",["domContent",a()+O.offset],null,"api")}var a=t(22),s=t("handle"),c=t(28),f=t("ee"),u=t(26),d=t(23),l=t(17),p=t(19),h=l.getConfiguration("ssl")===!1?"http":"https",m=window,v=m.document,w="addEventListener",g="attachEvent",y=m.XMLHttpRequest,x=y&&y.prototype,b=!d(m.location);NREUM.o={ST:setTimeout,SI:m.setImmediate,CT:clearTimeout,XHR:y,REQ:m.Request,EV:m.Event,PR:m.Promise,MO:m.MutationObserver};var E=""+location,R={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1215.min.js"},S=y&&x&&x[w]&&!/CriOS/.test(navigator.userAgent),O=e.exports={offset:a.getLastTimestamp(),now:a,origin:E,features:{},xhrWrappable:S,userAgent:u,disabled:b};if(!b){t(16),t(24),v[w]?(v[w]("DOMContentLoaded",o,p(!1)),m[w]("load",r,p(!1))):(v[g]("onreadystatechange",i),m[g]("onload",r)),s("mark",["firstbyte",a.getLastTimestamp()],null,"api");var T=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,c,f){function nrWrapper(){var o,a,u,l;try{a=this,o=d(arguments),u="function"==typeof r?r(o,a):r||{}}catch(p){i([p,"",[o,a,c],u],t)}s(n+"start",[o,a,c],u,f);try{return l=e.apply(a,o)}catch(h){throw s(n+"err",[o,a,h],u,f),h}finally{s(n+"end",[o,a,l],u,f)}}return a(e)?e:(n||(n=""),nrWrapper[l]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var s,c,f,u="-"===r.charAt(0);for(f=0;f<e.length;f++)c=e[f],s=t[c],a(s)||(t[c]=n(s,u?c+r:r,i,c,o))}function s(n,r,o,a){if(!h||e){var s=h;h=!0;try{t.emit(n,r,o,e,a)}catch(c){i([c,n,r,o],t)}h=s}}return t||(t=u),n.inPlace=r,n.flag=l,n}function i(t,e){e||(e=u);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)p.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[l])}function s(t,e){var n=e(t);return n[l]=t,o(t,n,u),n}function c(t,e,n){var r=t[e];t[e]=s(r,n)}function f(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var u=t("ee"),d=t(29),l="nr@original",p=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=s,e.exports.wrapInPlace=c,e.exports.argsToArray=f},{}]},{},["loader",2,13,4,3]);</script>
+
+    <!-- ICONS -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/icons/site.webmanifest">
+    <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/assets/icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/assets/icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- OpenSearch -->
+    <link type="application/opensearchdescription+xml" rel="search" href="/opensearch.xml">
+
+    <!-- APP -->
+    <meta name="apple-itunes-app" content="app-id=1049024104">
+    <meta name="google-play-app" content="app-id=adn.guatemala.com">
+
+    <!-- JavaScript Var Mobile Detection -->
+    <script>var is_mobile=false;</script>
+
+    <!-- JavaScript Var Is Sponsored -->
+    <script>var is_sponsored=false;</script>
+
+    <!-- Header Bidder e-planning -->
+    <script src="//i.e-planning.net/layers/hbdfp.js" id="hbepl" async data-isv="us.img.e-planning.net" data-sv="ads.us.e-planning.net" data-proxy="true" data-ci="2b40f"></script>
+
+    <!-- ADs DFP -->
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>var googletag = googletag || {}; googletag.cmd = googletag.cmd || []; </script>
+
+    <!-- STYLES -->
+    
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.guatemala.com/assets/css/swiper.min.css">
+    <link rel="stylesheet" href="https://www.guatemala.com/assets/css/styles.min.css?v=1649080094">
+    <link rel="stylesheet" href="https://www.guatemala.com/assets/fonts/fontello/css/guatemala.css?v=1649080094">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+
+    <!-- Newsletter css -->
+        <link rel="stylesheet" href="https://www.guatemala.com/assets/newsletter/dist/newsletter-styles.min.css?v=1649080094">
+
+
+    <!-- METAS: NO INDEX -->
+    
+    <!--[if lt IE 9]>
+    <script src="https://www.guatemala.com/assets/js/html5.js"></script>
+    <![endif]-->
+            <script>var ReadMoreActive=false;</script>
+        
+    <script type="text/javascript">
+        //get cookie
+        function getCookie(name) {
+            var name = name + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        var cookie_dimention = getCookie('__cv');
+    </script>
+
+    <!-- START: GOOGLE ANALYTICS -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-62155778-3', 'auto');
+        
+ga('set', 'dimension1', 'juandiego');
+ga('set', 'dimension2', '2022-04-19');
+ga('set', 'dimension3', 'Deportes');
+
+ga('set', 'dimension4', 'Directo');
+
+        if (cookie_dimention){
+            ga('set', 'dimension5', '1');
+        }
+        else{
+            ga('set', 'dimension5', '0');
+        }
+
+        ga('set', 'dimension6', '0');
+        ga(function(tracker) {
+            clientId = tracker.get('clientId');
+            ga('set', 'dimension7', clientId); //just set it once
+        });
+
+        ga('send', 'pageview');
+
+        ga('create', 'UA-62155778-7', 'auto', 'general');
+                    ga('general.set', 'dimension1', 'juandiego');
+            ga('general.set', 'dimension2', '2022-04-19');
+            ga('general.set', 'dimension3', 'Deportes');
+                ga('general.set', 'dimension4', 'Directo');
+                if (cookie_dimention){
+            ga('general.set', 'dimension5', '1');
+        }else{
+            ga('general.set', 'dimension5', '0');
+        }
+        ga('general.set', 'dimension6', '0');
+        ga(function(tracker) {
+            clientId = tracker.get('clientId');
+            ga('general.set', 'dimension7', clientId); //just set it once
+        });
+        ga('require', 'GTM-P9X4VWJ'); //google optimize
+        ga('general.send', 'pageview');
+    </script>
+    <!-- END: GOOGLE ANALYTICS -->
+
+    <!-- START: Google Ads Remarketing -->
+    <!-- Global site tag (gtag.js) - Google Ads: 784477961 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-784477961"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'AW-784477961');
+    </script>
+    <!-- END: Google Ads Remarketing -->
+
+    <!-- Styles for google optimize -->
+    <style>.async-hide { opacity: 0 !important} </style>
+    <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+    h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+    (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+    })(window,document.documentElement,'async-hide','dataLayer',4000,
+    {'GTM-P9X4VWJ':true});</script>
+
+    <!-- START: TailTarget Tag Manager TT-13133-4/CT-1115 -->
+    <script>
+        (function(i) {
+        var ts = document.createElement('script');
+        ts.type = 'text/javascript';
+        ts.async = true;
+        ts.src = ('https:' == document.location.protocol ? 'https://' :
+        'http://') + 'tags.t.tailtarget.com/t3m.js?i=' + i;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ts, s);
+        })('TT-13133-4/CT-1115');
+    </script>
+    <!-- END: TailTarget Tag Manager -->
+
+    <!-- ALEXA -->
+    <script type="text/javascript">
+        _atrk_opts = { atrk_acct:"WOY6o1IWNa10i+", domain:"guatemala.com",dynamic: true};
+        (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js "; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+    </script>
+    <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=WOY6o1IWNa10i+ " style="display:none" height="1" width="1" alt="" /></noscript>
+    <!-- END: ALEXA -->
+
+
+    <!-- START: FACEBOOK PIXEL -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '1590538467902767');
+        fbq('track', "PageView");
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1590538467902767&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- END: FACEBOOK PIXEL -->
+
+    <!-- COOKIES FUNCTIONS -->
+    <script type="text/javascript">
+        function createCookie(c,d,b){if(b){var a=new Date;a.setTime(a.getTime()+864E5*b);b="; expires="+a.toGMTString()}else b="";document.cookie=encodeURIComponent(c)+"="+encodeURIComponent(d)+b+"; path=/"}function readCookie(c){c=encodeURIComponent(c)+"=";for(var d=document.cookie.split(";"),b=0;b<d.length;b++){for(var a=d[b];" "===a.charAt(0);)a=a.substring(1,a.length);if(0===a.indexOf(c))return decodeURIComponent(a.substring(c.length,a.length))}return null}function eraseCookie(c){createCookie(c,"",-1)};
+    </script>
+
+    <!-- FACEBOOK APP_ID -->
+    <meta property="fb:app_id" content="936078066413175"/>
+
+        <!-- ONE SIGNAL -->
+    <link rel="manifest" href="/manifest.json" />
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+    <script>var OneSignal = window.OneSignal || []; var popupShowed = false; var ONE_SIGNAL_APP_ID = '5009176e-359d-4cac-a5a1-823db4fb3f76'; var COOKIE_DOMAIN = '.guatemala.com'; var register = true; var autoResubscribe = true;</script>
+    <script src="/embeds/push-notifications/main.js?v=1649080088"></script>
+
+    <!-- Article metas for custom post type -->
+            <meta property="article:section" content="Ciclismo" />     <!-- END: Article metas for custom post type -->
+
+            <!-- AppsFlyer - SmartBanner -->
+        <script>
+            !function(t,e,n,s,a,c,i,o,p){t.AppsFlyerSdkObject=a,t.AF=t.AF||function(){(t.AF.q=t.AF.q||[]).push([Date.now()].concat(Array.prototype.slice.call(arguments)))},t.AF.id=t.AF.id||i,t.AF.plugins={},o=e.createElement(n),p=e.getElementsByTagName(n)[0],o.async=1,o.src="https://websdk.appsflyer.com?"+(c.length>0?"st="+c.split(",").sort().join(",")+"&":"")+(i.length>0?"af_id="+i:""),p.parentNode.insertBefore(o,p)}(window,document,"script",0,"AF","banners",{banners: {key: "616023b5-3583-400c-b1b3-f79fe5027541"}})
+            setTimeout(function(){ AF('banners', 'showBanner') }, 15000);
+        </script>
+        
+    <!-- WP_HEAD  -->
+    			<script>
+			var quizSiteUrl = 'https://www.guatemala.com/';
+									</script>
+
+			
+<!-- This site is optimized with the Yoast SEO plugin v5.3.3 - https://yoast.com/wordpress/plugins/seo/ -->
+<title>Nicole Hacohen comenzará la temporada con la Copa de Naciones de Glasgow 2022</title>
+<meta name="description" content="La ciclista guatemalteca Nicole Hacohen está lista para comenzar la temporada de pista con su participación en la Copa de Naciones de Glasgow 2022."/>
+<link rel="canonical" href="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Ciclista guatemalteca competirá contra las mejores del mundo en el Reino Unido" />
+<meta property="og:description" content="La ciclista guatemalteca Nicole Hacohen está lista para comenzar la temporada de pista con su participación en la Copa de Naciones de Glasgow 2022." />
+<meta property="og:url" content="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" />
+<meta property="og:site_name" content="Guatemala.com" />
+<meta property="article:publisher" content="https://www.facebook.com/Guatemalacom" />
+<meta property="og:image" content="https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022anoto-su-primer-gol-con-la-Sociedad-Deportiva-Union-Africa-Ceuti-en-Espana.jpg" />
+<meta property="og:image:secure_url" content="https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022anoto-su-primer-gol-con-la-Sociedad-Deportiva-Union-Africa-Ceuti-en-Espana.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="La ciclista guatemalteca Nicole Hacohen está lista para comenzar la temporada de pista con su participación en la Copa de Naciones de Glasgow 2022." />
+<meta name="twitter:title" content="Nicole Hacohen comenzará la temporada con la Copa de Naciones de Glasgow 2022" />
+<meta name="twitter:site" content="@guatemala_com" />
+<meta name="twitter:image" content="https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022anoto-su-primer-gol-con-la-Sociedad-Deportiva-Union-Africa-Ceuti-en-Espana.jpg" />
+<meta name="twitter:creator" content="@guatemala_com" />
+<script type='application/ld+json'>{"@context":"http:\/\/schema.org","@type":"WebSite","@id":"#website","url":"https:\/\/www.guatemala.com\/","name":"Guatemala.com","potentialAction":{"@type":"SearchAction","target":"https:\/\/www.guatemala.com\/?s={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type='application/ld+json'>{"@context":"http:\/\/schema.org","@type":"Organization","url":"https:\/\/www.guatemala.com\/deportes\/ciclismo\/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html","sameAs":["https:\/\/www.facebook.com\/Guatemalacom","https:\/\/www.instagram.com\/guatemala\/","https:\/\/twitter.com\/guatemala_com"],"@id":"#organization","name":"Guatemala.com","logo":"https:\/\/www.guatemala.com\/fotos\/201803\/guatemala-logo.png"}</script>
+<!-- / Yoast SEO plugin. -->
+
+<link rel="amphtml" href="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html/?amp" /><meta name="generator" content="AMP for WP 0.9.98.4"/><link rel='dns-prefetch' href='//s.w.org' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://www.guatemala.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=4.9' type='text/css' media='all' />
+<link rel='https://api.w.org/' href='https://www.guatemala.com/wp-json/' />
+<link rel="alternate" type="application/json+oembed" href="https://www.guatemala.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.guatemala.com%2Fdeportes%2Fciclismo%2Fnicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.guatemala.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.guatemala.com%2Fdeportes%2Fciclismo%2Fnicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html&#038;format=xml" />
+			<meta property="fb:pages" content="1616390628594809" />
+							<meta property="ia:markup_url" content="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html?ia_markup=1" />
+				    <script type="text/javascript">
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '936078066413175',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v2.8'
+            });
+
+            FB.getLoginStatus(function(response) { statusChangeCallback(response); });
+        };
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/es_ES/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        function statusChangeCallback(response) {
+            if (response.status === 'connected' && document.getElementById('buttonContainer') != undefined) {
+                document.getElementById('buttonContainer').style.display='none';
+            }
+        }
+
+        function checkLoginState() {
+            FB.getLoginStatus(function(response) { statusChangeCallback(response); });
+        }
+    </script>
+    <link rel="icon" href="https://www.guatemala.com/fotos/2019/03/cropped-android-chrome-512x512-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://www.guatemala.com/fotos/2019/03/cropped-android-chrome-512x512-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="https://www.guatemala.com/fotos/2019/03/cropped-android-chrome-512x512-180x180.png" />
+<meta name="msapplication-TileImage" content="https://www.guatemala.com/fotos/2019/03/cropped-android-chrome-512x512-270x270.png" />
+</head>
+<body class="sport-template-default single single-sport postid-363219 sports">
+    <!-- FACEBOOK SDK -->
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.6";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <!-- TWITTER SDK -->
+    <script>
+        window.twttr = (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.twttr || {};
+            if (d.getElementById(id)) return t;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+
+            t._e = [];
+            t.ready = function(f) {
+            t._e.push(f);
+            };
+            return t;
+        }(document, "script", "twitter-wjs"));
+    </script>
+
+    
+    
+    <!-- HEADER -->
+    <header id="header" class="">
+        <div class="container">
+            <div class="row">
+                                    <div class="logo">
+                        <a href="https://www.guatemala.com" title="Guatemala.com">
+                            <i class="icon-logo-full"></i>
+                            <span>Guatemala.com</span>
+                        </a>
+                        <button class="main-menu-button-mobile">
+                            <i class="icon-gt-menu" style="font-size:22px"></i>
+                            <!-- <i class="icon-submenu-mobile"></i> -->
+                        </button>
+                    </div>
+                
+                <a class="logo-mobile" href="https://www.guatemala.com" title="Guatemala.com">
+                    <i class="icon-logo-text" style="font-size: 17px;"></i>
+                </a>
+                <button class="main-menu-button" id="showMainMenu" type="button">
+                    <i class="icon-submenu-tablet"></i>
+                    <span>Secciones</span>
+                </button>
+
+                <div id="main-navigation-container">
+                    <nav id="main-menu">
+                        <a class="home" href="https://www.guatemala.com" title="Inicio">
+                            <div><i class="icon-logo-icon"></i><span>Inicio</span></div>
+                        </a>
+                        <a class="" href="https://www.guatemala.com/noticias/" title="Actualidad">
+                            <div><i class="icon-category-notas"></i><span>Actualidad</span></div>
+                        </a>
+                        <a class="current" href="https://www.guatemala.com/deportes/" title="Deportes">
+                            <div><i class="icon-category-deportes"></i><span>Deportes</span></div>
+                        </a>
+                        <a href="https://eventos.guatemala.com/" title="Eventos">
+                            <div><i class="icon-category-eventos"></i><span>Eventos</span></div>
+                        </a>
+                        <a class="" href="https://www.guatemala.com/guias/" title="Turismo">
+                            <div><i class="icon-category-guias"></i><span>Turismo</span></div>
+                        </a>
+                        <a class="" href="https://www.guatemala.com/comida/" title="Comida">
+                            <div><i class="icon-category-comida"></i><span>Comida</span></div>
+                        </a>
+                        <a href="https://directorio.guatemala.com/" title="Directorio">
+                            <div><i class="icon-category-directorio"></i><span>Directorio</span></div>
+                        </a>
+                        <a href="https://aprende.guatemala.com/" title="Aprende">
+                            <div><i class="icon-category-aprende"></i><span>Aprende</span></div>
+                        </a>
+                        <a class="" href="https://www.guatemala.com/historias/" title="Historias">
+                            <div><i class="icon-historias"></i><span>Historias</span></div>
+                        </a>
+                        <a class="" href="https://www.guatemala.com/desarrollo/" title="Empresas">
+                            <div><i class="icon-category-empresas"></i><span>Empresas</span></div>
+                        </a>
+                                            </nav>
+                    <div id="header-search">
+                        <form id="form-header-search" method="get" action="/buscar">
+                            <input id="search" type="text" name="q" placeholder="Buscar..." autocomplete="off">
+                                                                                        <input type="hidden" name="sec" autocomplete="off" value="deportes">
+                                                        <label class="icon-search" for="search"></label>
+                        </form>
+                    </div>
+
+                    <!-- FACEBOOK LOGIN -->
+                                    </div>
+
+                <!-- MOBILE SEARCH BUTTON -->
+                <button class="search-container-button" id="showSearchContainer" type="button">
+                    <i class="icon-search"></i>
+                </button>
+
+                <!-- SUBMENU LINKS BUTTON -->
+                <button class="show-submenu-links mobile">
+                    <i class="icon-submenu"></i>
+                </button>
+
+                <!-- SUBMENU LINKS CONTENT -->
+                <div id="submenu-links">
+                    <a class="submenu-link" href="https://www.guatemala.com/quienes-somos/" title="Quiénes somos">Quiénes somos</a>
+                    <a class="submenu-link" href="https://www.guatemala.com/hoyportimananapormi/" title="Ir a #HoyPorTiMañanaPorMí">#HoyPorTiMañanaPorMí</a>
+                    <a class="submenu-link" href="https://www.guatemala.com/contacto/" title="Contacto">Contacto</a>
+                    <a class="submenu-link" href="https://www.guatemala.com/contacto/" title="Publicidad">Publicidad</a>
+                    <a class="submenu-link" href="https://directorio.guatemala.com/registra-tu-negocio" title="Registra tu empresa">Registra tu empresa</a>
+                    <a class="submenu-link" href="http://bicentenario.com.gt/" title="Ir a Bicentenario">Bicentenario</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- SUBHEADER -->
+    <div id="subheader-category" class=""><div class="container row"><p class="title">Ciclismo</p><span class="menu-mobile" id="showOptionsMobile"><i class="icon-category-deportes"></i><i class="icon-submenu-mobile"></i></span><ul class="main-menu"><li class="first-level"><a href="https://www.guatemala.com/deportes/atletismo/" title="Atletismo">Atletismo</a></li><li class="current first-level"><a href="https://www.guatemala.com/deportes/ciclismo/" title="Ciclismo">Ciclismo</a></li><li class="first-level"><a href="https://www.guatemala.com/deportes/futbol-guatemalteco/" title="Fútbol Nacional">Fútbol Nacional</a></li><li class="first-level"><a href="https://www.guatemala.com/deportes/triatlon/" title="Triatlón">Triatlón</a></li><li class="first-level showOptions with-child"><a id="more-categories" href="javascript:void(0)" title="Más">Más</a><ul class="full-menu"><li class=""><a href="https://www.guatemala.com/deportes/actualidad/" title="Actualidad">Actualidad</a></li><li class=""><a href="https://www.guatemala.com/deportes/ajedrez/" title="Ajedrez">Ajedrez</a></li><li class=""><a href="https://www.guatemala.com/deportes/artes-marciales/" title="Artes Marciales">Artes Marciales</a></li><li class=""><a href="https://www.guatemala.com/deportes/automovilismo/" title="Automovilismo">Automovilismo</a></li><li class=""><a href="https://www.guatemala.com/deportes/badminton/" title="Bádminton">Bádminton</a></li><li class=""><a href="https://www.guatemala.com/deportes/balonmano/" title="Balonmano">Balonmano</a></li><li class=""><a href="https://www.guatemala.com/deportes/basquetbol/" title="Básquetbol">Básquetbol</a></li><li class=""><a href="https://www.guatemala.com/deportes/beisbol/" title="Béisbol">Béisbol</a></li><li class=""><a href="https://www.guatemala.com/deportes/billar/" title="Billar">Billar</a></li><li class=""><a href="https://www.guatemala.com/deportes/boliche/" title="Boliche">Boliche</a></li><li class=""><a href="https://www.guatemala.com/deportes/boxeo-guatemala/" title="Boxeo">Boxeo</a></li><li class=""><a href="https://www.guatemala.com/deportes/crossfit/" title="Crossfit">Crossfit</a></li><li class=""><a href="https://www.guatemala.com/deportes/deportes-extremos/" title="Deportes extremos">Deportes extremos</a></li><li class=""><a href="https://www.guatemala.com/deportes/ecuestres/" title="Ecuestres">Ecuestres</a></li><li class=""><a href="https://www.guatemala.com/deportes/esgrima/" title="Esgrima">Esgrima</a></li><li class=""><a href="https://www.guatemala.com/deportes/esports/" title="eSports">eSports</a></li><li class=""><a href="https://www.guatemala.com/deportes/eventos-multideportivos/" title="Eventos Multideportivos">Eventos Multideportivos</a></li><li class=""><a href="https://www.guatemala.com/deportes/fisicoculturismo/" title="Fisicoculturismo">Fisicoculturismo</a></li><li class=""><a href="https://www.guatemala.com/deportes/futbol-americano/" title="Fútbol Americano">Fútbol Americano</a></li><li class=""><a href="https://www.guatemala.com/deportes/futsala/" title="Fútbol Sala">Fútbol Sala</a></li><li class=""><a href="https://www.guatemala.com/deportes/gimnasia/" title="Gimnasia">Gimnasia</a></li><li class=""><a href="https://www.guatemala.com/deportes/golf/" title="Golf">Golf</a></li><li class=""><a href="https://www.guatemala.com/deportes/hockey/" title="Hockey">Hockey</a></li><li class=""><a href="https://www.guatemala.com/deportes/judo/" title="Judo">Judo</a></li><li class=""><a href="https://www.guatemala.com/deportes/karate-do/" title="Karate Do">Karate Do</a></li><li class=""><a href="https://www.guatemala.com/deportes/lucha/" title="Lucha">Lucha</a></li><li class=""><a href="https://www.guatemala.com/deportes/montanismo/" title="Montañismo">Montañismo</a></li><li class=""><a href="https://www.guatemala.com/deportes/motociclismo/" title="Motociclismo">Motociclismo</a></li><li class=""><a href="https://www.guatemala.com/deportes/natacion/" title="Natación">Natación</a></li><li class=""><a href="https://www.guatemala.com/deportes/patinaje/" title="Patinaje">Patinaje</a></li><li class=""><a href="https://www.guatemala.com/deportes/pelota-maya/" title="Pelota Maya">Pelota Maya</a></li><li class=""><a href="https://www.guatemala.com/deportes/pentatlon/" title="Pentatlón">Pentatlón</a></li><li class=""><a href="https://www.guatemala.com/deportes/pesas/" title="Pesas">Pesas</a></li><li class=""><a href="https://www.guatemala.com/deportes/pesca-deportiva/" title="Pesca Deportiva">Pesca Deportiva</a></li><li class=""><a href="https://www.guatemala.com/deportes/raquetbol/" title="Ráquetbol">Ráquetbol</a></li><li class=""><a href="https://www.guatemala.com/deportes/remo-canotaje/" title="Remo y Canotaje">Remo y Canotaje</a></li><li class=""><a href="https://www.guatemala.com/deportes/juegos-olimpicos-rio-2016/" title="Río 2016">Río 2016</a></li><li class=""><a href="https://www.guatemala.com/deportes/rugby/" title="Rugby">Rugby</a></li><li class=""><a href="https://www.guatemala.com/deportes/softbol/" title="Sóftbol">Sóftbol</a></li><li class=""><a href="https://www.guatemala.com/deportes/squash/" title="Squash">Squash</a></li><li class=""><a href="https://www.guatemala.com/deportes/taekwondo/" title="Taekwondo">Taekwondo</a></li><li class=""><a href="https://www.guatemala.com/deportes/tenis-guatemala/" title="Tenis">Tenis</a></li><li class=""><a href="https://www.guatemala.com/deportes/tenis-de-mesa/" title="Tenis de Mesa">Tenis de Mesa</a></li><li class=""><a href="https://www.guatemala.com/deportes/tiro/" title="Tiro">Tiro</a></li><li class=""><a href="https://www.guatemala.com/deportes/tiro-con-arco/" title="Tiro con Arco">Tiro con Arco</a></li><li class=""><a href="https://www.guatemala.com/deportes/vela/" title="Vela">Vela</a></li><li class=""><a href="https://www.guatemala.com/deportes/voleibol/" title="Voleibol">Voleibol</a></li></ul></li></ul></div></div>    
+
+    <!-- main content -->
+    <div id="main_wrapper">
+
+        <div class="google-translate-container">
+    <div class="container">
+        <div class="social">
+            <a class="youtube" title="Ir a Youtube de Guatemala.com" href="https://www.youtube.com/channel/UCmjpbBFZNsxNlKKiUI-60iA?view_as=subscriber" target="_blank" rel="noopener noreferrer"><i class="icon-youtube"></i></a>
+            <a class="facebook" title="Ir a Facebook de Guatemala.com" href="https://www.facebook.com/Guatemalacom/" target="_blank" rel="noopener noreferrer"><i class="icon-facebook"></i></a>
+            <a class="instagram" title="Ir a Instagram de Guatemala.com" href="https://www.instagram.com/guatemala/" target="_blank" rel="noopener noreferrer"><i class="icon-instagram"></i></a>
+            <a class="twitter" title="Ir a Twitter de Guatemala.com" href="https://twitter.com/guatemala_com" target="_blank" rel="noopener noreferrer"><i class="icon-twitter"></i></a>
+            <a class="linkedin" title="Ir a Twitter de Guatemala.com" href="https://linkedin.com/company/guatemala" target="_blank" rel="noopener noreferrer"><i class="icon-linkedin"></i></a>
+        </div>
+                    <div class="padrinos-logos">
+                <div class="padrinos-logos-title">Nuestros padrinos</div>
+                <div class="padrinos-logos-container">
+                    <img src="/assets/img/padrinos/Coca-Cola_logoCircular.svg?v=1" alt="Coca-Cola">
+                    <img class="max" src="/assets/img/padrinos/max-grayscale-2.svg?v=1" alt="MAX">
+                    <img src="/assets/img/padrinos/claro-grayscale.svg?v=1" alt="Claro">
+                </div>
+            </div>
+        
+        <!-- <div class="space"></div> -->
+
+        <!-- Google translate widget -->
+        <div id="google_translate_element"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({pageLanguage: 'es', layout: google.translate.TranslateElement.InlineLayout.VERTICAL}, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    </div>
+</div>
+        
+        <div class="container">
+                        <div class="row">
+                    <div id="main_content"> <style type="text/css">.alm-btn-wrap .alm-load-more-btn{font-size:15px;font-weight:600;width:auto;height:42px;line-height:42px;background:#ed7070;color:#fff;border:none;border-radius:4px;margin:0 0 4px;padding:0 20px;display:inline-block;position:relative;-webkit-transition:all .35s ease;transition:all .35s ease;text-align:center;text-decoration:none;-webkit-appearance:none;-moz-appearance:none;appearance:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer}.alm-btn-wrap .alm-load-more-btn.loading,.alm-btn-wrap .alm-load-more-btn:hover{background-color:#e06464;color:#fff;text-decoration:none}.alm-btn-wrap .alm-load-more-btn:active{-webkit-box-shadow:inset 0 2px 1px rgba(0,0,0,.1);box-shadow:inset 0 2px 1px rgba(0,0,0,.1);text-decoration:none}.alm-btn-wrap .alm-load-more-btn.loading{cursor:default;outline:0;padding-left:44px}.alm-btn-wrap .alm-load-more-btn.done{cursor:default;opacity:.15;background-color:#ed7070;outline:0!important;-webkit-box-shadow:none!important;box-shadow:none!important}.alm-btn-wrap .alm-load-more-btn.done:before,.alm-btn-wrap .alm-load-more-btn:before{background:0 0;width:0}.alm-btn-wrap .alm-load-more-btn.loading:before{background:#fff url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/ajax-loader.gif) no-repeat center center;width:30px;height:30px;margin:6px;border-radius:3px;display:inline-block;z-index:0;content:'';position:absolute;left:0;top:0;overflow:hidden;-webkit-transition:width .5s ease-in-out;transition:width .5s ease-in-out}.alm-btn-wrap,.alm-masonry{display:block;overflow:hidden;clear:both}.alm-btn-wrap{text-align:center;padding:10px 0 25px}.ajax-load-more-wrap.blue .alm-load-more-btn{background-color:#0081bf}.ajax-load-more-wrap.blue .alm-load-more-btn.done,.ajax-load-more-wrap.blue .alm-load-more-btn.loading,.ajax-load-more-wrap.blue .alm-load-more-btn:hover{background-color:#0073aa}.ajax-load-more-wrap.green .alm-load-more-btn{background-color:#6fca68}.ajax-load-more-wrap.green .alm-load-more-btn.done,.ajax-load-more-wrap.green .alm-load-more-btn.loading,.ajax-load-more-wrap.green .alm-load-more-btn:hover{background-color:#64b95e}.ajax-load-more-wrap.red .alm-load-more-btn{background-color:#ca4b4b}.ajax-load-more-wrap.red .alm-load-more-btn.done,.ajax-load-more-wrap.red .alm-load-more-btn.loading,.ajax-load-more-wrap.red .alm-load-more-btn:hover{background-color:#b13b3b}.ajax-load-more-wrap.purple .alm-load-more-btn{background-color:#a86bb9}.ajax-load-more-wrap.purple .alm-load-more-btn.done,.ajax-load-more-wrap.purple .alm-load-more-btn.loading,.ajax-load-more-wrap.purple .alm-load-more-btn:hover{background-color:#9963a8}.ajax-load-more-wrap.grey .alm-load-more-btn{background-color:#888}.ajax-load-more-wrap.grey .alm-load-more-btn.done,.ajax-load-more-wrap.grey .alm-load-more-btn.loading,.ajax-load-more-wrap.grey .alm-load-more-btn:hover{background-color:#777}.ajax-load-more-wrap.white .alm-load-more-btn{background-color:#fff;color:#666;border:1px solid #efefef}.ajax-load-more-wrap.white .alm-load-more-btn.done,.ajax-load-more-wrap.white .alm-load-more-btn.loading,.ajax-load-more-wrap.white .alm-load-more-btn:hover{background-color:#efefef;color:#333}.ajax-load-more-wrap.white .alm-load-more-btn.done{border-color:#fff}.ajax-load-more-wrap.infinite .alm-load-more-btn{width:100%;background-color:transparent!important;background-position:center center;background-repeat:no-repeat;background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/spinner.gif);border:none!important;opacity:0;-webkit-transition:opacity .2s ease;transition:opacity .2s ease;-webkit-box-shadow:none!important;box-shadow:none!important;overflow:hidden;text-indent:-9999px;cursor:default!important;outline:0!important}.ajax-load-more-wrap.infinite .alm-load-more-btn:before{display:none!important}.ajax-load-more-wrap.infinite .alm-load-more-btn:active,.ajax-load-more-wrap.infinite .alm-load-more-btn:focus{outline:0}.ajax-load-more-wrap.infinite .alm-load-more-btn.done{opacity:0}.ajax-load-more-wrap.infinite .alm-load-more-btn.loading{opacity:1}.ajax-load-more-wrap.infinite.skype .alm-load-more-btn{background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/spinner-skype.gif)}.ajax-load-more-wrap.infinite.ring .alm-load-more-btn{background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/spinner-ring.gif)}.ajax-load-more-wrap.infinite.fading-blocks .alm-load-more-btn{background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/loader-fading-blocks.gif)}.ajax-load-more-wrap.infinite.fading-circles .alm-load-more-btn{background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/loader-fading-circles.gif)}.ajax-load-more-wrap.infinite.chasing-arrows .alm-load-more-btn{background-image:url(https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/img/spinner-chasing-arrows.gif)}.alm-listing{margin:0;padding:0}.alm-listing .alm-reveal{outline:0}.alm-listing .alm-paging-content>li,.alm-listing .alm-reveal>li,.alm-listing>li{background:0 0;margin:0 0 30px;padding:0 0 0 170px;overflow:hidden;position:relative;list-style:none}.alm-listing .alm-paging-content>li.no-img,.alm-listing .alm-reveal>li.no-img,.alm-listing>li.no-img{padding:0}.alm-listing .alm-paging-content>li p,.alm-listing .alm-reveal>li p,.alm-listing>li p{margin:0}.alm-listing .alm-paging-content>li p.entry-meta,.alm-listing .alm-reveal>li p.entry-meta,.alm-listing>li p.entry-meta{margin:0 0 5px;opacity:.75}.alm-listing .alm-paging-content>li h3,.alm-listing .alm-reveal>li h3,.alm-listing>li h3{margin:0 0 10px}.alm-listing .alm-paging-content>li img,.alm-listing .alm-reveal>li img,.alm-listing>li img{position:absolute;left:0;top:0;border-radius:2px}</style><style type="text/css">.alm-layouts .alm-listing{margin:0;padding:0}.alm-layouts .alm-listing .alm-layout{width:100%;display:block;clear:both;padding:0;margin:0 0 4%;overflow:visible}.alm-layouts .alm-listing .alm-layout,.alm-layouts .alm-listing .alm-layout *{-webkit-box-sizing:border-box;box-sizing:border-box}.alm-layouts .alm-listing .alm-layout a,.alm-layouts .alm-listing .alm-layout img{-webkit-box-shadow:none;box-shadow:none;border:none}.alm-layouts .alm-listing .alm-layout img{position:static;max-width:100%;height:auto;clear:both;margin:0;-webkit-border-radius:0;border-radius:0;display:block}.alm-layouts .alm-listing .alm-layout h3{font-size:22px;line-height:1.15;font-weight:600;margin:0 0 10px;padding:0}.alm-layouts .alm-listing .alm-layout h3 a{text-decoration:none}.alm-layouts .alm-listing .alm-layout h3 a:focus,.alm-layouts .alm-listing .alm-layout h3 a:hover{text-decoration:underline}.alm-layouts .alm-listing .alm-layout p.entry-meta{font-size:15px;opacity:.7;margin:0 0 10px}.alm-layouts .alm-listing .alm-layout p{font-size:15px;line-height:1.5;margin:0 0 1em}.alm-layouts .alm-listing .alm-layout.alm-2-col,.alm-layouts .alm-listing .alm-layout.alm-3-col,.alm-layouts .alm-listing .alm-layout.alm-4-col{width:48%;display:inline-block;vertical-align:top;clear:none}.alm-layouts .alm-listing .alm-2-col.odd{margin-right:4%}.alm-layouts .alm-listing .alm-layout.alm-2-col.alm-gallery{width:50%;margin:0}.alm-layouts .alm-listing .alm-layout.alm-3-col,.alm-layouts .alm-listing .alm-layout.alm-4-col{width:30.6333%;margin-right:4%}.alm-layouts .alm-listing .alm-layout.alm-3-col.last,.alm-layouts .alm-listing .alm-layout.alm-4-col.last{margin-right:0}.alm-layouts .alm-listing .alm-layout.alm-4-col{width:21.9333%}.alm-layouts .alm-listing .alm-layout.alm-3-col.alm-gallery,.alm-layouts .alm-listing .alm-layout.alm-4-col.alm-gallery{width:33.333%;margin:0}.alm-layouts .alm-listing .alm-layout.alm-4-col.alm-gallery{width:25%}.alm-layouts .alm-listing .alm-default{background:none;list-style:none;padding:0 0 0 170px;-webkit-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease;min-height:150px}.alm-layouts .alm-listing .alm-default img{max-width:100%;clear:both;position:absolute;left:0;top:2px;margin:0;-webkit-border-radius:3px;border-radius:3px}.alm-layouts .alm-listing .alm-default p{text-align:left}.alm-layouts .alm-listing .alm-default.alm-2-col{padding-left:106px;min-height:100px}.alm-layouts .alm-listing .alm-default.alm-2-col img{max-width:85px}.alm-layouts .alm-listing .alm-default.alm-3-col,.alm-layouts .alm-listing .alm-default.alm-4-col{padding-left:80px;min-height:100px}.alm-layouts .alm-listing .alm-default.alm-3-col img,.alm-layouts .alm-listing .alm-default.alm-4-col img{max-width:65px}.alm-layouts .alm-listing .alm-cta{background:none;list-style:none;padding:0;margin-bottom:4%;-webkit-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease}.alm-layouts .alm-listing .alm-cta img{width:100%;clear:both;position:static;margin:0;-webkit-border-radius:0;border-radius:0;-webkit-transition:all .2s ease;-o-transition:all .2s ease;transition:all .2s ease}.alm-layouts .alm-listing .alm-cta a{display:block;color:inherit;text-decoration:none}.alm-layouts .alm-listing .alm-cta a:focus img,.alm-layouts .alm-listing .alm-cta a:hover img{opacity:.7}.alm-layouts .alm-listing .alm-cta a:focus h3,.alm-layouts .alm-listing .alm-cta a:hover h3{text-decoration:underline}.alm-layouts .alm-listing .alm-cta .details{padding:20px;display:block;border-top:none;position:relative}.alm-layouts .alm-listing .alm-cta h3{color:#333;margin:0 0 20px;text-decoration:none}.alm-layouts .alm-listing .alm-cta p{text-align:left}.alm-layouts .alm-listing .alm-card{position:relative}.alm-layouts .alm-listing .alm-card a.card-container{-webkit-perspective:1000px;perspective:1000px;border:1px solid #efefef!important;background:#f7f7f7;display:block;position:relative}.alm-layouts .alm-listing .alm-card a.card-container.hover .card-flip,.alm-layouts .alm-listing .alm-card a.card-container:hover .card-flip{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}@media (-ms-high-contrast:active),(-ms-high-contrast:none){.alm-layouts .alm-listing .alm-card a.card-container.hover .card-flip,.alm-layouts .alm-listing .alm-card a.card-container:hover .card-flip{-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}}.alm-layouts .alm-listing .alm-card .card-flip{-webkit-transition:.6s;-o-transition:.6s;transition:.6s;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;position:relative}.alm-layouts .alm-listing .alm-card .img-mask{opacity:0;visibility:hidden}.alm-layouts .alm-listing .alm-card .card-back,.alm-layouts .alm-listing .alm-card .card-front{position:absolute;top:0;left:0;width:100%;height:100%;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transition:.6s;-o-transition:.6s;transition:.6s;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}.alm-layouts .alm-listing .alm-card .card-front{z-index:2;-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}.alm-layouts .alm-listing .alm-card .card-back{-webkit-transform:rotateY(-180deg);transform:rotateY(-180deg)}.alm-layouts .alm-listing .alm-card h3{position:absolute;bottom:0;margin:0;color:#fff;font-size:18px;line-height:20px;padding:14px 20px;background-color:rgba(0,0,0,.6);max-width:90%}.alm-layouts .alm-listing .alm-card h3 span{display:block;opacity:.65;font-weight:400;font-size:14px;color:#fff;padding:4px 0 0}.alm-layouts .alm-listing .alm-card img{height:auto}.alm-layouts .alm-listing .alm-card .text-wrap{width:100%;height:100%;display:block;padding:0 7%;background-color:#222;-webkit-box-shadow:inset 0 0 0 10px #333,inset 0 0 0 11px hsla(0,0%,100%,.1);box-shadow:inset 0 0 0 10px #333,inset 0 0 0 11px hsla(0,0%,100%,.1);text-align:center}.alm-layouts .alm-listing .alm-card .text-wrap,.alm-layouts .alm-listing .alm-card p{position:absolute;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}.alm-layouts .alm-listing .alm-card p{color:#ccc;padding:0 20px;margin:0 0 10px;font-size:14px;text-align:left;max-height:80%;overflow-y:auto;width:86%}.alm-layouts .alm-listing .alm-card span.more{font-weight:700;color:#fff;padding:8px 0 0;margin:0;display:block;font-size:12px;text-transform:uppercase}.alm-layouts .alm-listing .alm-gallery{padding:1px}.alm-layouts .alm-listing .alm-gallery a{display:block;overflow:hidden;position:relative}.alm-layouts .alm-listing .alm-gallery a:hover img{-webkit-transform:scale(1.2);-ms-transform:scale(1.2);transform:scale(1.2)}.alm-layouts .alm-listing .alm-gallery a:hover .alm-gallery-img-wrap{-webkit-filter:blur(5px);filter:blur(5px)}.alm-layouts .alm-listing .alm-gallery a:hover .overlay-details{opacity:1}.alm-layouts .alm-listing .alm-gallery .overlay-details{opacity:0;position:absolute;left:0;top:0;width:100%;height:100%;-webkit-transition:opacity .5s ease .15s;-o-transition:opacity .5s ease .15s;transition:opacity .5s ease .15s;background:rgba(0,0,0,.4);padding:0 10%;text-align:center;text-shadow:0 0 1px rgba(0,0,0,.1)}.alm-layouts .alm-listing .alm-gallery .overlay-details .vertical-align{position:relative;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%)}.alm-layouts .alm-listing .alm-gallery img{position:static;width:100%;height:auto;-webkit-transform:scale(1.05);-ms-transform:scale(1.05);transform:scale(1.05);-webkit-backface-visibility:hidden;backface-visibility:hidden}.alm-layouts .alm-listing .alm-gallery .alm-gallery-img-wrap,.alm-layouts .alm-listing .alm-gallery img{-webkit-transition:all .45s ease-in-out;-o-transition:all .45s ease-in-out;transition:all .45s ease-in-out}.alm-layouts .alm-listing .alm-gallery h3{color:#fff;margin:0 0 15px;font-weight:800}.alm-layouts .alm-listing .alm-gallery p{color:#fff;margin:0;opacity:.85}.alm-layouts .alm-listing .alm-gallery p.entry-date{margin:0 0 5px;opacity:.5;font-weight:300;font-size:12px;text-transform:uppercase}.alm-layouts .alm-listing.flex,.alm-layouts .alm-listing.flex .alm-reveal{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap}.alm-layouts .alm-listing .alm-blog-card{background:#efefef;border:1px solid #e7e7e7;-webkit-border-radius:5px;border-radius:5px;padding:25px 25px 110px;width:100%;text-align:center;margin-bottom:50px;margin-top:30px}.alm-layouts .alm-listing .alm-blog-card img.wp-post-image{border:3px solid #fff;-webkit-border-radius:100%;border-radius:100%;-webkit-box-shadow:0 0 3px #ccc;box-shadow:0 0 3px #ccc;width:120px;height:120px;margin:-60px auto 25px}.alm-layouts .alm-listing .alm-blog-card h3,.alm-layouts .alm-listing .alm-blog-card p{margin:0 0 15px;padding:0 5%}.alm-layouts .alm-listing .alm-blog-card p.alm-meta{opacity:.75;margin-bottom:0;font-size:13px}.alm-layouts .alm-listing .alm-post-author{display:block;width:100%;height:60px;overflow:visible;position:absolute;left:0;bottom:0;background:#fff;border-top:1px solid #e7e7e7;padding:0 10px;-webkit-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;font-size:13px}.alm-layouts .alm-listing .alm-post-author span{display:block;vertical-align:top;padding:15px;line-height:30px;width:100%;white-space:nowrap;overflow:hidden;-o-text-overflow:ellipsis;text-overflow:ellipsis}.alm-layouts .alm-listing .alm-post-author img{max-width:36px;max-height:36px;-webkit-border-radius:100%;border-radius:100%;-webkit-box-shadow:0 0 0 1px #e1e1e1;box-shadow:0 0 0 1px #e1e1e1;position:absolute;left:50%;top:-18px;margin-left:-18px;z-index:2}.alm-layouts .alm-listing .alm-post-author a{text-decoration:none}.alm-layouts .alm-listing .alm-post-author a:focus,.alm-layouts .alm-listing .alm-post-author a:hover{text-decoration:underline}.alm-layouts .alm-listing .alm-blog-card-2{background:#fff;border:1px solid #e7e7e7;-webkit-border-radius:2px;border-radius:2px;padding:0 0 60px;width:100%;text-align:left;margin-bottom:50px}.alm-layouts .alm-listing .alm-blog-card-2 img.wp-post-image{width:100%;margin:0;display:block;-webkit-border-radius:1px 1px 0 0;border-radius:1px 1px 0 0}.alm-layouts .alm-listing .alm-blog-card-2 .alm-card-details{display:block;padding:40px 30px 30px;position:relative}.alm-layouts .alm-listing .alm-blog-card-2 .avatar{width:50px;height:50px;-webkit-border-radius:100%;border-radius:100%;position:absolute;top:-25px;left:30px;z-index:1}.alm-layouts .alm-listing .alm-blog-card-2 h3{margin:0 0 20px}.alm-layouts .alm-listing .alm-blog-card-2 p{margin:0 0 20px;font-size:15px}.alm-layouts .alm-listing .alm-blog-card-2 p.alm-more-link{margin:0;font-weight:600;font-size:13px;text-transform:uppercase}.alm-layouts .alm-listing .alm-blog-card-2 .alm-post-author{background-color:#f7f7f7;-webkit-box-shadow:inset 0 2px 1px rgba(0,0,0,.05);box-shadow:inset 0 2px 1px rgba(0,0,0,.05)}.alm-layouts .alm-listing .alm-blog-card-3{background:#f7f7f7;border:none;-webkit-border-radius:15px;border-radius:15px;padding:0;width:100%;text-align:left;margin-bottom:50px;overflow:hidden;-webkit-box-shadow:0 0 0 1px #efefef;box-shadow:0 0 0 1px #efefef}.alm-layouts .alm-listing .alm-blog-card-3 img.wp-post-image{width:100%;margin:0;display:block;-webkit-border-radius:15px 15px 0 0;border-radius:15px 15px 0 0}.alm-layouts .alm-listing .alm-blog-card-3 .alm-card-details{display:block;padding:30px 30px 70px;position:relative}.alm-layouts .alm-listing .alm-blog-card-3 h3{font-weight:600;font-size:20px;margin:0 0 20px}.alm-layouts .alm-listing .alm-blog-card-3 p{margin:0 0 20px;font-size:15px}.alm-layouts .alm-listing .alm-blog-card-3 .alm-post-author{border-top:none;-webkit-border-radius:0 0 14px 14px;border-radius:0 0 14px 14px;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:nowrap;-ms-flex-wrap:nowrap;flex-wrap:nowrap;-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;padding:20px 30px;border-top:1px solid #efefef}.alm-layouts .alm-listing .alm-blog-card-3 .alm-post-author img,.alm-layouts .alm-listing .alm-blog-card-3 .alm-post-author span{display:inline-block;vertical-align:top}.alm-layouts .alm-listing .alm-blog-card-3 .alm-post-author img{position:static;margin:0 10px 0 0;-webkit-box-shadow:none;box-shadow:none}.alm-layouts .alm-listing .alm-blog-card-3 .alm-post-author span{width:auto;padding:0;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1}@media screen and (max-width:1024px){.alm-layouts .alm-listing .alm-overlay .overlay-details{padding:15px}.alm-layouts .alm-listing .alm-overlay .overlay-details h3{font-size:18px}.alm-layouts .alm-listing .alm-overlay .overlay-details p{font-size:14px}.alm-layouts .alm-listing .alm-layout.alm-3-col.alm-gallery,.alm-layouts .alm-listing .alm-layout.alm-4-col.alm-gallery{width:50%}.alm-layouts .alm-listing .alm-layout.alm-4-col{width:48%;margin-right:4%}.alm-layouts .alm-listing .alm-layout.alm-4-col:nth-child(2n){margin-right:0}}@media screen and (max-width:768px){.alm-layouts .alm-listing.flex,.alm-layouts .alm-listing.flex .alm-reveal{display:block}.alm-layouts .alm-listing .alm-layout.alm-2-col,.alm-layouts .alm-listing .alm-layout.alm-3-col,.alm-layouts .alm-listing .alm-layout.alm-4-col{width:100%;display:block;margin-left:0;margin-right:0}.alm-layouts .alm-listing .alm-layout.alm-2-col.odd,.alm-layouts .alm-listing .alm-layout.alm-3-col.last,.alm-layouts .alm-listing .alm-layout.alm-4-col.last{margin-right:0}.alm-layouts .alm-listing .alm-layout{margin:0 0 6%}.alm-layouts .alm-listing .alm-default,.alm-layouts .alm-listing .alm-default.alm-2-col,.alm-layouts .alm-listing .alm-default.alm-3-col,.alm-layouts .alm-listing .alm-default.alm-4-col{min-height:120px;padding:0 0 0 140px}.alm-layouts .alm-listing .alm-default.alm-2-col img,.alm-layouts .alm-listing .alm-default.alm-3-col img,.alm-layouts .alm-listing .alm-default.alm-4-col img,.alm-layouts .alm-listing .alm-default img{max-width:120px;width:120px;height:auto}.alm-layouts .alm-listing .alm-overlay .overlay-details{padding:12px}.alm-layouts .alm-listing .alm-layout .alm-overlay h3{margin:0;font-size:18px;line-height:1}.alm-layouts .alm-listing .alm-layout .alm-overlay p{display:none}.alm-layouts .alm-listing .alm-layout.alm-2-col.alm-gallery,.alm-layouts .alm-listing .alm-layout.alm-3-col.alm-gallery,.alm-layouts .alm-listing .alm-layout.alm-4-col.alm-gallery,.alm-layouts .alm-listing .alm-layout.alm-gallery{float:none;width:100%}.alm-layouts .alm-listing .alm-gallery .overlay-details{padding:0 15%}alm-layouts .alm-gallery h3{color:#fff;font-size:26px}.alm-layouts .alm-listing .alm-gallery p{font-size:16px}.alm-layouts .alm-listing .alm-card img{width:auto;height:auto}.alm-layouts .alm-listing .alm-blog-card{margin-bottom:60px}.alm-layouts .alm-listing .alm-blog-card img.wp-post-image{border:2px solid #fff;width:100px;height:100px;margin:-50px auto 20px}}@media screen and (max-width:480px){.alm-layouts .alm-listing .alm-default,.alm-layouts .alm-listing .alm-default.alm-2-col,.alm-layouts .alm-listing .alm-default.alm-3-col,.alm-layouts .alm-listing .alm-default.alm-4-col{min-height:80px;padding:0 0 0 96px}.alm-layouts .alm-listing .alm-default.alm-2-col img,.alm-layouts .alm-listing .alm-default.alm-3-col img,.alm-layouts .alm-listing .alm-default.alm-4-col img,.alm-layouts .alm-listing .alm-default img{max-width:80px;width:80px;height:auto}.alm-layouts .alm-listing .alm-gallery .overlay-details{padding:0 10%}.alm-layouts .alm-listing .alm-gallery h3{color:#fff;font-size:22px}.alm-layouts .alm-listing .alm-gallery p{font-size:14px}.alm-layouts .alm-listing .alm-gallery p:not(.entry-date){display:none}}</style><div id="ajax-load-more" class="ajax-load-more-wrap infinite fading-circles alm-layouts"  data-alm-id="" data-canonical-url="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" data-slug="nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022" data-post-id="363219" ><div aria-live="polite" class="alm-listing alm-ajax" data-cache="true" data-cache-id="single-cache" data-cache-path="/wp-content/cache/" data-single-post="true" data-single-post-id="363219" data-single-post-order="362893,362774,362317,361669,361961,360810,360417,359347,359183,358850,296481,357276,357755,356862,356602,355072,190942,352738,352259,344671,344324,344054,343099,341134,340420,338210,338663,337710,337318,337199" data-single-post-title-template="{post-title}" data-single-post-site-title="Guatemala.com" data-single-post-site-tagline="Noticias, Eventos, Turismo, Deportes, Historia y Comida" data-single-post-scroll="false" data-single-post-scrolltop="30" data-single-post-controls="1" data-single-post-pageview="false" data-container-type="div" data-repeater="default" data-theme-repeater="sport_repeater.php" data-post-type="sport" data-order="DESC" data-orderby="date" data-offset="0" data-posts-per-page="1" data-scroll="true" data-scroll-distance="100" data-max-pages="0" data-pause-override="false" data-pause="false" data-button-label="Older Posts" data-transition="none" data-images-loaded="false"><div class="alm-reveal alm-single-post post-363219" data-url="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" data-title="Nicole Hacohen comenzará la temporada con la Copa de Naciones de Glasgow 2022" data-id="363219" data-page="0">
+<script>
+    almUrlUpdate = function(permalink, type){
+
+        currentPost = jQuery('.alm-reveal[data-url="'+permalink+'"]').first();
+        dimensionsData = currentPost.find('.content_data').first().data();
+
+        // auto analytics
+        ga('set', 'dimension1', dimensionsData.author);
+        ga('set', 'dimension2', dimensionsData.post_date);
+        ga('set', 'dimension3', dimensionsData.post_type);
+        ga('set', 'dimension4', 'Scroll Infinito');
+        if (cookie_dimention){
+            ga('set', 'dimension5', '1');
+        }else{
+            ga('set', 'dimension5', '0');
+        }
+        ga('set', 'dimension6', dimensionsData.dimension6);
+        ga('send', 'pageview', '/'+dimensionsData.post_uri);
+
+        // general analytics
+        ga('general.set', 'dimension1', dimensionsData.author);
+        ga('general.set', 'dimension2', dimensionsData.post_date);
+        ga('general.set', 'dimension3', dimensionsData.post_type);
+        ga('general.set', 'dimension4', 'Scroll Infinito');
+        if (cookie_dimention){
+            ga('general.set', 'dimension5', '1');
+        }else{
+            ga('general.set', 'dimension5', '0');
+        }
+        ga('general.set', 'dimension6', dimensionsData.dimension6);
+        ga('general.send', 'pageview', '/'+dimensionsData.post_uri);
+    };
+</script>
+
+ <div id="article_363219">
+        <div class="left-content">
+            <div class="content_data single_content_wrapper" data-author="juandiego" data-post_date="2022-04-19" data-post_type="Deportes" data-post_uri="/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" data-dimension6="0">
+                <div class="single_top">
+                    <h1 class="title">Nicole Hacohen comenzará la temporada con la Copa de Naciones de Glasgow 2022</h1>
+                    
+                                            <div>
+                            <span class="breadcrumbs">
+                                                                    <a title="Ciclismo"
+                                        href="https://www.guatemala.com/deportes/ciclismo/"
+                                        class="category">Ciclismo</a>
+                                                            </span>
+                            |
+                            <span class="writter">Por: Juan Diego</span>
+                            <span class='hide-pipe-mobile'>|</span>
+                            <span class="date">Actualizado el: <time datetime="2022-04-19 21:12:57">19 abril 2022  9:12 pm</time></span>
+                        </div>
+                                    </div>
+                <div class="single_images"> <img width="885" height="500" src="https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022-885x500.png" class="attachment-web_gallery size-web_gallery" alt="Nicole Hacohen comenzará la temporada con la Copa de Naciones de Glasgow 2022" srcset="https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022-885x500.png 885w, https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022-270x153.png 270w, https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022-300x170.png 300w, https://www.guatemala.com/fotos/2022/04/Nicole-Hacohen-comenzara-la-temporada-con-la-Copa-de-Naciones-de-Glasgow-2022-540x305.png 540w" sizes="(max-width: 885px) 100vw, 885px" itemprop="image" /><p class='image_caption'>Descripción de la foto para personas con discapacidad visual: Nicole mira serie a la cámara, mientras sostiene su casco entre su mano. (Créditos: Guatemala.com)</p>                </div>
+                <div class="single_excerpt">
+
+                    <p>La ciclista guatemalteca Nicole Hacohen está lista para comenzar la temporada de pista con su participación en la Copa de Naciones de Glasgow 2022.</p>
+
+                    
+                        <audio id="audioNote-363219"
+                            src="https://audionotas.guatemala.com/deportes/363219.mp3"
+                            ontimeupdate="updateAudioNoteDuration(this, 'duration-audioNote-363219', true, 'Nicole Hacohen comenzar&aacute; la temporada con la Copa de Naciones de Glasgow 2022')"
+                            onloadedmetadata="updateAudioNoteDuration(this, 'duration-audioNote-363219', false, 'Nicole Hacohen comenzar&aacute; la temporada con la Copa de Naciones de Glasgow 2022')"
+                            onplaying="this.classList.add('playing')"
+                            onpause="this.classList.remove('playing')"
+                            onended="sendEventAudioEnded('Nicole Hacohen comenzar&aacute; la temporada con la Copa de Naciones de Glasgow 2022')"
+                            preload="none">
+                            <p>Tu navegador no soporta los elementos de audio</p>
+                        </audio>
+                        <div class="audio-note-controllers sport">
+                            <div class="audio-note-title">
+                                <span class="beta-label">Beta</span> Escucha la nota <i class="icon-assistive-listening"></i>
+                            </div>
+                            <div class="audio-note-button">
+                                <button onclick="playPauseAudioNote(this, 'audioNote-363219', 'Nicole Hacohen comenzar&aacute; la temporada con la Copa de Naciones de Glasgow 2022');" title="Reproducir Audionota">
+                                    <i class="icon-play"></i>
+                                    <span id="duration-audioNote-363219">Reproducir</span>
+                                </button>
+                                <div class="select">
+                                    <select name="audioNoteSpeed" id="audioNoteSpeed" data-audionoteid="audioNote-363219">
+                                        <option value="1">1x</option>
+                                        <option value="1.25">1.25x</option>
+                                        <option value="1.5">1.5x</option>
+                                        <option value="1.75">1.75x</option>
+                                        <option value="2">2x</option>
+                                        <option value="2.25">2.25x</option>
+                                        <option value="2.5">2.5x</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            var eventsSent = [];
+                            function playPauseAudioNote(button, id, title) {
+
+                                track = document.getElementById(id);
+                                if (track.classList.contains('playing')) {
+                                    track.pause();
+                                    button.classList.add('play');
+                                    button.classList.remove('pause');
+                                    ga('send', 'event', 'AudioNotas', 'Pause', title);
+                                    ga('general.send', 'event', 'AudioNotas', 'Pause', title);
+                                } else {
+                                    track.play();
+                                    button.classList.add('pause');
+                                    button.classList.remove('play');
+                                    ga('send', 'event', 'AudioNotas', 'Play', title);
+                                    ga('general.send', 'event', 'AudioNotas', 'Play', title);
+                                }
+
+                            }
+
+                            function changeAudioNoteSpeed(id, speed) {
+                                track = document.getElementById(id);
+                                track.playbackRate = speed;
+                            }
+
+                            document.querySelector('#audioNoteSpeed').addEventListener('change',function(){
+                                changeAudioNoteSpeed(this.dataset.audionoteid,this.value);
+                            });
+
+                            function updateAudioNoteDuration(track, containerId, showRemainig, title) {
+
+                                durationLeft = track.duration - track.currentTime ;
+                                minutes = Math.floor(durationLeft / 60);
+                                seconds = Math.floor(durationLeft - minutes * 60);
+
+                                if (seconds <= 9) { // concatenate 0 to match the minutes:seconds format
+                                    seconds = '0' + seconds
+                                }
+
+                                time = minutes + ':' + seconds;
+                                if (showRemainig) {
+                                    time = '-' + time;
+                                }
+
+                                document.getElementById(containerId).innerHTML = time;
+
+                                // Analytics events for audio listening
+                                if(track.currentTime >= 10 && track.currentTime <= 11 && !eventsSent.includes('10s-'+encodeURI(title))) { // 10s
+                                    ga('send', 'event', 'AudioNotas', '10s', title, 10);
+                                    ga('general.send', 'event', 'AudioNotas', '10s', title, 10);
+                                    eventsSent.push('10s-'+encodeURI(title));
+                                }
+
+                                if(track.currentTime >= 30 && track.currentTime <= 31 && !eventsSent.includes('30s-'+encodeURI(title))) { // 30s
+                                    ga('send', 'event', 'AudioNotas', '30s', title, 30);
+                                    ga('general.send', 'event', 'AudioNotas', '30s', title, 30);
+                                    eventsSent.push('30s-'+encodeURI(title));
+                                }
+
+                                if(track.currentTime >= 60 && track.currentTime <= 61 && !eventsSent.includes('1min-'+encodeURI(title))) { // 1min
+                                    ga('send', 'event', 'AudioNotas', '1min', title, 60);
+                                    ga('general.send', 'event', 'AudioNotas', '1min', title, 60);
+                                    eventsSent.push('1min-'+encodeURI(title));
+                                }
+
+                                if(track.currentTime >= 120 && track.currentTime <= 121 && !eventsSent.includes('2min-'+encodeURI(title))) { // 2min
+                                    ga('send', 'event', 'AudioNotas', '2min', title, 120);
+                                    ga('general.send', 'event', 'AudioNotas', '2min', title);
+                                    eventsSent.push('2min-'+encodeURI(title));
+                                }
+
+                                if(track.currentTime >= 180 && track.currentTime <= 181 && !eventsSent.includes('3min-'+encodeURI(title))) { // 3min
+                                    ga('send', 'event', 'AudioNotas', '3min', title, 180);
+                                    ga('general.send', 'event', 'AudioNotas', '3min', title, 180);
+                                    eventsSent.push('3min-'+encodeURI(title));
+                                }
+
+                            }
+
+                            function sendEventAudioEnded(title) {
+                                ga('send', 'event', 'AudioNotas', 'Completado', title);
+                                ga('general.send', 'event', 'AudioNotas', 'Completado', title);
+                            }
+                        </script>
+
+                                    </div>
+
+                
+                <div class="single_content read-more">
+
+                    
+                    
+                    <p>La primera competencia de la <strong>temporada 2022</strong> llegó para la ciclista <a href="https://aprende.guatemala.com/historia/biografia-nicole-hacohen-ciclista-guatemalteca/"><strong>Nicole Hacohen</strong></a>, quien tendrá la oportunidad de representar a Guatemala en la<strong> Copa de Naciones</strong> que se llevará a cabo del 21 al 24 de abril en <strong>Glasgow</strong>, Reino Unido.</p>
+<p>Nicole está lista para entregar su máximo esfuerzo en el tercer <strong>evento de talla mundial</strong> que afronta en su carrera deportiva. La guatemalteca de 24 años viene de una larga preparación de casi 2 meses tras participar en un campamento de alto rendimiento en el Centro de<strong> Mundial de Ciclismo,</strong> en <strong>Aigle</strong>, Suiza.</p>
+<div id="attachment_363233" style="width: 510px" class="wp-caption alignnone"><img class="size-full wp-image-363233" src="https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala1.png" alt="nicole hacohen guatemala1" width="500" height="500" srcset="https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala1.png 500w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala1-300x300.png 300w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala1-100x100.png 100w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala1-150x150.png 150w" sizes="(max-width: 500px) 100vw, 500px" /><p class="wp-caption-text">Descripción de la foto para personas con discapacidad visual: Nicole señala con su índice izquierdo una bandera de Guatemala que tiene en su manga derecha de su uniforme. (Créditos: Guatemala.com)</p></div>
+<h2><span style="color: #b91e40;">Nicole Hacohen representará a Guatemala en Glasgow </span></h2>
+<p>Esta será la primera parada de la Copa de Naciones organizada por la <strong>UCI</strong>, que en esta ocasión contará con la presencia de representantes de a40 diferentes países del mundo. Nicole será la única mujer centroamericana presente en la competencia y una de las 6 latinoamericanas, junto a otras 5 colombianas.</p>
+<p>Como es costumbre, Hacohen competirá en sus especialidades, las pruebas de <strong>keirin</strong> y <strong>velocidad</strong>. Su participación comenzará el viernes 22 de abril en velocidad y culminará el domingo 24 con el evento de keirin.</p>
+<div id="attachment_363230" style="width: 510px" class="wp-caption alignnone"><img class="size-full wp-image-363230" src="https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala.png" alt="nicole hacohen guatemala" width="500" height="500" srcset="https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala.png 500w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala-300x300.png 300w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala-100x100.png 100w, https://www.guatemala.com/fotos/2022/04/nicole-hacohen-guatemala-150x150.png 150w" sizes="(max-width: 500px) 100vw, 500px" /><p class="wp-caption-text">Descripción de la foto para personas con discapacidad visual: Nicole pedalea junto a una rival en una Copa de Naciones de Hong Kong. (Créditos: UCI)</p></div>
+<p>Esta será la segunda Copa de Naciones que participa Nicole. En 2021 tuvo la oportunidad de competir en <strong>Hong</strong> <strong>Kong</strong>, donde logró <a href="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-termino-top-10-copa-de-naciones-2021-hong-kong.html">terminar en el top 10</a> en ambos eventos que disputó. También será su tercera aparición en un evento de talla mundial, ya que también se suma su participación en el <strong>Campeonato</strong> Mundial de Francia.</p>
+<h3><span style="color: #b91e40;">Con la mira puesta en París 2024</span></h3>
+<p>Esta competencia formará parte del difícil camino que afronta la ciclista guatemalteca para conseguir una plaza a los próximos <strong>Juegos Olímpicos</strong> <strong>de París</strong>, Francia, en 2024. Para clasificarse, Nicole debe de quedar entre los primeros lugares del ranking mundial de sus dos especialidades.</p>
+<p>Por lo tanto, este evento como los que competirá en el resto del año serán de vital importancia para sumar todos los puntos posibles. En la última actualización del ranking, Nicole ubicó en el puesto 14 en velocidad y puesto 21 en keirin.</p>
+<p>¿Ya sabías que en Guatemala.com tenemos canal de Telegram? Únete <strong>desde tu celular</strong> en este<a href="https://t.me/guatemalacom" target="_blank" rel="noopener"> enlace de invitación</a>.</p>
+
+                    <!-- Subsections -->
+                    
+                    <!-- READ MORE BUTTON -->
+                    
+                                            <!-- AD DFP Native Post -->
+                        <!-- /21667615084/deportes_native_single -->
+                        <div class="sponsor-image-content-container">
+                            <div id='ad-native-post-363219'>
+                                <script>
+                                    googletag.cmd.push(function() {
+                                        googletag.defineSlot('/21667615084/deportes_native_single', ['fluid'], 'ad-native-post-363219')
+                                            .addService(googletag.pubads())
+                                            .setTargeting("sponsored_content", 'deportes_363219')
+                                            .setCollapseEmptyDiv(true);
+                                        googletag.enableServices();
+                                        googletag.display('ad-native-post-363219');
+                                    });
+                                </script>
+                            </div>
+                        </div> 
+                    
+                                            <!-- AD DFP Bottom Desktop -->
+                        <!-- /21667615084/deportes_desktop_single_2 -->
+                        <div class="sponsor-image-content-container">
+                            <div id='ad-bottom-desktop-363219'>
+                                <script>
+                                    googletag.cmd.push(function() {
+                                        googletag.defineSlot('/21667615084/deportes_desktop_single_2', [728, 90], 'ad-bottom-desktop-363219')
+                                            .addService(googletag.pubads())
+                                            .setTargeting("sponsored_content", 'deportes_363219')
+											.setCollapseEmptyDiv(true);
+                                        googletag.enableServices();
+                                        googletag.display('ad-bottom-desktop-363219');
+                                    });
+                                </script>
+                            </div>
+                        </div> 
+                    <!-- FB LIKE BUTTON -->
+                </div>
+
+					 <div  id="fb_single_footer_363219"  class="single_footer click-ajax-scroll last" >
+						  <input type="hidden" name="u4l" value="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" />
+                    
+        <div class="share_box">
+                            <div class="share_wa">
+                    <a class="btn-whatsapp-share" href="whatsapp://send?preview_url=true&text=%2ANicole+Hacohen+comenzar%C3%A1+la+temporada+con+la+Copa+de+Naciones+de+Glasgow+2022%3A%2A+https%3A%2F%2Fwww.guatemala.com%2Fdeportes%2Fciclismo%2Fnicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" data-action="share/whatsapp/share">
+                        <i class="icon-whatsapp"></i>
+                        Compartir
+                    </a>
+                </div>
+                                        <div class="share_fb">
+                    <div class="fb-like" data-href="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html" data-width="55" data-layout="box_count" data-action="like" data-show-faces="false" data-share="false"></div>
+                </div>
+            
+                            <div class="share_tw">
+                    <a title="Compartir en Twitter" class="twitter-share-button"
+                    href="https://twitter.com/share"
+                    data-url="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html"
+                    data-count="vertical">
+                    Tweet</a>
+                </div>
+            
+                            <div class="share_linkedin">
+                    <script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: es_ES</script>
+                    <script type="IN/Share" data-url="https://www.guatemala.com/deportes/ciclismo/nicole-hacohen-comenzara-la-temporada-la-copa-naciones-glasgow-2022.html"></script>
+                </div>
+                    </div>
+
+                    <div class="facebook_like_page"><span>Me gusta GUATEMALA.COM</span>
+                        <div class="fb-like" data-href="https://www.facebook.com/Guatemalacom/" data-width="100"
+                             data-layout="button_count" data-action="like" data-show-faces="true"
+                             data-share="false">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WIDGET DE DIRECTORIO EN MOVIL -->
+            
+            <div id="deleteMe_363219">
+                <script type="text/javascript">
+                    if (typeof jQuery !== "undefined") {
+                        jQuery(document).ready(function ($) {
+                            var title = "Nicole Hacohen comenzar&aacute; la temporada con la Copa de Naciones de Glasgow 2022";
+                            var url = $('#fb_single_footer_363219').find('input[name="u4l"]').val();
+                            var $twt = $('#fb_single_footer_363219').find('a.twitter-share-button');
+                            var $pls = $('#fb_single_footer_363219').find('div.g-plusone');
+
+                            $twt.data('url', url).attr('data-url', url);
+                            $twt.data('text', title).attr('data-text', title);
+                            $pls.data('href', url).attr('data-href', url);
+
+                            $('#fb_single_footer_363219').find('input[name="u4l"]').remove();
+
+                           if (typeof FB !== "undefined") {
+                                FB.XFBML.parse(document.getElementById('fb_single_footer_363219'));
+                            }
+                            // FB.XFBML.parse(document.getElementById('fb_comment_363219'));
+                            if (typeof twttr.widgets !== "undefined") {
+                                twttr.widgets.load();
+                            }
+                            if (typeof  gapi !== "undefined") {
+                                gapi.plusone.go();
+                            }
+
+                            jQuery('#deleteme_363219').remove();
+                        });
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="right-content">
+
+                            <div class="sidebar">
+
+                    <!-- AD DFP Padrinos Desktop -->
+<!--/21667615084/Padrinos_Sponsorship_300*250-320*100_TopRight-Center_Responsive-->
+<div class="dfp-ad-sidebar">
+    <div id='ad-padrinos-363219' style="margin-bottom:20px;">
+        <script>
+            googletag.cmd.push(function() {
+                googletag.defineSlot('/21667615084/Padrinos_Sponsorship_300*250-320*100_TopRight-Center_Responsive', [300, 250], 'ad-padrinos-363219')
+                    .addService(googletag.pubads())
+                    .setCollapseEmptyDiv(true);
+                googletag.enableServices();
+                googletag.display('ad-padrinos-363219');
+            });
+        </script>
+    </div>
+</div>
+
+                                            <!-- AD DFP Sidebar Desktop -->
+                        <!-- /21667615084/deportes_desktop_single_1 -->
+                        <div class="sponsor-image-content-container" style="text-align:center;">
+                            <div id='ad-sidebar-desktop-363219' style="margin-bottom:20px;">
+                                <script>
+                                    googletag.cmd.push(function() {
+                                        googletag.defineSlot('/21667615084/deportes_desktop_single_1', [[300, 600], [300, 250], [336, 280]], 'ad-sidebar-desktop-363219')
+                                            .addService(googletag.pubads())
+                                            .setTargeting("sponsored_content", 'deportes_363219')
+											.setCollapseEmptyDiv(true);
+                                        googletag.enableServices();
+                                        googletag.display('ad-sidebar-desktop-363219');
+                                    });
+                                </script>
+                            </div>
+                        </div> 
+                    <!-- WIDGET DE DIRECTORIO EN SIDEBAR -->
+                    
+                    		<div class="sidebar_posts ">
+			<h2 class="more-about">También te puede interesar</h2>
+			                                        <!-- <style>.hardcoded.article .info .article_title a:hover {color: #3C829C !important; }</style>
+                        <div class="article_small events article hardcoded">
+                            <div class="article_content">
+                                <div class="article_image">
+                                    <img width="270" height="153" src="https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-270x153.jpg" class="attachment-thumbnail size-thumbnail" alt="Grupo DetPon Guatemala Exportacion Vegetales frutas" srcset="https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-270x153.jpg 270w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-300x170.jpg 300w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-768x436.jpg 768w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-885x500.jpg 885w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-540x305.jpg 540w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-800x450.jpg 800w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas.jpg 890w" sizes="(max-width: 270px) 100vw, 270px" itemprop="image">						</div>
+                                <div class="info">
+                                    <span class="category" style="color: #3C829C !important;">Negocios </span>
+                                    | <span class="date">31 Julio de 2019</span>
+                                    <h3 class="article_title"><a title="Grupo DetPon: empresa comprometida con el desarrollo agrícola del país" href="https://www.guatemala.com/desarrollo/negocios/grupo-detpon-empresa-comprometida-con-el-desarrollo-agricola-del-pais.html?utm_source=guatemala.com&utm_medium=sidebar">Grupo DetPon: empresa comprometida con el desarrollo agrícola del país</a></h3>
+                                    <div class="article_excerpt">
+                                        <p>Grupo DetPon lleva 27 años produciendo frutas y vegetales de alta calidad, los cuales exporta a países como Estados Unidos, Canadá, Europa y Japón.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                
+				<div class="article_small events article">
+					<div class="article_content">
+						<div class="article_image">
+														<img width="270" height="153" src="https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-270x153.png" class="attachment-thumbnail size-thumbnail" alt="Las Alturas Extreme Park, el nuevo parque de MTB en la Ciudad de Guatemala" srcset="https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-270x153.png 270w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-300x170.png 300w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-768x436.png 768w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-885x500.png 885w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-540x305.png 540w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1-800x450.png 800w, https://www.guatemala.com/fotos/2022/04/Las-Alturas-Extreme-Park-el-nuevo-parque-de-MTB-en-la-Ciudad-de-Guatemala1.png 890w" sizes="(max-width: 270px) 100vw, 270px" itemprop="image" />						</div>
+						<div class="info">
+							<span class="category">Ciclismo </span>
+							                            	| <span class="date">13 abril de 2022</span>
+	                        							<h3 class="article_title"><a title="Las Alturas Extreme Park, el nuevo parque de MTB en la Ciudad de Guatemala" href="https://www.guatemala.com/deportes/ciclismo/las-alturas-extreme-park-nuevo-parque-mtb-ciudad-guatemala.html">Las Alturas Extreme Park, el nuevo parque de MTB en la Ciudad de Guatemala</a></h3>
+							<div class="article_excerpt">
+								<p>Conoce más de Las Alturas Extreme Park, el nuevo parque de Mountain Bike —MTB— que se encuentra ubicado dentro de la Ciudad de Guatemala.</p>
+							</div>
+						</div>
+					</div>
+				 </div>
+			                                        <!-- <style>.hardcoded.article .info .article_title a:hover {color: #3C829C !important; }</style>
+                        <div class="article_small events article hardcoded">
+                            <div class="article_content">
+                                <div class="article_image">
+                                    <img width="270" height="153" src="https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-270x153.jpg" class="attachment-thumbnail size-thumbnail" alt="Grupo DetPon Guatemala Exportacion Vegetales frutas" srcset="https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-270x153.jpg 270w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-300x170.jpg 300w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-768x436.jpg 768w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-885x500.jpg 885w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-540x305.jpg 540w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas-800x450.jpg 800w, https://www.guatemala.com/fotos/2019/07/Grupo-DetPon-Guatemala-Exportacion-Vegetales-frutas.jpg 890w" sizes="(max-width: 270px) 100vw, 270px" itemprop="image">						</div>
+                                <div class="info">
+                                    <span class="category" style="color: #3C829C !important;">Negocios </span>
+                                    | <span class="date">31 Julio de 2019</span>
+                                    <h3 class="article_title"><a title="Grupo DetPon: empresa comprometida con el desarrollo agrícola del país" href="https://www.guatemala.com/desarrollo/negocios/grupo-detpon-empresa-comprometida-con-el-desarrollo-agricola-del-pais.html?utm_source=guatemala.com&utm_medium=sidebar">Grupo DetPon: empresa comprometida con el desarrollo agrícola del país</a></h3>
+                                    <div class="article_excerpt">
+                                        <p>Grupo DetPon lleva 27 años produciendo frutas y vegetales de alta calidad, los cuales exporta a países como Estados Unidos, Canadá, Europa y Japón.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                
+				<div class="article_small events article">
+					<div class="article_content">
+						<div class="article_image">
+														<img width="270" height="153" src="https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-270x153.jpg" class="attachment-thumbnail size-thumbnail" alt="" srcset="https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-270x153.jpg 270w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-300x170.jpg 300w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-768x436.jpg 768w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-885x500.jpg 885w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-540x305.jpg 540w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022-800x450.jpg 800w, https://www.guatemala.com/fotos/2022/04/Sergio-Chumil-quinto-lugar-en-general-Vuelta-al-Futuro-Portugal-2022.jpg 890w" sizes="(max-width: 270px) 100vw, 270px" itemprop="image" />						</div>
+						<div class="info">
+							<span class="category">Ciclismo </span>
+							                            	| <span class="date">10 abril de 2022</span>
+	                        							<h3 class="article_title"><a title="Sergio Chumil, con Aluminios Cortizo, quinto lugar de la general Vuelta al Futuro Portugal" href="https://www.guatemala.com/deportes/ciclismo/sergio-chumil-aluminios-cortizo-quinto-lugar-la-general-vuelta-al-futuro-portugal.html">Sergio Chumil, con Aluminios Cortizo, quinto lugar de la general Vuelta al Futuro Portugal</a></h3>
+							<div class="article_excerpt">
+								<p>Sergio Chumil, ciclista originario de Tecpán, ganó el quinto lugar de la general en Vuelta al Futuro Portugal 2022, con su equipo Aluminios Cortizo.</p>
+							</div>
+						</div>
+					</div>
+				 </div>
+								</div>
+
+		
+                                            <!-- AD DFP Sidebar 2 Desktop -->
+                        <!-- /21667615084/deportes_desktop_sidebar_1 -->
+                        <div class="sponsor-image-content-container" style="text-align:center;">
+                            <div id='ad-sidebar-desktop-2363219' style="margin-bottom:20px;">
+                                <script>
+                                    googletag.cmd.push(function() {
+                                        googletag.defineSlot('/21667615084/deportes_desktop_sidebar_1', [[300, 600], [300, 250], [336, 280]], 'ad-sidebar-desktop-2363219')
+                                            .addService(googletag.pubads())
+                                            .setTargeting("sponsored_content", 'deportes_363219')
+                                            .setCollapseEmptyDiv(true);
+                                        googletag.enableServices();
+                                        googletag.display('ad-sidebar-desktop-2363219');
+                                    });
+                                </script>
+                            </div>
+                        </div>                 </div>
+            		  </div>
+
+    </div>
+
+</div></div><div class="alm-btn-wrap" style="visibility: hidden;"><button class="alm-load-more-btn more " rel="next">Older Posts</button></div></div>    </div>             </div> <!-- END: div.row -->
+
+            <div class="overlay-gt"></div>
+            <div id="overlay_notifications"></div>
+        </div> <!-- END: div.container -->
+    </div> <!-- END: div#main-wrapper -->
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="logo-footer">
+                    <i class="icon-logo-full"></i>
+                    <i class="icon-logo-text" style="font-size: 17px;"></i>
+                </div>
+                <p>2022 - Todos los derechos reservados.</p>
+                <nav>
+                    <ul>
+                        <li><a href="http://boletin.guatemala.com/subscription?f=ny763bDAkrENeRWOUpgcAiXBCs9HF1wrnILK0m5o892vU3x9K0wodP09RpsTzEPZFWdS" title="Boletín">Boletín</a></li>
+                        <li><a href="https://www.guatemala.com/privacy-policy/" title="Privacy Policy">Privacy Policy</a></li>
+                        <li><a href="https://www.guatemala.com/contacto/" title="Contacto">Contacto</a></li>
+                        <li><a href="https://www.guatemala.com/quienes-somos/" title="Contacto">Quiénes somos</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+                        <!-- View Story Button -->
+            <a id="story_link_fixed" class="story-link fixed" data-story-id="335147" href="https://www.guatemala.com/historias/sociedad/covid-19-pasos-obtener-constancia-registro-vacunacion-guatemala.html" title="Ir a Historia" data-icon-seen-url="https://www.guatemala.com/fotos/2019/09/historias-seen.png">
+                <img src="https://www.guatemala.com/fotos/2019/09/historias-new.png" alt="Historia destacada">
+            </a>
+            
+    <link rel='stylesheet' id='shortcodes-style-css'  href='https://www.guatemala.com/wp-content/plugins/guatemala_link_embeds/assets/css/link_embed.css?ver=4.8.1' type='text/css' media='all' />
+<link rel='stylesheet' id='sponsored_traffic_frontend_css-css'  href='https://www.guatemala.com/wp-content/plugins/guatemala_sponsored_traffic/assets/css/sponsored_traffic_frontend.css?ver=1649080092' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.guatemala.com/assets/js/jquery/jquery.js?ver=1649080094'></script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-includes/js/jquery/ui/core.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-includes/js/jquery/ui/datepicker.min.js?ver=1.11.4'></script>
+<script type='text/javascript'>
+jQuery(document).ready(function(jQuery){jQuery.datepicker.setDefaults({"closeText":"Cerrar","currentText":"Hoy","monthNames":["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],"monthNamesShort":["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],"nextText":"Siguiente","prevText":"Previo","dayNames":["domingo","lunes","martes","mi\u00e9rcoles","jueves","viernes","s\u00e1bado"],"dayNamesShort":["Dom","Lun","Mar","Mie","Jue","Vie","Sab"],"dayNamesMin":["D","L","M","X","J","V","S"],"dateFormat":"d MM \\dd\\e yy","firstDay":1,"isRTL":false});});
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/www.guatemala.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Por favor, prueba que no eres un robot."}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=4.9'></script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-includes/js/wp-embed.min.js?ver=4.8.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var alm_localize = {"ajaxurl":"https:\/\/www.guatemala.com\/wp-admin\/admin-ajax.php","restapi":{"active":false,"url":"https:\/\/www.guatemala.com\/wp-json\/","namespace":"ajaxloadmore"},"alm_nonce":"46a6b00569","pluginurl":"https:\/\/www.guatemala.com\/wp-content\/plugins\/ajax-load-more","scrolltop":"false","speed":"250","results_text":"Displaying page {num} of {total}.","no_results_text":"No results found."};
+var ajax_load_more_vars = {"id":"ajax-load-more"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-content/plugins/ajax-load-more/core/dist/js/ajax-load-more.min.js?ver=5.1.0.1'></script>
+<script type='text/javascript' src='https://www.guatemala.com/wp-content/plugins/ajax-load-more-pro/pro/ajax-load-more-previous-post/js/alm-single-posts.min.js?ver=1.4.0'></script>
+    	<script type="text/javascript" >
+    	jQuery(document).ready(function($) {
+
+        jQuery("body").on("submit",".sml_subscribe", function(e){
+          e.preventDefault();
+
+          var data = {
+      			'action': 'subscribe_callback',
+      			'sml_name': jQuery(this).find(".sml_nameinput").val(),
+            'sml_email': jQuery(this).find(".sml_emailinput").val(),
+            'sml_subscribe':jQuery(this).find("input[name='sml_subscribe']").val()
+      		};
+
+          jQuery.ajax({
+            url: 'https://www.guatemala.com/wp-admin/admin-ajax.php',
+            data: data,
+            method: "POST",
+            beforeSend:function(){
+              jQuery(e.target).find(".sml_error").hide();
+              jQuery(e.target).find(".sml_thankyou").hide();
+              jQuery(e.target).find(".sml_submitbtn").addClass("sml_disabled");
+              jQuery(e.target).find(".sml_submitbtn").prop("disabled", 1);
+              jQuery(e.target).find(".sml_loading").fadeIn();
+            }
+          }).success(function(response){
+
+            if(response == "1"){
+              thankyouDiv = jQuery(e.target).closest(".newsletter").data("thankyou");
+              if(jQuery(e.target).closest(".newsletter").find(thankyouDiv).length > 0){
+                jQuery(e.target).closest(".newsletter").find('.content-send').fadeOut('fast', function(){
+                  jQuery(e.target).closest(".newsletter").find(".content-left").hide();
+                  jQuery(e.target).closest(".newsletter").find(".content-right").css("width", "100%");
+                  jQuery(e.target).closest(".newsletter").find(".social").css("text-align", "center");
+                  jQuery(e.target).closest(".newsletter").find(thankyouDiv).fadeIn('fast');
+                  jQuery(this).remove();
+
+                });
+
+              }
+              else
+              {
+                jQuery(e.target).find(".sml_error").html('').hide();
+                jQuery(e.target).find(".sml_thankyou").html('¡Gracias por suscribirte!').fadeIn();
+              }
+
+              createCookie("remove_newsletter_modal_new", 1, 999999);
+            }else{
+              jQuery(e.target).find(".sml_thankyou").html('').hide();
+              jQuery(e.target).find(".sml_error").html(response).fadeIn();
+            }
+
+
+          }).always(function(){
+            jQuery(e.target).find(".sml_nameinput").val("");
+            jQuery(e.target).find(".sml_emailinput").val("");
+            jQuery(e.target).find(".sml_submitbtn").removeClass("sml_disabled");
+            jQuery(e.target).find(".sml_submitbtn").prop("disabled", 0);
+            jQuery(e.target).find(".sml_loading").fadeOut();
+          });
+
+
+
+
+    		});
+    	});
+    	</script> 
+    <!-- Quantcast Tag -->
+    <script type="text/javascript">
+        var _qevents = _qevents || [];
+
+        (function() {
+            var elem = document.createElement('script');
+            elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+            elem.async = true;
+            elem.type = "text/javascript";
+            var scpt = document.getElementsByTagName('script')[0];
+            scpt.parentNode.insertBefore(elem, scpt);
+        })();
+
+        _qevents.push({
+            qacct:"p-cY9AVe7rfqtjA"
+        });
+    </script>
+    <noscript>
+        <div style="display:none;">
+            <img src="//pixel.quantserve.com/pixel/p-cY9AVe7rfqtjA.gif" border="0" height="1" width="1" alt="Quantcast"/>
+        </div>
+    </noscript>
+    <!-- End Quantcast tag -->
+
+        <script src="https://www.guatemala.com/assets/js/swiper.min.js"></script>
+    <script type="text/javascript" src="https://www.guatemala.com/assets/js/ui.min.js?v=1649080094"></script>
+    <script src="https://www.guatemala.com/assets/js/masonry.pkgd.min.js"></script>
+    <script src="https://www.guatemala.com/assets/js/ssm.min.js"></script>
+
+        <script src="https://www.guatemala.com/assets/js/menus.js?v=1649080094"></script>
+
+    <!-- OneSignal translations -->
+    <script src="/embeds/push-notifications/translations.js"></script>
+
+    <!-- smart search -->
+            <script id="smartJs" type="text/javascript" src="https://www.guatemala.com/wp-content/plugins/api_v2/js/smart_search.src.js?v=1649080094&url=https://www.guatemala.com"></script>
+        <script>
+        var $grid;
+
+        jQuery(document).ready(function(){
+            if (jQuery(".article").length > 0 && jQuery(".article_small").length > 0 ) {
+                                    $grid = jQuery('.other-posts-group').masonry({
+                        // options
+                        itemSelector: '.article',
+                        columnWidth: ".article_small",
+                        percentPosition: true,
+                    });
+                            }
+        });
+    </script>
+
+    <script src="https://www.guatemala.com/assets/js/pandalocker.min.js"></script>
+
+    <!-- include scripts for badges -->
+    
+    <span data-time="[(2022-04-22 04:53:09)]"></span>
+    <span class="websitegt"></span>
+
+    <script src="https://www.guatemala.com/assets/js/jquery.sticky-kit.min.js"></script>
+        <script id="newsletter" src="https://www.guatemala.com/assets/newsletter/js/newsletter-embed.js?v=1649080094&url=https://www.guatemala.com&domain=.guatemala.com"></script>
+    <div id="nwsEmbGt"></div>
+
+    <!-- /21667615084/VSlider_1x1 -->
+    <div id='div-gpt-ad-1638408567913-0'>
+        <script>
+            googletag.cmd.push(function() {
+                googletag.defineSlot('/21667615084/VSlider_1x1', [1, 1], 'div-gpt-ad-1638408567913-0')
+                    .addService(googletag.pubads());
+                googletag.enableServices();
+                googletag.display('div-gpt-ad-1638408567913-0');
+            });
+        </script>
+    </div>
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"5b898c3193","applicationID":"108226898","transactionName":"NgEANUVVWkpTU01eDA9LIwJDXVtXHUNQWQQNAU8SR1tGTQ==","queueTime":0,"applicationTime":158,"atts":"GkYDQw1PSUQ=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+</html>

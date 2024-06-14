@@ -10,18 +10,17 @@ from time import sleep
 from courlan import (UrlStore, extract_links, fix_relative_urls, get_hostinfo,
                      is_navigation_page, is_not_crawlable)
 
-from .core import baseline
-from .downloads import fetch_url
-# from .feeds import find_feed_urls # extract_links ad extract_feed_links
-from .settings import DEFAULT_CONFIG
-from .utils import decode_response, load_html
-
-# language detection
 try:
     import py3langid
-    LANGID_FLAG = True
 except ImportError:
-    LANGID_FLAG = False
+    pass
+
+from .core import baseline
+from .downloads import fetch_response, fetch_url
+# from .feeds import find_feed_urls  # extract_links ad extract_feed_links
+from .settings import DEFAULT_CONFIG
+from .utils import LANGID_FLAG, decode_file, load_html
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -63,7 +62,7 @@ def refresh_detection(htmlstring, homepage):
 
 def probe_alternative_homepage(homepage):
     "Check if the homepage is redirected and return appropriate values."
-    response = fetch_url(homepage, decode=False)
+    response = fetch_response(homepage, decode=False)
     if response is None or response == '':
         return None, None, None
     # get redirected URL here?
@@ -71,7 +70,7 @@ def probe_alternative_homepage(homepage):
         logging.info('followed redirect: %s', response.url)
         homepage = response.url
     # decode response
-    htmlstring = decode_response(response.data)
+    htmlstring = decode_file(response.data)
     # is there a meta-refresh on the page?
     htmlstring, homepage = refresh_detection(htmlstring, homepage)
     if homepage is None:  # malformed or malicious content
@@ -115,32 +114,45 @@ def process_response(response, base_url, language, rules=None):
         URL_STORE.add_urls([response.url], visited=True)
         if response.data is not None and response.data != '':
             # convert urllib3 response to string
-            htmlstring = decode_response(response.data)
+            htmlstring = decode_file(response.data)
             # proceed to link extraction
             process_links(htmlstring, base_url, language=language, rules=rules)
 
 
+def parse_robots(robots_url, data):
+    "Parse a robots.txt file with the standard library urllib.robotparser."
+    # https://github.com/python/cpython/blob/main/Lib/urllib/robotparser.py
+    rules = urllib.robotparser.RobotFileParser()
+    rules.set_url(robots_url)
+    # exceptions happening here
+    try:
+        rules.parse(data.splitlines())
+    except Exception as exc:
+        LOGGER.error("cannot read robots.txt: %s", exc)
+        return None
+    return rules
+
+
 def init_crawl(homepage, todo, known_links, language=None, rules=None):
-    """Start crawl by initializing variables and potentially examining the starting page."""
+    "Start crawl by initializing variables and potentially examining the starting page."
     # config=DEFAULT_CONFIG
     _, base_url = get_hostinfo(homepage)
     if base_url is None or len(base_url) < 1:
-        raise ValueError(f'cannot crawl homepage: {homepage}')
+        raise ValueError(f"cannot crawl homepage: {homepage}")
+
     # TODO: just known or also visited?
     if known_links is not None:
         URL_STORE.add_urls(urls=known_links, visited=True)
     i = 0
+
     # fetch and parse robots.txt file if necessary
     if rules is None:
-        rules = urllib.robotparser.RobotFileParser()
-        rules.set_url(base_url + '/robots.txt')
-        # exceptions happening here
-        try:
-            rules.read()
-        except Exception as exc:
-            LOGGER.error('cannot read robots.txt: %s', exc)
-            rules = None
+        robots_url = base_url + "/robots.txt"
+        data = fetch_url(robots_url)
+        if data is not None:
+            rules = parse_robots(robots_url, data)
     URL_STORE.store_rules(base_url, rules)
+
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         URL_STORE.add_urls(urls=[homepage], visited=False)
@@ -167,7 +179,7 @@ def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
                 # extract links on homepage
                 process_links(htmlstring, url=url, language=lang, rules=rules)
         else:
-            response = fetch_url(url, decode=False)
+            response = fetch_response(url, decode=False)
             process_response(response, base_url, lang, rules=rules)
     # optional backup of gathered pages without nav-pages ? ...
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))

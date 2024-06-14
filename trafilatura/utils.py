@@ -1,24 +1,37 @@
 # pylint:disable-msg=E0611,I1101
 """
-Module bundling functions related to HTML and text processing.
+Module bundling functions related to HTML and text processing,
+content filtering and language detection.
 """
 
+import gzip
 import logging
 import re
-import warnings
+import zlib
 
-# if brotli is installed
-try:
-    import brotli
-except ImportError:
-    brotli = None
-
-from difflib import SequenceMatcher
 from functools import lru_cache
-from gzip import decompress
-from html import unescape
 from itertools import islice
 from unicodedata import normalize
+
+# response compression
+try:
+    import brotli
+    HAS_BROTLI = True
+except ImportError:
+    HAS_BROTLI = False
+
+try:
+    import zstandard
+    HAS_ZSTD = True
+except ImportError:
+    HAS_ZSTD = False
+
+# language detection
+try:
+    import py3langid
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
 
 # CChardet is faster and can be more accurate
 try:
@@ -37,6 +50,7 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
 DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
+HTML_STRIP_TAGS = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
@@ -49,52 +63,54 @@ URL_BLACKLIST_REGEX = re.compile(r'^https?://|/+$')
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
 
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) ', flags=re.IGNORECASE)
-AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
-AUTHOR_TWITTER = re.compile(r'@[\w]+')
-AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
-AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘({\[’\'][^"]+?[‘’"\')\]}]')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~¿]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)', flags=re.IGNORECASE)
-AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
-AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
-AUTHOR_EMOJI_REMOVE = re.compile(
-    "["
-    u"\U00002700-\U000027BF"  # Dingbats
-    u"\U0001F600-\U0001F64F"  # Emoticons
-    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
-    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
-    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
-    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
-    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
-    "]+", flags=re.UNICODE)
-AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
-CLEAN_META_TAGS = re.compile(r'["\']')
-
-STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
-
 FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
+TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
+RE_HTML_LANG = re.compile(r'([a-z]{2})')
+
+# Mostly filters for social media
+RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|'
+                        'Linkedin|Mail|PDF|Pinterest|Pocket|Print|QQ|Reddit|Twitter|'
+                        'WeChat|WeiBo|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$',
+                       flags=re.IGNORECASE)
+# COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
+
 
 def handle_compressed_file(filecontent):
-    """Tell if a file's magic number corresponds to the GZip format
-       and try to decode it. Alternatively, try Brotli if the package
-       is installed."""
-    if isinstance(filecontent, bytes):
-        # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-        if filecontent[:2] == b'\x1f\x8b':
-            # decode GZipped data
-            try:
-                filecontent = decompress(filecontent)
-            except (EOFError, OSError):
-                logging.warning('invalid GZ file')
-        # try brotli
-        elif brotli is not None:
-            try:
-                filecontent = brotli.decompress(filecontent)
-            except brotli.error:
-                pass  # logging.debug('invalid Brotli file')
+    """
+    Don't trust response headers and try to decompress a binary string
+    with a cascade of installed packages. Use magic numbers when available.
+    """
+    if not isinstance(filecontent, bytes):
+        return filecontent
+
+    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+    if filecontent[:3] == b"\x1f\x8b\x08":
+        try:
+            return gzip.decompress(filecontent)
+        except Exception:  # EOFError, OSError, gzip.BadGzipFile
+            LOGGER.warning("invalid GZ file")
+    # try zstandard
+    if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
+        try:
+            return zstandard.decompress(filecontent)  # max_output_size=???
+        except zstandard.ZstdError:
+            LOGGER.warning("invalid ZSTD file")
+    # try brotli
+    if HAS_BROTLI:
+        try:
+            return brotli.decompress(filecontent)
+        except brotli.error:
+            pass  # logging.debug('invalid Brotli file')
+    # try zlib/deflate
+    try:
+        return zlib.decompress(filecontent)
+    except zlib.error:
+        pass
+
+    # return content unchanged if decompression failed
     return filecontent
 
 
@@ -135,11 +151,7 @@ def detect_encoding(bytesobject):
 def decode_response(content):
     """Read the urllib3 object corresponding to the server response,
        try to guess its encoding and decode it to return a unicode string"""
-    warnings.warn(
-        "decode_response() will be deprecated, use decode_file() on the content.",
-         PendingDeprecationWarning
-    )
-    return decode_file(content)
+    raise ValueError("decode_response() is deprecated, use decode_file() instead.")
 
 
 def decode_file(filecontent):
@@ -326,74 +338,10 @@ def trim(string):
         return None
 
 
-def normalize_tags(tags):
-    '''Remove special characters of tags'''
-    tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
-    return ", ".join(filter(None, tags.split(", ")))
-
-
 def is_image_file(imagesrc):
     '''Check if the observed string corresponds to a valid image extension,
        return False otherwise'''
     return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
-
-
-def normalize_authors(current_authors, author_string):
-    '''Normalize author info to focus on author names only'''
-    new_authors = []
-    if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):
-        return current_authors
-    if current_authors is not None:
-        new_authors = current_authors.split('; ')
-    # fix to code with unicode
-    if '\\u' in author_string:
-        author_string = author_string.encode().decode('unicode_escape')
-    # fix html entities
-    if '&#' in author_string or '&amp;' in author_string:
-        author_string = unescape(author_string)
-    # remove html tags
-    author_string = AUTHOR_REMOVE_HTML.sub('', author_string)
-    # examine names
-    for author in AUTHOR_SPLIT.split(author_string):
-        author = trim(author)
-        # remove emoji
-        author = AUTHOR_EMOJI_REMOVE.sub('', author)
-        # remove @username
-        author = AUTHOR_TWITTER.sub('', author)
-        # replace special characters with space
-        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
-        author = AUTHOR_REMOVE_NICKNAME.sub('', author)
-        # remove special characters
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-        author = AUTHOR_PREFIX.sub('', author)
-        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
-        # skip empty or improbably long strings
-        if len(author) == 0 or (
-            # simple heuristics, regex or vowel tests also possible
-            ' ' not in author and '-' not in author and len(author) >= 50
-            ):
-            continue
-        # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
-            author = author.title()
-        # safety checks
-        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
-            new_authors.append(author)
-    if len(new_authors) == 0:
-        return current_authors
-    return '; '.join(new_authors).strip('; ')
-
-
-@lru_cache(maxsize=1024)
-def is_similar_domain(reference, new_string, threshold=0.5):
-    "Return the similarity ratio between two short strings, here domain names."
-    if new_string != reference:
-        new_string = STRIP_EXTENSION.sub("", new_string)
-        reference = STRIP_EXTENSION.sub("", reference)
-        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
-            return False
-    return True
 
 
 def make_chunks(iterable, n):
@@ -410,3 +358,83 @@ def make_chunks(iterable, n):
     # Python 3.8+ with walrus operator
     # while batch := tuple(islice(it, n)):
     #    yield batch
+
+
+def is_acceptable_length(my_len, options):
+    "Check if the document length is within acceptable boundaries."
+    if my_len < options.min_file_size:
+        LOGGER.error("too small/incorrect for URL %s", options.url)
+        return False
+    if my_len > options.max_file_size:
+        LOGGER.error("too large: length %s for URL %s", my_len, options.url)
+        return False
+    return True
+
+
+def check_html_lang(tree, target_language, strict=False):
+    """Check HTML meta-elements for language information and split
+       the result in case there are several languages."""
+    for attr in TARGET_LANG_ATTRS:
+        elems = tree.findall(f'.//meta[@{attr}][@content]')
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("content", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("%s lang attr failed", attr)
+            return False
+
+    # HTML lang attribute: sometimes a wrong indication
+    if strict:
+        elems = tree.xpath("//html[@lang]")
+        if elems:
+            if any(target_language in RE_HTML_LANG.split(elem.get("lang", "").lower()) for elem in elems):
+                return True
+            LOGGER.debug("HTML lang failed")
+            return False
+
+    LOGGER.debug("No relevant lang elements found")
+    return True
+
+
+def language_classifier(temp_text, temp_comments):
+    '''Run external component (if installed) for language identification'''
+    if LANGID_FLAG is True:
+        result, _ = (
+            py3langid.classify(temp_text)
+            if len(temp_text) > len(temp_comments)
+            else py3langid.classify(temp_comments)
+        )
+    else:
+        LOGGER.warning('Language detector not installed, skipping detection')
+        result = None
+    return result
+
+
+def language_filter(temp_text, temp_comments, target_language, docmeta):
+    '''Filter text based on language detection and store relevant information'''
+    # todo: run and pass info along anyway?
+    if target_language is not None:
+        # more thorough: detection on actual text content
+        docmeta.language = language_classifier(temp_text, temp_comments)
+        # HTML lang check? sometimes contradicted by detection above
+        #if docmeta.language is None:
+        #    if check_html_lang(tree, target_language) is False:
+        #        LOGGER.error('wrong HTML meta language for URL %s', url)
+        #        raise ValueError
+        if docmeta.language is not None and docmeta.language != target_language:
+            LOGGER.warning('wrong language: %s %s', docmeta.language, docmeta.url)
+            return True, docmeta
+    return False, docmeta
+
+
+def textfilter(element):
+    '''Filter out unwanted text'''
+    testtext = element.tail if element.text is None else element.text
+    # to check: line len → continue if len(line) <= 5
+    return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
+
+
+def text_chars_test(string):
+    '''Determine if a string is only composed of spaces and/or control characters'''
+    # or not re.search(r'\w', string)
+    # return string is not None and len(string) != 0 and not string.isspace()
+    return bool(string) and not string.isspace()

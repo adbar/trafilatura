@@ -10,26 +10,27 @@ import string
 import sys
 import traceback
 
+from base64 import urlsafe_b64encode
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
-from os import makedirs, path, walk
+from os import makedirs, path, stat, walk
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
 from trafilatura import spider
 
 from .baseline import html2txt
-from .core import Extractor, extract
+from .core import extract
+from .deduplication import generate_bow_hash
 from .downloads import (add_to_compressed_dict, buffered_downloads,
                         load_download_buffer)
 from .feeds import find_feed_urls
-from .filters import LANGID_FLAG, language_classifier
-from .hashing import generate_hash_filename
 from .meta import reset_caches
-from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, use_config
+from .settings import FILENAME_LEN, MAX_FILES_PER_DIRECTORY, args_to_extractor
 from .sitemaps import sitemap_search
-from .utils import URL_BLACKLIST_REGEX, make_chunks
+from .utils import LANGID_FLAG, URL_BLACKLIST_REGEX, is_acceptable_length, language_classifier, make_chunks
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -38,6 +39,8 @@ CHAR_CLASS = string.ascii_letters + string.digits
 
 STRIP_DIR = re.compile(r'[^/]+$')
 STRIP_EXTENSION = re.compile(r'\.[a-z]{2,5}$')
+
+CLEAN_XML = re.compile(r"<[^<]+?>")
 
 INPUT_URLS_ARGS = ['URL', 'crawl', 'explore', 'probe', 'feed', 'sitemap']
 
@@ -85,7 +88,7 @@ def load_input_dict(args):
     '''Read input list of URLs to process and
        build a domain-aware dictionary'''
     inputlist = load_input_urls(args)
-    # deduplicate, filter and and convert to dict
+    # deduplicate, filter and convert to dict
     return add_to_compressed_dict(
         inputlist,
         blacklist=args.blacklist,
@@ -120,18 +123,22 @@ def determine_counter_dir(dirname, counter):
     return path.join(dirname, counter_dir)
 
 
-def generate_filename():
-    '''Generate a random filename of the desired length'''
-    return ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
-
-
 def get_writable_path(destdir, extension):
     '''Find a writable path and return it along with its random file name'''
     output_path = None
     while output_path is None or path.exists(output_path):
-        filename = generate_filename()
+        # generate a random filename of the desired length
+        filename = ''.join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = path.join(destdir, filename + extension)
     return output_path, filename
+
+
+def generate_hash_filename(content: str) -> str:
+    """Create a filename-safe string by hashing the given content
+    after deleting potential XML tags."""
+    return urlsafe_b64encode(
+               generate_bow_hash(CLEAN_XML.sub("", content), 12)
+           ).decode()
 
 
 def determine_output_path(args, orig_filename, content, counter=None, new_filename=None):
@@ -152,7 +159,6 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
 
     output_path = path.join(destination_dir, filename + extension)
     return output_path, destination_dir
-
 
 
 def archive_html(htmlstring, args, counter=None):
@@ -190,10 +196,17 @@ def generate_filelist(inputdir):
 
 def file_processing(filename, args, counter=None, options=None):
     '''Aggregated functions to process a file in a list'''
+    if not options:
+        options = args_to_extractor(args)
+    options.source = filename
+
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    options.source = filename
-    options.date_params["max_date"] = datetime.fromtimestamp(path.getctime(filename)).strftime("%Y-%m-%d")
+
+    file_stat = stat(filename)
+    ref_timestamp = min(file_stat.st_ctime, file_stat.st_mtime)
+    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).strftime("%Y-%m-%d")
+
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
@@ -217,7 +230,7 @@ def download_queue_processing(url_store, args, counter, options):
     while url_store.done is False:
         bufferlist, url_store = load_download_buffer(url_store, options.config.getfloat('DEFAULT', 'SLEEP_TIME'))
         # process downloads
-        for url, result in buffered_downloads(bufferlist, args.parallel):
+        for url, result in buffered_downloads(bufferlist, args.parallel, options=options):
             # handle result
             if result is not None:
                 options.url = url
@@ -235,12 +248,12 @@ def cli_discovery(args):
     if args.list:
         url_store.reset()
 
-    config = use_config(filename=args.config_file)
+    options = args_to_extractor(args)
     func = partial(
                find_feed_urls if args.feed else sitemap_search,
                target_lang=args.target_language,
-               external=config.getboolean('DEFAULT', 'EXTERNAL_URLS'),
-               sleep_time=config.getfloat('DEFAULT', 'SLEEP_TIME')
+               external=options.config.getboolean('DEFAULT', 'EXTERNAL_URLS'),
+               sleep_time=options.config.getfloat('DEFAULT', 'SLEEP_TIME')
            )
 
     # link discovery and storage
@@ -264,7 +277,7 @@ def cli_discovery(args):
     if args.explore:
         # add to compressed dict and crawl the remaining websites
         control_dict = build_exploration_dict(url_store, input_urls, args)
-        cli_crawler(args, url_store=control_dict)
+        cli_crawler(args, url_store=control_dict, options=options)
 
 
 def build_exploration_dict(url_store, input_urls, args):
@@ -282,11 +295,12 @@ def build_exploration_dict(url_store, input_urls, args):
     return control_dict
 
 
-def cli_crawler(args, n=30, url_store=None):
+def cli_crawler(args, n=30, url_store=None, options=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
-    config = use_config(filename=args.config_file)
-    sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    if not options:
+        options = args_to_extractor(args)
+    sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
     # counter = None
     # load input URLs
     if url_store is None:
@@ -307,7 +321,7 @@ def cli_crawler(args, n=30, url_store=None):
     while spider.URL_STORE.done is False:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
         # start several threads
-        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False):
+        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False, options=options):
             base_url = get_base_url(url)
             # handle result
             if result is not None:
@@ -325,29 +339,14 @@ def cli_crawler(args, n=30, url_store=None):
 def probe_homepage(args):
     "Probe websites for extractable content and print the fitting ones."
     input_urls = load_input_urls(args)
-    config = use_config(filename=args.config_file)
-    min_length = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+    options = args_to_extractor(args)
 
-    for url, result in buffered_downloads(input_urls, args.parallel):
+    for url, result in buffered_downloads(input_urls, args.parallel, options=options):
         if result is not None:
             result = html2txt(result)
-            if result and len(result) > min_length and any(c.isalpha() for c in result):
+            if result and len(result) > options.min_extracted_size and any(c.isalpha() for c in result):
                 if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
                     print(url, flush=True)
-
-
-def _args_to_extractor(args, url=None):
-    "Derive extractor configuration from CLI args."
-    options = Extractor(
-                  config=use_config(filename=args.config_file), output_format=args.output_format,
-                  comments=args.no_comments, tables=args.no_tables,
-                  dedup=args.deduplicate, lang=args.target_language,
-                  url=url, only_with_metadata=args.only_with_metadata,
-                  tei_validation=args.validate_tei
-              )
-    for attr in ("fast", "precision", "recall", "formatting", "images", "links"):
-        setattr(options, attr, getattr(args, attr))
-    return options
 
 
 def url_processing_pipeline(args, url_store):
@@ -357,7 +356,7 @@ def url_processing_pipeline(args, url_store):
         url_store.print_unvisited_urls()  # and not write_result()
         return False  # and not sys.exit(0)
 
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
 
     # initialize file counter if necessary
     if url_store.total_url_number() > MAX_FILES_PER_DIRECTORY:
@@ -383,7 +382,7 @@ def url_processing_pipeline(args, url_store):
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filecounter = None
-    options = _args_to_extractor(args)
+    options = args_to_extractor(args)
     timeout = options.config.getint('DEFAULT', 'EXTRACTION_TIMEOUT')
 
     # max_tasks_per_child available in Python >= 3.11
@@ -403,14 +402,12 @@ def examine(htmlstring, args, url=None, options=None):
     """Generic safeguards and triggers"""
     result = None
     if not options:
-        options = _args_to_extractor(args, url)
+        options = args_to_extractor(args, url)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
-    elif len(htmlstring) > options.max_file_size:
-        sys.stderr.write('ERROR: file too large\n')
-    elif len(htmlstring) < options.min_file_size:
-        sys.stderr.write('ERROR: file too small\n')
+    elif not is_acceptable_length(len(htmlstring), options):
+        sys.stderr.write('ERROR: file size\n')
     # proceed
     else:
         try:

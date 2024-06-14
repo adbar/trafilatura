@@ -25,62 +25,25 @@ Step-by-step
 Quickstart
 ^^^^^^^^^^
 
-.. code-block:: python
-
-    # load necessary components
-    >>> from trafilatura import fetch_url, extract
-
-    # download a web page
-    >>> url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
-    >>> downloaded = fetch_url(url)
-    >>> downloaded is None  # assuming the download was successful
-    False
-
-    # extract information from HTML
-    >>> result = extract(downloaded)
-    >>> print(result)
-    # newlines preserved, TXT output ...
-
-The only required argument is the input document (here a downloaded HTML file), the rest is optional.
+For the basics see `quickstart documentation page <quickstart.html>`_.
 
 .. note::
     For a hands-on tutorial see also the Python Notebook `Trafilatura Overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_.
 
 
-
-Formats
-^^^^^^^
-
 Default output is set to TXT (bare text) without metadata.
 
-The following formats are available: bare text, text with Markdown formatting, CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
+The following formats are available: bare text, Markdown (from version 1.9 onwards), CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
 
 
 .. hint::
     Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
 
-The variables from the example above can be used further:
-
 
 .. code-block:: python
 
-    # newlines preserved, TXT output
-    >>> extract(downloaded)
-
-    # TXT/Markdown output
-    >>> extract(downloaded, include_links=True)
-
     # some formatting preserved in basic XML structure
     >>> extract(downloaded, output_format='xml')
-
-    # source URL provided for inclusion in metadata
-    >>> extract(downloaded, output_format='xml', url=url)
-
-    # links preserved in XML, converting relative links to absolute where possible
-    >>> extract(downloaded, output_format='xml', include_links=True)
-
-    # source URL must be provided to convert relative links to absolute with TXT output
-    >>> extract(downloaded, include_links=True, url=url)
 
 
 
@@ -92,7 +55,7 @@ Several elements can be included or discarded:
 * Text elements: comments, tables
 * Structural elements: formatting, images, links
 
-Their inclusion can be activated or deactivated using paramaters passed to the ``extract()`` function:
+Their inclusion can be activated or deactivated using parameters passed to the ``extract()`` function:
 
 
 .. code-block:: python
@@ -105,11 +68,13 @@ Their inclusion can be activated or deactivated using paramaters passed to the `
 
     # output with links
     >>> result = extract(downloaded, include_links=True)
-    # and so on...
+
+    # converting relative links to absolute where possible with url parameter
+    >>> extract(downloaded, output_format='xml', include_links=True, url=url)
 
 
 .. note::
-    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
+    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Selecting markdown automatically includes text formatting.
 
 
 ``include_formatting=True``
@@ -126,7 +91,7 @@ Only ``include_tables`` is activated by default.
 
 
 .. hint::
-    If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
+    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd removing a constraint (e.g. formatting) can greatly improve the result.
 
 
 Optimizing for precision and recall
@@ -138,8 +103,12 @@ The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``ext
 
     >>> result = extract(downloaded, url, favor_precision=True)
 
-They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+They affect processing and volume of textual output:
 
+1. By focusing precision/accuracy, i.e. more selective extraction, yielding less and more central elements.
+   If you believe the results are too noisy, try focusing on precision. Alternatively, you can supply a list of XPaths expressions to target precise HTML elements (``prune_xpath`` parameter of the extraction functions).
+2. By enhancing recall, i.e. more opportunistic extraction, taking more elements into account.
+   If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
 html2txt
@@ -153,6 +122,17 @@ This function emulates the behavior of similar functions in other packages, it i
     >>> html2txt(downloaded)
 
 
+Guessing if text can be found
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The function ``is_probably_readerable()`` has been ported from Mozilla's Readability.js, it is available from version 1.10.0 onwards and provides a way to guess if a page probably has a main text to extract.
+
+.. code-block:: python
+
+    >>> from trafilatura.readability_lxml import is_probably_readerable
+    >>> is_probably_readerable(html)  # HTML string or already parsed tree
+
+
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -163,7 +143,8 @@ The target language can also be set using 2-letter codes (`ISO 639-1 <https://en
     >>> result = extract(downloaded, url, target_language="de")
 
 .. note::
-    Additional components are required: ``pip install trafilatura[all]``
+    Additional components are required: ``pip install trafilatura[all]``.
+    This feature currently uses the `py3langid package <https://github.com/adbar/py3langid>`_ and is dependent on language availability and performance of the original model.
 
 
 Optimizing for speed
@@ -185,38 +166,6 @@ The following combination can lead to shorter processing times:
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
 
 
-Content hashing
-^^^^^^^^^^^^^^^
-
-Functions used to build content hashes can be found in `hashing.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/hashing.py>`_.
-
-
-.. code-block:: python
-
-    # create a filename-safe string by hashing the given content
-    >>> from trafilatura.hashing import generate_hash_filename
-    >>> generate_hash_filename("This is a text.")
-    'qAgzZnskrcRgeftk'
-
-
-The `SimHash <https://en.wikipedia.org/wiki/SimHash>`_ method (also called Charikar's hash) allows for near-duplicate detection. It implements a `locality-sensitive hashing <https://en.wikipedia.org/wiki/Locality-sensitive_hashing>`_ method based on a rolling hash and comparisons using the hamming distance. Overall it is reasonably fast and accurate for web texts and can be used to detect near duplicates by fixing a similarity threshold.
-
-
-.. code-block:: python
-
-    # create a Simhash for near-duplicate detection
-    >>> from trafilatura.hashing import Simhash
-    >>> first = Simhash("This is a text.")
-    >>> second = Simhash("This is a test.")
-    >>> second.similarity(first)
-    0.84375
-
-    # use existing Simhash
-    >>> first_copy = Simhash(existing_hash=first.hash)
-    >>> first_copy.similarity(first)
-    1.0
-
-
 Extraction settings
 -------------------
 
@@ -224,17 +173,10 @@ Extraction settings
     See also `settings page <settings.html>`_.
 
 
-Disabling ``signal``
-^^^^^^^^^^^^^^^^^^^^
+Function parameters
+^^^^^^^^^^^^^^^^^^^
 
-A timeout exit during extraction can be turned off if malicious data are not an issue or if you run into an error like `signal only works in main thread <https://github.com/adbar/trafilatura/issues/202>`_. In this case, the following code can be useful as it explicitly changes the required setting:
-
-.. code-block:: python
-
-    >>> from trafilatura.settings import use_config
-    >>> newconfig = use_config()
-    >>> newconfig.set("DEFAULT", "EXTRACTION_TIMEOUT", "0")
-    >>> extract(downloaded, config=newconfig)
+Starting from version 1.9, an object gathering necessary arguments and parameters can be passed to the extraction functions. See `settings.py` for an example.
 
 
 Metadata extraction
@@ -273,11 +215,11 @@ Even if the page to process has already been downloaded it can still be useful t
     >>> downloaded = fetch_url(url)
 
     # content discarded since necessary metadata couldn't be extracted
-    >>> bare_extraction(downloaded, with_metadata=True)
+    >>> bare_extraction(downloaded, only_with_metadata=True)
     >>>
 
     # date found in URL, extraction successful
-    >>> bare_extraction(downloaded, with_metadata=True, url=url)
+    >>> bare_extraction(downloaded, only_with_metadata=True, url=url)
 
 
 Memory use
@@ -344,14 +286,32 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
     'Here is the main text.'
 
 
+Interaction with BeautifulSoup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here is how to convert a BS4 object to LXML format in order to use it with Trafilatura:
+
+.. code-block:: python
+
+    >>> from bs4 import BeautifulSoup
+    >>> from lxml.html.soupparser import convert_tree
+    >>> from trafilatura import extract
+
+    >>> soup = BeautifulSoup("<html><body><time>The date is Feb 2, 2024</time></body></html>", "lxml")
+    >>> lxml_tree = convert_tree(soup)[0]
+    >>> extract(lxml_tree)
+
+
 Navigation
 ----------
+
+Three potential navigation strategies are currently available: feeds (mostly for fresh content), sitemaps (for exhaustivity, all potential pages as listed by the owners) and discovery by web crawling (i.e. by following the internal links, more experimental).
+
 
 Feeds
 ^^^^^
 
-
-The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
+The function ``find_feed_urls`` is a all-in-one utility that attempts to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
 
 .. code-block:: python
 
@@ -412,3 +372,13 @@ Sitemaps
     >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
 
 The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
+
+
+Web crawling
+^^^^^^^^^^^^
+
+See the `documentation page on web crawling <crawls.html>`_ for more information.
+
+
+.. hint::
+    For more information on how to refine and filter a URL collection, see the underlying `courlan <https://github.com/adbar/courlan>`_ library. 

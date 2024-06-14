@@ -21,9 +21,7 @@ except ImportError:
 from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
                         tostring)
 
-
-from .filters import text_chars_test
-from .utils import sanitize, sanitize_tree
+from .utils import sanitize, sanitize_tree, text_chars_test
 
 
 LOGGER = logging.getLogger(__name__)
@@ -41,11 +39,10 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {
-    'item': '\n- ',
     **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
 }
 SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
-WITH_ATTRIBUTES = {'cell', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
@@ -58,19 +55,23 @@ META_ATTRIBUTES = [
 HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
 
 
-def build_json_output(docmeta):
+def build_json_output(docmeta, with_metadata=True):
     '''Build JSON output based on extracted information'''
-    outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
-    outputdict.update({
-        'source': outputdict.pop('url'),
-        'source-hostname': outputdict.pop('sitename'),
-        'excerpt': outputdict.pop('description'),
-        'categories': ';'.join(outputdict.pop('categories')),
-        'tags': ';'.join(outputdict.pop('tags')),
-        'text': xmltotxt(outputdict.pop('body'), include_formatting=False),
-    })
+    if with_metadata:
+        outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
+        outputdict.update({
+            'source': outputdict.pop('url'),
+            'source-hostname': outputdict.pop('sitename'),
+            'excerpt': outputdict.pop('description'),
+            'categories': ';'.join(outputdict.pop('categories')),
+            'tags': ';'.join(outputdict.pop('tags')),
+            'text': xmltotxt(outputdict.pop('body'), include_formatting=False),
+        })
+        commentsbody = outputdict.pop('commentsbody')
+    else:
+        outputdict = {'text': xmltotxt(docmeta.body, include_formatting=False)}
+        commentsbody = docmeta.commentsbody
 
-    commentsbody = outputdict.pop('commentsbody')
     if commentsbody is not None:
         outputdict['comments'] = xmltotxt(commentsbody, include_formatting=False)
 
@@ -220,6 +221,7 @@ def replace_element_text(element, include_formatting):
     "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
     # handle formatting: convert to markdown
+    children = element.getchildren()
     if include_formatting and element.text:
         if element.tag == "head":
             try:
@@ -250,6 +252,12 @@ def replace_element_text(element, include_formatting):
                 elem_text = link_text
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
+    # cells
+    if element.tag == "cell" and elem_text and children and children[0].tag == 'p':
+        elem_text = f"{elem_text} "
+    # lists
+    elif element.tag == "item" and elem_text:
+        elem_text = f"- {elem_text}\n"
     return elem_text
 
 
@@ -291,21 +299,33 @@ def process_element(element, returnlist, include_formatting):
             returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
         # newlines for textless elements
         if element.tag in NEWLINE_ELEMS:
-            returnlist.append('\n')
             # add line after table head
             if element.tag == "row":
-                num_cells = len(element.xpath("./cell[@role='head']"))
-                if num_cells > 0:
-                    returnlist.append("---|" * len(element.xpath(".//cell")) + "\n")
-        return  # Nothing more to do with textless elements
+                max_span = int(element.get("span", 1))
+                cell_count = len(element.xpath(".//cell"))
+                # row ended so draw extra empty cells to match max_span
+                returnlist.append("|" * (max_span - cell_count) + "\n")
+                # if this is a head row, draw the separator below
+                is_head = bool(element.xpath("./cell[@role='head']"))
+                if is_head:
+                    returnlist.append("\n" + "---|" * max_span + "\n")
+            else:
+                returnlist.append('\n')
+        if element.tag != 'cell':
+            # cells still need to append vertical bars
+            # but nothing more to do with other textless elements
+            return
 
     # Process text
 
     # Common elements (Now processes end-tag logic correctly)
+    within_cell = element.xpath("ancestor::cell")
     if element.tag == 'p' and include_formatting:
-        returnlist.append('\n\u2424\n')
+        if not within_cell:
+            returnlist.append('\n\u2424\n')
     elif element.tag in NEWLINE_ELEMS:
-        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+        if not within_cell:
+            returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
     elif element.tag == 'cell':
         returnlist.extend(" | ")
     elif element.tag == 'comments':

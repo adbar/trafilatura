@@ -5,20 +5,16 @@ Unit tests for the spidering part of the trafilatura library.
 
 import logging
 import sys
+
 from collections import deque
 
 import pytest
+
 from courlan import UrlStore
 
 from trafilatura import spider
-from trafilatura.settings import DEFAULT_CONFIG
+# from trafilatura.utils import LANGID_FLAG
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -158,6 +154,15 @@ def test_focused_crawler():
     ## assert sorted(todo) == ['https://httpbun.com/links/1/0']
 
 
+def test_robots():
+    "Test robots.txt parsing"
+    robots_url = "https://example.org/robots.txt"
+    assert spider.parse_robots(robots_url, None) is None
+    assert spider.parse_robots(robots_url, 123) is None
+    assert spider.parse_robots(robots_url, b"123") is None
+    assert spider.parse_robots(robots_url, "Allow: *") is not None
+
+
 if __name__ == '__main__':
     test_redirections()
     test_meta_redirections()
@@ -165,3 +170,4 @@ if __name__ == '__main__':
     test_crawl_logic()
     test_crawl_page()
     test_focused_crawler()
+    test_robots()

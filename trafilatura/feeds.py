@@ -19,9 +19,10 @@ from courlan import (
     is_valid_url,
 )
 
+from .deduplication import is_similar_domain
 from .downloads import fetch_url
 from .settings import MAX_LINKS
-from .utils import is_similar_domain, load_html
+from .utils import load_html
 
 LOGGER = logging.getLogger(__name__)
 

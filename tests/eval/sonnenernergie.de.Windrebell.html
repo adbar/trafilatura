@@ -1,0 +1,489 @@
+																														  <!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="de" lang="de" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- 
+	This website is powered by TYPO3 - inspiring people to share!
+	TYPO3 is a free open source Content Management Framework initially created by Kasper Skaarhoj and licensed under GNU/GPL.
+	TYPO3 is copyright 1998-2018 of Kasper Skaarhoj. Extensions are copyright of their respective owners.
+	Information and contribution at https://typo3.org/
+-->
+
+<base href="https://www.sonnenenergie.de//" />
+<link rel="shortcut icon" href="/fileadmin/templates/favicon.ico" type="image/gif" />
+<title>SONNENENERGIE: Der WindRebell</title>
+<meta name="generator" content="TYPO3 CMS" />
+<meta name="DESCRIPTION" content="www.sonnenenergie.de" />
+
+
+<link rel="stylesheet" type="text/css" href="typo3temp/Assets/8f31022341.css?1592225233" media="all" />
+<link rel="stylesheet" type="text/css" href="typo3conf/ext/powermail/Resources/Public/Css/Basic.css?1513977478" media="all" />
+<link rel="stylesheet" type="text/css" href="typo3conf/ext/powermail/Resources/Public/Css/Bootstrap.css?1513977478" media="all" />
+<link rel="stylesheet" type="text/css" href="fileadmin/templates/css/reset.css?1537899347" media="all" />
+<link rel="stylesheet" type="text/css" href="fileadmin/templates/css/style.css?1538681249" media="all" />
+<link rel="stylesheet" type="text/css" href="fileadmin/templates/css/superfish.css?1539019159" media="all" />
+
+
+
+
+
+<script type="text/javascript">
+/*<![CDATA[*/
+/*_scriptCode*/
+
+			// decrypt helper function
+		function decryptCharcode(n,start,end,offset) {
+			n = n + offset;
+			if (offset > 0 && n > end) {
+				n = start + (n - end - 1);
+			} else if (offset < 0 && n < start) {
+				n = end - (start - n - 1);
+			}
+			return String.fromCharCode(n);
+		}
+			// decrypt string
+		function decryptString(enc,offset) {
+			var dec = "";
+			var len = enc.length;
+			for(var i=0; i < len; i++) {
+				var n = enc.charCodeAt(i);
+				if (n >= 0x2B && n <= 0x3A) {
+					dec += decryptCharcode(n,0x2B,0x3A,offset);	// 0-9 . , - + / :
+				} else if (n >= 0x40 && n <= 0x5A) {
+					dec += decryptCharcode(n,0x40,0x5A,offset);	// A-Z @
+				} else if (n >= 0x61 && n <= 0x7A) {
+					dec += decryptCharcode(n,0x61,0x7A,offset);	// a-z
+				} else {
+					dec += enc.charAt(i);
+				}
+			}
+			return dec;
+		}
+			// decrypt spam-protected emails
+		function linkTo_UnCryptMailto(s) {
+			location.href = decryptString(s,-1);
+		}
+		
+
+/*]]>*/
+</script>
+
+
+	<!--[if IE]>
+	<style type=text/css>
+	@import url(fileadmin/templates/multiflex4/css/style_ie.css);
+	</style>
+	<![endif]-->	<script type='text/javascript' src='fileadmin/templates/js/jquery.js'></script>
+	<script type='text/javascript' src='fileadmin/templates/js/hoverIntent.js'></script>
+	<!-- <script type="text/javascript" src="fileadmin/templates/js/jquery.bgiframe.min.js"></script --> 
+	<script type='text/javascript' src='fileadmin/templates/js/superfish.js'></script>
+
+	<script type="text/javascript"> 
+  $(document).ready(function(){
+  // $("ul.sf-menu").superfish().find('ul').bgIframe({opacity:false});
+
+  // var exampleOptions = {
+  //    speed: 'fast'
+  // }
+  // initialise plugin
+  // var example = $('ul.sf-menu').superfish(exampleOptions);    
+        
+         
+    }); 
+  </script>
+  
+  <script type='text/javascript' src='fileadmin/templates/js/misc.js'></script>
+
+<script type="text/javascript">
+	/*<![CDATA[*/
+<!--
+function openPic(url, winName, winParams) {	//
+			var theWindow = window.open(url, winName, winParams);
+			if (theWindow)	{theWindow.focus();}
+		}
+
+// -->
+	/*]]>*/
+</script>
+</head>
+<body>
+
+
+    <div id="header">
+      <div id="metanavi"><ul><li><a href="http://www.dgs.de" title="DGS" class="pfeilRechts">DGS</a></li><li id="selectedMetaNavi"><a href="index.php?id=2" title="SONNENENERGIE" class="pfeilRechts">SONNENENERGIE</a></li><li><a href="http://www.dgs-solarschulen.de" title="DGS SolarSchulen" class="pfeilRechts">DGS SolarSchulen</a></li><li><a href="http://www.dgs-berlin.de" title="Berlin-BB" class="pfeilRechts">Berlin-BB</a></li><li><a href="http://www.dgs-franken.de" title="Franken" class="pfeilRechts">Franken</a></li><li><a href="http://www.dgs-hh-sh.de/" title="Hamburg-SH" class="pfeilRechts">Hamburg-SH</a></li><li><a href="http://www.dgs-nrw.de" title="NRW" class="pfeilRechts">NRW</a></li><li><a href="http://www.dgs-thueringen.de" title="Thüringen" class="pfeilRechts">Thüringen</a></li></ul></div>
+      <div class="floatRight" id="top-right">
+        <!--
+        Max Musterrmann
+        <a href=""><img src="fileadmin/templates/img/layout/btn_logout.gif" width="52" height="23" alt="Logout" /></a>
+        <div>&nbsp;</div>
+        -->
+        
+      <div style="position: absolute; left: 879px;  right: 0; top:10px; margin-left: auto; margin-right: auto;width:100px">
+              <a href="https://twitter.com/_solarpapst" target="_blank"><img src="/fileadmin/templates/img/twitter.png" width="20"></a>
+              <a href="https://www.facebook.com/DGS-Deutsche-Gesellschaft-f%C3%BCr-Sonnenenergie-eV-319950984815277/" target="_blank"><img src="/fileadmin/templates/img/facebook.png" width="20"></a>
+      </div>        
+ 
+        <span><a href="/index.php?id=33">Mediadaten</a></span>
+        <span><a href="/index.php?id=58">Kontakt</a></span>
+        <span><a href="/index.php?id=13">Impressum</a></span>
+        <span><a href="/index.php?id=109">Datenschutzerklärung</a></span>
+        
+      </div>
+      <br class="clear" />
+    </div>
+    <div id="page">
+      <div id="navi">
+
+
+        <ul class="sf-menu">
+
+          <li id="navi2">
+            <a href="/">Aktuell</a>
+          </li>   
+          
+          <li id="navi3">
+            <a href="#">Rubriken</a>
+            <ul class="subnavi"><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=10">Bildung</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=4">Bioenergie</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=8">DGS Aktiv</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=14">Editorial</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=17">Energieberatung</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=18">Energieeffizienz</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=7">Energieressourcen</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=20">Energiespeicherung</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=21">Energiewende</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=9">Finanzen</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=3">International</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=22">Medien</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=5">Mobilität</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=19">Nachricht</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=15">Normen</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=0">Photovoltaik</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=2">Politik</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=11">Qualität</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=13">Recht</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=6">Solares Bauen</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=1">Solarthermie</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=12">Wirtschaft</a></li><li><a href="index.php?id=37&tx_ttnews%5Brubrik%5D=16">Wärmepumpe</a></li></ul>
+          </li>
+          
+          <li id="navi4">
+            <a href="#">Kategorien</a>
+            <ul class="subnavi"><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=1&die=">Elektromobilität</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=2&die=">Grundlagen</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=3&die=">CO2</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=9&die=">Markt</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=10&die=">Biogas</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=12&die=">Heizungstechnik</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=17&die=">EEG</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=20&die=">Produkt</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=22&die=">Rezension</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=23&die=">Forschung</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=24&die=">Diskussion</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=25&die=">Interview</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=26&die=">Veranstaltung</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=27&die=">Didaktik</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=28&die=">Ethik</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=30&die=">Kommentar</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=31&die=">Klimawandel</a></li><li><a href="index.php?id=36&tx_ttnews%5Bcat%5D=32&die=">Medien</a></li></ul>
+          </li>
+          
+
+          <li id="navi5">
+            <a href="/index.php?id=49">Ausgabenarchiv</a>
+          </li>
+
+          <li id="navi6">
+            <a href="/index.php?id=27">Abo</a>
+            
+          </li>
+
+          <li id="navi7">
+           <a href="/index.php?id=70">Digital</a>
+      
+          </li>
+
+
+        </ul>
+      </div>
+            
+
+      
+      <div id="suche">
+      <form action="index.php?id=21" method="post">
+    <input type="text" name="tx_ttnews[swords]" value="" />
+    
+        <input type="submit" value="" name="search" style="background:transparent url(fileadmin/templates/img/layout/btn_suchen.gif) no-repeat scroll 0 5px;width:55px;height:30px;margin:0;padding:0;border:none;" >
+     </form>                  
+
+      </div>
+      
+      
+      <div id="links">
+        <!-- B.1 MAIN CONTENT -->
+        <div id="main-content">
+          
+	<!--  CONTENT ELEMENT, uid:47/list [begin] -->
+		<div class="content"><div id="c47" class="csc-default">
+		<!--  Plugin inserted: [begin] -->
+			
+
+<div class="news-single-item">
+
+	<div class="news-edition-name">
+  <!--     -->
+  Ausgabe 2022/3
+   Kategorie: Grundlagen  <br />
+
+</div>
+		
+    <h1 class="pageTitel">Der WindRebell</h1>
+		
+	  <h2 class="pageTitel2">Mit Kleinwindkraft zu mehr Autarkie: In den vergangenen Jahren hat die DGS wesentlich dazu beigetragen, die als „SolarRebell“ bezeichneten Balkonkraftwerke durchzusetzen. Auch wenn es, anders als in Nachbarstaaten, in Deutschland immer noch politische Widerstände gegen diese einfachen Steckersolargeräte gibt, und z.B. der Verband der Elektrotechnik Elektronik Informationstechnik e.V. (VDE) dabei für einen gesonderten „Wielandstecker“ kämpft – seine Mitglieder, die Installateure, dürften den dann kostenpflichtig einbauen –,  ist das einfache Anschrauben, Einstöpseln, Stromsparen bei der Balkon-PV längst üblich. So können auch Menschen, die kein eigenes Haus besitzen, ein Stück Energieautarkie gewinnen.</h2>
+		
+		<br />
+		
+    
+		
+		
+
+    <div class="artikelBildPdf-Detail">
+      <div class="magContainer">
+                    <div class="magLink"><img width="18" height="16" title="" alt="" src="fileadmin/templates/img/layout/pdf.gif">
+                       <a href="">PDF Vorschau</a><div class="magPreview" style="display:none;width:160px"><div class="pdf-head"><b>Artikel-Vorschau</b></div><div class="pdf-img"><a href="uploads/media/SE-2022-03-s034-Windenergie-Der_WindRebell.pdf" target="_blank" style="all:unset;cursor:pointer">
+<img class="preview" src="typo3temp/_processed_/3/c/csm_SE-2022-03-s034-Windenergie-Der_WindRebell_8bd75193cc.gif" width="150" height="213" />
+</a>
+&nbsp;</div><div style="clear:both"></div></div></div></div>
+      
+      <div class="news-single-img"><a href="index.php?eID=tx_cms_showpic&amp;file=3813&amp;md5=922e680fda699bab4056a3c4714ae89532afcb93&amp;parameters%5B0%5D=YTo0OntzOjU6IndpZHRoIjtzOjQ6IjgwMG0iO3M6NjoiaGVpZ2h0IjtzOjM6IjYw&amp;parameters%5B1%5D=MCI7czo3OiJib2R5VGFnIjtzOjQyOiI8Ym9keSBiZ0NvbG9yPSIjZmZmZmZmIiBz&amp;parameters%5B2%5D=dHlsZT0ibWFyZ2luOjA7Ij4iO3M6NDoid3JhcCI7czozNzoiPGEgaHJlZj0iamF2&amp;parameters%5B3%5D=YXNjcmlwdDpjbG9zZSgpOyI%2BIHwgPC9hPiI7fQ%3D%3D" onclick="openPic('https:\/\/www.sonnenenergie.de\/\/index.php?eID=tx_cms_showpic\u0026file=3813\u0026md5=922e680fda699bab4056a3c4714ae89532afcb93\u0026parameters%5B0%5D=YTo0OntzOjU6IndpZHRoIjtzOjQ6IjgwMG0iO3M6NjoiaGVpZ2h0IjtzOjM6IjYw\u0026parameters%5B1%5D=MCI7czo3OiJib2R5VGFnIjtzOjQyOiI8Ym9keSBiZ0NvbG9yPSIjZmZmZmZmIiBz\u0026parameters%5B2%5D=dHlsZT0ibWFyZ2luOjA7Ij4iO3M6NDoid3JhcCI7czozNzoiPGEgaHJlZj0iamF2\u0026parameters%5B3%5D=YXNjcmlwdDpjbG9zZSgpOyI%2BIHwgPC9hPiI7fQ%3D%3D','c2a85c1d789106ae5ae4204d93918a94','width=450,height=600,status=0,menubar=0'); return false;" target="thePicture"><img src="typo3temp/_processed_/6/e/csm_Micro-WKA_20210620_183758_124bc5b79f.png" width="200" height="267"   alt=""  border="0" /></a><p class="news-single-imgcaption" style="width:200px;">Sinnvoll: Microwindkraft zur Stromversorgung eines Segelboots, Bildquelle: G. Warnke</p></div>
+    </div>		
+		
+		
+		
+		<div class="artikelInfo-Detail">
+		  <p>Viele Menschen träumen daher davon, sich mit einem „WindRebell“ noch autarker machen zu können. Doch das ist nicht so einfach, weil die Energie des Windes mit seinen Extremen wie Flauten und (Wirbel-)Stürmen sehr viel schlechter abschätzbar ist als die der Sonne mit ihren regional 940 bis 1.200 kWh/m2 im langjährigen Mittel. Auch unterscheidet sich der Windenergieertrag viel stärker von Region zu Region und sogar innerhalb einer Region. Deshalb ist es notwendig, sich die verschiedenen Einflussfaktoren genauer anzusehen.</p>
+<p><b>Geographie und Physik</b><br />Ganz Deutschland liegt zwar in einer Westwindzone, aber das Angebot an Windenergie für Kleinwindanlagen ist höchst unterschiedlich. Grob gesagt finden sich weiträumig lohnende Windgebiete nördlich der Linie Hamburg-Schwedt/Oder, westlich der Linie Hamburg-Bielefeld, und nördlich der Linie Bielefeld-Emmerich/Rhein, so dass sich ein um die Vertikalachse gespiegeltes Z ergibt. In diesem Bereich liegt die Windgeschwindigkeit in 10 Metern Höhe im langjährigen Mittel über vier Meter pro Sekunde. Außerhalb dieses Bereichs gibt es natürlich immer wieder Orte, an denen sich die kleine Windenergieernte lohnen kann: auf Höhenzügen z.B. der Mittelgebirge und an deren Westflanken, sowie an einzelnen breiten (Fluss-)Tälern in Ost-West-Richtung. Nicht lohnen dürfte sich die Ernte in dicht bebauten, talkesselartigen topographischen Strukturen, wie wir sie u.a. in Stuttgart, Karlsruhe, Dresden oder Frankfurt/Main finden. Einen guten, ersten Überblick über die regionale Windsituation bietet der Global Wind Atlas. Hier kann nach einzelnen Orten gesucht werden, um dort die durchschnittliche Windgeschwindigkeit und die genaue Hauptwindrichtung zu erfahren.</p>
+<p>Ebenso wichtig wie die großräumige Topographie ist die kleinräumige vor Ort. Wind braucht freien Raum – besonders in der Hauptwindrichtung – , um Geschwindigkeit aufnehmen zu können. Sind dort Hindernisse, entstehen im besten Fall einige Verwirbelungen, im schlimmsten Fall kommt nur noch ein laues Lüftchen an; ein WindRebell z.B. für ein Haus im Wald ist unsinnig, da sich biegende Äste und Wipfel die Windenergie zuvor absorbiert haben. Dann würde höchstens noch ein Windrad an einer Baumspitze helfen, wie es der Architekt Wolfgang Frey konzipiert hat. </p>
+<p>Wichtig ist, dass Windkraftanlagen auch Platz nach hinten brauchen, damit der Wind quasi abfließen kann. Ein kleines Windrad direkt vor eine quer zur Windrichtung stehend Mauer zu stellen, ist die Wahl des zweitschlechtesten Standorts – nach einer Aufstellung direkt hinter der Mauer! Da hilft es dann auch nicht, wenn der Global Wind Atlas vor Ort eine windstarke Region ausweist. Für hohe Gebäude mit Flachdächern ist der Leitfaden von Prof. Jochen Twele/HTW Berlin die beste Referenz.</p>
+<p>Und noch eine Besonderheit spielt bei einem meist nicht auf freiem Feld stehenden WindRebell eine wichtige Rolle: Gebäude können, wenn sie im richtigen Winkel zum Wind – oder besser zur Hauptwindrichtung – stehen, als Windbeschleuniger wirken. So schreibt Prof. Volker Quaschning: „Hügel, Anhöhen und Bergkuppen haben einen Einfluss auf die Windgeschwindigkeit. Auf Bergkuppen oder der Luv-Seite von Bergrücken, die senkrecht zum Wind stehen, kann es zu einer Überhöhung der Windgeschwindigkeit kommen, die bis zum Zweifachen des ungestörten Windes betragen kann. Im Lee eines Berges ist dagegen mit deutlich geringerer Windgeschwindigkeit zu rechnen.“ Gleiches gilt natürlich auch für Dachgiebel und Hausecken, wenn die dazugehörigen Dächer und Wände so ausgerichtet sind, dass sie als Windbeschleuniger wirken. Beträgt also die ungestörte Windgeschwindigkeit lokal 3,7 Meter pro Sekunde, so ist bei geeigneter Ausrichtung an den horizontalen und vertikalen Kanten von Gebäuden durchaus mit 7 Metern pro Sekunde zu rechnen. </p>
+<p><b>Recht und Ökonomie<br /></b>Ob eine Kleinwindenergieanlage (Klein-WEA) am geplanten Standort auch rechtlich aufgestellt werden darf, regeln im Allgemeinen die Bauordnungen der Bundesländer. In vielen Regionen sind kleine Windkraftanlagen von 10 m Höhe baurechtlich genehmigungsfrei, wobei darauf zu achten ist, ob sich die 10 m auf die Nabenhöhe oder auf die Gesamthöhe (d.h. inklusive Rotorblatt-Spitzen) beziehen. Wer nicht wie z.B. ein Landwirt über ein großes Grundstück verfügt, sollte dennoch mit dem Bauamt und den Nachbarn sprechen, um spätere Klagen wegen des Aufstellungsortes zu vermeiden. Denn wer seinen WindRebell innerstädtisch nahe an der Grundstücksgrenze errichten will oder muss, benötigt – Genehmigungsfreiheit hin oder her – schon sehr großzügige Nachbarn. Sonst kann ein Windrad von den Gerichten als „optisch bedrängend“ eingestuft werden oder der Schattenwurf zu Klagen führen. Die Installation mittels eines Masten auf dem Dach kann dazu führen, dass Bauhöhen überschritten werden. Zudem gilt auch für Klein-WEAs die „Technischen Anleitung zum Schutz gegen Lärm (TA Lärm)“ zum Bundes-Immissionsschutzgesetz, die Lärmbelästigungen regelt bzw. begrenzt. Schließlich haftet der Eigentümer einer Windenergieanlage natürlich auch für Schäden, die durch sie entstehen – etwa wenn der Wind die Anlage zerstört, und die Rotorblätter Nachbars Auto treffen. </p>
+<p>Was allerdings die Genehmigungsmöglichkeiten anbelangt, so dürften die durch die am 28.07.2022 im Bundesgesetzblatt veröffentlichten Änderungen am EEG, die den Erneuerbaren Energien in § 2 Vorrang einräumen, nochmals deutlich größer werden. Dennoch wird es kaum möglich sein, einen WindRebell z.B. an Gebäuden zu befestigen, die einem selbst nicht gehören. </p>
+<p>Dass auch eine kleine Windenergieanlage sinnvoll und profitabel sein kann, zeigen die vielen Mikrowindanlagen (0,1 bis 1,5 kW) auf größeren Segelbooten oder Yachten an den Küsten. Dabei kommen folgende Faktoren zum Tragen: </p><ul><li>Die Schiffe befinden sich in einer windhöffigen Gegend, d.h. hier sind über der Wasseroberfläche hohe Windgeschwindigkeiten häufig anzutreffen. </li></ul><ul><li>Die Anströmung der Windgeneratoren wird fast nie durch Hindernisse gestört – versteckte Buchten etc. einmal ausgenommen. </li></ul><ul><li>Die Boote verfügen durch ihre Batterien bereits über einen Stromspeicher; Laderegler werden bei den 12/24/48-Volt-Gleichstrom-Windturbinen mitgeliefert oder sind bereits in sie integriert. </li></ul><ul><li>Die Yachten können auch während des Segelns oder des Ankerns Strom erzeugen, wenn der Dieselmotor nicht angeworfen werden soll oder kann. </li></ul><ul><li>Die Schiffe werden unabhängig von der Landstromversorgung und dadurch fahrtentauglich. </li></ul><ul><li>Die Windturbine kann, anders als ein Dieselmotor, im Hafen auch laufen, wenn die Bootsbesatzung gar nicht an Bord ist.</li></ul><ul><li>Die Windgeneratorleistung und der meist relativ geringe Stromverbrauch an Bord durch Kühlschrank, Wasserpumpe, Funk- und Navigationsgeräte sowie Beleuchtung passen meist gut zusammen. </li></ul><ul><li>Durch ihre Verbreitung gibt es hinsichtlich der Qualität valide Praxiserfahrungen mit den üblichen Mikrowindanlagen. </li></ul><p>Außerhalb des Spezialgebiets Segelsport fehlen oft einige der o.a. Faktoren, was die Abschätzung der Profitabilität einer Anlage erschwert. </p>
+<p>Denn während bei SolarRebell-Anlagen die Module vergleichbar, die Erträge abschätzbar, und die erzeugten Leistungen selbst nutzbar sind, sind Kleinwindanlagen (1,5 bis 10 kW) kaum vergleichbar, ihre Erträge vor Ort wegen der geographischen Besonderheiten schwer abschätzbar und wegen des großen Leistungsspektrum zwischen Flaute und Sturm auch nicht immer selbst nutzbar. Eine Selbstnutzung des Stroms – ggf. auch als Heizungsunterstützung mittels eines Tauchsieders – ist aber zwingend notwendig, da die Einspeisevergütung für kleine Windkraftanlagen völlig unattraktiv ist. </p>
+<p>Die aus dem Segelsport bekannten Mikrowindanlagen sind zwar auch im Hausbereich möglich, aber kaum eine Lösung, zumal es hier mit Heizungspumpe, E-Herd, Waschmaschine, Geschirrspüler und Gefriertruhe erheblich größere Stromabnehmer gibt als auf See.</p>
+<p>Kleinwindanlagen benötigen wegen des stark schwankenden Windangebots immer einen Speicher; doch der ist als Heimspeicher – noch – recht teuer, und lohnt sich in den meisten Fällen als Extraanschaffung für eine Kleinwindanlage nicht. Ist jedoch bereits ein Speicher vorhanden, der aus verschiedenen Quellen/Anlagen (PV 1, PV 2, BHKW etc.) gespeist werden kann, entfallen hier natürlich die Extra-Investitionskosten. Ein „Steckerwindgerät“ analog zum Steckersolargerät ohne Speicher ist wegen der starken Leistungsschwankungen (Sturmspitzen) der Windenergie nicht möglich. </p>
+<p>Was kostet nun eine Kleinwindkraftanlage? In der Regel sind pro Kilowatt installierter Leistung 3.000 bis 8.000 Euro zu veranschlagen. Wobei günstig nicht immer gut ist und irgendwelche Billiganlagen aus Fernost oder von hier kaum empfehlenswert sind. Bezogen auf den Kilowattpreis ist Photovoltaik etwa drei bis viermal günstiger.</p>
+<p>Die Energieagentur NRW hat in ihrem 9/2021 veröffentlichten Papier „Kleinwindenergieanlagen“ die Amortisationszeiten für eine – für Wohngebiete schon zu große – 10-kW-Anlage zum Preis von 50.000 Euro berechnet: im besten Fall 13 Jahre, ansonsten aber erheblich über 20 Jahre. Das alles setzt durchschnittliche Windgeschwindigkeiten von 5 m/s und einen deutlichen Eigenverbrauch voraus. Und natürlich auch, dass die Anlage technisch gut funktioniert sowie nicht von Windabschattungen und starken Verwirbelungen betroffen ist. Für einen Landwirt an der Küste, der seine Milchkühlung rund um die Uhr laufen hat und auch weitere Maschinen einsetzt, kann sich das durchaus „rechnen“. Für viel Standorte in Deutschland aber, vor allem in den Einzelhausgebieten, wird sich so eine Kleinwindenergieanlage in absehbarer Zeit nie amortisieren, zumal hier Anlagenhöhen von 25-50 m zur Nutzung der dort stärkeren Winde nicht möglich sind. </p>
+<p><b>Technik</b><br />Doch es kommt noch schlimmer: Die Leistung der auf dem Markt erhältlichen Kleinwindkraftanlagen wird meist für Windgeschwindigkeiten von 11 oder 12 m/s angegeben, was Windstärke 6 bzw. starkem Wind entspricht (siehe Kasten). Damit die Kleinwindkraftanlage fürs Eigenheim annähernd das leistet, womit sie beworben wird („5-kW-Anlage“), müsste allerdings die durchschnittliche Windgeschwindigkeit im Jahr bei 10 bis 12 m/s liegen, und nicht nur an einigen wenigen glücklichen Tagen im Winterhalbjahr. Doch ein Blick in die entsprechenden Windkarten zeigt, dass es solche Standorte in Deutschland gar nicht gibt, jedenfalls nicht in der für das Home Energy Harvesting interessanten Höhe von 10-12 Metern, die im urbanen Umfeld maximal möglich ist. </p>
+<p>Habe ich allerdings statt der im Leistungsdatenblatt der Windenergieanlage angegebenen 12 m/s de facto im langjährigen Jahresmittel eine Windgeschwindigkeit von 6 m/s, dann bringt die Windkraftanlage nach der o.a. Formel durchschnittlich nur noch ein Achtel der angegebenen Leistung: ca. 600 statt 5.000 Watt. </p>
+<p>Ist das das Ende der Idee vom WindRebell? Nicht ganz, denn es haben sich oben zwei entscheidende „Stellschrauben“ für das Projekt WindRebell gezeigt: der Anlagenpreis und die Windgeschwindigkeit. Die Windgeschwindigkeit scheint zuerst einmal unbeeinflussbar, aber sie wird durch die natürliche Topografie beeinflusst, etwa wenn der Wind besonders stark durch enge Schluchten pfeift. Nicht anders sieht es mit städtischen „Häuserschluchten“ aus, auch wenn die gar nicht so martialisch einer Schlucht ähneln müssen. Wie wir oben gesehen haben, kann sich an entsprechend zum Wind ausgerichteten Flächen die Windgeschwindigkeit verdoppeln: statt der in der Region üblichen 3,7 m/s werden dort ca. 6-7 m/s erreicht. Solche punktuellen Orte an den Firsten von Satteldächern oder an Hausecken gilt es zu finden. Helfen kann dabei zuerst einmal die Beobachtung, etwa wenn an einer Hausecke bei Wind ständig die Mülltonnen umfallen. Anschließend sollten mit einer einfachen Wetterstation die Windgeschwindigkeiten dort möglichst über ein Jahr ermittelt werden.&nbsp;&nbsp; </p>
+<p>Der Anlagenpreis lässt sich dadurch drücken, dass – handwerkliches Geschick vorausgesetzt – die Anlage selbst gebaut wird. Allerdings sollte als Nicht-Ingenieur dringend (!) von einer Eigenkonstruktion abgesehen werden, und zwar sowohl aus Sicherheitsgründen als auch wegen des Ertrags. Denn irgendein sich nur hübsch drehendes Windrad, das kaum Strom erzeugt, bringt die eigene Energieautarkie nicht weiter. Wer in das Thema einsteigen will, sollte zwei Stunden investieren und bei Youtube „kleinwindanlage selber bauen“ in die Suchmaske eingeben. Doch dies dient nur der Orientierung, denn nicht alles, was in den Videos versprochen wird, kann in der Praxis auch gehalten werden. Besondere Vorsicht ist bei Videos geboten, die von Superwindrädern und weltumwälzenden Techniken sprechen. </p>
+<p>Für den Eigenbau sind Bücher mit Anleitungen und Konstruktionszeichnungen wie die von Uwe Hallenga und Horst Crome oder Günther Hacker erfolgversprechender und sicherer als viele Youtube-Videos. Und auch Seminare bzw. Webinare können ein geeigneter Einstieg sein. Zudem gibt es Onlineforen wie kleinwindanlagen.de und dasWindrad.de, wo Selbstbauer ihre Erfahrungen sowie Tipps austauschen, und wo sich auch technische Zeichnungen finden. Schließlich gibt es OpenSource-Bauanleitungen im Netz. Und wer sein Projekt wissenschaftlich-mathematisch angehen will, kann auf Freeware-Programme wie Q-Blade.org oder die kanadische RETScreen Clean Energy Management Software zurückgreifen.&nbsp; </p>
+<p>Auf welches Rotordesign sollte sich für einen WindRebell konzentriert werden? Die erste Entscheidung ist die zwischen Windkraftanlagen mit horizontaler (HAWT) und vertikaler (VAWT) Achse. Die Horizontal Axis Wind Turbine hat unser heutiges Bild von der Windkraft geprägt, vor allem bei den großen Turbinen. Diese sich schnell drehenden, meist dreiblättrigen Auftriebsläufer können bis zu 50% der im Wind enthaltenen Energie abernten, weshalb sie im Leistungsvergleich mit gleich großen Vertical Axis Wind Turbines (VAWT) fast immer vorn liegen. Doch letztere haben gerade für die Nutzung im urbanen Umfeld erhebliche Vorteile: sie sind leiser, kommen besser mit den in Siedlungen immer entstehenden Turbulenzen zurecht, und benötigen keine Windnachführung. Mögen die Turbinen mit horizontaler Achse im freien Gelände und bei Nabenhöhen von 30 bis über 130 Metern deutlich mehr Ertrag bieten – in stärker strukturierten Gebieten haben die Vertikalachser „die Nase vorn“. </p>
+<p>Nun gibt es auch bei den VAWT unterschiedliche Typen: Reine Widerstandsläufer wie z.B. der Savonius-Rotor, der Lenz-Rotor, und das aus den Windmessungen bekannte Schalen-Anemometer einerseits, sowie die schnell drehenden Auftriebsläufer der Darrieus-Typen andererseits, die sich besser zur Stromerzeugung eignen. Vom letzteren Typ sind die Helix-Darrieus-Rotore vorzuziehen, weil sie im Gegensatz zum Original-Darrieus („Schneebesen“) selbsttätig anlaufen können. Immerhin können Darrieus-Rotore einen Leistungsbeiwert/cp-Wert von 0,4 erreichen, d.h. sie können bis zu 40% der im Wind enthaltenen Energie abernten. Savonius-Rotore erreichen hingegen nur einen cp-Wert von knapp 0,2. </p>
+<p>Ein Helix-Darrieus sollte dabei entweder längs vor dem First eines Satteldachs positioniert werden, der quer zur Hauptwindrichtung verläuft – als eine Art liegender Vertikalrotor, wobei unbedingt die Dachstabilität beachtet werden muss! Oder er&nbsp; wird senkrecht an einer windhöffigen Hausecke positioniert. Beide Positionierungen ernten den an den Flächen beschleunigten Wind optimal, zumal sie generell die gesamte Länge des Firstes oder der Hausecke nutzen können. Das hat zudem noch einen weiteren Vorteil: die Achse des Darrieus-Rotors kann&nbsp; an beiden Enden befestigt werden, da alle Vertikalachser zu Schwingungen neigen. Wer eine Schwingungsübertragung auf das Gebäude noch stärker eliminieren will, kann die Achs-Halterungen mit Stoßdämpfern z.B. aus Autos versehen. Durch die Lagerung an beiden Achsenenden ist es möglich, dort auch Bremsen anzubringen, falls ein extremer Sturm die Anlage zu überfordern droht. Und schließlich: wird der Helix-Darrieus in einen um die vertikale Seitenachse klappbaren Rahmen montiert, kann er ggf. an den Hausecken wie einen Torflügel aus dem Wind gedreht werden. </p>
+<p>Wichtig ist die richtige Dimensionierung der Anlage und die Abstimmung der einzelnen Technikkomponenten aufeinander. Das gilt sowohl für Rotor-Durchmesser und -Höhe – ein kleiner Rotor bringt wenig – als auch für die gesamt Elektrik, insbesondere wenn sie auch das Haus betrifft. Wer hier kein ausgewiesener Fachmann ist, sollte sich unbedingt einen erfahrenen Elektriker holen. Ansonsten können die Schäden an der Hauselektrik und durch entstehende Brände erheblich sein. Zudem muss ein passendes Energiemanagementsystem gefunden und der Heimspeicher auf seine Eignung für den Windstrom betrachtet werden. Wer keinen Heimspeicher besitzt, kann mit dem Windstrom und einer Heizpatrone die eigene Wärmeversorgung fördern – die windstarken Zeiten im Winterhalbjahr und der Wohnwärmebedarf passen gut zusammen. </p>
+<p><b>Fazit</b><br />Wie bereits geschrieben: ein Steckerwindmodul analog zum Steckersolarmodul wird es nicht geben. Die Leistungsdifferenz zwischen wenig Wind und Wirbelsturm ist eben erheblich größer als die zwischen Tag und Nacht. Doch kostengünstige, weil selbst gebaute Kleinwindanlagen haben als WindRebell Potential – auch im bebauten Umfeld. Dass sie hier anders aussehen als ihre Megawatt-Verwandten, liegt in der Natur der Sache.</p>
+<p style="margin-left:11.35pt; text-align:left; text-indent:-11.35pt"><b>Literatur</b></p>
+<p style="margin-left:11.35pt; text-align:left; text-indent:-11.35pt">Robert Gasch, Jochen Twele: Windkraftanlagen. Grundlagen, Entwurf, Planung und Betrieb, 2005 </p>
+<p style="margin-left:11.35pt; text-align:left; text-indent:-11.35pt">Twele, Jochen (Hrsg.): Empfehlungen zum Einsatz kleiner Windenergieanlagen im urbanen Raum. Ein Leitfaden, Berlin 20134</p>
+<p style="margin-left:11.35pt; text-align:left; text-indent:-11.35pt">Volker Quaschning: Regenerative Energiesysteme. Technologie - Berechnung - Klimaschutz, 11. aktualisierte Auflage München 2021</p>
+<p style="margin-left:11.35pt; text-align:left; text-indent:-11.35pt">Patrick Jüttemann: Kleinwindkraft für Gewerbe &amp; Privat, Selbstverlag: www.klein-windkraftanlagen.com, 2. Auflage 2020 </p>
+<p><span lang="EN-GB">&nbsp;</span></p>
+<p><span style="color:red">Windgeschwindigkeiten in ihren verschiedenen Umrechnungsformen</span></p>
+<p>Prinzipiell gilt: 1 m/s = 3,6 km/h = ca. 2 kn/h = 2 nm/h.&nbsp; Die beiden letzten Angaben sind in der Seefahrt und damit auch für Küstengebiete relevant, weil sie hier häufig in Wettermeldungen auftauchen: kn steht für „Knoten“ (= 1,852 km/h) und meint dasselbe wie nm = Nautische Meile. Daneben gibt es die Beaufort-Skala, die sich nicht auf Messverfahren, sondern auf seemännische Beobachtungen stützt. Für einen Dachgiebel oder eine Hausecke, um die der Wind mit 7 m/s weht, müsste nach Beaufort Windstärke 4 angeben werden. Und wenn der Wind Regenschirme umschlägt, herrscht Windstärke 6. </p>
+<p>Wie viel Prozent der Windenergie können aber abgeerntet werden? Maßgeblich ist das Betzsche Gesetz, das besagt, dass eine Anlage maximal 16/27stel, also knapp unter 60% der Windenergie nutzen kann. Mehr ist wegen des entstehenden Luftstaus vor der Windkraftanlage nicht möglich, und eine 100%ige Nutzung der Windkraft würde ja bedeuten, dass der Wind zum Stehen käme. Sehr gute Anlagen ernten heute in der Praxis um 50% der Windenergie. </p>
+<p>Bleibt die Frage nach der Windleistung für die jeweilige Windenergieanlage. Die Berechnung geschieht nach der Formel: </p>
+<p style="margin-left:17.0pt">P = v3 · <span style="font-family:Symbol">r </span>· r2 · π ·&nbsp; 0,5 </p>
+<p>P ist die Leistung, v = die Windgeschwindigkeit, <span style="font-family:Symbol">r</span> = die Luftdichte, r = der Rotorradius,&nbsp; π = die Kreiszahl Pi.&nbsp; </p>
+<p>Die wichtigste, rein abstrakte Erkenntnis aus dieser Gleichung: Die Windgeschwindigkeit v beeinflusst die Leistung mit der dritten Potenz, der Rotorradius die Leistung „nur“ mit der zweiten Potenz. Verdoppelt sich also die Windgeschwindigkeit, erhöht sich die Leistung um das Achtfache; wird hingegen der Radius der Windkraftanlage verdoppelt, erhöht sich die Leistung „nur“ um das Vierfache. Windgeschwindigkeit ist für die Windenergie eben durch nichts zu ersetzen.</p>
+		  
+			<div class="links-article">
+      
+  		
+  		</div>
+  		
+  		<br /><a href="javascript:linkTo_UnCryptMailto('nbjmup+lpoubluAxbsolf.wfsmbh\/ef');"><div class="trenner_klein"> </div> <b>Von:</b> <br /> <br /> Götz Warnke</a>
+
+		  <div class="news-single-additional-info">
+						  
+		  
+		  
+			
+				 					  
+		  
+		  
+
+		  </div>
+	 	  
+		</div>
+		
+  
+	
+  <div style="clear:both">&nbsp;</div>
+  		
+	
+</div>		
+
+		<!--  Plugin inserted: [end] -->
+			</div></div>
+	<!--  CONTENT ELEMENT, uid:47/list [end] -->
+		
+        </div>
+      </div>
+      <div id="rechts">
+        <div class="fontsize10 marginBottom5">
+          Meist gesucht:
+        </div>
+        <div class="trenner" id="cloudspace">
+          
+	<!--  CONTENT ELEMENT, uid:50/html [begin] -->
+		<div id="c50" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<a href="index.php?id=37&tx_ttnews[cat]=30" class="medium">Kommentar</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=0" class="big">Photovoltaik</a>
+<a href="index.php?id=27" class="medium">Abo</a>
+<a href="index.php?id=37&tx_ttnews[cat]=28" class ="big">Ethik</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=1" class ="big">Solarthermie</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=7" class="medium">Energieressourcen</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=3" class="medium">International</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=21" class= "big">Energiewende</a>
+<a href="index.php?id=49" class="big">Archiv</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=8" class="small">DGS Aktiv</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=5" class="medium">Mobilität</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=2" class="medium">Politik</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=13" class="small">Recht</a>
+<a href="index.php?id=37&tx_ttnews[rubrik]=12" class="medium">Wirtschaft</a>
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:50/html [end] -->
+		
+        </div>
+        <!--
+        <div class="teaser teaserO">
+        <div class="teaserTitel">Die SONNENENERGIE</div>
+        <div class="teaserInhalt">
+        <div class="marginBottom10">In der aktuellen Ausgabe</div>
+        <div class="floatLeft"><a href=""><img src="fileadmin/templates/img/inhalt/teaser_buch.gif"  alt="Buch" /></a></div>
+        <div class="bold marginBottom3">BIOENERGIE</div>
+        <div class="marginBottom10">"Optimierung von Biogasanlagen"</div>
+        <div class="bold marginBottom3">ELEKTROMOBILIT&Auml;T</div>
+        <div class="marginBottom10">"Detroit, L.A., Paris"</div>
+        <div class="bold marginBottom3">SOLARSTROM</div>
+        <div class="marginBottom10">"Solaranlagen gemeinsam nutzen uns Satte Gewinne einfahren"</div>
+        </div>
+        </div>
+        <div class="teaser teaserB">
+        <div class="teaserTitel">BSM Newsletter</div>
+        <div class="teaserInhalt">
+        <div class="bold marginBottom3">27.03.2008</div>
+        <div class="pfeilRechtsB marginBottom3 blau bold">GESCHICHTE DER PV</div>
+        <div class="marginBottom10 marginLeft15">"Bauen und Hoffen"<br />
+        So baut man heute Solaranlagen. Der erste Bericht &uuml;ber die Langzeiterfahrung.</div>
+        <div class="pfeilRechtsB marginBottom3 blau bold">SOLARINDUSTRIE</div>
+        <div class="marginBottom10 marginLeft15">"Baunen und Hoffen"<br />
+        So baut man heute Solaranlagen. Der erste Bericht &uuml;ber die Langzeiterfahrung.</div>
+        <div class="pfeilRechtsB marginBottom3 blau bold">GROSSE SOALARANLAGEN</div>
+        <div class="marginBottom10 marginLeft15">"Baunen und Hoffen"<br />
+        So baut man heute Solaranlagen. Der erste Bericht &uuml;ber die Langzeiterfahrung.</div>
+        </div>
+        </div>
+        -->
+        
+        <div class="trenner">
+          
+	<!--  CONTENT ELEMENT, uid:211/html [begin] -->
+		<div id="c211" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: Propagandaschlacht ums Klima -->
+<a href="https://www.dgs-franken.de/medien/climatewar" target='_blank'><img src="fileadmin/templates/img/ClimateWar-Cover.jpg" width="300" alt="Propagandaschlacht ums Klima" /></a>
+<br />
+<br />
+
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:211/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:289/html [begin] -->
+		<div id="c289" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER:  Valentin Software -->
+<a href="https://valentin-software.com/produktneuheiten/pvsol-premium-2023-release-1-veroeffentlicht/?utm_source=https%3A%2F%2Fwww.sonnenenergie.de%2F&utm_medium=Banner-DE-11-2022&utm_campaign=Banner+DAW+2022&utm_content=PVSOL+premium+2023" target='_blank'><img src="fileadmin/templates/img/PVSOLpremium2023.gif" alt="Valentin Software" /></a>
+<br />
+<br />
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:289/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:198/html [begin] -->
+		<div id="c198" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: PVplug -->
+<a href="http://www.pvplug.de/" target='_blank'><img src="fileadmin/templates/img/pvplug.png" alt="PVplug" /></a>
+
+<br />
+<br />
+
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:198/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:170/html [begin] -->
+		<div id="c170" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: DGS-Prämie -->
+<a href="https://www.dgs.de/index.php?id=beitritt" target='_blank'><img src="fileadmin/templates/img/Mitglied-werden-296.gif" width="300" alt="DGS-Prämie"></a>
+<br />
+<br />
+
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:170/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:174/html [begin] -->
+		<div id="c174" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: Facebook -->
+<a href="https://www.facebook.com/pages/DGS-Deutsche-Gesellschaft-f%C3%BCr-Sonnenenergie-eV/319950984815277" target='_blank'><img src="fileadmin/templates/img/Facebook.gif" width="300" alt="Facebook" /></a>
+<br />
+<br />
+
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:174/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:168/html [begin] -->
+		<div id="c168" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: INTERSOLAR -->
+<a href="https://www.intersolar.de" target='_blank'><img src="fileadmin/templates/img/ISE2023_Banner_Master_296x136px_DE.gif" alt="Intersolar" /></a>
+<br />
+<br />
+
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:168/html [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:278/html [begin] -->
+		<div id="c278" class="csc-default">
+		<!--  Raw HTML content: [begin] -->
+			<!-- BANNER: Tagung Zukünftige Stromnetze -->
+<a href="https://www.zukunftsnetz.net/?utm_source=medienpartner&utm_medium=sonnenergie&utm_campaign=znetz&utm_content=website" target='_blank'><img src="fileadmin/templates/img/Zukunftsnetz23_300x250px.jpg" alt="Tagung Zukünftige Stromnetze" /></a>
+<br />
+<br />
+
+		<!--  Raw HTML content: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:278/html [end] -->
+		
+        </div>
+        
+      </div>
+      
+      <div style="clear:both">
+        &nbsp;
+      </div>
+      <div style="width: 981px; position: absolute; top: 203px;margin-left:12px;background-color: #F4DD9B;display:none" id="navi_over">
+        <!-- position: absolute; top: 202px; display: none; //-->
+        <!-- ###INFO_LAYER### -->
+        <!-- ###INFO_LAYER### -->
+      </div>
+    </div>
+    <div id="footer">
+      Copyright 2018 - Deutsche Gesellschaft f&uuml;r Sonnenenergie e.V.
+    </div>
+
+     
+    
+
+        <div id="datenschutz-outer">
+      <div id="datenschutz-inner">
+      Um unser Internetangebot insgesamt nutzerfreundlicher und effektiver zu machen, nutzen wir Cookies. 
+      Wenn Sie <a href="/index.php?id=109&enablecookies=1" class="btn">OK</a> klicken, willigen Sie hierin ein. Wenn Sie nicht einwilligen, können Sie einzelne Funktionen der Internetseite, 
+      die Cookies voraussetzen, nicht nutzen. Sie können die Einwilligung jederzeit durch Klick auf <a href="/index.php?id=109&enablecookies=2" class="btn">NICHT OK</a> widerrufen. 
+      Die Rechtmäßigkeit der aufgrund der Einwilligung bis zum Widerruf erfolgten Verarbeitung wird vom Widerruf nicht berührt. 
+      Nähere Informationen finden Sie in der <a href="/index.php?id=109" class="lnk">Datenschutzerklärung</a>.
+      </div> 
+    </div>
+
+<script src="typo3conf/ext/powermail/Resources/Public/JavaScripts/Libraries/jquery.datetimepicker.min.js?1513977478" type="text/javascript"></script>
+<script src="typo3conf/ext/powermail/Resources/Public/JavaScripts/Libraries/parsley.min.js?1513977478" type="text/javascript"></script>
+<script src="typo3conf/ext/powermail/Resources/Public/JavaScripts/Powermail/Tabs.min.js?1513977478" type="text/javascript"></script>
+<script src="typo3conf/ext/powermail/Resources/Public/JavaScripts/Powermail/Form.min.js?1513977478" type="text/javascript"></script>
+
+
+
+</body>
+</html>

@@ -1,6 +1,59 @@
 ## History / Changelog
 
 
+### 1.10.0
+
+Breaking changes:
+- raise errors on deprecated CLI and function arguments (#581)
+- regroup classes and functions linked to deduplication (#582)
+``trafilatura.hashing`` → ``trafilatura.deduplication``
+
+Extraction:
+- port of is_probably_readerable from readability.js by @zirkelc in #587
+- Markdown table fixes by @naktinis in #601
+- fix list spacing in TXT output (#598)
+- CLI fixes: file processing options, mtime, and tests (#605)
+- CLI fix: read standard input as binary (#607)
+
+Downloads:
+- fix deflate and add optional zstd to accepted encodings (#594)
+- spider fix: use internal download utilities for robots.txt (#590)
+
+Maintenance:
+- add author XPaths (#567)
+- update justext and lxml dependencies (#593)
+- simplify code: unique function for length tests (#591)
+
+Docs:
+- fix typos by @RainRat in #603
+
+
+### 1.9.0
+
+Extraction:
+- add markdown as explicit output (#550)
+- improve recall preset (#571)
+- speedup for readability-lxml (#547)
+- add global options object for extraction and use it in CLI (#552)
+- fix: better encoding detection (#548)
+- recall: fix for lists inside tables with @mikhainin (#534)
+- add symbol to preserve vertical spacing in Markdown (#499)
+- fix: table cell separators in non-XML output (#563)
+- slightly better accuracy and execution speed overall
+
+Metadata:
+- add file creation date (date extraction, JSON & XML-TEI) (#561)
+- fix: empty content in meta tag by @felipehertzer (#545)
+
+Maintenance:
+- restructure and simplify code (#543, #556)
+- CLI & downloads: revamp and use global options (#565)
+- eval: review code, add guidelines and small benchmark (#542)
+- fix: raise error if config file does not exist (#554)
+- deprecate `process_record()` (#549)
+- docs: convert readme to markdown and update info (#564, #578)
+
+
 ### 1.8.1
 
 Maintenance:
@@ -87,7 +140,7 @@ Documentation:
 Extraction:
 - more lenient HTML parsing (#370)
 - improved code block support with @idoshamun (#372, #401)
-- convertion of relative links to absolute by @feltcat (#377)
+- conversion of relative links to absolute by @feltcat (#377)
 - remove use of signal from core functions (#384)
 
 Metadata:

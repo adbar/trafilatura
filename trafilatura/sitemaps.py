@@ -18,9 +18,9 @@ from courlan import (
     lang_filter,
 )
 
+from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
-from .utils import is_similar_domain
 
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()

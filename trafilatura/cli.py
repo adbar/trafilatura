@@ -5,10 +5,14 @@ Implementing a basic command-line interface.
 import argparse
 import logging
 import sys
-import warnings
+
+try:  # Python 3.8+
+    from importlib.metadata import version
+except ImportError:
+    from importlib_metadata import version
+
 from platform import python_version
 
-from . import __version__
 from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
                         load_input_dict, probe_homepage,
@@ -158,10 +162,13 @@ def add_args(parser):
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
                         help="determine output format",
-                        choices=['txt', 'csv', 'json', 'markdown', 'xml', 'xmltei'],
+                        choices=['txt', 'csv', 'html', 'json', 'markdown', 'xml', 'xmltei'],
                         default='txt')
     group5_ex.add_argument("--csv",
                         help="shorthand for CSV output",
+                        action="store_true")
+    group5_ex.add_argument("--html",
+                        help="shorthand for HTML output",
                         action="store_true")
     group5_ex.add_argument("--json",
                         help="shorthand for JSON output",
@@ -186,7 +193,7 @@ def add_args(parser):
         "--version",
         help="show version information and exit",
         action="version",
-        version=f"Trafilatura {__version__} - Python {python_version()}",
+        version=f"Trafilatura {version('trafilatura')} - Python {python_version()}",
     )
 
     return parser
@@ -203,65 +210,35 @@ def parse_args(args):
 def map_args(args):
     '''Map existing options to format and output choices.'''
     # formats
-    if args.csv:
-        args.output_format = 'csv'
-    elif args.json:
-        args.output_format = 'json'
-    elif args.markdown:
-        args.output_format = 'markdown'
-    elif args.xml:
-        args.output_format = 'xml'
-    elif args.xmltei:
-        args.output_format = 'xmltei'
+    for otype in ("csv", "html", "json", "markdown", "xml", "xmltei"):
+        if getattr(args, otype):
+            args.output_format = otype
+            break
     # output configuration
     if args.nocomments is False:
-        args.no_comments = False
-        warnings.warn(
-            """--nocomments will be deprecated in a future version,
-               use --no-comments instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--nocomments is deprecated, use --no-comments instead",
+              )
     if args.notables is False:
-        args.no_tables = False
-        warnings.warn(
-            """--notables will be deprecated in a future version,
-               use --no-tables instead""",
-             PendingDeprecationWarning
-        )
-    if args.with_metadata is True:
-        args.only_with_metadata = True
-        warnings.warn(
-            """--with-metadata will be deprecated in a future version,
-               use --only-with-metadata instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--notables is deprecated, use --no-tables instead",
+              )
     if args.inputfile:
-        args.input_file = args.inputfile
-        warnings.warn(
-            """--inputfile will be deprecated in a future version,
-               use --input-file instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--inputfile is deprecated, use --input-file instead",
+              )
     if args.inputdir:
-        args.input_dir = args.inputdir
-        warnings.warn(
-            """--inputdir will be deprecated in a future version,
-               use --input-dir instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--inputdir is deprecated, use --input-dir instead",
+              )
     if args.outputdir:
-        args.output_dir = args.outputdir
-        warnings.warn(
-            """--outputdir will be deprecated in a future version,
-               use --output-dir instead""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--outputdir is deprecated, use --output-dir instead",
+              )
     if args.hash_as_name:
-        warnings.warn(
-            """--hash-as-name will be deprecated in a future version,
-               hashes are now used by default.""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "--hash-as-name is deprecated, hashes are used by default",
+              )
     return args
 
 
@@ -312,13 +289,7 @@ def process_args(args):
 
     # read input on STDIN directly
     else:
-        # file type and unicode check
-        try:
-            htmlstring = sys.stdin.read()
-        except UnicodeDecodeError:
-            sys.exit('ERROR: system, file type or buffer encoding')
-        # process
-        result = examine(htmlstring, args, url=args.URL)
+        result = examine(sys.stdin.buffer.read(), args, url=args.URL)
         write_result(result, args)
 
     # change exit code if there are errors

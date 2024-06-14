@@ -5,89 +5,25 @@ Extraction configuration and processing functions.
 
 import logging
 import sys
-import warnings
 
-from copy import deepcopy
+from copy import copy, deepcopy
 
 from lxml.etree import XPath, strip_tags
 
 # own
 from .baseline import baseline
+from .deduplication import content_fingerprint, duplicate_test
 from .external import compare_extraction
-from .filters import (LANGID_FLAG, check_html_lang, duplicate_test,
-                      language_filter)
-from .hashing import content_fingerprint
-from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
+from .htmlprocessing import build_html_output, convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import extract_comments, extract_content
-from .metadata import Document, extract_metadata, set_date_params
-from .settings import DEFAULT_CONFIG, use_config
-from .utils import load_html, normalize_unicode
+from .metadata import Document, extract_metadata
+from .settings import DEFAULT_CONFIG, Extractor, use_config
+from .utils import LANGID_FLAG, check_html_lang, language_filter, load_html, normalize_unicode
 from .xml import build_json_output, control_xml_output, xmltotxt, xmltocsv
 from .xpaths import REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
-
-
-class Extractor:
-    "Defines a class to store all extraction options."
-    __slots__ = [
-    'config',
-    # general
-    'format', 'fast', 'precision', 'recall', 'comments',
-    'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
-    # extraction size
-    'min_extracted_size', 'min_output_size',
-    'min_output_comm_size', 'min_extracted_comm_size',
-    # deduplication
-    'min_duplcheck_size', 'max_repetitions',
-    # rest
-    'max_file_size', 'min_file_size', 'max_tree_size',
-    # meta
-    'source', 'url', 'only_with_metadata', 'tei_validation',
-    'date_params',
-    'author_blacklist', 'url_blacklist'
-    ]
-    # consider dataclasses for Python 3.7+
-    def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
-                 fast=False, precision=False, recall=False,
-                 comments=True, formatting=False, links=False, images=False,
-                 tables=True, dedup=False, lang=None, max_tree_size=None,
-                 url=None, source=None, only_with_metadata=False, tei_validation=False,
-                 author_blacklist=None, url_blacklist=None, date_params=None):
-        self._add_config(config)
-        self.format = output_format
-        self.fast = fast
-        self.precision = precision
-        self.recall = recall
-        self.comments = comments
-        self.formatting = formatting or output_format == "markdown"
-        self.links = links
-        self.images = images
-        self.tables = tables
-        self.dedup = dedup
-        self.lang = lang
-        self.max_tree_size = max_tree_size
-        self.url = url
-        self.source = url or source
-        self.only_with_metadata = only_with_metadata
-        self.tei_validation = tei_validation
-        self.author_blacklist = author_blacklist or set()
-        self.url_blacklist = url_blacklist or set()
-        self.date_params = date_params or \
-                           set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH'))
-
-    def _add_config(self, config):
-        "Store options loaded from config file."
-        self.min_extracted_size = config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
-        self.min_output_size = config.getint('DEFAULT', 'MIN_OUTPUT_SIZE')
-        self.min_output_comm_size = config.getint('DEFAULT', 'MIN_OUTPUT_COMM_SIZE')
-        self.min_extracted_comm_size = config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE')
-        self.min_duplcheck_size = config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE')
-        self.max_repetitions = config.getint('DEFAULT', 'MAX_REPETITIONS')
-        self.max_file_size = config.getint('DEFAULT', 'MAX_FILE_SIZE')
-        self.min_file_size = config.getint('DEFAULT', 'MIN_FILE_SIZE')
-        self.config = config  # todo: remove?
 
 
 def determine_returnstring(document, options):
@@ -108,10 +44,24 @@ def determine_returnstring(document, options):
         returnstring = xmltocsv(document, options.formatting)
     # JSON
     elif options.format == 'json':
-        returnstring = build_json_output(document)
+        returnstring = build_json_output(document, options.with_metadata)
+    # HTML
+    elif options.format == 'html':
+        returnstring = build_html_output(document, options.with_metadata)
     # Markdown and TXT
     else:
-        returnstring = xmltotxt(document.body, options.formatting)
+        if options.with_metadata:
+            header = "---\n"
+            for attr in (
+                    'title', 'author', 'url', 'hostname', 'description', 'sitename',
+                    'date', 'categories', 'tags', 'fingerprint', 'id', 'license'
+                ):
+                if getattr(document, attr):
+                    header += f"{attr}: {str(getattr(document, attr))}\n"
+            header += "---\n"
+        else:
+            header = ""
+        returnstring = f"{header}{xmltotxt(document.body, options.formatting)}"
         if document.commentsbody is not None:
             returnstring = f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
     # normalize Unicode format (defaults to NFC)
@@ -124,7 +74,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                     include_tables=True, include_images=False, include_formatting=False,
                     include_links=False, deduplicate=False,
                     date_extraction_params=None,
-                    only_with_metadata=False, with_metadata=False,
+                    with_metadata=False, only_with_metadata=False,
                     max_tree_size=None, url_blacklist=None, author_blacklist=None,
                     as_dict=True, prune_xpath=None,
                     config=DEFAULT_CONFIG, options=None):
@@ -148,6 +98,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
+        with_metadata: Extract metadata fields and add them to the output (available soon).
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
@@ -166,13 +117,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         ValueError: Extraction problem.
     """
 
-    # deprecation warnings
-    if with_metadata is True:
-        only_with_metadata = with_metadata
-        warnings.warn(
-            '"with_metadata" will be deprecated in a future version, use "only_with_metadata instead"',
-            PendingDeprecationWarning
-        )
+    # deprecations
     #if no_fallback is True:
     #    fast = no_fallback
         #warnings.warn(
@@ -195,19 +140,19 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                           comments=include_comments, formatting=include_formatting, links=include_links,
                           images=include_images, tables=include_tables,
                           dedup=deduplicate, lang=target_language, max_tree_size=max_tree_size,
-                          url=url, only_with_metadata=only_with_metadata,
+                          url=url, with_metadata=with_metadata, only_with_metadata=only_with_metadata,
                           author_blacklist=author_blacklist, url_blacklist=url_blacklist,
                           date_params=date_extraction_params
                       )
 
         # quick and dirty HTML lang check
-        if options.lang and (options.fast or LANGID_FLAG is False):
+        if options.lang and (options.fast or not LANGID_FLAG):
             if check_html_lang(tree, options.lang) is False:
                 LOGGER.error('wrong HTML meta language: %s', options.source)
                 raise ValueError
 
         # extract metadata if necessary
-        if options.format not in ("markdown", "txt"):
+        if options.with_metadata:
 
             document = extract_metadata(tree, options.url, options.date_params, options.fast, options.author_blacklist)
 
@@ -217,10 +162,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 raise ValueError
 
             # cut short if core elements are missing
-            if options.only_with_metadata and any(
-                    x is None for x in
-                    [document.date, document.title, document.url]
-            ):
+            if options.only_with_metadata and not (document.date and document.title and document.url):
                 LOGGER.error('no metadata: %s', options.source)
                 raise ValueError
 
@@ -234,13 +176,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        # backup (or not) for further processing
-        tree_backup_1 = deepcopy(tree) if not options.fast else None
-        tree_backup_2 = deepcopy(tree)
+        # backup for further processing
+        tree_backup = copy(tree)
 
-        # clean + use LXML cleaner
+        # clean
         cleaned_tree = tree_cleaning(tree, options)
-        cleaned_tree_backup = deepcopy(cleaned_tree)
+        cleaned_tree_backup = copy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, options.url or document.url)
@@ -250,7 +191,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-        if options.precision:
+        if options.focus == "precision":
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
@@ -258,11 +199,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
         # compare if necessary
         if not options.fast:
-            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, postbody, temp_text, len_text, options)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, deepcopy(tree_backup), postbody, temp_text, len_text, options)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree # and favor_precision is False=?
         if len_text < options.min_extracted_size:
-            postbody, temp_text, len_text = baseline(tree_backup_2)
+            postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
@@ -276,7 +217,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 LOGGER.debug('output tree too long: %s, discarding %s', len(postbody), options.source)
                 raise ValueError
         # size checks
-        if len_comments < options.min_extracted_comm_size:
+        if options.comments and len_comments < options.min_extracted_comm_size:
             LOGGER.debug('not enough comments: %s', options.source)
         if len_text < options.min_output_size and \
            len_comments < options.min_output_comm_size:
@@ -320,7 +261,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_tables=True, include_images=False, include_formatting=False,
             include_links=False, deduplicate=False,
             date_extraction_params=None,
-            only_with_metadata=False, with_metadata=False,
+            with_metadata=False, only_with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
             settingsfile=None, prune_xpath=None,
             config=DEFAULT_CONFIG, options=None,
@@ -347,6 +288,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
+        with_metadata: Extract metadata fields and add them to the output (available soon).
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
@@ -373,7 +315,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         raise NameError(
             'Deprecated argument: use output_format instead, e.g. output_format="xml"'
             )
-        # todo: add with_metadata later
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
@@ -383,7 +324,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                       comments=include_comments, formatting=include_formatting, links=include_links,
                       images=include_images, tables=include_tables,
                       dedup=deduplicate, lang=target_language, max_tree_size=max_tree_size,
-                      url=url, only_with_metadata=only_with_metadata,
+                      url=url, with_metadata=with_metadata, only_with_metadata=only_with_metadata,
                       tei_validation=tei_validation,
                       author_blacklist=author_blacklist, url_blacklist=url_blacklist,
                       date_params=date_extraction_params
@@ -396,7 +337,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     try:
         document = bare_extraction(
             filecontent, options=options,
-            with_metadata=with_metadata,
             as_dict=False, prune_xpath=prune_xpath,
         )
     except RuntimeError:

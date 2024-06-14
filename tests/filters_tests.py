@@ -1,32 +1,19 @@
 # pylint:disable-msg=I1101,W1401
 """
-Unit tests for the trafilatura's text filters and cache.
+Unit tests for the trafilatura's text filters.
 """
 
-# language detection
-try:
-    import py3langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
+from lxml import html
 
-
-from lxml import etree, html
-
-import trafilatura.filters
-from trafilatura import extract, bare_extraction
-from trafilatura.core import Extractor
-from trafilatura.filters import (check_html_lang, duplicate_test,
-                                 language_filter)
-from trafilatura.lru import LRUCache
+from trafilatura import extract
 from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
+
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
-
-DEFAULT_OPTIONS = Extractor()
 
 SAMPLE_META = Document()
 
@@ -59,22 +46,7 @@ def test_filters():
     assert extract(doc, include_formatting=True, max_tree_size=500) is None
     doc = html.fromstring('<html><body>' + my_p*499 + '</body></html>')
     assert extract(doc, include_formatting=True, max_tree_size=500) is not None
-    ## deduplication
-    doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
-    trafilatura.filters.LRU_TEST = LRUCache(maxsize=2)
-    assert extract(doc, deduplicate=True) is not None
-    assert extract(doc, deduplicate=True) is not None
-    assert extract(doc, deduplicate=True) is not None
-    assert extract(doc, deduplicate=True) is None
-    # paragraph level
-    trafilatura.filters.LRU_TEST = LRUCache(maxsize=2)
-    my_p = etree.fromstring('<p>' + 'abc'*50 + '</p>')
-    options = DEFAULT_OPTIONS
-    options.dedup = True
-    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
-    assert trafilatura.htmlprocessing.process_node(my_p, options) is None
+
     # HTML lang filter
     # no lang
     assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
@@ -104,48 +76,6 @@ def test_filters():
     assert check_html_lang(html.fromstring('<html lang="en-US"><head><meta property="og:locale" content="de_DE" /></head><body></body></html>'), target_language='de', strict=True) is True
 
 
-def test_lrucache():
-    '''test basic duplicate detection'''
-    lru_test = LRUCache(maxsize=2)
-    trafilatura.filters.LRU_TEST = lru_test
-    my_body = etree.Element('body')
-    
-    ### element too short
-    #my_element = html.fromstring('<p>AAAA BBBB</p>')
-    #my_body.append(my_element)
-    #put_in_cache(my_body)
-    #assert duplicate_test(my_element, DEFAULT_CONFIG) is False
-    ### cached element
-    my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
-    my_body.append(my_element)
-    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
-    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
-    assert duplicate_test(my_body, DEFAULT_OPTIONS) is False
-    assert duplicate_test(my_element, DEFAULT_OPTIONS) is True
-    other_body = etree.Element('body')
-    other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
-    other_body.append(other_element)
-    assert duplicate_test(other_body, DEFAULT_OPTIONS) is False
-    assert duplicate_test(other_element, DEFAULT_OPTIONS) is False
-    assert duplicate_test(other_body, DEFAULT_OPTIONS) is False
-    assert duplicate_test(other_element, DEFAULT_OPTIONS) is True
-    yet_another_body = etree.Element('body')
-    yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
-    yet_another_body.append(yet_another_element)
-    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
-    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
-    assert duplicate_test(yet_another_body, DEFAULT_OPTIONS) is False
-    # 2 elements in cache, original element has been cleared?
-    # print(LRU_TEST.maxsize, LRU_TEST.full)
-    assert duplicate_test(other_element, DEFAULT_OPTIONS) is True
-    assert duplicate_test(yet_another_element, DEFAULT_OPTIONS) is True
-    assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
-    # clear the cache
-    lru_test.clear()
-    assert duplicate_test(other_element, DEFAULT_OPTIONS) is False
-    # get wrong key
-    assert lru_test.get('tralala') == -1
-
 
 def test_prune_xpath():
     '''test xpath pruning (parameter in extract and bare_extraction)'''
@@ -153,12 +83,12 @@ def test_prune_xpath():
     def doc():
         my_p = '<p>abc</p>'
         return html.fromstring('<html><body>' + my_p*50 + '</body></html>')
-    
+
     def doc2():
         my_p = '<p>abc</p>'
         my_h1 = '<h1>ABC</h1>'
         return html.fromstring('<html><body>' + my_h1 + my_p*50 + '</body></html>')
-    
+
     def doc3():
         my_p = '<p>abc</p>'
         my_h1 = '<h1>ABC</h1>'
@@ -178,5 +108,4 @@ def test_prune_xpath():
 
 if __name__ == '__main__':
     test_filters()
-    test_lrucache()
     test_prune_xpath()

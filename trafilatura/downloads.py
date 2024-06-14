@@ -5,9 +5,9 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
-import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from functools import partial
 from io import BytesIO
 from time import sleep
 
@@ -34,9 +34,8 @@ try:  # Python 3.8+
 except ImportError:
     from importlib_metadata import version
 
-
-from .settings import DEFAULT_CONFIG
-from .utils import URL_BLACKLIST_REGEX, decode_file, make_chunks
+from .settings import DEFAULT_CONFIG, Extractor
+from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
 
 
 LOGGER = logging.getLogger(__name__)
@@ -164,44 +163,40 @@ def _send_urllib_request(url, no_ssl, with_headers, config):
     return None
 
 
-def _handle_response(url, response, decode, config):
+def _handle_response(url, response, decode, options):
     'Internal function to run safety checks on response result.'
     lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-    elif lentest < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
-        LOGGER.error('too small/incorrect for URL %s', url)
-        # raise error instead?
-    elif lentest > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
-        LOGGER.error('too large: length %s for URL %s', lentest, url)
-        # raise error instead?
-    else:
+    # raise error instead?
+    elif is_acceptable_length(lentest, options):
         return response.html if decode else response
     # catchall
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=None):
     """Downloads a web page and seamlessly decodes the response.
 
     Args:
         url: URL of the page to fetch.
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
+        options: Extraction options (supersedes config).
 
     Returns:
         Unicode string or None in case of failed downloads and invalid results.
 
     """
     if not decode:
-        warnings.warn(
-            """Raw response objects will be deprecated for fetch_url,
-               use fetch_response instead.""",
-             PendingDeprecationWarning
-        )
+        raise ValueError(
+              "Raw response objects are deprecated for fetch_url(), use fetch_response() instead."
+              )
     response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
     if response is not None and response != '':
-        return _handle_response(url, response, decode, config)
+        if not options:
+            options = Extractor(config=config)
+        return _handle_response(url, response, decode, options)
         # return '' (useful do discard further processing?)
         # return response
     return None
@@ -298,7 +293,7 @@ def load_download_buffer(url_store, sleep_time=5):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
     bufferlist = []
     while not bufferlist:
-        bufferlist = url_store.get_download_urls(timelimit=sleep_time)
+        bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
         # add emptiness test or sleep?
         if not bufferlist:
             if url_store.done is True:
@@ -307,11 +302,12 @@ def load_download_buffer(url_store, sleep_time=5):
     return bufferlist, url_store
 
 
-def buffered_downloads(bufferlist, download_threads, decode=True):
+def buffered_downloads(bufferlist, download_threads, decode=True, options=None):
     '''Download queue consumer, single- or multi-threaded.'''
+    worker = partial(fetch_url, options=options) if decode else fetch_response
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
-            future_to_url = {executor.submit(fetch_url, url, decode): url for url in chunk}
+            future_to_url = {executor.submit(worker, url): url for url in chunk}
             for future in as_completed(future_to_url):
                 # url and download result
                 yield future_to_url[future], future.result()

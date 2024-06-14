@@ -4,6 +4,8 @@ Listing a series of settings that are applied module-wide.
 """
 
 from configparser import ConfigParser
+from datetime import datetime
+from html import unescape
 
 try:
     from os import sched_getaffinity
@@ -15,6 +17,7 @@ from pathlib import Path
 
 from lxml.etree import XPath
 
+from .utils import line_processing
 
 
 def use_config(filename=None, config=None):
@@ -35,6 +38,151 @@ def use_config(filename=None, config=None):
 
 
 DEFAULT_CONFIG = use_config()
+
+CONFIG_MAPPING = {
+    'min_extracted_size': 'MIN_EXTRACTED_SIZE',
+    'min_output_size': 'MIN_OUTPUT_SIZE',
+    'min_output_comm_size': 'MIN_OUTPUT_COMM_SIZE',
+    'min_extracted_comm_size': 'MIN_EXTRACTED_COMM_SIZE',
+    'min_duplcheck_size': 'MIN_DUPLCHECK_SIZE',
+    'max_repetitions': 'MAX_REPETITIONS',
+    'max_file_size': 'MAX_FILE_SIZE',
+    'min_file_size': 'MIN_FILE_SIZE'
+}
+
+
+class Extractor:
+    "Defines a class to store all extraction options."
+    __slots__ = [
+    'config',
+    # general
+    'format', 'fast', 'focus', 'comments',
+    'formatting', 'links', 'images', 'tables', 'dedup', 'lang',
+    # extraction size
+    'min_extracted_size', 'min_output_size',
+    'min_output_comm_size', 'min_extracted_comm_size',
+    # deduplication
+    'min_duplcheck_size', 'max_repetitions',
+    # rest
+    'max_file_size', 'min_file_size', 'max_tree_size',
+    # meta
+    'source', 'url', 'with_metadata', 'only_with_metadata', 'tei_validation',
+    'date_params',
+    'author_blacklist', 'url_blacklist'
+    ]
+    # consider dataclasses for Python 3.7+
+    def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
+                 fast=False, precision=False, recall=False,
+                 comments=True, formatting=False, links=False, images=False,
+                 tables=True, dedup=False, lang=None, max_tree_size=None,
+                 url=None, source=None, with_metadata=False, only_with_metadata=False, tei_validation=False,
+                 author_blacklist=None, url_blacklist=None, date_params=None):
+        self._add_config(config)
+        self.format = output_format
+        self.fast = fast
+        self.focus = "recall" if recall else "precision" if precision else "balanced"
+        self.comments = comments
+        self.formatting = formatting or output_format == "markdown"
+        self.links = links
+        self.images = images
+        self.tables = tables
+        self.dedup = dedup
+        self.lang = lang
+        self.max_tree_size = max_tree_size
+        self.url = url
+        self.source = url or source
+        self.only_with_metadata = only_with_metadata
+        self.tei_validation = tei_validation
+        self.author_blacklist = author_blacklist or set()
+        self.url_blacklist = url_blacklist or set()
+        self.with_metadata = (with_metadata or only_with_metadata or
+                              url_blacklist or output_format == "xmltei")
+        self.date_params = (date_params or
+                            set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')))
+
+    def _add_config(self, config):
+        "Store options loaded from config file."
+        for key, value in CONFIG_MAPPING.items():
+            setattr(self, key, config.getint('DEFAULT', value))
+        self.config = config
+
+
+def args_to_extractor(args, url=None):
+    "Derive extractor configuration from CLI args."
+    options = Extractor(
+                  config=use_config(filename=args.config_file), output_format=args.output_format,
+                  precision=args.precision, recall=args.recall,
+                  comments=args.no_comments, tables=args.no_tables,
+                  dedup=args.deduplicate, lang=args.target_language, url=url,
+                  with_metadata=args.with_metadata, only_with_metadata=args.only_with_metadata,
+                  tei_validation=args.validate_tei
+              )
+    for attr in ("fast", "formatting", "images", "links"):
+        setattr(options, attr, getattr(args, attr))
+    return options
+
+
+def set_date_params(extensive=True):
+    "Provide default parameters for date extraction."
+    return {
+               "original_date": True,
+               "extensive_search": extensive,
+               "max_date": datetime.now().strftime("%Y-%m-%d")
+           }
+
+
+class Document:  # consider dataclasses for Python 3.7+
+    "Defines a class to store all necessary data and metadata fields for extracted information."
+    __slots__ = [
+    'title', 'author', 'url', 'hostname', 'description', 'sitename',
+    'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
+    'body', 'comments', 'commentsbody', 'raw_text', 'text',
+    'language', 'image', 'pagetype', 'filedate'  # 'locale'?
+    ]
+    def __init__(self) -> None:
+        for slot in self.__slots__:
+            setattr(self, slot, None)
+
+    def __getattr__(self, name: str) -> None:
+        raise AttributeError("% attribute not present in Document", name)
+
+    def __setattr__(self, name: str, value) -> None:
+        if name in self.__slots__:
+            object.__setattr__(self, name, value)
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        "Set a series of attributes using a dictionary."
+        doc = cls()
+        for key, value in data.items():
+            setattr(doc, key, value)
+        return doc
+
+    def set_attributes(self, **kwargs) -> None:
+        "Helper function to (re-)set a series of attributes."
+        for key, value in kwargs.items():
+            if value:
+                setattr(self, key, value)
+
+    def clean_and_trim(self) -> None:
+        "Limit text length and trim the attributes."
+        for slot in self.__slots__:
+            value = getattr(self, slot)
+            if isinstance(value, str):
+                # length
+                if len(value) > 10000:
+                    value = value[:9999] + '…'
+                # HTML entities, remove spaces and control characters
+                value = line_processing(unescape(value))
+                setattr(self, slot, value)
+
+    def as_dict(self) -> None:
+        "Convert the document to a dictionary."
+        return {
+            attr: getattr(self, attr, None)
+            for attr in self.__slots__
+        }
+
 
 # Safety checks
 PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count(), 16)  # 16 processes at most
@@ -114,7 +262,7 @@ JUSTEXT_LANGUAGES = {
     'sr': 'Serbian',
     'sv': 'Swedish',
     'tr': 'Turkish',
-    'uk': 'Ukranian',
+    'uk': 'Ukrainian',
     'ur': 'Urdu',
     'vi': 'Vietnamese',
     # 'zh': '',
