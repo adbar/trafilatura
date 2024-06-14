@@ -5,6 +5,7 @@ Listing a series of settings that are applied module-wide.
 
 from configparser import ConfigParser
 from datetime import datetime
+from html import unescape
 
 try:
     from os import sched_getaffinity
@@ -15,6 +16,8 @@ except ImportError:
 from pathlib import Path
 
 from lxml.etree import XPath
+
+from .utils import line_processing
 
 
 def use_config(filename=None, config=None):
@@ -126,6 +129,59 @@ def set_date_params(extensive=True):
                "extensive_search": extensive,
                "max_date": datetime.now().strftime("%Y-%m-%d")
            }
+
+
+class Document:  # consider dataclasses for Python 3.7+
+    "Defines a class to store all necessary data and metadata fields for extracted information."
+    __slots__ = [
+    'title', 'author', 'url', 'hostname', 'description', 'sitename',
+    'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
+    'body', 'comments', 'commentsbody', 'raw_text', 'text',
+    'language', 'image', 'pagetype', 'filedate'  # 'locale'?
+    ]
+    def __init__(self) -> None:
+        for slot in self.__slots__:
+            setattr(self, slot, None)
+
+    def __getattr__(self, name: str) -> None:
+        raise AttributeError("% attribute not present in Document", name)
+
+    def __setattr__(self, name: str, value) -> None:
+        if name in self.__slots__:
+            object.__setattr__(self, name, value)
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        "Set a series of attributes using a dictionary."
+        doc = cls()
+        for key, value in data.items():
+            setattr(doc, key, value)
+        return doc
+
+    def set_attributes(self, **kwargs) -> None:
+        "Helper function to (re-)set a series of attributes."
+        for key, value in kwargs.items():
+            if value:
+                setattr(self, key, value)
+
+    def clean_and_trim(self) -> None:
+        "Limit text length and trim the attributes."
+        for slot in self.__slots__:
+            value = getattr(self, slot)
+            if isinstance(value, str):
+                # length
+                if len(value) > 10000:
+                    value = value[:9999] + '…'
+                # HTML entities, remove spaces and control characters
+                value = line_processing(unescape(value))
+                setattr(self, slot, value)
+
+    def as_dict(self) -> None:
+        "Convert the document to a dictionary."
+        return {
+            attr: getattr(self, attr, None)
+            for attr in self.__slots__
+        }
 
 
 # Safety checks

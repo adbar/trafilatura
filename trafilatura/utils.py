@@ -10,7 +10,6 @@ import re
 import zlib
 
 from functools import lru_cache
-from html import unescape
 from itertools import islice
 from unicodedata import normalize
 
@@ -51,6 +50,7 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
 DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
+HTML_STRIP_TAGS = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
@@ -62,28 +62,6 @@ URL_BLACKLIST_REGEX = re.compile(r'^https?://|/+$')
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)')
-
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von|from) ', flags=re.IGNORECASE)
-AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
-AUTHOR_TWITTER = re.compile(r'@[\w]+')
-AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
-AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘({\[’\'][^"]+?[‘’"\')\]}]')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~¿]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-|–)\s+(.*)', flags=re.IGNORECASE)
-AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
-AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
-AUTHOR_EMOJI_REMOVE = re.compile(
-    "["
-    u"\U00002700-\U000027BF"  # Dingbats
-    u"\U0001F600-\U0001F64F"  # Emoticons
-    u"\U00002600-\U000026FF"  # Miscellaneous Symbols
-    u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
-    u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
-    u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
-    u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
-    "]+", flags=re.UNICODE)
-AUTHOR_REMOVE_HTML = re.compile(r'<[^>]+>')
-CLEAN_META_TAGS = re.compile(r'["\']')
 
 FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
@@ -360,63 +338,10 @@ def trim(string):
         return None
 
 
-def normalize_tags(tags):
-    '''Remove special characters of tags'''
-    tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
-    return ", ".join(filter(None, tags.split(", ")))
-
-
 def is_image_file(imagesrc):
     '''Check if the observed string corresponds to a valid image extension,
        return False otherwise'''
     return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
-
-
-def normalize_authors(current_authors, author_string):
-    '''Normalize author info to focus on author names only'''
-    new_authors = []
-    if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):
-        return current_authors
-    if current_authors is not None:
-        new_authors = current_authors.split('; ')
-    # fix to code with unicode
-    if '\\u' in author_string:
-        author_string = author_string.encode().decode('unicode_escape')
-    # fix html entities
-    if '&#' in author_string or '&amp;' in author_string:
-        author_string = unescape(author_string)
-    # remove html tags
-    author_string = AUTHOR_REMOVE_HTML.sub('', author_string)
-    # examine names
-    for author in AUTHOR_SPLIT.split(author_string):
-        author = trim(author)
-        # remove emoji
-        author = AUTHOR_EMOJI_REMOVE.sub('', author)
-        # remove @username
-        author = AUTHOR_TWITTER.sub('', author)
-        # replace special characters with space
-        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
-        author = AUTHOR_REMOVE_NICKNAME.sub('', author)
-        # remove special characters
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-        author = AUTHOR_PREFIX.sub('', author)
-        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
-        # skip empty or improbably long strings
-        if len(author) == 0 or (
-            # simple heuristics, regex or vowel tests also possible
-            ' ' not in author and '-' not in author and len(author) >= 50
-            ):
-            continue
-        # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
-            author = author.title()
-        # safety checks
-        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
-            new_authors.append(author)
-    if len(new_authors) == 0:
-        return current_authors
-    return '; '.join(new_authors).strip('; ')
 
 
 def make_chunks(iterable, n):

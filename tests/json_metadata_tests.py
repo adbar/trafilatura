@@ -7,7 +7,7 @@ import sys
 
 from lxml import html
 
-from trafilatura.metadata import Document, extract_meta_json, extract_metadata
+from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -946,5 +946,26 @@ def test_json_extraction():
 
     assert metadata.pagetype == 'website'
 
+
+def test_normalize_authors():
+    "Test if author names are normalized correctly."
+    assert normalize_authors(None, "John Doe") == "John Doe"
+    assert normalize_authors("Alice; Bob", "John Doe") == "Alice; Bob; John Doe"
+    assert normalize_authors("Alice; Bob", "john.doe@example.com") == "Alice; Bob"
+    assert normalize_authors(None, "\\u00e9tienne") == "Étienne"
+    assert normalize_authors(None, "&#233;tienne") == "Étienne"
+    assert normalize_authors(None, "Alice &amp; Bob") == "Alice; Bob"
+    assert normalize_authors(None, "<b>John Doe</b>") == "John Doe"
+    assert normalize_authors(None, "John 😊 Doe") == "John Doe"
+    assert normalize_authors(None, "words by John Doe") == "John Doe"
+    assert normalize_authors(None, "John Doe123") == "John Doe"
+    assert normalize_authors(None, "John_Doe") == "John Doe"
+    assert normalize_authors(None, "John Doe* ") == "John Doe"
+    assert normalize_authors(None, "John Doe of John Doe") == "John Doe"
+    assert normalize_authors(None, "John Doe — John Doe") == "John Doe"
+    assert normalize_authors(None, 'John "The King" Doe') == "John  Doe"
+
+
 if __name__ == '__main__':
     test_json_extraction()
+    test_normalize_authors()
