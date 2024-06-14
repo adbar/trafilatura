@@ -5,7 +5,9 @@ Module regrouping baseline and basic extraction functions.
 
 import json
 
-from lxml.etree import Element, SubElement
+from typing import Any, Tuple
+
+from lxml.etree import _Element, Element, SubElement
 
 from .htmlprocessing import delete_element
 from .settings import BASIC_CLEAN_XPATH
@@ -13,14 +15,14 @@ from .utils import load_html, trim
 
 
 
-def basic_cleaning(tree):
+def basic_cleaning(tree: _Element) -> _Element:
     "Remove a few section types from the document."
     for elem in BASIC_CLEAN_XPATH(tree):
         delete_element(elem)
     return tree
 
 
-def baseline(filecontent):
+def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     """Use baseline extraction function targeting text paragraphs and/or JSON metadata.
 
     Args:
@@ -99,7 +101,7 @@ def baseline(filecontent):
     return postbody, elem.text, len(elem.text)
 
 
-def html2txt(content, clean=True):
+def html2txt(content: Any, clean: bool = True) -> str:
     """Run basic html2txt on a document.
 
     Args:
