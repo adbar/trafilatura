@@ -144,15 +144,15 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@class, "paid-content") or contains(@class, "paidcontent")
     or contains(@id, "premium-") or contains(@id, "paywall")
     or contains(@class, "obfuscated") or contains(@class, "blurred")
-    or contains(@class, " ad ")
+    or contains(@class, " ad ") or contains(@class, "permission")
     or contains(@class, "next-") or contains(@class, "side-stories")
     or contains(@class, "related-stories") or contains(@class, "most-popular")
     or contains(@class, "mol-factbox") or starts-with(@class, "ZendeskForm")
     or contains(@class, "message-container") or contains(@id, "message_container")
-    or contains(@class, "yin") or contains(@class, "zlylin") or
-    contains(@class, "xg1") or contains(@id, "bmdh") or
-    contains(@class, "slide") or contains(@class, "viewport") or
-    @data-lp-replacement-content or @data-testid]''',
+    or contains(@class, "yin") or contains(@class, "zlylin")
+    or contains(@class, "xg1") or contains(@id, "bmdh")
+    or contains(@class, "slide") or contains(@class, "viewport")
+    or @data-lp-replacement-content]''',
 
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
@@ -160,8 +160,8 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "reader-comments")
     or contains(@id, "akismet") or contains(@class, "akismet") or contains(@class, "suggest-links") or
     starts-with(@class, "hide-") or contains(@class, "-hide-") or contains(@class, "hide-print") or
-    contains(@id, "hidden") or contains(@style, "hidden") or contains(@class, " hidden") or
-    contains(@class, "noprint") or contains(@style, "display:none") or contains(@style, "display: none")
+    contains(@id, "hidden") or contains(@style, "hidden") or contains(@class, " hidden") or contains(@class, " hide")
+    or contains(@class, "noprint") or contains(@style, "display:none") or contains(@style, "display: none")
     or @aria-hidden="true" or contains(@class, "notloaded")]''',
 )]
 # conflicts:
