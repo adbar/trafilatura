@@ -256,9 +256,9 @@ def _urllib3_is_live_page(url: str) -> bool:
 
 def is_live_page(url: str) -> bool:
     "Send a HTTP HEAD request without taking anything else into account."
-    if HAS_PYCURL:
-        return _pycurl_is_live_page(url) or _urllib3_is_live_page(url)
-    return _urllib3_is_live_page(url)
+    result = _pycurl_is_live_page(url) if HAS_PYCURL else False
+    # use urllib3 as backup
+    return result or _urllib3_is_live_page(url)
 
 
 def add_to_compressed_dict(inputlist: List[str], blacklist: Optional[Set[str]] = None, url_filter: Optional[str] = None, url_store: Optional[UrlStore] = None, compression: bool = False, verbose: bool = False) -> UrlStore:

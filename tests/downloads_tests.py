@@ -10,12 +10,6 @@ import sys
 import zlib
 
 try:
-    import pycurl
-    HAS_PYCURL = True
-except ImportError:
-    HAS_PYCURL = False
-
-try:
     import brotli
     HAS_BROTLI = True
 except ImportError:
@@ -39,7 +33,7 @@ from trafilatura.cli_utils import (download_queue_processing,
                                    url_processing_pipeline)
 from trafilatura.core import Extractor, extract
 import trafilatura.downloads
-from trafilatura.downloads import (DEFAULT_HEADERS, USER_AGENT, Response,
+from trafilatura.downloads import (DEFAULT_HEADERS, HAS_PYCURL, USER_AGENT, Response,
                                    _determine_headers, _handle_response,
                                    _parse_config, _pycurl_is_live_page,
                                    _send_pycurl_request, _send_urllib_request,
@@ -96,13 +90,8 @@ def test_response_object():
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
 
 
-def test_fetch():
-    '''Test URL fetching.'''
-    # sanity check
-    assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
-    with pytest.raises(ValueError):
-        fetch_url("https://example.org", decode=False)
-
+def test_is_live_page():
+    '''Test if pages are available on the network.'''
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
     assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
@@ -110,6 +99,14 @@ def test_fetch():
     # is_live pycurl tests
     if HAS_PYCURL:
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
+
+
+def test_fetch():
+    '''Test URL fetching.'''
+    # sanity check
+    assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
+    with pytest.raises(ValueError):
+        fetch_url("https://example.org", decode=False)
 
     # fetch_url
     assert fetch_url('#@1234') is None
@@ -184,16 +181,16 @@ def test_decode():
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     assert decode_file(b" ") is not None
 
-    compression_types = [
-        ("GZip", gzip.compress(html_string.encode("utf-8"))),
-        ("Deflate", zlib.compress(html_string.encode("utf-8"))),
+    compressed_strings = [
+        gzip.compress(html_string.encode("utf-8")),
+        zlib.compress(html_string.encode("utf-8")),
     ]
     if HAS_BROTLI:
-        compression_types.append(("Brotli", brotli.compress(html_string.encode("utf-8"))))
+        compressed_strings.append(brotli.compress(html_string.encode("utf-8")))
     if HAS_ZSTD:
-        compression_types.append(("ZStandard", zstandard.compress(html_string.encode("utf-8"))))
+        compressed_strings.append(zstandard.compress(html_string.encode("utf-8")))
 
-    for name, compressed_string in compression_types:
+    for compressed_string in compressed_strings:
         assert handle_compressed_file(compressed_string) == html_string.encode("utf-8")
         assert decode_file(compressed_string) == html_string
         with pytest.raises(ValueError):
@@ -242,6 +239,7 @@ def test_queue():
 
 if __name__ == '__main__':
     test_response_object()
+    test_is_live_page()
     test_fetch()
     test_config()
     test_decode()
