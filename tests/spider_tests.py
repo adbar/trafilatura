@@ -172,6 +172,8 @@ def test_focused_crawler():
 
 def test_robots():
     "Test robots.txt parsing"
+    assert spider.get_rules("1234") is None
+
     robots_url = "https://example.org/robots.txt"
 
     assert spider.parse_robots(robots_url, None) is None

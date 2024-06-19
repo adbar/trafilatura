@@ -194,9 +194,8 @@ def crawl_page(visited_num: int, base_url: str, lang: Optional[str] = None, rule
         # probe and process homepage
         htmlstring, homepage, base_url = probe_alternative_homepage(url)
         if htmlstring and homepage and base_url:
-            # add potentially "new" homepage
-            if homepage != url:
-                URL_STORE.add_urls([homepage])
+            # register potentially new homepage
+            URL_STORE.add_urls([homepage])
             # extract links on homepage
             process_links(htmlstring, url=url, language=lang, rules=rules)
     else:
