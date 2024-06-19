@@ -1,6 +1,6 @@
 "Code parts dedicated to duplicate removal and text similarity."
 
-from __future__ import annotations  # Python >= 3.11: from typing import Self
+# 3.7+: from __future__ import annotations  # 3.11+: from typing import Self
 
 import re
 import string
@@ -126,11 +126,11 @@ class Simhash:
             return self._hash_to_int(inputhash)
         return None
 
-    def hamming_distance(self, other_hash: Simhash) -> int:
+    def hamming_distance(self, other_hash: Any) -> int:
         "Return distance between two hashes of equal length using the XOR operator."
         return BIN_COUNT_FUNC(self.hash ^ other_hash.hash)
 
-    def similarity(self, other_hash: Simhash) -> float:
+    def similarity(self, other_hash: Any) -> float:
         """Calculate how similar this hash is from another simhash.
         Returns a float from 0.0 to 1.0.
         """
