@@ -1,5 +1,6 @@
 "Code parts dedicated to duplicate removal and text similarity."
 
+from __future__ import annotations  # Python >= 3.11: from typing import Self
 
 import re
 import string
@@ -9,7 +10,7 @@ from functools import lru_cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from lxml.etree import _Element
 
@@ -107,14 +108,14 @@ class Simhash:
         "Convert the numerical hash to a hexadecimal string."
         return hex(self.hash)[2:]
 
-    def _hash_to_int(self, inputhash: Any) -> Optional[int]:
+    def _hash_to_int(self, inputhash: str) -> Optional[int]:
         "Convert the hexadecimal hash to a numerical value."
         try:
             return int(inputhash, 16)
         except (TypeError, ValueError):
             return None
 
-    def validate(self, inputhash: Optional[Any]) -> Optional[int]:
+    def validate(self, inputhash: Optional[Union[int, str]]) -> Optional[int]:
         "Validate the input hash and return it, or None otherwise."
         if isinstance(inputhash, int) and 18 <= len(str(inputhash)) <= 22:
             return inputhash
@@ -125,11 +126,11 @@ class Simhash:
             return self._hash_to_int(inputhash)
         return None
 
-    def hamming_distance(self, other_hash: Any) -> int:
+    def hamming_distance(self, other_hash: Simhash) -> int:
         "Return distance between two hashes of equal length using the XOR operator."
         return BIN_COUNT_FUNC(self.hash ^ other_hash.hash)
 
-    def similarity(self, other_hash: Any) -> float:
+    def similarity(self, other_hash: Simhash) -> float:
         """Calculate how similar this hash is from another simhash.
         Returns a float from 0.0 to 1.0.
         """
