@@ -1,5 +1,6 @@
 "Code parts dedicated to duplicate removal and text similarity."
 
+# 3.7+: from __future__ import annotations  # 3.11+: from typing import Self
 
 import re
 import string
@@ -9,7 +10,9 @@ from functools import lru_cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional, Union
+
+from lxml.etree import _Element
 
 from .settings import LRU_SIZE
 from .utils import trim
@@ -17,16 +20,15 @@ from .utils import trim
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
+BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
+
 
 @lru_cache(maxsize=1024)
 def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -> bool:
     "Return the similarity ratio between two short strings, here domain names."
-    if new_string != reference:
-        new_string = STRIP_EXTENSION.sub("", new_string)
-        reference = STRIP_EXTENSION.sub("", reference)
-        if SequenceMatcher(None, reference, new_string).ratio() < threshold:
-            return False
-    return True
+    reference = STRIP_EXTENSION.sub("", reference)
+    new_string = STRIP_EXTENSION.sub("", new_string)
+    return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
 def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
@@ -87,8 +89,7 @@ class Simhash:
     @lru_cache(maxsize=2**14)
     def _vector_to_add(self, token: str) -> List[int]:
         "Create vector to add to the existing string vector"
-        the_hash = self._hash(token)
-        return [1 if the_hash & (1 << i) else -1 for i in range(self.length)]
+        return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
 
     def create_hash(self, inputstring: str) -> int:
         """Calculates a Charikar simhash. References used:
@@ -107,14 +108,14 @@ class Simhash:
         "Convert the numerical hash to a hexadecimal string."
         return hex(self.hash)[2:]
 
-    def _hash_to_int(self, inputhash) -> Optional[int]:
+    def _hash_to_int(self, inputhash: str) -> Optional[int]:
         "Convert the hexadecimal hash to a numerical value."
         try:
             return int(inputhash, 16)
         except (TypeError, ValueError):
             return None
 
-    def validate(self, inputhash: Optional[Any]) -> Optional[int]:
+    def validate(self, inputhash: Optional[Union[int, str]]) -> Optional[int]:
         "Validate the input hash and return it, or None otherwise."
         if isinstance(inputhash, int) and 18 <= len(str(inputhash)) <= 22:
             return inputhash
@@ -127,12 +128,7 @@ class Simhash:
 
     def hamming_distance(self, other_hash: Any) -> int:
         "Return distance between two hashes of equal length using the XOR operator."
-        xor_result = self.hash ^ other_hash.hash
-        try:
-            # Python >= 3.10
-            return xor_result.bit_count()
-        except AttributeError:
-            return bin(xor_result).count("1")
+        return BIN_COUNT_FUNC(self.hash ^ other_hash.hash)
 
     def similarity(self, other_hash: Any) -> float:
         """Calculate how similar this hash is from another simhash.
@@ -162,8 +158,8 @@ class LRUCache:
         self.lock = RLock()  # because linkedlist updates aren't threadsafe
         # cache instance variables
         self.maxsize = maxsize
-        self.cache = {}
-        self.root = []  # root of the circular doubly linked list
+        self.cache: Dict[str, List[Any]] = {}
+        self.root: List[Any] = []  # root of the circular doubly linked list
         # initialize by pointing to self
         self.root[:] = [self.root, self.root, None, None]
         self.full = False
@@ -178,16 +174,16 @@ class LRUCache:
         link[NEXT] = self.root
         return result
 
-    def get(self, key) -> Any:
+    def get(self, key: Any) -> Any:
         """Tests if the key that is asked for is in the cache
-           and retrieve its value from the linked list."""
+        and retrieve its value from the linked list."""
         with self.lock:
             link = self.cache.get(key)
             if link:
                 return self._move_link(link)
         return -1
 
-    def put(self, key, value) -> None:
+    def put(self, key: str, value: Any) -> None:
         "Stores a given key in the cache."
         # Size limited caching that tracks accesses by recency
         with self.lock:
@@ -243,9 +239,9 @@ def put_in_cache(teststring: str) -> None:
     LRU_TEST.put(teststring, value)
 
 
-def duplicate_test(element, options):
+def duplicate_test(element: _Element, options: Any) -> bool:
     "Check for duplicate text with LRU cache."
-    teststring = trim(' '.join(element.itertext()))
+    teststring = trim(" ".join(element.itertext()))
     # teststring = element.text
     if len(teststring) > options.min_duplcheck_size:
         # retrieve value from cache
