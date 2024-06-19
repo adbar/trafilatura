@@ -4,8 +4,10 @@ Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
-import urllib.robotparser
+
 from time import sleep
+from typing import Any, Optional, Set, Tuple
+from urllib.robotparser import RobotFileParser
 
 from courlan import (UrlStore, extract_links, fix_relative_urls, get_hostinfo,
                      is_navigation_page, is_not_crawlable)
@@ -17,7 +19,6 @@ except ImportError:
 
 from .core import baseline
 from .downloads import fetch_response, fetch_url
-# from .feeds import find_feed_urls  # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, decode_file, load_html
 
@@ -26,8 +27,12 @@ LOGGER = logging.getLogger(__name__)
 
 URL_STORE = UrlStore(compressed=False, strict=False)
 
+ROBOTS_TXT_URL = "/robots.txt"
+MAX_SEEN_URLS = 10
+MAX_KNOWN_URLS = 100000
 
-def refresh_detection(htmlstring, homepage):
+
+def refresh_detection(htmlstring: str, homepage: str) -> Tuple[Optional[str], Optional[str]]:
     "Check if there could be a redirection by meta-refresh tag."
     if not '"refresh"' in htmlstring and not '"REFRESH"' in htmlstring:
         return htmlstring, homepage
@@ -38,76 +43,78 @@ def refresh_detection(htmlstring, homepage):
 
     # test meta-refresh redirection
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
-    results =  html_tree.xpath('//meta[@http-equiv="refresh"]/@content|//meta[@http-equiv="REFRESH"]/@content')
-    if results and ';' in results[0]:
-        text = results[0].split(';')[1].strip().lower()
-        if text.startswith('url=') or text.startswith('URL='):
-            url2 = text[4:]
-            if not url2.startswith('http'):
-                # Relative URL, adapt
-                _, base_url = get_hostinfo(url2)
-                url2 = fix_relative_urls(base_url, url2)
-            # second fetch
-            newhtmlstring = fetch_url(url2)
-            if newhtmlstring is None:
-                logging.warning('failed redirect: %s', url2)
-                return None, None
-            #else:
-            htmlstring, homepage = newhtmlstring, url2
-            logging.info('successful redirect: %s', url2)
-        else:
-            logging.info('no redirect found: %s', homepage)
+    results = html_tree.xpath('.//meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content')
+    result = results[0] if results else ""
+    if ';' in result:
+        url2 = result.split(';')[1].strip().lower().replace('url=', '')
+        if not url2.startswith('http'):
+            # Relative URL, adapt
+            _, base_url = get_hostinfo(url2)
+            url2 = fix_relative_urls(base_url, url2)
+        # second fetch
+        newhtmlstring = fetch_url(url2)
+        if newhtmlstring is None:
+            logging.warning('failed redirect: %s', url2)
+            return None, None
+        #else:
+        logging.info('successful redirect: %s', url2)
+        return newhtmlstring, url2
+
+    logging.info('no redirect found: %s', homepage)
     return htmlstring, homepage
 
 
-def probe_alternative_homepage(homepage):
+def probe_alternative_homepage(homepage: str) -> Tuple[Optional[str], Optional[str], Optional[str]]:
     "Check if the homepage is redirected and return appropriate values."
     response = fetch_response(homepage, decode=False)
-    if response is None or response == '':
+    if not response or not response.data:
         return None, None, None
+
     # get redirected URL here?
     if response.url not in (homepage, "/"):
-        logging.info('followed redirect: %s', response.url)
+        logging.info('followed homepage redirect: %s', response.url)
         homepage = response.url
+
     # decode response
     htmlstring = decode_file(response.data)
+
     # is there a meta-refresh on the page?
     htmlstring, homepage = refresh_detection(htmlstring, homepage)
     if homepage is None:  # malformed or malicious content
         return None, None, None
-    logging.info('fetching homepage OK: %s', homepage)
+
+    logging.debug('fetching homepage OK: %s', homepage)
     _, base_url = get_hostinfo(homepage)
     return htmlstring, homepage, base_url
 
 
-def process_links(htmlstring, url="", language=None, rules=None):
+def process_links(htmlstring: str, url: Optional[str] = "", language: Optional[str] = None, rules: Optional[RobotFileParser] = None) -> None:
     """Examine the HTML code and process the retrieved internal links.
        Extract and filter new internal links after an optional language check.
        Store the links in todo-list while prioritizing the navigation ones."""
-    links, links_priority = [], []
     # optional language check: run baseline extraction + language identifier
-    if language is not None and LANGID_FLAG is True and htmlstring is not None:
+    if language and LANGID_FLAG and htmlstring:
         _, text, _ = baseline(htmlstring)
         result, _ = py3langid.classify(text)
         if result != language:
             return
+
     # iterate through the links and filter them
+    links, links_priority = [], []
     for link in extract_links(pagecontent=htmlstring, url=url, external_bool=False, language=language, with_nav=True):
-        # check robots.txt rules
-        if rules is not None and not rules.can_fetch("*", link):
-            continue
-        # sanity check
-        if is_not_crawlable(link):
+        # check robots.txt rules + sanity check
+        if (rules and not rules.can_fetch("*", link)) or is_not_crawlable(link):
             continue
         # store
         if is_navigation_page(link):
             links_priority.append(link)
         else:
             links.append(link)
+
     URL_STORE.add_urls(urls=links, appendleft=links_priority)
 
 
-def process_response(response, base_url, language, rules=None):
+def process_response(response: Any, base_url: str, language: Optional[str], rules: Optional[RobotFileParser] = None) -> None:
     """Convert urllib3 response object and extract links."""
     # add final document URL to known_links
     if response is not None:
@@ -119,10 +126,10 @@ def process_response(response, base_url, language, rules=None):
             process_links(htmlstring, base_url, language=language, rules=rules)
 
 
-def parse_robots(robots_url, data):
+def parse_robots(robots_url: str, data: str) -> Optional[RobotFileParser]:
     "Parse a robots.txt file with the standard library urllib.robotparser."
     # https://github.com/python/cpython/blob/main/Lib/urllib/robotparser.py
-    rules = urllib.robotparser.RobotFileParser()
+    rules = RobotFileParser()
     rules.set_url(robots_url)
     # exceptions happening here
     try:
@@ -133,24 +140,35 @@ def parse_robots(robots_url, data):
     return rules
 
 
-def init_crawl(homepage, todo, known_links, language=None, rules=None):
+def get_rules(base_url: str) -> Optional[RobotFileParser]:
+    "Attempt to fetch and parse robots.txt file for a given website."
+    robots_url = base_url + ROBOTS_TXT_URL
+    data = fetch_url(robots_url)
+    if data is not None:
+        return parse_robots(robots_url, data)
+    return None
+
+
+def init_crawl(
+    homepage: str,
+    todo: Optional[Set[str]] = None,
+    known_links: Optional[Set[str]] = None,
+    language: Optional[str] = None,
+    rules: Optional[RobotFileParser] = None
+) -> Tuple[str, int, int, Optional[RobotFileParser], bool]:
     "Start crawl by initializing variables and potentially examining the starting page."
     # config=DEFAULT_CONFIG
     _, base_url = get_hostinfo(homepage)
-    if base_url is None or len(base_url) < 1:
+    if not base_url:
         raise ValueError(f"cannot crawl homepage: {homepage}")
 
     # TODO: just known or also visited?
-    if known_links is not None:
+    if known_links:
         URL_STORE.add_urls(urls=known_links, visited=True)
     i = 0
 
     # fetch and parse robots.txt file if necessary
-    if rules is None:
-        robots_url = base_url + "/robots.txt"
-        data = fetch_url(robots_url)
-        if data is not None:
-            rules = parse_robots(robots_url, data)
+    rules = rules or get_rules(base_url)
     URL_STORE.store_rules(base_url, rules)
 
     # initialize crawl by visiting homepage if necessary
@@ -163,31 +181,44 @@ def init_crawl(homepage, todo, known_links, language=None, rules=None):
     return base_url, i, known_num, rules, is_on
 
 
-def crawl_page(visited_num, base_url, lang=None, rules=None, initial=False):
+def crawl_page(visited_num: int, base_url: str, lang: Optional[str] = None, rules: Optional[RobotFileParser] = None, initial: bool = False) -> Tuple[bool, int, int]:
     """Examine a webpage, extract navigation links and links."""
     # config=DEFAULT_CONFIG
-    if not URL_STORE.is_exhausted_domain(base_url):
-        url = URL_STORE.get_url(base_url)
-        visited_num += 1
-        if initial is True:
-            # probe and process homepage
-            htmlstring, homepage, base_url = probe_alternative_homepage(url)
-            if all((htmlstring, homepage, base_url)):
-                # add potentially "new" homepage
-                if homepage != url:
-                    URL_STORE.add_urls([homepage])
-                # extract links on homepage
-                process_links(htmlstring, url=url, language=lang, rules=rules)
-        else:
-            response = fetch_response(url, decode=False)
-            process_response(response, base_url, lang, rules=rules)
+    url = URL_STORE.get_url(base_url)
+    if not url:
+        return False, len(URL_STORE.find_known_urls(base_url)), visited_num
+
+    visited_num += 1
+
+    if initial is True:
+        # probe and process homepage
+        htmlstring, homepage, base_url = probe_alternative_homepage(url)
+        if htmlstring and homepage and base_url:
+            # add potentially "new" homepage
+            if homepage != url:
+                URL_STORE.add_urls([homepage])
+            # extract links on homepage
+            process_links(htmlstring, url=url, language=lang, rules=rules)
+    else:
+        response = fetch_response(url, decode=False)
+        process_response(response, base_url, lang, rules=rules)
+
     # optional backup of gathered pages without nav-pages ? ...
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
     known_num = len(URL_STORE.find_known_urls(base_url))
     return is_on, known_num, visited_num
 
 
-def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG, rules=None):
+def focused_crawler(
+    homepage: str,
+    max_seen_urls: int = MAX_SEEN_URLS,
+    max_known_urls: int = MAX_KNOWN_URLS,
+    todo: Optional[Set[str]] = None,
+    known_links: Optional[Set[str]] = None,
+    lang: Optional[str] = None,
+    config: Any = DEFAULT_CONFIG,
+    rules: Optional[RobotFileParser] = None,
+) -> Tuple[Set[str], Set[str]]:
     """Basic crawler targeting pages of interest within a website.
 
     Args:
@@ -217,6 +248,6 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
     return todo, known_links
 
 
-def is_still_navigation(todo):
+def is_still_navigation(todo: Set[str]) -> bool:
     """Probe if there are still navigation URLs in the queue."""
     return any(is_navigation_page(url) for url in todo)
