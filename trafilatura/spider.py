@@ -6,7 +6,7 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 
 from time import sleep
-from typing import Any, Optional, Set, Tuple
+from typing import Any, List, Optional, Tuple
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -179,8 +179,8 @@ def get_rules(base_url: str) -> Optional[RobotFileParser]:
 
 def init_crawl(
     homepage: str,
-    todo: Optional[Set[str]] = None,
-    known_links: Optional[Set[str]] = None,
+    todo: Optional[List[str]] = None,
+    known_links: Optional[List[str]] = None,
     language: Optional[str] = None,
     rules: Optional[RobotFileParser] = None,
 ) -> Tuple[str, int, int, Optional[RobotFileParser], bool]:
@@ -248,20 +248,20 @@ def focused_crawler(
     homepage: str,
     max_seen_urls: int = MAX_SEEN_URLS,
     max_known_urls: int = MAX_KNOWN_URLS,
-    todo: Optional[Set[str]] = None,
-    known_links: Optional[Set[str]] = None,
+    todo: Optional[List[str]] = None,
+    known_links: Optional[List[str]] = None,
     lang: Optional[str] = None,
     config: Any = DEFAULT_CONFIG,
     rules: Optional[RobotFileParser] = None,
-) -> Tuple[Set[str], Set[str]]:
+) -> Tuple[List[str], List[str]]:
     """Basic crawler targeting pages of interest within a website.
 
     Args:
         homepage: URL of the page to first page to fetch, preferably the homepage of a website.
         max_seen_urls: maximum number of pages to visit, stop iterations at this number or at the exhaustion of pages on the website, whichever comes first.
         max_known_urls: stop if the total number of pages "known" exceeds this number.
-        todo: provide a previously generated list of pages to visit / crawl frontier, must be in collections.deque format.
-        known_links: provide a previously generated set of links.
+        todo: provide a previously generated list of pages to visit / crawl frontier.
+        known_links: provide a list of previously known pages.
         lang: try to target links according to language heuristics.
         config: use a different configuration (configparser format).
         rules: provide politeness rules (urllib.robotparser.RobotFileParser() format).
@@ -277,17 +277,19 @@ def focused_crawler(
     sleep_time = URL_STORE.get_crawl_delay(
         base_url, default=config.getfloat("DEFAULT", "SLEEP_TIME")
     )
+
     # visit pages until a limit is reached
     while is_on and i < max_seen_urls and known_num <= max_known_urls:
         is_on, known_num, i = crawl_page(i, base_url, lang=lang, rules=rules)
         sleep(sleep_time)
-    todo = set(URL_STORE.find_unvisited_urls(base_url))
+
     # refocus todo-list on URLs without navigation?
+    todo = list(dict.fromkeys(URL_STORE.find_unvisited_urls(base_url)))
     # [u for u in todo if not is_navigation_page(u)]
-    known_links = set(URL_STORE.find_known_urls(base_url))
+    known_links = list(dict.fromkeys(URL_STORE.find_known_urls(base_url)))
     return todo, known_links
 
 
-def is_still_navigation(todo: Set[str]) -> bool:
+def is_still_navigation(todo: List[str]) -> bool:
     """Probe if there are still navigation URLs in the queue."""
     return any(is_navigation_page(url) for url in todo)
