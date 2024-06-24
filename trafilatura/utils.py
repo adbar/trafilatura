@@ -148,13 +148,13 @@ def detect_encoding(bytesobject):
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_response(content):
+def decode_response(content) -> None:
     """Read the urllib3 object corresponding to the server response,
        try to guess its encoding and decode it to return a unicode string"""
     raise ValueError("decode_response() is deprecated, use decode_file() instead.")
 
 
-def decode_file(filecontent):
+def decode_file(filecontent) -> str:
     """Check if the bytestring could be GZip and eventually decompress it,
        guess bytestring encoding and try to decode to Unicode string.
        Resort to destructive conversion otherwise."""
@@ -360,7 +360,7 @@ def make_chunks(iterable, n):
     #    yield batch
 
 
-def is_acceptable_length(my_len, options):
+def is_acceptable_length(my_len, options) -> bool:
     "Check if the document length is within acceptable boundaries."
     if my_len < options.min_file_size:
         LOGGER.error("too small/incorrect for URL %s", options.url)

@@ -91,13 +91,13 @@ def probe_alternative_homepage(
     htmlstring = decode_file(response.data)
 
     # is there a meta-refresh on the page?
-    htmlstring, homepage = refresh_detection(htmlstring, homepage)
-    if homepage is None:  # malformed or malicious content
+    new_htmlstring, new_homepage = refresh_detection(htmlstring, homepage)
+    if new_homepage is None:  # malformed or malicious content
         return None, None, None
 
-    logging.debug("fetching homepage OK: %s", homepage)
-    _, base_url = get_hostinfo(homepage)
-    return htmlstring, homepage, base_url
+    logging.debug("fetching homepage OK: %s", new_homepage)
+    _, base_url = get_hostinfo(new_homepage)
+    return new_htmlstring, new_homepage, base_url
 
 
 def process_links(
@@ -147,7 +147,7 @@ def process_response(
     # add final document URL to known_links
     if response is not None:
         URL_STORE.add_urls([response.url], visited=True)
-        if response.data is not None and response.data != "":
+        if response.data:
             # convert urllib3 response to string
             htmlstring = decode_file(response.data)
             # proceed to link extraction
@@ -228,8 +228,8 @@ def crawl_page(
 
     if initial is True:
         # probe and process homepage
-        htmlstring, homepage, base_url = probe_alternative_homepage(url)
-        if htmlstring and homepage and base_url:
+        htmlstring, homepage, new_base_url = probe_alternative_homepage(url)
+        if htmlstring and homepage and new_base_url:
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
             # extract links on homepage
