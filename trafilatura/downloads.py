@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import partial
 from io import BytesIO
 from time import sleep
+from typing import Any, ByteString, Dict, Generator, List, Optional, Set, Tuple, Union
 
 import certifi
 import urllib3
@@ -23,8 +24,9 @@ try:
     CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
     # not thread-safe
     # CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
+    HAS_PYCURL = True
 except ImportError:
-    pycurl = None
+    HAS_PYCURL = False
 
 from courlan import UrlStore
 from courlan.network import redirection_test
@@ -56,44 +58,37 @@ class Response:
     "Store information gathered in a HTTP response object."
     __slots__ = ["data", "headers", "html", "status", "url"]
 
-    def __init__(self, data, status, url):
+    def __init__(self, data: ByteString, status: int, url: str) -> None:
         self.data = data
         self.headers = None
         self.html = None
         self.status = status
         self.url = url
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return self.data is not None
 
-    def __repr__(self):
-        return self.html if self.html else decode_file(self.data)
+    def __repr__(self) -> str:
+        return self.html or decode_file(self.data)
 
-    def __str__(self):
-        return self.__repr__()
-
-    def store_headers(self, headerdict):
+    def store_headers(self, headerdict: Dict[str, str]) -> None:
         "Store response headers if required."
         # further control steps here
         self.headers = {k.lower(): v for k, v in headerdict.items()}
 
-    def decode_data(self, decode):
+    def decode_data(self, decode: bool) -> None:
         "Decode the bytestring in data and store a string in html."
         if decode and self.data:
             self.html = decode_file(self.data)
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, str]:
         "Convert the response object to a dictionary."
-        return {
-            attr: getattr(self, attr)
-            for attr in self.__slots__
-            if hasattr(self, attr)
-        }
+        return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
 # caching throws an error
 # @lru_cache(maxsize=2)
-def _parse_config(config):
+def _parse_config(config: Any) -> Tuple[Optional[str], Optional[str]]:
     'Read and extract HTTP header strings from the configuration file.'
     # load a series of user-agents
     myagents = config.get('DEFAULT', 'USER_AGENTS').strip() or None
@@ -105,7 +100,7 @@ def _parse_config(config):
     return myagents, mycookie
 
 
-def _determine_headers(config, headers=None):
+def _determine_headers(config: Any, headers: Optional[Dict[str, str]] = None) -> Dict[str, str]:
     'Internal function to decide on user-agent string.'
     if config != DEFAULT_CONFIG:
         myagents, mycookie = _parse_config(config)
@@ -118,7 +113,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_urllib_request(url, no_ssl, with_headers, config):
+def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Any) -> Optional[Response]:
     "Internal function to robustly send a request (SSL or not) and return its result."
     # customize headers
     global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
@@ -134,20 +129,18 @@ def _send_urllib_request(url, no_ssl, with_headers, config):
             # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
     try:
-        # TODO: read by streaming chunks (stream=True, iter_content=xx)
-        # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         if no_ssl is False:
-            # define pool
             if not HTTP_POOL:
                 HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)  # cert_reqs='CERT_REQUIRED'
-            # execute request
-            response = HTTP_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
+            pool_manager = HTTP_POOL
         else:
-            # define pool
             if not NO_CERT_POOL:
                 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=config.getint('DEFAULT', 'DOWNLOAD_TIMEOUT'), cert_reqs='CERT_NONE', num_pools=NUM_CONNECTIONS)
-            # execute request
-            response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
+            pool_manager = NO_CERT_POOL
+        # execute request
+        # TODO: read by streaming chunks (stream=True)
+        # stop downloading as soon as MAX_FILE_SIZE is reached
+        response = pool_manager.request('GET', url, headers=_determine_headers(config), retries=RETRY_STRATEGY)
     except urllib3.exceptions.SSLError:
         LOGGER.warning('retrying after SSLError: %s', url)
         return _send_urllib_request(url, True, with_headers, config)
@@ -163,7 +156,7 @@ def _send_urllib_request(url, no_ssl, with_headers, config):
     return None
 
 
-def _handle_response(url, response, decode, options):
+def _handle_response(url: str, response: Response, decode: bool, options: Extractor) -> Optional[Union[Response, str]]:
     'Internal function to run safety checks on response result.'
     lentest = len(response.html or response.data or "")
     if response.status != 200:
@@ -175,7 +168,7 @@ def _handle_response(url, response, decode, options):
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=None):
+def fetch_url(url: str, decode: bool = True, no_ssl: bool = False, config: Any = DEFAULT_CONFIG, options: Optional[Extractor] = None) -> Optional[Union[Response, str]]:
     """Downloads a web page and seamlessly decodes the response.
 
     Args:
@@ -193,7 +186,7 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=Non
               "Raw response objects are deprecated for fetch_url(), use fetch_response() instead."
               )
     response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
-    if response is not None and response != '':
+    if response and response.data:
         if not options:
             options = Extractor(config=config)
         return _handle_response(url, response, decode, options)
@@ -202,7 +195,7 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, options=Non
     return None
 
 
-def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, config=DEFAULT_CONFIG):
+def fetch_response(url: str, *, decode: bool = False, no_ssl: bool = False, with_headers: bool = False, config: Any = DEFAULT_CONFIG) -> Optional[Response]:
     """Downloads a web page and returns a full response object.
 
     Args:
@@ -216,7 +209,7 @@ def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, confi
         Response object or None in case of failed downloads and invalid results.
 
     """
-    dl_function = _send_urllib_request if pycurl is None else _send_pycurl_request
+    dl_function = _send_urllib_request if not HAS_PYCURL else _send_pycurl_request
     LOGGER.debug('sending request: %s', url)
     response = dl_function(url, no_ssl, with_headers, config)  # Response
     if not response:  # None or ""
@@ -226,7 +219,7 @@ def fetch_response(url, *, decode=False, no_ssl=False, with_headers=False, confi
     return response
 
 
-def _pycurl_is_live_page(url):
+def _pycurl_is_live_page(url: str) -> bool:
     "Send a basic HTTP HEAD request with pycurl."
     # Initialize pycurl object
     curl = pycurl.Curl()
@@ -241,17 +234,17 @@ def _pycurl_is_live_page(url):
     # Perform the request
     try:
         curl.perform()
+        # Get the response code
+        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
     except pycurl.error as err:
         LOGGER.debug('pycurl HEAD error: %s %s', url, err)
-        return False
-    # Get the response code
-    page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
+        page_exists = False
     # Clean up
     curl.close()
     return page_exists
 
 
-def _urllib3_is_live_page(url):
+def _urllib3_is_live_page(url: str) -> bool:
     "Use courlan redirection test (based on urllib3) to send a HEAD request."
     try:
         _ = redirection_test(url)
@@ -261,14 +254,14 @@ def _urllib3_is_live_page(url):
     return True
 
 
-def is_live_page(url):
+def is_live_page(url: str) -> bool:
     "Send a HTTP HEAD request without taking anything else into account."
-    if pycurl is not None:
-        return _pycurl_is_live_page(url) or _urllib3_is_live_page(url)
-    return _urllib3_is_live_page(url)
+    result = _pycurl_is_live_page(url) if HAS_PYCURL else False
+    # use urllib3 as backup
+    return result or _urllib3_is_live_page(url)
 
 
-def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store=None, compression=False, verbose=False):
+def add_to_compressed_dict(inputlist: List[str], blacklist: Optional[Set[str]] = None, url_filter: Optional[str] = None, url_store: Optional[UrlStore] = None, compression: bool = False, verbose: bool = False) -> UrlStore:
     '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
     if url_store is None:
         url_store = UrlStore(
@@ -289,40 +282,33 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, url_store
     return url_store
 
 
-def load_download_buffer(url_store, sleep_time=5):
+def load_download_buffer(url_store: UrlStore, sleep_time: int = 5) -> Tuple[List[str], UrlStore]:
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    bufferlist = []
-    while not bufferlist:
+    while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
-        # add emptiness test or sleep?
-        if not bufferlist:
-            if url_store.done is True:
-                break
-            sleep(sleep_time)
+        if bufferlist or url_store.done:
+            break
+        sleep(sleep_time)
     return bufferlist, url_store
 
 
-def buffered_downloads(bufferlist, download_threads, decode=True, options=None):
+def buffered_downloads(bufferlist: List[str], download_threads: int, decode: bool = True, options: Optional[Extractor] = None) -> Generator[Tuple[str, str], None, None]:
     '''Download queue consumer, single- or multi-threaded.'''
     worker = partial(fetch_url, options=options) if decode else fetch_response
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
-            future_to_url = {executor.submit(worker, url): url for url in chunk}
+            future_to_url: Dict[Any, str] = {executor.submit(worker, url): url for url in chunk}
             for future in as_completed(future_to_url):
                 # url and download result
                 yield future_to_url[future], future.result()
 
 
-def _send_pycurl_request(url, no_ssl, with_headers, config):
+def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: Any) -> Optional[Response]:
     '''Experimental function using libcurl and pycurl to speed up downloads'''
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    headerbytes = BytesIO()
-    headers = _determine_headers(config)
-    headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
-    for header, content in headers.items():
-        headerlist.append(header + ': ' + content)
+    headerlist = [f"{header}: {content}" for header, content in _determine_headers(config).items()]
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
@@ -346,6 +332,7 @@ def _send_pycurl_request(url, no_ssl, with_headers, config):
         curl.setopt(pycurl.CAINFO, certifi.where())
 
     if with_headers:
+        headerbytes = BytesIO()
         curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
 
     # TCP_FASTOPEN
