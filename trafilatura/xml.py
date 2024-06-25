@@ -102,9 +102,7 @@ def strip_double_tags(tree):
     "Prevent nested tags among a fixed list of tags."
     for elem in reversed(tree.xpath(".//head | .//code | .//p")):
         for subelem in elem.iterdescendants("code", "head", "p"):
-            if subelem.getparent().tag in NESTING_WHITELIST:
-                continue
-            if subelem.tag == elem.tag:
+            if subelem.tag == elem.tag and subelem.getparent().tag not in NESTING_WHITELIST:
                 merge_with_parent(subelem)
     return tree
 
@@ -112,7 +110,7 @@ def strip_double_tags(tree):
 def build_xml_output(docmeta):
     '''Build XML output tree based on extracted information'''
     output = Element('doc')
-    output = add_xml_meta(output, docmeta)
+    add_xml_meta(output, docmeta)
     docmeta.body.tag = 'main'
     # clean XML tree
     output.append(clean_attributes(docmeta.body))
@@ -134,13 +132,11 @@ def control_xml_output(document, options):
 
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
-    control_string = tostring(output_tree, encoding='unicode')
-    output_tree = fromstring(control_string, CONTROL_PARSER)
+    output_tree = fromstring(tostring(output_tree, encoding='unicode'), CONTROL_PARSER)
 
     # validate
     if options.format == 'xmltei' and options.tei_validation:
-        result = validate_tei(output_tree)
-        LOGGER.debug('TEI validation result: %s %s', result, options.source)
+        LOGGER.debug('TEI validation result: %s %s', validate_tei(output_tree), options.source)
 
     return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
@@ -151,7 +147,6 @@ def add_xml_meta(output, docmeta):
         value = getattr(docmeta, attribute, None)
         if value:
             output.set(attribute, value if isinstance(value, str) else ';'.join(value))
-    return output
 
 
 def build_tei_output(docmeta):
@@ -196,7 +191,7 @@ def check_tei(xmldoc, url):
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
         # check attributes
-        for attribute in elem.attrib:
+        for attribute in list(elem.attrib):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
                 elem.attrib.pop(attribute)
@@ -221,7 +216,6 @@ def replace_element_text(element, include_formatting):
     "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
     # handle formatting: convert to markdown
-    children = element.getchildren()
     if include_formatting and element.text:
         if element.tag == "head":
             try:
@@ -253,8 +247,10 @@ def replace_element_text(element, include_formatting):
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
-    if element.tag == "cell" and elem_text and children and children[0].tag == 'p':
-        elem_text = f"{elem_text} "
+    if element.tag == "cell" and elem_text:
+        children = element.getchildren()
+        if children and children[0].tag == 'p':
+            elem_text = f"{elem_text} "
     # lists
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
@@ -286,8 +282,7 @@ def process_element(element, returnlist, include_formatting):
     # Process children recursively
     if element.text is not None:
         # this is the text that comes before the first child
-        textelement = replace_element_text(element, include_formatting)
-        returnlist.append(textelement)
+        returnlist.append(replace_element_text(element, include_formatting))
 
     for child in element:
         process_element(child, returnlist, include_formatting)
@@ -298,7 +293,7 @@ def process_element(element, returnlist, include_formatting):
             text = f'{element.get("title", "")} {element.get("alt", "")}'
             returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
         # newlines for textless elements
-        if element.tag in NEWLINE_ELEMS:
+        elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
                 max_span = int(element.get("span", 1))
@@ -306,12 +301,11 @@ def process_element(element, returnlist, include_formatting):
                 # row ended so draw extra empty cells to match max_span
                 returnlist.append("|" * (max_span - cell_count) + "\n")
                 # if this is a head row, draw the separator below
-                is_head = bool(element.xpath("./cell[@role='head']"))
-                if is_head:
+                if element.xpath("./cell[@role='head']"):
                     returnlist.append("\n" + "---|" * max_span + "\n")
             else:
                 returnlist.append('\n')
-        if element.tag != 'cell':
+        elif element.tag != 'cell':
             # cells still need to append vertical bars
             # but nothing more to do with other textless elements
             return
@@ -319,21 +313,17 @@ def process_element(element, returnlist, include_formatting):
     # Process text
 
     # Common elements (Now processes end-tag logic correctly)
-    within_cell = element.xpath("ancestor::cell")
-    if element.tag == 'p' and include_formatting:
-        if not within_cell:
-            returnlist.append('\n\u2424\n')
-    elif element.tag in NEWLINE_ELEMS:
-        if not within_cell:
-            returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+    if element.tag == 'p' and include_formatting and not element.xpath("ancestor::cell"):
+        returnlist.append('\n\u2424\n')
+    elif element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
+        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
     elif element.tag == 'cell':
         returnlist.extend(" | ")
     elif element.tag == 'comments':
         returnlist.append('\n\n')
-    else:
-        if element.tag not in SPECIAL_FORMATTING:
-            LOGGER.debug('unprocessed element in output: %s', element.tag)
-            returnlist.extend([' '])
+    elif element.tag not in SPECIAL_FORMATTING:
+        LOGGER.debug('unprocessed element in output: %s', element.tag)
+        returnlist.extend([' '])
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     if element.tail is not None:
@@ -363,38 +353,38 @@ def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
     # organize fields
-    data = (document.url,
-            document.id,
-            document.fingerprint,
-            document.hostname,
-            document.title,
-            document.image,
-            document.date,
-            posttext,
-            commentstext,
-            document.license,
-            document.pagetype)
-
-    outputwriter.writerow([d if d else null for d in data])
+    outputwriter.writerow([d if d else null for d in (
+        document.url,
+        document.id,
+        document.fingerprint,
+        document.hostname,
+        document.title,
+        document.image,
+        document.date,
+        posttext,
+        commentstext,
+        document.license,
+        document.pagetype
+    )])
     return output.getvalue()
 
 
 def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
     teidoc = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    header = write_fullheader(teidoc, docmeta)
+    write_fullheader(teidoc, docmeta)
     textelem = SubElement(teidoc, 'text')
     textbody = SubElement(textelem, 'body')
     # post
     postbody = clean_attributes(docmeta.body)
     postbody.tag = 'div'
-    postbody.set('type', 'entry') # rendition='#pst'
+    postbody.set('type', 'entry')
     textbody.append(postbody)
     # comments
     if docmeta.commentsbody is not None:
         commentsbody = clean_attributes(docmeta.commentsbody)
         commentsbody.tag = 'div'
-        commentsbody.set('type', 'comments') # rendition='#cmt'
+        commentsbody.set('type', 'comments')
         textbody.append(commentsbody)
     return teidoc
 
@@ -402,15 +392,12 @@ def write_teitree(docmeta):
 def _define_publisher_string(docmeta):
     '''Construct a publisher string to include in TEI header'''
     if docmeta.hostname and docmeta.sitename:
-        publisherstring = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
-    elif docmeta.hostname:
-        publisherstring = docmeta.hostname
-    elif docmeta.sitename:
-        publisherstring = docmeta.sitename
+        publisher = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
     else:
-        LOGGER.warning('no publisher for URL %s', docmeta.url)
-        publisherstring = 'N/A'
-    return publisherstring
+        publisher = docmeta.hostname or docmeta.sitename or 'N/A'
+        if LOGGER.isEnabledFor(logging.WARNING) and publisher == 'N/A':
+            LOGGER.warning('no publisher for URL %s', docmeta.url)
+    return publisher
 
 
 def write_fullheader(teidoc, docmeta):
@@ -419,83 +406,68 @@ def write_fullheader(teidoc, docmeta):
     header = SubElement(teidoc, 'teiHeader')
     filedesc = SubElement(header, 'fileDesc')
     bib_titlestmt = SubElement(filedesc, 'titleStmt')
-    bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')
-    bib_titlemain.text = docmeta.title
+    SubElement(bib_titlestmt, 'title', type='main').text = docmeta.title
     if docmeta.author:
-        bib_author = SubElement(bib_titlestmt, 'author')
-        bib_author.text = docmeta.author
+        SubElement(bib_titlestmt, 'author').text = docmeta.author
+
     publicationstmt_a = SubElement(filedesc, 'publicationStmt')
     publisher_string = _define_publisher_string(docmeta)
     # license, if applicable
     if docmeta.license:
-        publicationstmt_publisher = SubElement(publicationstmt_a, 'publisher')
-        publicationstmt_publisher.text = publisher_string
+        SubElement(publicationstmt_a, 'publisher').text = publisher_string
         availability = SubElement(publicationstmt_a, 'availability')
-        avail_p = SubElement(availability, 'p')
-        avail_p.text = docmeta.license
+        SubElement(availability, 'p').text = docmeta.license
     # insert an empty paragraph for conformity
     else:
-        publicationstmt_p = SubElement(publicationstmt_a, 'p')
+        SubElement(publicationstmt_a, 'p')
+
     notesstmt = SubElement(filedesc, 'notesStmt')
     if docmeta.id:
-        idno = SubElement(notesstmt, 'note', type='id')
-        idno.text = docmeta.id
-    fingerprint = SubElement(notesstmt, 'note', type='fingerprint')
-    fingerprint.text = docmeta.fingerprint
+        SubElement(notesstmt, 'note', type='id').text = docmeta.id
+    SubElement(notesstmt, 'note', type='fingerprint').text = docmeta.fingerprint
+
     sourcedesc = SubElement(filedesc, 'sourceDesc')
     source_bibl = SubElement(sourcedesc, 'bibl')
-    # determination of sigle string
-    if docmeta.sitename and docmeta.date:
-        sigle = docmeta.sitename + ', ' + docmeta.date
-    elif not docmeta.sitename and docmeta.date:
-        sigle = docmeta.date
-    elif docmeta.sitename:
-        sigle = docmeta.sitename
-    else:
+
+    sigle = ', '.join(filter(None, [docmeta.sitename, docmeta.date]))
+    if not sigle:
         LOGGER.warning('no sigle for URL %s', docmeta.url)
-        sigle = ''
-    if docmeta.title:
-        source_bibl.text = docmeta.title + '. ' + sigle
-    else:
-        source_bibl.text = '. ' + sigle
-    source_sigle = SubElement(sourcedesc, 'bibl', type='sigle')
-    source_sigle.text = sigle
+    source_bibl.text = ', '.join(filter(None, [docmeta.title, sigle]))
+    SubElement(sourcedesc, 'bibl', type='sigle').text = sigle
+
     biblfull = SubElement(sourcedesc, 'biblFull')
     bib_titlestmt = SubElement(biblfull, 'titleStmt')
-    bib_titlemain = SubElement(bib_titlestmt, 'title', type='main')
-    bib_titlemain.text = docmeta.title
+    SubElement(bib_titlestmt, 'title', type='main').text = docmeta.title
     if docmeta.author:
-        bib_author = SubElement(bib_titlestmt, 'author')
-        bib_author.text = docmeta.author
+        SubElement(bib_titlestmt, 'author').text = docmeta.author
+
     publicationstmt = SubElement(biblfull, 'publicationStmt')
-    publication_publisher = SubElement(publicationstmt, 'publisher')
-    publication_publisher.text = publisher_string
+    SubElement(publicationstmt, 'publisher').text = publisher_string
     if docmeta.url:
-        publication_url = SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
-    publication_date = SubElement(publicationstmt, 'date')
-    publication_date.text = docmeta.date
+        SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
+    SubElement(publicationstmt, 'date').text = docmeta.date
+
     profiledesc = SubElement(header, 'profileDesc')
     abstract = SubElement(profiledesc, 'abstract')
-    abstract_p = SubElement(abstract, 'p')
-    abstract_p.text = docmeta.description
-    if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
+    SubElement(abstract, 'p').text = docmeta.description
+
+    if docmeta.categories or docmeta.tags:
         textclass = SubElement(profiledesc, 'textClass')
         keywords = SubElement(textclass, 'keywords')
-        if len(docmeta.categories) > 0:
-            cat_list = SubElement(keywords, 'term', type='categories')
-            cat_list.text = ','.join(docmeta.categories)
-        if len(docmeta.tags) > 0:
-            tags_list = SubElement(keywords, 'term', type='tags')
-            tags_list.text = ','.join(docmeta.tags)
+        if docmeta.categories:
+            SubElement(keywords, 'term', type='categories').text = ','.join(docmeta.categories)
+        if docmeta.tags:
+            SubElement(keywords, 'term', type='tags').text = ','.join(docmeta.tags)
+
     creation = SubElement(profiledesc, 'creation')
-    date = SubElement(creation, 'date', type="download")
-    date.text = docmeta.filedate
+    SubElement(creation, 'date', type="download").text = docmeta.filedate
+
     encodingdesc = SubElement(header, 'encodingDesc')
     appinfo = SubElement(encodingdesc, 'appInfo')
     application = SubElement(appinfo, 'application', version=PKG_VERSION, ident='Trafilatura')
-    label = SubElement(application, 'label')
-    label.text = 'Trafilatura'
-    pointer = SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
+    SubElement(application, 'label').text = 'Trafilatura'
+    SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
+
     return header
 
 
@@ -593,7 +565,7 @@ def _move_element_one_level_up(element):
         new_elem.tail = parent.tail.strip()
         parent.tail = None
 
-    if len(new_elem) != 0 or new_elem.text or new_elem.tail:
+    if len(new_elem) > 0 or new_elem.text or new_elem.tail:
         grand_parent.insert(grand_parent.index(element) + 1, new_elem)
 
     if len(parent) == 0 and parent.text is None:
