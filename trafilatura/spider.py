@@ -42,7 +42,7 @@ def refresh_detection(
     htmlstring: str, homepage: str
 ) -> Tuple[Optional[str], Optional[str]]:
     "Check if there could be a redirection by meta-refresh tag."
-    if not '"refresh"' in htmlstring and not '"REFRESH"' in htmlstring:
+    if '"refresh"' not in htmlstring and '"REFRESH"' not in htmlstring:
         return htmlstring, homepage
 
     html_tree = load_html(htmlstring)
