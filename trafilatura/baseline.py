@@ -9,10 +9,9 @@ from typing import Any, Tuple
 
 from lxml.etree import _Element, Element, SubElement
 
-from .htmlprocessing import delete_element
 from .settings import BASIC_CLEAN_XPATH
 from .utils import load_html, trim
-
+from .xml import delete_element
 
 
 def basic_cleaning(tree: _Element) -> _Element:

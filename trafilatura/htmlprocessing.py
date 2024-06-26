@@ -13,7 +13,7 @@ from lxml.etree import Element, SubElement, strip_tags, tostring
 from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import textfilter, trim
-from .xml import META_ATTRIBUTES
+from .xml import META_ATTRIBUTES, delete_element
 
 
 LOGGER = logging.getLogger(__name__)
@@ -36,14 +36,6 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 
 PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
-
-
-def delete_element(element):
-    "Remove the element from the LXML tree."
-    try:
-        element.drop_tree()  # faster when applicable
-    except AttributeError:  # pragma: no cover
-        element.getparent().remove(element)
 
 
 def tree_cleaning(tree, options):
@@ -207,8 +199,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
             # print(elem.tag, templist)
 
     for elem in dict.fromkeys(deletions):
-        if elem.getparent() is not None:
-            delete_element(elem)
+        delete_element(elem)
 
     return subtree
 

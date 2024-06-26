@@ -57,6 +57,68 @@ META_ATTRIBUTES = [
 HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
 
 
+# https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
+def delete_element(element: _Element) -> None:
+    """
+    Removes this element from the tree, including its children and
+    text. The tail text is joined to the previous element or parent.
+    """
+    parent = element.getparent()
+    if parent is None:
+        return
+
+    if element.tail:
+        previous = element.getprevious()
+        if previous is None:
+            parent.text = (parent.text or "") + element.tail
+        else:
+            previous.tail = (previous.tail or "") + element.tail
+
+    parent.remove(element)
+
+
+def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
+    '''Merge element with its parent and convert formatting to markdown.'''
+    parent = element.getparent()
+    if parent is None:
+        return
+
+    full_text = replace_element_text(element, include_formatting)
+    if element.tail is not None:
+        full_text += element.tail
+
+    previous = element.getprevious()
+    if previous is not None:
+        # There is a previous node, append text to its tail
+        previous.tail = f'{previous.tail} {full_text}' if previous.tail else full_text
+    elif parent.text is not None:
+        parent.text = f'{parent.text} {full_text}'
+    else:
+        parent.text = full_text
+    parent.remove(element)
+
+
+def remove_empty_elements(tree: _Element) -> _Element:
+    '''Remove text elements without text.'''
+    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
+        if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
+            parent = element.getparent()
+            # not root element or element which is naturally empty
+            # do not remove elements inside <code> to preserve formatting
+            if parent is not None and element.tag != "graphic" and parent.tag != 'code':
+                parent.remove(element)
+    return tree
+
+
+def strip_double_tags(tree: _Element) -> _Element:
+    "Prevent nested tags among a fixed list of tags."
+    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
+        for subelem in elem.iterdescendants("code", "head", "p"):
+            if subelem.tag == elem.tag and subelem.getparent().tag not in NESTING_WHITELIST:
+                merge_with_parent(subelem)
+    return tree
+
+
 def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
     '''Build JSON output based on extracted information'''
     if with_metadata:
@@ -85,27 +147,6 @@ def clean_attributes(tree: _Element) -> _Element:
     for elem in tree.iter('*'):
         if elem.tag not in WITH_ATTRIBUTES:
             elem.attrib.clear()
-    return tree
-
-
-def remove_empty_elements(tree: _Element) -> _Element:
-    '''Remove text elements without text.'''
-    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
-        if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
-            parent = element.getparent()
-            # not root element or element which is naturally empty
-            # do not remove elements inside <code> to preserve formatting
-            if parent is not None and element.tag != "graphic" and parent.tag != 'code':
-                parent.remove(element)
-    return tree
-
-
-def strip_double_tags(tree: _Element) -> _Element:
-    "Prevent nested tags among a fixed list of tags."
-    for elem in reversed(tree.xpath(".//head | .//code | .//p")):
-        for subelem in elem.iterdescendants("code", "head", "p"):
-            if subelem.tag == elem.tag and subelem.getparent().tag not in NESTING_WHITELIST:
-                merge_with_parent(subelem)
     return tree
 
 
@@ -257,27 +298,6 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
     return elem_text
-
-
-def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
-    '''Merge element with its parent and convert formatting to markdown.'''
-    parent = element.getparent()
-    if parent is None:
-        return
-
-    full_text = replace_element_text(element, include_formatting)
-    if element.tail is not None:
-        full_text += element.tail
-
-    previous = element.getprevious()
-    if previous is not None:
-        # There is a previous node, append text to its tail
-        previous.tail = f'{previous.tail} {full_text}' if previous.tail else full_text
-    elif parent.text is not None:
-        parent.text = f'{parent.text} {full_text}'
-    else:
-        parent.text = full_text
-    parent.remove(element)
 
 
 def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
