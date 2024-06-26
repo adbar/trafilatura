@@ -1,6 +1,26 @@
 ## History / Changelog
 
 
+### 1.11.0
+
+Breaking change:
+- metadata now omitted by default: `with_metadata` triggers inclusion in all formats (#613)
+
+Extraction:
+- add HTML as output format (#614)
+- better and faster baseline extraction (#619)
+- better handling of HTML/XML elements (#628)
+- XPath rules added with @felipehertzer (#540)
+
+Evaluation:
+- new scripts and data with @LydiaKoerber (#606, #615)
+- additional data with @swetepete (#197)
+
+Maintenance:
+- docs extended and updated, added page on deduplication (#618)
+- review code, add tests and types in part of the submodules (#620, #623, #624, #625)
+
+
 ### 1.10.0
 
 Breaking changes:
