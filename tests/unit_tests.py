@@ -718,9 +718,15 @@ def test_htmlprocessing():
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(copy(mydoc), output_format='xml', config=ZERO_CONFIG, no_fallback=True)
     assert '<ab rend="h1" type="header">Test headline</ab>' in extract(copy(mydoc), output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+
     # merge with parent function
     element = etree.Element('test')
+    xml.delete_element(element)
+    assert etree.tostring(element) == b'<test/>'
+    element = etree.Element('test')
     xml.merge_with_parent(element)
+    assert etree.tostring(element) == b'<test/>'
+
     mydoc = html.fromstring('<html><body><p><span>A</span><span>B</span><span>C</span></p></body></html>')
     for element in mydoc.iter('span'):
         xml.merge_with_parent(element)
@@ -729,6 +735,7 @@ def test_htmlprocessing():
     for element in mydoc.iter('span'):
         xml.merge_with_parent(element)
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
+
     # paywalls
     my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'

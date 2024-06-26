@@ -1,10 +1,42 @@
 """
 Test for transformation to TEI.
 """
-from lxml.etree import Element, XMLParser, fromstring, tostring
+from copy import copy
+
+from lxml.etree import Element, SubElement, XMLParser, fromstring, tostring
 
 from trafilatura.metadata import Document
-from trafilatura.xml import check_tei, write_fullheader
+from trafilatura.xml import (check_tei, write_fullheader,
+                             _handle_unwanted_tails, _move_element_one_level_up,
+                             _wrap_unwanted_siblings_of_div)
+
+
+def test_sanity():
+    element = Element("p")
+    element.text = "test"
+    backup = copy(element)
+    _handle_unwanted_tails(element)
+    assert element.text == backup.text
+    element.tail = "tail"
+    backup = copy(element)
+    _handle_unwanted_tails(element)
+    assert element.text == "test tail"
+    div_elem = Element("div")
+    div_elem.append(backup)
+    _handle_unwanted_tails(backup)
+    assert tostring(div_elem) == b"<div><p>test tail</p></div>"
+
+    new_elem = Element("div")
+    _wrap_unwanted_siblings_of_div(new_elem)
+    assert new_elem is not None
+
+    p_elem = SubElement(new_elem, "p")
+    _move_element_one_level_up(p_elem)
+    assert tostring(new_elem) == b"<div><p/></div>"
+
+    head = Element("head")
+    result = check_tei(head, "")
+    assert result == head
 
 
 def test_publisher_added_before_availability_in_publicationStmt():

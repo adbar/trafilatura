@@ -9,10 +9,9 @@ from typing import Any, Tuple
 
 from lxml.etree import _Element, Element, SubElement
 
-from .htmlprocessing import delete_element
 from .settings import BASIC_CLEAN_XPATH
 from .utils import load_html, trim
-
+from .xml import delete_element
 
 
 def basic_cleaning(tree: _Element) -> _Element:
@@ -47,11 +46,10 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
             except Exception:  # JSONDecodeError or 'list' object has no attribute 'get'
                 json_body = ""
             if json_body:
-                elem = SubElement(postbody, 'p')
-                elem.text = trim(load_html(json_body).text_content()) if "<p>" in json_body else trim(json_body)
-                temp_text += " " + json_body
+                text = trim(load_html(json_body).text_content()) if "<p>" in json_body else trim(json_body)
+                SubElement(postbody, 'p').text = text
+                temp_text += " " + text if temp_text else text
                 # return postbody, elem.text, len(elem.text)
-    temp_text = temp_text.strip()
     if len(temp_text) > 100:
         return postbody, temp_text, len(temp_text)
 
@@ -62,11 +60,9 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     for article_elem in tree.iterfind('.//article'):
         text = trim(article_elem.text_content())
         if len(text) > 100:
-            elem = SubElement(postbody, 'p')
-            elem.text = text
-            temp_text += " " + text
+            SubElement(postbody, 'p').text = text
+            temp_text += " " + text if temp_text else text
     if len(postbody) > 0:
-        temp_text = temp_text.strip()
         # temp_text = trim('\n'.join(postbody.itertext()))
         return postbody, temp_text, len(temp_text)
 
@@ -77,12 +73,10 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
         entry = trim(element.text_content())
         if entry not in results:
-            elem = SubElement(postbody, 'p')
-            elem.text = entry
-            temp_text += " " + entry
+            SubElement(postbody, 'p').text = entry
+            temp_text += " " + entry if temp_text else entry
             results.add(entry)
     # temp_text = trim('\n'.join(postbody.itertext()))
-    temp_text = temp_text.strip()
     if len(temp_text) > 100:
         return postbody, temp_text, len(temp_text)
 
@@ -96,9 +90,9 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
         return postbody, elem.text, len(elem.text)
 
     # new fallback
-    elem = SubElement(postbody, 'p')
-    elem.text = html2txt(tree, clean=False)
-    return postbody, elem.text, len(elem.text)
+    text = html2txt(tree, clean=False)
+    SubElement(postbody, 'p').text = text
+    return postbody, text, len(text)
 
 
 def html2txt(content: Any, clean: bool = True) -> str:

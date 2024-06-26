@@ -8,12 +8,12 @@ import logging
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import Element, strip_tags, tostring
+from lxml.etree import Element, SubElement, strip_tags, tostring
 
 from .deduplication import duplicate_test
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import textfilter, trim
-from .xml import META_ATTRIBUTES
+from .xml import META_ATTRIBUTES, delete_element
 
 
 LOGGER = logging.getLogger(__name__)
@@ -36,14 +36,6 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 
 PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
-
-
-def delete_element(element):
-    "Remove the element from the LXML tree."
-    try:
-        element.drop_tree()  # faster when applicable
-    except AttributeError:  # pragma: no cover
-        element.getparent().remove(element)
 
 
 def tree_cleaning(tree, options):
@@ -70,14 +62,14 @@ def tree_cleaning(tree, options):
     if options.focus == "recall" and tree.find('.//p') is not None:
         tcopy = deepcopy(tree)
         for expression in cleaning_list:
-            for element in tree.getiterator(expression):
+            for element in tree.iter(expression):
                 delete_element(element)
         if tree.find('.//p') is None:
             tree = tcopy
     # delete targeted elements
     else:
         for expression in cleaning_list:
-            for element in tree.getiterator(expression):
+            for element in tree.iter(expression):
                 delete_element(element)
 
     return prune_html(tree)
@@ -207,9 +199,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
             # print(elem.tag, templist)
 
     for elem in dict.fromkeys(deletions):
-        parent = elem.getparent()
-        if parent is not None:
-            parent.remove(elem)
+        delete_element(elem)
 
     return subtree
 
@@ -285,14 +275,14 @@ def convert_lists(elem):
         # convert elem tag (needs to happen after the rest)
         subelem.tag = "item"
 
+
 def convert_quotes(elem):
     "Convert quoted elements while accounting for nested structures."
     code_flag = False
     if elem.tag == "pre":
         # detect if there could be code inside
-        children = elem.getchildren()
         # pre with a single span is more likely to be code
-        if len(children) == 1 and children[0].tag == "span":
+        if len(elem) == 1 and elem[0].tag == "span":
             code_flag = True
         # find hljs elements to detect if it's code
         code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
@@ -426,7 +416,7 @@ def build_html_output(document, with_metadata=False):
         for item in META_ATTRIBUTES:
             value = getattr(document, item)
             if value:
-                head.append(Element("meta", name=item, content=value))
+                SubElement(head, "meta", name=item, content=value)
         html_tree.insert(0, head)
 
     return tostring(html_tree, pretty_print=True, encoding='unicode').strip()

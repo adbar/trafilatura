@@ -6,12 +6,14 @@ Listing a series of settings that are applied module-wide.
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
+from typing import Dict, Optional
 
 try:
     from os import sched_getaffinity
+    HAS_SCHED = True
 except ImportError:
-    sched_getaffinity = None
     from os import cpu_count
+    HAS_SCHED = False
 
 from pathlib import Path
 
@@ -176,7 +178,7 @@ class Document:  # consider dataclasses for Python 3.7+
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
 
-    def as_dict(self) -> None:
+    def as_dict(self) -> Dict[str, Optional[str]]:
         "Convert the document to a dictionary."
         return {
             attr: getattr(self, attr, None)
@@ -185,7 +187,7 @@ class Document:  # consider dataclasses for Python 3.7+
 
 
 # Safety checks
-PARALLEL_CORES = min(len(sched_getaffinity(0)) if sched_getaffinity else cpu_count(), 16)  # 16 processes at most
+PARALLEL_CORES = min(len(sched_getaffinity(0)) if HAS_SCHED else cpu_count(), 16)  # 16 processes at most
 LRU_SIZE = 4096
 
 # Files
