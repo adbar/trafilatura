@@ -19,7 +19,7 @@ def test_sanity():
     assert element.text == backup.text
     element.tail = "tail"
     backup = copy(element)
-    _handle_unwanted_tails(element) == element
+    _handle_unwanted_tails(element)
     assert element.text == "test tail"
     div_elem = Element("div")
     div_elem.append(backup)
@@ -33,6 +33,10 @@ def test_sanity():
     p_elem = SubElement(new_elem, "p")
     _move_element_one_level_up(p_elem)
     assert tostring(new_elem) == b"<div><p/></div>"
+
+    head = Element("head")
+    result = check_tei(head, "")
+    assert result == head
 
 
 def test_publisher_added_before_availability_in_publicationStmt():
