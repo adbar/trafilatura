@@ -211,7 +211,7 @@ def fromstring_bytes(htmlobject):
     return tree
 
 
-def load_html(htmlobject: Any) -> Optional[_Element]:
+def load_html(htmlobject: Any) -> Optional[HtmlElement]:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
     """
@@ -429,14 +429,14 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
     return False, docmeta
 
 
-def textfilter(element):
+def textfilter(element: _Element) -> bool:
     '''Filter out unwanted text'''
     testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5
     return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
 
 
-def text_chars_test(string: str) -> bool:
+def text_chars_test(string: Optional[str]) -> bool:
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
