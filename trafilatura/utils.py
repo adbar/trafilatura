@@ -11,6 +11,7 @@ import zlib
 
 from functools import lru_cache
 from itertools import islice
+from typing import Any, Optional
 from unicodedata import normalize
 
 # response compression
@@ -38,7 +39,9 @@ try:
     from cchardet import detect as cchardet_detect
 except ImportError:
     cchardet_detect = None
+
 from charset_normalizer import from_bytes
+from lxml.etree import _Element
 from lxml.html import HtmlElement, HTMLParser, fromstring
 # response types
 from urllib3.response import HTTPResponse
@@ -208,7 +211,7 @@ def fromstring_bytes(htmlobject):
     return tree
 
 
-def load_html(htmlobject):
+def load_html(htmlobject: Any) -> Optional[_Element]:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
     """
@@ -290,7 +293,7 @@ def line_processing(line, preserve_space=False, trailing_space=False):
     return new_line
 
 
-def sanitize(text, preserve_space=False, trailing_space=False):
+def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = False) -> Optional[str]:
     '''Convert text and discard incompatible and invalid characters'''
     # consider all text as a single line
     if trailing_space:
@@ -302,7 +305,7 @@ def sanitize(text, preserve_space=False, trailing_space=False):
         return None
 
 
-def sanitize_tree(tree):
+def sanitize_tree(tree: _Element) -> _Element:
     '''Trims spaces, removes control characters and normalizes unicode'''
     for elem in tree.iter():
         parent = elem.getparent()
@@ -327,7 +330,7 @@ def sanitize_tree(tree):
 
 
 @lru_cache(maxsize=1024)
-def trim(string):
+def trim(string: str) -> Optional[str]:
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
@@ -433,7 +436,7 @@ def textfilter(element):
     return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
 
 
-def text_chars_test(string):
+def text_chars_test(string: str) -> bool:
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()

@@ -12,15 +12,17 @@ from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
 from pickle import load as load_pickle
+from typing import List, Optional
 
 try:  # Python 3.8+
     from importlib.metadata import version
 except ImportError:
     from importlib_metadata import version
 
-from lxml.etree import (Element, RelaxNG, SubElement, XMLParser, fromstring,
-                        tostring)
+from lxml.etree import (_Element, Element, RelaxNG, SubElement, XMLParser,
+                        fromstring, tostring)
 
+from .settings import Document, Extractor
 from .utils import sanitize, sanitize_tree, text_chars_test
 
 
@@ -55,7 +57,7 @@ META_ATTRIBUTES = [
 HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
 
 
-def build_json_output(docmeta, with_metadata=True):
+def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
     '''Build JSON output based on extracted information'''
     if with_metadata:
         outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
@@ -78,7 +80,7 @@ def build_json_output(docmeta, with_metadata=True):
     return json_dumps(outputdict, ensure_ascii=False)
 
 
-def clean_attributes(tree):
+def clean_attributes(tree: _Element) -> _Element:
     '''Remove unnecessary attributes.'''
     for elem in tree.iter('*'):
         if elem.tag not in WITH_ATTRIBUTES:
@@ -86,7 +88,7 @@ def clean_attributes(tree):
     return tree
 
 
-def remove_empty_elements(tree):
+def remove_empty_elements(tree: _Element) -> _Element:
     '''Remove text elements without text.'''
     for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
@@ -94,11 +96,11 @@ def remove_empty_elements(tree):
             # not root element or element which is naturally empty
             # do not remove elements inside <code> to preserve formatting
             if parent is not None and element.tag != "graphic" and parent.tag != 'code':
-                element.getparent().remove(element)
+                parent.remove(element)
     return tree
 
 
-def strip_double_tags(tree):
+def strip_double_tags(tree: _Element) -> _Element:
     "Prevent nested tags among a fixed list of tags."
     for elem in reversed(tree.xpath(".//head | .//code | .//p")):
         for subelem in elem.iterdescendants("code", "head", "p"):
@@ -107,11 +109,11 @@ def strip_double_tags(tree):
     return tree
 
 
-def build_xml_output(docmeta):
+def build_xml_output(docmeta: Document) -> _Element:
     '''Build XML output tree based on extracted information'''
     output = Element('doc')
     add_xml_meta(output, docmeta)
-    docmeta.body.tag = 'main'
+    docmeta.body.tag = 'main'  # type: ignore[attr-defined]
     # clean XML tree
     output.append(clean_attributes(docmeta.body))
     if docmeta.commentsbody is not None:
@@ -122,7 +124,7 @@ def build_xml_output(docmeta):
     return output
 
 
-def control_xml_output(document, options):
+def control_xml_output(document: Document, options: Extractor) -> str:
     '''Make sure the XML output is conform and valid if required'''
     strip_double_tags(document.body)
     remove_empty_elements(document.body)
@@ -141,7 +143,7 @@ def control_xml_output(document, options):
     return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 
-def add_xml_meta(output, docmeta):
+def add_xml_meta(output: _Element, docmeta: Document) -> None:
     '''Add extracted metadata to the XML output tree'''
     for attribute in META_ATTRIBUTES:
         value = getattr(docmeta, attribute, None)
@@ -149,7 +151,7 @@ def add_xml_meta(output, docmeta):
             output.set(attribute, value if isinstance(value, str) else ';'.join(value))
 
 
-def build_tei_output(docmeta):
+def build_tei_output(docmeta: Document) -> _Element:
     '''Build TEI-XML output tree based on extracted information'''
     # build TEI tree
     output = write_teitree(docmeta)
@@ -159,13 +161,15 @@ def build_tei_output(docmeta):
     return output
 
 
-def check_tei(xmldoc, url):
+def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
     for elem in xmldoc.iter('head'):
         elem.tag = 'ab'
         elem.set('type', 'header')
         parent = elem.getparent()
+        if parent is None:
+            continue
         if len(elem) > 0:
             new_elem = _tei_handle_complex_head(elem)
             parent.replace(elem, new_elem)
@@ -185,7 +189,7 @@ def check_tei(xmldoc, url):
             LOGGER.warning('not a TEI element, removing: %s %s', elem.tag, url)
             merge_with_parent(elem)
             continue
-        if elem.tag in TEI_REMOVE_TAIL and elem.tail and elem.tail.strip():
+        if elem.tag in TEI_REMOVE_TAIL:
             _handle_unwanted_tails(elem)
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
@@ -197,7 +201,7 @@ def check_tei(xmldoc, url):
     return xmldoc
 
 
-def validate_tei(xmldoc):  # , filename=""
+def validate_tei(xmldoc: _Element) -> bool:
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
@@ -211,14 +215,14 @@ def validate_tei(xmldoc):  # , filename=""
     return result
 
 
-def replace_element_text(element, include_formatting):
+def replace_element_text(element: _Element, include_formatting: bool) -> str:
     "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
     # handle formatting: convert to markdown
     if include_formatting and element.text:
         if element.tag == "head":
             try:
-                number = int(element.get("rend")[1])
+                number = int(element.get("rend")[1])  # type: ignore[index]
             except (TypeError, ValueError):
                 number = 2
             elem_text = f'{"#" * number} {elem_text}'
@@ -255,7 +259,7 @@ def replace_element_text(element, include_formatting):
     return elem_text
 
 
-def merge_with_parent(element, include_formatting=False):
+def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
     if parent is None:
@@ -276,7 +280,7 @@ def merge_with_parent(element, include_formatting=False):
     parent.remove(element)
 
 
-def process_element(element, returnlist, include_formatting):
+def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
     # Process children recursively
     if element.text is not None:
         # this is the text that comes before the first child
@@ -328,16 +332,16 @@ def process_element(element, returnlist, include_formatting):
         returnlist.append(element.tail)
 
 
-def xmltotxt(xmloutput, include_formatting):
-    '''Convert to plain text format and optionally preserve formatting as markdown.'''
-    returnlist = []
+def xmltotxt(xmloutput: _Element, include_formatting: bool) -> str:
+    "Convert to plain text format and optionally preserve formatting as markdown."
+    returnlist: List[str] = []
 
     process_element(xmloutput, returnlist, include_formatting)
 
-    return unescape(sanitize(''.join(returnlist)))
+    return unescape(sanitize("".join(returnlist)) or "")
 
 
-def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
+def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t", null: str = "null") -> str:
     "Convert the internal XML document representation to a CSV string."
     # preprocessing
     posttext = xmltotxt(document.body, include_formatting)
@@ -367,7 +371,7 @@ def xmltocsv(document, include_formatting, *, delim="\t", null="null"):
     return output.getvalue()
 
 
-def write_teitree(docmeta):
+def write_teitree(docmeta: Document) -> _Element:
     '''Bundle the extracted post and comments into a TEI tree'''
     teidoc = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     write_fullheader(teidoc, docmeta)
@@ -387,7 +391,7 @@ def write_teitree(docmeta):
     return teidoc
 
 
-def _define_publisher_string(docmeta):
+def _define_publisher_string(docmeta: Document) -> str:
     '''Construct a publisher string to include in TEI header'''
     if docmeta.hostname and docmeta.sitename:
         publisher = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
@@ -398,7 +402,7 @@ def _define_publisher_string(docmeta):
     return publisher
 
 
-def write_fullheader(teidoc, docmeta):
+def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
     '''Write TEI header based on gathered metadata'''
     # todo: add language info
     header = SubElement(teidoc, 'teiHeader')
@@ -469,7 +473,7 @@ def write_fullheader(teidoc, docmeta):
     return header
 
 
-def _handle_text_content_of_div_nodes(element):
+def _handle_text_content_of_div_nodes(element: _Element) -> None:
     "Wrap loose text in <div> within <p> elements for TEI conformity."
     if element.text and element.text.strip():
         if len(element) > 0 and element[0].tag == "p":
@@ -490,19 +494,24 @@ def _handle_text_content_of_div_nodes(element):
         element.tail = None
 
 
-def _handle_unwanted_tails(element):
+def _handle_unwanted_tails(element: _Element) -> None:
     "Handle tail on p and ab elements"
+    element.tail = element.tail.strip() if element.tail else None
+    if not element.tail:
+        return
+
     if element.tag == "p":
-        element.text = " ".join(filter(None, [element.text, element.tail.strip()]))
+        element.text = " ".join(filter(None, [element.text, element.tail]))
     else:
         new_sibling = Element('p')
-        new_sibling.text = element.tail.strip()
+        new_sibling.text = element.tail
         parent = element.getparent()
-        parent.insert(parent.index(element) + 1 , new_sibling)
+        if parent is not None:
+            parent.insert(parent.index(element) + 1 , new_sibling)
     element.tail = None
 
 
-def _tei_handle_complex_head(element):
+def _tei_handle_complex_head(element: _Element) -> _Element:
     "Convert certain child elements to <ab> and <lb>."
     new_element = Element('ab', attrib=element.attrib)
     new_element.text = element.text.strip() if element.text else None
@@ -523,11 +532,13 @@ def _tei_handle_complex_head(element):
     return new_element
 
 
-def _wrap_unwanted_siblings_of_div(div_element):
+def _wrap_unwanted_siblings_of_div(div_element: _Element) -> None:
     "Wrap unwanted siblings of a div element in a new div element."
     new_sibling = Element("div")
     new_sibling_index = None
     parent = div_element.getparent()
+    if parent is None:
+        return
     # check siblings after target element
     for sibling in div_element.itersiblings():
         if sibling.tag == "div":
@@ -546,25 +557,29 @@ def _wrap_unwanted_siblings_of_div(div_element):
         parent.insert(new_sibling_index, new_sibling)
 
 
-def _move_element_one_level_up(element):
+def _move_element_one_level_up(element: _Element) -> None:
     """
     Fix TEI compatibility issues by moving certain p-elems up in the XML tree.
     There is always a n+2 nesting for p-elements with the minimal structure ./TEI/text/body/p
     """
     parent = element.getparent()
-    grand_parent = parent.getparent()
+    grand_parent = parent.getparent() if parent is not None else None
+    if parent is None or grand_parent is None:
+        return
 
     new_elem = Element("p")
     new_elem.extend(sibling for sibling in element.itersiblings())
 
     grand_parent.insert(grand_parent.index(parent) + 1, element)
 
-    if element.tail and element.tail.strip():
-        new_elem.text = element.tail.strip()
+    tail = element.tail.strip() if element.tail else None
+    if tail:
+        new_elem.text = tail
         element.tail = None
 
-    if parent.tail and parent.tail.strip():
-        new_elem.tail = parent.tail.strip()
+    tail = parent.tail.strip() if parent.tail else None
+    if tail:
+        new_elem.tail = tail
         parent.tail = None
 
     if len(new_elem) > 0 or new_elem.text or new_elem.tail:
