@@ -178,8 +178,6 @@ def check_tei(xmldoc, url):
             elem.tag, elem.text, elem.tail = 'p', elem.tail, None
     # look for elements that are not valid
     for elem in xmldoc.findall('.//text/body//*'):
-        if elem.tag in TEI_REMOVE_TAIL and elem.tail and elem.tail.strip():
-            _handle_unwanted_tails(elem)
         # check elements
         if elem.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
@@ -187,14 +185,15 @@ def check_tei(xmldoc, url):
             LOGGER.warning('not a TEI element, removing: %s %s', elem.tag, url)
             merge_with_parent(elem)
             continue
-        if elem.tag == "div":
+        if elem.tag in TEI_REMOVE_TAIL and elem.tail and elem.tail.strip():
+            _handle_unwanted_tails(elem)
+        elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
         # check attributes
-        for attribute in list(elem.attrib):
-            if attribute not in TEI_VALID_ATTRS:
-                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
-                elem.attrib.pop(attribute)
+        for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
+            LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
+            elem.attrib.pop(attribute)
     return xmldoc
 
 
@@ -247,9 +246,8 @@ def replace_element_text(element, include_formatting):
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
-    if element.tag == "cell" and elem_text:
-        children = element.getchildren()
-        if children and children[0].tag == 'p':
+    if element.tag == "cell" and elem_text and len(element) > 0:
+        if element[0].tag == 'p':
             elem_text = f"{elem_text} "
     # lists
     elif element.tag == "item" and elem_text:
@@ -472,8 +470,9 @@ def write_fullheader(teidoc, docmeta):
 
 
 def _handle_text_content_of_div_nodes(element):
+    "Wrap loose text in <div> within <p> elements for TEI conformity."
     if element.text and element.text.strip():
-        if element.getchildren() and element[0].tag == "p":
+        if len(element) > 0 and element[0].tag == "p":
             element[0].text = f'{element.text} {element[0].text or ""}'.strip()
         else:
             new_child = Element("p")
@@ -482,7 +481,7 @@ def _handle_text_content_of_div_nodes(element):
         element.text = None
 
     if element.tail and element.tail.strip():
-        if element.getchildren() and element[-1].tag == "p":
+        if len(element) > 0 and element[-1].tag == "p":
             element[-1].text = f'{element[-1].text or ""} {element.tail}'.strip()
         else:
             new_child = Element("p")
@@ -494,7 +493,7 @@ def _handle_text_content_of_div_nodes(element):
 def _handle_unwanted_tails(element):
     "Handle tail on p and ab elements"
     if element.tag == "p":
-        element.text = element.text + " " + element.tail.strip() if element.text else element.tail
+        element.text = " ".join(filter(None, [element.text, element.tail.strip()]))
     else:
         new_sibling = Element('p')
         new_sibling.text = element.tail.strip()
@@ -504,8 +503,9 @@ def _handle_unwanted_tails(element):
 
 
 def _tei_handle_complex_head(element):
+    "Convert certain child elements to <ab> and <lb>."
     new_element = Element('ab', attrib=element.attrib)
-    new_element.text = element.text.strip() if element.text is not None else None
+    new_element.text = element.text.strip() if element.text else None
     for child in element.iterchildren():
         if child.tag == 'p':
             if len(new_element) > 0 or new_element.text:
@@ -517,12 +517,14 @@ def _tei_handle_complex_head(element):
                 new_element.text = child.text
         else:
             new_element.append(child)
-    if element.tail and element.tail.strip():
-        new_element.tail = element.tail.strip()
+    tail = element.tail.strip() if element.tail else None
+    if tail:
+        new_element.tail = tail
     return new_element
 
 
 def _wrap_unwanted_siblings_of_div(div_element):
+    "Wrap unwanted siblings of a div element in a new div element."
     new_sibling = Element("div")
     new_sibling_index = None
     parent = div_element.getparent()
@@ -536,7 +538,7 @@ def _wrap_unwanted_siblings_of_div(div_element):
         # some elements (e.g. <lb/>) can appear next to div, but
         # order of elements should be kept, thus add and reset new_sibling
         else:
-            if new_sibling_index and len(new_sibling) != 0:
+            if new_sibling_index and len(new_sibling) > 0:
                 parent.insert(new_sibling_index, new_sibling)
                 new_sibling = Element("div")
                 new_sibling_index = None
@@ -568,5 +570,5 @@ def _move_element_one_level_up(element):
     if len(new_elem) > 0 or new_elem.text or new_elem.tail:
         grand_parent.insert(grand_parent.index(element) + 1, new_elem)
 
-    if len(parent) == 0 and parent.text is None:
+    if len(parent) == 0 and not parent.text:
         grand_parent.remove(parent)

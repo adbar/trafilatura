@@ -167,7 +167,7 @@ def handle_lists(element, options):
         else:
             process_nested_elements(child, new_child_elem, options)
             if child.tail is not None and child.tail.strip():
-                new_child_elem_children = [el for el in new_child_elem.getchildren() if el.tag != "done"]
+                new_child_elem_children = [el for el in new_child_elem if el.tag != "done"]
                 if new_child_elem_children:
                     last_subchild = new_child_elem_children[-1]
                     if last_subchild.tail is None or not last_subchild.tail.strip():

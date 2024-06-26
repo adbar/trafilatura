@@ -173,7 +173,7 @@ class Document:
         # create a new html document with a div
         output = fragment_fromstring("<div/>")
         parent = best_candidate.elem.getparent()
-        siblings = parent.getchildren() if parent is not None else [best_candidate.elem]
+        siblings = list(parent) if parent is not None else [best_candidate.elem]
         for sibling in siblings:
             # in lxml there no concept of simple text
             # if isinstance(sibling, NavigableString): continue
