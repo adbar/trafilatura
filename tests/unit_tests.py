@@ -795,29 +795,33 @@ def test_precision_recall():
     '''test precision- and recall-oriented settings'''
     # the test cases could be better
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
-    assert extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True) is not None
-    assert extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True) is not None
+    assert extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True) is not None
+    assert extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True) is not None
 
     my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>')
-    assert 'teaser text' in extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
-    assert 'teaser text' not in extract(copy(my_document), config=ZERO_CONFIG, fast=True)
-    assert 'teaser text' not in extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
+    assert 'teaser text' in extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
+    assert 'teaser text' not in extract(copy(my_document), config=ZERO_CONFIG, no_fallback=True)
+    assert 'teaser text' not in extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
 
     my_document = html.fromstring('<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>')
-    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
     assert '1' not in result
-    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
+    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert '1' not in result
 
     my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><h2>Test</h2></div></body></html>')
-    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
+    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert 'content' in result and 'Test' not in result
 
     my_document = html.fromstring('<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>')
-    result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, fast=True)
+    result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, no_fallback=True)
     assert result != "Here is the text."
-    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
     assert result == "Here is the text."
+
+    my_document = html.fromstring('<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>')
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=False)
+    assert len(result) > 0
 
 
 def test_table_processing():
