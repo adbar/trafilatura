@@ -89,7 +89,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
-            Other values: "csv", "json", "markdown", "txt", "xml", and "xmltei".
+            Other values: "csv", "html", "json", "markdown", "txt", "xml", and "xmltei".
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
@@ -98,7 +98,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Extract metadata fields and add them to the output (available soon).
+        with_metadata: Extract metadata fields and add them to the output.
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
@@ -278,7 +278,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
-            "csv", "json", "markdown", "txt", "xml", and "xmltei".
+            "csv", "html", "json", "markdown", "txt", "xml", and "xmltei".
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
@@ -288,7 +288,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Extract metadata fields and add them to the output (available soon).
+        with_metadata: Extract metadata fields and add them to the output.
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
         max_tree_size: Discard documents with too many elements.
