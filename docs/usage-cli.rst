@@ -283,8 +283,8 @@ For all usage instructions see ``trafilatura -h``:
                    [--no-tables] [--only-with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE] [--precision] [--recall]
-                   [-out {txt,csv,json,markdown,xml,xmltei} | --csv | --json |
-                   --markdown | --xml | --xmltei]
+                   [-out {txt,csv,html,json,markdown,xml,xmltei} | --csv | --html |
+                   --json | --markdown | --xml | --xmltei]
                    [--validate-tei] [-v] [--version]
 
 
@@ -343,7 +343,7 @@ Extraction:
   --no-comments         don't output any comments
   --no-tables           don't output any table elements
   --only-with-metadata  only output those documents with title, URL and date
-                        (for formats supporting metadata)
+  --with-metadata       extract and add metadata to the output
   --target-language TARGET_LANGUAGE
                         select a target language (ISO 639-1 codes)
   --deduplicate         filter out duplicate documents and sections
@@ -360,8 +360,9 @@ Format:
 
 .. code-block:: bash
 
-  -out {txt,csv,json,markdown,xml,xmltei}, --output-format {txt,csv,json,markdown,xml,xmltei} determine output format
+  -out {txt,csv,html,json,markdown,xml,xmltei}, --output-format {txt,csv,html,json,markdown,xml,xmltei}
   --csv                 shorthand for CSV output
+  --html                shorthand for HTML output
   --json                shorthand for JSON output
   --markdown            shorthand for MD output
   --xml                 shorthand for XML output

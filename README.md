@@ -60,11 +60,10 @@ search engine optimization, and information security).
    - Optional elements: comments, links, images, tables
 
 - Multiple output formats:
-   - Text
-   - Markdown (with formatting)
-   - CSV (with metadata)
-   - JSON (with metadata)
-   - XML or [XML-TEI](https://tei-c.org/) (with metadata, text formatting and page structure)
+   - TXT and Markdown
+   - CSV
+   - JSON
+   - HTML, XML and [XML-TEI](https://tei-c.org/)
 
 - Optional add-ons:
    - Language detection on extracted content

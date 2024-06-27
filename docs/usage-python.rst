@@ -33,7 +33,7 @@ For the basics see `quickstart documentation page <quickstart.html>`_.
 
 Default output is set to TXT (bare text) without metadata.
 
-The following formats are available: bare text, Markdown (from version 1.9 onwards), CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
+The following formats are available: bare text, Markdown (from version 1.9 onwards), HTML (from version 1.11 onwards), CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
 
 
 .. hint::
