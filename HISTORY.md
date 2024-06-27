@@ -4,7 +4,9 @@
 ### 1.11.0
 
 Breaking change:
-- metadata now omitted by default: `with_metadata` triggers inclusion in all formats (#613)
+- metadata now skipped by default (#613), to trigger inclusion in all output formats:
+   - `with_metadata=True` (Python)
+   - `--with-metadata` (CLI)
 
 Extraction:
 - add HTML as output format (#614)
