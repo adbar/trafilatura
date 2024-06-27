@@ -48,56 +48,64 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     # bypass for recall
     if options.focus == "recall" and len_text > options.min_extracted_size * 10:
         return body, text, len_text
-    algo_flag, jt_result = False, False
+
+    use_readability, jt_result = False, False
     # prior cleaning
     backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
     if options.focus == "precision":
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
+
     # try with readability
     temppost_algo = try_readability(backup_tree)
     # unicode fix necessary on certain systems (#331)
     algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
     len_algo = len(algo_text)
+
     # compare
     LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
     # conditions to use alternative algorithms
     if len_algo in (0, len_text):
-        algo_flag = False
+        use_readability = False
     elif len_text == 0 and len_algo > 0:
-        algo_flag = True
+        use_readability = True
     elif len_text > 2 * len_algo:
-        algo_flag = False
-    elif len_algo > 2 * len_text:
-        algo_flag = True
+        use_readability = False
+    # quick fix for https://github.com/adbar/trafilatura/issues/632
+    elif len_algo > 2 * len_text and not algo_text.startswith("{"):
+        use_readability = True
     # borderline cases
     elif not body.xpath('.//p//text()') and len_algo > options.min_extracted_size * 2:
-        algo_flag = True
+        use_readability = True
     elif len(body.findall('.//table')) > len(body.findall('.//p')) and len_algo > options.min_extracted_size * 2:
-        algo_flag = True
+        use_readability = True
     # https://github.com/adbar/trafilatura/issues/354
     elif options.focus == "recall" and not body.xpath('.//head') and temppost_algo.xpath('.//h2|.//h3|.//h4') and len_algo > len_text:
-        algo_flag = True
+        use_readability = True
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, options.source)
-        algo_flag = False
+        use_readability = False
+
     # apply decision
-    if algo_flag:
+    if use_readability:
         body, text, len_text = temppost_algo, algo_text, len_algo
         LOGGER.debug('using generic algorithm: %s', options.source)
     else:
         LOGGER.debug('using custom extraction: %s', options.source)
+
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
         body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, 0, '')
         # prevent too short documents from replacing the main text
-        if jt_result is True and not len_text > 4*len_text2:  # threshold could be adjusted
+        if jt_result and not len_text > 4*len_text2:  # threshold could be adjusted
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
+
     # post-processing: remove unwanted sections
-    if algo_flag is True and jt_result is False:
+    if use_readability and not jt_result:
         body, text, len_text = sanitize_tree(body, options)
+
     return body, text, len_text
 
 
