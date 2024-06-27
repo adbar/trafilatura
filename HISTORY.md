@@ -13,6 +13,7 @@ Extraction:
 - better and faster baseline extraction (#619)
 - better handling of HTML/XML elements (#628)
 - XPath rules added with @felipehertzer (#540)
+- fix: avoid faulty readability_lxml content (#635)
 
 Evaluation:
 - new scripts and data with @LydiaKoerber (#606, #615)
