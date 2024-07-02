@@ -69,7 +69,7 @@ The ``focused_crawler()`` function integrates all necessary components and can b
     >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=1)
 
     # perform another iteration using previously collected information
-    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known=known_links)
+    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_links)
 
 
 Here the crawler stops after seeing a maximum of 10 URLs or registering a total of 100000 URLs on the website, whichever comes first.
