@@ -46,8 +46,12 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
             except Exception:  # JSONDecodeError or 'list' object has no attribute 'get'
                 json_body = ""
             if json_body:
-                text = trim(load_html(json_body).text_content()) if "<p>" in json_body else trim(json_body)
-                SubElement(postbody, 'p').text = text
+                if "<p>" in json_body:
+                    parsed = load_html(json_body)
+                    text = parsed.text_content() if parsed is not None else ""
+                else:
+                    text = json_body
+                SubElement(postbody, 'p').text = trim(text)
                 temp_text += " " + text if temp_text else text
                 # return postbody, elem.text, len(elem.text)
     if len(temp_text) > 100:
