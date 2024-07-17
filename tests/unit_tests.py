@@ -73,11 +73,12 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
-    output_format = 'txt'
-    if xml_flag is True:
+    if xml_flag:
         output_format = 'xml'
-    if tei_output is True:
-        output_format = 'tei'
+    elif tei_output:
+        output_format = 'xmltei'
+    else:
+        output_format = 'txt'
     return extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,

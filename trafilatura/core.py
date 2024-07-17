@@ -25,6 +25,8 @@ from .xpaths import REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
+TXT_FORMATS = {"markdown", "txt"}
+
 
 def determine_returnstring(document, options):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
@@ -347,7 +349,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     if document is None:
         return None
 
-    if options.format not in ("markdown", "txt"):
+    if options.format not in TXT_FORMATS:
         # add record ID to metadata
         document.id = record_id
         # calculate fingerprint

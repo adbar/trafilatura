@@ -17,7 +17,7 @@ from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
                         load_input_dict, probe_homepage,
                         url_processing_pipeline, write_result)
-from .settings import PARALLEL_CORES, SUPPORTED_FORMATS
+from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
 
 # fix output encoding on some systems
 try:
@@ -162,10 +162,10 @@ def add_args(parser):
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument("-out",
                         help=argparse.SUPPRESS,
-                        choices=sorted(SUPPORTED_FORMATS))
+                        choices=sorted(SUPPORTED_FMT_CLI))
     group5_ex.add_argument('--output-format',
                         help="determine output format",
-                        choices=sorted(SUPPORTED_FORMATS),
+                        choices=sorted(SUPPORTED_FMT_CLI),
                         default='txt')
     group5_ex.add_argument("--csv",
                         help="shorthand for CSV output",

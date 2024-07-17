@@ -22,7 +22,8 @@ from lxml.etree import XPath
 from .utils import line_processing
 
 
-SUPPORTED_FORMATS = {"csv", "json", "html", "markdown", "txt", "xml", "xmltei"}
+SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
+SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # the latter for bare_extraction() only
 _SUPPORTED = ', '.join(sorted(SUPPORTED_FORMATS))
 
 
