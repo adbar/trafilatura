@@ -38,7 +38,39 @@ def test_baseline():
         <html>
             <body>
                 <script type="application/ld+json">
-                    {"articleBody": "This is the article body"  # invalid JSON
+                    {"articleBody": "This is the article body, it has to be long enough to fool the length threshold which is set at len 100."  # invalid JSON
+                </script>
+            </body>
+        </html>
+    '''
+    _, result, _ = baseline(filecontent)
+    assert result == ''
+
+    # JSON OK
+    filecontent = b'''
+        <html>
+            <body>
+                <script type="application/ld+json">
+                    {
+                        "@type": "Article",
+                        "articleBody": "This is the article body, it has to be long enough to fool the length threshold which is set at len 100."
+                    }
+                </script>
+            </body>
+        </html>
+    '''
+    _, result, _ = baseline(filecontent)
+    assert len(result) > 100
+
+    # JSON malformed
+    filecontent = br'''
+        <html>
+            <body>
+                <script type="application/ld+json">
+                    {
+                        "@type": "Article",
+                        "articleBody": "<p>This is the article body, it has to be long enough to fool the length threshold which is set at len 100.<\/p>"
+                    }
                 </script>
             </body>
         </html>
