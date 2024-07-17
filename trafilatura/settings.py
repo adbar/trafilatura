@@ -22,6 +22,16 @@ from lxml.etree import XPath
 from .utils import line_processing
 
 
+SUPPORTED_FORMATS = {"csv", "json", "html", "markdown", "txt", "xml", "xmltei"}
+_SUPPORTED = ', '.join(sorted(SUPPORTED_FORMATS))
+
+
+def _check_output_format(chosen_format: str) -> None:
+    "Check if the format is supported and raise an error otherwise."
+    if chosen_format not in SUPPORTED_FORMATS:
+        raise ValueError(f"Invalid output format, allowed values are: {_SUPPORTED}")
+
+
 def use_config(filename=None, config=None):
     """
     Use configuration object or read and parse a settings file.
@@ -79,6 +89,7 @@ class Extractor:
                  tables=True, dedup=False, lang=None, max_tree_size=None,
                  url=None, source=None, with_metadata=False, only_with_metadata=False, tei_validation=False,
                  author_blacklist=None, url_blacklist=None, date_params=None):
+        _check_output_format(output_format)
         self._add_config(config)
         self.format = output_format
         self.fast = fast

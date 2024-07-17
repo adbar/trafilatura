@@ -141,6 +141,7 @@ def test_input():
     with pytest.raises(TypeError) as err:
         assert load_html(123) is None
     assert 'incompatible' in str(err.value)
+
     assert load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
@@ -159,6 +160,11 @@ def test_input():
     assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
+
+    # output format
+    assert extract('<html><body><p>ABC</p></body></html>', output_format="xml") is not None
+    with pytest.raises(ValueError):
+        assert extract('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
 
 
 def test_xmltocsv():
