@@ -809,7 +809,9 @@ def test_precision_recall():
     result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert '1' not in result
 
-    my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><h2>Test</h2></div></body></html>')
+    my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><p class="link">Test</p></div></body></html>')
+    result = extract(copy(my_document), favor_precision=False, config=ZERO_CONFIG, no_fallback=True)
+    assert 'content' in result and 'Test' in result
     result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert 'content' in result and 'Test' not in result
 
@@ -822,6 +824,10 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>')
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=False)
     assert len(result) > 0
+
+    my_document = html.fromstring('<html><body><div><span>Text.</span></div></body></html>')
+    assert extract(copy(my_document), favor_precision=True, no_fallback=True) == ""
+    assert extract(copy(my_document), favor_recall=True, no_fallback=True) == "Text."
 
 
 def test_table_processing():
