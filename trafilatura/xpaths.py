@@ -64,13 +64,13 @@ BODY_XPATH = [XPath(x) for x in (
 
 
 COMMENTS_XPATH = [XPath(x) for x in (
-    """.//*[self::div or self::list or self::section][contains(@id, 'commentlist')
-    or contains(@class, 'commentlist') or contains(@class, 'comment-page') or
-    contains(@id, 'comment-list') or contains(@class, 'comments-list') or
+    """.//*[self::div or self::list or self::section][contains(@id|@class, 'commentlist')
+    or contains(@class, 'comment-page') or
+    contains(@id|@class, 'comment-list') or
     contains(@class, 'comments-content') or contains(@class, 'post-comments')]""",
-    """.//*[self::div or self::section or self::list][starts-with(@id, 'comments')
-    or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or
-    starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
+    """.//*[self::div or self::section or self::list][starts-with(@id|@class, 'comments')
+    or starts-with(@class, 'Comments') or
+    starts-with(@id|@class, 'comment-') or
     contains(@class, 'article-comments')]""",
     """.//*[self::div or self::section or self::list][starts-with(@id, 'comol') or
     starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]""",
@@ -97,7 +97,7 @@ PAYWALL_DISCARD_XPATH = [XPath(
     contains(@id, "paywall") or contains(@id, "premium") or
     contains(@class, "paid-content") or contains(@class, "paidcontent") or
     contains(@class, "obfuscated") or contains(@class, "blurred") or
-    contains(@class, "restricted")
+    contains(@class, "restricted") or contains(@class, "overlay")
     ]'''
 )]
 
@@ -107,9 +107,9 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     '''.//*[self::div or self::item or self::list
             or self::p or self::section or self::span][
     contains(translate(@id, "F","f"), "footer") or contains(translate(@class, "F","f"), "footer")
-    or contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
+    or contains(@id, "related") or contains(@class, "elated") or
     contains(@id|@class, "viral") or
-    starts-with(@id, "shar") or starts-with(@class, "shar") or
+    starts-with(@id|@class, "shar") or
     contains(@class, "share-") or
     contains(translate(@id, "S", "s"), "share") or
     contains(@id|@class, "social") or contains(@class, "sociable") or
@@ -124,7 +124,7 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     contains(@id|@class, "banner") or contains(@class, "bar") or
     contains(@class, "meta") or contains(@id, "menu") or contains(@class, "menu") or
     contains(translate(@id, "N", "n"), "nav") or contains(translate(@role, "N", "n"), "nav")
-    or starts-with(@class, "nav") or contains(translate(@class, "N", "n"), "navigation") or
+    or starts-with(@class, "nav") or contains(@class, "avigation") or
     contains(@class, "navbar") or contains(@class, "navbox") or starts-with(@class, "post-nav")
     or contains(@id|@class, "breadcrumb") or
     contains(@id|@class, "bread-crumb") or
@@ -136,14 +136,11 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon")
     or contains(@class, "article-infos") or
-    contains(translate(@class, "I", "i"), "infoline")
+    contains(@class, "nfoline")
     or contains(@data-component, "MostPopularStories")
     or contains(@class, "outbrain") or contains(@class, "taboola")
     or contains(@class, "criteo") or contains(@class, "options") or contains(@class, "expand")
     or contains(@class, "consent") or contains(@class, "modal-content")
-    or contains(@class, "paid-content") or contains(@class, "paidcontent")
-    or contains(@id, "premium-") or contains(@id, "paywall")
-    or contains(@class, "obfuscated") or contains(@class, "blurred")
     or contains(@class, " ad ") or contains(@class, "permission")
     or contains(@class, "next-") or contains(@class, "side-stories")
     or contains(@class, "related-stories") or contains(@class, "most-popular")
@@ -156,11 +153,11 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
 
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
-    contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
+    contains(@class, "nocomments") or starts-with(@id|@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "reader-comments")
     or contains(@id, "akismet") or contains(@class, "akismet") or contains(@class, "suggest-links") or
     starts-with(@class, "hide-") or contains(@class, "-hide-") or contains(@class, "hide-print") or
-    contains(@id, "hidden") or contains(@style, "hidden") or contains(@class, " hidden") or contains(@class, " hide")
+    contains(@id|@style, "hidden") or contains(@class, " hidden") or contains(@class, " hide")
     or contains(@class, "noprint") or contains(@style, "display:none") or contains(@style, "display: none")
     or @aria-hidden="true" or contains(@class, "notloaded")]''',
 )]
@@ -188,9 +185,9 @@ PRECISION_DISCARD_XPATH = [XPath(x) for x in (
     './/header',
     '''.//*[self::div or self::item or self::list
              or self::p or self::section or self::span][
-        contains(@id, "bottom") or contains(@class, "bottom") or
-        contains(@id, "link") or contains(@class, "link")
-        or contains(@style, "border")
+        contains(@id|@class, "bottom") or
+        contains(@id|@class, "link") or
+        contains(@style, "border")
     ]''',
 )]
 # or contains(@id, "-comments") or contains(@class, "-comments")
@@ -209,10 +206,10 @@ COMMENTS_DISCARD_XPATH = [XPath(x) for x in (
     './/*[self::div or self::section][starts-with(@id, "respond")]',
     './/cite|.//quote',
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
-    contains(@class, "nocomments") or starts-with(@id, "reply-") or
-    starts-with(@class, "reply-") or contains(@class, "-reply-") or contains(@class, "message")
+    contains(@class, "nocomments") or starts-with(@id|@class, "reply-") or
+    contains(@class, "-reply-") or contains(@class, "message")
     or contains(@class, "signin") or
-    contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
+    contains(@id|@class, "akismet") or contains(@style, "display:none")]''',
 )]
 
 
