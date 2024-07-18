@@ -31,90 +31,141 @@ For the basics see `quickstart documentation page <quickstart.html>`_.
     For a hands-on tutorial see also the Python Notebook `Trafilatura Overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_.
 
 
-Default output is set to TXT (bare text) without metadata.
+Extraction functions
+^^^^^^^^^^^^^^^^^^^^
 
-The following formats are available: bare text, Markdown (from version 1.9 onwards), HTML (from version 1.11 onwards), CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
+The functions can be imported using ``from trafilatura import ...`` and used on raw documents (strings) or parsed HTML (LXML elements).
+
+Main text extraction, good balance between precision and recall:
+
+- ``extract``: Wrapper function, easiest way to perform text extraction and conversion
+- ``bare_extraction``: Internal function returning bare Python variables
+
+Additional fallback functions:
+
+- ``baseline``: Faster extraction function targeting text paragraphs and/or JSON metadata
+- ``html2txt``: Extract all text in a document, maximizing recall
 
 
-.. hint::
-    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
+Output
+^^^^^^
 
+By default, the output is in plain text (TXT) format without metadata. The following additional formats are available:
+
+- CSV
+- HTML (from version 1.11 onwards)
+- JSON
+- Markdown (from version 1.9 onwards)
+- XML and XML-TEI (following the guidelines of the Text Encoding Initiative)
+
+To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``.
+
+The ``bare_extraction`` function also accepts an additional ``python`` format to work with Python on the output.
+
+To extract and include metadata in the output, use the ``with_metadata=True`` argument.
+
+Examples
+~~~~~~~~
 
 .. code-block:: python
 
     # some formatting preserved in basic XML structure
-    >>> extract(downloaded, output_format='xml')
+    >>> extract(downloaded, output_format="xml")
+
+    # output in JSON format with metadata extracted
+    >>> extract(downloaded, output_format="json", with_metadata=True)
+
+
+Note that combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format (plain text with additional elements).
 
 
 
 Choice of HTML elements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Several elements can be included or discarded:
+Customize the extraction process by including or excluding specific HTML elements:
 
-* Text elements: comments, tables
-* Structural elements: formatting, images, links
 
-Their inclusion can be activated or deactivated using parameters passed to the ``extract()`` function:
+- Text elements:
+   ``include_comments=True``
+       Include comment sections at the bottom of articles.
+   ``include_tables=True``
+       Extract text from HTML ``<table>`` elements.
 
+- Structural elements:
+   ``include_formatting=True``
+        Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+   ``include_links=True``
+        Keep link targets (in ``href="..."``)
+   ``include_images=True``
+        Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+
+
+To operate on these elements, pass the corresponding parameters to the ``extract()`` function:
 
 .. code-block:: python
 
-    # no comments in output
+    # exclude comments from the output
     >>> result = extract(downloaded, include_comments=False)
 
-    # skip tables examination
-    >>> result = extract(downloaded, include_tables=False)
+    # skip tables and include links in the output
+    >>> result = extract(downloaded, include_tables=False, include_links=True)
 
-    # output with links
-    >>> result = extract(downloaded, include_links=True)
-
-    # converting relative links to absolute where possible with url parameter
+    # convert relative links to absolute links where possible
     >>> extract(downloaded, output_format='xml', include_links=True, url=url)
 
 
-.. note::
-    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Selecting markdown automatically includes text formatting.
+Important notes
+~~~~~~~~~~~~~~~
 
-
-``include_formatting=True``
-    Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-``include_links=True``
-    Keep link targets (in ``href="..."``)
-``include_images=True``
-    Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
-``include_tables=True``
-    Extract text from HTML ``<table>`` elements.
-
-
-Only ``include_tables`` is activated by default.
+- ``include_comments`` and ``include_tables`` are activated by default.
+- Including extra elements works best with conversion to XML formats or using ``bare_extraction()``. This allows for direct display and manipulation of the elements.
+- Certain elements may not be visible in the output if the chosen format does not allow it.
+- Selecting Markdown automatically includes text formatting.
 
 
 .. hint::
-    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd removing a constraint (e.g. formatting) can greatly improve the result.
+    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd, try removing a constraint (e.g. formatting) to improve the result.
 
 
-Optimizing for precision and recall
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions:
+The precision and recall presets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The main extraction functions offer two presets to adjust to focus of the extraction process: ``favor_precision`` and ``favor_recall``.
+
+These parameters allow you to change the balance between accuracy and comprehensiveness of the output.
 
 .. code-block:: python
 
     >>> result = extract(downloaded, url, favor_precision=True)
 
-They affect processing and volume of textual output:
 
-1. By focusing precision/accuracy, i.e. more selective extraction, yielding less and more central elements.
-   If you believe the results are too noisy, try focusing on precision. Alternatively, you can supply a list of XPaths expressions to target precise HTML elements (``prune_xpath`` parameter of the extraction functions).
-2. By enhancing recall, i.e. more opportunistic extraction, taking more elements into account.
-   If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
+Precision
+~~~~~~~~~
+
+- If your results contain too much noise, prioritize precision to focus on the most central and relevant elements.
+- Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions.
 
 
-html2txt
-^^^^^^^^
+Recall
+~~~~~~
 
-This function emulates the behavior of similar functions in other packages, it is normally used as a last resort during extraction but can be called specifically in order to output all possible text:
+- If parts of your documents are missing, try this preset to take more elements into account.
+- If content is still missing, refer to the `troubleshooting guide <troubleshooting.html>`_.
+
+
+
+Additional functions for text extraction
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``html2txt`` and ``baseline`` functions offer simpler approaches to extracting text from HTML content, prioritizing performance over precision.
+
+
+html2txt()
+~~~~~~~~~~
+
+The ``html2txt`` function serves as a last resort for extracting text from HTML content. It emulates the behavior of similar functions in other packages and can be used to output all possible text from a given HTML source, maximizing recall. However, it may not always produce accurate or meaningful results, as it does not consider the context of the extracted sections.
 
 .. code-block:: python
 
@@ -122,10 +173,23 @@ This function emulates the behavior of similar functions in other packages, it i
     >>> html2txt(downloaded)
 
 
+baseline()
+~~~~~~~~~~
+
+For a better balance between precision and recall, as well as improved performance, consider using the ``baseline`` function instead. This function returns a tuple containing an LXML element with the body, the extracted text as a string, and the length of the text.  It uses a set of heuristics to extract text from the HTML content, which generally produces more accurate results than ``html2txt``.
+
+.. code-block:: python
+
+    >>> from trafilatura import baseline
+    >>> postbody, text, len_text = baseline(downloaded)
+
+For more advanced use cases, consider using other functions in the package that provide more control and customization over the text extraction process.
+
+
 Guessing if text can be found
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The function ``is_probably_readerable()`` has been ported from Mozilla's Readability.js, it is available from version 1.10.0 onwards and provides a way to guess if a page probably has a main text to extract.
+The function ``is_probably_readerable()`` has been ported from Mozilla's Readability.js, it is available from version 1.10 onwards and provides a way to guess if a page probably has a main text to extract.
 
 .. code-block:: python
 
@@ -136,7 +200,7 @@ The function ``is_probably_readerable()`` has been ported from Mozilla's Readabi
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_) or if the target language is not available.
+The target language can also be set using 2-letter codes (ISO 639-1), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_) or if the target language is not available.
 
 .. code-block:: python
 
@@ -159,7 +223,7 @@ The available fallbacks make extraction more precise but also slower. The use of
     # skip algorithms used as fallback
     >>> result = extract(downloaded, no_fallback=True)
 
-The following combination can lead to shorter processing times:
+The following combination usually leads to shorter processing times:
 
 .. code-block:: python
 
@@ -176,11 +240,35 @@ Extraction settings
 Function parameters
 ^^^^^^^^^^^^^^^^^^^
 
-Starting from version 1.9, an object gathering necessary arguments and parameters can be passed to the extraction functions. See `settings.py` for an example.
+Starting from version 1.9, the ``Extractor`` class provides a convenient way to define and manage extraction parameters. It allows users to customize all options used by the extraction functions and offers a convenient shortcut compared to multiple function parameters.
+
+Here is how to use the class:
+
+.. code-block:: python
+
+    # import the Extractor class from the settings module
+    >>> from trafilatura.settings import Extractor
+
+    # set multiple options at once
+    >>> options = Extractor(output_format="json", with_metadata=True)
+
+    # add or adjust settings as needed
+    >>> options.formatting = True  # same as include_formatting
+    >>> options.source = "My Source"  # useful for debugging
+
+    # use the options in an extraction function
+    >>> extract(my_doc, options=options)
+
+
+See the ``settings.py`` file for a full example.
 
 
 Metadata extraction
 ^^^^^^^^^^^^^^^^^^^
+
+- ``with_metadata=True``: extract metadata fields and include them in the output
+- ``only_with_metadata=True``: only output documents featuring all essential metadata (date, title, url)
+
 
 Date
 ~~~~
@@ -229,9 +317,10 @@ Trafilatura uses caches to speed up extraction and cleaning processes. This may 
 
 .. code-block:: python
 
+    # import the function
     >>> from trafilatura.meta import reset_caches
 
-    # at any given point
+    # use it at any given point
     >>> reset_caches()
 
 
@@ -262,8 +351,10 @@ This can be useful to get the final redirection URL with ``response.url`` and th
 
     # necessary components
     >>> from trafilatura import fetch_response, bare_extraction
+
     # load an example
     >>> response = fetch_response("https://www.example.org")
+
     # perform extract() or bare_extraction() on Trafilatura's response object
     >>> bare_extraction(response.data, url=response.url)  # here is the redirection URL
 
@@ -281,6 +372,7 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
                     Here is the main text.
                     </p></article></body></html>"""
     >>> mytree = html.fromstring(my_doc)
+
     # extract from the already loaded LXML tree
     >>> extract(mytree)
     'Here is the main text.'
