@@ -193,11 +193,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        # backup for further processing
-        tree_backup = copy(tree)
-
-        # clean
-        cleaned_tree = tree_cleaning(tree, options)
+        # clean and backup for further processing
+        cleaned_tree = tree_cleaning(copy(tree), options)
         cleaned_tree_backup = copy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
@@ -211,7 +208,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
         if options.focus == "precision":
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
-        postbody, temp_text, len_text = trafilatura_sequence(cleaned_tree, cleaned_tree_backup, tree_backup, options)
+        postbody, temp_text, len_text = trafilatura_sequence(cleaned_tree, cleaned_tree_backup, tree, options)
 
         # tree size sanity check
         if options.max_tree_size:
