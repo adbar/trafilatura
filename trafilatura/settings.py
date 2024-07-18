@@ -23,14 +23,7 @@ from .utils import line_processing
 
 
 SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
-SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # the latter for bare_extraction() only
-_SUPPORTED = ', '.join(sorted(SUPPORTED_FORMATS))
-
-
-def _check_output_format(chosen_format: str) -> None:
-    "Check if the format is supported and raise an error otherwise."
-    if chosen_format not in SUPPORTED_FORMATS:
-        raise ValueError(f"Invalid output format, allowed values are: {_SUPPORTED}")
+SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # for bare_extraction() only
 
 
 def use_config(filename=None, config=None):
@@ -90,9 +83,8 @@ class Extractor:
                  tables=True, dedup=False, lang=None, max_tree_size=None,
                  url=None, source=None, with_metadata=False, only_with_metadata=False, tei_validation=False,
                  author_blacklist=None, url_blacklist=None, date_params=None):
-        _check_output_format(output_format)
+        self._set_format(output_format)
         self._add_config(config)
-        self.format = output_format
         self.fast = fast
         self.focus = "recall" if recall else "precision" if precision else "balanced"
         self.comments = comments
@@ -113,6 +105,12 @@ class Extractor:
                               url_blacklist or output_format == "xmltei")
         self.date_params = (date_params or
                             set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')))
+
+    def _set_format(self, chosen_format: str) -> None:
+        "Store the format if supported and raise an error otherwise."
+        if chosen_format not in SUPPORTED_FORMATS:
+            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
+        self.format = chosen_format
 
     def _add_config(self, config):
         "Store options loaded from config file."

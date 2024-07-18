@@ -164,8 +164,11 @@ def test_input():
 
     # output format
     assert extract('<html><body><p>ABC</p></body></html>', output_format="xml") is not None
-    with pytest.raises(ValueError):
+    with pytest.raises(AttributeError):
         assert extract('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
+    assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="python") is not None
+    with pytest.raises(AttributeError):
+        assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
 
 
 def test_xmltocsv():
@@ -782,8 +785,10 @@ def test_htmlprocessing():
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
-    with pytest.raises(NameError) as err:
+    with pytest.raises(ValueError) as err:
         extract(my_html, json_output=True)
+    with pytest.raises(ValueError) as err:
+        extract(my_html, output_format="python")
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None

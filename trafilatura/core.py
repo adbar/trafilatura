@@ -25,6 +25,7 @@ from .xpaths import REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
+DEPRECATED_ARGS = ('csv_output', 'json_output', 'tei_output', 'xml_output')
 TXT_FORMATS = {"markdown", "txt"}
 
 
@@ -306,16 +307,10 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         A string in the desired format or None.
 
     """
-    # older, deprecated functions
-    if kwargs and any([
-        # output formats
-            'csv_output' in kwargs,
-            'json_output' in kwargs,
-            'tei_output' in kwargs,
-            'xml_output' in kwargs
-        ]):
-        raise NameError(
-            'Deprecated argument: use output_format instead, e.g. output_format="xml"'
+    # older, deprecated functions still found in tutorials
+    if kwargs and any(arg in kwargs for arg in DEPRECATED_ARGS):
+        raise ValueError(
+            'Deprecated argument: use output_format, e.g. output_format="xml"'
             )
 
     # regroup extraction options
@@ -332,9 +327,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                       date_params=date_extraction_params
                   )
 
-    # markdown switch
-    include_formatting = include_formatting or output_format == "markdown"
-
     # extraction
     try:
         document = bare_extraction(
@@ -350,6 +342,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         return None
 
     if options.format not in TXT_FORMATS:
+        # control output
+        if options.format == "python":
+            raise ValueError("'python' format only usable in bare_extraction() function")
         # add record ID to metadata
         document.id = record_id
         # calculate fingerprint
