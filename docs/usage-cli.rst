@@ -60,24 +60,22 @@ Choice of HTML elements
 
 Several elements can be included or discarded (see list of options below):
 
-* Text elements: comments, tables
-* Structural elements: formatting, images, links
+- Text elements
+   - Comments and tables are extracted by default.
+   - ``--no-comments`` and ``--no-tables`` deactivate these settings.
 
-Only comments and text extracted from HTML ``<table>`` elements are extracted by default, ``--no-comments`` and ``--no-tables`` deactivate this setting.
-
-Further options:
-
-``--formatting``
-    Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-``--links``
-    Keep link targets (in ``href="..."``), converting relative URLs to absolute where possible
-``--images``
-    Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+- Structural elements
+   ``--formatting``
+      Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+   ``--links``
+      Keep link targets (in ``href="..."``), converting relative URLs to absolute where possible
+   ``--images``
+      Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
 
 .. note::
     Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML). Including extra elements works best with conversion to XML/XML-TEI.
 
-    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd removing a constraint (e.g. formatting) can greatly improve the result.
+    The heuristics used by the main algorithm change according to the presence of certain elements in the HTML. If the output seems odd, try removing a constraint (e.g. formatting) to improve the result.
 
 
 Output format
@@ -85,28 +83,29 @@ Output format
 
 Output as TXT without metadata is the default, another format can be selected in two different ways:
 
--  ``--csv``, ``--json``, ``--markdown`` (from version 1.9 onwards), ``--xml`` or ``--xmltei``
--  ``-out`` or ``--output-format`` {txt,csv,json,markdown,xml,xmltei}
+-  ``--csv``, ``--html``, ``--json``, ``--markdown``, ``--xml`` or ``--xmltei``
+-  ``--output-format`` {csv,json,html,markdown,txt,xml,xmltei}
 
 .. hint::
-    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format. Selecting markdown automatically includes text formatting.
+    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format. Selecting Markdown automatically includes text formatting.
+
+*HTML output is available from version 1.11, Markdown from version 1.9 onwards.*
 
 
 Optimizing for precision and recall
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The arguments ``--precision`` & ``--recall`` can be passed to the extractor. They affect processing and volume of textual output:
+The arguments ``--precision`` or ``--recall`` can be passed to adjust the focus of the extraction process.
 
-1. By focusing precision/accuracy, i.e. more selective extraction, yielding less and more central elements.
-   If you believe the results are too noisy, try focusing on precision.
-2. By enhancing recall, i.e. more opportunistic extraction, taking more elements into account.
-   If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
+- If your results contain too much noise, prioritize precision to focus on the most central and relevant elements.
+- If parts of your documents are missing, try this preset to take more elements into account.
+- If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
 Language identification
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Passing the argument ``--target-language`` along with a 2-letter code (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_) will trigger language filtering of the output if the identification component has been `installed <installation.html>`_ and if the target language is available.
+Passing the argument ``--target-language`` along with a 2-letter code (ISO 639-1) will trigger language filtering of the output if the identification component has been `installed <installation.html>`_ and if the target language is available.
 
 .. note::
     Additional components are required: ``pip install trafilatura[all]``.
@@ -283,8 +282,8 @@ For all usage instructions see ``trafilatura -h``:
                    [--no-tables] [--only-with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE] [--precision] [--recall]
-                   [-out {txt,csv,html,json,markdown,xml,xmltei} | --csv | --html |
-                   --json | --markdown | --xml | --xmltei]
+                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} | 
+                   --csv | --html | --json | --markdown | --xml | --xmltei]
                    [--validate-tei] [-v] [--version]
 
 
@@ -360,7 +359,8 @@ Format:
 
 .. code-block:: bash
 
-  -out {txt,csv,html,json,markdown,xml,xmltei}, --output-format {txt,csv,html,json,markdown,xml,xmltei}
+  --output-format {csv,json,html,markdown,txt,xml,xmltei}
+                        determine output format
   --csv                 shorthand for CSV output
   --html                shorthand for HTML output
   --json                shorthand for JSON output
