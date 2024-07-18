@@ -73,11 +73,12 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
-    output_format = 'txt'
-    if xml_flag is True:
+    if xml_flag:
         output_format = 'xml'
-    if tei_output is True:
-        output_format = 'tei'
+    elif tei_output:
+        output_format = 'xmltei'
+    else:
+        output_format = 'txt'
     return extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,
@@ -141,6 +142,7 @@ def test_input():
     with pytest.raises(TypeError) as err:
         assert load_html(123) is None
     assert 'incompatible' in str(err.value)
+
     assert load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
@@ -159,6 +161,14 @@ def test_input():
     assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
+
+    # output format
+    assert extract('<html><body><p>ABC</p></body></html>', output_format="xml") is not None
+    with pytest.raises(AttributeError):
+        assert extract('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
+    assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="python") is not None
+    with pytest.raises(AttributeError):
+        assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
 
 
 def test_xmltocsv():
@@ -775,8 +785,10 @@ def test_htmlprocessing():
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
-    with pytest.raises(NameError) as err:
+    with pytest.raises(ValueError) as err:
         extract(my_html, json_output=True)
+    with pytest.raises(ValueError) as err:
+        extract(my_html, output_format="python")
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None
@@ -809,7 +821,9 @@ def test_precision_recall():
     result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert '1' not in result
 
-    my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><h2>Test</h2></div></body></html>')
+    my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><p class="link">Test</p></div></body></html>')
+    result = extract(copy(my_document), favor_precision=False, config=ZERO_CONFIG, no_fallback=True)
+    assert 'content' in result and 'Test' in result
     result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
     assert 'content' in result and 'Test' not in result
 
@@ -822,6 +836,10 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>')
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=False)
     assert len(result) > 0
+
+    my_document = html.fromstring('<html><body><div><span>Text.</span></div></body></html>')
+    assert extract(copy(my_document), favor_precision=True, no_fallback=True) == ""
+    assert extract(copy(my_document), favor_recall=True, no_fallback=True) == "Text."
 
 
 def test_table_processing():
