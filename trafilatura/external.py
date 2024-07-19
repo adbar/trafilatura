@@ -97,7 +97,7 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
-        body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, 0, '')
+        body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, text, len_text)
         # prevent too short documents from replacing the main text
         if jt_result and not len_text > 4*len_text2:  # threshold could be adjusted
             LOGGER.debug('using justext, length: %s', len_text2)
@@ -144,7 +144,6 @@ def try_justext(tree, url, target_language):
         paragraphs = custom_justext(tree, justext_stoplist)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
-        result_body = None
     else:
         for paragraph in paragraphs:
             if paragraph.is_boilerplate:
@@ -155,7 +154,7 @@ def try_justext(tree, url, target_language):
     return result_body
 
 
-def justext_rescue(tree, options, postbody, len_text, text):
+def justext_rescue(tree, options, postbody, text, len_text):
     '''Try to use justext algorithm as a second fallback'''
     result_bool = False
     # additional cleaning
@@ -163,12 +162,10 @@ def justext_rescue(tree, options, postbody, len_text, text):
     #tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
-    if temppost_algo is not None:
-        temp_text = trim(' '.join(temppost_algo.itertext()))
-        len_algo = len(temp_text)
-        if len_algo > len_text:
-            postbody, text, len_text = temppost_algo, temp_text, len_algo
-            result_bool = True
+    temp_text = trim(' '.join(temppost_algo.itertext()))
+    if temp_text:
+        postbody, text, len_text = temppost_algo, temp_text, len(temp_text)
+        result_bool = True
     return postbody, text, len_text, result_bool
 
 
