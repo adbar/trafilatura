@@ -15,6 +15,7 @@ from justext.utils import get_stoplist  # , get_stoplists
 from lxml.etree import Element, strip_tags, tostring
 
 # own
+from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
@@ -124,8 +125,8 @@ def jt_stoplist_init():
 def custom_justext(tree, stoplist):
     'Customized version of JusText processing'
     paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, stoplist, 50, 200, 0.1, 0.2, 0.2, True)
-    revise_paragraph_classification(paragraphs, 200)
+    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.2, True)
+    revise_paragraph_classification(paragraphs, 150)
     return paragraphs
 
 
@@ -145,7 +146,9 @@ def try_justext(tree, url, target_language):
         LOGGER.error('justext %s %s', err, url)
         result_body = None
     else:
-        for paragraph in [p for p in paragraphs if not p.is_boilerplate]:
+        for paragraph in paragraphs:
+            if paragraph.is_boilerplate:
+                continue
             #if duplicate_test(paragraph) is not True:
             elem, elem.text = Element('p'), paragraph.text
             result_body.append(elem)
@@ -156,8 +159,8 @@ def justext_rescue(tree, options, postbody, len_text, text):
     '''Try to use justext algorithm as a second fallback'''
     result_bool = False
     # additional cleaning
-    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
-    tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
+    tree = basic_cleaning(tree)
+    #tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
     if temppost_algo is not None:
