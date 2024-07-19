@@ -227,13 +227,14 @@ def test_sysoutput():
     else:
         assert cli_utils.determine_counter_dir("testdir", 0) == "testdir\\1"
     # test file writing
-    testargs = ["", "--csv", "-o", "/dev/null/", "-b", "/dev/null/"]
+    testargs = ["", "--markdown", "-o", "/dev/null/", "-b", "/dev/null/"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
     result = "DADIDA"
     cli_utils.write_result(result, args)
     # process with backup directory and no counter
     options = args_to_extractor(args)
+    assert options.format == "markdown" and options.formatting is True
     assert cli_utils.process_result("DADIDA", args, None, options) is None
     # test keeping dir structure
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]

@@ -88,7 +88,7 @@ class Extractor:
         self.fast = fast
         self.focus = "recall" if recall else "precision" if precision else "balanced"
         self.comments = comments
-        self.formatting = formatting or output_format == "markdown"
+        self.formatting = formatting or self.format == "markdown"
         self.links = links
         self.images = images
         self.tables = tables
@@ -123,13 +123,14 @@ def args_to_extractor(args, url=None):
     "Derive extractor configuration from CLI args."
     options = Extractor(
                   config=use_config(filename=args.config_file), output_format=args.output_format,
+                  formatting=args.formatting,
                   precision=args.precision, recall=args.recall,
                   comments=args.no_comments, tables=args.no_tables,
                   dedup=args.deduplicate, lang=args.target_language, url=url,
                   with_metadata=args.with_metadata, only_with_metadata=args.only_with_metadata,
                   tei_validation=args.validate_tei
               )
-    for attr in ("fast", "formatting", "images", "links"):
+    for attr in ("fast", "images", "links"):
         setattr(options, attr, getattr(args, attr))
     return options
 
