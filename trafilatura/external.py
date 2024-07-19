@@ -21,7 +21,7 @@ from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
-from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
+from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
@@ -156,17 +156,14 @@ def try_justext(tree, url, target_language):
 
 def justext_rescue(tree, options, postbody, text, len_text):
     '''Try to use justext algorithm as a second fallback'''
-    result_bool = False
     # additional cleaning
     tree = basic_cleaning(tree)
-    #tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
     temp_text = trim(' '.join(temppost_algo.itertext()))
     if temp_text:
-        postbody, text, len_text = temppost_algo, temp_text, len(temp_text)
-        result_bool = True
-    return postbody, text, len_text, result_bool
+        return temppost_algo, temp_text, len(temp_text), True
+    return postbody, text, len_text, False
 
 
 def sanitize_tree(tree, options):
