@@ -456,8 +456,11 @@ def test_external():
 def test_images():
     '''Test image extraction function'''
     # file type
+    assert is_image_file(None) is False
+    assert is_image_file('') is False
     assert is_image_file('test.jpg') is True
     assert is_image_file('test.txt') is False
+    assert is_image_file('test.jpg'*2000) is False  # length threshold
     # tag with attributes
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
