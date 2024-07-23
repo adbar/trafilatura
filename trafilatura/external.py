@@ -4,14 +4,11 @@ Functions grounding on third-party software.
 """
 
 import logging
-import lzma
-from pathlib import Path
-from pickle import load as load_pickle
 
 # third-party
 from justext.core import (ParagraphMaker, classify_paragraphs,
                           revise_paragraph_classification)
-from justext.utils import get_stoplist  # , get_stoplists
+from justext.utils import get_stoplist, get_stoplists
 from lxml.etree import Element, strip_tags, tostring
 
 # own
@@ -26,7 +23,6 @@ from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH
 LOGGER = logging.getLogger(__name__)
 
 JT_STOPLIST = None
-JT_PICKLE = str(Path(__file__).parent / 'data/jt-stopwords-pickle.lzma')
 
 SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
@@ -113,19 +109,17 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
 def jt_stoplist_init():
     'Retrieve and return the content of all JusText stoplists'
     global JT_STOPLIST
-    with lzma.open(JT_PICKLE, 'rb') as picklefile:
-        JT_STOPLIST = load_pickle(picklefile)
-    # stoplist = set()
-    # for language in get_stoplists():
-    #     stoplist.update(get_stoplist(language))
-    # JT_STOPLIST = tuple(stoplist)
+    stoplist = set()
+    for language in get_stoplists():
+        stoplist.update(get_stoplist(language))
+    JT_STOPLIST = tuple(stoplist)
     return JT_STOPLIST
 
 
 def custom_justext(tree, stoplist):
     'Customized version of JusText processing'
     paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.2, True)
+    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
     revise_paragraph_classification(paragraphs, 150)
     return paragraphs
 
@@ -135,7 +129,7 @@ def try_justext(tree, url, target_language):
     # init
     result_body = Element('body')
     # determine language
-    if target_language is not None and target_language in JUSTEXT_LANGUAGES:
+    if target_language in JUSTEXT_LANGUAGES:
         justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
     else:
         justext_stoplist = JT_STOPLIST or jt_stoplist_init()
