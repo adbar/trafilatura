@@ -112,15 +112,10 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
 
 def collect_link_info(links_xpath, favor_precision=False):
     '''Collect heuristics on link text'''
-    # init
-    mylist = []
     # longer strings impact recall in favor of precision
     threshold = 50 if favor_precision else 10
     # examine the elements
-    for subelem in links_xpath:
-        subelemtext = trim(subelem.text_content())
-        if subelemtext:
-            mylist.append(subelemtext)
+    mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
     shortelems = sum(1 for text in mylist if len(text) < threshold)
     lengths = sum(len(text) for text in mylist)
     return lengths, len(mylist), shortelems, mylist
@@ -129,26 +124,29 @@ def collect_link_info(links_xpath, favor_precision=False):
 def link_density_test(element, text, favor_precision=False):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath, mylist = element.findall('.//ref'), []
+    threshold = 0.7 if favor_precision else 0.8
     if links_xpath:
+        #if len(links_xpath) == 1 and len(trim(links_xpath[0].text_content())) > len(text)*0.95:
+        #    return True, mylist
         if element.tag == 'p': #  and not element.getparent().tag == 'item'
             if not favor_precision:
                 if element.getnext() is None:
-                    limitlen, threshold = 60, 0.8
+                    limitlen = 60
                 else:
-                    limitlen, threshold = 30, 0.8
+                    limitlen = 30
             else:
-                limitlen, threshold = 200, 0.8
+                limitlen = 200
             #if 'hi' in list(element):
-            #    limitlen, threshold = 100, 0.8
+            #    limitlen = 100
         #elif element.tag == 'head':
-        #    limitlen, threshold = 50, 0.8
+        #    limitlen = 50
         else:
             if element.getnext() is None:
-                limitlen, threshold = 300, 0.8
+                limitlen = 300
             #elif re.search(r'[.?!:]', elemtext):
             #    limitlen, threshold = 150, 0.66
             else:
-                limitlen, threshold = 100, 0.8
+                limitlen = 100
         elemlen = len(text)
         if elemlen < limitlen:
             linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath, favor_precision)
@@ -334,7 +332,7 @@ def convert_tags(tree, options, url=None):
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing
     if not options.links:
-        xpath_expr = './/div//a|.//ul//a'  # .//p//a ?
+        xpath_expr = ".//*[self::div or self::li or self::p]//a"  # './/div//a|.//ul//a|.//p//a'
         if options.tables:
             xpath_expr += '|.//table//a'
         # necessary for further detection
@@ -348,7 +346,7 @@ def convert_tags(tree, options, url=None):
         for elem in tree.iter('a', 'ref'):
             elem.tag = 'ref'
             # replace href attribute and delete the rest
-            target = elem.get('href') # defaults to None
+            target = elem.get('href')  # defaults to None
             elem.attrib.clear()
             if target:
                 # convert relative URLs

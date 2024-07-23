@@ -509,7 +509,7 @@ def prune_unwanted_sections(tree, potential_tags, options):
     favor_precision = options.focus == "precision"
     # prune the rest
     tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
-    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
+    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)  # necessary?
     # decide if images are preserved
     if 'graphic' not in potential_tags:
         tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
@@ -527,8 +527,8 @@ def prune_unwanted_sections(tree, potential_tags, options):
         # delete trailing titles
         while len(tree) > 0 and (tree[-1].tag == 'head'):
             tree[-1].getparent().remove(tree[-1])
-        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=favor_precision
-        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=favor_precision
+        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=True
+        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=True
     return tree
 
 
