@@ -342,9 +342,11 @@ def trim(string: str) -> Optional[str]:
 
 
 def is_image_file(imagesrc):
-    '''Check if the observed string corresponds to a valid image extension,
-       return False otherwise'''
-    return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
+    '''Check if the observed string corresponds to a valid image extension.
+       Use a length threshold and apply a regex on the content.'''
+    if imagesrc is None or len(imagesrc) > 8192:
+        return False
+    return bool(IMAGE_EXTENSION.search(imagesrc))
 
 
 def make_chunks(iterable, n):
