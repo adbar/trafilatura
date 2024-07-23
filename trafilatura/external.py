@@ -93,9 +93,10 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
-        body2, text2, len_text2, jt_result = justext_rescue(tree, options)
+        body2, text2, len_text2 = justext_rescue(tree, options)
+        jt_result = bool(text2)
         # prevent too short documents from replacing the main text
-        if jt_result and not len_text > 4*len_text2:  # threshold could be adjusted
+        if text2 and not len_text > 4*len_text2:  # threshold could be adjusted
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
 
@@ -155,8 +156,7 @@ def justext_rescue(tree, options):
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
     temp_text = trim(' '.join(temppost_algo.itertext()))
-    jt_result = True if temp_text else False
-    return temppost_algo, temp_text, len(temp_text), jt_result
+    return temppost_algo, temp_text, len(temp_text)
 
 
 def sanitize_tree(tree, options):
