@@ -4,28 +4,25 @@ Functions grounding on third-party software.
 """
 
 import logging
-import lzma
-from pathlib import Path
-from pickle import load as load_pickle
 
 # third-party
 from justext.core import (ParagraphMaker, classify_paragraphs,
                           revise_paragraph_classification)
-from justext.utils import get_stoplist  # , get_stoplists
+from justext.utils import get_stoplist, get_stoplists
 from lxml.etree import Element, strip_tags, tostring
 
 # own
+from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
-from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH, REMOVE_COMMENTS_XPATH
+from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
 JT_STOPLIST = None
-JT_PICKLE = str(Path(__file__).parent / 'data/jt-stopwords-pickle.lzma')
 
 SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
@@ -96,9 +93,10 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
         # tree = prune_unwanted_sections(tree, {}, options)
-        body2, text2, len_text2, jt_result = justext_rescue(tree, options, body, 0, '')
+        body2, text2, len_text2 = justext_rescue(tree, options)
+        jt_result = bool(text2)
         # prevent too short documents from replacing the main text
-        if jt_result and not len_text > 4*len_text2:  # threshold could be adjusted
+        if text2 and not len_text > 4*len_text2:  # threshold could be adjusted
             LOGGER.debug('using justext, length: %s', len_text2)
             body, text, len_text = body2, text2, len_text2
 
@@ -112,20 +110,18 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
 def jt_stoplist_init():
     'Retrieve and return the content of all JusText stoplists'
     global JT_STOPLIST
-    with lzma.open(JT_PICKLE, 'rb') as picklefile:
-        JT_STOPLIST = load_pickle(picklefile)
-    # stoplist = set()
-    # for language in get_stoplists():
-    #     stoplist.update(get_stoplist(language))
-    # JT_STOPLIST = tuple(stoplist)
+    stoplist = set()
+    for language in get_stoplists():
+        stoplist.update(get_stoplist(language))
+    JT_STOPLIST = tuple(stoplist)
     return JT_STOPLIST
 
 
 def custom_justext(tree, stoplist):
     'Customized version of JusText processing'
     paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, stoplist, 50, 200, 0.1, 0.2, 0.2, True)
-    revise_paragraph_classification(paragraphs, 200)
+    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
+    revise_paragraph_classification(paragraphs, 150)
     return paragraphs
 
 
@@ -134,7 +130,7 @@ def try_justext(tree, url, target_language):
     # init
     result_body = Element('body')
     # determine language
-    if target_language is not None and target_language in JUSTEXT_LANGUAGES:
+    if target_language in JUSTEXT_LANGUAGES:
         justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
     else:
         justext_stoplist = JT_STOPLIST or jt_stoplist_init()
@@ -143,30 +139,24 @@ def try_justext(tree, url, target_language):
         paragraphs = custom_justext(tree, justext_stoplist)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
-        result_body = None
     else:
-        for paragraph in [p for p in paragraphs if not p.is_boilerplate]:
+        for paragraph in paragraphs:
+            if paragraph.is_boilerplate:
+                continue
             #if duplicate_test(paragraph) is not True:
             elem, elem.text = Element('p'), paragraph.text
             result_body.append(elem)
     return result_body
 
 
-def justext_rescue(tree, options, postbody, len_text, text):
+def justext_rescue(tree, options):
     '''Try to use justext algorithm as a second fallback'''
-    result_bool = False
     # additional cleaning
-    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
-    tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
+    tree = basic_cleaning(tree)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
-    if temppost_algo is not None:
-        temp_text = trim(' '.join(temppost_algo.itertext()))
-        len_algo = len(temp_text)
-        if len_algo > len_text:
-            postbody, text, len_text = temppost_algo, temp_text, len_algo
-            result_bool = True
-    return postbody, text, len_text, result_bool
+    temp_text = trim(' '.join(temppost_algo.itertext()))
+    return temppost_algo, temp_text, len(temp_text)
 
 
 def sanitize_tree(tree, options):
