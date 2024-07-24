@@ -340,8 +340,6 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append(newline)
     elif element.tag == "cell":
         returnlist.extend(" | ")
-    elif element.tag == "comments":
-        returnlist.append("\n")
     elif element.tag not in SPECIAL_FORMATTING:
         LOGGER.debug("unprocessed element in output: %s", element.tag)
         returnlist.extend([' '])
