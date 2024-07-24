@@ -18,7 +18,7 @@ from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
-from .xpaths import OVERALL_DISCARD_XPATH, PAYWALL_DISCARD_XPATH
+from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
@@ -48,7 +48,6 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
 
     use_readability, jt_result = False, False
     # prior cleaning
-    backup_tree = prune_unwanted_nodes(backup_tree, PAYWALL_DISCARD_XPATH)
     if options.focus == "precision":
         backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
 

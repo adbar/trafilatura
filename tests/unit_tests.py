@@ -755,7 +755,7 @@ def test_htmlprocessing():
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
 
     # paywalls
-    my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
+    my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
     # test tail of node deleted if set as text

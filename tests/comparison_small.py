@@ -34,11 +34,9 @@ except ImportError:
 #from trafilatura.utils import load_html, sanitize
 #from trafilatura.xml import xmltotxt
 
-logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
+logging.basicConfig(stream=sys.stdout, level=logging.ERROR)  # logging.WARNING
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-
-## logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
 
 #JT_STOPLIST = jt_stoplist_init()
 
