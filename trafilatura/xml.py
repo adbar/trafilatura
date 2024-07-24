@@ -336,10 +336,9 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
     # Process text
 
     # Common elements (Now processes end-tag logic correctly)
-    if element.tag == 'p' and include_formatting and not element.xpath("ancestor::cell"):
-        returnlist.append('\n\u2424\n')
-    elif element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
-        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
+    if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
+        newline = '\n\u2424\n' if include_formatting else '\n'
+        returnlist.extend([NEWLINE_ELEMS[element.tag], newline])
     elif element.tag == 'cell':
         returnlist.extend(" | ")
     elif element.tag == 'comments':
