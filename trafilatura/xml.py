@@ -39,10 +39,8 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
-
 SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
 WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
-
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
@@ -336,13 +334,12 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
 
     # Common elements (Now processes end-tag logic correctly)
     if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
-        newline = "\n\u2424\n" if include_formatting else "\n"  # spacing hack
-        returnlist.append(newline)
+        # spacing hack
+        returnlist.append("\n\u2424\n" if include_formatting else "\n")
     elif element.tag == "cell":
-        returnlist.extend(" | ")
+        returnlist.append(" | ")
     elif element.tag not in SPECIAL_FORMATTING:
-        LOGGER.debug("unprocessed element in output: %s", element.tag)
-        returnlist.extend([' '])
+        returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     if element.tail is not None:
