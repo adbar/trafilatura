@@ -320,10 +320,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
             # add line after table head
             if element.tag == "row":
                 cell_count = len(element.xpath(".//cell"))
-                try:
-                    max_span = int(element.get("span", 1))
-                except ValueError:
-                    max_span = 0
+                max_span = int(element.get("colspan") or element.get("span", 1))
                 # row ended so draw extra empty cells to match max_span
                 if 0 < max_span < 1000 and cell_count < max_span:
                     returnlist.append(f'{"|" * (max_span - cell_count)}\n')
