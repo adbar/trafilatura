@@ -319,13 +319,17 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                max_span = int(element.get("span", 1))
                 cell_count = len(element.xpath(".//cell"))
+                try:
+                    max_span = int(element.get("span", 1))
+                except ValueError:
+                    max_span = 0
                 # row ended so draw extra empty cells to match max_span
-                returnlist.append("|" * (max_span - cell_count) + "\n")
+                if 0 < max_span < 1000 and cell_count < max_span:
+                    returnlist.append(f'{"|" * (max_span - cell_count)}\n')
                 # if this is a head row, draw the separator below
                 if element.xpath("./cell[@role='head']"):
-                    returnlist.append("\n" + "---|" * max_span + "\n")
+                    returnlist.append(f'\n{"---|" * max_span}\n')
             else:
                 returnlist.append('\n')
         elif element.tag != 'cell':
