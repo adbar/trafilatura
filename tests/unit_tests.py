@@ -1104,6 +1104,24 @@ def test_table_processing():
     result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
+    htmlstring = '<html><body><article><table><tr><td span="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert "a | b | |" in result
+
+    # MemoryError: https://github.com/adbar/trafilatura/issues/657
+    htmlstring = '<html><body><article><table><tr><td colspan="9007199254740991">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result is not None
+
+    # wrong span info
+    htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert "a | b | |" in result
+
+    htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert "a | b | |" in result
+
 
 def test_list_processing():
     options = DEFAULT_OPTIONS
