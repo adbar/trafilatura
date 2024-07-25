@@ -109,42 +109,44 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     return tree
 
 
-def collect_link_info(links_xpath, favor_precision=False):
+def collect_link_info(links_xpath):
     '''Collect heuristics on link text'''
     mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
+    lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
-    shortelems = sum(1 for text in mylist if len(text) < 10)
-    lengths = sum(len(text) for text in mylist)
-    return lengths, len(mylist), shortelems, mylist
+    shortelems = sum(1 for l in lengths if l < 10)
+    return sum(lengths), len(mylist), shortelems, mylist
 
 
 def link_density_test(element, text, favor_precision=False):
     '''Remove sections which are rich in links (probably boilerplate)'''
-    links_xpath, mylist = element.findall('.//ref'), []
-    if links_xpath:
-        # shortcut
-        if len(links_xpath) == 1:
-            len_threshold = 10 if favor_precision else 100
-            link_text = trim(links_xpath[0].text_content())
-            if len(link_text) > len_threshold and len(link_text) > len(text)*0.9:
-                return True, []
-        if element.tag == 'p':
-            limitlen = 60 if element.getnext() is None else 30
+    links_xpath = element.findall('.//ref')
+    if not links_xpath:
+        return False, []
+    mylist = []
+    # shortcut
+    if len(links_xpath) == 1:
+        len_threshold = 10 if favor_precision else 100
+        link_text = trim(links_xpath[0].text_content())
+        if len(link_text) > len_threshold and len(link_text) > len(text)*0.9:
+            return True, []
+    if element.tag == 'p':
+        limitlen = 60 if element.getnext() is None else 30
+    else:
+        if element.getnext() is None:
+            limitlen = 300
+        #elif re.search(r'[.?!:]', element.text_content()):
+        #    limitlen, threshold = 150, 0.66
         else:
-            if element.getnext() is None:
-                limitlen = 300
-            #elif re.search(r'[.?!:]', element.text_content()):
-            #    limitlen, threshold = 150, 0.66
-            else:
-                limitlen = 100
-        elemlen = len(text)
-        if elemlen < limitlen:
-            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath, favor_precision)
-            if elemnum == 0:
-                return True, mylist
-            LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
-            if linklen > elemlen*0.8 or (elemnum > 1 and shortelems/elemnum > 0.8):
-                return True, mylist
+            limitlen = 100
+    elemlen = len(text)
+    if elemlen < limitlen:
+        linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
+        if elemnum == 0:
+            return True, mylist
+        LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
+        if linklen > elemlen*0.8 or (elemnum > 1 and shortelems/elemnum > 0.8):
+            return True, mylist
     return False, mylist
 
 
@@ -172,12 +174,11 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
-        if result:
+        if result or (
+            backtracking and templist and
+            0 < len(elemtext) < len_threshold and len(elem) >= depth_threshold
+        ):
             deletions.append(elem)
-        elif backtracking and templist:
-            if 0 < len(elemtext) < len_threshold and len(elem) >= depth_threshold:
-                deletions.append(elem)
-                # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
 
