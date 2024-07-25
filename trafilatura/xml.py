@@ -5,13 +5,11 @@ All functions related to XML generation, processing and validation.
 
 import csv
 import logging
-import lzma
 
 from html import unescape
 from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
-from pickle import load as load_pickle
 from typing import List, Optional
 
 try:  # Python 3.8+
@@ -19,8 +17,8 @@ try:  # Python 3.8+
 except ImportError:
     from importlib_metadata import version
 
-from lxml.etree import (_Element, Element, RelaxNG, SubElement, XMLParser,
-                        fromstring, tostring)
+from lxml.etree import (_Element, Element, SubElement, XMLParser,
+                        fromstring, tostring, DTD)
 
 from .settings import Document, Extractor
 from .utils import sanitize, sanitize_tree, text_chars_test
@@ -30,22 +28,19 @@ LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
 
 # validation
-TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema-pickle.lzma')
+TEI_SCHEMA = str(Path(__file__).parent / "data" / "tei_corpus.dtd")
 TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
                   'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
-TEI_RELAXNG = None  # to be downloaded later if necessary
+TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-NEWLINE_ELEMS = {
-    **{tag: '\n' for tag in ['code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table']}
-}
+NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
 WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
-
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
@@ -235,6 +230,8 @@ def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
+            #if len(elem) == 0:
+            #    elem.getparent().remove(elem)
         # check attributes
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
             LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
@@ -244,15 +241,16 @@ def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
 
 def validate_tei(xmldoc: _Element) -> bool:
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
-    global TEI_RELAXNG
-    if TEI_RELAXNG is None:
-        # load validator
-        with lzma.open(TEI_SCHEMA, 'rb') as schemafile:
-            schema_data = load_pickle(schemafile)
-        TEI_RELAXNG = RelaxNG(fromstring(schema_data))
-    result = TEI_RELAXNG.validate(xmldoc)
+    global TEI_DTD
+
+    if TEI_DTD is None:
+        # https://tei-c.org/release/xml/tei/custom/schema/dtd/tei_corpus.dtd
+        TEI_DTD = DTD(TEI_SCHEMA)
+
+    result = TEI_DTD.validate(xmldoc)
     if result is False:
-        LOGGER.warning('not a valid TEI document: %s', TEI_RELAXNG.error_log.last_error)
+        LOGGER.warning('not a valid TEI document: %s', TEI_DTD.error_log.last_error)
+
     return result
 
 
@@ -318,13 +316,14 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                max_span = int(element.get("span", 1))
                 cell_count = len(element.xpath(".//cell"))
+                max_span = int(element.get("colspan") or element.get("span", 1))
                 # row ended so draw extra empty cells to match max_span
-                returnlist.append("|" * (max_span - cell_count) + "\n")
+                if 0 < max_span < 1000 and cell_count < max_span:
+                    returnlist.append(f'{"|" * (max_span - cell_count)}\n')
                 # if this is a head row, draw the separator below
                 if element.xpath("./cell[@role='head']"):
-                    returnlist.append("\n" + "---|" * max_span + "\n")
+                    returnlist.append(f'\n{"---|" * max_span}\n')
             else:
                 returnlist.append('\n')
         elif element.tag != 'cell':
@@ -335,17 +334,13 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
     # Process text
 
     # Common elements (Now processes end-tag logic correctly)
-    if element.tag == 'p' and include_formatting and not element.xpath("ancestor::cell"):
-        returnlist.append('\n\u2424\n')
-    elif element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
-        returnlist.extend([NEWLINE_ELEMS[element.tag], '\n'])
-    elif element.tag == 'cell':
-        returnlist.extend(" | ")
-    elif element.tag == 'comments':
-        returnlist.append('\n\n')
+    if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
+        # spacing hack
+        returnlist.append("\n\u2424\n" if include_formatting else "\n")
+    elif element.tag == "cell":
+        returnlist.append(" | ")
     elif element.tag not in SPECIAL_FORMATTING:
-        LOGGER.debug('unprocessed element in output: %s', element.tag)
-        returnlist.extend([' '])
+        returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     if element.tail is not None:
