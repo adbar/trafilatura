@@ -1136,6 +1136,9 @@ def test_table_processing():
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == ""
+    htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{" "*100}</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == ""
 
 
 def test_list_processing():
