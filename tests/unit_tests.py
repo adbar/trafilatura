@@ -516,6 +516,11 @@ def test_links():
     mydoc = html.fromstring('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
     assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG, with_metadata=True)
 
+    # link in p, length threshold
+    mydoc = html.fromstring(f'<html><body><article><p><a>f{"abcd"*20}</a></p></article></body></html>')
+    assert "abc" in extract(copy(mydoc), no_fallback=True, config=ZERO_CONFIG, favor_precision=False)
+    assert extract(mydoc, no_fallback=True, config=ZERO_CONFIG, favor_precision=True) == ""
+
 
 def test_tei():
     '''test TEI-related functions'''
@@ -752,7 +757,7 @@ def test_htmlprocessing():
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
 
     # paywalls
-    my_html = '<html><body><main><p>1</p><p id="paywall">2</p><p>3</p></main></body></html>'
+    my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
     # test tail of node deleted if set as text
@@ -1121,6 +1126,19 @@ def test_table_processing():
     htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
+
+    # links: this gets through (for now)
+    htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == "a |"
+
+    # link: this is filtered out
+    htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == ""
+    htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{" "*100}</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == ""
 
 
 def test_list_processing():

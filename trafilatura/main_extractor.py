@@ -18,8 +18,7 @@ from .settings import TAG_CATALOG
 from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
-                     PAYWALL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
-                     TEASER_DISCARD_XPATH)
+                     PRECISION_DISCARD_XPATH, TEASER_DISCARD_XPATH)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -335,7 +334,7 @@ def handle_paragraphs(element, potential_tags, options):
     return None
 
 
-def define_cell_type(element, is_header):
+def define_cell_type(is_header):
     "Determine cell element type and mint new element."
     # define tag
     cell_element = Element("cell")
@@ -371,7 +370,7 @@ def handle_table(table_elem, potential_tags, options):
         elif subelement.tag in TABLE_ELEMS:
             is_header = subelement.tag == "th" and not seen_header_row
             seen_header = seen_header or is_header
-            new_child_elem = define_cell_type(subelement, is_header)
+            new_child_elem = define_cell_type(is_header)
             # process
             if len(subelement) == 0:
                 processed_cell = process_node(subelement, options)
@@ -385,7 +384,7 @@ def handle_table(table_elem, potential_tags, options):
                     if child.tag in TABLE_ALL:
                         # todo: define attributes properly
                         if child.tag in TABLE_ELEMS:
-                            # subcell_elem = define_cell_type(subelement)
+                            # subcell_elem = define_cell_type(is_header)
                             child.tag = "cell"
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
                     # todo: lists in table cells
@@ -509,7 +508,6 @@ def prune_unwanted_sections(tree, potential_tags, options):
     favor_precision = options.focus == "precision"
     # prune the rest
     tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
-    tree = prune_unwanted_nodes(tree, PAYWALL_DISCARD_XPATH)
     # decide if images are preserved
     if 'graphic' not in potential_tags:
         tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
@@ -518,17 +516,24 @@ def prune_unwanted_sections(tree, potential_tags, options):
         tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
         if favor_precision:
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
-    # remove elements by link density
-    tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
-    tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=favor_precision)
-    tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
+    # remove elements by link density, several passes
+    for _ in range(2):
+        tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
+        tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=favor_precision)
+        tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
+    # tables
+    if 'table' in potential_tags or favor_precision:
+        # tree = delete_by_link_density(tree, 'table', backtracking=False, favor_precision=favor_precision)
+        for elem in tree.iter('table'):
+            if link_density_test_tables(elem) is True:
+                elem.getparent().remove(elem)
     # also filter fw/head, table and quote elements?
     if favor_precision:
         # delete trailing titles
         while len(tree) > 0 and (tree[-1].tag == 'head'):
             tree[-1].getparent().remove(tree[-1])
-        tree = delete_by_link_density(tree, 'head', backtracking=False)  # favor_precision=favor_precision
-        tree = delete_by_link_density(tree, 'quote', backtracking=False)  # favor_precision=favor_precision
+        tree = delete_by_link_density(tree, 'head', backtracking=False, favor_precision=True)
+        tree = delete_by_link_density(tree, 'quote', backtracking=False, favor_precision=True)
     return tree
 
 
@@ -550,12 +555,6 @@ def _extract(tree, options):
             continue
         # prune the subtree
         subtree = prune_unwanted_sections(subtree, potential_tags, options)
-        # second pass?
-        # subtree = delete_by_link_density(subtree, 'list', backtracking=False, favor_precision=options.focus == "precision")
-        if 'table' in potential_tags or options.focus == "precision":
-            for elem in subtree.iter('table'):
-                if link_density_test_tables(elem) is True:
-                    elem.getparent().remove(elem)
         # skip if empty tree
         if len(subtree) == 0:
             continue

@@ -92,18 +92,9 @@ REMOVE_COMMENTS_XPATH = [XPath(
 # or contains(@class, 'comment') or contains(@id, 'comment')
 
 
-PAYWALL_DISCARD_XPATH = [XPath(
-    '''.//*[self::div or self::p][
-    contains(@id, "paywall") or contains(@id, "premium") or
-    contains(@class, "paid-content") or contains(@class, "paidcontent") or
-    contains(@class, "obfuscated") or contains(@class, "blurred") or
-    contains(@class, "restricted") or contains(@class, "overlay")
-    ]'''
-)]
-
-
 OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     # navigation + footers, news outlets related posts, sharing, jp-post-flair jp-relatedposts
+    # paywalls
     '''.//*[self::div or self::item or self::list
             or self::p or self::section or self::span][
     contains(translate(@id, "F","f"), "footer") or contains(translate(@class, "F","f"), "footer")
@@ -142,14 +133,16 @@ OVERALL_DISCARD_XPATH = [XPath(x) for x in (
     or contains(@class, "criteo") or contains(@class, "options") or contains(@class, "expand")
     or contains(@class, "consent") or contains(@class, "modal-content")
     or contains(@class, " ad ") or contains(@class, "permission")
-    or contains(@class, "next-") or contains(@class, "side-stories")
-    or contains(@class, "related-stories") or contains(@class, "most-popular")
-    or contains(@class, "mol-factbox") or starts-with(@class, "ZendeskForm")
-    or contains(@class, "message-container") or contains(@id, "message_container")
+    or contains(@class, "next-") or contains(@class, "-stories")
+    or contains(@class, "most-popular") or contains(@class, "mol-factbox")
+    or starts-with(@class, "ZendeskForm") or contains(@id|@class, "message-container")
     or contains(@class, "yin") or contains(@class, "zlylin")
     or contains(@class, "xg1") or contains(@id, "bmdh")
     or contains(@class, "slide") or contains(@class, "viewport")
-    or @data-lp-replacement-content]''',
+    or @data-lp-replacement-content
+    or contains(@id, "premium") or contains(@class, "overlay")
+    or contains(@class, "paid-content") or contains(@class, "paidcontent")
+    or contains(@class, "obfuscated") or contains(@class, "blurred")]''',
 
     # comment debris + hidden parts
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or
