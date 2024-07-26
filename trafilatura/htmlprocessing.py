@@ -153,15 +153,20 @@ def link_density_test(element, text, favor_precision=False):
 def link_density_test_tables(element):
     '''Remove tables which are rich in links (probably boilerplate)'''
     links_xpath = element.findall('.//ref')
-    if links_xpath:
-        elemlen = len(trim(element.text_content()))
-        if elemlen > 100:
-            linklen, elemnum, _, _ = collect_link_info(links_xpath)
-            if elemnum == 0:
-                return True
-            LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-            return linklen > 0.8*elemlen if elemlen < 1000 else linklen > 0.5*elemlen
-    return False
+
+    if not links_xpath:
+        return False
+
+    elemlen = len(trim(element.text_content()))
+    if elemlen < 200:
+        return False
+
+    linklen, elemnum, _, _ = collect_link_info(links_xpath)
+    if elemnum == 0:
+        return True
+
+    LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
+    return linklen > 0.8*elemlen if elemlen < 1000 else linklen > 0.5*elemlen
 
 
 def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision=False):

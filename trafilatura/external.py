@@ -91,7 +91,6 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:  # body.find(...)
         LOGGER.debug('unclean document triggering justext examination: %s', options.source)
-        # tree = prune_unwanted_sections(tree, {}, options)
         body2, text2, len_text2 = justext_rescue(tree, options)
         jt_result = bool(text2)
         # prevent too short documents from replacing the main text
