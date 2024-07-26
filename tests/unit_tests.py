@@ -1127,6 +1127,16 @@ def test_table_processing():
     result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
+    # links: this gets through (for now)
+    htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == "a |"
+
+    # link: this is filtered out
+    htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'
+    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == ""
+
 
 def test_list_processing():
     options = DEFAULT_OPTIONS
