@@ -1,6 +1,28 @@
 ## History / Changelog
 
 
+### 1.12.0
+
+Breaking change:
+- enforce fixed list of output formats, deprecate `-out` on the CLI (#647)
+
+Faster, more accurate extraction:
+- review link and structure checks (#653)
+- improve justext fallback (#652)
+- baseline: prevent LXML error in JSON-LD (#643), do not use as backup extraction (#646)
+- review XPaths for undesirable content (#645)
+
+Bugfixes and maintenance:
+- CLI fix: markdown format should trigger `include_formatting` (#649)
+- images fix: use a length threshold on src attribute (#654)
+- XML-TEI: replace RelaxNG by DTD, remove pickle, and update (#655)
+- formatting & markdown fix: add newlines (#656)
+- table fix: prevent `MemoryError` & `ValueError` during conversion to text (#658)
+
+Documentation:
+- update `crawls.rst`: `known` is an unexpected argument, by @tommytyc in #638
+
+
 ### 1.11.0
 
 Breaking change:

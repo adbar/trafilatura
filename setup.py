@@ -110,7 +110,7 @@ setup(
         "certifi",
         "charset_normalizer >= 3.0.1; python_version < '3.7'",
         "charset_normalizer >= 3.2.0; python_version >= '3.7'",
-        "courlan >= 1.1.0",
+        "courlan >= 1.2.0",
         "htmldate >= 1.8.1",
         "importlib_metadata; python_version < '3.8'",
         "justext >= 3.0.1",
