@@ -299,19 +299,19 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
 
 
 def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
-    "Convert a LXML element to a flattened string representation."
-    if element.text is not None:
+    "Recursively convert a LXML element and its children to a flattened string representation."
+    if element.text:
         # this is the text that comes before the first child
         returnlist.append(replace_element_text(element, include_formatting))
 
     for child in element:
         process_element(child, returnlist, include_formatting)
 
-    if element.text is None and element.tail is None:
-        if element.tag == 'graphic':
+    if not element.text and not element.tail:
+        if element.tag == "graphic":
             # add source, default to ''
             text = f'{element.get("title", "")} {element.get("alt", "")}'
-            returnlist.extend(['![', text.strip(), ']', '(', element.get('src', ''), ')'])
+            returnlist.append(f'![{text.strip()}]({element.get("src", "")})')
         # newlines for textless elements
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
@@ -326,8 +326,8 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
                 if element.xpath("./cell[@role='head']"):
                     returnlist.append(f'\n{"---|" * max_span}\n')
             else:
-                returnlist.append('\n')
-        elif element.tag != 'cell':
+                returnlist.append("\n")
+        elif element.tag != "cell":
             # cells still need to append vertical bars
             # but nothing more to do with other textless elements
             return
@@ -344,7 +344,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
-    if element.tail is not None:
+    if element.tail:
         returnlist.append(element.tail)
 
 
