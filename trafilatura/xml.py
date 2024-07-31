@@ -299,7 +299,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
 
 
 def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
-    # Process children recursively
+    "Convert a LXML element to a flattened string representation."
     if element.text is not None:
         # this is the text that comes before the first child
         returnlist.append(replace_element_text(element, include_formatting))
@@ -317,9 +317,10 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
             # add line after table head
             if element.tag == "row":
                 cell_count = len(element.xpath(".//cell"))
-                max_span = int(element.get("colspan") or element.get("span", 1))
+                # restrict columns to a maximum of 1000
+                max_span = min(int(element.get("colspan") or element.get("span", 1)), 1000)
                 # row ended so draw extra empty cells to match max_span
-                if 0 < max_span < 1000 and cell_count < max_span:
+                if cell_count < max_span:
                     returnlist.append(f'{"|" * (max_span - cell_count)}\n')
                 # if this is a head row, draw the separator below
                 if element.xpath("./cell[@role='head']"):
