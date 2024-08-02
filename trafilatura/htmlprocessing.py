@@ -71,15 +71,16 @@ def tree_cleaning(tree, options):
             for element in tree.iter(expression):
                 delete_element(element)
 
-    return prune_html(tree)
+    return prune_html(tree, options.focus)
 
 
-def prune_html(tree):
+def prune_html(tree, focus="balanced"):
     "Delete selected empty elements to save space and processing time."
-    # //comment() needed for date extraction
-    for element in tree.xpath("//processing-instruction()|//*[not(node())]"):
+    tails = False if focus == "precision" else True
+    # .//comment() needed for date extraction
+    for element in tree.xpath(".//processing-instruction()|.//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
-            delete_element(element)
+            delete_element(element, keep_tail=tails)
     return tree
 
 

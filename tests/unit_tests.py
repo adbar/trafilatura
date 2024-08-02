@@ -249,6 +249,7 @@ def test_exotic_tags(xmloutput=False):
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
+
     # edge cases
     htmlstring = '''<!DOCTYPE html>
 <html>
@@ -264,11 +265,12 @@ def test_exotic_tags(xmloutput=False):
         <!-- strong can be changed to b, em, i, u, or kbd -->
         <strong><a></a></strong>
         <h2>Aliquam eget interdum elit, id posuere ipsum.</h2>
-        <p>Phasellus lectus erat, hendrerit sed tortor ac, dignissim vehicula metus.</p>
+        <p>Phasellus lectus erat, hendrerit sed tortor ac, dignissim vehicula metus.<br/></p>
       </div>
   </body>
 </html>'''
     assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+
     htmlstring = '''<!DOCTYPE html>
 <html>
   <head>
@@ -282,11 +284,19 @@ def test_exotic_tags(xmloutput=False):
       <h3>Nested header</h3>
       <p>Some "hyphenated-word quote" followed by a bit more text line.</p>
       <em><p>em improperly wrapping p here</p></em>
-      <p>Text here</p>
+      <p>Text here<br/></p>
+      <h3>More articles</h3>
     </div>
   </body>
 </html>'''
-    assert extract(htmlstring, include_formatting=True, include_links=True, include_images=True) is not None
+    common = {"include_formatting": True, "include_links": True, "include_images": True}
+    params = [
+        common, {**common, "favor_precision": True}, {**common, "favor_recall": True}
+    ]
+    for p in params:
+        result = extract(htmlstring, **p)
+        assert "em improperly wrapping p here" in result and result.endswith("Text here")
+
     # comments
     assert extract('<html><body><article><p>text</p><div class="comments"><p>comment</p></div></article></body></html>', include_comments=True, no_fallback=True, config=ZERO_CONFIG).endswith("\ncomment")
 

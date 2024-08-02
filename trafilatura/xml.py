@@ -53,7 +53,7 @@ HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
-def delete_element(element: _Element) -> None:
+def delete_element(element: _Element, keep_tail: bool = True) -> None:
     """
     Removes this element from the tree, including its children and
     text. The tail text is joined to the previous element or parent.
@@ -62,7 +62,7 @@ def delete_element(element: _Element) -> None:
     if parent is None:
         return
 
-    if element.tail:
+    if keep_tail and element.tail:
         previous = element.getprevious()
         if previous is None:
             parent.text = (parent.text or "") + element.tail
