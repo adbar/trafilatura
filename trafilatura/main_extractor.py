@@ -331,7 +331,7 @@ def handle_paragraphs(element, potential_tags, options):
         last_elem = processed_element[-1]
         # clean trailing lb-elements
         if last_elem.tag == "lb" and last_elem.tail is None:
-            delete_element(last_elem, keep_tail=False)
+            delete_element(last_elem)
         return processed_element
     if processed_element.text:
         return processed_element
