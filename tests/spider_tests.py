@@ -233,11 +233,13 @@ def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
     todo, known_links = spider.focused_crawler(
-        "https://httpbun.com/links/1/1", max_seen_urls=1
+        "https://httpbun.com/links/2/2", max_seen_urls=2
     )
+    print(sorted(todo))
+    print(sorted(known_links))
     ## fails on Github Actions
-    # assert sorted(known_links) == ['https://httpbun.com/links/1/0', 'https://httpbun.com/links/1/1']
-    # assert sorted(todo) == ['https://httpbun.com/links/1/0']
+    assert sorted(known_links) == ['https://httpbun.com/links/2/0', 'https://httpbun.com/links/2/1', 'https://httpbun.com/links/2/2']
+    assert sorted(todo) == ['https://httpbun.com/links/2/0']
 
 
 def test_robots():
