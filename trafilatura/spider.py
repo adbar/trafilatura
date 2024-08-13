@@ -105,6 +105,7 @@ def process_links(
     url: Optional[str] = "",
     language: Optional[str] = None,
     rules: Optional[RobotFileParser] = None,
+    ref: Optional[str] = None,
 ) -> None:
     """Examine the HTML code and process the retrieved internal links.
     Extract and filter new internal links after an optional language check.
@@ -128,6 +129,9 @@ def process_links(
         # check robots.txt rules + sanity check
         if (rules and not rules.can_fetch("*", link)) or is_not_crawlable(link):
             continue
+        # use reference to determine crawl breadth
+        if ref and ref not in link:
+            continue
         # store
         if is_navigation_page(link):
             links_priority.append(link)
@@ -142,6 +146,7 @@ def process_response(
     base_url: str,
     language: Optional[str],
     rules: Optional[RobotFileParser] = None,
+    ref: Optional[str] = None,
 ) -> None:
     """Convert urllib3 response object and extract links."""
     # add final document URL to known_links
@@ -151,7 +156,7 @@ def process_response(
             # convert urllib3 response to string
             htmlstring = decode_file(response.data)
             # proceed to link extraction
-            process_links(htmlstring, base_url, language=language, rules=rules)
+            process_links(htmlstring, base_url, language=language, rules=rules, ref=ref)
 
 
 def parse_robots(robots_url: str, data: str) -> Optional[RobotFileParser]:
@@ -183,6 +188,7 @@ def init_crawl(
     known_links: Optional[List[str]] = None,
     language: Optional[str] = None,
     rules: Optional[RobotFileParser] = None,
+    ref: Optional[str] = None,
 ) -> Tuple[str, int, int, Optional[RobotFileParser], bool]:
     "Start crawl by initializing variables and potentially examining the starting page."
     # config=DEFAULT_CONFIG
@@ -203,7 +209,7 @@ def init_crawl(
     if todo is None:
         URL_STORE.add_urls(urls=[homepage], visited=False)
         _, known_num, i = crawl_page(
-            i, base_url, lang=language, rules=rules, initial=True
+            i, base_url, lang=language, rules=rules, initial=True, ref=ref
         )
     else:
         known_num = len(URL_STORE.find_known_urls(base_url))
@@ -217,6 +223,7 @@ def crawl_page(
     lang: Optional[str] = None,
     rules: Optional[RobotFileParser] = None,
     initial: bool = False,
+    ref: Optional[str] = None,
 ) -> Tuple[bool, int, int]:
     """Examine a webpage, extract navigation links and links."""
     # config=DEFAULT_CONFIG
@@ -233,10 +240,10 @@ def crawl_page(
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
             # extract links on homepage
-            process_links(htmlstring, url=url, language=lang, rules=rules)
+            process_links(htmlstring, url=url, language=lang, rules=rules, ref=ref)
     else:
         response = fetch_response(url, decode=False)
-        process_response(response, base_url, lang, rules=rules)
+        process_response(response, base_url, lang, rules=rules, ref=ref)
 
     # optional backup of gathered pages without nav-pages ? ...
     is_on = bool(URL_STORE.find_unvisited_urls(base_url))
@@ -271,8 +278,9 @@ def focused_crawler(
         Set of known links.
 
     """
+    reference = homepage.rsplit("/", 1)[0]
     base_url, i, known_num, rules, is_on = init_crawl(
-        homepage, todo, known_links, language=lang, rules=rules
+        homepage, todo, known_links, language=lang, rules=rules, ref=reference
     )
     sleep_time = URL_STORE.get_crawl_delay(
         base_url, default=config.getfloat("DEFAULT", "SLEEP_TIME")
@@ -280,7 +288,7 @@ def focused_crawler(
 
     # visit pages until a limit is reached
     while is_on and i < max_seen_urls and known_num <= max_known_urls:
-        is_on, known_num, i = crawl_page(i, base_url, lang=lang, rules=rules)
+        is_on, known_num, i = crawl_page(i, base_url, lang=lang, rules=rules, ref=reference)
         sleep(sleep_time)
 
     # refocus todo-list on URLs without navigation?

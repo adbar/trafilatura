@@ -90,29 +90,42 @@ def test_process_links():
     )
 
     # test navigation links
-    htmlstring = '<html><body><a href="https://example.org/tag/number1"/><a href="https://example.org/page2"/></body></html>'
+    url1 = "https://example.org/tag/number1"
+    url2 = "https://example.org/page2"
+    htmlstring = f'<html><body><a href="{url1}"/><a href="{url2}"/></body></html>'
     spider.process_links(htmlstring, base_url)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 3
-    assert len(todo) == 3 and todo[0] == "https://example.org/tag/number1"
+    assert len(todo) == 3 and todo[0] == url1
 
     # test cleaning and language
-    htmlstring = '<html><body><a href="https://example.org/en/page1/?"/></body></html>'
+    url = "https://example.org/en/page1/?"
+    target = "https://example.org/en/page1/"
+    htmlstring = f'<html><body><a href="{url}"/></body></html>'
     spider.process_links(htmlstring, base_url, language="en")
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 4
     assert (
-        len(todo) == 4 and "https://example.org/en/page1/" in todo
+        len(todo) == 4 and target in todo
     )  # TODO: remove slash?
 
+    # test rejection of URLs out of scope
+    url = "https://example.org/section2/page2"
+    htmlstring = f'<html><body><a href="{url}"/></body></html>'
+    spider.process_links(htmlstring, base_url, ref="https://example.org/section1")
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert url not in todo and len(known_links) == 4
+
     # wrong language
-    htmlstring = '<html><body><a href="https://example.org/en/page2"/></body></html>'
+    url = "https://example.org/en/page2"
+    htmlstring = f'<html><body><a href="{url}"/></body></html>'
     spider.process_links(htmlstring, base_url, language="de")
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert "https://example.org/en/page2" not in todo and len(known_links) == 4
+    assert url not in todo and len(known_links) == 4
 
     # invalid links
     htmlstring = '<html><body><a href="#anchor"/><a href="mailto:user@example.org"/><a href="tel:1234567890"/></body></html>'
@@ -137,10 +150,12 @@ def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
     # erroneous webpage
     with pytest.raises(ValueError):
-        base_url, i, known_num, rules, is_on = spider.init_crawl("xyz", None, None)
+        _, _, _, _, _ = spider.init_crawl("xyz", None, None)
     assert len(spider.URL_STORE.urldict) == 0
+
     # already visited
     base_url, i, known_num, rules, is_on = spider.init_crawl(
         url,
@@ -151,6 +166,10 @@ def test_crawl_logic():
     )
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert base_url == "https://httpbun.com"
+    assert i == 0 and known_num == 1
+    assert not is_on
+
     # normal webpage
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     base_url, i, known_num, rules, is_on = spider.init_crawl(url, None, None)
@@ -166,9 +185,11 @@ def test_crawl_logic():
         and i == 1
         and not is_on
     )
+
     # delay between requests
     assert spider.URL_STORE.get_crawl_delay("https://httpbun.com") == 5
     assert spider.URL_STORE.get_crawl_delay("https://httpbun.com", default=2.0) == 2.0
+
     # existing todo
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     base_url, i, known_num, rules, is_on = spider.init_crawl(
@@ -194,6 +215,7 @@ def test_crawl_page():
         "https://httpbun.com/links/2/1",
     ]
     assert len(known_links) == 3 and visited_num == 1
+    assert is_on and known_num == 3
     # initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     spider.URL_STORE.add_urls(["https://httpbun.com/html"])
@@ -214,8 +236,8 @@ def test_focused_crawler():
         "https://httpbun.com/links/1/1", max_seen_urls=1
     )
     ## fails on Github Actions
-    ## assert sorted(known_links) == ['https://httpbun.com/links/1/0', 'https://httpbun.com/links/1/1']
-    ## assert sorted(todo) == ['https://httpbun.com/links/1/0']
+    assert sorted(known_links) == ['https://httpbun.com/links/1/0', 'https://httpbun.com/links/1/1']
+    assert sorted(todo) == ['https://httpbun.com/links/1/0']
 
 
 def test_robots():
@@ -229,17 +251,17 @@ def test_robots():
     assert spider.parse_robots(robots_url, b"123") is None
 
     rules = spider.parse_robots(robots_url, "Allow: *")
-    assert rules is not None and rules.can_fetch("*", "https://example.org/1")
+    assert rules and rules.can_fetch("*", "https://example.org/1")
 
     rules = spider.parse_robots(robots_url, "User-agent: *\nDisallow: /")
-    assert rules is not None and not rules.can_fetch("*", "https://example.org/1")
+    assert rules and not rules.can_fetch("*", "https://example.org/1")
 
     rules = spider.parse_robots(robots_url, "User-agent: *\nDisallow: /private")
-    assert rules is not None and not rules.can_fetch("*", "https://example.org/private")
+    assert rules and not rules.can_fetch("*", "https://example.org/private")
     assert rules.can_fetch("*", "https://example.org/public")
 
     rules = spider.parse_robots(robots_url, "Allow: *\nUser-agent: *\nCrawl-delay: 10")
-    assert rules is not None and rules.crawl_delay("*") == 10
+    assert rules and rules.crawl_delay("*") == 10
 
     # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")
