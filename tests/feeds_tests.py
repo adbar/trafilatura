@@ -13,6 +13,7 @@ from trafilatura.feeds import (
     FeedParameters,
     determine_feed,
     extract_links,
+    find_links,
     find_feed_urls,
     handle_link_list,
 )
@@ -162,6 +163,9 @@ def test_feeds_helpers():
     params = FeedParameters("https://example.org", "example.org", "https://example.org")
     domainname, baseurl = get_hostinfo("https://example.org")
     assert domainname == params.domain and baseurl == params.base
+
+    # empty page
+    assert find_links("<feed></feed>", params) == []
 
     # nothing useful
     assert len(determine_feed("", params)) == 0

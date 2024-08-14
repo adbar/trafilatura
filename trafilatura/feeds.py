@@ -101,12 +101,11 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
     """Examine links to determine if they are valid and
     lead to a web page"""
     output_links = []
-    # sort and uniq
+
     for item in sorted(set(linklist)):
-        # fix and check
         link = fix_relative_urls(params.base, item)
-        # control output for validity
         checked = check_url(link, language=params.lang)
+
         if checked is not None:
             if (
                 not params.ext
@@ -121,6 +120,7 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
         # Feedburner/Google feeds
         elif "feedburner" in item or "feedproxy" in item:
             output_links.append(item)
+
     return output_links
 
 
@@ -173,9 +173,9 @@ def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
     feed_links = find_links(feed_string.strip(), params)
 
     output_links = [
-        l
-        for l in handle_link_list(feed_links, params)
-        if l != params.ref and l.count("/") > 2
+        link
+        for link in handle_link_list(feed_links, params)
+        if link != params.ref and link.count("/") > 2
     ]
 
     if feed_links:
@@ -189,29 +189,28 @@ def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
 
 
 def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
-    """Try to extract the feed URL from the home page.
+    """Parse the HTML and try to extract feed URLs from the home page.
     Adapted from http://www.aaronsw.com/2002/feedfinder/"""
-    # parse the page to look for feeds
     tree = load_html(htmlstring)
-    # safeguard
     if tree is None:
         LOGGER.debug("Invalid HTML/Feed page: %s", params.base)
         return []
 
-    feed_urls = []
-    for linkelem in tree.xpath('//link[@rel="alternate"][@href]'):
-        # most common case + websites like geo.de
-        if linkelem.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(
-            linkelem.get("href", "")
-        ):
-            feed_urls.append(linkelem.get("href"))
+    # most common case + websites like geo.de
+    feed_urls = [
+        l.get("href", "")
+        for l in tree.xpath('//link[@rel="alternate"][@href]')
+        if l.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(l.get("href", ""))
+    ]
 
     # backup
     if not feed_urls:
-        for linkelem in tree.xpath("//a[@href]"):
-            link = linkelem.get("href", "")
-            if LINK_VALIDATION_RE.search(link):
-                feed_urls.append(link)
+        feed_urls = [
+            link.get("href", "")
+            for link in tree.xpath("//a[@href]")
+            if LINK_VALIDATION_RE.search(link.get("href", ""))
+        ]
+
     # refine
     output_urls = []
     for link in dict.fromkeys(feed_urls):
