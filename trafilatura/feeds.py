@@ -77,13 +77,13 @@ class FeedParameters:
     def __init__(
         self,
         baseurl: str,
-        domainname: str,
+        domain: str,
         reference: str,
         external: bool = False,
         target_lang: Optional[str] = None,
     ) -> None:
         self.base: str = baseurl
-        self.domain: str = domainname
+        self.domain: str = domain
         self.ext: bool = external
         self.lang: Optional[str] = target_lang
         self.ref: str = reference
@@ -231,6 +231,22 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
     return output_urls
 
 
+def probe_gnews(params: FeedParameters, urlfilter: Optional[str]) -> List[str]:
+    "Alternative way to gather feed links: Google News."
+    if params.lang:
+        downloaded = fetch_url(
+            f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100"
+        )
+        if downloaded:
+            feed_links = extract_links(downloaded, params)
+            feed_links = filter_urls(feed_links, urlfilter)
+            LOGGER.debug(
+                "%s Google news links found for %s", len(feed_links), params.domain
+            )
+            return feed_links
+    return []
+
+
 def find_feed_urls(
     url: str,
     target_lang: Optional[str] = None,
@@ -252,12 +268,12 @@ def find_feed_urls(
         The extracted links as a list (sorted list of unique links).
 
     """
-    domainname, baseurl = get_hostinfo(url)
-    if domainname is None:
+    domain, baseurl = get_hostinfo(url)
+    if domain is None:
         LOGGER.warning("Invalid URL: %s", url)
         return []
 
-    params = FeedParameters(baseurl, domainname, url, external, target_lang)
+    params = FeedParameters(baseurl, domain, url, external, target_lang)
     urlfilter = None
     downloaded = fetch_url(url)
 
@@ -276,7 +292,7 @@ def find_feed_urls(
         # return links found
         if len(feed_links) > 0:
             feed_links = filter_urls(feed_links, urlfilter)
-            LOGGER.debug("%s feed links found for %s", len(feed_links), domainname)
+            LOGGER.debug("%s feed links found for %s", len(feed_links), domain)
             return feed_links
         LOGGER.debug("No usable feed links found: %s", url)
     else:
@@ -285,20 +301,7 @@ def find_feed_urls(
             sleep(sleep_time)
             return try_homepage(baseurl, target_lang)
 
-    # try alternative: Google News
-    if target_lang is not None:
-        downloaded = fetch_url(
-            f"https://news.google.com/rss/search?q=site:{baseurl}&hl={target_lang}&scoring=n&num=100"
-        )
-        if downloaded is not None:
-            feed_links = extract_links(downloaded, params)
-            feed_links = filter_urls(feed_links, urlfilter)
-            LOGGER.debug(
-                "%s Google news links found for %s", len(feed_links), domainname
-            )
-            return feed_links
-
-    return []
+    return probe_gnews(params, urlfilter)
 
 
 def try_homepage(baseurl: str, target_lang: Optional[str]) -> List[str]:

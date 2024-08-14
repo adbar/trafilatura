@@ -16,6 +16,7 @@ from trafilatura.feeds import (
     find_links,
     find_feed_urls,
     handle_link_list,
+    probe_gnews,
 )
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -290,6 +291,16 @@ def test_feeds_helpers():
     ]
     # diverging domain names
     assert not handle_link_list(["https://www.software.info/1"], params)
+
+    # Gnews
+    params = FeedParameters(
+        "https://www.handelsblatt.com",
+        "handelsblatt.com",
+        "https://www.handelsblatt.com",
+        False,
+        "de",
+    )
+    assert probe_gnews(params, None) is not None
 
 
 def test_cli_behavior():
