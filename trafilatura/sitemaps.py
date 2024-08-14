@@ -130,13 +130,12 @@ class SitemapObject:
             m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)
         ):
             handler(match)
-        if LOGGER.isEnabledFor(logging.DEBUG):
-            LOGGER.debug(
-                "%s sitemaps and %s links found for %s",
-                len(self.sitemap_urls),
-                len(self.urls),
-                self.current_url,
-            )
+        LOGGER.debug(
+            "%s sitemaps and %s links found for %s",
+            len(self.sitemap_urls),
+            len(self.urls),
+            self.current_url,
+        )
 
     def extract_sitemap_langlinks(self) -> None:
         "Extract links corresponding to a given target language."
