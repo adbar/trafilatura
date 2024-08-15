@@ -235,7 +235,7 @@ def test_sysoutput():
     # process with backup directory and no counter
     options = args_to_extractor(args)
     assert options.format == "markdown" and options.formatting is True
-    assert cli_utils.process_result("DADIDA", args, None, options) is None
+    assert cli_utils.process_result("DADIDA", args, -1, options) == -1
     # test keeping dir structure
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     with patch.object(sys, "argv", testargs):
