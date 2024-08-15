@@ -40,34 +40,19 @@ MAX_KNOWN_URLS = 100000
 
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
-    __slots__ = [
-        "start",
-        "base",
-        "lang",
-        "rules",
-        "ref",
-        "todo",
-        "known_links",
-        "i",
-        "known_num",
-        "is_on",
-    ]
+    __slots__ = ["start", "base", "lang", "rules", "ref", "i", "known_num", "is_on"]
 
     def __init__(
         self,
         start: str,
         lang: Optional[str] = None,
         rules: Optional[RobotFileParser] = None,
-        todo: Optional[List[str]] = None,
-        known_links: Optional[List[str]] = None,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
         self.ref: str = self._get_reference(start)
         self.lang: Optional[str] = lang
         self.rules: Optional[RobotFileParser] = rules or get_rules(self.base)
-        self.todo: List[str] = self._prepare_todo_list(todo)
-        self.known_links: List[str] = known_links or []
         self.i: int = 0
         self.known_num: int = 0
         self.is_on: bool = True
@@ -81,18 +66,29 @@ class CrawlParameters:
 
     def _get_reference(self, start: str) -> str:
         "Determine the reference URL."
-        return start.rsplit("/", 1)[0] if start.count("/") > 3 else start
-
-    def _prepare_todo_list(self, todo: Optional[List[str]]) -> List[str]:
-        "Initialize the todo list, excluding invalid URLs."
-        if not todo:
-            return []
-        return [u for u in todo if u != self.start and self.ref in u]
+        return start.rsplit("/", 1)[0] if start.count("/") >= 3 else start
 
     def update_metadata(self, url_store: UrlStore) -> None:
         "Adjust crawl data based on URL store info."
         self.is_on = bool(url_store.find_unvisited_urls(self.base))
         self.known_num = len(url_store.find_known_urls(self.base))
+
+    def filter_list(self, todo: Optional[List[str]]) -> List[str]:
+        "Prepare the todo list, excluding invalid URLs."
+        if not todo:
+            return []
+        return [u for u in todo if u != self.start and self.ref in u]
+
+    def is_valid_link(self, link: str) -> bool:
+        "Run checks: robots.txt rules, URL type and crawl breadth."
+        if (
+            (self.rules and not self.rules.can_fetch("*", link))
+            or is_not_crawlable(link)
+            or self.ref
+            and self.ref not in link
+        ):
+            return False
+        return True
 
 
 def refresh_detection(
@@ -215,15 +211,8 @@ def process_links(
         language=params.lang,
         with_nav=True,
     ):
-        # check robots.txt rules + sanity check
-        if (params.rules and not params.rules.can_fetch("*", link)) or is_not_crawlable(
-            link
-        ):
+        if not params.is_valid_link(link):
             continue
-        # use reference to determine crawl breadth
-        if params.ref and params.ref not in link:
-            continue
-        # store
         if is_navigation_page(link):
             links_priority.append(link)
         else:
@@ -245,23 +234,29 @@ def process_response(
     process_links(decode_file(response.data), params, params.base)
 
 
-def init_crawl(params: CrawlParameters) -> CrawlParameters:
+def init_crawl(
+    start: str,
+    lang: Optional[str] = None,
+    rules: Optional[RobotFileParser] = None,
+    todo: Optional[List[str]] = None,
+    known: Optional[List[str]] = None,
+) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
+    params = CrawlParameters(start, lang, rules)
+
     # todo: just known or also visited?
-    URL_STORE.add_urls(urls=params.known_links, visited=True)
-    URL_STORE.add_urls(urls=params.todo)
+    URL_STORE.add_urls(urls=known or [], visited=True)
+    URL_STORE.add_urls(urls=params.filter_list(todo))
     URL_STORE.store_rules(params.base, params.rules)
 
     # visiting the start page if necessary
-    if not params.todo:
+    if not todo:
         URL_STORE.add_urls(urls=[params.start], visited=False)
         params = crawl_page(params, initial=True)
     else:
         params.update_metadata(URL_STORE)
 
-    # clear temporary lists
-    params.known_links, params.todo = [], []
     return params
 
 
@@ -323,16 +318,15 @@ def focused_crawler(
         Set of known links.
 
     """
-    params = init_crawl(CrawlParameters(homepage, lang, rules, todo, known_links))
+    params = init_crawl(homepage, lang, rules, todo, known_links)
 
-    # params = init_crawl(params)
     sleep_time = URL_STORE.get_crawl_delay(
         params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME")
     )
 
     # visit pages until a limit is reached
     while (
-        params.is_on and params.i < max_seen_urls and params.known_num <= max_known_urls
+        params.is_on and params.i <= max_seen_urls and params.known_num <= max_known_urls
     ):
         params = crawl_page(params)
         sleep(sleep_time)
