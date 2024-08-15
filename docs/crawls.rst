@@ -7,18 +7,12 @@ Web crawling
         focused crawling, enforces politeness rules, and navigates through websites.
 
 
+A tool aiming at the discovery of links by exploration and retrieval is commonly known as (web) crawler or spider. This process involves traversing the web to extract information and identify hyperlinks (URLs) for further exploration. A crawler keeps track of and permanently sorts the URLs seen in order to get to new leads. Essentially, a crawler is a sort of a virtual librarian which looks for info and catalogues it.
 
-A crawler is a computer program that automatically and systematically visits web pages. Crawling implies to send robots across the Web in order to “read” web pages and collect information about them. A web crawler usually searches the visited pages for the links (i.e. URLs) that they entail and follows them through. It keeps track of and permanently sorts the URLs seen in order to get to new websites to visit. Essentially, a crawler is a sort of a virtual librarian which looks for info and catalogues it.
+Prominent operators of web crawlers include search engine companies, which use them to build their search indexes. Additional applications include web archiving, data mining, and text analytics. In linguistic research, they can be used to build web corpora.
 
-The most well-known operators of web crawlers are companies running web search engines. These programs feed search engines all the information they need to create a (giant) database, the search index.
-Another use of web crawlers is in Web archiving, which involves large sets of webpages to be periodically collected and archived.
-Other applications include data mining and text analytics, for example building web corpora for linguistic research.
+Efficient techniques are essential to optimize resource utilization. Trafilatura supports focused crawling, adhering to politeness rules, and efficiently navigating through links. This page shows how to perform these tasks with Python and on the command-line.
 
-
-Dive deep into the web with crawling techniques. Trafilatura supports focused crawling, adhering to politeness rules, and efficiently navigates through sitemaps and feeds. This page shows how to perform certain web crawling tasks with Python and on the command-line. The `trafilatura` package allows for easy focused crawling (see definition below).
-
-..
-    Web crawlers require resources to run, so companies want to make sure they are using their resources as efficiently as possible, so they must be selective.
 
 
 Design decisions
@@ -27,27 +21,34 @@ Design decisions
 Intra vs. inter
 ~~~~~~~~~~~~~~~
 
-A necessary distinction has to be made between intra- and inter-domains crawling:
+A necessary distinction has to be made between intra-domain and inter-domains crawling:
 
-1. Focused crawling on web-page level: Finding sources within a web page is relatively easy if the page is not too big or too convoluted. For this Trafilatura offers functions to search for links in sitemaps and feeds.
-2. Web crawling: Hopping between websites can be cumbersome. Discovering more domains without gathering too much junk or running into bugs is difficult without experience with the subject.
+1. Focused crawling on website level: Finding sources within a website is relatively straightforward if it is not too rich in links or too convoluted.
+2. Broad web crawling: Hopping across multiple websites can be challenging as it requires navigating diverse domains without accumulating irrelevant data or running into technical issues.
 
-For practical reasons the first solution ("intra") is best, along with "good" (i.e. customized as needed) seeds/sources. As an alternative, prefix searches on the `Common Crawl index <https://index.commoncrawl.org/>`_ can be used.
+Trafilatura offers functions to support both approaches. In practice, intra-domain crawling is often the more feasible option, especially when paired with carefully curated sources.
 
-See `information on finding sources <sources.html>`_ for more details. 
+Another viable alternative is leveraging existing data from external crawling projects. See `information on finding sources <sources.html>`_ for more details. 
 
 
 Concept and operation
 ~~~~~~~~~~~~~~~~~~~~~
 
-The focused crawler aims at the discovery of texts within a websites by exploration and retrieval of links. This tool is commonly known as (web) `crawler or spider <https://en.wikipedia.org/wiki/Web_crawler>`_.
+Crawling starts with a seed list of URLs to visit. As these pages are downloaded, a parsing module extracts specific elements. While the main part of Trafilatura focuses on metadata, text, and comments, the crawling component identifies relevant hyperlinks present on the pages and adds them to the list of URLs to visit, called the frontier.
 
-A Web crawler starts with a list of URLs to visit, called the seeds. As the crawler visits these URLs, a parsing module extracts specific elements from fetched web pages. The main part of Trafilatura focuses on metadata, text, and comments. The crawler component additionally targets links: it identifies all the hyperlinks present on the pages and adds them to the list of URLs to visit, called the `crawl frontier <https://en.wikipedia.org/wiki/Crawl_frontier>`_.
+The crawl frontier is initially populated with the seed set. Visited pages are removed from the frontier. A filter is applied to determine whether the extracted links should be included, prioritizing navigation pages (such as archives or categories) to maximize link gathering in few iterations. The resulting links are then added to the frontier.
 
-Initially, the URL frontier contains the seed set. As web pages are visited they are removed from it. The fetched pages are parsed and further internal links are extracted. A URL filter is used to determine whether the extracted links should be included based on one of several tests. It prioritizes navigation pages (archives, categories, etc.) over the rest in order to gather as many links as possible in few iterations. The resulting links are then added to the frontier.
 
-The spider module implements politeness rules as defined by the `Robots exclusion standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ where applicable.
-Duplicate removal is included, which concerns both URL- and text-level analysis. It can register if a URL has already been visited or if a web page with the same content has already been seen at another URL.
+.. hint::
+    See also the documentation page `Compendium: Web texts in linguistics and humanities <compendium.html>`_ for more details. 
+
+
+Characteristics
+~~~~~~~~~~~~~~~
+
+The spider module implements politeness rules as defined by the Robots Exclusion Standard, where applicable.
+
+Duplicate removal is also implemented, which involves both URL- and text-level analysis. This allows the crawler to detect and avoid revisiting previously crawled URLs or web pages with identical content.
 
 
 
@@ -57,7 +58,13 @@ With Python
 Focused crawler
 ~~~~~~~~~~~~~~~
 
-The ``focused_crawler()`` function integrates all necessary components and can be adjusted by a series of arguments. The following lines explain how to set up a focused crawler which will explore a given website to extract internal links.
+The ``focused_crawler()`` function integrates all necessary components and can be customized using various arguments. To use it, you will need to import the corresponding module and call the function with the required parameters:
+
+* ``homepage``: the URL of the page to start crawling from (it can also be a subsection)
+* ``max_seen_urls``: the maximum number of pages to visit
+* ``max_known_urls``: the maximum number of pages to "know" about
+
+The following example demonstrates how to set up a focused crawler to extract internal links from a given website.
 
 .. code-block:: python
 
@@ -72,9 +79,16 @@ The ``focused_crawler()`` function integrates all necessary components and can b
     >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_links)
 
 
-Here the crawler stops after seeing a maximum of 10 URLs or registering a total of 100000 URLs on the website, whichever comes first.
+In this example, the crawler stops after seeing a maximum of 10 URLs or registering a total of 100,000 URLs on the website, whichever comes first. Setting both parameters to high values can result in a significant increase in processing time.
 
-The collected links can then be downloaded and processed. The ``to_visit`` variable keeps track of what's ahead of the exploration. Using ``known_links`` makes sure the same pages are not visited twice.  The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both can also be converted to a list if necessary:
+
+Step by step
+~~~~~~~~~~~~
+
+The function returns two values, a snapshot of the current crawling state. Since the collected links can be downloaded and processed at a later time, it is recommended to progress in a step-by-step manner.
+
+The ``to_visit`` variable keeps track of what is ahead and the ``known_links`` variable ensures that the same pages are not visited twice. The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both variables can easily be converted to lists if necessary:
+
 
 .. code-block:: python
 
@@ -86,11 +100,8 @@ As this requirement can vary depending on the use case (e.g. checking new pages 
 You can also use a custom configuration and pass politeness rules to the crawler. For more information see the `documentation of the function <corefunctions.html#trafilatura.spider.focused_crawler>`_.
 
 
-Navigation
-~~~~~~~~~~
+You can determine the course of a crawl by checking if there are still navigation pages to visit using the ``is_still_navigation()`` function:
 
-.. hint::
-    You may decide on the course of a crawl by determining if there are still navigation pages to visit:
 
 .. code-block:: python
 
@@ -102,10 +113,11 @@ Navigation
 For more info please refer to the `core functions page <corefunctions.html>`_.
 
 
+
 On the command-line
 -------------------
 
-Two different options are available on the command-line:
+Two options are available on the command-line:
 
 * ``--crawl`` : crawl a fixed number of pages within the website
 * ``--explore`` : combination of sitemap and crawl (uses sitemaps if possible)
@@ -116,14 +128,15 @@ On the CLI the crawler automatically works its way through a website, stopping a
 
     $ trafilatura --crawl "https://www.example.org" > links.txt
 
-It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--input-file`` option).
+It can also crawl websites in parallel by reading a list of target sites from a list using the ``-i``/``--input-file`` option.
 
 .. note::
-    The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This happens in order to give a chance to examine the collected URLs prior to further downloads. For more information on how to refine and filter a URL collection, see the underlying `courlan package <https://github.com/adbar/courlan>`_. 
+    The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This allows for examination of the collected URLs prior to further downloads. For more information on refining and filtering URL collections, see the underlying `courlan package <https://github.com/adbar/courlan>`_.
 
 
-References
-----------
+
+Further reading
+---------------
 
 Boldi, P., Codenotti, B., Santini, M., & Vigna, S. (2004). Ubicrawler: A scalable fully distributed web crawler. Software: Practice and Experience, 34(8), 711-726.
 

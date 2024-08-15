@@ -158,6 +158,10 @@ def test_crawl_logic():
         _, _, _, _, _ = trafilatura.spider.init_crawl("xyz", None, None)
     assert len(trafilatura.spider.URL_STORE.urldict) == 0
 
+    # empty request
+    trafilatura.spider.process_response(None, "https://example.org", None)
+    assert len(trafilatura.spider.URL_STORE.urldict) == 0
+
     # already visited
     base_url, i, known_num, rules, is_on = trafilatura.spider.init_crawl(
         url,

@@ -13,8 +13,10 @@ from trafilatura.feeds import (
     FeedParameters,
     determine_feed,
     extract_links,
+    find_links,
     find_feed_urls,
     handle_link_list,
+    probe_gnews,
 )
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -163,6 +165,9 @@ def test_feeds_helpers():
     domainname, baseurl = get_hostinfo("https://example.org")
     assert domainname == params.domain and baseurl == params.base
 
+    # empty page
+    assert find_links("<feed></feed>", params) == []
+
     # nothing useful
     assert len(determine_feed("", params)) == 0
     assert (
@@ -276,6 +281,11 @@ def test_feeds_helpers():
     # feed discovery
     assert not find_feed_urls("http://")
     assert not find_feed_urls("https://httpbun.com/status/404")
+
+    # feed download and processing
+    links = find_feed_urls("https://www.w3.org/blog/feed/")
+    assert len(links) > 0
+
     # Feedburner/Google links
     assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == [
         "https://feedproxy.google.com/ABCD"
@@ -286,6 +296,16 @@ def test_feeds_helpers():
     ]
     # diverging domain names
     assert not handle_link_list(["https://www.software.info/1"], params)
+
+    # Gnews
+    params = FeedParameters(
+        "https://www.handelsblatt.com",
+        "handelsblatt.com",
+        "https://www.handelsblatt.com",
+        False,
+        "de",
+    )
+    assert probe_gnews(params, None) is not None
 
 
 def test_cli_behavior():

@@ -7,7 +7,7 @@ import re
 
 from itertools import islice
 from time import sleep
-from typing import List, Set, Optional
+from typing import Callable, List, Set, Optional, Pattern
 
 from courlan import (
     clean_url,
@@ -122,43 +122,44 @@ class SitemapObject:
         else:
             self.urls.append(link)
 
-    def extract_sitemap_langlinks(self) -> None:
-        "Extract links corresponding to a given target language."
-        if "hreflang=" not in self.content:
-            return
-        # compile regex here for modularity and efficiency
-        lang_regex = re.compile(
-            rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL
-        )
-        # extract
-        for attrs in (
-            m[0] for m in islice(XHTML_REGEX.finditer(self.content), MAX_LINKS)
-        ):
-            if lang_regex.search(attrs):
-                lang_match = HREFLANG_REGEX.search(attrs)
-                if lang_match:
-                    self.handle_link(lang_match[1])
-        LOGGER.debug(
-            "%s sitemaps and %s links with hreflang found for %s",
-            len(self.sitemap_urls),
-            len(self.urls),
-            self.current_url,
-        )
-
-    def extract_sitemap_links(self) -> None:
-        "Extract sitemap links and web page links from a sitemap file."
-        # extract
+    def extract_links(
+        self, regex: Pattern[str], index: int, handler: Callable[[str], None]
+    ) -> None:
+        "Extract links from the content using pre-defined regex, index and handler."
         for match in (
-            m[1] for m in islice(LINK_REGEX.finditer(self.content), MAX_LINKS)
+            m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)
         ):
-            # process middle part of the match tuple
-            self.handle_link(match)
+            handler(match)
         LOGGER.debug(
             "%s sitemaps and %s links found for %s",
             len(self.sitemap_urls),
             len(self.urls),
             self.current_url,
         )
+
+    def extract_sitemap_langlinks(self) -> None:
+        "Extract links corresponding to a given target language."
+        if "hreflang=" not in self.content:
+            return
+
+        lang_regex = re.compile(
+            rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL
+        )
+
+        def handle_lang_link(attrs: str) -> None:
+            "Examine language code attributes."
+            if lang_regex.search(attrs):
+                lang_match = HREFLANG_REGEX.search(attrs)
+                if lang_match:
+                    self.handle_link(lang_match[1])
+
+        self.extract_links(XHTML_REGEX, 0, handle_lang_link)
+
+    def extract_sitemap_links(self) -> None:
+        "Extract sitemap links and web page links from a sitemap file."
+        self.extract_links(
+            LINK_REGEX, 1, self.handle_link
+        )  # process middle part of the match tuple
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
@@ -168,10 +169,7 @@ class SitemapObject:
             return
         # try to extract links from TXT file
         if not SITEMAP_FORMAT.match(self.content):
-            for match in (
-                m[0] for m in islice(DETECT_LINKS.finditer(self.content), MAX_LINKS)
-            ):
-                self.handle_link(match)
+            self.extract_links(DETECT_LINKS, 0, self.handle_link)
             return
         # process XML sitemap
         if self.target_lang is not None:
@@ -182,7 +180,10 @@ class SitemapObject:
 
 
 def sitemap_search(
-    url: str, target_lang: Optional[str] = None, external: bool = False, sleep_time: int = 2
+    url: str,
+    target_lang: Optional[str] = None,
+    external: bool = False,
+    sleep_time: int = 2,
 ) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
