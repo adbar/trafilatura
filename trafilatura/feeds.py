@@ -282,7 +282,7 @@ def find_feed_urls(
     if downloaded is not None:
         # assume it's a feed
         feed_links = extract_links(downloaded, params)
-        if len(feed_links) == 0:
+        if not feed_links:
             # assume it's a web page
             for feed in determine_feed(downloaded, params):
                 feed_string = fetch_url(feed)
@@ -291,7 +291,7 @@ def find_feed_urls(
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
         # return links found
-        if len(feed_links) > 0:
+        if feed_links:
             feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug("%s feed links found for %s", len(feed_links), domain)
             return feed_links

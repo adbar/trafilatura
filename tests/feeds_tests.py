@@ -281,6 +281,11 @@ def test_feeds_helpers():
     # feed discovery
     assert not find_feed_urls("http://")
     assert not find_feed_urls("https://httpbun.com/status/404")
+
+    # feed download and processing
+    links = find_feed_urls("https://www.w3.org/blog/feed/")
+    assert len(links) > 0
+
     # Feedburner/Google links
     assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == [
         "https://feedproxy.google.com/ABCD"
