@@ -301,6 +301,7 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     if not options:
         options = args_to_extractor(args)
     sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
+    param_dict = {}
     # counter = None
     # load input URLs
     if url_store is None:
@@ -311,8 +312,8 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            # base_url, i, known_num, rules, is_on
-            _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
+            params = spider.CrawlParameters(startpage, lang=args.target_language)
+            param_dict[hostname] = spider.init_crawl(params)
             # update info
             # TODO: register changes?
             # if base_url != hostname:
@@ -325,9 +326,7 @@ def cli_crawler(args, n=30, url_store=None, options=None):
             base_url = get_base_url(url)
             # handle result
             if result is not None:
-                spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
-                # just in case a crawl delay is specified in robots.txt
-                # sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(base_url)))
+                spider.process_response(result, param_dict[base_url])
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
