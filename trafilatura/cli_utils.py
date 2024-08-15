@@ -313,8 +313,7 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            params = spider.CrawlParameters(startpage, lang=args.target_language)
-            param_dict[hostname] = spider.init_crawl(params)
+            param_dict[hostname] = spider.init_crawl(startpage, lang=args.target_language)
             # update info
             # TODO: register changes?
             # if base_url != hostname:
