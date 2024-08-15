@@ -323,9 +323,7 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
-        # start several threads
         for url, result in buffered_downloads(bufferlist, args.parallel, decode=False, options=options):
-            # handle result
             if result is not None:
                 base_url = get_base_url(url)
                 spider.process_response(result, param_dict[base_url])
@@ -333,7 +331,6 @@ def cli_crawler(args, n=30, url_store=None, options=None):
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
 
-    # print results
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
 
 

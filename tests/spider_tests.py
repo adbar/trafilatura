@@ -12,8 +12,7 @@ import pytest
 
 from courlan import UrlStore
 
-import trafilatura.spider  # for global variables
-from trafilatura.spider import CrawlParameters
+from trafilatura import spider  # for global variables
 
 # from trafilatura.utils import LANGID_FLAG
 
@@ -23,13 +22,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 def test_redirections():
     "Test redirection detection."
-    _, _, baseurl = trafilatura.spider.probe_alternative_homepage("xyz")
+    _, _, baseurl = spider.probe_alternative_homepage("xyz")
     assert baseurl is None
-    _, _, baseurl = trafilatura.spider.probe_alternative_homepage(
+    _, _, baseurl = spider.probe_alternative_homepage(
         "https://httpbun.com/redirect-to?url=https://example.org"
     )
     assert baseurl == "https://example.org"
-    # _, _, baseurl = trafilatura.spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
+    # _, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
 
 
 def test_meta_redirections():
@@ -64,7 +63,7 @@ def test_meta_redirections():
     ]
 
     for htmlstring, homepage, expected_homepage in tests:
-        htmlstring2, homepage2 = trafilatura.spider.refresh_detection(
+        htmlstring2, homepage2 = spider.refresh_detection(
             htmlstring, homepage
         )
         assert homepage2 == expected_homepage
@@ -78,28 +77,28 @@ def test_meta_redirections():
 def test_process_links():
     "Test link extraction procedures."
     base_url = "https://example.org"
-    params = CrawlParameters(base_url)
+    params = spider.CrawlParameters(base_url)
     htmlstring = '<html><body><a href="https://example.org/page1"/><a href="https://example.org/page1/"/><a href="https://test.org/page1"/></body></html>'
 
     # 1 internal link in total
-    trafilatura.spider.process_links(htmlstring, params)
-    assert len(trafilatura.spider.URL_STORE.find_known_urls(base_url)) == 1
-    assert len(trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)) == 1
+    spider.process_links(htmlstring, params)
+    assert len(spider.URL_STORE.find_known_urls(base_url)) == 1
+    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1
 
     # same with content already seen
-    trafilatura.spider.process_links(htmlstring, params)
+    spider.process_links(htmlstring, params)
     assert (
-        len(trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)) == 1
-        and len(trafilatura.spider.URL_STORE.find_known_urls(base_url)) == 1
+        len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1
+        and len(spider.URL_STORE.find_known_urls(base_url)) == 1
     )
 
     # test navigation links
     url1 = "https://example.org/tag/number1"
     url2 = "https://example.org/page2"
     htmlstring = f'<html><body><a href="{url1}"/><a href="{url2}"/></body></html>'
-    trafilatura.spider.process_links(htmlstring, params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
+    spider.process_links(htmlstring, params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 3
     assert len(todo) == 3 and todo[0] == url1
 
@@ -107,85 +106,84 @@ def test_process_links():
     url = "https://example.org/en/page1/?"
     target = "https://example.org/en/page1/"
     htmlstring = f'<html><body><a href="{url}"/></body></html>'
-    params = CrawlParameters(base_url, lang="en")
-    trafilatura.spider.process_links(htmlstring, params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
+    params = spider.CrawlParameters(base_url, lang="en")
+    spider.process_links(htmlstring, params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 4
     assert len(todo) == 4 and target in todo  # TODO: remove slash?
 
     # test rejection of URLs out of scope
     url = "https://example.org/section2/page2"
     htmlstring = f'<html><body><a href="{url}"/></body></html>'
-    params = CrawlParameters("https://example.org/section1")
-    trafilatura.spider.process_links(htmlstring, params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
+    params = spider.CrawlParameters("https://example.org/section1")
+    spider.process_links(htmlstring, params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert url not in todo and len(known_links) == 4
 
     # wrong language
     url = "https://example.org/en/page2"
     htmlstring = f'<html><body><a href="{url}"/></body></html>'
-    params = CrawlParameters(base_url, lang="de")
-    trafilatura.spider.process_links(htmlstring, params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
+    params = spider.CrawlParameters(base_url, lang="de")
+    spider.process_links(htmlstring, params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert url not in todo and len(known_links) == 4
 
     # invalid links
-    params = CrawlParameters(base_url)
+    params = spider.CrawlParameters(base_url)
     htmlstring = '<html><body><a href="#anchor"/><a href="mailto:user@example.org"/><a href="tel:1234567890"/></body></html>'
-    trafilatura.spider.process_links(htmlstring, params)
+    spider.process_links(htmlstring, params)
     assert len(known_links) == 4 and len(todo) == 4
 
     # not crawlable
     htmlstring = '<html><body><a href="https://example.org/login"/></body></html>'
-    trafilatura.spider.process_links(htmlstring, params)
+    spider.process_links(htmlstring, params)
     assert len(known_links) == 4 and len(todo) == 4
 
     # test queue evaluation
     todo = deque()
-    assert trafilatura.spider.is_still_navigation(todo) is False
+    assert spider.is_still_navigation(todo) is False
     todo.append("https://example.org/en/page1")
-    assert trafilatura.spider.is_still_navigation(todo) is False
+    assert spider.is_still_navigation(todo) is False
     todo.append("https://example.org/tag/1")
-    assert trafilatura.spider.is_still_navigation(todo) is True
+    assert spider.is_still_navigation(todo) is True
 
 
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     url = "https://httpbun.com/html"
-    trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
 
     # erroneous webpage
     with pytest.raises(ValueError):
-        params = CrawlParameters("xyz")
-    assert len(trafilatura.spider.URL_STORE.urldict) == 0
+        params = spider.CrawlParameters("xyz")
+    assert len(spider.URL_STORE.urldict) == 0
 
     # empty request
-    params = CrawlParameters("https://example.org")
-    trafilatura.spider.process_response(None, params)
-    assert len(trafilatura.spider.URL_STORE.urldict) == 0
+    params = spider.CrawlParameters("https://example.org")
+    spider.process_response(None, params)
+    assert len(spider.URL_STORE.urldict) == 0
     assert params.start == params.base == params.ref == "https://example.org"
     assert params.i == 0 and params.known_num == 0 and params.is_on
     assert params.lang is None and params.rules is None
 
     # already visited
-    params = CrawlParameters(url)
-    params.known_links = [url]
-    params = trafilatura.spider.init_crawl(params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(params.base)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(params.base)
+    params = spider.CrawlParameters(url, None, None, None, [url])
+    params = spider.init_crawl(params)
+    todo = spider.URL_STORE.find_unvisited_urls(params.base)
+    known_links = spider.URL_STORE.find_known_urls(params.base)
     assert params.base == "https://httpbun.com"
     assert params.i == 0 and params.known_num == 1
     assert not params.is_on
 
     # normal webpage
-    trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    params = CrawlParameters(url)
-    params = trafilatura.spider.init_crawl(params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(params.base)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(params.base)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    params = spider.CrawlParameters(url)
+    params = spider.init_crawl(params)
+    todo = spider.URL_STORE.find_unvisited_urls(params.base)
+    known_links = spider.URL_STORE.find_known_urls(params.base)
     assert (
         todo == []
         and known_links == [url]
@@ -195,52 +193,58 @@ def test_crawl_logic():
     )
 
     # delay between requests
-    assert trafilatura.spider.URL_STORE.get_crawl_delay("https://httpbun.com") == 5
+    assert spider.URL_STORE.get_crawl_delay("https://httpbun.com") == 5
     assert (
-        trafilatura.spider.URL_STORE.get_crawl_delay("https://httpbun.com", default=2.0)
+        spider.URL_STORE.get_crawl_delay("https://httpbun.com", default=2.0)
         == 2.0
     )
 
     # existing todo
-    trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    params = CrawlParameters(url)
-    params.todo = [url]
-    params = trafilatura.spider.init_crawl(params)
+    params = spider.CrawlParameters(url, None, None, [url, "http://irrelevant.com"])
+    assert params.todo == []
+    params = spider.init_crawl(params)
     assert params.base == "https://httpbun.com" and params.i == 0 and not params.is_on
+
+    # new todo
+    params.todo = ["https://httpbun.com/links/1/1"]
+    params = spider.init_crawl(params)
+    assert params.base == "https://httpbun.com"
+    assert params.todo == [] and params.known_links == []
+    assert params.i == 0 and params.is_on and params.known_num == 2
 
 
 def test_crawl_page():
     "Test page-by-page processing."
     base_url = "https://httpbun.com"
 
-    trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    trafilatura.spider.URL_STORE.add_urls(["https://httpbun.com/links/2/2"])
-    params = CrawlParameters(base_url)
-    params = trafilatura.spider.crawl_page(params)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
-    #assert sorted(todo) == [
-    #    "https://httpbun.com/links/2/0",
-    #    "https://httpbun.com/links/2/1",
-    #]
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/links/2/2"])
+    params = spider.CrawlParameters(base_url)
+    params = spider.crawl_page(params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
+    assert sorted(todo) == [
+        "https://httpbun.com/links/2/0",
+        "https://httpbun.com/links/2/1",
+    ]
     assert params.i == 1 and params.is_on and params.known_num == 3
 
     # initial page
-    trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
-    trafilatura.spider.URL_STORE.add_urls(["https://httpbun.com/html"])
-    params = CrawlParameters(base_url, lang="de")
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/html"])
+    params = spider.CrawlParameters(base_url, lang="de")
     # if LANGID_FLAG is True:
-    params = trafilatura.spider.crawl_page(params, initial=True)
-    todo = trafilatura.spider.URL_STORE.find_unvisited_urls(base_url)
-    known_links = trafilatura.spider.URL_STORE.find_known_urls(base_url)
+    params = spider.crawl_page(params, initial=True)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+    known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(todo) == 0 and len(known_links) == 1 and params.i == 1
     ## TODO: find a better page for language tests
 
 
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
-    trafilatura.spider.URL_STORE = UrlStore()
-    todo, known_links = trafilatura.spider.focused_crawler(
+    spider.URL_STORE = UrlStore()
+    todo, known_links = spider.focused_crawler(
         "https://httpbun.com/links/2/2", max_seen_urls=2
     )
     assert len(known_links) > 0
@@ -251,32 +255,32 @@ def test_focused_crawler():
 
 def test_robots():
     "Test robots.txt parsing"
-    assert trafilatura.spider.get_rules("1234") is None
+    assert spider.get_rules("1234") is None
 
     robots_url = "https://example.org/robots.txt"
 
-    assert trafilatura.spider.parse_robots(robots_url, None) is None
-    assert trafilatura.spider.parse_robots(robots_url, 123) is None
-    assert trafilatura.spider.parse_robots(robots_url, b"123") is None
+    assert spider.parse_robots(robots_url, None) is None
+    assert spider.parse_robots(robots_url, 123) is None
+    assert spider.parse_robots(robots_url, b"123") is None
 
-    rules = trafilatura.spider.parse_robots(robots_url, "Allow: *")
+    rules = spider.parse_robots(robots_url, "Allow: *")
     assert rules and rules.can_fetch("*", "https://example.org/1")
 
-    rules = trafilatura.spider.parse_robots(robots_url, "User-agent: *\nDisallow: /")
+    rules = spider.parse_robots(robots_url, "User-agent: *\nDisallow: /")
     assert rules and not rules.can_fetch("*", "https://example.org/1")
 
-    rules = trafilatura.spider.parse_robots(
+    rules = spider.parse_robots(
         robots_url, "User-agent: *\nDisallow: /private"
     )
     assert rules and not rules.can_fetch("*", "https://example.org/private")
     assert rules.can_fetch("*", "https://example.org/public")
 
-    rules = trafilatura.spider.parse_robots(
+    rules = spider.parse_robots(
         robots_url, "Allow: *\nUser-agent: *\nCrawl-delay: 10"
     )
     assert rules and rules.crawl_delay("*") == 10
 
-    # rules = trafilatura.spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
+    # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")
     # assert not rules.can_fetch("*", "https://example.org/private")
 
