@@ -233,8 +233,8 @@ def test_queue():
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     options = args_to_extractor(args)
     options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
-    results = download_queue_processing(url_store, args, None, options)
-    assert len(results[0]) == 5 and results[1] is None
+    results = download_queue_processing(url_store, args, -1, options)
+    assert len(results[0]) == 5 and results[1] is -1
 
 
 if __name__ == '__main__':
