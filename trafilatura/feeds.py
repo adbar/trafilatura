@@ -109,7 +109,7 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
         if checked is not None:
             if (
                 not params.ext
-                and not "feed" in link
+                and "feed" not in link
                 and not is_similar_domain(params.domain, checked[1])
             ):
                 LOGGER.warning(
@@ -131,11 +131,11 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
         if feed_string.startswith("{"):
             try:
                 # fallback: https://www.jsonfeed.org/version/1.1/
-                return [
+                candidates = [
                     item.get("url") or item.get("id")
                     for item in json.loads(feed_string).get("items", [])
-                    if any(k in item for k in ("url", "id"))
                 ]
+                return [c for c in candidates if c is not None]
             except json.decoder.JSONDecodeError:
                 LOGGER.debug("JSON decoding error: %s", params.domain)
         else:
@@ -198,9 +198,10 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
 
     # most common case + websites like geo.de
     feed_urls = [
-        l.get("href", "")
-        for l in tree.xpath('//link[@rel="alternate"][@href]')
-        if l.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(l.get("href", ""))
+        link.get("href", "")
+        for link in tree.xpath('//link[@rel="alternate"][@href]')
+        if link.get("type") in FEED_TYPES
+        or LINK_VALIDATION_RE.search(link.get("href", ""))
     ]
 
     # backup

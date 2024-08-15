@@ -66,11 +66,13 @@ def refresh_detection(
         # Relative URL, adapt
         base_url = get_base_url(url2)
         url2 = fix_relative_urls(base_url, url2)
+
     # second fetch
     newhtmlstring = fetch_url(url2)
     if newhtmlstring is None:
         logging.warning("failed redirect: %s", url2)
         return None, None
+
     # else:
     logging.info("successful redirect: %s", url2)
     return newhtmlstring, url2
@@ -159,9 +161,9 @@ def process_response(
     """Convert urllib3 response object and extract links."""
     if response is None or not response.data:
         return
-    # add final document URL to known_links
+
     URL_STORE.add_urls([response.url], visited=True)
-    # convert urllib3 response to string and proceed to link extraction
+
     process_links(
         decode_file(response.data), base_url, language=language, rules=rules, ref=ref
     )
