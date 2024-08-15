@@ -158,15 +158,17 @@ def test_crawl_logic():
     trafilatura.spider.URL_STORE = UrlStore(compressed=False, strict=False)
 
     # erroneous webpage
-    params = CrawlParameters("xyz")
     with pytest.raises(ValueError):
-        _, _, _, _, _ = trafilatura.spider.init_crawl(params)
+        params = CrawlParameters("xyz")
     assert len(trafilatura.spider.URL_STORE.urldict) == 0
 
     # empty request
     params = CrawlParameters("https://example.org")
     trafilatura.spider.process_response(None, params)
     assert len(trafilatura.spider.URL_STORE.urldict) == 0
+    assert params.start == params.base == params.ref == "https://example.org"
+    assert params.i == 0 and params.known_num == 0 and params.is_on
+    assert params.lang is None and params.rules is None
 
     # already visited
     params = CrawlParameters(url)

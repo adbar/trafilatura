@@ -49,15 +49,31 @@ class CrawlParameters:
         rules: Optional[RobotFileParser] = None,
     ) -> None:
         self.start: str = start
-        self.base: str = get_base_url(start)
+        self.base: str = self._get_base_url(start)
+        self.ref: str = self. _get_reference(start)
         self.lang: Optional[str] = lang
         self.rules: Optional[RobotFileParser] = rules
-        self.ref: str = start.rsplit("/", 1)[0] if start.count("/") > 3 else start
         self.todo: List[str] = []
         self.known_links: List[str] = []
         self.i: int = 0
         self.known_num: int = 0
         self.is_on: bool = True
+
+    def _get_base_url(self, start: str) -> str:
+        "Set reference domain for the crawl."
+        base: str = get_base_url(start)
+        if not base:
+            raise ValueError(f"cannot start crawl: {start}")
+        return base
+
+    def _get_reference(self, start: str) -> str:
+        "Determine the reference URL."
+        return start.rsplit("/", 1)[0] if start.count("/") > 3 else start
+
+    def update_metadata(self, url_store: UrlStore) -> None:
+        "Adjust crawl data based on URL store info."
+        self.is_on = bool(url_store.find_unvisited_urls(self.base))
+        self.known_num = len(url_store.find_known_urls(self.base))
 
 
 def refresh_detection(
@@ -213,9 +229,6 @@ def process_response(
 def init_crawl(params: CrawlParameters) -> CrawlParameters:
     "Start crawl by initializing variables and potentially examining the starting page."
     # config=DEFAULT_CONFIG
-    # params.base = get_base_url(params.homepage)
-    if not params.base:
-        raise ValueError(f"cannot start crawl: {params.start}")
 
     # TODO: just known or also visited?
     if params.known_links:
@@ -232,9 +245,8 @@ def init_crawl(params: CrawlParameters) -> CrawlParameters:
         params = crawl_page(params, initial=True)
     else:
         # todo: URL_STORE.add_urls(urls=params.todo)
-        params.known_num = len(URL_STORE.find_known_urls(params.base))
+        params.update_metadata(URL_STORE)
 
-    params.is_on = bool(URL_STORE.find_unvisited_urls(params.base))
     return params
 
 
@@ -265,8 +277,7 @@ def crawl_page(
         process_response(response, params)
 
     # optional backup of gathered pages without nav-pages ? ...
-    params.is_on = bool(URL_STORE.find_unvisited_urls(params.base))
-    params.known_num = len(URL_STORE.find_known_urls(params.base))
+    params.update_metadata(URL_STORE)
     return params
 
 
