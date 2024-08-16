@@ -5,8 +5,9 @@ Functions dedicated to website navigation and crawling/spidering.
 
 import logging
 
+from configparser import ConfigParser
 from time import sleep
-from typing import Any, List, Optional, Tuple
+from typing import List, Optional, Tuple
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -24,7 +25,7 @@ except ImportError:
     pass
 
 from .core import baseline
-from .downloads import fetch_response, fetch_url
+from .downloads import Response, fetch_response, fetch_url
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, decode_file, load_html
 
@@ -81,14 +82,11 @@ class CrawlParameters:
 
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type and crawl breadth."
-        if (
-            (self.rules and not self.rules.can_fetch("*", link))
-            or is_not_crawlable(link)
-            or self.ref
-            and self.ref not in link
-        ):
-            return False
-        return True
+        return (
+            (not self.rules or self.rules.can_fetch("*", link))
+            and self.ref in link
+            and not is_not_crawlable(link)
+        )
 
 
 def refresh_detection(
@@ -202,7 +200,6 @@ def process_links(
     if not is_target_language(htmlstring, params.lang):
         return
 
-    # iterate through the links and filter them
     links, links_priority = [], []
     for link in extract_links(
         pagecontent=htmlstring,
@@ -222,7 +219,7 @@ def process_links(
 
 
 def process_response(
-    response: Any,
+    response: Optional[Response],
     params: CrawlParameters,
 ) -> None:
     """Convert urllib3 response object and extract links."""
@@ -298,7 +295,7 @@ def focused_crawler(
     todo: Optional[List[str]] = None,
     known_links: Optional[List[str]] = None,
     lang: Optional[str] = None,
-    config: Any = DEFAULT_CONFIG,
+    config: ConfigParser = DEFAULT_CONFIG,
     rules: Optional[RobotFileParser] = None,
 ) -> Tuple[List[str], List[str]]:
     """Basic crawler targeting pages of interest within a website.
@@ -326,7 +323,7 @@ def focused_crawler(
 
     # visit pages until a limit is reached
     while (
-        params.is_on and params.i <= max_seen_urls and params.known_num <= max_known_urls
+        params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls
     ):
         params = crawl_page(params)
         sleep(sleep_time)
