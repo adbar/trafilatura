@@ -86,6 +86,7 @@ def test_parser():
         "--url-filter",
         "test1",
         "test2",
+        "-vvv",
     ]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
@@ -183,7 +184,6 @@ def test_input_type():
     with open(testfile, "rb") as f:
         teststring = f.read(1024)
     assert cli.examine(teststring, args) is None
-    args.verbose = 2
     assert cli.examine([1, 2, 3], args) is None
     testfile = "docs/usage.rst"
     with open(testfile, "r", encoding="utf-8") as f:
