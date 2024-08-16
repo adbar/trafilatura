@@ -12,6 +12,7 @@ except ImportError:
     from importlib_metadata import version
 
 from platform import python_version
+from typing import Any
 
 from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
@@ -34,7 +35,7 @@ except AttributeError:
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-def add_args(parser):
+def add_args(parser: Any) -> Any:
     "Add argument groups and arguments to parser."
 
     group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
@@ -202,7 +203,7 @@ def add_args(parser):
     return parser
 
 
-def parse_args(args):
+def parse_args(args: Any) -> Any:
     """Define parser for command-line arguments"""
     parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
     parser = add_args(parser)
@@ -210,7 +211,7 @@ def parse_args(args):
     return map_args(parser.parse_args())
 
 
-def map_args(args):
+def map_args(args: Any) -> Any:
     '''Map existing options to format and output choices.'''
     # formats
     for otype in ("csv", "html", "json", "markdown", "xml", "xmltei"):
@@ -249,32 +250,28 @@ def map_args(args):
     return args
 
 
-def main():
+def main() -> None:
     """ Run as a command-line utility. """
     args = parse_args(sys.argv[1:])
     process_args(args)
 
 
-def process_args(args):
+def process_args(args: Any) -> None:
     """Perform the actual processing according to the arguments"""
-    # init
     error_caught = False
-    # verbosity
+
     if args.verbose == 1:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
     elif args.verbose >= 2:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
 
     # processing according to mutually exclusive options
-    # read url list from input file
-    if args.input_file and all([not args.crawl, not args.explore, not args.feed, not args.probe, not args.sitemap]):
-        url_store = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, url_store)
 
     # fetch urls from a feed or a sitemap
-    elif args.explore or args.feed or args.sitemap:
+    if args.explore or args.feed or args.sitemap:
         cli_discovery(args)
 
     # activate crawler/spider
@@ -289,6 +286,11 @@ def process_args(args):
     elif args.input_dir:
         file_processing_pipeline(args)
 
+    # read url list from input file
+    elif args.input_file:
+        url_store = load_input_dict(args)
+        error_caught = url_processing_pipeline(args, url_store)
+
     # process input URL
     elif args.URL:
         url_store = load_input_dict(args)
@@ -300,7 +302,7 @@ def process_args(args):
         write_result(result, args)
 
     # change exit code if there are errors
-    if error_caught is True:
+    if error_caught:
         sys.exit(1)
 
 

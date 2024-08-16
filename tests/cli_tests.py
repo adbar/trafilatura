@@ -12,19 +12,21 @@ import sys
 from contextlib import redirect_stdout
 from datetime import datetime
 from os import path
+from tempfile import gettempdir
 from unittest.mock import patch
 
 import pytest
 
 from courlan import UrlStore
 
-from trafilatura import cli, cli_utils, spider  # settings
+from trafilatura import cli, cli_utils, spider, settings
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
-from trafilatura.settings import args_to_extractor
 from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
+
+settings.MAX_FILES_PER_DIRECTORY = 1
 
 
 def test_parser():
@@ -84,6 +86,7 @@ def test_parser():
         "--url-filter",
         "test1",
         "test2",
+        "-vvv",
     ]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
@@ -181,6 +184,7 @@ def test_input_type():
     with open(testfile, "rb") as f:
         teststring = f.read(1024)
     assert cli.examine(teststring, args) is None
+    assert cli.examine([1, 2, 3], args) is None
     testfile = "docs/usage.rst"
     with open(testfile, "r", encoding="utf-8") as f:
         teststring = f.read()
@@ -232,10 +236,13 @@ def test_sysoutput():
         args = cli.parse_args(testargs)
     result = "DADIDA"
     cli_utils.write_result(result, args)
+    args.output_dir = gettempdir()
+    args.backup_dir = None
+    cli_utils.write_result(result, args)
     # process with backup directory and no counter
-    options = args_to_extractor(args)
+    options = settings.args_to_extractor(args)
     assert options.format == "markdown" and options.formatting is True
-    assert cli_utils.process_result("DADIDA", args, None, options) is None
+    assert cli_utils.process_result("DADIDA", args, -1, options) == -1
     # test keeping dir structure
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     with patch.object(sys, "argv", testargs):
@@ -404,7 +411,7 @@ def test_file_processing():
     # test manually
     for f in cli_utils.generate_filelist(args.input_dir):
         cli_utils.file_processing(f, args)
-    options = args_to_extractor(args)
+    options = settings.args_to_extractor(args)
     args.output_dir = "/dev/null"
     for f in cli_utils.generate_filelist(args.input_dir):
         cli_utils.file_processing(f, args, options=options)
@@ -420,7 +427,7 @@ def test_cli_config_file():
     ) as f:
         teststring = f.read()
     args.config_file = path.join(RESOURCES_DIR, args.config_file)
-    options = args_to_extractor(args)
+    options = settings.args_to_extractor(args)
     assert cli.examine(teststring, args, options=options) is None
 
 

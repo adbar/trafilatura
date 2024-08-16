@@ -6,7 +6,7 @@ Listing a series of settings that are applied module-wide.
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 try:
     from os import sched_getaffinity
@@ -119,7 +119,7 @@ class Extractor:
         self.config = config
 
 
-def args_to_extractor(args, url=None):
+def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
     "Derive extractor configuration from CLI args."
     options = Extractor(
                   config=use_config(filename=args.config_file), output_format=args.output_format,
@@ -135,7 +135,7 @@ def args_to_extractor(args, url=None):
     return options
 
 
-def set_date_params(extensive=True):
+def set_date_params(extensive: bool = True):
     "Provide default parameters for date extraction."
     return {
                "original_date": True,
