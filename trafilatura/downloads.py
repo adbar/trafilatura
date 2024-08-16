@@ -361,7 +361,7 @@ def buffered_downloads(
     download_threads: int,
     decode: bool = True,
     options: Optional[Extractor] = None,
-) -> Generator[Tuple[str, str], None, None]:
+) -> Generator[Tuple[str, Union[Response, str]], None, None]:
     """Download queue consumer, single- or multi-threaded."""
     worker = partial(fetch_url, options=options) if decode else fetch_response
     with ThreadPoolExecutor(max_workers=download_threads) as executor:

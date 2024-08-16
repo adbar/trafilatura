@@ -189,7 +189,7 @@ def archive_html(htmlstring: str, args: Any, counter: int = -1) -> str:
 def write_result(
     result: Optional[str],
     args: Any,
-    orig_filename: Optional[str] = None,
+    orig_filename: str = "",
     counter: int = -1,
     new_filename: Optional[str] = None,
 ) -> None:
@@ -241,7 +241,7 @@ def process_result(
 ) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
     # backup option
-    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
+    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else ""
     # process
     result = examine(htmlstring, args, options=options)
     write_result(
@@ -344,9 +344,8 @@ def cli_crawler(
 ) -> None:
     """Start a focused crawler which downloads a fixed number of URLs within a website
     and prints the links found in the process."""
-    if not options:
-        options = args_to_extractor(args)
-    sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
+    options = options or args_to_extractor(args)
+    sleep_time = options.config.getfloat("DEFAULT", "SLEEP_TIME")
     param_dict = {}
 
     # load input URLs
@@ -359,24 +358,30 @@ def cli_crawler(
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            param_dict[hostname] = spider.init_crawl(startpage, lang=args.target_language)
+            if startpage:
+                param_dict[hostname] = spider.init_crawl(
+                    startpage, lang=args.target_language
+                )
             # update info
             # TODO: register changes?
             # if base_url != hostname:
             # ...
 
     # iterate until the threshold is reached
-    while spider.URL_STORE.done is False:
-        bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
-        for url, result in buffered_downloads(bufferlist, args.parallel, decode=False, options=options):
+    while not spider.URL_STORE.done:
+        bufferlist, spider.URL_STORE = load_download_buffer(
+            spider.URL_STORE, sleep_time
+        )
+        for url, result in buffered_downloads(
+            bufferlist, args.parallel, decode=False, options=options
+        ):
             if result is not None:
-                base_url = get_base_url(url)
-                spider.process_response(result, param_dict[base_url])
+                spider.process_response(result, param_dict[get_base_url(url)])
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
 
-    print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
+    print("\n".join(u for u in spider.URL_STORE.dump_urls()))
 
 
 def probe_homepage(args: Any) -> None:
