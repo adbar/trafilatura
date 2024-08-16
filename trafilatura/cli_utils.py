@@ -301,39 +301,36 @@ def cli_crawler(args, n=30, url_store=None, options=None):
     if not options:
         options = args_to_extractor(args)
     sleep_time = options.config.getfloat('DEFAULT', 'SLEEP_TIME')
-    # counter = None
+    param_dict = {}
+
     # load input URLs
     if url_store is None:
         spider.URL_STORE.add_urls(load_input_urls(args))
     else:
         spider.URL_STORE = url_store
+
     # load crawl data
     for hostname in spider.URL_STORE.get_known_domains():
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
-            # base_url, i, known_num, rules, is_on
-            _ = spider.init_crawl(startpage, None, set(), language=args.target_language)
+            param_dict[hostname] = spider.init_crawl(startpage, lang=args.target_language)
             # update info
             # TODO: register changes?
             # if base_url != hostname:
             # ...
+
     # iterate until the threshold is reached
     while spider.URL_STORE.done is False:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
-        # start several threads
         for url, result in buffered_downloads(bufferlist, args.parallel, decode=False, options=options):
-            base_url = get_base_url(url)
-            # handle result
             if result is not None:
-                spider.process_response(result, base_url, args.target_language, rules=spider.URL_STORE.get_rules(base_url))
-                # just in case a crawl delay is specified in robots.txt
-                # sleep(spider.get_crawl_delay(spider.URL_STORE.get_rules(base_url)))
+                base_url = get_base_url(url)
+                spider.process_response(result, param_dict[base_url])
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
-    # print results
+
     print('\n'.join(u for u in spider.URL_STORE.dump_urls()))
-    #return todo, known_links
 
 
 def probe_homepage(args):

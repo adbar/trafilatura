@@ -7,6 +7,7 @@ import logging
 import random
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from configparser import ConfigParser
 from functools import partial
 from io import BytesIO
 from time import sleep
@@ -113,7 +114,7 @@ class Response:
 
 # caching throws an error
 # @lru_cache(maxsize=2)
-def _parse_config(config: Any) -> Tuple[Optional[str], Optional[str]]:
+def _parse_config(config: ConfigParser) -> Tuple[Optional[str], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
     # load a series of user-agents
     myagents = config.get("DEFAULT", "USER_AGENTS").strip() or None
@@ -126,7 +127,7 @@ def _parse_config(config: Any) -> Tuple[Optional[str], Optional[str]]:
 
 
 def _determine_headers(
-    config: Any, headers: Optional[Dict[str, str]] = None
+    config: ConfigParser, headers: Optional[Dict[str, str]] = None
 ) -> Dict[str, str]:
     "Internal function to decide on user-agent string."
     if config != DEFAULT_CONFIG:
@@ -141,7 +142,7 @@ def _determine_headers(
 
 
 def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: Any
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
 ) -> Optional[Response]:
     "Internal function to robustly send a request (SSL or not) and return its result."
     # customize headers
@@ -215,7 +216,7 @@ def fetch_url(
     url: str,
     decode: bool = True,
     no_ssl: bool = False,
-    config: Any = DEFAULT_CONFIG,
+    config: ConfigParser = DEFAULT_CONFIG,
     options: Optional[Extractor] = None,
 ) -> Optional[str]:
     """Downloads a web page and seamlessly decodes the response.
@@ -250,7 +251,7 @@ def fetch_response(
     decode: bool = False,
     no_ssl: bool = False,
     with_headers: bool = False,
-    config: Any = DEFAULT_CONFIG,
+    config: ConfigParser = DEFAULT_CONFIG,
 ) -> Optional[Response]:
     """Downloads a web page and returns a full response object.
 
@@ -374,7 +375,7 @@ def buffered_downloads(
 
 
 def _send_pycurl_request(
-    url: str, no_ssl: bool, with_headers: bool, config: Any
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
 ) -> Optional[Response]:
     """Experimental function using libcurl and pycurl to speed up downloads"""
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
