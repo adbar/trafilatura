@@ -1,6 +1,22 @@
 ## History / Changelog
 
 
+### 1.12.1
+
+Navigation:
+- spider: restrict search to sections containing URL path (#673)
+- crawler: add parameter class and types, **breaking change** for undocumented functions (#675)
+- maintenance: simplify link discovery and extend tests (#674)
+- CLI: review code, add types and tests (#677)
+
+Bugfixes:
+- fix `AttributeError` in element deletion (#668)
+- fix `MemoryError` in table header columns (#665)
+
+Docs:
+- docs: fix variable name for extract_metadata in quickstart by @jpigla in #678
+
+
 ### 1.12.0
 
 Breaking change:
