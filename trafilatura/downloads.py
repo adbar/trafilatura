@@ -4,6 +4,7 @@ All functions needed to steer and execute downloads of web documents.
 """
 
 import logging
+import os
 import random
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -12,9 +13,25 @@ from functools import partial
 from io import BytesIO
 from time import sleep
 from typing import Any, ByteString, Dict, Generator, List, Optional, Set, Tuple, Union
+from urllib.parse import urlparse
 
 import certifi
 import urllib3
+
+SOCKS_PROXY_SCHEMES = {"socks4", "socks4a", "socks5", "socks5h"}
+
+try:
+    import socks
+    import urllib3.contrib.socks
+
+    PROXY_URL = os.environ.get("http_proxy")
+    if PROXY_URL is not None:
+        parsed_proxy_url = urlparse(PROXY_URL)
+        if parsed_proxy_url.scheme not in SOCKS_PROXY_SCHEMES:
+            # TODO: maybe issue warning because of unsupported proxy scheme
+            PROXY_URL = None
+except ImportError:
+    PROXY_URL = None
 
 try:
     import pycurl
@@ -159,9 +176,16 @@ def _send_urllib_request(
             # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
     try:
+        if PROXY_URL:
+            pool_manager_class = urllib3.contrib.socks.SOCKSProxyManager
+            pool_manager_args = {"proxy_url": PROXY_URL}
+        else:
+            pool_manager_class = urllib3.PoolManager
+            pool_manager_args = {}
         if no_ssl is False:
             if not HTTP_POOL:
-                HTTP_POOL = urllib3.PoolManager(
+                HTTP_POOL = pool_manager_class(
+                    **pool_manager_args,
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     ca_certs=certifi.where(),
@@ -170,7 +194,8 @@ def _send_urllib_request(
             pool_manager = HTTP_POOL
         else:
             if not NO_CERT_POOL:
-                NO_CERT_POOL = urllib3.PoolManager(
+                NO_CERT_POOL = pool_manager_class(
+                    **pool_manager_args,
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     cert_reqs="CERT_NONE",
@@ -288,13 +313,20 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(curl.NOBODY, True)
+    if PROXY_URL:
+        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
     # Perform the request
     try:
         curl.perform()
         # Get the response code
         page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
     except pycurl.error as err:
-        LOGGER.debug("pycurl HEAD error: %s %s", url, err)
+        if PROXY_URL is not None and err.args[0] == pycurl.E_COULDNT_CONNECT:
+            # connection errors could be related to SOCKS proxy
+            log_level = logging.WARN
+        else:
+            log_level = logging.DEBUG
+        LOGGER.log(log_level, "pycurl HEAD error: %s %s", url, err)
         page_exists = False
     # Clean up
     curl.close()

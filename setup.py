@@ -36,6 +36,9 @@ extras = {
     "gui": [
         "Gooey >= 1.0.1",
     ],
+    "socks": [
+        "pysocks >= 1.7.1"
+    ],
 }
 
 setup(

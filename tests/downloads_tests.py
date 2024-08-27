@@ -44,6 +44,7 @@ from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, decode_response, handle_compressed_file, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+LOGGER = logging.getLogger(__name__)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
@@ -59,10 +60,24 @@ def _reset_downloads_global_objects():
     """
     Force global objects to be re-created
     """
+    trafilatura.downloads.PROXY_URL = None
     trafilatura.downloads.HTTP_POOL = None
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
 
+PROXY_URLS = [None]
+if os.environ.get('PROXY_TEST', 'false') == 'true':
+    PROXY_URLS.extend([
+        'socks5://localhost:1080',
+        'socks5://user:pass@localhost:1081'
+    ])
+
+@pytest.fixture(params=PROXY_URLS)
+def proxy_url(request):
+    _reset_downloads_global_objects()
+    trafilatura.downloads.PROXY_URL = request.param
+    yield trafilatura.downloads.PROXY_URL
+    _reset_downloads_global_objects()
 
 def test_response_object():
     "Test if the Response class is functioning as expected."
@@ -90,8 +105,10 @@ def test_response_object():
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
 
 
-def test_is_live_page():
+def test_is_live_page(proxy_url):
     '''Test if pages are available on the network.'''
+    if proxy_url is not None:
+        LOGGER.debug('using proxy %s', proxy_url)
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
     assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
@@ -101,8 +118,10 @@ def test_is_live_page():
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
 
 
-def test_fetch():
+def test_fetch(proxy_url):
     '''Test URL fetching.'''
+    if proxy_url is not None:
+        LOGGER.debug('using proxy %s', proxy_url)
     # sanity check
     assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
     with pytest.raises(ValueError):
