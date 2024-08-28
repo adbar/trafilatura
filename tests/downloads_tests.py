@@ -55,7 +55,6 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 DEFAULT_OPTS = Extractor(config=DEFAULT_CONFIG)
 
-
 def _reset_downloads_global_objects():
     """
     Force global objects to be re-created
@@ -64,25 +63,6 @@ def _reset_downloads_global_objects():
     trafilatura.downloads.HTTP_POOL = None
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
-
-
-if os.environ.get("PROXY_TEST") == "true":
-    PROXY_URLS = [
-        "bogus://localhost:1080",
-        "socks5://localhost:1080",
-        "socks5://user:pass@localhost:1081",
-    ]
-else:
-    PROXY_URLS = []
-
-
-@pytest.fixture(params=PROXY_URLS)
-def proxy_url(request):
-    _reset_downloads_global_objects()
-    trafilatura.downloads.PROXY_URL = request.param
-    yield trafilatura.downloads.PROXY_URL
-    _reset_downloads_global_objects()
-
 
 def test_response_object():
     "Test if the Response class is functioning as expected."
@@ -110,10 +90,8 @@ def test_response_object():
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
 
 
-def test_is_live_page(proxy_url):
+def test_is_live_page():
     '''Test if pages are available on the network.'''
-    if proxy_url is not None:
-        LOGGER.debug('using proxy %s', proxy_url)
     # is_live general tests
     assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
     assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
@@ -122,11 +100,8 @@ def test_is_live_page(proxy_url):
     if HAS_PYCURL:
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
 
-
-def test_fetch(proxy_url):
+def test_fetch():
     '''Test URL fetching.'''
-    if proxy_url is not None:
-        LOGGER.debug('using proxy %s', proxy_url)
     # sanity check
     assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
     with pytest.raises(ValueError):
@@ -177,6 +152,33 @@ def test_fetch(proxy_url):
     # reset global objects again to avoid affecting other tests
     _reset_downloads_global_objects()
 
+is_proxy_test = os.environ.get('PROXY_TEST', 'false') == 'true'
+
+proxy_urls = (
+    ("socks5://localhost:1080", True),
+    ("socks5://user:pass@localhost:1081", True),
+    ("socks5://localhost:10/", False),
+    ("bogus://localhost:1080", False),
+)
+
+def proxied(f):
+    for proxy_url, is_working in proxy_urls:
+        _reset_downloads_global_objects()
+        trafilatura.downloads.PROXY_URL = proxy_url
+        if is_working:
+            f()
+        else:
+            with pytest.raises(AssertionError):
+                f()
+    _reset_downloads_global_objects()
+
+@pytest.mark.skipif(not is_proxy_test, reason="proxy tests disabled")
+def test_proxied_is_live_page():
+    proxied(test_is_live_page)
+
+@pytest.mark.skipif(not is_proxy_test, reason="proxy tests disabled")
+def test_proxied_fetch():
+    proxied(test_fetch)
 
 def test_config():
     '''Test how configuration options are read and stored.'''

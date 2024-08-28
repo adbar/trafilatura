@@ -24,13 +24,9 @@ from .settings import DEFAULT_CONFIG, Extractor
 from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
 
 
-SOCKS_PROXY_SCHEMES = {"socks4", "socks4a", "socks5", "socks5h"}
-
 try:
     from urllib3.contrib.socks import SOCKSProxyManager
-    proxy = os.environ.get("http_proxy", "")
-    PROXY_URL = proxy if proxy.split("://", 1)[0] in SOCKS_PROXY_SCHEMES else None
-    # issue warning because of unsupported proxy scheme?
+    PROXY_URL = os.environ.get("http_proxy")
 except ImportError:
     PROXY_URL = None
 
@@ -62,9 +58,12 @@ HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
-POOL_MANAGER_CLASS = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
-POOL_MANAGER_ARGS = {"proxy_url": PROXY_URL} if PROXY_URL else {}
-# POOL_MANAGER_ARGS["num_pools"] = 50
+def create_pool(**args):
+    manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
+    manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
+    #manager_args["num_pools"] = 50
+    return manager_class(**manager_args, **args)
+
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 USER_AGENT = (
@@ -176,8 +175,7 @@ def _send_urllib_request(
     try:
         if no_ssl is False:
             if not HTTP_POOL:
-                HTTP_POOL = POOL_MANAGER_CLASS(
-                    **POOL_MANAGER_ARGS,
+                HTTP_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     ca_certs=certifi.where(),
@@ -186,8 +184,7 @@ def _send_urllib_request(
             pool_manager = HTTP_POOL
         else:
             if not NO_CERT_POOL:
-                NO_CERT_POOL = POOL_MANAGER_CLASS(
-                    **POOL_MANAGER_ARGS,
+                NO_CERT_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     cert_reqs="CERT_NONE",
@@ -313,11 +310,6 @@ def _pycurl_is_live_page(url: str) -> bool:
         # Get the response code
         page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
     except pycurl.error as err:
-        #if PROXY_URL and err.args[0] == pycurl.E_COULDNT_CONNECT:
-        #    # connection errors could be related to SOCKS proxy
-        #    log_level = logging.WARN
-        #else:
-        #    log_level = logging.DEBUG
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
     # Clean up
