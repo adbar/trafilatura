@@ -52,6 +52,7 @@ jobs:
           PROXY_PASSWORD: pass
         ports:
           - 1081:1080
+
     steps:
     # Python and pip setup
     - name: Set up Python ${{ matrix.python-version }}
@@ -99,10 +100,6 @@ jobs:
     - name: Install full dependencies
       if: ${{ matrix.env.MINIMAL == 'false'}}
       run: python -m pip install -e ".[all]"
-
-    - name: Install SOCKS proxy dependencies
-      if: ${{ matrix.env.PROXY_TEST == 'true' }}
-      run: python -m pip install -e ".[socks]"
 
     # tests
     - name: Lint with flake8

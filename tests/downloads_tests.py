@@ -65,12 +65,16 @@ def _reset_downloads_global_objects():
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
 
-PROXY_URLS = [None]
-if os.environ.get('PROXY_TEST', 'false') == 'true':
-    PROXY_URLS.extend([
-        'socks5://localhost:1080',
-        'socks5://user:pass@localhost:1081'
-    ])
+
+if os.environ.get("PROXY_TEST") == "true":
+    PROXY_URLS = [
+        "bogus://localhost:1080",
+        "socks5://localhost:1080",
+        "socks5://user:pass@localhost:1081",
+    ]
+else:
+    PROXY_URLS = []
+
 
 @pytest.fixture(params=PROXY_URLS)
 def proxy_url(request):
@@ -78,6 +82,7 @@ def proxy_url(request):
     trafilatura.downloads.PROXY_URL = request.param
     yield trafilatura.downloads.PROXY_URL
     _reset_downloads_global_objects()
+
 
 def test_response_object():
     "Test if the Response class is functioning as expected."

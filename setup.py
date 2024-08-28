@@ -31,13 +31,11 @@ extras = {
         "htmldate[speed] >= 1.8.1",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.3",
+        "urllib3[socks]",
         "zstandard >= 0.20.0",
     ],
     "gui": [
         "Gooey >= 1.0.1",
-    ],
-    "socks": [
-        "pysocks >= 1.7.1"
     ],
 }
 
