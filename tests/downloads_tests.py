@@ -43,8 +43,8 @@ from trafilatura.downloads import (DEFAULT_HEADERS, HAS_PYCURL, USER_AGENT, Resp
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, decode_response, handle_compressed_file, load_html
 
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-LOGGER = logging.getLogger(__name__)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
@@ -55,6 +55,7 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 DEFAULT_OPTS = Extractor(config=DEFAULT_CONFIG)
 
+
 def _reset_downloads_global_objects():
     """
     Force global objects to be re-created
@@ -63,6 +64,7 @@ def _reset_downloads_global_objects():
     trafilatura.downloads.HTTP_POOL = None
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
+
 
 def test_response_object():
     "Test if the Response class is functioning as expected."
@@ -99,6 +101,7 @@ def test_is_live_page():
     # is_live pycurl tests
     if HAS_PYCURL:
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
+
 
 def test_fetch():
     '''Test URL fetching.'''
@@ -152,17 +155,20 @@ def test_fetch():
     # reset global objects again to avoid affecting other tests
     _reset_downloads_global_objects()
 
-is_proxy_test = os.environ.get('PROXY_TEST', 'false') == 'true'
 
-proxy_urls = (
+NOT_PROXY_TEST = os.environ.get("PROXY_TEST", "false") == "false"
+
+PROXY_URLS = (
     ("socks5://localhost:1080", True),
     ("socks5://user:pass@localhost:1081", True),
     ("socks5://localhost:10/", False),
     ("bogus://localhost:1080", False),
 )
 
+
 def proxied(f):
-    for proxy_url, is_working in proxy_urls:
+    "Run the download using a potentially malformed proxy address."
+    for proxy_url, is_working in PROXY_URLS:
         _reset_downloads_global_objects()
         trafilatura.downloads.PROXY_URL = proxy_url
         if is_working:
@@ -172,13 +178,16 @@ def proxied(f):
                 f()
     _reset_downloads_global_objects()
 
-@pytest.mark.skipif(not is_proxy_test, reason="proxy tests disabled")
+
+@pytest.mark.skipif(NOT_PROXY_TEST, reason="proxy tests disabled")
 def test_proxied_is_live_page():
     proxied(test_is_live_page)
 
-@pytest.mark.skipif(not is_proxy_test, reason="proxy tests disabled")
+
+@pytest.mark.skipif(NOT_PROXY_TEST, reason="proxy tests disabled")
 def test_proxied_fetch():
     proxied(test_fetch)
+
 
 def test_config():
     '''Test how configuration options are read and stored.'''
@@ -267,6 +276,8 @@ if __name__ == '__main__':
     test_response_object()
     test_is_live_page()
     test_fetch()
+    test_proxied_is_live_page()
+    test_proxied_fetch()
     test_config()
     test_decode()
     test_queue()

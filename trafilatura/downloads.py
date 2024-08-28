@@ -51,17 +51,17 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
-NUM_CONNECTIONS = 50
-
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
+
 def create_pool(**args):
+    "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
-    #manager_args["num_pools"] = 50
+    manager_args["num_pools"] = 50
     return manager_class(**manager_args, **args)
 
 
@@ -178,8 +178,7 @@ def _send_urllib_request(
                 HTTP_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    ca_certs=certifi.where(),
-                    num_pools=NUM_CONNECTIONS,
+                    ca_certs=certifi.where()
                 )  # cert_reqs='CERT_REQUIRED'
             pool_manager = HTTP_POOL
         else:
@@ -187,8 +186,7 @@ def _send_urllib_request(
                 NO_CERT_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    cert_reqs="CERT_NONE",
-                    num_pools=NUM_CONNECTIONS,
+                    cert_reqs="CERT_NONE"
                 )
             pool_manager = NO_CERT_POOL
         # execute request
