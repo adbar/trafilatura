@@ -43,6 +43,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, HAS_PYCURL, USER_AGENT, Resp
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, decode_response, handle_compressed_file, load_html
 
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 ZERO_CONFIG = DEFAULT_CONFIG
@@ -59,6 +60,7 @@ def _reset_downloads_global_objects():
     """
     Force global objects to be re-created
     """
+    trafilatura.downloads.PROXY_URL = None
     trafilatura.downloads.HTTP_POOL = None
     trafilatura.downloads.NO_CERT_POOL = None
     trafilatura.downloads.RETRY_STRATEGY = None
@@ -154,6 +156,39 @@ def test_fetch():
     _reset_downloads_global_objects()
 
 
+IS_PROXY_TEST = os.environ.get("PROXY_TEST", "false") == "true"
+
+PROXY_URLS = (
+    ("socks5://localhost:1080", True),
+    ("socks5://user:pass@localhost:1081", True),
+    ("socks5://localhost:10/", False),
+    ("bogus://localhost:1080", False),
+)
+
+
+def proxied(f):
+    "Run the download using a potentially malformed proxy address."
+    for proxy_url, is_working in PROXY_URLS:
+        _reset_downloads_global_objects()
+        trafilatura.downloads.PROXY_URL = proxy_url
+        if is_working:
+            f()
+        else:
+            with pytest.raises(AssertionError):
+                f()
+    _reset_downloads_global_objects()
+
+
+@pytest.mark.skipif(not IS_PROXY_TEST, reason="proxy tests disabled")
+def test_proxied_is_live_page():
+    proxied(test_is_live_page)
+
+
+@pytest.mark.skipif(not IS_PROXY_TEST, reason="proxy tests disabled")
+def test_proxied_fetch():
+    proxied(test_fetch)
+
+
 def test_config():
     '''Test how configuration options are read and stored.'''
     # default config is none
@@ -241,6 +276,8 @@ if __name__ == '__main__':
     test_response_object()
     test_is_live_page()
     test_fetch()
+    test_proxied_is_live_page()
+    test_proxied_fetch()
     test_config()
     test_decode()
     test_queue()

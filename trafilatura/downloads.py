@@ -4,6 +4,7 @@ All functions needed to steer and execute downloads of web documents.
 """
 
 import logging
+import os
 import random
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -16,9 +17,21 @@ from typing import Any, ByteString, Dict, Generator, List, Optional, Set, Tuple,
 import certifi
 import urllib3
 
+from courlan import UrlStore
+from courlan.network import redirection_test
+
+from .settings import DEFAULT_CONFIG, Extractor
+from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
+
+
+try:
+    from urllib3.contrib.socks import SOCKSProxyManager
+    PROXY_URL = os.environ.get("http_proxy")
+except ImportError:
+    PROXY_URL = None
+
 try:
     import pycurl
-
     CURL_SHARE = pycurl.CurlShare()
     # available options:
     # https://curl.se/libcurl/c/curl_share_setopt.html
@@ -30,26 +43,27 @@ try:
 except ImportError:
     HAS_PYCURL = False
 
-from courlan import UrlStore
-from courlan.network import redirection_test
-
 try:  # Python 3.8+
     from importlib.metadata import version
 except ImportError:
     from importlib_metadata import version
 
-from .settings import DEFAULT_CONFIG, Extractor
-from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
-
 
 LOGGER = logging.getLogger(__name__)
-
-NUM_CONNECTIONS = 50
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
+
+
+def create_pool(**args):
+    "Configure urllib3 download pool according to user-defined settings."
+    manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
+    manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
+    manager_args["num_pools"] = 50
+    return manager_class(**manager_args, **args)
+
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 USER_AGENT = (
@@ -161,20 +175,18 @@ def _send_urllib_request(
     try:
         if no_ssl is False:
             if not HTTP_POOL:
-                HTTP_POOL = urllib3.PoolManager(
+                HTTP_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    ca_certs=certifi.where(),
-                    num_pools=NUM_CONNECTIONS,
+                    ca_certs=certifi.where()
                 )  # cert_reqs='CERT_REQUIRED'
             pool_manager = HTTP_POOL
         else:
             if not NO_CERT_POOL:
-                NO_CERT_POOL = urllib3.PoolManager(
+                NO_CERT_POOL = create_pool(
                     retries=RETRY_STRATEGY,
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    cert_reqs="CERT_NONE",
-                    num_pools=NUM_CONNECTIONS,
+                    cert_reqs="CERT_NONE"
                 )
             pool_manager = NO_CERT_POOL
         # execute request
@@ -288,6 +300,8 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(curl.NOBODY, True)
+    if PROXY_URL:
+        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
     # Perform the request
     try:
         curl.perform()
@@ -409,6 +423,9 @@ def _send_pycurl_request(
     if with_headers:
         headerbytes = BytesIO()
         curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
+
+    if PROXY_URL:
+        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
 
     # TCP_FASTOPEN
     # curl.setopt(pycurl.FAILONERROR, 1)

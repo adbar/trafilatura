@@ -1,0 +1,18 @@
+services:
+  socks_proxy:
+    image: serjs/go-socks5-proxy
+    ports:
+      - 1080:1080
+  socks_proxy_auth:
+    image: serjs/go-socks5-proxy
+    ports:
+      - 1081:1080
+    environment:
+      PROXY_USER: user
+      PROXY_PASSWORD: pass
+#  tor_proxy:
+#    image: dperson/torproxy
+#    ports:
+#      - 9050:9050
+      
+
