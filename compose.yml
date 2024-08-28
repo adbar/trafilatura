@@ -10,9 +10,9 @@ services:
     environment:
       PROXY_USER: user
       PROXY_PASSWORD: pass
-  tor_proxy:
-    image: dperson/torproxy
-    ports:
-      - 9050:9050
+#  tor_proxy:
+#    image: dperson/torproxy
+#    ports:
+#      - 9050:9050
       
 

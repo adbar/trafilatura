@@ -156,7 +156,7 @@ def test_fetch():
     _reset_downloads_global_objects()
 
 
-NOT_PROXY_TEST = os.environ.get("PROXY_TEST", "false") == "false"
+IS_PROXY_TEST = os.environ.get("PROXY_TEST", "false") == "true"
 
 PROXY_URLS = (
     ("socks5://localhost:1080", True),
@@ -179,12 +179,12 @@ def proxied(f):
     _reset_downloads_global_objects()
 
 
-@pytest.mark.skipif(NOT_PROXY_TEST, reason="proxy tests disabled")
+@pytest.mark.skipif(not IS_PROXY_TEST, reason="proxy tests disabled")
 def test_proxied_is_live_page():
     proxied(test_is_live_page)
 
 
-@pytest.mark.skipif(NOT_PROXY_TEST, reason="proxy tests disabled")
+@pytest.mark.skipif(not IS_PROXY_TEST, reason="proxy tests disabled")
 def test_proxied_fetch():
     proxied(test_fetch)
 
