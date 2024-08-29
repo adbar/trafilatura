@@ -24,7 +24,9 @@ try:
 except ImportError:
     pass
 
-from .core import baseline
+from lxml.etree import XPath, tostring
+
+from .core import baseline, prune_unwanted_nodes
 from .downloads import Response, fetch_response, fetch_url
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, decode_file, load_html
@@ -218,25 +220,13 @@ def process_links(
     URL_STORE.add_urls(urls=links, appendleft=links_priority)
 
 
-def process_response(
-    response: Optional[Response],
-    params: CrawlParameters,
-) -> None:
-    """Convert urllib3 response object and extract links."""
-    if response is None or not response.data:
-        return
-    # add final document URL to known_links
-    URL_STORE.add_urls([response.url], visited=True)
-    # convert urllib3 response to string and proceed to link extraction
-    process_links(decode_file(response.data), params, params.base)
-
-
 def init_crawl(
     start: str,
     lang: Optional[str] = None,
     rules: Optional[RobotFileParser] = None,
     todo: Optional[List[str]] = None,
     known: Optional[List[str]] = None,
+    prune_xpath: Optional[str] = None,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
@@ -250,7 +240,7 @@ def init_crawl(
     # visiting the start page if necessary
     if not todo:
         URL_STORE.add_urls(urls=[params.start], visited=False)
-        params = crawl_page(params, initial=True)
+        params = crawl_page(params, initial=True, prune_xpath=prune_xpath)
     else:
         params.update_metadata(URL_STORE)
 
@@ -260,9 +250,11 @@ def init_crawl(
 def crawl_page(
     params: CrawlParameters,
     initial: bool = False,
+    prune_xpath: Optional[str] = None,
 ) -> CrawlParameters:
     """Examine a webpage, extract navigation links and links."""
     # config=DEFAULT_CONFIG
+    htmlstring = None
     url = URL_STORE.get_url(params.base)
     if not url:
         params.is_on = False
@@ -277,11 +269,24 @@ def crawl_page(
         if htmlstring and homepage and new_base_url:
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
-            # extract links on homepage
-            process_links(htmlstring, params, url=url)
     else:
         response = fetch_response(url, decode=False)
-        process_response(response, params)
+        """Convert urllib3 response object and extract links."""
+        if response is not None and response.data:
+            # add final document URL to known_links
+            URL_STORE.add_urls([response.url], visited=True)
+            htmlstring = decode_file(response.data)
+            url = params.base
+
+    if htmlstring and prune_xpath is not None:
+        if isinstance(prune_xpath, str):
+            prune_xpath = [prune_xpath]
+        tree = load_html(htmlstring)
+        tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
+        htmlstring = tostring(tree).decode()
+
+    # convert urllib3 response to string and proceed to link extraction
+    process_links(htmlstring, params, url)
 
     # optional backup of gathered pages without nav-pages ? ...
     params.update_metadata(URL_STORE)
@@ -297,6 +302,7 @@ def focused_crawler(
     lang: Optional[str] = None,
     config: ConfigParser = DEFAULT_CONFIG,
     rules: Optional[RobotFileParser] = None,
+    prune_xpath: Optional[str] = None,
 ) -> Tuple[List[str], List[str]]:
     """Basic crawler targeting pages of interest within a website.
 
@@ -315,7 +321,7 @@ def focused_crawler(
         Set of known links.
 
     """
-    params = init_crawl(homepage, lang, rules, todo, known_links)
+    params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath)
 
     sleep_time = URL_STORE.get_crawl_delay(
         params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME")
@@ -325,7 +331,7 @@ def focused_crawler(
     while (
         params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls
     ):
-        params = crawl_page(params)
+        params = crawl_page(params, prune_xpath=prune_xpath)
         sleep(sleep_time)
 
     # refocus todo-list on URLs without navigation?

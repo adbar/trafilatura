@@ -159,14 +159,6 @@ def test_crawl_logic():
         params = spider.CrawlParameters("xyz")
     assert len(spider.URL_STORE.urldict) == 0
 
-    # empty request
-    params = spider.CrawlParameters("https://example.org")
-    spider.process_response(None, params)
-    assert len(spider.URL_STORE.urldict) == 0
-    assert params.start == params.base == params.ref == "https://example.org"
-    assert params.i == 0 and params.known_num == 0 and params.is_on
-    assert params.lang is None and params.rules is None
-
     # already visited
     params = spider.init_crawl(url, known=[url])
     assert params.base == "https://httpbun.com"
@@ -219,6 +211,24 @@ def test_crawl_page():
         "https://httpbun.com/links/2/1",
     ]
     assert params.i == 1 and params.is_on and params.known_num == 3
+
+    # prune path
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/links/2/2"])
+    params = spider.CrawlParameters(base_url)
+    params = spider.crawl_page(params, prune_xpath="//a")
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+
+    assert len(todo) == 0 and params.i == 1
+
+    # empty request
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/payload"])
+    params = spider.CrawlParameters(base_url)
+    params = spider.crawl_page(params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+
+    assert len(todo) == 0 and params.i == 1
 
     # initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)

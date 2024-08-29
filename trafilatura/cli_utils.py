@@ -40,6 +40,7 @@ from .utils import (
     is_acceptable_length,
     language_classifier,
     make_chunks,
+    decode_file,
 )
 
 
@@ -375,8 +376,11 @@ def cli_crawler(
         for url, result in buffered_downloads(
             bufferlist, args.parallel, decode=False, options=options
         ):
-            if result is not None:
-                spider.process_response(result, param_dict[get_base_url(url)])
+            if result is not None and result.data:
+                # add final document URL to known_links
+                spider.URL_STORE.add_urls([result.url], visited=True)
+                # convert urllib3 response to string and proceed to link extraction
+                spider.process_links(decode_file(result.data), param_dict[get_base_url(url)])
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break
