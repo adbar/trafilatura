@@ -220,6 +220,24 @@ def test_crawl_page():
     ]
     assert params.i == 1 and params.is_on and params.known_num == 3
 
+    # prune path
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/links/2/2"])
+    params = spider.CrawlParameters(base_url, prune_xpath="//a")
+    params = spider.crawl_page(params)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+
+    assert len(todo) == 0 and params.i == 1
+
+    # prune path with initial page
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    spider.URL_STORE.add_urls(["https://httpbun.com/links/2/2"])
+    params = spider.CrawlParameters(base_url, prune_xpath="//a")
+    params = spider.crawl_page(params, initial=True)
+    todo = spider.URL_STORE.find_unvisited_urls(base_url)
+
+    assert len(todo) == 0 and params.i == 1
+
     # initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     spider.URL_STORE.add_urls(["https://httpbun.com/html"])
