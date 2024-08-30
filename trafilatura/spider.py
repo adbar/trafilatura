@@ -204,6 +204,13 @@ def process_links(
     if not is_target_language(htmlstring, params.lang):
         return
 
+    if htmlstring and params.prune_xpath is not None:
+        if isinstance(params.prune_xpath, str):
+            params.prune_xpath = [params.prune_xpath]
+        tree = load_html(htmlstring)
+        tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
+        htmlstring = tostring(tree).decode()
+
     links, links_priority = [], []
     for link in extract_links(
         pagecontent=htmlstring,
@@ -232,16 +239,8 @@ def process_response(
     # add final document URL to known_links
     URL_STORE.add_urls([response.url], visited=True)
 
-    htmlstring = decode_file(response.data)
-    if htmlstring and params.prune_xpath is not None:
-        if isinstance(params.prune_xpath, str):
-            params.prune_xpath = [params.prune_xpath]
-        tree = load_html(htmlstring)
-        tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
-        htmlstring = tostring(tree).decode()
-
     # convert urllib3 response to string and proceed to link extraction
-    process_links(htmlstring, params, params.base)
+    process_links(decode_file(response.data), params, params.base)
 
 
 def init_crawl(
