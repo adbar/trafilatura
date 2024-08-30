@@ -218,6 +218,7 @@ def process_links(
         external_bool=False,
         language=params.lang,
         with_nav=True,
+        strict=False,
     ):
         if not params.is_valid_link(link):
             continue
