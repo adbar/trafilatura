@@ -88,6 +88,12 @@ For local or user installations where trafilatura cannot be used from the comman
 Additional functionality
 ------------------------
 
+Compression
+~~~~~~~~~~~
+
+Trafilatura works best if compression modules in the Python standard library are available. If this is not the case the following modules are impacted: processing of compressed HTML data (less coverage), backup HTML storage (CLI), and UrlStore in the underlying courlan library (lesser capacity).
+
+
 Optional modules
 ~~~~~~~~~~~~~~~~
 
