@@ -184,6 +184,7 @@ def sitemap_search(
     target_lang: Optional[str] = None,
     external: bool = False,
     sleep_time: int = 2,
+    max_sitemaps: int = MAX_SITEMAPS_SEEN,
 ) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
 
@@ -195,6 +196,7 @@ def sitemap_search(
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
         sleep_time: Wait between requests on the same website.
+        max_sitemaps: Maximum number of sitemaps to process.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -228,7 +230,7 @@ def sitemap_search(
         ]
 
     # iterate through nested sitemaps and results
-    while sitemap.sitemap_urls and len(sitemap.seen) < MAX_SITEMAPS_SEEN:
+    while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
         sitemap.current_url = sitemap.sitemap_urls.pop()
         sitemap.fetch()
         sitemap.process()
@@ -237,7 +239,7 @@ def sitemap_search(
             s for s in sitemap.sitemap_urls if s not in sitemap.seen
         ]
 
-        if len(sitemap.seen) < MAX_SITEMAPS_SEEN:
+        if len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
     if urlfilter:

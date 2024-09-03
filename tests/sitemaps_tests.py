@@ -173,6 +173,9 @@ def test_robotstxt():
 
 def test_whole():
     "Test whole process."
+    results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de", max_sitemaps=1)
+    assert len(results) == 8
+
     trafilatura.settings.MAX_SITEMAPS_SEEN = 1
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
     assert len(results) == 8
