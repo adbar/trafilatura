@@ -51,6 +51,8 @@ META_ATTRIBUTES = [
 
 HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
 
+MAX_TABLE_WIDTH = 1000
+
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
 def delete_element(element: _Element, keep_tail: bool = True) -> None:
@@ -318,7 +320,11 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
             if element.tag == "row":
                 cell_count = len(element.xpath(".//cell"))
                 # restrict columns to a maximum of 1000
-                max_span = min(int(element.get("colspan") or element.get("span", 1)), 1000)
+                span_info = element.get("colspan") or element.get("span")
+                if not span_info or not span_info.isdigit():
+                    max_span = 1
+                else:
+                    max_span = min(int(span_info), MAX_TABLE_WIDTH)
                 # row ended so draw extra empty cells to match max_span
                 if cell_count < max_span:
                     returnlist.append(f'{"|" * (max_span - cell_count)}\n')
