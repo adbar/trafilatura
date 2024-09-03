@@ -4,10 +4,20 @@ Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
 
-import gzip
+try:
+    import gzip
+    HAS_GZIP = True
+except ImportError:
+    HAS_GZIP = False
+
 import logging
 import re
-import zlib
+
+try:
+    import zlib
+    HAS_ZLIB = True
+except ImportError:
+    HAS_ZLIB = False
 
 from functools import lru_cache
 from itertools import islice
@@ -90,7 +100,7 @@ def handle_compressed_file(filecontent):
         return filecontent
 
     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if filecontent[:3] == b"\x1f\x8b\x08":
+    if HAS_GZIP and filecontent[:3] == b"\x1f\x8b\x08":
         try:
             return gzip.decompress(filecontent)
         except Exception:  # EOFError, OSError, gzip.BadGzipFile
@@ -108,10 +118,11 @@ def handle_compressed_file(filecontent):
         except brotli.error:
             pass  # logging.debug('invalid Brotli file')
     # try zlib/deflate
-    try:
-        return zlib.decompress(filecontent)
-    except zlib.error:
-        pass
+    if HAS_ZLIB:
+        try:
+            return zlib.decompress(filecontent)
+        except zlib.error:
+            pass
 
     # return content unchanged if decompression failed
     return filecontent

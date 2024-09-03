@@ -2,7 +2,12 @@
 Functions dedicated to command-line processing.
 """
 
-import gzip
+try:
+    import gzip
+    HAS_GZIP = True
+except ImportError:
+    HAS_GZIP = False
+
 import logging
 import random
 import re
@@ -179,7 +184,7 @@ def archive_html(htmlstring: str, args: Any, counter: int = -1) -> str:
     destination_directory = determine_counter_dir(args.backup_dir, counter)
     output_path, filename = get_writable_path(destination_directory, ".html.gz")
     # check the directory status
-    if check_outputdir_status(destination_directory) is True:
+    if check_outputdir_status(destination_directory) is True and HAS_GZIP:
         # write
         with gzip.open(output_path, "wb") as outputfile:
             outputfile.write(htmlstring.encode("utf-8"))
