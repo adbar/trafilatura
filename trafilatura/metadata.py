@@ -479,23 +479,6 @@ def extract_license(tree: HtmlElement) -> Optional[str]:
     return None
 
 
-def extract_image(tree: HtmlElement) -> Optional[str]:
-    """Search meta tags following the OpenGraph guidelines (https://ogp.me/)
-    and search meta tags with Twitter Image"""
-
-    for elem in tree.xpath(
-        './/head/meta[@property="og:image" or @property="og:image:url"][@content]'
-    ):
-        return elem.get("content")
-
-    for elem in tree.xpath(
-        './/head/meta[@property="twitter:image" or @property="twitter:image:src"][@content]'
-    ):
-        return elem.get("content")
-
-    return None
-
-
 def extract_metadata(
     filecontent: str,
     default_url: Optional[str] = None,
@@ -558,10 +541,6 @@ def extract_metadata(
     # hostname
     if metadata.url:
         metadata.hostname = extract_domain(metadata.url, fast=True)
-
-    # image
-    if not metadata.image:
-        metadata.image = extract_image(tree)
 
     # extract date with external module htmldate
     date_config["url"] = metadata.url
