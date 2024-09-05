@@ -319,7 +319,7 @@ def extract_metainfo(
             content = trim(" ".join(elem.itertext()))
             if content and 2 < len(content) < len_limit:
                 return content
-        if len(results) > 1 and LOGGER.isEnabledFor(logging.DEBUG):
+        if len(results) > 1:
             LOGGER.debug(
                 "more than one invalid result: %s %s", expression, len(results)
             )
