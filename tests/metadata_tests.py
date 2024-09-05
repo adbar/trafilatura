@@ -7,9 +7,10 @@ import logging
 import sys
 
 from lxml import html
+from lxml.etree import XPath
 
 from trafilatura.json_metadata import normalize_authors, normalize_json
-from trafilatura.metadata import check_authors, extract_metadata, extract_url
+from trafilatura.metadata import check_authors, extract_metadata, extract_metainfo, extract_url, normalize_tags
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -247,6 +248,10 @@ def test_sitename():
 
 def test_meta():
     '''Test extraction out of meta-elements'''
+    doc = html.fromstring("<html><p class='test'>a</p><p class='other'>b</p><p type='this'>cde</p></html>")
+    assert extract_metainfo(doc, [XPath(".//p[@class]")]) is None
+    assert extract_metainfo(doc, [XPath(".//p[@type]")]) == "cde"
+
     metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/><meta property="og:type" content="Open Graph Type"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
     assert metadata.pagetype == 'Open Graph Type'
     assert metadata.title == 'Open Graph Title'
@@ -276,6 +281,9 @@ def test_meta():
 
 def test_catstags():
     '''Test extraction of categories and tags'''
+    assert normalize_tags("   ") == ""
+    assert normalize_tags(" 1 &amp; 2 ") == "1 & 2"
+
     htmldocs = [
         '<html><body><p class="entry-categories"><a href="https://example.org/category/cat1/">Cat1</a>, <a href="https://example.org/category/cat2/">Cat2</a></p></body></html>',
         '<html><body><div class="postmeta"><a href="https://example.org/category/cat1/">Cat1</a></div></body></html>',
@@ -332,14 +340,18 @@ def test_images():
     '''Image extraction from meta SEO tags'''
     htmldocs = [
         '<html><head><meta property="image" content="https://example.org/example.jpg"></html>',
+        '<html><head><meta property="og:image:url" content="example.jpg"></html>',
         '<html><head><meta property="og:image" content="https://example.org/example-opengraph.jpg" /><body/></html>',
         '<html><head><meta property="twitter:image" content="https://example.org/example-twitter.jpg"></html>',
+        '<html><head><meta property="twitter:image:src" content="example-twitter.jpg"></html>',
         '<html><head><meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" /></html>',
     ]
     expected_images = [
         'https://example.org/example.jpg',
+        'example.jpg',
         'https://example.org/example-opengraph.jpg',
         'https://example.org/example-twitter.jpg',
+        'example-twitter.jpg',
         None,
     ]
 
