@@ -28,19 +28,16 @@ Please send a [GitHub Pull Request to trafilatura](https://github.com/adbar/traf
 A special thanks to all the [contributors](https://github.com/adbar/trafilatura/graphs/contributors) who have played a part in Trafilatura.
 
 
-
 ## Testing and evaluating the code
 
 Here is how you can run the tests if you wish to correct the errors and further improve the code:
 
 - Run `pytest` from trafilatura's directory, or select a particular test suite, for example `realworld_tests.py`, and run `pytest realworld_tests.py` or simply `python3 realworld_tests.py`
-- Check how it performs on the benchmark in `tests/eval/` by running `tests/comparison_small.py`
-
-See also the [tests Readme](tests/README.rst) for more information on the evaluation.
+- See also the [tests Readme](tests/README.rst) for information on the evaluation
 
 
 
-For further questions you can contact me by way of [GitHub issues](https://github.com/adbar/trafilatura/issues), [X](https://x.com/adbarbaresi) or [E-Mail](https://adrien.barbaresi.eu/).
+For further questions you can use [GitHub issues](https://github.com/adbar/trafilatura/issues) and discussion pages, or [E-Mail](https://adrien.barbaresi.eu/).
 
 Thanks,
 

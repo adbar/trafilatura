@@ -61,6 +61,9 @@ For various reasons, it is also possible that the standard download utility does
 - Several alternatives are available on the command-line, e.g. ``wget -O - "my_url" | trafilatura`` instead of ``trafilatura -u "my_url"``.
 - Emulating a browser is also possible, see the information on headless browsing above.
 
+Asynchronous processing can be more efficient than a multiprocessing in certain context, see for instance the ``aiohttp`` library.
+
+
 .. note::
     Downloads may fail because your IP or user agent are blocked. Trafilatura's crawling and download capacities do not bypass such restrictions.
 

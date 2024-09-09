@@ -128,4 +128,4 @@ Further steps
 For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
 
 .. hint::
-     Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <Trafilatura_Overview.ipynb>`_
+     Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_
