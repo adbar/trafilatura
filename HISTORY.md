@@ -1,6 +1,17 @@
 ## History / Changelog
 
 
+## 1.12.2
+
+- downloads: add support for SOCKS proxies with @gremid (#682)
+- extraction fix: ValueError in table spans (#685)
+- spider: `prune_xpath` parameter added by @felipehertzer (#684)
+- spider: relax strict parameter for link extraction (#687)
+- sitemaps: `max_sitemaps` parameter added by @felipehertzer (#690)
+- maintenance: make compression libraries optional (#691)
+- metadata: review and lint code (#694)
+
+
 ### 1.12.1
 
 Navigation:
