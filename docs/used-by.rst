@@ -6,7 +6,7 @@ Uses & citations
         Trafilatura's versatility makes it ideal for a wide range of applications, it is included in other software packages and cited in research publications. Known uses and case studies are listed here.
 
 
-Originally released to collect data for linguistic research and lexicography at the [Berlin-Brandenburg Academy of Sciences](https://www.dwds.de/d/k-web), Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications. This page compiles projects and publications that reference the library, across fields such as linguistics, natural language processing, social science, information science, and large language models.
+Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications. This page compiles projects and publications that reference the library, across fields such as linguistics, natural language processing, social science, information science, and large language models.
 
 It is recognized for its effectiveness in article extraction, earning accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
 
