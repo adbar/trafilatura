@@ -3,24 +3,19 @@ Uses & citations
 
 .. meta::
     :description lang=en:
-        Trafilatura's versatility makes it ideal for a wide range of applications, it is included in other software packages and cited in research publications. Known uses and case studies are listed here.
+        Trafilatura now widely used, integrated into other software packages and cited in research publications. Notable projects and institutional users are listed on this page.
 
 
+Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications across fields such as linguistics, natural language processing, social sciences, information science, and AI (large language models).
 
-Trafilatura is widely recognized for its effectiveness in article extraction, earning accolades as the most efficient open-source library in various benchmarks and academic evaluations. As such, it is used by numerous institutions, integrated into other software packages and cited in research publications, across fields such as linguistics, natural language processing, social science, information science, and large language models. This page compiles projects and publications that reference the library.
+The tool is recognized for its effectiveness in article extraction, earning accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
 
-It is versatile and can be useful for a wide range of applications. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
-
-If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes (i.e. fork the repository and submit a pull request).
+If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes by submitting a pull request.
 
 
 
 Notable projects using this software
 ------------------------------------
-
-Trafilatura has been employed in a variety of contexts and projects. Some of the known uses include academic research (e.g. data-driven studies in linguistics and social sciences), refinement of large language models (LLMs), and further inclusion in other open source packages.
-
-
 
 Known institutional users
 ^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -131,7 +131,9 @@ Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/co
 Context
 -------
 
-Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. These documentation pages also provide information on `concepts behind data collection <background.html>`_ as well as practical tips on how to gather web texts (see `tutorials <tutorials.html>`_).
+Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is now `widely used <used-by.html>`_.
+
+Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. These documentation pages also provide information on `concepts behind data collection <background.html>`_ as well as `tutorials <tutorials.html>`_ on how to gather web texts.
 
 *Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the refinement and conversion process. It is also the way shapes of pasta are formed.
 
@@ -139,7 +141,7 @@ Extracting and pre-processing web texts to the exacting standards of scientific 
 Author
 ~~~~~~
 
-Reach out via the software repository or the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also X or LinkedIn for the latest updates.
+Reach out via the software repository or the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also social networks for the latest updates.
 
 This work started as a PhD project at the crossroads of linguistics and NLP, this expertise has been instrumental in shaping Trafilatura over the years. It has first been released under its current form in 2019, its development is referenced in the following publications:
 

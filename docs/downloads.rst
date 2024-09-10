@@ -19,7 +19,6 @@ With Python
 Simple downloads
 ~~~~~~~~~~~~~~~~
 
-
 Running simple downloads is straightforward with the ``fetch_url()`` function. This method is also known as single-threaded downloads as they are processed sequentially.
 
 
@@ -67,7 +66,6 @@ Using the ``fetch_response()`` function instead provides access to more informat
 Trafilatura-backed parallel threads
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 Threads are a way to run several program parts at once, see for instance `An Intro to Threading in Python <https://realpython.com/intro-to-python-threading/>`_. Multi-threaded downloads are a good option in order to make a more efficient use of the Internet connection. The threads download pages as they go.
 
 .. hint::
@@ -100,10 +98,26 @@ The following variant of multi-threaded downloads with throttling is implemented
 This safe but efficient option consists in throttling requests based on domains/websites from which content is downloaded. It is highly recommended!
 
 
-Asynchronous downloads
-~~~~~~~~~~~~~~~~~~~~~~
+Using a SOCKS proxy
+~~~~~~~~~~~~~~~~~~~
 
-Asynchronous processing in probably even more efficient in the context of file downloads from a variety of websites. See for instance the `AIOHTTP library <https://docs.aiohttp.org/>`_.
+Setting the global environment variable ``http_proxy`` before loading Trafilatura will run all downloads through the specified SOCKS proxy:
+
+.. code-block:: bash
+
+    # set socks proxy
+    export http_proxy=socks5://PROXYHOST:PROXYPORT
+
+    # with user and password
+    export http_proxy=socks5://USER:PASSWORD@PROXYHOST:PROXYPORT
+
+
+Alternatively, the variable ``trafilatura.downloads.PROXY_URL`` can be set manually but this only works for the current Python instance.
+
+To test this function locally, set up Docker and run ``docker compose up -d && PROXY_TEST=true pytest tests/download_tests.py``.
+
+.. note::
+    New in version 1.12.2.
 
 
 On the command-line
@@ -120,6 +134,8 @@ Downloads on the command-line are automatically run with threads and domain-awar
     To check for download errors you can use the exit code (0 if all pages could be downloaded, 1 otherwise) and sift through the logs if necessary.
 
 For more information, see `page on command-line use <usage-cli.html>`_.
+
+Setting up a SOCKS proxy as described above also works when Trafilatura is used on the command-line.
 
 
 Enforcing politeness rules

@@ -7,7 +7,7 @@ Web crawling
         focused crawling, enforces politeness rules, and navigates through websites.
 
 
-A tool aiming at the discovery of links by exploration and retrieval is commonly known as (web) crawler or spider. This process involves traversing the web to extract information and identify hyperlinks (URLs) for further exploration. A crawler keeps track of and permanently sorts the URLs seen in order to get to new leads. Essentially, a crawler is a sort of a virtual librarian which looks for info and catalogues it.
+A tool aiming at the discovery of links by exploration and retrieval is commonly known as (web) crawler or spider. This process involves traversing the web to extract information and identify hyperlinks (URLs) for further exploration. A crawler keeps track of and permanently sorts the links seen in order to get to new leads. Essentially, a crawler is a sort of a virtual librarian which catalogues information.
 
 Prominent operators of web crawlers include search engine companies, which use them to build their search indexes. Additional applications include web archiving, data mining, and text analytics. In linguistic research, they can be used to build web corpora.
 
@@ -34,7 +34,7 @@ Another viable alternative is leveraging existing data from external crawling pr
 Concept and operation
 ~~~~~~~~~~~~~~~~~~~~~
 
-Crawling starts with a seed list of URLs to visit. As these pages are downloaded, a parsing module extracts specific elements. While the main part of Trafilatura focuses on metadata, text, and comments, the crawling component identifies relevant hyperlinks present on the pages and adds them to the list of URLs to visit, called the frontier.
+Crawling starts with a seed list of URLs to visit. As these pages are downloaded, a parsing module extracts specific elements. The crawler identifies relevant hyperlinks present on the pages and adds them to the list of URLs to visit, called the frontier.
 
 The crawl frontier is initially populated with the seed set. Visited pages are removed from the frontier. A filter is applied to determine whether the extracted links should be included, prioritizing navigation pages (such as archives or categories) to maximize link gathering in few iterations. The resulting links are then added to the frontier.
 
@@ -50,6 +50,7 @@ The spider module implements politeness rules as defined by the Robots Exclusion
 
 Duplicate removal is also implemented, which involves both URL- and text-level analysis. This allows the crawler to detect and avoid revisiting previously crawled URLs or web pages with identical content.
 
+It is safe to crawl a fairly high number of websites and pages per host, bounding factors are time (waiting between requests on the same host), bandwidth (for concurrent downloads), and RAM (above millions of URLs to track).
 
 
 With Python
@@ -58,22 +59,35 @@ With Python
 Focused crawler
 ~~~~~~~~~~~~~~~
 
-The ``focused_crawler()`` function integrates all necessary components and can be customized using various arguments. To use it, you will need to import the corresponding module and call the function with the required parameters:
+The ``focused_crawler()`` function integrates all necessary components and can be customized using various arguments. To use it, you will need to import the corresponding module and call the function with a URL to start from (``homepage`` parameter). The function also accepts optional parameters:
 
-* ``homepage``: the URL of the page to start crawling from (it can also be a subsection)
-* ``max_seen_urls``: the maximum number of pages to visit
-* ``max_known_urls``: the maximum number of pages to "know" about
+* ``max_seen_urls``: the maximum number of pages to visit (default: 10)
+* ``max_known_urls``: the maximum number of pages to "know" about (default: 100000)
+* ``todo``: provide a previously generated list of pages to visit (i.e. a crawl frontier)
+* ``known_links``: provide a list of previously known pages
+* ``lang``: try to target links according to language heuristics (two-letter code)
 
-The following example demonstrates how to set up a focused crawler to extract internal links from a given website.
+The following example demonstrates how to set up a focused crawler to extract internal links from a given website:
+
 
 .. code-block:: python
 
     >>> from trafilatura.spider import focused_crawler
 
-    >>> homepage = 'https://www.example.org'
-
     # perform the first iteration (will not work with this website, there are no internal links)
     >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=1)
+
+
+
+Step by step
+~~~~~~~~~~~~
+
+The function returns two values, a snapshot of the current crawling state. Since the collected links can be downloaded and processed at a later time, it is recommended to progress in a step-by-step manner to save and examine data between runs.
+
+The ``to_visit`` variable keeps track of what is ahead and the ``known_links`` variable ensures that the same pages are not visited twice. As this requirement can vary depending on the use case (e.g. checking new pages every day on a homepage) these variables are optional. Other parameters include ``config`` (see settings file) and ``rules`` (politeness rules, defaults to the ones provided by the website or safe values).
+
+
+.. code-block:: python
 
     # perform another iteration using previously collected information
     >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_links)
@@ -81,24 +95,7 @@ The following example demonstrates how to set up a focused crawler to extract in
 
 In this example, the crawler stops after seeing a maximum of 10 URLs or registering a total of 100,000 URLs on the website, whichever comes first. Setting both parameters to high values can result in a significant increase in processing time.
 
-
-Step by step
-~~~~~~~~~~~~
-
-The function returns two values, a snapshot of the current crawling state. Since the collected links can be downloaded and processed at a later time, it is recommended to progress in a step-by-step manner.
-
-The ``to_visit`` variable keeps track of what is ahead and the ``known_links`` variable ensures that the same pages are not visited twice. The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both variables can easily be converted to lists if necessary:
-
-
-.. code-block:: python
-
-    to_visit, known_urls = list(to_visit), sorted(known_urls)
-
-
-As this requirement can vary depending on the use case (e.g. checking new pages every day on a homepage) these variables are optional. Other parameters include ``lang`` (target language), ``config`` (see settings file), and ``rules`` (politeness rules, defaults to the ones provided by the website or safe values).
-
 You can also use a custom configuration and pass politeness rules to the crawler. For more information see the `documentation of the function <corefunctions.html#trafilatura.spider.focused_crawler>`_.
-
 
 You can determine the course of a crawl by checking if there are still navigation pages to visit using the ``is_still_navigation()`` function:
 
