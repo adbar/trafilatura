@@ -170,7 +170,7 @@ are formed.
 
 Reach out via ia the software repository or the [contact
 page](https://adrien.barbaresi.eu/) for inquiries, collaborations, or
-feedback. See also X or LinkedIn for the latest updates.
+feedback. See also social networks for the latest updates.
 
 This work started as a PhD project at the crossroads of linguistics and
 NLP, this expertise has been instrumental in shaping Trafilatura over
