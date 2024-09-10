@@ -11,11 +11,9 @@ Introduction
 ------------
 
 
-R is a free software environment for statistical computing and graphics. Trafilatura extends its capabilities to the R community. Discover how to use Trafilatura in your R projects with this dedicated page.
+R is a free software environment for statistical computing and graphics. `Reticulate <https://rstudio.github.io/reticulate>`_ is an R package that enables easy interoperability between R and Python. With Reticulate, you can import Python modules as if they were R packages and call Python functions from R.
 
-`Reticulate <https://rstudio.github.io/reticulate>`_ is an R package that enables easy interoperability between R and Python. With Reticulate, you can import Python modules as if they were R packages and call Python functions from R.
-
-This allows R users to leverage the vast array of Python packages and tools and basically allows for execution of Python code inside an R session. Python packages can then be used with minimal adaptations, which is ideal for those who would rather operate from R than having to go back and forth between languages and environments.
+This allows R users to leverage the vast array of Python packages and tools and basically allows for execution of Python code inside an R session. Python packages can then be used with minimal adaptations rather than having to go back and forth between languages and environments.
 
 
 Installation
@@ -72,6 +70,9 @@ Once you have installed a Python package, you can use it from R with the ``impor
 
 Download and extraction
 -----------------------
+
+This section demonstrates how to use functions in a R environment. Beyond the examples below, all functions in these documentation pages should be available as well.
+
 
 R syntax
 ^^^^^^^^
@@ -175,4 +176,3 @@ Further resources:
 Working with the content:
 
 - `Basic Text Processing in R <https://programminghistorian.org/en/lessons/basic-text-processing-in-r>`_
-- `Quanteda <https://quanteda.io>`_ is an R package for managing and analyzing text
