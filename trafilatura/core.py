@@ -333,17 +333,13 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                   )
 
     # extraction
-    try:
-        document = bare_extraction(
-            filecontent, options=options,
-            as_dict=False, prune_xpath=prune_xpath,
-        )
-    except RuntimeError:
-        LOGGER.error('Processing timeout for %s', url)
-        document = None
+    document = bare_extraction(
+        filecontent, options=options,
+        as_dict=False, prune_xpath=prune_xpath,
+    )
 
     # post-processing
-    if document is None:
+    if not document:
         return None
 
     if options.format not in TXT_FORMATS:
