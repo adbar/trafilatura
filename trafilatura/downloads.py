@@ -11,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
 from functools import partial
 from io import BytesIO
+from importlib.metadata import version
 from time import sleep
 from typing import Any, ByteString, Dict, Generator, List, Optional, Set, Tuple, Union
 
@@ -42,11 +43,6 @@ try:
     HAS_PYCURL = True
 except ImportError:
     HAS_PYCURL = False
-
-try:  # Python 3.8+
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
 
 
 LOGGER = logging.getLogger(__name__)

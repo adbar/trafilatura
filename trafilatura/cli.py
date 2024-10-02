@@ -6,11 +6,7 @@ import argparse
 import logging
 import sys
 
-try:  # Python 3.8+
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
-
+from importlib.metadata import version
 from platform import python_version
 from typing import Any
 
@@ -20,19 +16,12 @@ from .cli_utils import (cli_crawler, cli_discovery, examine,
                         url_processing_pipeline, write_result)
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
 
+
 # fix output encoding on some systems
-try:
-    # > Python 3.7
-    if sys.stdout.encoding != 'UTF-8':
-        sys.stdout.reconfigure(encoding='utf-8')
-    if sys.stderr.encoding != 'UTF-8':
-        sys.stderr.reconfigure(encoding='utf-8')
-except AttributeError:
-    import codecs
-    if sys.stdout.encoding != 'UTF-8':
-        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-    if sys.stderr.encoding != 'UTF-8':
-        sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+if sys.stdout.encoding != 'UTF-8':
+    sys.stdout.reconfigure(encoding='utf-8')
+if sys.stderr.encoding != 'UTF-8':
+    sys.stderr.reconfigure(encoding='utf-8')
 
 
 def add_args(parser: Any) -> Any:

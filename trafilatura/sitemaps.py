@@ -8,6 +8,7 @@ import re
 from itertools import islice
 from time import sleep
 from typing import Callable, List, Set, Optional, Pattern
+from urllib.robotparser import RobotFileParser
 
 from courlan import (
     clean_url,
@@ -22,11 +23,10 @@ from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
 
-# import urllib.robotparser # Python >= 3.8
-# ROBOT_PARSER = urllib.robotparser.RobotFileParser()
-
 
 LOGGER = logging.getLogger(__name__)
+
+ROBOT_PARSER = RobotFileParser()
 
 LINK_REGEX = re.compile(r"<loc>(?:<!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
@@ -277,27 +277,22 @@ def find_robots_sitemaps(baseurl: str) -> List[str]:
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
-def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
+def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > 10000:
         return []
-    sitemapurls = []
-    # source: https://github.com/python/cpython/blob/3.8/Lib/urllib/robotparser.py
-    for line in robotstxt.splitlines():
-        # remove optional comment and strip line
-        i = line.find("#")
-        if i >= 0:
-            line = line[:i]
-        line = line.strip()
-        if not line:
-            continue
-        line = line.split(":", 1)
-        if len(line) == 2:
-            line[0] = line[0].strip().lower()
-            if line[0] == "sitemap":
-                # urllib.parse.unquote(line[1].strip())
-                candidate = fix_relative_urls(baseurl, line[1].strip())
-                sitemapurls.append(candidate)
-    LOGGER.debug("%s sitemaps found in robots.txt", len(sitemapurls))
-    return sitemapurls
+
+    ROBOT_PARSER.set_url(baseurl)
+    ROBOT_PARSER.parse(robotstxt.splitlines())
+    candidates = ROBOT_PARSER.site_maps()
+    print(candidates)
+
+    if not candidates:
+        return []
+
+    urls = [fix_relative_urls(baseurl, u) for u in candidates if u.strip()]
+
+    urls = list(dict.fromkeys(urls))
+    LOGGER.debug("%s sitemaps found in robots.txt", len(urls))
+    return urls
