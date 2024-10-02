@@ -28,7 +28,7 @@ extras = {
         "brotli",
         "cchardet >= 2.1.7; python_version < '3.11'",  # build issue
         "faust-cchardet >= 2.1.19; python_version >= '3.11'",
-        "htmldate[speed] >= 1.8.1",
+        "htmldate[speed] >= 1.9.0",
         "py3langid >= 0.2.2",
         "pycurl >= 7.45.3",
         "urllib3[socks]",
@@ -60,8 +60,6 @@ setup(
         "Operating System :: POSIX",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -106,20 +104,17 @@ setup(
         ]
     },
     include_package_data=True,
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     install_requires=[
         "certifi",
-        "charset_normalizer >= 3.0.1; python_version < '3.7'",
-        "charset_normalizer >= 3.2.0; python_version >= '3.7'",
-        "courlan >= 1.2.0",
-        "htmldate >= 1.8.1",
-        "importlib_metadata; python_version < '3.8'",
+        "charset_normalizer >= 3.2.0",
+        "courlan >= 1.3.1",
+        "htmldate >= 1.9.0",
         "justext >= 3.0.1",
         # see tests on Github Actions
         "lxml == 4.9.2 ; platform_system == 'Darwin' and python_version <= '3.8'",
         "lxml >= 5.2.2 ; platform_system != 'Darwin' or python_version > '3.8'",
-        "urllib3 >= 1.26, < 2; python_version < '3.7'",
-        "urllib3 >= 1.26, < 3; python_version >= '3.7'",
+        "urllib3 >= 1.26, < 3",
     ],
     extras_require=extras,
     entry_points={

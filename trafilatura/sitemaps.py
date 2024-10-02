@@ -286,7 +286,6 @@ def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]
     ROBOT_PARSER.set_url(baseurl)
     ROBOT_PARSER.parse(robotstxt.splitlines())
     candidates = ROBOT_PARSER.site_maps()
-    print(candidates)
 
     if not candidates:
         return []
