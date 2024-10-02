@@ -147,11 +147,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
 
     # load data
     try:
-        tree = load_html(filecontent)
-        if tree is None:
-            LOGGER.error('empty HTML tree: %s', url)
-            raise ValueError
-
         # regroup extraction options
         if not options or not isinstance(options, Extractor):
             options = Extractor(
@@ -164,6 +159,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                           author_blacklist=author_blacklist, url_blacklist=url_blacklist,
                           date_params=date_extraction_params
                       )
+        
+        # load the HTML tree
+        tree = load_html(filecontent)
+        if tree is None:
+            LOGGER.error('empty HTML tree: %s', url)
+            raise ValueError
 
         # quick and dirty HTML lang check
         if options.lang and (options.fast or not LANGID_FLAG):
@@ -332,17 +333,13 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
                   )
 
     # extraction
-    try:
-        document = bare_extraction(
-            filecontent, options=options,
-            as_dict=False, prune_xpath=prune_xpath,
-        )
-    except RuntimeError:
-        LOGGER.error('Processing timeout for %s', url)
-        document = None
+    document = bare_extraction(
+        filecontent, options=options,
+        as_dict=False, prune_xpath=prune_xpath,
+    )
 
     # post-processing
-    if document is None:
+    if not document:
         return None
 
     if options.format not in TXT_FORMATS:
