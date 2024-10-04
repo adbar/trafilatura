@@ -10,9 +10,11 @@ import random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
 from functools import partial
+from importlib.metadata import version
 from io import BytesIO
 from time import sleep
-from typing import Any, ByteString, Dict, Generator, List, Optional, Set, Tuple, Union
+from typing import (Any, ByteString, Dict, Generator, List, Optional, Set,
+                    Tuple, Union)
 
 import certifi
 import urllib3
@@ -21,8 +23,8 @@ from courlan import UrlStore
 from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
-from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
-
+from .utils import (URL_BLACKLIST_REGEX, decode_file, is_acceptable_length,
+                    make_chunks)
 
 try:
     from urllib3.contrib.socks import SOCKSProxyManager
@@ -42,11 +44,6 @@ try:
     HAS_PYCURL = True
 except ImportError:
     HAS_PYCURL = False
-
-try:  # Python 3.8+
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
 
 
 LOGGER = logging.getLogger(__name__)

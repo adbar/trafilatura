@@ -22,9 +22,6 @@ from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
 
-# import urllib.robotparser # Python >= 3.8
-# ROBOT_PARSER = urllib.robotparser.RobotFileParser()
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -277,13 +274,14 @@ def find_robots_sitemaps(baseurl: str) -> List[str]:
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
-def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
+def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > 10000:
         return []
-    sitemapurls = []
-    # source: https://github.com/python/cpython/blob/3.8/Lib/urllib/robotparser.py
+
+    candidates = []
+    # source: https://github.com/python/cpython/blob/3.12/Lib/urllib/robotparser.py
     for line in robotstxt.splitlines():
         # remove optional comment and strip line
         i = line.find("#")
@@ -297,7 +295,10 @@ def extract_robots_sitemaps(robotstxt: str, baseurl: str) -> List[str]:
             line[0] = line[0].strip().lower()
             if line[0] == "sitemap":
                 # urllib.parse.unquote(line[1].strip())
-                candidate = fix_relative_urls(baseurl, line[1].strip())
-                sitemapurls.append(candidate)
+                candidates.append(line[1].strip())
+
+    candidates = list(dict.fromkeys(candidates))
+    sitemapurls = [fix_relative_urls(baseurl, u) for u in candidates if u]
+
     LOGGER.debug("%s sitemaps found in robots.txt", len(sitemapurls))
     return sitemapurls

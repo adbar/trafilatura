@@ -361,19 +361,11 @@ def is_image_file(imagesrc):
 
 
 def make_chunks(iterable, n):
-    """
-    Chunk data into smaller pieces.
-    https://docs.python.org/3/library/itertools.html
-    """
-    it = iter(iterable)
-    while True:
-        chunk = tuple(islice(it, n))
-        if not chunk:
-            return
-        yield chunk
-    # Python 3.8+ with walrus operator
-    # while batch := tuple(islice(it, n)):
-    #    yield batch
+    "Chunk data into smaller pieces."
+    # 3.12+: https://docs.python.org/3/library/itertools.html#itertools.batched
+    iterator = iter(iterable)
+    while batch := tuple(islice(iterator, n)):
+        yield batch
 
 
 def is_acceptable_length(my_len, options) -> bool:

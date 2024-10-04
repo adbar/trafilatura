@@ -1,6 +1,7 @@
 "Code parts dedicated to duplicate removal and text similarity."
 
-# 3.7+: from __future__ import annotations  # 3.11+: from typing import Self
+# from __future__ import annotations
+# 3.11+: from typing import Self
 
 import re
 import string

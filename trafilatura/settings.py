@@ -76,7 +76,6 @@ class Extractor:
     'date_params',
     'author_blacklist', 'url_blacklist'
     ]
-    # consider dataclasses for Python 3.7+
     def __init__(self, *, config=DEFAULT_CONFIG, output_format="txt",
                  fast=False, precision=False, recall=False,
                  comments=True, formatting=False, links=False, images=False,
@@ -144,7 +143,7 @@ def set_date_params(extensive: bool = True):
            }
 
 
-class Document:  # consider dataclasses for Python 3.7+
+class Document:
     "Defines a class to store all necessary data and metadata fields for extracted information."
     __slots__ = [
     'title', 'author', 'url', 'hostname', 'description', 'sitename',

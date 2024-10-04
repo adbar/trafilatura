@@ -7,15 +7,11 @@ import csv
 import logging
 
 from html import unescape
+from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
 from typing import List, Optional
-
-try:  # Python 3.8+
-    from importlib.metadata import version
-except ImportError:
-    from importlib_metadata import version
 
 from lxml.etree import (_Element, Element, SubElement, XMLParser,
                         fromstring, tostring, DTD)
