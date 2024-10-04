@@ -149,6 +149,12 @@ OG_PROPERTIES = {
 
 OG_AUTHOR = {"og:author", "og:article:author"}
 
+URL_SELECTORS = [
+    './/head//link[@rel="canonical"]',
+    './/head//base',
+    './/head//link[@rel="alternate"][@hreflang="x-default"]'
+]
+
 
 def normalize_tags(tags: str) -> str:
     """Remove special characters of tags"""
@@ -382,25 +388,17 @@ def extract_author(tree: HtmlElement) -> Optional[str]:
 
 def get_url_attr(element: Optional[HtmlElement]) -> Optional[str]:
     """Return the attribute containing the URL if present."""
-    if element is not None and "href" in element.attrib:
-        return element.attrib["href"]
-    return None
+    return element.attrib.get("href") if element is not None else None
 
 
 def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optional[str]:
     """Extract the URL from the canonical link"""
-    # try canonical link first
-    url = get_url_attr(tree.find('.//head//link[@rel="canonical"]'))
+    for selector in URL_SELECTORS:
+        url = get_url_attr(tree.find(selector))
+        if url:
+            break
 
-    # try base
-    if not url:
-        url = get_url_attr(tree.find('.//head//base'))
-
-    # try default language link
-    if not url:
-        url = get_url_attr(tree.find('.//head//link[@rel="alternate"][@hreflang="x-default"]'))
-
-    # add domain name if it's missing
+    # fix relative URLs
     if url and url.startswith("/"):
         for element in tree.iterfind(".//head//meta[@content]"):
             attrtype = element.get("name") or element.get("property") or ""
@@ -411,10 +409,10 @@ def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optiona
                     url = base_url + url
                     break
 
-    # sanity check: don't return invalid URLs
-    if url is not None:
+    # do not return invalid URLs
+    if url:
         validation_result, parsed_url = validate_url(url)
-        url = None if validation_result is False else normalize_url(parsed_url)
+        url = normalize_url(parsed_url) if validation_result else None
 
     return url or default_url
 
