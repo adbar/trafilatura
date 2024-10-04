@@ -386,15 +386,11 @@ def extract_author(tree: HtmlElement) -> Optional[str]:
     return author
 
 
-def get_url_attr(element: Optional[HtmlElement]) -> Optional[str]:
-    """Return the attribute containing the URL if present."""
-    return element.attrib.get("href") if element is not None else None
-
-
 def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optional[str]:
     """Extract the URL from the canonical link"""
     for selector in URL_SELECTORS:
-        url = get_url_attr(tree.find(selector))
+        element = tree.find(selector)
+        url = element.attrib.get("href") if element is not None else None
         if url:
             break
 
