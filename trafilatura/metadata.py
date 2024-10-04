@@ -380,22 +380,26 @@ def extract_author(tree: HtmlElement) -> Optional[str]:
     return author
 
 
+def get_url_attr(element: Optional[HtmlElement]) -> Optional[str]:
+    """Return the attribute containing the URL if present."""
+    if element is not None and "href" in element.attrib:
+        return element.attrib["href"]
+    return None
+
+
 def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optional[str]:
     """Extract the URL from the canonical link"""
-    url = None
-    # https://www.tutorialrepublic.com/html-reference/html-base-tag.php
     # try canonical link first
-    element = tree.find('.//head//link[@rel="canonical"][@href]')
-    if element is not None:
-        url = element.attrib["href"]
+    url = get_url_attr(tree.find('.//head//link[@rel="canonical"]'))
+
+    # try base
+    if not url:
+        url = get_url_attr(tree.find('.//head//base'))
+
     # try default language link
-    else:
-        element = tree.find('.//head//link[@rel="alternate"][@hreflang="x-default"]')
-        if element is not None:
-            LOGGER.debug(
-                tostring(element, pretty_print=False, encoding="unicode").strip()
-            )
-            url = element.attrib["href"]
+    if not url:
+        url = get_url_attr(tree.find('.//head//link[@rel="alternate"][@hreflang="x-default"]'))
+
     # add domain name if it's missing
     if url and url.startswith("/"):
         for element in tree.iterfind(".//head//meta[@content]"):
@@ -406,10 +410,12 @@ def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optiona
                     # prepend URL
                     url = base_url + url
                     break
+
     # sanity check: don't return invalid URLs
     if url is not None:
         validation_result, parsed_url = validate_url(url)
         url = None if validation_result is False else normalize_url(parsed_url)
+
     return url or default_url
 
 
