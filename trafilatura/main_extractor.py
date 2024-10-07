@@ -35,8 +35,7 @@ NOT_AT_THE_END = {'head', 'ref'}
 
 def _log_event(msg, tag, text):
     "Format extraction event for debugging purposes."
-    if LOGGER.isEnabledFor(logging.DEBUG):
-        LOGGER.debug(f"{msg}: {tag} {trim(text) or 'None'}")
+    LOGGER.debug("%s: %s %s", msg, tag, trim(text) or "None")
 
 
 def handle_titles(element, options):
