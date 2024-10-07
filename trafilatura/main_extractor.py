@@ -260,8 +260,6 @@ def handle_other_elements(element, potential_tags, options):
                 processed_element.tag = "p"
             # insert
             return processed_element
-    else:
-        _log_event("unexpected element seen", element.tag, element.text)
 
     return None
 
