@@ -170,6 +170,14 @@ def test_input():
     with pytest.raises(AttributeError):
         assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
 
+    # text elements
+    elem = etree.Element("p")
+    elem.text = "text"
+    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is not None
+    elem = etree.Element("unexpected")
+    elem.text = "text"
+    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is None
+
 
 def test_xmltocsv():
     doc = Document()
