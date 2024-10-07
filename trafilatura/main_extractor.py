@@ -35,7 +35,7 @@ NOT_AT_THE_END = {'head', 'ref'}
 
 def _log_event(msg, tag, text):
     "Format extraction event for debugging purposes."
-    LOGGER.debug("%s: %s %s", msg, tag, trim(text) or "None")
+    LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
 
 def handle_titles(element, options):
@@ -261,7 +261,7 @@ def handle_other_elements(element, potential_tags, options):
             # insert
             return processed_element
     else:
-        LOGGER.debug("unexpected element seen: %s %s", element.tag, element.text)
+        _log_event("unexpected element seen", element.tag, element.text)
 
     return None
 
@@ -279,7 +279,7 @@ def handle_paragraphs(element, potential_tags, options):
     processed_element = Element(element.tag)
     for child in element.iter("*"):
         if child.tag not in potential_tags and child.tag != "done":
-            LOGGER.debug("unexpected in p: %s %s %s", child.tag, child.text, child.tail)
+            _log_event("unexpected in p", child.tag, child.text)
             continue
         # spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
@@ -287,7 +287,7 @@ def handle_paragraphs(element, potential_tags, options):
         if processed_child is not None:
             # todo: needing attention!
             if processed_child.tag == "p":
-                _log_event("extra p", "p", processed_child.text or "")
+                _log_event("extra in p", "p", processed_child.text)
                 if processed_element.text:
                     processed_element.text += " " + processed_child.text
                 else:
@@ -593,7 +593,7 @@ def _extract(tree, options):
             delete_element(result_body[-1], keep_tail=False)
         # exit the loop if the result has children
         if len(result_body) > 1:
-            LOGGER.debug(expr)
+            LOGGER.debug(trim(str(expr)))
             break
     temp_text = ' '.join(result_body.itertext()).strip()
     return result_body, temp_text, potential_tags
