@@ -4,7 +4,6 @@ source = trafilatura
 omit =
     tests/*
     setup.py
-    trafilatura/gui.py
 
 [report]
 exclude_lines =
