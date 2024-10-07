@@ -66,7 +66,6 @@ Features
    - HTML, XML and `XML-TEI <https://tei-c.org/>`_
 - Optional add-ons:
    - Language detection on extracted content
-   - Graphical user interface (GUI)
    - Speed optimizations
 - Actively maintained with support from the open-source community:
    - Regular updates, feature additions, and optimizations

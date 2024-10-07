@@ -67,7 +67,6 @@ search engine optimization, and information security).
 
 - Optional add-ons:
    - Language detection on extracted content
-   - Graphical user interface (GUI)
    - Speed optimizations
 
 - Actively maintained with support from the open-source community:

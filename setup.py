@@ -34,9 +34,6 @@ extras = {
         "urllib3[socks]",
         "zstandard >= 0.20.0",
     ],
-    "gui": [
-        "Gooey >= 1.0.1",
-    ],
 }
 
 setup(
@@ -120,7 +117,6 @@ setup(
     entry_points={
         "console_scripts": [
             "trafilatura=trafilatura.cli:main",
-            "trafilatura_gui=trafilatura.gui:main",
         ],
     },
     # platforms='any',
