@@ -63,7 +63,7 @@ Features
    - TXT and Markdown
    - CSV
    - JSON
-   - HTML, XML and [XML-TEI](https://tei-c.org/)
+   - HTML, XML and `XML-TEI <https://tei-c.org/>`_
 - Optional add-ons:
    - Language detection on extracted content
    - Graphical user interface (GUI)
