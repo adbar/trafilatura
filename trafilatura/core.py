@@ -4,7 +4,6 @@ Extraction configuration and processing functions.
 """
 
 import logging
-import sys
 
 from copy import copy, deepcopy
 
@@ -158,7 +157,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                           author_blacklist=author_blacklist, url_blacklist=url_blacklist,
                           date_params=date_extraction_params
                       )
-        
+
         # load the HTML tree
         tree = load_html(filecontent)
         if tree is None:
@@ -271,8 +270,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             with_metadata=False, only_with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
             settingsfile=None, prune_xpath=None,
-            config=DEFAULT_CONFIG, options=None,
-            **kwargs):
+            config=DEFAULT_CONFIG, options=None):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
 

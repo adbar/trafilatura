@@ -269,6 +269,7 @@ The following arguments have been deprecated since inception:
 - ``--inputfile``, ``--inputdir``, and ``--outputdir`` → ``--input-file``, ``--input-dir``, and ``--output-dir``
 - ``-out`` → ``--output-format``
 - ``--hash-as-name`` → hashes used by default
+- ``--with-metadata`` (include metadata) had once the effect of today's ``--only-with-metadata`` (only documents with necessary metadata)
 
 
 

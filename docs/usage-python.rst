@@ -484,3 +484,4 @@ The following functions and arguments are deprecated:
 - extraction: ``process_record()`` function → use ``extract()`` instead
 - utils: ``decode_response()`` function → use ``decode_file()`` instead
 - extraction: ``csv_output``, ``json_output``, ``tei_output``, ``xml_output`` → use ``output_format`` parameter instead
+- metadata: ``with_metadata`` (include metadata) had once the effect of today's ``only_with_metadata`` (only documents with necessary metadata)
