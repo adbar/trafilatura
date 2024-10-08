@@ -15,7 +15,7 @@ __version__ = '1.12.2'
 import logging
 
 from .baseline import baseline, html2txt
-from .core import bare_extraction, extract, process_record
+from .core import bare_extraction, extract
 from .downloads import fetch_response, fetch_url
 from .metadata import extract_metadata
 from .utils import load_html
