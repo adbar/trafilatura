@@ -4,7 +4,6 @@ Extraction configuration and processing functions.
 """
 
 import logging
-import sys
 
 from copy import copy, deepcopy
 
@@ -25,7 +24,6 @@ from .xpaths import REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
-DEPRECATED_ARGS = ('csv_output', 'json_output', 'tei_output', 'xml_output')
 TXT_FORMATS = {"markdown", "txt"}
 
 
@@ -159,7 +157,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,  # fast=False,
                           author_blacklist=author_blacklist, url_blacklist=url_blacklist,
                           date_params=date_extraction_params
                       )
-        
+
         # load the HTML tree
         tree = load_html(filecontent)
         if tree is None:
@@ -272,8 +270,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             with_metadata=False, only_with_metadata=False,
             max_tree_size=None, url_blacklist=None, author_blacklist=None,
             settingsfile=None, prune_xpath=None,
-            config=DEFAULT_CONFIG, options=None,
-            **kwargs):
+            config=DEFAULT_CONFIG, options=None):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
 
@@ -312,12 +309,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         A string in the desired format or None.
 
     """
-    # older, deprecated functions still found in tutorials
-    if kwargs and any(arg in kwargs for arg in DEPRECATED_ARGS):
-        raise ValueError(
-            'Deprecated argument: use output_format, e.g. output_format="xml"'
-            )
-
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
         options = Extractor(
@@ -354,8 +345,3 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
     # return
     return determine_returnstring(document, options)
-
-
-def process_record(*args, **kwargs):
-    "Deprecated extraction function."
-    sys.exit("process_record() is deprecated, use extract() instead")

@@ -41,7 +41,7 @@ from trafilatura.downloads import (DEFAULT_HEADERS, HAS_PYCURL, USER_AGENT, Resp
                                    add_to_compressed_dict, fetch_url,
                                    is_live_page, load_download_buffer)
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
-from trafilatura.utils import decode_file, decode_response, handle_compressed_file, load_html
+from trafilatura.utils import decode_file, handle_compressed_file, load_html
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -228,8 +228,6 @@ def test_decode():
     for compressed_string in compressed_strings:
         assert handle_compressed_file(compressed_string) == html_string.encode("utf-8")
         assert decode_file(compressed_string) == html_string
-        with pytest.raises(ValueError):
-            decode_response(compressed_string)
 
     # errors
     for bad_file in ("äöüß", b"\x1f\x8b\x08abc", b"\x28\xb5\x2f\xfdabc"):

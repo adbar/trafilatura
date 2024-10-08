@@ -38,15 +38,9 @@ def add_args(parser: Any) -> Any:
     group1_ex.add_argument("-i", "--input-file",
                         help="name of input file for batch processing",
                         type=str)
-    group1_ex.add_argument("--inputfile",
-                        help=argparse.SUPPRESS,
-                        type=str)   # will be deprecated
     group1_ex.add_argument("--input-dir",
                         help="read files from a specified directory (relative path)",
                         type=str)
-    group1_ex.add_argument("--inputdir",
-                        help=argparse.SUPPRESS,
-                        type=str)   # will be deprecated
     group1_ex.add_argument("-u", "--URL",
                         help="custom URL download",
                         type=str)
@@ -64,18 +58,12 @@ def add_args(parser: Any) -> Any:
     group2.add_argument("-o", "--output-dir",
                         help="write results in a specified directory (relative path)",
                         type=str)
-    group2.add_argument("--outputdir",
-                        help=argparse.SUPPRESS,
-                        type=str)   # will be deprecated
     group2.add_argument('--backup-dir',
                         help="preserve a copy of downloaded files in a backup directory",
                         type=str)
     group2.add_argument('--keep-dirs',
                         help="keep input directory structure and file names",
                         action="store_true")
-    group2.add_argument('--hash-as-name',
-                        help=argparse.SUPPRESS,
-                        action="store_true")   # will be deprecated
 
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",
@@ -114,12 +102,6 @@ def add_args(parser: Any) -> Any:
     group4.add_argument("--images",
                         help="include image sources in output (experimental)",
                         action="store_true")
-    group4.add_argument("--nocomments",
-                        help=argparse.SUPPRESS,
-                        action="store_false")  # will be deprecated
-    group4.add_argument("--notables",
-                        help=argparse.SUPPRESS,
-                        action="store_false")  # will be deprecated
     group4.add_argument("--no-comments",
                         help="don't output any comments",
                         action="store_false")  # false = no comments
@@ -149,9 +131,6 @@ def add_args(parser: Any) -> Any:
                         action="store_true")
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
-    group5_ex.add_argument("-out",
-                        help=argparse.SUPPRESS,
-                        choices=SUPPORTED_FMT_CLI)
     group5_ex.add_argument('--output-format',
                         help="determine output format",
                         choices=SUPPORTED_FMT_CLI,
@@ -206,35 +185,6 @@ def map_args(args: Any) -> Any:
         if getattr(args, otype):
             args.output_format = otype
             break
-    # output configuration
-    if args.nocomments is False:
-        raise ValueError(
-              "--nocomments is deprecated, use --no-comments instead",
-              )
-    if args.notables is False:
-        raise ValueError(
-              "--notables is deprecated, use --no-tables instead",
-              )
-    if args.inputfile:
-        raise ValueError(
-              "--inputfile is deprecated, use --input-file instead",
-              )
-    if args.inputdir:
-        raise ValueError(
-              "--inputdir is deprecated, use --input-dir instead",
-              )
-    if args.outputdir:
-        raise ValueError(
-              "--outputdir is deprecated, use --output-dir instead",
-              )
-    if args.hash_as_name:
-        raise ValueError(
-              "--hash-as-name is deprecated, hashes are used by default",
-              )
-    if args.out:
-        raise ValueError(
-              "-out is deprecated, use --output-format instead",
-              )
     return args
 
 
