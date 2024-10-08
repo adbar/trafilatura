@@ -260,6 +260,19 @@ Using a subpart of the site also acts like a filter, for example ``--sitemap "ht
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
 
+Deprecations
+------------
+
+The following arguments have been deprecated since inception:
+
+- ``--nocomments`` and ``--notables`` → ``--no-comments`` and ``--no-tables``
+- ``--inputfile``, ``--inputdir``, and ``--outputdir`` → ``--input-file``, ``--input-dir``, and ``--output-dir``
+- ``-out`` → ``--output-format``
+- ``--hash-as-name`` → hashes used by default
+- ``--with-metadata`` (include metadata) had once the effect of today's ``--only-with-metadata`` (only documents with necessary metadata)
+
+
+
 Further information
 -------------------
 

@@ -21,7 +21,7 @@ except ImportError:
     from charset_normalizer import detect
 
 import trafilatura.htmlprocessing
-from trafilatura import bare_extraction, extract, process_record, xml
+from trafilatura import bare_extraction, extract, xml
 from trafilatura.core import Extractor
 from trafilatura.external import sanitize_tree, try_justext
 from trafilatura.main_extractor import (handle_formatting, handle_image,
@@ -149,9 +149,6 @@ def test_input():
     #assert load_html(b'0'*int(10e3)) is None
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, 'url', '0000', target_language=None) is None
-    # legacy
-    with pytest.raises(SystemExit):
-        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
@@ -169,6 +166,14 @@ def test_input():
     assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="python") is not None
     with pytest.raises(AttributeError):
         assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
+
+    # text elements
+    elem = etree.Element("p")
+    elem.text = "text"
+    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is not None
+    elem = etree.Element("unexpected")
+    elem.text = "text"
+    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is None
 
 
 def test_xmltocsv():
@@ -805,8 +810,6 @@ def test_htmlprocessing():
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
-    with pytest.raises(ValueError) as err:
-        extract(my_html, json_output=True)
     with pytest.raises(ValueError) as err:
         extract(my_html, output_format="python")
     assert extract(my_html, config=NEW_CONFIG) is None

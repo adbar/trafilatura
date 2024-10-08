@@ -117,27 +117,6 @@ def test_parser():
         r"Trafilatura [0-9]\.[0-9]+\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue()
     )
 
-    # test deprecations
-    with patch.object(sys, "argv", ["", "--inputfile", "test.txt"]), pytest.raises(
-        ValueError
-    ):
-        cli.map_args(cli.parse_args(testargs))
-
-    for arg in ("--nocomments", "--notables", "--hash-as-name"):
-        testargs = ["", arg]
-        with patch.object(sys, "argv", testargs), pytest.raises(ValueError):
-            cli.map_args(cli.parse_args(testargs))
-
-    testargs = ["", "--inputdir", "test1"]
-    with patch.object(sys, "argv", testargs), pytest.raises(ValueError):
-        cli.map_args(cli.parse_args(testargs))
-    testargs = ["", "--outputdir", "test2"]
-    with patch.object(sys, "argv", testargs), pytest.raises(ValueError):
-        cli.map_args(cli.parse_args(testargs))
-    testargs = ["", "-out", "xml"]
-    with patch.object(sys, "argv", testargs), pytest.raises(ValueError):
-        cli.map_args(cli.parse_args(testargs))
-
 
 def test_climain(capfd):
     """test arguments and main CLI entrypoint"""
