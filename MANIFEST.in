@@ -1,4 +1,4 @@
-include CITATION.cff CONTRIBUTING.md HISTORY.md README.rst LICENSE pytest.ini
+include CITATION.cff CONTRIBUTING.md HISTORY.md README.rst LICENSE
 graft trafilatura/data/
 include trafilatura/settings.cfg
 
