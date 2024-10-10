@@ -108,5 +108,5 @@ all = [
     "zstandard >= 0.23.0",
 ]
 
-# [tool.pytest.ini_options]
-# testpaths = "tests/*test*.py"
+[tool.pytest.ini_options]
+testpaths = "tests/*test*.py"
