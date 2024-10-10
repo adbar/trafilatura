@@ -94,6 +94,7 @@ trafilatura = "trafilatura.cli:main"
 # Development extras
 [project.optional-dependencies]
 dev = [
+    "flake8",
     "pytest",
     "pytest-cov",
 ]
