@@ -82,6 +82,7 @@ class Extractor:
                  tables=True, dedup=False, lang=None, max_tree_size=None,
                  url=None, source=None, with_metadata=False, only_with_metadata=False, tei_validation=False,
                  author_blacklist=None, url_blacklist=None, date_params=None):
+        self._set_source(url, source)
         self._set_format(output_format)
         self._add_config(config)
         self.fast = fast
@@ -95,7 +96,6 @@ class Extractor:
         self.lang = lang
         self.max_tree_size = max_tree_size
         self.url = url
-        self.source = url or source
         self.only_with_metadata = only_with_metadata
         self.tei_validation = tei_validation
         self.author_blacklist = author_blacklist or set()
@@ -104,6 +104,11 @@ class Extractor:
                               url_blacklist or output_format == "xmltei")
         self.date_params = (date_params or
                             set_date_params(self.config.getboolean('DEFAULT', 'EXTENSIVE_DATE_SEARCH')))
+
+    def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
+        "Set the source attribute in a robust way."
+        source = url or source
+        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
 
     def _set_format(self, chosen_format: str) -> None:
         "Store the format if supported and raise an error otherwise."

@@ -158,6 +158,8 @@ def test_input():
     assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
+    options = Extractor(source="test\udcc3this")
+    assert options.source == "test?this"
 
     # output format
     assert extract('<html><body><p>ABC</p></body></html>', output_format="xml") is not None
