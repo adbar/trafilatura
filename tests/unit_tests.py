@@ -1502,9 +1502,12 @@ def test_html_conversion():
     <p>Text</p>
     <head rend="h1">Heading 1</head>
     <head rend="h2">Heading 2</head>
+    <head>No attribute</head>
     <hi rend="#i">Italic</hi>
     <hi rend="#b">Bold</hi>
+    <hi>No rend</hi>
     <ref target="https://example.com">Link</ref>
+    <ref>No href</ref>
 </xml>'''
     tree = etree.fromstring(xml)
     html_tree = trafilatura.htmlprocessing.convert_to_html(copy(tree))
@@ -1516,9 +1519,12 @@ def test_html_conversion():
     <p>Text</p>
     <h1>Heading 1</h1>
     <h2>Heading 2</h2>
+    <h3>No attribute</h3>
     <i>Italic</i>
     <strong>Bold</strong>
+    <i>No rend</i>
     <a href="https://example.com">Link</a>
+    <a href="">No href</a>
 </body></html>'''
     assert etree.tostring(html_tree, method='html').decode() == expected_html
 

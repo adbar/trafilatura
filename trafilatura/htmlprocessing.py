@@ -369,11 +369,11 @@ HTML_CONVERSIONS = {
     "item": "li",
     "code": "pre",
     "quote": "blockquote",
-    "head": lambda elem: f"h{int(elem.get('rend')[1:])}",
+    "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
     "img": "graphic",
     "ref": "a",
-    "hi": lambda elem: HTML_TAG_MAPPING[elem.get('rend')]
+    "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")]
 }
 
 
@@ -387,8 +387,7 @@ def convert_to_html(tree):
             elem.tag = HTML_CONVERSIONS[elem.tag]
         # handle attributes
         if elem.tag == "a":
-            elem.set("href", elem.get("target"))
-            elem.attrib.pop("target")
+            elem.set("href", elem.attrib.pop("target", ""))
         else:
             elem.attrib.clear()
     tree.tag = "body"
