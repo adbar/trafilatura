@@ -6,12 +6,14 @@ Functions to process nodes in HTML code.
 import logging
 
 from copy import deepcopy
+from typing import List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import Element, SubElement, strip_tags, tostring
+from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
+from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
-from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
+from .settings import Document, Extractor, CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
 
@@ -37,7 +39,7 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 PRESERVE_IMG_CLEANING = {'figure', 'picture', 'source'}
 
 
-def tree_cleaning(tree, options):
+def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
@@ -74,9 +76,9 @@ def tree_cleaning(tree, options):
     return prune_html(tree, options.focus)
 
 
-def prune_html(tree, focus="balanced"):
+def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     "Delete selected empty elements to save space and processing time."
-    tails = False if focus == "precision" else True
+    tails = not focus == "precision"
     # .//comment() needed for date extraction
     for element in tree.xpath(".//processing-instruction()|.//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
@@ -84,8 +86,8 @@ def prune_html(tree, focus="balanced"):
     return tree
 
 
-def prune_unwanted_nodes(tree, nodelist, with_backup=False):
-    '''Prune the HTML tree by removing unwanted sections.'''
+def prune_unwanted_nodes(tree: HtmlElement, nodelist: List[XPath], with_backup: bool = False) -> HtmlElement:
+    "Prune the HTML tree by removing unwanted sections."
     if with_backup:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
         backup = deepcopy(tree)
@@ -110,8 +112,8 @@ def prune_unwanted_nodes(tree, nodelist, with_backup=False):
     return tree
 
 
-def collect_link_info(links_xpath):
-    '''Collect heuristics on link text'''
+def collect_link_info(links_xpath: List[HtmlElement]) -> Tuple[int, int, int, List[str]]:
+    "Collect heuristics on link text"
     mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
     lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
@@ -119,16 +121,16 @@ def collect_link_info(links_xpath):
     return sum(lengths), len(mylist), shortelems, mylist
 
 
-def link_density_test(element, text, favor_precision=False):
-    '''Remove sections which are rich in links (probably boilerplate)'''
+def link_density_test(element: HtmlElement, text: str, favor_precision: bool = False) -> Tuple[bool, List[str]]:
+    "Remove sections which are rich in links (probably boilerplate)"
     links_xpath = element.findall('.//ref')
     if not links_xpath:
         return False, []
-    mylist = []
+    mylist: List[str] = []
     # shortcut
     if len(links_xpath) == 1:
         len_threshold = 10 if favor_precision else 100
-        link_text = trim(links_xpath[0].text_content())
+        link_text = trim(links_xpath[0].text_content()) or ""
         if len(link_text) > len_threshold and len(link_text) > len(text)*0.9:
             return True, []
     if element.tag == 'p':
@@ -151,14 +153,14 @@ def link_density_test(element, text, favor_precision=False):
     return False, mylist
 
 
-def link_density_test_tables(element):
-    '''Remove tables which are rich in links (probably boilerplate)'''
+def link_density_test_tables(element: HtmlElement) -> bool:
+    "Remove tables which are rich in links (probably boilerplate)."
     links_xpath = element.findall('.//ref')
 
     if not links_xpath:
         return False
 
-    elemlen = len(trim(element.text_content()))
+    elemlen = len(trim(element.text_content()) or "")
     if elemlen < 200:
         return False
 
@@ -170,15 +172,15 @@ def link_density_test_tables(element):
     return linklen > 0.8*elemlen if elemlen < 1000 else linklen > 0.5*elemlen
 
 
-def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision=False):
-    '''Determine the link density of elements with respect to their length,
-       and remove the elements identified as boilerplate.'''
+def delete_by_link_density(subtree: HtmlElement, tagname: str, backtracking: bool = False, favor_precision: bool = False) -> HtmlElement:
+    """Determine the link density of elements with respect to their length,
+       and remove the elements identified as boilerplate."""
     deletions = []
     len_threshold = 200 if favor_precision else 100
     depth_threshold = 1 if favor_precision else 3
 
     for elem in subtree.iter(tagname):
-        elemtext = trim(elem.text_content())
+        elemtext = trim(elem.text_content()) or ""
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result or (
             backtracking and templist and
@@ -194,7 +196,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False, favor_precision
     return subtree
 
 
-def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
+def handle_textnode(elem: _Element, options: Extractor, comments_fix: bool = True, preserve_spaces: bool = False) -> Optional[_Element]:
     "Convert, format, and probe potential text elements."
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
@@ -230,7 +232,7 @@ def handle_textnode(elem, options, comments_fix=True, preserve_spaces=False):
     return elem
 
 
-def process_node(elem, options):
+def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
     "Convert, format, and probe potential text elements (light format)."
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
@@ -250,7 +252,7 @@ def process_node(elem, options):
     return elem
 
 
-def convert_lists(elem):
+def convert_lists(elem: _Element) -> None:
     "Convert <ul> and <ol> to <list> and underlying <li> elements to <item>."
     elem.set("rend", elem.tag)
     elem.tag = "list"
@@ -266,7 +268,7 @@ def convert_lists(elem):
         subelem.tag = "item"
 
 
-def convert_quotes(elem):
+def convert_quotes(elem: _Element) -> None:
     "Convert quoted elements while accounting for nested structures."
     code_flag = False
     if elem.tag == "pre":
@@ -283,25 +285,25 @@ def convert_quotes(elem):
     elem.tag = "code" if code_flag else "quote"
 
 
-def convert_headings(elem):
+def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
     elem.attrib.clear()
     elem.set("rend", elem.tag)
     elem.tag = "head"
 
 
-def convert_line_breaks(elem):
+def convert_line_breaks(elem: _Element) -> None:
     "Convert <br> and <hr> to <lb>"
     elem.tag = "lb"
 
 
-def convert_deletions(elem):
+def convert_deletions(elem: _Element) -> None:
     'Convert <del>, <s>, <strike> to <del rend="overstrike">'
     elem.tag = "del"
     elem.set("rend", "overstrike")
 
 
-def convert_details(elem):
+def convert_details(elem: _Element) -> None:
     "Handle details and summary."
     elem.tag = "div"
     for subelem in elem.iter("summary"):
@@ -320,7 +322,7 @@ CONVERSIONS = {
 }
 
 
-def convert_tags(tree, options, url=None):
+def convert_tags(tree: HtmlElement, options: Extractor, url: Optional[str] = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing
     if not options.links:
@@ -347,7 +349,7 @@ def convert_tags(tree, options, url=None):
                 elem.set('target', target)
 
     if options.formatting:
-        for elem in tree.iter(REND_TAG_MAPPING.keys()):
+        for elem in tree.iter(REND_TAG_MAPPING.keys()):  # type: ignore[call-overload]
             elem.attrib.clear()
             elem.set('rend', REND_TAG_MAPPING[elem.tag])
             elem.tag = 'hi'
@@ -355,7 +357,7 @@ def convert_tags(tree, options, url=None):
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
     # iterate over all concerned elements
-    for elem in tree.iter(CONVERSIONS.keys()):
+    for elem in tree.iter(CONVERSIONS.keys()):  # type: ignore[call-overload]
         CONVERSIONS[elem.tag](elem)
     # images
     if options.images:
@@ -377,12 +379,12 @@ HTML_CONVERSIONS = {
 }
 
 
-def convert_to_html(tree):
+def convert_to_html(tree: _Element) -> _Element:
     "Convert XML to simplified HTML."
-    for elem in tree.iter(HTML_CONVERSIONS.keys()):
+    for elem in tree.iter(HTML_CONVERSIONS.keys()):  # type: ignore[call-overload]
         # apply function or straight conversion
         if callable(HTML_CONVERSIONS[elem.tag]):
-            elem.tag = HTML_CONVERSIONS[elem.tag](elem)
+            elem.tag = HTML_CONVERSIONS[elem.tag](elem) # type: ignore[operator]
         else:
             elem.tag = HTML_CONVERSIONS[elem.tag]
         # handle attributes
@@ -396,7 +398,7 @@ def convert_to_html(tree):
     return root
 
 
-def build_html_output(document, with_metadata=False):
+def build_html_output(document: Document, with_metadata: bool = False) -> str:
     "Convert the document to HTML and return a string."
     html_tree = convert_to_html(document.body)
 
