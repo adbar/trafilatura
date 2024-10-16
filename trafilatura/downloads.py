@@ -127,7 +127,7 @@ class Response:
 # @lru_cache(maxsize=2)
 def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
-    agent_list = []
+    agent_list = None
     # load a series of user-agents
     myagents = config.get("DEFAULT", "USER_AGENTS").strip() or None
     if myagents is not None and myagents != "":
