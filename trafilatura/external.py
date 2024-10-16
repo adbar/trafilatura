@@ -6,9 +6,8 @@ Functions grounding on third-party software.
 import logging
 
 # third-party
-from justext.core import (ParagraphMaker, classify_paragraphs,
-                          revise_paragraph_classification)
-from justext.utils import get_stoplist, get_stoplists
+from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification  # type: ignore
+from justext.utils import get_stoplist, get_stoplists  # type: ignore
 from lxml.etree import Element, strip_tags, tostring
 
 # own

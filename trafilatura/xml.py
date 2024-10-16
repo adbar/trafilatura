@@ -120,8 +120,8 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
             'source': outputdict.pop('url'),
             'source-hostname': outputdict.pop('sitename'),
             'excerpt': outputdict.pop('description'),
-            'categories': ';'.join(outputdict.pop('categories')),
-            'tags': ';'.join(outputdict.pop('tags')),
+            'categories': ';'.join(outputdict.pop('categories') or []),
+            'tags': ';'.join(outputdict.pop('tags') or []),
             'text': xmltotxt(outputdict.pop('body'), include_formatting=False),
         })
         commentsbody = outputdict.pop('commentsbody')
@@ -586,7 +586,7 @@ def _move_element_one_level_up(element: _Element) -> None:
         return
 
     new_elem = Element("p")
-    new_elem.extend(sibling for sibling in element.itersiblings())
+    new_elem.extend(list(element.itersiblings()))
 
     grand_parent.insert(grand_parent.index(parent) + 1, element)
 

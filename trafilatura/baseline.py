@@ -8,13 +8,14 @@ import json
 from typing import Any, Tuple
 
 from lxml.etree import _Element, Element, SubElement
+from lxml.html import HtmlElement
 
 from .settings import BASIC_CLEAN_XPATH
 from .utils import load_html, trim
 from .xml import delete_element
 
 
-def basic_cleaning(tree: _Element) -> _Element:
+def basic_cleaning(tree: HtmlElement) -> HtmlElement:
     "Remove a few section types from the document."
     for elem in BASIC_CLEAN_XPATH(tree):
         delete_element(elem)
@@ -75,7 +76,7 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     temp_text = ""
     # postbody = Element('body')
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
-        entry = trim(element.text_content())
+        entry = trim(element.text_content()) or ""
         if entry not in results:
             SubElement(postbody, 'p').text = entry
             temp_text += " " + entry if temp_text else entry
@@ -88,10 +89,10 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     postbody = Element('body')
     body_elem = tree.find('.//body')
     if body_elem is not None:
-        elem = SubElement(postbody, 'p')
+        p_elem = SubElement(postbody, 'p')
         # todo: sanitize?
-        elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
-        return postbody, elem.text, len(elem.text)
+        p_elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
+        return postbody, p_elem.text, len(p_elem.text)
 
     # new fallback
     text = html2txt(tree, clean=False)

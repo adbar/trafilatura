@@ -21,32 +21,32 @@ except ImportError:
 
 from functools import lru_cache
 from itertools import islice
-from typing import Any, Optional
+from typing import Any, List, Literal, Optional, Tuple, Union
 from unicodedata import normalize
 
 # response compression
 try:
-    import brotli
+    import brotli  # type: ignore
     HAS_BROTLI = True
 except ImportError:
     HAS_BROTLI = False
 
 try:
-    import zstandard
+    import zstandard  # type: ignore
     HAS_ZSTD = True
 except ImportError:
     HAS_ZSTD = False
 
 # language detection
 try:
-    import py3langid
+    import py3langid  # type: ignore
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
 
 # CChardet is faster and can be more accurate
 try:
-    from cchardet import detect as cchardet_detect
+    from cchardet import detect as cchardet_detect  # type: ignore
 except ImportError:
     cchardet_detect = None
 
@@ -91,7 +91,7 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-def handle_compressed_file(filecontent):
+def handle_compressed_file(filecontent: bytes) -> Union[bytes, str]:
     """
     Don't trust response headers and try to decompress a binary string
     with a cascade of installed packages. Use magic numbers when available.
@@ -128,7 +128,7 @@ def handle_compressed_file(filecontent):
     return filecontent
 
 
-def isutf8(data):
+def isutf8(data: bytes) -> bool:
     """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
     try:
         data.decode('UTF-8')
@@ -137,7 +137,7 @@ def isutf8(data):
     return True
 
 
-def detect_encoding(bytesobject):
+def detect_encoding(bytesobject: bytes) -> List[str]:
     """"Read all input or first chunk and return a list of encodings"""
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
@@ -162,14 +162,15 @@ def detect_encoding(bytesobject):
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_file(filecontent) -> str:
+def decode_file(filecontent: Union[bytes, str]) -> str:
     """Check if the bytestring could be GZip and eventually decompress it,
        guess bytestring encoding and try to decode to Unicode string.
        Resort to destructive conversion otherwise."""
-    # init
     if isinstance(filecontent, str):
         return filecontent
+
     htmltext = None
+
     # GZip and Brotli test
     filecontent = handle_compressed_file(filecontent)
     # encoding
@@ -181,6 +182,7 @@ def decode_file(filecontent) -> str:
             htmltext = None
         else:
             break
+
     # return original content if nothing else succeeded
     return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
@@ -206,7 +208,7 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     return htmlstring
 
 
-def fromstring_bytes(htmlobject):
+def fromstring_bytes(htmlobject: str) -> Optional[HtmlElement]:
     "Try to pass bytes to LXML parser."
     tree = None
     try:
@@ -262,23 +264,23 @@ def load_html(htmlobject: Any) -> Optional[HtmlElement]:
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
-def return_printables_and_spaces(char):
+def return_printables_and_spaces(char: str) -> str:
     'Return a character if it belongs to certain classes'
     return char if char.isprintable() or char.isspace() else ''
 
 
-def remove_control_characters(string):
+def remove_control_characters(string: str) -> str:
     '''Prevent non-printable and XML invalid character errors'''
     return ''.join(map(return_printables_and_spaces, string))
 
 
-def normalize_unicode(string, unicodeform='NFC'):
+def normalize_unicode(string: str, unicodeform: Literal['NFC', 'NFD', 'NFKC', 'NFKD'] = 'NFC') -> str:
     'Normalize the given string to the specified unicode format.'
     return normalize(unicodeform, string)
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line, preserve_space=False, trailing_space=False):
+def line_processing(line: str, preserve_space: bool = False, trailing_space: bool = False) -> Optional[str]:
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
@@ -346,7 +348,7 @@ def trim(string: str) -> Optional[str]:
         return None
 
 
-def is_image_file(imagesrc):
+def is_image_file(imagesrc: Optional[str]) -> bool:
     '''Check if the observed string corresponds to a valid image extension.
        Use a length threshold and apply a regex on the content.'''
     if imagesrc is None or len(imagesrc) > 8192:
@@ -354,7 +356,7 @@ def is_image_file(imagesrc):
     return bool(IMAGE_EXTENSION.search(imagesrc))
 
 
-def make_chunks(iterable, n):
+def make_chunks(iterable: Any, n: int) -> Any:
     "Chunk data into smaller pieces."
     # 3.12+: https://docs.python.org/3/library/itertools.html#itertools.batched
     iterator = iter(iterable)
@@ -362,7 +364,7 @@ def make_chunks(iterable, n):
         yield batch
 
 
-def is_acceptable_length(my_len, options) -> bool:
+def is_acceptable_length(my_len: int, options: Any) -> bool:
     "Check if the document length is within acceptable boundaries."
     if my_len < options.min_file_size:
         LOGGER.error("too small/incorrect for URL %s", options.url)
@@ -373,7 +375,7 @@ def is_acceptable_length(my_len, options) -> bool:
     return True
 
 
-def check_html_lang(tree, target_language, strict=False):
+def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = False) -> bool:
     """Check HTML meta-elements for language information and split
        the result in case there are several languages."""
     for attr in TARGET_LANG_ATTRS:
@@ -397,7 +399,7 @@ def check_html_lang(tree, target_language, strict=False):
     return True
 
 
-def language_classifier(temp_text, temp_comments):
+def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
     '''Run external component (if installed) for language identification'''
     if LANGID_FLAG is True:
         result, _ = (
@@ -411,7 +413,7 @@ def language_classifier(temp_text, temp_comments):
     return result
 
 
-def language_filter(temp_text, temp_comments, target_language, docmeta):
+def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
     '''Filter text based on language detection and store relevant information'''
     # todo: run and pass info along anyway?
     if target_language is not None:
@@ -432,11 +434,11 @@ def textfilter(element: _Element) -> bool:
     '''Filter out unwanted text'''
     testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5
-    return not text_chars_test(testtext) or any(map(RE_FILTER.match, testtext.splitlines()))
+    return not testtext or testtext.isspace() or any(map(RE_FILTER.match, testtext.splitlines()))
 
 
 def text_chars_test(string: Optional[str]) -> bool:
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
-    return bool(string) and not string.isspace()
+    return bool(string) and not string.isspace()  # type: ignore[union-attr]
