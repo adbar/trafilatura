@@ -350,8 +350,11 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append(element.tail)
 
 
-def xmltotxt(xmloutput: _Element, include_formatting: bool) -> str:
+def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
+    if xmloutput is None:
+        return ""
+
     returnlist: List[str] = []
 
     process_element(xmloutput, returnlist, include_formatting)

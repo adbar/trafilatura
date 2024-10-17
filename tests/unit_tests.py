@@ -741,6 +741,8 @@ def test_tei():
 
 def test_htmlprocessing():
     '''test html-related functions'''
+    assert xml.xmltotxt(None, include_formatting=False) == ""
+
     options = DEFAULT_OPTIONS
     options.tables = True
     assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
@@ -1383,6 +1385,8 @@ def test_is_probably_readerable():
     """
     Test is_probably_readerable function.
     """
+    assert not is_probably_readerable("ABC")
+
     very_small_str = "hello there"
     small_str = "hello there " * 11
     large_str = "hello there " * 12

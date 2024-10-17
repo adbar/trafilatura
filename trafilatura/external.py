@@ -5,10 +5,13 @@ Functions grounding on third-party software.
 
 import logging
 
+from typing import Any, Tuple
+
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification  # type: ignore
 from justext.utils import get_stoplist, get_stoplists  # type: ignore
-from lxml.etree import Element, strip_tags, tostring
+from lxml.etree import _Element, Element, strip_tags, tostring
+from lxml.html import HtmlElement
 
 # own
 from .baseline import basic_cleaning
@@ -16,7 +19,7 @@ from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
-from .xml import TEI_VALID_TAGS
+from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
@@ -26,7 +29,7 @@ JT_STOPLIST = None
 SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
 
-def try_readability(htmlinput):
+def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     '''Safety net: try with the generic algorithm readability'''
     # defaults: min_text_length=25, retry_length=250
     try:
@@ -35,10 +38,10 @@ def try_readability(htmlinput):
         return fromstring_bytes(doc.summary())
     except Exception as err:
         LOGGER.warning('readability_lxml failed: %s', err)
-        return Element('div')
+        return HtmlElement('div')
 
 
-def compare_extraction(tree, backup_tree, body, text, len_text, options):
+def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: HtmlElement, text: str, len_text: int, options: Any) -> Tuple[_Element, str, int]:
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall
@@ -53,7 +56,7 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     # try with readability
     temppost_algo = try_readability(backup_tree)
     # unicode fix necessary on certain systems (#331)
-    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
+    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8')) or ""
     len_algo = len(algo_text)
 
     # compare
@@ -104,7 +107,7 @@ def compare_extraction(tree, backup_tree, body, text, len_text, options):
     return body, text, len_text
 
 
-def jt_stoplist_init():
+def jt_stoplist_init() -> Tuple[str]:
     'Retrieve and return the content of all JusText stoplists'
     global JT_STOPLIST
     stoplist = set()
@@ -114,7 +117,7 @@ def jt_stoplist_init():
     return JT_STOPLIST
 
 
-def custom_justext(tree, stoplist):
+def custom_justext(tree: HtmlElement, stoplist: Tuple[str]) -> Any:
     'Customized version of JusText processing'
     paragraphs = ParagraphMaker.make_paragraphs(tree)
     classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
@@ -122,7 +125,7 @@ def custom_justext(tree, stoplist):
     return paragraphs
 
 
-def try_justext(tree, url, target_language):
+def try_justext(tree: HtmlElement, url: str, target_language: str) -> _Element:
     '''Second safety net: try with the generic algorithm justext'''
     # init
     result_body = Element('body')
@@ -146,22 +149,22 @@ def try_justext(tree, url, target_language):
     return result_body
 
 
-def justext_rescue(tree, options):
+def justext_rescue(tree: HtmlElement, options: Any) -> Tuple[_Element, str, int]:
     '''Try to use justext algorithm as a second fallback'''
     # additional cleaning
     tree = basic_cleaning(tree)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
-    temp_text = trim(' '.join(temppost_algo.itertext()))
+    temp_text = trim(' '.join(temppost_algo.itertext())) or ""
     return temppost_algo, temp_text, len(temp_text)
 
 
-def sanitize_tree(tree, options):
+def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, int]:
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)
     for elem in tree.findall(SANITIZED_XPATH):
-        elem.getparent().remove(elem)
+        delete_element(elem, keep_tail=False)
     if options.links is False:
         strip_tags(cleaned_tree, 'a')
     strip_tags(cleaned_tree, 'span')
@@ -184,5 +187,5 @@ def sanitize_tree(tree, options):
     ]
     strip_tags(cleaned_tree, *sanitization_list)
     # 4. return
-    text = trim(' '.join(cleaned_tree.itertext()))
+    text = trim(' '.join(cleaned_tree.itertext())) or ""
     return cleaned_tree, text, len(text)
