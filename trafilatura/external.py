@@ -41,7 +41,7 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
         return HtmlElement('div')
 
 
-def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: HtmlElement, text: str, len_text: int, options: Any) -> Tuple[_Element, str, int]:
+def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Any) -> Tuple[_Element, str, int]:
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall

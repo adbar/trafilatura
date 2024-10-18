@@ -54,7 +54,7 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 
-def create_pool(**args):
+def create_pool(**args: Any) -> Union[SOCKSProxyManager, urllib3.PoolManager]:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}

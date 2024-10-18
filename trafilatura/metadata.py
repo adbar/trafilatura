@@ -8,7 +8,7 @@ import re
 
 from copy import deepcopy
 from html import unescape
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from courlan import (
     extract_domain,
@@ -480,7 +480,7 @@ def extract_license(tree: HtmlElement) -> Optional[str]:
 
 
 def extract_metadata(
-    filecontent: str,
+    filecontent: Union[HtmlElement, str],
     default_url: Optional[str] = None,
     date_config: Optional[Any] = None,
     extensive: bool = True,
@@ -489,7 +489,7 @@ def extract_metadata(
     """Main process for metadata extraction.
 
     Args:
-        filecontent: HTML code as string.
+        filecontent: HTML code as string or parsed tree.
         default_url: Previously known URL of the downloaded document.
         date_config: Provide extraction parameters to htmldate as dict().
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
