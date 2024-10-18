@@ -231,7 +231,7 @@ def fetch_url(
 
     Args:
         url: URL of the page to fetch.
-        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
+        no_ssl: Do not try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
         options: Extraction options (supersedes config).
 
@@ -244,8 +244,6 @@ def fetch_url(
         if not options:
             options = Extractor(config=config)
         return _handle_response(url, response, True, options)
-        # return '' (useful do discard further processing?)
-        # return response
     return None
 
 
