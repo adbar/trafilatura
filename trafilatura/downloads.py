@@ -224,7 +224,6 @@ def _handle_response(
 
 def fetch_url(
     url: str,
-    decode: bool = True,
     no_ssl: bool = False,
     config: ConfigParser = DEFAULT_CONFIG,
     options: Optional[Extractor] = None,
@@ -233,7 +232,7 @@ def fetch_url(
 
     Args:
         url: URL of the page to fetch.
-        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
+        no_ssl: Do not try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
         options: Extraction options (supersedes config).
 
@@ -241,17 +240,11 @@ def fetch_url(
         Unicode string or None in case of failed downloads and invalid results.
 
     """
-    if not decode:
-        raise ValueError(
-            "Raw response objects are deprecated for fetch_url(), use fetch_response() instead."
-        )
-    response = fetch_response(url, decode=decode, no_ssl=no_ssl, config=config)
+    response = fetch_response(url, decode=True, no_ssl=no_ssl, config=config)
     if response and response.data:
         if not options:
             options = Extractor(config=config)
-        return _handle_response(url, response, decode, options)
-        # return '' (useful do discard further processing?)
-        # return response
+        return _handle_response(url, response, True, options)
     return None
 
 

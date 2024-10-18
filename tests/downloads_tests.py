@@ -107,8 +107,6 @@ def test_fetch():
     '''Test URL fetching.'''
     # sanity check
     assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
-    with pytest.raises(ValueError):
-        fetch_url("https://example.org", decode=False)
 
     # fetch_url
     assert fetch_url('#@1234') is None
