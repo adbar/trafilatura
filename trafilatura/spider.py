@@ -20,7 +20,7 @@ from courlan import (
 )
 
 try:
-    import py3langid
+    import py3langid  # type: ignore
 except ImportError:
     pass
 
@@ -206,10 +206,11 @@ def process_links(
 
     if htmlstring and params.prune_xpath is not None:
         if isinstance(params.prune_xpath, str):
-            params.prune_xpath = [params.prune_xpath]
+            params.prune_xpath = [params.prune_xpath]  # type: ignore[assignment]
         tree = load_html(htmlstring)
-        tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
-        htmlstring = tostring(tree).decode()
+        if tree is not None:
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
+            htmlstring = tostring(tree).decode()
 
     links, links_priority = [], []
     for link in extract_links(

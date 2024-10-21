@@ -350,7 +350,7 @@ def add_to_compressed_dict(
 
 
 def load_download_buffer(
-    url_store: UrlStore, sleep_time: int = 5
+    url_store: UrlStore, sleep_time: float = 5.0
 ) -> Tuple[Optional[List[str]], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:

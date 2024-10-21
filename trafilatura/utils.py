@@ -289,10 +289,10 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     if not preserve_space:
         # remove newlines that are not related to punctuation or markup
         # remove non-printable chars and normalize space characters (including Unicode spaces)
-        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))
+        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))  # type: ignore[assignment]
         # prune empty lines
         if all(map(str.isspace, new_line)):
-            new_line = None
+            new_line = None  # type: ignore[assignment]
         elif trailing_space:
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""

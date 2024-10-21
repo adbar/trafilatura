@@ -145,7 +145,7 @@ class Extractor:
         self.with_metadata: bool = (
             with_metadata
             or only_with_metadata
-            or url_blacklist
+            or bool(url_blacklist)
             or output_format == "xmltei"
         )
         self.date_params: Dict[str, Any] = date_params or set_date_params(

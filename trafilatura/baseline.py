@@ -63,7 +63,7 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     # scrape from article tag
     temp_text = ""
     for article_elem in tree.iterfind('.//article'):
-        text = trim(article_elem.text_content())
+        text = trim(article_elem.text_content()) or ""
         if len(text) > 100:
             SubElement(postbody, 'p').text = text
             temp_text += " " + text if temp_text else text
@@ -91,7 +91,8 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     if body_elem is not None:
         p_elem = SubElement(postbody, 'p')
         # todo: sanitize?
-        p_elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
+        text_elems = [trim(e) for e in body_elem.itertext()]
+        p_elem.text = '\n'.join([e for e in text_elems if e])
         return postbody, p_elem.text, len(p_elem.text)
 
     # new fallback

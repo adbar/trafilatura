@@ -82,7 +82,7 @@ class SitemapObject:
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
         LOGGER.debug("fetching sitemap: %s", self.current_url)
-        self.content = fetch_url(self.current_url)
+        self.content = fetch_url(self.current_url) or ""
         self.seen.add(self.current_url)
 
     def handle_link(self, link: str) -> None:
@@ -94,7 +94,7 @@ class SitemapObject:
         link = fix_relative_urls(self.base_url, link)
         link = clean_url(link, self.target_lang)
 
-        if link is None or not lang_filter(link, self.target_lang):
+        if not link or not lang_filter(link, self.target_lang):
             return
 
         newdomain = extract_domain(link, fast=True)
@@ -180,7 +180,7 @@ def sitemap_search(
     url: str,
     target_lang: Optional[str] = None,
     external: bool = False,
-    sleep_time: int = 2,
+    sleep_time: float = 2.0,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
 ) -> List[str]:
     """Look for sitemaps for the given URL and gather links.
@@ -290,12 +290,12 @@ def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]
         line = line.strip()
         if not line:
             continue
-        line = line.split(":", 1)
-        if len(line) == 2:
-            line[0] = line[0].strip().lower()
-            if line[0] == "sitemap":
+        line_parts = line.split(":", 1)
+        if len(line_parts) == 2:
+            line_parts[0] = line_parts[0].strip().lower()
+            if line_parts[0] == "sitemap":
                 # urllib.parse.unquote(line[1].strip())
-                candidates.append(line[1].strip())
+                candidates.append(line_parts[1].strip())
 
     candidates = list(dict.fromkeys(candidates))
     sitemapurls = [fix_relative_urls(baseurl, u) for u in candidates if u]

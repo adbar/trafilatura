@@ -252,7 +252,7 @@ def find_feed_urls(
     url: str,
     target_lang: Optional[str] = None,
     external: bool = False,
-    sleep_time: int = 2,
+    sleep_time: float = 2.0,
 ) -> List[str]:
     """Try to find feed URLs.
 
@@ -286,7 +286,8 @@ def find_feed_urls(
             # assume it's a web page
             for feed in determine_feed(downloaded, params):
                 feed_string = fetch_url(feed)
-                feed_links.extend(extract_links(feed_string, params))
+                if feed_string:
+                    feed_links.extend(extract_links(feed_string, params))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
