@@ -220,7 +220,7 @@ def normalize_json(string: str) -> str:
         string = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match[1], 16)), string)
         string = ''.join(c for c in string if ord(c) < 0xD800 or ord(c) > 0xDFFF)
         string = unescape(string)
-    return trim(JSON_REMOVE_HTML.sub('', string))  # type: ignore[no-any-return]
+    return trim(JSON_REMOVE_HTML.sub('', string)) or ""
 
 
 def normalize_authors(current_authors: Optional[str], author_string: str) -> Optional[str]:
@@ -240,13 +240,13 @@ def normalize_authors(current_authors: Optional[str], author_string: str) -> Opt
     author_string = HTML_STRIP_TAGS.sub('', author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
-        author = trim(author)
+        author = trim(author) or ""
         # remove emoji
         author = AUTHOR_EMOJI_REMOVE.sub('', author)
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)
         # replace special characters with space
-        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author))
+        author = trim(AUTHOR_REPLACE_JOIN.sub(' ', author)) or ""
         author = AUTHOR_REMOVE_NICKNAME.sub('', author)
         # remove special characters
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)

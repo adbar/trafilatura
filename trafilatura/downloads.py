@@ -210,7 +210,7 @@ def _send_urllib_request(
 
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
-) -> Optional[Union[Response, str, None]]:
+) -> Optional[Union[Response, str]]:  # todo: only return str
     "Internal function to run safety checks on response result."
     lentest = len(response.html or response.data or "")
     if response.status != 200:

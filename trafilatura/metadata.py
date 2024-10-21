@@ -485,7 +485,7 @@ def extract_metadata(
     date_config: Optional[Any] = None,
     extensive: bool = True,
     author_blacklist: Optional[Set[str]] = None,
-) -> Optional[Document]:
+) -> Document:
     """Main process for metadata extraction.
 
     Args:
@@ -495,8 +495,8 @@ def extract_metadata(
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
 
     Returns:
-        A trafilatura.metadata.Document containing the extracted metadata information or None.
-        trafilatura.metadata.Document has .as_dict() method that will return a copy as a dict.
+        A trafilatura.settings.Document containing the extracted metadata information or None.
+        The Document class has .as_dict() method that will return a copy as a dict.
     """
     # init
     author_blacklist = author_blacklist or set()
@@ -505,7 +505,7 @@ def extract_metadata(
     # load contents
     tree = load_html(filecontent)
     if tree is None:
-        return None
+        return Document()
 
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)

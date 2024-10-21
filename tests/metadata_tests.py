@@ -271,7 +271,8 @@ def test_meta():
     assert metadata.title == 'Title'
 
     # catch errors
-    assert extract_metadata('') is None
+    metadata = extract_metadata('')
+    assert all(getattr(metadata, a) is None for a in metadata.__slots__)
     metadata = extract_metadata('<html><title></title></html>')
     assert metadata.sitename is None
     metadata = extract_metadata('<html><head><title>' + 'AAA'*10000 + '</title></head></html>')
