@@ -340,10 +340,9 @@ def examine_title_element(
     title_element = tree.find(".//head//title")
     if title_element is not None:
         title = trim(title_element.text_content())
-        if title:
-            match = HTMLTITLE_REGEX.match(title)
-            if match:
-                return title, match[1], match[2]
+        match = HTMLTITLE_REGEX.match(title)
+        if match:
+            return title, match[1], match[2]
     LOGGER.debug("no main title found")
     return title, None, None
 
