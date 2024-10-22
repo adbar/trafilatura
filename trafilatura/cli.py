@@ -16,10 +16,11 @@ from .cli_utils import (cli_crawler, cli_discovery, examine,
                         url_processing_pipeline, write_result)
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
 
+
 # fix output encoding on some systems
-if sys.stdout.encoding != 'UTF-8':
+if sys.stdout.encoding != 'UTF-8' and hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
-if sys.stderr.encoding != 'UTF-8':
+if sys.stderr.encoding != 'UTF-8' and hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8')
 
 

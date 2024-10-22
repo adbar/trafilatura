@@ -741,6 +741,8 @@ def test_tei():
 
 def test_htmlprocessing():
     '''test html-related functions'''
+    assert xml.xmltotxt(None, include_formatting=False) == ""
+
     options = DEFAULT_OPTIONS
     options.tables = True
     assert trafilatura.htmlprocessing.tree_cleaning(etree.Element('html'), options) is not None
@@ -819,6 +821,7 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
+    assert extract(my_html, target_language='de', no_fallback=True, config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
 
@@ -1383,6 +1386,8 @@ def test_is_probably_readerable():
     """
     Test is_probably_readerable function.
     """
+    assert not is_probably_readerable("ABC")
+
     very_small_str = "hello there"
     small_str = "hello there " * 11
     large_str = "hello there " * 12

@@ -29,7 +29,7 @@ from trafilatura import spider
 from .baseline import html2txt
 from .core import extract
 from .deduplication import generate_bow_hash
-from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .downloads import Response, add_to_compressed_dict, buffered_downloads, load_download_buffer
 from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import (
@@ -272,7 +272,7 @@ def download_queue_processing(
             bufferlist, args.parallel, options=options
         ):
             # handle result
-            if result:
+            if result and isinstance(result, str):
                 options.url = url
                 counter = process_result(result, args, counter, options)
             else:
@@ -380,7 +380,7 @@ def cli_crawler(
         for url, result in buffered_downloads(
             bufferlist, args.parallel, decode=False, options=options
         ):
-            if result is not None:
+            if result and isinstance(result, Response):
                 spider.process_response(result, param_dict[get_base_url(url)])
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):

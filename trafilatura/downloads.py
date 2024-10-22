@@ -33,7 +33,7 @@ except ImportError:
     PROXY_URL = None
 
 try:
-    import pycurl
+    import pycurl  # type: ignore
     CURL_SHARE = pycurl.CurlShare()
     # available options:
     # https://curl.se/libcurl/c/curl_share_setopt.html
@@ -54,12 +54,12 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 
-def create_pool(**args):
+def create_pool(**args: Any) -> Any:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
-    manager_args["num_pools"] = 50
-    return manager_class(**manager_args, **args)
+    manager_args["num_pools"] = 50  # type: ignore[assignment]
+    return manager_class(**manager_args, **args)  # type: ignore[arg-type]
 
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
@@ -125,16 +125,17 @@ class Response:
 
 # caching throws an error
 # @lru_cache(maxsize=2)
-def _parse_config(config: ConfigParser) -> Tuple[Optional[str], Optional[str]]:
+def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
+    agent_list = None
     # load a series of user-agents
     myagents = config.get("DEFAULT", "USER_AGENTS").strip() or None
     if myagents is not None and myagents != "":
-        myagents = myagents.split("\n")
+        agent_list = myagents.split("\n")
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
     # todo: support for several cookies?
     mycookie = config.get("DEFAULT", "COOKIE") or None
-    return myagents, mycookie
+    return agent_list, mycookie
 
 
 def _determine_headers(
@@ -209,7 +210,7 @@ def _send_urllib_request(
 
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
-) -> Optional[Union[Response, str]]:
+) -> Optional[Union[Response, str]]:  # todo: only return str
     "Internal function to run safety checks on response result."
     lentest = len(response.html or response.data or "")
     if response.status != 200:
@@ -349,8 +350,8 @@ def add_to_compressed_dict(
 
 
 def load_download_buffer(
-    url_store: UrlStore, sleep_time: int = 5
-) -> Tuple[List[str], UrlStore]:
+    url_store: UrlStore, sleep_time: float = 5.0
+) -> Tuple[Optional[List[str]], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)

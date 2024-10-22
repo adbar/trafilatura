@@ -145,7 +145,7 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
     # Atom
     if "<link " in feed_string:
         return [
-            LINK_HREF.search(link)[1]
+            LINK_HREF.search(link)[1]  # type: ignore[index]
             for link in (
                 m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)
             )
@@ -252,7 +252,7 @@ def find_feed_urls(
     url: str,
     target_lang: Optional[str] = None,
     external: bool = False,
-    sleep_time: int = 2,
+    sleep_time: float = 2.0,
 ) -> List[str]:
     """Try to find feed URLs.
 
@@ -278,7 +278,6 @@ def find_feed_urls(
     urlfilter = None
     downloaded = fetch_url(url)
 
-    downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
         feed_links = extract_links(downloaded, params)
@@ -286,7 +285,8 @@ def find_feed_urls(
             # assume it's a web page
             for feed in determine_feed(downloaded, params):
                 feed_string = fetch_url(feed)
-                feed_links.extend(extract_links(feed_string, params))
+                if feed_string:
+                    feed_links.extend(extract_links(feed_string, params))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
                 urlfilter = url
