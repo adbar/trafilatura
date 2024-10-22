@@ -278,7 +278,6 @@ def find_feed_urls(
     urlfilter = None
     downloaded = fetch_url(url)
 
-    downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
         feed_links = extract_links(downloaded, params)

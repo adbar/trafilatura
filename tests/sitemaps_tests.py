@@ -82,6 +82,7 @@ def test_extraction():
     #sitemap.handle_link(url)  #  (url, '0')
 
     # safety belts
+    assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml.gz', None) is False
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is False
     assert sitemaps.is_plausible_sitemap('http://example.org/sitemap.xml', 'ABC') is False
     assert sitemaps.is_plausible_sitemap('http://test.org/sitemap.xml', '<!DOCTYPE html><html><body/></html>') is False
