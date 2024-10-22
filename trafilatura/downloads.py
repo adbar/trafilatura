@@ -58,8 +58,8 @@ def create_pool(**args: Any) -> Any:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
-    manager_args["num_pools"] = 50
-    return manager_class(**manager_args, **args)
+    manager_args["num_pools"] = 50  # type: ignore[assignment]
+    return manager_class(**manager_args, **args)  # type: ignore[arg-type]
 
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)

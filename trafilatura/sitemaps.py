@@ -92,7 +92,7 @@ class SitemapObject:
             return
         # fix, check, clean and normalize
         link = fix_relative_urls(self.base_url, link)
-        link = clean_url(link, self.target_lang)
+        link = clean_url(link, self.target_lang) or ""
 
         if not link or not lang_filter(link, self.target_lang):
             return

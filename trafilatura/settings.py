@@ -353,6 +353,7 @@ MANUALLY_CLEANED = [
     "math",
     "menuitem",
     "nav",
+    "noindex",
     "noscript",
     "optgroup",
     "option",

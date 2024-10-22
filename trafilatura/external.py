@@ -19,7 +19,7 @@ from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import fromstring_bytes, trim
-from .xml import TEI_VALID_TAGS, delete_element
+from .xml import TEI_VALID_TAGS
 from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
@@ -163,8 +163,6 @@ def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, in
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)
-    for elem in tree.findall(SANITIZED_XPATH):
-        delete_element(elem, keep_tail=False)
     if options.links is False:
         strip_tags(cleaned_tree, 'a')
     strip_tags(cleaned_tree, 'span')
