@@ -8,7 +8,7 @@ import logging
 from copy import copy, deepcopy
 from typing import Any, Dict, Optional, Set, Tuple, Union
 
-from lxml.etree import _Element, XPath, strip_tags
+from lxml.etree import _Element, Element, XPath, strip_tags
 from lxml.html import HtmlElement
 
 # own
@@ -198,32 +198,31 @@ def bare_extraction(
     #    PendingDeprecationWarning
     # )
 
-    # load data
-    try:
-        # regroup extraction options
-        if not options or not isinstance(options, Extractor):
-            options = Extractor(
-                config=config,
-                output_format=output_format,
-                fast=no_fallback,
-                precision=favor_precision,
-                recall=favor_recall,
-                comments=include_comments,
-                formatting=include_formatting,
-                links=include_links,
-                images=include_images,
-                tables=include_tables,
-                dedup=deduplicate,
-                lang=target_language,
-                max_tree_size=max_tree_size,
-                url=url,
-                with_metadata=with_metadata,
-                only_with_metadata=only_with_metadata,
-                author_blacklist=author_blacklist,
-                url_blacklist=url_blacklist,
-                date_params=date_extraction_params,
-            )
+    # regroup extraction options
+    if not options or not isinstance(options, Extractor):
+        options = Extractor(
+            config=config,
+            output_format=output_format,
+            fast=no_fallback,
+            precision=favor_precision,
+            recall=favor_recall,
+            comments=include_comments,
+            formatting=include_formatting,
+            links=include_links,
+            images=include_images,
+            tables=include_tables,
+            dedup=deduplicate,
+            lang=target_language,
+            max_tree_size=max_tree_size,
+            url=url,
+            with_metadata=with_metadata,
+            only_with_metadata=only_with_metadata,
+            author_blacklist=author_blacklist,
+            url_blacklist=url_blacklist,
+            date_params=date_extraction_params,
+        )
 
+    try:
         # load the HTML tree
         tree = load_html(filecontent)
         if tree is None:
@@ -282,7 +281,7 @@ def bare_extraction(
                 cleaned_tree, options
             )
         else:
-            commentsbody, temp_comments, len_comments = None, "", 0
+            commentsbody, temp_comments, len_comments = Element("body"), "", 0
         if options.focus == "precision":
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
@@ -450,7 +449,7 @@ def extract(
     )
 
     # post-processing
-    if not document:
+    if not document or not isinstance(document, Document):
         return None
 
     if options.format not in TXT_FORMATS:

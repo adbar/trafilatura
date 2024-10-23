@@ -246,7 +246,7 @@ class Document:
         tags: Optional[List[str]] = None,
         fingerprint: Optional[str] = None,
         idval: Optional[str] = None,
-        license: Optional[str] = None,
+        license_val: Optional[str] = None,
         body: _Element = Element("body"),
         comments: Optional[str] = None,
         commentsbody: _Element = Element("body"),
@@ -268,7 +268,7 @@ class Document:
         self.tags: Optional[List[str]] = tags
         self.fingerprint: Optional[str] = fingerprint
         self.id: Optional[str] = idval
-        self.license: Optional[str] = license
+        self.license: Optional[str] = license_val
         self.body: _Element = body
         self.comments: Optional[str] = comments
         self.commentsbody: _Element = commentsbody

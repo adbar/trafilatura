@@ -91,7 +91,7 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-def handle_compressed_file(filecontent: bytes) -> Union[bytes, str]:
+def handle_compressed_file(filecontent: bytes) -> bytes:
     """
     Don't trust response headers and try to decompress a binary string
     with a cascade of installed packages. Use magic numbers when available.
