@@ -119,7 +119,7 @@ def trafilatura_sequence(
         )
 
     # rescue: baseline extraction on original/dirty tree
-    if len_text < options.min_extracted_size and not options.focus == "precision":
+    if len_text < options.min_extracted_size and not options.focus == "precision":  # type: ignore[attr-defined]
         postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
         LOGGER.debug("non-clean extracted length: %s (extraction)", len_text)
 
@@ -305,11 +305,11 @@ def bare_extraction(
                 )
                 raise ValueError
         # size checks
-        if options.comments and len_comments < options.min_extracted_comm_size:
+        if options.comments and len_comments < options.min_extracted_comm_size:  # type: ignore[attr-defined]
             LOGGER.debug("not enough comments: %s", options.source)
         if (
-            len_text < options.min_output_size
-            and len_comments < options.min_output_comm_size
+            len_text < options.min_output_size  # type: ignore[attr-defined]
+            and len_comments < options.min_output_comm_size  # type: ignore[attr-defined]
         ):
             LOGGER.debug(
                 "text and comments not long enough: %s %s %s",

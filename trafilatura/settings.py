@@ -6,7 +6,7 @@ Listing a series of settings that are applied module-wide.
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 try:
     from os import sched_getaffinity
@@ -17,7 +17,7 @@ except ImportError:
 
 from pathlib import Path
 
-from lxml.etree import XPath
+from lxml.etree import _Element, Element, XPath
 
 from .utils import line_processing
 
@@ -59,6 +59,7 @@ CONFIG_MAPPING = {
 }
 
 
+# todo Python >= 3.10: use dataclass with slots=True
 class Extractor:
     "Defines a class to store all extraction options."
     __slots__ = [
@@ -203,6 +204,7 @@ def set_date_params(extensive: bool = True) -> Dict[str, Any]:
     }
 
 
+# todo Python >= 3.10: use dataclass with slots=True
 class Document:
     "Defines a class to store all necessary data and metadata fields for extracted information."
     __slots__ = [
@@ -230,16 +232,52 @@ class Document:
         # 'locale'?
     ]
 
-    def __init__(self) -> None:
-        for slot in self.__slots__:
-            setattr(self, slot, None)
-
-    def __getattr__(self, name: str) -> None:
-        raise AttributeError(f"{name} attribute not present in Document")
-
-    def __setattr__(self, name: str, value: Any) -> None:
-        if name in self.__slots__:
-            object.__setattr__(self, name, value)
+    def __init__(
+        self,
+        *,
+        title: Optional[str] = None,
+        author: Optional[str] = None,
+        url: Optional[str] = None,
+        hostname: Optional[str] = None,
+        description: Optional[str] = None,
+        sitename: Optional[str] = None,
+        date: Optional[str] = None,
+        categories: Optional[List[str]] = None,
+        tags: Optional[List[str]] = None,
+        fingerprint: Optional[str] = None,
+        idval: Optional[str] = None,
+        license: Optional[str] = None,
+        body: _Element = Element("body"),
+        comments: Optional[str] = None,
+        commentsbody: _Element = Element("body"),
+        raw_text: Optional[str] = None,
+        text: Optional[str] = None,
+        language: Optional[str] = None,
+        image: Optional[str] = None,
+        pagetype: Optional[str] = None,
+        filedate: Optional[str] = None,
+    ):
+        self.title: Optional[str] = title
+        self.author: Optional[str] = author
+        self.url: Optional[str] = url
+        self.hostname: Optional[str] = hostname
+        self.description: Optional[str] = description
+        self.sitename: Optional[str] = sitename
+        self.date: Optional[str] = date
+        self.categories: Optional[List[str]] = categories
+        self.tags: Optional[List[str]] = tags
+        self.fingerprint: Optional[str] = fingerprint
+        self.id: Optional[str] = idval
+        self.license: Optional[str] = license
+        self.body: _Element = body
+        self.comments: Optional[str] = comments
+        self.commentsbody: _Element = commentsbody
+        self.raw_text: Optional[str] = raw_text
+        self.text: Optional[str] = text
+        self.language: Optional[str] = language
+        self.image: Optional[str] = image
+        self.pagetype: Optional[str] = pagetype
+        self.filedate: Optional[str] = filedate
 
     @classmethod
     def from_dict(cls: Any, data: Dict[str, Any]) -> Any:

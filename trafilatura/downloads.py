@@ -290,14 +290,14 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
-    curl.setopt(curl.NOBODY, True)
+    curl.setopt(curl.NOBODY, True)  # type: ignore[attr-defined]
     if PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
     # Perform the request
     try:
         curl.perform()
         # Get the response code
-        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
+        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400  # type: ignore[attr-defined]
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
@@ -351,7 +351,7 @@ def add_to_compressed_dict(
 
 def load_download_buffer(
     url_store: UrlStore, sleep_time: float = 5.0
-) -> Tuple[Optional[List[str]], UrlStore]:
+) -> Tuple[List[str], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
@@ -442,7 +442,7 @@ def _send_pycurl_request(
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
     resp = Response(
-        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)
+        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)  # type: ignore[attr-defined]
     )
     curl.close()
 
