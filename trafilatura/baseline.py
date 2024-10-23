@@ -43,16 +43,16 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and 'articleBody' in elem.text:
             try:
-                json_body = json.loads(elem.text).get("articleBody")
+                json_body = json.loads(elem.text).get("articleBody", "")
             except Exception:  # JSONDecodeError or 'list' object has no attribute 'get'
                 json_body = ""
             if json_body:
                 if "<p>" in json_body:
                     parsed = load_html(json_body)
-                    text = parsed.text_content() if parsed is not None else ""
+                    text = trim(parsed.text_content()) if parsed is not None else ""
                 else:
-                    text = json_body
-                SubElement(postbody, 'p').text = trim(text)
+                    text = trim(json_body)
+                SubElement(postbody, 'p').text = text
                 temp_text += " " + text if temp_text else text
                 # return postbody, elem.text, len(elem.text)
     if len(temp_text) > 100:
@@ -63,7 +63,7 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     # scrape from article tag
     temp_text = ""
     for article_elem in tree.iterfind('.//article'):
-        text = trim(article_elem.text_content()) or ""
+        text = trim(article_elem.text_content())
         if len(text) > 100:
             SubElement(postbody, 'p').text = text
             temp_text += " " + text if temp_text else text
@@ -76,7 +76,7 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     temp_text = ""
     # postbody = Element('body')
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
-        entry = trim(element.text_content()) or ""
+        entry = trim(element.text_content())
         if entry not in results:
             SubElement(postbody, 'p').text = entry
             temp_text += " " + entry if temp_text else entry

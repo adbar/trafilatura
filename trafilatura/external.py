@@ -56,7 +56,7 @@ def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Eleme
     # try with readability
     temppost_algo = try_readability(backup_tree)
     # unicode fix necessary on certain systems (#331)
-    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8')) or ""
+    algo_text = trim(tostring(temppost_algo, method='text', encoding='utf-8').decode('utf-8'))
     len_algo = len(algo_text)
 
     # compare
@@ -155,7 +155,7 @@ def justext_rescue(tree: HtmlElement, options: Any) -> Tuple[_Element, str, int]
     tree = basic_cleaning(tree)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
-    temp_text = trim(' '.join(temppost_algo.itertext())) or ""
+    temp_text = trim(' '.join(temppost_algo.itertext()))
     return temppost_algo, temp_text, len(temp_text)
 
 
@@ -185,5 +185,5 @@ def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, in
     ]
     strip_tags(cleaned_tree, *sanitization_list)
     # 4. return
-    text = trim(' '.join(cleaned_tree.itertext())) or ""
+    text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

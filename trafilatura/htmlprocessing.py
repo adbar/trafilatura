@@ -140,7 +140,7 @@ def link_density_test(
     # shortcut
     if len(links_xpath) == 1:
         len_threshold = 10 if favor_precision else 100
-        link_text = trim(links_xpath[0].text_content()) or ""
+        link_text = trim(links_xpath[0].text_content())
         if len(link_text) > len_threshold and len(link_text) > len(text) * 0.9:
             return True, []
     if element.tag == "p":
@@ -176,7 +176,7 @@ def link_density_test_tables(element: HtmlElement) -> bool:
     if not links_xpath:
         return False
 
-    elemlen = len(trim(element.text_content()) or "")
+    elemlen = len(trim(element.text_content()))
     if elemlen < 200:
         return False
 
@@ -201,7 +201,7 @@ def delete_by_link_density(
     depth_threshold = 1 if favor_precision else 3
 
     for elem in subtree.iter(tagname):
-        elemtext = trim(elem.text_content()) or ""
+        elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result or (
             backtracking
@@ -232,7 +232,7 @@ def handle_textnode(
     # lb bypass
     if not comments_fix and elem.tag == "lb":
         if not preserve_spaces:
-            elem.tail = trim(elem.tail)
+            elem.tail = trim(elem.tail) or None
         # if textfilter(elem) is True:
         #     return None
         # duplicate_test(subelement)?
@@ -248,9 +248,9 @@ def handle_textnode(
 
     # trim
     if not preserve_spaces:
-        elem.text = trim(elem.text)
+        elem.text = trim(elem.text) or None
         if elem.tail:
-            elem.tail = trim(elem.tail)
+            elem.tail = trim(elem.tail) or None
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
@@ -269,7 +269,7 @@ def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
         return None
 
     # trim
-    elem.text, elem.tail = trim(elem.text), trim(elem.tail)
+    elem.text, elem.tail = trim(elem.text) or None, trim(elem.tail) or None
 
     # adapt content string
     if elem.tag != "lb" and not elem.text and elem.tail:

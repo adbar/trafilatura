@@ -242,7 +242,7 @@ def put_in_cache(teststring: str) -> None:
 
 def duplicate_test(element: _Element, options: Any) -> bool:
     "Check for duplicate text with LRU cache."
-    teststring = trim(" ".join(element.itertext())) or ""
+    teststring = trim(" ".join(element.itertext()))
     # teststring = element.text
     if len(teststring) > options.min_duplcheck_size:
         # retrieve value from cache

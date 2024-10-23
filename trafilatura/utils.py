@@ -337,15 +337,13 @@ def sanitize_tree(tree: _Element) -> _Element:
 
 
 @lru_cache(maxsize=1024)
-def trim(string: str) -> Optional[str]:
-    '''Remove unnecessary spaces within a text string'''
+def trim(string: str) -> str:
+    "Remove unnecessary spaces within a text string."
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
-        # return LINES_TRIMMING.sub(r' ', string).strip(' \t\n\r\v')
-        # faster:
-        return ' '.join(string.split()).strip()
+        return " ".join(string.split()).strip()
     except (AttributeError, TypeError):
-        return None
+        return ""
 
 
 def is_image_file(imagesrc: Optional[str]) -> bool:

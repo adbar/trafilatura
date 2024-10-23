@@ -86,7 +86,7 @@ LIST_TAGS = {"ol", "ul"}
 
 def text_length(elem: HtmlElement) -> int:
     "Return the length of the element with all its contents."
-    return len(trim(elem.text_content()) or "")
+    return len(trim(elem.text_content()))
 
 
 class Candidate:
@@ -232,7 +232,7 @@ class Document:
                 continue
             grand_parent_node = parent_node.getparent()
 
-            elem_text = trim(elem.text_content()) or ""
+            elem_text = trim(elem.text_content())
             elem_text_len = len(elem_text)
 
             # discard too short paragraphs
