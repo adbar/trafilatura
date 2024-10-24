@@ -129,8 +129,7 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
         outputdict = {'text': xmltotxt(docmeta.body, include_formatting=False)}
         commentsbody = docmeta.commentsbody
 
-    if commentsbody is not None:
-        outputdict['comments'] = xmltotxt(commentsbody, include_formatting=False)
+    outputdict['comments'] = xmltotxt(commentsbody, include_formatting=False)
 
     return json_dumps(outputdict, ensure_ascii=False)
 
@@ -147,14 +146,13 @@ def build_xml_output(docmeta: Document) -> _Element:
     '''Build XML output tree based on extracted information'''
     output = Element('doc')
     add_xml_meta(output, docmeta)
-    docmeta.body.tag = 'main'  # type: ignore[attr-defined]
+    docmeta.body.tag = 'main'
+
     # clean XML tree
     output.append(clean_attributes(docmeta.body))
-    if docmeta.commentsbody is not None:
-        docmeta.commentsbody.tag = 'comments'
-        output.append(clean_attributes(docmeta.commentsbody))
-# XML invalid characters
-# https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
+    docmeta.commentsbody.tag = 'comments'
+    output.append(clean_attributes(docmeta.commentsbody))
+
     return output
 
 
@@ -365,11 +363,8 @@ def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
 def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t", null: str = "null") -> str:
     "Convert the internal XML document representation to a CSV string."
     # preprocessing
-    posttext = xmltotxt(document.body, include_formatting)
-    if document.commentsbody is not None:
-        commentstext = xmltotxt(document.commentsbody, include_formatting)
-    else:
-        commentstext = ""
+    posttext = xmltotxt(document.body, include_formatting) or null
+    commentstext = xmltotxt(document.commentsbody, include_formatting) or null
 
     # output config
     output = StringIO()
@@ -404,11 +399,10 @@ def write_teitree(docmeta: Document) -> _Element:
     postbody.set('type', 'entry')
     textbody.append(postbody)
     # comments
-    if docmeta.commentsbody is not None:
-        commentsbody = clean_attributes(docmeta.commentsbody)
-        commentsbody.tag = 'div'
-        commentsbody.set('type', 'comments')
-        textbody.append(commentsbody)
+    commentsbody = clean_attributes(docmeta.commentsbody)
+    commentsbody.tag = 'div'
+    commentsbody.set('type', 'comments')
+    textbody.append(commentsbody)
     return teidoc
 
 

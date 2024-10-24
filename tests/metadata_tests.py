@@ -272,7 +272,8 @@ def test_meta():
 
     # catch errors
     metadata = extract_metadata('')
-    assert all(getattr(metadata, a) is None for a in metadata.__slots__)
+    target_slots = set(metadata.__slots__) - {"body", "commentsbody"}
+    assert all(getattr(metadata, a) is None for a in target_slots)
     metadata = extract_metadata('<html><title></title></html>')
     assert metadata.sitename is None
     metadata = extract_metadata('<html><head><title>' + 'AAA'*10000 + '</title></head></html>')

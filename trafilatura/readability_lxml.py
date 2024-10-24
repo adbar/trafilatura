@@ -154,9 +154,8 @@ class Document:
                 LOGGER.debug(
                     "Ruthless and lenient parsing did not work. Returning raw html"
                 )
-                article = self.doc.find("body")
-                if article is None:
-                    article = self.doc
+                body = self.doc.find("body")
+                article = body if body is not None else self.doc
 
             cleaned_article = self.sanitize(article, candidates)
             article_length = len(cleaned_article or "")

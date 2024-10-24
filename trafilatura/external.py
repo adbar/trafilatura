@@ -35,10 +35,11 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
         # force conversion to utf-8 (see #319)
-        return fromstring_bytes(doc.summary())
+        summary = fromstring_bytes(doc.summary())
+        return summary if summary is not None else HtmlElement()
     except Exception as err:
         LOGGER.warning('readability_lxml failed: %s', err)
-        return HtmlElement('div')
+        return HtmlElement()
 
 
 def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Any) -> Tuple[_Element, str, int]:
