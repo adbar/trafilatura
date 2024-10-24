@@ -208,15 +208,23 @@ def _send_urllib_request(
     return None
 
 
+def _is_suitable_response(url: str, response: Response, options: Extractor) -> bool:
+    "Check if the response conforms to formal criteria."
+    lentest = len(response.html or response.data or "")
+    if response.status != 200:
+        LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
+        return False
+    # raise error instead?
+    if not is_acceptable_length(lentest, options):
+        return False
+    return True
+
+
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
 ) -> Optional[Union[Response, str]]:  # todo: only return str
     "Internal function to run safety checks on response result."
-    lentest = len(response.html or response.data or "")
-    if response.status != 200:
-        LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
-    # raise error instead?
-    elif is_acceptable_length(lentest, options):
+    if _is_suitable_response(url, response, options):
         return response.html if decode else response
     # catchall
     return None
@@ -244,7 +252,8 @@ def fetch_url(
     if response and response.data:
         if not options:
             options = Extractor(config=config)
-        return _handle_response(url, response, True, options)
+        if _is_suitable_response(url, response, options):
+            return response.html
     return None
 
 
@@ -290,14 +299,14 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
-    curl.setopt(curl.NOBODY, True)
+    curl.setopt(curl.NOBODY, True)  # type: ignore[attr-defined]
     if PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
     # Perform the request
     try:
         curl.perform()
         # Get the response code
-        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
+        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400  # type: ignore[attr-defined]
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
@@ -351,7 +360,7 @@ def add_to_compressed_dict(
 
 def load_download_buffer(
     url_store: UrlStore, sleep_time: float = 5.0
-) -> Tuple[Optional[List[str]], UrlStore]:
+) -> Tuple[List[str], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
@@ -442,7 +451,7 @@ def _send_pycurl_request(
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
     resp = Response(
-        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)
+        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)  # type: ignore[attr-defined]
     )
     curl.close()
 

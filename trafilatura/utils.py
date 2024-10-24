@@ -91,7 +91,7 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-def handle_compressed_file(filecontent: bytes) -> Union[bytes, str]:
+def handle_compressed_file(filecontent: bytes) -> bytes:
     """
     Don't trust response headers and try to decompress a binary string
     with a cascade of installed packages. Use magic numbers when available.
@@ -289,7 +289,7 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     if not preserve_space:
         # remove newlines that are not related to punctuation or markup
         # remove non-printable chars and normalize space characters (including Unicode spaces)
-        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))  # type: ignore[assignment]
+        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))
         # prune empty lines
         if all(map(str.isspace, new_line)):
             new_line = None  # type: ignore[assignment]

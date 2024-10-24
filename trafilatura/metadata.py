@@ -334,9 +334,9 @@ def extract_metainfo(
 
 def examine_title_element(
     tree: HtmlElement,
-) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+) -> Tuple[str, Optional[str], Optional[str]]:
     """Extract text segments out of main <title> element."""
-    title = None
+    title = ""
     title_element = tree.find(".//head//title")
     if title_element is not None:
         title = trim(title_element.text_content())
@@ -355,8 +355,8 @@ def extract_title(tree: HtmlElement) -> Optional[str]:
         if title:
             return title
     # extract using x-paths
-    title = extract_metainfo(tree, TITLE_XPATHS)
-    if title is not None:
+    title = extract_metainfo(tree, TITLE_XPATHS) or ""
+    if title:
         return title
     # extract using title tag
     title, first, second = examine_title_element(tree)
