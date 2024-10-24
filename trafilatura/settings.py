@@ -13,7 +13,7 @@ try:
     CPU_COUNT = len(sched_getaffinity(0))
 except ImportError:
     from os import cpu_count
-    CPU_COUNT = cpu_count()
+    CPU_COUNT = cpu_count() or 1
 
 from pathlib import Path
 

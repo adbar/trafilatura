@@ -146,7 +146,7 @@ def build_xml_output(docmeta: Document) -> _Element:
     '''Build XML output tree based on extracted information'''
     output = Element('doc')
     add_xml_meta(output, docmeta)
-    docmeta.body.tag = 'main'  # type: ignore[attr-defined]
+    docmeta.body.tag = 'main'
 
     # clean XML tree
     output.append(clean_attributes(docmeta.body))

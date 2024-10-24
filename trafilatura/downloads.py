@@ -208,15 +208,23 @@ def _send_urllib_request(
     return None
 
 
+def _is_suitable_response(url: str, response: Response, options: Extractor) -> bool:
+    "Check if the response conforms to formal criteria."
+    lentest = len(response.html or response.data or "")
+    if response.status != 200:
+        LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
+        return False
+    # raise error instead?
+    if not is_acceptable_length(lentest, options):
+        return False
+    return True
+
+
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
 ) -> Optional[Union[Response, str]]:  # todo: only return str
     "Internal function to run safety checks on response result."
-    lentest = len(response.html or response.data or "")
-    if response.status != 200:
-        LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
-    # raise error instead?
-    elif is_acceptable_length(lentest, options):
+    if _is_suitable_response(url, response, options):
         return response.html if decode else response
     # catchall
     return None
@@ -244,7 +252,8 @@ def fetch_url(
     if response and response.data:
         if not options:
             options = Extractor(config=config)
-        return _handle_response(url, response, True, options)
+        if _is_suitable_response(url, response, options):
+            return response.html
     return None
 
 
