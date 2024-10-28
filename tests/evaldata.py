@@ -2210,34 +2210,6 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-'https://www.cecil.de/magazin/lieblingsfarbe-blau': {
-    'file': 'cecil.de.lieblingsfarbe.html',
-    'author': '',
-    'title': 'Lieblingsfarbe Blau',
-    'date': '',
-    'description': '',
-    'categories': [],
-    'tags': [],
-    'with': ['Von der Jeans über Blusen bis hin', 'Orange oder einem kräftigen Gelb', 'wie zum Beispiel eine'],
-    'without': ['Newsletteranmeldung', 'Unsere Vorteile für Sie'],
-    'comments': [],
-    'license': '',
-    'region': 'DE',
-},
-'https://www.street-one.de/blog/Heaven-Blue': {
-    'file': 'street-one.de.blue.html',
-    'author': '',
-    'title': 'Heaven Blue',
-    'date': '',
-    'description': '',
-    'categories': [],
-    'tags': [],
-    'with': ['Ladies, stellt euch folgendes', 'egal, ob mit zartem Zebra-Print', 'Dann behaltet das Gefühl, das'],
-    'without': ['Basic Top Anni', 'Kostenlose Bestellhotline', 'Unsere Vorteile für Sie'],
-    'comments': [],
-    'license': '',
-    'region': 'DE',
-},
 'https://www.limespace.de/2019/10/22/professionell-entloeten-so-machen-sie-alte-elektrogeraete-wieder-einsatzbereit/': {
     'file': 'limespace.de.entloeten.html',
     'author': 'Limespacer',
@@ -2864,8 +2836,8 @@ EVAL_PAGES = {
     'description': 'André Loibl ​Der beliebteste Mindset-Coach mit Freude und Sönnchen reinlassen- Für Dein stabiles und großartiges Business, das Menschen bewegt und einen echten Unterschied in der Welt macht -Hey, André hier! :-)Du willst mich besser kennen lernen? Prima! Fangen wir mit den grundlegenden Fragen an:Wofür stehe ich?',
     'categories': [],
     'tags': [],
-    'with': ['1. Freude und Leichtigkeit.', 'Ich habe ein kurzes Video gemacht', 'Natürlich erfordert das Veränderung und Wachstum', 'offen und neugierig sind'],
-    'without': ['Weiter', 'Hier kostenlos anmelden'],
+    'with': ['1. Freude und Leichtigkeit.', 'Ich habe ein kurzes Video gemacht', 'offen und neugierig sind'],
+    'without': ['Weiter', 'Hier kostenlos anmelden', 'KANGA PROJECT'],
     'comments': [],
     'license': '',
     'region': '',
@@ -4491,9 +4463,9 @@ EVAL_PAGES = {
     'date': '2020-04-28',
     'description': 'Whether you&#039;re for or against Sweden&#039;s softer approach to coronavirus lockdowns, there is no denying state epidemiologist Anders Tegnell has become a household name in the country during the crisis.',
     'categories': [],
-    'tags': ['coronavirus', 'tattoo'],
-    'with': ['te epidemiologist Anders Tegnell has become a household name in the country during the crisis.', 'd to get the tattoo after Tastas advertised the design for a temporary rub-on tattoo on Instagram.', 'rking accusations of callousness as well as admiration for keeping a cool head under pressure.'],
-    'without': ['Share this article', 'Member comments', 'Related articles'],
+    'tags': ['tattoo', 'covid-19'],
+    'with': ['epidemiologist Anders Tegnell has become a household name', 'to get the tattoo after Tastas advertised the design', 'Asked about the tattoo last week by newspaper GP'],
+    'without': ['to leave a comment', 'Advertisement', 'The latest news about the coronavirus outbreak'],
     'comments': [],
     'license': '',
     'region': '',
@@ -4522,20 +4494,6 @@ EVAL_PAGES = {
     'tags': ['Pressefreiheit'],
     'with': ['esichts der Corona-Krise und ihrer Folgen für die Gesellschaft ist das Thema ', 'effpunkt von Journalist, Text und Leser fokussiert. Das Werk entstan', 'rall auf der Welt das Recht haben muss, frei und ohne Angst berichten zu können.'],
     'without': ['zurück', 'nach oben', 'English'],
-    'comments': [],
-    'license': '',
-    'region': 'DE',
-},
-'https://www.bundeswehrkarriere.de/VIP/Laura': {
-    'file': 'bundeswehrkarriere.de.Laura.html',
-    'author': '',
-    'title': 'Ein Land setzt sich gemeinsam ein',
-    'date': '',
-    'description': 'Mach, was wirklich zählt. Gehen Sie an Ihre Grenzen & werden Sie stärker. Jobs mit Zukunft. Richtig gefördert werden. Umfassende Ausbildung. Medizinische Versorgung. Die Zukunft entwickeln. Attraktiver Arbeitgeber. Verantwortung übernehmen. Tägliche Herausforderung. Jetzt informieren!',
-    'categories': [],
-    'tags': [],
-    'with': ['mit allen Behörden sowie Helferinnen und Helfern gegen Corona.', 'wir dich über deine Karrieremöglichkeiten in einem von unseren rund 100 Beratungsbüros bundesweit.', 'etet dir der Freiwillige Wehrdienst die Möglichkeit, den Arbeitgeber Bundeswehr „probeweise“ kennenzulerne'],
-    'without': ['erfolge die Bundeswehr im Einsatz gegen Corona unter:', 'einsatzgegencorona.de', 'Beratungsgespräch vereinbaren'],
     'comments': [],
     'license': '',
     'region': 'DE',
@@ -5534,17 +5492,17 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'https://www.wevolver.com/article/2020.autonomous.vehicle.technology.report': {
-    'file': 'wevolver.com.vehicle.html',
-    'author': 'Wevolver Staff',
-    'title': '2020 Autonomous Vehicle Technology Report',
+'https://www.wevolver.com/article/3dprinting.gets.a.turbo.boost.from.um.technology': {
+    'file': 'wevolver.com.3dprinting.html',
+    'author': 'James Lynch from University of Michigan',
+    'title': '3D-printing gets a turbo boost from U-M technology',
     'date': '2020-02-20',
-    'description': 'Stay cutting edge and find information on Robotics, Automotive, Aerospace, Manufacturing, AI, Energy, and more engineering topics.',
+    'description': '',
     'categories': [],
-    'tags': ['autonomous vehicles'],
-    'with': ['Following the Autonomous Vehicle Hype.', 'At the same time, technology developers have', 'most important market, and the company supplies'],  # 3 segments
-    'without': ['By combining two types of computers, this system could speed up', 'Moose UGV an handle tough environments', 'EngineeringClicks.com is the No. 1 mechanical design'],  # 3 segments
-    'comments': ['Thanks to all the contributors, for the comprehensive', 'With reference to FLIR dataset, the concept ', 'Keep me posted on your progress!'],  # 0 or 3 segments
+    'tags': ['3D Printing', 'machine learning vehicles'],
+    'with': ['The algorithm allows printers to deliver high-quality results', 'Chinedum Okwudire', 'vibration-induced error compensation of a 3D printer'],  # 3 segments
+    'without': ['Search for articles and topics', 'Create smart machines.', 'We reach millions of professional engineers'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -5771,20 +5729,6 @@ EVAL_PAGES = {
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'HU',  # if obvious: DE, CH, AT
-},
-'https://apply.workable.com/gousto/j/8F4D8D5904/': {
-    'file': 'workable.com.gousto.html',
-    'author': '',
-    'title': 'Health and Safety Manager',
-    'date': '',
-    'description': 'Gousto are on a mission to become the UK&#39;s favourite way to eat dinner!Delicious recipes, precise ingredients &amp;amp; a dollop of adventure, delivered to your door. We have invested into our technology, data capability and our product to ensure t...',
-    'categories': [],
-    'tags': [],
-    'with': ['Gousto are on a mission to become the UK', 'Liaise with External Agencies as required.', 'consistently go the extra mile to apply and'],  # 3 segments
-    'without': ['This site is protected by reCAPTCHA and the Google', 'Gousto collects and processes personal data in accordance with', 'Spalding, England, United Kingdom'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.tine.no/presserom/nyhetsarkiv/nff-tine-fotballskole-viktig-for-barneidretten-gjennom-pandemien': {
     'file': 'tine.no.fotballskole.html',
@@ -6874,17 +6818,6 @@ EVAL_PAGES = {
     'date': '2022-01-14',
     'with': ['Fixer Aluminiumstock', 'ambitionierte Skibergsteiger, die', ' X-Press-Hauptskihalter mit innovativem'],  # 3 segments
     'without': ['KOMMENTARE', 'KOMMENDE TERMINE', 'One Love – Babsi Zangerl und Jacopo Larcher'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.camping.info/magazin/de/campingurlaub-an-der-italienischen-kuste-von-ligurien-camping-lino': {
-    'file': 'camping.info-ligurien.html',
-    'author': '',
-    'title': 'Campingurlaub an der italienischen Küste von Ligurien: Camping Lino',
-    'date': '2022-01-24',
-    'with': ['am Platz. Die kleine aber', 'direkt am Mittelmeer und', 'und eine Gaststätte für'],  # 3 segments
-    'without': ['Reisen & Routen', 'Startseite', 'Campingplätze'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT

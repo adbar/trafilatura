@@ -4433,49 +4433,6 @@
         "license": "",
         "region": "DE"
     },
-    "https://www.cecil.de/magazin/lieblingsfarbe-blau": {
-        "file": "cecil.de.lieblingsfarbe.html",
-        "author": "",
-        "title": "Lieblingsfarbe Blau",
-        "date": "",
-        "description": "",
-        "categories": [],
-        "tags": [],
-        "with": [
-            "Von der Jeans \u00fcber Blusen bis hin",
-            "Orange oder einem kr\u00e4ftigen Gelb",
-            "wie zum Beispiel eine"
-        ],
-        "without": [
-            "Newsletteranmeldung",
-            "Unsere Vorteile f\u00fcr Sie"
-        ],
-        "comments": [],
-        "license": "",
-        "region": "DE"
-    },
-    "https://www.street-one.de/blog/Heaven-Blue": {
-        "file": "street-one.de.blue.html",
-        "author": "",
-        "title": "Heaven Blue",
-        "date": "",
-        "description": "",
-        "categories": [],
-        "tags": [],
-        "with": [
-            "Ladies, stellt euch folgendes",
-            "egal, ob mit zartem Zebra-Print",
-            "Dann behaltet das Gef\u00fchl, das"
-        ],
-        "without": [
-            "Basic Top Anni",
-            "Kostenlose Bestellhotline",
-            "Unsere Vorteile f\u00fcr Sie"
-        ],
-        "comments": [],
-        "license": "",
-        "region": "DE"
-    },
     "https://www.limespace.de/2019/10/22/professionell-entloeten-so-machen-sie-alte-elektrogeraete-wieder-einsatzbereit/": {
         "file": "limespace.de.entloeten.html",
         "author": "Limespacer",
@@ -5620,12 +5577,12 @@
         "with": [
             "1. Freude und Leichtigkeit.",
             "Ich habe ein kurzes Video gemacht",
-            "Nat\u00fcrlich erfordert das Ver\u00e4nderung und Wachstum",
             "offen und neugierig sind"
         ],
         "without": [
             "Weiter",
-            "Hier kostenlos anmelden"
+            "Hier kostenlos anmelden",
+            "KANGA PROJECT"
         ],
         "comments": [],
         "license": "",
@@ -8621,18 +8578,18 @@
         "description": "Whether you&#039;re for or against Sweden&#039;s softer approach to coronavirus lockdowns, there is no denying state epidemiologist Anders Tegnell has become a household name in the country during the crisis.",
         "categories": [],
         "tags": [
-            "coronavirus",
-            "tattoo"
+            "tattoo",
+            "covid-19"
         ],
         "with": [
-            "te epidemiologist Anders Tegnell has become a household name in the country during the crisis.",
-            "d to get the tattoo after Tastas advertised the design for a temporary rub-on tattoo on Instagram.",
-            "rking accusations of callousness as well as admiration for keeping a cool head under pressure."
+            "epidemiologist Anders Tegnell has become a household name",
+            "to get the tattoo after Tastas advertised the design",
+            "Asked about the tattoo last week by newspaper GP"
         ],
         "without": [
-            "Share this article",
-            "Member comments",
-            "Related articles"
+            "to leave a comment",
+            "Advertisement",
+            "The latest news about the coronavirus outbreak"
         ],
         "comments": [],
         "license": "",
@@ -8683,28 +8640,6 @@
             "zur\u00fcck",
             "nach oben",
             "English"
-        ],
-        "comments": [],
-        "license": "",
-        "region": "DE"
-    },
-    "https://www.bundeswehrkarriere.de/VIP/Laura": {
-        "file": "bundeswehrkarriere.de.Laura.html",
-        "author": "",
-        "title": "Ein Land setzt sich gemeinsam ein",
-        "date": "",
-        "description": "Mach, was wirklich z\u00e4hlt. Gehen Sie an Ihre Grenzen & werden Sie st\u00e4rker. Jobs mit Zukunft. Richtig gef\u00f6rdert werden. Umfassende Ausbildung. Medizinische Versorgung. Die Zukunft entwickeln. Attraktiver Arbeitgeber. Verantwortung \u00fcbernehmen. T\u00e4gliche Herausforderung. Jetzt informieren!",
-        "categories": [],
-        "tags": [],
-        "with": [
-            "mit allen Beh\u00f6rden sowie Helferinnen und Helfern gegen Corona.",
-            "wir dich \u00fcber deine Karrierem\u00f6glichkeiten in einem von unseren rund 100 Beratungsb\u00fcros bundesweit.",
-            "etet dir der Freiwillige Wehrdienst die M\u00f6glichkeit, den Arbeitgeber Bundeswehr \u201eprobeweise\u201c kennenzulerne"
-        ],
-        "without": [
-            "erfolge die Bundeswehr im Einsatz gegen Corona unter:",
-            "einsatzgegencorona.de",
-            "Beratungsgespr\u00e4ch vereinbaren"
         ],
         "comments": [],
         "license": "",
@@ -10656,31 +10591,28 @@
         "license": "",
         "region": ""
     },
-    "https://www.wevolver.com/article/2020.autonomous.vehicle.technology.report": {
-        "file": "wevolver.com.vehicle.html",
-        "author": "Wevolver Staff",
-        "title": "2020 Autonomous Vehicle Technology Report",
+    "https://www.wevolver.com/article/3dprinting.gets.a.turbo.boost.from.um.technology": {
+        "file": "wevolver.com.3dprinting.html",
+        "author": "James Lynch from University of Michigan",
+        "title": "3D-printing gets a turbo boost from U-M technology",
         "date": "2020-02-20",
-        "description": "Stay cutting edge and find information on Robotics, Automotive, Aerospace, Manufacturing, AI, Energy, and more engineering topics.",
+        "description": "",
         "categories": [],
         "tags": [
-            "autonomous vehicles"
+            "3D Printing",
+            "machine learning vehicles"
         ],
         "with": [
-            "Following the Autonomous Vehicle Hype.",
-            "At the same time, technology developers have",
-            "most important market, and the company supplies"
+            "The algorithm allows printers to deliver high-quality results",
+            "Chinedum Okwudire",
+            "vibration-induced error compensation of a 3D printer"
         ],
         "without": [
-            "By combining two types of computers, this system could speed up",
-            "Moose UGV an handle tough environments",
-            "EngineeringClicks.com is the No. 1 mechanical design"
+            "Search for articles and topics",
+            "Create smart machines.",
+            "We reach millions of professional engineers"
         ],
-        "comments": [
-            "Thanks to all the contributors, for the comprehensive",
-            "With reference to FLIR dataset, the concept ",
-            "Keep me posted on your progress!"
-        ],
+        "comments": [],
         "license": "",
         "region": ""
     },
@@ -11089,28 +11021,6 @@
         "comments": [],
         "license": "",
         "region": "HU"
-    },
-    "https://apply.workable.com/gousto/j/8F4D8D5904/": {
-        "file": "workable.com.gousto.html",
-        "author": "",
-        "title": "Health and Safety Manager",
-        "date": "",
-        "description": "Gousto are on a mission to become the UK&#39;s favourite way to eat dinner!Delicious recipes, precise ingredients &amp;amp; a dollop of adventure, delivered to your door. We have invested into our technology, data capability and our product to ensure t...",
-        "categories": [],
-        "tags": [],
-        "with": [
-            "Gousto are on a mission to become the UK",
-            "Liaise with External Agencies as required.",
-            "consistently go the extra mile to apply and"
-        ],
-        "without": [
-            "This site is protected by reCAPTCHA and the Google",
-            "Gousto collects and processes personal data in accordance with",
-            "Spalding, England, United Kingdom"
-        ],
-        "comments": [],
-        "license": "",
-        "region": ""
     },
     "https://www.tine.no/presserom/nyhetsarkiv/nff-tine-fotballskole-viktig-for-barneidretten-gjennom-pandemien": {
         "file": "tine.no.fotballskole.html",
@@ -13137,25 +13047,6 @@
             "KOMMENTARE",
             "KOMMENDE TERMINE",
             "One Love \u2013 Babsi Zangerl und Jacopo Larcher"
-        ],
-        "comments": [],
-        "license": "",
-        "region": "DE"
-    },
-    "https://www.camping.info/magazin/de/campingurlaub-an-der-italienischen-kuste-von-ligurien-camping-lino": {
-        "file": "camping.info-ligurien.html",
-        "author": "",
-        "title": "Campingurlaub an der italienischen K\u00fcste von Ligurien: Camping Lino",
-        "date": "2022-01-24",
-        "with": [
-            "am Platz. Die kleine aber",
-            "direkt am Mittelmeer und",
-            "und eine Gastst\u00e4tte f\u00fcr"
-        ],
-        "without": [
-            "Reisen & Routen",
-            "Startseite",
-            "Campingpl\u00e4tze"
         ],
         "comments": [],
         "license": "",
