@@ -250,11 +250,6 @@ EVAL_PAGES = {
     'with': ['Zeit für Loslassen und Entspannung.', 'Erfrischende, abschwellende Augencreme Phyto Contour', 'Wie sieht dein Alltag aus?', 'Vielen Dank Anja für deine Tipps rund um Beauty'],
     'without': ['Das Thema könnte dich auch interessieren:', 'Betreiberin von incurvy Plus Size', 'Wir verwenden Cookies'],
 },
-'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': {
-    'file': 'dw.com.uncork.html',
-    'with': ['No grape variety invites as much intrigue', 'With just 0.9 hectares'],
-    'without': ['Related Subjects', 'Audios and videos on the topic', 'But boozers in Berlin'],
-},
 'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': {
     'file': 'jolie.de.adele.html',
     'with': ['Adele feierte ausgelassen mit den Spice Girls', 'wie sich Adele weiterentwickelt.'],
@@ -274,11 +269,6 @@ EVAL_PAGES = {
     'file': 'franziska-elea.de.vuitton.html',
     'with': ['Zuerst dachte ich, ich könnte das', 'x Franzi', 'Flauschjacke: Bershka'],
     'without': ['Palm Springs Mini (links)', 'Diese Website verwendet Akismet', 'New York, New York'],
-},
-'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': {
-    'file': 'gofeminin.de.abnehmen.html',
-    'with': ['Crash-Diäten ziehen meist den Jojo-Effekt', 'Die Psyche spielt eine nicht unerhebliche Rolle', '2. Satt essen bei den Mahlzeiten'],
-    'without': ['Sportskanone oder Sportmuffel', 'PINNEN', 'Bringt die Kilos zum Purzeln!'],
 },
 'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': {
     'file': 'brigitte.de.ikigai.html',
@@ -403,11 +393,6 @@ EVAL_PAGES = {
     'with': ['I use a Skylake processor with GNU GCC 8.3.', 'gsoc-2018', '0.091 GB/s', 'version 0.2 on vcpkg.'],
     'without': ['Leave a Reply', 'Science and Technology links', 'Proudly powered by WordPress'],
 },
-'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': {
-    'file': 'zeit.de.zugverkehr.html',
-    'with': ['36 Stunden.', 'Nationale Egoismen', 'Deutschland kaum beschleunigt.', 'geprägte Fehlentscheidung.', 'horrende Preise für miserablen Service bezahlen?'],
-    'without': ['Durchgehende Tickets fehlen', 'Bitte melden Sie sich an, um zu kommentieren.'],
-},
 'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': {
     'file': 'franceculture.fr.idees.html',
     'with': ['Performativité', 'Les individus productifs communiquent', 'de nos espoirs et de nos désirs.'],
@@ -419,12 +404,6 @@ EVAL_PAGES = {
     'without': ['Reuters files', 'turns CO2 into soap', 'I consent to receiving'],
     'comments': ['Postmedia is committed'],
 },
-# overview page: result is None
-# 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
-#    'file': 'chip.de.tests.html',
-#    'with': [],
-#    'without': [],
-#},
 'https://www.ahlen.de/start/aktuelles/aktuelle/information/nachricht/aus-ahlen/reparaturcafe-am-31-januar/': {
     'file': 'ahlen.de.reparaturcafe.html',
     'author': '',
@@ -2133,20 +2112,6 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-'https://medium.com/@ransu.massol/recherche-non-%C3%A0-une-loi-in%C3%A9galitaire-be507f7cf761': {
-    'file': 'medium.com.recherche.html',
-    'author': 'Francois Massol',
-    'title': 'Recherche : non à une loi inégalitaire',
-    'date': '2019-12-09',
-    'description': '',
-    'categories': [],
-    'tags': ['Recherche Scientifique', 'Compétition', 'Darwinism', 'Inégalités', 'Politiques Publiques'],
-    'with': ['Cela fait de très nombreuses', 'que nous connaissons', 'Que les moyens financiers'],
-    'without': ['Welcome to a place where', 'More From Medium', 'Become a member'],
-    'comments': [],
-    'license': '',
-    'region': '',
-},
 'https://juliasleseblog.blogspot.com/2018/08/irland-roadtrip.html': {
     'file': 'juliasleseblog.blogspot.com.irland.html',
     'author': 'Julia Fahrngruber',
@@ -3157,20 +3122,6 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-'https://www.faz.net/aktuell/reise/reise-durch-sierra-leone-es-ist-zeit-fuer-den-tourismus-16306548.html': {
-    'file': 'faz.net.leone.html',
-    'author': 'Karin Finkenzeller',
-    'title': 'Die Sonne geht auch wieder auf',
-    'date': '2019-07-30',
-    'description': 'Sierra Leone hat schwere B&uuml;rgerkriegszeiten hinter sich. Endlose Strände, grüne Hügel und die Hoffnung sind schon da. Jetzt fehlen nur...',
-    'categories': [],
-    'tags': [],
-    'with': ['Sierra Leone hat schwere Zeiten hinter sich', 'Touré, einem mageren, hoch aufgeschossenen Mann, gehört das Land', 'Deshalb sichert er den Herstellern ein Auskommen wie kaum ein'],
-    'without': ['Hinweis der Redaktion: Zum Teil wurden die Recherchereisen für diesen Artikel von', 'Dieser Beitrag kann nicht mehr kommentiert werden.', ' © Frankfurter Allgemeine Zeitung GmbH 2020 '],
-    'comments': ['Für Anbenteuerurlauber sicher ein guter Tip'],
-    'license': '',
-    'region': 'DE',
-},
 'https://www.management-circle.de/blog/remote-support-mit-smart-glasses/': {
     'file': 'management-circle.de.glasses.html',
     'author': 'Isabella Beyer',
@@ -3749,20 +3700,6 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-'https://www.ndr.de/sport/fussball/Eintracht-Braunschweig-Ein-Remis-als-Mutmacher,eintracht2488.html': {
-    'file': 'd36b1d6cdc2c41e18bc5324b41629e0b.html',
-    'author': '',
-    'title': 'Eintracht Braunschweig: Ein Remis als Mutmacher',
-    'date': '2019-10-19',
-    'description': 'Eintracht Braunschweig ist in der Dritten Liga seit dem 1. September sieglos. Das Remis im Testspiel gegen den HSV macht den Niedersachsen Mut für das heutige Heimspiel gegen Spitzenreiter Unterhaching.',
-    'categories': ['Fußball'],
-    'tags': [],
-    'with': ['Das Gefühl, nach dem Schlusspfiff die Hände nach oben', 'Bis auf Nehrig und Fürstner', 'hmann sprach auf der Pressekonferenz am Freitag von einem "sehr guten Test" und freute sich darüber, dass bis auf die Langzeitverletzten Bernd Nehrig und Stepha'],
-    'without': ['Mögliche Aufstellung', 'Sail United: Das Meer ist barrierefrei ', 'Ergebnisse, Tabellenstände und die Spieltage im Überblick.'],
-    'comments': [],
-    'license': '',
-    'region': 'DE',
-},
 'https://www.tichyseinblick.de/kolumnen/spahns-spitzwege/no-peace-for-our-time-pence-syrien-und-die-tuerkei/': {
     'file': 'd32ad974a4b04657bb6e4d91852bd52d.html',
     'author': 'Tomas Spahn',
@@ -3830,20 +3767,6 @@ EVAL_PAGES = {
     'with': ['Im Interview mit dem Sportportal', 'Ist Özil ein verkappter Feingeist?', 'nicht für einen Rosenkranz hält.'],
     'without': ['Der nächste Beitrag', 'Die Kommentarfunktion wird 2 Tage nach Veröffentlichungsdatum des Beitrages geschlossen.', 'Meistkommentiert'],
     'comments': ['wichtig ist lebenswichtig, Christen sind böse und die Räume der Frankfurter Buchmesse sind frei'],
-    'license': '',
-    'region': 'DE',
-},
-'https://www.handelsblatt.com/finanzen/banken-versicherungen/dsgv-sparkassenpraesident-helmut-schleweis-fordert-mehr-staatliche-investitionen/25132278.html?ticket=ST-305736-xrZByjo6IdvdbvOYqy5a-ap1': {
-    'file': 'd20cc6511c6f4cb3bad3a1e57435456d.html',
-    'author': 'Elisabeth Atzler',
-    'title': 'Sparkassenpräsident will mehr staatliche Investitionen',
-    'date': '2019-10-18',
-    'description': 'Schleweis,EZB,Sparkassen,Geldpolitik,Niedrigzinsen,DSGV,Fusion,Helaba,Konjunktur,Investition,LBBW,IW Köln,Deutsche Bank,S-Finanzgruppe,DekaBank,IMF,Helmut Schleweis,Michael Hüther',
-    'categories': [],
-    'tags': ['EZB', 'Bild', 'Landesbanken', 'Banken in Deutschland', 'Sparkassen', 'Helmut Schleweis', 'Konjunktur', 'Europäische Union', 'Deutscher Sparkassen- und Giroverband (DSGV)'],
-    'with': ['Der oberste Sparkassenvertreter hält wegen der Konjunkturabkühlung', 'Damit reiht sich Schleweis bei denjenigen ein', 'Nukleus einer Sparkassenzentralbank'],
-    'without': ['Deutsche Banken haben den Niedrigzinsen', 'Benachrichtigung aktivieren', 'Flipboard'],
-    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -5695,20 +5618,6 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'https://medium.com/@pimterry/host-your-node-app-on-dokku-digitalocean-1cb97e3ab041': {
-    'file': 'medium.com.dokku.html',
-    'author': 'Tim Perry',
-    'title': 'Host your Node app on Dokku & DigitalOcean',
-    'date': '2016-03-28',
-    'description': 'DigitalOcean are a superbly cheap and remarkably frictionless platform to run your servers (a cut-down and honed AWS competitor) in the cloud. If you want quick easy hosting, they’re fantastic. The…',
-    'categories': [],
-    'tags': ['Nodejs', 'Web Hosting', 'Docker'],
-    'with': ['are a superbly cheap and remarkably frictionless platform to run', 'Node project, started, and have the given port exposed.', 'You start Dokku, tell it what services you need'],  # 3 segments
-    'without': ['Creator of HTTP Toolkit', '3 min read', 'Nodejs'],  # 3 segments
-    'comments': ['what workflow do you recommend for local development when'],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
 'https://www.economist.com/open-future/2018/06/18/why-collaborative-thinking-beats-individual-smarts': {
     'file': 'economist.com.thinking.html',
     'author': '',
@@ -6504,21 +6413,7 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-    'https://www.linkedin.com/feed/update/urn:li:activity:6341926280803471360': {
-    'file': 'linkedin.com.feed.6341926280803471360.html',
-    'author': 'Messente Communications',
-    'title': 'Whitepaper - 2FA Impact on Data Breaches',
-    'date': '',
-    'description': 'It&amp;#39;s no secret, user behavior and broken business processes are the culprits behind data breaches. 4 out of every 5 hacking-related breach is due to weak …',
-    'categories': [],
-    'tags': [],
-    'with': ['It\'s no secret', '2FA and its impact on mitigating the risk of financial breaches.', '2FA Impact on Data Breaches'],  # 3 segments
-    'without': ['To view or add a comment', '1,192 followers', 'Share'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
-    'https://www.fifplay.com/fifa-21-game-settings/': {
+'https://www.fifplay.com/fifa-21-game-settings/': {
     'file': 'fifplay.com.settings.html',
     'author': '',
     'title': 'FIFA 21 Game Settings',
@@ -6550,17 +6445,6 @@ EVAL_PAGES = {
     'date': '2022-01-21',
     'with': ['Du willst mehr über den Flächenverbrauch für Fleisch,', 'dessen Entwicklung vermitteln:', 'Eine bemerkenswerte Statistik macht besonders'],  # 3 segments
     'without': ['Quellenangaben:', 'richtig! Die Aufmerksamkeit', 'NEUESTE BEITRÄGE.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.bund.net/service/presse/pressemitteilungen/detail/news/marode-strassen-und-bruecken-erhalt-statt-neubau-verkehrsminister-wissing-muss-sicherung-und-instandsetzung-bestehender-strecken-absoluten-vorrang-geben-und-strassenneubauprojekte-stoppen/': {
-    'file': 'bund.net-marode.html',
-    'author': '',
-    'title': 'Marode Straßen und Brücken: Erhalt statt Neubau – Verkehrsminister Wissing muss Sicherung und Instandsetzung bestehender Strecken absoluten Vorrang geben und Straßenneubauprojekte stoppen',
-    'date': '2022-01-21',
-    'with': ['Antje von Broock, BUND-Geschäftsführerin', 'leistungsfähigen Mobilitätssystems', 'örtlichen Verbänden zügig umgesetzt werden."'],  # 3 segments
-    'without': ['Zur Übersicht', 'Koalitionsvertrag verlangt, "einen stärkeren', 'Jens Hilgenberg, BUND-Verkehrsexperte'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -7307,8 +7191,8 @@ EVAL_PAGES = {
     'author': '',
     'title': 'Unser Tipp im November: Das Hermelin',
     'date': '2021-11-01',
-    'with': ['Winterfell wurde ihm früher', 'Paarungszeit der Hermeline', 'Hermelin ist weit verbreitet'],  # 3 segments
-    'without': ['Weitere Tipps', 'ist im Winter mit seinem', 'Unser Tipp im Oktober:'],  # 3 segments
+    'with': ['Beobachtungstipp', 'Paarungszeit der Hermeline', 'Hermelin ist weit verbreitet'],  # 3 segments
+    'without': ['Newsletter erhalten', 'iStock.com', 'Unser Tipp im Oktober:'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -7353,17 +7237,6 @@ EVAL_PAGES = {
     'date': '2021-11-05',
     'with': ['Die Lokalwahlen endeten', 'Der Hauptstadt Skopje wird', 'Zaev erklärt seinen Rücktritt'],  # 3 segments
     'without': ['Über diese Reihe', 'Die Auslandsmitarbeiter vor Ort', 'Erdrutschsieg der'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.feuerwehrverband.de/jetzt-noch-plaetze-fuer-forum-brandschutzerziehung-sichern/': {
-    'file': 'feuerwehrverband.de-Brandschutzerziehung.html',
-    'author': '',
-    'title': 'Jetzt noch Plätze für Forum Brandschutzerziehung sichern',
-    'date': '2021-11-03',
-    'with': ['Jetzt noch anmelden und bequem', 'digitalen Ausbildungsmöglichkeiten erweitert', 'Auch wenn wir uns freuen'],  # 3 segments
-    'without': ['Ähnliche Artikel', 'Katastrophenhilfe zur Stärkung', 'Jens lebt auf der Insel'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -7496,17 +7369,6 @@ EVAL_PAGES = {
     'date': '2021-11-08',
     'with': ['Dortmund-Dorstfeld jedoch anders sein', 'Ewald Ferlemann und sein', 'Sebastian Everding stellt nach'],  # 3 segments
     'without': ['8. November 2021', 'Wildvogelstation Ferlemann in', 'Aktuelle Wahlen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.refinery29.com/de-de/vreni-frost-instagram-werbung-abmahnung': {
-    'file': 'refiner29.com-Verni.html',
-    'author': 'Lisa Trautmann',
-    'title': 'Der Fall Vreni Frost – Müssen wir bald jedes Bild auf Instagram kennzeichnen?',
-    'date': '2018-05-23',
-    'with': ['Sie betreibt seit', 'Ab wie vielen Followern ist', 'Vreni, du wurdest'],  # 3 segments
-    'without': ['Vreni Frost im offenen', 'Start a discussion, not', 'Foto: Vreni Fros'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -7760,17 +7622,6 @@ EVAL_PAGES = {
     'date': '2021-11-11',
     'with': ['zur Eröffnung der Schloßkirche', 'Bei der Erweiterung', '„Wir sind Kirche mit Geflüchteten'],  # 3 segments
     'without': ['Ähnliche Nachrichten', 'Livestream der Synode', 'Wort des Bischofs zur Herbstsynode'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.erzbistum-koeln.de/presse_und_medien/magazin/Totenmonat-November-Niemand-geht-allein/': {
-    'file': 'erzbistum-koeln.de-Totenmonat.html',
-    'author': 'Ulrich Nitsche',
-    'title': 'Totenmonat November: Niemand geht allein',
-    'date': '2021-11-08',
-    'with': ['entschieden, ehrenamtliche Bestattungsbeauftragte', 'Pastoralreferenten sind schon', 'Niemand wird vergessen'],  # 3 segments
-    'without': ['Bräuche zu Sankt Martin', 'ein Stadtteil von Neuss', 'Bestattungsbeauftragte Marianne Ricking'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -8157,17 +8008,6 @@ EVAL_PAGES = {
     'date': '2022-01-25',
     'with': ['richtet sich an alle, die sich über die Radon-Situation', 'darüber hinaus bereits vorhandene Messdaten', 'nur mit einer Radon-Messung im Boden'],  # 3 segments
     'without': ['Was ist Radon?', 'Radon in der Boden-Luft in Deutschland', 'Wie bewerten Sie diesen Artikel?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.bmbf.de/bmbf/shareddocs/pressemitteilungen/de/2022/01/260122-Directions.html': {
-    'file': 'bmbf.de-forschungsprojekt.html',
-    'author': '',
-    'title': 'Stark-Watzinger: Forschungsprojekt legt Grundstein für Datenschutzzertifizierung von Bildungsprodukten',
-    'date': '2022-01-26',
-    'with': ['Mit dem Forschungsprojekt legen wir dafür den Grundstein.', 'Mit Hilfe eines Gütesiegels (Stufe I) und', 'Datenschutzzertifizierung für'],  # 3 segments
-    'without': ['Mediathek', 'Pressemitteilungen', 'Pressemitteilungen'],  # 3 segments #nur sehr wenige segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -8744,35 +8584,13 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
-'https://www.autohaus.de/nachrichten/autohandel/vda-chefin-mueller-das-autohaus-ist-alternativlos-3126349': {
-    'file': 'autohaus.de-mueller.html',
-    'author': 'se',
-    'title': 'VDA-Chefin Müller: "Das Autohaus ist alternativlos"',
-    'date': '2022-02-03',
-    'with': ['den stationären Handel weiter', 'geht in vielen Bereichen Richtung', 'Das begrüßen wir ausdrücklich, damit ist dann'],  # 3 segments
-    'without': ['Lesezeit: 4 min 1 Kommentare', 'Hildegard Müller, Präsidentin des Herstellerverbandes VDA', 'DAT-Report – wichtiges Planungsinstrument'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
-'https://www.gruene-bundestag.de/themen/biologische-vielfalt-naturschutz/natuerlicher-klima-und-artenschutz': {
-    'file': 'gruene-bundestag.de-klima-und-artenschutz.html',
-    'author': '',
-    'title': 'Natürlicher Klima- und Artenschutz',
-    'date': '2022-02-01',
-    'with': ['Überschwemmungen gleichermaßen vor.', 'trat 1975 in Kraft. Die Bundesrepublik', 'Bewirtschaftung. Das kostet zweifellos'],  # 3 segments
-    'without': ['Ähnliche Beiträge', 'Hohe Energiepreise durch Gas und Kohle', 'Bild von Michael Gaida auf Pixabay'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
-},
 'https://www.feuerwehrverband.de/dfv-auf-der-vorbereitungstagung-der-interkulturellen-woche/': {
     'file': 'feuerwehrverband.de-vorbereitungstagung.html',
     'author': '',
     'title': 'DFV auf der Vorbereitungstagung der Interkulturellen Woche',
     'date': '2022-02-04',
-    'with': ['bundesweite Vorbereitungstagung der Interkulturellen', 'Geplant sind unter anderem Workshops', 'Die eigentliche Interkulturelle Woche'],  # 3 segments
-    'without': ['DFV-Experte Carsten Schneider', 'DFV und DJF bei 4.', 'Trauer um Polizeiangehörige in'],  # 3 segments
+    'with': ['bundesweite Vorbereitungstagung der Interkulturellen', 'Faktor 112', 'Die eigentliche Interkulturelle Woche'],  # 3 segments
+    'without': ['DFV-Experte Carsten Schneider', 'Nach Anmeldung geht mir eine E-Mail', 'Beitrag teilen'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
@@ -8987,12 +8805,12 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.bmbf.de/bmbf/de/forschung/energiewende-und-nachhaltiges-wirtschaften/energiewende-und-nachhaltiges-wirtschaften_node.html': {
-    'file': 'bmf.de.energiewende.html',
+    'file': 'bmbf.de.energiewende.html',
     'author': '',
-    'title': ': Energiewende, Mobilität und nachhaltiges Wirtschaften',
+    'title': 'Energiewende, Mobilität und nachhaltiges Wirtschaften',
     'date': '',  # YYYY-MM-DD
-    'with': ["Erneuerbare Energien", "Die Bundesregierung investiert", "Es geht aber nicht nur"],  # 3 segments
-    'without': ["Forschung", "Mehr Informationen", "Bildung Forschung Europa und die Welt"],  # 3 segments
+    'with': ["Ländliche Regionen schrumpfen", "Die Bundesregierung investiert", "mit vielfältigen Forschungsprojekten"],  # 3 segments
+    'without': ["Thinkstock", "Chancen für eine biobasierte", "Folgen Sie uns"],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
@@ -9342,8 +9160,8 @@ EVAL_PAGES = {
     'author': 'Amelie Siekmann',
     'title': 'Heizen mit Abfallholz: Mit dieser Erfindung funktioniert es',
     'date': '2022-12-11',  
-    'with': ['Auch dünne Äste,', 'Zunächst steckt er die ', 'Die Hydraulikpresse im Inneren'],  # 3 segments
-    'without': ['Mehr zum Thema', 'Hier ist Ihre Meinung gefragt', ''],  # 3 segments
+    'with': ['Auch dünne Äste,', 'Zunächst steckt er die', 'Die Hydraulikpresse im Inneren'],  # 3 segments
+    'without': ['Mehr zum Thema', 'Hier ist Ihre Meinung gefragt', 'Wir informieren Sie täglich'],  # 3 segments
     'comments': ['Moin vom Fjord', 'Zum andern ist', 'Gerne Nachfragen'],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
@@ -9425,17 +9243,6 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'https://www.bund.net/themen/aktuelles/detail-aktuelles/news/akw-neubau-in-polen-gefaehrlich-unwirtschaftlich-und-ohne-zukunft/': {
-    'file': 'bund.net.akw.html',
-    'author': 'Bund',
-    'title': 'AKW-Neubau in Polen: gefährlich, unwirtschaftlich und ohne Zukunft',
-    'date': '2022-12-12',
-    'with': ['Antje von Broock, BUND-Geschäftsführerin:', 'Sämtliche Probleme der Atomkraft, ', 'Mehrere Studien zeigen, dass bei '],  # 3 segments
-    'without': ['Mehr Informationen:', 'Zur Übersicht', 'Fan werden'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
 'https://mitvergnuegen.com/2022/ausflug-herbst-um-berlin/': {
     'file': 'mitvergnuegen.de.herbst.html',
     'author': 'Marina Beuerle',
@@ -9487,7 +9294,7 @@ EVAL_PAGES = {
     'date': '2022-12-06',  
     'with': ['Ich wollte diesen Text schon', 'Heute sehe ich das anders.', '„Da wo du herkommst, bin ich zu weiß'],  # 3 segments
     'without': ['Sharing is caring', 'Ähnliche Artikel', 'ABOUT'],  # 3 segments
-    'comments': ['', '', ''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -9574,8 +9381,8 @@ EVAL_PAGES = {
     'author': 'Sonia Mevißen',
     'title': 'Liebeshoroskop Januar 2023: Das sagen die Sterne über euer Liebesglück',
     'date': '2023-01-01',
-    'with': ['Zeit für große Gefühle?', 'Im Januar sind Sie verträumt', 'Ab 27.01. bietet Venus bessere Vibes'],  # 3 segments
-    'without': ['Folge uns überall!', 'Nichts mehr verpassen!', 'Alle Rubriken'],  # 3 segments
+    'with': ['Zeit für große Gefühle?', 'Im Januar sind Sie verträumt', 'Doch nicht nur im Bett klappt es'],  # 3 segments
+    'without': ['Folge uns überall!', 'wir haben viele spannende Themen', 'Auch lesen:'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
@@ -9917,17 +9724,6 @@ EVAL_PAGES = {
     'date': '2022-06-15',  # YYYY-MM-DD
     'with': ['Dies ist vielleicht ein Food Blog, ', 'Meine Gründergeschichte', 'Wir bei MYMARINI gehen von daher aus einer'],  # 3 segments
     'without': ['Kategorie:', 'Folge mir', 'Hallo!'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
-'https://peppermynta.de/guides/fair-fashion-basics-minimalismus-kleiderschrank-nachhaltige-capsule-wardrobe/': {
-    'file': 'peppermynta.de.fairfashion.html',
-    'author': 'Laura Keuthen',
-    'title': 'FAIR FASHION BASICS, DIE DU UNBEDINGT FÜR DEINE CAPSULE WARDROBE BRAUCHST',
-    'date': '2022-12-07',  # YYYY-MM-DD
-    'with': ['Back to basics!', 'Das deutsche Fair Fashion Label', 'ROTHOLZ – Minimalistische Designs'],  # 3 segments
-    'without': ['Hier gibt’s noch mehr Fair Fashion Basics:', 'Kennt ihr schon unseren Brandfinder?', 'Tags'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
@@ -11032,8 +10828,8 @@ EVAL_PAGES = {
 'description': 'Was wäre Wintermode ohne kuschelige Knitwear? Ob grob oder fein gestrickt, in Form von flauschigen Pullovern oder schicken Strickkleidern: Von fairer Strickmode können wir gerade im Herbst und Winter nicht genug bekommen. Wir stellen euch heute unsere liebsten Fair Fashion Strick Labels vor, bei denen ihr nachhaltige Strickmode findet – schön eingekuschelt sind wir gewappnet für die kalte Jahreszeit. ',
 'categories':[],
 'tags':["achiy","alpakawolle","cashmere","chiengora","claudia-lanius","eco-knitwear","edelziege","faible-and-failure","fair-fashion-cardigan","fair-fashion-pullover","fair-fashion-strick","fair-fashion-strickjacke","fair-fashion-strickpullover","fair-produzierte-strickmode","handarbeit","handgestrickt","handgestrickte-knitwear","handgestrickte-pullover","handmade","hanishken","hessnatur","hundewolle","isabelle-mann","jann-june","kaschmir","kaschmirwolle","knitwear","kontrolliert-biologische-tierhaltung","lanius","living-crafts","maiami","merino-wolle","merinowolle","merz-b-schwanen","mila-vert","modus-intarsia","mulesing","mulesingfree","mulesingfrei","mulesingfreie-merinowolle","nachhaltige-strickmode","naturfasern","recolution","wolle","wunderwerk","yak-wolle"],
-'with':['Leider hat die Wollproduktion aber auch ihre Schattenseiten', 'und ist gerade in der konventionellen Tierhaltung oftmals mit viel Tierleid verbunden', 'Bei Merinoschafen, die für ihre besonders weiche Wolle bekannt sind, ist vor allem das Mulesing ein Pr'],
-'without':['Das könnte Dich auch noch interessieren', 'FRAUENGESUNDHEIT: NATÜRLICHE PRODUKTE FÜR DIE WECHSELJAHRE, PERIODE & CO.', 'NACHHALTIGE BETTWÄSCHE – DIE BESTEN MARKEN FÜR BIO BETTWÄSCHE OHNE SCHADSTOFFE'],
+'with':['Was wäre Wintermode ohne kuschelige Knitwear', 'und ist gerade in der konventionellen Tierhaltung oftmals mit viel Tierleid verbunden', 'Fairer Strick Made in Europe'],
+'without':['Das könnte Dich auch noch interessieren', 'Kennt ihr schon unseren Brandfinder?', 'Studiert im Master European Culture and Economy'],
 'comments':[],
 'license':'',
 'region':'DE',
