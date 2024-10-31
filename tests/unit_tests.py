@@ -219,8 +219,9 @@ def test_tojson():
 def test_python_output():
     # bare extraction for python
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
-    result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 21
+    result = bare_extraction(mystring, config=ZERO_CONFIG)
+    dict_result = result.as_dict()
+    assert isinstance(dict_result, dict) and len(dict_result) == 21
 
 
 def test_exotic_tags(xmloutput=False):
@@ -327,7 +328,7 @@ def test_formatting():
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '### Title\n\n**This here is in bold font.**'
     assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
-    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
+    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG).body, encoding="unicode")
 
     meta_string = '<html><head><title>Test</title></head><body><p>ABC.</p></body></html>'
     meta_result = extract(meta_string, output_format='markdown', config=ZERO_CONFIG, with_metadata=True)
@@ -827,9 +828,9 @@ def test_extraction_options():
     # assert extract(my_html) is None
 
     my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
-    assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True)["date"] is not None
-    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True)["date"] is None
-    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False)["date"] is None
+    assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True).date is None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False).date is None
 
 
 def test_precision_recall():

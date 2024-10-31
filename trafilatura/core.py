@@ -148,7 +148,7 @@ def bare_extraction(
     max_tree_size: Optional[int] = None,
     url_blacklist: Optional[Set[str]] = None,
     author_blacklist: Optional[Set[str]] = None,
-    as_dict: bool = True,
+    as_dict: bool = False,
     prune_xpath: Optional[Any] = None,
     config: Any = DEFAULT_CONFIG,
     options: Optional[Extractor] = None,
@@ -202,7 +202,7 @@ def bare_extraction(
         )
     if as_dict:
         warnings.warn(
-            '"as_dict" will be deprecated, use the .as_dict() method of the document class',
+            '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
             PendingDeprecationWarning
         )
 
