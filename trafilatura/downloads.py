@@ -215,7 +215,7 @@ def _send_urllib_request(
         response.release_conn()
 
         # necessary for standardization
-        resp = Response(data, response.status, response.geturl())
+        resp = Response(bytes(data), response.status, response.geturl())
         if with_headers:
             resp.store_headers(response.headers)
         return resp
