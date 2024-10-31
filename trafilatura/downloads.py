@@ -153,58 +153,79 @@ def _determine_headers(
     return headers or DEFAULT_HEADERS
 
 
-def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Optional[Response]:
-    "Internal function to robustly send a request (SSL or not) and return its result."
-    # customize headers
-    global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
+def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
+    "Define a retry strategy according to the config file."
+    global RETRY_STRATEGY
     if not RETRY_STRATEGY:
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint(
-                "DEFAULT", "MAX_REDIRECTS"
-            ),  # raise_on_redirect=False,
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
             # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
-    try:
-        if no_ssl is False:
-            if not HTTP_POOL:
-                HTTP_POOL = create_pool(
-                    retries=RETRY_STRATEGY,
-                    timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    ca_certs=certifi.where()
-                )  # cert_reqs='CERT_REQUIRED'
-            pool_manager = HTTP_POOL
-        else:
-            if not NO_CERT_POOL:
-                NO_CERT_POOL = create_pool(
-                    retries=RETRY_STRATEGY,
-                    timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    cert_reqs="CERT_NONE"
-                )
-            pool_manager = NO_CERT_POOL
-        # execute request
-        # TODO: read by streaming chunks (stream=True)
-        # stop downloading as soon as MAX_FILE_SIZE is reached
-        response = pool_manager.request(
-            "GET", url, headers=_determine_headers(config), retries=RETRY_STRATEGY
+    return RETRY_STRATEGY
+
+
+def _initiate_pool(config: ConfigParser, cert_reqs: str = "CERT_REQUIRED") -> urllib3.PoolManager:
+    "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
+    global HTTP_POOL, NO_CERT_POOL
+    pool_manager = HTTP_POOL if cert_reqs == "CERT_REQUIRED" else NO_CERT_POOL
+
+    if not pool_manager:
+        pool_manager = create_pool(
+            retries=_get_retry_strategy(config),
+            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
+            ca_certs=certifi.where() if cert_reqs == "CERT_REQUIRED" else None,
+            cert_reqs=cert_reqs
         )
+        # update variables
+        if cert_reqs == "CERT_REQUIRED":
+            HTTP_POOL = pool_manager
+        else:
+            NO_CERT_POOL = pool_manager
+
+    return pool_manager
+
+
+def _send_urllib_request(
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
+) -> Optional[Response]:
+    "Internal function to robustly send a request (SSL or not) and return its result."
+    pool_manager = _initiate_pool(
+        config,
+        cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED"
+    )
+
+    try:
+        # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
+        response = pool_manager.request(
+            "GET",
+            url,
+            headers=_determine_headers(config),
+            retries=_get_retry_strategy(config),
+            preload_content=False
+        )
+        data = bytearray()
+        for chunk in response.stream(2**17):
+            data.extend(chunk)
+            if len(data) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
+                raise ValueError("MAX_FILE_SIZE exceeded")
+        response.release_conn()
+
+        # necessary for standardization
+        resp = Response(data, response.status, response.geturl())
+        if with_headers:
+            resp.store_headers(response.headers)
+        return resp
+
     except urllib3.exceptions.SSLError:
         LOGGER.warning("retrying after SSLError: %s", url)
         return _send_urllib_request(url, True, with_headers, config)
     except Exception as err:
         LOGGER.error("download error: %s %s", url, err)  # sys.exc_info()[0]
-    else:
-        # necessary for standardization
-        resp = Response(response.data, response.status, response.geturl())
-        if with_headers:
-            resp.store_headers(response.headers)
-        return resp
-    # catchall
+
     return None
 
 

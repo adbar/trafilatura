@@ -150,6 +150,14 @@ def test_fetch():
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
 
+    # test MAX_FILE_SIZE
+    this_config = DEFAULT_CONFIG
+    this_config.set('DEFAULT', 'MAX_FILE_SIZE', '1')
+    args = ('https://httpbun.com/html', True, False, this_config)
+    assert _send_urllib_request(*args) is None
+    if HAS_PYCURL:
+        assert _send_pycurl_request(*args) is None
+
     # reset global objects again to avoid affecting other tests
     _reset_downloads_global_objects()
 
