@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+## future v2.0.0
+
+Breaking changes:
+- `bare_extraction()`: the function now returns an instance of the Document class by default
+- `bare_extraction()`: `as_dict` deprecation warning → use `.as_dict()` method on return value
+- `bare_extraction()` and `extract()`: `no_fallback` deprecation warning → use `fast` instead
+
+
 ## 1.12.2
 
 - downloads: add support for SOCKS proxies with @gremid (#682)

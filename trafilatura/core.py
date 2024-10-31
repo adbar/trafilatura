@@ -4,6 +4,7 @@ Extraction configuration and processing functions.
 """
 
 import logging
+import warnings
 
 from copy import copy, deepcopy
 from typing import Any, Dict, Optional, Set, Tuple, Union
@@ -129,7 +130,8 @@ def trafilatura_sequence(
 def bare_extraction(
     filecontent: Any,
     url: Optional[str] = None,
-    no_fallback: bool = False,  # fast=False,
+    fast: bool = False,
+    no_fallback: bool = False,
     favor_precision: bool = False,
     favor_recall: bool = False,
     include_comments: bool = True,
@@ -146,7 +148,7 @@ def bare_extraction(
     max_tree_size: Optional[int] = None,
     url_blacklist: Optional[Set[str]] = None,
     author_blacklist: Optional[Set[str]] = None,
-    as_dict: bool = True,
+    as_dict: bool = False,
     prune_xpath: Optional[Any] = None,
     config: Any = DEFAULT_CONFIG,
     options: Optional[Extractor] = None,
@@ -156,7 +158,8 @@ def bare_extraction(
     Args:
         filecontent: HTML code as string.
         url: URL of the webpage.
-        no_fallback: Use faster heuristics and skip backup extraction.
+        fast: Use faster heuristics and skip backup extraction.
+        no_fallback: Will be deprecated, use "fast" instead.
         favor_precision: prefer less text but correct extraction.
         favor_recall: prefer more text even when unsure.
         include_comments: Extract comments along with the main text.
@@ -177,7 +180,7 @@ def bare_extraction(
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
-        as_dict: Legacy option, return a dictionary instead of a class with attributes.
+        as_dict: Will be deprecated, use the .as_dict() method of the document class.
         prune_xpath: Provide an XPath expression to prune the tree before extraction.
             can be str or list of str.
         config: Directly provide a configparser configuration.
@@ -191,19 +194,24 @@ def bare_extraction(
     """
 
     # deprecations
-    # if no_fallback is True:
-    #    fast = no_fallback
-    # warnings.warn(
-    #    '"no_fallback" will be deprecated in a future version, use "fast" instead',
-    #    PendingDeprecationWarning
-    # )
+    if no_fallback:
+        fast = no_fallback
+        warnings.warn(
+            '"no_fallback" will be deprecated in a future version, use "fast" instead',
+            PendingDeprecationWarning
+        )
+    if as_dict:
+        warnings.warn(
+            '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
+            PendingDeprecationWarning
+        )
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
         options = Extractor(
             config=config,
             output_format=output_format,
-            fast=no_fallback,
+            fast=fast,
             precision=favor_precision,
             recall=favor_recall,
             comments=include_comments,
@@ -354,6 +362,7 @@ def extract(
     filecontent: Any,
     url: Optional[str] = None,
     record_id: Optional[str] = None,
+    fast: bool = False,
     no_fallback: bool = False,
     favor_precision: bool = False,
     favor_recall: bool = False,
@@ -384,7 +393,8 @@ def extract(
         filecontent: HTML code as string.
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
-        no_fallback: Skip the backup extraction with readability-lxml and justext.
+        fast: Use faster heuristics and skip backup extraction.
+        no_fallback: Will be deprecated, use "fast" instead.
         favor_precision: prefer less text but correct extraction.
         favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
@@ -415,12 +425,19 @@ def extract(
         A string in the desired format or None.
 
     """
+    if no_fallback:
+        fast = no_fallback
+        warnings.warn(
+            '"no_fallback" will be deprecated in a future version, use "fast" instead',
+            PendingDeprecationWarning
+        )
+
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
         options = Extractor(
             config=use_config(settingsfile, config),
             output_format=output_format,
-            fast=no_fallback,
+            fast=fast,
             precision=favor_precision,
             recall=favor_recall,
             comments=include_comments,

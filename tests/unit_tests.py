@@ -79,11 +79,12 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
         output_format = 'xmltei'
     else:
         output_format = 'txt'
-    return extract(htmlstring, url,
-                     record_id='0000',
-                     no_fallback=False,
-                     output_format=output_format,
-                     target_language=langcheck)
+    return extract(
+               htmlstring, url,
+               record_id='0000',
+               output_format=output_format,
+               target_language=langcheck
+           )
 
 
 def test_trim():
@@ -218,8 +219,9 @@ def test_tojson():
 def test_python_output():
     # bare extraction for python
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
-    result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
-    assert isinstance(result, dict) and len(result) == 21
+    result = bare_extraction(mystring, config=ZERO_CONFIG)
+    dict_result = result.as_dict()
+    assert isinstance(dict_result, dict) and len(dict_result) == 21
 
 
 def test_exotic_tags(xmloutput=False):
@@ -249,12 +251,12 @@ def test_exotic_tags(xmloutput=False):
     converted = handle_paragraphs(element, ['p'], options)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # naked div with <lb>
-    assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', no_fallback=True, config=ZERO_CONFIG)
+    assert '1.\n2.\n3.' in extract('<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>', fast=True, config=ZERO_CONFIG)
     # HTML5: <details>
     htmlstring = '<html><body><article><details><summary>Epcot Center</summary><p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p></details></article></body></html>'
-    my_result = extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+    my_result = extract(htmlstring, fast=True, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-    my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
+    my_result = extract(htmlstring, fast=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
 
     # edge cases
@@ -305,7 +307,7 @@ def test_exotic_tags(xmloutput=False):
         assert "em improperly wrapping p here" in result and result.endswith("Text here")
 
     # comments
-    assert extract('<html><body><article><p>text</p><div class="comments"><p>comment</p></div></article></body></html>', include_comments=True, no_fallback=True, config=ZERO_CONFIG).endswith("\ncomment")
+    assert extract('<html><body><article><p>text</p><div class="comments"><p>comment</p></div></article></body></html>', include_comments=True, fast=True, config=ZERO_CONFIG).endswith("\ncomment")
 
 
 def test_formatting():
@@ -326,7 +328,7 @@ def test_formatting():
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '### Title\n\n**This here is in bold font.**'
     assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
-    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG)["body"], encoding="unicode")
+    assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG).body, encoding="unicode")
 
     meta_string = '<html><head><title>Test</title></head><body><p>ABC.</p></body></html>'
     meta_result = extract(meta_string, output_format='markdown', config=ZERO_CONFIG, with_metadata=True)
@@ -400,37 +402,37 @@ trafilatura.extract("")
 
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
-    my_result = extract(copy(my_document), no_fallback=True, include_formatting=False, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), fast=True, include_formatting=False, config=ZERO_CONFIG)
     assert my_result == 'bold, italics, tt, deleted, underlined, link and additional text to bypass detection.'
 
-    my_result = extract(copy(my_document), no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
 
-    my_result = extract(copy(my_document), no_fallback=True, include_links=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), fast=True, include_links=True, include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, [link](test.html) and additional text to bypass detection.'
 
-    my_result = extract(copy(my_document), output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), output_format='xml', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
     assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
 
-    my_result = extract(copy(my_document), output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    my_result = extract(copy(my_document), output_format='xml', include_formatting=True, include_links=True, fast=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref> and additional text to bypass detection.</p>' in my_result
-    my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='txt', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
     my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
-    my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, fast=True, config=ZERO_CONFIG)
     assert 'AAA' in my_result and 'BBB' in my_result and 'CCC' in my_result
 
     # line-break following formatting
     my_document = html.fromstring('<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>')
-    my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='txt', fast=True, config=ZERO_CONFIG)
     assert my_result == 'Staff Review of the Financial Situation\nDomestic financial conditions remained accommodative over the intermeeting period.'
     # title with formatting
     my_document = html.fromstring('<html><body><article><h4 id="1theinoperator">1) The <code>in</code> Operator</h4><p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p></article></body></html>')
-    my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<head rend="h4">1) The <code>in</code> Operator</head>' in my_result and '<p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p>' in my_result
 
 
@@ -457,16 +459,16 @@ def test_external():
     # test langid
     if LANGID_FLAG is True:
         doc = html.fromstring('<html><body>' + '<p>Non è inglese.</p>'*20 + '</body></html>')
-        assert extract(doc, no_fallback=False, target_language='en', deduplicate=False) is None
+        assert extract(doc, fast=False, target_language='en', deduplicate=False) is None
     # no tables
     with open(path.join(RESOURCES_DIR, "apache.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
-    assert 'localhost:80' in extract(teststring, no_fallback=False, include_tables=True)
-    assert 'localhost:80' not in extract(teststring, no_fallback=False, include_tables=False)
+    assert 'localhost:80' in extract(teststring, fast=False, include_tables=True)
+    assert 'localhost:80' not in extract(teststring, fast=False, include_tables=False)
     with open(path.join(RESOURCES_DIR, "scam.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
-    assert extract(teststring, no_fallback=True, include_tables=False) == ''
-    assert extract(teststring, no_fallback=False, include_tables=False) == ''
+    assert extract(teststring, fast=True, include_tables=False) == ''
+    assert extract(teststring, fast=False, include_tables=False) == ''
     # invalid XML attributes: namespace colon in attribute key (issue #375). Those attributes should be stripped
     bad_xml = 'Testing<ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
     res = extract(bad_xml, output_format='xml')
@@ -489,9 +491,9 @@ def test_images():
     with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert '![Example image](test.jpg)' not in extract(teststring)
-    assert '![Example image](test.jpg)' in extract(teststring, include_images=True, no_fallback=True)
-    assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
-    assert extract('<html><body><article><img data-src="test.jpg" alt="text" title="a title"/></article></body></html>', include_images=True, no_fallback=True) == '![a title text](test.jpg)'
+    assert '![Example image](test.jpg)' in extract(teststring, include_images=True, fast=True)
+    assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, fast=True, output_format='xml', config=ZERO_CONFIG)
+    assert extract('<html><body><article><img data-src="test.jpg" alt="text" title="a title"/></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
 
     # CNN example
     mydoc = html.fromstring('<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781" src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-eq-state="mini xsmall small medium" data-src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg">')
@@ -515,28 +517,28 @@ def test_links():
     # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>')
     assert 'testlink.html' not in extract(copy(mydoc))
-    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, fast=True, config=ZERO_CONFIG)
     # relative link conversion
-    assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), url='https://www.example.com/', include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough.' in extract(copy(mydoc), url='https://www.example.com/', include_links=True, fast=True, config=ZERO_CONFIG)
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>')
-    assert '[Test link text.] This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.] This part of the text has to be long enough.' in extract(copy(mydoc), include_links=True, fast=True, config=ZERO_CONFIG)
     mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
-    result = extract(copy(mydoc), output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    result = extract(copy(mydoc), output_format='xml', include_links=True, fast=True, config=ZERO_CONFIG)
     assert '1' in result and '2' in result and '3' in result
     with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
-    assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
-    assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert '[link](testlink.html)' in extract(teststring, include_links=True, fast=True, config=ZERO_CONFIG)
+    assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, fast=True, output_format='xml', config=ZERO_CONFIG)
     # test license link
     mydoc = html.fromstring('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
-    assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG, with_metadata=True)
+    assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, fast=True, output_format='xml', config=ZERO_CONFIG, with_metadata=True)
 
     # link in p, length threshold
     mydoc = html.fromstring(f'<html><body><article><p><a>f{"abcd"*20}</a></p></article></body></html>')
-    assert "abc" in extract(copy(mydoc), no_fallback=True, config=ZERO_CONFIG, favor_precision=False)
-    assert extract(mydoc, no_fallback=True, config=ZERO_CONFIG, favor_precision=True) == ""
+    assert "abc" in extract(copy(mydoc), fast=True, config=ZERO_CONFIG, favor_precision=False)
+    assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
 def test_tei():
@@ -545,8 +547,8 @@ def test_tei():
     with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result1 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
-    result2 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=True)
+    result1 = extract(teststring, "mocked", fast=True, output_format='xmltei', tei_validation=False)
+    result2 = extract(teststring, "mocked", fast=True, output_format='xmltei', tei_validation=True)
     assert result1 is not None and result1 == result2
     assert xml.validate_tei(etree.fromstring(result1)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
@@ -554,14 +556,14 @@ def test_tei():
     with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, include_comments=True, output_format='xmltei', tei_validation=False)
+    result = extract(teststring, "mocked", fast=True, include_comments=True, output_format='xmltei', tei_validation=False)
     assert result is not None # and '<p>license</p>' in result
     assert xml.validate_tei(etree.fromstring(result)) is True
-    result = extract(teststring, "mocked", no_fallback=True, include_comments=False, output_format='xmltei', tei_validation=False)
+    result = extract(teststring, "mocked", fast=True, include_comments=False, output_format='xmltei', tei_validation=False)
     assert result is not None # and '<p>license</p>' in result
     assert xml.validate_tei(etree.fromstring(result)) is True
     # include ID in metadata
-    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False, record_id='0001')
+    result = extract(teststring, "mocked", fast=True, output_format='xmltei', tei_validation=False, record_id='0001')
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
     # test header + metadata
@@ -618,10 +620,10 @@ def test_tei():
     expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
     assert result == expected
     htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
-    extracted = extract(htmlstring, url='mocked', no_fallback=True, output_format="xmltei")
+    extracted = extract(htmlstring, url='mocked', fast=True, output_format="xmltei")
     assert xml.validate_tei(etree.fromstring(extracted)) is True
     htmlstring  = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
-    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei")
     assert '<ab rend="h1" type="header">title</ab>' in extracted
     assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
     htmlstring = html.fromstring(
@@ -637,7 +639,7 @@ def test_tei():
         </article></body>
         </html>"""
     )
-    extracted = extract(htmlstring, url="mocked", no_fallback=True, output_format="xmltei")
+    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei")
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
     # merge double elements
     tree = html.fromstring(
@@ -755,8 +757,8 @@ def test_htmlprocessing():
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
-    assert '<head rend="h1">Test headline</head>' in extract(copy(mydoc), output_format='xml', config=ZERO_CONFIG, no_fallback=True)
-    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(copy(mydoc), output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    assert '<head rend="h1">Test headline</head>' in extract(copy(mydoc), output_format='xml', config=ZERO_CONFIG, fast=True)
+    assert '<ab rend="h1" type="header">Test headline</ab>' in extract(copy(mydoc), output_format='xmltei', config=ZERO_CONFIG, fast=True)
 
     # merge with parent function
     element = etree.Element('test')
@@ -777,8 +779,8 @@ def test_htmlprocessing():
 
     # paywalls
     my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
-    assert extract(my_html, config=ZERO_CONFIG, no_fallback=True) == '1\n3'
-    assert extract(my_html, config=ZERO_CONFIG, no_fallback=False) == '1\n3'
+    assert extract(my_html, config=ZERO_CONFIG, fast=True) == '1\n3'
+    assert extract(my_html, config=ZERO_CONFIG, fast=False) == '1\n3'
     # test tail of node deleted if set as text
     node = etree.fromstring("<div><p></p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
@@ -821,53 +823,53 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=False, output_format='xml', config=ZERO_CONFIG) is not None
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
-    assert extract(my_html, target_language='de', no_fallback=True, config=ZERO_CONFIG) is None
+    assert extract(my_html, target_language='de', fast=True, config=ZERO_CONFIG) is None
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
 
     my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
-    assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True)["date"] is not None
-    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True)["date"] is None
-    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False)["date"] is None
+    assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True).date is None
+    assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False).date is None
 
 
 def test_precision_recall():
     '''test precision- and recall-oriented settings'''
     # the test cases could be better
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
-    assert extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True) is not None
-    assert extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True) is not None
+    assert extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True) is not None
+    assert extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True) is not None
 
     my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>')
-    assert 'teaser text' in extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
-    assert 'teaser text' not in extract(copy(my_document), config=ZERO_CONFIG, no_fallback=True)
-    assert 'teaser text' not in extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
+    assert 'teaser text' in extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
+    assert 'teaser text' not in extract(copy(my_document), config=ZERO_CONFIG, fast=True)
+    assert 'teaser text' not in extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
 
     my_document = html.fromstring('<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>')
-    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert '1' not in result
-    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
     assert '1' not in result
 
     my_document = html.fromstring('<html><body><div class="article-body"><p>content</p><p class="link">Test</p></div></body></html>')
-    result = extract(copy(my_document), favor_precision=False, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_precision=False, config=ZERO_CONFIG, fast=True)
     assert 'content' in result and 'Test' in result
-    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
     assert 'content' in result and 'Test' not in result
 
     my_document = html.fromstring('<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>')
-    result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, fast=True)
     assert result != "Here is the text."
-    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=True)
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert result == "Here is the text."
 
     my_document = html.fromstring('<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>')
-    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, no_fallback=False)
+    result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=False)
     assert len(result) > 0
 
     my_document = html.fromstring('<html><body><div><span>Text.</span></div></body></html>')
-    assert extract(copy(my_document), favor_precision=True, no_fallback=True) == ""
-    assert extract(copy(my_document), favor_recall=True, no_fallback=True) == "Text."
+    assert extract(copy(my_document), favor_precision=True, fast=True) == ""
+    assert extract(copy(my_document), favor_recall=True, fast=True) == "Text."
 
 
 def test_table_processing():
@@ -915,7 +917,7 @@ def test_table_processing():
             </html>"""
     )
     processed = extract(
-        htmlstring, no_fallback=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
+        htmlstring, fast=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
     assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
@@ -1008,7 +1010,7 @@ def test_table_processing():
 <td>they buy</td>
 </tr>
     </table></article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(htmlstring, fast=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '''<row>
         <cell>
           <hi>Present Tense</hi>
@@ -1020,15 +1022,15 @@ def test_table_processing():
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
-    assert extract(htmlstring, no_fallback=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
+    assert extract(htmlstring, fast=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
     # table with links
     # todo: further tests and adjustments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
+    result = extract(htmlstring, fast=True, output_format='xml', config=ZERO_CONFIG, include_tables=True, include_links=True)
     assert 'ABCD' not in result
     # nested table
     htmlstring = '<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     # todo: all elements are there, but output not nested
     assert '<cell role="head">1</cell>' in result and '<cell>2</cell>' in result
     nested_table = html.fromstring(
@@ -1106,64 +1108,64 @@ def test_table_processing():
     assert result == ["table", "row", "cell", ]
     # table nested in figure https://github.com/adbar/trafilatura/issues/301
     htmlstring = '<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='xml', config=ZERO_CONFIG, include_tables=True)
     assert "1" in result and "2" in result
     # table headers in non-XML formats
     htmlstring = '<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>'
-    assert "---|---|" in extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert "---|---|" in extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
 
     # remove new lines in table cells in text format
     htmlstring = '<html><body><article><table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "cell 1 | cell 2 |" in result
 
     # only one header row is allowed in text format
     htmlstring = '<html><body><article><table><tr><th>a</th><th>b</th></tr><tr><th>c</th><th>d</th></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result.count("---|") == 2
 
     # handle colspan by appending columns in text format
     htmlstring = '<html><body><article><table><tr><td colspan="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2.1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
     # MemoryError: https://github.com/adbar/trafilatura/issues/657
     htmlstring = '<html><body><article><table><tr><td colspan="9007199254740991">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result is not None
 
     htmlstring = '<html><body><article><table><tr><th colspan="9007199254740991">a</th><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result is not None
 
     # wrong span info
     htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert "a | b | |" in result
 
     # links: this gets through (for now)
     htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == "a |"
 
     # link: this is filtered out
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == ""
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{" "*100}</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, no_fallback=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == ""
 
 
@@ -1171,7 +1173,7 @@ def test_list_processing():
     options = DEFAULT_OPTIONS
     # basic lists
     my_doc = "<html><body><article><p>P 1</p><ul><li>Item 1</li><li>Item 2</li></ul><p>P 2</p></article></body></html>"
-    my_result = extract(my_doc, no_fallback=True, output_format='txt', config=ZERO_CONFIG)
+    my_result = extract(my_doc, fast=True, output_format='txt', config=ZERO_CONFIG)
     assert my_result == "P 1\n- Item 1\n- Item 2\nP 2"
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), options))
@@ -1190,7 +1192,7 @@ def test_list_processing():
   <li>Milk</li>
 </ul>
 </article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    my_result = extract(htmlstring, fast=True, output_format='xml', config=ZERO_CONFIG)
     expected = '''
     <list rend="ul">
       <item>Coffee</item>
@@ -1212,7 +1214,7 @@ def test_list_processing():
   <dd>White cold drink</dd>
 </dl>
 </article></body></html>'''
-    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    my_result = extract(htmlstring, fast=True, output_format='xml', config=ZERO_CONFIG)
     assert '''
     <list rend="dl">
       <item rend="dt-1">Coffee</item>
@@ -1334,7 +1336,7 @@ def test_mixed_content_extraction():
     """
     html_content = '<html><body><p>Text here</p><img src="img.jpg"/><video src="video.mp4"/></body></html>'
     expected = "Text here"
-    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
+    result = extract(html_content, fast=False, config=ZERO_CONFIG)
     assert result.strip() == expected, "Mixed content extraction failed"
 
 
@@ -1344,7 +1346,7 @@ def test_nonstd_html_entities():
     """
     html_content = '<html><body><p>Text &customentity; more text</p></body></html>'
     expected = "Text &customentity; more text"
-    result = extract(html_content, no_fallback=False, config=ZERO_CONFIG)
+    result = extract(html_content, fast=False, config=ZERO_CONFIG)
     assert result.strip() == expected, "Non-standard HTML entity handling failed"
 
 
@@ -1354,7 +1356,7 @@ def test_large_doc_performance():
     """
     large_html = '<html><body>' + '<p>Sample text</p>' * 10000 + '</body></html>'
     start = time.time()
-    extract(large_html, no_fallback=False, config=ZERO_CONFIG)
+    extract(large_html, fast=False, config=ZERO_CONFIG)
     end = time.time()
     assert end - start < 5, "Large document performance issue"
 
@@ -1368,7 +1370,7 @@ def test_lang_detection():
         {'html': '<html><body><p>Texte en français</p></body></html>', 'expected': 'fr'},
     ]
     for sample in samples:
-        result = extract(sample['html'], no_fallback=False, config=ZERO_CONFIG)
+        result = extract(sample['html'], fast=False, config=ZERO_CONFIG)
         detected = language_classifier(result, "")
         assert detected == sample['expected'] or not LANGID_FLAG
 
@@ -1558,7 +1560,17 @@ def test_html_conversion():
     assert result == excepted_html
 
 
+def test_deprecations():
+    "Test deprecated function parameters."
+    htmlstring = "<html><body><article>ABC</article></body></html>"
+    assert extract(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
+    assert bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
+    assert bare_extraction(htmlstring, as_dict=True, config=ZERO_CONFIG) is not None
+
+
+
 if __name__ == '__main__':
+    test_deprecations()
     test_config_loading()
     test_trim()
     test_input()
