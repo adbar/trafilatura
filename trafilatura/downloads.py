@@ -248,6 +248,7 @@ def fetch_url(
         Unicode string or None in case of failed downloads and invalid results.
 
     """
+    config = options.config if options else config
     response = fetch_response(url, decode=True, no_ssl=no_ssl, config=config)
     if response and response.data:
         if not options:
@@ -377,7 +378,12 @@ def buffered_downloads(
     options: Optional[Extractor] = None,
 ) -> Generator[Tuple[str, Union[Response, str]], None, None]:
     """Download queue consumer, single- or multi-threaded."""
-    worker = partial(fetch_url, options=options) if decode else fetch_response
+    if decode:
+        worker = partial(fetch_url, options=options)
+    else:
+        config = options.config if options else DEFAULT_CONFIG
+        worker = partial(fetch_response, config=config)
+
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, 10000):
             future_to_url: Dict[Any, str] = {
