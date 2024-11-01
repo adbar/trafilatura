@@ -174,22 +174,24 @@ def _send_urllib_request(
     "Internal function to robustly send a request (SSL or not) and return its result."
     global HTTP_POOL, NO_CERT_POOL
 
-    try:
-        if no_ssl is False:
-            if not HTTP_POOL:
-                HTTP_POOL = create_pool(
-                    timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    ca_certs=certifi.where()
-                )  # cert_reqs='CERT_REQUIRED'
-            pool_manager = HTTP_POOL
-        else:
-            if not NO_CERT_POOL:
-                NO_CERT_POOL = create_pool(
-                    timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-                    cert_reqs="CERT_NONE"
-                )
+    if (no_ssl and not NO_CERT_POOL) or (not no_ssl and not HTTP_POOL):
+        timeout = config.getint("DEFAULT", "DOWNLOAD_TIMEOUT")
+        if no_ssl:
+            NO_CERT_POOL = create_pool(
+                timeout=timeout,
+                cert_reqs="CERT_NONE"
+            )
             pool_manager = NO_CERT_POOL
+        else:
+            HTTP_POOL = create_pool(
+                timeout=timeout,
+                ca_certs=certifi.where()
+            )  # cert_reqs='CERT_REQUIRED'
+            pool_manager = HTTP_POOL
 
+    pool_manager = NO_CERT_POOL if no_ssl else HTTP_POOL
+
+    try:
         # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
         response = pool_manager.request(
             "GET",
