@@ -127,11 +127,9 @@ class Response:
 # @lru_cache(maxsize=2)
 def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
-    agent_list = None
     # load a series of user-agents
-    myagents = config.get("DEFAULT", "USER_AGENTS").strip() or None
-    if myagents is not None and myagents != "":
-        agent_list = myagents.split("\n")
+    myagents = config.get("DEFAULT", "USER_AGENTS", fallback="").strip()
+    agent_list = myagents.splitlines() if myagents else None
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
     # todo: support for several cookies?
     mycookie = config.get("DEFAULT", "COOKIE") or None
@@ -145,10 +143,9 @@ def _determine_headers(
     if config != DEFAULT_CONFIG:
         myagents, mycookie = _parse_config(config)
         headers = {}
-        if myagents is not None:
-            rnumber = random.randint(0, len(myagents) - 1)
-            headers["User-Agent"] = myagents[rnumber]
-        if mycookie is not None:
+        if myagents:
+            headers["User-Agent"] = random.choice(myagents)
+        if mycookie:
             headers["Cookie"] = mycookie
     return headers or DEFAULT_HEADERS
 
@@ -157,6 +154,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     "Define a retry strategy according to the config file."
     global RETRY_STRATEGY
     if not RETRY_STRATEGY:
+    # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
             redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
@@ -171,22 +169,22 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
 def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
-    pool_manager = NO_CERT_POOL if no_ssl else HTTP_POOL
+    pool = NO_CERT_POOL if no_ssl else HTTP_POOL
 
-    if not pool_manager:
+    if not pool:
         # define settings
-        pool_manager = create_pool(
+        pool = create_pool(
             timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
             ca_certs=None if no_ssl else certifi.where() ,
             cert_reqs="CERT_NONE"if no_ssl else "CERT_REQUIRED" ,
         )
         # update variables
         if no_ssl:
-            NO_CERT_POOL = pool_manager
+            NO_CERT_POOL = pool
         else:
-            HTTP_POOL = pool_manager
+            HTTP_POOL = pool
 
-    return pool_manager
+    return pool
 
 
 def _send_urllib_request(
