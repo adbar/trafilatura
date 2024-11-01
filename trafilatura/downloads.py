@@ -168,30 +168,37 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     return RETRY_STRATEGY
 
 
+def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager:
+    "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
+    global HTTP_POOL, NO_CERT_POOL
+    pool_manager = NO_CERT_POOL if no_ssl else HTTP_POOL
+
+    if not pool_manager:
+        # define settings
+        pool_manager = create_pool(
+            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
+            ca_certs=None if no_ssl else certifi.where() ,
+            cert_reqs="CERT_NONE"if no_ssl else "CERT_REQUIRED" ,
+        )
+        # update variables
+        if no_ssl:
+            NO_CERT_POOL = pool_manager
+        else:
+            HTTP_POOL = pool_manager
+
+    return pool_manager
+
+
 def _send_urllib_request(
     url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
 ) -> Optional[Response]:
     "Internal function to robustly send a request (SSL or not) and return its result."
-    global HTTP_POOL, NO_CERT_POOL
-
-    if (no_ssl and not NO_CERT_POOL) or (not no_ssl and not HTTP_POOL):
-        timeout = config.getint("DEFAULT", "DOWNLOAD_TIMEOUT")
-        if no_ssl:
-            NO_CERT_POOL = create_pool(
-                timeout=timeout,
-                cert_reqs="CERT_NONE"
-            )
-            pool_manager = NO_CERT_POOL
-        else:
-            HTTP_POOL = create_pool(
-                timeout=timeout,
-                ca_certs=certifi.where()
-            )  # cert_reqs='CERT_REQUIRED'
-            pool_manager = HTTP_POOL
-
-    pool_manager = NO_CERT_POOL if no_ssl else HTTP_POOL
-
     try:
+        pool_manager = _initiate_pool(
+            config,
+            no_ssl = no_ssl
+        )
+
         # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
         response = pool_manager.request(
             "GET",
