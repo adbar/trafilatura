@@ -13,8 +13,8 @@ from functools import partial
 from importlib.metadata import version
 from io import BytesIO
 from time import sleep
-from typing import (Any, ByteString, Dict, Generator, List, Optional, Set,
-                    Tuple, Union)
+from typing import (Any, ByteString, Callable, Dict, Generator, List,
+                     Optional, Set, Tuple, Union)
 
 import certifi
 import urllib3
@@ -371,27 +371,41 @@ def load_download_buffer(
     return bufferlist, url_store
 
 
+def _buffered_downloads(
+    bufferlist: List[str],
+    download_threads: int,
+    worker: Callable[[str], Any],
+    chunksize: int = 10000,
+) -> Generator[Tuple[str, Any], None, None]:
+    "Use a thread pool to perform a series of downloads."
+    with ThreadPoolExecutor(max_workers=download_threads) as executor:
+        for chunk in make_chunks(bufferlist, chunksize):
+            future_to_url = {executor.submit(worker, url): url for url in chunk}
+            for future in as_completed(future_to_url):
+                yield future_to_url[future], future.result()
+
+
 def buffered_downloads(
     bufferlist: List[str],
     download_threads: int,
-    decode: bool = True,
     options: Optional[Extractor] = None,
-) -> Generator[Tuple[str, Union[Response, str]], None, None]:
-    """Download queue consumer, single- or multi-threaded."""
-    if decode:
-        worker = partial(fetch_url, options=options)
-    else:
-        config = options.config if options else DEFAULT_CONFIG
-        worker = partial(fetch_response, config=config)
+) -> Generator[Tuple[str, str], None, None]:
+    "Download queue consumer, single- or multi-threaded."
+    worker = partial(fetch_url, options=options)
 
-    with ThreadPoolExecutor(max_workers=download_threads) as executor:
-        for chunk in make_chunks(bufferlist, 10000):
-            future_to_url: Dict[Any, str] = {
-                executor.submit(worker, url): url for url in chunk
-            }
-            for future in as_completed(future_to_url):
-                # url and download result
-                yield future_to_url[future], future.result()
+    return _buffered_downloads(bufferlist, download_threads, worker)
+
+
+def buffered_response_downloads(
+    bufferlist: List[str],
+    download_threads: int,
+    options: Optional[Extractor] = None,
+) -> Generator[Tuple[str, Response], None, None]:
+    "Download queue consumer, returns full Response objects."
+    config = options.config if options else DEFAULT_CONFIG
+    worker = partial(fetch_response, config=config)
+
+    return _buffered_downloads(bufferlist, download_threads, worker)
 
 
 def _send_pycurl_request(

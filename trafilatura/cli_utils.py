@@ -29,7 +29,13 @@ from trafilatura import spider
 from .baseline import html2txt
 from .core import extract
 from .deduplication import generate_bow_hash
-from .downloads import Response, add_to_compressed_dict, buffered_downloads, load_download_buffer
+from .downloads import (
+    Response,
+    add_to_compressed_dict,
+    buffered_downloads,
+    buffered_response_downloads,
+    load_download_buffer
+)
 from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import (
@@ -377,8 +383,8 @@ def cli_crawler(
         bufferlist, spider.URL_STORE = load_download_buffer(
             spider.URL_STORE, sleep_time
         )
-        for url, result in buffered_downloads(
-            bufferlist, args.parallel, decode=False, options=options
+        for url, result in buffered_response_downloads(
+            bufferlist, args.parallel, options=options
         ):
             if result and isinstance(result, Response):
                 spider.process_response(result, param_dict[get_base_url(url)])
@@ -394,7 +400,9 @@ def probe_homepage(args: Any) -> None:
     input_urls = load_input_urls(args)
     options = args_to_extractor(args)
 
-    for url, result in buffered_downloads(input_urls, args.parallel, options=options):
+    for url, result in buffered_downloads(
+        input_urls, args.parallel, options=options
+    ):
         if result is not None:
             result = html2txt(result)
             if (
