@@ -178,7 +178,6 @@ def _send_urllib_request(
         if no_ssl is False:
             if not HTTP_POOL:
                 HTTP_POOL = create_pool(
-                    retries=_get_retry_strategy(config),
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     ca_certs=certifi.where()
                 )  # cert_reqs='CERT_REQUIRED'
@@ -186,29 +185,38 @@ def _send_urllib_request(
         else:
             if not NO_CERT_POOL:
                 NO_CERT_POOL = create_pool(
-                    retries=_get_retry_strategy(config),
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     cert_reqs="CERT_NONE"
                 )
             pool_manager = NO_CERT_POOL
-        # execute request
-        # TODO: read by streaming chunks (stream=True)
-        # stop downloading as soon as MAX_FILE_SIZE is reached
+
+        # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
         response = pool_manager.request(
-            "GET", url, headers=_determine_headers(config), retries=RETRY_STRATEGY
+            "GET",
+            url,
+            headers=_determine_headers(config),
+            retries=_get_retry_strategy(config),
+            preload_content=False
         )
+        data = bytearray()
+        for chunk in response.stream(2**17):
+            data.extend(chunk)
+            if len(data) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
+                raise ValueError("MAX_FILE_SIZE exceeded")
+        response.release_conn()
+
+        # necessary for standardization
+        resp = Response(bytes(data), response.status, response.geturl())
+        if with_headers:
+            resp.store_headers(response.headers)
+        return resp
+
     except urllib3.exceptions.SSLError:
         LOGGER.warning("retrying after SSLError: %s", url)
         return _send_urllib_request(url, True, with_headers, config)
     except Exception as err:
         LOGGER.error("download error: %s %s", url, err)  # sys.exc_info()[0]
-    else:
-        # necessary for standardization
-        resp = Response(response.data, response.status, response.geturl())
-        if with_headers:
-            resp.store_headers(response.headers)
-        return resp
-    # catchall
+
     return None
 
 
