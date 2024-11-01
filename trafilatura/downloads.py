@@ -153,28 +153,32 @@ def _determine_headers(
     return headers or DEFAULT_HEADERS
 
 
-def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Optional[Response]:
-    "Internal function to robustly send a request (SSL or not) and return its result."
-    # customize headers
-    global HTTP_POOL, NO_CERT_POOL, RETRY_STRATEGY
+def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
+    "Define a retry strategy according to the config file."
+    global RETRY_STRATEGY
     if not RETRY_STRATEGY:
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint(
-                "DEFAULT", "MAX_REDIRECTS"
-            ),  # raise_on_redirect=False,
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
             # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
+    return RETRY_STRATEGY
+
+
+def _send_urllib_request(
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
+) -> Optional[Response]:
+    "Internal function to robustly send a request (SSL or not) and return its result."
+    global HTTP_POOL, NO_CERT_POOL
+
     try:
         if no_ssl is False:
             if not HTTP_POOL:
                 HTTP_POOL = create_pool(
-                    retries=RETRY_STRATEGY,
+                    retries=_get_retry_strategy(config),
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     ca_certs=certifi.where()
                 )  # cert_reqs='CERT_REQUIRED'
@@ -182,7 +186,7 @@ def _send_urllib_request(
         else:
             if not NO_CERT_POOL:
                 NO_CERT_POOL = create_pool(
-                    retries=RETRY_STRATEGY,
+                    retries=_get_retry_strategy(config),
                     timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
                     cert_reqs="CERT_NONE"
                 )
