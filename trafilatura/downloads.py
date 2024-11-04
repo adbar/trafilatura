@@ -13,8 +13,18 @@ from functools import partial
 from importlib.metadata import version
 from io import BytesIO
 from time import sleep
-from typing import (Any, ByteString, Callable, Dict, Generator, List,
-                     Optional, Set, Tuple, Union)
+from typing import (
+    Any,
+    ByteString,
+    Callable,
+    Dict,
+    Generator,
+    List,
+    Optional,
+    Set,
+    Tuple,
+    Union,
+)
 
 import certifi
 import urllib3
@@ -23,17 +33,18 @@ from courlan import UrlStore
 from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
-from .utils import (URL_BLACKLIST_REGEX, decode_file, is_acceptable_length,
-                    make_chunks)
+from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
 
 try:
     from urllib3.contrib.socks import SOCKSProxyManager
+
     PROXY_URL = os.environ.get("http_proxy")
 except ImportError:
     PROXY_URL = None
 
 try:
     import pycurl  # type: ignore
+
     CURL_SHARE = pycurl.CurlShare()
     # available options:
     # https://curl.se/libcurl/c/curl_share_setopt.html
@@ -54,7 +65,7 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 
-def create_pool(**args: Any) -> Any:
+def create_pool(**args: Any) -> Union[urllib3.PoolManager, SOCKSProxyManager]:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
@@ -154,10 +165,12 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     "Define a retry strategy according to the config file."
     global RETRY_STRATEGY
     if not RETRY_STRATEGY:
-    # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
+        # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
+            redirect=config.getint(
+                "DEFAULT", "MAX_REDIRECTS"
+            ),  # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
@@ -166,7 +179,9 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     return RETRY_STRATEGY
 
 
-def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager:
+def _initiate_pool(
+    config: ConfigParser, no_ssl: bool = False
+) -> Union[urllib3.PoolManager, SOCKSProxyManager]:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
     pool = NO_CERT_POOL if no_ssl else HTTP_POOL
@@ -175,8 +190,8 @@ def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolMa
         # define settings
         pool = create_pool(
             timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-            ca_certs=None if no_ssl else certifi.where() ,
-            cert_reqs="CERT_NONE"if no_ssl else "CERT_REQUIRED" ,
+            ca_certs=None if no_ssl else certifi.where(),
+            cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED",
         )
         # update variables
         if no_ssl:
@@ -192,10 +207,7 @@ def _send_urllib_request(
 ) -> Optional[Response]:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
-        pool_manager = _initiate_pool(
-            config,
-            no_ssl = no_ssl
-        )
+        pool_manager = _initiate_pool(config, no_ssl=no_ssl)
 
         # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
         response = pool_manager.request(
@@ -203,7 +215,7 @@ def _send_urllib_request(
             url,
             headers=_determine_headers(config),
             retries=_get_retry_strategy(config),
-            preload_content=False
+            preload_content=False,
         )
         data = bytearray()
         for chunk in response.stream(2**17):
@@ -310,6 +322,7 @@ def fetch_response(
 
 def _pycurl_is_live_page(url: str) -> bool:
     "Send a basic HTTP HEAD request with pycurl."
+    page_exists = False
     # Initialize pycurl object
     curl = pycurl.Curl()
     # Set the URL and HTTP method (HEAD)
