@@ -65,7 +65,7 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 
-def create_pool(**args: Any) -> Union[urllib3.PoolManager, SOCKSProxyManager]:
+def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
@@ -181,7 +181,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
 
 def _initiate_pool(
     config: ConfigParser, no_ssl: bool = False
-) -> Union[urllib3.PoolManager, SOCKSProxyManager]:
+) -> Union[urllib3.PoolManager, Any]:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
     pool = NO_CERT_POOL if no_ssl else HTTP_POOL
