@@ -27,6 +27,7 @@ from boilerpy3 import extractors
 from bs4 import BeautifulSoup
 from goose3 import Goose
 from inscriptis import get_text
+from magic_html import GeneralExtractor
 from newspaper import fulltext
 from newsplease import NewsPlease
 # from readabilipy import simple_json_from_html_string
@@ -38,12 +39,25 @@ from resiliparse.parse.html import HTMLTree
 from trafilatura import baseline, extract, html2txt
 from trafilatura.external import jt_stoplist_init
 
+# custom
+from justext.core import (ParagraphMaker, classify_paragraphs,
+                          preprocessor, revise_paragraph_classification)
+from trafilatura.baseline import basic_cleaning
+from trafilatura.htmlprocessing import tree_cleaning, prune_unwanted_nodes
+from trafilatura.readability_lxml import Document as ReadabilityDocument
+from trafilatura.settings import Extractor
+from trafilatura.utils import load_html, trim
+
 
 boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
 g = Goose()
 
+magic_html_extractor = GeneralExtractor()
+
 JT_STOPLIST = jt_stoplist_init()
+
+OPTIONS = Extractor()
 
 
 def convert_to_str(htmlbinary):
@@ -54,6 +68,29 @@ def convert_to_str(htmlbinary):
     except (TypeError, UnicodeDecodeError):
         htmlstring = htmlbinary
     return htmlstring
+
+
+def run_custom(htmlbinary):
+    tree = load_html(htmlbinary)
+    #tree = preprocessor(tree)
+    tree = basic_cleaning(tree)
+    #tree = tree_cleaning(load_html(htmlbinary), OPTIONS)
+    try:
+        paragraphs = ParagraphMaker.make_paragraphs(tree)
+        classify_paragraphs(paragraphs, JT_STOPLIST, 50, 150, 0.1, 0.2, 0.3, True)
+        revise_paragraph_classification(paragraphs, 150)
+        return " ".join([p.text for p in paragraphs if not p.is_boilerplate])
+    except ValueError:
+        return ""
+
+
+def run_custom_2(htmlbinary):
+    tree = tree_cleaning(load_html(htmlbinary), OPTIONS)
+    try:
+        doc = ReadabilityDocument(tree, min_text_length=25, retry_length=250)
+        return doc.summary()
+    except Exception as err:
+        return ""
 
 
 def run_baseline(htmlbinary):
@@ -237,6 +274,11 @@ def run_bs4(htmlbinary):
     return BeautifulSoup(htmlbinary, features='lxml').get_text(strip=True)
 
 
+def run_magic_html(htmlbinary):
+    '''try with the magic_html package'''
+    return run_bs4(magic_html_extractor.extract(convert_to_str(htmlbinary), base_url="").get("html"))
+
+
 def run_nothing(htmlstring):
     return ''
 
@@ -263,6 +305,10 @@ ALGORITHMS = {
     'nothing': {
         'library': '-',
         'function': run_nothing
+    },
+    'custom': {
+        'library': '-',
+        'function': run_custom
     },
     'baseline': {
         'library': '-',
@@ -323,6 +369,10 @@ ALGORITHMS = {
     'bs4': {
         'library': 'beautifulsoup4',
         'function': run_bs4
+    },
+    'magic_html': {
+        'library': 'magic_html',
+        'function': run_magic_html
     },
     'trafilatura precision': {
         'library': 'trafilatura',
