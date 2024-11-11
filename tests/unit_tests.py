@@ -1566,6 +1566,10 @@ def test_deprecations():
     assert extract(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
     assert bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
     assert bare_extraction(htmlstring, as_dict=True, config=ZERO_CONFIG) is not None
+    with pytest.raises(ValueError):
+        extract(htmlstring, max_tree_size=100)
+    with pytest.raises(ValueError):
+        bare_extraction(htmlstring, max_tree_size=100)
 
 
 

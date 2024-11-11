@@ -113,7 +113,6 @@ class Extractor:
         tables: bool = True,
         dedup: bool = False,
         lang: Optional[str] = None,
-        max_tree_size: Optional[int] = None,
         url: Optional[str] = None,
         source: Optional[str] = None,
         with_metadata: bool = False,
@@ -137,7 +136,6 @@ class Extractor:
         self.tables: bool = tables
         self.dedup: bool = dedup
         self.lang: Optional[str] = lang
-        self.max_tree_size: Optional[int] = max_tree_size
         self.url: Optional[str] = url
         self.only_with_metadata: bool = only_with_metadata
         self.tei_validation: bool = tei_validation
@@ -152,6 +150,7 @@ class Extractor:
         self.date_params: Dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
+        self.max_tree_size = None
 
     def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
         "Set the source attribute in a robust way."
