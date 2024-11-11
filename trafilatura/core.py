@@ -177,7 +177,6 @@ def bare_extraction(
         with_metadata: Extract metadata fields and add them to the output.
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
         as_dict: Will be deprecated, use the .as_dict() method of the document class.
@@ -205,6 +204,8 @@ def bare_extraction(
             '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
             PendingDeprecationWarning
         )
+    if max_tree_size:
+        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
@@ -221,7 +222,6 @@ def bare_extraction(
             tables=include_tables,
             dedup=deduplicate,
             lang=target_language,
-            max_tree_size=max_tree_size,
             url=url,
             with_metadata=with_metadata,
             only_with_metadata=only_with_metadata,
@@ -412,7 +412,6 @@ def extract(
         with_metadata: Extract metadata fields and add them to the output.
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
         settingsfile: Use a configuration file to override the standard settings.
@@ -432,6 +431,9 @@ def extract(
             PendingDeprecationWarning
         )
 
+    if max_tree_size:
+        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
+
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
         options = Extractor(
@@ -447,7 +449,6 @@ def extract(
             tables=include_tables,
             dedup=deduplicate,
             lang=target_language,
-            max_tree_size=max_tree_size,
             url=url,
             with_metadata=with_metadata,
             only_with_metadata=only_with_metadata,
