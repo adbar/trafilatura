@@ -192,6 +192,15 @@ Jointly developed plugins and additional packages also contribute to the field o
 Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
 
 
+Building the docs
+-----------------
+
+Starting from the ``docs/`` folder of the repository:
+
+1. ``pip install -r requirements.txt``
+2. ``sphinx-build -b html . _build/`` (where ``_build`` is the target directory)
+
+
 
 Further documentation
 =====================
@@ -207,10 +216,4 @@ Further documentation
    used-by
    background
 
-
-Indices and tables
-==================
-
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
