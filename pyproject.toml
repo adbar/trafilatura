@@ -77,8 +77,7 @@ version = {attr = "trafilatura.__version__"}
 # https://setuptools.pypa.io/en/stable/userguide/datafiles.html
 [tool.setuptools.package-data]
 trafilatura = [
-    "data/tei-schema-pickle.lzma",
-    "data/jt-stopwords-pickle.lzma",
+    "data/tei_corpus.dtd",
     "settings.cfg",
 ]
 
