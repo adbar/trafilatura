@@ -312,7 +312,7 @@ def cli_discovery(args: Any) -> None:
                 url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
                 if (
-                    args.sitemap
+                    (args.sitemap or args.feed)
                     and args.list
                     and len(url_store.get_known_domains()) >= args.parallel
                 ):
