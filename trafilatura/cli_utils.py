@@ -20,6 +20,7 @@ from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_compl
 from datetime import datetime
 from functools import partial
 from os import makedirs, path, stat, walk
+from threading import RLock
 from typing import Any, Generator, Optional, List, Set, Tuple
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
@@ -301,6 +302,7 @@ def cli_discovery(args: Any) -> None:
         external=options.config.getboolean("DEFAULT", "EXTERNAL_URLS"),
         sleep_time=options.config.getfloat("DEFAULT", "SLEEP_TIME"),
     )
+    lock = RLock()
 
     # link discovery and storage
     with ThreadPoolExecutor(max_workers=args.parallel) as executor:
@@ -311,14 +313,11 @@ def cli_discovery(args: Any) -> None:
             if future.result() is not None:
                 url_store.add_urls(future.result())
                 # empty buffer in order to spare memory
-                if (
-                    (args.sitemap or args.feed)
-                    and args.list
-                    and len(url_store.get_known_domains()) >= args.parallel
-                ):
-                    url_store.print_unvisited_urls()
-                    url_store.reset()
-                    reset_caches()
+                if args.list and len(url_store.get_known_domains()) >= args.parallel:
+                    with lock:
+                        url_store.print_unvisited_urls()
+                        url_store.reset()
+                        reset_caches()
 
     # process the (rest of the) links found
     error_caught = url_processing_pipeline(args, url_store)
