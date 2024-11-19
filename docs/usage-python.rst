@@ -481,7 +481,12 @@ Deprecations
 
 The following functions and arguments are deprecated:
 
-- extraction: ``process_record()`` function → use ``extract()`` instead
+- extraction:
+   - ``process_record()`` function → use ``extract()`` instead
+   - ``csv_output``, ``json_output``, ``tei_output``, ``xml_output`` → use ``output_format`` parameter instead
+   - ``bare_extraction(as_dict=True)`` → the function returns a ``Document`` object, use ``.as_dict()`` method on it
+   - ``bare_extraction()`` and ``extract()``: ``no_fallback`` → use ``fast`` instead
+   - ``max_tree_size`` parameter moved to ``settings.cfg`` file
+- downloads: ``decode`` argument in ``fetch_url()`` → use ``fetch_response`` instead
 - utils: ``decode_response()`` function → use ``decode_file()`` instead
-- extraction: ``csv_output``, ``json_output``, ``tei_output``, ``xml_output`` → use ``output_format`` parameter instead
 - metadata: ``with_metadata`` (include metadata) had once the effect of today's ``only_with_metadata`` (only documents with necessary metadata)

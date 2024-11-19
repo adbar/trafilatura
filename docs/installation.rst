@@ -72,6 +72,7 @@ In case this does not happen automatically, specify the version number:
 
 ``pip install trafilatura==number``
 
+- Last version for Python 3.6 and 3.7: ``1.12.2``
 - Last version for Python 3.5: ``0.9.3``
 - Last version for Python 3.4: ``0.8.2``
 
@@ -123,6 +124,8 @@ htmldate[all] / htmldate[speed]
 py3langid
     Language detection on extracted main text
 pycurl
-    Faster downloads, possibly less robust though
+    Faster downloads, useful where urllib3 fails
+urllib3[socks]
+    Downloads through SOCKS proxy with urllib3
 zstandard
     Additional compression algorithm for downloads

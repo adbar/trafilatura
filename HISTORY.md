@@ -4,9 +4,39 @@
 ## future v2.0.0
 
 Breaking changes:
-- `bare_extraction()`: the function now returns an instance of the Document class by default
-- `bare_extraction()`: `as_dict` deprecation warning → use `.as_dict()` method on return value
-- `bare_extraction()` and `extract()`: `no_fallback` deprecation warning → use `fast` instead
+- Python 3.6 and 3.7 deprecated (#709)
+- `bare_extraction()`:
+   - now returns an instance of the `Document` class by default
+   - `as_dict` deprecation warning → use `.as_dict()` method on return value (#730)
+- `bare_extraction()` and `extract()`: `no_fallback` deprecation warning → use `fast` instead (#730)
+- downloads: remove `decode` argument in `fetch_url()` → use `fetch_response` instead (#724)
+- deprecated graphical user interface now removed (#713)
+- extraction: move `max_tree_size` parameter to `settings.cfg` (#742)
+- see [Python](https://trafilatura.readthedocs.io/en/latest/usage-python.html#deprecations) and [CLI](https://trafilatura.readthedocs.io/en/latest/usage-cli.html#deprecations) deprecations in the docs
+
+Fixes:
+- set `options.source` before raising error on empty doc tree by @dmoklaf (#707)
+- robust encoding in `options.source` (#717)
+- more robust mapping for conversion to HTML (#721)
+- CLI downloads: use all information in settings file (#734)
+- downloads: cleaner urllib3 code (#736)
+- CLI: print URLs early for feeds and sitemaps with `--list` with @gremid (#744)
+
+Metadata:
+- more robust URL extraction (#710)
+
+Maintenance:
+- remove already deprecated functions and args (#716)
+- add type hints (#723, #728)
+- setup: use `pyproject.toml` file (#715)
+- simplify code (#708, #709, #727)
+- better debug messages in `main_extractor` (#714)
+- evaluation: review data, update packages, add magic_html (#731)
+- setup: explicit exports through `__all__` (#740)
+
+Documentation:
+- fix link in `docs/index.html` by @nzw0301 (#711)
+- remove docs from published packages (#743)
 
 
 ## 1.12.2

@@ -8,6 +8,10 @@ Note that the GUI was a feature in Trafilatura until version 1.8.1, but it is cu
 If installation fails, usage on the command-line is recommended.
 
 
+.. hint::
+    This interface is removed until further notice starting from Trafilatura version 2, mostly due to issues with cross-platform tests and maintenance.
+
+
 Installation
 ~~~~~~~~~~~~
 
