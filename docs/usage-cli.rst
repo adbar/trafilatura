@@ -289,10 +289,10 @@ For all usage instructions see ``trafilatura -h``:
                    [--parallel PARALLEL] [-b BLACKLIST] [--list]
                    [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
                    [--feed [FEED] | --sitemap [SITEMAP] | --crawl [CRAWL] |
-                   --explore [EXPLORE]] [--archived]
+                   --explore [EXPLORE] | --probe [PROBE]] [--archived]
                    [--url-filter URL_FILTER [URL_FILTER ...]] [-f]
                    [--formatting] [--links] [--images] [--no-comments]
-                   [--no-tables] [--only-with-metadata]
+                   [--no-tables] [--only-with-metadata] [--with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE] [--precision] [--recall]
                    [--output-format {csv,json,html,markdown,txt,xml,xmltei} | 

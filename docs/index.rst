@@ -127,6 +127,12 @@ Contributions of all kinds are welcome. Visit the `Contributing page <https://gi
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who extended the docs or submitted bug reports, features and bugfixes!
 
 
+Changes
+-------
+
+For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
+
+
 Context
 -------
 
