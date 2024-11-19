@@ -240,6 +240,10 @@ def test_sysoutput():
 
 def test_download():
     """test page download and command-line interface"""
+    assert cli_utils._define_exit_code([], 0) == 0
+    assert cli_utils._define_exit_code(["a"], 1) == 126
+    assert cli_utils._define_exit_code(["a"], 2) == 1
+
     testargs = ["", "-v"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
