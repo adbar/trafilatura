@@ -264,7 +264,7 @@ def test_download():
         args = cli.parse_args(testargs)
     with pytest.raises(SystemExit) as e:
         cli.process_args(args)
-    assert e.type == SystemExit and e.value.code == 1
+    assert e.type == SystemExit and e.value.code == 126
 
 
 # @patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
