@@ -423,7 +423,12 @@ def _define_exit_code(errors: List[str], total: int) -> int:
     """Compute exit code based on the number of errors:
     0 if there are no errors, 126 if there are too many, 1 otherwise."""
     ratio = len(errors) / total if total > 0 else 0
-    return 126 if ratio > 0.99 else 1 if errors else 0
+
+    if ratio > 0.99:
+        return 126
+    if errors:
+        return 1
+    return 0
 
 
 def url_processing_pipeline(args: Any, url_store: UrlStore) -> int:
@@ -438,7 +443,7 @@ def url_processing_pipeline(args: Any, url_store: UrlStore) -> int:
 
     # download strategy
     errors, counter = download_queue_processing(url_store, args, counter, options)
-    LOGGER.debug("%s URLs could not be found", len(errors))
+    LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
     if args.archived is True:
         url_store = UrlStore()
