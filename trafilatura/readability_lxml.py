@@ -269,7 +269,8 @@ class Document:
 
     def score_node(self, elem: HtmlElement) -> Candidate:
         score = self.class_weight(elem)
-        name = elem.tag.lower()
+        tag = str(elem.tag)
+        name = tag.lower()
         if name in DIV_SCORES:
             score += 5
         elif name in BLOCK_SCORES:

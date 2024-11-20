@@ -35,7 +35,7 @@ CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
 
 
-def _log_event(msg: str, tag: str, text: Optional[Union[bytes, str]]) -> None:
+def _log_event(msg: str, tag: Any, text: Optional[Union[bytes, str]]) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
@@ -365,7 +365,7 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
     # calculate maximum number of columns per row, includin colspan
     max_cols = 0
     for tr in table_elem.iter('tr'):
-        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))  # type: ignore
+        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
 
     # explore sub-elements
     seen_header_row = False
