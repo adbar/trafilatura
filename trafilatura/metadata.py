@@ -38,6 +38,7 @@ from .xpaths import (
     TITLE_XPATHS,
 )
 
+__all__ = ["Document"]
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger("htmldate").setLevel(logging.WARNING)
@@ -309,7 +310,8 @@ def examine_meta(tree: HtmlElement) -> Document:
     # backups
     metadata.sitename = metadata.sitename or backup_sitename
     # copy
-    metadata.set_attributes(tags=tags)
+    metadata.tags = tags
+    # metadata.set_attributes(tags=tags)
     return metadata
 
 

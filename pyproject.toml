@@ -94,8 +94,11 @@ trafilatura = "trafilatura.cli:main"
 [project.optional-dependencies]
 dev = [
     "flake8",
+    "mypy",
     "pytest",
     "pytest-cov",
+    "types-lxml",
+    "types-urllib3",
 ]
 all = [
     "brotli",

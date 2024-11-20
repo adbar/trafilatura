@@ -82,28 +82,32 @@ jobs:
     #     sudo apt-get update
     #     sudo apt-get install libxml2-dev libxslt-dev
 
-    - name: Install dependencies
-      run: python -m pip install -e ".[dev]"
-
-    # pycurl installation fix
-    - name: Install packages required by pycurl
-      if: ${{ matrix.env.MINIMAL == 'false'}}
-      run: |
-        sudo apt-get update
-        sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
-    # alternatively: sudo apt-get install libcurl4-openssl-dev libssl-dev
-
-    - name: Install full dependencies
-      if: ${{ matrix.env.MINIMAL == 'false'}}
-      run: python -m pip install -e ".[all]"
-
-    # tests
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    - name: Install dependencies
+      run: python -m pip install -e ".[dev]"
+
+    # pycurl installation fix
+    - name: Install packages required by pycurl
+      if: ${{ matrix.env.MINIMAL == 'false' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
+    # alternatively: sudo apt-get install libcurl4-openssl-dev libssl-dev
+
+    - name: Install full dependencies
+      if: ${{ matrix.env.MINIMAL == 'false' }}
+      run: python -m pip install -e ".[all]"
+
+    - name: Type checking
+      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.11' }}
+      run: |
+        mypy -p trafilatura
 
     - name: Test with pytest
       run: |
