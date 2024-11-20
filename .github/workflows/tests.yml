@@ -18,7 +18,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-        python-version: ["3.9", "3.11", "3.13", "3.14-dev"]  # "3.13", "3.14-dev"
+        python-version: ["3.9", "3.11", "3.13"]  # "3.14-dev"
         env:
           - MINIMAL: "true"
             PROXY_TEST: "false"
@@ -110,7 +110,7 @@ jobs:
 
     # coverage
     - name: Upload coverage to Codecov
-      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.11' }}
+      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.12' }}
       uses: codecov/codecov-action@v4
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
