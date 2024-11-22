@@ -288,7 +288,7 @@ def download_queue_processing(
     return errors, counter
 
 
-def cli_discovery(args: Any) -> None:
+def cli_discovery(args: Any) -> int:
     "Group CLI functions dedicated to URL discovery."
     url_store = load_input_dict(args)
     input_urls = url_store.dump_urls()
@@ -320,13 +320,15 @@ def cli_discovery(args: Any) -> None:
                         reset_caches()
 
     # process the (rest of the) links found
-    error_caught = url_processing_pipeline(args, url_store)
+    exit_code = url_processing_pipeline(args, url_store)
 
     # activate site explorer
     if args.explore:
         # add to compressed dict and crawl the remaining websites
         control_dict = build_exploration_dict(url_store, input_urls, args)
         cli_crawler(args, url_store=control_dict, options=options)
+
+    return exit_code
 
 
 def build_exploration_dict(
@@ -417,18 +419,31 @@ def probe_homepage(args: Any) -> None:
                     print(url, flush=True)
 
 
-def url_processing_pipeline(args: Any, url_store: UrlStore) -> bool:
+def _define_exit_code(errors: List[str], total: int) -> int:
+    """Compute exit code based on the number of errors:
+    0 if there are no errors, 126 if there are too many, 1 otherwise."""
+    ratio = len(errors) / total if total > 0 else 0
+
+    if ratio > 0.99:
+        return 126
+    if errors:
+        return 1
+    return 0
+
+
+def url_processing_pipeline(args: Any, url_store: UrlStore) -> int:
     "Aggregated functions to show a list and download and process an input list."
     if args.list:
         url_store.print_unvisited_urls()  # and not write_result()
         return False  # and not sys.exit(0)
 
     options = args_to_extractor(args)
-    counter = 0 if url_store.total_url_number() > MAX_FILES_PER_DIRECTORY else -1
+    url_count = url_store.total_url_number()
+    counter = 0 if url_count > MAX_FILES_PER_DIRECTORY else -1
 
     # download strategy
     errors, counter = download_queue_processing(url_store, args, counter, options)
-    LOGGER.debug("%s URLs could not be found", len(errors))
+    LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
     if args.archived is True:
         url_store = UrlStore()
@@ -443,9 +458,9 @@ def url_processing_pipeline(args: Any, url_store: UrlStore) -> bool:
                 len(errors),
             )
             # pass information along if URLs are missing
-            return bool(archived_errors)
+            return _define_exit_code(archived_errors, url_store.total_url_number())
 
-    return bool(errors)
+    return _define_exit_code(errors, url_count)
 
 
 def file_processing_pipeline(args: Any) -> None:

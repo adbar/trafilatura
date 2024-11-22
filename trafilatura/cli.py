@@ -197,7 +197,7 @@ def main() -> None:
 
 def process_args(args: Any) -> None:
     """Perform the actual processing according to the arguments"""
-    error_caught = False
+    exit_code = 0
 
     if args.verbose == 1:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
@@ -211,7 +211,7 @@ def process_args(args: Any) -> None:
 
     # fetch urls from a feed or a sitemap
     if args.explore or args.feed or args.sitemap:
-        cli_discovery(args)
+        exit_code = cli_discovery(args)
 
     # activate crawler/spider
     elif args.crawl:
@@ -225,15 +225,10 @@ def process_args(args: Any) -> None:
     elif args.input_dir:
         file_processing_pipeline(args)
 
-    # read url list from input file
-    elif args.input_file:
+    # read url list from input file or process input URL
+    elif args.input_file or args.URL:
         url_store = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, url_store)
-
-    # process input URL
-    elif args.URL:
-        url_store = load_input_dict(args)
-        error_caught = url_processing_pipeline(args, url_store)  # process single url
+        exit_code = url_processing_pipeline(args, url_store)
 
     # read input on STDIN directly
     else:
@@ -241,8 +236,8 @@ def process_args(args: Any) -> None:
         write_result(result, args)
 
     # change exit code if there are errors
-    if error_caught:
-        sys.exit(1)
+    if exit_code != 0:
+        sys.exit(exit_code)
 
 
 if __name__ == '__main__':

@@ -240,6 +240,10 @@ def test_sysoutput():
 
 def test_download():
     """test page download and command-line interface"""
+    assert cli_utils._define_exit_code([], 0) == 0
+    assert cli_utils._define_exit_code(["a"], 1) == 126
+    assert cli_utils._define_exit_code(["a"], 2) == 1
+
     testargs = ["", "-v"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
@@ -264,7 +268,7 @@ def test_download():
         args = cli.parse_args(testargs)
     with pytest.raises(SystemExit) as e:
         cli.process_args(args)
-    assert e.type == SystemExit and e.value.code == 1
+    assert e.type == SystemExit and e.value.code == 126
 
 
 # @patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
