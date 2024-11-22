@@ -15,7 +15,6 @@ from io import BytesIO
 from time import sleep
 from typing import (
     Any,
-    ByteString,
     Callable,
     Dict,
     Generator,
@@ -106,7 +105,7 @@ class Response:
     "Store information gathered in a HTTP response object."
     __slots__ = ["data", "headers", "html", "status", "url"]
 
-    def __init__(self, data: ByteString, status: int, url: str) -> None:
+    def __init__(self, data: bytes, status: int, url: str) -> None:
         self.data = data
         self.headers: Optional[Dict[str, str]] = None
         self.html: Optional[str] = None

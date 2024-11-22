@@ -408,7 +408,7 @@ def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
     else:
         LOGGER.warning('Language detector not installed, skipping detection')
         result = None
-    return result
+    return result  # type: ignore[no-any-return]
 
 
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
