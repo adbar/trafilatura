@@ -15,7 +15,6 @@ from io import BytesIO
 from time import sleep
 from typing import (
     Any,
-    ByteString,
     Callable,
     Dict,
     Generator,
@@ -73,7 +72,7 @@ def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
     return manager_class(**manager_args, **args)  # type: ignore[arg-type]
 
 
-DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
+DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)  # type: ignore[no-untyped-call]
 USER_AGENT = (
     "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 )
@@ -106,7 +105,7 @@ class Response:
     "Store information gathered in a HTTP response object."
     __slots__ = ["data", "headers", "html", "status", "url"]
 
-    def __init__(self, data: ByteString, status: int, url: str) -> None:
+    def __init__(self, data: bytes, status: int, url: str) -> None:
         self.data = data
         self.headers: Optional[Dict[str, str]] = None
         self.html: Optional[str] = None
@@ -332,14 +331,14 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
-    curl.setopt(curl.NOBODY, True)  # type: ignore[attr-defined]
+    curl.setopt(curl.NOBODY, True)
     if PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
     # Perform the request
     try:
         curl.perform()
         # Get the response code
-        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400  # type: ignore[attr-defined]
+        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
@@ -503,7 +502,7 @@ def _send_pycurl_request(
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
     resp = Response(
-        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)  # type: ignore[attr-defined]
+        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)
     )
     curl.close()
 

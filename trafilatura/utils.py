@@ -32,7 +32,7 @@ except ImportError:
     HAS_BROTLI = False
 
 try:
-    import zstandard  # type: ignore
+    import zstandard
     HAS_ZSTD = True
 except ImportError:
     HAS_ZSTD = False
@@ -114,7 +114,7 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
     # try brotli
     if HAS_BROTLI:
         try:
-            return brotli.decompress(filecontent)
+            return brotli.decompress(filecontent)  # type: ignore[no-any-return]
         except brotli.error:
             pass  # logging.debug('invalid Brotli file')
     # try zlib/deflate
@@ -408,7 +408,7 @@ def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
     else:
         LOGGER.warning('Language detector not installed, skipping detection')
         result = None
-    return result
+    return result  # type: ignore[no-any-return]
 
 
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:

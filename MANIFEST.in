@@ -1,6 +1,7 @@
 include CITATION.cff CONTRIBUTING.md HISTORY.md README.rst LICENSE
 graft trafilatura/data/
 include trafilatura/settings.cfg
+include trafilatura/py.typed
 
 include tests/__init__.py
 include tests/*test*.py

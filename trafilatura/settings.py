@@ -279,18 +279,12 @@ class Document:
         self.filedate: Optional[str] = filedate
 
     @classmethod
-    def from_dict(cls: Any, data: Dict[str, Any]) -> Any:
+    def from_dict(cls, data: Dict[str, Any]) -> 'Document':
         "Set a series of attributes using a dictionary."
         doc = cls()
         for key, value in data.items():
             setattr(doc, key, value)
         return doc
-
-    def set_attributes(self, **kwargs: Optional[Dict[str, Any]]) -> None:
-        "Helper function to (re-)set a series of attributes."
-        for key, value in kwargs.items():
-            if value:
-                setattr(self, key, value)
 
     def clean_and_trim(self) -> None:
         "Limit text length and trim the attributes."

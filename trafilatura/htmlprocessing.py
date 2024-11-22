@@ -291,7 +291,7 @@ def convert_lists(elem: _Element) -> None:
     for subelem in elem.iter("dd", "dt", "li"):
         # keep track of dd/dt items
         if subelem.tag in ("dd", "dt"):
-            subelem.set("rend", f"{subelem.tag}-{i}")
+            subelem.set("rend", f"{str(subelem.tag)}-{i}")
             # increment counter after <dd> in description list
             if subelem.tag == "dd":
                 i += 1
@@ -397,7 +397,7 @@ def convert_tags(
             convert_link(elem, base_url)
 
     if options.formatting:
-        for elem in tree.iter(REND_TAG_MAPPING.keys()):  # type: ignore[call-overload]
+        for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
             elem.set("rend", REND_TAG_MAPPING[elem.tag])
             elem.tag = "hi"
@@ -405,7 +405,7 @@ def convert_tags(
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
     # iterate over all concerned elements
-    for elem in tree.iter(CONVERSIONS.keys()):  # type: ignore[call-overload]
+    for elem in tree.iter(CONVERSIONS.keys()):
         CONVERSIONS[elem.tag](elem)
     # images
     if options.images:
@@ -430,12 +430,13 @@ HTML_CONVERSIONS = {
 
 def convert_to_html(tree: _Element) -> _Element:
     "Convert XML to simplified HTML."
-    for elem in tree.iter(HTML_CONVERSIONS.keys()):  # type: ignore[call-overload]
+    for elem in tree.iter(HTML_CONVERSIONS.keys()):
+        conversion = HTML_CONVERSIONS[str(elem.tag)]
         # apply function or straight conversion
-        if callable(HTML_CONVERSIONS[elem.tag]):
-            elem.tag = HTML_CONVERSIONS[elem.tag](elem)  # type: ignore[operator]
+        if callable(conversion):
+            elem.tag = conversion(elem)
         else:
-            elem.tag = HTML_CONVERSIONS[elem.tag]
+            elem.tag = conversion  # type: ignore[assignment]
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))

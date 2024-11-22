@@ -7,7 +7,7 @@ import logging
 import re  # import regex as re
 
 from copy import deepcopy
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, Tuple, Set, Union
 
 from lxml.etree import _Element, Element, SubElement, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -16,7 +16,7 @@ from lxml.html import HtmlElement
 from .htmlprocessing import (delete_by_link_density, handle_textnode,
                              link_density_test_tables, process_node,
                              prune_unwanted_nodes)
-from .settings import TAG_CATALOG
+from .settings import TAG_CATALOG, Extractor
 from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
@@ -35,12 +35,12 @@ CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
 
 
-def _log_event(msg: str, tag: str, text: Optional[Union[bytes, str]]) -> None:
+def _log_event(msg: str, tag: Any, text: Optional[Union[bytes, str]]) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
 
-def handle_titles(element: _Element, options: Any) -> Optional[_Element]:
+def handle_titles(element: _Element, options: Extractor) -> Optional[_Element]:
     '''Process head elements (titles)'''
     if len(element) == 0:
         # maybe needs attention?
@@ -66,7 +66,7 @@ def handle_titles(element: _Element, options: Any) -> Optional[_Element]:
     return None
 
 
-def handle_formatting(element: _Element, options: Any) -> Optional[_Element]:
+def handle_formatting(element: _Element, options: Extractor) -> Optional[_Element]:
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
     formatting = process_node(element, options)
@@ -124,7 +124,7 @@ def add_sub_element(new_child_elem: _Element, subelem: _Element, processed_subch
         sub_child_elem.set(attr, subelem.attrib[attr])
 
 
-def process_nested_elements(child: _Element, new_child_elem: _Element, options: Any) -> None:
+def process_nested_elements(child: _Element, new_child_elem: _Element, options: Extractor) -> None:
     "Iterate through an element child and rewire its descendants."
     new_child_elem.text = child.text
     for subelem in child.iterdescendants("*"):
@@ -158,7 +158,7 @@ def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
 
 
-def handle_lists(element: _Element, options: Any) -> Optional[_Element]:
+def handle_lists(element: _Element, options: Extractor) -> Optional[_Element]:
     "Process lists elements including their descendants."
     processed_element = Element(element.tag)
 
@@ -224,7 +224,7 @@ def handle_code_blocks(element: _Element) -> _Element:
     return processed_element
 
 
-def handle_quotes(element: _Element, options: Any) -> Optional[_Element]:
+def handle_quotes(element: _Element, options: Extractor) -> Optional[_Element]:
     "Process quotes elements."
     if is_code_block_element(element):
         return handle_code_blocks(element)
@@ -242,7 +242,7 @@ def handle_quotes(element: _Element, options: Any) -> Optional[_Element]:
     return None
 
 
-def handle_other_elements(element: _Element, potential_tags: Any, options: Any) -> Optional[_Element]:
+def handle_other_elements(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
     "Handle diverse or unknown elements in the scope of relevant tags."
     # handle w3schools code
     if element.tag == "div" and "w3-code" in element.get("class", ""):
@@ -269,7 +269,7 @@ def handle_other_elements(element: _Element, potential_tags: Any, options: Any) 
     return None
 
 
-def handle_paragraphs(element: _Element, potential_tags: Any, options: Any) -> Optional[_Element]:
+def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
     "Process paragraphs along with their children, trim and clean the content."
     element.attrib.clear()  # todo: test if necessary
     # strip_tags(element, 'p') # change in precision due to spaces?
@@ -355,7 +355,7 @@ def define_cell_type(is_header: bool) -> _Element:
     return cell_element
 
 
-def handle_table(table_elem: _Element, potential_tags: Any, options: Any) -> Optional[_Element]:
+def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
     "Process single table element."
     newtable = Element("table")
 
@@ -365,7 +365,7 @@ def handle_table(table_elem: _Element, potential_tags: Any, options: Any) -> Opt
     # calculate maximum number of columns per row, includin colspan
     max_cols = 0
     for tr in table_elem.iter('tr'):
-        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))  # type: ignore
+        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
 
     # explore sub-elements
     seen_header_row = False
@@ -471,7 +471,7 @@ def handle_image(element: _Element) -> Optional[_Element]:
     return processed_element
 
 
-def handle_textelem(element: _Element, potential_tags: Any, options: Any) -> Optional[_Element]:
+def handle_textelem(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
     '''Process text element and determine how to deal with its content'''
     new_element = None
     # bypass: nested elements
@@ -501,7 +501,7 @@ def handle_textelem(element: _Element, potential_tags: Any, options: Any) -> Opt
     return new_element
 
 
-def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Any, potential_tags: Any = TAG_CATALOG) -> _Element:
+def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Extractor, potential_tags: Any = TAG_CATALOG) -> _Element:
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
@@ -518,11 +518,11 @@ def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Any, po
         strip_tags(search_tree, 'span')
     subelems = search_tree.xpath(search_expr)
     result_body.extend(filter(lambda x: x is not None, (handle_textelem(e, potential_tags, options)
-                       for e in subelems)))
+                       for e in subelems)))  # type: ignore[arg-type]
     return result_body
 
 
-def prune_unwanted_sections(tree: HtmlElement, potential_tags: Any, options: Any) -> HtmlElement:
+def prune_unwanted_sections(tree: HtmlElement, potential_tags: Set[str], options: Extractor) -> HtmlElement:
     'Rule-based deletion of targeted document sections'
     favor_precision = options.focus == "precision"
     # prune the rest
@@ -556,7 +556,7 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: Any, options: Any
     return tree
 
 
-def _extract(tree: HtmlElement, options: Any) -> Tuple[_Element, str, Any]:
+def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
     if options.tables is True:
@@ -583,7 +583,7 @@ def _extract(tree: HtmlElement, options: Any) -> Tuple[_Element, str, Any]:
             factor = 1
         else:
             factor = 3
-        if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:
+        if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:  # type: ignore[attr-defined]
             potential_tags.add('div')
         # polish list of potential tags
         if 'ref' not in potential_tags:
@@ -609,7 +609,7 @@ def _extract(tree: HtmlElement, options: Any) -> Tuple[_Element, str, Any]:
     return result_body, temp_text, potential_tags
 
 
-def extract_content(cleaned_tree: HtmlElement, options: Any) -> Tuple[_Element, str, int]:
+def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, int]:
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -622,7 +622,7 @@ def extract_content(cleaned_tree: HtmlElement, options: Any) -> Tuple[_Element, 
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
+    if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:  # type: ignore[attr-defined]
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
@@ -632,7 +632,7 @@ def extract_content(cleaned_tree: HtmlElement, options: Any) -> Tuple[_Element, 
     return result_body, temp_text, len(temp_text)
 
 
-def process_comments_node(elem: _Element, potential_tags: Any, options: Any) -> Optional[_Element]:
+def process_comments_node(elem: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
     '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
@@ -646,7 +646,7 @@ def process_comments_node(elem: _Element, potential_tags: Any, options: Any) -> 
     return None
 
 
-def extract_comments(tree: HtmlElement, options: Any) -> Tuple[_Element, str, int, HtmlElement]:
+def extract_comments(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, int, HtmlElement]:
     "Try to extract comments out of potential sections in the HTML."
     comments_body = Element("body")
     # define iteration strategy
@@ -668,7 +668,7 @@ def extract_comments(tree: HtmlElement, options: Any) -> Tuple[_Element, str, in
         #        comments_body.append(processed_elem)
         # processed_elems = (process_comments_node(elem, potential_tags, options) for elem in
         #                    subtree.xpath('.//*'))
-        comments_body.extend(filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*"))))
+        comments_body.extend(filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*"))))  # type: ignore[arg-type]
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)

@@ -103,7 +103,7 @@ def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Eleme
 
     # post-processing: remove unwanted sections
     if use_readability and not jt_result:
-        body, text, len_text = sanitize_tree(body, options)
+        body, text, len_text = sanitize_tree(body, options)  # type: ignore[arg-type]
 
     return body, text, len_text
 
