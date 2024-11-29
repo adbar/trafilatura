@@ -1022,7 +1022,7 @@ def test_table_processing():
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
-    assert extract(htmlstring, fast=True, output_format='txt').startswith("Present Tense | I buy | you buy |")
+    assert extract(htmlstring, fast=True, output_format='txt').startswith("| Present Tense | I buy | you buy |")
     # table with links
     # todo: further tests and adjustments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
@@ -1112,12 +1112,12 @@ def test_table_processing():
     assert "1" in result and "2" in result
     # table headers in non-XML formats
     htmlstring = '<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>'
-    assert "---|---|" in extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert "|---|---|" in extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
 
     # remove new lines in table cells in text format
     htmlstring = '<html><body><article><table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "cell 1 | cell 2 |" in result
+    assert "| cell 1 | cell 2 |" in result
 
     # only one header row is allowed in text format
     htmlstring = '<html><body><article><table><tr><th>a</th><th>b</th></tr><tr><th>c</th><th>d</th></tr></table></article></body></html>'
@@ -1127,15 +1127,15 @@ def test_table_processing():
     # handle colspan by appending columns in text format
     htmlstring = '<html><body><article><table><tr><td colspan="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "a | b | |" in result
+    assert "| a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "a | b | |" in result
+    assert "| a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2.1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "a | b | |" in result
+    assert "| a | b | |" in result
 
     # MemoryError: https://github.com/adbar/trafilatura/issues/657
     htmlstring = '<html><body><article><table><tr><td colspan="9007199254740991">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
@@ -1149,16 +1149,16 @@ def test_table_processing():
     # wrong span info
     htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "a | b | |" in result
+    assert "| a | b | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "a | b | |" in result
+    assert "| a | b | |" in result
 
     # links: this gets through (for now)
     htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert result == "a |"
+    assert result == "| a |"
 
     # link: this is filtered out
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'

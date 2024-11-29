@@ -287,7 +287,10 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     # cells
     if element.tag == "cell" and elem_text and len(element) > 0:
         if element[0].tag == 'p':
-            elem_text = f"{elem_text} "
+            elem_text = f"{elem_text} " if element.getprevious() is not None else f"| {elem_text} "
+    elif element.tag == 'cell' and elem_text:
+        # add | before first cell
+        elem_text = f"{elem_text}" if element.getprevious() is not None else f"| {elem_text}"
     # lists
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
@@ -324,7 +327,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
                     returnlist.append(f'{"|" * (max_span - cell_count)}\n')
                 # if this is a head row, draw the separator below
                 if element.xpath("./cell[@role='head']"):
-                    returnlist.append(f'\n{"---|" * max_span}\n')
+                    returnlist.append(f'\n|{"---|" * max_span}\n')
             else:
                 returnlist.append("\n")
         elif element.tag != "cell":
@@ -337,7 +340,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
     # Common elements (Now processes end-tag logic correctly)
     if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell"):
         # spacing hack
-        returnlist.append("\n\u2424\n" if include_formatting else "\n")
+        returnlist.append("\n\u2424\n" if include_formatting and element.tag != 'row' else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
     elif element.tag not in SPECIAL_FORMATTING:
