@@ -510,7 +510,7 @@ def test_crawling():
     testargs = ["", "--crawl", ""]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    cli.process_args(args)
+    cli_utils.cli_crawler(args)
 
     testargs = ["", "--crawl", " "]
     with patch.object(sys, "argv", testargs):
@@ -522,7 +522,7 @@ def test_crawling():
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
+        cli.process_args(args)
     assert f.getvalue() == "https://httpbun.com/html\n"
 
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
