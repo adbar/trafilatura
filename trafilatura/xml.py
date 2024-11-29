@@ -287,7 +287,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     # cells
     if element.tag == "cell" and elem_text and len(element) > 0:
         if element[0].tag == 'p':
-            elem_text = f"{elem_text} "
+            elem_text = f"{elem_text} " if element.getprevious() is not None else f"| {elem_text} "
     elif element.tag == 'cell' and elem_text:
         # add | before first cell
         elem_text = f"{elem_text}" if element.getprevious() is not None else f"| {elem_text}"
