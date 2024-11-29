@@ -355,7 +355,7 @@ class Document:
                 )
                 elem.drop_tree()
             elif elem.text_content().count(",") < 10:
-                to_remove = False
+                to_remove = True
                 counts = {
                     kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS
                 }
@@ -376,41 +376,32 @@ class Document:
                 #    continue
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
                     reason = f'too many images ({counts["img"]})'
-                    to_remove = True
                 elif counts["li"] > counts["p"] and elem.tag not in LIST_TAGS:
                     reason = "more <li>s than <p>s"
-                    to_remove = True
                 elif counts["input"] > (counts["p"] / 3):
                     reason = "less than 3x <p>s than <input>s"
-                    to_remove = True
                 elif content_length < self.min_text_length and counts["img"] == 0:
                     reason = f"too short content length {content_length} without a single image"
-                    to_remove = True
                 elif content_length < self.min_text_length and counts["img"] > 2:
                     reason = (
                         f"too short content length {content_length} and too many images"
                     )
-                    to_remove = True
                 elif weight < 25 and link_density > 0.2:
                     reason = (
                         f"too many links {link_density:.3f} for its weight {weight}"
                     )
-                    to_remove = True
                 elif weight >= 25 and link_density > 0.5:
                     reason = (
                         f"too many links {link_density:.3f} for its weight {weight}"
                     )
-                    to_remove = True
                 elif (counts["embed"] == 1 and content_length < 75) or counts[
                     "embed"
                 ] > 1:
                     reason = (
                         "<embed>s with too short content length, or too many <embed>s"
                     )
-                    to_remove = True
                 elif not content_length:
                     reason = "no content"
-                    to_remove = True
 
                     # find x non empty preceding and succeeding siblings
                     siblings = []
@@ -430,17 +421,18 @@ class Document:
                     if siblings and sum(siblings) > 1000:
                         to_remove = False
                         allowed.update(elem.iter("table", "ul", "div", "section"))
+                else:
+                    to_remove = False
 
                 if to_remove:
                     elem.drop_tree()
-                    if LOGGER.isEnabledFor(logging.DEBUG):
-                        LOGGER.debug(
-                            "Removed %6.3f %s with weight %s cause it has %s.",
-                            score,
-                            elem.tag,
-                            weight,
-                            reason or "",
-                        )
+                    LOGGER.debug(
+                        "Removed %6.3f %s with weight %s cause it has %s.",
+                        score,
+                        elem.tag,
+                        weight,
+                        reason or "",
+                    )
 
         self.doc = node
         return _tostring(self.doc)
