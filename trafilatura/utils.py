@@ -405,7 +405,7 @@ def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
             if len(temp_text) > len(temp_comments)
             else py3langid.classify(temp_comments)
         )
-    else:
+    else:  # pragma: no cover
         LOGGER.warning('Language detector not installed, skipping detection')
         result = None
     return result  # type: ignore[no-any-return]

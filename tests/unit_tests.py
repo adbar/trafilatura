@@ -23,7 +23,7 @@ except ImportError:
 import trafilatura.htmlprocessing
 from trafilatura import bare_extraction, extract, xml
 from trafilatura.core import Extractor
-from trafilatura.external import sanitize_tree, try_justext
+from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (handle_formatting, handle_image,
                                         handle_lists, handle_paragraphs, handle_quotes,
                                         handle_table, handle_textelem)
@@ -815,7 +815,8 @@ def test_htmlprocessing():
 
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
-    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --></p></div></body></html>'
+    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --><?php echo "This is a PHP processing instruction"; ?></p></div></body></html>'
+
     with pytest.raises(ValueError) as err:
         extract(my_html, output_format="python")
     assert extract(my_html, config=NEW_CONFIG) is None
@@ -824,8 +825,19 @@ def test_extraction_options():
     assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
     assert extract(my_html, target_language='de', fast=True, config=ZERO_CONFIG) is None
+
+    # justext hardening
     assert etree.tostring(try_justext(html.fromstring(my_html), None, 'de')) == b'<body/>'
+    assert etree.tostring(try_justext(None, None, 'de')) == b'<body/>'
     # assert extract(my_html) is None
+
+    # readability
+    my_html = '<html><body><p>' + 'Text. '*10 + '</p></body></html>'
+    result = etree.tostring(try_readability(html.fromstring(my_html)))
+    assert len(result) > 10 and b'Text' in result
+    my_html = '<html><body><p>' + 'Text. '*10 + '<embed>Test</embed></p></body></html>'
+    result = etree.tostring(try_readability(html.fromstring(my_html)))
+    assert b'Test' not in result
 
     my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
     assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None
