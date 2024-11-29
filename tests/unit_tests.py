@@ -832,9 +832,12 @@ def test_extraction_options():
     # assert extract(my_html) is None
 
     # readability
+    my_html = '<html><body><p>' + 'Text. '*10 + '</p></body></html>'
+    result = etree.tostring(try_readability(html.fromstring(my_html)))
+    assert len(result) > 10 and b'Text' in result
     my_html = '<html><body><p>' + 'Text. '*10 + '<embed>Test</embed></p></body></html>'
     result = etree.tostring(try_readability(html.fromstring(my_html)))
-    assert len(result) > 10 and 'Test' not in result
+    assert b'Test' not in result
 
     my_html = '<html><head/><body>' + '<p>ABC def ghi jkl.</p>'*1000 + '<p>Posted on 1st Dec 2019<.</p></body></html>'
     assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None

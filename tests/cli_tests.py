@@ -510,7 +510,7 @@ def test_crawling():
     testargs = ["", "--crawl", ""]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-        cli.process_args(args)
+    cli.process_args(args)
 
     testargs = ["", "--crawl", " "]
     with patch.object(sys, "argv", testargs):
