@@ -6,7 +6,7 @@ from copy import copy
 from lxml.etree import Element, SubElement, XMLParser, fromstring, tostring
 
 from trafilatura.metadata import Document
-from trafilatura.xml import (check_tei, write_fullheader,
+from trafilatura.xml import (check_tei, replace_element_text, write_fullheader,
                              _handle_unwanted_tails, _move_element_one_level_up,
                              _wrap_unwanted_siblings_of_div)
 
@@ -472,9 +472,36 @@ def test_handling_of_text_content_in_div():
     assert cleaned.find(".//p").text == "tail"
 
 
+def test_replace_element_text():
+    elem = Element("head")
+    elem.text = "Title"
+    elem.set("rend", "h1")
+    assert replace_element_text(elem, True) == "# Title"
+
+    elem = Element("hi")
+    elem.text = "Text"
+    elem.set("rend", "#b")
+    assert replace_element_text(elem, True) == "**Text**"
+
+    elem = Element("item")
+    elem.text = "Test text"
+    elem.tag = "item"
+    assert replace_element_text(elem, True) == "- Test text\n"
+
+    elem = Element("ref")
+    elem.text = "Link"
+    elem.set("target", "https://example.com")
+    assert replace_element_text(elem, True) == "[Link](https://example.com)"
+
+    elem = Element("ref")
+    elem.text = "Link"
+    assert replace_element_text(elem, True) == "[Link]"
+
+
 if __name__ == "__main__":
     test_publisher_added_before_availability_in_publicationStmt()
     test_unwanted_siblings_of_div_removed()
     test_tail_on_p_like_elements_removed()
     test_head_with_children_converted_to_ab()
     test_ab_with_p_parent_resolved()
+    test_replace_element_text()

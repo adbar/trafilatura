@@ -138,7 +138,7 @@ def try_justext(tree: HtmlElement, url: str, target_language: str) -> _Element:
     # extract
     try:
         paragraphs = custom_justext(tree, justext_stoplist)
-    except ValueError as err:  # not an XML element: HtmlComment
+    except Exception as err:
         LOGGER.error('justext %s %s', err, url)
     else:
         for paragraph in paragraphs:

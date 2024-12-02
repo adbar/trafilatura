@@ -225,6 +225,14 @@ def test_sysoutput():
     options = settings.args_to_extractor(args)
     assert options.format == "markdown" and options.formatting is True
     assert cli_utils.process_result("DADIDA", args, -1, options) == -1
+
+    # with counter
+    with open(
+        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
+    ) as f:
+        teststring = f.read()
+    assert cli_utils.process_result(teststring, args, 1, options) == 2
+
     # test keeping dir structure
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     with patch.object(sys, "argv", testargs):
@@ -377,6 +385,9 @@ def test_cli_pipeline():
 
 def test_file_processing():
     "Test file processing pipeline on actual directories."
+    backup = settings.MAX_FILES_PER_DIRECTORY
+    settings.MAX_FILES_PER_DIRECTORY = 0
+
     # dry-run file processing pipeline
     testargs = ["", "--parallel", "1", "--input-dir", "/dev/null"]
     with patch.object(sys, "argv", testargs):
@@ -392,6 +403,8 @@ def test_file_processing():
     args.output_dir = "/dev/null"
     for f in cli_utils.generate_filelist(args.input_dir):
         cli_utils.file_processing(f, args, options=options)
+
+    settings.MAX_FILES_PER_DIRECTORY = backup
 
 
 def test_cli_config_file():
@@ -509,7 +522,7 @@ def test_crawling():
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
-        cli_utils.cli_crawler(args)
+        cli.process_args(args)
     assert f.getvalue() == "https://httpbun.com/html\n"
 
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
