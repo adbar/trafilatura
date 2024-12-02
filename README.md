@@ -33,16 +33,15 @@ required, the output can be converted to commonly used formats.
 Going from HTML bulk to essential parts can alleviate many problems
 related to text quality, by **focusing on the actual content**,
 **avoiding the noise** caused by recurring elements like headers and footers
-and by **making sense of the data and metadata** with selected information. The
-extractor is designed to be **robust and reasonably fast**.
+and by **making sense of the data and metadata** with selected information.
 The extractor strikes a balance between limiting noise (precision) and
 including all valid parts (recall). It is **robust and reasonably fast**.
 
 Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
 and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents>)
-by companies like HuggingFace and IBM, and research centers at
+by companies like HuggingFace and IBM as well as research centers at
 the Allen Institute, Stanford, the Tokyo Institute of Technology, or
-the University of Munich (LMU).
+the University of Munich.
 
 
 ### Features
@@ -197,18 +196,13 @@ acquisition. Here is how to cite it:
 
 ### Software ecosystem
 
-Case studies and publications are listed on the [Used By documentation
-page](https://trafilatura.readthedocs.io/en/latest/used-by.html).
-
 Jointly developed plugins and additional packages also contribute to the
 field of web data extraction and analysis:
 
 <img alt="Software ecosystem" src="https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png" align="center" width="65%"/>
 
 Corresponding posts can be found on [Bits of
-Language](https://adrien.barbaresi.eu/blog/tag/trafilatura.html). The
-blog covers a range of topics from technical how-tos, updates on new
-features, to discussions on text mining challenges and solutions.
+Language](https://adrien.barbaresi.eu/blog/tag/trafilatura.html).
 
 Impressive, you have reached the end of the page: Thank you for your
 interest!

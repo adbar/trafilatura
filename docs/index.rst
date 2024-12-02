@@ -42,7 +42,7 @@ Trafilatura is a **Python package and command-line tool** designed to gather tex
 
 Going from raw HTML to essential parts can alleviate many problems related to text quality, by avoiding the **noise caused by recurring elements** like headers and footers and by **making sense of the data and metadata** with selected information. The extractor strikes a balance between limiting noise (precision) and including all valid parts (recall). It is **robust and reasonably fast**.
 
-Trafilatura is `widely used <used-by.html>`_ and integrated into `thousands of projects <https://github.com/adbar/trafilatura/network/dependents>`_ by companies like HuggingFace and IBM, and research centers at the Allen Institute, Stanford, the Tokyo Institute of Technology, or the University of Munich (LMU).
+Trafilatura is `widely used <used-by.html>`_ and integrated into `thousands of projects <https://github.com/adbar/trafilatura/network/dependents>`_ by companies like HuggingFace and IBM as well as research centers at the Allen Institute, Stanford, the Tokyo Institute of Technology, or the University of Munich.
 
 
 Features
@@ -190,8 +190,6 @@ Trafilatura is widely used in the academic domain, chiefly for data acquisition.
 
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
-
-Case studies and publications are listed on the `Used By documentation page <used-by.html>`_.
 
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
