@@ -6,7 +6,7 @@ Uses & citations
         Trafilatura now widely used, integrated into other software packages and cited in research publications. Notable projects and institutional users are listed on this page.
 
 
-Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications across fields such as linguistics, natural language processing, computational social science, search engine optimization, information security, and artificial intelligence (large language models).
+Initially released to collect data for linguistic research and lexicography at the Berlin-Brandenburg Academy of Sciences, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications across fields such as linguistics, natural language processing, computational social science, search engine optimization, information security, and artificial intelligence (large language models).
 
 The tool earns accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
 
@@ -33,6 +33,8 @@ Companies and research centers
 - Tokyo Institute of Technology with a `Japanese Web Corpus for Large Language Models <https://arxiv.org/pdf/2404.17733>`_
 - Turku University, NLP department with `FinGPT <https://turkunlp.org/gpt3-finnish>`_ models
 - University of Munich (LMU), Center for Language and Information Processing, `GlotWeb project <https://github.com/cisnlp/GlotWeb>`_
+
+The Go port `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_ is used at Microsoft Research.
 
 
 Various software repositories
@@ -200,10 +202,3 @@ Publications citing Htmldate
 
 See `citation page of htmldate's documentation <https://htmldate.readthedocs.io/en/latest/used-by.html>`_.
 
-
-
-Ports
------
-
-Go port
-    `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_

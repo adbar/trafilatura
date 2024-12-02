@@ -39,8 +39,8 @@ including all valid parts (recall). It is **robust and reasonably fast**.
 
 Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
 and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents>)
-by companies like HuggingFace and IBM as well as research centers at
-the Allen Institute, Stanford, the Tokyo Institute of Technology, or
+by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like
+the Allen Institute, Stanford, the Tokyo Institute of Technology, and
 the University of Munich.
 
 
@@ -123,7 +123,7 @@ This package is distributed under the [Apache 2.0 license](https://www.apache.or
 Versions prior to v1.8.0 are under GPLv3+ license.
 
 
-## Contributing
+### Contributing
 
 Contributions of all kinds are welcome. Visit the [Contributing
 page](https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md)

@@ -42,7 +42,7 @@ Trafilatura is a **Python package and command-line tool** designed to gather tex
 
 Going from raw HTML to essential parts can alleviate many problems related to text quality, by avoiding the **noise caused by recurring elements** like headers and footers and by **making sense of the data and metadata** with selected information. The extractor strikes a balance between limiting noise (precision) and including all valid parts (recall). It is **robust and reasonably fast**.
 
-Trafilatura is `widely used <used-by.html>`_ and integrated into `thousands of projects <https://github.com/adbar/trafilatura/network/dependents>`_ by companies like HuggingFace and IBM as well as research centers at the Allen Institute, Stanford, the Tokyo Institute of Technology, or the University of Munich.
+Trafilatura is `widely used <used-by.html>`_ and integrated into `thousands of projects <https://github.com/adbar/trafilatura/network/dependents>`_ by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like the Allen Institute, Stanford, the Tokyo Institute of Technology, and the University of Munich.
 
 
 Features
@@ -120,17 +120,11 @@ Versions prior to v1.8.0 are under GPLv3+ license.
 
 
 Contributing
-------------
+~~~~~~~~~~~~
 
 Contributions of all kinds are welcome. Visit the `Contributing page <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated issue page <https://github.com/adbar/trafilatura/issues>`_.
 
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who extended the docs or submitted bug reports, features and bugfixes!
-
-
-Changes
--------
-
-For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
 
 
 Context
@@ -214,6 +208,13 @@ Starting from the ``docs/`` folder of the repository:
 
 
 
+Changes
+-------
+
+For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
+
+
+
 Further documentation
 =====================
 
@@ -228,4 +229,4 @@ Further documentation
    used-by
    background
 
-* :ref:`genindex`
+:ref:`genindex`
