@@ -20,7 +20,7 @@ from .settings import (
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
 )
-from .utils import textfilter, trim
+from .utils import textfilter, trim, is_image_element
 from .xml import META_ATTRIBUTES, delete_element
 
 
@@ -226,6 +226,8 @@ def handle_textnode(
     preserve_spaces: bool = False,
 ) -> Optional[_Element]:
     "Convert, format, and probe potential text elements."
+    if elem.tag == "graphic" and is_image_element(elem):
+        return elem
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
 

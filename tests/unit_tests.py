@@ -483,6 +483,7 @@ def test_images():
     assert is_image_file('test.txt') is False
     assert is_image_file('test.jpg'*2000) is False  # length threshold
     # tag with attributes
+    assert handle_image(None) is None
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
@@ -494,6 +495,12 @@ def test_images():
     assert '![Example image](test.jpg)' in extract(teststring, include_images=True, fast=True)
     assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, fast=True, output_format='xml', config=ZERO_CONFIG)
     assert extract('<html><body><article><img data-src="test.jpg" alt="text" title="a title"/></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
+    assert extract('<html><body><article><p><img data-src="test.jpg" alt="text" title="a title"/></p></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
+    assert extract('<html><body><article><p><img other="test.jpg" alt="text" title="a title"/></p></article></body></html>', include_images=True, fast=True) == ''
+    assert extract('<html><body><article><div><p><img data-src="test.jpg" alt="text" title="a title"/></p></div></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
+    assert extract('<html><body><article><div><p><img data-src-small="test.jpg" alt="text" title="a title"/></p></div></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
+
+    assert handle_image(html.fromstring('<img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="text"></img>')) is None
 
     # CNN example
     mydoc = html.fromstring('<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781" src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-eq-state="mini xsmall small medium" data-src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg">')
