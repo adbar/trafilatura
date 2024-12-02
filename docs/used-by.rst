@@ -6,9 +6,9 @@ Uses & citations
         Trafilatura now widely used, integrated into other software packages and cited in research publications. Notable projects and institutional users are listed on this page.
 
 
-Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications across fields such as linguistics, natural language processing, social sciences, information science, and AI (large language models).
+Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is used by numerous institutions, integrated into other software packages and cited in research publications across fields such as linguistics, natural language processing, computational social science, search engine optimization, information security, and artificial intelligence (large language models).
 
-The tool is recognized for its effectiveness in article extraction, earning accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
+The tool earns accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
 
 If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes by submitting a pull request.
 
@@ -17,8 +17,8 @@ If you wish to add further references, please `edit this page <https://github.co
 Notable projects using this software
 ------------------------------------
 
-Known institutional users
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Companies and research centers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Allen Institute for AI with the `Dolma toolkit <https://github.com/allenai/dolma>`_ used to pre-train the OLMo LLM
 - HuggingFace with `DataTrove <https://github.com/huggingface/datatrove>`_ to process, filter and deduplicate text data

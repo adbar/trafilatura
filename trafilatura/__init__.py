@@ -7,7 +7,7 @@ __title__ = "Trafilatura"
 __author__ = "Adrien Barbaresi and contributors"
 __license__ = "Apache-2.0"
 __copyright__ = "Copyright 2019-present, Adrien Barbaresi"
-__version__ = "1.12.2"
+__version__ = "2.0.0"
 
 
 import logging

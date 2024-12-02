@@ -32,15 +32,17 @@ required, the output can be converted to commonly used formats.
 
 Going from HTML bulk to essential parts can alleviate many problems
 related to text quality, by **focusing on the actual content**,
-**avoiding the noise** caused by recurring elements (headers, footers
-etc.), and **making sense of the data** with selected information. The
-extractor is designed to be **robust and reasonably fast**, it runs in
-production on millions of documents.
+**avoiding the noise** caused by recurring elements like headers and footers
+and by **making sense of the data and metadata** with selected information. The
+extractor is designed to be **robust and reasonably fast**.
+The extractor strikes a balance between limiting noise (precision) and
+including all valid parts (recall). It is **robust and reasonably fast**.
 
-The tool's versatility makes it **useful for quantitative and
-data-driven approaches**. It is used in the academic domain and beyond
-(e.g. in natural language processing, computational social science,
-search engine optimization, and information security).
+Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
+and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents>)
+by companies like HuggingFace and IBM, and research centers at
+the Allen Institute, Stanford, the Tokyo Institute of Technology, or
+the University of Munich (LMU).
 
 
 ### Features
@@ -84,22 +86,6 @@ limiting noise and including all valid parts.
 For more information see the [benchmark section](https://trafilatura.readthedocs.io/en/latest/evaluation.html)
 and the [evaluation readme](https://github.com/adbar/trafilatura/blob/master/tests/README.rst)
 to run the evaluation with the latest data and packages.
-
-**750 documents, 2236 text & 2250 boilerplate segments (2022-05-18), Python 3.8**
-
-| Python Package | Precision | Recall | Accuracy | F-Score | Diff. |
-|----------------|-----------|--------|----------|---------|-------|
-| html_text 0.5.2 | 0.529 | **0.958** | 0.554 | 0.682 | 2.2x |
-| inscriptis 2.2.0 (html to txt) | 0.534 | **0.959** | 0.563 | 0.686 | 3.5x |
-| newspaper3k 0.2.8 | 0.895 | 0.593 | 0.762 | 0.713 | 12x |
-| justext 3.0.0 (custom) | 0.865 | 0.650 | 0.775 | 0.742 | 5.2x |
-| boilerpy3 1.0.6 (article mode) | 0.814 | 0.744 | 0.787 | 0.777 | 4.1x |
-| *baseline (text markup)* | 0.757 | 0.827 | 0.781 | 0.790 | **1x** |
-| goose3 3.1.9 | **0.934** | 0.690 | 0.821 | 0.793 | 22x |
-| readability-lxml 0.8.1 | 0.891 | 0.729 | 0.820 | 0.801 | 5.8x |
-| news-please 1.5.22 | 0.898 | 0.734 | 0.826 | 0.808 | 61x |
-| readabilipy 0.2.0 | 0.877 | 0.870 | 0.874 | 0.874 | 248x |
-| trafilatura 1.2.2 (standard) | 0.914 | 0.904 | **0.910** | **0.909** | 7.1x |
 
 
 #### Other evaluations:
@@ -152,13 +138,17 @@ who extended the docs or submitted bug reports, features and bugfixes!
 
 ## Context
 
-Developed with practical applications of academic research in mind, this
-software is part of a broader effort to derive information from web
-documents. Extracting and pre-processing web texts to the exacting
-standards of scientific research presents a substantial challenge. This
-software package simplifies text data collection and enhances corpus
-quality, it is currently used to build [text databases for linguistic
-research](https://www.dwds.de/d/k-web).
+This work started as a PhD project at the crossroads of linguistics and
+NLP, this expertise has been instrumental in shaping Trafilatura over
+the years. Initially launched to create text databases for research purposes
+at the Berlin-Brandenburg Academy of Sciences (DWDS and ZDL units),
+this package continues to be maintained but its future development
+depends on community support.
+
+**If you value this software or depend on it for your product, consider
+sponsoring it and contributing to its codebase**. Your support will
+help maintain and enhance this popular package, ensuring its growth,
+robustness, and accessibility for developers and users around the world.
 
 *Trafilatura* is an Italian word for [wire
 drawing](https://en.wikipedia.org/wiki/Wire_drawing) symbolizing the
@@ -170,11 +160,6 @@ are formed.
 Reach out via ia the software repository or the [contact
 page](https://adrien.barbaresi.eu/) for inquiries, collaborations, or
 feedback. See also social networks for the latest updates.
-
-This work started as a PhD project at the crossroads of linguistics and
-NLP, this expertise has been instrumental in shaping Trafilatura over
-the years. It has first been released under its current form in 2019,
-its development is referenced in the following publications:
 
 -   Barbaresi, A. [Trafilatura: A Web Scraping Library and Command-Line
     Tool for Text Discovery and
