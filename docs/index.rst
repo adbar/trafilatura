@@ -40,9 +40,9 @@ Description
 
 Trafilatura is a **Python package and command-line tool** designed to gather text on the Web. It includes discovery, extraction and text processing components. Its main applications are **web crawling, downloads, scraping, and extraction** of main texts, metadata and comments. It aims at staying **handy and modular**: no database is required, the output can be converted to commonly used formats.
 
-Going from raw HTML to essential parts can alleviate many problems related to text quality, first by avoiding the **noise caused by recurring elements** (headers, footers, links/blogroll etc.) and second by including information such as author and date in order to **make sense of the data**. The extractor tries to strike a balance between limiting noise (precision) and including all valid parts (recall). It also has to be **robust and reasonably fast**, it runs in production on millions of documents.
+Going from raw HTML to essential parts can alleviate many problems related to text quality, by avoiding the **noise caused by recurring elements** like headers and footers and by **making sense of the data and metadata** with selected information. The extractor strikes a balance between limiting noise (precision) and including all valid parts (recall). It is **robust and reasonably fast**.
 
-This tool can be **useful for quantitative research** in corpus linguistics, natural language processing, computational social science and beyond: it is relevant to anyone interested in data science, information extraction, text mining, and scraping-intensive use cases like search engine optimization, business analytics or information security.
+Trafilatura is `widely used <used-by.html>`_ and integrated into `thousands of projects <https://github.com/adbar/trafilatura/network/dependents>`_ by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like the Allen Institute, Stanford, the Tokyo Institute of Technology, and the University of Munich.
 
 
 Features
@@ -120,25 +120,27 @@ Versions prior to v1.8.0 are under GPLv3+ license.
 
 
 Contributing
-------------
+~~~~~~~~~~~~
 
 Contributions of all kinds are welcome. Visit the `Contributing page <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated issue page <https://github.com/adbar/trafilatura/issues>`_.
 
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who extended the docs or submitted bug reports, features and bugfixes!
 
 
-Changes
--------
-
-For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
-
-
 Context
 -------
 
-Originally released to collect data for linguistic research and lexicography at the `Berlin-Brandenburg Academy of Sciences <https://www.dwds.de/d/k-web>`_, Trafilatura is now `widely used <used-by.html>`_.
+This work started as a PhD project at the crossroads of linguistics and NLP,
+this expertise has been instrumental in shaping Trafilatura over the years. 
+Initially launched to create text databases for research purposes
+at the Berlin-Brandenburg Academy of Sciences (DWDS and ZDL units),
+this package continues to be maintained but its future development
+depends on community support.
 
-Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge. These documentation pages also provide information on `concepts behind data collection <background.html>`_ as well as `tutorials <tutorials.html>`_ on how to gather web texts.
+**If you value this software or depend on it for your product, consider
+sponsoring it and contributing to its codebase**. Your support will
+help maintain and enhance this popular package, ensuring its growth,
+robustness, and accessibility for developers and users around the world.
 
 *Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the refinement and conversion process. It is also the way shapes of pasta are formed.
 
@@ -147,9 +149,6 @@ Author
 ~~~~~~
 
 Reach out via the software repository or the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also social networks for the latest updates.
-
-This work started as a PhD project at the crossroads of linguistics and NLP, this expertise has been instrumental in shaping Trafilatura over the years. It has first been released under its current form in 2019, its development is referenced in the following publications:
-
 
 - Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, Proceedings of ACL/IJCNLP 2021: System Demonstrations, 2021, p. 122-131.
 -  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
@@ -186,8 +185,6 @@ Trafilatura is widely used in the academic domain, chiefly for data acquisition.
 Software ecosystem
 ~~~~~~~~~~~~~~~~~~
 
-Case studies and publications are listed on the `Used By documentation page <used-by.html>`_.
-
 Jointly developed plugins and additional packages also contribute to the field of web data extraction and analysis:
 
 .. image:: software-ecosystem.png
@@ -195,7 +192,10 @@ Jointly developed plugins and additional packages also contribute to the field o
     :align: center
     :width: 65%
 
-Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
+Corresponding posts can be found on
+`Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_.
+The blog covers a range of topics from technical how-tos, updates on new
+features, to discussions on text mining challenges and solutions.
 
 
 Building the docs
@@ -205,6 +205,13 @@ Starting from the ``docs/`` folder of the repository:
 
 1. ``pip install -r requirements.txt``
 2. ``sphinx-build -b html . _build/`` (where ``_build`` is the target directory)
+
+
+
+Changes
+-------
+
+For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
 
 
 
@@ -222,4 +229,4 @@ Further documentation
    used-by
    background
 
-* :ref:`genindex`
+:ref:`genindex`
