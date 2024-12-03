@@ -346,6 +346,20 @@ def trim(string: str) -> str:
         return ""
 
 
+def is_image_element(element: _Element) -> bool:
+    '''Check if an element is a valid img element'''
+    for attr in ("data-src", "src"):
+        src = element.get(attr, "")
+        if is_image_file(src):
+            return True
+    else:
+        # take the first corresponding attribute
+        for attr, value in element.attrib.items():
+            if attr.startswith("data-src") and is_image_file(value):
+                return True
+    return False
+
+
 def is_image_file(imagesrc: Optional[str]) -> bool:
     '''Check if the observed string corresponds to a valid image extension.
        Use a length threshold and apply a regex on the content.'''
