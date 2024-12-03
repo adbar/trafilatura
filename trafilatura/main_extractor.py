@@ -331,6 +331,11 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             #    else:
             #        newsub.tail = processed_child.text
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
+
+            if processed_child.tag == 'graphic':
+                image_elem = handle_image(processed_child)
+                if image_elem is not None:
+                    newsub = image_elem
             processed_element.append(newsub)
         child.tag = "done"
     # finish
@@ -437,8 +442,11 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
     return None
 
 
-def handle_image(element: _Element) -> Optional[_Element]:
+def handle_image(element: Optional[_Element]) -> Optional[_Element]:
     "Process image elements and their relevant attributes."
+    if element is None:
+        return None
+
     processed_element = Element(element.tag)
 
     for attr in ("data-src", "src"):
