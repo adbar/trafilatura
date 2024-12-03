@@ -21,13 +21,14 @@ Fixes:
 - more robust mapping for conversion to HTML (#721)
 - CLI downloads: use all information in settings file (#734)
 - downloads: cleaner urllib3 code (#736)
-- CLI: print URLs early for feeds and sitemaps with `--list` with @gremid (#744)
 - refine table markdown output by @unsleepy22 (#752)
+- extraction fix: images in text nodes by @unsleepy22 (#757)
 
 Metadata:
 - more robust URL extraction (#710)
 
 Command-line interface:
+- CLI: print URLs early for feeds and sitemaps with `--list` with @gremid (#744)
 - CLI: add 126 exit code for high error ratio (#747)
 
 Maintenance:
