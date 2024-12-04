@@ -109,7 +109,7 @@ def prune_unwanted_nodes(
                     # There is a previous node, append text to its tail
                     prev.tail = (prev.tail or "") + " " + subtree.tail
             # remove the node
-            subtree.getparent().remove(subtree)
+            delete_element(subtree)
 
     if with_backup:
         new_len = len(tree.text_content())
