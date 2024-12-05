@@ -285,12 +285,15 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
-    if element.tag == "cell" and elem_text and len(element) > 0:
-        if element[0].tag == 'p':
-            elem_text = f"{elem_text} " if element.getprevious() is not None else f"| {elem_text} "
-    elif element.tag == 'cell' and elem_text:
-        # add | before first cell
-        elem_text = f"{elem_text}" if element.getprevious() is not None else f"| {elem_text}"
+    if element.tag == "cell":
+        elem_text = elem_text.strip()
+
+        if elem_text and len(element) > 0:
+            if element[0].tag == 'p':
+                elem_text = f"{elem_text} " if element.getprevious() is not None else f"| {elem_text} "
+        elif elem_text:
+            # add | before first cell
+            elem_text = f"{elem_text}" if element.getprevious() is not None else f"| {elem_text}"
     # lists
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
@@ -348,7 +351,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     if element.tail:
-        returnlist.append(element.tail)
+        returnlist.append(element.tail.strip() if element.tag == 'cell' else element.tail)
 
 
 def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
