@@ -8,6 +8,7 @@ import re  # import regex as re
 
 from copy import deepcopy
 from typing import Any, Optional, Tuple, Set, Union
+from urllib.parse import urljoin
 
 from lxml.etree import _Element, Element, SubElement, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -333,7 +334,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
 
             if processed_child.tag == 'graphic':
-                image_elem = handle_image(processed_child)
+                image_elem = handle_image(processed_child, options)
                 if image_elem is not None:
                     newsub = image_elem
             processed_element.append(newsub)
@@ -367,10 +368,16 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
     # strip these structural elements
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
-    # calculate maximum number of columns per row, includin colspan
+    # calculate maximum number of columns per row, including colspan
     max_cols = 0
+    diff_colspans = set()
     for tr in table_elem.iter('tr'):
-        max_cols = max(max_cols, sum(int(td.get("colspan", 1)) for td in tr.iter(TABLE_ELEMS)))
+        total_colspans = 0
+        for td in tr.iter(TABLE_ELEMS):
+            colspan = int(td.get("colspan", 1))
+            diff_colspans.add(colspan)
+            total_colspans += colspan
+        max_cols = max(max_cols, total_colspans)
 
     # explore sub-elements
     seen_header_row = False
@@ -431,8 +438,9 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
         # cleanup
         subelement.tag = "done"
 
-    # clean up row attributes
-    newrow.attrib.pop("span", None)
+    # clean up row attributes only when all cells in table share the same colspan
+    if len(diff_colspans) == 1:
+        newrow.attrib.pop("span", None)
 
     # end of processing
     if len(newrow) > 0:
@@ -442,7 +450,7 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
     return None
 
 
-def handle_image(element: Optional[_Element]) -> Optional[_Element]:
+def handle_image(element: Optional[_Element], options: Optional[Extractor] = None) -> Optional[_Element]:
     "Process image elements and their relevant attributes."
     if element is None:
         return None
@@ -472,9 +480,13 @@ def handle_image(element: Optional[_Element]) -> Optional[_Element]:
         return None
 
     # post-processing: URLs
-    src_attr = processed_element.get("src", "")
-    if not src_attr.startswith("http"):
-        processed_element.set("src", re.sub(r"^//", "http://", src_attr))
+    link = processed_element.get("src", "")
+    if not link.startswith("http"):
+        if options is not None and options.url is not None:
+            link = urljoin(options.url, link)
+        else:
+            link = re.sub(r"^//", "http://", link)
+        processed_element.set("src", link)
 
     return processed_element
 
@@ -502,7 +514,7 @@ def handle_textelem(element: _Element, potential_tags: Set[str], options: Extrac
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element, potential_tags, options)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
-        new_element = handle_image(element)
+        new_element = handle_image(element, options)
     else:
         # other elements (div, ??, ??)
         new_element = handle_other_elements(element, potential_tags, options)

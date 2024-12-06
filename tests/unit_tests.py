@@ -499,6 +499,13 @@ def test_images():
     assert extract('<html><body><article><p><img other="test.jpg" alt="text" title="a title"/></p></article></body></html>', include_images=True, fast=True) == ''
     assert extract('<html><body><article><div><p><img data-src="test.jpg" alt="text" title="a title"/></p></div></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
     assert extract('<html><body><article><div><p><img data-src-small="test.jpg" alt="text" title="a title"/></p></div></article></body></html>', include_images=True, fast=True) == '![a title text](test.jpg)'
+    assert extract('<html><body><article><div><p><img src="https://a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>', include_images=True, fast=True) == '![a title text](https://a.b/test.jpg)'
+
+    url = 'http://a.b/c/d.html'
+    assert extract('<html><body><article><div><p><img src="//a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>', url=url, include_images=True, fast=True) == '![a title text](http://a.b/test.jpg)'
+    assert extract('<html><body><article><div><p><img src="/a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>', url=url, include_images=True, fast=True) == '![a title text](http://a.b/a.b/test.jpg)'
+    assert extract('<html><body><article><div><p><img src="./a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>', url=url, include_images=True, fast=True) == '![a title text](http://a.b/c/a.b/test.jpg)'
+    assert extract('<html><body><article><div><p><img src="../a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>', url=url, include_images=True, fast=True) == '![a title text](http://a.b/a.b/test.jpg)'
 
     assert handle_image(html.fromstring('<img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="text"></img>')) is None
 
@@ -1186,6 +1193,38 @@ def test_table_processing():
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{" "*100}</a></td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == ""
+
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr><td>a</td><td colspan="2">
+                 <p>b</p>
+                 <p>c</p>
+                 </td></tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == "| a | b | c |\n| a | b c | |"
+
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr><td>a</td><td colspan="2">
+                 <p>b</p>
+                 <p>c</p>
+                 </td></tr>
+                 <tr><td>a</td><td colspan="2">
+                 <p>b</p>
+                 <p>c</p>
+                 </td></tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result == "| a | b | c |\n| a | b c | |\n| a | b c | |"
 
 
 def test_list_processing():
