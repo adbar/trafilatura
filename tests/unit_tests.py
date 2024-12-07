@@ -140,6 +140,13 @@ def test_input():
         == '<!DOCTYPE html>\n<html lang="en-US">\n<head/>\n<body/>\n</html>'
     )
 
+    htmlstring = '<!DOCTYPE html><html><head></head><body>Foo <br/> Bar</body></html>'
+    beginning = htmlstring[:50].lower()
+    assert (
+        repair_faulty_html(htmlstring, beginning)
+        == '<!DOCTYPE html><html><head></head><body>Foo <br/> Bar</body></html>\n'
+    )
+
     with pytest.raises(TypeError) as err:
         assert load_html(123) is None
     assert 'incompatible' in str(err.value)
