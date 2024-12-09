@@ -61,7 +61,7 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
-DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE.+?/ ?>", re.I)
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<]*>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
 HTML_STRIP_TAGS = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
