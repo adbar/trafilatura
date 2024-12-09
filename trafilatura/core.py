@@ -486,3 +486,116 @@ def extract(
 
     # return
     return determine_returnstring(document, options)
+
+
+def extract_with_metadata(
+    filecontent: Any,
+    url: Optional[str] = None,
+    record_id: Optional[str] = None,
+    fast: bool = False,
+    favor_precision: bool = False,
+    favor_recall: bool = False,
+    include_comments: bool = True,
+    output_format: str = "txt",
+    tei_validation: bool = False,
+    target_language: Optional[str] = None,
+    include_tables: bool = True,
+    include_images: bool = False,
+    include_formatting: bool = False,
+    include_links: bool = False,
+    deduplicate: bool = False,
+    date_extraction_params: Optional[Dict[str, Any]] = None,
+    url_blacklist: Optional[Set[str]] = None,
+    author_blacklist: Optional[Set[str]] = None,
+    settingsfile: Optional[str] = None,
+    prune_xpath: Optional[Any] = None,
+    config: Any = DEFAULT_CONFIG,
+    options: Optional[Extractor] = None,
+) -> Optional[Document]:
+    """Main function exposed by the package:
+       Wrapper for text extraction and conversion to chosen output format.
+       This method also returns document metadata.
+
+    Args:
+        filecontent: HTML code as string.
+        url: URL of the webpage.
+        record_id: Add an ID to the metadata.
+        fast: Use faster heuristics and skip backup extraction.
+        no_fallback: Will be deprecated, use "fast" instead.
+        favor_precision: prefer less text but correct extraction.
+        favor_recall: when unsure, prefer more text.
+        include_comments: Extract comments along with the main text.
+        output_format: Define an output format:
+            "csv", "html", "json", "markdown", "txt", "xml", and "xmltei".
+        tei_validation: Validate the XML-TEI output with respect to the TEI standard.
+        target_language: Define a language to discard invalid documents (ISO 639-1 format).
+        include_tables: Take into account information within the HTML <table> element.
+        include_images: Take images into account (experimental).
+        include_formatting: Keep structural elements related to formatting
+            (only valuable if output_format is set to XML).
+        include_links: Keep links along with their targets (experimental).
+        deduplicate: Remove duplicate segments and documents.
+        date_extraction_params: Provide extraction parameters to htmldate as dict().
+        url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
+        author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
+        settingsfile: Use a configuration file to override the standard settings.
+        prune_xpath: Provide an XPath expression to prune the tree before extraction.
+            can be str or list of str.
+        config: Directly provide a configparser configuration.
+        options: Directly provide a whole extractor configuration.
+
+    Returns:
+        Document metadata with content string in the desired format or None.
+    """
+    # regroup extraction options
+    if not options or not isinstance(options, Extractor):
+        options = Extractor(
+            config=use_config(settingsfile, config),
+            output_format=output_format,
+            fast=fast,
+            precision=favor_precision,
+            recall=favor_recall,
+            comments=include_comments,
+            formatting=include_formatting,
+            links=include_links,
+            images=include_images,
+            tables=include_tables,
+            dedup=deduplicate,
+            lang=target_language,
+            url=url,
+            with_metadata=True,
+            only_with_metadata=False,
+            tei_validation=tei_validation,
+            author_blacklist=author_blacklist,
+            url_blacklist=url_blacklist,
+            date_params=date_extraction_params,
+        )
+
+    # extraction
+    document = bare_extraction(
+        filecontent,
+        options=options,
+        as_dict=False,
+        prune_xpath=prune_xpath,
+    )
+
+    # post-processing
+    if not document or not isinstance(document, Document):
+        return None
+
+    if options.format not in TXT_FORMATS:
+        # control output
+        if options.format == "python":
+            raise ValueError(
+                "'python' format only usable in bare_extraction() function"
+            )
+        # add record ID to metadata
+        document.id = record_id
+        # calculate fingerprint
+        if document.raw_text is not None:
+            document.fingerprint = content_fingerprint(
+                str(document.title) + " " + str(document.raw_text)
+            )
+
+    document.text = determine_returnstring(document, options)
+    return document

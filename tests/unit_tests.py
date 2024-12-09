@@ -21,7 +21,7 @@ except ImportError:
     from charset_normalizer import detect
 
 import trafilatura.htmlprocessing
-from trafilatura import bare_extraction, extract, xml
+from trafilatura import bare_extraction, extract, extract_with_metadata, xml
 from trafilatura.core import Extractor
 from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (handle_formatting, handle_image,
@@ -434,6 +434,59 @@ trafilatura.extract("")
     my_document = html.fromstring('<html><body><article><h4 id="1theinoperator">1) The <code>in</code> Operator</h4><p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p></article></body></html>')
     my_result = extract(my_document, output_format='xml', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<head rend="h4">1) The <code>in</code> Operator</head>' in my_result and '<p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p>' in my_result
+
+
+def test_extract_with_metadata():
+    '''Test extract_with_metadata method'''
+    url = 'http://aa.bb/cc.html'
+    my_document = html.fromstring("""<html>
+        <head></head>
+        <body>
+        <article>
+        <p>AAA, <p>BBB</p>, CCC.</p>
+        </article>
+        </body>
+        </html>
+    """)
+    parsed_doc = extract_with_metadata(my_document, output_format='txt', include_formatting=True, fast=True, url=url)
+    content = parsed_doc.text
+    assert 'AAA' in content and 'BBB' in content and 'CCC' in content
+    assert url == parsed_doc.url and parsed_doc.date is None and parsed_doc.title is None
+
+    my_document = html.fromstring("""<html>
+        <head><title>title</title></head>
+        <body>
+        <article>
+        <div>May 24, 2021</div>
+        <p>AAA, <p>BBB</p>, CCC.</p>
+        </article>
+        </body>
+        </html>
+    """)
+    parsed_doc = extract_with_metadata(my_document, output_format='txt', include_formatting=True, fast=True, url=url)
+    content = parsed_doc.text
+    assert 'AAA' in content and 'BBB' in content and 'CCC' in content
+    assert url == parsed_doc.url and '2021-05-24' == parsed_doc.date and 'title' == parsed_doc.title
+
+    parsed_doc = extract_with_metadata(my_document, output_format='xml')
+    assert 'AAA, BBB , CCC.' == parsed_doc.raw_text and 'ee7d2fb6fcf2837d' == parsed_doc.fingerprint
+    content = parsed_doc.text
+    assert 'AAA' in content and 'BBB' in content and 'CCC' in content
+
+    my_document = html.fromstring("""<html>
+        <head><meta http-equiv="content-language" content="es"></head>
+        <body>
+        <article>
+        <p>AAA, <p>BBB</p>, CCC.</p>
+        </article>
+        </body>
+        </html>
+    """)
+    parsed_doc = extract_with_metadata(my_document, target_language='en', fast=True)
+    assert parsed_doc is None
+
+    with pytest.raises(ValueError) as err:
+        extract_with_metadata(my_document, output_format="python")
 
 
 def test_external():
@@ -1637,6 +1690,7 @@ if __name__ == '__main__':
     test_trim()
     test_input()
     test_formatting()
+    test_extract_with_metadata()
     test_exotic_tags()
     test_images()
     test_links()
