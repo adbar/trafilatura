@@ -193,19 +193,7 @@ def bare_extraction(
     """
 
     # deprecations
-    if no_fallback:
-        fast = no_fallback
-        warnings.warn(
-            '"no_fallback" will be deprecated in a future version, use "fast" instead',
-            PendingDeprecationWarning
-        )
-    if as_dict:
-        warnings.warn(
-            '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
-            PendingDeprecationWarning
-        )
-    if max_tree_size:
-        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
+    _check_deprecation(no_fallback=no_fallback, as_dict=as_dict, max_tree_size=max_tree_size)
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
@@ -424,68 +412,34 @@ def extract(
         A string in the desired format or None.
 
     """
-    if no_fallback:
-        fast = no_fallback
-        warnings.warn(
-            '"no_fallback" will be deprecated in a future version, use "fast" instead',
-            PendingDeprecationWarning
-        )
-
-    if max_tree_size:
-        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
-
-    # regroup extraction options
-    if not options or not isinstance(options, Extractor):
-        options = Extractor(
-            config=use_config(settingsfile, config),
-            output_format=output_format,
-            fast=fast,
-            precision=favor_precision,
-            recall=favor_recall,
-            comments=include_comments,
-            formatting=include_formatting,
-            links=include_links,
-            images=include_images,
-            tables=include_tables,
-            dedup=deduplicate,
-            lang=target_language,
-            url=url,
-            with_metadata=with_metadata,
-            only_with_metadata=only_with_metadata,
-            tei_validation=tei_validation,
-            author_blacklist=author_blacklist,
-            url_blacklist=url_blacklist,
-            date_params=date_extraction_params,
-        )
-
-    # extraction
-    document = bare_extraction(
-        filecontent,
-        options=options,
-        as_dict=False,
+    document = _internal_extraction(
+        filecontent=filecontent,
+        url=url,
+        record_id=record_id,
+        fast=fast,
+        no_fallback=no_fallback,
+        favor_precision=favor_precision,
+        favor_recall=favor_recall,
+        include_comments=include_comments,
+        output_format=output_format,
+        tei_validation=tei_validation,
+        target_language=target_language,
+        include_tables=include_tables,
+        include_images=include_images,
+        include_formatting=include_formatting,
+        include_links=include_links,
+        deduplicate=deduplicate,
+        date_extraction_params=date_extraction_params,
+        with_metadata=with_metadata,
+        only_with_metadata=only_with_metadata,
+        max_tree_size=max_tree_size,
+        url_blacklist=url_blacklist,
+        author_blacklist=author_blacklist,
+        settingsfile=settingsfile,
         prune_xpath=prune_xpath,
-    )
-
-    # post-processing
-    if not document or not isinstance(document, Document):
-        return None
-
-    if options.format not in TXT_FORMATS:
-        # control output
-        if options.format == "python":
-            raise ValueError(
-                "'python' format only usable in bare_extraction() function"
-            )
-        # add record ID to metadata
-        document.id = record_id
-        # calculate fingerprint
-        if document.raw_text is not None:
-            document.fingerprint = content_fingerprint(
-                str(document.title) + " " + str(document.raw_text)
-            )
-
-    # return
-    return determine_returnstring(document, options)
+        config=config,
+        options=options)
+    return document.text if document is not None else None
 
 
 def extract_with_metadata(
@@ -547,6 +501,84 @@ def extract_with_metadata(
     Returns:
         Document metadata with content string in the desired format or None.
     """
+    return _internal_extraction(
+        filecontent=filecontent,
+        url=url,
+        record_id=record_id,
+        fast=fast,
+        favor_precision=favor_precision,
+        favor_recall=favor_recall,
+        include_comments=include_comments,
+        output_format=output_format,
+        tei_validation=tei_validation,
+        target_language=target_language,
+        include_tables=include_tables,
+        include_images=include_images,
+        include_formatting=include_formatting,
+        include_links=include_links,
+        deduplicate=deduplicate,
+        date_extraction_params=date_extraction_params,
+        with_metadata=True,
+        only_with_metadata=False,
+        url_blacklist=url_blacklist,
+        author_blacklist=author_blacklist,
+        settingsfile=settingsfile,
+        prune_xpath=prune_xpath,
+        config=config,
+        options=options)
+
+
+def _check_deprecation(
+        no_fallback: bool = False,
+        as_dict: bool = False,
+        max_tree_size: Optional[int] = None,
+)-> None:
+    '''Check deprecated or to-be-deprecated params'''
+    if no_fallback:
+        fast = no_fallback
+        warnings.warn(
+            '"no_fallback" will be deprecated in a future version, use "fast" instead',
+            PendingDeprecationWarning
+        )
+    if as_dict:
+        warnings.warn(
+            '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
+            PendingDeprecationWarning
+        )
+    if max_tree_size:
+        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
+
+
+def _internal_extraction(
+        filecontent: Any,
+        url: Optional[str] = None,
+        record_id: Optional[str] = None,
+        fast: bool = False,
+        no_fallback: bool = False,
+        favor_precision: bool = False,
+        favor_recall: bool = False,
+        include_comments: bool = True,
+        output_format: str = "txt",
+        tei_validation: bool = False,
+        target_language: Optional[str] = None,
+        include_tables: bool = True,
+        include_images: bool = False,
+        include_formatting: bool = False,
+        include_links: bool = False,
+        deduplicate: bool = False,
+        date_extraction_params: Optional[Dict[str, Any]] = None,
+        with_metadata: bool = False,
+        only_with_metadata: bool = False,
+        max_tree_size: Optional[int] = None,
+        url_blacklist: Optional[Set[str]] = None,
+        author_blacklist: Optional[Set[str]] = None,
+        settingsfile: Optional[str] = None,
+        prune_xpath: Optional[Any] = None,
+        config: Any = DEFAULT_CONFIG,
+        options: Optional[Extractor] = None,
+) -> Optional[Document]:
+    _check_deprecation(no_fallback=no_fallback, as_dict=False, max_tree_size=max_tree_size)
+
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
         options = Extractor(
@@ -563,8 +595,8 @@ def extract_with_metadata(
             dedup=deduplicate,
             lang=target_language,
             url=url,
-            with_metadata=True,
-            only_with_metadata=False,
+            with_metadata=with_metadata,
+            only_with_metadata=only_with_metadata,
             tei_validation=tei_validation,
             author_blacklist=author_blacklist,
             url_blacklist=url_blacklist,
@@ -597,5 +629,6 @@ def extract_with_metadata(
                 str(document.title) + " " + str(document.raw_text)
             )
 
+    # return
     document.text = determine_returnstring(document, options)
     return document
