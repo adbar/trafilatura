@@ -577,6 +577,7 @@ def _internal_extraction(
         config: Any = DEFAULT_CONFIG,
         options: Optional[Extractor] = None,
 ) -> Optional[Document]:
+    '''Internal method to do the extraction'''
     _check_deprecation(no_fallback=no_fallback, as_dict=False, max_tree_size=max_tree_size)
 
     # regroup extraction options
