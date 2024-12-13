@@ -467,5 +467,8 @@ def is_in_table_cell(elem: _Element) -> bool:
     while elem is not None:
         if elem.tag == 'cell':
             return True
-        elem = elem.getparent()
+        parent = elem.getparent()
+        if parent is None:
+            break
+        elem = parent
     return False
