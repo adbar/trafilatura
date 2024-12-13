@@ -17,7 +17,7 @@ from lxml.etree import (_Element, Element, SubElement, XMLParser,
                         fromstring, tostring, DTD)
 
 from .settings import Document, Extractor
-from .utils import sanitize, sanitize_tree, text_chars_test
+from .utils import is_in_table_cell, sanitize, sanitize_tree, text_chars_test
 
 
 LOGGER = logging.getLogger(__name__)
@@ -288,12 +288,8 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     if element.tag == "cell":
         elem_text = elem_text.strip()
 
-        if elem_text and len(element) > 0:
-            if element[0].tag == 'p':
-                elem_text = f"{elem_text} " if element.getprevious() is not None else f"| {elem_text} "
-        elif elem_text:
-            # add | before first cell
-            elem_text = f"{elem_text}" if element.getprevious() is not None else f"| {elem_text}"
+        if elem_text:
+            elem_text = f"{elem_text} "
     # lists
     elif element.tag == "item" and elem_text:
         elem_text = f"- {elem_text}\n"
@@ -302,18 +298,29 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
 
 def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
+    if element.tag == 'cell' and element.getprevious() is None:
+        returnlist.append('| ')
+
     if element.text:
         # this is the text that comes before the first child
         returnlist.append(replace_element_text(element, include_formatting))
 
+    if element.tail and element.tag != 'graphic' and is_in_table_cell(element):
+        # if element is in table cell, append tail after element text when element is not graphic since we deal with
+        # graphic tail alone, textless elements like lb should be processed here too, otherwise process tail at the end
+        returnlist.append(element.tail.strip())
+
     for child in element:
         process_element(child, returnlist, include_formatting)
 
-    if not element.text and not element.tail:
+    if not element.text:
         if element.tag == "graphic":
             # add source, default to ''
             text = f'{element.get("title", "")} {element.get("alt", "")}'
             returnlist.append(f'![{text.strip()}]({element.get("src", "")})')
+
+            if element.tail:
+                returnlist.append(f' {element.tail.strip()}')
         # newlines for textless elements
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
@@ -350,8 +357,8 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
-    if element.tail:
-        returnlist.append(element.tail.strip() if element.tag == 'cell' else element.tail)
+    if element.tail and not is_in_table_cell(element):
+        returnlist.append(element.tail)
 
 
 def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:

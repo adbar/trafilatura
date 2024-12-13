@@ -1286,6 +1286,70 @@ def test_table_processing():
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result == "| a | b | c |\n| a | b c | |\n| a | b c | |"
 
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr>
+                    <td>a<img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></td>
+                    <td><p>b</p><p>c</p></td>
+                    <td>d</td>
+                 </tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
+                     include_images=True, include_tables=True)
+    assert result == "| a | b | c |\n| a ![img](http://aa.bb/c.jpg) a | b c | d |"
+
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr>
+                    <td><a href="http://aa.bb/"><img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></a></td>
+                    <td><p>b</p><p>c</p></td>
+                    <td>d</td>
+                 </tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
+                     include_images=True, include_tables=True)
+    assert result == "| a | b | c |\n| ![img](http://aa.bb/c.jpg) a | b c | d |"
+
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr>
+                    <td><img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></td>
+                    <td><p>b</p><p>c</p></td>
+                    <td>d</td>
+                 </tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
+                     include_images=True, include_tables=True)
+    assert result == "| a | b | c |\n| ![img](http://aa.bb/c.jpg) a | b c | d |"
+
+    htmlstring = """
+                 <html><body><article>
+                 <table>
+                 <tr><td>a</td><td>b</td><td>c</td></tr>
+                 <tr>
+                    <td><img src="http://aa.bb/c.jpg" alt="img1"/><span>a</span><img src="http://aa.bb/c.jpg" alt="img2"/></td>
+                    <td><p>b</p><p>c</p></td>
+                    <td>d</td>
+                 </tr>
+                 </table>
+                 </article></body></html>
+                 """
+    result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
+                     include_images=True, include_tables=True)
+    assert result == "| a | b | c |\n| ![img1](http://aa.bb/c.jpg) a ![img2](http://aa.bb/c.jpg) | b c | d |"
+
 
 def test_list_processing():
     options = DEFAULT_OPTIONS

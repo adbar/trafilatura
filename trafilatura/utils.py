@@ -454,3 +454,18 @@ def text_chars_test(string: Optional[str]) -> bool:
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
     return bool(string) and not string.isspace()  # type: ignore[union-attr]
+
+
+def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
+    '''Copy attributes from src element to dest element'''
+    for key in src_elem.keys():
+        dest_elem.set(key, src_elem.attrib[key])
+
+
+def is_in_table_cell(elem: _Element) -> bool:
+    '''Check whether an element is in a table cell'''
+    while elem is not None:
+        if elem.tag == 'cell':
+            return True
+        elem = elem.getparent()
+    return False
