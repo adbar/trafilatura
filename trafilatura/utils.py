@@ -464,11 +464,4 @@ def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
 
 def is_in_table_cell(elem: _Element) -> bool:
     '''Check whether an element is in a table cell'''
-    while elem is not None:
-        if elem.tag == 'cell':
-            return True
-        parent = elem.getparent()
-        if parent is None:
-            break
-        elem = parent
-    return False
+    return elem.xpath('//ancestor::cell')
