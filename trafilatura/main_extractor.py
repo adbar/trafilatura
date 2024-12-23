@@ -18,7 +18,7 @@ from .htmlprocessing import (delete_by_link_density, handle_textnode,
                              link_density_test_tables, process_node,
                              prune_unwanted_nodes)
 from .settings import TAG_CATALOG, Extractor
-from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
+from .utils import FORMATTING_PROTECTED, copy_attributes, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
                      DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
@@ -157,6 +157,8 @@ def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
     if processed_elem is not None:
         childelem = SubElement(orig_elem, processed_elem.tag)
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
+        if processed_elem.tag == 'graphic':
+            copy_attributes(childelem, processed_elem)
 
 
 def handle_lists(element: _Element, options: Extractor) -> Optional[_Element]:
@@ -488,6 +490,7 @@ def handle_image(element: Optional[_Element], options: Optional[Extractor] = Non
             link = re.sub(r"^//", "http://", link)
         processed_element.set("src", link)
 
+    processed_element.tail = element.tail
     return processed_element
 
 
