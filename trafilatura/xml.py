@@ -361,7 +361,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append(element.tail)
 
 
-def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
+def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool, preserve_space: bool = False) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
     if xmloutput is None:
         return ""
@@ -370,7 +370,7 @@ def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
 
     process_element(xmloutput, returnlist, include_formatting)
 
-    return unescape(sanitize("".join(returnlist)) or "")
+    return unescape(sanitize("".join(returnlist), preserve_space) or "")
 
 
 def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t", null: str = "null") -> str:
