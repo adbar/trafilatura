@@ -442,6 +442,26 @@ trafilatura.extract("")
     my_result = extract(my_document, output_format='xml', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<head rend="h4">1) The <code>in</code> Operator</head>' in my_result and '<p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p>' in my_result
 
+    my_document = html.fromstring("""
+    <html><head><body><article>python code below:
+    ```python
+def test:
+    print('hello')
+    print('world')
+    ```
+    </article></body></html> 
+    """)
+    my_result = extract(my_document, output_format='markdown', include_formatting=True)
+    assert "python code below:\n```python\ndef test:\nprint('hello')\nprint('world')\n```" == my_result
+
+    my_result = extract(my_document, output_format='markdown', include_formatting=True, preserve_space=True)
+    assert """python code below:
+    ```python
+def test:
+    print('hello')
+    print('world')
+    ```""" == my_result
+
 
 def test_extract_with_metadata():
     '''Test extract_with_metadata method'''
