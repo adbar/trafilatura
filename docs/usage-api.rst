@@ -3,32 +3,32 @@ API
 
 .. meta::
     :description lang=en:
-        See how to use the official Trafilatura API to download and extract data for free or for larger volumes.
+        See how to use the official Trafilatura API to download and extract data.
 
 
 Introduction
 ------------
-
-Simplify the process of turning URLs and HTML into structured, meaningful data!
-
-Use the last version of the software straight from the application programming interface. The API allows you to access the capabilities of Trafilatura, a web scraping and data extraction library, directly from your applications and projects.
 
 With the Trafilatura API, you can:
 
 - Download URLs or provide your own data, including web scraping capabilities
 - Configure the output format to suit your needs, with support for multiple use cases
 
-
 This is especially useful if you want to try out the software without installing it or if you want to support the project while saving time.
 
 
-Endpoints
----------
+.. warning::
+    The API is currently unavailable, feel free to get in touch for any inquiries.
 
-The Trafilatura API comes in two versions, available from two different gateways:
 
-- `Free for demonstration purposes <https://trafilatura.mooo.com>`_ (including documentation page)
-- `For a larger volume of requests <https://rapidapi.com/trafapi/api/trafilatura>`_ (documentation with code snippets and plans)
+..
+    Endpoints
+    ---------
+
+    The Trafilatura API comes in two versions, available from two different gateways:
+
+    - `Free for demonstration purposes <https://trafilatura.mooo.com>`_ (including documentation page)
+    - `For a larger volume of requests <https://rapidapi.com/trafapi/api/trafilatura>`_ (documentation with code snippets and plans)
 
 
 Making JSON requests
@@ -103,5 +103,3 @@ Further information
 -------------------
 
 Please note that the underlying code is not currently open-sourced, feel free to reach out for specific use cases or collaborations.
-
-With the API, you can focus on building your applications and projects, while leaving the heavy lifting to Trafilatura.

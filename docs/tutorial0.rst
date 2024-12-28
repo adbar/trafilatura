@@ -193,7 +193,7 @@ The output directory can be created on demand, but it must be writable.
     # output in XML format, backup of HTML files
     $ trafilatura --xml -i list.txt -o xmlfiles/ --backup-dir htmlfiles/
 
-The second and third instructions create a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic text editor or a full-fledged text-editing software or IDE such as the `Atom editor <https://atom.io/>`_.
+The second and third instructions create a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic text editor or a full-fledged text-editing software or IDE.
 
 
 .. hint::

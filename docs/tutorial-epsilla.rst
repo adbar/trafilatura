@@ -32,11 +32,7 @@ Alternatives include `Qdrant <https://github.com/qdrant/qdrant>`_, `Redis <https
 Setup Epsilla
 -------------
 
-In this tutorial, we will need an Epsilla database server. There are two ways to get one: use the free cloud version or start one locally.
-
-Epsilla has a `cloud version <https://cloud.epsilla.com//?ref=trafilatura>`_ with a free tier. You can sign up and get a server running in a few steps.
-
-Alternatively, you can start one locally with a `Docker <https://docs.docker.com/get-started/>`_ image.
+In this tutorial, we will need an Epsilla database server. You can start one locally with a `Docker <https://docs.docker.com/get-started/>`_ image.
 
 .. code-block:: bash
 
@@ -154,8 +150,5 @@ We can now perform a vector search to find the most relevant project based on a 
     print(response)
 
 You will see the returned response is React! That is the correct answer. React is a modern frontend library, but PyTorch and Tensorflow are not.
-
-.. image:: https://static.scarf.sh/a.png?x-pxid=51f549d1-aabf-473c-b971-f8d9c3ac8ac5
-    :alt: 
 
 

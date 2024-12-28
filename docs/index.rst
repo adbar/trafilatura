@@ -134,13 +134,12 @@ This work started as a PhD project at the crossroads of linguistics and NLP,
 this expertise has been instrumental in shaping Trafilatura over the years. 
 Initially launched to create text databases for research purposes
 at the Berlin-Brandenburg Academy of Sciences (DWDS and ZDL units),
-this package continues to be maintained but its future development
-depends on community support.
+this package continues to be maintained but its future depends on community support.
 
 **If you value this software or depend on it for your product, consider
-sponsoring it and contributing to its codebase**. Your support will
-help maintain and enhance this popular package, ensuring its growth,
-robustness, and accessibility for developers and users around the world.
+sponsoring it and contributing to its codebase**. Your support
+`on GitHub <https://github.com/sponsors/adbar>`_ or `ko-fi.com <https://ko-fi.com/adbarbaresi>`_
+will help maintain and enhance this popular package.
 
 *Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the refinement and conversion process. It is also the way shapes of pasta are formed.
 
@@ -225,8 +224,8 @@ Further documentation
    usage
    tutorials
    evaluation
-   corefunctions
    used-by
+   corefunctions
    background
 
 :ref:`genindex`

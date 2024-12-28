@@ -34,7 +34,7 @@ Beyond raw HTML
 
 While downloading and processing raw HTML documents is much faster, it can be necessary to fully render the web page before further processing, e.g. because a page makes exhaustive use of JavaScript or because content is injected from multiple sources.
 
-In such cases the way to go is to use a browser automation library like `Playwright <https://playwright.dev/python/docs/library/>`_. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
+In such cases the way to go is to use a browser automation library like Playwright. For available alternatives see this `list of headless browsers <https://github.com/dhamaniasad/HeadlessBrowsers>`_.
 
 For more refined masking and automation methods, see the `nodriver <https://github.com/ultrafunkamsterdam/nodriver>`_ and `browserforge <https://github.com/daijro/browserforge>`_ packages.
 
@@ -43,7 +43,7 @@ For more refined masking and automation methods, see the `nodriver <https://gith
 Bypassing paywalls
 ^^^^^^^^^^^^^^^^^^
 
-A browser automation library can also be useful to bypass issues related to cookies and paywalls as it can be combined with a corresponding browser extension, e.g. `iamdamdev's bypass-paywalls-chrome <https://github.com/iamadamdev/bypass-paywalls-chrome>`_ or `this alternative by magnolia1234 <https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean>`_.
+A browser automation library can also be useful to bypass issues related to cookies and paywalls as it can be combined with a corresponding browser extension, e.g. iamdamdev's bypass-paywalls-chrome and available alternatives.
 
 
 
