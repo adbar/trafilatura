@@ -39,18 +39,18 @@ Corpora
 URL lists from corpus linguistic projects can be a starting ground to derive information from, either to recreate existing corpora or to re-crawl the websites and find new content. If the websites do not exist anymore, the links can still be useful as the corresponding web pages can be retrieved from web archives.
 
 - `Sources for the Internet Corpora <http://corpus.leeds.ac.uk/internet.html>`_ of the Leeds Centre for Translation Studies
-- `Link data sets <https://www.webcorpora.org/opendata/links/>`_  of the COW project
+- `Link data sets <http://www.webcorpora.org/opendata/links/>`_  of the COW project
 
 
 URL directories
 ~~~~~~~~~~~~~~~
 
-- `Overview of the Web archiving community <https://github.com/pirate/ArchiveBox/wiki/Web-Archiving-Community>`_
+- `Overview of the Web archiving community <https://github.com/ArchiveBox/ArchiveBox/wiki/Web-Archiving-Community>`_
 - `lazynlp list of sources <https://github.com/chiphuyen/lazynlp>`_
 
 DMOZ (now an archive) and Wikipedia work quite well as primary sources:
 
-- `Qualification of URLs extracted from DMOZ and Wikipedia <https://tel.archives-ouvertes.fr/tel-01167309/document#page=189>`_ (PhD thesis section)
+- `Qualification of URLs extracted from DMOZ and Wikipedia <https://theses.hal.science/tel-01167309/document#page=189>`_ (PhD thesis section)
 
 ..
    https://www.sketchengine.eu/guide/create-a-corpus-from-the-web/
@@ -130,13 +130,9 @@ Social networks
 
 Series of surface scrapers that crawl the networks without even logging in, thus circumventing the API restrictions. Development of such software solutions is fast-paced, so no links will be listed here at the moment.
 
-Previously collected tweet IDs can be “hydrated”, i.e. retrieved from Twitter in bulk. see for instance:
-
-- `Twitter datasets for research and archiving <https://tweetsets.library.gwu.edu/>`_
-- `Search GitHub for Tweet IDs <https://github.com/search?q=tweet+ids>`_
+Previously collected tweet IDs can be “hydrated”, i.e. retrieved from Twitter in bulk.
 
 Links can be extracted from tweets with a regular expression such as ``re.findall(r'https?://[^ ]+')``. They probably need to be resolved first to get actual link targets and not just shortened URLs (like t.co/…).
-
 
 For further ideas from previous projects see references below.
 

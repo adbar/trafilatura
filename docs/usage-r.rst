@@ -11,7 +11,7 @@ Introduction
 ------------
 
 
-R is a free software environment for statistical computing and graphics. `Reticulate <https://rstudio.github.io/reticulate>`_ is an R package that enables easy interoperability between R and Python. With Reticulate, you can import Python modules as if they were R packages and call Python functions from R.
+R is a free software environment for statistical computing and graphics. `Reticulate <https://rstudio.github.io/reticulate/>`_ is an R package that enables easy interoperability between R and Python. With Reticulate, you can import Python modules as if they were R packages and call Python functions from R.
 
 This allows R users to leverage the vast array of Python packages and tools and basically allows for execution of Python code inside an R session. Python packages can then be used with minimal adaptations rather than having to go back and forth between languages and environments.
 

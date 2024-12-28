@@ -10,9 +10,6 @@ Initially released to collect data for linguistic research and lexicography at t
 
 The tool earns accolades as the most efficient open-source library in benchmarks and academic evaluations. It supports language modeling by providing high-quality text data, aids data mining with efficient web data retrieval, and streamlines information extraction from unstructured content. In SEO and business analytics it gathers online data for insights and in information security, it monitors websites for threat detection.
 
-If you wish to add further references, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and suggest changes by submitting a pull request.
-
-
 
 Notable projects using this software
 ------------------------------------
@@ -23,13 +20,13 @@ Companies and research centers
 - Allen Institute for AI with the `Dolma toolkit <https://github.com/allenai/dolma>`_ used to pre-train the OLMo LLM
 - HuggingFace with `DataTrove <https://github.com/huggingface/datatrove>`_ to process, filter and deduplicate text data
 - IBM's `Data-Prep-Kit <https://github.com/IBM/data-prep-kit>`_, a toolkit for data preparation in a LLM context
-- `Media Cloud platform <https://mediacloud.org>`_ for media analysis
+- `Media Cloud platform <https://www.mediacloud.org>`_ for media analysis
 - SciencesPo médialab through its `Minet <https://github.com/medialab/minet>`_ webmining package
 - Stanford Open Virtual Assistant Lab's `STORM <https://github.com/stanford-oval/storm>`_, a LLM system that writes Wikipedia-like articles
 - Swedish national center for applied AI with `SWEB: A large dataset for Scandinavian languages <https://arxiv.org/pdf/2410.04456>`_
 - Technology Innovation Institute Abu Dhabi with Falcon LLM and its underlying `RefinedWeb Dataset <https://arxiv.org/abs/2306.01116>`_
 - `Teclis search engine <https://teclis.com/>`_ (related to Kagi)
-- The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web for the `Fatcat catalog <https://fatcat.wiki/>`_ of research publications
+- The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web
 - Tokyo Institute of Technology with a `Japanese Web Corpus for Large Language Models <https://arxiv.org/pdf/2404.17733>`_
 - Turku University, NLP department with `FinGPT <https://turkunlp.org/gpt3-finnish>`_ models
 - University of Munich (LMU), Center for Language and Information Processing, `GlotWeb project <https://github.com/cisnlp/GlotWeb>`_
@@ -43,12 +40,11 @@ Various software repositories
 - `Benson <https://github.com/timoteostewart/benson>`_, to turn a list of URLs into mp3s of the contents of each web page
 - `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
 - `Ethical ad server <https://github.com/readthedocs/ethical-ad-server>`_ on ReadTheDocs (hosting these doc pages)
-- `GLAM Workbench <https://glam-workbench.github.io/web-archives/>`_ for cultural heritage (web archives section)
-- `llama-hub <https://github.com/emptycrown/llama-hub>`_, a library of data loaders for large language models
+- `GLAM Workbench <https://glam-workbench.net/web-archives/>`_ for cultural heritage (web archives section)
 - `LlamaIndex <https://github.com/run-llama/llama_index>`_, a data framework for LLM applications
-- `Obsei <https://obsei.com/>`_, a text collection and analysis tool
+- `Obsei <https://www.obsei.com/>`_, a text collection and analysis tool
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
-- `Website-to-Chatbot <https://github.com/Anil-matcha/Website-to-Chatbot>`_, a personalized chatbot
+- `Website-to-Chatbot <https://github.com/Anil-matcha/Chatbase-Alternative>`_, a personalized chatbot
 
 For more see this list of `software using Trafilatura <https://github.com/adbar/trafilatura/network/dependents>`_.
 

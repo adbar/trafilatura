@@ -1,6 +1,6 @@
 # with version specifier
 sphinx>=8.1.3
-pydata-sphinx-theme>=0.16.0
+pydata-sphinx-theme>=0.16.1
 docutils>=0.21.2
 sphinx-sitemap>=2.6.0
 

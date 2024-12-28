@@ -45,7 +45,7 @@ Formats and software used in corpus linguistics
 
 Input/Output formats: TXT, XML and XML-TEI are quite frequent in corpus linguistics.
 
-- Han., N.-R. (2022). "`Transforming Data <https://doi.org/10.7551/mitpress/12200.003.0010>`_", The Open Handbook of Linguistic Data.
+- Han., N.-R. (2022). "Transforming Data", The Open Handbook of Linguistic Data.
 
 
 The XML and XML-TEI formats
@@ -62,9 +62,9 @@ Corpus analysis tools
 - `CorpusExplorer <https://notes.jan-oliver-ruediger.de/software/corpusexplorer-overview/>`_ supports CSV, TXT and various XML formats
 - `Corpus Workbench (CWB) <https://cwb.sourceforge.io/>`_ uses verticalized texts whose origin can be in TXT or XML format
 - `LancsBox <http://corpora.lancs.ac.uk/lancsbox/>`_ support various formats, notably TXT & XML
-- `TXM <http://textometrie.ens-lyon.fr/?lang=en>`_ (textometry platform) can take TXT, XML & XML-TEI files as input
+- `TXM <https://txm.gitpages.huma-num.fr/textometrie/en/>`_ (textometry platform) can take TXT, XML & XML-TEI files as input
 - `Voyant <https://voyant-tools.org/>`_ support various formats, notably TXT, XML & XML-TEI
-- `Wmatrix <http://ucrel.lancs.ac.uk/wmatrix/>`_ can work with TXT and XML
+- `Wmatrix <https://ucrel.lancs.ac.uk/wmatrix/>`_ can work with TXT and XML
 - `WordSmith <https://lexically.net/wordsmith/index.html>`_ supports TXT and XML
 
 Further corpus analysis software can be found on `corpus-analysis.com <https://corpus-analysis.com/>`_.
