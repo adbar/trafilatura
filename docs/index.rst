@@ -118,15 +118,6 @@ This package is distributed under the `Apache 2.0 license <https://www.apache.or
 Versions prior to v1.8.0 are under GPLv3+ license.
 
 
-
-Contributing
-~~~~~~~~~~~~
-
-Contributions of all kinds are welcome. Visit the `Contributing page <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated issue page <https://github.com/adbar/trafilatura/issues>`_.
-
-Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who extended the docs or submitted bug reports, features and bugfixes!
-
-
 Context
 -------
 
@@ -140,6 +131,8 @@ this package continues to be maintained but its future depends on community supp
 sponsoring it and contributing to its codebase**. Your support
 `on GitHub <https://github.com/sponsors/adbar>`_ or `ko-fi.com <https://ko-fi.com/adbarbaresi>`_
 will help maintain and enhance this popular package.
+Visit the `Contributing page <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_
+for more information.
 
 *Trafilatura* is an Italian word for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_ symbolizing the refinement and conversion process. It is also the way shapes of pasta are formed.
 

@@ -115,8 +115,6 @@ The date extraction component ``htmldate`` is referenced in the following public
 Publications citing Trafilatura
 -------------------------------
 
-https://www.degruyter.com/document/doi/10.1515/9783110729603-009/html
-
 
 - Alakukku, L. (2022). "Domain specific boilerplate removal from web pages with entropy and clustering", Master's thesis, University of Aalto.
 - Alexandrescu, A., & Butincu, C.N. (2023). Decentralized news-retrieval architecture using blockchain technology. Mathematics, 11(21), 4542.
