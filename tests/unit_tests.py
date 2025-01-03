@@ -407,6 +407,18 @@ trafilatura.extract("")
     my_result = extract(my_document, output_format='xml', include_links=True, config=ZERO_CONFIG)
     assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
 
+    my_document = html.fromstring("""<html><body><article>
+        <ul>
+            <li>Number 0</li>
+            <li>Number <a href="test.html">1</a></li>
+            <li><a href="test.html">Number 2</a> n2</li>
+            <li>Number 3</li>
+            <li><p>Number 4</p> n4</li>
+        </ul>
+        <p>Test</p></article></body></html>
+    """)
+    my_result = extract(my_document, output_format='markdown', include_links=True, config=ZERO_CONFIG)
+    assert my_result == '- Number 0\n- Number [1](test.html)\n- [Number 2](test.html) n2\n- Number 3\n- Number 4 n4\n\nTest'
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(copy(my_document), fast=True, include_formatting=False, config=ZERO_CONFIG)
@@ -444,23 +456,24 @@ trafilatura.extract("")
 
     my_document = html.fromstring("""
     <html><head><body><article>python code below:
-    ```python
+    <pre><code>
 def test:
     print('hello')
     print('world')
-    ```
+    </code></pre>
     </article></body></html> 
     """)
     my_result = extract(my_document, output_format='markdown', include_formatting=True)
-    assert "python code below:\n```python\ndef test:\nprint('hello')\nprint('world')\n```" == my_result
+    assert "python code below:\n```\ndef test:\nprint('hello')\nprint('world')\n```" == my_result
 
     my_result = extract(my_document, output_format='markdown', include_formatting=True, preserve_space=True)
     assert """python code below:
-    ```python
+    ```
 def test:
     print('hello')
     print('world')
-    ```""" == my_result
+    
+```""" == my_result
 
 
 def test_extract_with_metadata():
