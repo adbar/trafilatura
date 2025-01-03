@@ -273,7 +273,9 @@ def is_last_element_in_item(element: _Element) -> bool:
     if element.tag == 'item':
         return len(element.getchildren()) == 0
     # element within list item
-    return element.getnext() is None or element.getnext().tag == 'item'
+    if element.getnext() is None:
+        return True
+    return element.getnext().tag == 'item'
 
 
 def replace_element_text(element: _Element, include_formatting: bool) -> str:
