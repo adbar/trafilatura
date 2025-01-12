@@ -35,6 +35,7 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+SPECIAL_FORMATTING = {'code', 'del', 'head', 'hi', 'ref'}
 WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
