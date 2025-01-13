@@ -251,8 +251,8 @@ def validate_tei(xmldoc: _Element) -> bool:
 
 
 def replace_element_text(element: _Element, include_formatting: bool) -> str:
-    "Determine element text based on just the text of the element. One must deal with the tail separately."
     elem_text = element.text or ""
+    "Determine element text based on just the text of the element. One must deal with the tail separately."
     # handle formatting: convert to markdown
     if include_formatting and element.text:
         if element.tag == "head":
@@ -268,7 +268,11 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
             if rend in HI_FORMATTING:
                 elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
         elif element.tag == "code":
-            if "\n" in element.text:
+            if "\n" in elem_text or element.xpath(".//lb"):  # Handle <br> inside <code>
+                # Convert <br> to \n within code blocks
+                for lb in element.xpath(".//lb"):
+                    elem_text = f"{elem_text}\n{lb.tail}"
+                    lb.getparent().remove(lb)
                 elem_text = f"```\n{elem_text}\n```\n"
             else:
                 elem_text = f"`{elem_text}`"
