@@ -317,10 +317,17 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
             for subelem in code_elems:
                 subelem.attrib.clear()
-        if elem.text and any([code_indicator in elem.text for code_indicator in CODE_INDICATORS]):
+        if _is_code_block(elem.text):
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
+def _is_code_block(text: str) -> bool:
+    if not text:
+        return False
+    for indicator in CODE_INDICATORS:
+        if indicator in text:
+            return True
+    return False
 
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
