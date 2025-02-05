@@ -41,19 +41,19 @@ try:
 except ImportError:
     PROXY_URL = None
 
-#try:
-import pycurl  # type: ignore
+try:
+    import pycurl  # type: ignore
 
-CURL_SHARE = pycurl.CurlShare()
-# available options:
-# https://curl.se/libcurl/c/curl_share_setopt.html
-CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
-CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
-# not thread-safe
-CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
-HAS_PYCURL = True
-#except ImportError:
-    #HAS_PYCURL = False
+    CURL_SHARE = pycurl.CurlShare()
+    # available options:
+    # https://curl.se/libcurl/c/curl_share_setopt.html
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
+    # not thread-safe
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
+    HAS_PYCURL = True
+except ImportError:
+    HAS_PYCURL = False
 
 LOGGER = logging.getLogger(__name__)
 
