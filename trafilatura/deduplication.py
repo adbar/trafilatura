@@ -13,6 +13,7 @@ from operator import add
 from threading import RLock
 from typing import Any, Dict, List, Optional, Union
 
+import unicodedata
 from lxml.etree import _Element
 
 from .settings import LRU_SIZE
@@ -23,8 +24,19 @@ STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
 
-# Punctuation for non latin alphabet languages
-STRING_PUNCTUATION_EXTENDED = string.punctuation + "。"
+def strip_all_punctuation(text: str) -> str:
+    """Replace all Unicode punctuation characters with spaces."""
+    cleaned_chars = []
+
+    for char in text:
+        # Check if character is in any Unicode punctuation category
+        is_punctuation = unicodedata.category(char).startswith('P')
+
+        # Replace punctuation with space, otherwise keep character
+        cleaned_char = ' ' if is_punctuation else char
+        cleaned_chars.append(cleaned_char)
+
+    return ''.join(cleaned_chars)
 
 
 @lru_cache(maxsize=1024)
@@ -39,8 +51,10 @@ def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
     tokens = []
+
+    inputstring = strip_all_punctuation(inputstring)
+
     for token in inputstring.split():
-        token = token.strip(STRING_PUNCTUATION_EXTENDED)
         if token.isalnum():
             tokens.append(token)
     sample = []
