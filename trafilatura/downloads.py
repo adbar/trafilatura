@@ -61,6 +61,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
+_POOL_CACHE = {}  # key: (no_ssl, effective_proxy), value: pool
+
 
 
 def create_pool(proxy: Optional[str] = None, **args: Any) -> Union[urllib3.PoolManager, Any]:
@@ -194,14 +196,40 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
 def _initiate_pool(
     config: ConfigParser, no_ssl: bool = False, proxy: Optional[str] = None
 ) -> Union[urllib3.PoolManager, Any]:
+    """
+    Create (or retrieve from cache) a urllib3 pool manager according to options in the
+    config file, taking into account SSL settings and the effective proxy to use.
+
+    Args:
+        config: The configuration object (ConfigParser) with settings.
+        no_ssl: If True, do not use SSL certificates.
+        proxy: Optional proxy URL to override the global PROXY_URL.
+
+    Returns:
+        A pool manager instance (e.g., ProxyManager or PoolManager) ready for requests.
+    """
+    # Determine the effective proxy: use the provided proxy if available,
+    # otherwise fall back to the global PROXY_URL.
     effective_proxy = proxy if proxy is not None else PROXY_URL
-    LOGGER.debug("Initiating new pool with no_ssl=%s and effective_proxy=%s", no_ssl, effective_proxy)
+
+    # Create a cache key based on the no_ssl flag and the effective proxy value.
+    key = (no_ssl, effective_proxy)
+    LOGGER.debug("Initiating pool with no_ssl=%s and effective_proxy=%s (cache key: %s)", no_ssl, effective_proxy, key)
+
+    # If we already have a pool for this key, return it.
+    if key in _POOL_CACHE:
+        LOGGER.debug("Using cached pool for key: %s", key)
+        return _POOL_CACHE[key]
+
+    # Otherwise, create a new pool.
     pool = create_pool(
         proxy=effective_proxy,
         timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
         ca_certs=None if no_ssl else certifi.where(),
         cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED",
     )
+    _POOL_CACHE[key] = pool
+    LOGGER.debug("Created new pool and cached for key: %s", key)
     return pool
 
 
