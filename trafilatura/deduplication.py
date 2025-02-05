@@ -23,6 +23,9 @@ STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
 
+# Punctuation for non latin alphabet languages
+STRING_PUNCTUATION_EXTENDED = string.punctuation + "。"
+
 
 @lru_cache(maxsize=1024)
 def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -> bool:
@@ -37,7 +40,7 @@ def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
     there is enough data."""
     tokens = []
     for token in inputstring.split():
-        token = token.strip(string.punctuation)
+        token = token.strip(STRING_PUNCTUATION_EXTENDED)
         if token.isalnum():
             tokens.append(token)
     sample = []
