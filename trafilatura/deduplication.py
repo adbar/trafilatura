@@ -87,10 +87,10 @@ class Simhash:
     __slots__ = ["hash", "length"]
 
     def __init__(
-            self,
-            inputstring: str = "",
-            length: int = 64,
-            existing_hash: Optional[str] = None,
+        self,
+        inputstring: str = "",
+        length: int = 64,
+        existing_hash: Optional[str] = None,
     ) -> None:
         "Store length and existing or new hash."
         self.length = length
@@ -114,7 +114,7 @@ class Simhash:
         #    return -2
         # return x
 
-    @lru_cache(maxsize=2 ** 14)
+    @lru_cache(maxsize=2**14)
     def _vector_to_add(self, token: str) -> List[int]:
         "Create vector to add to the existing string vector"
         return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
