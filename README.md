@@ -38,7 +38,7 @@ The extractor strikes a balance between limiting noise (precision) and
 including all valid parts (recall). It is **robust and reasonably fast**.
 
 Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
-and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents>)
+and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents)
 by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like
 the Allen Institute, Stanford, the Tokyo Institute of Technology, and
 the University of Munich.
