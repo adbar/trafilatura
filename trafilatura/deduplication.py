@@ -4,8 +4,8 @@
 # 3.11+: from typing import Self
 
 import re
+import sys
 import string
-
 from difflib import SequenceMatcher
 from functools import lru_cache
 from hashlib import blake2b
@@ -19,24 +19,12 @@ from lxml.etree import _Element
 from .settings import LRU_SIZE
 from .utils import trim
 
-
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
 
-def strip_all_punctuation(text: str) -> str:
-    """Replace all Unicode punctuation characters with spaces."""
-    cleaned_chars = []
-
-    for char in text:
-        # Check if character is in any Unicode punctuation category
-        is_punctuation = unicodedata.category(char).startswith('P')
-
-        # Replace punctuation with space, otherwise keep character
-        cleaned_char = ' ' if is_punctuation else char
-        cleaned_chars.append(cleaned_char)
-
-    return ''.join(cleaned_chars)
+PUNCT_TBL = dict.fromkeys((i for i in range(sys.maxunicode)
+                           if unicodedata.category(chr(i)).startswith('P')), ord(' '))
 
 
 @lru_cache(maxsize=1024)
@@ -47,14 +35,16 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
-def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
-    """Split input into list of tokens and adjust length threshold to make sure
-    there is enough data."""
+def sample_tokens_fallback(inputstring: str, length: int = 64) -> List[str]:
+    """
+    This fallback implementation is used when the primary sample_tokens function
+    generates an empty token list. This is mostly relevant for languages like
+    mandarin where none latin-based punctuation is used e.g.: 。
+    """
     tokens = []
-
-    inputstring = strip_all_punctuation(inputstring)
-
-    for token in inputstring.split():
+    # Replace all punctuation with spaces using translation table
+    clean_text = inputstring.translate(PUNCT_TBL)
+    for token in clean_text.split():
         if token.isalnum():
             tokens.append(token)
     sample = []
@@ -62,6 +52,26 @@ def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
         sample = [t for t in tokens if len(t) > i]
         if len(sample) >= length / 2:
             return sample
+    return sample
+
+
+def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
+    """Split input into list of tokens and adjust length threshold to make sure
+    there is enough data."""
+    tokens = []
+    for token in inputstring.split():
+        token = token.strip(string.punctuation)
+        if token.isalnum():
+            tokens.append(token)
+    sample = []
+    for i in range(4, -1, -1):
+        sample = [t for t in tokens if len(t) > i]
+        if len(sample) >= length / 2:
+            return sample
+
+    if len(sample) == 0:
+        return sample_tokens_fallback(inputstring, length)
+
     return sample
 
 
@@ -77,10 +87,10 @@ class Simhash:
     __slots__ = ["hash", "length"]
 
     def __init__(
-        self,
-        inputstring: str = "",
-        length: int = 64,
-        existing_hash: Optional[str] = None,
+            self,
+            inputstring: str = "",
+            length: int = 64,
+            existing_hash: Optional[str] = None,
     ) -> None:
         "Store length and existing or new hash."
         self.length = length
@@ -104,7 +114,7 @@ class Simhash:
         #    return -2
         # return x
 
-    @lru_cache(maxsize=2**14)
+    @lru_cache(maxsize=2 ** 14)
     def _vector_to_add(self, token: str) -> List[int]:
         "Create vector to add to the existing string vector"
         return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
