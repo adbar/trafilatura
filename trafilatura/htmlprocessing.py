@@ -44,6 +44,8 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
+CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
@@ -315,8 +317,18 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
             for subelem in code_elems:
                 subelem.attrib.clear()
+        if _is_code_block(elem.text):
+            code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
+def _is_code_block(text: Optional[str]) -> bool:
+    "Check if the element text is part of a code block."
+    if not text:
+        return False
+    for indicator in CODE_INDICATORS:
+        if indicator in text:
+            return True
+    return False
 
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
