@@ -70,7 +70,6 @@ class Extractor:
         "focus",
         "comments",
         "formatting",
-        "preserve_space",
         "links",
         "images",
         "tables",
@@ -109,7 +108,6 @@ class Extractor:
         recall: bool = False,
         comments: bool = True,
         formatting: bool = False,
-        preserve_space: bool = False,
         links: bool = False,
         images: bool = False,
         tables: bool = True,
@@ -133,7 +131,6 @@ class Extractor:
         )
         self.comments: bool = comments
         self.formatting: bool = formatting or self.format == "markdown"
-        self.preserve_space: bool = preserve_space
         self.links: bool = links
         self.images: bool = images
         self.tables: bool = tables

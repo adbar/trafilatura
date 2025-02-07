@@ -330,10 +330,10 @@ def test_formatting():
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # titles as markdown
-    my_string = '<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>'
+    my_string = '<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b>Non-bold here</p></article></body></html>'
     my_document = html.fromstring(my_string)
     my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '### Title\n\n**This here is in bold font.**'
+    assert my_result == '### Title\n\n**This here is in bold font.** Non-bold here'
     assert extract(my_string, output_format='markdown', config=ZERO_CONFIG) == my_result
     assert '<hi rend="#b">' in etree.tostring(bare_extraction(my_string, output_format='markdown', config=ZERO_CONFIG).body, encoding="unicode")
 
@@ -415,20 +415,20 @@ trafilatura.extract("")
             <li>Number 3</li>
             <li><p>Number 4</p> n4</li>
         </ul>
-        <p>Test</p></article></body></html>
+        Test</article></body></html>
     """)
     my_result = extract(my_document, output_format='markdown', include_links=True, config=ZERO_CONFIG)
-    assert my_result == '- Number 0\n- Number [1](test.html)\n- [Number 2](test.html) n2\n- Number 3\n- Number 4 n4\n\nTest'
+    assert my_result == '- Number 0\n- Number [1](test.html)\n- [Number 2](test.html)n2\n- Number 3\n- Number 4 n4\n\nTest'
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>')
     my_result = extract(copy(my_document), fast=True, include_formatting=False, config=ZERO_CONFIG)
     assert my_result == 'bold, italics, tt, deleted, underlined, link and additional text to bypass detection.'
 
     my_result = extract(copy(my_document), fast=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
+    assert my_result == '**bold** , *italics* , `tt` , ~~deleted~~, __underlined__ , link and additional text to bypass detection.'
 
     my_result = extract(copy(my_document), fast=True, include_links=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, [link](test.html) and additional text to bypass detection.'
+    assert my_result == '**bold** , *italics* , `tt` , ~~deleted~~, __underlined__ , [link](test.html) and additional text to bypass detection.'
 
     my_result = extract(copy(my_document), output_format='xml', fast=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, link and additional text to bypass detection.</p>' in my_result
@@ -437,7 +437,7 @@ trafilatura.extract("")
     my_result = extract(copy(my_document), output_format='xml', include_formatting=True, include_links=True, fast=True, config=ZERO_CONFIG)
     assert '<p><hi rend="#b">bold</hi>, <hi rend="#i">italics</hi>, <hi rend="#t">tt</hi>, <del>deleted</del>, <hi rend="#u">underlined</hi>, <ref target="test.html">link</ref> and additional text to bypass detection.</p>' in my_result
     my_result = extract(my_document, output_format='txt', fast=True, include_formatting=True, config=ZERO_CONFIG)
-    assert my_result == '**bold**, *italics*, `tt`, ~~deleted~~, __underlined__, link and additional text to bypass detection.'
+    assert my_result == '**bold** , *italics* , `tt` , ~~deleted~~, __underlined__ , link and additional text to bypass detection.'
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
@@ -456,7 +456,7 @@ trafilatura.extract("")
 
     my_document = html.fromstring("""
     <html><head><body><article>python code below:
-    <pre><code>
+<pre><code>
 def test:
     print('hello')
     print('world')
@@ -464,11 +464,11 @@ def test:
     </article></body></html> 
     """)
     my_result = extract(my_document, output_format='markdown', include_formatting=True)
-    assert "python code below:\n```\ndef test:\nprint('hello')\nprint('world')\n```" == my_result
+    assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
 
-    my_result = extract(my_document, output_format='markdown', include_formatting=True, preserve_space=True)
+    my_result = extract(my_document, output_format='markdown', include_formatting=True)
     assert """python code below:
-    ```
+```
 def test:
     print('hello')
     print('world')
@@ -1141,7 +1141,7 @@ def test_table_processing():
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
-    assert extract(htmlstring, fast=True, output_format='txt').startswith("| Present Tense | I buy | you buy |")
+    assert extract(htmlstring, fast=True, output_format='txt').startswith("| Present Tense  | I buy  | you buy  |")
     # table with links
     # todo: further tests and adjustments
     htmlstring = '<html><body><article><table><tr><td><a href="test.html">' + 'ABCD'*100 + '</a></td></tr></table></article></body></html>'
@@ -1236,7 +1236,7 @@ def test_table_processing():
     # remove new lines in table cells in text format
     htmlstring = '<html><body><article><table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| cell 1 | cell 2 |" in result
+    assert "| cell 1  | cell 2  |" in result
 
     # only one header row is allowed in text format
     htmlstring = '<html><body><article><table><tr><th>a</th><th>b</th></tr><tr><th>c</th><th>d</th></tr></table></article></body></html>'
@@ -1246,15 +1246,15 @@ def test_table_processing():
     # handle colspan by appending columns in text format
     htmlstring = '<html><body><article><table><tr><td colspan="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    assert "| a  | b  | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    assert "| a  | b  | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="2.1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    assert "| a  | b  | |" in result
 
     # MemoryError: https://github.com/adbar/trafilatura/issues/657
     htmlstring = '<html><body><article><table><tr><td colspan="9007199254740991">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
@@ -1268,16 +1268,16 @@ def test_table_processing():
     # wrong span info
     htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    assert "| a  | b  | |" in result
 
     htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    assert "| a  | b  | |" in result
 
     # links: this gets through (for now)
     htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a |"
+    assert result == "| a  |"
 
     # link: this is filtered out
     htmlstring = f'<html><body><article><table><tr><td><a href="link.html">{"abc"*100}</a></td></tr></table></article></body></html>'
@@ -1299,7 +1299,7 @@ def test_table_processing():
                  </article></body></html>
                  """
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a | b | c |\n| a | b c | |"
+    assert result == "| a  | b  | c  | \n| a  | b c  | |"
 
     htmlstring = """
                  <html><body><article>
@@ -1317,7 +1317,7 @@ def test_table_processing():
                  </article></body></html>
                  """
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a | b | c |\n| a | b c | |\n| a | b c | |"
+    assert result == "| a  | b  | c  | \n| a  | b c  | |\n| a  | b c  | |"
 
     htmlstring = """
                  <html><body><article>
@@ -1333,7 +1333,7 @@ def test_table_processing():
                  """
     result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
                      include_images=True, include_tables=True)
-    assert result == "| a | b | c |\n| a ![img](http://aa.bb/c.jpg) a | b c | d |"
+    assert result == "| a  | b  | c  | \n| a ![img](http://aa.bb/c.jpg) a  | b c  | d  |"
 
     htmlstring = """
                  <html><body><article>
@@ -1349,7 +1349,7 @@ def test_table_processing():
                  """
     result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
                      include_images=True, include_tables=True)
-    assert result == "| a | b | c |\n| ![img](http://aa.bb/c.jpg) a | b c | d |"
+    assert result == "| a  | b  | c  | \n| ![img](http://aa.bb/c.jpg) a  | b c  | d  |"
 
     htmlstring = """
                  <html><body><article>
@@ -1365,7 +1365,7 @@ def test_table_processing():
                  """
     result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
                      include_images=True, include_tables=True)
-    assert result == "| a | b | c |\n| ![img](http://aa.bb/c.jpg) a | b c | d |"
+    assert result == "| a  | b  | c  | \n| ![img](http://aa.bb/c.jpg) a  | b c  | d  |"
 
     htmlstring = """
                  <html><body><article>
@@ -1381,7 +1381,7 @@ def test_table_processing():
                  """
     result = extract(htmlstring, fast=True, output_format='markdown', config=ZERO_CONFIG,
                      include_images=True, include_tables=True)
-    assert result == "| a | b | c |\n| ![img1](http://aa.bb/c.jpg) a ![img2](http://aa.bb/c.jpg) | b c | d |"
+    assert result == "| a  | b  | c  | \n| ![img1](http://aa.bb/c.jpg) a ![img2](http://aa.bb/c.jpg)  | b c  | d  |"
 
 
 def test_list_processing():

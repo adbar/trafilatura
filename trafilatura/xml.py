@@ -35,7 +35,7 @@ TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
 NEWLINE_ELEMS = {'code', 'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
-SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref'}
+SPECIAL_FORMATTING = {'del', 'head', 'hi', 'ref', 'item', 'cell'}
 WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
@@ -285,7 +285,9 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     elem_text = element.text or ""
     # handle formatting: convert to markdown
     if include_formatting and element.text:
-        if element.tag == "head":
+        if element.tag in ('article', 'list', 'table'):
+            elem_text = elem_text.strip()
+        elif element.tag == "head":
             try:
                 number = int(element.get("rend")[1])  # type: ignore[index]
             except (TypeError, ValueError):
@@ -296,7 +298,8 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
         elif element.tag == "hi":
             rend = element.get("rend")
             if rend in HI_FORMATTING:
-                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
+                # force space after highlight text to make it more compatible with various md renderers
+                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]} "
         elif element.tag == "code":
             if "\n" in element.text:
                 elem_text = f"```\n{elem_text}\n```"
@@ -320,9 +323,9 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
 
         if elem_text:
             elem_text = f"{elem_text} "
-    # lists
+    # within lists
     if is_first_element_in_item(element) and not is_in_table_cell(element):
-        elem_text = f"- {elem_text} "
+        elem_text = f"- {elem_text}"
 
     return elem_text
 
@@ -371,7 +374,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
                     returnlist.append(f'\n|{"---|" * max_span}\n')
             else:
                 returnlist.append("\n")
-        elif element.tag != "cell":
+        elif element.tag != "cell" and element.tag != 'item':
             # cells still need to append vertical bars
             # but nothing more to do with other textless elements
             return
@@ -390,14 +393,14 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     # unless it's within a list item or a table
     if element.tail and not is_in_table_cell(element):
-        returnlist.append(element.tail.strip() if is_element_in_item(element) else element.tail)
+        returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag=='list' else element.tail)
 
     # deal with list items alone
     if is_last_element_in_item(element) and not is_in_table_cell(element):
         returnlist.append('\n')
 
 
-def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool, preserve_space: bool = False) -> str:
+def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
     if xmloutput is None:
         return ""
@@ -406,7 +409,7 @@ def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool, preserve_s
 
     process_element(xmloutput, returnlist, include_formatting)
 
-    return unescape(sanitize("".join(returnlist), preserve_space) or "")
+    return unescape(sanitize("".join(returnlist), True) or "")
 
 
 def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t", null: str = "null") -> str:
