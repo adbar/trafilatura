@@ -142,17 +142,14 @@ def test_dedup():
 
 def test_sample_tokens(monkeypatch):
     "Test token sampling functions including fallback for non-latin text"
-    # Create spy counters
-    call_counter = {'fallback': 0, 'main': 0}
 
-    # Store original function
+    call_counter = {'fallback': 0, 'main': 0}
     original_fallback = trafilatura.deduplication.sample_tokens_fallback
 
     def spy_fallback(*args, **kwargs):
         call_counter['fallback'] += 1
         return original_fallback(*args, **kwargs)
 
-    # Patch the fallback function
     monkeypatch.setattr(trafilatura.deduplication, 'sample_tokens_fallback', spy_fallback)
 
     # Test regular text
