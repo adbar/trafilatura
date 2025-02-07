@@ -321,7 +321,7 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
-def _is_code_block(text: str | None) -> bool:
+def _is_code_block(text: Optional[str]) -> bool:
     "Check if the element text is part of a code block."
     if not text:
         return False
