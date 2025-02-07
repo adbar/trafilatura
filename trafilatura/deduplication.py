@@ -35,24 +35,26 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
+def _get_sample_by_length(tokens: List[str], target_length: int) -> List[str]:
+    """Helper function to get a sample of tokens based on length criteria."""
+    sample = []
+    for i in range(4, -1, -1):
+        sample = [t for t in tokens if len(t) > i]
+        if len(sample) >= target_length / 2:
+            return sample
+    return sample
+
+
 def sample_tokens_fallback(inputstring: str, length: int = 64) -> List[str]:
     """
     This fallback implementation is used when the primary sample_tokens function
     generates an empty token list. This is mostly relevant for languages like
     mandarin where none latin-based punctuation is used e.g.: 。
     """
-    tokens = []
     # Replace all punctuation with spaces using translation table
     clean_text = inputstring.translate(PUNCT_TBL)
-    for token in clean_text.split():
-        if token.isalnum():
-            tokens.append(token)
-    sample = []
-    for i in range(4, -1, -1):
-        sample = [t for t in tokens if len(t) > i]
-        if len(sample) >= length / 2:
-            return sample
-    return sample
+    tokens = [t for t in clean_text.split() if t.isalnum()]
+    return _get_sample_by_length(tokens, length)
 
 
 def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
@@ -63,11 +65,8 @@ def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
         token = token.strip(string.punctuation)
         if token.isalnum():
             tokens.append(token)
-    sample = []
-    for i in range(4, -1, -1):
-        sample = [t for t in tokens if len(t) > i]
-        if len(sample) >= length / 2:
-            return sample
+
+    sample = _get_sample_by_length(tokens, length)
 
     if len(sample) == 0:
         return sample_tokens_fallback(inputstring, length)
@@ -87,10 +86,10 @@ class Simhash:
     __slots__ = ["hash", "length"]
 
     def __init__(
-        self,
-        inputstring: str = "",
-        length: int = 64,
-        existing_hash: Optional[str] = None,
+            self,
+            inputstring: str = "",
+            length: int = 64,
+            existing_hash: Optional[str] = None,
     ) -> None:
         "Store length and existing or new hash."
         self.length = length
@@ -114,7 +113,7 @@ class Simhash:
         #    return -2
         # return x
 
-    @lru_cache(maxsize=2**14)
+    @lru_cache(maxsize=2 ** 14)
     def _vector_to_add(self, token: str) -> List[int]:
         "Create vector to add to the existing string vector"
         return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
