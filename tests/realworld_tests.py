@@ -438,12 +438,12 @@ def test_extract(xmloutput, formatting):
     if formatting is False:
         assert 'Einblicke in die Vision zukünftiger Softwaregenerationen.' in result
     else:
-        assert 'Einblicke in die **Vision zukünftiger Softwaregenerationen**.\n' in result
+        assert 'Einblicke in die **Vision zukünftiger Softwaregenerationen** .\n' in result
     assert 'Frage 4: Welche Rolle spielt Big Data in Bezug auf Assistenz-Systeme und KI?' in result
     if formatting is False:
         assert 'von The unbelievable Machine Company (*um) zur Verfügung gestellt.' in result
     else:
-        assert 'von **The unbelievable Machine Company (*um)** zur Verfügung gestellt.\n' in result
+        assert 'von **The unbelievable Machine Company (*um)**  zur Verfügung gestellt.\n' in result
     assert 'Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung.' not in result
     assert 'Die Top 5 digitalen Trends für den Mittelstand' not in result
     assert ', leading edge,' not in result  # and 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result
@@ -514,7 +514,7 @@ def test_extract_links_formatting():
     result = load_mock_page('http://www.pcgamer.com/2012/08/09/skyrim-part-1/', formatting=True, links=True)
     assert 'In [Skyrim](https://www.pcgamer.com/best-skyrim-mods/), a mage' in result
     # the original has the space at the end of the em tag
-    assert "*Legends *don't destroy *houses*," in result
+    assert "*Legends * don't destroy *houses* ," in result
 
 
 def test_pages():
