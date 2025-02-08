@@ -4,7 +4,6 @@
 # 3.11+: from typing import Self
 
 import re
-import sys
 import string
 from difflib import SequenceMatcher
 from functools import lru_cache
@@ -23,8 +22,7 @@ STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
 
-PUNCT_TBL = dict.fromkeys((i for i in range(sys.maxunicode)
-                           if unicodedata.category(chr(i)).startswith('P')), ord(' '))
+PUNCT_TBL = str.maketrans({i: ' ' for i in range(0x10FFFF) if unicodedata.category(chr(i)).startswith('P')})
 
 
 @lru_cache(maxsize=1024)
