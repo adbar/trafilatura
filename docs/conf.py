@@ -20,8 +20,8 @@ import trafilatura
 
 # -- Project information -----------------------------------------------------
 
-project = 'trafilatura'
-copyright = '2024, Adrien Barbaresi'
+project = 'Trafilatura'
+copyright = '2025, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__
@@ -88,7 +88,6 @@ html_theme = 'pydata_sphinx_theme' # 'furo' # 'alabaster'
 ## pydata options
 html_theme_options = {
   "github_url": "https://github.com/adbar/trafilatura",
-  "twitter_url": "https://twitter.com/adbarbaresi",
   "external_links": [
       {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],

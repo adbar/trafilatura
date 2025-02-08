@@ -38,7 +38,7 @@ The extractor strikes a balance between limiting noise (precision) and
 including all valid parts (recall). It is **robust and reasonably fast**.
 
 Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
-and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents>)
+and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents)
 by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like
 the Allen Institute, Stanford, the Tokyo Institute of Technology, and
 the University of Munich.
@@ -141,13 +141,12 @@ This work started as a PhD project at the crossroads of linguistics and
 NLP, this expertise has been instrumental in shaping Trafilatura over
 the years. Initially launched to create text databases for research purposes
 at the Berlin-Brandenburg Academy of Sciences (DWDS and ZDL units),
-this package continues to be maintained but its future development
-depends on community support.
+this package continues to be maintained but its future depends on community support.
 
 **If you value this software or depend on it for your product, consider
-sponsoring it and contributing to its codebase**. Your support will
-help maintain and enhance this popular package, ensuring its growth,
-robustness, and accessibility for developers and users around the world.
+sponsoring it and contributing to its codebase**. Your support
+[on GitHub](https://github.com/sponsors/adbar) or [ko-fi.com](https://ko-fi.com/adbarbaresi)
+will help maintain and enhance this popular package.
 
 *Trafilatura* is an Italian word for [wire
 drawing](https://en.wikipedia.org/wiki/Wire_drawing) symbolizing the

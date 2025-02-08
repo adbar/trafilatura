@@ -82,7 +82,7 @@ So wird die DWDS-Plattform zu einer Art Meta-Suchmaschine. Der Vorteil besteht d
     Hier finden Sie eine `Liste der Webkorpora auf der DWDS-Plattform <https://www.dwds.de/d/k-web>`_.
 
 
-Bei größeren Webkorpora ist die Filterung hinsichtlich der Relevanz und der Textqualität meistens quantitativer Natur, siehe `Barbaresi 2015 (Diss.) Kapitel 4 <https://tel.archives-ouvertes.fr/tel-01167309/document>`_ für Details. Im Übrigen haben wir das Schlimmste aus dem Web manuell ausgegrenzt.
+Bei größeren Webkorpora ist die Filterung hinsichtlich der Relevanz und der Textqualität meistens quantitativer Natur, siehe `Barbaresi 2015 (Diss.) Kapitel 4 <https://theses.hal.science/tel-01167309/document>`_ für Details. Im Übrigen haben wir das Schlimmste aus dem Web manuell ausgegrenzt.
 
 
 Download und Verarbeitung der Daten
