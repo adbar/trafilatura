@@ -5,7 +5,6 @@
 
 import re
 import string
-
 from difflib import SequenceMatcher
 from functools import lru_cache
 from hashlib import blake2b
@@ -13,15 +12,17 @@ from operator import add
 from threading import RLock
 from typing import Any, Dict, List, Optional, Union
 
+import unicodedata
 from lxml.etree import _Element
 
 from .settings import LRU_SIZE
 from .utils import trim
 
-
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
 BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
+
+PUNCT_TBL = str.maketrans({i: ' ' for i in range(0x10FFFF) if unicodedata.category(chr(i)).startswith('P')})
 
 
 @lru_cache(maxsize=1024)
@@ -32,6 +33,28 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
+def _get_sample_by_length(tokens: List[str], target_length: int) -> List[str]:
+    """Helper function to get a sample of tokens based on length criteria."""
+    sample = []
+    for i in range(4, -1, -1):
+        sample = [t for t in tokens if len(t) > i]
+        if len(sample) >= target_length / 2:
+            return sample
+    return sample
+
+
+def sample_tokens_fallback(inputstring: str, length: int = 64) -> List[str]:
+    """
+    This fallback implementation is used when the primary sample_tokens function
+    generates an empty token list. This is mostly relevant for languages like
+    mandarin where none latin-based punctuation is used e.g.: 。
+    """
+    # Replace all punctuation with spaces using translation table
+    clean_text = inputstring.translate(PUNCT_TBL)
+    tokens = [t for t in clean_text.split() if t.isalnum()]
+    return _get_sample_by_length(tokens, length)
+
+
 def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
@@ -40,11 +63,12 @@ def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
         token = token.strip(string.punctuation)
         if token.isalnum():
             tokens.append(token)
-    sample = []
-    for i in range(4, -1, -1):
-        sample = [t for t in tokens if len(t) > i]
-        if len(sample) >= length / 2:
-            return sample
+
+    sample = _get_sample_by_length(tokens, length)
+
+    if len(sample) == 0:
+        return sample_tokens_fallback(inputstring, length)
+
     return sample
 
 

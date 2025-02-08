@@ -24,6 +24,24 @@ def test_hashes():
     assert generate_hash_filename(content) == "42LNugG3Sc95646i"
 
 
+def test_content_fingerprint():
+    "Test content fingerprint generation for different types of text"
+    # Test regular Latin text
+    text = "Hello world! This is a test string with some numbers 123."
+    fingerprint = trafilatura.deduplication.content_fingerprint(text)
+    assert fingerprint == "5efdce9f2b554683"
+
+    # Test Chinese text
+    chinese_text = "这是一个测试。我们在测试中文。"
+    chinese_fingerprint = trafilatura.deduplication.content_fingerprint(chinese_text)
+    print(chinese_fingerprint)
+    assert chinese_fingerprint == "ff377edee6edfb78"
+
+    # Test mixed text
+    mixed_text = "Hello世界。This is混合文本!"
+    mixed_fingerprint = trafilatura.deduplication.content_fingerprint(mixed_text)
+    assert mixed_fingerprint == "24979dc6c8a26a5"
+
 
 def test_simhash():
     "Test similarity calculation based on Simhash class."
@@ -122,8 +140,47 @@ def test_dedup():
     assert trafilatura.htmlprocessing.process_node(my_p, options) is None
 
 
+def test_sample_tokens(monkeypatch):
+    "Test token sampling functions including fallback for non-latin text"
+
+    call_counter = {'fallback': 0, 'main': 0}
+    original_fallback = trafilatura.deduplication.sample_tokens_fallback
+
+    def spy_fallback(*args, **kwargs):
+        call_counter['fallback'] += 1
+        return original_fallback(*args, **kwargs)
+
+    monkeypatch.setattr(trafilatura.deduplication, 'sample_tokens_fallback', spy_fallback)
+
+    # Test regular text
+    text = "Hello world! This is a test string with some numbers 123."
+    tokens = trafilatura.deduplication.sample_tokens(text)
+    assert len(tokens) > 0
+    assert "Hello" in tokens
+    assert "world" in tokens
+    assert "123" in tokens
+    assert call_counter['fallback'] == 0, "Fallback shouldn't be called for Latin character text"
+
+    # Test Chinese text with Chinese punctuation
+    chinese_text = "这是一个测试。我们在测试中文。"
+    tokens = trafilatura.deduplication.sample_tokens(chinese_text)
+    assert len(tokens) == 2
+    assert "这是一个测试" in tokens
+    assert "我们在测试中文" in tokens
+    assert call_counter['fallback'] == 1, "Fallback should be called for Chinese text"
+
+    # Test mixed text using the default sample tokens method
+    mixed_text = "Hello世界。This is混合文本!"
+    tokens = trafilatura.deduplication.sample_tokens(mixed_text)
+    assert len(tokens) == 1
+    assert 'is混合文本' in tokens
+    assert call_counter['fallback'] == 1, "Fallback shouldn't be called due to blank"
+
+
 if __name__ == "__main__":
     test_hashes()
     test_simhash()
     test_lrucache()
     test_dedup()
+    test_sample_tokens()
+    test_content_fingerprint()
