@@ -481,7 +481,7 @@ def test_replace_element_text():
     elem = Element("hi")
     elem.text = "Text"
     elem.set("rend", "#b")
-    assert replace_element_text(elem, True) == "**Text** "
+    assert replace_element_text(elem, True) == "**Text**"
 
     elem = Element("item")
     elem.text = "Test text"

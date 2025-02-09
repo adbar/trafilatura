@@ -17,7 +17,7 @@ from lxml.etree import (_Element, Element, SubElement, XMLParser,
                         fromstring, tostring, DTD)
 
 from .settings import Document, Extractor
-from .utils import is_in_table_cell, sanitize, sanitize_tree, text_chars_test
+from .utils import is_in_table_cell, is_last_element_in_cell, sanitize, sanitize_tree, text_chars_test
 
 
 LOGGER = logging.getLogger(__name__)
@@ -281,8 +281,8 @@ def is_last_element_in_item(element: _Element) -> bool:
 
 
 def replace_element_text(element: _Element, include_formatting: bool) -> str:
+    """Determine element text based on just the text of the element. One must deal with the tail separately."""
     elem_text = element.text or ""
-    "Determine element text based on just the text of the element. One must deal with the tail separately."
     # handle formatting: convert to markdown
     if include_formatting and element.text:
         if element.tag in ('article', 'list', 'table'):
@@ -298,8 +298,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
         elif element.tag == "hi":
             rend = element.get("rend")
             if rend in HI_FORMATTING:
-                # force space after highlight text to make it more compatible with various md renderers
-                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]} "
+                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
         elif element.tag == "code":
             if "\n" in elem_text or element.xpath(".//lb"):  # Handle <br> inside <code>
                 # Convert <br> to \n within code blocks
@@ -322,11 +321,12 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
-    if element.tag == "cell":
+    if element.tag == 'cell':
         elem_text = elem_text.strip()
 
-        if elem_text:
+        if elem_text and not is_last_element_in_cell(element):
             elem_text = f"{elem_text} "
+
     # within lists
     if is_first_element_in_item(element) and not is_in_table_cell(element):
         elem_text = f"- {elem_text}"
@@ -391,7 +391,7 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append("\n\u2424\n" if include_formatting and element.tag != 'row' else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
-    elif element.tag not in SPECIAL_FORMATTING:
+    elif element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element): #  and not is_in_table_cell(element)
         returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
