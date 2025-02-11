@@ -251,16 +251,30 @@ def validate_tei(xmldoc: _Element) -> bool:
 
 def is_element_in_item(element: _Element) -> bool:
     """Check whether an element is a list item or within a list item"""
-    return element.tag == 'item' or bool(element.xpath('ancestor::item'))
+    current = element
+    while current is not None:
+        if current.tag == 'item':
+            return True
+        current = current.getparent()
 
 
 def is_first_element_in_item(element: _Element) -> bool:
     """Check whether an element is the first element in list item"""
     if element.tag == 'item' and element.text:
         return True
-    for sub_elem in element.xpath('ancestor::item'):
-        if not sub_elem.text:
-            return True
+
+    current = element
+    item_ancestor = None
+    while current is not None:
+        if current.tag == 'item':
+            item_ancestor = current
+            break
+        current = current.getparent()
+
+    if item_ancestor is None:
+        return False
+    elif not item_ancestor.text:
+        return True
     return False
 
 
@@ -396,11 +410,12 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     # unless it's within a list item or a table
-    if element.tail and not is_in_table_cell(element):
+    is_in_cell = is_in_table_cell(element)
+    if element.tail and not is_in_cell:
         returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag=='list' else element.tail)
 
     # deal with list items alone
-    if is_last_element_in_item(element) and not is_in_table_cell(element):
+    if is_last_element_in_item(element) and not is_in_cell:
         returnlist.append('\n')
 
 

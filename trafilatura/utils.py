@@ -3,6 +3,7 @@
 Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
+from wsgiref.util import request_uri
 
 try:
     import gzip
@@ -464,7 +465,15 @@ def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
 
 def is_in_table_cell(elem: _Element) -> bool:
     '''Check whether an element is in a table cell'''
-    return elem.getparent() is not None and bool(elem.xpath('//ancestor::cell'))
+    # return elem.getparent() is not None and bool(elem.xpath('//ancestor::cell'))
+    if elem.getparent() is None:
+        return False
+    current = elem
+    while current is not None:
+        if current.tag == 'cell':
+            return True
+        current = current.getparent()
+    return False
 
 
 def is_last_element_in_cell(elem: _Element) -> bool:

@@ -3,6 +3,7 @@
 Unit tests for the trafilatura library.
 """
 
+import cProfile
 import logging
 import sys
 import time
