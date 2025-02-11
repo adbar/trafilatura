@@ -3,7 +3,6 @@
 Unit tests for the trafilatura library.
 """
 
-import cProfile
 import logging
 import sys
 import time
@@ -1587,7 +1586,6 @@ def test_large_doc_performance():
     extract(large_html, fast=False, config=ZERO_CONFIG)
     end = time.time()
     assert end - start < 5, "Large document performance issue"
-
 
 def test_lang_detection():
     """

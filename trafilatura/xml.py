@@ -17,7 +17,8 @@ from lxml.etree import (_Element, Element, SubElement, XMLParser,
                         fromstring, tostring, DTD)
 
 from .settings import Document, Extractor
-from .utils import is_in_table_cell, is_last_element_in_cell, sanitize, sanitize_tree, text_chars_test
+from .utils import is_element_in_item, is_first_element_in_item, is_in_table_cell, is_last_element_in_cell, \
+    is_last_element_in_item, sanitize, sanitize_tree, text_chars_test
 
 
 LOGGER = logging.getLogger(__name__)
@@ -248,50 +249,6 @@ def validate_tei(xmldoc: _Element) -> bool:
         LOGGER.warning('not a valid TEI document: %s', TEI_DTD.error_log.last_error)
 
     return result
-
-def is_element_in_item(element: _Element) -> bool:
-    """Check whether an element is a list item or within a list item"""
-    current = element
-    while current is not None:
-        if current.tag == 'item':
-            return True
-        current = current.getparent()
-
-
-def is_first_element_in_item(element: _Element) -> bool:
-    """Check whether an element is the first element in list item"""
-    if element.tag == 'item' and element.text:
-        return True
-
-    current = element
-    item_ancestor = None
-    while current is not None:
-        if current.tag == 'item':
-            item_ancestor = current
-            break
-        current = current.getparent()
-
-    if item_ancestor is None:
-        return False
-    elif not item_ancestor.text:
-        return True
-    return False
-
-
-def is_last_element_in_item(element: _Element) -> bool:
-    """Check whether an element is the last element in list item"""
-    if not is_element_in_item(element):
-        return False
-
-    # pure text only in list item
-    if element.tag == 'item':
-        return len(element.getchildren()) == 0
-    # element within list item
-    next_element = element.getnext()
-    if next_element is None:
-        return True
-    else:
-        return next_element.tag == 'item'
 
 
 def replace_element_text(element: _Element, include_formatting: bool) -> str:
