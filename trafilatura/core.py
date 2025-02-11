@@ -93,7 +93,8 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
             header = ""
         returnstring = f"{header}{xmltotxt(document.body, options.formatting)}"
         if document.commentsbody is not None:
-            returnstring = f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
+            returnstring = \
+                f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
 
@@ -487,7 +488,7 @@ def extract_with_metadata(
         include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
             (only valuable if output_format is set to XML).
-        include_links: Keep links along with their targets (experimental).
+=        include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
