@@ -21,7 +21,7 @@ except ImportError:
 
 from functools import lru_cache
 from itertools import islice
-from typing import Any, List, Literal, Optional, Tuple, Union
+from typing import Any, cast, List, Literal, Optional, Tuple, Union
 from unicodedata import normalize
 
 # response compression
@@ -464,4 +464,72 @@ def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
 
 def is_in_table_cell(elem: _Element) -> bool:
     '''Check whether an element is in a table cell'''
-    return bool(elem.xpath('//ancestor::cell'))
+    # return elem.getparent() is not None and bool(elem.xpath('//ancestor::cell'))
+    if elem.getparent() is None:
+        return False
+    current: Optional[_Element] = elem
+    while current is not None:
+        if current.tag == 'cell':
+            return True
+        current = current.getparent()
+    return False
+
+
+def is_last_element_in_cell(elem: _Element) -> bool:
+    '''Check whether an element is the last element in table cell'''
+    if not is_in_table_cell(elem): # shortcut
+        return False
+
+    if elem.tag == "cell":
+        children = elem.getchildren()
+        return not children or children[-1] == elem
+    else:
+        parent = cast(_Element, elem.getparent())
+        children = parent.getchildren()
+        return not children or children[-1] == elem
+
+
+def is_element_in_item(element: _Element) -> bool:
+    """Check whether an element is a list item or within a list item"""
+    current: Optional[_Element] = element
+    while current is not None:
+        if current.tag == 'item':
+            return True
+        current = current.getparent()
+    return False
+
+
+def is_first_element_in_item(element: _Element) -> bool:
+    """Check whether an element is the first element in list item"""
+    if element.tag == 'item' and element.text:
+        return True
+
+    current: Optional[_Element] = element
+    item_ancestor = None
+    while current is not None:
+        if current.tag == 'item':
+            item_ancestor = current
+            break
+        current = current.getparent()
+
+    if item_ancestor is None:
+        return False
+    elif not item_ancestor.text:
+        return True
+    return False
+
+
+def is_last_element_in_item(element: _Element) -> bool:
+    """Check whether an element is the last element in list item"""
+    if not is_element_in_item(element):
+        return False
+
+    # pure text only in list item
+    if element.tag == 'item':
+        return len(element.getchildren()) == 0
+    # element within list item
+    next_element = element.getnext()
+    if next_element is None:
+        return True
+    else:
+        return next_element.tag == 'item'
