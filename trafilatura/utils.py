@@ -3,7 +3,6 @@
 Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
-from wsgiref.util import request_uri
 
 try:
     import gzip

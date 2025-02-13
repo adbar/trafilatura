@@ -1587,6 +1587,7 @@ def test_large_doc_performance():
     end = time.time()
     assert end - start < 5, "Large document performance issue"
 
+
 def test_lang_detection():
     """
     Accuracy of language detection.
