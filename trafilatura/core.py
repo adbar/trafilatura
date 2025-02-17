@@ -93,7 +93,8 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
             header = ""
         returnstring = f"{header}{xmltotxt(document.body, options.formatting)}"
         if document.commentsbody is not None:
-            returnstring = f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
+            returnstring = \
+                f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
 
