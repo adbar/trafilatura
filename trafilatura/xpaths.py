@@ -209,7 +209,7 @@ AUTHOR_XPATHS = [
         //*[self::a or self::address or self::div or self::link or self::p or self::span or self::strong][
         @rel='author' or @id='author' or @class='author' or @itemprop='author name' or rel='me' or
         @data-testid='AuthorCard' or @data-testid='AuthorURL' or
-        re:test(@class, 'author-name|AuthorName|authorName|author name')]|//author
+        re:test(@class, 'author-?name|AuthorName|authorName')]|//author
         ''',
         namespaces={'re': regexpNS}
     ),
@@ -221,7 +221,8 @@ AUTHOR_XPATHS = [
         contains(@itemprop, 'author') or
         re:test(@id, 'author|zuozhe|bianji|xiaobian') or
         re:test(@class, 'author|channel-name|zuozhe|bianji|xiaobian|submitted-by|posted-by|journalist-name')]
-        '''
+        ''',
+        namespaces={'re': regexpNS}
     ),
     XPath(
          # last resort: any element
@@ -254,7 +255,7 @@ CATEGORIES_XPATHS = [
     XPath(
         '''
         //div[
-        re:test(@class, '^(?:post-?info|post-?meta|meta|entry-(?:meta|info|utility))') or
+        re:test(@class, '^(?:post-?info|post-?meta|meta|entry-meta|entry-info|entry-utility)') or
         starts-with(@id, 'postpath')]//a[@href]
         ''',
         namespaces={'re': regexpNS}
@@ -272,8 +273,8 @@ CATEGORIES_XPATHS = [
 TAGS_XPATHS = [
     XPath('''//div[@class='tags']//a[@href]'''),
     XPath('''//p[starts-with(@class, 'entry-tags')]//a[@href]'''),
-    XPath('''//div[@class='row' or @class='jp-relatedposts' or @class='entry-utility' or 
-    re:test(@class, '^(?:tag|postmeta|meta)')]//a[@href]'''),
+    XPath('''//div[@class='row' or @class='jp-relatedposts' or @class='entry-utility' or
+    re:test(@class, '^(?:tag|postmeta|meta)')]//a[@href]''', namespaces={'re': regexpNS}),
     XPath('''//*[@class='entry-meta' or contains(@class, 'topics') or
      contains(@class, 'tags-links')]//a[@href]''')
 ]
