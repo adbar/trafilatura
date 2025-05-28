@@ -195,6 +195,7 @@ def bare_extraction(
 
     # deprecations
     _check_deprecation(no_fallback=no_fallback, as_dict=as_dict, max_tree_size=max_tree_size)
+    fast = fast or no_fallback
 
     # regroup extraction options
     if not options or not isinstance(options, Extractor):
@@ -536,7 +537,6 @@ def _check_deprecation(
 )-> None:
     '''Check deprecated or to-be-deprecated params'''
     if no_fallback:
-        fast = no_fallback
         warnings.warn(
             '"no_fallback" will be deprecated in a future version, use "fast" instead',
             PendingDeprecationWarning
