@@ -413,14 +413,14 @@ def convert_tags(
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
-            elem.set("rend", REND_TAG_MAPPING[elem.tag])
+            elem.set("rend", REND_TAG_MAPPING[elem.tag])  # type: ignore[index]
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)
+        CONVERSIONS[elem.tag](elem)  # type: ignore[index]
     # images
     if options.images:
         for elem in tree.iter("img"):
