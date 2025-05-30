@@ -26,7 +26,7 @@ jobs:
             PROXY_TEST: "true"
         include:
           # custom python versions
-          - os: ubuntu-20.04
+          - os: ubuntu-24.04
             python-version: 3.8
           - os: macos-13
             python-version: 3.8
