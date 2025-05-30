@@ -541,8 +541,11 @@ def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Extract
     else:
         strip_tags(search_tree, 'span')
     subelems = search_tree.xpath(search_expr)
-    result_body.extend(filter(lambda x: x is not None, (handle_textelem(e, potential_tags, options)
-                       for e in subelems)))  # type: ignore[arg-type]
+    result_body.extend(
+        filter(
+            lambda x: x is not None,  # type: ignore[arg-type]
+            (handle_textelem(e, potential_tags, options) for e in subelems))
+    )
     return result_body
 
 
