@@ -6,13 +6,14 @@ Functions to process nodes in HTML code.
 import logging
 
 from copy import deepcopy
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
+from .html_elements_reference import MDN_ELEMENTS
 from .settings import (
     Document,
     Extractor,
@@ -45,6 +46,70 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
 CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+
+# HTML element to XML element conversion map
+HTML_EL_TO_XML_EL: Dict[str, str] = {
+    # Special conversions that are already handled by CONVERSIONS functions
+    "dl": "list",       # handled by convert_lists
+    "ol": "list",       # handled by convert_lists
+    "ul": "list",       # handled by convert_lists
+    "li": "item",       # handled by convert_lists
+    "dd": "item",       # handled by convert_lists
+    "dt": "item",       # handled by convert_lists
+    "h1": "head",       # handled by convert_headings
+    "h2": "head",       # handled by convert_headings
+    "h3": "head",       # handled by convert_headings
+    "h4": "head",       # handled by convert_headings
+    "h5": "head",       # handled by convert_headings
+    "h6": "head",       # handled by convert_headings
+    "br": "lb",         # handled by convert_line_breaks
+    "hr": "lb",         # handled by convert_line_breaks
+    "blockquote": "quote",  # handled by convert_quotes
+    "pre": "code",      # handled by convert_quotes (may become quote)
+    "q": "quote",       # handled by convert_quotes
+    "del": "del",       # handled by convert_deletions
+    "s": "del",         # handled by convert_deletions
+    "strike": "del",    # handled by convert_deletions
+    "details": "div",   # handled by convert_details
+    "summary": "head",  # handled within convert_details
+    
+    # Formatting elements handled by REND_TAG_MAPPING
+    "em": "hi",         # with rend="#i"
+    "i": "hi",          # with rend="#i"
+    "b": "hi",          # with rend="#b"
+    "strong": "hi",     # with rend="#b"
+    "u": "hi",          # with rend="#u"
+    "kbd": "hi",        # with rend="#t"
+    "samp": "hi",       # with rend="#t"
+    "tt": "hi",         # with rend="#t"
+    "var": "hi",        # with rend="#t"
+    "sub": "hi",        # with rend="#sub"
+    "sup": "hi",        # with rend="#sup"
+    
+    # Link and image conversions
+    "a": "ref",         # handled in convert_tags
+    "img": "graphic",   # handled in convert_tags
+    
+    # Common preserved elements (identity mappings)
+    "p": "p",
+    "div": "div",
+    "span": "span",
+    "table": "table",
+    "tr": "row",        # handled in main_extractor
+    "td": "cell",       # handled in main_extractor  
+    "th": "cell",       # handled in main_extractor
+    "figure": "figure",
+    "figcaption": "figcaption",
+}
+
+# ------------------------------------------------------------------
+# FINALISE CONVERSION MAP – fill any MDN tag that is still missing
+# with an *identity* rule so the element is preserved rather than
+# silently discarded. This guarantees full coverage requested in
+# issue #720.
+# ------------------------------------------------------------------
+for _tag in MDN_ELEMENTS:
+    HTML_EL_TO_XML_EL.setdefault(_tag, _tag)
 
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
