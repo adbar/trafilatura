@@ -9,7 +9,9 @@ from copy import deepcopy
 from typing import Dict, List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
+from lxml.etree import (
+    _Element, Element, SubElement, XPath, strip_tags, tostring
+)
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
@@ -45,7 +47,7 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
-CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+CODE_INDICATORS = ["{", "(\"", "('", "\\n    "]
 
 # HTML element to XML element conversion map
 HTML_EL_TO_XML_EL: Dict[str, str] = {
@@ -72,7 +74,7 @@ HTML_EL_TO_XML_EL: Dict[str, str] = {
     "strike": "del",    # handled by convert_deletions
     "details": "div",   # handled by convert_details
     "summary": "head",  # handled within convert_details
-    
+
     # Formatting elements handled by REND_TAG_MAPPING
     "em": "hi",         # with rend="#i"
     "i": "hi",          # with rend="#i"
@@ -85,46 +87,57 @@ HTML_EL_TO_XML_EL: Dict[str, str] = {
     "var": "hi",        # with rend="#t"
     "sub": "hi",        # with rend="#sub"
     "sup": "hi",        # with rend="#sup"
-    
+
     # Link and image conversions
     "a": "ref",         # handled in convert_tags
     "img": "graphic",   # handled in convert_tags
-    
+
     # Common preserved elements (identity mappings)
     "p": "p",
     "div": "div",
     "span": "span",
     "table": "table",
-    "tr": "row",        # handled in main_extractor
-    "td": "cell",       # handled in main_extractor  
-    "th": "cell",       # handled in main_extractor
     "figure": "figure",
     "figcaption": "figcaption",
+
+    # NOTE: Table elements (tr, td, th) are intentionally excluded
+    # from conversion in convert_tags() and handled later by
+    # main_extractor which converts them to row/cell. They appear in
+    # EXCLUDED_TAGS to prevent conflicts.
 }
 
 # ------------------------------------------------------------------
 # FINALISE CONVERSION MAP – fill any MDN tag that is still missing
 # with an *identity* rule so the element is preserved rather than
-# silently discarded. This guarantees full coverage requested in
-# issue #720.
+# silently discarded. This guarantees full coverage.
 # ------------------------------------------------------------------
-for _tag in MDN_ELEMENTS:
-    HTML_EL_TO_XML_EL.setdefault(_tag, _tag)
+for tag in MDN_ELEMENTS:
+    HTML_EL_TO_XML_EL.setdefault(tag, tag)
+
+# Build-time safety check: ensure no empty strings in mapping
+# Empty strings would cause tree.iter() to silently fail
+assert "" not in HTML_EL_TO_XML_EL.values(), \
+    "Empty string found in HTML_EL_TO_XML_EL mapping"
+assert None not in HTML_EL_TO_XML_EL.values(), \
+    "None found in HTML_EL_TO_XML_EL mapping"
 
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
-    cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
+    cleaning_list, stripping_list = (MANUALLY_CLEANED.copy(),
+                                     MANUALLY_STRIPPED.copy())
     if not options.tables:
         cleaning_list.extend(["table", "td", "th", "tr"])
     else:
-        # prevent this issue: https://github.com/adbar/trafilatura/issues/301
+        # prevent this issue:
+        # https://github.com/adbar/trafilatura/issues/301
         for elem in tree.xpath(".//figure[descendant::table]"):
             elem.tag = "div"
     if options.images:
-        # Many websites have <img> inside <figure> or <picture> or <source> tag
-        cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
+        # Many websites have <img> inside <figure> or <picture> or <source>
+        cleaning_list = [e for e in cleaning_list
+                         if e not in PRESERVE_IMG_CLEANING]
         stripping_list.remove("img")
 
     # strip targeted elements
@@ -189,10 +202,11 @@ def collect_link_info(
     links_xpath: List[HtmlElement],
 ) -> Tuple[int, int, int, List[str]]:
     "Collect heuristics on link text"
-    mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
+    mylist = [e for e in (trim(elem.text_content())
+                          for elem in links_xpath) if e]
     lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
-    shortelems = sum(1 for l in lengths if l < 10)
+    shortelems = sum(1 for length in lengths if length < 10)
     return sum(lengths), len(mylist), shortelems, mylist
 
 
@@ -231,7 +245,8 @@ def link_density_test(
             shortelems,
             elemnum,
         )
-        if linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8):
+        if linklen > elemlen * 0.8 or \
+                (elemnum > 1 and shortelems / elemnum > 0.8):
             return True, mylist
     return False, mylist
 
@@ -252,7 +267,8 @@ def link_density_test_tables(element: HtmlElement) -> bool:
         return True
 
     LOGGER.debug("table link text: %s / total: %s", linklen, elemlen)
-    return linklen > 0.8 * elemlen if elemlen < 1000 else linklen > 0.5 * elemlen
+    return (linklen > 0.8 * elemlen if elemlen < 1000
+            else linklen > 0.5 * elemlen)
 
 
 def delete_by_link_density(
@@ -295,7 +311,8 @@ def handle_textnode(
     "Convert, format, and probe potential text elements."
     if elem.tag == "graphic" and is_image_element(elem):
         return elem
-    if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
+    if (elem.tag == "done" or
+            (len(elem) == 0 and not elem.text and not elem.tail)):
         return None
 
     # lb bypass
@@ -322,7 +339,7 @@ def handle_textnode(
             elem.tail = trim(elem.tail) or None
 
     # filter content
-    # or not re.search(r'\w', element.text):  # text_content()?
+    # or not re.search(r'\\w', element.text):  # text_content()?
     if (
         not elem.text
         and textfilter(elem)
@@ -334,7 +351,8 @@ def handle_textnode(
 
 def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
     "Convert, format, and probe potential text elements (light format)."
-    if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
+    if (elem.tag == "done" or
+            (len(elem) == 0 and not elem.text and not elem.tail)):
         return None
 
     # trim
@@ -346,7 +364,8 @@ def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
 
     # content checks
     if elem.text or elem.tail:
-        if textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
+        if (textfilter(elem) or
+                (options.dedup and duplicate_test(elem, options))):
             return None
 
     return elem
@@ -386,6 +405,7 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
+
 def _is_code_block(text: Optional[str]) -> bool:
     "Check if the element text is part of a code block."
     if not text:
@@ -394,6 +414,7 @@ def _is_code_block(text: Optional[str]) -> bool:
         if indicator in text:
             return True
     return False
+
 
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
@@ -442,6 +463,21 @@ CONVERSIONS = {
     # wbr
 }
 
+# ------------------------------------------------------------------
+# Pre-compute excluded tags and tags to convert for performance
+# This avoids rebuilding the set on every convert_tags() call
+# ------------------------------------------------------------------
+_TABLE_RELATED = {"table", "caption", "col", "colgroup", "tbody", "thead",
+                  "tfoot", "tr", "td", "th"}
+_EXCLUDED_TAGS = set(CONVERSIONS.keys()) | {"a", "img"} | _TABLE_RELATED
+
+# Pre-compute tags that need conversion for optimal performance
+_CONVERSION_TAGS: Tuple[str, ...] = tuple(
+    set(CONVERSIONS.keys()) | 
+    {tag for tag, target in HTML_EL_TO_XML_EL.items()
+     if tag not in _EXCLUDED_TAGS and target != tag}
+)
+
 
 def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
     "Replace link tags and href attributes, delete the rest."
@@ -483,10 +519,18 @@ def convert_tags(
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
-    # iterate over all concerned elements
-    for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)  # type: ignore[index]
-    # images
+    # Apply all conversions - iterate only over tags that need conversion
+    for elem in tree.iter(*_CONVERSION_TAGS):
+        # Apply function-based conversions first (they take precedence)
+        if elem.tag in CONVERSIONS:
+            CONVERSIONS[elem.tag](elem)  # type: ignore[index]
+        # Apply simple tag mapping (already filtered by _CONVERSION_TAGS)
+        elif elem.tag in HTML_EL_TO_XML_EL:
+            tag_str = str(elem.tag)
+            if tag_str in HTML_EL_TO_XML_EL:
+                elem.tag = HTML_EL_TO_XML_EL[tag_str]
+
+    # Handle images last to ensure they're converted to 'graphic'
     if options.images:
         for elem in tree.iter("img"):
             elem.tag = "graphic"
