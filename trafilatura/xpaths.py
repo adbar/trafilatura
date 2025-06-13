@@ -46,7 +46,7 @@ BODY_XPATH = [XPath(x) for x in (
     or @role='article'])[1]""",
     '''(.//*[self::article or self::div or self::main or self::section][
     contains(@id, "content-main") or contains(@class, "content-main") or contains(@class, "content_main") or
-    contains(@id, "content-body") or contains(@class, "content-body") or contains(@id, "contentBody")
+    contains(@id, "content-body") or contains(@class, "content-body") or contains(@class, "conbody") or contains(@id, "conbody") or contains(@id, "contentBody")
     or contains(@class, "content__body") or contains(translate(@id, "CM","cm"), "main-content") or contains(translate(@class, "CM","cm"), "main-content")
     or contains(translate(@class, "CP","cp"), "page-content") or
     @id="content" or @class="content"])[1]''',
