@@ -179,7 +179,7 @@ def link_density_test_tables(element: HtmlElement) -> bool:
         return False
 
     elemlen = len(trim(element.text_content()))
-    if elemlen < 200:
+    if elemlen > 0 and elemlen < 200:
         return False
 
     linklen, elemnum, _, _ = collect_link_info(links_xpath)
