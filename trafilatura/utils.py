@@ -25,11 +25,11 @@ from typing import Any, cast, List, Literal, Optional, Tuple, Union
 from unicodedata import normalize
 
 # response compression
-try:
-    import brotli  # type: ignore
-    HAS_BROTLI = True
-except ImportError:
-    HAS_BROTLI = False
+# try:
+#     import brotli  # type: ignore
+#     HAS_BROTLI = True
+# except ImportError:
+#     HAS_BROTLI = False
 
 try:
     import zstandard
@@ -38,11 +38,11 @@ except ImportError:
     HAS_ZSTD = False
 
 # language detection
-try:
-    import py3langid  # type: ignore
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
+# try:
+#     import py3langid  # type: ignore
+#     LANGID_FLAG = True
+# except ImportError:
+#     LANGID_FLAG = False
 
 # CChardet is faster and can be more accurate
 try:
@@ -91,41 +91,41 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-def handle_compressed_file(filecontent: bytes) -> bytes:
-    """
-    Don't trust response headers and try to decompress a binary string
-    with a cascade of installed packages. Use magic numbers when available.
-    """
-    if not isinstance(filecontent, bytes):
-        return filecontent
+# def handle_compressed_file(filecontent: bytes) -> bytes:
+#     """
+#     Don't trust response headers and try to decompress a binary string
+#     with a cascade of installed packages. Use magic numbers when available.
+#     """
+#     if not isinstance(filecontent, bytes):
+#         return filecontent
 
-    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if HAS_GZIP and filecontent[:3] == b"\x1f\x8b\x08":
-        try:
-            return gzip.decompress(filecontent)
-        except Exception:  # EOFError, OSError, gzip.BadGzipFile
-            LOGGER.warning("invalid GZ file")
-    # try zstandard
-    if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
-        try:
-            return zstandard.decompress(filecontent)  # max_output_size=???
-        except zstandard.ZstdError:
-            LOGGER.warning("invalid ZSTD file")
-    # try brotli
-    if HAS_BROTLI:
-        try:
-            return brotli.decompress(filecontent)  # type: ignore[no-any-return]
-        except brotli.error:
-            pass  # logging.debug('invalid Brotli file')
-    # try zlib/deflate
-    if HAS_ZLIB:
-        try:
-            return zlib.decompress(filecontent)
-        except zlib.error:
-            pass
+#     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+#     if HAS_GZIP and filecontent[:3] == b"\x1f\x8b\x08":
+#         try:
+#             return gzip.decompress(filecontent)
+#         except Exception:  # EOFError, OSError, gzip.BadGzipFile
+#             LOGGER.warning("invalid GZ file")
+#     # try zstandard
+#     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
+#         try:
+#             return zstandard.decompress(filecontent)  # max_output_size=???
+#         except zstandard.ZstdError:
+#             LOGGER.warning("invalid ZSTD file")
+#     # try brotli
+#     if HAS_BROTLI:
+#         try:
+#             return brotli.decompress(filecontent)  # type: ignore[no-any-return]
+#         except brotli.error:
+#             pass  # logging.debug('invalid Brotli file')
+#     # try zlib/deflate
+#     if HAS_ZLIB:
+#         try:
+#             return zlib.decompress(filecontent)
+#         except zlib.error:
+#             pass
 
-    # return content unchanged if decompression failed
-    return filecontent
+#     # return content unchanged if decompression failed
+#     return filecontent
 
 
 def isutf8(data: bytes) -> bool:
@@ -411,35 +411,35 @@ def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = Fals
     return True
 
 
-def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
-    '''Run external component (if installed) for language identification'''
-    if LANGID_FLAG is True:
-        result, _ = (
-            py3langid.classify(temp_text)
-            if len(temp_text) > len(temp_comments)
-            else py3langid.classify(temp_comments)
-        )
-    else:  # pragma: no cover
-        LOGGER.warning('Language detector not installed, skipping detection')
-        result = None
-    return result  # type: ignore[no-any-return]
+# def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
+#     '''Run external component (if installed) for language identification'''
+#     if LANGID_FLAG is True:
+#         result, _ = (
+#             py3langid.classify(temp_text)
+#             if len(temp_text) > len(temp_comments)
+#             else py3langid.classify(temp_comments)
+#         )
+#     else:  # pragma: no cover
+#         LOGGER.warning('Language detector not installed, skipping detection')
+#         result = None
+#     return result  # type: ignore[no-any-return]
 
 
-def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
-    '''Filter text based on language detection and store relevant information'''
-    # todo: run and pass info along anyway?
-    if target_language is not None:
-        # more thorough: detection on actual text content
-        docmeta.language = language_classifier(temp_text, temp_comments)
-        # HTML lang check? sometimes contradicted by detection above
-        #if docmeta.language is None:
-        #    if check_html_lang(tree, target_language) is False:
-        #        LOGGER.error('wrong HTML meta language for URL %s', url)
-        #        raise ValueError
-        if docmeta.language is not None and docmeta.language != target_language:
-            LOGGER.warning('wrong language: %s %s', docmeta.language, docmeta.url)
-            return True, docmeta
-    return False, docmeta
+# def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
+#     '''Filter text based on language detection and store relevant information'''
+#     # todo: run and pass info along anyway?
+#     if target_language is not None:
+#         # more thorough: detection on actual text content
+#         docmeta.language = language_classifier(temp_text, temp_comments)
+#         # HTML lang check? sometimes contradicted by detection above
+#         #if docmeta.language is None:
+#         #    if check_html_lang(tree, target_language) is False:
+#         #        LOGGER.error('wrong HTML meta language for URL %s', url)
+#         #        raise ValueError
+#         if docmeta.language is not None and docmeta.language != target_language:
+#             LOGGER.warning('wrong language: %s %s', docmeta.language, docmeta.url)
+#             return True, docmeta
+#     return False, docmeta
 
 
 def textfilter(element: _Element) -> bool:

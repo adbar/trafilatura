@@ -5,7 +5,7 @@ All functions related to XML generation, processing and validation.
 
 import csv
 import logging
-
+# build_json_output, control_xml_output, xmltotxt, xmltocsv
 from html import unescape
 from importlib.metadata import version
 from io import StringIO

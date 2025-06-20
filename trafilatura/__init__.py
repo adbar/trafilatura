@@ -12,10 +12,9 @@ __version__ = "2.0.0"
 
 import logging
 
-from .baseline import baseline, html2txt
-from .core import bare_extraction, extract, extract_with_metadata
-from .downloads import fetch_response, fetch_url
-from .metadata import extract_metadata
+from .core import bare_extraction, extract
+
+
 from .utils import load_html
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
@@ -24,10 +23,7 @@ __all__ = [
     "bare_extraction",
     "baseline",
     "extract",
-    "extract_metadata",
-    "extract_with_metadata",
     "fetch_response",
     "fetch_url",
-    "html2txt",
     "load_html",
 ]

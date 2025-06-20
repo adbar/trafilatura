@@ -12,7 +12,7 @@ from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
 from lxml.html import HtmlElement
 
-from .deduplication import duplicate_test
+# from .deduplication import duplicate_test
 from .settings import (
     Document,
     Extractor,
@@ -20,7 +20,8 @@ from .settings import (
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
 )
-from .utils import textfilter, trim, is_image_element
+# from .utils import textfilter, trim, is_image_element
+from .utils import trim, is_image_element
 from .xml import META_ATTRIBUTES, delete_element
 
 
@@ -258,12 +259,12 @@ def handle_textnode(
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if (
-        not elem.text
-        and textfilter(elem)
-        or (options.dedup and duplicate_test(elem, options))
-    ):
-        return None
+    # if (
+    #     not elem.text
+    #     and textfilter(elem)
+    #     or (options.dedup and duplicate_test(elem, options))
+    # ):
+    #     return None
     return elem
 
 
@@ -280,9 +281,9 @@ def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
         elem.text, elem.tail = elem.tail, None
 
     # content checks
-    if elem.text or elem.tail:
-        if textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
-            return None
+    # if elem.text or elem.tail:
+    #     if textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
+    #         return None
 
     return elem
 

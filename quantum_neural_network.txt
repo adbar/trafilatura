@@ -1,0 +1,94 @@
+# Quantum neural network
+
+**Quantum neural networks** are computational neural network models which are based on the principles of quantum mechanics. The first ideas on quantum neural computation were published independently in 1995 by Subhash Kak and Ron Chrisley,[1][2] engaging with the theory of quantum mind, which posits that quantum effects play a role in cognitive function. However, typical research in quantum neural networks involves combining classical artificial neural network models (which are widely used in machine learning for the important task of pattern recognition) with the advantages of quantum information in order to develop more efficient algorithms.[3][4][5] One important motivation for these investigations is the difficulty to train classical neural networks, especially in big data applications. The hope is that features of quantum computing such as quantum parallelism or the effects of interference and entanglement can be used as resources. Since the technological implementation of a quantum computer is still in a premature stage, such quantum neural network models are mostly theoretical proposals that await their full implementation in physical experiments.
+
+Most Quantum neural networks are developed as feed-forward networks. Similar to their classical counterparts, this structure intakes input from one layer of qubits, and passes that input onto another layer of qubits. This layer of qubits evaluates this information and passes on the output to the next layer. Eventually the path leads to the final layer of qubits.[6][7] The layers do not have to be of the same width, meaning they don't have to have the same number of qubits as the layer before or after it. This structure is trained on which path to take similar to classical artificial neural networks. This is discussed in a lower section. Quantum neural networks refer to three different categories: Quantum computer with classical data, classical computer with quantum data, and quantum computer with quantum data.[6]
+
+## Examples
+
+[edit]Quantum neural network research is still in its infancy, and a conglomeration of proposals and ideas of varying scope and mathematical rigor have been put forward. Most of them are based on the idea of replacing classical binary or McCulloch-Pitts neurons with a qubit (which can be called a “quron”), resulting in neural units that can be in a superposition of the state ‘firing’ and ‘resting’.
+
+### Quantum perceptrons
+
+[edit]A lot of proposals attempt to find a quantum equivalent for the perceptron unit from which neural nets are constructed. A problem is that nonlinear activation functions do not immediately correspond to the mathematical structure of quantum theory, since a quantum evolution is described by linear operations and leads to probabilistic observation. Ideas to imitate the perceptron activation function with a quantum mechanical formalism reach from special measurements[8][9] to postulating non-linear quantum operators (a mathematical framework that is disputed).[10][11] A direct implementation of the activation function using the circuit-based model of quantum computation has recently been proposed by Schuld, Sinayskiy and Petruccione based on the quantum phase estimation algorithm.[12]
+
+### Quantum networks
+
+[edit]At a larger scale, researchers have attempted to generalize neural networks to the quantum setting. One way of constructing a quantum neuron is to first generalise classical neurons and then generalising them further to make unitary gates. Interactions between neurons can be controlled quantumly, with unitary gates, or classically, via measurement of the network states. This high-level theoretical technique can be applied broadly, by taking different types of networks and different implementations of quantum neurons, such as photonically implemented neurons[7][13] and quantum reservoir processor (quantum version of reservoir computing).[14] Most learning algorithms follow the classical model of training an artificial neural network to learn the input-output function of a given training set and use classical feedback loops to update parameters of the quantum system until they converge to an optimal configuration. Learning as a parameter optimisation problem has also been approached by adiabatic models of quantum computing.[15]
+
+Quantum neural networks can be applied to algorithmic design: given qubits with tunable mutual interactions, one can attempt to learn interactions following the classical backpropagation rule from a training set of desired input-output relations, taken to be the desired output algorithm's behavior.[16][17] The quantum network thus ‘learns’ an algorithm.
+
+### Quantum associative memory
+
+[edit]The first quantum associative memory algorithm was introduced by Dan Ventura and Tony Martinez in 1999.[18] The authors do not attempt to translate the structure of artificial neural network models into quantum theory, but propose an algorithm for a circuit-based quantum computer that simulates associative memory. The memory states (in Hopfield neural networks saved in the weights of the neural connections) are written into a superposition, and a Grover-like quantum search algorithm retrieves the memory state closest to a given input. As such, this is not a fully content-addressable memory, since only incomplete patterns can be retrieved.
+
+The first truly content-addressable quantum memory, which can retrieve patterns also from corrupted inputs, was proposed by Carlo A. Trugenberger.[19][20][21] Both memories can store an exponential (in terms of n qubits) number of patterns but can be used only once due to the no-cloning theorem and their destruction upon measurement.
+
+Trugenberger,[20] however, has shown that his probabilistic model of quantum associative memory can be efficiently implemented and re-used multiples times for any polynomial number of stored patterns, a large advantage with respect to classical associative memories.
+
+### Classical neural networks inspired by quantum theory
+
+[edit]A substantial amount of interest has been given to a “quantum-inspired” model that uses ideas from quantum theory to implement a neural network based on fuzzy logic.[22]
+
+## Training
+
+[edit]Quantum Neural Networks can be theoretically trained similarly to training classical/artificial neural networks. A key difference lies in communication between the layers of a neural networks. For classical neural networks, at the end of a given operation, the current perceptron copies its output to the next layer of perceptron(s) in the network. However, in a quantum neural network, where each perceptron is a qubit, this would violate the no-cloning theorem.[6][23] A proposed generalized solution to this is to replace the classical fan-out method with an arbitrary unitary that spreads out, but does not copy, the output of one qubit to the next layer of qubits. Using this fan-out Unitary () with a dummy state qubit in a known state (Ex.  in the computational basis), also known as an Ancilla bit, the information from the qubit can be transferred to the next layer of qubits.[7] This process adheres to the quantum operation requirement of reversibility.[7][24]
+
+Using this quantum feed-forward network, deep neural networks can be executed and trained efficiently. A deep neural network is essentially a network with many hidden-layers, as seen in the sample model neural network above. Since the Quantum neural network being discussed uses fan-out Unitary operators, and each operator only acts on its respective input, only two layers are used at any given time.[6] In other words, no Unitary operator is acting on the entire network at any given time, meaning the number of qubits required for a given step depends on the number of inputs in a given layer. Since Quantum Computers are notorious for their ability to run multiple iterations in a short period of time, the efficiency of a quantum neural network is solely dependent on the number of qubits in any given layer, and not on the depth of the network.[24]
+
+### Cost functions
+
+[edit]To determine the effectiveness of a neural network, a cost function is used, which essentially measures the proximity of the network's output to the expected or desired output. In a Classical Neural Network, the weights () and biases () at each step determine the outcome of the cost function .[6] When training a Classical Neural network, the weights and biases are adjusted after each iteration, and given equation 1 below, where  is the desired output and  is the actual output, the cost function is optimized when = 0. For a quantum neural network, the cost function is determined by measuring the fidelity of the outcome state () with the desired outcome state (), seen in Equation 2 below. In this case, the Unitary operators are adjusted after each iteration, and the cost function is optimized when C = 1.[6]
+
+```
+Equation 1 
+```
+```
+Equation 2 
+```
+### Barren plateaus
+
+[edit]Gradient descent is widely used and successful in classical algorithms. However, although the simplified structure is very similar to neural networks such as CNNs, QNNs perform much worse.
+
+Since the quantum space exponentially expands as the q-bit grows, the observations will concentrate around the mean value at an exponential rate, where also have exponentially small gradients.[26]
+
+This situation is known as Barren Plateaus, because most of the initial parameters are trapped on a "plateau" of almost zero gradient, which approximates random wandering[26] rather than gradient descent. This makes the model untrainable.
+
+In fact, not only QNN, but almost all deeper VQA algorithms have this problem. In the present NISQ era, this is one of the problems that have to be solved if more applications are to be made of the various VQA algorithms, including QNN.
+
+## See also
+
+[edit]- Differentiable programming
+- Optical neural network
+- Holographic associative memory
+- Quantum cognition
+- Quantum machine learning
+
+## References
+
+[edit]- **^**Kak, S. (1995). "On quantum neural computing".- *Advances in Imaging and Electron Physics*.- **94**: 259–313. doi:10.1016/S1076-5670(08)70147-2. ISBN 9780120147366.
+- **^**Chrisley, R. (1995). "Quantum Learning". In Pylkkänen, P.; Pylkkö, P. (eds.).- *New directions in cognitive science: Proceedings of the international symposium, Saariselka, 4–9 August 1995, Lapland, Finland*. Helsinki: Finnish Association of Artificial Intelligence. pp. 77–89. ISBN 951-22-2645-6.
+- **^**da Silva, Adenilton J.; Ludermir, Teresa B.; de Oliveira, Wilson R. (2016). "Quantum perceptron over a field and neural network architecture selection in a quantum computer".- *Neural Networks*.- **76**: 55–64. arXiv:1602.00709. Bibcode:2016arXiv160200709D. doi:10.1016/j.neunet.2016.01.002. PMID 26878722. S2CID 15381014.
+- **^**Panella, Massimo; Martinelli, Giuseppe (2011). "Neural networks with quantum architecture and quantum learning".- *International Journal of Circuit Theory and Applications*.- **39**: 61–77. doi:10.1002/cta.619. S2CID 3791858.
+- **^**Schuld, M.; Sinayskiy, I.; Petruccione, F. (2014). "The quest for a Quantum Neural Network".- *Quantum Information Processing*.- **13**(11): 2567–2586. arXiv:1408.7005. Bibcode:2014QuIP...13.2567S. doi:10.1007/s11128-014-0809-8. S2CID 37238534.
+- ^ **a****b****c****d****e****f***Nature Communications*.**11**(1): 808. arXiv:1902.10445. Bibcode:2020NatCo..11..808B. doi:10.1038/s41467-020-14454-2. ISSN 2041-1723. PMC 7010779. PMID 32041956.
+- ^ **a****b****c****d***npj Quantum Information*.**3**(1): 36. arXiv:1612.01045. Bibcode:2017npjQI...3...36W. doi:10.1038/s41534-017-0032-4. S2CID 51685660.
+- **^**Perus, M. (2000). "Neural Networks as a basis for quantum associative memory".- *Neural Network World*.- **10**(6): 1001. CiteSeerX 10.1.1.106.4583.
+- **^**Zak, M.; Williams, C. P. (1998). "Quantum Neural Nets".- *International Journal of Theoretical Physics*.- **37**(2): 651–684. doi:10.1023/A:1026656110699. S2CID 55783801.
+- **^**Gupta, Sanjay; Zia, R.K.P. (2001). "Quantum Neural Networks".- *Journal of Computer and System Sciences*.- **63**(3): 355–383. arXiv:quant-ph/0201144. doi:10.1006/jcss.2001.1769. S2CID 206569020.
+- **^**Faber, J.; Giraldi, G. A. (2002). "Quantum Models for Artificial Neural Network".
+- **^**Schuld, M.; Sinayskiy, I.; Petruccione, F. (2014). "Simulating a perceptron on a quantum computer".- *Physics Letters A*.- **379**(7): 660–663. arXiv:1412.3635. doi:10.1016/j.physleta.2014.11.061. S2CID 14288234.
+- **^**Narayanan, A.; Menneer, T. (2000). "Quantum artificial neural network architectures and components".- *Information Sciences*.- **128**(3–4): 231–255. doi:10.1016/S0020-0255(00)00055-4. S2CID 10901562.
+- **^**Ghosh, S.; Opala, A.; Matuszewski, M.; Paterek, P.; Liew, T. C. H. (2019). "Quantum reservoir processing".- *npj Quantum Information*.- **5**(1): 35. arXiv:1811.10335. Bibcode:2019npjQI...5...35G. doi:10.1038/s41534-019-0149-8. S2CID 119197635.
+- **^**Neven, H.; et al. (2008). "Training a Binary Classifier with the Quantum Adiabatic Algorithm". arXiv:0811.0416 [quant-ph].
+- **^**Bang, J.; et al. (2014). "A strategy for quantum algorithm design assisted by machine learning".- *New Journal of Physics*.- **16**(7): 073017. arXiv:1301.1132. Bibcode:2014NJPh...16g3017B. doi:10.1088/1367-2630/16/7/073017. S2CID 55377982.
+- **^**Behrman, E. C.; Steck, J. E.; Kumar, P.; Walsh, K. A. (2008). "Quantum Algorithm design using dynamic learning".- *Quantum Information and Computation*.- **8**(1–2): 12–29. arXiv:0808.1558. doi:10.26421/QIC8.1-2-2. S2CID 18587557.
+- **^**Ventura, D.; Martinez, T. (1999). "A Quantum Associative Memory Based on Grover's Algorithm" (PDF).- *Artificial Neural Nets and Genetic Algorithms*. pp. 22–27. doi:10.1007/978-3-7091-6384-9_5. ISBN 978-3-211-83364-3. S2CID 3258510. Archived from the original (PDF) on 2017-09-11.
+- **^**Trugenberger, C. A. (2001-07-18). "Probabilistic Quantum Memories".- *Physical Review Letters*.- **87**(6): 067901. arXiv:quant-ph/0012100. Bibcode:2001PhRvL..87f7901T. doi:10.1103/physrevlett.87.067901. ISSN 0031-9007. PMID 11497863. S2CID 23325931.
+- ^ **a****b***Quantum Information Processing*.**1**(6): 471–493. arXiv:quant-ph/0210176. Bibcode:2002QuIP....1..471T. doi:10.1023/A:1024022632303. S2CID 1928001.
+- **^**Trugenberger, C. A. (2002-12-19). "Phase Transitions in Quantum Pattern Recognition".- *Physical Review Letters*.- **89**(27): 277903. arXiv:quant-ph/0204115. Bibcode:2002PhRvL..89A7903T. doi:10.1103/physrevlett.89.277903. ISSN 0031-9007. PMID 12513243. S2CID 33065081.
+- **^**Purushothaman, G.; Karayiannis, N. (1997). "Quantum Neural Networks (QNN's): Inherently Fuzzy Feedforward Neural Networks" (PDF).- *IEEE Transactions on Neural Networks*.- **8**(3): 679–93. doi:10.1109/72.572106. PMID 18255670. S2CID 1634670. Archived from the original (PDF) on 2017-09-11.
+- **^**Nielsen, Michael A; Chuang, Isaac L (2010).- *Quantum computation and quantum information*. Cambridge; New York: Cambridge University Press. ISBN 978-1-107-00217-3. OCLC 665137861.
+- ^ **a****b***Foundations of Physics*.**16**(6): 507–531. Bibcode:1986FoPh...16..507F. doi:10.1007/BF01886518. ISSN 1572-9516. S2CID 122076550.
+- **^**Wang, Samson; Fontana, Enrico; Cerezo, M.; Sharma, Kunal; Sone, Akira; Cincio, Lukasz; Coles, Patrick J. (2021-11-29). "Noise-induced barren plateaus in variational quantum algorithms".- *Nature Communications*.- **12**(1): 6961. arXiv:2007.14384. Bibcode:2021NatCo..12.6961W. doi:10.1038/s41467-021-27045-6. ISSN 2041-1723. PMC 8630047. PMID 34845216.
+- ^ **a****b***Nature Communications*.**9**(1): 4812. arXiv:1803.11173. Bibcode:2018NatCo...9.4812M. doi:10.1038/s41467-018-07090-4. ISSN 2041-1723. PMC 6240101. PMID 30446662.
