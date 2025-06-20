@@ -12,7 +12,7 @@ __version__ = "2.0.0"
 
 import logging
 
-from .core import bare_extraction, extract
+from .core import _internal_extraction
 
 
 from .utils import load_html
@@ -21,8 +21,8 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 __all__ = [
     "bare_extraction",
+    "_internal_extraction",
     "baseline",
-    "extract",
     "fetch_response",
     "fetch_url",
     "load_html",

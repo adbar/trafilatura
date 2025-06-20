@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html class="client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 vector-feature-night-mode-enabled skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available" lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<title>Quantum neural network - Wikipedia</title>
+<script>(function(){var className="client-js vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 vector-feature-night-mode-enabled skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available";var cookie=document.cookie.match(/(?:^|; )enwikimwclientpreferences=([^;]+)/);if(cookie){cookie[1].split('%2C').forEach(function(pref){className=className.replace(new RegExp('(^| )'+pref.replace(/-clientpref-\w+$|[^\w-]+/g,'')+'-clientpref-\\w+( |$)'),'$1'+pref+'$2');});}document.documentElement.className=className;}());RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"1a346359-1467-4475-921b-bc604d6a8abb","wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Quantum_neural_network","wgTitle":"Quantum neural network","wgCurRevisionId":1296426484,"wgRevisionId":1296426484,"wgArticleId":3737445,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Articles with short description","Short description is different from Wikidata","Artificial neural networks","Quantum information science","Quantum programming"],"wgPageViewLanguage":"en","wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Quantum_neural_network","wgRelevantArticleId":3737445,"wgIsProbablyEditable":true,"wgRelevantPageIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgNoticeProject":"wikipedia","wgCiteReferencePreviewsActive":false,"wgFlaggedRevsParams":{"tags":{"status":{"levels":1}}},"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgPopupsFlags":0,"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgMFDisplayWikibaseDescriptions":{"search":true,"watchlist":true,"tagline":false,"nearby":true},"wgWMESchemaEditAttemptStepOversample":false,"wgWMEPageLength":20000,"wgMetricsPlatformUserExperiments":{"active_experiments":[],"overrides":[],"enrolled":[],"assigned":[],"subject_ids":[],"sampling_units":[]},"wgEditSubmitButtonLabelPublish":true,"wgULSPosition":"interlanguage","wgULSisCompactLinksEnabled":false,"wgVector2022LanguageInHeader":true,"wgULSisLanguageSelectorEmpty":false,"wgWikibaseItemId":"Q1981341","wgCheckUserClientHintsHeadersJsApi":["brands","architecture","bitness","fullVersionList","mobile","model","platform","platformVersion"],"GEHomepageSuggestedEditsEnableTopics":true,"wgGESuggestedEditsTaskTypes":{"taskTypes":["copyedit","link-recommendation"],"unavailableTaskTypes":[]},"wgGETopicsMatchModeEnabled":false,"wgGELevelingUpEnabledForUser":false};
+RLSTATE={"ext.globalCssJs.user.styles":"ready","site.styles":"ready","user.styles":"ready","ext.globalCssJs.user":"ready","user":"ready","user.options":"loading","ext.cite.styles":"ready","ext.math.styles":"ready","skins.vector.search.codex.styles":"ready","skins.vector.styles":"ready","skins.vector.icons":"ready","jquery.makeCollapsible.styles":"ready","ext.wikimediamessages.styles":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.uls.interlanguage":"ready","wikibase.client.init":"ready"};RLPAGEMODULES=["ext.xLab","ext.cite.ux-enhancements","mediawiki.page.media","site","mediawiki.page.ready","jquery.makeCollapsible","mediawiki.toc","skins.vector.js","ext.centralNotice.geoIP","ext.centralNotice.startUp","ext.gadget.ReferenceTooltips","ext.gadget.switcher","ext.urlShortener.toolbar","ext.centralauth.centralautologin","mmv.bootstrap","ext.popups","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","ext.echo.centralauth","ext.eventLogging","ext.wikimediaEvents","ext.navigationTiming","ext.uls.interface","ext.cx.eventlogging.campaigns","ext.cx.uls.quick.actions","wikibase.client.vector-2022","ext.checkUser.clientHints","ext.quicksurveys.init","ext.growthExperiments.SuggestedEditSession"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.impl(function(){return["user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});
+}];});});</script>
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=ext.cite.styles%7Cext.math.styles%7Cext.uls.interlanguage%7Cext.visualEditor.desktopArticleTarget.noscript%7Cext.wikimediamessages.styles%7Cjquery.makeCollapsible.styles%7Cskins.vector.icons%2Cstyles%7Cskins.vector.search.codex.styles%7Cwikibase.client.init&amp;only=styles&amp;skin=vector-2022">
+<script async="" src="/w/load.php?lang=en&amp;modules=startup&amp;only=scripts&amp;raw=1&amp;skin=vector-2022"></script>
+<meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="/w/load.php?lang=en&amp;modules=site.styles&amp;only=styles&amp;skin=vector-2022">
+<meta name="generator" content="MediaWiki 1.45.0-wmf.6">
+<meta name="referrer" content="origin">
+<meta name="referrer" content="origin-when-cross-origin">
+<meta name="robots" content="max-image-preview:standard">
+<meta name="format-detection" content="telephone=no">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Neural_Network_-_basic_scheme_with_legends.png/1200px-Neural_Network_-_basic_scheme_with_legends.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="750">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Neural_Network_-_basic_scheme_with_legends.png/960px-Neural_Network_-_basic_scheme_with_legends.png">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="500">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="400">
+<meta name="viewport" content="width=1120">
+<meta property="og:title" content="Quantum neural network - Wikipedia">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="//upload.wikimedia.org">
+<link rel="alternate" media="only screen and (max-width: 640px)" href="//en.m.wikipedia.org/wiki/Quantum_neural_network">
+<link rel="alternate" type="application/x-wiki" title="Edit this page" href="/w/index.php?title=Quantum_neural_network&amp;action=edit">
+<link rel="apple-touch-icon" href="/static/apple-touch/wikipedia.png">
+<link rel="icon" href="/static/favicon/wikipedia.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="/w/rest.php/v1/search" title="Wikipedia (en)">
+<link rel="EditURI" type="application/rsd+xml" href="//en.wikipedia.org/w/api.php?action=rsd">
+<link rel="canonical" href="https://en.wikipedia.org/wiki/Quantum_neural_network">
+<link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">
+<link rel="alternate" type="application/atom+xml" title="Wikipedia Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom">
+<link rel="dns-prefetch" href="//meta.wikimedia.org" />
+<link rel="dns-prefetch" href="auth.wikimedia.org">
+</head>
+<body class="skin--responsive skin-vector skin-vector-search-vue mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject mw-editable page-Quantum_neural_network rootpage-Quantum_neural_network skin-vector-2022 action-view"><a class="mw-jump-link" href="#bodyContent">Jump to content</a>
+<div class="vector-header-container">
+	<header class="vector-header mw-header no-font-mode-scale">
+		<div class="vector-header-start">
+			<nav class="vector-main-menu-landmark" aria-label="Site">
+				
+<div id="vector-main-menu-dropdown" class="vector-dropdown vector-main-menu-dropdown vector-button-flush-left vector-button-flush-right"  title="Main menu" >
+	<input type="checkbox" id="vector-main-menu-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-main-menu-dropdown" class="vector-dropdown-checkbox "  aria-label="Main menu"  >
+	<label id="vector-main-menu-dropdown-label" for="vector-main-menu-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-menu mw-ui-icon-wikimedia-menu"></span>
+
+<span class="vector-dropdown-label-text">Main menu</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+				<div id="vector-main-menu-unpinned-container" class="vector-unpinned-container">
+		
+<div id="vector-main-menu" class="vector-main-menu vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-main-menu-pinnable-header vector-pinnable-header-unpinned"
+	data-feature-name="main-menu-pinned"
+	data-pinnable-element-id="vector-main-menu"
+	data-pinned-container-id="vector-main-menu-pinned-container"
+	data-unpinned-container-id="vector-main-menu-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Main menu</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-main-menu.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-main-menu.unpin">hide</button>
+</div>
+
+	
+<div id="p-navigation" class="vector-menu mw-portlet mw-portlet-navigation"  >
+	<div class="vector-menu-heading">
+		Navigation
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-mainpage-description" class="mw-list-item"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z"><span>Main page</span></a></li><li id="n-contents" class="mw-list-item"><a href="/wiki/Wikipedia:Contents" title="Guides to browsing Wikipedia"><span>Contents</span></a></li><li id="n-currentevents" class="mw-list-item"><a href="/wiki/Portal:Current_events" title="Articles related to current events"><span>Current events</span></a></li><li id="n-randompage" class="mw-list-item"><a href="/wiki/Special:Random" title="Visit a randomly selected article [x]" accesskey="x"><span>Random article</span></a></li><li id="n-aboutsite" class="mw-list-item"><a href="/wiki/Wikipedia:About" title="Learn about Wikipedia and how it works"><span>About Wikipedia</span></a></li><li id="n-contactpage" class="mw-list-item"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us" title="How to contact Wikipedia"><span>Contact us</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+	
+	
+<div id="p-interaction" class="vector-menu mw-portlet mw-portlet-interaction"  >
+	<div class="vector-menu-heading">
+		Contribute
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="n-help" class="mw-list-item"><a href="/wiki/Help:Contents" title="Guidance on how to use and edit Wikipedia"><span>Help</span></a></li><li id="n-introduction" class="mw-list-item"><a href="/wiki/Help:Introduction" title="Learn how to edit Wikipedia"><span>Learn to edit</span></a></li><li id="n-portal" class="mw-list-item"><a href="/wiki/Wikipedia:Community_portal" title="The hub for editors"><span>Community portal</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="/wiki/Special:RecentChanges" title="A list of recent changes to Wikipedia [r]" accesskey="r"><span>Recent changes</span></a></li><li id="n-upload" class="mw-list-item"><a href="/wiki/Wikipedia:File_upload_wizard" title="Add images or other media for use on Wikipedia"><span>Upload file</span></a></li><li id="n-specialpages" class="mw-list-item"><a href="/wiki/Special:SpecialPages"><span>Special pages</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+</div>
+
+				</div>
+
+	</div>
+</div>
+
+		</nav>
+			
+<a href="/wiki/Main_Page" class="mw-logo">
+	<img class="mw-logo-icon" src="/static/images/icons/wikipedia.png" alt="" aria-hidden="true" height="50" width="50">
+	<span class="mw-logo-container skin-invert">
+		<img class="mw-logo-wordmark" alt="Wikipedia" src="/static/images/mobile/copyright/wikipedia-wordmark-en.svg" style="width: 7.5em; height: 1.125em;">
+		<img class="mw-logo-tagline" alt="The Free Encyclopedia" src="/static/images/mobile/copyright/wikipedia-tagline-en.svg" width="117" height="13" style="width: 7.3125em; height: 0.8125em;">
+	</span>
+</a>
+
+		</div>
+		<div class="vector-header-end">
+			
+<div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-collapses vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+	<a href="/wiki/Special:Search" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only search-toggle" title="Search Wikipedia [f]" accesskey="f"><span class="vector-icon mw-ui-icon-search mw-ui-icon-wikimedia-search"></span>
+
+<span>Search</span>
+	</a>
+	<div class="vector-typeahead-search-container">
+		<div class="cdx-typeahead-search cdx-typeahead-search--show-thumbnail cdx-typeahead-search--auto-expand-width">
+			<form action="/w/index.php" id="searchform" class="cdx-search-input cdx-search-input--has-end-button">
+				<div id="simpleSearch" class="cdx-search-input__input-wrapper"  data-search-loc="header-moved">
+					<div class="cdx-text-input cdx-text-input--has-start-icon">
+						<input
+							class="cdx-text-input__input mw-searchInput"
+							 type="search" name="search" placeholder="Search Wikipedia" aria-label="Search Wikipedia" autocapitalize="sentences" spellcheck="false" title="Search Wikipedia [f]" accesskey="f" id="searchInput"
+							>
+						<span class="cdx-text-input__icon cdx-text-input__start-icon"></span>
+					</div>
+					<input type="hidden" name="title" value="Special:Search">
+				</div>
+				<button class="cdx-button cdx-search-input__end-button">Search</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+			<nav class="vector-user-links vector-user-links-wide" aria-label="Personal tools">
+	<div class="vector-user-links-main">
+	
+<div id="p-vector-user-menu-preferences" class="vector-menu mw-portlet emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+	
+<div id="p-vector-user-menu-userpage" class="vector-menu mw-portlet emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+	<nav class="vector-appearance-landmark" aria-label="Appearance">
+		
+<div id="vector-appearance-dropdown" class="vector-dropdown "  title="Change the appearance of the page&#039;s font size, width, and color" >
+	<input type="checkbox" id="vector-appearance-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-appearance-dropdown" class="vector-dropdown-checkbox "  aria-label="Appearance"  >
+	<label id="vector-appearance-dropdown-label" for="vector-appearance-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-appearance mw-ui-icon-wikimedia-appearance"></span>
+
+<span class="vector-dropdown-label-text">Appearance</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+			<div id="vector-appearance-unpinned-container" class="vector-unpinned-container">
+				
+			</div>
+		
+	</div>
+</div>
+
+	</nav>
+	
+<div id="p-vector-user-menu-notifications" class="vector-menu mw-portlet emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+	
+<div id="p-vector-user-menu-overflow" class="vector-menu mw-portlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			<li id="pt-sitesupport-2" class="user-links-collapsible-item mw-list-item user-links-collapsible-item"><a data-mw="interface" href="https://donate.wikimedia.org/?wmf_source=donate&amp;wmf_medium=sidebar&amp;wmf_campaign=en.wikipedia.org&amp;uselang=en" class=""><span>Donate</span></a>
+</li>
+<li id="pt-createaccount-2" class="user-links-collapsible-item mw-list-item user-links-collapsible-item"><a data-mw="interface" href="/w/index.php?title=Special:CreateAccount&amp;returnto=Quantum+neural+network" title="You are encouraged to create an account and log in; however, it is not mandatory" class=""><span>Create account</span></a>
+</li>
+<li id="pt-login-2" class="user-links-collapsible-item mw-list-item user-links-collapsible-item"><a data-mw="interface" href="/w/index.php?title=Special:UserLogin&amp;returnto=Quantum+neural+network" title="You&#039;re encouraged to log in; however, it&#039;s not mandatory. [o]" accesskey="o" class=""><span>Log in</span></a>
+</li>
+
+			
+		</ul>
+		
+	</div>
+</div>
+
+	</div>
+	
+<div id="vector-user-links-dropdown" class="vector-dropdown vector-user-menu vector-button-flush-right vector-user-menu-logged-out"  title="Log in and more options" >
+	<input type="checkbox" id="vector-user-links-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-user-links-dropdown" class="vector-dropdown-checkbox "  aria-label="Personal tools"  >
+	<label id="vector-user-links-dropdown-label" for="vector-user-links-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-ellipsis mw-ui-icon-wikimedia-ellipsis"></span>
+
+<span class="vector-dropdown-label-text">Personal tools</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+		
+<div id="p-personal" class="vector-menu mw-portlet mw-portlet-personal user-links-collapsible-item"  title="User menu" >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="pt-sitesupport" class="user-links-collapsible-item mw-list-item"><a href="https://donate.wikimedia.org/?wmf_source=donate&amp;wmf_medium=sidebar&amp;wmf_campaign=en.wikipedia.org&amp;uselang=en"><span>Donate</span></a></li><li id="pt-createaccount" class="user-links-collapsible-item mw-list-item"><a href="/w/index.php?title=Special:CreateAccount&amp;returnto=Quantum+neural+network" title="You are encouraged to create an account and log in; however, it is not mandatory"><span class="vector-icon mw-ui-icon-userAdd mw-ui-icon-wikimedia-userAdd"></span> <span>Create account</span></a></li><li id="pt-login" class="user-links-collapsible-item mw-list-item"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Quantum+neural+network" title="You&#039;re encouraged to log in; however, it&#039;s not mandatory. [o]" accesskey="o"><span class="vector-icon mw-ui-icon-logIn mw-ui-icon-wikimedia-logIn"></span> <span>Log in</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-user-menu-anon-editor" class="vector-menu mw-portlet mw-portlet-user-menu-anon-editor"  >
+	<div class="vector-menu-heading">
+		Pages for logged out editors <a href="/wiki/Help:Introduction" aria-label="Learn more about editing"><span>learn more</span></a>
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="pt-anoncontribs" class="mw-list-item"><a href="/wiki/Special:MyContributions" title="A list of edits made from this IP address [y]" accesskey="y"><span>Contributions</span></a></li><li id="pt-anontalk" class="mw-list-item"><a href="/wiki/Special:MyTalk" title="Discussion about edits from this IP address [n]" accesskey="n"><span>Talk</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+	
+	</div>
+</div>
+
+</nav>
+
+		</div>
+	</header>
+</div>
+<div class="mw-page-container">
+	<div class="mw-page-container-inner">
+		<div class="vector-sitenotice-container">
+			<div id="siteNotice"><!-- CentralNotice --></div>
+		</div>
+		<div class="vector-column-start">
+			<div class="vector-main-menu-container">
+		<div id="mw-navigation">
+			<nav id="mw-panel" class="vector-main-menu-landmark" aria-label="Site">
+				<div id="vector-main-menu-pinned-container" class="vector-pinned-container">
+				
+				</div>
+		</nav>
+		</div>
+	</div>
+	<div class="vector-sticky-pinned-container">
+				<nav id="mw-panel-toc" aria-label="Contents" data-event-name="ui.sidebar-toc" class="mw-table-of-contents-container vector-toc-landmark">
+					<div id="vector-toc-pinned-container" class="vector-pinned-container">
+					<div id="vector-toc" class="vector-toc vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-toc-pinnable-header vector-pinnable-header-pinned"
+	data-feature-name="toc-pinned"
+	data-pinnable-element-id="vector-toc"
+	
+	
+>
+	<h2 class="vector-pinnable-header-label">Contents</h2>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-toc.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-toc.unpin">hide</button>
+</div>
+
+
+	<ul class="vector-toc-contents" id="mw-panel-toc-list">
+		<li id="toc-mw-content-text"
+			class="vector-toc-list-item vector-toc-level-1">
+			<a href="#" class="vector-toc-link">
+				<div class="vector-toc-text">(Top)</div>
+			</a>
+		</li>
+		<li id="toc-Examples"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Examples">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">1</span>
+				<span>Examples</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Examples-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Examples subsection</span>
+			</button>
+		
+		<ul id="toc-Examples-sublist" class="vector-toc-list">
+			<li id="toc-Quantum_perceptrons"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Quantum_perceptrons">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">1.1</span>
+					<span>Quantum perceptrons</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Quantum_perceptrons-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Quantum_networks"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Quantum_networks">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">1.2</span>
+					<span>Quantum networks</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Quantum_networks-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Quantum_associative_memory"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Quantum_associative_memory">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">1.3</span>
+					<span>Quantum associative memory</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Quantum_associative_memory-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Classical_neural_networks_inspired_by_quantum_theory"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Classical_neural_networks_inspired_by_quantum_theory">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">1.4</span>
+					<span>Classical neural networks inspired by quantum theory</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Classical_neural_networks_inspired_by_quantum_theory-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-Training"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#Training">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">2</span>
+				<span>Training</span>
+			</div>
+		</a>
+		
+			<button aria-controls="toc-Training-sublist" class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-toc-toggle">
+				<span class="vector-icon mw-ui-icon-wikimedia-expand"></span>
+				<span>Toggle Training subsection</span>
+			</button>
+		
+		<ul id="toc-Training-sublist" class="vector-toc-list">
+			<li id="toc-Cost_functions"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Cost_functions">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">2.1</span>
+					<span>Cost functions</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Cost_functions-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+		<li id="toc-Barren_plateaus"
+			class="vector-toc-list-item vector-toc-level-2">
+			<a class="vector-toc-link" href="#Barren_plateaus">
+				<div class="vector-toc-text">
+					<span class="vector-toc-numb">2.2</span>
+					<span>Barren plateaus</span>
+				</div>
+			</a>
+			
+			<ul id="toc-Barren_plateaus-sublist" class="vector-toc-list">
+			</ul>
+		</li>
+	</ul>
+	</li>
+	<li id="toc-See_also"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#See_also">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">3</span>
+				<span>See also</span>
+			</div>
+		</a>
+		
+		<ul id="toc-See_also-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+	<li id="toc-References"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#References">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">4</span>
+				<span>References</span>
+			</div>
+		</a>
+		
+		<ul id="toc-References-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+	<li id="toc-External_links"
+		class="vector-toc-list-item vector-toc-level-1 vector-toc-list-item-expanded">
+		<a class="vector-toc-link" href="#External_links">
+			<div class="vector-toc-text">
+				<span class="vector-toc-numb">5</span>
+				<span>External links</span>
+			</div>
+		</a>
+		
+		<ul id="toc-External_links-sublist" class="vector-toc-list">
+		</ul>
+	</li>
+</ul>
+</div>
+
+					</div>
+		</nav>
+			</div>
+		</div>
+		<div class="mw-content-container">
+			<main id="content" class="mw-body">
+				<header class="mw-body-header vector-page-titlebar no-font-mode-scale">
+					<nav aria-label="Contents" class="vector-toc-landmark">
+						
+<div id="vector-page-titlebar-toc" class="vector-dropdown vector-page-titlebar-toc vector-button-flush-left"  title="Table of Contents" >
+	<input type="checkbox" id="vector-page-titlebar-toc-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-page-titlebar-toc" class="vector-dropdown-checkbox "  aria-label="Toggle the table of contents"  >
+	<label id="vector-page-titlebar-toc-label" for="vector-page-titlebar-toc-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-listBullet mw-ui-icon-wikimedia-listBullet"></span>
+
+<span class="vector-dropdown-label-text">Toggle the table of contents</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+							<div id="vector-page-titlebar-toc-unpinned-container" class="vector-unpinned-container">
+			</div>
+		
+	</div>
+</div>
+
+					</nav>
+					<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-main">Quantum neural network</span></h1>
+							
+<div id="p-lang-btn" class="vector-dropdown mw-portlet mw-portlet-lang"  >
+	<input type="checkbox" id="p-lang-btn-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-p-lang-btn" class="vector-dropdown-checkbox mw-interlanguage-selector" aria-label="Go to an article in another language. Available in 8 languages"   >
+	<label id="p-lang-btn-label" for="p-lang-btn-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--action-progressive mw-portlet-lang-heading-8" aria-hidden="true"  ><span class="vector-icon mw-ui-icon-language-progressive mw-ui-icon-wikimedia-language-progressive"></span>
+
+<span class="vector-dropdown-label-text">8 languages</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+		<div class="vector-menu-content">
+			
+			<ul class="vector-menu-content-list">
+				
+				<li class="interlanguage-link interwiki-ar mw-list-item"><a href="https://ar.wikipedia.org/wiki/%D8%B4%D8%A8%D9%83%D8%A9_%D8%B9%D8%B5%D8%A8%D9%8A%D8%A9_%D9%83%D9%85%D9%8A%D8%A9" title="شبكة عصبية كمية – Arabic" lang="ar" hreflang="ar" data-title="شبكة عصبية كمية" data-language-autonym="العربية" data-language-local-name="Arabic" class="interlanguage-link-target"><span>العربية</span></a></li><li class="interlanguage-link interwiki-bn mw-list-item"><a href="https://bn.wikipedia.org/wiki/%E0%A6%95%E0%A7%8B%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%A8%E0%A7%8D%E0%A6%9F%E0%A6%BE%E0%A6%AE_%E0%A6%A8%E0%A6%BF%E0%A6%89%E0%A6%B0%E0%A6%BE%E0%A6%B2_%E0%A6%A8%E0%A7%87%E0%A6%9F%E0%A6%93%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%B0%E0%A7%8D%E0%A6%95" title="কোয়ান্টাম নিউরাল নেটওয়ার্ক – Bangla" lang="bn" hreflang="bn" data-title="কোয়ান্টাম নিউরাল নেটওয়ার্ক" data-language-autonym="বাংলা" data-language-local-name="Bangla" class="interlanguage-link-target"><span>বাংলা</span></a></li><li class="interlanguage-link interwiki-ca mw-list-item"><a href="https://ca.wikipedia.org/wiki/Xarxa_neuronal_qu%C3%A0ntica" title="Xarxa neuronal quàntica – Catalan" lang="ca" hreflang="ca" data-title="Xarxa neuronal quàntica" data-language-autonym="Català" data-language-local-name="Catalan" class="interlanguage-link-target"><span>Català</span></a></li><li class="interlanguage-link interwiki-de mw-list-item"><a href="https://de.wikipedia.org/wiki/Neuronaler_Schaltkreis" title="Neuronaler Schaltkreis – German" lang="de" hreflang="de" data-title="Neuronaler Schaltkreis" data-language-autonym="Deutsch" data-language-local-name="German" class="interlanguage-link-target"><span>Deutsch</span></a></li><li class="interlanguage-link interwiki-es mw-list-item"><a href="https://es.wikipedia.org/wiki/Red_neuronal_cu%C3%A1ntica" title="Red neuronal cuántica – Spanish" lang="es" hreflang="es" data-title="Red neuronal cuántica" data-language-autonym="Español" data-language-local-name="Spanish" class="interlanguage-link-target"><span>Español</span></a></li><li class="interlanguage-link interwiki-fa mw-list-item"><a href="https://fa.wikipedia.org/wiki/%D8%B4%D8%A8%DA%A9%D9%87_%D8%B9%D8%B5%D8%A8%DB%8C_%DA%A9%D9%88%D8%A7%D9%86%D8%AA%D9%88%D9%85%DB%8C" title="شبکه عصبی کوانتومی – Persian" lang="fa" hreflang="fa" data-title="شبکه عصبی کوانتومی" data-language-autonym="فارسی" data-language-local-name="Persian" class="interlanguage-link-target"><span>فارسی</span></a></li><li class="interlanguage-link interwiki-sr mw-list-item"><a href="https://sr.wikipedia.org/wiki/Kvantne_neuronske_mre%C5%BEe" title="Kvantne neuronske mreže – Serbian" lang="sr" hreflang="sr" data-title="Kvantne neuronske mreže" data-language-autonym="Српски / srpski" data-language-local-name="Serbian" class="interlanguage-link-target"><span>Српски / srpski</span></a></li><li class="interlanguage-link interwiki-uk mw-list-item"><a href="https://uk.wikipedia.org/wiki/%D0%9A%D0%B2%D0%B0%D0%BD%D1%82%D0%BE%D0%B2%D0%B0_%D0%BD%D0%B5%D0%B9%D1%80%D0%BE%D0%BD%D0%BD%D0%B0_%D0%BC%D0%B5%D1%80%D0%B5%D0%B6%D0%B0" title="Квантова нейронна мережа – Ukrainian" lang="uk" hreflang="uk" data-title="Квантова нейронна мережа" data-language-autonym="Українська" data-language-local-name="Ukrainian" class="interlanguage-link-target"><span>Українська</span></a></li>
+			</ul>
+			<div class="after-portlet after-portlet-lang"><span class="wb-langlinks-edit wb-langlinks-link"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q1981341#sitelinks-wikipedia" title="Edit interlanguage links" class="wbc-editpage">Edit links</a></span></div>
+		</div>
+
+	</div>
+</div>
+</header>
+				<div class="vector-page-toolbar vector-feature-custom-font-size-clientpref--excluded">
+					<div class="vector-page-toolbar-container">
+						<div id="left-navigation">
+							<nav aria-label="Namespaces">
+								
+<div id="p-associated-pages" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-associated-pages"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-nstab-main" class="selected vector-tab-noicon mw-list-item"><a href="/wiki/Quantum_neural_network" title="View the content page [c]" accesskey="c"><span>Article</span></a></li><li id="ca-talk" class="vector-tab-noicon mw-list-item"><a href="/wiki/Talk:Quantum_neural_network" rel="discussion" title="Discuss improvements to the content page [t]" accesskey="t"><span>Talk</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+								
+<div id="vector-variants-dropdown" class="vector-dropdown emptyPortlet"  >
+	<input type="checkbox" id="vector-variants-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-variants-dropdown" class="vector-dropdown-checkbox " aria-label="Change language variant"   >
+	<label id="vector-variants-dropdown-label" for="vector-variants-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet" aria-hidden="true"  ><span class="vector-dropdown-label-text">English</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+					
+<div id="p-variants" class="vector-menu mw-portlet mw-portlet-variants emptyPortlet"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			
+		</ul>
+		
+	</div>
+</div>
+
+				
+	</div>
+</div>
+
+							</nav>
+						</div>
+						<div id="right-navigation" class="vector-collapsible">
+							<nav aria-label="Views">
+								
+<div id="p-views" class="vector-menu vector-menu-tabs mw-portlet mw-portlet-views"  >
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-view" class="selected vector-tab-noicon mw-list-item"><a href="/wiki/Quantum_neural_network"><span>Read</span></a></li><li id="ca-edit" class="vector-tab-noicon mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit" title="Edit this page [e]" accesskey="e"><span>Edit</span></a></li><li id="ca-history" class="vector-tab-noicon mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;action=history" title="Past revisions of this page [h]" accesskey="h"><span>View history</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+							</nav>
+				
+							<nav class="vector-page-tools-landmark" aria-label="Page tools">
+								
+<div id="vector-page-tools-dropdown" class="vector-dropdown vector-page-tools-dropdown"  >
+	<input type="checkbox" id="vector-page-tools-dropdown-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-page-tools-dropdown" class="vector-dropdown-checkbox "  aria-label="Tools"  >
+	<label id="vector-page-tools-dropdown-label" for="vector-page-tools-dropdown-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet" aria-hidden="true"  ><span class="vector-dropdown-label-text">Tools</span>
+	</label>
+	<div class="vector-dropdown-content">
+
+
+									<div id="vector-page-tools-unpinned-container" class="vector-unpinned-container">
+						
+<div id="vector-page-tools" class="vector-page-tools vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-page-tools-pinnable-header vector-pinnable-header-unpinned"
+	data-feature-name="page-tools-pinned"
+	data-pinnable-element-id="vector-page-tools"
+	data-pinned-container-id="vector-page-tools-pinned-container"
+	data-unpinned-container-id="vector-page-tools-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Tools</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-page-tools.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-page-tools.unpin">hide</button>
+</div>
+
+	
+<div id="p-cactions" class="vector-menu mw-portlet mw-portlet-cactions emptyPortlet vector-has-collapsible-items"  title="More options" >
+	<div class="vector-menu-heading">
+		Actions
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="ca-more-view" class="selected vector-more-collapsible-item mw-list-item"><a href="/wiki/Quantum_neural_network"><span>Read</span></a></li><li id="ca-more-edit" class="vector-more-collapsible-item mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit" title="Edit this page [e]" accesskey="e"><span>Edit</span></a></li><li id="ca-more-history" class="vector-more-collapsible-item mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;action=history"><span>View history</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-tb" class="vector-menu mw-portlet mw-portlet-tb"  >
+	<div class="vector-menu-heading">
+		General
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="t-whatlinkshere" class="mw-list-item"><a href="/wiki/Special:WhatLinksHere/Quantum_neural_network" title="List of all English Wikipedia pages containing links to this page [j]" accesskey="j"><span>What links here</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="/wiki/Special:RecentChangesLinked/Quantum_neural_network" rel="nofollow" title="Recent changes in pages linked from this page [k]" accesskey="k"><span>Related changes</span></a></li><li id="t-upload" class="mw-list-item"><a href="//en.wikipedia.org/wiki/Wikipedia:File_Upload_Wizard" title="Upload files [u]" accesskey="u"><span>Upload file</span></a></li><li id="t-permalink" class="mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;oldid=1296426484" title="Permanent link to this revision of this page"><span>Permanent link</span></a></li><li id="t-info" class="mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;action=info" title="More information about this page"><span>Page information</span></a></li><li id="t-cite" class="mw-list-item"><a href="/w/index.php?title=Special:CiteThisPage&amp;page=Quantum_neural_network&amp;id=1296426484&amp;wpFormIdentifier=titleform" title="Information on how to cite this page"><span>Cite this page</span></a></li><li id="t-urlshortener" class="mw-list-item"><a href="/w/index.php?title=Special:UrlShortener&amp;url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FQuantum_neural_network"><span>Get shortened URL</span></a></li><li id="t-urlshortener-qrcode" class="mw-list-item"><a href="/w/index.php?title=Special:QrCode&amp;url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FQuantum_neural_network"><span>Download QR code</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-coll-print_export" class="vector-menu mw-portlet mw-portlet-coll-print_export"  >
+	<div class="vector-menu-heading">
+		Print/export
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="coll-download-as-rl" class="mw-list-item"><a href="/w/index.php?title=Special:DownloadAsPdf&amp;page=Quantum_neural_network&amp;action=show-download-screen" title="Download this page as a PDF file"><span>Download as PDF</span></a></li><li id="t-print" class="mw-list-item"><a href="/w/index.php?title=Quantum_neural_network&amp;printable=yes" title="Printable version of this page [p]" accesskey="p"><span>Printable version</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+<div id="p-wikibase-otherprojects" class="vector-menu mw-portlet mw-portlet-wikibase-otherprojects"  >
+	<div class="vector-menu-heading">
+		In other projects
+	</div>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list">
+			
+			<li id="t-wikibase" class="wb-otherproject-link wb-otherproject-wikibase-dataitem mw-list-item"><a href="https://www.wikidata.org/wiki/Special:EntityPage/Q1981341" title="Structured data on this page hosted by Wikidata [g]" accesskey="g"><span>Wikidata item</span></a></li>
+		</ul>
+		
+	</div>
+</div>
+
+</div>
+
+									</div>
+				
+	</div>
+</div>
+
+							</nav>
+						</div>
+					</div>
+				</div>
+				<div class="vector-column-end no-font-mode-scale">
+					<div class="vector-sticky-pinned-container">
+						<nav class="vector-page-tools-landmark" aria-label="Page tools">
+							<div id="vector-page-tools-pinned-container" class="vector-pinned-container">
+				
+							</div>
+		</nav>
+						<nav class="vector-appearance-landmark" aria-label="Appearance">
+							<div id="vector-appearance-pinned-container" class="vector-pinned-container">
+				<div id="vector-appearance" class="vector-appearance vector-pinnable-element">
+	<div
+	class="vector-pinnable-header vector-appearance-pinnable-header vector-pinnable-header-pinned"
+	data-feature-name="appearance-pinned"
+	data-pinnable-element-id="vector-appearance"
+	data-pinned-container-id="vector-appearance-pinned-container"
+	data-unpinned-container-id="vector-appearance-unpinned-container"
+>
+	<div class="vector-pinnable-header-label">Appearance</div>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-pin-button" data-event-name="pinnable-header.vector-appearance.pin">move to sidebar</button>
+	<button class="vector-pinnable-header-toggle-button vector-pinnable-header-unpin-button" data-event-name="pinnable-header.vector-appearance.unpin">hide</button>
+</div>
+
+
+</div>
+
+							</div>
+		</nav>
+					</div>
+				</div>
+				<div id="bodyContent" class="vector-body" aria-labelledby="firstHeading" data-mw-ve-target-container>
+					<div class="vector-body-before-content">
+							<div class="mw-indicators">
+		</div>
+
+						<div id="siteSub" class="noprint">From Wikipedia, the free encyclopedia</div>
+					</div>
+					<div id="contentSub"><div id="mw-content-subtitle"></div></div>
+					
+					
+					<div id="mw-content-text" class="mw-body-content"><div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><div class="shortdescription nomobile noexcerpt noprint searchaux" style="display:none">Quantum Mechanics in Neural Networks</div>
+<figure class="mw-default-size" typeof="mw:File/Thumb"><a href="/wiki/File:Neural_Network_-_basic_scheme_with_legends.png" class="mw-file-description"><img src="//upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Neural_Network_-_basic_scheme_with_legends.png/250px-Neural_Network_-_basic_scheme_with_legends.png" decoding="async" width="250" height="156" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Neural_Network_-_basic_scheme_with_legends.png/500px-Neural_Network_-_basic_scheme_with_legends.png 1.5x" data-file-width="2800" data-file-height="1750"></a><figcaption>Simple model of a feed forward neural network. For a deep learning network, increase the number of hidden layers.</figcaption></figure>
+<p><b>Quantum neural networks</b> are <a href="/wiki/Neural_network_(machine_learning)" title="Neural network (machine learning)">computational neural network</a> models which are based on the principles of <a href="/wiki/Quantum_mechanics" title="Quantum mechanics">quantum mechanics</a>. The first ideas on quantum neural computation were published independently in 1995 by <a href="/wiki/Subhash_Kak" title="Subhash Kak">Subhash Kak</a> and Ron Chrisley,<sup id="cite_ref-1" class="reference"><a href="#cite_note-1"><span class="cite-bracket">[</span>1<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-2" class="reference"><a href="#cite_note-2"><span class="cite-bracket">[</span>2<span class="cite-bracket">]</span></a></sup> engaging with the theory of <a href="/wiki/Quantum_mind" title="Quantum mind">quantum mind</a>, which posits that quantum effects play a role in cognitive function. However, typical research in quantum neural networks involves combining classical <a href="/wiki/Artificial_neural_network" class="mw-redirect" title="Artificial neural network">artificial neural network</a> models (which are widely used in machine learning for the important task of pattern recognition) with the advantages of <a href="/wiki/Quantum_information" title="Quantum information">quantum information</a> in order to develop more efficient algorithms.<sup id="cite_ref-3" class="reference"><a href="#cite_note-3"><span class="cite-bracket">[</span>3<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-4" class="reference"><a href="#cite_note-4"><span class="cite-bracket">[</span>4<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-5" class="reference"><a href="#cite_note-5"><span class="cite-bracket">[</span>5<span class="cite-bracket">]</span></a></sup> One important motivation for these investigations is the difficulty to train classical neural networks, especially in <a href="/wiki/Big_data" title="Big data">big data applications</a>. The hope is that features of <a href="/wiki/Quantum_computing" title="Quantum computing">quantum computing</a> such as <a href="/wiki/Quantum_parallelism" class="mw-redirect" title="Quantum parallelism">quantum parallelism</a> or the effects of <a href="/wiki/Quantum_interference" class="mw-redirect" title="Quantum interference">interference</a> and <a href="/wiki/Quantum_entanglement" title="Quantum entanglement">entanglement</a> can be used as resources. Since the technological implementation of a quantum computer is still in a premature stage, such quantum neural network models are mostly theoretical proposals that await their full implementation in physical experiments.
+</p><p>Most Quantum neural networks are developed as <a href="/wiki/Feedforward_neural_network" title="Feedforward neural network">feed-forward</a> networks. Similar to their classical counterparts, this structure intakes input from one layer of qubits, and passes that input onto another layer of qubits. This layer of qubits evaluates this information and passes on the output to the next layer. Eventually the path leads to the final layer of qubits.<sup id="cite_ref-:0_6-0" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-WanDKGK16_7-0" class="reference"><a href="#cite_note-WanDKGK16-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup> The layers do not have to be of the same width, meaning they don't have to have the same number of qubits as the layer before or after it. This structure is trained on which path to take similar to classical <a href="/wiki/Artificial_neural_network" class="mw-redirect" title="Artificial neural network">artificial neural networks</a>. This is discussed in a lower section. Quantum neural networks refer to three different categories: Quantum computer with classical data, classical computer with quantum data, and quantum computer with quantum data.<sup id="cite_ref-:0_6-1" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup>
+</p>
+<meta property="mw:PageProp/toc">
+<div class="mw-heading mw-heading2"><h2 id="Examples">Examples</h2><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=1" title="Edit section: Examples"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>Quantum neural network research is still in its infancy, and a conglomeration of proposals and ideas of varying scope and mathematical rigor have been put forward. Most of them are based on the idea of replacing classical binary or <a href="/wiki/McCulloch-Pitts_neuron" class="mw-redirect" title="McCulloch-Pitts neuron">McCulloch-Pitts neurons</a> with a <a href="/wiki/Qubit" title="Qubit">qubit</a> (which can be called a “quron”), resulting in neural units that can be in a <a href="/wiki/Quantum_superposition" title="Quantum superposition">superposition</a> of the state ‘firing’ and ‘resting’.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Quantum_perceptrons">Quantum perceptrons</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=2" title="Edit section: Quantum perceptrons"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>A lot of proposals attempt to find a quantum equivalent for the <a href="/wiki/Perceptron" title="Perceptron">perceptron</a> unit from which neural nets are constructed. A problem is that nonlinear activation functions do not immediately correspond to the mathematical structure of quantum theory, since a quantum evolution is described by linear operations and leads to probabilistic observation. Ideas to imitate the perceptron activation function with a quantum mechanical formalism reach from special measurements<sup id="cite_ref-8" class="reference"><a href="#cite_note-8"><span class="cite-bracket">[</span>8<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-9" class="reference"><a href="#cite_note-9"><span class="cite-bracket">[</span>9<span class="cite-bracket">]</span></a></sup> to postulating non-linear quantum operators (a mathematical framework that is disputed).<sup id="cite_ref-10" class="reference"><a href="#cite_note-10"><span class="cite-bracket">[</span>10<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-11" class="reference"><a href="#cite_note-11"><span class="cite-bracket">[</span>11<span class="cite-bracket">]</span></a></sup> A direct implementation of the activation function using the <a href="/wiki/Quantum_circuit" title="Quantum circuit">circuit-based model of quantum computation</a> has recently been proposed by Schuld, Sinayskiy and Petruccione based on the <a href="/wiki/Quantum_phase_estimation_algorithm" title="Quantum phase estimation algorithm">quantum phase estimation algorithm</a>.<sup id="cite_ref-12" class="reference"><a href="#cite_note-12"><span class="cite-bracket">[</span>12<span class="cite-bracket">]</span></a></sup>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Quantum_networks">Quantum networks</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=3" title="Edit section: Quantum networks"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>At a larger scale, researchers have attempted to generalize neural networks to the quantum setting. One way of constructing a quantum neuron is to first generalise classical neurons and then generalising them further to make unitary gates. Interactions between neurons can be controlled quantumly, with <a href="/wiki/Unitary_operator" title="Unitary operator">unitary</a> <a href="/wiki/Quantum_logic_gate" title="Quantum logic gate">gates</a>, or classically, via <a href="/wiki/Measurement_in_quantum_mechanics" title="Measurement in quantum mechanics">measurement</a> of the network states. This high-level theoretical technique can be applied broadly, by taking different types of networks and different implementations of quantum neurons, such as <a href="/wiki/Integrated_quantum_photonics" title="Integrated quantum photonics">photonically</a> implemented neurons<sup id="cite_ref-WanDKGK16_7-1" class="reference"><a href="#cite_note-WanDKGK16-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-13" class="reference"><a href="#cite_note-13"><span class="cite-bracket">[</span>13<span class="cite-bracket">]</span></a></sup> and <a href="/w/index.php?title=Quantum_reservoir_processor&amp;action=edit&amp;redlink=1" class="new" title="Quantum reservoir processor (page does not exist)">quantum reservoir processor</a> (quantum version of <a href="/wiki/Reservoir_computing" title="Reservoir computing">reservoir computing</a>).<sup id="cite_ref-14" class="reference"><a href="#cite_note-14"><span class="cite-bracket">[</span>14<span class="cite-bracket">]</span></a></sup> Most learning algorithms follow the classical model of training an artificial neural network to learn the input-output function of a given <a href="/wiki/Training_set" class="mw-redirect" title="Training set">training set</a> and use classical feedback loops to update parameters of the quantum system until they converge to an optimal configuration. Learning as a parameter optimisation problem has also been approached by adiabatic models of quantum computing.<sup id="cite_ref-15" class="reference"><a href="#cite_note-15"><span class="cite-bracket">[</span>15<span class="cite-bracket">]</span></a></sup>
+</p><p>Quantum neural networks can be applied to algorithmic design: given <a href="/wiki/Qubits" class="mw-redirect" title="Qubits">qubits</a> with tunable mutual interactions, one can attempt to learn interactions following the classical <a href="/wiki/Backpropagation" title="Backpropagation">backpropagation</a> rule from a <a href="/wiki/Training_set" class="mw-redirect" title="Training set">training set</a> of desired input-output relations, taken to be the desired output algorithm's behavior.<sup id="cite_ref-16" class="reference"><a href="#cite_note-16"><span class="cite-bracket">[</span>16<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-17" class="reference"><a href="#cite_note-17"><span class="cite-bracket">[</span>17<span class="cite-bracket">]</span></a></sup> The quantum network thus ‘learns’ an algorithm.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Quantum_associative_memory">Quantum associative memory</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=4" title="Edit section: Quantum associative memory"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>The first quantum associative memory algorithm was introduced by Dan Ventura and Tony Martinez in 1999.<sup id="cite_ref-18" class="reference"><a href="#cite_note-18"><span class="cite-bracket">[</span>18<span class="cite-bracket">]</span></a></sup> The authors do not attempt to translate the structure of artificial neural network models into quantum theory, but propose an algorithm for a <a href="/wiki/Quantum_circuit" title="Quantum circuit">circuit-based quantum computer</a> that simulates <a href="/wiki/Associative_memory_(psychology)" title="Associative memory (psychology)">associative memory</a>. The memory states (in <a href="/wiki/Hopfield_neural_network" class="mw-redirect" title="Hopfield neural network">Hopfield neural networks</a> saved in the weights of the neural connections) are written into a superposition, and a <a href="/wiki/Grover_search_algorithm" class="mw-redirect" title="Grover search algorithm">Grover-like quantum search algorithm</a> retrieves the memory state closest to a given input. As such, this is not a fully content-addressable memory, since only incomplete patterns can be retrieved.
+</p><p>The first truly content-addressable quantum memory, which can retrieve patterns also from corrupted inputs, was proposed by Carlo A. Trugenberger.<sup id="cite_ref-19" class="reference"><a href="#cite_note-19"><span class="cite-bracket">[</span>19<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-:2_20-0" class="reference"><a href="#cite_note-:2-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-21" class="reference"><a href="#cite_note-21"><span class="cite-bracket">[</span>21<span class="cite-bracket">]</span></a></sup> Both memories can store an exponential (in terms of n qubits) number of patterns but can be used only once due to the no-cloning theorem and their destruction upon measurement.
+</p><p>Trugenberger,<sup id="cite_ref-:2_20-1" class="reference"><a href="#cite_note-:2-20"><span class="cite-bracket">[</span>20<span class="cite-bracket">]</span></a></sup> however, has shown that his probabilistic model of quantum associative memory can be efficiently implemented and re-used multiples times for any polynomial number of stored patterns, a large advantage with respect to classical associative memories.
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Classical_neural_networks_inspired_by_quantum_theory">Classical neural networks inspired by quantum theory</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=5" title="Edit section: Classical neural networks inspired by quantum theory"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>A substantial amount of interest has been given to a “quantum-inspired” model that uses ideas from quantum theory to implement a neural network based on <a href="/wiki/Fuzzy_logic" title="Fuzzy logic">fuzzy logic</a>.<sup id="cite_ref-22" class="reference"><a href="#cite_note-22"><span class="cite-bracket">[</span>22<span class="cite-bracket">]</span></a></sup>
+</p>
+<div class="mw-heading mw-heading2"><h2 id="Training">Training</h2><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=6" title="Edit section: Training"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>Quantum Neural Networks can be theoretically trained similarly to training classical/artificial neural networks. A key difference lies in communication between the layers of a neural networks. For classical neural networks, at the end of a given operation, the current <a href="/wiki/Perceptron" title="Perceptron">perceptron</a> copies its output to the next layer of perceptron(s) in the network. However, in a quantum neural network, where each perceptron is a qubit, this would violate the <a href="/wiki/No-cloning_theorem" title="No-cloning theorem">no-cloning theorem</a>.<sup id="cite_ref-:0_6-2" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-23" class="reference"><a href="#cite_note-23"><span class="cite-bracket">[</span>23<span class="cite-bracket">]</span></a></sup> A proposed generalized solution to this is to replace the classical <a href="/wiki/Fan-out_(software)" title="Fan-out (software)">fan-out</a> method with an arbitrary <a href="/wiki/Unitary_matrix" title="Unitary matrix">unitary</a> that spreads out, but does not copy, the output of one qubit to the next layer of qubits. Using this fan-out Unitary (<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle U_{f}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msub>
+          <mi>U</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>f</mi>
+          </mrow>
+        </msub>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle U_{f}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f7be3c3c86d5d87a48bec069e8477dd5a4823fcc" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -1.005ex; width:2.724ex; height:2.843ex;" alt="{\displaystyle U_{f}}"></span>) with a dummy state qubit in a known state (Ex. <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle |0\rangle }">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mrow class="MJX-TeXAtom-ORD">
+          <mo stretchy="false">|</mo>
+        </mrow>
+        <mn>0</mn>
+        <mo fence="false" stretchy="false">⟩<!-- ⟩ --></mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle |0\rangle }</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/ed066a3ad158da0ad6d6a421a606b1c8a35eb95b" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:2.714ex; height:2.843ex;" alt="{\displaystyle |0\rangle }"></span> in the <a href="/wiki/Qubit" title="Qubit">computational basis</a>), also known as an <a href="/wiki/Ancilla_bit" title="Ancilla bit">Ancilla bit</a>, the information from the qubit can be transferred to the next layer of qubits.<sup id="cite_ref-WanDKGK16_7-2" class="reference"><a href="#cite_note-WanDKGK16-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup> This process adheres to the quantum operation requirement of <a href="/wiki/Reversible_computing" title="Reversible computing">reversibility</a>.<sup id="cite_ref-WanDKGK16_7-3" class="reference"><a href="#cite_note-WanDKGK16-7"><span class="cite-bracket">[</span>7<span class="cite-bracket">]</span></a></sup><sup id="cite_ref-:1_24-0" class="reference"><a href="#cite_note-:1-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup>
+</p><p>Using this quantum feed-forward network, deep neural networks can be executed and trained efficiently. A deep neural network is essentially a network with many hidden-layers, as seen in the sample model neural network above. Since the Quantum neural network being discussed uses fan-out Unitary operators, and each operator only acts on its respective input, only two layers are used at any given time.<sup id="cite_ref-:0_6-3" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup> In other words, no Unitary operator is acting on the entire network at any given time, meaning the number of qubits required for a given step depends on the number of inputs in a given layer. Since Quantum Computers are notorious for their ability to run multiple iterations in a short period of time, the efficiency of a quantum neural network is solely dependent on the number of qubits in any given layer, and not on the depth of the network.<sup id="cite_ref-:1_24-1" class="reference"><a href="#cite_note-:1-24"><span class="cite-bracket">[</span>24<span class="cite-bracket">]</span></a></sup>
+</p>
+<div class="mw-heading mw-heading3"><h3 id="Cost_functions">Cost functions</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=7" title="Edit section: Cost functions"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<p>To determine the effectiveness of a neural network, a cost function is used, which essentially measures the proximity of the network's output to the expected or desired output. In a Classical Neural Network, the weights (<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle w}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>w</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle w}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/88b1e0c8e1be5ebe69d18a8010676fa42d7961e6" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.664ex; height:1.676ex;" alt="{\displaystyle w}"></span>) and biases (<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle b}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>b</mi>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle b}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f11423fbb2e967f986e36804a8ae4271734917c3" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:0.998ex; height:2.176ex;" alt="{\displaystyle b}"></span>) at each step determine the outcome of the cost function <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle C(w,b)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>C</mi>
+        <mo stretchy="false">(</mo>
+        <mi>w</mi>
+        <mo>,</mo>
+        <mi>b</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle C(w,b)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f9abbbec2979bb7bbb736036a272c1c7ea0de876" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:7.271ex; height:2.843ex;" alt="{\displaystyle C(w,b)}"></span>.<sup id="cite_ref-:0_6-4" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup> When training a Classical Neural network, the weights and biases are adjusted after each iteration, and given equation 1 below, where <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle y(x)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>y</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle y(x)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/e871993bfd131a8b0c3591c26084cf8171a74dcd" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:4.294ex; height:2.843ex;" alt="{\displaystyle y(x)}"></span>&nbsp;is the desired output and <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle a^{\text{out}}(x)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mi>a</mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mtext>out</mtext>
+          </mrow>
+        </msup>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle a^{\text{out}}(x)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/310effa2486a6262e1d7f335f89d418ac8d7a8cc" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:6.977ex; height:3.009ex;" alt="{\displaystyle a^{\text{out}}(x)}"></span>&nbsp;is the actual output, the cost function is optimized when <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle C(w,b)}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>C</mi>
+        <mo stretchy="false">(</mo>
+        <mi>w</mi>
+        <mo>,</mo>
+        <mi>b</mi>
+        <mo stretchy="false">)</mo>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle C(w,b)}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f9abbbec2979bb7bbb736036a272c1c7ea0de876" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:7.271ex; height:2.843ex;" alt="{\displaystyle C(w,b)}"></span>= 0. For a quantum neural network, the cost function is determined by measuring the fidelity of the outcome state (<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle \rho ^{\text{out}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mi>ρ<!-- ρ --></mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mtext>out</mtext>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \rho ^{\text{out}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/fceedbe3dc579e4795b0cb170593d52eae8be88e" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.838ex; width:3.81ex; height:3.009ex;" alt="{\displaystyle \rho ^{\text{out}}}"></span>) with the desired outcome state (<span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle \phi ^{\text{out}}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <msup>
+          <mi>ϕ<!-- ϕ --></mi>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mtext>out</mtext>
+          </mrow>
+        </msup>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle \phi ^{\text{out}}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/a4a88c2cb21782b938396158bc6888cd9cc7195d" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.671ex; width:3.993ex; height:2.843ex;" alt="{\displaystyle \phi ^{\text{out}}}"></span>), seen in Equation 2 below. In this case, the Unitary operators are adjusted after each iteration, and the cost function is optimized when C = 1.<sup id="cite_ref-:0_6-5" class="reference"><a href="#cite_note-:0-6"><span class="cite-bracket">[</span>6<span class="cite-bracket">]</span></a></sup>
+</p>
+<pre>Equation 1 <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle C(w,b)={1 \over N}\sum _{x}{||y(x)-a^{\text{out}}(x)|| \over 2}}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>C</mi>
+        <mo stretchy="false">(</mo>
+        <mi>w</mi>
+        <mo>,</mo>
+        <mi>b</mi>
+        <mo stretchy="false">)</mo>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mn>1</mn>
+            <mi>N</mi>
+          </mfrac>
+        </mrow>
+        <munder>
+          <mo>∑<!-- ∑ --></mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>x</mi>
+          </mrow>
+        </munder>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mo stretchy="false">|</mo>
+              </mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mo stretchy="false">|</mo>
+              </mrow>
+              <mi>y</mi>
+              <mo stretchy="false">(</mo>
+              <mi>x</mi>
+              <mo stretchy="false">)</mo>
+              <mo>−<!-- − --></mo>
+              <msup>
+                <mi>a</mi>
+                <mrow class="MJX-TeXAtom-ORD">
+                  <mtext>out</mtext>
+                </mrow>
+              </msup>
+              <mo stretchy="false">(</mo>
+              <mi>x</mi>
+              <mo stretchy="false">)</mo>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mo stretchy="false">|</mo>
+              </mrow>
+              <mrow class="MJX-TeXAtom-ORD">
+                <mo stretchy="false">|</mo>
+              </mrow>
+            </mrow>
+            <mn>2</mn>
+          </mfrac>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle C(w,b)={1 \over N}\sum _{x}{||y(x)-a^{\text{out}}(x)|| \over 2}}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/5f1511b1d7b9496d9e3d84366ecfab6846084608" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -3.005ex; width:34.934ex; height:6.843ex;" alt="{\displaystyle C(w,b)={1 \over N}\sum _{x}{||y(x)-a^{\text{out}}(x)|| \over 2}}"></span>
+</pre>
+<pre>Equation 2 <span class="mwe-math-element mwe-math-element-inline"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" alttext="{\displaystyle C={1 \over N}\sum _{x}^{N}{\langle \phi ^{\text{out}}|\rho ^{\text{out}}|\phi ^{\text{out}}\rangle }}">
+  <semantics>
+    <mrow class="MJX-TeXAtom-ORD">
+      <mstyle displaystyle="true" scriptlevel="0">
+        <mi>C</mi>
+        <mo>=</mo>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mfrac>
+            <mn>1</mn>
+            <mi>N</mi>
+          </mfrac>
+        </mrow>
+        <munderover>
+          <mo>∑<!-- ∑ --></mo>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>x</mi>
+          </mrow>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mi>N</mi>
+          </mrow>
+        </munderover>
+        <mrow class="MJX-TeXAtom-ORD">
+          <mo fence="false" stretchy="false">⟨<!-- ⟨ --></mo>
+          <msup>
+            <mi>ϕ<!-- ϕ --></mi>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mtext>out</mtext>
+            </mrow>
+          </msup>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mo stretchy="false">|</mo>
+          </mrow>
+          <msup>
+            <mi>ρ<!-- ρ --></mi>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mtext>out</mtext>
+            </mrow>
+          </msup>
+          <mrow class="MJX-TeXAtom-ORD">
+            <mo stretchy="false">|</mo>
+          </mrow>
+          <msup>
+            <mi>ϕ<!-- ϕ --></mi>
+            <mrow class="MJX-TeXAtom-ORD">
+              <mtext>out</mtext>
+            </mrow>
+          </msup>
+          <mo fence="false" stretchy="false">⟩<!-- ⟩ --></mo>
+        </mrow>
+      </mstyle>
+    </mrow>
+    <annotation encoding="application/x-tex">{\displaystyle C={1 \over N}\sum _{x}^{N}{\langle \phi ^{\text{out}}|\rho ^{\text{out}}|\phi ^{\text{out}}\rangle }}</annotation>
+  </semantics>
+</math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/6cbe49f4c554979aac34d5b0482ec855dc5d7287" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -3.005ex; width:26.793ex; height:7.343ex;" alt="{\displaystyle C={1 \over N}\sum _{x}^{N}{\langle \phi ^{\text{out}}|\rho ^{\text{out}}|\phi ^{\text{out}}\rangle }}"></span>
+</pre>
+<div class="mw-heading mw-heading3"><h3 id="Barren_plateaus">Barren plateaus</h3><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=8" title="Edit section: Barren plateaus"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<figure class="mw-default-size" typeof="mw:File/Thumb"><a href="/wiki/File:Barren_plateaus_of_VQA.webp" class="mw-file-description"><img alt="The Barren Plateau problem becomes increasingly serious as the VQA expands" src="//upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Barren_plateaus_of_VQA.webp/250px-Barren_plateaus_of_VQA.webp.png" decoding="async" width="250" height="183" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Barren_plateaus_of_VQA.webp/500px-Barren_plateaus_of_VQA.webp.png 1.5x" data-file-width="1350" data-file-height="989"></a><figcaption><b>Barren plateaus of VQA</b><sup id="cite_ref-25" class="reference"><a href="#cite_note-25"><span class="cite-bracket">[</span>25<span class="cite-bracket">]</span></a></sup> Figure shows the Barren Plateau problem becomes increasingly serious as the VQA expands.</figcaption></figure>
+<p>Gradient descent is widely used and successful in classical algorithms. However, although the simplified structure is very similar to neural networks such as CNNs, QNNs perform much worse.
+</p><p>Since the quantum space exponentially expands as the q-bit grows, the observations will concentrate around the mean value at an exponential rate, where also have exponentially small gradients.<sup id="cite_ref-:3_26-0" class="reference"><a href="#cite_note-:3-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup>
+</p><p>This situation is known as Barren Plateaus, because most of the initial parameters are trapped on a "plateau" of almost zero gradient, which approximates random wandering<sup id="cite_ref-:3_26-1" class="reference"><a href="#cite_note-:3-26"><span class="cite-bracket">[</span>26<span class="cite-bracket">]</span></a></sup> rather than gradient descent. This makes the model untrainable.
+</p><p>In fact, not only QNN, but almost all deeper VQA algorithms have this problem. In the present <a href="/wiki/Noisy_intermediate-scale_quantum_era" title="Noisy intermediate-scale quantum era">NISQ era</a>, this is one of the problems that have to be solved if more applications are to be made of the various VQA algorithms, including QNN.
+</p>
+<div class="mw-heading mw-heading2"><h2 id="See_also">See also</h2><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=9" title="Edit section: See also"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<ul><li><a href="/wiki/Differentiable_programming" title="Differentiable programming">Differentiable programming</a></li>
+<li><a href="/wiki/Optical_neural_network" title="Optical neural network">Optical neural network</a></li>
+<li><a href="/wiki/Holographic_associative_memory" title="Holographic associative memory">Holographic associative memory</a></li>
+<li><a href="/wiki/Quantum_cognition" title="Quantum cognition">Quantum cognition</a></li>
+<li><a href="/wiki/Quantum_machine_learning" title="Quantum machine learning">Quantum machine learning</a></li></ul>
+<div class="mw-heading mw-heading2"><h2 id="References">References</h2><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=10" title="Edit section: References"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<style data-mw-deduplicate="TemplateStyles:r1239543626">.mw-parser-output .reflist{margin-bottom:0.5em;list-style-type:decimal}@media screen{.mw-parser-output .reflist{font-size:90%}}.mw-parser-output .reflist .references{font-size:100%;margin-bottom:0;list-style-type:inherit}.mw-parser-output .reflist-columns-2{column-width:30em}.mw-parser-output .reflist-columns-3{column-width:25em}.mw-parser-output .reflist-columns{margin-top:0.3em}.mw-parser-output .reflist-columns ol{margin-top:0}.mw-parser-output .reflist-columns li{page-break-inside:avoid;break-inside:avoid-column}.mw-parser-output .reflist-upper-alpha{list-style-type:upper-alpha}.mw-parser-output .reflist-upper-roman{list-style-type:upper-roman}.mw-parser-output .reflist-lower-alpha{list-style-type:lower-alpha}.mw-parser-output .reflist-lower-greek{list-style-type:lower-greek}.mw-parser-output .reflist-lower-roman{list-style-type:lower-roman}</style><div class="reflist">
+<div class="mw-references-wrap mw-references-columns"><ol class="references">
+<li id="cite_note-1"><span class="mw-cite-backlink"><b><a href="#cite_ref-1">^</a></b></span> <span class="reference-text"><style data-mw-deduplicate="TemplateStyles:r1238218222">.mw-parser-output cite.citation{font-style:inherit;word-wrap:break-word}.mw-parser-output .citation q{quotes:"\"""\"""'""'"}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}.mw-parser-output .id-lock-free.id-lock-free a{background:url("//upload.wikimedia.org/wikipedia/commons/6/65/Lock-green.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-limited.id-lock-limited a,.mw-parser-output .id-lock-registration.id-lock-registration a{background:url("//upload.wikimedia.org/wikipedia/commons/d/d6/Lock-gray-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .id-lock-subscription.id-lock-subscription a{background:url("//upload.wikimedia.org/wikipedia/commons/a/aa/Lock-red-alt-2.svg")right 0.1em center/9px no-repeat}.mw-parser-output .cs1-ws-icon a{background:url("//upload.wikimedia.org/wikipedia/commons/4/4c/Wikisource-logo.svg")right 0.1em center/12px no-repeat}body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-free a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-limited a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-registration a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .id-lock-subscription a,body:not(.skin-timeless):not(.skin-minerva) .mw-parser-output .cs1-ws-icon a{background-size:contain;padding:0 1em 0 0}.mw-parser-output .cs1-code{color:inherit;background:inherit;border:none;padding:inherit}.mw-parser-output .cs1-hidden-error{display:none;color:var(--color-error,#d33)}.mw-parser-output .cs1-visible-error{color:var(--color-error,#d33)}.mw-parser-output .cs1-maint{display:none;color:#085;margin-left:0.3em}.mw-parser-output .cs1-kern-left{padding-left:0.2em}.mw-parser-output .cs1-kern-right{padding-right:0.2em}.mw-parser-output .citation .mw-selflink{font-weight:inherit}@media screen{.mw-parser-output .cs1-format{font-size:95%}html.skin-theme-clientpref-night .mw-parser-output .cs1-maint{color:#18911f}}@media screen and (prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .cs1-maint{color:#18911f}}</style><cite id="CITEREFKak1995" class="citation journal cs1">Kak, S. (1995). "On quantum neural computing". <i>Advances in Imaging and Electron Physics</i>. <b>94</b>: <span class="nowrap">259–</span>313. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1016%2FS1076-5670%2808%2970147-2">10.1016/S1076-5670(08)70147-2</a>. <a href="/wiki/ISBN_(identifier)" class="mw-redirect" title="ISBN (identifier)">ISBN</a>&nbsp;<a href="/wiki/Special:BookSources/9780120147366" title="Special:BookSources/9780120147366"><bdi>9780120147366</bdi></a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Advances+in+Imaging+and+Electron+Physics&amp;rft.atitle=On+quantum+neural+computing&amp;rft.volume=94&amp;rft.pages=259-313&amp;rft.date=1995&amp;rft_id=info%3Adoi%2F10.1016%2FS1076-5670%2808%2970147-2&amp;rft.isbn=9780120147366&amp;rft.aulast=Kak&amp;rft.aufirst=S.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-2"><span class="mw-cite-backlink"><b><a href="#cite_ref-2">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFChrisley1995" class="citation book cs1">Chrisley, R. (1995). "Quantum Learning". In Pylkkänen, P.; Pylkkö, P. (eds.). <i>New directions in cognitive science: Proceedings of the international symposium, Saariselka, 4–9 August 1995, Lapland, Finland</i>. Helsinki: Finnish Association of Artificial Intelligence. pp.&nbsp;<span class="nowrap">77–</span>89. <a href="/wiki/ISBN_(identifier)" class="mw-redirect" title="ISBN (identifier)">ISBN</a>&nbsp;<a href="/wiki/Special:BookSources/951-22-2645-6" title="Special:BookSources/951-22-2645-6"><bdi>951-22-2645-6</bdi></a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=Quantum+Learning&amp;rft.btitle=New+directions+in+cognitive+science%3A+Proceedings+of+the+international+symposium%2C+Saariselka%2C+4%E2%80%939+August+1995%2C+Lapland%2C+Finland&amp;rft.place=Helsinki&amp;rft.pages=77-89&amp;rft.pub=Finnish+Association+of+Artificial+Intelligence&amp;rft.date=1995&amp;rft.isbn=951-22-2645-6&amp;rft.aulast=Chrisley&amp;rft.aufirst=R.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-3"><span class="mw-cite-backlink"><b><a href="#cite_ref-3">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFda_SilvaLudermirde_Oliveira2016" class="citation journal cs1">da Silva, Adenilton J.; Ludermir, Teresa B.; de Oliveira, Wilson R. (2016). "Quantum perceptron over a field and neural network architecture selection in a quantum computer". <i>Neural Networks</i>. <b>76</b>: <span class="nowrap">55–</span>64. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1602.00709">1602.00709</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2016arXiv160200709D">2016arXiv160200709D</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1016%2Fj.neunet.2016.01.002">10.1016/j.neunet.2016.01.002</a>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/26878722">26878722</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:15381014">15381014</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Neural+Networks&amp;rft.atitle=Quantum+perceptron+over+a+field+and+neural+network+architecture+selection+in+a+quantum+computer&amp;rft.volume=76&amp;rft.pages=55-64&amp;rft.date=2016&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A15381014%23id-name%3DS2CID&amp;rft_id=info%3Abibcode%2F2016arXiv160200709D&amp;rft_id=info%3Aarxiv%2F1602.00709&amp;rft_id=info%3Apmid%2F26878722&amp;rft_id=info%3Adoi%2F10.1016%2Fj.neunet.2016.01.002&amp;rft.aulast=da+Silva&amp;rft.aufirst=Adenilton+J.&amp;rft.au=Ludermir%2C+Teresa+B.&amp;rft.au=de+Oliveira%2C+Wilson+R.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-4"><span class="mw-cite-backlink"><b><a href="#cite_ref-4">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFPanellaMartinelli2011" class="citation journal cs1">Panella, Massimo; Martinelli, Giuseppe (2011). "Neural networks with quantum architecture and quantum learning". <i><a href="/wiki/International_Journal_of_Circuit_Theory_and_Applications" title="International Journal of Circuit Theory and Applications">International Journal of Circuit Theory and Applications</a></i>. <b>39</b>: <span class="nowrap">61–</span>77. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1002%2Fcta.619">10.1002/cta.619</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:3791858">3791858</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=International+Journal+of+Circuit+Theory+and+Applications&amp;rft.atitle=Neural+networks+with+quantum+architecture+and+quantum+learning&amp;rft.volume=39&amp;rft.pages=61-77&amp;rft.date=2011&amp;rft_id=info%3Adoi%2F10.1002%2Fcta.619&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A3791858%23id-name%3DS2CID&amp;rft.aulast=Panella&amp;rft.aufirst=Massimo&amp;rft.au=Martinelli%2C+Giuseppe&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-5"><span class="mw-cite-backlink"><b><a href="#cite_ref-5">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFSchuldSinayskiyPetruccione2014" class="citation journal cs1">Schuld, M.; Sinayskiy, I.; Petruccione, F. (2014). "The quest for a Quantum Neural Network". <i>Quantum Information Processing</i>. <b>13</b> (11): <span class="nowrap">2567–</span>2586. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1408.7005">1408.7005</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014QuIP...13.2567S">2014QuIP...13.2567S</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1007%2Fs11128-014-0809-8">10.1007/s11128-014-0809-8</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:37238534">37238534</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Quantum+Information+Processing&amp;rft.atitle=The+quest+for+a+Quantum+Neural+Network&amp;rft.volume=13&amp;rft.issue=11&amp;rft.pages=2567-2586&amp;rft.date=2014&amp;rft_id=info%3Aarxiv%2F1408.7005&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A37238534%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1007%2Fs11128-014-0809-8&amp;rft_id=info%3Abibcode%2F2014QuIP...13.2567S&amp;rft.aulast=Schuld&amp;rft.aufirst=M.&amp;rft.au=Sinayskiy%2C+I.&amp;rft.au=Petruccione%2C+F.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-:0-6"><span class="mw-cite-backlink">^ <a href="#cite_ref-:0_6-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-:0_6-1"><sup><i><b>b</b></i></sup></a> <a href="#cite_ref-:0_6-2"><sup><i><b>c</b></i></sup></a> <a href="#cite_ref-:0_6-3"><sup><i><b>d</b></i></sup></a> <a href="#cite_ref-:0_6-4"><sup><i><b>e</b></i></sup></a> <a href="#cite_ref-:0_6-5"><sup><i><b>f</b></i></sup></a></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFBeerBondarenkoFarrellyOsborne2020" class="citation journal cs1">Beer, Kerstin; Bondarenko, Dmytro; Farrelly, Terry; Osborne, Tobias J.; Salzmann, Robert; Scheiermann, Daniel; Wolf, Ramona (2020-02-10). <a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7010779">"Training deep quantum neural networks"</a>. <i>Nature Communications</i>. <b>11</b> (1): 808. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1902.10445">1902.10445</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2020NatCo..11..808B">2020NatCo..11..808B</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1038%2Fs41467-020-14454-2">10.1038/s41467-020-14454-2</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/2041-1723">2041-1723</a>. <a href="/wiki/PMC_(identifier)" class="mw-redirect" title="PMC (identifier)">PMC</a>&nbsp;<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7010779">7010779</a></span>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/32041956">32041956</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Nature+Communications&amp;rft.atitle=Training+deep+quantum+neural+networks&amp;rft.volume=11&amp;rft.issue=1&amp;rft.pages=808&amp;rft.date=2020-02-10&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC7010779%23id-name%3DPMC&amp;rft_id=info%3Abibcode%2F2020NatCo..11..808B&amp;rft_id=info%3Aarxiv%2F1902.10445&amp;rft.issn=2041-1723&amp;rft_id=info%3Adoi%2F10.1038%2Fs41467-020-14454-2&amp;rft_id=info%3Apmid%2F32041956&amp;rft.aulast=Beer&amp;rft.aufirst=Kerstin&amp;rft.au=Bondarenko%2C+Dmytro&amp;rft.au=Farrelly%2C+Terry&amp;rft.au=Osborne%2C+Tobias+J.&amp;rft.au=Salzmann%2C+Robert&amp;rft.au=Scheiermann%2C+Daniel&amp;rft.au=Wolf%2C+Ramona&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC7010779&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-WanDKGK16-7"><span class="mw-cite-backlink">^ <a href="#cite_ref-WanDKGK16_7-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-WanDKGK16_7-1"><sup><i><b>b</b></i></sup></a> <a href="#cite_ref-WanDKGK16_7-2"><sup><i><b>c</b></i></sup></a> <a href="#cite_ref-WanDKGK16_7-3"><sup><i><b>d</b></i></sup></a></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFWanDahlstenKristjanssonGardner2017" class="citation journal cs1">Wan, Kwok-Ho; Dahlsten, Oscar; Kristjansson, Hler; Gardner, Robert; Kim, Myungshik (2017). "Quantum generalisation of feedforward neural networks". <i>npj Quantum Information</i>. <b>3</b> (1): 36. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1612.01045">1612.01045</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2017npjQI...3...36W">2017npjQI...3...36W</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1038%2Fs41534-017-0032-4">10.1038/s41534-017-0032-4</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:51685660">51685660</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=npj+Quantum+Information&amp;rft.atitle=Quantum+generalisation+of+feedforward+neural+networks&amp;rft.volume=3&amp;rft.issue=1&amp;rft.pages=36&amp;rft.date=2017&amp;rft_id=info%3Aarxiv%2F1612.01045&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A51685660%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1038%2Fs41534-017-0032-4&amp;rft_id=info%3Abibcode%2F2017npjQI...3...36W&amp;rft.aulast=Wan&amp;rft.aufirst=Kwok-Ho&amp;rft.au=Dahlsten%2C+Oscar&amp;rft.au=Kristjansson%2C+Hler&amp;rft.au=Gardner%2C+Robert&amp;rft.au=Kim%2C+Myungshik&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-8"><span class="mw-cite-backlink"><b><a href="#cite_ref-8">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFPerus2000" class="citation journal cs1">Perus, M. (2000). "Neural Networks as a basis for quantum associative memory". <i>Neural Network World</i>. <b>10</b> (6): 1001. <a href="/wiki/CiteSeerX_(identifier)" class="mw-redirect" title="CiteSeerX (identifier)">CiteSeerX</a>&nbsp;<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.106.4583">10.1.1.106.4583</a></span>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Neural+Network+World&amp;rft.atitle=Neural+Networks+as+a+basis+for+quantum+associative+memory&amp;rft.volume=10&amp;rft.issue=6&amp;rft.pages=1001&amp;rft.date=2000&amp;rft_id=https%3A%2F%2Fciteseerx.ist.psu.edu%2Fviewdoc%2Fsummary%3Fdoi%3D10.1.1.106.4583%23id-name%3DCiteSeerX&amp;rft.aulast=Perus&amp;rft.aufirst=M.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-9"><span class="mw-cite-backlink"><b><a href="#cite_ref-9">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFZakWilliams1998" class="citation journal cs1">Zak, M.; Williams, C. P. (1998). "Quantum Neural Nets". <i>International Journal of Theoretical Physics</i>. <b>37</b> (2): <span class="nowrap">651–</span>684. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1023%2FA%3A1026656110699">10.1023/A:1026656110699</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:55783801">55783801</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=International+Journal+of+Theoretical+Physics&amp;rft.atitle=Quantum+Neural+Nets&amp;rft.volume=37&amp;rft.issue=2&amp;rft.pages=651-684&amp;rft.date=1998&amp;rft_id=info%3Adoi%2F10.1023%2FA%3A1026656110699&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A55783801%23id-name%3DS2CID&amp;rft.aulast=Zak&amp;rft.aufirst=M.&amp;rft.au=Williams%2C+C.+P.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-10"><span class="mw-cite-backlink"><b><a href="#cite_ref-10">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFGuptaZia2001" class="citation journal cs1">Gupta, Sanjay; Zia, R.K.P. (2001). "Quantum Neural Networks". <i>Journal of Computer and System Sciences</i>. <b>63</b> (3): <span class="nowrap">355–</span>383. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/quant-ph/0201144">quant-ph/0201144</a></span>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1006%2Fjcss.2001.1769">10.1006/jcss.2001.1769</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:206569020">206569020</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Journal+of+Computer+and+System+Sciences&amp;rft.atitle=Quantum+Neural+Networks&amp;rft.volume=63&amp;rft.issue=3&amp;rft.pages=355-383&amp;rft.date=2001&amp;rft_id=info%3Aarxiv%2Fquant-ph%2F0201144&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A206569020%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1006%2Fjcss.2001.1769&amp;rft.aulast=Gupta&amp;rft.aufirst=Sanjay&amp;rft.au=Zia%2C+R.K.P.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-11"><span class="mw-cite-backlink"><b><a href="#cite_ref-11">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFFaberGiraldi2002" class="citation web cs1">Faber, J.; Giraldi, G. A. (2002). <a rel="nofollow" class="external text" href="http://virtual01.lncc.br/~giraldi/TechReport/QNN-Review.pdf.gz">"Quantum Models for Artificial Neural Network"</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=unknown&amp;rft.btitle=Quantum+Models+for+Artificial+Neural+Network&amp;rft.date=2002&amp;rft.aulast=Faber&amp;rft.aufirst=J.&amp;rft.au=Giraldi%2C+G.+A.&amp;rft_id=http%3A%2F%2Fvirtual01.lncc.br%2F~giraldi%2FTechReport%2FQNN-Review.pdf.gz&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-12"><span class="mw-cite-backlink"><b><a href="#cite_ref-12">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFSchuldSinayskiyPetruccione2014" class="citation journal cs1">Schuld, M.; Sinayskiy, I.; Petruccione, F. (2014). "Simulating a perceptron on a quantum computer". <i>Physics Letters A</i>. <b>379</b> (7): <span class="nowrap">660–</span>663. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1412.3635">1412.3635</a></span>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1016%2Fj.physleta.2014.11.061">10.1016/j.physleta.2014.11.061</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:14288234">14288234</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Physics+Letters+A&amp;rft.atitle=Simulating+a+perceptron+on+a+quantum+computer&amp;rft.volume=379&amp;rft.issue=7&amp;rft.pages=660-663&amp;rft.date=2014&amp;rft_id=info%3Aarxiv%2F1412.3635&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A14288234%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1016%2Fj.physleta.2014.11.061&amp;rft.aulast=Schuld&amp;rft.aufirst=M.&amp;rft.au=Sinayskiy%2C+I.&amp;rft.au=Petruccione%2C+F.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-13"><span class="mw-cite-backlink"><b><a href="#cite_ref-13">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFNarayananMenneer2000" class="citation journal cs1">Narayanan, A.; Menneer, T. (2000). "Quantum artificial neural network architectures and components". <i>Information Sciences</i>. <b>128</b> (<span class="nowrap">3–</span>4): <span class="nowrap">231–</span>255. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1016%2FS0020-0255%2800%2900055-4">10.1016/S0020-0255(00)00055-4</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:10901562">10901562</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Information+Sciences&amp;rft.atitle=Quantum+artificial+neural+network+architectures+and+components&amp;rft.volume=128&amp;rft.issue=%3Cspan+class%3D%22nowrap%22%3E3%E2%80%93%3C%2Fspan%3E4&amp;rft.pages=231-255&amp;rft.date=2000&amp;rft_id=info%3Adoi%2F10.1016%2FS0020-0255%2800%2900055-4&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A10901562%23id-name%3DS2CID&amp;rft.aulast=Narayanan&amp;rft.aufirst=A.&amp;rft.au=Menneer%2C+T.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-14"><span class="mw-cite-backlink"><b><a href="#cite_ref-14">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFGhoshOpalaMatuszewskiPaterek2019" class="citation journal cs1">Ghosh, S.; Opala, A.; Matuszewski, M.; Paterek, P.; Liew, T. C. H. (2019). "Quantum reservoir processing". <i>npj Quantum Information</i>. <b>5</b> (1): 35. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1811.10335">1811.10335</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2019npjQI...5...35G">2019npjQI...5...35G</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1038%2Fs41534-019-0149-8">10.1038/s41534-019-0149-8</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:119197635">119197635</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=npj+Quantum+Information&amp;rft.atitle=Quantum+reservoir+processing&amp;rft.volume=5&amp;rft.issue=1&amp;rft.pages=35&amp;rft.date=2019&amp;rft_id=info%3Aarxiv%2F1811.10335&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A119197635%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1038%2Fs41534-019-0149-8&amp;rft_id=info%3Abibcode%2F2019npjQI...5...35G&amp;rft.aulast=Ghosh&amp;rft.aufirst=S.&amp;rft.au=Opala%2C+A.&amp;rft.au=Matuszewski%2C+M.&amp;rft.au=Paterek%2C+P.&amp;rft.au=Liew%2C+T.+C.+H.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-15"><span class="mw-cite-backlink"><b><a href="#cite_ref-15">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFNevenDenchevRoseMacready2008" class="citation arxiv cs1">Neven, H.; et&nbsp;al. (2008). "Training a Binary Classifier with the Quantum Adiabatic Algorithm". <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/0811.0416">0811.0416</a></span> [<a rel="nofollow" class="external text" href="https://arxiv.org/archive/quant-ph">quant-ph</a>].</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=preprint&amp;rft.jtitle=arXiv&amp;rft.atitle=Training+a+Binary+Classifier+with+the+Quantum+Adiabatic+Algorithm&amp;rft.date=2008&amp;rft_id=info%3Aarxiv%2F0811.0416&amp;rft.aulast=Neven&amp;rft.aufirst=H.&amp;rft.au=Denchev%2C+Vasil+S.&amp;rft.au=Rose%2C+Geordie&amp;rft.au=Macready%2C+William+G.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-16"><span class="mw-cite-backlink"><b><a href="#cite_ref-16">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFBangRyuYooPawłowski2014" class="citation journal cs1">Bang, J.; et&nbsp;al. (2014). "A strategy for quantum algorithm design assisted by machine learning". <i>New Journal of Physics</i>. <b>16</b> (7): 073017. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1301.1132">1301.1132</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2014NJPh...16g3017B">2014NJPh...16g3017B</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1088%2F1367-2630%2F16%2F7%2F073017">10.1088/1367-2630/16/7/073017</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:55377982">55377982</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=New+Journal+of+Physics&amp;rft.atitle=A+strategy+for+quantum+algorithm+design+assisted+by+machine+learning&amp;rft.volume=16&amp;rft.issue=7&amp;rft.pages=073017&amp;rft.date=2014&amp;rft_id=info%3Aarxiv%2F1301.1132&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A55377982%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1088%2F1367-2630%2F16%2F7%2F073017&amp;rft_id=info%3Abibcode%2F2014NJPh...16g3017B&amp;rft.aulast=Bang&amp;rft.aufirst=J.&amp;rft.au=Ryu%2C+Junghee&amp;rft.au=Yoo%2C+Seokwon&amp;rft.au=Paw%C5%82owski%2C+Marcin&amp;rft.au=Lee%2C+Jinhyoung&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-17"><span class="mw-cite-backlink"><b><a href="#cite_ref-17">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFBehrmanSteckKumarWalsh2008" class="citation journal cs1">Behrman, E. C.; Steck, J. E.; Kumar, P.; Walsh, K. A. (2008). "Quantum Algorithm design using dynamic learning". <i>Quantum Information and Computation</i>. <b>8</b> (<span class="nowrap">1–</span>2): <span class="nowrap">12–</span>29. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/0808.1558">0808.1558</a></span>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.26421%2FQIC8.1-2-2">10.26421/QIC8.1-2-2</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:18587557">18587557</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Quantum+Information+and+Computation&amp;rft.atitle=Quantum+Algorithm+design+using+dynamic+learning&amp;rft.volume=8&amp;rft.issue=%3Cspan+class%3D%22nowrap%22%3E1%E2%80%93%3C%2Fspan%3E2&amp;rft.pages=12-29&amp;rft.date=2008&amp;rft_id=info%3Aarxiv%2F0808.1558&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A18587557%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.26421%2FQIC8.1-2-2&amp;rft.aulast=Behrman&amp;rft.aufirst=E.+C.&amp;rft.au=Steck%2C+J.+E.&amp;rft.au=Kumar%2C+P.&amp;rft.au=Walsh%2C+K.+A.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-18"><span class="mw-cite-backlink"><b><a href="#cite_ref-18">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFVenturaMartinez1999" class="citation book cs1">Ventura, D.; Martinez, T. (1999). <a rel="nofollow" class="external text" href="https://web.archive.org/web/20170911115617/https://pdfs.semanticscholar.org/d46f/e04b57b75a7f9c57f25d03d1c56b480ab755.pdf">"A Quantum Associative Memory Based on Grover's Algorithm"</a> <span class="cs1-format">(PDF)</span>. <i>Artificial Neural Nets and Genetic Algorithms</i>. pp.&nbsp;<span class="nowrap">22–</span>27. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1007%2F978-3-7091-6384-9_5">10.1007/978-3-7091-6384-9_5</a>. <a href="/wiki/ISBN_(identifier)" class="mw-redirect" title="ISBN (identifier)">ISBN</a>&nbsp;<a href="/wiki/Special:BookSources/978-3-211-83364-3" title="Special:BookSources/978-3-211-83364-3"><bdi>978-3-211-83364-3</bdi></a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:3258510">3258510</a>. Archived from <a rel="nofollow" class="external text" href="https://pdfs.semanticscholar.org/d46f/e04b57b75a7f9c57f25d03d1c56b480ab755.pdf">the original</a> <span class="cs1-format">(PDF)</span> on 2017-09-11.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=bookitem&amp;rft.atitle=A+Quantum+Associative+Memory+Based+on+Grover%27s+Algorithm&amp;rft.btitle=Artificial+Neural+Nets+and+Genetic+Algorithms&amp;rft.pages=22-27&amp;rft.date=1999&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A3258510%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1007%2F978-3-7091-6384-9_5&amp;rft.isbn=978-3-211-83364-3&amp;rft.aulast=Ventura&amp;rft.aufirst=D.&amp;rft.au=Martinez%2C+T.&amp;rft_id=https%3A%2F%2Fpdfs.semanticscholar.org%2Fd46f%2Fe04b57b75a7f9c57f25d03d1c56b480ab755.pdf&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-19"><span class="mw-cite-backlink"><b><a href="#cite_ref-19">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFTrugenberger2001" class="citation journal cs1">Trugenberger, C. A. (2001-07-18). <a rel="nofollow" class="external text" href="https://dx.doi.org/10.1103/physrevlett.87.067901">"Probabilistic Quantum Memories"</a>. <i>Physical Review Letters</i>. <b>87</b> (6): 067901. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/quant-ph/0012100">quant-ph/0012100</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2001PhRvL..87f7901T">2001PhRvL..87f7901T</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1103%2Fphysrevlett.87.067901">10.1103/physrevlett.87.067901</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/0031-9007">0031-9007</a>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/11497863">11497863</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:23325931">23325931</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Physical+Review+Letters&amp;rft.atitle=Probabilistic+Quantum+Memories&amp;rft.volume=87&amp;rft.issue=6&amp;rft.pages=067901&amp;rft.date=2001-07-18&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A23325931%23id-name%3DS2CID&amp;rft_id=info%3Abibcode%2F2001PhRvL..87f7901T&amp;rft_id=info%3Aarxiv%2Fquant-ph%2F0012100&amp;rft.issn=0031-9007&amp;rft_id=info%3Adoi%2F10.1103%2Fphysrevlett.87.067901&amp;rft_id=info%3Apmid%2F11497863&amp;rft.aulast=Trugenberger&amp;rft.aufirst=C.+A.&amp;rft_id=http%3A%2F%2Fdx.doi.org%2F10.1103%2Fphysrevlett.87.067901&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-:2-20"><span class="mw-cite-backlink">^ <a href="#cite_ref-:2_20-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-:2_20-1"><sup><i><b>b</b></i></sup></a></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFTrugenberger2002" class="citation journal cs1">Trugenberger, Carlo A. (2002). "Quantum Pattern Recognition". <i>Quantum Information Processing</i>. <b>1</b> (6): <span class="nowrap">471–</span>493. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/quant-ph/0210176">quant-ph/0210176</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2002QuIP....1..471T">2002QuIP....1..471T</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1023%2FA%3A1024022632303">10.1023/A:1024022632303</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:1928001">1928001</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Quantum+Information+Processing&amp;rft.atitle=Quantum+Pattern+Recognition&amp;rft.volume=1&amp;rft.issue=6&amp;rft.pages=471-493&amp;rft.date=2002&amp;rft_id=info%3Aarxiv%2Fquant-ph%2F0210176&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A1928001%23id-name%3DS2CID&amp;rft_id=info%3Adoi%2F10.1023%2FA%3A1024022632303&amp;rft_id=info%3Abibcode%2F2002QuIP....1..471T&amp;rft.aulast=Trugenberger&amp;rft.aufirst=Carlo+A.&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-21"><span class="mw-cite-backlink"><b><a href="#cite_ref-21">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFTrugenberger2002" class="citation journal cs1">Trugenberger, C. A. (2002-12-19). <a rel="nofollow" class="external text" href="https://dx.doi.org/10.1103/physrevlett.89.277903">"Phase Transitions in Quantum Pattern Recognition"</a>. <i>Physical Review Letters</i>. <b>89</b> (27): 277903. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/quant-ph/0204115">quant-ph/0204115</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2002PhRvL..89A7903T">2002PhRvL..89A7903T</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1103%2Fphysrevlett.89.277903">10.1103/physrevlett.89.277903</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/0031-9007">0031-9007</a>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/12513243">12513243</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:33065081">33065081</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Physical+Review+Letters&amp;rft.atitle=Phase+Transitions+in+Quantum+Pattern+Recognition&amp;rft.volume=89&amp;rft.issue=27&amp;rft.pages=277903&amp;rft.date=2002-12-19&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A33065081%23id-name%3DS2CID&amp;rft_id=info%3Abibcode%2F2002PhRvL..89A7903T&amp;rft_id=info%3Aarxiv%2Fquant-ph%2F0204115&amp;rft.issn=0031-9007&amp;rft_id=info%3Adoi%2F10.1103%2Fphysrevlett.89.277903&amp;rft_id=info%3Apmid%2F12513243&amp;rft.aulast=Trugenberger&amp;rft.aufirst=C.+A.&amp;rft_id=http%3A%2F%2Fdx.doi.org%2F10.1103%2Fphysrevlett.89.277903&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-22"><span class="mw-cite-backlink"><b><a href="#cite_ref-22">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFPurushothamanKarayiannis1997" class="citation journal cs1">Purushothaman, G.; Karayiannis, N. (1997). <a rel="nofollow" class="external text" href="https://web.archive.org/web/20170911115935/https://pdfs.semanticscholar.org/fe11/93d386f42358e7cf9b1f71bf33e7ddd945b5.pdf">"Quantum Neural Networks (QNN's): Inherently Fuzzy Feedforward Neural Networks"</a> <span class="cs1-format">(PDF)</span>. <i>IEEE Transactions on Neural Networks</i>. <b>8</b> (3): <span class="nowrap">679–</span>93. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1109%2F72.572106">10.1109/72.572106</a>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/18255670">18255670</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:1634670">1634670</a>. Archived from <a rel="nofollow" class="external text" href="https://pdfs.semanticscholar.org/fe11/93d386f42358e7cf9b1f71bf33e7ddd945b5.pdf">the original</a> <span class="cs1-format">(PDF)</span> on 2017-09-11.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=IEEE+Transactions+on+Neural+Networks&amp;rft.atitle=Quantum+Neural+Networks+%28QNN%27s%29%3A+Inherently+Fuzzy+Feedforward+Neural+Networks&amp;rft.volume=8&amp;rft.issue=3&amp;rft.pages=679-93&amp;rft.date=1997&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A1634670%23id-name%3DS2CID&amp;rft_id=info%3Apmid%2F18255670&amp;rft_id=info%3Adoi%2F10.1109%2F72.572106&amp;rft.aulast=Purushothaman&amp;rft.aufirst=G.&amp;rft.au=Karayiannis%2C+N.&amp;rft_id=https%3A%2F%2Fpdfs.semanticscholar.org%2Ffe11%2F93d386f42358e7cf9b1f71bf33e7ddd945b5.pdf&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-23"><span class="mw-cite-backlink"><b><a href="#cite_ref-23">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFNielsenChuang2010" class="citation book cs1">Nielsen, Michael A; Chuang, Isaac L (2010). <a rel="nofollow" class="external text" href="https://www.worldcat.org/oclc/665137861"><i>Quantum computation and quantum information</i></a>. Cambridge; New York: Cambridge University Press. <a href="/wiki/ISBN_(identifier)" class="mw-redirect" title="ISBN (identifier)">ISBN</a>&nbsp;<a href="/wiki/Special:BookSources/978-1-107-00217-3" title="Special:BookSources/978-1-107-00217-3"><bdi>978-1-107-00217-3</bdi></a>. <a href="/wiki/OCLC_(identifier)" class="mw-redirect" title="OCLC (identifier)">OCLC</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/oclc/665137861">665137861</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;rft.genre=book&amp;rft.btitle=Quantum+computation+and+quantum+information&amp;rft.place=Cambridge%3B+New+York&amp;rft.pub=Cambridge+University+Press&amp;rft.date=2010&amp;rft_id=info%3Aoclcnum%2F665137861&amp;rft.isbn=978-1-107-00217-3&amp;rft.aulast=Nielsen&amp;rft.aufirst=Michael+A&amp;rft.au=Chuang%2C+Isaac+L&amp;rft_id=https%3A%2F%2Fwww.worldcat.org%2Foclc%2F665137861&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-:1-24"><span class="mw-cite-backlink">^ <a href="#cite_ref-:1_24-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-:1_24-1"><sup><i><b>b</b></i></sup></a></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFFeynman1986" class="citation journal cs1">Feynman, Richard P. (1986-06-01). <span class="id-lock-subscription" title="Paid subscription required"><a rel="nofollow" class="external text" href="https://doi.org/10.1007/BF01886518">"Quantum mechanical computers"</a></span>. <i>Foundations of Physics</i>. <b>16</b> (6): <span class="nowrap">507–</span>531. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/1986FoPh...16..507F">1986FoPh...16..507F</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1007%2FBF01886518">10.1007/BF01886518</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/1572-9516">1572-9516</a>. <a href="/wiki/S2CID_(identifier)" class="mw-redirect" title="S2CID (identifier)">S2CID</a>&nbsp;<a rel="nofollow" class="external text" href="https://api.semanticscholar.org/CorpusID:122076550">122076550</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Foundations+of+Physics&amp;rft.atitle=Quantum+mechanical+computers&amp;rft.volume=16&amp;rft.issue=6&amp;rft.pages=507-531&amp;rft.date=1986-06-01&amp;rft_id=info%3Adoi%2F10.1007%2FBF01886518&amp;rft_id=https%3A%2F%2Fapi.semanticscholar.org%2FCorpusID%3A122076550%23id-name%3DS2CID&amp;rft.issn=1572-9516&amp;rft_id=info%3Abibcode%2F1986FoPh...16..507F&amp;rft.aulast=Feynman&amp;rft.aufirst=Richard+P.&amp;rft_id=https%3A%2F%2Fdoi.org%2F10.1007%2FBF01886518&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-25"><span class="mw-cite-backlink"><b><a href="#cite_ref-25">^</a></b></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFWangFontanaCerezoSharma2021" class="citation journal cs1">Wang, Samson; Fontana, Enrico; Cerezo, M.; Sharma, Kunal; Sone, Akira; Cincio, Lukasz; Coles, Patrick J. (2021-11-29). <a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8630047">"Noise-induced barren plateaus in variational quantum algorithms"</a>. <i>Nature Communications</i>. <b>12</b> (1): 6961. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/2007.14384">2007.14384</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2021NatCo..12.6961W">2021NatCo..12.6961W</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1038%2Fs41467-021-27045-6">10.1038/s41467-021-27045-6</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/2041-1723">2041-1723</a>. <a href="/wiki/PMC_(identifier)" class="mw-redirect" title="PMC (identifier)">PMC</a>&nbsp;<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8630047">8630047</a></span>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/34845216">34845216</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Nature+Communications&amp;rft.atitle=Noise-induced+barren+plateaus+in+variational+quantum+algorithms&amp;rft.volume=12&amp;rft.issue=1&amp;rft.pages=6961&amp;rft.date=2021-11-29&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC8630047%23id-name%3DPMC&amp;rft_id=info%3Abibcode%2F2021NatCo..12.6961W&amp;rft_id=info%3Aarxiv%2F2007.14384&amp;rft.issn=2041-1723&amp;rft_id=info%3Adoi%2F10.1038%2Fs41467-021-27045-6&amp;rft_id=info%3Apmid%2F34845216&amp;rft.aulast=Wang&amp;rft.aufirst=Samson&amp;rft.au=Fontana%2C+Enrico&amp;rft.au=Cerezo%2C+M.&amp;rft.au=Sharma%2C+Kunal&amp;rft.au=Sone%2C+Akira&amp;rft.au=Cincio%2C+Lukasz&amp;rft.au=Coles%2C+Patrick+J.&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC8630047&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+<li id="cite_note-:3-26"><span class="mw-cite-backlink">^ <a href="#cite_ref-:3_26-0"><sup><i><b>a</b></i></sup></a> <a href="#cite_ref-:3_26-1"><sup><i><b>b</b></i></sup></a></span> <span class="reference-text"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1238218222"><cite id="CITEREFMcCleanBoixoSmelyanskiyBabbush2018" class="citation journal cs1">McClean, Jarrod R.; Boixo, Sergio; Smelyanskiy, Vadim N.; Babbush, Ryan; Neven, Hartmut (2018-11-16). <a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6240101">"Barren plateaus in quantum neural network training landscapes"</a>. <i>Nature Communications</i>. <b>9</b> (1): 4812. <a href="/wiki/ArXiv_(identifier)" class="mw-redirect" title="ArXiv (identifier)">arXiv</a>:<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1803.11173">1803.11173</a></span>. <a href="/wiki/Bibcode_(identifier)" class="mw-redirect" title="Bibcode (identifier)">Bibcode</a>:<a rel="nofollow" class="external text" href="https://ui.adsabs.harvard.edu/abs/2018NatCo...9.4812M">2018NatCo...9.4812M</a>. <a href="/wiki/Doi_(identifier)" class="mw-redirect" title="Doi (identifier)">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1038%2Fs41467-018-07090-4">10.1038/s41467-018-07090-4</a>. <a href="/wiki/ISSN_(identifier)" class="mw-redirect" title="ISSN (identifier)">ISSN</a>&nbsp;<a rel="nofollow" class="external text" href="https://search.worldcat.org/issn/2041-1723">2041-1723</a>. <a href="/wiki/PMC_(identifier)" class="mw-redirect" title="PMC (identifier)">PMC</a>&nbsp;<span class="id-lock-free" title="Freely accessible"><a rel="nofollow" class="external text" href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6240101">6240101</a></span>. <a href="/wiki/PMID_(identifier)" class="mw-redirect" title="PMID (identifier)">PMID</a>&nbsp;<a rel="nofollow" class="external text" href="https://pubmed.ncbi.nlm.nih.gov/30446662">30446662</a>.</cite><span title="ctx_ver=Z39.88-2004&amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;rft.genre=article&amp;rft.jtitle=Nature+Communications&amp;rft.atitle=Barren+plateaus+in+quantum+neural+network+training+landscapes&amp;rft.volume=9&amp;rft.issue=1&amp;rft.pages=4812&amp;rft.date=2018-11-16&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC6240101%23id-name%3DPMC&amp;rft_id=info%3Abibcode%2F2018NatCo...9.4812M&amp;rft_id=info%3Aarxiv%2F1803.11173&amp;rft.issn=2041-1723&amp;rft_id=info%3Adoi%2F10.1038%2Fs41467-018-07090-4&amp;rft_id=info%3Apmid%2F30446662&amp;rft.aulast=McClean&amp;rft.aufirst=Jarrod+R.&amp;rft.au=Boixo%2C+Sergio&amp;rft.au=Smelyanskiy%2C+Vadim+N.&amp;rft.au=Babbush%2C+Ryan&amp;rft.au=Neven%2C+Hartmut&amp;rft_id=https%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpmc%2Farticles%2FPMC6240101&amp;rfr_id=info%3Asid%2Fen.wikipedia.org%3AQuantum+neural+network" class="Z3988"></span></span>
+</li>
+</ol></div></div>
+<div class="mw-heading mw-heading2"><h2 id="External_links">External links</h2><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Quantum_neural_network&amp;action=edit&amp;section=11" title="Edit section: External links"><span>edit</span></a><span class="mw-editsection-bracket">]</span></span></div>
+<ul><li><a rel="nofollow" class="external text" href="https://arxiv.org/abs/1408.7005">Recent review of quantum neural networks by M. Schuld, I. Sinayskiy and F. Petruccione</a></li>
+<li><a rel="nofollow" class="external text" href="http://www.cic.unb.br/~weigang/qc/aci.html">Review of quantum neural networks by Wei</a></li>
+<li><a rel="nofollow" class="external text" href="https://arxiv.org/abs/quant-ph/0401127">Article by P. Gralewicz on the plausibility of quantum computing in biological neural networks</a></li>
+<li><a rel="nofollow" class="external text" href="https://web.archive.org/web/20131113014007/http://www.dwavesys.com/en/dev-tutorial-neural.html">Training a neural net to recognize images</a></li></ul>
+<div class="navbox-styles"><style data-mw-deduplicate="TemplateStyles:r1129693374">.mw-parser-output .hlist dl,.mw-parser-output .hlist ol,.mw-parser-output .hlist ul{margin:0;padding:0}.mw-parser-output .hlist dd,.mw-parser-output .hlist dt,.mw-parser-output .hlist li{margin:0;display:inline}.mw-parser-output .hlist.inline,.mw-parser-output .hlist.inline dl,.mw-parser-output .hlist.inline ol,.mw-parser-output .hlist.inline ul,.mw-parser-output .hlist dl dl,.mw-parser-output .hlist dl ol,.mw-parser-output .hlist dl ul,.mw-parser-output .hlist ol dl,.mw-parser-output .hlist ol ol,.mw-parser-output .hlist ol ul,.mw-parser-output .hlist ul dl,.mw-parser-output .hlist ul ol,.mw-parser-output .hlist ul ul{display:inline}.mw-parser-output .hlist .mw-empty-li{display:none}.mw-parser-output .hlist dt::after{content:": "}.mw-parser-output .hlist dd::after,.mw-parser-output .hlist li::after{content:" · ";font-weight:bold}.mw-parser-output .hlist dd:last-child::after,.mw-parser-output .hlist dt:last-child::after,.mw-parser-output .hlist li:last-child::after{content:none}.mw-parser-output .hlist dd dd:first-child::before,.mw-parser-output .hlist dd dt:first-child::before,.mw-parser-output .hlist dd li:first-child::before,.mw-parser-output .hlist dt dd:first-child::before,.mw-parser-output .hlist dt dt:first-child::before,.mw-parser-output .hlist dt li:first-child::before,.mw-parser-output .hlist li dd:first-child::before,.mw-parser-output .hlist li dt:first-child::before,.mw-parser-output .hlist li li:first-child::before{content:" (";font-weight:normal}.mw-parser-output .hlist dd dd:last-child::after,.mw-parser-output .hlist dd dt:last-child::after,.mw-parser-output .hlist dd li:last-child::after,.mw-parser-output .hlist dt dd:last-child::after,.mw-parser-output .hlist dt dt:last-child::after,.mw-parser-output .hlist dt li:last-child::after,.mw-parser-output .hlist li dd:last-child::after,.mw-parser-output .hlist li dt:last-child::after,.mw-parser-output .hlist li li:last-child::after{content:")";font-weight:normal}.mw-parser-output .hlist ol{counter-reset:listitem}.mw-parser-output .hlist ol>li{counter-increment:listitem}.mw-parser-output .hlist ol>li::before{content:" "counter(listitem)"\a0 "}.mw-parser-output .hlist dd ol>li:first-child::before,.mw-parser-output .hlist dt ol>li:first-child::before,.mw-parser-output .hlist li ol>li:first-child::before{content:" ("counter(listitem)"\a0 "}</style><style data-mw-deduplicate="TemplateStyles:r1236075235">.mw-parser-output .navbox{box-sizing:border-box;border:1px solid #a2a9b1;width:100%;clear:both;font-size:88%;text-align:center;padding:1px;margin:1em auto 0}.mw-parser-output .navbox .navbox{margin-top:0}.mw-parser-output .navbox+.navbox,.mw-parser-output .navbox+.navbox-styles+.navbox{margin-top:-1px}.mw-parser-output .navbox-inner,.mw-parser-output .navbox-subgroup{width:100%}.mw-parser-output .navbox-group,.mw-parser-output .navbox-title,.mw-parser-output .navbox-abovebelow{padding:0.25em 1em;line-height:1.5em;text-align:center}.mw-parser-output .navbox-group{white-space:nowrap;text-align:right}.mw-parser-output .navbox,.mw-parser-output .navbox-subgroup{background-color:#fdfdfd}.mw-parser-output .navbox-list{line-height:1.5em;border-color:#fdfdfd}.mw-parser-output .navbox-list-with-group{text-align:left;border-left-width:2px;border-left-style:solid}.mw-parser-output tr+tr>.navbox-abovebelow,.mw-parser-output tr+tr>.navbox-group,.mw-parser-output tr+tr>.navbox-image,.mw-parser-output tr+tr>.navbox-list{border-top:2px solid #fdfdfd}.mw-parser-output .navbox-title{background-color:#ccf}.mw-parser-output .navbox-abovebelow,.mw-parser-output .navbox-group,.mw-parser-output .navbox-subgroup .navbox-title{background-color:#ddf}.mw-parser-output .navbox-subgroup .navbox-group,.mw-parser-output .navbox-subgroup .navbox-abovebelow{background-color:#e6e6ff}.mw-parser-output .navbox-even{background-color:#f7f7f7}.mw-parser-output .navbox-odd{background-color:transparent}.mw-parser-output .navbox .hlist td dl,.mw-parser-output .navbox .hlist td ol,.mw-parser-output .navbox .hlist td ul,.mw-parser-output .navbox td.hlist dl,.mw-parser-output .navbox td.hlist ol,.mw-parser-output .navbox td.hlist ul{padding:0.125em 0}.mw-parser-output .navbox .navbar{display:block;font-size:100%}.mw-parser-output .navbox-title .navbar{float:left;text-align:left;margin-right:0.5em}body.skin--responsive .mw-parser-output .navbox-image img{max-width:none!important}@media print{body.ns-0 .mw-parser-output .navbox{display:none!important}}</style></div><div role="navigation" class="navbox" aria-labelledby="Quantum_information_science667" style="padding:3px"><table class="nowraplinks hlist mw-collapsible mw-collapsed navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th scope="col" class="navbox-title" colspan="2"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1129693374"><style data-mw-deduplicate="TemplateStyles:r1239400231">.mw-parser-output .navbar{display:inline;font-size:88%;font-weight:normal}.mw-parser-output .navbar-collapse{float:left;text-align:left}.mw-parser-output .navbar-boxtext{word-spacing:0}.mw-parser-output .navbar ul{display:inline-block;white-space:nowrap;line-height:inherit}.mw-parser-output .navbar-brackets::before{margin-right:-0.125em;content:"[ "}.mw-parser-output .navbar-brackets::after{margin-left:-0.125em;content:" ]"}.mw-parser-output .navbar li{word-spacing:-0.125em}.mw-parser-output .navbar a>span,.mw-parser-output .navbar a>abbr{text-decoration:inherit}.mw-parser-output .navbar-mini abbr{font-variant:small-caps;border-bottom:none;text-decoration:none;cursor:inherit}.mw-parser-output .navbar-ct-full{font-size:114%;margin:0 7em}.mw-parser-output .navbar-ct-mini{font-size:114%;margin:0 4em}html.skin-theme-clientpref-night .mw-parser-output .navbar li a abbr{color:var(--color-base)!important}@media(prefers-color-scheme:dark){html.skin-theme-clientpref-os .mw-parser-output .navbar li a abbr{color:var(--color-base)!important}}@media print{.mw-parser-output .navbar{display:none!important}}</style><div class="navbar plainlinks hlist navbar-mini"><ul><li class="nv-view"><a href="/wiki/Template:Quantum_information" title="Template:Quantum information"><abbr title="View this template">v</abbr></a></li><li class="nv-talk"><a href="/wiki/Template_talk:Quantum_information" title="Template talk:Quantum information"><abbr title="Discuss this template">t</abbr></a></li><li class="nv-edit"><a href="/wiki/Special:EditPage/Template:Quantum_information" title="Special:EditPage/Template:Quantum information"><abbr title="Edit this template">e</abbr></a></li></ul></div><div id="Quantum_information_science667" style="font-size:114%;margin:0 4em"><a href="/wiki/Quantum_information_science" title="Quantum information science">Quantum information science</a></div></th></tr><tr><th scope="row" class="navbox-group" style="width:1%">General</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/DiVincenzo%27s_criteria" title="DiVincenzo's criteria">DiVincenzo's criteria</a></li>
+<li><a href="/wiki/Noisy_intermediate-scale_quantum_era" title="Noisy intermediate-scale quantum era">NISQ era</a></li>
+<li><a href="/wiki/Quantum_computing" title="Quantum computing">Quantum computing</a>
+<ul><li><a href="/wiki/Timeline_of_quantum_computing_and_communication" title="Timeline of quantum computing and communication">timeline</a></li></ul></li>
+<li><a href="/wiki/Quantum_information" title="Quantum information">Quantum information</a></li>
+<li><a href="/wiki/Quantum_programming" title="Quantum programming">Quantum programming</a></li>
+<li><a href="/wiki/Quantum_simulator" title="Quantum simulator">Quantum simulation</a></li>
+<li><a href="/wiki/Qubit" title="Qubit">Qubit</a>
+<ul><li><a href="/wiki/Physical_and_logical_qubits" title="Physical and logical qubits">physical vs. logical</a></li></ul></li>
+<li><a href="/wiki/List_of_quantum_processors" title="List of quantum processors">Quantum processors</a>
+<ul><li><a href="/wiki/Cloud-based_quantum_computing" title="Cloud-based quantum computing">cloud-based</a></li></ul></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Theorems</th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Bell%27s_theorem" title="Bell's theorem">Bell's</a></li>
+<li><a href="/wiki/Eastin%E2%80%93Knill_theorem" title="Eastin–Knill theorem">Eastin–Knill</a></li>
+<li><a href="/wiki/Gleason%27s_theorem" title="Gleason's theorem">Gleason's</a></li>
+<li><a href="/wiki/Gottesman%E2%80%93Knill_theorem" title="Gottesman–Knill theorem">Gottesman–Knill</a></li>
+<li><a href="/wiki/Holevo%27s_theorem" title="Holevo's theorem">Holevo's</a></li>
+<li><a href="/wiki/No-broadcasting_theorem" title="No-broadcasting theorem">No-broadcasting</a></li>
+<li><a href="/wiki/No-cloning_theorem" title="No-cloning theorem">No-cloning</a></li>
+<li><a href="/wiki/No-communication_theorem" title="No-communication theorem">No-communication</a></li>
+<li><a href="/wiki/No-deleting_theorem" title="No-deleting theorem">No-deleting</a></li>
+<li><a href="/wiki/No-hiding_theorem" title="No-hiding theorem">No-hiding</a></li>
+<li><a href="/wiki/No-teleportation_theorem" title="No-teleportation theorem">No-teleportation</a></li>
+<li><a href="/wiki/PBR_theorem" class="mw-redirect" title="PBR theorem">PBR</a></li>
+<li><a href="/wiki/Quantum_speed_limit_theorems" class="mw-redirect" title="Quantum speed limit theorems">Quantum speed limit</a></li>
+<li><a href="/wiki/Threshold_theorem" title="Threshold theorem">Threshold</a></li>
+<li><a href="/wiki/Solovay%E2%80%93Kitaev_theorem" title="Solovay–Kitaev theorem">Solovay–Kitaev</a></li>
+<li><a href="/wiki/Schr%C3%B6dinger%E2%80%93HJW_theorem" class="mw-redirect" title="Schrödinger–HJW theorem">Schrödinger-HJW</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Quantum<br>communication</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Classical_capacity" title="Classical capacity">Classical capacity</a>
+<ul><li><a href="/wiki/Entanglement-assisted_classical_capacity" title="Entanglement-assisted classical capacity">entanglement-assisted</a></li>
+<li><a href="/wiki/Quantum_capacity" title="Quantum capacity">quantum capacity</a></li></ul></li>
+<li><a href="/wiki/Entanglement_distillation" title="Entanglement distillation">Entanglement distillation</a></li>
+<li><a href="/wiki/Entanglement_swapping" title="Entanglement swapping">Entanglement swapping</a></li>
+<li><a href="/wiki/Monogamy_of_entanglement" title="Monogamy of entanglement">Monogamy of entanglement</a></li>
+<li><a href="/wiki/LOCC" title="LOCC">LOCC</a></li>
+<li><a href="/wiki/Quantum_channel" title="Quantum channel">Quantum channel</a>
+<ul><li><a href="/wiki/Quantum_network" title="Quantum network">quantum network</a></li></ul></li>
+<li><a href="/wiki/Quantum_state_purification" title="Quantum state purification">State purification</a></li>
+<li><a href="/wiki/Quantum_teleportation" title="Quantum teleportation">Quantum teleportation</a>
+<ul><li><a href="/wiki/Quantum_energy_teleportation" title="Quantum energy teleportation">quantum energy teleportation</a></li>
+<li><a href="/wiki/Quantum_gate_teleportation" title="Quantum gate teleportation">quantum gate teleportation</a></li></ul></li>
+<li><a href="/wiki/Superdense_coding" title="Superdense coding">Superdense coding</a></li></ul>
+</div><table class="nowraplinks navbox-subgroup" style="border-spacing:0"><tbody><tr><th id="Quantum_cryptography24" scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_cryptography" title="Quantum cryptography">Quantum cryptography</a></th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Post-quantum_cryptography" title="Post-quantum cryptography">Post-quantum cryptography</a></li>
+<li><a href="/wiki/Quantum_coin_flipping" title="Quantum coin flipping">Quantum coin flipping</a></li>
+<li><a href="/wiki/Quantum_money" title="Quantum money">Quantum money</a></li>
+<li><a href="/wiki/Quantum_key_distribution" title="Quantum key distribution">Quantum key distribution</a>
+<ul><li><a href="/wiki/BB84" title="BB84">BB84</a></li>
+<li><a href="/wiki/SARG04" title="SARG04">SARG04</a></li>
+<li><a href="/wiki/List_of_quantum_key_distribution_protocols" title="List of quantum key distribution protocols">other protocols</a></li></ul></li>
+<li><a href="/wiki/Quantum_secret_sharing" title="Quantum secret sharing">Quantum secret sharing</a></li></ul>
+</div></td></tr></tbody></table><div>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_algorithm" title="Quantum algorithm">Quantum algorithms</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Algorithmic_cooling" title="Algorithmic cooling">Algorithmic cooling</a></li>
+<li><a href="/wiki/Amplitude_amplification" title="Amplitude amplification">Amplitude amplification</a></li>
+<li><a href="/wiki/Bernstein%E2%80%93Vazirani_algorithm" title="Bernstein–Vazirani algorithm">Bernstein–Vazirani</a></li>
+<li><a href="/wiki/BHT_algorithm" title="BHT algorithm">BHT</a></li>
+<li><a href="/wiki/Boson_sampling" title="Boson sampling">Boson sampling</a></li>
+<li><a href="/wiki/Deutsch%E2%80%93Jozsa_algorithm" title="Deutsch–Jozsa algorithm">Deutsch–Jozsa</a></li>
+<li><a href="/wiki/Grover%27s_algorithm" title="Grover's algorithm">Grover's</a></li>
+<li><a href="/wiki/HHL_algorithm" title="HHL algorithm">HHL</a></li>
+<li><a href="/wiki/Hidden_subgroup_problem" title="Hidden subgroup problem">Hidden subgroup</a></li>
+<li><a href="/wiki/Magic_state_distillation" title="Magic state distillation">Magic state distillation</a></li>
+<li><a href="/wiki/Quantum_annealing" title="Quantum annealing">Quantum annealing</a></li>
+<li><a href="/wiki/Quantum_counting_algorithm" title="Quantum counting algorithm">Quantum counting</a></li>
+<li><a href="/wiki/Quantum_Fourier_transform" title="Quantum Fourier transform">Quantum Fourier transform</a></li>
+<li><a href="/wiki/Quantum_optimization_algorithms" title="Quantum optimization algorithms">Quantum optimization</a></li>
+<li><a href="/wiki/Quantum_phase_estimation_algorithm" title="Quantum phase estimation algorithm">Quantum phase estimation</a></li>
+<li><a href="/wiki/Shor%27s_algorithm" title="Shor's algorithm">Shor's</a></li>
+<li><a href="/wiki/Simon%27s_problem" title="Simon's problem">Simon's</a></li>
+<li><a href="/wiki/Variational_quantum_eigensolver" title="Variational quantum eigensolver">VQE</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_complexity_theory" title="Quantum complexity theory">Quantum<br>complexity theory</a></th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/BQP" title="BQP">BQP</a></li>
+<li><a href="/wiki/One_clean_qubit" title="One clean qubit">DQC1</a></li>
+<li><a href="/wiki/Exact_quantum_polynomial_time" title="Exact quantum polynomial time">EQP</a></li>
+<li><a href="/wiki/QIP_(complexity)" title="QIP (complexity)">QIP</a></li>
+<li><a href="/wiki/QMA" title="QMA">QMA</a></li>
+<li><a href="/wiki/PostBQP" title="PostBQP">PostBQP</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Quantum <br> processor benchmarks</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Quantum_supremacy" title="Quantum supremacy">Quantum supremacy</a></li>
+<li><a href="/wiki/Quantum_volume" title="Quantum volume">Quantum volume</a></li>
+<li><a href="/wiki/Randomized_benchmarking" title="Randomized benchmarking">Randomized benchmarking</a>
+<ul><li><a href="/wiki/Cross-entropy_benchmarking" title="Cross-entropy benchmarking">XEB</a></li></ul></li>
+<li><a href="/wiki/Relaxation_(NMR)" title="Relaxation (NMR)">Relaxation times</a>
+<ul><li><a href="/wiki/Spin%E2%80%93lattice_relaxation" title="Spin–lattice relaxation"><i>T</i><sub>1</sub></a></li>
+<li><a href="/wiki/Spin%E2%80%93spin_relaxation" title="Spin–spin relaxation"><i>T</i><sub>2</sub></a></li></ul></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Quantum<br><a href="/wiki/Model_of_computation" title="Model of computation">computing models</a></th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Adiabatic_quantum_computation" title="Adiabatic quantum computation">Adiabatic quantum computation</a></li>
+<li><a href="/wiki/Continuous-variable_quantum_information" title="Continuous-variable quantum information">Continuous-variable quantum information</a></li>
+<li><a href="/wiki/One-way_quantum_computer" title="One-way quantum computer">One-way quantum computer</a>
+<ul><li><a href="/wiki/Cluster_state" title="Cluster state">cluster state</a></li></ul></li>
+<li><a href="/wiki/Quantum_circuit" title="Quantum circuit">Quantum circuit</a>
+<ul><li><a href="/wiki/Quantum_logic_gate" title="Quantum logic gate">quantum logic gate</a></li></ul></li>
+<li><a href="/wiki/Quantum_machine_learning" title="Quantum machine learning">Quantum machine learning</a>
+<ul><li><a class="mw-selflink selflink">quantum neural network</a></li></ul></li>
+<li><a href="/wiki/Quantum_Turing_machine" title="Quantum Turing machine">Quantum Turing machine</a></li>
+<li><a href="/wiki/Topological_quantum_computer" title="Topological quantum computer">Topological quantum computer</a></li>
+<li><a href="/wiki/Hamiltonian_quantum_computation" title="Hamiltonian quantum computation">Hamiltonian quantum computation</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_error_correction" title="Quantum error correction">Quantum<br>error correction</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li>Codes
+<ul><li><a href="/wiki/Five-qubit_error_correcting_code" title="Five-qubit error correcting code">5 qubit</a></li>
+<li><a href="/wiki/CSS_code" title="CSS code">CSS</a></li>
+<li><a href="/wiki/Gottesman%E2%80%93Kitaev%E2%80%93Preskill_code" title="Gottesman–Kitaev–Preskill code">GKP</a></li>
+<li><a href="/wiki/Quantum_convolutional_code" title="Quantum convolutional code">quantum convolutional</a></li>
+<li><a href="/wiki/Stabilizer_code" title="Stabilizer code">stabilizer</a></li>
+<li><a href="/wiki/Shor_code" class="mw-redirect" title="Shor code">Shor</a></li>
+<li><a href="/wiki/Bacon%E2%80%93Shor_code" title="Bacon–Shor code">Bacon–Shor</a></li>
+<li><a href="/wiki/Steane_code" title="Steane code">Steane</a></li>
+<li><a href="/wiki/Toric_code" title="Toric code">Toric</a></li>
+<li><a href="/wiki/Gnu_code" title="Gnu code"><i>gnu</i></a></li></ul></li>
+<li><a href="/wiki/Entanglement-assisted_stabilizer_formalism" title="Entanglement-assisted stabilizer formalism">Entanglement-assisted</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Physical<br>implementations</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em"></div><table class="nowraplinks navbox-subgroup" style="border-spacing:0"><tbody><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_optics" title="Quantum optics">Quantum optics</a></th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Cavity_quantum_electrodynamics" title="Cavity quantum electrodynamics">Cavity QED</a></li>
+<li><a href="/wiki/Circuit_quantum_electrodynamics" title="Circuit quantum electrodynamics">Circuit QED</a></li>
+<li><a href="/wiki/Linear_optical_quantum_computing" title="Linear optical quantum computing">Linear optical QC</a></li>
+<li><a href="/wiki/KLM_protocol" title="KLM protocol">KLM protocol</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Ultracold_atom" title="Ultracold atom">Ultracold atoms</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Neutral_atom_quantum_computer" title="Neutral atom quantum computer">Neutral atom QC</a></li>
+<li><a href="/wiki/Trapped-ion_quantum_computer" title="Trapped-ion quantum computer">Trapped-ion QC</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Spin_(physics)" title="Spin (physics)">Spin</a>-based</th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Kane_quantum_computer" title="Kane quantum computer">Kane QC</a></li>
+<li><a href="/wiki/Spin_qubit_quantum_computer" title="Spin qubit quantum computer">Spin qubit QC</a></li>
+<li><a href="/wiki/Nitrogen-vacancy_center" title="Nitrogen-vacancy center">NV center</a></li>
+<li><a href="/wiki/Nuclear_magnetic_resonance_quantum_computer" title="Nuclear magnetic resonance quantum computer">NMR QC</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Superconducting_quantum_computing" title="Superconducting quantum computing">Superconducting</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Charge_qubit" title="Charge qubit">Charge qubit</a></li>
+<li><a href="/wiki/Flux_qubit" title="Flux qubit">Flux qubit</a></li>
+<li><a href="/wiki/Phase_qubit" title="Phase qubit">Phase qubit</a></li>
+<li><a href="/wiki/Transmon" title="Transmon">Transmon</a></li></ul>
+</div></td></tr></tbody></table><div></div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Quantum_programming" title="Quantum programming">Quantum<br>programming</a></th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/OpenQASM" title="OpenQASM">OpenQASM</a>–<a href="/wiki/Qiskit" title="Qiskit">Qiskit</a>–<a href="/wiki/IBM_Quantum_Experience" class="mw-redirect" title="IBM Quantum Experience">IBM QX</a></li>
+<li><a href="/wiki/Quil_(instruction_set_architecture)" title="Quil (instruction set architecture)">Quil</a>–<a href="/wiki/Rigetti_Computing" title="Rigetti Computing">Forest/Rigetti QCS</a></li>
+<li><a href="/wiki/Cirq" title="Cirq">Cirq</a></li>
+<li><a href="/wiki/Q_Sharp" title="Q Sharp">Q#</a></li>
+<li><a href="/wiki/Libquantum" title="Libquantum">libquantum</a></li>
+<li><a href="/wiki/Quantum_programming" title="Quantum programming">many others...</a></li></ul>
+</div></td></tr><tr><td class="navbox-abovebelow" colspan="2"><div>
+<ul><li><span class="noviewer" typeof="mw:File"><span title="Category"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/9/96/Symbol_category_class.svg/20px-Symbol_category_class.svg.png" decoding="async" width="16" height="16" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/en/thumb/9/96/Symbol_category_class.svg/40px-Symbol_category_class.svg.png 1.5x" data-file-width="180" data-file-height="185"></span></span> <a href="/wiki/Category:Quantum_information_science" title="Category:Quantum information science">Quantum information science</a></li>
+<li><span class="noviewer" typeof="mw:File"><span title="Template"><img alt="" src="//upload.wikimedia.org/wikipedia/commons/thumb/8/83/Symbol_template_class_pink.svg/20px-Symbol_template_class_pink.svg.png" decoding="async" width="16" height="16" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/commons/thumb/8/83/Symbol_template_class_pink.svg/40px-Symbol_template_class_pink.svg.png 1.5x" data-file-width="180" data-file-height="185"></span></span> <a href="/wiki/Template:Quantum_mechanics_topics" title="Template:Quantum mechanics topics">Quantum mechanics topics</a></li></ul>
+</div></td></tr></tbody></table></div>
+<div class="navbox-styles"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1129693374"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1236075235"></div><div role="navigation" class="navbox" aria-labelledby="Differentiable_computing254" style="padding:3px"><table class="nowraplinks hlist mw-collapsible autocollapse navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th scope="col" class="navbox-title" colspan="2"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1129693374"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1239400231"><div class="navbar plainlinks hlist navbar-mini"><ul><li class="nv-view"><a href="/wiki/Template:Differentiable_computing" title="Template:Differentiable computing"><abbr title="View this template">v</abbr></a></li><li class="nv-talk"><a href="/wiki/Template_talk:Differentiable_computing" title="Template talk:Differentiable computing"><abbr title="Discuss this template">t</abbr></a></li><li class="nv-edit"><a href="/wiki/Special:EditPage/Template:Differentiable_computing" title="Special:EditPage/Template:Differentiable computing"><abbr title="Edit this template">e</abbr></a></li></ul></div><div id="Differentiable_computing254" style="font-size:114%;margin:0 4em">Differentiable computing</div></th></tr><tr><th scope="row" class="navbox-group" style="width:1%"><a href="/wiki/Differentiable_function" title="Differentiable function">General</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><b><a href="/wiki/Differentiable_programming" title="Differentiable programming">Differentiable programming</a></b></li>
+<li><a href="/wiki/Information_geometry" title="Information geometry">Information geometry</a></li>
+<li><a href="/wiki/Statistical_manifold" title="Statistical manifold">Statistical manifold</a></li>
+<li><a href="/wiki/Automatic_differentiation" title="Automatic differentiation">Automatic differentiation</a></li>
+<li><a href="/wiki/Neuromorphic_computing" title="Neuromorphic computing">Neuromorphic computing</a></li>
+<li><a href="/wiki/Pattern_recognition" title="Pattern recognition">Pattern recognition</a></li>
+<li><a href="/wiki/Ricci_calculus" title="Ricci calculus">Ricci calculus</a></li>
+<li><a href="/wiki/Computational_learning_theory" title="Computational learning theory">Computational learning theory</a></li>
+<li><a href="/wiki/Inductive_bias" title="Inductive bias">Inductive bias</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Hardware</th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Graphcore" title="Graphcore">IPU</a></li>
+<li><a href="/wiki/Tensor_Processing_Unit" title="Tensor Processing Unit">TPU</a></li>
+<li><a href="/wiki/Vision_processing_unit" title="Vision processing unit">VPU</a></li>
+<li><a href="/wiki/Memristor" title="Memristor">Memristor</a></li>
+<li><a href="/wiki/SpiNNaker" title="SpiNNaker">SpiNNaker</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%">Software libraries</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/TensorFlow" title="TensorFlow">TensorFlow</a></li>
+<li><a href="/wiki/PyTorch" title="PyTorch">PyTorch</a></li>
+<li><a href="/wiki/Keras" title="Keras">Keras</a></li>
+<li><a href="/wiki/Scikit-learn" title="Scikit-learn">scikit-learn</a></li>
+<li><a href="/wiki/Theano_(software)" title="Theano (software)">Theano</a></li>
+<li><a href="/wiki/JAX_(software)" title="JAX (software)">JAX</a></li>
+<li><a href="/wiki/Flux_(machine-learning_framework)" title="Flux (machine-learning framework)">Flux.jl</a></li>
+<li><a href="/wiki/MindSpore" title="MindSpore">MindSpore</a></li></ul>
+</div></td></tr><tr><td class="navbox-abovebelow" colspan="2"><div>
+<ul><li><span class="noviewer" typeof="mw:File"><a href="/wiki/File:Symbol_portal_class.svg" class="mw-file-description" title="Portal"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/e/e2/Symbol_portal_class.svg/20px-Symbol_portal_class.svg.png" decoding="async" width="16" height="16" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/en/thumb/e/e2/Symbol_portal_class.svg/40px-Symbol_portal_class.svg.png 1.5x" data-file-width="180" data-file-height="185"></a></span> Portals
+<ul><li><a href="/wiki/Portal:Computer_programming" title="Portal:Computer programming">Computer programming</a></li>
+<li><a href="/wiki/Portal:Technology" title="Portal:Technology">Technology</a></li></ul></li></ul>
+</div></td></tr></tbody></table></div>
+<div class="navbox-styles"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1129693374"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1236075235"></div><div role="navigation" class="navbox" aria-labelledby="Emerging_technologies167" style="padding:3px"><table class="nowraplinks hlist mw-collapsible autocollapse navbox-inner" style="border-spacing:0;background:transparent;color:inherit"><tbody><tr><th scope="col" class="navbox-title" colspan="2" style="text-align: center;"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1129693374"><link rel="mw-deduplicated-inline-style" href="mw-data:TemplateStyles:r1239400231"><div class="navbar plainlinks hlist navbar-mini"><ul><li class="nv-view"><a href="/wiki/Template:Emerging_technologies" title="Template:Emerging technologies"><abbr title="View this template">v</abbr></a></li><li class="nv-talk"><a href="/wiki/Template_talk:Emerging_technologies" title="Template talk:Emerging technologies"><abbr title="Discuss this template">t</abbr></a></li><li class="nv-edit"><a href="/wiki/Special:EditPage/Template:Emerging_technologies" title="Special:EditPage/Template:Emerging technologies"><abbr title="Edit this template">e</abbr></a></li></ul></div><div id="Emerging_technologies167" style="font-size:114%;margin:0 4em"><a href="/wiki/Emerging_technologies" title="Emerging technologies">Emerging technologies</a></div></th></tr><tr><th scope="row" class="navbox-group" style="text-align: center;;width:1%">Fields</th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em"></div><table class="nowraplinks navbox-subgroup" style="border-spacing:0"><tbody><tr><th scope="row" class="navbox-group" style="width:1%;text-align: center;"><a href="/wiki/Quantum_technology" class="mw-redirect" title="Quantum technology">Quantum</a></th><td class="navbox-list-with-group navbox-list navbox-odd" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Quantum_algorithm" title="Quantum algorithm">algorithms</a></li>
+<li><a href="/wiki/Quantum_amplifier" title="Quantum amplifier">amplifier</a></li>
+<li><a href="/wiki/Quantum_bus" title="Quantum bus">bus</a></li>
+<li><a href="/wiki/Quantum_cellular_automaton" title="Quantum cellular automaton">cellular automata</a></li>
+<li><a href="/wiki/Quantum_channel" title="Quantum channel">channel</a></li>
+<li><a href="/wiki/Quantum_circuit" title="Quantum circuit">circuit</a></li>
+<li><a href="/wiki/Quantum_complexity_theory" title="Quantum complexity theory">complexity theory</a></li>
+<li><a href="/wiki/Quantum_computing" title="Quantum computing">computing</a></li>
+<li><a href="/wiki/Quantum_cryptography" title="Quantum cryptography">cryptography</a>
+<ul><li><a href="/wiki/Post-quantum_cryptography" title="Post-quantum cryptography">post-quantum</a></li></ul></li>
+<li><a href="/wiki/Quantum_dynamics" title="Quantum dynamics">dynamics</a></li>
+<li><a href="/wiki/Quantum_electronics" class="mw-redirect" title="Quantum electronics">electronics</a></li>
+<li><a href="/wiki/Quantum_error_correction" title="Quantum error correction">error correction</a></li>
+<li><a href="/wiki/Quantum_finite_automaton" title="Quantum finite automaton">finite automata</a></li>
+<li><a href="/wiki/Quantum_image_processing" title="Quantum image processing">image processing</a></li>
+<li><a href="/wiki/Quantum_imaging" title="Quantum imaging">imaging</a></li>
+<li><a href="/wiki/Quantum_information" title="Quantum information">information</a></li>
+<li><a href="/wiki/Quantum_key_distribution" title="Quantum key distribution">key distribution</a></li>
+<li><a href="/wiki/Quantum_logic" title="Quantum logic">logic</a></li>
+<li><a href="/wiki/Quantum_logic_clock" title="Quantum logic clock">logic clock</a></li>
+<li><a href="/wiki/Quantum_logic_gate" title="Quantum logic gate">logic gate</a></li>
+<li><a href="/wiki/Quantum_machine" title="Quantum machine">machine</a></li>
+<li><a href="/wiki/Quantum_machine_learning" title="Quantum machine learning">machine learning</a></li>
+<li><a href="/wiki/Quantum_metamaterial" title="Quantum metamaterial">metamaterial</a></li>
+<li><a href="/wiki/Quantum_network" title="Quantum network">network</a></li>
+<li><a class="mw-selflink selflink">neural network</a></li>
+<li><a href="/wiki/Quantum_optics" title="Quantum optics">optics</a></li>
+<li><a href="/wiki/Quantum_programming" title="Quantum programming">programming</a></li>
+<li><a href="/wiki/Quantum_sensor" title="Quantum sensor">sensing</a></li>
+<li><a href="/wiki/Quantum_simulator" title="Quantum simulator">simulator</a></li>
+<li><a href="/wiki/Quantum_teleportation" title="Quantum teleportation">teleportation</a></li></ul>
+</div></td></tr><tr><th scope="row" class="navbox-group" style="width:1%;text-align: center;">Other</th><td class="navbox-list-with-group navbox-list navbox-even" style="width:100%;padding:0"><div style="padding:0 0.25em">
+<ul><li><a href="/wiki/Acoustic_levitation" title="Acoustic levitation">Acoustic levitation</a></li>
+<li><a href="/wiki/Anti-gravity" title="Anti-gravity">Anti-gravity</a></li>
+<li><a href="/wiki/Cloak_of_invisibility" title="Cloak of invisibility">Cloak of invisibility</a></li>
+<li><a href="/wiki/Digital_scent_technology" title="Digital scent technology">Digital scent technology</a></li>
+<li><a href="/wiki/Force_field_(technology)" title="Force field (technology)">Force field</a>
+<ul><li><a href="/wiki/Plasma_window" title="Plasma window">Plasma window</a></li></ul></li>
+<li><a href="/wiki/Immersion_(virtual_reality)" title="Immersion (virtual reality)">Immersive virtual reality</a></li>
+<li><a href="/wiki/Magnetic_refrigeration" class="mw-redirect" title="Magnetic refrigeration">Magnetic refrigeration</a></li>
+<li><a href="/wiki/Phased-array_optics" title="Phased-array optics">Phased-array optics</a></li>
+<li><a href="/wiki/Thermoacoustic_heat_engine" title="Thermoacoustic heat engine">Thermoacoustic heat engine</a></li></ul>
+</div></td></tr></tbody></table><div></div></td></tr><tr><td class="navbox-abovebelow" colspan="2" style="text-align: center;"><div>
+<ul><li><span class="noviewer" typeof="mw:File"><span title="List-Class article"><img alt="" src="//upload.wikimedia.org/wikipedia/en/thumb/d/db/Symbol_list_class.svg/20px-Symbol_list_class.svg.png" decoding="async" width="16" height="16" class="mw-file-element" srcset="//upload.wikimedia.org/wikipedia/en/thumb/d/db/Symbol_list_class.svg/40px-Symbol_list_class.svg.png 1.5x" data-file-width="180" data-file-height="185"></span></span> <b><a href="/wiki/List_of_emerging_technologies" title="List of emerging technologies">List</a></b></li></ul>
+</div></td></tr></tbody></table></div>
+<!-- 
+NewPP limit report
+Parsed by mw‐api‐ext.eqiad.main‐d94589b4‐kck5b
+Cached time: 20250619231445
+Cache expiry: 2592000
+Reduced expiry: false
+Complications: [vary‐revision‐sha1, show‐toc]
+CPU time usage: 0.469 seconds
+Real time usage: 0.602 seconds
+Preprocessor visited node count: 2389/1000000
+Revision size: 21613/2097152 bytes
+Post‐expand include size: 130115/2097152 bytes
+Template argument size: 1036/2097152 bytes
+Highest expansion depth: 11/100
+Expensive parser function count: 1/500
+Unstrip recursion depth: 1/20
+Unstrip post‐expand size: 133925/5000000 bytes
+Lua time usage: 0.291/10.000 seconds
+Lua memory usage: 5240279/52428800 bytes
+Number of Wikibase entities loaded: 0/500
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%  444.425      1 -total
+ 61.70%  274.204      1 Template:Reflist
+ 45.49%  202.176     21 Template:Cite_journal
+ 21.95%   97.542      6 Template:Navbox
+ 18.94%   84.171      1 Template:Quantum_computing
+ 13.74%   61.079      1 Template:Short_description
+  8.18%   36.340      2 Template:Pagetype
+  5.26%   23.361      3 Template:Cite_book
+  3.42%   15.214      3 Template:Main_other
+  2.97%   13.211      1 Template:SDcat
+-->
+
+<!-- Saved in parser cache with key enwiki:pcache:3737445:|#|:idhash:canonical and timestamp 20250619231445 and revision id 1296426484. Rendering was triggered because: api-parse
+ -->
+</div><!--esi <esi:include src="/esitest-fa8a495983347898/content" /> --><noscript><img src="https://en.wikipedia.org/wiki/Special:CentralAutoLogin/start?type=1x1&amp;usesul3=1" alt="" width="1" height="1" style="border: none; position: absolute;"></noscript>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="https://en.wikipedia.org/w/index.php?title=Quantum_neural_network&amp;oldid=1296426484">https://en.wikipedia.org/w/index.php?title=Quantum_neural_network&amp;oldid=1296426484</a>"</div></div>
+					<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Help:Category" title="Help:Category">Categories</a>: <ul><li><a href="/wiki/Category:Artificial_neural_networks" title="Category:Artificial neural networks">Artificial neural networks</a></li><li><a href="/wiki/Category:Quantum_information_science" title="Category:Quantum information science">Quantum information science</a></li><li><a href="/wiki/Category:Quantum_programming" title="Category:Quantum programming">Quantum programming</a></li></ul></div><div id="mw-hidden-catlinks" class="mw-hidden-catlinks mw-hidden-cats-hidden">Hidden categories: <ul><li><a href="/wiki/Category:Articles_with_short_description" title="Category:Articles with short description">Articles with short description</a></li><li><a href="/wiki/Category:Short_description_is_different_from_Wikidata" title="Category:Short description is different from Wikidata">Short description is different from Wikidata</a></li></ul></div></div>
+				</div>
+			</main>
+			
+		</div>
+		<div class="mw-footer-container">
+			
+<footer id="footer" class="mw-footer" >
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> This page was last edited on 19 June 2025, at 23:14<span class="anonymous-show">&#160;(UTC)</span>.</li>
+	<li id="footer-info-copyright">Text is available under the <a href="/wiki/Wikipedia:Text_of_the_Creative_Commons_Attribution-ShareAlike_4.0_International_License" title="Wikipedia:Text of the Creative Commons Attribution-ShareAlike 4.0 International License">Creative Commons Attribution-ShareAlike 4.0 License</a>;
+additional terms may apply. By using this site, you agree to the <a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Terms_of_Use" class="extiw" title="foundation:Special:MyLanguage/Policy:Terms of Use">Terms of Use</a> and <a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy" class="extiw" title="foundation:Special:MyLanguage/Policy:Privacy policy">Privacy Policy</a>. Wikipedia® is a registered trademark of the <a rel="nofollow" class="external text" href="https://wikimediafoundation.org/">Wikimedia Foundation, Inc.</a>, a non-profit organization.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Privacy_policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="/wiki/Wikipedia:About">About Wikipedia</a></li>
+	<li id="footer-places-disclaimers"><a href="/wiki/Wikipedia:General_disclaimer">Disclaimers</a></li>
+	<li id="footer-places-contact"><a href="//en.wikipedia.org/wiki/Wikipedia:Contact_us">Contact Wikipedia</a></li>
+	<li id="footer-places-wm-codeofconduct"><a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Universal_Code_of_Conduct">Code of Conduct</a></li>
+	<li id="footer-places-developers"><a href="https://developer.wikimedia.org">Developers</a></li>
+	<li id="footer-places-statslink"><a href="https://stats.wikimedia.org/#/en.wikipedia.org">Statistics</a></li>
+	<li id="footer-places-cookiestatement"><a href="https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Cookie_statement">Cookie statement</a></li>
+	<li id="footer-places-mobileview"><a href="//en.m.wikipedia.org/w/index.php?title=Quantum_neural_network&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-copyrightico"><a href="https://www.wikimedia.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><picture><source media="(min-width: 500px)" srcset="/static/images/footer/wikimedia-button.svg" width="84" height="29"><img src="/static/images/footer/wikimedia.svg" width="25" height="25" alt="Wikimedia Foundation" lang="en" loading="lazy"></picture></a></li>
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/" class="cdx-button cdx-button--fake-button cdx-button--size-large cdx-button--fake-button--enabled"><picture><source media="(min-width: 500px)" srcset="/w/resources/assets/poweredby_mediawiki.svg" width="88" height="31"><img src="/w/resources/assets/mediawiki_compact.svg" alt="Powered by MediaWiki" lang="en" width="25" height="25" loading="lazy"></picture></a></li>
+</ul>
+
+</footer>
+
+		</div>
+	</div> 
+</div> 
+<div class="vector-header-container vector-sticky-header-container no-font-mode-scale">
+	<div id="vector-sticky-header" class="vector-sticky-header">
+		<div class="vector-sticky-header-start">
+			<div class="vector-sticky-header-icon-start vector-button-flush-left vector-button-flush-right" aria-hidden="true">
+				<button class="cdx-button cdx-button--weight-quiet cdx-button--icon-only vector-sticky-header-search-toggle" tabindex="-1" data-event-name="ui.vector-sticky-search-form.icon"><span class="vector-icon mw-ui-icon-search mw-ui-icon-wikimedia-search"></span>
+
+<span>Search</span>
+			</button>
+		</div>
+			
+		<div role="search" class="vector-search-box-vue  vector-search-box-show-thumbnail vector-search-box">
+			<div class="vector-typeahead-search-container">
+				<div class="cdx-typeahead-search cdx-typeahead-search--show-thumbnail">
+					<form action="/w/index.php" id="vector-sticky-search-form" class="cdx-search-input cdx-search-input--has-end-button">
+						<div  class="cdx-search-input__input-wrapper"  data-search-loc="header-moved">
+							<div class="cdx-text-input cdx-text-input--has-start-icon">
+								<input
+									class="cdx-text-input__input mw-searchInput"
+									
+									type="search" name="search" placeholder="Search Wikipedia">
+								<span class="cdx-text-input__icon cdx-text-input__start-icon"></span>
+							</div>
+							<input type="hidden" name="title" value="Special:Search">
+						</div>
+						<button class="cdx-button cdx-search-input__end-button">Search</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="vector-sticky-header-context-bar">
+				<nav aria-label="Contents" class="vector-toc-landmark">
+						
+					<div id="vector-sticky-header-toc" class="vector-dropdown mw-portlet mw-portlet-sticky-header-toc vector-sticky-header-toc vector-button-flush-left"  >
+						<input type="checkbox" id="vector-sticky-header-toc-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-vector-sticky-header-toc" class="vector-dropdown-checkbox "  aria-label="Toggle the table of contents"  >
+						<label id="vector-sticky-header-toc-label" for="vector-sticky-header-toc-checkbox" class="vector-dropdown-label cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only " aria-hidden="true"  ><span class="vector-icon mw-ui-icon-listBullet mw-ui-icon-wikimedia-listBullet"></span>
+
+<span class="vector-dropdown-label-text">Toggle the table of contents</span>
+						</label>
+						<div class="vector-dropdown-content">
+					
+						<div id="vector-sticky-header-toc-unpinned-container" class="vector-unpinned-container">
+						</div>
+					
+						</div>
+					</div>
+			</nav>
+				<div class="vector-sticky-header-context-bar-primary" aria-hidden="true" ><span class="mw-page-title-main">Quantum neural network</span></div>
+			</div>
+		</div>
+		<div class="vector-sticky-header-end" aria-hidden="true">
+			<div class="vector-sticky-header-icons">
+				<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-talk-sticky-header" tabindex="-1" data-event-name="talk-sticky-header"><span class="vector-icon mw-ui-icon-speechBubbles mw-ui-icon-wikimedia-speechBubbles"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-subject-sticky-header" tabindex="-1" data-event-name="subject-sticky-header"><span class="vector-icon mw-ui-icon-article mw-ui-icon-wikimedia-article"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-history-sticky-header" tabindex="-1" data-event-name="history-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-history mw-ui-icon-wikimedia-wikimedia-history"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only mw-watchlink" id="ca-watchstar-sticky-header" tabindex="-1" data-event-name="watch-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-star mw-ui-icon-wikimedia-wikimedia-star"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-edit-sticky-header" tabindex="-1" data-event-name="wikitext-edit-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-wikiText mw-ui-icon-wikimedia-wikimedia-wikiText"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-ve-edit-sticky-header" tabindex="-1" data-event-name="ve-edit-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-edit mw-ui-icon-wikimedia-wikimedia-edit"></span>
+
+<span></span>
+			</a>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--icon-only" id="ca-viewsource-sticky-header" tabindex="-1" data-event-name="ve-edit-protected-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-editLock mw-ui-icon-wikimedia-wikimedia-editLock"></span>
+
+<span></span>
+			</a>
+		</div>
+			<div class="vector-sticky-header-buttons">
+				<button class="cdx-button cdx-button--weight-quiet mw-interlanguage-selector" id="p-lang-btn-sticky-header" tabindex="-1" data-event-name="ui.dropdown-p-lang-btn-sticky-header"><span class="vector-icon mw-ui-icon-wikimedia-language mw-ui-icon-wikimedia-wikimedia-language"></span>
+
+<span>8 languages</span>
+			</button>
+			<a href="#" class="cdx-button cdx-button--fake-button cdx-button--fake-button--enabled cdx-button--weight-quiet cdx-button--action-progressive" id="ca-addsection-sticky-header" tabindex="-1" data-event-name="addsection-sticky-header"><span class="vector-icon mw-ui-icon-speechBubbleAdd-progressive mw-ui-icon-wikimedia-speechBubbleAdd-progressive"></span>
+
+<span>Add topic</span>
+			</a>
+		</div>
+			<div class="vector-sticky-header-icon-end">
+				<div class="vector-user-links">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="mw-portlet mw-portlet-dock-bottom emptyPortlet" id="p-dock-bottom">
+	<ul>
+		
+	</ul>
+</div>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgHostname":"mw-web.eqiad.main-5dc9b748d7-cwg5f","wgBackendResponseTime":227,"wgPageParseReport":{"limitreport":{"cputime":"0.469","walltime":"0.602","ppvisitednodes":{"value":2389,"limit":1000000},"revisionsize":{"value":21613,"limit":2097152},"postexpandincludesize":{"value":130115,"limit":2097152},"templateargumentsize":{"value":1036,"limit":2097152},"expansiondepth":{"value":11,"limit":100},"expensivefunctioncount":{"value":1,"limit":500},"unstrip-depth":{"value":1,"limit":20},"unstrip-size":{"value":133925,"limit":5000000},"entityaccesscount":{"value":0,"limit":500},"timingprofile":["100.00%  444.425      1 -total"," 61.70%  274.204      1 Template:Reflist"," 45.49%  202.176     21 Template:Cite_journal"," 21.95%   97.542      6 Template:Navbox"," 18.94%   84.171      1 Template:Quantum_computing"," 13.74%   61.079      1 Template:Short_description","  8.18%   36.340      2 Template:Pagetype","  5.26%   23.361      3 Template:Cite_book","  3.42%   15.214      3 Template:Main_other","  2.97%   13.211      1 Template:SDcat"]},"scribunto":{"limitreport-timeusage":{"value":"0.291","limit":"10.000"},"limitreport-memusage":{"value":5240279,"limit":52428800}},"cachereport":{"origin":"mw-api-ext.eqiad.main-d94589b4-kck5b","timestamp":"20250619231445","ttl":2592000,"transientcontent":false}}});});</script>
+<script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"Quantum neural network","url":"https:\/\/en.wikipedia.org\/wiki\/Quantum_neural_network","sameAs":"http:\/\/www.wikidata.org\/entity\/Q1981341","mainEntity":"http:\/\/www.wikidata.org\/entity\/Q1981341","author":{"@type":"Organization","name":"Contributors to Wikimedia projects"},"publisher":{"@type":"Organization","name":"Wikimedia Foundation, Inc.","logo":{"@type":"ImageObject","url":"https:\/\/www.wikimedia.org\/static\/images\/wmf-hor-googpub.png"}},"datePublished":"2006-01-16T07:16:40Z","dateModified":"2025-06-19T23:14:42Z","image":"https:\/\/upload.wikimedia.org\/wikipedia\/commons\/e\/e7\/Neural_Network_-_basic_scheme_with_legends.png","headline":"computational neural network model based on the principles of quantum mechanics"}</script>
+</body>
+</html>
