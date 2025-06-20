@@ -134,7 +134,12 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
         elif subelem.tag == "table":
-            processed_subchild = handle_table(subelem, TAG_CATALOG, options)
+            potential_tags = set(TAG_CATALOG)
+            if options.images is True:
+                potential_tags.add('graphic')
+            if options.links is True:
+                potential_tags.add('ref')
+            processed_subchild = handle_table(subelem, potential_tags, options)
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
         else:
