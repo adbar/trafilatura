@@ -4,11 +4,11 @@ Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
 
-try:
-    import gzip
-    HAS_GZIP = True
-except ImportError:
-    HAS_GZIP = False
+# try:
+#     import gzip
+#     HAS_GZIP = True
+# except ImportError:
+#     HAS_GZIP = False
 
 import logging
 import re
@@ -31,11 +31,11 @@ from unicodedata import normalize
 # except ImportError:
 #     HAS_BROTLI = False
 
-try:
-    import zstandard
-    HAS_ZSTD = True
-except ImportError:
-    HAS_ZSTD = False
+# try:
+#     import zstandard
+#     HAS_ZSTD = True
+# except ImportError:
+#     HAS_ZSTD = False
 
 # language detection
 # try:
@@ -80,8 +80,8 @@ FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'ref', 'td'}
 SPACING_PROTECTED = {'code', 'pre'}
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
-TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
-RE_HTML_LANG = re.compile(r'([a-z]{2})')
+# TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
+# RE_HTML_LANG = re.compile(r'([a-z]{2})')
 
 # Mostly filters for social media
 RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|'
@@ -376,70 +376,15 @@ def make_chunks(iterable: Any, n: int) -> Any:
         yield batch
 
 
-def is_acceptable_length(my_len: int, options: Any) -> bool:
-    "Check if the document length is within acceptable boundaries."
-    if my_len < options.min_file_size:
-        LOGGER.error("too small/incorrect for URL %s", options.url)
-        return False
-    if my_len > options.max_file_size:
-        LOGGER.error("too large: length %s for URL %s", my_len, options.url)
-        return False
-    return True
-
-
-def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = False) -> bool:
-    """Check HTML meta-elements for language information and split
-       the result in case there are several languages."""
-    for attr in TARGET_LANG_ATTRS:
-        elems = tree.findall(f'.//meta[@{attr}][@content]')
-        if elems:
-            if any(target_language in RE_HTML_LANG.split(elem.get("content", "").lower()) for elem in elems):
-                return True
-            LOGGER.debug("%s lang attr failed", attr)
-            return False
-
-    # HTML lang attribute: sometimes a wrong indication
-    if strict:
-        elems = tree.xpath("//html[@lang]")
-        if elems:
-            if any(target_language in RE_HTML_LANG.split(elem.get("lang", "").lower()) for elem in elems):
-                return True
-            LOGGER.debug("HTML lang failed")
-            return False
-
-    LOGGER.debug("No relevant lang elements found")
-    return True
-
-
-# def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
-#     '''Run external component (if installed) for language identification'''
-#     if LANGID_FLAG is True:
-#         result, _ = (
-#             py3langid.classify(temp_text)
-#             if len(temp_text) > len(temp_comments)
-#             else py3langid.classify(temp_comments)
-#         )
-#     else:  # pragma: no cover
-#         LOGGER.warning('Language detector not installed, skipping detection')
-#         result = None
-#     return result  # type: ignore[no-any-return]
-
-
-# def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
-#     '''Filter text based on language detection and store relevant information'''
-#     # todo: run and pass info along anyway?
-#     if target_language is not None:
-#         # more thorough: detection on actual text content
-#         docmeta.language = language_classifier(temp_text, temp_comments)
-#         # HTML lang check? sometimes contradicted by detection above
-#         #if docmeta.language is None:
-#         #    if check_html_lang(tree, target_language) is False:
-#         #        LOGGER.error('wrong HTML meta language for URL %s', url)
-#         #        raise ValueError
-#         if docmeta.language is not None and docmeta.language != target_language:
-#             LOGGER.warning('wrong language: %s %s', docmeta.language, docmeta.url)
-#             return True, docmeta
-#     return False, docmeta
+# def is_acceptable_length(my_len: int, options: Any) -> bool:
+#     "Check if the document length is within acceptable boundaries."
+#     if my_len < options.min_file_size:
+#         LOGGER.error("too small/incorrect for URL %s", options.url)
+#         return False
+#     if my_len > options.max_file_size:
+#         LOGGER.error("too large: length %s for URL %s", my_len, options.url)
+#         return False
+#     return True
 
 
 def textfilter(element: _Element) -> bool:

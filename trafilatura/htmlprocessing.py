@@ -12,7 +12,7 @@ from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
 from lxml.html import HtmlElement
 
-# from .deduplication import duplicate_test
+
 from .settings import (
     Document,
     Extractor,
@@ -20,7 +20,7 @@ from .settings import (
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
 )
-# from .utils import textfilter, trim, is_image_element
+
 from .utils import trim, is_image_element
 from .xml import META_ATTRIBUTES, delete_element
 

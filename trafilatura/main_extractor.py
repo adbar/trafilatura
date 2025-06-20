@@ -656,7 +656,7 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> Tuple[_Ele
     strip_elements(result_body, 'done')
     strip_tags(result_body, 'div')
     # return
-    return result_body, temp_text, len(temp_text)
+    return result_body
 
 
 def process_comments_node(elem: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
