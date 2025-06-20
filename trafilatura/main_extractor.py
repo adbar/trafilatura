@@ -133,6 +133,15 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
             processed_subchild = handle_lists(subelem, options)
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
+        elif subelem.tag == "table":
+            potential_tags = set(TAG_CATALOG)
+            if options.images is True:
+                potential_tags.add('graphic')
+            if options.links is True:
+                potential_tags.add('ref')
+            processed_subchild = handle_table(subelem, potential_tags, options)
+            if processed_subchild is not None:
+                new_child_elem.append(processed_subchild)
         else:
             processed_subchild = handle_textnode(subelem, options, comments_fix=False)
             if processed_subchild is not None:
@@ -433,8 +442,8 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
                         define_newelem(processed_subchild, new_child_elem)
                     child.tag = "done"
             # add to tree
-            if new_child_elem.text or len(new_child_elem) > 0:
-                newrow.append(new_child_elem)
+            # if new_child_elem.text or len(new_child_elem) > 0:
+            newrow.append(new_child_elem)
         # beware of nested tables
         elif subelement.tag == "table":
             break
@@ -608,6 +617,8 @@ def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[
         ptest = subtree.xpath('//p//text()')
         if options.focus == "precision":
             factor = 1
+        elif options.focus == "recall":
+            factor = 10
         else:
             factor = 3
         if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:  # type: ignore[attr-defined]
