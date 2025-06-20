@@ -91,42 +91,6 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-# def handle_compressed_file(filecontent: bytes) -> bytes:
-#     """
-#     Don't trust response headers and try to decompress a binary string
-#     with a cascade of installed packages. Use magic numbers when available.
-#     """
-#     if not isinstance(filecontent, bytes):
-#         return filecontent
-
-#     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-#     if HAS_GZIP and filecontent[:3] == b"\x1f\x8b\x08":
-#         try:
-#             return gzip.decompress(filecontent)
-#         except Exception:  # EOFError, OSError, gzip.BadGzipFile
-#             LOGGER.warning("invalid GZ file")
-#     # try zstandard
-#     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
-#         try:
-#             return zstandard.decompress(filecontent)  # max_output_size=???
-#         except zstandard.ZstdError:
-#             LOGGER.warning("invalid ZSTD file")
-#     # try brotli
-#     if HAS_BROTLI:
-#         try:
-#             return brotli.decompress(filecontent)  # type: ignore[no-any-return]
-#         except brotli.error:
-#             pass  # logging.debug('invalid Brotli file')
-#     # try zlib/deflate
-#     if HAS_ZLIB:
-#         try:
-#             return zlib.decompress(filecontent)
-#         except zlib.error:
-#             pass
-
-#     # return content unchanged if decompression failed
-#     return filecontent
-
 
 def isutf8(data: bytes) -> bool:
     """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
