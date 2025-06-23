@@ -17,8 +17,7 @@ from .htmlprocessing import (
     tree_cleaning,
 )
 from .main_extractor import  extract_content
-from .settings import Document
-from .settings import Extractor
+from .settings import Document, Extractor
 from .utils import (
     load_html,
     normalize_unicode,
