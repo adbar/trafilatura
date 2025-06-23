@@ -3,13 +3,12 @@
 
 # logs
 *.log
-
+*.html
 # packaging
 dist/
 build/
 *.egg-info/
 .idea/
-
 # tests
 .cache/
 .eggs/
