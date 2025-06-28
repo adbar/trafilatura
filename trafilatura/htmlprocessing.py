@@ -432,7 +432,7 @@ def convert_tags(
 HTML_CONVERSIONS = {
     "list": "ul",
     "item": "li",
-    "code": "pre",
+    "code": lambda elem: "pre" if elem.xpath('.//code') else "code",
     "quote": "blockquote",
     "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
