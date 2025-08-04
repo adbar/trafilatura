@@ -930,6 +930,12 @@ def test_htmlprocessing():
     processed = trafilatura.htmlprocessing.handle_textnode(node, options)
     assert processed.tail == "tail" and processed.text == "text"
 
+    # fix for bug 807
+    node = html.fragment_fromstring("<div><p><span>span</span> span tail</p> p tail </div>")
+    assert node.text_content() == "span span tail p tail "
+    prune = etree.XPath(".//span")
+    processed = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [prune])
+    assert node.text_content() == " span tail p tail "
 
 
 def test_extraction_options():
