@@ -103,13 +103,7 @@ def prune_unwanted_nodes(
     for expression in nodelist:
         for subtree in expression(tree):
             # preserve tail text from deletion
-            if subtree.tail is not None:
-                prev = subtree.getprevious()
-                if prev is None:
-                    prev = subtree.getparent()
-                if prev is not None:
-                    # There is a previous node, append text to its tail
-                    prev.tail = (prev.tail or "") + " " + subtree.tail
+            # tail is by default preserved by delete_element()
             # remove the node
             delete_element(subtree)
 
