@@ -26,7 +26,7 @@ BODY_XPATH = [XPath(x) for x in (
     contains(@class, "article__body") or @itemprop="articleBody" or
     contains(translate(@id, "B", "b"), "articlebody") or contains(translate(@class, "B", "b"), "articlebody")
     or @id="articleContent" or contains(@class, "ArticleContent") or
-    contains(@class, "page-content") or contains(@class, "text-content") or
+    contains(@class, "page-content") or contains(@class, "text-content") or contains(@class, "inner-content") or
     contains(@id, "body-text") or contains(@class, "body-text") or
     contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")][1]''',
     # (…)[1] = first occurrence

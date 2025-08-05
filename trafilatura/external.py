@@ -46,7 +46,7 @@ def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Eleme
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall
-    if options.focus == "recall" and len_text > options.min_extracted_size * 10:
+    if options.focus == "recall":
         return body, text, len_text
 
     use_readability, jt_result = False, False
