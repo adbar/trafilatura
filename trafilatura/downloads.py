@@ -50,11 +50,10 @@ try:
     CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
     CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
     # not thread-safe
-    # CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
     HAS_PYCURL = True
 except ImportError:
     HAS_PYCURL = False
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -62,20 +61,41 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
+_POOL_CACHE = {}  # key: (no_ssl, effective_proxy), value: pool
 
 
-def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
+
+def create_pool(proxy: Optional[str] = None, **args: Any) -> Union[urllib3.PoolManager, Any]:
     "Configure urllib3 download pool according to user-defined settings."
-    manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
-    manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
+    # Use the passed proxy if given, otherwise fall back to PROXY_URL.
+    proxy_value = proxy if proxy is not None else PROXY_URL
+
+    if proxy_value:
+        # If the proxy URL indicates a SOCKS proxy, use SOCKSProxyManager.
+        if proxy_value.lower().startswith("socks"):
+            try:
+                from urllib3.contrib.socks import SOCKSProxyManager
+                manager_class = SOCKSProxyManager
+            except ImportError as e:
+                raise ImportError("SOCKSProxyManager is not available. "
+                                  "Please install the required dependency (e.g., via pip install urllib3[socks]).") from e
+        else:
+            # Otherwise, assume it's an HTTP/HTTPS proxy and use ProxyManager.
+            from urllib3 import ProxyManager
+            manager_class = ProxyManager
+        manager_args = {"proxy_url": proxy_value}
+    else:
+        # No proxy specified: use the default PoolManager.
+        manager_class = urllib3.PoolManager
+        manager_args = {}
+
+    # Set the number of pools.
     manager_args["num_pools"] = 50  # type: ignore[assignment]
-    return manager_class(**manager_args, **args)  # type: ignore[arg-type]
+    return manager_class(**manager_args, **args)
 
 
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)  # type: ignore[no-untyped-call]
-USER_AGENT = (
-    "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
-)
+USER_AGENT = "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 DEFAULT_HEADERS["User-Agent"] = USER_AGENT
 
 FORCE_STATUS = [
@@ -133,8 +153,6 @@ class Response:
         return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
-# caching throws an error
-# @lru_cache(maxsize=2)
 def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
     # load a series of user-agents
@@ -167,48 +185,60 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint(
-                "DEFAULT", "MAX_REDIRECTS"
-            ),  # raise_on_redirect=False,
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
-            # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
         )
     return RETRY_STRATEGY
 
 
 def _initiate_pool(
-    config: ConfigParser, no_ssl: bool = False
+    config: ConfigParser, no_ssl: bool = False, proxy: Optional[str] = None
 ) -> Union[urllib3.PoolManager, Any]:
-    "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
-    global HTTP_POOL, NO_CERT_POOL
-    pool = NO_CERT_POOL if no_ssl else HTTP_POOL
+    """
+    Create (or retrieve from cache) a urllib3 pool manager according to options in the
+    config file, taking into account SSL settings and the effective proxy to use.
 
-    if not pool:
-        # define settings
-        pool = create_pool(
-            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
-            ca_certs=None if no_ssl else certifi.where(),
-            cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED",
-        )
-        # update variables
-        if no_ssl:
-            NO_CERT_POOL = pool
-        else:
-            HTTP_POOL = pool
+    Args:
+        config: The configuration object (ConfigParser) with settings.
+        no_ssl: If True, do not use SSL certificates.
+        proxy: Optional proxy URL to override the global PROXY_URL.
 
+    Returns:
+        A pool manager instance (e.g., ProxyManager or PoolManager) ready for requests.
+    """
+    # Determine the effective proxy: use the provided proxy if available,
+    # otherwise fall back to the global PROXY_URL.
+    effective_proxy = proxy if proxy is not None else PROXY_URL
+
+    # Create a cache key based on the no_ssl flag and the effective proxy value.
+    key = (no_ssl, effective_proxy)
+    LOGGER.debug("Initiating pool with no_ssl=%s and effective_proxy=%s (cache key: %s)", no_ssl, effective_proxy, key)
+
+    # If we already have a pool for this key, return it.
+    if key in _POOL_CACHE:
+        LOGGER.debug("Using cached pool for key: %s", key)
+        return _POOL_CACHE[key]
+
+    # Otherwise, create a new pool.
+    pool = create_pool(
+        proxy=effective_proxy,
+        timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
+        ca_certs=None if no_ssl else certifi.where(),
+        cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED",
+    )
+    _POOL_CACHE[key] = pool
+    LOGGER.debug("Created new pool and cached for key: %s", key)
     return pool
 
 
 def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser, proxy: Optional[str] = None
 ) -> Optional[Response]:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
-        pool_manager = _initiate_pool(config, no_ssl=no_ssl)
-
-        # execute request, stop downloading as soon as MAX_FILE_SIZE is reached
+        pool_manager = _initiate_pool(config, no_ssl=no_ssl, proxy=proxy)
         response = pool_manager.request(
             "GET",
             url,
@@ -231,10 +261,9 @@ def _send_urllib_request(
 
     except urllib3.exceptions.SSLError:
         LOGGER.warning("retrying after SSLError: %s", url)
-        return _send_urllib_request(url, True, with_headers, config)
+        return _send_urllib_request(url, True, with_headers, config, proxy=proxy)
     except Exception as err:
-        LOGGER.error("download error: %s %s", url, err)  # sys.exc_info()[0]
-
+        LOGGER.error("download error: %s %s", url, err)
     return None
 
 
@@ -244,7 +273,6 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
     if response.status != 200:
         LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
         return False
-    # raise error instead?
     if not is_acceptable_length(lentest, options):
         return False
     return True
@@ -252,11 +280,10 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
 
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
-) -> Optional[Union[Response, str]]:  # todo: only return str
+) -> Optional[Union[Response, str]]:
     "Internal function to run safety checks on response result."
     if _is_suitable_response(url, response, options):
         return response.html if decode else response
-    # catchall
     return None
 
 
@@ -265,6 +292,7 @@ def fetch_url(
     no_ssl: bool = False,
     config: ConfigParser = DEFAULT_CONFIG,
     options: Optional[Extractor] = None,
+    proxy: Optional[str] = None,
 ) -> Optional[str]:
     """Downloads a web page and seamlessly decodes the response.
 
@@ -273,13 +301,13 @@ def fetch_url(
         no_ssl: Do not try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
         options: Extraction options (supersedes config).
+        proxy: Optional proxy URL to use for the request.
 
     Returns:
         Unicode string or None in case of failed downloads and invalid results.
-
     """
     config = options.config if options else config
-    response = fetch_response(url, decode=True, no_ssl=no_ssl, config=config)
+    response = fetch_response(url, decode=True, no_ssl=no_ssl, config=config, proxy=proxy)
     if response and response.data:
         if not options:
             options = Extractor(config=config)
@@ -295,6 +323,7 @@ def fetch_response(
     no_ssl: bool = False,
     with_headers: bool = False,
     config: ConfigParser = DEFAULT_CONFIG,
+    proxy: Optional[str] = None,
 ) -> Optional[Response]:
     """Downloads a web page and returns a full response object.
 
@@ -304,15 +333,15 @@ def fetch_response(
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         with_headers: Keep track of the response headers.
         config: Pass configuration values for output control.
+        proxy: Optional proxy URL to use for the request.
 
     Returns:
         Response object or None in case of failed downloads and invalid results.
-
     """
     dl_function = _send_urllib_request if not HAS_PYCURL else _send_pycurl_request
     LOGGER.debug("sending request: %s", url)
-    response = dl_function(url, no_ssl, with_headers, config)  # Response
-    if not response:  # None or ""
+    response = dl_function(url, no_ssl, with_headers, config, proxy=proxy)
+    if not response:
         LOGGER.debug("request failed: %s", url)
         return None
     response.decode_data(decode)
@@ -322,27 +351,20 @@ def fetch_response(
 def _pycurl_is_live_page(url: str) -> bool:
     "Send a basic HTTP HEAD request with pycurl."
     page_exists = False
-    # Initialize pycurl object
     curl = pycurl.Curl()
-    # Set the URL and HTTP method (HEAD)
     curl.setopt(pycurl.URL, url.encode("utf-8"))
     curl.setopt(pycurl.CONNECTTIMEOUT, 10)
-    # no SSL verification
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
-    # Set option to avoid getting the response body
     curl.setopt(curl.NOBODY, True)
     if PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
-    # Perform the request
     try:
         curl.perform()
-        # Get the response code
         page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
-    # Clean up
     curl.close()
     return page_exists
 
@@ -360,7 +382,6 @@ def _urllib3_is_live_page(url: str) -> bool:
 def is_live_page(url: str) -> bool:
     "Send a HTTP HEAD request without taking anything else into account."
     result = _pycurl_is_live_page(url) if HAS_PYCURL else False
-    # use urllib3 as backup
     return result or _urllib3_is_live_page(url)
 
 
@@ -420,10 +441,21 @@ def buffered_downloads(
     bufferlist: List[str],
     download_threads: int,
     options: Optional[Extractor] = None,
+    proxy: Optional[str] = None,
 ) -> Generator[Tuple[str, str], None, None]:
-    "Download queue consumer, single- or multi-threaded."
-    worker = partial(fetch_url, options=options)
-
+    """
+    Download queue consumer, single- or multi-threaded.
+    
+    Args:
+        bufferlist: A list of URLs to download.
+        download_threads: The number of threads to use.
+        options: Extraction options (contains config, etc.).
+        proxy: Optional proxy URL to use for all downloads.
+        
+    Returns:
+        A generator yielding tuples of (URL, downloaded HTML text).
+    """
+    worker = partial(fetch_url, options=options, proxy=proxy)
     return _buffered_downloads(bufferlist, download_threads, worker)
 
 
@@ -431,33 +463,37 @@ def buffered_response_downloads(
     bufferlist: List[str],
     download_threads: int,
     options: Optional[Extractor] = None,
+    proxy: Optional[str] = None,
 ) -> Generator[Tuple[str, Response], None, None]:
-    "Download queue consumer, returns full Response objects."
+    """
+    Download queue consumer, returns full Response objects.
+    
+    Args:
+        bufferlist: A list of URLs to download.
+        download_threads: The number of threads to use.
+        options: Extraction options (contains config, etc.).
+        proxy: Optional proxy URL to use for all downloads.
+        
+    Returns:
+        A generator yielding tuples of (URL, Response object).
+    """
     config = options.config if options else DEFAULT_CONFIG
-    worker = partial(fetch_response, config=config)
-
+    worker = partial(fetch_response, config=config, proxy=proxy)
     return _buffered_downloads(bufferlist, download_threads, worker)
 
 
 def _send_pycurl_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
+    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser, proxy: Optional[str] = None
 ) -> Optional[Response]:
     """Experimental function using libcurl and pycurl to speed up downloads"""
-    # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
-
-    # init
     headerlist = [
         f"{header}: {content}" for header, content in _determine_headers(config).items()
     ]
-
-    # prepare curl request
-    # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url.encode("utf-8"))
     # share data
     curl.setopt(pycurl.SHARE, CURL_SHARE)
     curl.setopt(pycurl.HTTPHEADER, headerlist)
-    # curl.setopt(pycurl.USERAGENT, '')
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
     curl.setopt(pycurl.MAXREDIRS, config.getint("DEFAULT", "MAX_REDIRECTS"))
     curl.setopt(pycurl.CONNECTTIMEOUT, config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"))
@@ -475,31 +511,20 @@ def _send_pycurl_request(
         headerbytes = BytesIO()
         curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
 
-    if PROXY_URL:
+    # Use the passed proxy if available; otherwise, fall back to the global PROXY_URL.
+    if proxy:
+        curl.setopt(pycurl.PRE_PROXY, proxy)
+    elif PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
 
-    # TCP_FASTOPEN
-    # curl.setopt(pycurl.FAILONERROR, 1)
-    # curl.setopt(pycurl.ACCEPT_ENCODING, '')
-
-    # send request
     try:
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
         LOGGER.error("pycurl error: %s %s", url, err)
-        # retry in case of SSL-related error
-        # see https://curl.se/libcurl/c/libcurl-errors.html
-        # errmsg = curl.errstr_raw()
-        # additional error codes: 80, 90, 96, 98
         if no_ssl is False and err.args[0] in CURL_SSL_ERRORS:
             LOGGER.debug("retrying after SSL error: %s %s", url, err)
-            return _send_pycurl_request(url, True, with_headers, config)
-        # traceback.print_exc(file=sys.stderr)
-        # sys.stderr.flush()
+            return _send_pycurl_request(url, True, with_headers, config, proxy=proxy)
         return None
-
-    # additional info
-    # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
     resp = Response(
         bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)
@@ -508,18 +533,13 @@ def _send_pycurl_request(
 
     if with_headers:
         respheaders = {}
-        # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
         for line in (
             headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines()
         ):
-            # re.split(r'\r?\n') ?
-            # This will botch headers that are split on multiple lines...
             if ":" not in line:
                 continue
-            # Break the header line into header name and value.
             name, value = line.split(":", 1)
-            # Now we can actually record the header name and value.
-            respheaders[name.strip()] = value.strip()  # name.strip().lower() ?
+            respheaders[name.strip()] = value.strip()
         resp.store_headers(respheaders)
 
     return resp
