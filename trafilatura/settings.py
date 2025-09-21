@@ -454,6 +454,7 @@ JUSTEXT_LANGUAGES = {
     "hr": "Croatian",
     "hu": "Hungarian",
     # 'ja': '',
+    "ku": "Kurdish",
     "ko": "Korean",
     "id": "Indonesian",
     "it": "Italian",
