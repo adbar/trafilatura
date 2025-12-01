@@ -377,6 +377,9 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                 elif child.tag == "ref":
                     if child.get("target") is not None:
                         newsub.set("target", child.get("target", ""))
+                    # Preserve anchor ids (e.g., footnote links) so in-document jumps still work.
+                    if child.get("id") is not None:
+                        newsub.set("id", child.get("id", ""))
                 if preserved_children:
                     for preserved in preserved_children:
                         newsub.append(preserved)

@@ -509,12 +509,16 @@ def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
     "Replace link tags and href attributes, delete the rest."
     elem.tag = "ref"
     target = elem.get("href")  # defaults to None
+    link_id = elem.get("id")
     elem.attrib.clear()
     if target:
         # convert relative URLs
         if base_url:
             target = fix_relative_urls(base_url, target)
         elem.set("target", target)
+    if link_id:
+        # Preserve anchor IDs (e.g., footnote targets) for round-trip output.
+        elem.set("id", link_id)
 
 
 def convert_tags(

@@ -1900,6 +1900,35 @@ def test_inline_anchor_paragraph_merge():
     assert para.xpath('.//a')
 
 
+def test_link_ids_are_preserved():
+    """Anchor ids (e.g., footnote links) must survive extraction."""
+    html_input = """
+    <html><body><article>
+      <p>
+        Agents are learning to talk and coordinate, as noted in
+        <a id="footnote-13-178703143"
+           href="https://www.thetimes.blog/p/agents-are-learning-to-talk#footnote-anchor-13-178703143"
+           class="footnote-number">13</a>,
+        which links to the supporting footnote.
+      </p>
+    </article></body></html>
+    """
+    res = extract(
+        html_input,
+        output_format="html",
+        include_links=True,
+        include_formatting=True,
+        config=ZERO_CONFIG,
+    )
+    doc = html.fromstring(res)
+    anchors = doc.xpath('//a[@id="footnote-13-178703143"]')
+    assert anchors, "expected footnote anchor id to be preserved"
+    anchor = anchors[0]
+    assert anchor.get("href") == (
+        "https://www.thetimes.blog/p/agents-are-learning-to-talk#footnote-anchor-13-178703143"
+    )
+
+
 def test_inline_strong_retains_line_break():
     """Line breaks inside bold/strong spans should survive as <br> nodes."""
     html_input = """
