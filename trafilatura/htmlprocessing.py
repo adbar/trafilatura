@@ -3,13 +3,25 @@
 Functions to process nodes in HTML code.
 """
 
+import base64
 import logging
+import re
+from urllib.parse import urlparse
 
 from copy import deepcopy
 from typing import List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
+from lxml import html as lxml_html
+from lxml.etree import (
+    _Element,
+    Element,
+    SubElement,
+    XPath,
+    strip_tags,
+    tostring,
+    fromstring,
+)
 from lxml.html import HtmlElement
 import json
 
@@ -43,9 +55,110 @@ REND_TAG_MAPPING = {
 
 HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
-PRESERVE_IMG_CLEANING = {"figure", "picture", "source", "audio", "video", "track"}
+PRESERVE_IMG_CLEANING = {"figure", "picture", "source", "audio", "video", "track", "svg"}
 
 CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+
+SVG_NS_HREF = "{http://www.w3.org/1999/xlink}href"
+
+
+def _sanitize_svg_length(value: Optional[str]) -> Optional[str]:
+    if not value:
+        return None
+    match = re.match(r"\s*([0-9]*\.?[0-9]+)", value)
+    if not match:
+        return None
+    number = match.group(1)
+    if "." in number:
+        number = number.rstrip("0").rstrip(".")
+    return number
+
+
+def _extract_svg_dimensions(svg_elem: Element) -> Tuple[Optional[str], Optional[str]]:
+    width = _sanitize_svg_length(svg_elem.get("width"))
+    height = _sanitize_svg_length(svg_elem.get("height"))
+    if width and height:
+        return width, height
+    viewbox = svg_elem.get("viewBox") or svg_elem.get("viewbox")
+    if viewbox:
+        parts = viewbox.replace(",", " ").split()
+        if len(parts) == 4:
+            w_candidate = _sanitize_svg_length(parts[2])
+            h_candidate = _sanitize_svg_length(parts[3])
+            width = width or w_candidate
+            height = height or h_candidate
+    return width, height
+
+
+def _absolutize_svg_links(svg_elem: Element, base_url: Optional[str]) -> None:
+    if not base_url:
+        return
+    for node in svg_elem.iter():
+        for attr, value in list(node.attrib.items()):
+            if not value:
+                continue
+            attr_lower = attr.lower()
+            if (
+                attr_lower.endswith("href")
+                or attr_lower in ("src", "xlink:href")
+                or attr == SVG_NS_HREF
+            ):
+                if value.startswith(("http://", "https://", "data:", "#", "url(")):
+                    continue
+                node.set(attr, fix_relative_urls(base_url, value))
+
+
+def _clean_svg_element(svg_elem: Element, base_url: Optional[str]) -> Element:
+    svg_copy = deepcopy(svg_elem)
+    for junk in svg_copy.xpath(
+        ".//script|.//iframe|.//foreignObject|.//object"
+    ):
+        delete_element(junk, keep_tail=False)
+    _absolutize_svg_links(svg_copy, base_url)
+    return svg_copy
+
+
+def _serialize_svg(svg_elem: Element, base_url: Optional[str]) -> Optional[str]:
+    cleaned = _clean_svg_element(svg_elem, base_url)
+    markup = tostring(cleaned, encoding="unicode")
+    if not markup:
+        return None
+    encoded = base64.b64encode(markup.encode("utf-8")).decode("ascii")
+    return encoded
+
+
+def _build_svg_graphic(
+    svg_elem: Element, base_url: Optional[str], caption: str = ""
+) -> Optional[Element]:
+    inline = _serialize_svg(svg_elem, base_url)
+    if not inline:
+        return None
+    graphic = Element("graphic")
+    graphic.set("data-type", "svg")
+    graphic.set("data-inline-svg", inline)
+    width, height = _extract_svg_dimensions(svg_elem)
+    if width:
+        graphic.set("width", width)
+    if height:
+        graphic.set("height", height)
+    label = svg_elem.get("aria-label") or svg_elem.get("title")
+    if label:
+        graphic.set("alt", label)
+    if caption:
+        graphic.set("caption", caption)
+    return graphic
+
+
+def _build_mathml_graphic(node: Element, display: str) -> Optional[Element]:
+    markup = tostring(node, encoding="unicode", with_tail=False)
+    if not markup:
+        return None
+    encoded = base64.b64encode(markup.encode("utf-8")).decode("ascii")
+    graphic = Element("graphic")
+    graphic.set("data-type", "mathml")
+    graphic.set("data-inline-html", encoded)
+    graphic.set("data-display", display)
+    return graphic
 
 # Remove CSS-like garbage sequences at the beginning of captions
 
@@ -193,14 +306,19 @@ def delete_by_link_density(
     tagname: str,
     backtracking: bool = False,
     favor_precision: bool = False,
+    base_url: Optional[str] = None,
 ) -> HtmlElement:
     """Determine the link density of elements with respect to their length,
     and remove the elements identified as boilerplate."""
     deletions = []
     len_threshold = 200 if favor_precision else 100
     depth_threshold = 1 if favor_precision else 3
+    base_host = _safe_host(base_url)
 
     for elem in subtree.iter(tagname):
+        if base_host and _has_same_origin_media(elem, base_host):
+            # Keep media-only blocks when the media is hosted on the same origin/subdomain.
+            continue
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result or (
@@ -219,6 +337,52 @@ def delete_by_link_density(
     return subtree
 
 
+def _safe_host(url: Optional[str]) -> Optional[str]:
+    if not url:
+        return None
+    try:
+        parsed = urlparse(url)
+        return parsed.hostname.lower() if parsed.hostname else None
+    except Exception:
+        return None
+
+
+def _host_matches(base_host: str, other: str) -> bool:
+    other = other.lower()
+    return other == base_host or other.endswith("." + base_host)
+
+
+def _has_same_origin_media(elem: HtmlElement, base_host: str) -> bool:
+    """Return True if the element contains a graphic pointing to the same origin/subdomain."""
+    for graphic in elem.xpath(".//graphic[@src]"):
+        src = graphic.get("src")
+        if not src:
+            continue
+        try:
+            host = urlparse(src).hostname
+        except Exception:
+            host = None
+        if host and _host_matches(base_host, host):
+            return True
+    return False
+
+
+def _has_math_markup(elem: _Element) -> bool:
+    """Return True if the node (or any descendant) carries MathML/KaTeX markup."""
+    for node in elem.iter():
+        if node.tag == "math":
+            return True
+        class_attr = node.get("class")
+        if class_attr:
+            if isinstance(class_attr, (list, tuple)):
+                classes = " ".join(map(str, class_attr))
+            else:
+                classes = str(class_attr)
+            if "katex" in classes:
+                return True
+    return False
+
+
 def handle_textnode(
     elem: _Element,
     options: Extractor,
@@ -227,8 +391,8 @@ def handle_textnode(
 ) -> Optional[_Element]:
     "Convert, format, and probe potential text elements."
     if elem.tag == "graphic":
-        # pass through if it's a valid image or declared AV media
-        if is_image_element(elem) or elem.get("data-type") in ("video", "audio"):
+        # pass through if it's a valid image, KaTeX placeholder, or declared AV media
+        if is_image_element(elem) or elem.get("data-type") in ("video", "audio", "mathml"):
             return elem
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
@@ -258,11 +422,10 @@ def handle_textnode(
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if (
-        not elem.text
-        and textfilter(elem)
-        or (options.dedup and duplicate_test(elem, options))
-    ):
+    has_math = _has_math_markup(elem)
+    if not has_math and not elem.text and textfilter(elem):
+        return None
+    if options.dedup and duplicate_test(elem, options):
         return None
     return elem
 
@@ -382,12 +545,16 @@ def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
     "Replace link tags and href attributes, delete the rest."
     elem.tag = "ref"
     target = elem.get("href")  # defaults to None
+    link_id = elem.get("id")
     elem.attrib.clear()
     if target:
         # convert relative URLs
         if base_url:
             target = fix_relative_urls(base_url, target)
         elem.set("target", target)
+    if link_id:
+        # Preserve anchor IDs (e.g., footnote targets) for round-trip output.
+        elem.set("id", link_id)
 
 
 def convert_tags(
@@ -432,13 +599,13 @@ def convert_tags(
             if caption_el is not None:
                 # drop garbage elements inside caption (e.g., style/script)
                 for junk in caption_el.xpath('.//style|.//script|.//noscript|.//link|.//meta|.//iframe|.//object|.//svg'):
-                    delete_element(junk, keep_tail=False)
+                    delete_element(junk, keep_tail=True)
             caption = " ".join(caption_el.itertext()).strip() if caption_el is not None else ""
             if caption_el is not None and caption_el.getparent() is not None:
                 caption_el.getparent().remove(caption_el)
 
-            # prefer <img>, then <picture><img>, then <video>, then <audio>
-            media_nodes = fig.xpath('.//img | .//picture/img | .//video | .//audio')
+            # prefer <img>, then <picture><img>, then <video>, then <audio>, then inline <svg>
+            media_nodes = fig.xpath('.//img | .//picture/img | .//video | .//audio | .//svg')
             media = media_nodes[0] if media_nodes else None
             if media is None:
                 continue
@@ -456,6 +623,12 @@ def convert_tags(
                     g.set("alt", media.get("alt", ""))
                 if media.get("title"):
                     g.set("title", media.get("title", ""))
+            elif media.tag == "svg":
+                svg_graphic = _build_svg_graphic(media, base_url, caption)
+                if svg_graphic is None:
+                    continue
+                for attr, value in svg_graphic.attrib.items():
+                    g.set(attr, value)
             else:
                 # video or audio
                 g.set("data-type", "video" if media.tag == "video" else "audio")
@@ -493,7 +666,7 @@ def convert_tags(
                     if media.get(attr) is not None:
                         g.set(attr, media.get(attr) or "")
 
-            if caption:
+            if caption and media.tag != "svg":
                 g.set("caption", caption)
             # replace figure element in place with <graphic>
             fig.tag = "graphic"
@@ -551,7 +724,50 @@ def convert_tags(
         for elem in tree.iter("img"):
             elem.tag = "graphic"
 
+        # 4) Inline SVG without figures
+        for svg in list(tree.xpath(".//svg")):
+            parent = svg.getparent()
+            if parent is None:
+                continue
+            if parent.tag == "graphic":
+                continue
+            graphic_svg = _build_svg_graphic(svg, base_url)
+            if graphic_svg is None:
+                continue
+            idx = parent.index(svg)
+            graphic_svg.tail = svg.tail
+            parent.remove(svg)
+            parent.insert(idx, graphic_svg)
+
+    _replace_mathml_with_graphics(tree)
     return tree
+
+
+def _replace_mathml_with_graphics(tree: HtmlElement) -> None:
+    """Capture MathML markup as <graphic data-type="mathml"> placeholders."""
+    xpath = ".//*[local-name()='math']"
+    for node in list(tree.xpath(xpath)):
+        display_attr = (node.get("display", "") or "").lower()
+        if not display_attr:
+            style_attr = (node.get("style", "") or "").replace(" ", "").lower()
+            if "display:block" in style_attr:
+                display_attr = "block"
+        inferred_display = "block" if display_attr == "block" else "inline"
+        _replace_node_with_graphic(node, inferred_display)
+
+
+def _replace_node_with_graphic(node: Element, display: str) -> None:
+    graphic = _build_mathml_graphic(node, display)
+    if graphic is None:
+        return
+    parent = node.getparent()
+    if parent is None:
+        return
+    idx = parent.index(node)
+    graphic.tail = node.tail
+    node.tail = None
+    parent.remove(node)
+    parent.insert(idx, graphic)
 
 
 HTML_CONVERSIONS = {
@@ -593,6 +809,40 @@ def convert_to_html(tree: _Element) -> _Element:
             if g.get("title"):
                 img.set("title", g.get("title", ""))
             replacement = wrap_in_figure(img)
+        elif dtype == "svg":
+            inline_data = g.get("data-inline-svg")
+            if not inline_data:
+                continue
+            try:
+                svg_elem = fromstring(base64.b64decode(inline_data))
+            except Exception:
+                continue
+            if g.get("width") and not svg_elem.get("width"):
+                svg_elem.set("width", g.get("width", ""))
+            if g.get("height") and not svg_elem.get("height"):
+                svg_elem.set("height", g.get("height", ""))
+            if g.get("alt") and not svg_elem.get("aria-label"):
+                svg_elem.set("aria-label", g.get("alt", ""))
+            replacement = wrap_in_figure(svg_elem)
+        elif dtype in ("katex", "mathml"):
+            raw_html = g.get("data-inline-html")
+            if not raw_html:
+                continue
+            try:
+                decoded = base64.b64decode(raw_html).decode("utf-8")
+                fragment = lxml_html.fragment_fromstring(decoded, create_parent=True)
+            except Exception:
+                continue
+            nodes = list(fragment)
+            if not nodes:
+                continue
+            if len(nodes) == 1:
+                replacement = nodes[0]
+            else:
+                wrapper = Element("span")
+                for child in nodes:
+                    wrapper.append(child)
+                replacement = wrapper
         else:
             tagname = "video" if dtype == "video" else "audio"
             media_el = Element(tagname)

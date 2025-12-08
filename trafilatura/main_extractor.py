@@ -16,7 +16,7 @@ from lxml.html import HtmlElement
 # own
 from .htmlprocessing import (delete_by_link_density, handle_textnode,
                              link_density_test_tables, process_node,
-                             prune_unwanted_nodes)
+                             prune_unwanted_nodes, _has_math_markup)
 from .settings import TAG_CATALOG, Extractor
 from .utils import FORMATTING_PROTECTED, copy_attributes, is_image_file, text_chars_test, trim
 from .xml import delete_element
@@ -34,6 +34,8 @@ TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
+INLINE_ONLY_TAGS = {'ref', 'hi', 'span', 'code', 'lb', 'del', 'em', 'strong', 'sub', 'sup', 'b', 'i'}
+SENTENCE_TERMINATORS = ('.', '!', '?', ';', '…', ')', '"', "'", ']', '}', '»', '”', '’')
 
 
 def _log_event(msg: str, tag: Any, text: Optional[Union[bytes, str]]) -> None:
@@ -117,6 +119,56 @@ def handle_formatting(element: _Element, options: Extractor) -> Optional[_Elemen
     return processed_element
 
 
+def _paragraph_has_only_inline(elem: _Element) -> bool:
+    for child in elem:
+        if child.tag not in INLINE_ONLY_TAGS:
+            return False
+    return len(elem) > 0
+
+
+def _paragraph_text(elem: _Element) -> str:
+    return ''.join(elem.itertext()).strip()
+
+
+def _needs_merge(prev: _Element, curr: _Element) -> bool:
+    if prev.tag != 'p' or curr.tag != 'p':
+        return False
+    if not _paragraph_has_only_inline(curr):
+        return False
+    if len(curr) == 0 or curr[0].tag != 'ref':
+        return False
+    prev_text = _paragraph_text(prev)
+    if not prev_text or prev_text.endswith(SENTENCE_TERMINATORS):
+        return False
+    curr_text = _paragraph_text(curr)
+    return bool(curr_text)
+
+
+def merge_inline_anchor_paragraphs(tree: HtmlElement) -> None:
+    for paragraph in list(tree.xpath(".//p")):
+        prev = paragraph.getprevious()
+        if prev is None:
+            continue
+        if not _needs_merge(prev, paragraph):
+            continue
+        if prev.tail:
+            prev.tail = prev.tail.rstrip()
+        if prev.text and not prev.text.endswith(' '):
+            prev.text += ' '
+        elif not prev.text:
+            prev.text = ''
+        prev.text = (prev.text or '') + (paragraph.text or '')
+        while len(paragraph):
+            child = paragraph[0]
+            paragraph.remove(child)
+            prev.append(child)
+        if paragraph.tail:
+            prev.tail = (prev.tail or '') + paragraph.tail
+        parent = paragraph.getparent()
+        if parent is not None:
+            parent.remove(paragraph)
+
+
 def add_sub_element(new_child_elem: _Element, subelem: _Element, processed_subchild: _Element) -> None:
     "Add a sub-element to an existing child element."
     sub_child_elem = SubElement(new_child_elem, processed_subchild.tag)
@@ -154,11 +206,16 @@ def is_text_element(elem: _Element) -> bool:
 
 def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
     "Create a new sub-element if necessary."
-    if processed_elem is not None:
-        childelem = SubElement(orig_elem, processed_elem.tag)
-        childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
-        if processed_elem.tag == 'graphic':
-            copy_attributes(childelem, processed_elem)
+    if processed_elem is None:
+        return
+    if _has_math_markup(processed_elem):
+        new_child = deepcopy(processed_elem)
+        orig_elem.append(new_child)
+        return
+    childelem = SubElement(orig_elem, processed_elem.tag)
+    childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
+    if processed_elem.tag == 'graphic':
+        copy_attributes(childelem, processed_elem)
 
 
 def handle_lists(element: _Element, options: Extractor) -> Optional[_Element]:
@@ -303,9 +360,14 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             # handle formatting
             newsub = Element(child.tag)
             if processed_child.tag in P_FORMATTING:
+                preserved_children = []
                 # check depth and clean
                 if len(processed_child) > 0:
-                    for item in processed_child:  # children are lists
+                    for item in list(processed_child):  # children are lists
+                        if item.tag == "lb":
+                            preserved_children.append(deepcopy(item))
+                            item.tag = "done"
+                            continue
                         if text_chars_test(item.text) is True:
                             item.text = " " + item.text  # type: ignore[operator]
                         strip_tags(processed_child, item.tag)
@@ -315,6 +377,12 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                 elif child.tag == "ref":
                     if child.get("target") is not None:
                         newsub.set("target", child.get("target", ""))
+                    # Preserve anchor ids (e.g., footnote links) so in-document jumps still work.
+                    if child.get("id") is not None:
+                        newsub.set("id", child.get("id", ""))
+                if preserved_children:
+                    for preserved in preserved_children:
+                        newsub.append(preserved)
             # handle line breaks
             # elif processed_child.tag == 'lb':
             #    try:
@@ -495,6 +563,24 @@ def handle_image(element: Optional[_Element], options: Optional[Extractor] = Non
             else:
                 link = re.sub(r"^//", "http://", link)
             processed_element.set("src", link)
+    elif dtype == "svg":
+        inline_data = element.get("data-inline-svg")
+        if not inline_data:
+            return None
+        processed_element.set("data-type", "svg")
+        processed_element.set("data-inline-svg", inline_data)
+        processed_element.set("src", f"data:image/svg+xml;base64,{inline_data}")
+        for attr in ("width", "height", "caption", "alt", "title"):
+            if element.get(attr):
+                processed_element.set(attr, element.get(attr, ""))
+    elif dtype in ("katex", "mathml"):
+        inline_html = element.get("data-inline-html")
+        if not inline_html:
+            return None
+        processed_element.set("data-type", "mathml")
+        processed_element.set("data-inline-html", inline_html)
+        if display := element.get("data-display"):
+            processed_element.set("data-display", display)
     else:
         # Audio/Video: keep known attributes without enforcing image file suffix
         for k, v in element.attrib.items():
@@ -600,9 +686,27 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: Set[str], options
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density, several passes
     for _ in range(2):
-        tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
+        tree = delete_by_link_density(
+            tree,
+            'div',
+            backtracking=True,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
+        tree = delete_by_link_density(
+            tree,
+            'list',
+            backtracking=False,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
+        tree = delete_by_link_density(
+            tree,
+            'p',
+            backtracking=False,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
     # tables
     if 'table' in potential_tags or favor_precision:
         # tree = delete_by_link_density(tree, 'table', backtracking=False, favor_precision=favor_precision)
@@ -660,7 +764,21 @@ def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[
         if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
         # extract content
-        result_body.extend([el for el in (handle_textelem(e, potential_tags, options) for e in subelems) if el is not None])
+        processed_elements = []
+        for elem in subelems:
+            if elem.tag == "done":
+                continue
+            parent = elem.getparent()
+            if (
+                elem.tag in FORMATTING
+                and parent is not None
+                and parent.tag in FORMATTING_PROTECTED
+            ):
+                continue
+            handled = handle_textelem(elem, potential_tags, options)
+            if handled is not None:
+                processed_elements.append(handled)
+        result_body.extend(processed_elements)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             delete_element(result_body[-1], keep_tail=False)

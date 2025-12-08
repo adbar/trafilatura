@@ -22,7 +22,7 @@ from .htmlprocessing import (
     prune_unwanted_nodes,
     tree_cleaning,
 )
-from .main_extractor import extract_comments, extract_content
+from .main_extractor import extract_comments, extract_content, merge_inline_anchor_paragraphs
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import (
@@ -272,6 +272,7 @@ def bare_extraction(
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, options, options.url or document.url)
+        merge_inline_anchor_paragraphs(cleaned_tree)
 
         # comments first, then remove
         if options.comments:

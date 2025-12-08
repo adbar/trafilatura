@@ -1882,6 +1882,68 @@ def test_html_figure_caption_sanitization_complex():
     assert 'Before Inside After' == ' '.join(cap.split())
 
 
+def test_inline_anchor_paragraph_merge():
+    """Inline-only anchor paragraphs should be merged back into prior paragraph."""
+    html_input = """
+    <html><body><article>
+      <p>Intro sentence without a full stop leads right into a</p>
+      <p><a href="https://example.com/link">link</a>. This continuation should remain inline.</p>
+    </article></body></html>
+    """
+    res = extract(html_input, output_format="html", include_links=True, config=ZERO_CONFIG)
+    doc = html.fromstring(res)
+    paras = doc.xpath('//p')
+    assert len(paras) == 1
+    para = paras[0]
+    assert 'link' in para.text_content()
+    assert 'This continuation should remain inline.' in para.text_content()
+    assert para.xpath('.//a')
+
+
+def test_link_ids_are_preserved():
+    """Anchor ids (e.g., footnote links) must survive extraction."""
+    html_input = """
+    <html><body><article>
+      <p>
+        Agents are learning to talk and coordinate, as noted in
+        <a id="footnote-13-178703143"
+           href="https://www.thetimes.blog/p/agents-are-learning-to-talk#footnote-anchor-13-178703143"
+           class="footnote-number">13</a>,
+        which links to the supporting footnote.
+      </p>
+    </article></body></html>
+    """
+    res = extract(
+        html_input,
+        output_format="html",
+        include_links=True,
+        include_formatting=True,
+        config=ZERO_CONFIG,
+    )
+    doc = html.fromstring(res)
+    anchors = doc.xpath('//a[@id="footnote-13-178703143"]')
+    assert anchors, "expected footnote anchor id to be preserved"
+    anchor = anchors[0]
+    assert anchor.get("href") == (
+        "https://www.thetimes.blog/p/agents-are-learning-to-talk#footnote-anchor-13-178703143"
+    )
+
+
+def test_inline_strong_retains_line_break():
+    """Line breaks inside bold/strong spans should survive as <br> nodes."""
+    html_input = """
+    <html><body><article>
+      <p><strong>“Hamnet”<br/></strong>This drama imagines how Shakespeare’s work might have been influenced.</p>
+    </article></body></html>
+    """
+    res = extract(html_input, output_format="html", include_formatting=True, config=ZERO_CONFIG)
+    doc = html.fromstring(res)
+    strong_nodes = doc.xpath('//p/strong')
+    assert strong_nodes, "Expected <strong> node in output"
+    strong_html = etree.tostring(strong_nodes[0], encoding="unicode")
+    assert "<br" in strong_html, "Expected <br> preserved inside <strong>"
+
+
 def test_html_figcaption_with_noise():
     """Figcaption text starting with CSS-like garbage is cleaned."""
     html_input = """
@@ -1903,6 +1965,38 @@ def test_html_figcaption_with_noise():
     assert 'Photograph: Reuters' == ' '.join(cap.split())
     assert 'css-1st60ou' not in cap and 'margin-left:0.25rem' not in cap and 'BAD(' not in cap
     assert 'css-1st60ou' not in res and 'margin-left:0.25rem' not in res and 'BAD(' not in res
+
+
+def test_inline_svg_preserved_when_images_requested():
+    html_input = """
+    <html><body><article>
+      <figure>
+        <svg viewBox="0 0 600 200" width="600" height="200" aria-label="Timeline">
+          <rect width="600" height="200" fill="#eee"></rect>
+          <text x="300" y="120" text-anchor="middle" fill="#222">Sample SVG</text>
+        </svg>
+        <figcaption>Inline SVG diagram</figcaption>
+      </figure>
+    </article></body></html>
+    """
+    xml_output = extract(
+        html_input,
+        output_format="xml",
+        include_images=True,
+        config=ZERO_CONFIG,
+    )
+    assert '<graphic data-type="svg"' in xml_output
+    assert 'data-inline-svg' in xml_output
+
+    html_output = extract(
+        html_input,
+        output_format="html",
+        include_images=True,
+        config=ZERO_CONFIG,
+    )
+    assert '<svg' in html_output
+    assert 'width="600"' in html_output and 'height="200"' in html_output
+    assert 'Inline SVG diagram' in html_output
 
 
 def test_audio_not_self_closed_does_not_swallow_content():
@@ -1927,6 +2021,31 @@ def test_audio_not_self_closed_does_not_swallow_content():
     assert 'Intro inside' not in res_media
     # ensure proper closing tag is used
     assert '</audio>' in res_media
+
+
+def test_anchor_wrapped_same_origin_images_survive_link_pruning():
+    """Anchor-only paragraphs with same-origin images should not be pruned by link-density cleanup."""
+    html_input = """
+    <html><body><article>
+      <p><a href="https://example.com/full"><img src="https://example.com/img/a.jpg" alt="A"></a></p>
+      <p><a href="https://cdn.other.com/full"><img src="https://cdn.other.com/img/b.jpg" alt="B"></a></p>
+      <p><a href="https://sub.example.com/full"><img src="https://sub.example.com/img/c.jpg" alt="C"></a></p>
+    </article></body></html>
+    """
+    res = extract(
+        html_input,
+        output_format="html",
+        include_images=True,
+        include_links=True,
+        config=ZERO_CONFIG,
+        url="https://example.com/post",
+    )
+    doc = html.fromstring(res)
+    imgs = doc.xpath('//img')
+    srcs = {img.get('src') for img in imgs}
+    assert 'https://example.com/img/a.jpg' in srcs, "expected same-origin image to survive"
+    assert 'https://sub.example.com/img/c.jpg' in srcs, "expected subdomain image to survive"
+    assert 'https://cdn.other.com/img/b.jpg' not in srcs, "external image should still be pruned"
 
 
 def test_paragraph_splitting_for_figure():

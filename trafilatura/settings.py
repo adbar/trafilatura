@@ -381,7 +381,6 @@ MANUALLY_CLEANED = [
     "label",
     "legend",
     "marquee",
-    "math",
     "menuitem",
     "nav",
     "noindex",

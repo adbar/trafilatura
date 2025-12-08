@@ -27,7 +27,7 @@ LOGGER = logging.getLogger(__name__)
 JT_STOPLIST = None
 
 SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
-MEDIA_TAGS = {"audio", "video", "figure", "source", "track", "picture"}
+MEDIA_TAGS = {"audio", "video", "figure", "source", "track", "picture", "svg"}
 
 
 def try_readability(htmlinput: HtmlElement) -> HtmlElement:
