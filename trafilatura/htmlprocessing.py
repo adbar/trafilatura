@@ -6,6 +6,7 @@ Functions to process nodes in HTML code.
 import base64
 import logging
 import re
+from urllib.parse import urlparse
 
 from copy import deepcopy
 from typing import List, Optional, Tuple
@@ -305,14 +306,19 @@ def delete_by_link_density(
     tagname: str,
     backtracking: bool = False,
     favor_precision: bool = False,
+    base_url: Optional[str] = None,
 ) -> HtmlElement:
     """Determine the link density of elements with respect to their length,
     and remove the elements identified as boilerplate."""
     deletions = []
     len_threshold = 200 if favor_precision else 100
     depth_threshold = 1 if favor_precision else 3
+    base_host = _safe_host(base_url)
 
     for elem in subtree.iter(tagname):
+        if base_host and _has_same_origin_media(elem, base_host):
+            # Keep media-only blocks when the media is hosted on the same origin/subdomain.
+            continue
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result or (
@@ -329,6 +335,36 @@ def delete_by_link_density(
         delete_element(elem)
 
     return subtree
+
+
+def _safe_host(url: Optional[str]) -> Optional[str]:
+    if not url:
+        return None
+    try:
+        parsed = urlparse(url)
+        return parsed.hostname.lower() if parsed.hostname else None
+    except Exception:
+        return None
+
+
+def _host_matches(base_host: str, other: str) -> bool:
+    other = other.lower()
+    return other == base_host or other.endswith("." + base_host)
+
+
+def _has_same_origin_media(elem: HtmlElement, base_host: str) -> bool:
+    """Return True if the element contains a graphic pointing to the same origin/subdomain."""
+    for graphic in elem.xpath(".//graphic[@src]"):
+        src = graphic.get("src")
+        if not src:
+            continue
+        try:
+            host = urlparse(src).hostname
+        except Exception:
+            host = None
+        if host and _host_matches(base_host, host):
+            return True
+    return False
 
 
 def _has_math_markup(elem: _Element) -> bool:

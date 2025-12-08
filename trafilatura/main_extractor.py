@@ -686,9 +686,27 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: Set[str], options
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density, several passes
     for _ in range(2):
-        tree = delete_by_link_density(tree, 'div', backtracking=True, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, 'list', backtracking=False, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, 'p', backtracking=False, favor_precision=favor_precision)
+        tree = delete_by_link_density(
+            tree,
+            'div',
+            backtracking=True,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
+        tree = delete_by_link_density(
+            tree,
+            'list',
+            backtracking=False,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
+        tree = delete_by_link_density(
+            tree,
+            'p',
+            backtracking=False,
+            favor_precision=favor_precision,
+            base_url=options.url,
+        )
     # tables
     if 'table' in potential_tags or favor_precision:
         # tree = delete_by_link_density(tree, 'table', backtracking=False, favor_precision=favor_precision)

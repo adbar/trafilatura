@@ -2023,6 +2023,31 @@ def test_audio_not_self_closed_does_not_swallow_content():
     assert '</audio>' in res_media
 
 
+def test_anchor_wrapped_same_origin_images_survive_link_pruning():
+    """Anchor-only paragraphs with same-origin images should not be pruned by link-density cleanup."""
+    html_input = """
+    <html><body><article>
+      <p><a href="https://example.com/full"><img src="https://example.com/img/a.jpg" alt="A"></a></p>
+      <p><a href="https://cdn.other.com/full"><img src="https://cdn.other.com/img/b.jpg" alt="B"></a></p>
+      <p><a href="https://sub.example.com/full"><img src="https://sub.example.com/img/c.jpg" alt="C"></a></p>
+    </article></body></html>
+    """
+    res = extract(
+        html_input,
+        output_format="html",
+        include_images=True,
+        include_links=True,
+        config=ZERO_CONFIG,
+        url="https://example.com/post",
+    )
+    doc = html.fromstring(res)
+    imgs = doc.xpath('//img')
+    srcs = {img.get('src') for img in imgs}
+    assert 'https://example.com/img/a.jpg' in srcs, "expected same-origin image to survive"
+    assert 'https://sub.example.com/img/c.jpg' in srcs, "expected subdomain image to survive"
+    assert 'https://cdn.other.com/img/b.jpg' not in srcs, "external image should still be pruned"
+
+
 def test_paragraph_splitting_for_figure():
     """A <figure> inside a paragraph should result in two <p> blocks around it in HTML output."""
     html_input = """
