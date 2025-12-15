@@ -177,17 +177,30 @@ def determine_output_path(
         extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
 
     if args.keep_dirs:
-        # strip directory
-        original_dir = STRIP_DIR.sub("", orig_filename)
-        destination_dir = path.join(args.output_dir, original_dir)
-        # strip extension
-        filename = STRIP_EXTENSION.sub("", orig_filename)
+        if args.input_dir:
+            try:
+                rel_path = path.relpath(orig_filename, args.input_dir)
+            except ValueError:
+                rel_path = path.basename(orig_filename)
+            # strip extension
+            filename = path.splitext(rel_path)[0]
+            output_path = path.join(args.output_dir, filename + extension)
+            destination_dir = path.dirname(output_path)
+        else:
+            # strip directory
+            original_dir = STRIP_DIR.sub("", orig_filename)
+            destination_dir = path.join(args.output_dir, original_dir)
+            # strip extension
+            filename = STRIP_EXTENSION.sub("", orig_filename)
+            # handle potential path duplication
+            filename = path.basename(filename)
+            output_path = path.join(destination_dir, filename + extension)
     else:
         destination_dir = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
         filename = new_filename or generate_hash_filename(content)
+        output_path = path.join(destination_dir, filename + extension)
 
-    output_path = path.join(destination_dir, filename + extension)
     return output_path, destination_dir
 
 

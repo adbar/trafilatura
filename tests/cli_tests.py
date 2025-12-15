@@ -6,13 +6,14 @@ import io
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 
 from contextlib import redirect_stdout
 from datetime import datetime
 from os import path
-from tempfile import gettempdir
+from tempfile import gettempdir, mkdtemp
 from unittest.mock import patch
 
 import pytest
@@ -587,6 +588,48 @@ def test_probing():
         assert f.getvalue().strip() == url
 
 
+def test_keep_dirs_and_extension():
+    """Test --keep-dirs and --output-extension flags."""
+    # Setup
+    input_dir = mkdtemp()
+    output_dir = mkdtemp()
+
+    try:
+        os.makedirs(os.path.join(input_dir, "subdir"))
+
+        with open(os.path.join(input_dir, "file1.html"), "w") as f:
+            f.write("<html><body><h1>File 1</h1><p>Content 1</p></body></html>")
+
+        with open(os.path.join(input_dir, "subdir", "file2.html"), "w") as f:
+            f.write("<html><body><h1>File 2</h1><p>Content 2</p></body></html>")
+
+        # Test: --keep-dirs and --output-extension
+        test_args = [
+            "trafilatura",
+            "--input-dir", input_dir,
+            "--output-dir", output_dir,
+            "--keep-dirs",
+            "--output-extension", ".md"
+        ]
+
+        with patch.object(sys, 'argv', test_args):
+            try:
+                cli.main()
+            except SystemExit as e:
+                assert e.code == 0
+
+        # Verify
+        file1_out = os.path.join(output_dir, "file1.md")
+        file2_out = os.path.join(output_dir, "subdir", "file2.md")
+
+        assert os.path.exists(file1_out)
+        assert os.path.exists(file2_out)
+
+    finally:
+        shutil.rmtree(input_dir)
+        shutil.rmtree(output_dir)
+
+
 if __name__ == "__main__":
     test_parser()
     test_climain()
@@ -599,3 +642,4 @@ if __name__ == "__main__":
     test_crawling()
     test_download()
     test_probing()
+    test_keep_dirs_and_extension()
