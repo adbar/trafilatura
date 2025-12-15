@@ -14,7 +14,7 @@ from .cli_utils import (cli_crawler, cli_discovery, examine,
                         file_processing_pipeline, load_blacklist,
                         load_input_dict, probe_homepage,
                         url_processing_pipeline, write_result)
-from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
+from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI, AdvancedOptions
 
 
 # fix output encoding on some systems
@@ -133,6 +133,10 @@ def add_args(parser: Any) -> Any:
     group4.add_argument("--recall",
                         help="favor extraction recall (more text, possibly more noise)",
                         action="store_true")
+    available_flags = [e.value for e in AdvancedOptions]
+    group4.add_argument("--advanced-flags",
+                        help=f"experimental features (space-separated strings). Available options: {', '.join(available_flags)}",
+                        nargs='+', type=AdvancedOptions)
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('--output-format',
@@ -189,6 +193,11 @@ def map_args(args: Any) -> Any:
         if getattr(args, otype):
             args.output_format = otype
             break
+
+    # advanced flags
+    if args.advanced_flags:
+        args.advanced_flags = set(args.advanced_flags)
+
     return args
 
 

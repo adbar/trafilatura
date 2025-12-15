@@ -5,6 +5,7 @@ Listing a series of settings that are applied module-wide.
 
 from configparser import ConfigParser
 from datetime import datetime
+from enum import Enum
 from html import unescape
 from typing import Any, Dict, List, Optional, Set
 
@@ -24,6 +25,11 @@ from .utils import line_processing
 
 SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
 SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # for bare_extraction() only
+
+
+class AdvancedOptions(Enum):
+    "Advanced options for the extraction process."
+    ALL_PRE_BLOCKS_ARE_CODEBLOCKS = "ALL_PRE_BLOCKS_ARE_CODEBLOCKS"
 
 
 def use_config(
@@ -96,6 +102,7 @@ class Extractor:
         "date_params",
         "author_blacklist",
         "url_blacklist",
+        "advanced_flags",
     ]
 
     def __init__(
@@ -121,6 +128,7 @@ class Extractor:
         author_blacklist: Optional[Set[str]] = None,
         url_blacklist: Optional[Set[str]] = None,
         date_params: Optional[Dict[str, str]] = None,
+        advanced_flags: Optional[Set[AdvancedOptions]] = None,
     ):
         self._set_source(url, source)
         self._set_format(output_format)
@@ -141,6 +149,7 @@ class Extractor:
         self.tei_validation: bool = tei_validation
         self.author_blacklist: Set[str] = author_blacklist or set()
         self.url_blacklist: Set[str] = url_blacklist or set()
+        self.advanced_flags: Set[AdvancedOptions] = advanced_flags or set()
         self.with_metadata: bool = (
             with_metadata
             or only_with_metadata
@@ -151,6 +160,10 @@ class Extractor:
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
         self.max_tree_size = None
+
+    def has_flag(self, flag: AdvancedOptions) -> bool:
+        "Check if a specific advanced flag is set."
+        return flag in self.advanced_flags
 
     def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
         "Set the source attribute in a robust way."
@@ -188,6 +201,7 @@ def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
         with_metadata=args.with_metadata,
         only_with_metadata=args.only_with_metadata,
         tei_validation=args.validate_tei,
+        advanced_flags=set(args.advanced_flags) if args.advanced_flags else None,
     )
     for attr in ("fast", "images", "links"):
         setattr(options, attr, getattr(args, attr))

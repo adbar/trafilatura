@@ -16,6 +16,7 @@ from .deduplication import duplicate_test
 from .settings import (
     Document,
     Extractor,
+    AdvancedOptions,
     CUT_EMPTY_ELEMS,
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
@@ -297,13 +298,12 @@ def convert_lists(elem: _Element) -> None:
         subelem.tag = "item"
 
 
-def convert_quotes(elem: _Element) -> None:
+def convert_quotes(elem: _Element, options: Optional[Extractor] = None) -> None:
     "Convert quoted elements while accounting for nested structures."
     code_flag = False
     if elem.tag == "pre":
-        # detect if there could be code inside
-        # pre with a single span is more likely to be code
-        if len(elem) == 1 and elem[0].tag == "span":
+        if (len(elem) == 1 and elem[0].tag == "span") or \
+            (options and options.has_flag(AdvancedOptions.ALL_PRE_BLOCKS_ARE_CODEBLOCKS)):
             code_flag = True
         # find hljs elements to detect if it's code
         code_elems = elem.xpath(".//span[starts-with(@class,'hljs')]")
@@ -414,7 +414,10 @@ def convert_tags(
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)  # type: ignore[index]
+        if elem.tag in ("pre", "blockquote", "q"):
+            convert_quotes(elem, options)
+        else:
+            CONVERSIONS[elem.tag](elem)  # type: ignore[index]
     # images
     if options.images:
         for elem in tree.iter("img"):

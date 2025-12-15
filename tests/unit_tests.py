@@ -30,7 +30,7 @@ from trafilatura.main_extractor import (handle_formatting, handle_image,
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.readability_lxml import is_probably_readerable
-from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config, AdvancedOptions
 from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
                                language_classifier, load_html, normalize_unicode,
                                repair_faulty_html, sanitize, textfilter, trim)
@@ -1804,6 +1804,22 @@ def test_deprecations():
         bare_extraction(htmlstring, max_tree_size=100)
 
 
+def test_pre_conversion_flag():
+    '''Test the ALL_PRE_BLOCKS_ARE_CODEBLOCKS flag'''
+    html_content = '<html><body><pre>Some text</pre></body></html>'
+
+    # Default behavior (without flag) -> should be quote (blockquote)
+    options = Extractor(output_format='xml')
+    result = extract(html_content, output_format='xml', config=ZERO_CONFIG, options=options)
+    assert '<quote>Some text</quote>' in result
+    assert '<code>' not in result
+
+    # With flag -> should be code
+    options = Extractor(output_format='xml', advanced_flags={AdvancedOptions.ALL_PRE_BLOCKS_ARE_CODEBLOCKS})
+    result = extract(html_content, output_format='xml', config=ZERO_CONFIG, options=options)
+    assert '<code>Some text</code>' in result
+    assert '<quote>' not in result
+
 
 if __name__ == '__main__':
     test_deprecations()
@@ -1832,3 +1848,4 @@ if __name__ == '__main__':
     test_lang_detection()
     test_is_probably_readerable()
     test_html_conversion()
+    test_pre_conversion_flag()
