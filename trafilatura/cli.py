@@ -65,6 +65,9 @@ def add_args(parser: Any) -> Any:
     group2.add_argument('--keep-dirs',
                         help="keep input directory structure and file names",
                         action="store_true")
+    group2.add_argument('--output-extension',
+                        help="specify a custom file extension for the output files",
+                        type=str)
 
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",

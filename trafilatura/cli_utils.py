@@ -169,7 +169,12 @@ def determine_output_path(
 ) -> Tuple[str, str]:
     "Pick a directory based on selected options and a file name based on output type."
     # determine extension, TXT by default
-    extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
+    if args.output_extension:
+        extension = args.output_extension
+        if not extension.startswith("."):
+            extension = "." + extension
+    else:
+        extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
 
     if args.keep_dirs:
         # strip directory

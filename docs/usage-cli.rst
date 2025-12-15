@@ -129,6 +129,7 @@ Trafilatura will work as well provided web pages (HTML documents) are used as in
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
+-  ``--output-extension`` to specify a custom file extension for the output files (e.g. ``.md``)
 
 
 .. note::
@@ -295,8 +296,9 @@ For all usage instructions see ``trafilatura -h``:
                    [--no-tables] [--only-with-metadata] [--with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE] [--precision] [--recall]
-                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} | 
+                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} |
                    --csv | --html | --json | --markdown | --xml | --xmltei]
+				   [--output-extension OUTPUT_EXTENSION]
                    [--validate-tei] [-v] [--version]
 
 
@@ -331,6 +333,8 @@ Output:
                         preserve a copy of downloaded files in a backup
                         directory
   --keep-dirs           keep input directory structure and file names
+  --output-extension OUTPUT_EXTENSION
+                        specify a custom file extension for the output files
 
 Navigation:
   Link discovery and web crawling
