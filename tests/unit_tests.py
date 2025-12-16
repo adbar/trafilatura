@@ -6,7 +6,7 @@ Unit tests for the trafilatura library.
 import logging
 import sys
 import time
-
+import regex
 from copy import copy
 from os import path
 
@@ -1820,6 +1820,19 @@ def test_pre_conversion_flag():
     assert '<code>Some text</code>' in result
     assert '<quote>' not in result
 
+def test_regex_for_body():
+    """Test the regex option for body extraction."""
+
+    reg = regex.compile(r'(?:<h1>.+?</h1>).+?(<h3>.+?</h3>)</body>',regex.DOTALL | regex.VERSION1)
+
+    html_content = '<html><body><h1>Not Captured Group</h1><h2>Skipped</h2>\n<h3>Want This</h3></body></html>'
+	
+    options = Extractor(output_format='markdown', regex=reg)
+    result = extract(html_content, config=ZERO_CONFIG, options=options)
+    assert 'Want This' in result
+    assert 'Not Captured Group' not in result
+    assert 'Skipped' not in result
+
 
 if __name__ == '__main__':
     test_deprecations()
@@ -1849,3 +1862,4 @@ if __name__ == '__main__':
     test_is_probably_readerable()
     test_html_conversion()
     test_pre_conversion_flag()
+    test_regex_for_body()

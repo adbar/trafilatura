@@ -102,6 +102,14 @@ The arguments ``--precision`` or ``--recall`` can be passed to adjust the focus 
 - If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
+Custom Extraction
+~~~~~~~~~~~~~~~~~
+
+You can provide a custom regular expression to extract the main content prior to processing.:
+
+- ``--regex-file-for-body``: Read a regex from a file and use it to extract the main text. If the regex matches, the captured groups are concatenated and used as the page content prior to any processing. The content is wrapped in an html tag to ensure treated as html. The regex is processed by the [python regex module](https://github.com/mrabarnett/mrab-regex), thus allowing for advanced features such as named capturing groups (default flags are regex.DOTALL | regex.VERSION1) but those can be controlled by inline flags.
+
+
 Language identification
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -370,6 +378,8 @@ Extraction:
                         text)
   --recall              favor extraction recall (more text, possibly more
                         noise)
+  --regex-file-for-body REGEX_FILE_FOR_BODY
+                        read a regex from a file and use it to extract the main text
 
 Format:
   Selection of the output format

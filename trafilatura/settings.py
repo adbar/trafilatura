@@ -7,7 +7,8 @@ from configparser import ConfigParser
 from datetime import datetime
 from enum import Enum
 from html import unescape
-from typing import Any, Dict, List, Optional, Set
+import regex
+from typing import Any, Dict, List, Optional, Set, Pattern
 
 try:
     from os import sched_getaffinity
@@ -103,6 +104,7 @@ class Extractor:
         "author_blacklist",
         "url_blacklist",
         "advanced_flags",
+        "regex",
     ]
 
     def __init__(
@@ -129,6 +131,7 @@ class Extractor:
         url_blacklist: Optional[Set[str]] = None,
         date_params: Optional[Dict[str, str]] = None,
         advanced_flags: Optional[Set[AdvancedOptions]] = None,
+        regex: Optional[Pattern[Any]] = None,
     ):
         self._set_source(url, source)
         self._set_format(output_format)
@@ -150,6 +153,7 @@ class Extractor:
         self.author_blacklist: Set[str] = author_blacklist or set()
         self.url_blacklist: Set[str] = url_blacklist or set()
         self.advanced_flags: Set[AdvancedOptions] = advanced_flags or set()
+        self.regex: Optional[Pattern[Any]] = regex
         self.with_metadata: bool = (
             with_metadata
             or only_with_metadata
@@ -187,6 +191,11 @@ class Extractor:
 
 def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
     "Derive extractor configuration from CLI args."
+    reg = None
+    if hasattr(args, "regex_file_for_body") and args.regex_file_for_body:
+        with open(args.regex_file_for_body, "r", encoding="utf-8") as f:
+            reg = regex.compile(f.read().strip(),regex.DOTALL | regex.VERSION1)
+
     options = Extractor(
         config=use_config(filename=args.config_file),
         output_format=args.output_format,
@@ -202,6 +211,7 @@ def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
         only_with_metadata=args.only_with_metadata,
         tei_validation=args.validate_tei,
         advanced_flags=set(args.advanced_flags) if args.advanced_flags else None,
+        regex=reg,
     )
     for attr in ("fast", "images", "links"):
         setattr(options, attr, getattr(args, attr))

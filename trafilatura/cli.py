@@ -133,6 +133,9 @@ def add_args(parser: Any) -> Any:
     group4.add_argument("--recall",
                         help="favor extraction recall (more text, possibly more noise)",
                         action="store_true")
+    group4.add_argument("--regex-file-for-body",
+                        help="read a regex from a file and use it to extract the main text",
+                        type=str)
     available_flags = [e.value for e in AdvancedOptions]
     group4.add_argument("--advanced-flags",
                         help=f"experimental features (space-separated strings). Available options: {', '.join(available_flags)}",
