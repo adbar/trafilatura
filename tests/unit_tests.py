@@ -578,7 +578,7 @@ def test:
     print('hello')
     print('world')
     </code></pre>
-    </article></body></html> 
+    </article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_formatting=True)
     assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
@@ -590,7 +590,7 @@ def test:
 def test:
     print('hello')
     print('world')
-    
+
 ```"""
         == my_result
     )
@@ -2001,8 +2001,8 @@ for name and age:</p>
 </div>"""
     testresult = extract(w3schools, config=ZERO_CONFIG, output_format="xml")
     expected = """<code>
-  class Person:<lb/>\xa0 def __init__(self, name, age):<lb/>\xa0\xa0\xa0 
-  self.name = name<lb/>\xa0\xa0\xa0 self.age = age<lb/><lb/>p1 = Person("John", 
+  class Person:<lb/>\xa0 def __init__(self, name, age):<lb/>\xa0\xa0\xa0
+  self.name = name<lb/>\xa0\xa0\xa0 self.age = age<lb/><lb/>p1 = Person("John",
   36)<lb/>
   <lb/>print(p1.name)<lb/>print(p1.age) </code>"""
     assert expected in testresult and "quote" not in testresult
