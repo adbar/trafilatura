@@ -91,8 +91,20 @@ jobs:
         env:
           PROXY_TEST: ${{ matrix.proxy-test }}
 
+      - name: Check Codecov token availability
+        id: codecov-token
+        if: ${{ matrix.upload-coverage == 'true' }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          if [[ -n "${CODECOV_TOKEN}" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Upload coverage to Codecov
-        if: ${{ matrix.upload-coverage == 'true' && secrets.CODECOV_TOKEN != '' }}
+        if: ${{ matrix.upload-coverage == 'true' && steps.codecov-token.outputs.available == 'true' }}
         uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
