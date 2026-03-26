@@ -32,7 +32,14 @@ from courlan import UrlStore
 from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
-from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
+from .utils import (
+    HAS_BROTLI,
+    HAS_ZSTD,
+    URL_BLACKLIST_REGEX,
+    decode_file,
+    is_acceptable_length,
+    make_chunks,
+)
 
 try:
     from urllib3.contrib.socks import SOCKSProxyManager
@@ -72,7 +79,25 @@ def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
     return manager_class(**manager_args, **args)  # type: ignore[arg-type]
 
 
-DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)  # type: ignore[no-untyped-call]
+def _build_default_headers() -> Dict[str, str]:
+    "Create default request headers with optional compression support."
+    headers = urllib3.util.make_headers(accept_encoding=True)  # type: ignore[no-untyped-call]
+    encodings = headers.get("accept-encoding", "").split(",")
+    available = {encoding.strip() for encoding in encodings if encoding.strip()}
+    if HAS_BROTLI:
+        available.add("br")
+    if HAS_ZSTD:
+        available.add("zstd")
+    if available:
+        headers["accept-encoding"] = ",".join(
+            encoding
+            for encoding in ("deflate", "gzip", "br", "zstd")
+            if encoding in available
+        )
+    return headers
+
+
+DEFAULT_HEADERS = _build_default_headers()
 USER_AGENT = (
     "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 )

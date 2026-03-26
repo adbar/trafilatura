@@ -177,6 +177,21 @@ def add_sub_element(new_child_elem: _Element, subelem: _Element, processed_subch
         sub_child_elem.set(attr, subelem.attrib[attr])
 
 
+def _xml_compatible_text(value: Optional[str]) -> Optional[str]:
+    "Drop control characters that libxml refuses in text/tail assignments."
+    if value is None:
+        return None
+    cleaned = "".join(
+        char
+        for char in value
+        if char in ("\t", "\n", "\r")
+        or 0x20 <= ord(char) <= 0xD7FF
+        or 0xE000 <= ord(char) <= 0xFFFD
+        or 0x10000 <= ord(char) <= 0x10FFFF
+    )
+    return cleaned or None
+
+
 def process_nested_elements(child: _Element, new_child_elem: _Element, options: Extractor) -> None:
     "Iterate through an element child and rewire its descendants."
     new_child_elem.text = child.text
@@ -401,7 +416,8 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             #        newsub.tail = processed_child.text + processed_child.tail
             #    else:
             #        newsub.tail = processed_child.text
-            newsub.text, newsub.tail = processed_child.text, processed_child.tail
+            newsub.text = _xml_compatible_text(processed_child.text)
+            newsub.tail = _xml_compatible_text(processed_child.tail)
 
             if processed_child.tag == 'graphic':
                 image_elem = handle_image(processed_child, options)

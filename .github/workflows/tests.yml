@@ -14,26 +14,8 @@ env:
 
 jobs:
   build:
-    name: build (${{ matrix.python-version }}, ${{ matrix.variant }})
+    name: build (3.13, full)
     runs-on: ubuntu-22.04
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - python-version: "3.11"
-            variant: minimal
-            install-full: "false"
-            proxy-test: "false"
-            run-lint: "false"
-            run-mypy: "false"
-            upload-coverage: "false"
-          - python-version: "3.13"
-            variant: full
-            install-full: "true"
-            proxy-test: "true"
-            run-lint: "true"
-            run-mypy: "true"
-            upload-coverage: "true"
     services:
       socks_proxy:
         image: serjs/go-socks5-proxy
@@ -53,10 +35,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.13
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.13"
           cache: pip
           cache-dependency-path: pyproject.toml
 
@@ -67,33 +49,28 @@ jobs:
         run: python -m pip install -e ".[dev]"
 
       - name: Install packages required by pycurl
-        if: ${{ matrix.install-full == 'true' }}
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-gnutls-dev libgnutls28-dev
 
       - name: Install full dependencies
-        if: ${{ matrix.install-full == 'true' }}
         run: python -m pip install -e ".[all]"
 
       - name: Lint with flake8
-        if: ${{ matrix.run-lint == 'true' }}
         run: |
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Type checking
-        if: ${{ matrix.run-mypy == 'true' }}
         run: mypy -p trafilatura
 
       - name: Test with pytest
         run: python -m pytest --cov=./ --cov-report=xml
         env:
-          PROXY_TEST: ${{ matrix.proxy-test }}
+          PROXY_TEST: "true"
 
       - name: Check Codecov token availability
         id: codecov-token
-        if: ${{ matrix.upload-coverage == 'true' }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
@@ -104,7 +81,7 @@ jobs:
           fi
 
       - name: Upload coverage to Codecov
-        if: ${{ matrix.upload-coverage == 'true' && steps.codecov-token.outputs.available == 'true' }}
+        if: ${{ steps.codecov-token.outputs.available == 'true' }}
         uses: codecov/codecov-action@v5
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

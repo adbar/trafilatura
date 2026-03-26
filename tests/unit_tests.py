@@ -543,7 +543,7 @@ def test_extract_with_metadata():
 
 def test_external():
     '''Test external components'''
-    options = DEFAULT_OPTIONS
+    options = Extractor()
     options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
@@ -575,7 +575,12 @@ def test_external():
     assert extract(teststring, fast=True, include_tables=False) == ''
     assert extract(teststring, fast=False, include_tables=False) == ''
     # invalid XML attributes: namespace colon in attribute key (issue #375). Those attributes should be stripped
-    bad_xml = 'Testing<ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
+    bad_xml = (
+        '<html><body>Testing<ul bad:attr="" style="margin:15px">'
+        '<li><b>Features:</b> Saves the cost of two dedicated phone lines.</li>'
+        "<li>Requires no change to the existing Fire Alarm Control Panel configuration.</li>"
+        "</ul></body></html>"
+    )
     res = extract(bad_xml, output_format='xml')
     assert "Features" in res
 
@@ -1010,7 +1015,7 @@ def test_precision_recall():
 
 
 def test_table_processing():
-    options = DEFAULT_OPTIONS
+    options = Extractor()
     table_simple_cell = html.fromstring(
         "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
     )
@@ -1070,7 +1075,7 @@ def test_table_processing():
         == "<table><row><cell>text<p>more text</p></cell></row></table>"
     )
     table_cell_with_link = html.fromstring(
-        "<table><tr><td><ref='test'>link</ref></td></tr></table>"
+        "<table><tr><td><ref target='test'>link</ref></td></tr></table>"
     )
     processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
     result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
