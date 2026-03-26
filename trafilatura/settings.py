@@ -6,14 +6,14 @@ Listing a series of settings that are applied module-wide.
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
+import os
 from typing import Any, Dict, List, Optional, Set
 
-try:
-    from os import sched_getaffinity
+sched_getaffinity = getattr(os, "sched_getaffinity", None)
+if sched_getaffinity is not None:
     CPU_COUNT = len(sched_getaffinity(0))
-except ImportError:
-    from os import cpu_count
-    CPU_COUNT = cpu_count() or 1
+else:
+    CPU_COUNT = os.cpu_count() or 1
 
 from pathlib import Path
 

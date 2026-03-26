@@ -32,7 +32,7 @@ except ImportError:
     HAS_BROTLI = False
 
 try:
-    import zstandard
+    import zstandard  # type: ignore[import-not-found]
     HAS_ZSTD = True
 except ImportError:
     HAS_ZSTD = False

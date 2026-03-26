@@ -911,9 +911,9 @@ def convert_to_html(tree: _Element) -> _Element:
             p_before = Element("p")
             p_before.text = p.text
             for _ in range(idx_fig):
-                child = p[0]
-                p.remove(child)
-                p_before.append(child)
+                left_child: _Element = p[0]
+                p.remove(left_child)
+                p_before.append(left_child)
             # right part
             p_after = Element("p")
             # figure tail belongs to the right paragraph
@@ -922,9 +922,9 @@ def convert_to_html(tree: _Element) -> _Element:
                 fig.tail = None
             # move remaining children to right paragraph
             while len(p) > 0:
-                child = p[0]
-                p.remove(child)
-                p_after.append(child)
+                right_child: _Element = p[0]
+                p.remove(right_child)
+                p_after.append(right_child)
 
             # insert p_before, fig, p_after around original p
             grand = p.getparent()

@@ -7,7 +7,7 @@ import logging
 
 from configparser import ConfigParser
 from time import sleep
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -50,7 +50,7 @@ class CrawlParameters:
         start: str,
         lang: Optional[str] = None,
         rules: Optional[RobotFileParser] = None,
-        prune_xpath: Optional[str] = None,
+        prune_xpath: Optional[Union[str, List[str]]] = None,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
@@ -60,7 +60,7 @@ class CrawlParameters:
         self.i: int = 0
         self.known_num: int = 0
         self.is_on: bool = True
-        self.prune_xpath: Optional[str] = prune_xpath
+        self.prune_xpath: Optional[Union[str, List[str]]] = prune_xpath
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."
@@ -205,11 +205,14 @@ def process_links(
         return
 
     if htmlstring and params.prune_xpath is not None:
-        if isinstance(params.prune_xpath, str):
-            params.prune_xpath = [params.prune_xpath]  # type: ignore[assignment]
+        prune_xpaths = (
+            [params.prune_xpath]
+            if isinstance(params.prune_xpath, str)
+            else params.prune_xpath
+        )
         tree = load_html(htmlstring)
         if tree is not None:
-            tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpaths])
             htmlstring = tostring(tree).decode()
 
     links, links_priority = [], []
@@ -251,7 +254,7 @@ def init_crawl(
     rules: Optional[RobotFileParser] = None,
     todo: Optional[List[str]] = None,
     known: Optional[List[str]] = None,
-    prune_xpath: Optional[str] = None,
+    prune_xpath: Optional[Union[str, List[str]]] = None,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
@@ -312,7 +315,7 @@ def focused_crawler(
     lang: Optional[str] = None,
     config: ConfigParser = DEFAULT_CONFIG,
     rules: Optional[RobotFileParser] = None,
-    prune_xpath: Optional[str] = None,
+    prune_xpath: Optional[Union[str, List[str]]] = None,
 ) -> Tuple[List[str], List[str]]:
     """Basic crawler targeting pages of interest within a website.
 
