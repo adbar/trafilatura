@@ -1,0 +1,24 @@
+name: Dispatch Inkmark Rebuild
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'master' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger trafilatura rebuild in Inkmark
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.INKMARK_REPO_DISPATCH_TOKEN }}
+          repository: avhm/inkmark-monorepo
+          event-type: trafilatura-updated
+          client-payload: >-
+            {"trafilatura_sha":"${{ github.event.workflow_run.head_sha }}","source_repository":"${{ github.repository }}","source_branch":"${{ github.event.workflow_run.head_branch }}","source_run_id":"${{ github.event.workflow_run.id }}","source_run_url":"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}"}

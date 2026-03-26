@@ -1,0 +1,105 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: sync-upstream-master
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          ref: master
+
+      - name: Fetch upstream
+        run: |
+          set -euo pipefail
+          if git remote get-url upstream >/dev/null 2>&1; then
+            git remote set-url upstream https://github.com/adbar/trafilatura.git
+          else
+            git remote add upstream https://github.com/adbar/trafilatura.git
+          fi
+          git fetch origin master
+          git fetch upstream master
+
+      - name: Check whether upstream is ahead
+        id: upstream
+        run: |
+          set -euo pipefail
+          ahead="$(git rev-list --right-only --count master...upstream/master)"
+          short_sha="$(git rev-parse --short=12 upstream/master)"
+          {
+            echo "ahead=$ahead"
+            echo "short_sha=$short_sha"
+            echo "branch=automation/sync-upstream-$short_sha"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Nothing to sync
+        if: steps.upstream.outputs.ahead == '0'
+        run: echo "upstream/master is already merged into master"
+
+      - name: Configure git author
+        if: steps.upstream.outputs.ahead != '0'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge upstream/master into sync branch
+        if: steps.upstream.outputs.ahead != '0'
+        env:
+          BRANCH_NAME: ${{ steps.upstream.outputs.branch }}
+        run: |
+          set -euo pipefail
+          git checkout -B "$BRANCH_NAME" master
+          git merge --no-ff --no-edit upstream/master
+
+      - name: Push sync branch
+        if: steps.upstream.outputs.ahead != '0'
+        env:
+          BRANCH_NAME: ${{ steps.upstream.outputs.branch }}
+        run: |
+          set -euo pipefail
+          git push --force-with-lease origin "$BRANCH_NAME"
+
+      - name: Create or reuse pull request
+        if: steps.upstream.outputs.ahead != '0'
+        id: pull-request
+        env:
+          BRANCH_NAME: ${{ steps.upstream.outputs.branch }}
+          GH_TOKEN: ${{ github.token }}
+          SHORT_SHA: ${{ steps.upstream.outputs.short_sha }}
+        run: |
+          set -euo pipefail
+          pr_number="$(gh pr list --base master --head "$BRANCH_NAME" --json number --jq '.[0].number')"
+          if [[ -z "$pr_number" ]]; then
+            pr_url="$(gh pr create \
+              --base master \
+              --head "$BRANCH_NAME" \
+              --title "chore: sync upstream/master ($SHORT_SHA)" \
+              --body "Syncs \`upstream/master\` into \`master\` and relies on the existing test workflow before merge.")"
+            pr_number="${pr_url##*/}"
+          fi
+          echo "number=$pr_number" >> "$GITHUB_OUTPUT"
+
+      - name: Enable auto-merge
+        if: steps.upstream.outputs.ahead != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.pull-request.outputs.number }}
+        run: |
+          set -euo pipefail
+          if ! gh pr merge --auto --merge "$PR_NUMBER"; then
+            echo "Auto-merge could not be enabled. Enable repository auto-merge if you want fully unattended upstream syncs." >> "$GITHUB_STEP_SUMMARY"
+          fi
