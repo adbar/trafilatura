@@ -548,6 +548,24 @@ def test_inline_formatting_paragraph_does_not_split_html_output():
     assert "<i>really foolish</i>to do that." not in result
 
 
+def test_handle_paragraphs_keeps_wrapped_formatting_with_link_text():
+    """Paragraphs wrapped in formatting should keep descendant text and links."""
+    options = DEFAULT_OPTIONS
+    options._add_config(ZERO_CONFIG)
+    paragraph = html.fromstring(
+        '<p><hi rend="#i"><hi rend="#b">Stream und Anmeldung<lb/></hi>'
+        'Die Tagung wird gestreamt. Alle weiteren Einzelheiten bitten wir direkt den '
+        '<ref target="http://example.org/info">Seiten der Stiftung</ref> zu entnehmen. '
+        'Hier geht zur <ref target="http://example.org/signup">Anmeldung</ref>.</hi></p>'
+    )
+    converted = handle_paragraphs(paragraph, TAG_CATALOG, options)
+    assert converted is not None
+    result = etree.tostring(converted, encoding="unicode")
+    assert "Stream und Anmeldung" in result
+    assert "Die Tagung wird gestreamt." in result
+    assert "Hier geht zur Anmeldung." in result
+
+
 def test_extract_with_metadata():
     '''Test extract_with_metadata method'''
     url = 'http://aa.bb/cc.html'

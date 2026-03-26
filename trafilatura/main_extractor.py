@@ -414,13 +414,10 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             # handle formatting
             newsub = Element(child.tag)
             if processed_child.tag in P_FORMATTING:
-                preserved_children = []
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in list(processed_child):  # children are lists
                         if item.tag in {"graphic", "lb"}:
-                            preserved_children.append(deepcopy(item))
-                            item.tag = "done"
                             continue
                         if text_chars_test(item.text) is True:
                             item.text = " " + item.text  # type: ignore[operator]
@@ -434,8 +431,10 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                     # Preserve anchor ids (e.g., footnote links) so in-document jumps still work.
                     if child.get("id") is not None:
                         newsub.set("id", child.get("id", ""))
-                if preserved_children:
-                    for preserved in preserved_children:
+                if len(processed_child) > 0:
+                    for preserved in list(processed_child):
+                        if preserved.tag not in {"graphic", "lb"}:
+                            continue
                         newsub.append(preserved)
             # handle line breaks
             # elif processed_child.tag == 'lb':
