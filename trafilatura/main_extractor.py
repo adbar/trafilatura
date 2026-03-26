@@ -192,6 +192,44 @@ def _xml_compatible_text(value: Optional[str]) -> Optional[str]:
     return cleaned or None
 
 
+def _needs_text_join(existing: str, incoming: str) -> bool:
+    "Determine if a space is needed when gluing two inline text runs together."
+    if not existing or not incoming:
+        return False
+    return (
+        not existing[-1].isspace()
+        and not incoming[0].isspace()
+        and incoming[0] not in ",.;:!?)]}"
+    )
+
+
+def _append_paragraph_text(processed_element: _Element, text: Optional[str]) -> None:
+    "Append text to a paragraph, preserving child order and simple spacing."
+    text = _xml_compatible_text(text)
+    if text is None:
+        return
+    if len(processed_element) > 0:
+        last_child = processed_element[-1]
+        existing_tail = last_child.tail or ""
+        if _needs_text_join(existing_tail, text):
+            last_child.tail = f"{existing_tail} {text}"
+        else:
+            last_child.tail = f"{existing_tail}{text}"
+        return
+    existing_text = processed_element.text or ""
+    if _needs_text_join(existing_text, text):
+        processed_element.text = f"{existing_text} {text}"
+    else:
+        processed_element.text = f"{existing_text}{text}"
+
+
+def _mark_subtree_done(element: _Element) -> None:
+    "Mark an element and all descendants as consumed by the extractor."
+    for descendant in element.iterdescendants():
+        descendant.tag = "done"
+    element.tag = "done"
+
+
 def process_nested_elements(child: _Element, new_child_elem: _Element, options: Extractor) -> None:
     "Iterate through an element child and rewire its descendants."
     new_child_elem.text = child.text
@@ -355,7 +393,8 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
 
     # children
     processed_element = Element(element.tag)
-    for child in element.iter("*"):
+    processed_element.text = _xml_compatible_text(element.text)
+    for child in list(element):
         if child.tag not in potential_tags and child.tag != "done":
             _log_event("unexpected in p", child.tag, child.text)
             continue
@@ -366,11 +405,11 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
             # todo: needing attention!
             if processed_child.tag == "p":
                 _log_event("extra in p", "p", processed_child.text)
-                if processed_element.text:
-                    processed_element.text += " " + (processed_child.text or "")
-                else:
-                    processed_element.text = processed_child.text
-                child.tag = "done"
+                _append_paragraph_text(
+                    processed_element,
+                    f"{processed_child.text or ''}{processed_child.tail or ''}",
+                )
+                _mark_subtree_done(child)
                 continue
             # handle formatting
             newsub = Element(child.tag)
@@ -379,7 +418,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in list(processed_child):  # children are lists
-                        if item.tag == "lb":
+                        if item.tag in {"graphic", "lb"}:
                             preserved_children.append(deepcopy(item))
                             item.tag = "done"
                             continue
@@ -424,7 +463,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                 if image_elem is not None:
                     newsub = image_elem
             processed_element.append(newsub)
-        child.tag = "done"
+        _mark_subtree_done(child)
     # finish
     if len(processed_element) > 0:
         last_elem = processed_element[-1]

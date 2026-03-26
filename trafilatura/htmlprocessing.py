@@ -423,7 +423,8 @@ def handle_textnode(
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
     has_math = _has_math_markup(elem)
-    if not has_math and not elem.text and textfilter(elem):
+    has_graphic = elem.tag == "graphic" or elem.find(".//graphic") is not None
+    if not has_math and not has_graphic and not elem.text and textfilter(elem):
         return None
     if options.dedup and duplicate_test(elem, options):
         return None

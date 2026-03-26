@@ -488,6 +488,66 @@ def test:
 ```""" == my_result
 
 
+def test_handle_paragraphs_preserves_inline_formatting_runs():
+    """Inline formatting inside a paragraph should stay in a single paragraph."""
+    options = DEFAULT_OPTIONS
+    options._add_config(ZERO_CONFIG)
+    paragraph = html.fromstring(
+        '<p>The gamble here was that because the regime would simply '
+        '<hi rend="#i"><hi rend="#b">collapse</hi></hi> on cue, the United States could remove '
+        'Iran’s regional threat <hi rend="#i">without</hi> having to commit to a major military operation '
+        'that might span weeks, disrupt global energy supplies, expand over the region, cost $200 billion '
+        'dollars and potentially require ground operations. Because <hi rend="#i">everyone</hi> knew that '
+        'result was <hi rend="#i"><hi rend="#b">worse than the status quo</hi></hi> and it would thus be '
+        '<hi rend="#i">really foolish</hi> to do that.</p>'
+    )
+    converted = handle_paragraphs(paragraph, TAG_CATALOG, options)
+    result = etree.tostring(converted, encoding="unicode")
+    assert result.count("<p") == 1
+    assert " ".join("".join(converted.itertext()).split()) == (
+        "The gamble here was that because the regime would simply collapse on cue, "
+        "the United States could remove Iran’s regional threat without having to "
+        "commit to a major military operation that might span weeks, disrupt global "
+        "energy supplies, expand over the region, cost $200 billion dollars and "
+        "potentially require ground operations. Because everyone knew that result was "
+        "worse than the status quo and it would thus be really foolish to do that."
+    )
+    assert '<hi rend="#i">everyone</hi> knew' in result
+    assert '<hi rend="#i">really foolish</hi> to do that.</p>' in result
+
+
+def test_inline_formatting_paragraph_does_not_split_html_output():
+    """Formatted inline spans should not be emitted as separate paragraphs."""
+    html_input = """
+    <html><body><article>
+      <p>The gamble here was that because the regime would simply <em><strong>collapse</strong></em> on cue, the United States could remove Iran’s regional threat <em>without</em> having to commit to a major military operation that might span weeks, disrupt global energy supplies, expand over the region, cost $200 billion dollars and potentially require ground operations. Because <em>everyone</em> knew that result was <em><strong>worse than the status quo</strong></em> and it would thus be <em>really foolish</em> to do that.</p>
+    </article></body></html>
+    """
+    result = extract(
+        html_input,
+        output_format="html",
+        include_formatting=True,
+        fast=True,
+        config=ZERO_CONFIG,
+    )
+    doc = html.fromstring(result)
+    paragraphs = doc.xpath("//p")
+    assert len(paragraphs) == 1
+    paragraph_html = etree.tostring(paragraphs[0], encoding="unicode")
+    assert " ".join(paragraphs[0].text_content().split()) == (
+        "The gamble here was that because the regime would simply collapse on cue, "
+        "the United States could remove Iran’s regional threat without having to "
+        "commit to a major military operation that might span weeks, disrupt global "
+        "energy supplies, expand over the region, cost $200 billion dollars and "
+        "potentially require ground operations. Because everyone knew that result was "
+        "worse than the status quo and it would thus be really foolish to do that."
+    )
+    assert "<i>everyone</i> knew" in paragraph_html
+    assert "<i>really foolish</i> to do that." in paragraph_html
+    assert "<i>everyone</i>knew" not in result
+    assert "<i>really foolish</i>to do that." not in result
+
+
 def test_extract_with_metadata():
     '''Test extract_with_metadata method'''
     url = 'http://aa.bb/cc.html'
