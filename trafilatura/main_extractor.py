@@ -239,7 +239,12 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
         else:
-            processed_subchild = handle_textnode(subelem, options, comments_fix=False)
+            processed_subchild = handle_textnode(
+                subelem,
+                options,
+                comments_fix=False,
+                preserve_spaces=True,
+            )
             if processed_subchild is not None:
                 add_sub_element(new_child_elem, subelem, processed_subchild)
         subelem.tag = "done"

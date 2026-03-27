@@ -1983,6 +1983,25 @@ def test_inline_anchor_paragraph_merge():
     assert para.xpath('.//a')
 
 
+def test_list_item_anchor_tail_space_is_preserved():
+    """Inline link tails inside list items should keep their leading space."""
+    html_input = """
+    <html><body><article>
+      <ol>
+        <li><a href="https://en.wikipedia.org/wiki/Mmap">Mmap</a> the input file to memory.</li>
+      </ol>
+    </article></body></html>
+    """
+    res = extract(html_input, output_format="html", include_links=True, config=ZERO_CONFIG)
+    doc = html.fromstring(res)
+    items = doc.xpath('//li')
+    assert len(items) == 1
+    item = items[0]
+    assert item.text_content() == "Mmap the input file to memory."
+    anchor = item.xpath('.//a')[0]
+    assert anchor.tail == " the input file to memory."
+
+
 def test_link_ids_are_preserved():
     """Anchor ids (e.g., footnote links) must survive extraction."""
     html_input = """
