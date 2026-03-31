@@ -26,13 +26,36 @@ jobs:
       - name: Fetch upstream
         run: |
           set -euo pipefail
+          fetch_with_retry() {
+            local remote="$1"
+            local branch="$2"
+            local max_attempts=5
+            local attempt=1
+
+            while true; do
+              if git fetch "$remote" "$branch"; then
+                return 0
+              fi
+
+              if [[ "$attempt" -ge "$max_attempts" ]]; then
+                echo "::error::git fetch $remote $branch failed after $max_attempts attempts"
+                return 1
+              fi
+
+              local sleep_seconds=$((attempt * 5))
+              echo "git fetch $remote $branch failed on attempt $attempt/$max_attempts; retrying in ${sleep_seconds}s..."
+              attempt=$((attempt + 1))
+              sleep "$sleep_seconds"
+            done
+          }
+
           if git remote get-url upstream >/dev/null 2>&1; then
             git remote set-url upstream https://github.com/adbar/trafilatura.git
           else
             git remote add upstream https://github.com/adbar/trafilatura.git
           fi
           git fetch origin master
-          git fetch upstream master
+          fetch_with_retry upstream master
 
       - name: Check whether upstream is ahead
         id: upstream
