@@ -1140,7 +1140,9 @@ def test_table_processing():
         htmlstring, fast=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
-    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
+    assert "<table><row>" in result
+    assert "<cell>text<head>more_text</head></cell>" in result
+    assert '<cell><p><reftarget="link">linktext</ref></p></cell>' in result
 
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
@@ -1156,8 +1158,8 @@ def test_table_processing():
         "<table><tr><td><ref target='test'>link</ref></td></tr></table>"
     )
     processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
-    result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
-    assert result == ["p"]
+    result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
+    assert result == '<cell><p><ref target="test">link</ref></p></cell>'
     table_with_head = html.fromstring(
         """<table>
       <tr>
@@ -1981,6 +1983,40 @@ def test_inline_anchor_paragraph_merge():
     assert 'link' in para.text_content()
     assert 'This continuation should remain inline.' in para.text_content()
     assert para.xpath('.//a')
+
+
+def test_table_cell_inline_anchor_tail_is_preserved():
+    """Inline anchor tails inside table-cell paragraphs should survive HTML extraction."""
+    html_input = """
+    <html><body><table><tr><td>
+      <font size="2" face="verdana">
+        It was a test and is now an all out
+        <a href="https://example.com/war">war</a> on design.<br/><br/>
+        The present era starts here.
+      </font>
+    </td></tr></table></body></html>
+    """
+    res = extract(
+        html_input,
+        output_format="html",
+        include_links=True,
+        include_formatting=True,
+        include_images=True,
+        include_tables=True,
+        include_comments=False,
+        deduplicate=True,
+        fast=False,
+        favor_precision=True,
+        config=ZERO_CONFIG,
+    )
+    doc = html.fromstring(res)
+    cell = doc.xpath('//cell')[0]
+    assert "It was a test and is now an all out" in cell.text_content()
+    assert "war on design." in cell.text_content()
+    anchor = cell.xpath('.//a')[0]
+    assert anchor.get("href") == "https://example.com/war"
+    assert anchor.tail == " on design."
+    assert not cell.xpath('.//p[not(*) and not(normalize-space())]')
 
 
 def test_list_item_anchor_tail_space_is_preserved():

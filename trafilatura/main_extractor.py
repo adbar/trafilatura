@@ -36,6 +36,7 @@ CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
 INLINE_ONLY_TAGS = {'ref', 'hi', 'span', 'code', 'lb', 'del', 'em', 'strong', 'sub', 'sup', 'b', 'i'}
 SENTENCE_TERMINATORS = ('.', '!', '?', ';', '…', ')', '"', "'", ']', '}', '»', '”', '’')
+COPYABLE_INLINE_OUTPUT = {'code', 'del', 'graphic', 'hi', 'lb', 'ref'}
 
 
 def _log_event(msg: str, tag: Any, text: Optional[Union[bytes, str]]) -> None:
@@ -72,7 +73,12 @@ def handle_titles(element: _Element, options: Extractor) -> Optional[_Element]:
 def handle_formatting(element: _Element, options: Extractor) -> Optional[_Element]:
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
-    formatting = process_node(element, options)
+    formatting = handle_textnode(
+        element,
+        options,
+        comments_fix=False,
+        preserve_spaces=True,
+    )
     if formatting is None:  #  and len(element) == 0
         return None
 
@@ -262,11 +268,19 @@ def is_text_element(elem: _Element) -> bool:
     return elem is not None and text_chars_test(''.join(elem.itertext())) is True
 
 
+def _has_copyable_output_children(processed_elem: _Element) -> bool:
+    "Copy processed nodes only when their nested markup is part of the extractor output vocabulary."
+    if len(processed_elem) == 0:
+        return False
+    descendant_tags = {child.tag for child in processed_elem.iterdescendants()}
+    return descendant_tags.issubset(COPYABLE_INLINE_OUTPUT)
+
+
 def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
     "Create a new sub-element if necessary."
     if processed_elem is None:
         return
-    if _has_math_markup(processed_elem):
+    if _has_math_markup(processed_elem) or _has_copyable_output_children(processed_elem):
         new_child = deepcopy(processed_elem)
         orig_elem.append(new_child)
         return
