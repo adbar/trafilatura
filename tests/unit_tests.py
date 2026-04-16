@@ -872,6 +872,17 @@ def test_htmlprocessing():
     options.formatting, options.images, options.links = True, True, True
     myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, options)
     assert myconverted.xpath('.//ref') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
+
+    # multiple images inside a link must keep their original order after being
+    # lifted out of the <ref> (addnext reverses order if iterated forward)
+    multi_img = html.fromstring(
+        '<html><body><a href="/x"><img src="a.jpg"/><img src="b.jpg"/><img src="c.jpg"/></a></body></html>'
+    )
+    options.images, options.links = True, True
+    multi_converted = trafilatura.htmlprocessing.convert_tags(multi_img, options)
+    srcs = [g.get('src') for g in multi_converted.iter('graphic')]
+    assert srcs == ['a.jpg', 'b.jpg', 'c.jpg']
+
     options.images, options.tables = True, False
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
