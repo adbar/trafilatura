@@ -30,7 +30,7 @@ LOGGER = logging.getLogger(__name__)
 
 P_FORMATTING = {'hi', 'ref'}
 TABLE_ELEMS = {'td', 'th'}
-TABLE_ALL = {'td', 'th', 'hi'}
+TABLE_ALL = {'td', 'th', 'hi', 'ref'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
@@ -157,7 +157,7 @@ def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
     if processed_elem is not None:
         childelem = SubElement(orig_elem, processed_elem.tag)
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
-        if processed_elem.tag == 'graphic':
+        if processed_elem.tag in ('graphic', 'ref'):
             copy_attributes(childelem, processed_elem)
 
 
