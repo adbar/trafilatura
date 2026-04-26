@@ -280,6 +280,10 @@ def bare_extraction(
             )
         else:
             commentsbody, temp_comments, len_comments = Element("body"), "", 0
+            # When comments are disabled, prune comment nodes from the tree
+            # to prevent them from leaking into the main text extraction.
+            # Previously this only ran in "precision" mode.
+            cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
         if options.focus == "precision":
             cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
