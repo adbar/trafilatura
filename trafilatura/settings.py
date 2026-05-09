@@ -350,6 +350,7 @@ MANUALLY_CLEANED = [
     # important
     "aside",
     "embed",
+    "fencedframe",
     "footer",
     "form",
     "head",
