@@ -906,6 +906,7 @@ def test_htmlprocessing():
     assert 'ad' not in extract(fenced_html, config=ZERO_CONFIG, fast=False)
     fenced_outer = '<html><body><fencedframe><article><h1>ad</h1><p>buy now buy now buy now buy now</p></article></fencedframe></body></html>'
     assert 'ad' not in extract(fenced_outer, config=ZERO_CONFIG, fast=False)
+    assert extract(fenced_outer, config=use_config()) is None
     # test tail of node deleted if set as text
     node = etree.fromstring("<div><p></p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
