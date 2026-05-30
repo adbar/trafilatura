@@ -275,6 +275,9 @@ def examine_meta(tree: HtmlElement) -> Document:
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 metadata.sitename = metadata.sitename or content_attr
+            # image    
+            elif name_attr in METANAME_IMAGE:
+                metadata.image = metadata.image or content_attr
             # twitter
             elif name_attr in TWITTER_ATTRS or "twitter:app:name" in name_attr:
                 backup_sitename = content_attr
