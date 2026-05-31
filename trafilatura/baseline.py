@@ -76,6 +76,11 @@ def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
     temp_text = ""
     # postbody = Element('body')
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
+        # Skip inline <code> elements — their text is already captured by their parent <p>
+        if element.tag == 'code':
+            parent = element.getparent()
+            if parent is not None and str(parent.tag) in ('p', 'li', 'td', 'th', 'span', 'a'):
+                continue
         entry = trim(element.text_content())
         if entry not in results:
             SubElement(postbody, 'p').text = entry
