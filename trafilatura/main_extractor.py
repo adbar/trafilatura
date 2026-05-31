@@ -204,11 +204,15 @@ def handle_lists(element: _Element, options: Extractor) -> Optional[_Element]:
 
 def is_code_block_element(element: _Element) -> bool:
     "Check if it is a code element according to common structural markers."
+    # Inline <code> inside paragraph-like context is NOT a block element
+    parent = element.getparent()
+    if element.tag == "code" and parent is not None \
+       and parent.tag in ('p', 'li', 'td', 'th', 'span', 'a'):
+        return False
     # pip
     if element.get("lang") or element.tag == "code":
         return True
     # GitHub
-    parent = element.getparent()
     if parent is not None and "highlight" in parent.get("class", ""):
         return True
     # highlightjs
@@ -541,6 +545,11 @@ def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Extract
     else:
         strip_tags(search_tree, 'span')
     subelems = search_tree.xpath(search_expr)
+    # Filter out inline <code> elements to prevent duplication (they are
+    # already included in their parent <p>/<li>/etc. text)
+    subelems = [e for e in subelems
+                if not (e.tag == 'code' and e.getparent() is not None
+                        and e.getparent().tag in ('p', 'li', 'td', 'th', 'span', 'a'))]
     result_body.extend(
         filter(
             lambda x: x is not None,  # type: ignore[arg-type]
@@ -620,6 +629,11 @@ def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[
         LOGGER.debug(sorted(potential_tags))
         # proper extraction
         subelems = subtree.xpath('.//*')
+        # Filter out inline <code> elements — they are already part of their
+        # parent <p>/<li>/etc. and should not be processed as separate blocks
+        subelems = [e for e in subelems
+                    if not (e.tag == 'code' and e.getparent() is not None
+                            and e.getparent().tag in ('p', 'li', 'td', 'th', 'span', 'a'))]
         # e.g. only lb-elems in a div
         if {e.tag for e in subelems} == {'lb'}:
             subelems = [subtree]
