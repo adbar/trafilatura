@@ -13,29 +13,30 @@ jobs:
   build:
 
     runs-on: ${{ matrix.os }}
+    # pre-release interpreters (e.g. 3.15-dev) may break: don't fail the whole run
+    continue-on-error: ${{ endsWith(matrix.python-version, '-dev') }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
-        python-version: ["3.9", "3.11", "3.13"]  # "3.14-dev"
+        python-version: ["3.10", "3.12", "3.14", "3.15-dev"]
         env:
           - MINIMAL: "true"
             PROXY_TEST: "false"
           - MINIMAL: "false"
             PROXY_TEST: "true"
         include:
-          # custom python versions
-          - os: ubuntu-24.04
-            python-version: 3.8
-          - os: macos-13
-            python-version: 3.8
+          # custom OS / Python combinations
           - os: macos-latest
-            python-version: "3.10"
+            python-version: "3.11"
           - os: windows-latest
-            python-version: "3.10"
+            python-version: "3.11"
           - os: ubuntu-latest
-            python-version: "3.12"
+            python-version: "3.13"
+            env:
+              MINIMAL: "false"
+              PROXY_TEST: "true"
     services:
       socks_proxy:
         image: ${{ matrix.os == 'ubuntu-latest' && 'serjs/go-socks5-proxy' || '' }}
@@ -50,33 +51,23 @@ jobs:
           - 1081:1080
 
     steps:
-    # Python and pip setup
+    # package setup
+    - uses: actions/checkout@v5
+
+    # Python and uv setup
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Upgrade pip
-      run: python -m pip install --upgrade pip
-
-    - name: Get pip cache dir
-      id: pip-cache
-      run: |
-        echo "::set-output name=dir::$(pip cache dir)"
-
-    - name: pip cache
-      uses: actions/cache@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
       with:
-        path: ${{ steps.pip-cache.outputs.dir }}
-        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
-
-    # package setup
-    - uses: actions/checkout@v4
+        enable-cache: true
+        cache-dependency-glob: pyproject.toml
 
     - name: Install dependencies
-      run: python -m pip install -e ".[dev]"
+      run: uv pip install --system -e ".[dev]"
 
     - name: Lint with flake8
       run: |
@@ -95,7 +86,7 @@ jobs:
 
     - name: Install full dependencies
       if: ${{ matrix.env.MINIMAL == 'false' }}
-      run: python -m pip install -e ".[all]"
+      run: uv pip install --system -e ".[all]"
 
     - name: Type checking
       if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
@@ -111,7 +102,7 @@ jobs:
     # coverage
     - name: Upload coverage to Codecov
       if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:

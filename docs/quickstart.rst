@@ -61,7 +61,7 @@ You can bypass the use of fallback algorithms in fast mode. This can improve per
 .. code-block:: python
 
     # faster mode without backup extraction
-    >>> result = extract(downloaded, no_fallback=True)
+    >>> result = extract(downloaded, fast=True)
 
 
 For a full list of options see `Python usage <usage-python.html>`_.
