@@ -66,6 +66,13 @@ def _reset_downloads_global_objects():
     trafilatura.downloads.RETRY_STRATEGY = None
 
 
+@pytest.fixture(autouse=True)
+def _reset_downloads_globals():
+    "Keep download globals (e.g. PROXY_URL) isolated: reset after every test, even on failure."
+    yield
+    _reset_downloads_global_objects()
+
+
 def test_response_object():
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
@@ -183,7 +190,6 @@ def proxied(f):
         else:
             with pytest.raises(AssertionError):
                 f()
-    _reset_downloads_global_objects()
 
 
 @pytest.mark.skipif(not IS_PROXY_TEST, reason="proxy tests disabled")
