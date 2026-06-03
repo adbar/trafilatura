@@ -221,13 +221,13 @@ The available fallbacks make extraction more precise but also slower. The use of
 .. code-block:: python
 
     # skip algorithms used as fallback
-    >>> result = extract(downloaded, no_fallback=True)
+    >>> result = extract(downloaded, fast=True)
 
 The following combination usually leads to shorter processing times:
 
 .. code-block:: python
 
-    >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
+    >>> result = extract(downloaded, include_comments=False, include_tables=False, fast=True)
 
 
 Extraction settings
@@ -273,7 +273,7 @@ Metadata extraction
 Date
 ~~~~
 
-Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. By default, focus is on original dates and the extraction replicates the *fast/no_fallback* option.
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. By default, focus is on original dates and the extraction replicates the *fast* option.
 
 `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
 
