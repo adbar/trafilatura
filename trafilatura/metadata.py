@@ -275,6 +275,9 @@ def examine_meta(tree: HtmlElement) -> Document:
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 metadata.sitename = metadata.sitename or content_attr
+            # image    
+            elif name_attr in METANAME_IMAGE:
+                metadata.image = metadata.image or content_attr
             # twitter
             elif name_attr in TWITTER_ATTRS or "twitter:app:name" in name_attr:
                 backup_sitename = content_attr
@@ -408,7 +411,7 @@ def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optiona
     # do not return invalid URLs
     if url:
         validation_result, parsed_url = validate_url(url)
-        url = normalize_url(parsed_url) if validation_result else None
+        url = normalize_url(parsed_url) if validation_result and parsed_url else None
 
     return url or default_url
 

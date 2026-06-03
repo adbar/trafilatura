@@ -7,6 +7,8 @@ import os
 import sys
 from unittest.mock import patch
 
+import pytest
+
 from courlan import get_hostinfo
 from trafilatura.cli import main
 from trafilatura.feeds import (
@@ -20,6 +22,8 @@ from trafilatura.feeds import (
 )
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+pytestmark = pytest.mark.usefixtures("mock_network")
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, "resources")

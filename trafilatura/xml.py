@@ -274,7 +274,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
             if "\n" in elem_text or element.xpath(".//lb"):  # Handle <br> inside <code>
                 # Convert <br> to \n within code blocks
                 for lb in element.xpath(".//lb"):
-                    elem_text = f"{elem_text}\n{lb.tail}"
+                    elem_text = f'{elem_text}\n{lb.tail or ""}'
                     lb.getparent().remove(lb)
                 elem_text = f"```\n{elem_text}\n```\n"
             else:

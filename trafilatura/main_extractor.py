@@ -308,7 +308,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = " " + item.text  # type: ignore[operator]
-                        strip_tags(processed_child, item.tag)
+                        strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
                 # correct attributes
                 if child.tag == "hi":
                     newsub.set("rend", child.get("rend", ""))
@@ -541,8 +541,11 @@ def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Extract
     else:
         strip_tags(search_tree, 'span')
     subelems = search_tree.xpath(search_expr)
-    result_body.extend(filter(lambda x: x is not None, (handle_textelem(e, potential_tags, options)
-                       for e in subelems)))  # type: ignore[arg-type]
+    result_body.extend(
+        filter(
+            lambda x: x is not None,  # type: ignore[arg-type]
+            (handle_textelem(e, potential_tags, options) for e in subelems))
+    )
     return result_body
 
 

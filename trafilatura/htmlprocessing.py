@@ -103,13 +103,7 @@ def prune_unwanted_nodes(
     for expression in nodelist:
         for subtree in expression(tree):
             # preserve tail text from deletion
-            if subtree.tail is not None:
-                prev = subtree.getprevious()
-                if prev is None:
-                    prev = subtree.getparent()
-                if prev is not None:
-                    # There is a previous node, append text to its tail
-                    prev.tail = (prev.tail or "") + " " + subtree.tail
+            # tail is by default preserved by delete_element()
             # remove the node
             delete_element(subtree)
 
@@ -413,14 +407,14 @@ def convert_tags(
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
-            elem.set("rend", REND_TAG_MAPPING[elem.tag])
+            elem.set("rend", REND_TAG_MAPPING[elem.tag])  # type: ignore[index]
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)
+        CONVERSIONS[elem.tag](elem)  # type: ignore[index]
     # images
     if options.images:
         for elem in tree.iter("img"):
