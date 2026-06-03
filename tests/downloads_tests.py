@@ -239,6 +239,15 @@ def test_queue():
     url_store = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
     assert isinstance(url_store, UrlStore)
 
+    # blacklist and URL filter
+    url_store = add_to_compressed_dict(
+        ['https://example.org/page', 'https://example.org/skip'],
+        blacklist={'example.org/skip'}, url_filter=['/page'])
+    assert url_store.dump_urls() == ['https://example.org/page']
+
+    # response download buffer (empty input, no network)
+    assert list(dl.buffered_response_downloads([], 1)) == []
+
     # download buffer
     inputurls = [f'https://test{i}.org/{j}' for i in range(1, 7) for j in range(1, 4)]
     url_store = add_to_compressed_dict(inputurls)
