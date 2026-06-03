@@ -1,8 +1,5 @@
 "Code parts dedicated to duplicate removal and text similarity."
 
-# from __future__ import annotations
-# 3.11+: from typing import Self
-
 import re
 import string
 from difflib import SequenceMatcher

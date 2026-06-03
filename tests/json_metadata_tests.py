@@ -953,6 +953,7 @@ def test_normalize_authors():
     assert normalize_authors("Alice; Bob", "John Doe") == "Alice; Bob; John Doe"
     assert normalize_authors("Alice; Bob", "john.doe@example.com") == "Alice; Bob"
     assert normalize_authors(None, "\\u00e9tienne") == "Étienne"
+    assert normalize_authors(None, "Jane\\uZZ Doe") == "Jane\\uZZ Doe"  # invalid \u escape must not raise
     assert normalize_authors(None, "&#233;tienne") == "Étienne"
     assert normalize_authors(None, "Alice &amp; Bob") == "Alice; Bob"
     assert normalize_authors(None, "<b>John Doe</b>") == "John Doe"

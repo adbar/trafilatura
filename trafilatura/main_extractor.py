@@ -377,7 +377,7 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
         total_colspans = 0
         for td in tr.iter(TABLE_ELEMS):
             colspan = td.get("colspan", 1)
-            colspan = int(colspan) if colspan else 1
+            colspan = int(colspan) if str(colspan).isdigit() else 1
             diff_colspans.add(colspan)
             total_colspans += colspan
         max_cols = max(max_cols, total_colspans)

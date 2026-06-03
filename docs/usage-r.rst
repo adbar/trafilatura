@@ -38,7 +38,7 @@ A recent version of Python is necessary. Some systems already have such an envir
 .. code-block:: bash
 
     $ python3 --version
-    Python 3.10.12 # version 3.6 or higher is fine
+    Python 3.10.12 # version 3.10 or higher is fine
 
 
 By default, reticulate will use the Python executable found on your system's PATH. You can use the ``use_python()`` function to set the Python version and path that you want to use: ``use_python("/path/to/python/executable")``.
