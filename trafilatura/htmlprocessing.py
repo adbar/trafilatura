@@ -132,6 +132,9 @@ def link_density_test(
     links_xpath = element.findall(".//ref")
     if not links_xpath:
         return False, []
+    # preserve image containers
+    if element.find(".//graphic") is not None:
+        return False, []
     mylist: List[str] = []
     # shortcut
     if len(links_xpath) == 1:
@@ -419,6 +422,18 @@ def convert_tags(
     if options.images:
         for elem in tree.iter("img"):
             elem.tag = "graphic"
+        # move images out of links to prevent duplication/loss
+        if options.links:
+            for ref in list(tree.iter("ref")):
+                graphics = list(ref.iter("graphic"))
+                # iterate in reverse so addnext preserves original order
+                for graphic in reversed(graphics):
+                    ref.addnext(graphic)
+                # remove ref if it only contained images (no text),
+                # its leftover children (picture, source) would
+                # otherwise trigger justext fallback and lose images
+                if graphics and not ref.text_content().strip():
+                    delete_element(ref)
 
     return tree
 
