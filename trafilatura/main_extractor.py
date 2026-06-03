@@ -308,7 +308,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = " " + item.text  # type: ignore[operator]
-                        strip_tags(processed_child, item.tag)
+                        strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
                 # correct attributes
                 if child.tag == "hi":
                     newsub.set("rend", child.get("rend", ""))
@@ -377,7 +377,7 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
         total_colspans = 0
         for td in tr.iter(TABLE_ELEMS):
             colspan = td.get("colspan", 1)
-            colspan = int(colspan) if colspan else 1
+            colspan = int(colspan) if str(colspan).isdigit() else 1
             diff_colspans.add(colspan)
             total_colspans += colspan
         max_cols = max(max_cols, total_colspans)

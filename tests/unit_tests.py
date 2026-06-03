@@ -9,6 +9,7 @@ import time
 
 from copy import copy
 from os import path
+from unittest.mock import patch
 
 import pytest
 
@@ -21,8 +22,8 @@ except ImportError:
     from charset_normalizer import detect
 
 import trafilatura.htmlprocessing
-from trafilatura import bare_extraction, extract, extract_with_metadata, xml
-from trafilatura.core import Extractor
+from trafilatura import bare_extraction, baseline, extract, extract_with_metadata, xml
+from trafilatura import core
 from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (handle_formatting, handle_image,
                                         handle_lists, handle_paragraphs, handle_quotes,
@@ -52,7 +53,7 @@ MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 }
 
-DEFAULT_OPTIONS = Extractor()
+DEFAULT_OPTIONS = core.Extractor()
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
@@ -147,6 +148,14 @@ def test_input():
         == '<!DOCTYPE html><html><head></head><body>Foo <br/> Bar</body></html>\n'
     )
 
+    # XML-illegal chars are stripped pre-parse (see utils.INVALID_XML_CHARS)
+    htmlstring = '<html><body><p>a\x00b\x1dc￾￿d</p>\t<p>keep\tme</p></body></html>'
+    assert repair_faulty_html(htmlstring, htmlstring[:50].lower()) == \
+        '<html><body><p>abcd</p>\t<p>keep\tme</p></body></html>'
+    page = '<html><body><article>' + '<p>Long enough article paragraph\x1d for baseline￿ to trigger.</p>' * 3 + '</article></body></html>'
+    assert baseline(page)[2] > 0  # no ValueError, control chars stripped
+    assert extract(page, fast=True) is not None
+
     with pytest.raises(TypeError) as err:
         assert load_html(123) is None
     assert 'incompatible' in str(err.value)
@@ -166,7 +175,7 @@ def test_input():
     assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
     assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
-    options = Extractor(source="test\udcc3this")
+    options = core.Extractor(source="test\udcc3this")
     assert options.source == "test?this"
 
     # output format
@@ -575,7 +584,7 @@ def test_external():
     assert extract(teststring, fast=True, include_tables=False) == ''
     assert extract(teststring, fast=False, include_tables=False) == ''
     # invalid XML attributes: namespace colon in attribute key (issue #375). Those attributes should be stripped
-    bad_xml = 'Testing<ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
+    bad_xml = '<p>Testing</p><ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
     res = extract(bad_xml, output_format='xml')
     assert "Features" in res
 
@@ -872,6 +881,17 @@ def test_htmlprocessing():
     options.formatting, options.images, options.links = True, True, True
     myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, options)
     assert myconverted.xpath('.//ref') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
+
+    # multiple images inside a link must keep their original order after being
+    # lifted out of the <ref> (addnext reverses order if iterated forward)
+    multi_img = html.fromstring(
+        '<html><body><a href="/x"><img src="a.jpg"/><img src="b.jpg"/><img src="c.jpg"/></a></body></html>'
+    )
+    options.images, options.links = True, True
+    multi_converted = trafilatura.htmlprocessing.convert_tags(multi_img, options)
+    srcs = [g.get('src') for g in multi_converted.iter('graphic')]
+    assert srcs == ['a.jpg', 'b.jpg', 'c.jpg']
+
     options.images, options.tables = True, False
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, options)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
@@ -900,6 +920,13 @@ def test_htmlprocessing():
     my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, fast=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, fast=False) == '1\n3'
+    # fencedframe
+    fenced_html = '<html><body><article><p>real</p><fencedframe><p>ad</p></fencedframe><p>more</p></article></body></html>'
+    assert 'ad' not in extract(fenced_html, config=ZERO_CONFIG, fast=True)
+    assert 'ad' not in extract(fenced_html, config=ZERO_CONFIG, fast=False)
+    fenced_outer = '<html><body><fencedframe><article><h1>ad</h1><p>buy now buy now buy now buy now</p></article></fencedframe></body></html>'
+    assert 'ad' not in extract(fenced_outer, config=ZERO_CONFIG, fast=False)
+    assert extract(fenced_outer, config=use_config()) is None
     # test tail of node deleted if set as text
     node = etree.fromstring("<div><p></p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
@@ -1070,7 +1097,7 @@ def test_table_processing():
         == "<table><row><cell>text<p>more text</p></cell></row></table>"
     )
     table_cell_with_link = html.fromstring(
-        "<table><tr><td><ref='test'>link</ref></td></tr></table>"
+        "<table><tr><td><ref target='test'>link</ref></td></tr></table>"
     )
     processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
     result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
@@ -1280,6 +1307,11 @@ def test_table_processing():
     assert result is not None
 
     htmlstring = '<html><body><article><table><tr><th colspan="9007199254740991">a</th><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result is not None
+
+    # non-numeric colspan must not discard the whole document
+    htmlstring = '<html><body><article><table><tr><td colspan="2x">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result is not None
 
@@ -1594,6 +1626,7 @@ def test_large_doc_performance():
     assert end - start < 5, "Large document performance issue"
 
 
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
 def test_lang_detection():
     """
     Accuracy of language detection.
@@ -1605,7 +1638,7 @@ def test_lang_detection():
     for sample in samples:
         result = extract(sample['html'], fast=False, config=ZERO_CONFIG)
         detected = language_classifier(result, "")
-        assert detected == sample['expected'] or not LANGID_FLAG
+        assert detected == sample['expected']
 
 
 def test_config_loading():
@@ -1615,6 +1648,19 @@ def test_config_loading():
 
     config = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
     assert config is not None
+
+    # the settingsfile= argument must actually be applied, not silently ignored:
+    # newsettings.cfg sets MIN_OUTPUT_SIZE/MIN_EXTRACTED_SIZE far above this doc's length
+    settingsfile = path.join(RESOURCES_DIR, "newsettings.cfg")
+    html = "<html><body><article><p>Short paragraph of content here.</p></article></body></html>"
+    assert extract(html) is not None
+    assert extract(html, settingsfile=settingsfile) is None
+    assert extract_with_metadata(html, settingsfile=settingsfile) is None
+    # an explicit config object is still honored when no settingsfile is given
+    assert extract(html, config=NEW_CONFIG) is None
+    # a missing settingsfile is reported, not silently ignored
+    with pytest.raises(FileNotFoundError):
+        extract(html, settingsfile="/bogus-dir/bogus-file.txt")
 
 
 def test_is_probably_readerable():
@@ -1803,6 +1849,24 @@ def test_deprecations():
         extract(htmlstring, max_tree_size=100)
     with pytest.raises(ValueError):
         bare_extraction(htmlstring, max_tree_size=100)
+
+    # single source of truth for the effective "fast" flag
+    assert core._check_deprecation(no_fallback=True) is True
+    assert core._check_deprecation(fast=True) is True
+    assert core._check_deprecation() is False
+
+    # regression: no_fallback=True must reach Extractor.fast via both entry points
+    captured = []
+
+    class _SpyExtractor(core.Extractor):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            captured.append(self.fast)
+
+    with patch.object(core, "Extractor", _SpyExtractor):
+        extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+        bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+    assert captured and all(captured)
 
 
 

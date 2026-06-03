@@ -414,7 +414,7 @@ def extract_url(tree: HtmlElement, default_url: Optional[str] = None) -> Optiona
     # do not return invalid URLs
     if url:
         validation_result, parsed_url = validate_url(url)
-        url = normalize_url(parsed_url) if validation_result else None
+        url = normalize_url(parsed_url) if validation_result and parsed_url else None
 
     return url or default_url
 

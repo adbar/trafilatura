@@ -26,7 +26,7 @@ LOGGER = logging.getLogger(__name__)
 
 JT_STOPLIST = None
 
-SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
+SANITIZED_XPATH = './/aside|.//audio|.//button|.//fencedframe|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
 
 def try_readability(htmlinput: HtmlElement) -> HtmlElement:
@@ -184,7 +184,7 @@ def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, in
         for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]
         if tagname not in TEI_VALID_TAGS
     ]
-    strip_tags(cleaned_tree, *sanitization_list)
+    strip_tags(cleaned_tree, *sanitization_list)  # type: ignore[arg-type]
     # 4. return
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

@@ -3,17 +3,16 @@
 Listing a series of settings that are applied module-wide.
 """
 
+import os
+
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
 from typing import Any, Dict, List, Optional, Set
 
-try:
-    from os import sched_getaffinity
-    CPU_COUNT = len(sched_getaffinity(0))
-except ImportError:
-    from os import cpu_count
-    CPU_COUNT = cpu_count() or 1
+# sched_getaffinity (Linux-only) with fallback
+_get_affinity = getattr(os, "sched_getaffinity", None)
+CPU_COUNT = len(_get_affinity(0)) if _get_affinity is not None else (os.cpu_count() or 1)
 
 from pathlib import Path
 
@@ -124,7 +123,8 @@ class Extractor:
     ):
         self._set_source(url, source)
         self._set_format(output_format)
-        self._add_config(config)
+        # single normalization point: an explicit config=None falls back to defaults
+        self._add_config(config or DEFAULT_CONFIG)
         self.fast: bool = fast
         self.focus: str = (
             "recall" if recall else "precision" if precision else "balanced"
@@ -150,7 +150,8 @@ class Extractor:
         self.date_params: Dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        self.max_tree_size = None
+        max_tree = self.config.get("DEFAULT", "MAX_TREE_SIZE", fallback="").strip()
+        self.max_tree_size: Optional[int] = int(max_tree) if max_tree else None
 
     def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
         "Set the source attribute in a robust way."
@@ -350,6 +351,7 @@ MANUALLY_CLEANED = [
     # important
     "aside",
     "embed",
+    "fencedframe",
     "footer",
     "form",
     "head",
@@ -430,7 +432,7 @@ MANUALLY_STRIPPED = [
 # 'center', 'rb', 'wbr'
 
 BASIC_CLEAN_XPATH = XPath(
-    ".//aside|.//div[contains(@class|@id, 'footer')]|.//footer|.//script|.//style"
+    ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style"
 )
 
 TAG_CATALOG = frozenset(
@@ -438,38 +440,84 @@ TAG_CATALOG = frozenset(
 )
 # + list(CUT_EMPTY_ELEMS)
 
-
+# mapping for languages known to py3langid
 JUSTEXT_LANGUAGES = {
+    "af": "Afrikaans",
+    "an": "Aragonese",
     "ar": "Arabic",
+    "az": "Azerbaijani",
+    "be": "Belarusian",
     "bg": "Bulgarian",
-    "cz": "Czech",
+    "bn": "Bengali",
+    "br": "Breton",
+    "bs": "Bosnian",
+    "ca": "Catalan",
+    "cs": "Czech",
+    "cy": "Welsh",
     "da": "Danish",
     "de": "German",
-    "en": "English",
     "el": "Greek",
+    "en": "English",
+    "eo": "Esperanto",
     "es": "Spanish",
+    "et": "Estonian",
+    "eu": "Basque",
     "fa": "Persian",
     "fi": "Finnish",
     "fr": "French",
+    "ga": "Irish",
+    "gl": "Galician",
+    "gu": "Gujarati",
+    "he": "Hebrew",
+    "hi": "Hindi",
     "hr": "Croatian",
+    "ht": "Haitian",
     "hu": "Hungarian",
-    # 'ja': '',
-    "ko": "Korean",
+    "hy": "Armenian",
     "id": "Indonesian",
+    "is": "Icelandic",
     "it": "Italian",
-    "no": "Norwegian_Nynorsk",
+    "jv": "Javanese",
+    "ka": "Georgian",
+    "kk": "Kazakh",
+    "kn": "Kannada",
+    "ko": "Korean",
+    "ku": "Kurdish",
+    "ky": "Kyrgyz",
+    "la": "Latin",
+    "lb": "Luxembourgish",
+    "lt": "Lithuanian",
+    "lv": "Latvian",
+    "mk": "Macedonian",
+    "ml": "Malayalam",
+    "mr": "Marathi",
+    "ms": "Malay",
+    "mt": "Maltese",
+    "nb": "Norwegian_Bokmal",
+    "ne": "Nepali",
     "nl": "Dutch",
+    "nn": "Norwegian_Nynorsk",
+    "no": "Norwegian_Bokmal",
+    "oc": "Occitan",
     "pl": "Polish",
     "pt": "Portuguese",
+    "qu": "Quechua",
     "ro": "Romanian",
     "ru": "Russian",
     "sk": "Slovak",
     "sl": "Slovenian",
+    "sq": "Albanian",
     "sr": "Serbian",
     "sv": "Swedish",
+    "sw": "Swahili",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "tl": "Tagalog",
     "tr": "Turkish",
     "uk": "Ukrainian",
     "ur": "Urdu",
     "vi": "Vietnamese",
-    # 'zh': '',
+    "vo": "Volapuk",
+    "wa": "Walloon",
+    # no justext stoplist available: 'ja' (Japanese), 'zh' (Chinese)
 }
