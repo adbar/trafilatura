@@ -41,7 +41,7 @@ A comparison with similar software is run periodically. As the packages tend to 
 
 Note: As numerous packages are installed it is recommended to create a virtual environment, for example with ``pyenv`` or ``venv``.
 
-1. Install the packages specified in ``eval-requirements.txt``
+1. Install the evaluation extra: ``uv pip install -e ".[eval]"`` (or ``pip install -e ".[eval]"``); optionally add ``magic_html`` with ``pip install git+https://github.com/opendatalab/magic-html``
 2. Run the script ``evaluate.py``
 
 Options:

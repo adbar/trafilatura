@@ -184,7 +184,7 @@ def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, in
         for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]
         if tagname not in TEI_VALID_TAGS
     ]
-    strip_tags(cleaned_tree, *sanitization_list)
+    strip_tags(cleaned_tree, *sanitization_list)  # type: ignore[arg-type]
     # 4. return
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

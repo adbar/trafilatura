@@ -32,7 +32,13 @@ from courlan import UrlStore
 from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
-from .utils import URL_BLACKLIST_REGEX, decode_file, is_acceptable_length, make_chunks
+from .utils import (
+    HAS_ZSTD,
+    URL_BLACKLIST_REGEX,
+    decode_file,
+    is_acceptable_length,
+    make_chunks,
+)
 
 try:
     from urllib3.contrib.socks import SOCKSProxyManager
@@ -72,7 +78,15 @@ def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
     return manager_class(**manager_args, **args)  # type: ignore[arg-type]
 
 
-DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)  # type: ignore[no-untyped-call]
+def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
+    "Route the pycurl request through PROXY_URL when one is configured."
+    if PROXY_URL:
+        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
+
+
+DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
+if HAS_ZSTD and "zstd" not in DEFAULT_HEADERS["accept-encoding"]:
+    DEFAULT_HEADERS["accept-encoding"] += ",zstd"
 USER_AGENT = (
     "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 )
@@ -133,8 +147,8 @@ class Response:
         return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
-# caching throws an error
-# @lru_cache(maxsize=2)
+# not cacheable: ConfigParser is unhashable (MutableMapping sets __hash__ = None),
+# so @lru_cache(maxsize=2) raises TypeError on call
 def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
     "Read and extract HTTP header strings from the configuration file."
     # load a series of user-agents
@@ -217,9 +231,10 @@ def _send_urllib_request(
             preload_content=False,
         )
         data = bytearray()
+        max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
         for chunk in response.stream(2**17):
             data.extend(chunk)
-            if len(data) > config.getint("DEFAULT", "MAX_FILE_SIZE"):
+            if len(data) > max_file_size:
                 raise ValueError("MAX_FILE_SIZE exceeded")
         response.release_conn()
 
@@ -332,8 +347,7 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(curl.NOBODY, True)
-    if PROXY_URL:
-        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
+    _apply_curl_proxy(curl)
     # Perform the request
     try:
         curl.perform()
@@ -475,8 +489,7 @@ def _send_pycurl_request(
         headerbytes = BytesIO()
         curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
 
-    if PROXY_URL:
-        curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
+    _apply_curl_proxy(curl)
 
     # TCP_FASTOPEN
     # curl.setopt(pycurl.FAILONERROR, 1)
