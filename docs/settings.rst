@@ -35,6 +35,7 @@ The default file included in the package is `settings.cfg <https://github.com/ad
    * ``MIN_EXTRACTED_SIZE = 250`` acceptable size in characters (used to trigger fallbacks)
    * ``MIN_OUTPUT_SIZE = 1`` absolute acceptable minimum for main text output
    * ``MIN_EXTRACTED_COMM_SIZE`` and ``MIN_OUTPUT_COMM_SIZE`` work the same for comment extraction
+   * ``MAX_TREE_SIZE`` discard documents with more HTML elements than this number (empty by default, i.e. no limit)
    * ``EXTRACTION_TIMEOUT = 30`` only active on the command-line: drop extraction after 30 seconds to prevent CPU usage due to erroneous or malicious files. Set to 0 if you see errors related to the ``signal`` module and/or use a module such as `defusedxml <https://github.com/tiran/defusedxml>`_
 - Deduplication (not active by default)
    * ``MIN_DUPLCHECK_SIZE = 100`` minimum size in characters to run deduplication on

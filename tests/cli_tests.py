@@ -27,6 +27,8 @@ from trafilatura.utils import LANGID_FLAG
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 RESOURCES_DIR = path.join(path.abspath(path.dirname(__file__)), "resources")
 
+pytestmark = pytest.mark.usefixtures("mock_network")
+
 settings.MAX_FILES_PER_DIRECTORY = 1
 
 

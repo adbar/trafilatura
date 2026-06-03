@@ -64,6 +64,8 @@ UNICODE_ALIASES = {'utf-8', 'utf_8'}
 DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<]*>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
 HTML_STRIP_TAGS = re.compile(r'(<!--.*?-->|<[^>]*>)')
+# control characters
+INVALID_XML_CHARS = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]')
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
@@ -114,7 +116,7 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
     # try brotli
     if HAS_BROTLI:
         try:
-            return brotli.decompress(filecontent)  # type: ignore[no-any-return]
+            return brotli.decompress(filecontent)
         except brotli.error:
             pass  # logging.debug('invalid Brotli file')
     # try zlib/deflate
@@ -194,6 +196,7 @@ def is_dubious_html(beginning: str) -> bool:
 
 def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     "Repair faulty HTML strings to make then palatable for libxml2."
+    htmlstring = INVALID_XML_CHARS.sub("", htmlstring)
     # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
@@ -271,6 +274,9 @@ def return_printables_and_spaces(char: str) -> str:
 
 def remove_control_characters(string: str) -> str:
     '''Prevent non-printable and XML invalid character errors'''
+    # in case most strings are already clean
+    if string.isprintable():
+        return string
     return ''.join(map(return_printables_and_spaces, string))
 
 
@@ -422,7 +428,7 @@ def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
     else:  # pragma: no cover
         LOGGER.warning('Language detector not installed, skipping detection')
         result = None
-    return result  # type: ignore[no-any-return]
+    return result
 
 
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:

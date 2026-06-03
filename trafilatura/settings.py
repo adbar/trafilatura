@@ -3,6 +3,8 @@
 Listing a series of settings that are applied module-wide.
 """
 
+import os
+
 from configparser import ConfigParser
 from datetime import datetime
 from enum import Enum
@@ -10,12 +12,9 @@ from html import unescape
 import regex
 from typing import Any, Dict, List, Optional, Set, Pattern
 
-try:
-    from os import sched_getaffinity
-    CPU_COUNT = len(sched_getaffinity(0))
-except ImportError:
-    from os import cpu_count
-    CPU_COUNT = cpu_count() or 1
+# sched_getaffinity (Linux-only) with fallback
+_get_affinity = getattr(os, "sched_getaffinity", None)
+CPU_COUNT = len(_get_affinity(0)) if _get_affinity is not None else (os.cpu_count() or 1)
 
 from pathlib import Path
 
@@ -135,7 +134,8 @@ class Extractor:
     ):
         self._set_source(url, source)
         self._set_format(output_format)
-        self._add_config(config)
+        # single normalization point: an explicit config=None falls back to defaults
+        self._add_config(config or DEFAULT_CONFIG)
         self.fast: bool = fast
         self.focus: str = (
             "recall" if recall else "precision" if precision else "balanced"
@@ -163,7 +163,8 @@ class Extractor:
         self.date_params: Dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        self.max_tree_size = None
+        max_tree = self.config.get("DEFAULT", "MAX_TREE_SIZE", fallback="").strip()
+        self.max_tree_size: Optional[int] = int(max_tree) if max_tree else None
 
     def has_flag(self, flag: AdvancedOptions) -> bool:
         "Check if a specific advanced flag is set."

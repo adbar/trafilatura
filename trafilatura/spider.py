@@ -26,7 +26,8 @@ except ImportError:
 
 from lxml.etree import XPath, tostring
 
-from .core import baseline, prune_unwanted_nodes
+from .baseline import baseline
+from .htmlprocessing import prune_unwanted_nodes
 from .downloads import Response, fetch_response, fetch_url
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, decode_file, load_html
@@ -205,11 +206,14 @@ def process_links(
         return
 
     if htmlstring and params.prune_xpath is not None:
-        if isinstance(params.prune_xpath, str):
-            params.prune_xpath = [params.prune_xpath]  # type: ignore[assignment]
+        xpaths = (
+            [params.prune_xpath]
+            if isinstance(params.prune_xpath, str)
+            else params.prune_xpath
+        )
         tree = load_html(htmlstring)
         if tree is not None:
-            tree = prune_unwanted_nodes(tree, [XPath(x) for x in params.prune_xpath])
+            tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
             htmlstring = tostring(tree).decode()
 
     links, links_priority = [], []

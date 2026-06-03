@@ -114,7 +114,7 @@ Setting the global environment variable ``http_proxy`` before loading Trafilatur
 
 Alternatively, the variable ``trafilatura.downloads.PROXY_URL`` can be set manually but this only works for the current Python instance.
 
-To test this function locally, set up Docker and run ``docker compose up -d && PROXY_TEST=true pytest tests/download_tests.py``.
+The unstable end-to-end proxy tests have been discarded in favor of unit tests.
 
 .. note::
     New in version 1.12.2.
