@@ -26,7 +26,7 @@ BODY_XPATH = [XPath(x) for x in (
     contains(@class, "article__body") or @itemprop="articleBody" or
     contains(translate(@id, "B", "b"), "articlebody") or contains(translate(@class, "B", "b"), "articlebody")
     or @id="articleContent" or contains(@class, "ArticleContent") or
-    contains(@class, "page-content") or contains(@class, "text-content") or
+    contains(@class, "page-content") or contains(@class, "text-content") or contains(@class, "inner-content") or
     contains(@id, "body-text") or contains(@class, "body-text") or
     contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")][1]''',
     # (…)[1] = first occurrence
@@ -46,7 +46,7 @@ BODY_XPATH = [XPath(x) for x in (
     or @role='article'])[1]""",
     '''(.//*[self::article or self::div or self::main or self::section][
     contains(@id, "content-main") or contains(@class, "content-main") or contains(@class, "content_main") or
-    contains(@id, "content-body") or contains(@class, "content-body") or contains(@id, "contentBody")
+    contains(@id, "content-body") or contains(@class, "content-body") or contains(@class, "conbody") or contains(@id, "conbody") or contains(@id, "contentBody")
     or contains(@class, "content__body") or contains(translate(@id, "CM","cm"), "main-content") or contains(translate(@class, "CM","cm"), "main-content")
     or contains(translate(@class, "CP","cp"), "page-content") or
     @id="content" or @class="content"])[1]''',

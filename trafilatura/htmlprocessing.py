@@ -173,7 +173,7 @@ def link_density_test_tables(element: HtmlElement) -> bool:
         return False
 
     elemlen = len(trim(element.text_content()))
-    if elemlen < 200:
+    if elemlen > 0 and elemlen < 200:
         return False
 
     linklen, elemnum, _, _ = collect_link_info(links_xpath)
@@ -426,11 +426,13 @@ def convert_tags(
 HTML_CONVERSIONS = {
     "list": "ul",
     "item": "li",
-    "code": "pre",
+    "code": lambda elem: "pre" if elem.xpath('.//code') else "code",
     "quote": "blockquote",
     "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
-    "img": "graphic",
+    "graphic": "img",
+    "row": "tr",
+    "cell": lambda elem: "th" if elem.get("role") == "head" else "td",
     "ref": "a",
     "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")],
 }
@@ -448,6 +450,8 @@ def convert_to_html(tree: _Element) -> _Element:
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))
+        elif elem.tag == "img":
+            elem.set("src", elem.attrib.pop("src", ""))
         else:
             elem.attrib.clear()
     tree.tag = "body"
