@@ -19,6 +19,8 @@ from trafilatura import spider  # for global variables
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+pytestmark = pytest.mark.usefixtures("mock_network")
+
 
 def test_redirections():
     "Test redirection detection."

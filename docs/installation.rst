@@ -98,11 +98,11 @@ Trafilatura works best if compression modules in the Python standard library are
 Optional modules
 ~~~~~~~~~~~~~~~~
 
-A few additional libraries can be installed for extended functionality and faster processing: language detection and faster encoding detection: the ``cchardet`` package may not work on all systems but it is highly recommended.
+A few additional libraries can be installed for extended functionality and faster processing, e.g. language detection and faster encoding detection with ``faust-cchardet``.
 
 .. code-block:: bash
 
-    $ pip install cchardet  # single package only
+    $ pip install faust-cchardet  # single package only
     $ pip install trafilatura[all]  # all additional functionality
 
 
@@ -117,7 +117,7 @@ A few additional libraries can be installed for extended functionality and faste
 
 brotli
     Additional compression algorithm for downloads
-cchardet / faust-cchardet (Python >= 3.11)
+faust-cchardet
     Faster encoding detection, also possibly more accurate (especially for encodings used in Asia)
 htmldate[all] / htmldate[speed]
     Faster and more precise date extraction with a series of dedicated packages

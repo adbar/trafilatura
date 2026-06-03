@@ -308,7 +308,7 @@ def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extr
                     for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = " " + item.text  # type: ignore[operator]
-                        strip_tags(processed_child, item.tag)
+                        strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
                 # correct attributes
                 if child.tag == "hi":
                     newsub.set("rend", child.get("rend", ""))
