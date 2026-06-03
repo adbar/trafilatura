@@ -26,7 +26,7 @@ Some systems already have such an environment installed, to check it just run th
 .. code-block:: bash
 
     $ python3 --version  # python can also work
-    Python 3.10.12       # version 3.6 or higher is fine
+    Python 3.10.12       # version 3.10 or higher is fine
 
 
 Trafilatura package

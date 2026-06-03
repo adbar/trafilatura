@@ -4,6 +4,7 @@ For reference, here is the list of all JSON-LD types: https://schema.org/docs/fu
 """
 
 import json
+import logging
 import re
 
 from html import unescape
@@ -11,6 +12,9 @@ from typing import Any, Dict, List, Optional, Pattern, Union
 
 from .settings import Document
 from .utils import HTML_STRIP_TAGS, trim
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting", "liveblogposting"}
@@ -232,7 +236,10 @@ def normalize_authors(current_authors: Optional[str], author_string: str) -> Opt
         new_authors = current_authors.split('; ')
     # fix to code with unicode
     if '\\u' in author_string:
-        author_string = author_string.encode().decode('unicode_escape')
+        try:
+            author_string = author_string.encode().decode('unicode_escape')
+        except UnicodeDecodeError:
+            LOGGER.debug("invalid unicode escape in author: %s", author_string)
     # fix html entities
     if '&#' in author_string or '&amp;' in author_string:
         author_string = unescape(author_string)

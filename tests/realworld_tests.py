@@ -737,7 +737,9 @@ def test_pages():
     assert 'Ältere Menschen' in str(metadata.tags)
 
     url = "https://www.mercurynews.com/2023/01/16/letters-1119/"
+    # regression #299: an empty-list JSON-LD "@type" must not crash extract_metadata
     metadata = extract_metadata(load_mock_page(url, xml_flag=True))
+    assert metadata is not None
 
 
 if __name__ == '__main__':

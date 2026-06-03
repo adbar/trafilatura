@@ -55,7 +55,7 @@ FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
 LINK_ELEMENTS = re.compile(
-    r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>"
+    r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL
 )
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
@@ -158,7 +158,7 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
     if "<link>" in feed_string:
         return [
             m[1].strip()
-            for m in islice(LINK_ELEMENTS.finditer(feed_string, re.DOTALL), MAX_LINKS)
+            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
         ]
 
     return []

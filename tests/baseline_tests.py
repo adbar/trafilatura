@@ -25,13 +25,16 @@ def test_baseline():
     assert result == ''
 
     tests = [
-        '<html><body><article>' + 'The article consists of this text.'*10 + '</article></body></html>',
-        '<html><body><article><b>The article consists of this text.</b></article></body></html>',
-        '<html><body><quote>This is only a quote but it is better than nothing.</quote></body></html>',
+        ('<html><body><article>' + 'The article consists of this text.'*10 + '</article></body></html>',
+         'The article consists of this text.'),
+        ('<html><body><article><b>The article consists of this text.</b></article></body></html>',
+         'The article consists of this text.'),
+        ('<html><body><quote>This is only a quote but it is better than nothing.</quote></body></html>',
+         'This is only a quote but it is better than nothing.'),
     ]
-    for doc in tests:
+    for doc, expected in tests:
         _, result, _ = baseline(doc)
-        assert result is not None
+        assert expected in result
 
     # Invalid JSON
     filecontent = b'''

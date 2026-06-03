@@ -1310,6 +1310,11 @@ def test_table_processing():
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
     assert result is not None
 
+    # non-numeric colspan must not discard the whole document
+    htmlstring = '<html><body><article><table><tr><td colspan="2x">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
+    result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
+    assert result is not None
+
     # wrong span info
     htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
     result = extract(htmlstring, fast=True, output_format='txt', config=ZERO_CONFIG, include_tables=True)
@@ -1621,6 +1626,7 @@ def test_large_doc_performance():
     assert end - start < 5, "Large document performance issue"
 
 
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
 def test_lang_detection():
     """
     Accuracy of language detection.
@@ -1632,7 +1638,7 @@ def test_lang_detection():
     for sample in samples:
         result = extract(sample['html'], fast=False, config=ZERO_CONFIG)
         detected = language_classifier(result, "")
-        assert detected == sample['expected'] or not LANGID_FLAG
+        assert detected == sample['expected']
 
 
 def test_config_loading():

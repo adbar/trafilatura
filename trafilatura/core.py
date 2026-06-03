@@ -160,7 +160,7 @@ def bare_extraction(
         filecontent: HTML code as string.
         url: URL of the webpage.
         fast: Use faster heuristics and skip backup extraction.
-        no_fallback: Will be deprecated, use "fast" instead.
+        no_fallback: Deprecated, use "fast" instead.
         favor_precision: prefer less text but correct extraction.
         favor_recall: prefer more text even when unsure.
         include_comments: Extract comments along with the main text.
@@ -180,7 +180,7 @@ def bare_extraction(
             (date, title, url).
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
-        as_dict: Will be deprecated, use the .as_dict() method of the document class.
+        as_dict: Deprecated, use the .as_dict() method instead.
         prune_xpath: Provide an XPath expression to prune the tree before extraction.
             can be str or list of str.
         config: Directly provide a configparser configuration.
@@ -385,7 +385,7 @@ def extract(
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
         fast: Use faster heuristics and skip backup extraction.
-        no_fallback: Will be deprecated, use "fast" instead.
+        no_fallback: Deprecated, use "fast" instead.
         favor_precision: prefer less text but correct extraction.
         favor_recall: when unsure, prefer more text.
         include_comments: Extract comments along with the main text.
@@ -536,20 +536,20 @@ def _check_deprecation(
         no_fallback: bool = False,
         as_dict: bool = False,
         max_tree_size: Optional[int] = None,
-)-> bool:
-    '''Check deprecated or to-be-deprecated params and return the effective "fast" flag.'''
+) -> bool:
+    '''Check deprecated params and return the effective "fast" flag.'''
     if no_fallback:
         warnings.warn(
-            '"no_fallback" will be deprecated in a future version, use "fast" instead',
-            PendingDeprecationWarning
+            '"no_fallback" will be removed, use "fast" instead',
+            DeprecationWarning
         )
     if as_dict:
         warnings.warn(
-            '"as_dict" will be deprecated, use the .as_dict() method on bare_extraction results',
-            PendingDeprecationWarning
+            '"as_dict" will be removed, use the .as_dict() method instead',
+            DeprecationWarning
         )
     if max_tree_size:
-        raise ValueError("max_tree_size is deprecated, use settings.cfg file instead")
+        raise ValueError('"max_tree_size" will be removed, use settings.cfg instead')
     return fast or no_fallback
 
 
