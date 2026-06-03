@@ -128,7 +128,7 @@ class Document:
         Warning: It mutates internal DOM representation of the HTML document,
         so it is better to call other API methods before this one.
         """
-        for elem in self.doc.iter("script", "style"):
+        for elem in self.doc.iter("script", "style", "fencedframe"):
             elem.drop_tree()
 
         ruthless = True

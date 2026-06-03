@@ -351,6 +351,7 @@ MANUALLY_CLEANED = [
     # important
     "aside",
     "embed",
+    "fencedframe",
     "footer",
     "form",
     "head",
@@ -431,7 +432,7 @@ MANUALLY_STRIPPED = [
 # 'center', 'rb', 'wbr'
 
 BASIC_CLEAN_XPATH = XPath(
-    ".//aside|.//div[contains(@class|@id, 'footer')]|.//footer|.//script|.//style"
+    ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style"
 )
 
 TAG_CATALOG = frozenset(

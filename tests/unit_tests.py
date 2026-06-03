@@ -920,6 +920,13 @@ def test_htmlprocessing():
     my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
     assert extract(my_html, config=ZERO_CONFIG, fast=True) == '1\n3'
     assert extract(my_html, config=ZERO_CONFIG, fast=False) == '1\n3'
+    # fencedframe
+    fenced_html = '<html><body><article><p>real</p><fencedframe><p>ad</p></fencedframe><p>more</p></article></body></html>'
+    assert 'ad' not in extract(fenced_html, config=ZERO_CONFIG, fast=True)
+    assert 'ad' not in extract(fenced_html, config=ZERO_CONFIG, fast=False)
+    fenced_outer = '<html><body><fencedframe><article><h1>ad</h1><p>buy now buy now buy now buy now</p></article></fencedframe></body></html>'
+    assert 'ad' not in extract(fenced_outer, config=ZERO_CONFIG, fast=False)
+    assert extract(fenced_outer, config=use_config()) is None
     # test tail of node deleted if set as text
     node = etree.fromstring("<div><p></p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)

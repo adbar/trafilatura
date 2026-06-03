@@ -26,7 +26,7 @@ LOGGER = logging.getLogger(__name__)
 
 JT_STOPLIST = None
 
-SANITIZED_XPATH = './/aside|.//audio|.//button|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
+SANITIZED_XPATH = './/aside|.//audio|.//button|.//fencedframe|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time'
 
 
 def try_readability(htmlinput: HtmlElement) -> HtmlElement:
