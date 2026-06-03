@@ -21,9 +21,7 @@ jobs:
         python-version: ["3.10", "3.12", "3.14"]
         env:
           - MINIMAL: "true"
-            PROXY_TEST: "false"
           - MINIMAL: "false"
-            PROXY_TEST: "true"
         include:
           # custom OS / Python combinations
           - os: macos-latest
@@ -34,19 +32,6 @@ jobs:
             python-version: "3.13"
             env:
               MINIMAL: "false"
-              PROXY_TEST: "true"
-    services:
-      socks_proxy:
-        image: ${{ matrix.os == 'ubuntu-latest' && 'serjs/go-socks5-proxy' || '' }}
-        ports:
-          - 1080:1080
-      socks_proxy_auth:
-        image: ${{ matrix.os == 'ubuntu-latest' && 'serjs/go-socks5-proxy' || '' }}
-        env:
-          PROXY_USER: user
-          PROXY_PASSWORD: pass
-        ports:
-          - 1081:1080
 
     steps:
     # package setup
@@ -94,8 +79,6 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --cov=./ --cov-report=xml
-      env:
-        PROXY_TEST: ${{ matrix.env.PROXY_TEST }}
 
     # coverage
     - name: Upload coverage to Codecov
