@@ -195,6 +195,14 @@ def test_input():
     assert handle_textelem(elem, [], DEFAULT_OPTIONS) is None
 
 
+def test_document_isolation():
+    "Documents must not share a mutable Element default (thread-safety / correctness)."
+    d1, d2 = Document(), Document()
+    assert d1.body is not d2.body
+    assert d1.commentsbody is not d2.commentsbody
+    assert d1.body.tag == "body" and len(d1.body) == 0
+
+
 def test_xmltocsv():
     doc = Document()
     doc.body = etree.fromstring('<xml/>')

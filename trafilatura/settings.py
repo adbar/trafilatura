@@ -247,9 +247,9 @@ class Document:
         fingerprint: Optional[str] = None,
         idval: Optional[str] = None,
         license_val: Optional[str] = None,
-        body: _Element = Element("body"),
+        body: Optional[_Element] = None,
         comments: Optional[str] = None,
-        commentsbody: _Element = Element("body"),
+        commentsbody: Optional[_Element] = None,
         raw_text: Optional[str] = None,
         text: Optional[str] = None,
         language: Optional[str] = None,
@@ -269,9 +269,9 @@ class Document:
         self.fingerprint: Optional[str] = fingerprint
         self.id: Optional[str] = idval
         self.license: Optional[str] = license_val
-        self.body: _Element = body
+        self.body: _Element = body if body is not None else Element("body")
         self.comments: Optional[str] = comments
-        self.commentsbody: _Element = commentsbody
+        self.commentsbody: _Element = commentsbody if commentsbody is not None else Element("body")
         self.raw_text: Optional[str] = raw_text
         self.text: Optional[str] = text
         self.language: Optional[str] = language
