@@ -6,6 +6,8 @@ import logging
 import os
 import sys
 
+import pytest
+
 from courlan import get_hostinfo
 
 import trafilatura
@@ -14,6 +16,8 @@ from trafilatura.deduplication import is_similar_domain
 from trafilatura.utils import decode_file
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+pytestmark = pytest.mark.usefixtures("mock_network")
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')

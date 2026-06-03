@@ -7,7 +7,7 @@ from lxml import html
 
 from trafilatura import extract
 from trafilatura.metadata import Document
-from trafilatura.settings import DEFAULT_CONFIG, Extractor
+from trafilatura.settings import DEFAULT_CONFIG, Extractor, use_config
 from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
 
 
@@ -51,6 +51,15 @@ def test_filters():
     assert extract(doc, options=options) is None
     doc = html.fromstring('<html><body>' + my_p*499 + '</body></html>')
     assert extract(doc, options=options) is not None
+
+    # MAX_TREE_SIZE is read from the config (empty value disables the limit)
+    assert Extractor().max_tree_size is None
+    config = use_config()
+    config['DEFAULT']['MAX_TREE_SIZE'] = '500'
+    assert Extractor(config=config).max_tree_size == 500
+    my_p = '<p>abc</p>'
+    assert extract(html.fromstring('<html><body>' + my_p*501 + '</body></html>'), config=config) is None
+    assert extract(html.fromstring('<html><body>' + my_p*50 + '</body></html>'), config=config) is not None
 
     # HTML lang filter
     # no lang

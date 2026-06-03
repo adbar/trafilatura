@@ -230,7 +230,7 @@ def test_url():
         '<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>',
         '<html><head><meta name="twitter:url" content="https://example.org"/></head><body></body></html>',
         '<html><head><link rel="alternate" hreflang="x-default" href="https://example.org"/></head><body></body></html>',
-        '<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>'
+        '<html><head><link rel="canonical" href="/article/medical-record"/></head><body></body></html>',
         '<html><head><base href="https://example.org" target="_blank"/></head><body></body></html>',
     ]
     default_urls = [None, None, None, None, "https://example.org", None]
