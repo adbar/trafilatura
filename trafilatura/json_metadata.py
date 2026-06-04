@@ -71,9 +71,10 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Opti
 def process_parent(parent: Any, metadata: Document) -> Document:
     "Find and extract selected metadata from JSON parts."
     for content in filter(None, parent):  # type: Dict[str, Any]
-        # try to extract publisher
-        if 'publisher' in content and 'name' in content['publisher']:
-            metadata.sitename = content['publisher']['name']
+        # publisher may be a bare string, not a dict
+        publisher = content.get('publisher')
+        if isinstance(publisher, dict) and 'name' in publisher:
+            metadata.sitename = publisher['name']
 
         if '@type' not in content or not content["@type"]:
             continue
@@ -92,7 +93,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
                 metadata.sitename = candidate
 
         elif content_type == "person":
-            if content.get('name') and not content['name'].startswith('http'):
+            if isinstance(content.get('name'), str) and not content['name'].startswith('http'):
                 metadata.author = normalize_authors(metadata.author, content['name'])
 
         elif content_type in JSON_ARTICLE_SCHEMA:
@@ -111,6 +112,8 @@ def process_parent(parent: Any, metadata: Document) -> Document:
                     list_authors = [list_authors]
 
                 for author in list_authors:
+                    if isinstance(author, str):
+                        author = {"name": author}
                     if '@type' not in author or author['@type'] == 'Person':
                         author_name = None
                         # error thrown: author['name'] can be a list (?)
@@ -157,7 +160,7 @@ def extract_json(schema: Union[List[Any], Dict[str, str]], metadata: Document) -
             elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower() and 'liveBlogUpdate' in parent:
                 parent = parent['liveBlogUpdate'] if isinstance(parent['liveBlogUpdate'], list) else [parent['liveBlogUpdate']]
             else:
-                parent = schema
+                return process_parent(schema, metadata)
 
             metadata = process_parent(parent, metadata)
 
@@ -168,8 +171,12 @@ def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> Opti
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
-    while mymatch and ' ' in mymatch[1]:
-        authors = normalize_authors(authors, mymatch[1])
+    while mymatch:
+        # first matching group (JSON_AUTHOR_1 has two)
+        name = next(filter(None, mymatch.groups()), None)
+        if not name or ' ' not in name:
+            break
+        authors = normalize_authors(authors, name)
         elemtext = regular_expression.sub(r'', elemtext, count=1)
         mymatch = regular_expression.search(elemtext)
     return authors or None
@@ -265,11 +272,12 @@ def normalize_authors(current_authors: Optional[str], author_string: str) -> Opt
         if not author or (len(author) >= 50 and ' ' not in author and '-' not in author):
             continue
         # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+        if not author[0].isupper():
             author = author.title()
-        # safety checks
-        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
+        if author not in new_authors:
             new_authors.append(author)
+    # keep only the fullest form of each name (drop names contained in another)
+    new_authors = [n for n in new_authors if not any(n != m and n in m for m in new_authors)]
     if len(new_authors) == 0:
         return current_authors
     return '; '.join(new_authors).strip('; ')

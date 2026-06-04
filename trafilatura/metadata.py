@@ -370,13 +370,13 @@ def extract_title(tree: HtmlElement) -> Optional[str]:
             return t
     # take first h1-title
     if h1_results:
-        return h1_results[0].text_content()
+        return trim(h1_results[0].text_content())
     # take first h2-title
     try:
-        title = tree.xpath(".//h2")[0].text_content()
+        title = trim(tree.xpath(".//h2")[0].text_content())
     except IndexError:
         LOGGER.debug("no h2 title found")
-    return title
+    return title or None
 
 
 def extract_author(tree: HtmlElement) -> Optional[str]:
@@ -425,7 +425,7 @@ def extract_sitename(tree: HtmlElement) -> Optional[str]:
 def extract_catstags(metatype: str, tree: HtmlElement) -> List[str]:
     """Find category and tag information"""
     results: List[str] = []
-    regexpr = "/" + metatype + "[s|ies]?/"
+    regexpr = "/" + metatype.rstrip("y") + "(?:y|ies|s)?/"
     xpath_expression = CATEGORIES_XPATHS if metatype == "category" else TAGS_XPATHS
     # search using custom expressions
     for catexpr in xpath_expression:
@@ -456,12 +456,14 @@ def parse_license_element(element: HtmlElement, strict: bool = False) -> Optiona
     match = LICENSE_REGEX.search(element.get("href", ""))
     if match:
         return f"CC {match[1].upper()} {match[2]}"
-    if element.text:
+    # use text_content() to also catch text wrapped in nested markup
+    text = trim(element.text_content())
+    if text:
         # check if it could be a CC license
         if strict:
-            match = TEXT_LICENSE_REGEX.search(element.text)
+            match = TEXT_LICENSE_REGEX.search(text)
             return match[0] if match else None
-        return trim(element.text)
+        return text
     return None
 
 
@@ -495,15 +497,16 @@ def extract_metadata(
         filecontent: HTML code as string or parsed tree.
         default_url: Previously known URL of the downloaded document.
         date_config: Provide extraction parameters to htmldate as dict().
+        extensive: Use extensive search for date extraction.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
 
     Returns:
-        A trafilatura.settings.Document containing the extracted metadata information or None.
+        A trafilatura.settings.Document containing the extracted metadata information.
         The Document class has .as_dict() method that will return a copy as a dict.
     """
     # init
     author_blacklist = author_blacklist or set()
-    date_config = date_config or set_date_params(extensive)
+    date_config = {**date_config} if date_config else set_date_params(extensive)
 
     # load contents
     tree = load_html(filecontent)
@@ -586,7 +589,7 @@ def extract_metadata(
     metadata.license = extract_license(tree)
 
     # safety checks
-    metadata.filedate = date_config["max_date"]
+    metadata.filedate = date_config.get("max_date")
     metadata.clean_and_trim()
 
     return metadata
