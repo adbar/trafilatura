@@ -966,7 +966,3 @@ def test_normalize_authors():
     assert normalize_authors(None, "John Doe — John Doe") == "John Doe"
     assert normalize_authors(None, 'John "The King" Doe') == "John  Doe"
 
-
-if __name__ == '__main__':
-    test_json_extraction()
-    test_normalize_authors()

@@ -82,12 +82,7 @@ def test_lrucache():
     trafilatura.deduplication.LRU_TEST = lru_test
     my_body = etree.Element('body')
 
-    ### element too short
-    #my_element = html.fromstring('<p>AAAA BBBB</p>')
-    #my_body.append(my_element)
-    #put_in_cache(my_body)
-    #assert duplicate_test(my_element, DEFAULT_CONFIG) is False
-    ### cached element
+    # cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
     assert duplicate_test(my_element, DEFAULT_OPTIONS) is False
@@ -175,12 +170,3 @@ def test_sample_tokens(monkeypatch):
     assert len(tokens) == 1
     assert 'is混合文本' in tokens
     assert call_counter['fallback'] == 1, "Fallback shouldn't be called due to blank"
-
-
-if __name__ == "__main__":
-    test_hashes()
-    test_simhash()
-    test_lrucache()
-    test_dedup()
-    test_sample_tokens()
-    test_content_fingerprint()

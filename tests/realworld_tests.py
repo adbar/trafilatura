@@ -312,10 +312,6 @@ def test_extract(xmloutput, formatting):
     result = do_load_page('https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/')
     assert 'Argentina, the birthplace of polo.' in result and 'Simon Wittenberg travels to the Eternal City in Italy' in result and 'Luxury and lifestyle articles' not in result and 'Pinterest' not in result
 
-    #result = load_mock_page('https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5', xmloutput)
-    #print(result)
-    #assert result == '???'
-
     result = do_load_page('https://www.gruen-digital.de/2015/01/digitalpolitisches-jahrestagung-2015-der-heinrich-boell-stiftung-baden-wuerttemberg/')
     assert 'Prof. Dr. Caja Thimm' in result and 'zur Anmeldung.' in result and 'Next post' not in result and 'Aus den Ländern' not in result
 
@@ -494,22 +490,6 @@ def test_extract(xmloutput, formatting):
         assert 'Reuters files' not in result
 
 
-
-    #result = load_mock_page('https://www.lanouvellerepublique.fr/indre-et-loire/commune/saint-martin-le-beau/family-park-la-derniere-saison-a-saint-martin-le-beau', xmloutput)
-    #print(result)
-    #assert result == '???'
-
-    #result = load_mock_page('', xmloutput)
-    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
-
-    # try:
-    # ...
-    # except AssertionError as err:
-    #    if platform.system() == 'Windows':
-    #        pass
-    #    else:
-    #        raise AssertionError(err)
-
 def test_extract_links_formatting():
     result = load_mock_page('http://www.pcgamer.com/2012/08/09/skyrim-part-1/', formatting=True, links=True)
     assert 'In [Skyrim](https://www.pcgamer.com/best-skyrim-mods/), a mage' in result
@@ -541,7 +521,6 @@ def test_pages():
 
     metadata = extract_metadata(load_mock_page_meta('https://www.creativecommons.at/faircoin-hackathon'))
     assert metadata.title == 'FairCoin hackathon beim Sommercamp'
-    # assert metadata.url == '/faircoin-hackathon'
 
     metadata = extract_metadata(load_mock_page_meta('https://netzpolitik.org/2016/die-cider-connection-abmahnungen-gegen-nutzer-von-creative-commons-bildern/'))
     assert metadata.title == 'Die Cider Connection: Abmahnungen gegen Nutzer von Creative-Commons-Bildern'
@@ -573,7 +552,6 @@ def test_pages():
     assert metadata.author == 'Florence Audier'
     assert metadata.description.startswith("L'évaluation, et la place")
     assert metadata.sitename == 'La Vie des idées'
-    # assert metadata.categories == ['Essai', 'Économie']
     assert metadata.tags == []
     # <meta property="og:type" content="article" />
     # <meta name="DC:type" content="journalArticle">
@@ -594,23 +572,17 @@ def test_pages():
     assert metadata.author == 'Bob Yirka'
     assert metadata.description == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
     assert metadata.sitename == 'Phys.org'
-    # assert metadata.categories == ['Archaeology', 'Fossils']
     assert metadata.tags == ["Science, Physics News, Science news, Technology News, Physics, Materials, Nanotech, Technology, Science"]
     assert metadata.url == 'https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'
 
     metadata = extract_metadata(load_mock_page_meta('https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/'))
     assert metadata.title == "Mercurial's Journey to and Reflections on Python 3"
-    # assert metadata.author == 'Gregory Szorc'
-    # assert metadata.sitename == 'gregoryszorc'
-    # assert metadata.categories == ['Mercurial', 'Python']
 
     metadata = extract_metadata(load_mock_page_meta('https://www.pluralsight.com/tech-blog/managing-python-environments/'))
     assert metadata.title == 'Managing Python Environments'
     assert metadata.author == 'John Walk'
     assert metadata.description.startswith("If you're not careful,")
     assert metadata.sitename == 'pluralsight.com'  # 'Pluralsight'
-    # assert metadata.categories == ['practices']
-    # assert metadata.tags == ['python', 'docker', ' getting started']
     assert metadata.url == 'https://www.pluralsight.com/tech-blog/managing-python-environments/'
 
     url = 'https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'
@@ -644,7 +616,6 @@ def test_pages():
     assert metadata.author == 'Wikimedia Foundation'
     assert metadata.description.startswith('Today, on Wikipedia’s 19th birthday')
     assert metadata.sitename == 'Wikimedia Foundation'
-    # assert metadata.categories == ['Politics', 'Turkey', 'Wikipedia']
     assert metadata.url == url
 
     url = 'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH'
@@ -652,7 +623,6 @@ def test_pages():
     assert metadata.title.endswith('scores historic upset at SAG awards, boosting Oscar chances') # &#039;Parasite&#039;
     assert metadata.author == 'Jill Serjeant'
     assert metadata.date == '2020-01-20'
-    # assert metadata.description == '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.'
     assert metadata.sitename == 'Reuters'
     assert 'Media' in metadata.categories[0]  # ['Parasite', 'SAG awards', 'Cinema']
     assert metadata.url == 'https://www.reuters.com/article/us-awards-sag-idUSKBN1ZI0EH'
@@ -716,7 +686,6 @@ def test_pages():
     url = 'https://www.spiegel.de/spiegel/print/d-161500790.html'
     metadata = extract_metadata(load_mock_page_meta(url))
     assert metadata.title == 'Ein Albtraum'
-    # assert metadata.author == 'Clemens Höges'
 
     url = 'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'
     metadata = extract_metadata(load_mock_page_meta(url))
@@ -740,7 +709,3 @@ def test_pages():
     # regression #299: an empty-list JSON-LD "@type" must not crash extract_metadata
     metadata = extract_metadata(load_mock_page(url, xml_flag=True))
     assert metadata is not None
-
-
-if __name__ == '__main__':
-    pytest.main(['-x', __file__])

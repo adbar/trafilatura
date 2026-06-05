@@ -108,6 +108,8 @@ def test_is_live_page():
     # is_live pycurl tests
     if HAS_PYCURL:
         assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
+        # connection failure exercises the pycurl HEAD error branch
+        assert _pycurl_is_live_page('https://nonexistent.invalid.example/') is False
 
 
 def test_fetch():
@@ -233,6 +235,7 @@ def test_decode():
         assert handle_compressed_file(bad_file) == bad_file
 
 
+@pytest.mark.usefixtures("mock_network")
 def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
@@ -276,12 +279,3 @@ def test_queue():
     options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(url_store, args, -1, options)
     assert len(results[0]) == 5 and results[1] is -1
-
-
-if __name__ == '__main__':
-    test_response_object()
-    test_is_live_page()
-    test_fetch()
-    test_config()
-    test_decode()
-    test_queue()

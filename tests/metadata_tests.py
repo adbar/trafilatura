@@ -403,16 +403,3 @@ def test_document_as_dict():
     assert dict_["license"] == "CC BY-SA 4.0"
     assert dict_["image"] == "https://example.org/example.jpg"
 
-
-if __name__ == '__main__':
-    test_titles()
-    test_authors()
-    test_dates()
-    test_meta()
-    test_url()
-    test_description()
-    test_catstags()
-    test_sitename()
-    test_license()
-    test_images()
-    test_document_as_dict()
