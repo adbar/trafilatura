@@ -165,6 +165,19 @@ def test_extraction():
     sitemap.process()
     assert (sitemap.sitemap_urls, sitemap.urls) == ([], ['https://test.org/en/1', 'https://test.org/en/2'])
 
+    # XML sitemap with matching hreflang links: return after the langlink pass
+    sitemap = sitemaps.SitemapObject('https://example.org', 'example.org', [], 'de')
+    sitemap.current_url = 'https://example.org/sitemap.xml'
+    sitemap.content = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        '<url><loc>https://example.org/page</loc>'
+        '<xhtml:link rel="alternate" hreflang="de" href="https://example.org/de/page"/>'
+        '</url></urlset>'
+    )
+    sitemap.process()
+    assert sitemap.urls == ['https://example.org/de/page']
+
 
 def test_robotstxt():
     '''Check if sitemaps can be found over robots.txt'''
@@ -184,10 +197,3 @@ def test_whole():
     trafilatura.settings.MAX_SITEMAPS_SEEN = 1
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
     assert len(results) == 8
-
-
-if __name__ == '__main__':
-    test_search()
-    test_extraction()
-    test_robotstxt()
-    test_whole()

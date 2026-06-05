@@ -90,7 +90,6 @@ def test_filters():
     assert check_html_lang(html.fromstring('<html lang="en-US"><head><meta property="og:locale" content="de_DE" /></head><body></body></html>'), target_language='de', strict=True) is True
 
 
-
 def test_prune_xpath():
     '''test xpath pruning (parameter in extract and bare_extraction)'''
     #create example html
@@ -124,8 +123,3 @@ def test_prune_xpath():
     assert extract(doc2()) != ''
     assert extract(doc3()) != ''
     assert extract(doc4()) != ''
-
-
-if __name__ == '__main__':
-    test_filters()
-    test_prune_xpath()

@@ -1030,11 +1030,3 @@ def test_extract_json_processes_list_once():
         jm.process_parent = orig
     assert len(count) == 1
 
-
-if __name__ == '__main__':
-    test_json_extraction()
-    test_normalize_authors()
-    test_normalize_json()
-    test_extract_json_shapes()
-    test_json_metadata_robustness()
-    test_extract_json_processes_list_once()

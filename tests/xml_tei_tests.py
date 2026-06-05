@@ -496,12 +496,3 @@ def test_replace_element_text():
     elem = Element("ref")
     elem.text = "Link"
     assert replace_element_text(elem, True) == "[Link]"
-
-
-if __name__ == "__main__":
-    test_publisher_added_before_availability_in_publicationStmt()
-    test_unwanted_siblings_of_div_removed()
-    test_tail_on_p_like_elements_removed()
-    test_head_with_children_converted_to_ab()
-    test_ab_with_p_parent_resolved()
-    test_replace_element_text()
