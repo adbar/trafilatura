@@ -313,7 +313,7 @@ def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = Fal
         return line_processing(text, preserve_space, True)
     # process line by line
     try:
-        return '\n'.join(filter(None, (line_processing(l, preserve_space) for l in text.splitlines()))).replace('\u2424', '')
+        return '\n'.join(filter(None, (line_processing(line, preserve_space) for line in text.splitlines()))).replace('\u2424', '')
     except AttributeError:
         return None
 

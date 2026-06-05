@@ -32,7 +32,7 @@ def check_for_html_in_evaldata(htmldir):
     files = os.listdir(htmldir)
     print('\n', htmldir, len(files))
     for f in files:
-        if not f in filenames:
+        if f not in filenames:
             print(f)
 
 check_for_html_in_evaldata('eval/')

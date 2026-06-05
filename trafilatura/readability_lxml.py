@@ -472,10 +472,11 @@ def is_node_visible(node: HtmlElement) -> bool:
     return True
 
 
-def is_probably_readerable(html: HtmlElement, options: Any={}) -> bool:
+def is_probably_readerable(html: HtmlElement, options: Any = None) -> bool:
     """
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
+    options = options or {}
     doc = load_html(html)
     if doc is None:
         return False

@@ -554,7 +554,7 @@ def test_extract_with_metadata():
     parsed_doc = extract_with_metadata(my_document, target_language='en', fast=True)
     assert parsed_doc is None
 
-    with pytest.raises(ValueError) as err:
+    with pytest.raises(ValueError):
         extract_with_metadata(my_document, output_format="python")
 
 
@@ -977,7 +977,7 @@ def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
     my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.<!-- comment --><?php echo "This is a PHP processing instruction"; ?></p></div></body></html>'
 
-    with pytest.raises(ValueError) as err:
+    with pytest.raises(ValueError):
         extract(my_html, output_format="python")
     assert extract(my_html, config=NEW_CONFIG) is None
     assert extract(my_html, config=ZERO_CONFIG) is not None

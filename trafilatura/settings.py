@@ -8,17 +8,16 @@ import os
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
-from typing import Any, Dict, List, Optional, Set
-
-# sched_getaffinity (Linux-only) with fallback
-_get_affinity = getattr(os, "sched_getaffinity", None)
-CPU_COUNT = len(_get_affinity(0)) if _get_affinity is not None else (os.cpu_count() or 1)
-
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Set
 
 from lxml.etree import _Element, Element, XPath
 
 from .utils import line_processing
+
+# sched_getaffinity (Linux-only) with fallback
+_get_affinity = getattr(os, "sched_getaffinity", None)
+CPU_COUNT = len(_get_affinity(0)) if _get_affinity is not None else (os.cpu_count() or 1)
 
 
 SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
@@ -56,6 +55,12 @@ CONFIG_MAPPING = {
     "max_file_size": "MAX_FILE_SIZE",
     "min_file_size": "MIN_FILE_SIZE",
 }
+
+
+def _get_optional_int(config: ConfigParser, option: str) -> Optional[int]:
+    "Read an optional positive integer setting; None when empty or non-numeric."
+    value = config.get("DEFAULT", option, fallback="").strip()
+    return int(value) if value.isdigit() else None
 
 
 # todo Python >= 3.10: use dataclass with slots=True
@@ -150,8 +155,7 @@ class Extractor:
         self.date_params: Dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        max_tree = self.config.get("DEFAULT", "MAX_TREE_SIZE", fallback="").strip()
-        self.max_tree_size: Optional[int] = int(max_tree) if max_tree else None
+        self.max_tree_size: Optional[int] = _get_optional_int(self.config, "MAX_TREE_SIZE")
 
     def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
         "Set the source attribute in a robust way."

@@ -193,9 +193,10 @@ def bare_extraction(
         ValueError: Extraction problem.
     """
 
-    # deprecations
+    # deprecations: stacklevel=3 → user → bare_extraction → _check_deprecation
     fast = _check_deprecation(
-        fast, no_fallback=no_fallback, as_dict=as_dict, max_tree_size=max_tree_size
+        fast, no_fallback=no_fallback, as_dict=as_dict, max_tree_size=max_tree_size,
+        stacklevel=3,
     )
 
     # regroup extraction options
@@ -536,17 +537,21 @@ def _check_deprecation(
         no_fallback: bool = False,
         as_dict: bool = False,
         max_tree_size: Optional[int] = None,
+        stacklevel: int = 2,
 ) -> bool:
-    '''Check deprecated params and return the effective "fast" flag.'''
+    '''Check deprecated params and return the effective "fast" flag.
+       stacklevel is set by the caller so the warning points at user code.'''
     if no_fallback:
         warnings.warn(
             '"no_fallback" will be removed, use "fast" instead',
-            DeprecationWarning
+            DeprecationWarning,
+            stacklevel=stacklevel,
         )
     if as_dict:
         warnings.warn(
             '"as_dict" will be removed, use the .as_dict() method instead',
-            DeprecationWarning
+            DeprecationWarning,
+            stacklevel=stacklevel,
         )
     if max_tree_size:
         raise ValueError('"max_tree_size" will be removed, use settings.cfg instead')
@@ -582,8 +587,10 @@ def _internal_extraction(
         options: Optional[Extractor] = None,
 ) -> Optional[Document]:
     '''Internal method to do the extraction'''
+    # stacklevel=4 → user → extract → _internal_extraction → _check_deprecation
     fast = _check_deprecation(
-        fast, no_fallback=no_fallback, as_dict=False, max_tree_size=max_tree_size
+        fast, no_fallback=no_fallback, as_dict=False, max_tree_size=max_tree_size,
+        stacklevel=4,
     )
 
     # regroup extraction options

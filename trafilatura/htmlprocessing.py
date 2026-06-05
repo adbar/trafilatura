@@ -121,7 +121,7 @@ def collect_link_info(
     mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
     lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
-    shortelems = sum(1 for l in lengths if l < 10)
+    shortelems = sum(1 for length in lengths if length < 10)
     return sum(lengths), len(mylist), shortelems, mylist
 
 

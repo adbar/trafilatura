@@ -76,6 +76,13 @@ def generate_bow_hash(inputstring: str, length: int = 24) -> bytes:
     return blake2b(teststring.encode(), digest_size=length).digest()
 
 
+@lru_cache(maxsize=2**14)
+def _vector_to_add(token: str, length: int) -> List[int]:
+    "Token's contribution to a Simhash vector, cached across all instances."
+    token_hash = int.from_bytes(blake2b(token.encode(), digest_size=8).digest(), "big")
+    return [1 if token_hash & (1 << i) else -1 for i in range(length)]
+
+
 class Simhash:
     "Implement a basic Charikar hashing approach of string similarity."
     __slots__ = ["hash", "length"]
@@ -90,29 +97,6 @@ class Simhash:
         self.length = length
         self.hash = self.validate(existing_hash) or self.create_hash(inputstring)
 
-    def _hash(self, inputstring: str) -> int:
-        "Return a numerical hash of the string."
-        return int.from_bytes(
-            blake2b(inputstring.encode(), digest_size=8).digest(), "big"
-        )
-        # old: variable-length version of Python's builtin hash by @sean-public
-        # see also Siphash13 in https://peps.python.org/pep-0456/
-        # if inputstring == "":
-        #    return 0
-        # mask = 2**self.length - 1
-        # x = ord(inputstring[0]) << 7
-        # for c in inputstring:
-        #    x = ((x * 1000003) ^ ord(c)) & mask
-        # x ^= len(inputstring)
-        # if x == -1:
-        #    return -2
-        # return x
-
-    @lru_cache(maxsize=2**14)
-    def _vector_to_add(self, token: str) -> List[int]:
-        "Create vector to add to the existing string vector"
-        return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
-
     def create_hash(self, inputstring: str) -> int:
         """Calculates a Charikar simhash. References used:
         https://github.com/vilda/shash/
@@ -122,7 +106,7 @@ class Simhash:
         vector = [0] * self.length
 
         for token in sample_tokens(inputstring, self.length):
-            vector = list(map(add, vector, self._vector_to_add(token)))
+            vector = list(map(add, vector, _vector_to_add(token, self.length)))
 
         return sum(1 << i for i in range(self.length) if vector[i] >= 0)
 
