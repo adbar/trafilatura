@@ -1125,7 +1125,27 @@ def test_table_processing():
         htmlstring, fast=True, output_format='xml', config=DEFAULT_CONFIG, include_links=True
     )
     result = processed.replace('\n', '').replace(' ', '')
-    assert """<table><row><cell>text<head>more_text</head></cell></row></table>""" in result
+    assert """<table><row><cell>text<head>more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>""" in result
+
+    # multi-row table with <a> in every cell must keep all rows and link text
+    # (regression: handle_formatting detached the ref mid-iteration, collapsing
+    # subsequent rows into wild text, see issue #794)
+    multi_row_links = """<html><body><article>
+        <p>Enough intro text to satisfy trafilatura's minimum extraction length requirements for this test.</p>
+        <table>
+            <tr><th>Key</th><th>Value</th></tr>
+            <tr><td><a href="/k1">Coord</a>:</td><td><a href="/v1">48 N</a></td></tr>
+            <tr><td><a href="/k2">State</a>:</td><td><a href="/v2">BW</a></td></tr>
+            <tr><td><a href="/k3">Region</a>:</td><td><a href="/v3">Stuttgart</a></td></tr>
+        </table>
+    </article></body></html>"""
+    md = extract(multi_row_links, output_format='markdown',
+                 include_tables=True, include_links=True, config=ZERO_CONFIG)
+    for key, href, value in [("Coord", "/k1", "48 N"),
+                             ("State", "/k2", "BW"),
+                             ("Region", "/k3", "Stuttgart")]:
+        assert f"[{key}]({href})" in md
+        assert value in md
 
     table_cell_w_text_and_child = html.fromstring(
         "<table><tr><td>text<lb/><p>more text</p></td></tr></table>"
@@ -1142,7 +1162,9 @@ def test_table_processing():
     )
     processed_table = handle_table(table_cell_with_link, TAG_CATALOG, options)
     result = [child.tag for child in processed_table.find(".//cell").iterdescendants()]
-    assert result == ["p"]
+    # the ref is kept inside the cell instead of being wrapped in a <p>,
+    # which previously detached it and broke the table (see issue #794)
+    assert result == ["ref"]
     table_with_head = html.fromstring(
         """<table>
       <tr>
