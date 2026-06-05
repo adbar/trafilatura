@@ -8,6 +8,7 @@ import sys
 from lxml import html
 
 from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
+from trafilatura.json_metadata import JSON_AUTHOR_1, JSON_AUTHOR_2, extract_json, extract_json_author, normalize_json, process_parent
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -94,8 +95,8 @@ def test_json_extraction():
 }
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
-    assert metadata is not None and metadata.pagetype == 'liveblogposting'
+    assert metadata.title == 'Apple Spring Forward Event Live Blog'
+    assert metadata.pagetype == 'liveblogposting'
 
     ### Test for potential errors
     metadata = Document()
@@ -135,8 +136,8 @@ def test_json_extraction():
 </script>
 </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
-    assert metadata is not None and metadata.pagetype == 'liveblogposting'
+    assert metadata.title == 'Apple Spring Forward Event Live Blog'
+    assert metadata.pagetype == 'liveblogposting'
 
     ### Test for potential errors - Missing content on live blog
     metadata = Document()
@@ -160,8 +161,8 @@ def test_json_extraction():
     </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog'
-    assert metadata is not None and metadata.pagetype == 'liveblogposting'
+    assert metadata.title == 'Apple Spring Forward Event Live Blog'
+    assert metadata.pagetype == 'liveblogposting'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -195,8 +196,8 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.author == 'Douglas Noel Adams'
-    assert metadata is not None and metadata.pagetype == 'socialmediaposting'
+    assert metadata.author == 'Douglas Noel Adams'
+    assert metadata.pagetype == 'socialmediaposting'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -224,8 +225,8 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and len(metadata.categories) == 0
-    assert metadata is not None and metadata.pagetype == 'article'
+    assert len(metadata.categories) == 0
+    assert metadata.pagetype == 'article'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -335,7 +336,7 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == "Mickelson comments hurt new league: Norman" and metadata.sitename == "7NEWS" and metadata.author == "Digital Staff" and "Golf" in metadata.categories and metadata.pagetype == 'newsarticle'
+    assert metadata.title == "Mickelson comments hurt new league: Norman" and metadata.sitename == "7NEWS" and metadata.author == "Digital Staff" and "Golf" in metadata.categories and metadata.pagetype == 'newsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -376,7 +377,7 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee" and metadata.author == "Bill Birtles" and metadata.sitename == "ABC News" and metadata.pagetype == 'newsarticle'
+    assert metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee" and metadata.author == "Bill Birtles" and metadata.sitename == "ABC News" and metadata.pagetype == 'newsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -481,7 +482,7 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise" and metadata.author == "Sharon Otterman; Emma G Fitzsimmons" and metadata.sitename == "The New York Times" and metadata.pagetype == 'newsarticle'
+    assert metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise" and metadata.author == "Sharon Otterman; Emma G Fitzsimmons" and metadata.sitename == "The New York Times" and metadata.pagetype == 'newsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -523,7 +524,7 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp" and metadata.author == "Caio Mello" and metadata.sitename == "UOL"
+    assert metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp" and metadata.author == "Caio Mello" and metadata.sitename == "UOL"
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -571,7 +572,7 @@ def test_json_extraction():
     </script>
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == "12 words and phrases you need to survive in Hamburg" and metadata.author == "Alexander Johnstone" and metadata.sitename == "The Local" and metadata.pagetype == 'newsarticle'
+    assert metadata.title == "12 words and phrases you need to survive in Hamburg" and metadata.author == "Alexander Johnstone" and metadata.sitename == "The Local" and metadata.pagetype == 'newsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -621,7 +622,7 @@ def test_json_extraction():
         }
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.author is None and metadata.sitename == "Andreessen Horowitz" and metadata.pagetype == 'website'
+    assert metadata.author is None and metadata.sitename == "Andreessen Horowitz" and metadata.pagetype == 'website'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -637,7 +638,7 @@ def test_json_extraction():
 </script>
 </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.author is None and metadata.sitename is None and metadata.pagetype is None
+    assert metadata.author is None and metadata.sitename is None and metadata.pagetype is None
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -666,7 +667,7 @@ def test_json_extraction():
     </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.author is None and metadata.sitename is None and metadata.pagetype == 'liveblogposting'
+    assert metadata.author is None and metadata.sitename is None and metadata.pagetype == 'liveblogposting'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -694,7 +695,7 @@ def test_json_extraction():
 }
 </script>
 </body></html>'''), metadata)
-    assert metadata is not None and metadata.title == 'Apple Spring Forward Event Live Blog' and metadata.pagetype == 'liveblogposting'
+    assert metadata.title == 'Apple Spring Forward Event Live Blog' and metadata.pagetype == 'liveblogposting'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring(r'''
@@ -745,7 +746,7 @@ def test_json_extraction():
 </script>
 </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.title == "EastEnders' June Brown leaves soap 'for good'" and metadata.sitename == "BBC News" and metadata.pagetype == 'reportagenewsarticle'
+    assert metadata.title == "EastEnders' June Brown leaves soap 'for good'" and metadata.sitename == "BBC News" and metadata.pagetype == 'reportagenewsarticle'
 
     metadata = Document()
     metadata.sitename = "https://bbcnews.com"
@@ -769,7 +770,7 @@ def test_json_extraction():
     </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.sitename == "BBC News" and metadata.pagetype == 'reportagenewsarticle'
+    assert metadata.sitename == "BBC News" and metadata.pagetype == 'reportagenewsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -801,7 +802,7 @@ def test_json_extraction():
     </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.author == "John Doe" and metadata.title == "How to Tie a Reef Knot" and metadata.pagetype == 'article'
+    assert metadata.author == "John Doe" and metadata.title == "How to Tie a Reef Knot" and metadata.pagetype == 'article'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -820,7 +821,7 @@ def test_json_extraction():
         </script>
     </script>
     </body></html>'''), metadata)
-    assert metadata is not None and metadata.author == "Bill Birtles; John Smith" and metadata.pagetype == 'newsarticle'
+    assert metadata.author == "Bill Birtles; John Smith" and metadata.pagetype == 'newsarticle'
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -838,7 +839,7 @@ def test_json_extraction():
         </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.title is None and metadata.sitename is None and metadata.pagetype is None
+    assert metadata.title is None and metadata.sitename is None and metadata.pagetype is None
 
     metadata = Document()
     metadata = extract_meta_json(html.fromstring('''
@@ -894,7 +895,7 @@ def test_json_extraction():
         </script>
     </body></html>'''), metadata)
 
-    assert metadata is not None and metadata.title == "Find perfection in these places where land meets water." and metadata.sitename == "National Geographic" and metadata.author == "Kimberley Lovato" and metadata.pagetype == 'article'
+    assert metadata.title == "Find perfection in these places where land meets water." and metadata.sitename == "National Geographic" and metadata.author == "Kimberley Lovato" and metadata.pagetype == 'article'
 
     # tests that "@type": [] in the JSON doesn't cause an exception
 
@@ -950,6 +951,10 @@ def test_json_extraction():
 def test_normalize_authors():
     "Test if author names are normalized correctly."
     assert normalize_authors(None, "John Doe") == "John Doe"
+    assert normalize_authors(None, "abc") == "Abc"
+    assert normalize_authors(None, "Steve Steve 123") == "Steve Steve"
+    assert normalize_authors(None, "By Steve Steve") == "Steve Steve"
+    assert normalize_authors(None, "123") is None  # no usable name -> returns current
     assert normalize_authors("Alice; Bob", "John Doe") == "Alice; Bob; John Doe"
     assert normalize_authors("Alice; Bob", "john.doe@example.com") == "Alice; Bob"
     assert normalize_authors(None, "\\u00e9tienne") == "Étienne"
@@ -965,8 +970,71 @@ def test_normalize_authors():
     assert normalize_authors(None, "John Doe of John Doe") == "John Doe"
     assert normalize_authors(None, "John Doe — John Doe") == "John Doe"
     assert normalize_authors(None, 'John "The King" Doe') == "John  Doe"
+    # dedup keeps the fullest form regardless of order
+    assert normalize_authors("Smith", "John Smith") == "John Smith"
+    assert normalize_authors("John Smith", "Smith") == "John Smith"
+
+
+def test_normalize_json():
+    "Test JSON string normalization (escapes, surrogates, HTML)."
+    assert normalize_json('Test \\nthis') == 'Test this'
+    assert normalize_json('\\uD800\\uDC00Hello\\uDBFF\\uDFFF') == 'Hello'
+    assert normalize_json('Test 【ABC】') == 'Test 【ABC】'
+    assert normalize_json("Seán Federico O'Murchú") == "Seán Federico O'Murchú"
+
+
+def test_extract_json_shapes():
+    "JSON-LD container shapes and process_parent field-extraction branches."
+    # @graph wrapper
+    schema = [{"@context": "https://schema.org", "@graph": [{"@type": "Article", "author": {"name": "Jane Doe"}}]}]
+    assert extract_json(schema, Document()).author == "Jane Doe"
+    # list-valued articleSection
+    assert process_parent([{"@type": "Article", "articleSection": ["News", "Politics"]}], Document()).categories == ["News", "Politics"]
+    # a Person with a plain-string name yields the author
+    assert process_parent([{"@type": "Person", "name": "Jane Doe"}], Document()).author == "Jane Doe"
+    # a longer organization name supersedes a shorter sitename
+    assert process_parent([{"@type": "Organization", "name": "AB"}, {"@type": "Organization", "name": "ABCD Corp"}], Document()).sitename == "ABCD Corp"
+
+
+def test_json_metadata_robustness():
+    "Malformed/edge JSON-LD shapes must not raise and should extract where possible."
+    # "names" key leaves the first author regex group empty
+    assert extract_json_author('{"author":{"names":"Jane Doe"}}', JSON_AUTHOR_1) == "Jane Doe"
+    assert extract_json_author('{"author":{"name":"Jane Doe"}}', JSON_AUTHOR_1) == "Jane Doe"
+    assert extract_json_author('{"Person":{"names":"Jane Doe"}}', JSON_AUTHOR_2) == "Jane Doe"
+    # a single-word match (no space) is skipped
+    assert extract_json_author('{"author":{"name":"Cher"}}', JSON_AUTHOR_1) is None
+    # publisher as a bare string
+    assert process_parent([{"publisher": "the name of co"}], Document()).sitename is None
+    assert process_parent([{"publisher": {"name": "Acme"}}], Document()).sitename == "Acme"
+    # Person.name as a list must not raise
+    assert process_parent([{"@type": "Person", "name": ["Jane", "Doe"]}], Document()).author is None
+    # article author as a list of plain strings must be extracted, not dropped
+    assert process_parent([{"@type": "Article", "author": ["John Doe", "Jane Smith"]}], Document()).author == "John Doe; Jane Smith"
+    # malformed JSON-LD (non-dict items) is swallowed by extract_metadata, not raised
+    assert extract_metadata('<html><body><script type="application/ld+json">[123]</script></body></html>') is not None
+
+
+def test_extract_json_processes_list_once():
+    "A flat list of @context objects is processed once, not once per item."
+    import trafilatura.json_metadata as jm
+    schema = [
+        {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "A"},
+        {"@context": "https://schema.org", "@type": "NewsArticle", "headline": "B"},
+    ]
+    orig, count = jm.process_parent, []
+    jm.process_parent = lambda p, m: count.append(1) or orig(p, m)
+    try:
+        extract_json(schema, Document())
+    finally:
+        jm.process_parent = orig
+    assert len(count) == 1
 
 
 if __name__ == '__main__':
     test_json_extraction()
     test_normalize_authors()
+    test_normalize_json()
+    test_extract_json_shapes()
+    test_json_metadata_robustness()
+    test_extract_json_processes_list_once()
