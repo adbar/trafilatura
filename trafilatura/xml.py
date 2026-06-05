@@ -276,7 +276,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
                 for lb in element.xpath(".//lb"):
                     elem_text = f'{elem_text}\n{lb.tail or ""}'
                     lb.getparent().remove(lb)
-                elem_text = f"```\n{elem_text}\n```\n"
+                elem_text = f"\n```\n{elem_text}\n```\n"
             else:
                 elem_text = f"`{elem_text}`"
     # handle links

@@ -102,6 +102,14 @@ The arguments ``--precision`` or ``--recall`` can be passed to adjust the focus 
 - If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
 
 
+Custom Extraction
+~~~~~~~~~~~~~~~~~
+
+You can provide a custom regular expression to extract the main content prior to processing.:
+
+- ``--regex-file-for-body``: Read a regex from a file and use it to extract the main text. If the regex matches, the captured groups are concatenated and used as the page content prior to any processing. The content is wrapped in an html tag to ensure treated as html. The regex is processed by the [python regex module](https://github.com/mrabarnett/mrab-regex), thus allowing for advanced features such as named capturing groups (default flags are regex.DOTALL | regex.VERSION1) but those can be controlled by inline flags.
+
+
 Language identification
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -129,6 +137,7 @@ Trafilatura will work as well provided web pages (HTML documents) are used as in
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
+-  ``--output-extension`` to specify a custom file extension for the output files (e.g. ``.md``)
 
 
 .. note::
@@ -295,8 +304,9 @@ For all usage instructions see ``trafilatura -h``:
                    [--no-tables] [--only-with-metadata] [--with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE] [--precision] [--recall]
-                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} | 
+                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} |
                    --csv | --html | --json | --markdown | --xml | --xmltei]
+				   [--output-extension OUTPUT_EXTENSION]
                    [--validate-tei] [-v] [--version]
 
 
@@ -331,6 +341,8 @@ Output:
                         preserve a copy of downloaded files in a backup
                         directory
   --keep-dirs           keep input directory structure and file names
+  --output-extension OUTPUT_EXTENSION
+                        specify a custom file extension for the output files
 
 Navigation:
   Link discovery and web crawling
@@ -366,6 +378,8 @@ Extraction:
                         text)
   --recall              favor extraction recall (more text, possibly more
                         noise)
+  --regex-file-for-body REGEX_FILE_FOR_BODY
+                        read a regex from a file and use it to extract the main text
 
 Format:
   Selection of the output format

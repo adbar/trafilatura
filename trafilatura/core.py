@@ -28,6 +28,7 @@ from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import (
     LANGID_FLAG,
     check_html_lang,
+    decode_file,
     language_filter,
     load_html,
     normalize_unicode,
@@ -222,6 +223,16 @@ def bare_extraction(
         )
 
     try:
+        # regex for body
+        if options.regex:
+            text_content = decode_file(filecontent)
+
+            match = options.regex.search(text_content)
+            if match:
+                filecontent = "<html>"+"".join(match.groups()) + "</html>"
+                LOGGER.debug("REGEX reduced body to: %s", filecontent)
+            else:
+                LOGGER.warning("REGEX did not find match for body: %s", options.source)
         # load the HTML tree
         tree = load_html(filecontent)
         if tree is None:

@@ -6,7 +6,7 @@ Unit tests for the trafilatura library.
 import logging
 import sys
 import time
-
+import regex
 from copy import copy
 from os import path
 from unittest.mock import patch
@@ -31,7 +31,7 @@ from trafilatura.main_extractor import (handle_formatting, handle_image,
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.readability_lxml import is_probably_readerable
-from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config, AdvancedOptions
 from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
                                language_classifier, load_html, normalize_unicode,
                                repair_faulty_html, sanitize, textfilter, trim)
@@ -484,13 +484,12 @@ trafilatura.extract("")
     assert '<head rend="h4">1) The <code>in</code> Operator</head>' in my_result and '<p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p>' in my_result
 
     my_document = html.fromstring("""
-    <html><head><body><article>python code below:
-<pre><code>
+    <html><head><body><article>python code below:<pre><code>
 def test:
     print('hello')
     print('world')
     </code></pre>
-    </article></body></html> 
+    </article></body></html>
     """)
     my_result = extract(my_document, output_format='markdown', include_formatting=True)
     assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
@@ -1899,6 +1898,35 @@ def test_deprecations():
     assert captured and all(captured)
 
 
+def test_pre_conversion_flag():
+    '''Test the ALL_PRE_BLOCKS_ARE_CODEBLOCKS flag'''
+    html_content = '<html><body><pre>Some text</pre></body></html>'
+
+    # Default behavior (without flag) -> should be quote (blockquote)
+    options = Extractor(output_format='xml')
+    result = extract(html_content, output_format='xml', config=ZERO_CONFIG, options=options)
+    assert '<quote>Some text</quote>' in result
+    assert '<code>' not in result
+
+    # With flag -> should be code
+    options = Extractor(output_format='xml', advanced_flags={AdvancedOptions.ALL_PRE_BLOCKS_ARE_CODEBLOCKS})
+    result = extract(html_content, output_format='xml', config=ZERO_CONFIG, options=options)
+    assert '<code>Some text</code>' in result
+    assert '<quote>' not in result
+
+def test_regex_for_body():
+    """Test the regex option for body extraction."""
+
+    reg = regex.compile(r'(?:<h1>.+?</h1>).+?(<h3>.+?</h3>)</body>',regex.DOTALL | regex.VERSION1)
+
+    html_content = '<html><body><h1>Not Captured Group</h1><h2>Skipped</h2>\n<h3>Want This</h3></body></html>'
+	
+    options = Extractor(output_format='markdown', regex=reg)
+    result = extract(html_content, config=ZERO_CONFIG, options=options)
+    assert 'Want This' in result
+    assert 'Not Captured Group' not in result
+    assert 'Skipped' not in result
+
 
 if __name__ == '__main__':
     test_deprecations()
@@ -1927,3 +1955,5 @@ if __name__ == '__main__':
     test_lang_detection()
     test_is_probably_readerable()
     test_html_conversion()
+    test_pre_conversion_flag()
+    test_regex_for_body()
