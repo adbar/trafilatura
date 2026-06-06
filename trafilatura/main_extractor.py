@@ -707,8 +707,8 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         # processed_elems = (process_comments_node(elem, potential_tags, options) for elem in
         #                    subtree.xpath('.//*'))
         comments_body.extend(
-            filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*")))
-        )  # type: ignore[arg-type]
+            filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*")))  # type: ignore[arg-type]
+        )
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
