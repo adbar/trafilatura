@@ -19,6 +19,7 @@ def _resource(name):
 CANNED_RESPONSES = {
     "https://example.org/": _resource("httpbin_sample.html"),
     "https://httpbun.com/html": _resource("httpbin_sample.html"),
+    "https://httpbun.com/status/200": b"<html><body><p>status 200 ok</p></body></html>",
     "https://httpbun.com/links/2/2": (
         b'<html><head><title>Links</title></head><body>'
         b'<a href="/links/2/0">0</a> <a href="/links/2/1">1</a> 2</body></html>'
@@ -35,6 +36,30 @@ CANNED_RESPONSES = {
     "https://www.sitemaps.org/robots.txt": b"Sitemap: https://www.sitemaps.org/sitemap.xml",
     "https://www.sitemaps.org/sitemap.xml": _resource("sitemap.xml"),
     "https://sitemaps.org/sitemap.xml": _resource("sitemap.xml"),
+    # feed discovery: a web page advertising a feed via <link rel="alternate">
+    "https://example.com/blog": (
+        b'<html><head><title>Blog</title>'
+        b'<link rel="alternate" type="application/rss+xml" href="https://example.com/feed.xml"/>'
+        b'</head><body><p>posts</p></body></html>'
+    ),
+    "https://example.com/feed.xml": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Blog feed</title>'
+        b'<entry><link href="https://example.com/blog/post-1"/></entry></feed>'
+    ),
+    # a plain page with no feeds at all (exercises the "no usable feed links" path)
+    "https://example.com/plain": b"<html><head><title>Plain</title></head><body><p>nothing</p></body></html>",
+    # Google News fallback feed
+    "https://news.google.com/rss/search?q=site:handelsblatt.com&hl=de&scoring=n&num=100": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>News</title>'
+        b'<entry><link href="https://www.handelsblatt.com/article-1"/></entry></feed>'
+    ),
+    # homepage with a meta-refresh pointing at an unreachable URL (failed redirect)
+    "https://example.com/refresh-home": (
+        b'<html><head><meta http-equiv="refresh" content="0; url=https://example.com/missing"/>'
+        b"</head><body><p>redirecting</p></body></html>"
+    ),
 }
 
 

@@ -290,6 +290,13 @@ def test_feeds_helpers():
     links = find_feed_urls("https://www.w3.org/blog/feed/")
     assert len(links) > 0
 
+    # web page (not a feed) -> discover feed via <link rel="alternate"> then fetch it
+    links = find_feed_urls("https://example.com/blog")
+    assert links == ["https://example.com/blog/post-1"]
+
+    # web page that advertises no feed -> no usable feed links
+    assert find_feed_urls("https://example.com/plain") == []
+
     # Feedburner/Google links
     assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == [
         "https://feedproxy.google.com/ABCD"
@@ -309,7 +316,7 @@ def test_feeds_helpers():
         False,
         "de",
     )
-    assert probe_gnews(params, None) is not None
+    assert probe_gnews(params, None) == ["https://www.handelsblatt.com/article-1"]
 
 
 def test_cli_behavior():
@@ -317,11 +324,3 @@ def test_cli_behavior():
     testargs = ["", "--list", "--feed", "https://httpbun.com/xml"]
     with patch.object(sys, "argv", testargs):
         assert main() is None
-
-
-if __name__ == "__main__":
-    test_atom_extraction()
-    test_rss_extraction()
-    test_json_extraction()
-    test_feeds_helpers()
-    test_cli_behavior()

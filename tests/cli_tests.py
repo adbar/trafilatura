@@ -177,6 +177,32 @@ def test_input_type():
     assert 10 <= len(list(cli_utils.generate_filelist(RESOURCES_DIR))) <= 21
 
 
+def test_cli_stdin():
+    "Input read directly from STDIN when no URL/file/dir is given."
+    testargs = ["", "-v"]
+    with patch.object(sys, "argv", testargs):
+        args = cli.parse_args(testargs)
+    html = b"<html><body><article>" + b"<p>Piped paragraph content.</p>" * 5 + b"</article></body></html>"
+    f = io.StringIO()
+    with patch("sys.stdin") as mock_stdin, redirect_stdout(f):
+        mock_stdin.buffer.read.return_value = html
+        cli.process_args(args)
+    assert "Piped paragraph content." in f.getvalue()
+
+
+def test_cli_examine_error(monkeypatch, capsys):
+    "examine() swallows extraction errors and reports them on stderr."
+    testargs = ["", "-v"]
+    with patch.object(sys, "argv", testargs):
+        args = cli.parse_args(testargs)
+    def _boom(*args, **kwargs):
+        raise RuntimeError("kaboom")
+    monkeypatch.setattr(cli_utils, "extract", _boom)
+    html = "<html><body><article><p>" + "content " * 20 + "</p></article></body></html>"
+    assert cli.examine(html, args) is None
+    assert "kaboom" in capsys.readouterr().err
+
+
 def test_sysoutput():
     """test command-line output with respect to CLI arguments"""
     testargs = ["", "--csv", "-o", "/root/forbidden/"]
@@ -260,14 +286,6 @@ def test_download():
     assert cli.examine(None, args) is None
     assert cli.examine(" ", args) is None
     assert cli.examine("0" * int(10e7), args) is None
-    # url = 'https://httpbun.org/status/200'
-    # teststring = fetch_url(url)
-    # assert teststring is None  # too small
-    # assert cli.examine(teststring, args, url) is None
-    # url = 'https://httpbun.org/links/2/2'
-    # teststring = fetch_url(url)
-    # assert teststring is not None
-    # assert cli.examine(teststring, args, url) is None
     url = "https://httpbun.com/html"
     teststring = fetch_url(url)
     assert teststring is not None
@@ -587,17 +605,3 @@ def test_probing():
         assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
-
-
-if __name__ == "__main__":
-    test_parser()
-    test_climain()
-    test_input_type()
-    test_input_filtering()
-    test_sysoutput()
-    test_cli_pipeline()
-    test_file_processing()
-    test_cli_config_file()
-    test_crawling()
-    test_download()
-    test_probing()

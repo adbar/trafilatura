@@ -30,7 +30,8 @@ def test_redirections():
         "https://httpbun.com/redirect-to?url=https://example.org"
     )
     assert baseurl == "https://example.org"
-    # _, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
+    # meta-refresh to an unreachable target -> failed redirect -> all None
+    assert spider.probe_alternative_homepage("https://example.com/refresh-home") == (None, None, None)
 
 
 def test_meta_redirections():
@@ -290,13 +291,3 @@ def test_robots():
     # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")
     # assert not rules.can_fetch("*", "https://example.org/private")
-
-
-if __name__ == "__main__":
-    test_redirections()
-    test_meta_redirections()
-    test_process_links()
-    test_crawl_logic()
-    test_crawl_page()
-    test_focused_crawler()
-    test_robots()

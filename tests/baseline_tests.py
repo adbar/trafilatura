@@ -100,8 +100,3 @@ def test_html2txt():
     assert html2txt("<html></html>") == ""
     assert html2txt("<html><body/></html>") == ""
     assert html2txt("<html><body><style>font-size: 8pt</style><p>ABC</p></body></html>") == "ABC"
-
-
-if __name__ == '__main__':
-    test_baseline()
-    test_html2txt()

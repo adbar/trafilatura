@@ -32,9 +32,10 @@ from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
-from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html, is_image_file,
-                               language_classifier, load_html, normalize_unicode,
-                               repair_faulty_html, sanitize, textfilter, trim)
+from trafilatura.utils import (LANGID_FLAG, detect_encoding, is_dubious_html,
+                               is_image_file, is_in_table_cell, language_classifier,
+                               load_html, normalize_unicode, repair_faulty_html,
+                               sanitize, textfilter, trim)
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -171,6 +172,11 @@ def test_input():
         myinput = gzfile.read()
     assert 'Long story short,' in extract(myinput)
 
+    # responses exposing a .data attribute are unwrapped
+    class _RespLike:
+        data = b'<html><body><p>response data</p></body></html>'
+    assert load_html(_RespLike()) is not None
+
     # unicode normalization
     assert normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
@@ -179,17 +185,17 @@ def test_input():
     assert options.source == "test?this"
 
     # output format
-    assert extract('<html><body><p>ABC</p></body></html>', output_format="xml") is not None
+    assert 'ABC' in extract('<html><body><p>ABC</p></body></html>', output_format="xml")
     with pytest.raises(AttributeError):
         assert extract('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
-    assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="python") is not None
+    assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="python").text == 'ABC'
     with pytest.raises(AttributeError):
         assert bare_extraction('<html><body><p>ABC</p></body></html>', output_format="xyz") is not None
 
     # text elements
     elem = etree.Element("p")
     elem.text = "text"
-    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is not None
+    assert handle_textelem(elem, [], DEFAULT_OPTIONS).text == "text"
     elem = etree.Element("unexpected")
     elem.text = "text"
     assert handle_textelem(elem, [], DEFAULT_OPTIONS) is None
@@ -596,6 +602,7 @@ def test_external():
     res = extract(bad_xml, output_format='xml')
     assert "Features" in res
 
+
 def test_images():
     '''Test image extraction function'''
     # file type
@@ -972,6 +979,24 @@ def test_htmlprocessing():
     processed = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [prune])
     assert node.text_content() == " span tail p tail "
 
+    # link_density_test_tables: a table whose <ref> links carry no text
+    # (elemnum == 0) is treated as boilerplate and discarded
+    linkless_table = html.fromstring("<table><cell>" + "word " * 50 + '<ref target="/x"></ref></cell></table>')
+    assert trafilatura.htmlprocessing.link_density_test_tables(linkless_table) is True
+
+    # replace_element_text: an empty <ref> (no text) yields an empty string
+    assert xml.replace_element_text(etree.Element("ref"), include_formatting=False) == ""
+
+    # regression #797: a code block with a tailless <lb> must not emit a literal "None"
+    code = etree.fromstring("<code>print(1)<lb/></code>")
+    code_md = xml.replace_element_text(code, include_formatting=True)
+    assert "None" not in code_md and "print(1)" in code_md
+
+    # handle_paragraphs: a trailing <lb> with no tail is stripped from the output
+    para = etree.fromstring("<p>text<lb>x</lb></p>")
+    processed = handle_paragraphs(para, {"p", "lb"}, DEFAULT_OPTIONS)
+    assert processed is not None and not processed.findall(".//lb")
+
 
 def test_extraction_options():
     '''Test the different parameters available in extract() and bare_extraction()'''
@@ -1046,6 +1071,14 @@ def test_precision_recall():
 
 def test_table_processing():
     options = DEFAULT_OPTIONS
+
+    # regression #767: is_in_table_cell must check real ancestry, not "a cell exists somewhere"
+    tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
+    inside = tree.xpath(".//cell/p")[0]
+    outside = tree.xpath("./p")[0]
+    assert is_in_table_cell(inside) is True
+    assert is_in_table_cell(outside) is False  # buggy '//ancestor::cell' would return True
+
     table_simple_cell = html.fromstring(
         "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
     )
@@ -1679,6 +1712,9 @@ def test_config_loading():
     config = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
     assert config is not None
 
+    # an explicit config object short-circuits and is returned unchanged
+    assert use_config(config=config) is config
+
     # the settingsfile= argument must actually be applied, not silently ignored:
     # newsettings.cfg sets MIN_OUTPUT_SIZE/MIN_EXTRACTED_SIZE far above this doc's length
     settingsfile = path.join(RESOURCES_DIR, "newsettings.cfg")
@@ -1897,33 +1933,3 @@ def test_deprecations():
         extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
         bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG)
     assert captured and all(captured)
-
-
-
-if __name__ == '__main__':
-    test_deprecations()
-    test_config_loading()
-    test_trim()
-    test_input()
-    test_formatting()
-    test_extract_with_metadata()
-    test_exotic_tags()
-    test_images()
-    test_links()
-    test_htmlprocessing()
-    test_extraction_options()
-    test_precision_recall()
-    test_xmltocsv()
-    test_tojson()
-    test_python_output()
-    test_external()
-    test_tei()
-    test_table_processing()
-    test_list_processing()
-    test_code_blocks()
-    test_mixed_content_extraction()
-    test_nonstd_html_entities()
-    test_large_doc_performance()
-    test_lang_detection()
-    test_is_probably_readerable()
-    test_html_conversion()
