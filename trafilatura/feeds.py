@@ -52,9 +52,7 @@ FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
-LINK_ELEMENTS = re.compile(
-    r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL
-)
+LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
 
@@ -70,6 +68,7 @@ LINK_VALIDATION_RE = re.compile(
 
 class FeedParameters:
     "Store necessary information to proceed a feed."
+
     __slots__ = ["base", "domain", "ext", "lang", "ref"]
 
     def __init__(
@@ -105,14 +104,8 @@ def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
         checked = check_url(link, language=params.lang)
 
         if checked is not None:
-            if (
-                not params.ext
-                and "feed" not in link
-                and not is_similar_domain(params.domain, checked[1])
-            ):
-                LOGGER.warning(
-                    "Rejected, diverging domain names: %s %s", params.domain, checked[1]
-                )
+            if not params.ext and "feed" not in link and not is_similar_domain(params.domain, checked[1]):
+                LOGGER.warning("Rejected, diverging domain names: %s %s", params.domain, checked[1])
             else:
                 output_links.append(checked[0])
         # Feedburner/Google feeds
@@ -129,10 +122,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         if feed_string.startswith("{"):
             try:
                 # fallback: https://www.jsonfeed.org/version/1.1/
-                candidates = [
-                    item.get("url") or item.get("id")
-                    for item in json.loads(feed_string).get("items", [])
-                ]
+                candidates = [item.get("url") or item.get("id") for item in json.loads(feed_string).get("items", [])]
                 return [c for c in candidates if c is not None]
             except json.decoder.JSONDecodeError:
                 LOGGER.debug("JSON decoding error: %s", params.domain)
@@ -144,9 +134,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
     if "<link " in feed_string:
         return [
             LINK_HREF.search(link)[1]  # type: ignore[index]
-            for link in (
-                m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)
-            )
+            for link in (m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS))
             if "atom+xml" not in link and 'rel="self"' not in link
         ]
         # if '"' in feedlink:
@@ -154,10 +142,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
 
     # RSS
     if "<link>" in feed_string:
-        return [
-            m[1].strip()
-            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
-        ]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     return []
 
@@ -170,16 +155,10 @@ def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
 
     feed_links = find_links(feed_string.strip(), params)
 
-    output_links = [
-        link
-        for link in handle_link_list(feed_links, params)
-        if link != params.ref and link.count("/") > 2
-    ]
+    output_links = [link for link in handle_link_list(feed_links, params) if link != params.ref and link.count("/") > 2]
 
     if feed_links:
-        LOGGER.debug(
-            "Links found: %s of which %s valid", len(feed_links), len(output_links)
-        )
+        LOGGER.debug("Links found: %s of which %s valid", len(feed_links), len(output_links))
     else:
         LOGGER.debug("Invalid feed for %s", params.domain)
 
@@ -198,16 +177,13 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     feed_urls = [
         link.get("href", "")
         for link in tree.xpath('//link[@rel="alternate"][@href]')
-        if link.get("type") in FEED_TYPES
-        or LINK_VALIDATION_RE.search(link.get("href", ""))
+        if link.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
     ]
 
     # backup
     if not feed_urls:
         feed_urls = [
-            link.get("href", "")
-            for link in tree.xpath("//a[@href]")
-            if LINK_VALIDATION_RE.search(link.get("href", ""))
+            link.get("href", "") for link in tree.xpath("//a[@href]") if LINK_VALIDATION_RE.search(link.get("href", ""))
         ]
 
     # refine
@@ -215,33 +191,22 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     for link in dict.fromkeys(feed_urls):
         link = fix_relative_urls(params.base, link)
         link = clean_url(link)
-        if (
-            link
-            and link != params.ref
-            and is_valid_url(link)
-            and not BLACKLIST.search(link)
-        ):
+        if link and link != params.ref and is_valid_url(link) and not BLACKLIST.search(link):
             output_urls.append(link)
 
     # log result
-    LOGGER.debug(
-        "Feed URLs found: %s of which %s valid", len(feed_urls), len(output_urls)
-    )
+    LOGGER.debug("Feed URLs found: %s of which %s valid", len(feed_urls), len(output_urls))
     return output_urls
 
 
 def probe_gnews(params: FeedParameters, urlfilter: str | None) -> list[str]:
     "Alternative way to gather feed links: Google News."
     if params.lang:
-        downloaded = fetch_url(
-            f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100"
-        )
+        downloaded = fetch_url(f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100")
         if downloaded:
             feed_links = extract_links(downloaded, params)
             feed_links = filter_urls(feed_links, urlfilter)
-            LOGGER.debug(
-                "%s Google news links found for %s", len(feed_links), params.domain
-            )
+            LOGGER.debug("%s Google news links found for %s", len(feed_links), params.domain)
             return feed_links
     return []
 

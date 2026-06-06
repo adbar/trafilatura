@@ -4,6 +4,7 @@ Functions dedicated to command-line processing.
 
 try:
     import gzip
+
     HAS_GZIP = True
 except ImportError:
     HAS_GZIP = False
@@ -123,9 +124,7 @@ def check_outputdir_status(directory: str) -> bool:
             # maybe the directory has already been created
             # sleep(0.25)
             # if not path.exists(directory) or not path.isdir(directory):
-            sys.stderr.write(
-                "ERROR: Destination directory cannot be created: " + directory + "\n"
-            )
+            sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
             # raise OSError()
             return False
     return True
@@ -204,9 +203,7 @@ def write_result(
     if args.output_dir is None:
         sys.stdout.write(result + "\n")
     else:
-        destination_path, destination_dir = determine_output_path(
-            args, orig_filename, result, counter, new_filename
-        )
+        destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
             with open(destination_path, mode="w", encoding="utf-8") as outputfile:
@@ -220,9 +217,7 @@ def generate_filelist(inputdir: str) -> Generator[str, None, None]:
             yield path.join(root, fname)
 
 
-def file_processing(
-    filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None
-) -> None:
+def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None) -> None:
     "Aggregated functions to process a file in a list."
     if not options:
         options = args_to_extractor(args)
@@ -233,25 +228,19 @@ def file_processing(
 
     file_stat = stat(filename)
     ref_timestamp = min(file_stat.st_ctime, file_stat.st_mtime)
-    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).strftime(
-        "%Y-%m-%d"
-    )
+    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).strftime("%Y-%m-%d")
 
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
 
 
-def process_result(
-    htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None
-) -> int:
+def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
     # backup option
     fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else ""
     # process
     result = examine(htmlstring, args, options=options)
-    write_result(
-        result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug
-    )
+    write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
     # increment written file counter
     if counter >= 0 and result:
         counter += 1
@@ -268,9 +257,7 @@ def download_queue_processing(
     while not url_store.done:
         bufferlist, url_store = load_download_buffer(url_store, sleep_time)
         # process downloads
-        for url, result in buffered_downloads(
-            bufferlist, args.parallel, options=options
-        ):
+        for url, result in buffered_downloads(bufferlist, args.parallel, options=options):
             # handle result
             if result and isinstance(result, str):
                 options.url = url
@@ -324,14 +311,10 @@ def cli_discovery(args: argparse.Namespace) -> int:
     return exit_code
 
 
-def build_exploration_dict(
-    url_store: UrlStore, input_urls: list[str], args: argparse.Namespace
-) -> UrlStore:
+def build_exploration_dict(url_store: UrlStore, input_urls: list[str], args: argparse.Namespace) -> UrlStore:
     "Find domains for which nothing has been found and add info to the crawl dict."
     input_domains = {extract_domain(u) for u in input_urls}
-    still_to_crawl = input_domains - {
-        extract_domain(u) for u in url_store.get_known_domains()
-    }
+    still_to_crawl = input_domains - {extract_domain(u) for u in url_store.get_known_domains()}
     new_input_urls = [u for u in input_urls if extract_domain(u) in still_to_crawl]
     return add_to_compressed_dict(
         new_input_urls,
@@ -364,9 +347,7 @@ def cli_crawler(
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             if startpage:
-                param_dict[hostname] = spider.init_crawl(
-                    startpage, lang=args.target_language
-                )
+                param_dict[hostname] = spider.init_crawl(startpage, lang=args.target_language)
             # update info
             # TODO: register changes?
             # if base_url != hostname:
@@ -374,12 +355,8 @@ def cli_crawler(
 
     # iterate until the threshold is reached
     while not spider.URL_STORE.done:
-        bufferlist, spider.URL_STORE = load_download_buffer(
-            spider.URL_STORE, sleep_time
-        )
-        for url, result in buffered_response_downloads(
-            bufferlist, args.parallel, options=options
-        ):
+        bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
+        for url, result in buffered_response_downloads(bufferlist, args.parallel, options=options):
             if result and isinstance(result, Response):
                 spider.process_response(result, param_dict[get_base_url(url)])
         # early exit if maximum count is reached
@@ -394,21 +371,11 @@ def probe_homepage(args: argparse.Namespace) -> None:
     input_urls = load_input_urls(args)
     options = args_to_extractor(args)
 
-    for url, result in buffered_downloads(
-        input_urls, args.parallel, options=options
-    ):
+    for url, result in buffered_downloads(input_urls, args.parallel, options=options):
         if result is not None:
             result = html2txt(result)
-            if (
-                result
-                and len(result) > options.min_extracted_size
-                and any(c.isalpha() for c in result)
-            ):
-                if (
-                    not LANGID_FLAG
-                    or not args.target_language
-                    or language_classifier(result, "") == args.target_language
-                ):
+            if result and len(result) > options.min_extracted_size and any(c.isalpha() for c in result):
+                if not LANGID_FLAG or not args.target_language or language_classifier(result, "") == args.target_language:
                     print(url, flush=True)
 
 
@@ -442,9 +409,7 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
         url_store = UrlStore()
         url_store.add_urls(["https://web.archive.org/web/20/" + e for e in errors])
         if len(url_store.find_known_urls("https://web.archive.org")) > 0:
-            archived_errors, _ = download_queue_processing(
-                url_store, args, counter, options
-            )
+            archived_errors, _ = download_queue_processing(url_store, args, counter, options)
             LOGGER.debug(
                 "%s archived URLs out of %s could not be found",
                 len(archived_errors),
@@ -465,14 +430,10 @@ def file_processing_pipeline(args: argparse.Namespace) -> None:
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(
-            generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY
-        ):
+        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            worker = partial(
-                file_processing, args=args, counter=filecounter, options=options
-            )
+            worker = partial(file_processing, args=args, counter=filecounter, options=options)
             executor.map(worker, filebatch, chunksize=10, timeout=timeout)
             # update counter
             if filecounter >= 0:

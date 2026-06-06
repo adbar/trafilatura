@@ -41,7 +41,7 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
-CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+CODE_INDICATORS = ["{", '("', "('", "\n    "]
 
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
@@ -89,9 +89,7 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(
-    tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False
-) -> HtmlElement:
+def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if with_backup:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
@@ -122,9 +120,7 @@ def collect_link_info(
     return sum(lengths), len(mylist), shortelems, mylist
 
 
-def link_density_test(
-    element: HtmlElement, text: str, favor_precision: bool = False
-) -> tuple[bool, list[str]]:
+def link_density_test(element: HtmlElement, text: str, favor_precision: bool = False) -> tuple[bool, list[str]]:
     "Remove sections which are rich in links (probably boilerplate)"
     links_xpath = element.findall(".//ref")
     if not links_xpath:
@@ -199,12 +195,7 @@ def delete_by_link_density(
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
-        if result or (
-            backtracking
-            and templist
-            and 0 < len(elemtext) < len_threshold
-            and len(elem) >= depth_threshold
-        ):
+        if result or (backtracking and templist and 0 < len(elemtext) < len_threshold and len(elem) >= depth_threshold):
             deletions.append(elem)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
@@ -252,11 +243,7 @@ def handle_textnode(
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if (
-        not elem.text
-        and textfilter(elem)
-        or (options.dedup and duplicate_test(elem, options))
-    ):
+    if not elem.text and textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
         return None
     return elem
 
@@ -315,6 +302,7 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
+
 def _is_code_block(text: str | None) -> bool:
     "Check if the element text is part of a code block."
     if not text:
@@ -323,6 +311,7 @@ def _is_code_block(text: str | None) -> bool:
         if indicator in text:
             return True
     return False
+
 
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
@@ -384,9 +373,7 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
         elem.set("target", target)
 
 
-def convert_tags(
-    tree: HtmlElement, options: Extractor, url: str | None = None
-) -> HtmlElement:
+def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing
     if not options.links:

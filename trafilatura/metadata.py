@@ -46,15 +46,11 @@ META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 
-HTMLTITLE_REGEX = re.compile(
-    r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$"
-)  # part without dots?
+HTMLTITLE_REGEX = re.compile(r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$")  # part without dots?
 
 CLEAN_META_TAGS = re.compile(r'["\']')
 
-LICENSE_REGEX = re.compile(
-    r"/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])"
-)
+LICENSE_REGEX = re.compile(r"/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])")
 TEXT_LICENSE_REGEX = re.compile(
     r"(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?",
     re.I,
@@ -149,11 +145,7 @@ OG_PROPERTIES = {
 
 OG_AUTHOR = {"og:author", "og:article:author"}
 
-URL_SELECTORS = [
-    './/head//link[@rel="canonical"]',
-    './/head//base',
-    './/head//link[@rel="alternate"][@hreflang="x-default"]'
-]
+URL_SELECTORS = ['.//head//link[@rel="canonical"]', ".//head//base", './/head//link[@rel="alternate"][@hreflang="x-default"]']
 
 
 def normalize_tags(tags: str) -> str:
@@ -168,11 +160,7 @@ def normalize_tags(tags: str) -> str:
 def check_authors(authors: str, author_blacklist: set[str]) -> str | None:
     "Check if the authors string correspond to expected values."
     author_blacklist = {a.lower() for a in author_blacklist}
-    new_authors = [
-        author.strip()
-        for author in authors.split(";")
-        if author.strip().lower() not in author_blacklist
-    ]
+    new_authors = [author.strip() for author in authors.split(";") if author.strip().lower() not in author_blacklist]
     if new_authors:
         return "; ".join(new_authors).strip("; ")
     return None
@@ -180,9 +168,7 @@ def check_authors(authors: str, author_blacklist: set[str]) -> str | None:
 
 def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
     """Parse and extract metadata from JSON-LD data"""
-    for elem in tree.xpath(
-        './/script[@type="application/ld+json" or @type="application/settings+json"]'
-    ):
+    for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
         element_text = normalize_json(JSON_MINIFY.sub(r"\1", elem.text))
@@ -196,9 +182,7 @@ def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
 
 def extract_opengraph(tree: HtmlElement) -> dict[str, str | None]:
     """Search meta tags following the OpenGraph guidelines (https://ogp.me/)"""
-    result = dict.fromkeys(
-        ("title", "author", "url", "description", "sitename", "image", "pagetype")
-    )
+    result = dict.fromkeys(("title", "author", "url", "description", "sitename", "image", "pagetype"))
 
     # detect OpenGraph schema
     for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
@@ -274,18 +258,14 @@ def examine_meta(tree: HtmlElement) -> Document:
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 metadata.sitename = metadata.sitename or content_attr
-            # image    
+            # image
             elif name_attr in METANAME_IMAGE:
                 metadata.image = metadata.image or content_attr
             # twitter
             elif name_attr in TWITTER_ATTRS or "twitter:app:name" in name_attr:
                 backup_sitename = content_attr
             # url
-            elif (
-                name_attr == "twitter:url"
-                and not metadata.url
-                and is_valid_url(content_attr)
-            ):
+            elif name_attr == "twitter:url" and not metadata.url and is_valid_url(content_attr):
                 metadata.url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'
@@ -317,9 +297,7 @@ def examine_meta(tree: HtmlElement) -> Document:
     return metadata
 
 
-def extract_metainfo(
-    tree: HtmlElement, expressions: list[XPath], len_limit: int = 200
-) -> str | None:
+def extract_metainfo(tree: HtmlElement, expressions: list[XPath], len_limit: int = 200) -> str | None:
     """Extract meta information"""
     # try all XPath expressions
     for expression in expressions:
@@ -330,9 +308,7 @@ def extract_metainfo(
             if content and 2 < len(content) < len_limit:
                 return content
         if len(results) > 1:
-            LOGGER.debug(
-                "more than one invalid result: %s %s", expression, len(results)
-            )
+            LOGGER.debug("more than one invalid result: %s %s", expression, len(results))
     return None
 
 
@@ -428,18 +404,12 @@ def extract_catstags(metatype: str, tree: HtmlElement) -> list[str]:
     xpath_expression = CATEGORIES_XPATHS if metatype == "category" else TAGS_XPATHS
     # search using custom expressions
     for catexpr in xpath_expression:
-        results.extend(
-            elem.text_content()
-            for elem in catexpr(tree)
-            if re.search(regexpr, elem.attrib["href"])
-        )
+        results.extend(elem.text_content() for elem in catexpr(tree) if re.search(regexpr, elem.attrib["href"]))
         if results:
             break
     # category fallback
     if metatype == "category" and not results:
-        for element in tree.xpath(
-            './/head//meta[@property="article:section" or contains(@name, "subject")][@content]'
-        ):
+        for element in tree.xpath('.//head//meta[@property="article:section" or contains(@name, "subject")][@content]'):
             results.append(element.attrib["content"])
         # optional: search through links
         # if not results:
@@ -474,9 +444,7 @@ def extract_license(tree: HtmlElement) -> str | None:
         if result is not None:
             return result
     # probe footer elements for CC links
-    for element in tree.xpath(
-        './/footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'
-    ):
+    for element in tree.xpath('.//footer//a[@href]|.//div[contains(@class, "footer") or contains(@id, "footer")]//a[@href]'):
         result = parse_license_element(element, strict=True)
         if result is not None:
             return result
@@ -564,11 +532,7 @@ def extract_metadata(
         # scrap Twitter ID
         metadata.sitename = metadata.sitename.lstrip("@")
         # capitalize
-        if (
-            metadata.sitename
-            and "." not in metadata.sitename
-            and not metadata.sitename[0].isupper()
-        ):
+        if metadata.sitename and "." not in metadata.sitename and not metadata.sitename[0].isupper():
             metadata.sitename = metadata.sitename.title()
     # use URL
     elif metadata.url:

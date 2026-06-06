@@ -24,9 +24,7 @@ SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
 SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # for bare_extraction() only
 
 
-def use_config(
-    filename: str | None = None, config: ConfigParser | None = None
-) -> ConfigParser:
+def use_config(filename: str | None = None, config: ConfigParser | None = None) -> ConfigParser:
     """
     Use configuration object or read and parse a settings file.
     """
@@ -66,6 +64,7 @@ def _get_optional_int(config: ConfigParser, option: str) -> int | None:
 # todo Python >= 3.10: use dataclass with slots=True
 class Extractor:
     "Defines a class to store all extraction options."
+
     __slots__ = [
         "config",
         # general
@@ -141,9 +140,7 @@ class Extractor:
         # single normalization point: an explicit config=None falls back to defaults
         self._add_config(config or DEFAULT_CONFIG)
         self.fast: bool = fast
-        self.focus: str = (
-            "recall" if recall else "precision" if precision else "balanced"
-        )
+        self.focus: str = "recall" if recall else "precision" if precision else "balanced"
         self.comments: bool = comments
         self.formatting: bool = formatting or self.format == "markdown"
         self.links: bool = links
@@ -156,12 +153,7 @@ class Extractor:
         self.tei_validation: bool = tei_validation
         self.author_blacklist: set[str] = author_blacklist or set()
         self.url_blacklist: set[str] = url_blacklist or set()
-        self.with_metadata: bool = (
-            with_metadata
-            or only_with_metadata
-            or bool(url_blacklist)
-            or output_format == "xmltei"
-        )
+        self.with_metadata: bool = with_metadata or only_with_metadata or bool(url_blacklist) or output_format == "xmltei"
         self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
@@ -175,9 +167,7 @@ class Extractor:
     def _set_format(self, chosen_format: str) -> None:
         "Store the format if supported and raise an error otherwise."
         if chosen_format not in SUPPORTED_FORMATS:
-            raise AttributeError(
-                f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}"
-            )
+            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
         self.format = chosen_format
 
     def _add_config(self, config: ConfigParser) -> None:
@@ -221,6 +211,7 @@ def set_date_params(extensive: bool = True) -> dict[str, Any]:
 # todo Python >= 3.10: use dataclass with slots=True
 class Document:
     "Defines a class to store all necessary data and metadata fields for extracted information."
+
     __slots__ = [
         "title",
         "author",
@@ -294,7 +285,7 @@ class Document:
         self.filedate: str | None = filedate
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> 'Document':
+    def from_dict(cls, data: dict[str, Any]) -> "Document":
         "Set a series of attributes using a dictionary."
         doc = cls()
         for key, value in data.items():
@@ -445,13 +436,9 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-BASIC_CLEAN_XPATH = XPath(
-    ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style"
-)
+BASIC_CLEAN_XPATH = XPath(".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style")
 
-TAG_CATALOG = frozenset(
-    ["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"]
-)
+TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
 # + list(CUT_EMPTY_ELEMS)
 
 # mapping for languages known to py3langid

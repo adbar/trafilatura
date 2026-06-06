@@ -41,6 +41,7 @@ MAX_KNOWN_URLS = 100000
 
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
+
     __slots__ = ["start", "base", "lang", "rules", "ref", "i", "known_num", "is_on", "prune_xpath"]
 
     def __init__(
@@ -84,16 +85,10 @@ class CrawlParameters:
 
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type and crawl breadth."
-        return (
-            (not self.rules or self.rules.can_fetch("*", link))
-            and self.ref in link
-            and not is_not_crawlable(link)
-        )
+        return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
 
 
-def refresh_detection(
-    htmlstring: str, homepage: str
-) -> tuple[str | None, str | None]:
+def refresh_detection(htmlstring: str, homepage: str) -> tuple[str | None, str | None]:
     "Check if there could be a redirection by meta-refresh tag."
     if '"refresh"' not in htmlstring and '"REFRESH"' not in htmlstring:
         return htmlstring, homepage
@@ -104,9 +99,7 @@ def refresh_detection(
 
     # test meta-refresh redirection
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
-    results = html_tree.xpath(
-        './/meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content'
-    )
+    results = html_tree.xpath('.//meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content')
 
     result = results[0] if results else ""
 
@@ -203,11 +196,7 @@ def process_links(
         return
 
     if htmlstring and params.prune_xpath is not None:
-        xpaths = (
-            [params.prune_xpath]
-            if isinstance(params.prune_xpath, str)
-            else params.prune_xpath
-        )
+        xpaths = [params.prune_xpath] if isinstance(params.prune_xpath, str) else params.prune_xpath
         tree = load_html(htmlstring)
         if tree is not None:
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
@@ -335,14 +324,10 @@ def focused_crawler(
     """
     params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath)
 
-    sleep_time = URL_STORE.get_crawl_delay(
-        params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME")
-    )
+    sleep_time = URL_STORE.get_crawl_delay(params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME"))
 
     # visit pages until a limit is reached
-    while (
-        params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls
-    ):
+    while params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls:
         params = crawl_page(params)
         sleep(sleep_time)
 

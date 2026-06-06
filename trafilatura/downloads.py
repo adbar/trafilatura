@@ -78,9 +78,7 @@ def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 if HAS_ZSTD and "zstd" not in DEFAULT_HEADERS["accept-encoding"]:
     DEFAULT_HEADERS["accept-encoding"] += ",zstd"
-USER_AGENT = (
-    "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
-)
+USER_AGENT = "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 DEFAULT_HEADERS["User-Agent"] = USER_AGENT
 
 FORCE_STATUS = [
@@ -108,6 +106,7 @@ CURL_SSL_ERRORS = {35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91}
 
 class Response:
     "Store information gathered in a HTTP response object."
+
     __slots__ = ["data", "headers", "html", "status", "url"]
 
     def __init__(self, data: bytes, status: int, url: str) -> None:
@@ -151,9 +150,7 @@ def _parse_config(config: ConfigParser) -> tuple[list[str] | None, str | None]:
     return agent_list, mycookie
 
 
-def _determine_headers(
-    config: ConfigParser, headers: dict[str, str] | None = None
-) -> dict[str, str]:
+def _determine_headers(config: ConfigParser, headers: dict[str, str] | None = None) -> dict[str, str]:
     "Internal function to decide on user-agent string."
     if config != DEFAULT_CONFIG:
         myagents, mycookie = _parse_config(config)
@@ -172,9 +169,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint(
-                "DEFAULT", "MAX_REDIRECTS"
-            ),  # raise_on_redirect=False,
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
@@ -183,9 +178,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     return RETRY_STRATEGY
 
 
-def _initiate_pool(
-    config: ConfigParser, no_ssl: bool = False
-) -> urllib3.PoolManager | Any:
+def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager | Any:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
     pool = NO_CERT_POOL if no_ssl else HTTP_POOL
@@ -206,9 +199,7 @@ def _initiate_pool(
     return pool
 
 
-def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Response | None:
+def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
         pool_manager = _initiate_pool(config, no_ssl=no_ssl)
@@ -384,9 +375,7 @@ def add_to_compressed_dict(
     inputlist = list(dict.fromkeys(inputlist))
 
     if blacklist:
-        inputlist = [
-            u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist
-        ]
+        inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist]
 
     if url_filter:
         inputlist = [u for u in inputlist if any(f in u for f in url_filter)]
@@ -395,9 +384,7 @@ def add_to_compressed_dict(
     return url_store
 
 
-def load_download_buffer(
-    url_store: UrlStore, sleep_time: float = 5.0
-) -> tuple[list[str], UrlStore]:
+def load_download_buffer(url_store: UrlStore, sleep_time: float = 5.0) -> tuple[list[str], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
@@ -444,16 +431,12 @@ def buffered_response_downloads(
     return _buffered_downloads(bufferlist, download_threads, worker)
 
 
-def _send_pycurl_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Response | None:
+def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
     """Experimental function using libcurl and pycurl to speed up downloads"""
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    headerlist = [
-        f"{header}: {content}" for header, content in _determine_headers(config).items()
-    ]
+    headerlist = [f"{header}: {content}" for header, content in _determine_headers(config).items()]
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
@@ -505,17 +488,13 @@ def _send_pycurl_request(
     # additional info
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
-    resp = Response(
-        bufferbytes, curl.getinfo(pycurl.RESPONSE_CODE), curl.getinfo(pycurl.EFFECTIVE_URL)
-    )
+    resp = Response(bufferbytes, curl.getinfo(pycurl.RESPONSE_CODE), curl.getinfo(pycurl.EFFECTIVE_URL))
     curl.close()
 
     if with_headers:
         respheaders = {}
         # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
-        for line in (
-            headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines()
-        ):
+        for line in headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines():
             # re.split(r'\r?\n') ?
             # This will botch headers that are split on multiple lines...
             if ":" not in line:
