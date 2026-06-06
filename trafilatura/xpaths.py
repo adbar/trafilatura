@@ -6,8 +6,6 @@ and to extract metadata.
 
 from lxml.etree import XPath
 
-
-
 regexpNS = 'http://exslt.org/regular-expressions'
 
 

@@ -41,12 +41,12 @@ from trafilatura.external import jt_stoplist_init
 
 # custom
 from justext.core import (ParagraphMaker, classify_paragraphs,
-                          preprocessor, revise_paragraph_classification)
+                          revise_paragraph_classification)
 from trafilatura.baseline import basic_cleaning
-from trafilatura.htmlprocessing import tree_cleaning, prune_unwanted_nodes
+from trafilatura.htmlprocessing import tree_cleaning
 from trafilatura.readability_lxml import Document as ReadabilityDocument
 from trafilatura.settings import Extractor
-from trafilatura.utils import load_html, trim
+from trafilatura.utils import load_html
 
 
 boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
@@ -89,7 +89,7 @@ def run_custom_2(htmlbinary):
     try:
         doc = ReadabilityDocument(tree, min_text_length=25, retry_length=250)
         return doc.summary()
-    except Exception as err:
+    except Exception:
         return ""
 
 
@@ -242,7 +242,7 @@ def run_newsplease(htmlbinary):
     try:
         article = NewsPlease.from_html(htmlbinary, url=None)
         return article.maintext
-    except Exception as err:
+    except Exception:
         #print('Newsplease exception:', err)
         return ''
 
@@ -478,7 +478,7 @@ class Evaluation():
                 true_negatives += len(item['without'])
         # full article body in gold standard
         elif self.evaltype == 'fullstring':
-            n_grams = None  # TODO ngram shingling
+            pass  # TODO ngram shingling
         return true_positives, false_negatives, false_positives, true_negatives
 
     def predict(self, dict_result, htmlstring):

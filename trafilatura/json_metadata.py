@@ -6,13 +6,12 @@ For reference, here is the list of all JSON-LD types: https://schema.org/docs/fu
 import json
 import logging
 import re
-
 from html import unescape
-from typing import Any, Dict, List, Optional, Pattern, Union
+from re import Pattern
+from typing import Any
 
 from .settings import Document
 from .utils import HTML_STRIP_TAGS, trim
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -58,7 +57,7 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     "]+", flags=re.UNICODE)
 
 
-def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Optional[str] = None) -> bool:
+def is_plausible_sitename(metadata: Document, candidate: Any, content_type: str | None = None) -> bool:
     '''Determine if the candidate should be used as sitename.'''
     if candidate and isinstance(candidate, str):
         if not metadata.sitename or (len(metadata.sitename) < len(candidate) and content_type != "webpage"):
@@ -70,7 +69,7 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: Opti
 
 def process_parent(parent: Any, metadata: Document) -> Document:
     "Find and extract selected metadata from JSON parts."
-    for content in filter(None, parent):  # type: Dict[str, Any]
+    for content in filter(None, parent):  # type: dict[str, Any]
         # publisher may be a bare string, not a dict
         publisher = content.get('publisher')
         if isinstance(publisher, dict) and 'name' in publisher:
@@ -145,7 +144,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
     return metadata
 
 
-def extract_json(schema: Union[List[Any], Dict[str, str]], metadata: Document) -> Document:
+def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Document:
     '''Parse and extract metadata from JSON-LD data'''
     if isinstance(schema, dict):
         schema = [schema]
@@ -167,7 +166,7 @@ def extract_json(schema: Union[List[Any], Dict[str, str]], metadata: Document) -
     return metadata
 
 
-def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> Optional[str]:
+def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> str | None:
     '''Crudely extract author names from JSON-LD data'''
     authors = None
     mymatch = regular_expression.search(elemtext)
@@ -234,7 +233,7 @@ def normalize_json(string: str) -> str:
     return trim(JSON_REMOVE_HTML.sub('', string))
 
 
-def normalize_authors(current_authors: Optional[str], author_string: str) -> Optional[str]:
+def normalize_authors(current_authors: str | None, author_string: str) -> str | None:
     '''Normalize author info to focus on author names only'''
     new_authors = []
     if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):

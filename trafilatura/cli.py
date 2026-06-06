@@ -5,17 +5,21 @@ Implementing a basic command-line interface.
 import argparse
 import logging
 import sys
-
 from importlib.metadata import version
 from platform import python_version
-from typing import Any
 
-from .cli_utils import (cli_crawler, cli_discovery, examine,
-                        file_processing_pipeline, load_blacklist,
-                        load_input_dict, probe_homepage,
-                        url_processing_pipeline, write_result)
+from .cli_utils import (
+    cli_crawler,
+    cli_discovery,
+    examine,
+    file_processing_pipeline,
+    load_blacklist,
+    load_input_dict,
+    probe_homepage,
+    url_processing_pipeline,
+    write_result,
+)
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
-
 
 # fix output encoding on some systems
 if sys.stdout.encoding != 'UTF-8' and hasattr(sys.stdout, 'reconfigure'):
@@ -24,7 +28,7 @@ if sys.stderr.encoding != 'UTF-8' and hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8')
 
 
-def add_args(parser: Any) -> Any:
+def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     "Add argument groups and arguments to parser."
 
     group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
@@ -171,7 +175,7 @@ def add_args(parser: Any) -> Any:
     return parser
 
 
-def parse_args(args: Any) -> Any:
+def parse_args(args: list[str]) -> argparse.Namespace:
     """Define parser for command-line arguments"""
     parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
     parser = add_args(parser)
@@ -179,7 +183,7 @@ def parse_args(args: Any) -> Any:
     return map_args(parser.parse_args())
 
 
-def map_args(args: Any) -> Any:
+def map_args(args: argparse.Namespace) -> argparse.Namespace:
     '''Map existing options to format and output choices.'''
     # formats
     for otype in ("csv", "html", "json", "markdown", "xml", "xmltei"):
@@ -195,7 +199,7 @@ def main() -> None:
     process_args(args)
 
 
-def process_args(args: Any) -> None:
+def process_args(args: argparse.Namespace) -> None:
     """Perform the actual processing according to the arguments"""
     exit_code = 0
 

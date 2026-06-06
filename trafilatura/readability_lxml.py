@@ -19,10 +19,9 @@ License of forked code: Apache-2.0.
 
 import logging
 import re
-
 from math import sqrt
 from operator import attrgetter
-from typing import Any, Dict, Optional, Set
+from typing import Any
 
 from lxml.etree import tostring
 from lxml.html import HtmlElement, fragment_fromstring
@@ -165,7 +164,7 @@ class Document:
                 continue
             return cleaned_article
 
-    def get_article(self, candidates: Dict[HtmlElement, Candidate], best_candidate: Candidate) -> HtmlElement:
+    def get_article(self, candidates: dict[HtmlElement, Candidate], best_candidate: Candidate) -> HtmlElement:
         # Now that we have the top candidate, look through its siblings for
         # content that might also be related.
         # Things like preambles, content split by ads that we removed, etc.
@@ -206,7 +205,7 @@ class Document:
         #    output.append(best_candidate.elem)
         return output
 
-    def select_best_candidate(self, candidates: Dict[HtmlElement, Candidate]) -> Optional[Candidate]:
+    def select_best_candidate(self, candidates: dict[HtmlElement, Candidate]) -> Candidate | None:
         if not candidates:
             return None
         sorted_candidates = sorted(
@@ -222,7 +221,7 @@ class Document:
         link_length = sum(text_length(link) for link in elem.findall(".//a"))
         return link_length / total_length
 
-    def score_paragraphs(self) -> Dict[HtmlElement, Candidate]:
+    def score_paragraphs(self) -> dict[HtmlElement, Candidate]:
         candidates = {}
 
         for elem in self.doc.iter("p", "pre", "td"):
@@ -323,7 +322,7 @@ class Document:
                 if child.tag == "br":
                     child.drop_tree()
 
-    def sanitize(self, node: HtmlElement, candidates: Dict[HtmlElement, Candidate]) -> str:
+    def sanitize(self, node: HtmlElement, candidates: dict[HtmlElement, Candidate]) -> str:
         for header in node.iter("h1", "h2", "h3", "h4", "h5", "h6"):
             if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
                 header.drop_tree()
@@ -337,7 +336,7 @@ class Document:
             else:
                 elem.drop_tree()
 
-        allowed: Set[HtmlElement] = set()
+        allowed: set[HtmlElement] = set()
         # Conditionally clean <table>s, <ul>s, and <div>s
         for elem in reversed(
             node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")
@@ -472,10 +471,11 @@ def is_node_visible(node: HtmlElement) -> bool:
     return True
 
 
-def is_probably_readerable(html: HtmlElement, options: Any={}) -> bool:
+def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | None = None) -> bool:
     """
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
+    options = options or {}
     doc = load_html(html)
     if doc is None:
         return False

@@ -4,25 +4,22 @@ Functions to process nodes in HTML code.
 """
 
 import logging
-
 from copy import deepcopy
-from typing import List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
 from .settings import (
-    Document,
-    Extractor,
     CUT_EMPTY_ELEMS,
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
+    Document,
+    Extractor,
 )
-from .utils import textfilter, trim, is_image_element
+from .utils import is_image_element, textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -93,7 +90,7 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
 
 
 def prune_unwanted_nodes(
-    tree: HtmlElement, nodelist: List[XPath], with_backup: bool = False
+    tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False
 ) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if with_backup:
@@ -115,19 +112,19 @@ def prune_unwanted_nodes(
 
 
 def collect_link_info(
-    links_xpath: List[HtmlElement],
-) -> Tuple[int, int, int, List[str]]:
+    links_xpath: list[HtmlElement],
+) -> tuple[int, int, int, list[str]]:
     "Collect heuristics on link text"
     mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
     lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
-    shortelems = sum(1 for l in lengths if l < 10)
+    shortelems = sum(1 for length in lengths if length < 10)
     return sum(lengths), len(mylist), shortelems, mylist
 
 
 def link_density_test(
     element: HtmlElement, text: str, favor_precision: bool = False
-) -> Tuple[bool, List[str]]:
+) -> tuple[bool, list[str]]:
     "Remove sections which are rich in links (probably boilerplate)"
     links_xpath = element.findall(".//ref")
     if not links_xpath:
@@ -135,7 +132,7 @@ def link_density_test(
     # preserve image containers
     if element.find(".//graphic") is not None:
         return False, []
-    mylist: List[str] = []
+    mylist: list[str] = []
     # shortcut
     if len(links_xpath) == 1:
         len_threshold = 10 if favor_precision else 100
@@ -223,7 +220,7 @@ def handle_textnode(
     options: Extractor,
     comments_fix: bool = True,
     preserve_spaces: bool = False,
-) -> Optional[_Element]:
+) -> _Element | None:
     "Convert, format, and probe potential text elements."
     if elem.tag == "graphic" and is_image_element(elem):
         return elem
@@ -264,7 +261,7 @@ def handle_textnode(
     return elem
 
 
-def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
+def process_node(elem: _Element, options: Extractor) -> _Element | None:
     "Convert, format, and probe potential text elements (light format)."
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
@@ -318,7 +315,7 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
-def _is_code_block(text: Optional[str]) -> bool:
+def _is_code_block(text: str | None) -> bool:
     "Check if the element text is part of a code block."
     if not text:
         return False
@@ -375,7 +372,7 @@ CONVERSIONS = {
 }
 
 
-def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
+def convert_link(elem: HtmlElement, base_url: str | None) -> None:
     "Replace link tags and href attributes, delete the rest."
     elem.tag = "ref"
     target = elem.get("href")  # defaults to None
@@ -388,7 +385,7 @@ def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
 
 
 def convert_tags(
-    tree: HtmlElement, options: Extractor, url: Optional[str] = None
+    tree: HtmlElement, options: Extractor, url: str | None = None
 ) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing

@@ -4,10 +4,9 @@ Module regrouping baseline and basic extraction functions.
 # pylint:disable-msg=E0611
 
 import json
+from typing import Any
 
-from typing import Any, Tuple
-
-from lxml.etree import _Element, Element, SubElement
+from lxml.etree import Element, SubElement, _Element
 from lxml.html import HtmlElement
 
 from .settings import BASIC_CLEAN_XPATH
@@ -22,7 +21,7 @@ def basic_cleaning(tree: HtmlElement) -> HtmlElement:
     return tree
 
 
-def baseline(filecontent: Any) -> Tuple[_Element, str, int]:
+def baseline(filecontent: Any) -> tuple[_Element, str, int]:
     """Use baseline extraction function targeting text paragraphs and/or JSON metadata.
 
     Args:
