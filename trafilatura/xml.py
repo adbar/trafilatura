@@ -5,21 +5,25 @@ All functions related to XML generation, processing and validation.
 
 import csv
 import logging
-
 from html import unescape
 from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
-from typing import List, Optional
 
-from lxml.etree import (_Element, Element, SubElement, XMLParser,
-                        fromstring, tostring, DTD)
+from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring, tostring
 
 from .settings import Document, Extractor
-from .utils import is_element_in_item, is_first_element_in_item, is_in_table_cell, is_last_element_in_cell, \
-    is_last_element_in_item, sanitize, sanitize_tree, text_chars_test
-
+from .utils import (
+    is_element_in_item,
+    is_first_element_in_item,
+    is_in_table_cell,
+    is_last_element_in_cell,
+    is_last_element_in_item,
+    sanitize,
+    sanitize_tree,
+    text_chars_test,
+)
 
 LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
@@ -194,7 +198,7 @@ def build_tei_output(docmeta: Document) -> _Element:
     return output
 
 
-def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
+def check_tei(xmldoc: _Element, url: str | None) -> _Element:
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
     for elem in xmldoc.iter('head'):
@@ -305,7 +309,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     return elem_text
 
 
-def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
+def process_element(element: _Element, returnlist: list[str], include_formatting: bool) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
     if element.tag == 'cell' and element.getprevious() is None:
         returnlist.append('| ')
@@ -376,12 +380,12 @@ def process_element(element: _Element, returnlist: List[str], include_formatting
         returnlist.append('\n')
 
 
-def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
+def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
     if xmloutput is None:
         return ""
 
-    returnlist: List[str] = []
+    returnlist: list[str] = []
 
     process_element(xmloutput, returnlist, include_formatting)
 

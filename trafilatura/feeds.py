@@ -5,10 +5,8 @@ Examining feeds and extracting links for further processing.
 import json
 import logging
 import re
-
 from itertools import islice
 from time import sleep
-from typing import List, Optional
 
 from courlan import (
     check_url,
@@ -80,12 +78,12 @@ class FeedParameters:
         domain: str,
         reference: str,
         external: bool = False,
-        target_lang: Optional[str] = None,
+        target_lang: str | None = None,
     ) -> None:
         self.base: str = baseurl
         self.domain: str = domain
         self.ext: bool = external
-        self.lang: Optional[str] = target_lang
+        self.lang: str | None = target_lang
         self.ref: str = reference
 
 
@@ -97,7 +95,7 @@ def is_potential_feed(feed_string: str) -> bool:
     return "<rss" in beginning or "<feed" in beginning
 
 
-def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
+def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
     """Examine links to determine if they are valid and
     lead to a web page"""
     output_links = []
@@ -124,7 +122,7 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
     return output_links
 
 
-def find_links(feed_string: str, params: FeedParameters) -> List[str]:
+def find_links(feed_string: str, params: FeedParameters) -> list[str]:
     "Try different feed types and return the corresponding links."
     if not is_potential_feed(feed_string):
         # JSON
@@ -164,7 +162,7 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
     return []
 
 
-def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
+def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
     "Extract and refine links from Atom, RSS and JSON feeds."
     if not feed_string:
         LOGGER.debug("Empty feed: %s", params.domain)
@@ -188,7 +186,7 @@ def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
     return output_links
 
 
-def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
+def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     """Parse the HTML and try to extract feed URLs from the home page.
     Adapted from http://www.aaronsw.com/2002/feedfinder/"""
     tree = load_html(htmlstring)
@@ -232,7 +230,7 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
     return output_urls
 
 
-def probe_gnews(params: FeedParameters, urlfilter: Optional[str]) -> List[str]:
+def probe_gnews(params: FeedParameters, urlfilter: str | None) -> list[str]:
     "Alternative way to gather feed links: Google News."
     if params.lang:
         downloaded = fetch_url(
@@ -250,10 +248,10 @@ def probe_gnews(params: FeedParameters, urlfilter: Optional[str]) -> List[str]:
 
 def find_feed_urls(
     url: str,
-    target_lang: Optional[str] = None,
+    target_lang: str | None = None,
     external: bool = False,
     sleep_time: float = 2.0,
-) -> List[str]:
+) -> list[str]:
     """Try to find feed URLs.
 
     Args:
@@ -305,7 +303,7 @@ def find_feed_urls(
     return probe_gnews(params, urlfilter)
 
 
-def try_homepage(baseurl: str, target_lang: Optional[str]) -> List[str]:
+def try_homepage(baseurl: str, target_lang: str | None) -> list[str]:
     """Shift into reverse and try the homepage instead of the particular feed
     page that was given as input."""
     LOGGER.debug("Probing homepage for feeds instead: %s", baseurl)

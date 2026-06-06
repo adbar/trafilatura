@@ -5,25 +5,33 @@ Functions related to the main Trafilatura extractor.
 
 import logging
 import re  # import regex as re
-
 from copy import deepcopy
-from typing import Any, Optional, Tuple, Set, Union
+from typing import Any
 from urllib.parse import urljoin
 
-from lxml.etree import _Element, Element, SubElement, strip_elements, strip_tags, tostring
+from lxml.etree import Element, SubElement, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
-from .htmlprocessing import (delete_by_link_density, handle_textnode,
-                             link_density_test_tables, process_node,
-                             prune_unwanted_nodes)
+from .htmlprocessing import (
+    delete_by_link_density,
+    handle_textnode,
+    link_density_test_tables,
+    process_node,
+    prune_unwanted_nodes,
+)
 from .settings import TAG_CATALOG, Extractor
 from .utils import FORMATTING_PROTECTED, copy_attributes, is_image_file, text_chars_test, trim
 from .xml import delete_element
-from .xpaths import (BODY_XPATH, COMMENTS_DISCARD_XPATH, COMMENTS_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, OVERALL_DISCARD_XPATH,
-                     PRECISION_DISCARD_XPATH, TEASER_DISCARD_XPATH)
-
+from .xpaths import (
+    BODY_XPATH,
+    COMMENTS_DISCARD_XPATH,
+    COMMENTS_XPATH,
+    DISCARD_IMAGE_ELEMENTS,
+    OVERALL_DISCARD_XPATH,
+    PRECISION_DISCARD_XPATH,
+    TEASER_DISCARD_XPATH,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -36,12 +44,12 @@ CODES_QUOTES = {'code', 'quote'}
 NOT_AT_THE_END = {'head', 'ref'}
 
 
-def _log_event(msg: str, tag: Any, text: Optional[Union[bytes, str]]) -> None:
+def _log_event(msg: str, tag: Any, text: bytes | str | None) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
 
-def handle_titles(element: _Element, options: Extractor) -> Optional[_Element]:
+def handle_titles(element: _Element, options: Extractor) -> _Element | None:
     '''Process head elements (titles)'''
     if len(element) == 0:
         # maybe needs attention?
@@ -67,7 +75,7 @@ def handle_titles(element: _Element, options: Extractor) -> Optional[_Element]:
     return None
 
 
-def handle_formatting(element: _Element, options: Extractor) -> Optional[_Element]:
+def handle_formatting(element: _Element, options: Extractor) -> _Element | None:
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
     formatting = process_node(element, options)
@@ -161,7 +169,7 @@ def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
             copy_attributes(childelem, processed_elem)
 
 
-def handle_lists(element: _Element, options: Extractor) -> Optional[_Element]:
+def handle_lists(element: _Element, options: Extractor) -> _Element | None:
     "Process lists elements including their descendants."
     processed_element = Element(element.tag)
 
@@ -227,7 +235,7 @@ def handle_code_blocks(element: _Element) -> _Element:
     return processed_element
 
 
-def handle_quotes(element: _Element, options: Extractor) -> Optional[_Element]:
+def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
     "Process quotes elements."
     if is_code_block_element(element):
         return handle_code_blocks(element)
@@ -245,7 +253,7 @@ def handle_quotes(element: _Element, options: Extractor) -> Optional[_Element]:
     return None
 
 
-def handle_other_elements(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
+def handle_other_elements(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Handle diverse or unknown elements in the scope of relevant tags."
     # handle w3schools code
     if element.tag == "div" and "w3-code" in element.get("class", ""):
@@ -272,7 +280,7 @@ def handle_other_elements(element: _Element, potential_tags: Set[str], options: 
     return None
 
 
-def handle_paragraphs(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
+def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process paragraphs along with their children, trim and clean the content."
     element.attrib.clear()  # todo: test if necessary
     # strip_tags(element, 'p') # change in precision due to spaces?
@@ -363,7 +371,7 @@ def define_cell_type(is_header: bool) -> _Element:
     return cell_element
 
 
-def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
+def handle_table(table_elem: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process single table element."
     newtable = Element("table")
 
@@ -453,7 +461,7 @@ def handle_table(table_elem: _Element, potential_tags: Set[str], options: Extrac
     return None
 
 
-def handle_image(element: Optional[_Element], options: Optional[Extractor] = None) -> Optional[_Element]:
+def handle_image(element: _Element | None, options: Extractor | None = None) -> _Element | None:
     "Process image elements and their relevant attributes."
     if element is None:
         return None
@@ -495,7 +503,7 @@ def handle_image(element: Optional[_Element], options: Optional[Extractor] = Non
     return processed_element
 
 
-def handle_textelem(element: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
+def handle_textelem(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     '''Process text element and determine how to deal with its content'''
     new_element = None
     # bypass: nested elements
@@ -549,7 +557,7 @@ def recover_wild_text(tree: HtmlElement, result_body: _Element, options: Extract
     return result_body
 
 
-def prune_unwanted_sections(tree: HtmlElement, potential_tags: Set[str], options: Extractor) -> HtmlElement:
+def prune_unwanted_sections(tree: HtmlElement, potential_tags: set[str], options: Extractor) -> HtmlElement:
     'Rule-based deletion of targeted document sections'
     favor_precision = options.focus == "precision"
     # prune the rest
@@ -583,7 +591,7 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: Set[str], options
     return tree
 
 
-def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[str]]:
+def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
     if options.tables is True:
@@ -610,7 +618,7 @@ def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[
             factor = 1
         else:
             factor = 3
-        if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:  # type: ignore[attr-defined]
+        if not ptest or len(''.join(ptest)) < options.min_extracted_size * factor:
             potential_tags.add('div')
         # polish list of potential tags
         if 'ref' not in potential_tags:
@@ -636,7 +644,7 @@ def _extract(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, Set[
     return result_body, temp_text, potential_tags
 
 
-def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, int]:
+def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Element, str, int]:
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -649,7 +657,7 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> Tuple[_Ele
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:  # type: ignore[attr-defined]
+    if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = ' '.join(result_body.itertext()).strip()
     # filter output
@@ -659,7 +667,7 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> Tuple[_Ele
     return result_body, temp_text, len(temp_text)
 
 
-def process_comments_node(elem: _Element, potential_tags: Set[str], options: Extractor) -> Optional[_Element]:
+def process_comments_node(elem: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
@@ -673,7 +681,7 @@ def process_comments_node(elem: _Element, potential_tags: Set[str], options: Ext
     return None
 
 
-def extract_comments(tree: HtmlElement, options: Extractor) -> Tuple[_Element, str, int, HtmlElement]:
+def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, int, HtmlElement]:
     "Try to extract comments out of potential sections in the HTML."
     comments_body = Element("body")
     # define iteration strategy

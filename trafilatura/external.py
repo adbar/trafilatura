@@ -4,20 +4,19 @@ Functions grounding on third-party software.
 """
 
 import logging
-
-from typing import Any, Tuple
+from typing import Any
 
 # third-party
-from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification  # type: ignore
-from justext.utils import get_stoplist, get_stoplists  # type: ignore
-from lxml.etree import _Element, Element, strip_tags, tostring
+from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
+from justext.utils import get_stoplist, get_stoplists
+from lxml.etree import Element, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
 from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
-from .settings import JUSTEXT_LANGUAGES
+from .settings import JUSTEXT_LANGUAGES, Extractor
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
 from .xpaths import OVERALL_DISCARD_XPATH
@@ -42,7 +41,7 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
         return HtmlElement()
 
 
-def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Any) -> Tuple[_Element, str, int]:
+def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Extractor) -> tuple[_Element, str, int]:
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall
@@ -108,7 +107,7 @@ def compare_extraction(tree: HtmlElement, backup_tree: HtmlElement, body: _Eleme
     return body, text, len_text
 
 
-def jt_stoplist_init() -> Tuple[str]:
+def jt_stoplist_init() -> tuple[str]:
     'Retrieve and return the content of all JusText stoplists'
     global JT_STOPLIST
     stoplist = set()
@@ -118,7 +117,7 @@ def jt_stoplist_init() -> Tuple[str]:
     return JT_STOPLIST
 
 
-def custom_justext(tree: HtmlElement, stoplist: Tuple[str]) -> Any:
+def custom_justext(tree: HtmlElement, stoplist: tuple[str]) -> Any:
     'Customized version of JusText processing'
     paragraphs = ParagraphMaker.make_paragraphs(tree)
     classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
@@ -126,7 +125,7 @@ def custom_justext(tree: HtmlElement, stoplist: Tuple[str]) -> Any:
     return paragraphs
 
 
-def try_justext(tree: HtmlElement, url: str, target_language: str) -> _Element:
+def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
     '''Second safety net: try with the generic algorithm justext'''
     # init
     result_body = Element('body')
@@ -150,7 +149,7 @@ def try_justext(tree: HtmlElement, url: str, target_language: str) -> _Element:
     return result_body
 
 
-def justext_rescue(tree: HtmlElement, options: Any) -> Tuple[_Element, str, int]:
+def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, int]:
     '''Try to use justext algorithm as a second fallback'''
     # additional cleaning
     tree = basic_cleaning(tree)
@@ -160,7 +159,7 @@ def justext_rescue(tree: HtmlElement, options: Any) -> Tuple[_Element, str, int]
     return temppost_algo, temp_text, len(temp_text)
 
 
-def sanitize_tree(tree: HtmlElement, options: Any) -> Tuple[HtmlElement, str, int]:
+def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str, int]:
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)

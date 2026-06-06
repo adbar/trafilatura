@@ -4,10 +4,10 @@ Deriving link info from sitemaps.
 
 import logging
 import re
-
+from collections.abc import Callable
 from itertools import islice
+from re import Pattern
 from time import sleep
-from typing import Callable, List, Set, Optional, Pattern
 
 from courlan import (
     clean_url,
@@ -21,7 +21,6 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -65,8 +64,8 @@ class SitemapObject:
         self,
         base_url: str,
         domain: str,
-        sitemapsurls: List[str],
-        target_lang: Optional[str] = None,
+        sitemapsurls: list[str],
+        target_lang: str | None = None,
         external: bool = False,
     ) -> None:
         self.base_url: str = base_url
@@ -74,10 +73,10 @@ class SitemapObject:
         self.domain: str = domain
         self.external: bool = external
         self.current_url: str = ""
-        self.seen: Set[str] = set()
-        self.sitemap_urls: List[str] = sitemapsurls
-        self.target_lang: Optional[str] = target_lang
-        self.urls: List[str] = []
+        self.seen: set[str] = set()
+        self.sitemap_urls: list[str] = sitemapsurls
+        self.target_lang: str | None = target_lang
+        self.urls: list[str] = []
 
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
@@ -178,11 +177,11 @@ class SitemapObject:
 
 def sitemap_search(
     url: str,
-    target_lang: Optional[str] = None,
+    target_lang: str | None = None,
     external: bool = False,
     sleep_time: float = 2.0,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
-) -> List[str]:
+) -> list[str]:
     """Look for sitemaps for the given URL and gather links.
 
     Args:
@@ -246,7 +245,7 @@ def sitemap_search(
     return sitemap.urls
 
 
-def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
+def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     """Check if the sitemap corresponds to an expected format,
     i.e. TXT or XML."""
     if contents is None:
@@ -267,14 +266,14 @@ def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
     return True
 
 
-def find_robots_sitemaps(baseurl: str) -> List[str]:
+def find_robots_sitemaps(baseurl: str) -> list[str]:
     """Guess the location of the robots.txt file and try to extract
     sitemap URLs from it"""
     robotstxt = fetch_url(baseurl + "/robots.txt")
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
-def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]:
+def extract_robots_sitemaps(robotstxt: str | None, baseurl: str) -> list[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > 10000:

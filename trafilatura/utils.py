@@ -21,12 +21,12 @@ except ImportError:
 
 from functools import lru_cache
 from itertools import islice
-from typing import Any, cast, List, Literal, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Literal, cast
 from unicodedata import normalize
 
 # response compression
 try:
-    import brotli  # type: ignore
+    import brotli
     HAS_BROTLI = True
 except ImportError:
     HAS_BROTLI = False
@@ -39,23 +39,26 @@ except ImportError:
 
 # language detection
 try:
-    import py3langid  # type: ignore
+    import py3langid
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
 
 # CChardet is faster and can be more accurate
 try:
-    from cchardet import detect as cchardet_detect  # type: ignore
+    from cchardet import detect as cchardet_detect
 except ImportError:
     cchardet_detect = None
 
 from charset_normalizer import from_bytes
 from lxml.etree import _Element
 from lxml.html import HtmlElement, HTMLParser, fromstring
+
 # response types
 from urllib3.response import HTTPResponse
 
+if TYPE_CHECKING:
+    from .settings import Document, Extractor
 
 LOGGER = logging.getLogger(__name__)
 
@@ -139,7 +142,7 @@ def isutf8(data: bytes) -> bool:
     return True
 
 
-def detect_encoding(bytesobject: bytes) -> List[str]:
+def detect_encoding(bytesobject: bytes) -> list[str]:
     """"Read all input or first chunk and return a list of encodings"""
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
@@ -164,7 +167,7 @@ def detect_encoding(bytesobject: bytes) -> List[str]:
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_file(filecontent: Union[bytes, str]) -> str:
+def decode_file(filecontent: bytes | str) -> str:
     """Check if the bytestring could be GZip and eventually decompress it,
        guess bytestring encoding and try to decode to Unicode string.
        Resort to destructive conversion otherwise."""
@@ -211,7 +214,7 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     return htmlstring
 
 
-def fromstring_bytes(htmlobject: str) -> Optional[HtmlElement]:
+def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     "Try to pass bytes to LXML parser."
     tree = None
     try:
@@ -221,7 +224,7 @@ def fromstring_bytes(htmlobject: str) -> Optional[HtmlElement]:
     return tree
 
 
-def load_html(htmlobject: Any) -> Optional[HtmlElement]:
+def load_html(htmlobject: Any) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
     """
@@ -286,7 +289,7 @@ def normalize_unicode(string: str, unicodeform: Literal['NFC', 'NFD', 'NFKC', 'N
 
 
 @lru_cache(maxsize=1024)
-def line_processing(line: str, preserve_space: bool = False, trailing_space: bool = False) -> Optional[str]:
+def line_processing(line: str, preserve_space: bool = False, trailing_space: bool = False) -> str | None:
     '''Remove HTML space entities, then discard incompatible unicode
        and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
@@ -306,7 +309,7 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     return new_line
 
 
-def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = False) -> Optional[str]:
+def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = False) -> str | None:
     '''Convert text and discard incompatible and invalid characters'''
     # consider all text as a single line
     if trailing_space:
@@ -366,7 +369,7 @@ def is_image_element(element: _Element) -> bool:
     return False
 
 
-def is_image_file(imagesrc: Optional[str]) -> bool:
+def is_image_file(imagesrc: str | None) -> bool:
     '''Check if the observed string corresponds to a valid image extension.
        Use a length threshold and apply a regex on the content.'''
     if imagesrc is None or len(imagesrc) > 8192:
@@ -382,7 +385,7 @@ def make_chunks(iterable: Any, n: int) -> Any:
         yield batch
 
 
-def is_acceptable_length(my_len: int, options: Any) -> bool:
+def is_acceptable_length(my_len: int, options: "Extractor") -> bool:
     "Check if the document length is within acceptable boundaries."
     if my_len < options.min_file_size:
         LOGGER.error("too small/incorrect for URL %s", options.url)
@@ -417,7 +420,7 @@ def check_html_lang(tree: HtmlElement, target_language: str, strict: bool = Fals
     return True
 
 
-def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
+def language_classifier(temp_text: str, temp_comments: str) -> str | None:
     '''Run external component (if installed) for language identification'''
     if LANGID_FLAG is True:
         result, _ = (
@@ -431,7 +434,7 @@ def language_classifier(temp_text: str, temp_comments: str) -> Optional[str]:
     return result
 
 
-def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: Any) -> Tuple[bool, Any]:
+def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: "Document") -> tuple[bool, "Document"]:
     '''Filter text based on language detection and store relevant information'''
     # todo: run and pass info along anyway?
     if target_language is not None:
@@ -455,7 +458,7 @@ def textfilter(element: _Element) -> bool:
     return not testtext or testtext.isspace() or any(map(RE_FILTER.match, testtext.splitlines()))
 
 
-def text_chars_test(string: Optional[str]) -> bool:
+def text_chars_test(string: str | None) -> bool:
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
@@ -473,7 +476,7 @@ def is_in_table_cell(elem: _Element) -> bool:
     # return elem.getparent() is not None and bool(elem.xpath('//ancestor::cell'))
     if elem.getparent() is None:
         return False
-    current: Optional[_Element] = elem
+    current: _Element | None = elem
     while current is not None:
         if current.tag == 'cell':
             return True
@@ -497,7 +500,7 @@ def is_last_element_in_cell(elem: _Element) -> bool:
 
 def is_element_in_item(element: _Element) -> bool:
     """Check whether an element is a list item or within a list item"""
-    current: Optional[_Element] = element
+    current: _Element | None = element
     while current is not None:
         if current.tag == 'item':
             return True
@@ -510,7 +513,7 @@ def is_first_element_in_item(element: _Element) -> bool:
     if element.tag == 'item' and element.text:
         return True
 
-    current: Optional[_Element] = element
+    current: _Element | None = element
     item_ancestor = None
     while current is not None:
         if current.tag == 'item':

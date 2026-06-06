@@ -3,15 +3,15 @@
 Listing a series of settings that are applied module-wide.
 """
 
+import argparse
 import os
-
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
 
-from lxml.etree import _Element, Element, XPath
+from lxml.etree import Element, XPath, _Element
 
 from .utils import line_processing
 
@@ -25,7 +25,7 @@ SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # for bare_extraction()
 
 
 def use_config(
-    filename: Optional[str] = None, config: Optional[ConfigParser] = None
+    filename: str | None = None, config: ConfigParser | None = None
 ) -> ConfigParser:
     """
     Use configuration object or read and parse a settings file.
@@ -57,7 +57,7 @@ CONFIG_MAPPING = {
 }
 
 
-def _get_optional_int(config: ConfigParser, option: str) -> Optional[int]:
+def _get_optional_int(config: ConfigParser, option: str) -> int | None:
     "Read an optional positive integer setting; None when empty or non-numeric."
     value = config.get("DEFAULT", option, fallback="").strip()
     return int(value) if value.isdigit() else None
@@ -102,6 +102,16 @@ class Extractor:
         "url_blacklist",
     ]
 
+    # config-derived integer sizes, populated by _add_config via CONFIG_MAPPING
+    min_extracted_size: int
+    min_output_size: int
+    min_output_comm_size: int
+    min_extracted_comm_size: int
+    min_duplcheck_size: int
+    max_repetitions: int
+    max_file_size: int
+    min_file_size: int
+
     def __init__(
         self,
         *,
@@ -116,15 +126,15 @@ class Extractor:
         images: bool = False,
         tables: bool = True,
         dedup: bool = False,
-        lang: Optional[str] = None,
-        url: Optional[str] = None,
-        source: Optional[str] = None,
+        lang: str | None = None,
+        url: str | None = None,
+        source: str | None = None,
         with_metadata: bool = False,
         only_with_metadata: bool = False,
         tei_validation: bool = False,
-        author_blacklist: Optional[Set[str]] = None,
-        url_blacklist: Optional[Set[str]] = None,
-        date_params: Optional[Dict[str, str]] = None,
+        author_blacklist: set[str] | None = None,
+        url_blacklist: set[str] | None = None,
+        date_params: dict[str, str] | None = None,
     ):
         self._set_source(url, source)
         self._set_format(output_format)
@@ -140,24 +150,24 @@ class Extractor:
         self.images: bool = images
         self.tables: bool = tables
         self.dedup: bool = dedup
-        self.lang: Optional[str] = lang
-        self.url: Optional[str] = url
+        self.lang: str | None = lang
+        self.url: str | None = url
         self.only_with_metadata: bool = only_with_metadata
         self.tei_validation: bool = tei_validation
-        self.author_blacklist: Set[str] = author_blacklist or set()
-        self.url_blacklist: Set[str] = url_blacklist or set()
+        self.author_blacklist: set[str] = author_blacklist or set()
+        self.url_blacklist: set[str] = url_blacklist or set()
         self.with_metadata: bool = (
             with_metadata
             or only_with_metadata
             or bool(url_blacklist)
             or output_format == "xmltei"
         )
-        self.date_params: Dict[str, Any] = date_params or set_date_params(
+        self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        self.max_tree_size: Optional[int] = _get_optional_int(self.config, "MAX_TREE_SIZE")
+        self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
 
-    def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
+    def _set_source(self, url: str | None, source: str | None) -> None:
         "Set the source attribute in a robust way."
         source = url or source
         self.source = source and source.encode("utf-8", "replace").decode("utf-8")
@@ -177,7 +187,7 @@ class Extractor:
         self.config = config
 
 
-def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
+def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
     "Derive extractor configuration from CLI args."
     options = Extractor(
         config=use_config(filename=args.config_file),
@@ -199,7 +209,7 @@ def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
     return options
 
 
-def set_date_params(extensive: bool = True) -> Dict[str, Any]:
+def set_date_params(extensive: bool = True) -> dict[str, Any]:
     "Provide default parameters for date extraction."
     return {
         "original_date": True,
@@ -239,52 +249,52 @@ class Document:
     def __init__(
         self,
         *,
-        title: Optional[str] = None,
-        author: Optional[str] = None,
-        url: Optional[str] = None,
-        hostname: Optional[str] = None,
-        description: Optional[str] = None,
-        sitename: Optional[str] = None,
-        date: Optional[str] = None,
-        categories: Optional[List[str]] = None,
-        tags: Optional[List[str]] = None,
-        fingerprint: Optional[str] = None,
-        idval: Optional[str] = None,
-        license_val: Optional[str] = None,
-        body: Optional[_Element] = None,
-        comments: Optional[str] = None,
-        commentsbody: Optional[_Element] = None,
-        raw_text: Optional[str] = None,
-        text: Optional[str] = None,
-        language: Optional[str] = None,
-        image: Optional[str] = None,
-        pagetype: Optional[str] = None,
-        filedate: Optional[str] = None,
+        title: str | None = None,
+        author: str | None = None,
+        url: str | None = None,
+        hostname: str | None = None,
+        description: str | None = None,
+        sitename: str | None = None,
+        date: str | None = None,
+        categories: list[str] | None = None,
+        tags: list[str] | None = None,
+        fingerprint: str | None = None,
+        idval: str | None = None,
+        license_val: str | None = None,
+        body: _Element | None = None,
+        comments: str | None = None,
+        commentsbody: _Element | None = None,
+        raw_text: str | None = None,
+        text: str | None = None,
+        language: str | None = None,
+        image: str | None = None,
+        pagetype: str | None = None,
+        filedate: str | None = None,
     ):
-        self.title: Optional[str] = title
-        self.author: Optional[str] = author
-        self.url: Optional[str] = url
-        self.hostname: Optional[str] = hostname
-        self.description: Optional[str] = description
-        self.sitename: Optional[str] = sitename
-        self.date: Optional[str] = date
-        self.categories: Optional[List[str]] = categories
-        self.tags: Optional[List[str]] = tags
-        self.fingerprint: Optional[str] = fingerprint
-        self.id: Optional[str] = idval
-        self.license: Optional[str] = license_val
+        self.title: str | None = title
+        self.author: str | None = author
+        self.url: str | None = url
+        self.hostname: str | None = hostname
+        self.description: str | None = description
+        self.sitename: str | None = sitename
+        self.date: str | None = date
+        self.categories: list[str] | None = categories
+        self.tags: list[str] | None = tags
+        self.fingerprint: str | None = fingerprint
+        self.id: str | None = idval
+        self.license: str | None = license_val
         self.body: _Element = body if body is not None else Element("body")
-        self.comments: Optional[str] = comments
+        self.comments: str | None = comments
         self.commentsbody: _Element = commentsbody if commentsbody is not None else Element("body")
-        self.raw_text: Optional[str] = raw_text
-        self.text: Optional[str] = text
-        self.language: Optional[str] = language
-        self.image: Optional[str] = image
-        self.pagetype: Optional[str] = pagetype
-        self.filedate: Optional[str] = filedate
+        self.raw_text: str | None = raw_text
+        self.text: str | None = text
+        self.language: str | None = language
+        self.image: str | None = image
+        self.pagetype: str | None = pagetype
+        self.filedate: str | None = filedate
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Document':
+    def from_dict(cls, data: dict[str, Any]) -> 'Document':
         "Set a series of attributes using a dictionary."
         doc = cls()
         for key, value in data.items():
@@ -303,7 +313,7 @@ class Document:
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
 
-    def as_dict(self) -> Dict[str, Optional[str]]:
+    def as_dict(self) -> dict[str, str | None]:
         "Convert the document to a dictionary."
         return {attr: getattr(self, attr, None) for attr in self.__slots__}
 

@@ -5,11 +5,11 @@ Extraction configuration and processing functions.
 
 import logging
 import warnings
-
+from configparser import ConfigParser
 from copy import copy, deepcopy
-from typing import Any, Dict, Optional, Set, Tuple, Union
+from typing import Any
 
-from lxml.etree import _Element, Element, XPath, strip_tags
+from lxml.etree import Element, XPath, _Element, strip_tags
 from lxml.html import HtmlElement
 
 # own
@@ -32,9 +32,8 @@ from .utils import (
     load_html,
     normalize_unicode,
 )
-from .xml import build_json_output, control_xml_output, xmltotxt, xmltocsv
+from .xml import build_json_output, control_xml_output, xmltocsv, xmltotxt
 from .xpaths import REMOVE_COMMENTS_XPATH
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -104,7 +103,7 @@ def trafilatura_sequence(
     cleaned_tree_backup: HtmlElement,
     tree_backup: HtmlElement,
     options: Extractor,
-) -> Tuple[_Element, str, int]:
+) -> tuple[_Element, str, int]:
     "Execute the standard cascade of extractors used by Trafilatura."
     # Trafilatura's main extractor
     postbody, temp_text, len_text = extract_content(cleaned_tree, options)
@@ -121,7 +120,7 @@ def trafilatura_sequence(
         )
 
     # rescue: baseline extraction on original/dirty tree
-    if len_text < options.min_extracted_size and not options.focus == "precision":  # type: ignore[attr-defined]
+    if len_text < options.min_extracted_size and not options.focus == "precision":
         postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
         LOGGER.debug("non-clean extracted length: %s (extraction)", len_text)
 
@@ -130,30 +129,30 @@ def trafilatura_sequence(
 
 def bare_extraction(
     filecontent: Any,
-    url: Optional[str] = None,
+    url: str | None = None,
     fast: bool = False,
     no_fallback: bool = False,
     favor_precision: bool = False,
     favor_recall: bool = False,
     include_comments: bool = True,
     output_format: str = "python",
-    target_language: Optional[str] = None,
+    target_language: str | None = None,
     include_tables: bool = True,
     include_images: bool = False,
     include_formatting: bool = False,
     include_links: bool = False,
     deduplicate: bool = False,
-    date_extraction_params: Optional[Dict[str, Any]] = None,
+    date_extraction_params: dict[str, Any] | None = None,
     with_metadata: bool = False,
     only_with_metadata: bool = False,
-    max_tree_size: Optional[int] = None,
-    url_blacklist: Optional[Set[str]] = None,
-    author_blacklist: Optional[Set[str]] = None,
+    max_tree_size: int | None = None,
+    url_blacklist: set[str] | None = None,
+    author_blacklist: set[str] | None = None,
     as_dict: bool = False,
-    prune_xpath: Optional[Any] = None,
-    config: Any = DEFAULT_CONFIG,
-    options: Optional[Extractor] = None,
-) -> Optional[Union[Document, Dict[str, Any]]]:
+    prune_xpath: str | list[str] | None = None,
+    config: ConfigParser = DEFAULT_CONFIG,
+    options: Extractor | None = None,
+) -> Document | dict[str, Any] | None:
     """Internal function for text extraction returning bare Python variables.
 
     Args:
@@ -304,11 +303,11 @@ def bare_extraction(
                 )
                 raise ValueError
         # size checks
-        if options.comments and len_comments < options.min_extracted_comm_size:  # type: ignore[attr-defined]
+        if options.comments and len_comments < options.min_extracted_comm_size:
             LOGGER.debug("not enough comments: %s", options.source)
         if (
-            len_text < options.min_output_size  # type: ignore[attr-defined]
-            and len_comments < options.min_output_comm_size  # type: ignore[attr-defined]
+            len_text < options.min_output_size
+            and len_comments < options.min_output_comm_size
         ):
             LOGGER.debug(
                 "text and comments not long enough: %s %s %s",
@@ -352,8 +351,8 @@ def bare_extraction(
 
 def extract(
     filecontent: Any,
-    url: Optional[str] = None,
-    record_id: Optional[str] = None,
+    url: str | None = None,
+    record_id: str | None = None,
     fast: bool = False,
     no_fallback: bool = False,
     favor_precision: bool = False,
@@ -361,23 +360,23 @@ def extract(
     include_comments: bool = True,
     output_format: str = "txt",
     tei_validation: bool = False,
-    target_language: Optional[str] = None,
+    target_language: str | None = None,
     include_tables: bool = True,
     include_images: bool = False,
     include_formatting: bool = False,
     include_links: bool = False,
     deduplicate: bool = False,
-    date_extraction_params: Optional[Dict[str, Any]] = None,
+    date_extraction_params: dict[str, Any] | None = None,
     with_metadata: bool = False,
     only_with_metadata: bool = False,
-    max_tree_size: Optional[int] = None,
-    url_blacklist: Optional[Set[str]] = None,
-    author_blacklist: Optional[Set[str]] = None,
-    settingsfile: Optional[str] = None,
-    prune_xpath: Optional[Any] = None,
-    config: Any = DEFAULT_CONFIG,
-    options: Optional[Extractor] = None,
-) -> Optional[str]:
+    max_tree_size: int | None = None,
+    url_blacklist: set[str] | None = None,
+    author_blacklist: set[str] | None = None,
+    settingsfile: str | None = None,
+    prune_xpath: str | list[str] | None = None,
+    config: ConfigParser = DEFAULT_CONFIG,
+    options: Extractor | None = None,
+) -> str | None:
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
 
@@ -448,28 +447,28 @@ def extract(
 
 def extract_with_metadata(
     filecontent: Any,
-    url: Optional[str] = None,
-    record_id: Optional[str] = None,
+    url: str | None = None,
+    record_id: str | None = None,
     fast: bool = False,
     favor_precision: bool = False,
     favor_recall: bool = False,
     include_comments: bool = True,
     output_format: str = "txt",
     tei_validation: bool = False,
-    target_language: Optional[str] = None,
+    target_language: str | None = None,
     include_tables: bool = True,
     include_images: bool = False,
     include_formatting: bool = False,
     include_links: bool = False,
     deduplicate: bool = False,
-    date_extraction_params: Optional[Dict[str, Any]] = None,
-    url_blacklist: Optional[Set[str]] = None,
-    author_blacklist: Optional[Set[str]] = None,
-    settingsfile: Optional[str] = None,
-    prune_xpath: Optional[Any] = None,
-    config: Any = DEFAULT_CONFIG,
-    options: Optional[Extractor] = None,
-) -> Optional[Document]:
+    date_extraction_params: dict[str, Any] | None = None,
+    url_blacklist: set[str] | None = None,
+    author_blacklist: set[str] | None = None,
+    settingsfile: str | None = None,
+    prune_xpath: str | list[str] | None = None,
+    config: ConfigParser = DEFAULT_CONFIG,
+    options: Extractor | None = None,
+) -> Document | None:
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
        This method also returns document metadata.
@@ -536,7 +535,7 @@ def _check_deprecation(
         *,
         no_fallback: bool = False,
         as_dict: bool = False,
-        max_tree_size: Optional[int] = None,
+        max_tree_size: int | None = None,
         stacklevel: int = 2,
 ) -> bool:
     '''Check deprecated params and return the effective "fast" flag.
@@ -560,8 +559,8 @@ def _check_deprecation(
 
 def _internal_extraction(
         filecontent: Any,
-        url: Optional[str] = None,
-        record_id: Optional[str] = None,
+        url: str | None = None,
+        record_id: str | None = None,
         fast: bool = False,
         no_fallback: bool = False,
         favor_precision: bool = False,
@@ -569,23 +568,23 @@ def _internal_extraction(
         include_comments: bool = True,
         output_format: str = "txt",
         tei_validation: bool = False,
-        target_language: Optional[str] = None,
+        target_language: str | None = None,
         include_tables: bool = True,
         include_images: bool = False,
         include_formatting: bool = False,
         include_links: bool = False,
         deduplicate: bool = False,
-        date_extraction_params: Optional[Dict[str, Any]] = None,
+        date_extraction_params: dict[str, Any] | None = None,
         with_metadata: bool = False,
         only_with_metadata: bool = False,
-        max_tree_size: Optional[int] = None,
-        url_blacklist: Optional[Set[str]] = None,
-        author_blacklist: Optional[Set[str]] = None,
-        settingsfile: Optional[str] = None,
-        prune_xpath: Optional[Any] = None,
-        config: Any = DEFAULT_CONFIG,
-        options: Optional[Extractor] = None,
-) -> Optional[Document]:
+        max_tree_size: int | None = None,
+        url_blacklist: set[str] | None = None,
+        author_blacklist: set[str] | None = None,
+        settingsfile: str | None = None,
+        prune_xpath: str | list[str] | None = None,
+        config: ConfigParser = DEFAULT_CONFIG,
+        options: Extractor | None = None,
+) -> Document | None:
     '''Internal method to do the extraction'''
     # stacklevel=4 → user → extract → _internal_extraction → _check_deprecation
     fast = _check_deprecation(
