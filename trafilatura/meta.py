@@ -14,7 +14,7 @@ from .utils import line_processing, return_printables_and_spaces, trim
 
 def reset_caches() -> None:
     """Reset all known LRU caches used to speed up processing.
-       This may release some memory."""
+    This may release some memory."""
     # justext
     define_stoplist.cache_clear()
     # handles htmldate and charset_normalizer

@@ -48,6 +48,7 @@ GUESSES = [
 
 class SitemapObject:
     "Store all necessary information on sitemap download and processing."
+
     __slots__ = [
         "base_url",
         "content",
@@ -103,14 +104,8 @@ class SitemapObject:
 
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
-        if (
-            not self.external
-            and not WHITELISTED_PLATFORMS.search(newdomain)
-            and not is_similar_domain(self.domain, newdomain)
-        ):
-            LOGGER.warning(
-                "link discarded, diverging domain names: %s %s", self.domain, newdomain
-            )
+        if not self.external and not WHITELISTED_PLATFORMS.search(newdomain) and not is_similar_domain(self.domain, newdomain):
+            LOGGER.warning("link discarded, diverging domain names: %s %s", self.domain, newdomain)
             return
 
         if DETECT_SITEMAP_LINK.search(link):
@@ -118,13 +113,9 @@ class SitemapObject:
         else:
             self.urls.append(link)
 
-    def extract_links(
-        self, regex: Pattern[str], index: int, handler: Callable[[str], None]
-    ) -> None:
+    def extract_links(self, regex: Pattern[str], index: int, handler: Callable[[str], None]) -> None:
         "Extract links from the content using pre-defined regex, index and handler."
-        for match in (
-            m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)
-        ):
+        for match in (m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)):
             handler(match)
         LOGGER.debug(
             "%s sitemaps and %s links found for %s",
@@ -138,9 +129,7 @@ class SitemapObject:
         if "hreflang=" not in self.content:
             return
 
-        lang_regex = re.compile(
-            rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL
-        )
+        lang_regex = re.compile(rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL)
 
         def handle_lang_link(attrs: str) -> None:
             "Examine language code attributes."
@@ -153,9 +142,7 @@ class SitemapObject:
 
     def extract_sitemap_links(self) -> None:
         "Extract sitemap links and web page links from a sitemap file."
-        self.extract_links(
-            LINK_REGEX, 1, self.handle_link
-        )  # process middle part of the match tuple
+        self.extract_links(LINK_REGEX, 1, self.handle_link)  # process middle part of the match tuple
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
@@ -221,9 +208,7 @@ def sitemap_search(
 
     # try sitemaps in robots.txt file, additional URLs just in case
     if not sitemap.sitemap_urls:
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [
-            f"{baseurl}/{g}" for g in GUESSES
-        ]
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [f"{baseurl}/{g}" for g in GUESSES]
 
     # iterate through nested sitemaps and results
     while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
@@ -231,9 +216,7 @@ def sitemap_search(
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
-        sitemap.sitemap_urls = [
-            s for s in sitemap.sitemap_urls if s not in sitemap.seen
-        ]
+        sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
         if len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)

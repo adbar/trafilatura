@@ -76,9 +76,7 @@ def test_atom_extraction():
     )
 
     params = FeedParameters("http://example.org/", "example.org", "http://example.org")
-    assert extract_links(
-        f'{XMLDECL}<link href="http://example.org/article1/"rest"/>', params
-    ) == [
+    assert extract_links(f'{XMLDECL}<link href="http://example.org/article1/"rest"/>', params) == [
         "http://example.org/article1/"
     ]  # TODO: remove slash?
 
@@ -86,16 +84,9 @@ def test_atom_extraction():
 def test_rss_extraction():
     """Test link extraction from a RSS feed"""
     params = FeedParameters("http://example.org/", "example.org", "")
-    assert (
-        len(
-            extract_links(f"{XMLDECL}<link>http://example.org/article1/</link>", params)
-        )
-        == 1
-    )
+    assert len(extract_links(f"{XMLDECL}<link>http://example.org/article1/</link>", params)) == 1
     # CDATA
-    assert extract_links(
-        f"{XMLDECL}<link><![CDATA[http://example.org/article1/]]></link>", params
-    ) == [
+    assert extract_links(f"{XMLDECL}<link><![CDATA[http://example.org/article1/]]></link>", params) == [
         "http://example.org/article1/"
     ]  # TODO: remove slash?
 
@@ -119,9 +110,9 @@ def test_rss_extraction():
     assert len(extract_links(f"{XMLDECL}<link>https://example.org</link>", params)) == 0
 
     params = FeedParameters("https://www.dwds.de", "dwds.de", "https://www.dwds.de")
-    assert extract_links(
-        f"{XMLDECL}<link>/api/feed/themenglossar/Corona</link>", params
-    ) == ["https://www.dwds.de/api/feed/themenglossar/Corona"]
+    assert extract_links(f"{XMLDECL}<link>/api/feed/themenglossar/Corona</link>", params) == [
+        "https://www.dwds.de/api/feed/themenglossar/Corona"
+    ]
 
     params = FeedParameters("https://example.org", "example.org", "")
     filepath = os.path.join(RESOURCES_DIR, "feed2.rss")
@@ -255,15 +246,15 @@ def test_feeds_helpers():
 
     # detecting in <a>-elements
     params = FeedParameters("https://example.org", "example.org", "https://example.org")
-    assert determine_feed(
-        '<html><body><a href="https://example.org/feed.xml"><body/></html>', params
-    ) == ["https://example.org/feed.xml"]
-    assert determine_feed(
-        '<html><body><a href="https://example.org/feed.atom"><body/></html>', params
-    ) == ["https://example.org/feed.atom"]
-    assert determine_feed(
-        '<html><body><a href="https://example.org/rss"><body/></html>', params
-    ) == ["https://example.org/rss"]
+    assert determine_feed('<html><body><a href="https://example.org/feed.xml"><body/></html>', params) == [
+        "https://example.org/feed.xml"
+    ]
+    assert determine_feed('<html><body><a href="https://example.org/feed.atom"><body/></html>', params) == [
+        "https://example.org/feed.atom"
+    ]
+    assert determine_feed('<html><body><a href="https://example.org/rss"><body/></html>', params) == [
+        "https://example.org/rss"
+    ]
     assert determine_feed(
         '<html><body><a href="https://example.org/feeds/posts/default/"><body/></html>',
         params,
@@ -298,13 +289,9 @@ def test_feeds_helpers():
     assert find_feed_urls("https://example.com/plain") == []
 
     # Feedburner/Google links
-    assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == [
-        "https://feedproxy.google.com/ABCD"
-    ]
+    assert handle_link_list(["https://feedproxy.google.com/ABCD"], params) == ["https://feedproxy.google.com/ABCD"]
     # override failed checks
-    assert handle_link_list(["https://feedburner.com/kat/1"], params) == [
-        "https://feedburner.com/kat/1"
-    ]
+    assert handle_link_list(["https://feedburner.com/kat/1"], params) == ["https://feedburner.com/kat/1"]
     # diverging domain names
     assert not handle_link_list(["https://www.software.info/1"], params)
 

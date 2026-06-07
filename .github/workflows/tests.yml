@@ -52,8 +52,10 @@ jobs:
     - name: Install dependencies
       run: uv pip install --system -e ".[dev]"
 
-    - name: Lint with ruff
-      run: ruff check .
+    - name: Lint and format check
+      run: |
+        ruff check .
+        ruff format --check --diff trafilatura tests
 
     # pycurl installation fix
     - name: Install packages required by pycurl

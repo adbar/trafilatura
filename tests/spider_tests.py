@@ -26,9 +26,7 @@ def test_redirections():
     "Test redirection detection."
     _, _, baseurl = spider.probe_alternative_homepage("xyz")
     assert baseurl is None
-    _, _, baseurl = spider.probe_alternative_homepage(
-        "https://httpbun.com/redirect-to?url=https://example.org"
-    )
+    _, _, baseurl = spider.probe_alternative_homepage("https://httpbun.com/redirect-to?url=https://example.org")
     assert baseurl == "https://example.org"
     # meta-refresh to an unreachable target -> failed redirect -> all None
     assert spider.probe_alternative_homepage("https://example.com/refresh-home") == (None, None, None)
@@ -88,10 +86,7 @@ def test_process_links():
 
     # same with content already seen
     spider.process_links(htmlstring, params)
-    assert (
-        len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1
-        and len(spider.URL_STORE.find_known_urls(base_url)) == 1
-    )
+    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1 and len(spider.URL_STORE.find_known_urls(base_url)) == 1
 
     # test navigation links
     url1 = "https://example.org/tag/number1"
@@ -201,9 +196,7 @@ def test_crawl_logic():
     # new todo
     params = spider.init_crawl(url, todo=["https://httpbun.com/links/1/1"])
     assert params.base == "https://httpbun.com"
-    assert spider.URL_STORE.find_unvisited_urls(params.base) == [
-        "https://httpbun.com/links/1/1"
-    ]
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == ["https://httpbun.com/links/1/1"]
     assert params.i == 0 and params.is_on and params.known_num == 2
 
 
@@ -256,9 +249,7 @@ def test_crawl_page():
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
-    todo, known_links = spider.focused_crawler(
-        "https://httpbun.com/links/2/2", max_seen_urls=2
-    )
+    todo, known_links = spider.focused_crawler("https://httpbun.com/links/2/2", max_seen_urls=2)
     assert len(known_links) > 0
     ## fails on Github Actions
     # assert sorted(known_links) == ['https://httpbun.com/links/2/0', 'https://httpbun.com/links/2/1', 'https://httpbun.com/links/2/2']

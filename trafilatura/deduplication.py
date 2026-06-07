@@ -85,6 +85,7 @@ def _vector_to_add(token: str, length: int) -> list[int]:
 
 class Simhash:
     "Implement a basic Charikar hashing approach of string similarity."
+
     __slots__ = ["hash", "length"]
 
     def __init__(
