@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 name = "trafilatura"
 description = "Python & Command-line tool to gather text and metadata on the Web: Crawling, scraping, extraction, output as CSV, JSON, HTML, MD, TXT, XML."
 readme = "README.md"
-license = { text = "Apache 2.0" }
+license = "Apache-2.0"
 dynamic = ["version"]
 requires-python = ">=3.10"
 authors = [
@@ -33,7 +33,6 @@ classifiers = [
     "Intended Audience :: Education",
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: MacOS",
     "Operating System :: Microsoft",
     "Operating System :: POSIX",
