@@ -371,9 +371,9 @@ def extract_title(tree: HtmlElement) -> Optional[str]:
     # take first non-empty h1-title
     if h1_results:
         for h1_result in h1_results:
-            title = trim(h1_results[0].text_content())
+            title = trim(h1_result.text_content())
             if title:
-                return title 
+                return title
     # take first h2-title
     try:
         title = tree.xpath(".//h2")[0].text_content()
