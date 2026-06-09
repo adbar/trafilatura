@@ -7,11 +7,11 @@ build-backend = "setuptools.build_meta"
 name = "trafilatura"
 description = "Python & Command-line tool to gather text and metadata on the Web: Crawling, scraping, extraction, output as CSV, JSON, HTML, MD, TXT, XML."
 readme = "README.md"
-license = { text = "Apache 2.0" }
+license = "Apache-2.0"
 dynamic = ["version"]
 requires-python = ">=3.10"
 authors = [
-  {name = "Adrien Barbaresi", email = "barbaresi@bbaw.de"}
+  {name = "Adrien Barbaresi"}
 ]
 keywords=[
     "corpus",
@@ -33,7 +33,6 @@ classifiers = [
     "Intended Audience :: Education",
     "Intended Audience :: Information Technology",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: MacOS",
     "Operating System :: Microsoft",
     "Operating System :: POSIX",
@@ -91,11 +90,12 @@ trafilatura = "trafilatura.cli:main"
 # Development extras
 [project.optional-dependencies]
 dev = [
-    "flake8 >= 7.0",
-    "mypy >= 1.11",
+    "ruff >= 0.15",
+    "mypy >= 2.1.0",
     "pytest >= 8.0",
     "pytest-cov >= 5.0",
     "types-lxml >= 2026.2.16",
+    "types-pycurl >= 7.46.0.20260509",
     "types-urllib3 >= 1.26.25.14",
 ]
 all = [
@@ -134,6 +134,10 @@ docs = [
     "sphinx-sitemap >= 2.9.0",
 ]
 
+[tool.ruff]
+line-length = 127
+target-version = "py310"
+
 [tool.mypy]
 # pin the target so type-checking is deterministic across contributor machines
 # and matches CI: check against the lowest supported version on Linux
@@ -145,6 +149,11 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 no_implicit_reexport = true
 disallow_untyped_defs = true
+
+# third-party packages without type stubs (replaces per-import "# type: ignore")
+[[tool.mypy.overrides]]
+module = ["brotli", "py3langid", "cchardet", "justext.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = "tests/*test*.py"

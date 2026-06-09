@@ -113,11 +113,9 @@ def test_parser():
     with pytest.raises(SystemExit) as e, redirect_stdout(f):
         with patch.object(sys, "argv", testargs):
             args = cli.parse_args(testargs)
-    assert e.type == SystemExit
+    assert e.type is SystemExit
     assert e.value.code == 0
-    assert re.match(
-        r"Trafilatura [0-9]\.[0-9]+\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue()
-    )
+    assert re.match(r"Trafilatura [0-9]\.[0-9]+\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue())
 
 
 def test_climain(capfd):
@@ -132,7 +130,7 @@ def test_climain(capfd):
     # help display
     assert subprocess.run([trafilatura_bin, "--help"], check=True).returncode == 0
     # piped input
-    empty_input = b"<html><body><article>" + b"<p>ABC</p>"*100 + b"</article></body></html>"
+    empty_input = b"<html><body><article>" + b"<p>ABC</p>" * 100 + b"</article></body></html>"
     result = subprocess.run([trafilatura_bin], input=empty_input, check=True)
     assert result.returncode == 0
     captured = capfd.readouterr()
@@ -142,12 +140,7 @@ def test_climain(capfd):
     if os.name == "nt":
         # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
         env["PYTHONIOENCODING"] = "utf-8"
-    assert (
-        subprocess.run(
-            [trafilatura_bin, "--input-dir", RESOURCES_DIR], env=env, check=True
-        ).returncode
-        == 0
-    )
+    assert subprocess.run([trafilatura_bin, "--input-dir", RESOURCES_DIR], env=env, check=True).returncode == 0
     # compressed file
     with open(path.join(RESOURCES_DIR, "webpage.html.gz"), "rb") as inputf:
         compressed_input = inputf.read()
@@ -177,6 +170,34 @@ def test_input_type():
     assert 10 <= len(list(cli_utils.generate_filelist(RESOURCES_DIR))) <= 21
 
 
+def test_cli_stdin():
+    "Input read directly from STDIN when no URL/file/dir is given."
+    testargs = ["", "-v"]
+    with patch.object(sys, "argv", testargs):
+        args = cli.parse_args(testargs)
+    html = b"<html><body><article>" + b"<p>Piped paragraph content.</p>" * 5 + b"</article></body></html>"
+    f = io.StringIO()
+    with patch("sys.stdin") as mock_stdin, redirect_stdout(f):
+        mock_stdin.buffer.read.return_value = html
+        cli.process_args(args)
+    assert "Piped paragraph content." in f.getvalue()
+
+
+def test_cli_examine_error(monkeypatch, capsys):
+    "examine() swallows extraction errors and reports them on stderr."
+    testargs = ["", "-v"]
+    with patch.object(sys, "argv", testargs):
+        args = cli.parse_args(testargs)
+
+    def _boom(*args, **kwargs):
+        raise RuntimeError("kaboom")
+
+    monkeypatch.setattr(cli_utils, "extract", _boom)
+    html = "<html><body><article><p>" + "content " * 20 + "</p></article></body></html>"
+    assert cli.examine(html, args) is None
+    assert "kaboom" in capsys.readouterr().err
+
+
 def test_sysoutput():
     """test command-line output with respect to CLI arguments"""
     testargs = ["", "--csv", "-o", "/root/forbidden/"]
@@ -195,17 +216,13 @@ def test_sysoutput():
         args = cli.parse_args(testargs)
     assert cli_utils.check_outputdir_status(args.output_dir) is True
     # test fileslug for name
-    filepath, destdir = cli_utils.determine_output_path(
-        args, args.output_dir, "", new_filename="AAZZ"
-    )
+    filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
     assert filepath.endswith("AAZZ.xml")
     # test json output
     args2 = args
     args2.xml, args2.json = False, True
     args2 = cli.map_args(args2)
-    filepath2, destdir2 = cli_utils.determine_output_path(
-        args, args.output_dir, "", new_filename="AAZZ"
-    )
+    filepath2, destdir2 = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
     assert filepath2.endswith("AAZZ.json")
     assert "you-touch-my-tralala" in destdir2
     # test directory counter
@@ -229,9 +246,7 @@ def test_sysoutput():
     assert cli_utils.process_result("DADIDA", args, -1, options) == -1
 
     # with counter
-    with open(
-        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli_utils.process_result(teststring, args, 1, options) == 2
 
@@ -260,14 +275,6 @@ def test_download():
     assert cli.examine(None, args) is None
     assert cli.examine(" ", args) is None
     assert cli.examine("0" * int(10e7), args) is None
-    # url = 'https://httpbun.org/status/200'
-    # teststring = fetch_url(url)
-    # assert teststring is None  # too small
-    # assert cli.examine(teststring, args, url) is None
-    # url = 'https://httpbun.org/links/2/2'
-    # teststring = fetch_url(url)
-    # assert teststring is not None
-    # assert cli.examine(teststring, args, url) is None
     url = "https://httpbun.com/html"
     teststring = fetch_url(url)
     assert teststring is not None
@@ -278,7 +285,7 @@ def test_download():
         args = cli.parse_args(testargs)
     with pytest.raises(SystemExit) as e:
         cli.process_args(args)
-    assert e.type == SystemExit and e.value.code == 126
+    assert e.type is SystemExit and e.value.code == 126
 
 
 # @patch('trafilatura.settings.MAX_FILES_PER_DIRECTORY', 1)
@@ -330,26 +337,20 @@ def test_cli_pipeline():
     testargs = ["", "--output-format", "xml", "--only-with-metadata"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    with open(
-        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     testargs = ["", "--output-format", "xml", "--only-with-metadata", "--precision"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    with open(
-        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     # test JSON output
     testargs = ["", "--output-format", "json", "--recall"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    with open(
-        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
     # sitemaps: tested in --explore
@@ -371,9 +372,7 @@ def test_cli_pipeline():
     testargs = ["", "--links", "--images"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    with open(
-        path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     result = cli.examine(teststring, args)
     assert "[link](testlink.html)" in result and "test.jpg" in result
@@ -414,9 +413,7 @@ def test_cli_config_file():
     testargs = ["", "--input-dir", "/dev/null", "--config-file", "newsettings.cfg"]
     with patch.object(sys, "argv", testargs):
         args = cli.parse_args(testargs)
-    with open(
-        path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8"
-    ) as f:
+    with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     args.config_file = path.join(RESOURCES_DIR, args.config_file)
     options = settings.args_to_extractor(args)
@@ -459,9 +456,7 @@ def test_input_filtering():
     # URL in blacklist
     args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     my_urls = cli_utils.load_input_urls(args)
-    my_blacklist = cli_utils.load_blacklist(
-        path.join(RESOURCES_DIR, "list-discard.txt")
-    )
+    my_blacklist = cli_utils.load_blacklist(path.join(RESOURCES_DIR, "list-discard.txt"))
     url_store = add_to_compressed_dict(my_urls, blacklist=my_blacklist)
     assert len(url_store.dump_urls()) == 0
     # other method
@@ -474,17 +469,11 @@ def test_input_filtering():
     # URL filter
     args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
     my_urls = cli_utils.load_input_urls(args)
-    url_store = add_to_compressed_dict(
-        my_urls, blacklist=None, url_filter=["status"], url_store=None
-    )
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=["status"], url_store=None)
     assert len(url_store.urldict) == 1
-    url_store = add_to_compressed_dict(
-        my_urls, blacklist=None, url_filter=["teststring"], url_store=None
-    )
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=["teststring"], url_store=None)
     assert len(url_store.urldict) == 0
-    url_store = add_to_compressed_dict(
-        my_urls, blacklist=None, url_filter=["status", "teststring"], url_store=None
-    )
+    url_store = add_to_compressed_dict(my_urls, blacklist=None, url_filter=["status", "teststring"], url_store=None)
     assert len(url_store.urldict) == 1
 
     # malformed URLs
@@ -498,9 +487,7 @@ def test_input_filtering():
     assert len(url_store.find_known_urls("https://example.org")) == 1
 
     # filter before exploration
-    input_store = add_to_compressed_dict(
-        ["https://example.org/1", "https://sitemaps.org/test"]
-    )
+    input_store = add_to_compressed_dict(["https://example.org/1", "https://sitemaps.org/test"])
     input_urls = ["https://example.org", "http://sitemaps.org/", "https://test.info/"]
     url_store = cli_utils.build_exploration_dict(input_store, input_urls, args)
     assert url_store.get_known_domains() == ["https://test.info"]
@@ -587,17 +574,3 @@ def test_probing():
         assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
-
-
-if __name__ == "__main__":
-    test_parser()
-    test_climain()
-    test_input_type()
-    test_input_filtering()
-    test_sysoutput()
-    test_cli_pipeline()
-    test_file_processing()
-    test_cli_config_file()
-    test_crawling()
-    test_download()
-    test_probing()

@@ -2,17 +2,17 @@
 
 import re
 import string
+import unicodedata
 from difflib import SequenceMatcher
 from functools import lru_cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
-import unicodedata
 from lxml.etree import _Element
 
-from .settings import LRU_SIZE
+from .settings import LRU_SIZE, Extractor
 from .utils import trim
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
@@ -30,7 +30,7 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
     return SequenceMatcher(None, reference, new_string).ratio() >= threshold
 
 
-def _get_sample_by_length(tokens: List[str], target_length: int) -> List[str]:
+def _get_sample_by_length(tokens: list[str], target_length: int) -> list[str]:
     """Helper function to get a sample of tokens based on length criteria."""
     sample = []
     for i in range(4, -1, -1):
@@ -40,7 +40,7 @@ def _get_sample_by_length(tokens: List[str], target_length: int) -> List[str]:
     return sample
 
 
-def sample_tokens_fallback(inputstring: str, length: int = 64) -> List[str]:
+def sample_tokens_fallback(inputstring: str, length: int = 64) -> list[str]:
     """
     This fallback implementation is used when the primary sample_tokens function
     generates an empty token list. This is mostly relevant for languages like
@@ -52,7 +52,7 @@ def sample_tokens_fallback(inputstring: str, length: int = 64) -> List[str]:
     return _get_sample_by_length(tokens, length)
 
 
-def sample_tokens(inputstring: str, length: int = 64) -> List[str]:
+def sample_tokens(inputstring: str, length: int = 64) -> list[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
     tokens = []
@@ -76,42 +76,27 @@ def generate_bow_hash(inputstring: str, length: int = 24) -> bytes:
     return blake2b(teststring.encode(), digest_size=length).digest()
 
 
+@lru_cache(maxsize=2**14)
+def _vector_to_add(token: str, length: int) -> list[int]:
+    "Token's contribution to a Simhash vector, cached across all instances."
+    token_hash = int.from_bytes(blake2b(token.encode(), digest_size=8).digest(), "big")
+    return [1 if token_hash & (1 << i) else -1 for i in range(length)]
+
+
 class Simhash:
     "Implement a basic Charikar hashing approach of string similarity."
+
     __slots__ = ["hash", "length"]
 
     def __init__(
         self,
         inputstring: str = "",
         length: int = 64,
-        existing_hash: Optional[str] = None,
+        existing_hash: str | None = None,
     ) -> None:
         "Store length and existing or new hash."
         self.length = length
         self.hash = self.validate(existing_hash) or self.create_hash(inputstring)
-
-    def _hash(self, inputstring: str) -> int:
-        "Return a numerical hash of the string."
-        return int.from_bytes(
-            blake2b(inputstring.encode(), digest_size=8).digest(), "big"
-        )
-        # old: variable-length version of Python's builtin hash by @sean-public
-        # see also Siphash13 in https://peps.python.org/pep-0456/
-        # if inputstring == "":
-        #    return 0
-        # mask = 2**self.length - 1
-        # x = ord(inputstring[0]) << 7
-        # for c in inputstring:
-        #    x = ((x * 1000003) ^ ord(c)) & mask
-        # x ^= len(inputstring)
-        # if x == -1:
-        #    return -2
-        # return x
-
-    @lru_cache(maxsize=2**14)
-    def _vector_to_add(self, token: str) -> List[int]:
-        "Create vector to add to the existing string vector"
-        return [1 if self._hash(token) & (1 << i) else -1 for i in range(self.length)]
 
     def create_hash(self, inputstring: str) -> int:
         """Calculates a Charikar simhash. References used:
@@ -122,7 +107,7 @@ class Simhash:
         vector = [0] * self.length
 
         for token in sample_tokens(inputstring, self.length):
-            vector = list(map(add, vector, self._vector_to_add(token)))
+            vector = list(map(add, vector, _vector_to_add(token, self.length)))
 
         return sum(1 << i for i in range(self.length) if vector[i] >= 0)
 
@@ -130,14 +115,14 @@ class Simhash:
         "Convert the numerical hash to a hexadecimal string."
         return hex(self.hash)[2:]
 
-    def _hash_to_int(self, inputhash: str) -> Optional[int]:
+    def _hash_to_int(self, inputhash: str) -> int | None:
         "Convert the hexadecimal hash to a numerical value."
         try:
             return int(inputhash, 16)
         except (TypeError, ValueError):
             return None
 
-    def validate(self, inputhash: Optional[Union[int, str]]) -> Optional[int]:
+    def validate(self, inputhash: int | str | None) -> int | None:
         "Validate the input hash and return it, or None otherwise."
         if isinstance(inputhash, int) and 18 <= len(str(inputhash)) <= 22:
             return inputhash
@@ -148,11 +133,11 @@ class Simhash:
             return self._hash_to_int(inputhash)
         return None
 
-    def hamming_distance(self, other_hash: Any) -> int:
+    def hamming_distance(self, other_hash: "Simhash") -> int:
         "Return distance between two hashes of equal length using the XOR operator."
         return BIN_COUNT_FUNC(self.hash ^ other_hash.hash)
 
-    def similarity(self, other_hash: Any) -> float:
+    def similarity(self, other_hash: "Simhash") -> float:
         """Calculate how similar this hash is from another simhash.
         Returns a float from 0.0 to 1.0.
         """
@@ -180,8 +165,8 @@ class LRUCache:
         self.lock = RLock()  # because linkedlist updates aren't threadsafe
         # cache instance variables
         self.maxsize = maxsize
-        self.cache: Dict[str, List[Any]] = {}
-        self.root: List[Any] = []  # root of the circular doubly linked list
+        self.cache: dict[str, list[Any]] = {}
+        self.root: list[Any] = []  # root of the circular doubly linked list
         # initialize by pointing to self
         self.root[:] = [self.root, self.root, None, None]
         self.full = False
@@ -261,7 +246,7 @@ def put_in_cache(teststring: str) -> None:
     LRU_TEST.put(teststring, value)
 
 
-def duplicate_test(element: _Element, options: Any) -> bool:
+def duplicate_test(element: _Element, options: Extractor) -> bool:
     "Check for duplicate text with LRU cache."
     teststring = trim(" ".join(element.itertext()))
     # teststring = element.text

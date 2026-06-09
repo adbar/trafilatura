@@ -4,10 +4,10 @@ Deriving link info from sitemaps.
 
 import logging
 import re
-
+from collections.abc import Callable
 from itertools import islice
+from re import Pattern
 from time import sleep
-from typing import Callable, List, Set, Optional, Pattern
 
 from courlan import (
     clean_url,
@@ -21,7 +21,6 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -49,6 +48,7 @@ GUESSES = [
 
 class SitemapObject:
     "Store all necessary information on sitemap download and processing."
+
     __slots__ = [
         "base_url",
         "content",
@@ -65,8 +65,8 @@ class SitemapObject:
         self,
         base_url: str,
         domain: str,
-        sitemapsurls: List[str],
-        target_lang: Optional[str] = None,
+        sitemapsurls: list[str],
+        target_lang: str | None = None,
         external: bool = False,
     ) -> None:
         self.base_url: str = base_url
@@ -74,10 +74,10 @@ class SitemapObject:
         self.domain: str = domain
         self.external: bool = external
         self.current_url: str = ""
-        self.seen: Set[str] = set()
-        self.sitemap_urls: List[str] = sitemapsurls
-        self.target_lang: Optional[str] = target_lang
-        self.urls: List[str] = []
+        self.seen: set[str] = set()
+        self.sitemap_urls: list[str] = sitemapsurls
+        self.target_lang: str | None = target_lang
+        self.urls: list[str] = []
 
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
@@ -104,14 +104,8 @@ class SitemapObject:
 
         # don't take links from another domain and make an exception for main platforms
         # also bypass: subdomains vs. domains
-        if (
-            not self.external
-            and not WHITELISTED_PLATFORMS.search(newdomain)
-            and not is_similar_domain(self.domain, newdomain)
-        ):
-            LOGGER.warning(
-                "link discarded, diverging domain names: %s %s", self.domain, newdomain
-            )
+        if not self.external and not WHITELISTED_PLATFORMS.search(newdomain) and not is_similar_domain(self.domain, newdomain):
+            LOGGER.warning("link discarded, diverging domain names: %s %s", self.domain, newdomain)
             return
 
         if DETECT_SITEMAP_LINK.search(link):
@@ -119,13 +113,9 @@ class SitemapObject:
         else:
             self.urls.append(link)
 
-    def extract_links(
-        self, regex: Pattern[str], index: int, handler: Callable[[str], None]
-    ) -> None:
+    def extract_links(self, regex: Pattern[str], index: int, handler: Callable[[str], None]) -> None:
         "Extract links from the content using pre-defined regex, index and handler."
-        for match in (
-            m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)
-        ):
+        for match in (m[index] for m in islice(regex.finditer(self.content), MAX_LINKS)):
             handler(match)
         LOGGER.debug(
             "%s sitemaps and %s links found for %s",
@@ -139,9 +129,7 @@ class SitemapObject:
         if "hreflang=" not in self.content:
             return
 
-        lang_regex = re.compile(
-            rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL
-        )
+        lang_regex = re.compile(rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL)
 
         def handle_lang_link(attrs: str) -> None:
             "Examine language code attributes."
@@ -154,9 +142,7 @@ class SitemapObject:
 
     def extract_sitemap_links(self) -> None:
         "Extract sitemap links and web page links from a sitemap file."
-        self.extract_links(
-            LINK_REGEX, 1, self.handle_link
-        )  # process middle part of the match tuple
+        self.extract_links(LINK_REGEX, 1, self.handle_link)  # process middle part of the match tuple
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
@@ -178,11 +164,11 @@ class SitemapObject:
 
 def sitemap_search(
     url: str,
-    target_lang: Optional[str] = None,
+    target_lang: str | None = None,
     external: bool = False,
     sleep_time: float = 2.0,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
-) -> List[str]:
+) -> list[str]:
     """Look for sitemaps for the given URL and gather links.
 
     Args:
@@ -222,9 +208,7 @@ def sitemap_search(
 
     # try sitemaps in robots.txt file, additional URLs just in case
     if not sitemap.sitemap_urls:
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [
-            f"{baseurl}/{g}" for g in GUESSES
-        ]
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [f"{baseurl}/{g}" for g in GUESSES]
 
     # iterate through nested sitemaps and results
     while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
@@ -232,9 +216,7 @@ def sitemap_search(
         sitemap.fetch()
         sitemap.process()
         # sanity check: keep track of visited sitemaps and exclude them
-        sitemap.sitemap_urls = [
-            s for s in sitemap.sitemap_urls if s not in sitemap.seen
-        ]
+        sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
         if len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
@@ -246,7 +228,7 @@ def sitemap_search(
     return sitemap.urls
 
 
-def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
+def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     """Check if the sitemap corresponds to an expected format,
     i.e. TXT or XML."""
     if contents is None:
@@ -267,14 +249,14 @@ def is_plausible_sitemap(url: str, contents: Optional[str]) -> bool:
     return True
 
 
-def find_robots_sitemaps(baseurl: str) -> List[str]:
+def find_robots_sitemaps(baseurl: str) -> list[str]:
     """Guess the location of the robots.txt file and try to extract
     sitemap URLs from it"""
     robotstxt = fetch_url(baseurl + "/robots.txt")
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
-def extract_robots_sitemaps(robotstxt: Optional[str], baseurl: str) -> List[str]:
+def extract_robots_sitemaps(robotstxt: str | None, baseurl: str) -> list[str]:
     "Read a robots.txt file and find sitemap links."
     # sanity check on length (cause: redirections)
     if robotstxt is None or len(robotstxt) > 10000:

@@ -11,12 +11,14 @@ import zlib
 
 try:
     import brotli
+
     HAS_BROTLI = True
 except ImportError:
     HAS_BROTLI = False
 
 try:
     import zstandard
+
     HAS_ZSTD = True
 except ImportError:
     HAS_ZSTD = False
@@ -29,17 +31,26 @@ import pytest
 from courlan import UrlStore
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import (download_queue_processing,
-                                   url_processing_pipeline)
+from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import Extractor, extract
 import trafilatura.downloads as dl
-from trafilatura.downloads import (DEFAULT_HEADERS, HAS_PYCURL, USER_AGENT, Response,
-                                   _determine_headers, _handle_response,
-                                   _parse_config, _pycurl_is_live_page,
-                                   _send_pycurl_request, _send_urllib_request,
-                                   _urllib3_is_live_page,
-                                   add_to_compressed_dict, fetch_url,
-                                   is_live_page, load_download_buffer)
+from trafilatura.downloads import (
+    DEFAULT_HEADERS,
+    HAS_PYCURL,
+    USER_AGENT,
+    Response,
+    _determine_headers,
+    _handle_response,
+    _parse_config,
+    _pycurl_is_live_page,
+    _send_pycurl_request,
+    _send_urllib_request,
+    _urllib3_is_live_page,
+    add_to_compressed_dict,
+    fetch_url,
+    is_live_page,
+    load_download_buffer,
+)
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, handle_compressed_file, load_html
 
@@ -47,11 +58,11 @@ from trafilatura.utils import decode_file, handle_compressed_file, load_html
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 ZERO_CONFIG = DEFAULT_CONFIG
-ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
-ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
+ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
+ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
 
-RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
-UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
+RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources")
+UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, "newsettings.cfg"))
 
 DEFAULT_OPTS = Extractor(config=DEFAULT_CONFIG)
 
@@ -86,12 +97,12 @@ def test_response_object():
     assert sorted(my_dict) == ["data", "headers", "html", "status", "url"]
 
     # response object: data, status, url
-    response = Response("", 200, 'https://httpbin.org/encoding/utf8')
+    response = Response("", 200, "https://httpbin.org/encoding/utf8")
     for size in (10000000, 1):
-        response.data = b'ABC'*size
+        response.data = b"ABC" * size
         assert _handle_response(response.url, response, False, DEFAULT_OPTS) is None
     # straight handling of response object
-    with open(os.path.join(RESOURCES_DIR, 'utf8.html'), 'rb') as filehandle:
+    with open(os.path.join(RESOURCES_DIR, "utf8.html"), "rb") as filehandle:
         response.data = filehandle.read()
     assert _handle_response(response.url, response, False, DEFAULT_OPTS) is not None
     assert load_html(response) is not None
@@ -100,33 +111,35 @@ def test_response_object():
 
 
 def test_is_live_page():
-    '''Test if pages are available on the network.'''
+    """Test if pages are available on the network."""
     # is_live general tests
-    assert _urllib3_is_live_page('https://httpbun.com/status/301') is True
-    assert _urllib3_is_live_page('https://httpbun.com/status/404') is False
-    assert is_live_page('https://httpbun.com/status/403') is False
+    assert _urllib3_is_live_page("https://httpbun.com/status/301") is True
+    assert _urllib3_is_live_page("https://httpbun.com/status/404") is False
+    assert is_live_page("https://httpbun.com/status/403") is False
     # is_live pycurl tests
     if HAS_PYCURL:
-        assert _pycurl_is_live_page('https://httpbun.com/status/301') is True
+        assert _pycurl_is_live_page("https://httpbun.com/status/301") is True
+        # connection failure exercises the pycurl HEAD error branch
+        assert _pycurl_is_live_page("https://nonexistent.invalid.example/") is False
 
 
 def test_fetch():
-    '''Test URL fetching.'''
+    """Test URL fetching."""
     # sanity check
-    assert _send_urllib_request('', True, False, DEFAULT_CONFIG) is None
+    assert _send_urllib_request("", True, False, DEFAULT_CONFIG) is None
 
     # fetch_url
-    assert fetch_url('#@1234') is None
-    assert fetch_url('https://httpbun.com/status/404') is None
+    assert fetch_url("#@1234") is None
+    assert fetch_url("https://httpbun.com/status/404") is None
 
     # test if the functions default to no_ssl
     # False doesn't work?
-    url = 'https://expired.badssl.com/'
+    url = "https://expired.badssl.com/"
     assert _send_urllib_request(url, True, False, DEFAULT_CONFIG) is not None
     if HAS_PYCURL:
         assert _send_pycurl_request(url, False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
-    url = 'https://httpbun.com/status/200'
+    url = "https://httpbun.com/status/200"
     for no_ssl in (True, False):
         response = _send_urllib_request(url, no_ssl, True, DEFAULT_CONFIG)
         assert b"200" in response.data and b"OK" in response.data  # JSON
@@ -134,37 +147,40 @@ def test_fetch():
     if HAS_PYCURL:
         response1 = _send_pycurl_request(url, True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
-        assert _handle_response(url, response1, False, DEFAULT_OPTS).data == _handle_response(url, response, False, DEFAULT_OPTS).data
+        assert (
+            _handle_response(url, response1, False, DEFAULT_OPTS).data
+            == _handle_response(url, response, False, DEFAULT_OPTS).data
+        )
         assert _handle_response(url, response1, True, DEFAULT_OPTS) == _handle_response(url, response, True, DEFAULT_OPTS)
 
     # test handling of redirects
-    res = fetch_url('https://httpbun.com/redirect/2')
+    res = fetch_url("https://httpbun.com/redirect/2")
     assert len(res) > 100  # We followed redirects and downloaded something in the end
     new_config = use_config()  # get a new config instance to avoid mutating the default one
     # patch max directs: limit to 0. We won't fetch any page as a result
-    new_config.set('DEFAULT', 'MAX_REDIRECTS', '0')
+    new_config.set("DEFAULT", "MAX_REDIRECTS", "0")
     _reset_downloads_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
-    res = fetch_url('https://httpbun.com/redirect/1', config=new_config)
+    res = fetch_url("https://httpbun.com/redirect/1", config=new_config)
     assert res is None
     # also test max redir implementation on pycurl if available
     if HAS_PYCURL:
-        assert _send_pycurl_request('https://httpbun.com/redirect/1', True, False, new_config) is None
+        assert _send_pycurl_request("https://httpbun.com/redirect/1", True, False, new_config) is None
 
     # test timeout
-    new_config.set('DEFAULT', 'DOWNLOAD_TIMEOUT', '1')
-    args = ('https://httpbun.com/delay/2', True, False, new_config)
+    new_config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
+    args = ("https://httpbun.com/delay/2", True, False, new_config)
     assert _send_urllib_request(*args) is None
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
 
     # test MAX_FILE_SIZE
-    backup = ZERO_CONFIG.getint('DEFAULT', 'MAX_FILE_SIZE')
-    ZERO_CONFIG.set('DEFAULT', 'MAX_FILE_SIZE', '1')
-    args = ('https://httpbun.com/html', True, False, ZERO_CONFIG)
+    backup = ZERO_CONFIG.getint("DEFAULT", "MAX_FILE_SIZE")
+    ZERO_CONFIG.set("DEFAULT", "MAX_FILE_SIZE", "1")
+    args = ("https://httpbun.com/html", True, False, ZERO_CONFIG)
     assert _send_urllib_request(*args) is None
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
-    ZERO_CONFIG.set('DEFAULT', 'MAX_FILE_SIZE', str(backup))
+    ZERO_CONFIG.set("DEFAULT", "MAX_FILE_SIZE", str(backup))
 
 
 def test_proxy_plumbing(monkeypatch):
@@ -188,30 +204,30 @@ def test_pycurl_proxy(monkeypatch):
 
 
 def test_config():
-    '''Test how configuration options are read and stored.'''
+    """Test how configuration options are read and stored."""
     # default config is none
     assert _parse_config(DEFAULT_CONFIG) == (None, None)
     # default accept-encoding
-    accepted = ['deflate', 'gzip']
+    accepted = ["deflate", "gzip"]
     if HAS_BROTLI:
-        accepted.append('br')
+        accepted.append("br")
     if HAS_ZSTD:
-        accepted.append('zstd')
+        accepted.append("zstd")
     # subset: urllib3/stdlib may advertise extra encodings (e.g. zstd on 3.14)
-    assert set(accepted) <= set(DEFAULT_HEADERS['accept-encoding'].split(','))
+    assert set(accepted) <= set(DEFAULT_HEADERS["accept-encoding"].split(","))
     # default user-agent
     default = _determine_headers(DEFAULT_CONFIG)
-    assert default['User-Agent'] == USER_AGENT
-    assert 'Cookie' not in default
+    assert default["User-Agent"] == USER_AGENT
+    assert "Cookie" not in default
     # user-agents rotation
-    assert _parse_config(UA_CONFIG) == (['Firefox', 'Chrome'], 'yummy_cookie=choco; tasty_cookie=strawberry')
+    assert _parse_config(UA_CONFIG) == (["Firefox", "Chrome"], "yummy_cookie=choco; tasty_cookie=strawberry")
     custom = _determine_headers(UA_CONFIG)
-    assert custom['User-Agent'] in ['Chrome', 'Firefox']
-    assert custom['Cookie'] == 'yummy_cookie=choco; tasty_cookie=strawberry'
+    assert custom["User-Agent"] in ["Chrome", "Firefox"]
+    assert custom["Cookie"] == "yummy_cookie=choco; tasty_cookie=strawberry"
 
 
 def test_decode():
-    '''Test how responses are being decoded.'''
+    """Test how responses are being decoded."""
     html_string = "<html><head/><body><div>ABC</div></body></html>"
     assert decode_file(b" ") is not None
 
@@ -233,23 +249,24 @@ def test_decode():
         assert handle_compressed_file(bad_file) == bad_file
 
 
+@pytest.mark.usefixtures("mock_network")
 def test_queue():
-    'Test creation, modification and download of URL queues.'
+    "Test creation, modification and download of URL queues."
     # test conversion and storage
-    url_store = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
+    url_store = add_to_compressed_dict(["ftps://www.example.org/", "http://"])
     assert isinstance(url_store, UrlStore)
 
     # blacklist and URL filter
     url_store = add_to_compressed_dict(
-        ['https://example.org/page', 'https://example.org/skip'],
-        blacklist={'example.org/skip'}, url_filter=['/page'])
-    assert url_store.dump_urls() == ['https://example.org/page']
+        ["https://example.org/page", "https://example.org/skip"], blacklist={"example.org/skip"}, url_filter=["/page"]
+    )
+    assert url_store.dump_urls() == ["https://example.org/page"]
 
     # response download buffer (empty input, no network)
     assert list(dl.buffered_response_downloads([], 1)) == []
 
     # download buffer
-    inputurls = [f'https://test{i}.org/{j}' for i in range(1, 7) for j in range(1, 4)]
+    inputurls = [f"https://test{i}.org/{j}" for i in range(1, 7) for j in range(1, 4)]
     url_store = add_to_compressed_dict(inputurls)
     bufferlist, _ = load_download_buffer(url_store, sleep_time=5)
     assert len(bufferlist) == 6
@@ -258,30 +275,21 @@ def test_queue():
     assert len(bufferlist) == 6
 
     # CLI args
-    url_store = add_to_compressed_dict(['https://www.example.org/'])
-    testargs = ['', '--list']
-    with patch.object(sys, 'argv', testargs):
+    url_store = add_to_compressed_dict(["https://www.example.org/"])
+    testargs = ["", "--list"]
+    with patch.object(sys, "argv", testargs):
         args = parse_args(testargs)
     assert url_processing_pipeline(args, url_store) is False
 
     # single/multiprocessing
-    testargs = ['', '-v']
-    with patch.object(sys, 'argv', testargs):
+    testargs = ["", "-v"]
+    with patch.object(sys, "argv", testargs):
         args = parse_args(testargs)
-    inputurls = [f'https://httpbun.com/status/{i}' for i in (301, 304, 200, 300, 400, 505)]
+    inputurls = [f"https://httpbun.com/status/{i}" for i in (301, 304, 200, 300, 400, 505)]
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True
-    args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
+    args.config_file = os.path.join(RESOURCES_DIR, "newsettings.cfg")
     options = args_to_extractor(args)
-    options.config['DEFAULT']['SLEEP_TIME'] = '0.2'
+    options.config["DEFAULT"]["SLEEP_TIME"] = "0.2"
     results = download_queue_processing(url_store, args, -1, options)
     assert len(results[0]) == 5 and results[1] is -1
-
-
-if __name__ == '__main__':
-    test_response_object()
-    test_is_live_page()
-    test_fetch()
-    test_config()
-    test_decode()
-    test_queue()

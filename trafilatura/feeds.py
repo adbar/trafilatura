@@ -5,10 +5,8 @@ Examining feeds and extracting links for further processing.
 import json
 import logging
 import re
-
 from itertools import islice
 from time import sleep
-from typing import List, Optional
 
 from courlan import (
     check_url,
@@ -54,9 +52,7 @@ FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
-LINK_ELEMENTS = re.compile(
-    r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL
-)
+LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
 
@@ -72,6 +68,7 @@ LINK_VALIDATION_RE = re.compile(
 
 class FeedParameters:
     "Store necessary information to proceed a feed."
+
     __slots__ = ["base", "domain", "ext", "lang", "ref"]
 
     def __init__(
@@ -80,12 +77,12 @@ class FeedParameters:
         domain: str,
         reference: str,
         external: bool = False,
-        target_lang: Optional[str] = None,
+        target_lang: str | None = None,
     ) -> None:
         self.base: str = baseurl
         self.domain: str = domain
         self.ext: bool = external
-        self.lang: Optional[str] = target_lang
+        self.lang: str | None = target_lang
         self.ref: str = reference
 
 
@@ -97,7 +94,7 @@ def is_potential_feed(feed_string: str) -> bool:
     return "<rss" in beginning or "<feed" in beginning
 
 
-def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
+def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
     """Examine links to determine if they are valid and
     lead to a web page"""
     output_links = []
@@ -107,14 +104,8 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
         checked = check_url(link, language=params.lang)
 
         if checked is not None:
-            if (
-                not params.ext
-                and "feed" not in link
-                and not is_similar_domain(params.domain, checked[1])
-            ):
-                LOGGER.warning(
-                    "Rejected, diverging domain names: %s %s", params.domain, checked[1]
-                )
+            if not params.ext and "feed" not in link and not is_similar_domain(params.domain, checked[1]):
+                LOGGER.warning("Rejected, diverging domain names: %s %s", params.domain, checked[1])
             else:
                 output_links.append(checked[0])
         # Feedburner/Google feeds
@@ -124,17 +115,14 @@ def handle_link_list(linklist: List[str], params: FeedParameters) -> List[str]:
     return output_links
 
 
-def find_links(feed_string: str, params: FeedParameters) -> List[str]:
+def find_links(feed_string: str, params: FeedParameters) -> list[str]:
     "Try different feed types and return the corresponding links."
     if not is_potential_feed(feed_string):
         # JSON
         if feed_string.startswith("{"):
             try:
                 # fallback: https://www.jsonfeed.org/version/1.1/
-                candidates = [
-                    item.get("url") or item.get("id")
-                    for item in json.loads(feed_string).get("items", [])
-                ]
+                candidates = [item.get("url") or item.get("id") for item in json.loads(feed_string).get("items", [])]
                 return [c for c in candidates if c is not None]
             except json.decoder.JSONDecodeError:
                 LOGGER.debug("JSON decoding error: %s", params.domain)
@@ -146,9 +134,7 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
     if "<link " in feed_string:
         return [
             LINK_HREF.search(link)[1]  # type: ignore[index]
-            for link in (
-                m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS)
-            )
+            for link in (m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS))
             if "atom+xml" not in link and 'rel="self"' not in link
         ]
         # if '"' in feedlink:
@@ -156,15 +142,12 @@ def find_links(feed_string: str, params: FeedParameters) -> List[str]:
 
     # RSS
     if "<link>" in feed_string:
-        return [
-            m[1].strip()
-            for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)
-        ]
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     return []
 
 
-def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
+def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
     "Extract and refine links from Atom, RSS and JSON feeds."
     if not feed_string:
         LOGGER.debug("Empty feed: %s", params.domain)
@@ -172,23 +155,17 @@ def extract_links(feed_string: str, params: FeedParameters) -> List[str]:
 
     feed_links = find_links(feed_string.strip(), params)
 
-    output_links = [
-        link
-        for link in handle_link_list(feed_links, params)
-        if link != params.ref and link.count("/") > 2
-    ]
+    output_links = [link for link in handle_link_list(feed_links, params) if link != params.ref and link.count("/") > 2]
 
     if feed_links:
-        LOGGER.debug(
-            "Links found: %s of which %s valid", len(feed_links), len(output_links)
-        )
+        LOGGER.debug("Links found: %s of which %s valid", len(feed_links), len(output_links))
     else:
         LOGGER.debug("Invalid feed for %s", params.domain)
 
     return output_links
 
 
-def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
+def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     """Parse the HTML and try to extract feed URLs from the home page.
     Adapted from http://www.aaronsw.com/2002/feedfinder/"""
     tree = load_html(htmlstring)
@@ -200,16 +177,13 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
     feed_urls = [
         link.get("href", "")
         for link in tree.xpath('//link[@rel="alternate"][@href]')
-        if link.get("type") in FEED_TYPES
-        or LINK_VALIDATION_RE.search(link.get("href", ""))
+        if link.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
     ]
 
     # backup
     if not feed_urls:
         feed_urls = [
-            link.get("href", "")
-            for link in tree.xpath("//a[@href]")
-            if LINK_VALIDATION_RE.search(link.get("href", ""))
+            link.get("href", "") for link in tree.xpath("//a[@href]") if LINK_VALIDATION_RE.search(link.get("href", ""))
         ]
 
     # refine
@@ -217,43 +191,32 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> List[str]:
     for link in dict.fromkeys(feed_urls):
         link = fix_relative_urls(params.base, link)
         link = clean_url(link)
-        if (
-            link
-            and link != params.ref
-            and is_valid_url(link)
-            and not BLACKLIST.search(link)
-        ):
+        if link and link != params.ref and is_valid_url(link) and not BLACKLIST.search(link):
             output_urls.append(link)
 
     # log result
-    LOGGER.debug(
-        "Feed URLs found: %s of which %s valid", len(feed_urls), len(output_urls)
-    )
+    LOGGER.debug("Feed URLs found: %s of which %s valid", len(feed_urls), len(output_urls))
     return output_urls
 
 
-def probe_gnews(params: FeedParameters, urlfilter: Optional[str]) -> List[str]:
+def probe_gnews(params: FeedParameters, urlfilter: str | None) -> list[str]:
     "Alternative way to gather feed links: Google News."
     if params.lang:
-        downloaded = fetch_url(
-            f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100"
-        )
+        downloaded = fetch_url(f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100")
         if downloaded:
             feed_links = extract_links(downloaded, params)
             feed_links = filter_urls(feed_links, urlfilter)
-            LOGGER.debug(
-                "%s Google news links found for %s", len(feed_links), params.domain
-            )
+            LOGGER.debug("%s Google news links found for %s", len(feed_links), params.domain)
             return feed_links
     return []
 
 
 def find_feed_urls(
     url: str,
-    target_lang: Optional[str] = None,
+    target_lang: str | None = None,
     external: bool = False,
     sleep_time: float = 2.0,
-) -> List[str]:
+) -> list[str]:
     """Try to find feed URLs.
 
     Args:
@@ -305,7 +268,7 @@ def find_feed_urls(
     return probe_gnews(params, urlfilter)
 
 
-def try_homepage(baseurl: str, target_lang: Optional[str]) -> List[str]:
+def try_homepage(baseurl: str, target_lang: str | None) -> list[str]:
     """Shift into reverse and try the homepage instead of the particular feed
     page that was given as input."""
     LOGGER.debug("Probing homepage for feeds instead: %s", baseurl)

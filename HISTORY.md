@@ -1,6 +1,47 @@
 ## History / Changelog
 
 
+## 2.1.0
+
+Major changes:
+- Dependencies updated, lxml in particular (with minimal changes in the code)
+- Faster XPath performance using XSLT extensions by @Honesty-of-the-Cavernous-Tissue (#793)
+- More deprecation warnings
+- More robust code
+
+Fixes:
+- Fix node pruning raising an AttributeError in certain cases by @PLPeeters (#761)
+- Refine img src url and fix table extraction bugs by @unsleepy22 (#762)
+- Fix eager doctype regex matching by @UVMvmfee (#764)
+- Add extract_with_metadata method and ut by @unsleepy22 (#765)
+- More robust table extraction by @unsleepy22 (#767)
+- Detect code in pre-tag using indicators and fix code formatting issues by @steineggerroland (#776)
+- Fix tokenizer not stripping "Ideographic Full Stop" by @reinoldus (#783)
+- Improve spacing in item, cell and code blocks by @unsleepy22 (#772)
+- Changed code to handle potential empty string by @seanswyi (#790)
+- Optimize PUNCT_TBL creation by @deedy5 (#791)
+- Replace `None`s in code blocks by @crackcomm in (#797)
+- Propagate no_fallback setting to fast argument by @unsleepy22 (#800)
+- Fix bug #807 by @arcombe012 (#808)
+- Added support to meta name image by @felipehertzer (#809)
+- Preserve images when links are included by @rmarchei (#841)
+- Clean fencedframe element during extraction by @eyupcanakman (#847)
+- Add all Justext languages known to the detector with @cikay (#810)
+- Safer lxml element init by @adbar (#856)
+- Preserve links in tables when --links is enabled by @rmarchei (#858)
+
+Maintenance:
+- Update docs by @adbar (#773)
+- Update README: fix /dependents links by @vbarbaresi (#785)
+- Update CI pipeline by @adbar (#801)
+- Update setup, fix code and tests by @adbar (#853)
+- Review consistency of code, tests and docs by @adbar (#855)
+- Add tests to prevent metadata bugs by @adbar (#857)
+- Tests: check consistency by @adbar (#859)
+- Modernize code base by @adbar (#860)
+- Format the code with ruff by @adbar (#861)
+
+
 ## 2.0.0
 
 Breaking changes:
