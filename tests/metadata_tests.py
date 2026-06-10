@@ -35,6 +35,20 @@ def test_titles():
         ("<html><body><h2>First</h2><h1>Second</h1></body></html>", "Second"),
         ("<html><body><h2>First</h2><h2>Second</h2></body></html>", "First"),
         ("<html><body><title></title></body></html>", None),
+        # head title is preferred over h1s when it exists and is not a domain
+        (
+            "<html><head><title>Head Title</title></head><body><h1>First</h1><h1>Second</h1></body></html>",
+            "Head Title",
+        ),
+        # domain-like head titles are ignored, falling back to the first h1
+        (
+            "<html><head><title>example.com</title></head><body><h1>First</h1><h1>Second</h1></body></html>",
+            "First",
+        ),
+        # the first non-empty h1 is used when earlier h1s are blank
+        ("<html><body><h1>   </h1><h1>Real Title</h1></body></html>", "Real Title"),
+        # all-blank h1s fall through to nothing
+        ("<html><body><h1>   </h1><h1>   </h1></body></html>", None),
     ]
 
     for doc, expected_title in tests:
