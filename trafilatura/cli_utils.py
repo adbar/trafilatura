@@ -395,7 +395,7 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     "Aggregated functions to show a list and download and process an input list."
     if args.list:
         url_store.print_unvisited_urls()  # and not write_result()
-        return False  # and not sys.exit(0)
+        return 0  # and not sys.exit(0)
 
     options = args_to_extractor(args)
     url_count = url_store.total_url_number()

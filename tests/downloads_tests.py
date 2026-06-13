@@ -84,6 +84,21 @@ def _reset_downloads_globals():
     _reset_downloads_global_objects()
 
 
+def test_urllib_request_releases_conn_on_oversize():
+    "regression: the connection is released even when MAX_FILE_SIZE aborts the stream mid-download."
+    from unittest.mock import MagicMock
+
+    resp = MagicMock()
+    # stream more than MAX_FILE_SIZE so the loop raises ValueError before the normal release
+    resp.stream.return_value = iter([b"x" * (2**17)] * 1000)
+    pool = MagicMock()
+    pool.request.return_value = resp
+    with patch.object(dl, "_initiate_pool", return_value=pool):
+        result = _send_urllib_request("https://example.org", False, False, DEFAULT_CONFIG)
+    assert result is None
+    resp.release_conn.assert_called_once()
+
+
 def test_response_object():
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
@@ -279,7 +294,7 @@ def test_queue():
     testargs = ["", "--list"]
     with patch.object(sys, "argv", testargs):
         args = parse_args(testargs)
-    assert url_processing_pipeline(args, url_store) is False
+    assert url_processing_pipeline(args, url_store) == 0
 
     # single/multiprocessing
     testargs = ["", "-v"]

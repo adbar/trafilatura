@@ -31,13 +31,15 @@ def use_config(filename: str | None = None, config: ConfigParser | None = None) 
     if config is not None:
         return config
 
-    if filename is None:
-        filename = str(Path(__file__).parent / "settings.cfg")
-    elif not Path(filename).is_file():
-        raise FileNotFoundError("The given config file does not exist")
-
     config = ConfigParser()
-    config.read(filename)
+    default_file = str(Path(__file__).parent / "settings.cfg")
+    if filename is None:
+        config.read(default_file)
+    else:
+        if not Path(filename).is_file():
+            raise FileNotFoundError("The given config file does not exist")
+        # seed defaults first so a partial user file only overrides the keys it sets
+        config.read([default_file, filename])
     return config
 
 
@@ -101,7 +103,7 @@ class Extractor:
         "url_blacklist",
     ]
 
-    # config-derived integer sizes, populated by _add_config via CONFIG_MAPPING
+    # set by _add_config via CONFIG_MAPPING
     min_extracted_size: int
     min_output_size: int
     min_output_comm_size: int
@@ -153,7 +155,9 @@ class Extractor:
         self.tei_validation: bool = tei_validation
         self.author_blacklist: set[str] = author_blacklist or set()
         self.url_blacklist: set[str] = url_blacklist or set()
-        self.with_metadata: bool = with_metadata or only_with_metadata or bool(url_blacklist) or output_format == "xmltei"
+        self.with_metadata: bool = (
+            with_metadata or only_with_metadata or bool(url_blacklist) or bool(author_blacklist) or output_format == "xmltei"
+        )
         self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
@@ -304,8 +308,9 @@ class Document:
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
 
-    def as_dict(self) -> dict[str, str | None]:
+    def as_dict(self) -> dict[str, Any]:
         "Convert the document to a dictionary."
+        # heterogeneous value types (str, list, lxml _Element, None)
         return {attr: getattr(self, attr, None) for attr in self.__slots__}
 
 

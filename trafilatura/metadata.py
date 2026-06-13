@@ -44,7 +44,7 @@ logging.getLogger("htmldate").setLevel(logging.WARNING)
 
 META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 
-JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
+JSON_MINIFY = re.compile(r'("(?:\\.|[^"\\])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$")  # part without dots?
 

@@ -150,7 +150,7 @@ warn_redundant_casts = true
 no_implicit_reexport = true
 disallow_untyped_defs = true
 
-# third-party packages without type stubs (replaces per-import "# type: ignore")
+# third-party packages without type stubs
 [[tool.mypy.overrides]]
 module = ["brotli", "py3langid", "cchardet", "justext.*"]
 ignore_missing_imports = true

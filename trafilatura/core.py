@@ -114,7 +114,7 @@ def trafilatura_sequence(
         )
 
     # rescue: baseline extraction on original/dirty tree
-    if len_text < options.min_extracted_size and not options.focus == "precision":
+    if len_text < options.min_extracted_size and options.focus != "precision":
         postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
         LOGGER.debug("non-clean extracted length: %s (extraction)", len_text)
 
@@ -525,8 +525,7 @@ def _check_deprecation(
     max_tree_size: int | None = None,
     stacklevel: int = 2,
 ) -> bool:
-    """Check deprecated params and return the effective "fast" flag.
-    stacklevel is set by the caller so the warning points at user code."""
+    """Check deprecated params and return the effective "fast" flag."""
     if no_fallback:
         warnings.warn(
             '"no_fallback" will be removed, use "fast" instead',

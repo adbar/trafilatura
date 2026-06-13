@@ -132,8 +132,9 @@ class Response:
         if decode and self.data:
             self.html = decode_file(self.data)
 
-    def as_dict(self) -> dict[str, str]:
+    def as_dict(self) -> dict[str, Any]:
         "Convert the response object to a dictionary."
+        # heterogeneous value types (bytes, int, dict, str, None)
         return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
@@ -214,11 +215,13 @@ def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Con
         )
         data = bytearray()
         max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
-        for chunk in response.stream(2**17):
-            data.extend(chunk)
-            if len(data) > max_file_size:
-                raise ValueError("MAX_FILE_SIZE exceeded")
-        response.release_conn()
+        try:
+            for chunk in response.stream(2**17):
+                data.extend(chunk)
+                if len(data) > max_file_size:
+                    raise ValueError("MAX_FILE_SIZE exceeded")
+        finally:
+            response.release_conn()
 
         # necessary for standardization
         resp = Response(bytes(data), response.status, response.geturl())
@@ -474,6 +477,7 @@ def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: Con
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
         LOGGER.error("pycurl error: %s %s", url, err)
+        curl.close()
         # retry in case of SSL-related error
         # see https://curl.se/libcurl/c/libcurl-errors.html
         # errmsg = curl.errstr_raw()
