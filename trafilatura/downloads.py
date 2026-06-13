@@ -55,10 +55,27 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
+
+
+def validate_url(url: str) -> bool:
+    """Validate URL before making requests. Reject private/internal IPs."""
+    import ipaddress
+    from urllib.parse import urlparse
+    try:
+        parsed = urlparse(url)
+        if parsed.hostname:
+            try:
+                ip = ipaddress.ip_address(parsed.hostname)
+                if ip.is_private or ip.is_loopback or ip.is_link_local:
+                    return False
+            except ValueError:
+                pass  # hostname is not an IP
+        return True
+    except Exception:
+        return False
 
 
 def create_pool(**args: Any) -> urllib3.PoolManager | Any:
@@ -311,6 +328,9 @@ def fetch_response(
     """
     dl_function = _send_urllib_request if not HAS_PYCURL else _send_pycurl_request
     LOGGER.debug("sending request: %s", url)
+    if not validate_url(url):
+        LOGGER.warning("URL validation failed, rejecting: %s", url)
+        return None
     response = dl_function(url, no_ssl, with_headers, config)  # Response
     if not response:  # None or ""
         LOGGER.debug("request failed: %s", url)

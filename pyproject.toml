@@ -54,7 +54,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "certifi",
+    "certifi >= 2024.0.0",
     "charset_normalizer >= 3.4.0",
     "courlan >= 1.4.0",
     "htmldate >= 1.10.0",
