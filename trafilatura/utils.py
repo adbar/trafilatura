@@ -69,7 +69,7 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {"utf-8", "utf_8"}
 
-DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<]*>", re.I)
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<>]*>", re.I)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
 HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 # control characters
@@ -367,11 +367,10 @@ def is_image_element(element: _Element) -> bool:
         src = element.get(attr, "")
         if is_image_file(src):
             return True
-    else:
-        # take the first corresponding attribute
-        for attr, value in element.attrib.items():
-            if attr.startswith("data-src") and is_image_file(value):
-                return True
+    # take the first corresponding attribute
+    for attr, value in element.attrib.items():
+        if attr.startswith("data-src") and is_image_file(value):
+            return True
     return False
 
 
@@ -464,7 +463,7 @@ def text_chars_test(string: str | None) -> bool:
     """Determine if a string is only composed of spaces and/or control characters"""
     # or not re.search(r'\w', string)
     # return string is not None and len(string) != 0 and not string.isspace()
-    return bool(string) and not string.isspace()  # type: ignore[union-attr]
+    return bool(string and not string.isspace())
 
 
 def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
@@ -490,13 +489,9 @@ def is_last_element_in_cell(elem: _Element) -> bool:
     if not is_in_table_cell(elem):  # shortcut
         return False
 
-    if elem.tag == "cell":
-        children = elem.getchildren()
-        return not children or children[-1] == elem
-    else:
-        parent = cast(_Element, elem.getparent())
-        children = parent.getchildren()
-        return not children or children[-1] == elem
+    container = elem if elem.tag == "cell" else cast(_Element, elem.getparent())
+    children = container.getchildren()
+    return not children or children[-1] == elem
 
 
 def is_element_in_item(element: _Element) -> bool:

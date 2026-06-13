@@ -8,7 +8,16 @@ import sys
 from lxml import html
 from lxml.etree import XPath
 
-from trafilatura.metadata import check_authors, extract_metadata, extract_metainfo, extract_title, extract_url, normalize_tags
+from trafilatura.metadata import (
+    JSON_MINIFY,
+    check_authors,
+    extract_metadata,
+    extract_metainfo,
+    extract_title,
+    extract_url,
+    normalize_tags,
+)
+from trafilatura.settings import Extractor, use_config
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -71,6 +80,9 @@ def test_author_blacklist():
     blacklist = {"A", "b"}
     assert check_authors("a; B; c; d", blacklist) == "c; d"
     assert check_authors("a;B;c;d", blacklist) == "c; d"
+    # regression: author_blacklist alone must enable with_metadata (was asymmetric with url_blacklist)
+    assert Extractor(config=use_config(), author_blacklist={"X"}).with_metadata is True
+    assert Extractor(config=use_config()).with_metadata is False
 
 
 def test_author_from_meta():
@@ -381,6 +393,14 @@ def test_extract_title_fallbacks():
     "Fallback titles are trimmed; nothing found returns None."
     assert extract_title(html.fromstring("<html><body><h1>  A  </h1><h1>B</h1></body></html>")) == "A"
     assert extract_title(html.fromstring("<html><body><p>x</p></body></html>")) is None
+    # regression #400: an empty single <h1> must not block a non-empty <h2>
+    assert extract_title(html.fromstring("<html><body><h1></h1><h2>Real Title</h2></body></html>")) == "Real Title"
+
+
+def test_json_minify():
+    "regression #854: an escaped backslash must not strip whitespace from adjacent JSON-LD fields."
+    minified = JSON_MINIFY.sub(r"\1", '{"author": "Curtis Heyen", "keywords": ["fatal stabbing\\\\", "homicide"]}')
+    assert '"Curtis Heyen"' in minified
 
 
 def test_license():

@@ -1264,6 +1264,16 @@ def test_precision_recall():
     assert extract(copy(my_document), favor_recall=True, fast=True) == "Text."
 
 
+def test_recover_wild_text_default_tags():
+    "recover_wild_text with default tags in recall mode must not crash (frozenset .update())"
+    from trafilatura.main_extractor import recover_wild_text
+
+    options = core.Extractor(recall=True)
+    tree = html.fromstring("<body><div>some wild text outside the main frame, long enough to be recovered</div></body>")
+    result = recover_wild_text(tree, etree.Element("body"), options)
+    assert result is not None
+
+
 def test_table_processing():
     options = DEFAULT_OPTIONS
 
@@ -1273,6 +1283,11 @@ def test_table_processing():
     outside = tree.xpath("./p")[0]
     assert is_in_table_cell(inside) is True
     assert is_in_table_cell(outside) is False  # buggy '//ancestor::cell' would return True
+
+    # regression: comments/PIs in a <table> have a read-only .tag and must not crash handle_table
+    table_with_comment = html.fromstring("<table><!-- c1 --><tr><td>cell text<!-- c2 --></td></tr></table>")
+    processed = handle_table(table_with_comment, TAG_CATALOG, options)
+    assert processed is not None and "cell text" in "".join(processed.itertext())
 
     table_simple_cell = html.fromstring(
         "<table><tr><td>cell1</td><td>cell2</td></tr><tr><td>cell3</td><td>cell4</td></tr></table>"
@@ -1931,6 +1946,19 @@ def test_config_loading():
     with pytest.raises(FileNotFoundError):
         extract(html, settingsfile="/bogus-dir/bogus-file.txt")
 
+    # a partial settings file must not raise NoOptionError: defaults are seeded, user keys override
+    import tempfile
+
+    with tempfile.NamedTemporaryFile("w", suffix=".cfg", delete=False) as tmp:
+        tmp.write("[DEFAULT]\nMIN_EXTRACTED_SIZE = 9999\n")
+        partial_path = tmp.name
+    partial = use_config(filename=partial_path)
+    options = core.Extractor(config=partial)
+    assert options.min_extracted_size == 9999  # overridden by the partial file
+    # unset key falls back to the on-disk default (read fresh: the DEFAULT_CONFIG
+    # singleton may have been mutated in-place by the extract() calls above)
+    assert options.min_output_size == use_config().getint("DEFAULT", "MIN_OUTPUT_SIZE")
+
 
 def test_is_probably_readerable():
     """
@@ -2102,6 +2130,22 @@ def test_html_conversion():
 </html>"""
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
+
+    # regression #819/#777: internal table tags must become valid HTML in HTML output,
+    # mapping row->tr, head cell->th, plain cell->td and dropping the span/role attributes
+    table_xml = (
+        "<body><table>"
+        '<row span="3"><cell role="head">Name</cell><cell role="head">Phone</cell></row>'
+        '<row span="3"><cell>Jane</cell><cell>p1</cell><cell>p2</cell></row>'
+        "</table></body>"
+    )
+    table_html = etree.tostring(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(table_xml)), encoding="unicode")
+    assert table_html == (
+        "<html><body><table>"
+        "<tr><th>Name</th><th>Phone</th></tr>"
+        "<tr><td>Jane</td><td>p1</td><td>p2</td></tr>"
+        "</table></body></html>"
+    )
 
 
 def test_deprecations():

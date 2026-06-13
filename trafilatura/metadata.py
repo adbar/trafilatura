@@ -44,7 +44,7 @@ logging.getLogger("htmldate").setLevel(logging.WARNING)
 
 META_URL = re.compile(r"https?://(?:www\.|w[0-9]+\.)?([^/]+)")
 
-JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
+JSON_MINIFY = re.compile(r'("(?:\\.|[^"\\])*")|\s')
 
 HTMLTITLE_REGEX = re.compile(r"^(.+)?\s+[–•·—|⁄*⋆~‹«<›»>:-]\s+(.+)$")  # part without dots?
 
@@ -345,7 +345,9 @@ def extract_title(tree: HtmlElement) -> str | None:
             return t
     # take first h1-title
     if h1_results:
-        return trim(h1_results[0].text_content())
+        title = trim(h1_results[0].text_content())
+        if title:
+            return title
     # take first h2-title
     try:
         title = trim(tree.xpath(".//h2")[0].text_content())

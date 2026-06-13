@@ -314,8 +314,8 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
-                        if text_chars_test(item.text) is True:
-                            item.text = " " + item.text  # type: ignore[operator]
+                        if item.text is not None and text_chars_test(item.text):
+                            item.text = " " + item.text
                         strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
                 # correct attributes
                 if child.tag == "hi":
@@ -399,6 +399,8 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
         newrow.set("span", span_attr)
 
     for subelement in table_elem.iterdescendants():
+        if not isinstance(subelement.tag, str):  # skip comments / PIs (non-writable .tag)
+            continue
         if subelement.tag == "tr":
             # process existing row
             if len(newrow) > 0:
@@ -421,6 +423,8 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
                 new_child_elem.text, new_child_elem.tail = subelement.text, subelement.tail
                 subelement.tag = "done"
                 for child in subelement.iterdescendants():
+                    if not isinstance(child.tag, str):  # skip comments / PIs
+                        continue
                     if child.tag in TABLE_ALL:
                         # todo: define attributes properly
                         if child.tag in TABLE_ELEMS:
@@ -534,11 +538,13 @@ def handle_textelem(element: _Element, potential_tags: set[str], options: Extrac
 
 
 def recover_wild_text(
-    tree: HtmlElement, result_body: _Element, options: Extractor, potential_tags: Any = TAG_CATALOG
+    tree: HtmlElement, result_body: _Element, options: Extractor, potential_tags: set[str] | None = None
 ) -> _Element:
     """Look for all previously unconsidered wild elements, including outside of the determined
     frame and throughout the document to recover potentially missing text parts"""
     LOGGER.debug("Recovering wild text elements")
+    # TAG_CATALOG is a frozenset; the recall branch calls .update()
+    potential_tags = set(TAG_CATALOG) if potential_tags is None else potential_tags
     search_expr = ".//blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table|.//div[contains(@class, 'w3-code')]"
     if options.focus == "recall":
         potential_tags.update(["div", "lb"])
@@ -617,10 +623,7 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
             continue
         # no paragraphs containing text, or not enough
         ptest = subtree.xpath("//p//text()")
-        if options.focus == "precision":
-            factor = 1
-        else:
-            factor = 3
+        factor = 1 if options.focus == "precision" else 3
         if not ptest or len("".join(ptest)) < options.min_extracted_size * factor:
             potential_tags.add("div")
         # polish list of potential tags

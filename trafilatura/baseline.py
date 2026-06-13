@@ -94,10 +94,8 @@ def baseline(filecontent: Any) -> tuple[_Element, str, int]:
         p_elem.text = "\n".join([e for e in text_elems if e])
         return postbody, p_elem.text, len(p_elem.text)
 
-    # new fallback
-    text = html2txt(tree, clean=False)
-    SubElement(postbody, "p").text = text
-    return postbody, text, len(text)
+    # no <body> in the tree: html2txt would do the same lookup and return "" anyway
+    return postbody, "", 0
 
 
 def html2txt(content: Any, clean: bool = True) -> str:

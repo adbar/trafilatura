@@ -137,13 +137,12 @@ def link_density_test(element: HtmlElement, text: str, favor_precision: bool = F
             return True, []
     if element.tag == "p":
         limitlen = 60 if element.getnext() is None else 30
+    elif element.getnext() is None:
+        limitlen = 300
+    # elif re.search(r'[.?!:]', element.text_content()):
+    #    limitlen, threshold = 150, 0.66
     else:
-        if element.getnext() is None:
-            limitlen = 300
-        # elif re.search(r'[.?!:]', element.text_content()):
-        #    limitlen, threshold = 150, 0.66
-        else:
-            limitlen = 100
+        limitlen = 100
     elemlen = len(text)
     if elemlen < limitlen:
         linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
@@ -307,10 +306,7 @@ def _is_code_block(text: str | None) -> bool:
     "Check if the element text is part of a code block."
     if not text:
         return False
-    for indicator in CODE_INDICATORS:
-        if indicator in text:
-            return True
-    return False
+    return any(indicator in text for indicator in CODE_INDICATORS)
 
 
 def convert_headings(elem: _Element) -> None:
@@ -432,6 +428,8 @@ HTML_CONVERSIONS = {
     "img": "graphic",
     "ref": "a",
     "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")],
+    "row": "tr",
+    "cell": lambda elem: "th" if elem.get("role") == "head" else "td",
 }
 
 
