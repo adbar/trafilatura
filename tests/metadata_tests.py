@@ -10,6 +10,7 @@ from lxml.etree import XPath
 
 from trafilatura.metadata import (
     JSON_MINIFY,
+    Document,
     check_authors,
     extract_metadata,
     extract_metainfo,
@@ -17,6 +18,7 @@ from trafilatura.metadata import (
     extract_url,
     normalize_tags,
 )
+from trafilatura.json_metadata import extract_json, extract_json_parse_error, process_parent
 from trafilatura.settings import Extractor, use_config
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -94,7 +96,7 @@ def test_author_blacklist():
     blacklist = {"A", "b"}
     assert check_authors("a; B; c; d", blacklist) == "c; d"
     assert check_authors("a;B;c;d", blacklist) == "c; d"
-    # regression: author_blacklist alone must enable with_metadata (was asymmetric with url_blacklist)
+    # regression: author_blacklist alone must enable with_metadata
     assert Extractor(config=use_config(), author_blacklist={"X"}).with_metadata is True
     assert Extractor(config=use_config()).with_metadata is False
 
@@ -415,6 +417,42 @@ def test_json_minify():
     "regression #854: an escaped backslash must not strip whitespace from adjacent JSON-LD fields."
     minified = JSON_MINIFY.sub(r"\1", '{"author": "Curtis Heyen", "keywords": ["fatal stabbing\\\\", "homicide"]}')
     assert '"Curtis Heyen"' in minified
+
+
+def test_extract_json_multiple_blocks():
+    "regression: a flat JSON-LD object must not short-circuit the loop and drop later @graph blocks."
+    schema = [
+        {"@context": "https://schema.org", "@type": "WebPage", "name": "Flat object"},
+        {"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Graph Headline"}]},
+    ]
+    metadata = extract_json(schema, Document())
+    assert metadata.title == "Graph Headline"
+
+
+def test_extract_json_parse_error():
+    "Crude-regex fallback for malformed JSON-LD extracts each field; comma-publisher is rejected."
+    blob = (
+        '{"@type":"Article","author":{"name":"Jane Doe"},'
+        '"publisher":{"@type":"Organization","name":"Example Publisher"},'
+        '"articleSection":"World News","headline":"Big Story",} BROKEN'
+    )
+    m = extract_json_parse_error(blob, Document())
+    assert (m.author, m.pagetype, m.sitename, m.categories, m.title) == (
+        "Jane Doe",
+        "article",
+        "Example Publisher",
+        ["World News"],
+        "Big Story",
+    )
+    assert extract_json_parse_error('{"publisher":{"name":"Acme, Inc"}} X', Document()).sitename is None
+
+
+def test_process_parent_keeps_good_sitename():
+    "regression: a bare publisher dict must not clobber an already-plausible sitename."
+    metadata = Document()
+    metadata.sitename = "A Long Established Site Name"
+    process_parent([{"publisher": {"@type": "Organization", "name": "Pub"}}], metadata)
+    assert metadata.sitename == "A Long Established Site Name"
 
 
 def test_license():

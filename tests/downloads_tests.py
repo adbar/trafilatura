@@ -24,7 +24,7 @@ except ImportError:
     HAS_ZSTD = False
 
 from time import sleep
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -43,6 +43,7 @@ from trafilatura.downloads import (
     _handle_response,
     _parse_config,
     _pycurl_is_live_page,
+    _initiate_pool,
     _send_pycurl_request,
     _send_urllib_request,
     _urllib3_is_live_page,
@@ -86,16 +87,11 @@ def _reset_downloads_globals():
 
 def test_urllib_request_releases_conn_on_oversize():
     "regression: the connection is released even when MAX_FILE_SIZE aborts the stream mid-download."
-    from unittest.mock import MagicMock
-
     resp = MagicMock()
-    # stream more than MAX_FILE_SIZE so the loop raises ValueError before the normal release
-    resp.stream.return_value = iter([b"x" * (2**17)] * 1000)
-    pool = MagicMock()
-    pool.request.return_value = resp
+    resp.stream.return_value = iter([b"x" * (2**17)] * 1000)  # exceeds MAX_FILE_SIZE → ValueError mid-stream
+    pool = MagicMock(request=MagicMock(return_value=resp))
     with patch.object(dl, "_initiate_pool", return_value=pool):
-        result = _send_urllib_request("https://example.org", False, False, DEFAULT_CONFIG)
-    assert result is None
+        assert _send_urllib_request("https://example.org", False, False, DEFAULT_CONFIG) is None
     resp.release_conn.assert_called_once()
 
 
@@ -147,12 +143,6 @@ def test_fetch():
     assert fetch_url("#@1234") is None
     assert fetch_url("https://httpbun.com/status/404") is None
 
-    # test if the functions default to no_ssl
-    # False doesn't work?
-    url = "https://expired.badssl.com/"
-    assert _send_urllib_request(url, True, False, DEFAULT_CONFIG) is not None
-    if HAS_PYCURL:
-        assert _send_pycurl_request(url, False, False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
     url = "https://httpbun.com/status/200"
     for no_ssl in (True, False):
@@ -196,6 +186,46 @@ def test_fetch():
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
     ZERO_CONFIG.set("DEFAULT", "MAX_FILE_SIZE", str(backup))
+
+
+def test_no_ssl_pool():
+    "no_ssl skips cert verification in the urllib3 pool; the default verifies."
+    _reset_downloads_global_objects()
+    insecure = _initiate_pool(DEFAULT_CONFIG, no_ssl=True)
+    assert insecure.connection_pool_kw["cert_reqs"] == "CERT_NONE"
+    assert insecure.connection_pool_kw["ca_certs"] is None
+    secure = _initiate_pool(DEFAULT_CONFIG, no_ssl=False)
+    assert secure.connection_pool_kw["cert_reqs"] == "CERT_REQUIRED"
+    assert secure.connection_pool_kw["ca_certs"] is not None
+
+
+def test_urllib_request_ssl_retry():
+    "An SSLError triggers a retry with no_ssl=True."
+    import urllib3
+
+    resp = MagicMock(status=200)
+    resp.stream.return_value = [b"<html>ok</html>"]
+    resp.geturl.return_value = "https://ssl.example/"
+    # one pool, reused: first request raises SSLError, the retry succeeds
+    pool = MagicMock(request=MagicMock(side_effect=[urllib3.exceptions.SSLError("bad cert"), resp]))
+    with patch.object(dl, "_initiate_pool", return_value=pool):
+        assert _send_urllib_request("https://ssl.example/", False, False, DEFAULT_CONFIG) is not None
+    assert pool.request.call_count == 2
+
+
+def test_pycurl_ssl_retry(monkeypatch):
+    "An SSL-class pycurl error triggers one retry with verification disabled."
+    if not HAS_PYCURL:
+        pytest.skip("pycurl not installed")
+    import pycurl
+
+    curl = MagicMock()  # one handle reused for both attempts
+    curl.perform_rb.side_effect = [pycurl.error(35, "SSL error"), b"<html>ok</html>"]  # 35 ∈ CURL_SSL_ERRORS
+    curl.getinfo.side_effect = [200, "https://ssl.example/"]  # consumed only by the retry's Response()
+    monkeypatch.setattr(pycurl, "Curl", lambda: curl)
+
+    assert _send_pycurl_request("https://ssl.example/", False, False, DEFAULT_CONFIG) is not None
+    assert curl.perform_rb.call_count == 2
 
 
 def test_proxy_plumbing(monkeypatch):

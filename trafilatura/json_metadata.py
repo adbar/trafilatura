@@ -121,7 +121,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
     for content in filter(None, parent):  # type: dict[str, Any]
         # publisher may be a bare string, not a dict
         publisher = content.get("publisher")
-        if isinstance(publisher, dict) and "name" in publisher:
+        if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
             metadata.sitename = publisher["name"]
 
         if "@type" not in content or not content["@type"]:
@@ -198,25 +198,27 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
     if isinstance(schema, dict):
         schema = [schema]
 
+    # collect content from every valid block, then process once (no short-circuit on a flat object)
+    parents: list[Any] = []
     for parent in schema:
         context = parent.get("@context")
 
         if context and isinstance(context, str) and JSON_SCHEMA_ORG.match(context):
             if "@graph" in parent:
-                parent = parent["@graph"] if isinstance(parent["@graph"], list) else [parent["@graph"]]
+                graph = parent["@graph"]
+                parents.extend(graph if isinstance(graph, list) else [graph])
             elif (
                 "@type" in parent
                 and isinstance(parent["@type"], str)
                 and "liveblogposting" in parent["@type"].lower()
                 and "liveBlogUpdate" in parent
             ):
-                parent = parent["liveBlogUpdate"] if isinstance(parent["liveBlogUpdate"], list) else [parent["liveBlogUpdate"]]
+                updates = parent["liveBlogUpdate"]
+                parents.extend(updates if isinstance(updates, list) else [updates])
             else:
-                return process_parent(schema, metadata)
+                parents.append(parent)
 
-            metadata = process_parent(parent, metadata)
-
-    return metadata
+    return process_parent(parents, metadata)
 
 
 def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> str | None:

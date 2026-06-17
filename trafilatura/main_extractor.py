@@ -21,7 +21,7 @@ from .htmlprocessing import (
     prune_unwanted_nodes,
 )
 from .settings import TAG_CATALOG, Extractor
-from .utils import FORMATTING_PROTECTED, copy_attributes, is_image_file, text_chars_test, trim
+from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (
     BODY_XPATH,
@@ -38,8 +38,10 @@ LOGGER = logging.getLogger(__name__)
 
 P_FORMATTING = {"hi", "ref"}
 TABLE_ELEMS = {"td", "th"}
-TABLE_ALL = {"td", "th", "hi", "ref"}
-FORMATTING = {"hi", "ref", "span"}
+TABLE_ALL = TABLE_ELEMS | P_FORMATTING
+FORMATTING = P_FORMATTING | {"span"}
+# meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
+KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 CODES_QUOTES = {"code", "quote"}
 NOT_AT_THE_END = {"head", "ref"}
 
@@ -130,7 +132,8 @@ def add_sub_element(new_child_elem: _Element, subelem: _Element, processed_subch
     sub_child_elem = SubElement(new_child_elem, processed_subchild.tag)
     sub_child_elem.text, sub_child_elem.tail = processed_subchild.text, processed_subchild.tail
     for attr in subelem.attrib:
-        sub_child_elem.set(attr, subelem.attrib[attr])
+        if attr in KEEP_ATTRS:
+            sub_child_elem.set(attr, subelem.attrib[attr])
 
 
 def process_nested_elements(child: _Element, new_child_elem: _Element, options: Extractor) -> None:
@@ -160,13 +163,14 @@ def is_text_element(elem: _Element) -> bool:
     return elem is not None and text_chars_test("".join(elem.itertext())) is True
 
 
-def define_newelem(processed_elem: _Element, orig_elem: _Element) -> None:
+def define_newelem(processed_elem: _Element | None, orig_elem: _Element) -> None:
     "Create a new sub-element if necessary."
     if processed_elem is not None:
         childelem = SubElement(orig_elem, processed_elem.tag)
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
-        if processed_elem.tag in ("graphic", "ref"):
-            copy_attributes(childelem, processed_elem)
+        for key, value in processed_elem.attrib.items():
+            if key in KEEP_ATTRS:
+                childelem.set(key, value)
 
 
 def handle_lists(element: _Element, options: Extractor) -> _Element | None:
@@ -243,8 +247,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
     processed_element = Element(element.tag)
     for child in element.iter("*"):
         processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
-        if processed_child is not None:
-            define_newelem(processed_child, processed_element)
+        define_newelem(processed_child, processed_element)
         child.tag = "done"
     if is_text_element(processed_element):
         # avoid double/nested tags
@@ -371,6 +374,17 @@ def define_cell_type(is_header: bool) -> _Element:
     return cell_element
 
 
+def _colspan(cell: _Element) -> int:
+    "Parse a cell's colspan, defaulting to 1 for a missing or non-numeric value."
+    value = cell.get("colspan", "1")
+    return int(value) if value.isdigit() else 1
+
+
+def _row_has_content(row: _Element) -> bool:
+    "Whether any cell in a row carries text or children."
+    return any(cell.text or len(cell) > 0 for cell in row)
+
+
 def handle_table(table_elem: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process single table element."
     newtable = Element("table")
@@ -378,21 +392,16 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
     # strip these structural elements
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
-    # calculate maximum number of columns per row, including colspan
-    max_cols = 0
-    diff_colspans = set()
-    for tr in table_elem.iter("tr"):
-        total_colspans = 0
-        for td in tr.iter(TABLE_ELEMS):
-            colspan = td.get("colspan", 1)
-            colspan = int(colspan) if str(colspan).isdigit() else 1
-            diff_colspans.add(colspan)
-            total_colspans += colspan
-        max_cols = max(max_cols, total_colspans)
+    # maximum number of columns per row, including colspan
+    max_cols = max(
+        (sum(_colspan(td) for td in tr.iter(TABLE_ELEMS)) for tr in table_elem.iter("tr")),
+        default=0,
+    )
 
     # explore sub-elements
     seen_header_row = False
     seen_header = False
+    # every row carries the table's column count so short rows pad consistently (no last-row exception)
     span_attr = str(max_cols) if max_cols > 1 else ""
     newrow = Element("row")
     if span_attr:
@@ -402,9 +411,10 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
         if not isinstance(subelement.tag, str):  # skip comments / PIs (non-writable .tag)
             continue
         if subelement.tag == "tr":
-            # process existing row
+            # flush the previous row (dropping it if all cells are empty), then start a fresh one
             if len(newrow) > 0:
-                newtable.append(newrow)
+                if _row_has_content(newrow):
+                    newtable.append(newrow)
                 newrow = Element("row")
                 if span_attr:
                     newrow.set("span", span_attr)
@@ -428,37 +438,29 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
                     if child.tag in TABLE_ALL:
                         # todo: define attributes properly
                         if child.tag in TABLE_ELEMS:
-                            # subcell_elem = define_cell_type(is_header)
                             child.tag = "cell"
                         processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
-                    # todo: lists in table cells
+                    # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
                     elif child.tag == "list" and options.focus == "recall":
                         processed_subchild = handle_lists(child, options)
                         if processed_subchild is not None:
                             new_child_elem.append(processed_subchild)
                             processed_subchild = None  # don't handle it anymore
                     else:
-                        # subcell_elem = Element(child.tag)
                         processed_subchild = handle_textelem(child, potential_tags.union(["div"]), options)
-                    # add child element to processed_element
-                    if processed_subchild is not None:
-                        define_newelem(processed_subchild, new_child_elem)
+                    # add child element to processed_element (define_newelem no-ops on None)
+                    define_newelem(processed_subchild, new_child_elem)
                     child.tag = "done"
-            # add to tree
-            if new_child_elem.text or len(new_child_elem) > 0:
-                newrow.append(new_child_elem)
+            # add to tree (keep empty cells so column positions stay aligned)
+            newrow.append(new_child_elem)
         # beware of nested tables
         elif subelement.tag == "table":
             break
         # cleanup
         subelement.tag = "done"
 
-    # clean up row attributes only when all cells in table share the same colspan
-    if len(diff_colspans) == 1:
-        newrow.attrib.pop("span", None)
-
     # end of processing
-    if len(newrow) > 0:
+    if _row_has_content(newrow):
         newtable.append(newrow)
     if len(newtable) > 0:
         return newtable

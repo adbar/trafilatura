@@ -466,12 +466,6 @@ def text_chars_test(string: str | None) -> bool:
     return bool(string and not string.isspace())
 
 
-def copy_attributes(dest_elem: _Element, src_elem: _Element) -> None:
-    """Copy attributes from src element to dest element"""
-    for key in src_elem.keys():
-        dest_elem.set(key, src_elem.attrib[key])
-
-
 def is_in_table_cell(elem: _Element) -> bool:
     """Check whether an element is in a table cell"""
     if elem.getparent() is None:

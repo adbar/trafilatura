@@ -94,7 +94,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     #                    action="store_true")
 
     group4.add_argument("-f", "--fast", help="fast (without fallback detection)", action="store_true")
-    group4.add_argument("--formatting", help="include text formatting (bold, italic, etc.)", action="store_true")
+    group4.add_argument("--formatting", help="include text formatting (bold, italic, etc.)", action="store_true", default=None)
     group4.add_argument("--links", help="include links along with their targets (experimental)", action="store_true")
     group4.add_argument("--images", help="include image sources in output (experimental)", action="store_true")
     group4.add_argument("--no-comments", help="don't output any comments", action="store_false")  # false = no comments

@@ -122,7 +122,7 @@ class Extractor:
         precision: bool = False,
         recall: bool = False,
         comments: bool = True,
-        formatting: bool = False,
+        formatting: bool | None = None,
         links: bool = False,
         images: bool = False,
         tables: bool = True,
@@ -144,7 +144,8 @@ class Extractor:
         self.fast: bool = fast
         self.focus: str = "recall" if recall else "precision" if precision else "balanced"
         self.comments: bool = comments
-        self.formatting: bool = formatting or self.format == "markdown"
+        # markdown implies formatting by default, but an explicit formatting=False is honored
+        self.formatting: bool = (self.format == "markdown") if formatting is None else formatting
         self.links: bool = links
         self.images: bool = images
         self.tables: bool = tables

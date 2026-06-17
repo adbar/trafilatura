@@ -3,6 +3,8 @@
 Unit tests for the trafilatura's text hashing and cache.
 """
 
+import pytest
+
 from lxml import etree, html
 
 import trafilatura.deduplication
@@ -11,9 +13,19 @@ from trafilatura import extract
 from trafilatura.cli_utils import generate_hash_filename
 from trafilatura.core import Extractor
 from trafilatura.deduplication import LRUCache, Simhash, content_fingerprint, duplicate_test
+from trafilatura.meta import reset_caches
 
 
 DEFAULT_OPTIONS = Extractor()
+
+
+@pytest.fixture(autouse=True)
+def _restore_lru_test():
+    "Restore the module-global LRU_TEST after tests that reassign it."
+    original = trafilatura.deduplication.LRU_TEST
+    yield
+    trafilatura.deduplication.LRU_TEST = original
+    reset_caches()
 
 
 def test_hashes():
@@ -138,6 +150,19 @@ def test_dedup():
     assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
     assert trafilatura.htmlprocessing.process_node(my_p, options) is not None
     assert trafilatura.htmlprocessing.process_node(my_p, options) is None
+
+
+def test_dedup_reset_caches():
+    "Repeated identical extractions accumulate in LRU_TEST; reset_caches() clears it (#778)."
+    reset_caches()
+    try:
+        doc = html.fromstring("<html><body>" + "<p>abc</p>" * 50 + "</body></html>")
+        results = [extract(doc, deduplicate=True) for _ in range(6)]
+        assert results[0] is not None and results[-1] is None
+        reset_caches()
+        assert extract(doc, deduplicate=True) is not None
+    finally:
+        reset_caches()
 
 
 def test_sample_tokens(monkeypatch):
