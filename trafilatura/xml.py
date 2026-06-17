@@ -20,7 +20,6 @@ from .utils import (
     is_in_table_cell,
     is_last_element_in_cell,
     is_last_element_in_item,
-    line_processing,
     sanitize,
     sanitize_tree,
     text_chars_test,
