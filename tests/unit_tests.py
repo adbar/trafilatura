@@ -487,7 +487,7 @@ trafilatura.extract("")
         Test</article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_links=True, config=ZERO_CONFIG)
-    assert my_result == "- Number 0\n- Number [1](test.html)\n- [Number 2](test.html)n2\n- Number 3\n- Number 4 n4\n\nTest"
+    assert my_result == "- Number 0\n- Number [1](test.html)\n- [Number 2](test.html) n2\n- Number 3\n- Number 4 n4\n\nTest"
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring(
         '<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>'
@@ -578,6 +578,12 @@ def test:
 ```"""
         == my_result
     )
+
+
+def test_markdown_list_item_inline_spacing():
+    """Inline formatting tails inside list items must keep their leading space (issue #845)"""
+    htmlstring = "<html><body><article><ol><li>Foo <em>bar</em> baz.</li></ol></article></body></html>"
+    assert extract(htmlstring, output_format="markdown", config=ZERO_CONFIG) == "- Foo *bar* baz."
 
 
 def test_extract_with_metadata():

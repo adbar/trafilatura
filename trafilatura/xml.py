@@ -20,6 +20,7 @@ from .utils import (
     is_in_table_cell,
     is_last_element_in_cell,
     is_last_element_in_item,
+    line_processing,
     sanitize,
     sanitize_tree,
     text_chars_test,
@@ -403,7 +404,14 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
     # unless it's within a list item or a table
     is_in_cell = is_in_table_cell(element)
     if element.tail and not is_in_cell:
-        returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag == "list" else element.tail)
+        if is_element_in_item(element) and element.tag in SPECIAL_FORMATTING:
+            # inline formatting elements get no trailing space appended above, so
+            # keep a single leading/trailing space in the tail (e.g. "*bar* baz")
+            normalized_tail = line_processing(element.tail, trailing_space=True)
+            if normalized_tail:
+                returnlist.append(normalized_tail)
+        else:
+            returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag == "list" else element.tail)
 
     # deal with list items alone
     if is_last_element_in_item(element) and not is_in_cell:
