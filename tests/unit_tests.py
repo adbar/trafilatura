@@ -603,11 +603,11 @@ def test_include_formatting_markdown():
     assert extract(doc, output_format="markdown", include_formatting=False, config=ZERO_CONFIG) == "plain and bold text here."
     assert extract(doc, output_format="txt", include_formatting=True, config=ZERO_CONFIG) == "plain and **bold** text here."
 
+
 def test_markdown_list_item_inline_spacing():
     """Inline formatting tails inside list items must keep their leading space (issue #845)"""
     htmlstring = "<html><body><article><ol><li>Foo <em>bar</em> baz.</li></ol></article></body></html>"
     assert extract(htmlstring, output_format="markdown", config=ZERO_CONFIG) == "- Foo *bar* baz."
-
 
 
 def test_extract_with_metadata():
