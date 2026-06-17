@@ -195,6 +195,12 @@ def delete_by_link_density(
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
         if result or (backtracking and templist and 0 < len(elemtext) < len_threshold and len(elem) >= depth_threshold):
+            # a paragraph that holds the content of a list item is kept: the
+            # link density of the whole list is checked separately, and
+            # removing it here would leave the item empty (GH #788)
+            parent = elem.getparent()
+            if tagname == "p" and parent is not None and parent.tag == "item":
+                continue
             deletions.append(elem)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
