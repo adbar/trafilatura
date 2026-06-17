@@ -1801,6 +1801,19 @@ def test_list_processing():
     item_element = processed_list[0]
     assert item_element.tail is not True
     assert item_element[0].tail == "tail"
+    # list items whose only content is a link must be kept (GH #788)
+    htmlstring = """<html><body><article>
+<p>If your eye is twitching and you do not have other symptoms, here are some common everyday causes worth knowing about.</p>
+<ul>
+<li><p><a href="https://example.org/stress">Stress</a></p></li>
+<li><p>Fatigue</p></li>
+<li><p><a href="https://example.org/strain">Eye strain</a></p></li>
+</ul>
+</article></body></html>"""
+    my_result = extract(htmlstring, fast=True, output_format="markdown", include_links=True, config=ZERO_CONFIG)
+    assert "[Stress](https://example.org/stress)" in my_result
+    assert "Fatigue" in my_result
+    assert "[Eye strain](https://example.org/strain)" in my_result
     list_item_with_child_and_tail = html.fromstring("<list><item><p>text</p>tail1</item>tail</list>")
     processed_list = handle_lists(list_item_with_child_and_tail, options)
     item_element = processed_list[0]
