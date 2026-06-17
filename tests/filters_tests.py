@@ -35,15 +35,10 @@ def test_filters():
     else:
         # no detection
         assert language_filter("Hier ist ein Text.", "", "en", SAMPLE_META)[0] is False
-    # test URL blacklist
-    assert (
-        extract(
-            '<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>',
-            output_format="xml",
-            url_blacklist={"https://example.org"},
-        )
-        is None
-    )
+    # test URL blacklist (non-empty body so the None is caused by the blacklist, not missing content)
+    doc = '<html><head><link rel="canonical" href="https://example.org"/></head><body><article><p>Real body text here.</p></article></body></html>'
+    assert extract(doc, output_format="xml", config=ZERO_CONFIG) is not None
+    assert extract(doc, output_format="xml", url_blacklist={"https://example.org"}, config=ZERO_CONFIG) is None
 
     ## recursion limit
     options = Extractor()

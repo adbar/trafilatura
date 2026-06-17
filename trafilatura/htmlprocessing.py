@@ -425,7 +425,7 @@ HTML_CONVERSIONS = {
     "quote": "blockquote",
     "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
-    "img": "graphic",
+    "graphic": "img",
     "ref": "a",
     "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")],
     "row": "tr",
@@ -445,7 +445,7 @@ def convert_to_html(tree: _Element) -> _Element:
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))
-        else:
+        elif elem.tag != "img":  # keep <img> src/alt/title; drop everything else
             elem.attrib.clear()
     tree.tag = "body"
     root = Element("html")

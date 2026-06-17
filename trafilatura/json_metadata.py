@@ -121,7 +121,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
     for content in filter(None, parent):  # type: dict[str, Any]
         # publisher may be a bare string, not a dict
         publisher = content.get("publisher")
-        if isinstance(publisher, dict) and "name" in publisher:
+        if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
             metadata.sitename = publisher["name"]
 
         if "@type" not in content or not content["@type"]:
@@ -212,7 +212,8 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
             ):
                 parent = parent["liveBlogUpdate"] if isinstance(parent["liveBlogUpdate"], list) else [parent["liveBlogUpdate"]]
             else:
-                return process_parent(schema, metadata)
+                # flat object (valid @context, no @graph/liveblog): treat it as content itself
+                parent = [parent]
 
             metadata = process_parent(parent, metadata)
 

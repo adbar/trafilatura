@@ -38,6 +38,7 @@ from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.deduplication import LRU_TEST
 from trafilatura.utils import (
     LANGID_FLAG,
     detect_encoding,
@@ -45,9 +46,11 @@ from trafilatura.utils import (
     is_image_file,
     is_in_table_cell,
     language_classifier,
+    line_processing,
     load_html,
     normalize_unicode,
     repair_faulty_html,
+    return_printables_and_spaces,
     sanitize,
     textfilter,
     trim,
@@ -70,7 +73,11 @@ MOCK_PAGES = {
     "http://exotic_tags": "exotic_tags.html",
 }
 
-DEFAULT_OPTIONS = core.Extractor()
+
+@pytest.fixture
+def options():
+    "A fresh Extractor per test (never a shared, mutable module global)."
+    return core.Extractor()
 
 
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
@@ -124,7 +131,18 @@ def test_trim():
     assert trim.cache_info() != old_values
 
 
-def test_input():
+def test_reset_caches():
+    "reset_caches() must empty every trafilatura-owned cache, not just trim."
+    caches = (trim, line_processing, return_printables_and_spaces)
+    for fn in caches:
+        fn("x")
+    LRU_TEST.put("k", 1)
+    assert all(fn.cache_info().currsize for fn in caches) and LRU_TEST.cache
+    reset_caches()
+    assert not any(fn.cache_info().currsize for fn in caches) and not LRU_TEST.cache
+
+
+def test_input(options):
     """test if loaded strings/trees are handled properly"""
     teststring = "高山云雾出好茶".encode("utf-8")
     assert detect_encoding(teststring) == ["utf-8"]
@@ -204,10 +222,10 @@ def test_input():
     # text elements
     elem = etree.Element("p")
     elem.text = "text"
-    assert handle_textelem(elem, [], DEFAULT_OPTIONS).text == "text"
+    assert handle_textelem(elem, [], options).text == "text"
     elem = etree.Element("unexpected")
     elem.text = "text"
-    assert handle_textelem(elem, [], DEFAULT_OPTIONS) is None
+    assert handle_textelem(elem, [], options) is None
 
 
 def test_document_isolation():
@@ -263,8 +281,7 @@ def test_python_output():
     assert isinstance(dict_result, dict) and len(dict_result) == 21
 
 
-def test_exotic_tags(xmloutput=False):
-    options = DEFAULT_OPTIONS
+def test_exotic_tags(options, xmloutput=False):
     options._add_config(ZERO_CONFIG)
     # cover some edge cases with a specially crafted file
     result = load_mock_page("http://exotic_tags", xml_flag=xmloutput, tei_output=True)
@@ -356,9 +373,8 @@ def test_exotic_tags(xmloutput=False):
     ).endswith("\ncomment")
 
 
-def test_formatting():
+def test_formatting(options):
     """Test HTML formatting conversion and extraction"""
-    options = DEFAULT_OPTIONS
 
     # trailing <lb>
     my_document = html.fromstring("<html><body><p>This here is the text.<br/></p></body></html>")
@@ -487,7 +503,7 @@ trafilatura.extract("")
         Test</article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_links=True, config=ZERO_CONFIG)
-    assert my_result == "- Number 0\n- Number [1](test.html)\n- [Number 2](test.html)n2\n- Number 3\n- Number 4 n4\n\nTest"
+    assert my_result == "- Number 0\n- Number [1](test.html)\n- [Number 2](test.html) n2\n- Number 3\n- Number 4 n4\n\nTest"
     # XML and Markdown formatting within <p>-tag
     my_document = html.fromstring(
         '<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>'
@@ -580,6 +596,14 @@ def test:
     )
 
 
+def test_include_formatting_markdown():
+    "markdown defaults to formatted, but an explicit include_formatting=False is honored (was ignored for markdown)."
+    doc = "<html><body><article><p>plain and <b>bold</b> text here.</p></article></body></html>"
+    assert extract(doc, output_format="markdown", config=ZERO_CONFIG) == "plain and **bold** text here."
+    assert extract(doc, output_format="markdown", include_formatting=False, config=ZERO_CONFIG) == "plain and bold text here."
+    assert extract(doc, output_format="txt", include_formatting=True, config=ZERO_CONFIG) == "plain and **bold** text here."
+
+
 def test_extract_with_metadata():
     """Test extract_with_metadata method"""
     url = "http://aa.bb/cc.html"
@@ -633,9 +657,8 @@ def test_extract_with_metadata():
         extract_with_metadata(my_document, output_format="python")
 
 
-def test_external():
+def test_external(options):
     """Test external components"""
-    options = DEFAULT_OPTIONS
     options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring("<html><body><footer>Test text</footer></body></html>")
@@ -676,7 +699,7 @@ def test_external():
     assert "Features" in res
 
 
-def test_images():
+def test_images(options):
     """Test image extraction function"""
     # file type
     assert is_image_file(None) is False
@@ -690,7 +713,7 @@ def test_images():
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     # HTML conversion
-    assert handle_textelem(etree.Element("graphic"), [], DEFAULT_OPTIONS) is None
+    assert handle_textelem(etree.Element("graphic"), [], options) is None
     with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert "![Example image](test.jpg)" not in extract(teststring)
@@ -810,9 +833,8 @@ def test_images():
     )
 
 
-def test_links():
+def test_links(options):
     """Test link extraction function"""
-    options = DEFAULT_OPTIONS
     options._add_config(ZERO_CONFIG)
     assert handle_textelem(etree.Element("ref"), [], options) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
@@ -1064,11 +1086,10 @@ def test_tei():
         assert tree.find(f".//{parent_tag}/p") is not None
 
 
-def test_htmlprocessing():
+def test_htmlprocessing(options):
     """test html-related functions"""
     assert xml.xmltotxt(None, include_formatting=False) == ""
 
-    options = DEFAULT_OPTIONS
     options.tables = True
     assert trafilatura.htmlprocessing.tree_cleaning(etree.Element("html"), options) is not None
     assert trafilatura.htmlprocessing.prune_html(etree.Element("unwanted")) is not None
@@ -1183,7 +1204,7 @@ def test_htmlprocessing():
 
     # handle_paragraphs: a trailing <lb> with no tail is stripped from the output
     para = etree.fromstring("<p>text<lb>x</lb></p>")
-    processed = handle_paragraphs(para, {"p", "lb"}, DEFAULT_OPTIONS)
+    processed = handle_paragraphs(para, {"p", "lb"}, options)
     assert processed is not None and not processed.findall(".//lb")
 
 
@@ -1264,6 +1285,13 @@ def test_precision_recall():
     assert extract(copy(my_document), favor_recall=True, fast=True) == "Text."
 
 
+def test_url_blacklist():
+    "A document whose canonical URL is blacklisted is rejected."
+    doc = '<html><head><link rel="canonical" href="https://example.org/page"/></head><body><article><p>Some real article body text here.</p></article></body></html>'
+    assert extract(doc, config=ZERO_CONFIG) is not None
+    assert extract(doc, url_blacklist={"https://example.org/page"}, config=ZERO_CONFIG) is None
+
+
 def test_recover_wild_text_default_tags():
     "recover_wild_text with default tags in recall mode must not crash (frozenset .update())"
     from trafilatura.main_extractor import recover_wild_text
@@ -1274,9 +1302,7 @@ def test_recover_wild_text_default_tags():
     assert result is not None
 
 
-def test_table_processing():
-    options = DEFAULT_OPTIONS
-
+def test_table_processing(options):
     # regression #767: is_in_table_cell must check real ancestry, not "a cell exists somewhere"
     tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
     inside = tree.xpath(".//cell/p")[0]
@@ -1332,7 +1358,7 @@ def test_table_processing():
     processed = extract(htmlstring, fast=True, output_format="xml", config=DEFAULT_CONFIG, include_links=True)
     result = processed.replace("\n", "").replace(" ", "")
     assert (
-        """<table><row><cell>text<head>more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>"""
+        """<table><rowspan="2"><cell>text<headrend="h4">more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>"""
         in result
     )
 
@@ -1431,9 +1457,9 @@ def test_table_processing():
     </table></article></body></html>"""
     my_result = extract(htmlstring, fast=True, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert (
-        """<row>
+        """<row span="7">
         <cell>
-          <hi>Present Tense</hi>
+          <hi rend="#b">Present Tense</hi>
         </cell>
         <cell>I buy</cell>
         <cell>you buy</cell>
@@ -1540,6 +1566,9 @@ def test_table_processing():
     # table headers in non-XML formats
     htmlstring = "<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>"
     assert "|---|---|" in extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
+    # regression: a header row's separator must match the column count even with no body row (was "|---|")
+    single_header = "<html><body><article><table><tr><th>a</th><th>b</th><th>c</th></tr></table></article></body></html>"
+    assert "|---|---|---|" in extract(single_header, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
 
     # remove new lines in table cells in text format
     htmlstring = "<html><body><article><table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table></article></body></html>"
@@ -1551,41 +1580,7 @@ def test_table_processing():
     result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
     assert result.count("---|") == 2
 
-    # handle colspan by appending columns in text format
-    htmlstring = '<html><body><article><table><tr><td colspan="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
-
-    htmlstring = '<html><body><article><table><tr><td span="2">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
-
-    htmlstring = '<html><body><article><table><tr><td span="2.1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
-
-    # MemoryError: https://github.com/adbar/trafilatura/issues/657
-    htmlstring = '<html><body><article><table><tr><td colspan="9007199254740991">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result is not None
-
-    htmlstring = '<html><body><article><table><tr><th colspan="9007199254740991">a</th><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result is not None
-
-    # non-numeric colspan must not discard the whole document
-    htmlstring = '<html><body><article><table><tr><td colspan="2x">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result is not None
-
-    # wrong span info
-    htmlstring = '<html><body><article><table><tr><td span="-1">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
-
-    htmlstring = '<html><body><article><table><tr><td span="abc">a</td><td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| a | b | |" in result
+    # colspan/span handling lives in test_table_colspan_* (parametrized)
 
     # links: this gets through (for now)
     htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
@@ -1705,8 +1700,148 @@ def test_table_processing():
     assert result == "| a | b | c | \n| ![img1](http://aa.bb/c.jpg) a ![img2](http://aa.bb/c.jpg) | b c | d |"
 
 
-def test_list_processing():
-    options = DEFAULT_OPTIONS
+# link + bold paragraph, plus a table cell with a link/bold and an image cell — shared by the combo tests
+_COMBO_DOC = (
+    "<html><body><article>"
+    '<p>Intro with a <a href="http://x.io/p">link</a> and <b>bold</b> word.</p>'
+    "<table><tr><td>h1</td><td>h2</td></tr>"
+    '<tr><td><a href="http://x.io/c"><b>bold link</b></a></td>'
+    '<td><img src="http://x.io/i.jpg" alt="pic"/></td></tr></table>'
+    "</article></body></html>"
+)
+_COMBO_ALL_ON = dict(include_links=True, include_formatting=True, include_images=True, include_tables=True)
+
+
+def test_combined_links_formatting_images_tables():
+    "Pin current behavior with all four flags on; cells keep formatting + images but still drop the wrapping link."
+    result = extract(_COMBO_DOC, output_format="markdown", config=ZERO_CONFIG, **_COMBO_ALL_ON)
+    # TODO: a link wrapping formatting in a cell still loses its target (ref/hi nesting); formatting now survives
+    assert result == (
+        "Intro with a [link](http://x.io/p) and **bold** word.\n\n| h1 | h2 | \n| **bold link** | ![pic](http://x.io/i.jpg) |"
+    )
+
+
+@pytest.mark.parametrize(
+    "off,expected",
+    [
+        (
+            "include_links",
+            "Intro with a link and **bold** word.\n\n| h1 | h2 | \n| **bold link** | ![pic](http://x.io/i.jpg) |",
+        ),
+        # TODO bug: a link wrapping formatting loses its target when formatting is on (cell ref/hi nesting); off "rescues" it
+        (
+            "include_formatting",
+            "Intro with a [link](http://x.io/p) and bold word.\n| h1 | h2 | \n| [bold link](http://x.io/c) | ![pic](http://x.io/i.jpg) |",
+        ),
+        ("include_images", "Intro with a [link](http://x.io/p) and **bold** word.\n\n| h1 | h2 | \n| **bold link** |  |"),
+        ("include_tables", "Intro with a [link](http://x.io/p) and **bold** word."),
+    ],
+)
+def test_combined_flags_toggle_off(off, expected):
+    "Pin current behavior: disabling one flag changes only its feature (combined doc)."
+    result = extract(_COMBO_DOC, output_format="markdown", config=ZERO_CONFIG, **{**_COMBO_ALL_ON, off: False})
+    assert result == expected
+
+
+def _table_md(table, **kwargs):
+    doc = f"<html><body><article><p>enough intro text here for extraction</p>{table}</article></body></html>"
+    return extract(doc, output_format="markdown", config=ZERO_CONFIG, include_tables=True, **kwargs)
+
+
+def _table_txt(table):
+    doc = f"<html><body><article>{table}</article></body></html>"
+    return extract(doc, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
+
+
+# a short first-row cell + a 3-cell second row; the short row should pad to 3 columns
+_COLSPAN_ROWS = "<td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table>"
+
+
+@pytest.mark.parametrize("first_cell", ['colspan="2"', 'span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
+def test_table_colspan_padding(first_cell):
+    "A first-row cell with span/colspan info pads the short row to the table's column count."
+    assert "| a | b | |" in _table_txt(f"<table><tr><td {first_cell}>a</td>{_COLSPAN_ROWS}")
+
+
+@pytest.mark.parametrize(
+    "first_cell", ['<td colspan="9007199254740991">a</td>', '<th colspan="9007199254740991">a</th>', '<td colspan="2x">a</td>']
+)
+def test_table_huge_or_bad_colspan_no_crash(first_cell):
+    "Huge or non-numeric colspan must not crash or discard the document (#657)."
+    assert _table_txt(f"<table><tr>{first_cell}{_COLSPAN_ROWS}") is not None
+
+
+def test_table_rowspan_ignored():
+    "Pin: rowspan content is not propagated; the short row is padded to the column count, not filled with 'x'."
+    # TODO: rowspan unsupported — the spanned cell is not repeated into the next row (just blank-padded)
+    assert _table_md("<table><tr><td rowspan='2'>x</td><td>a</td></tr><tr><td>b</td></tr></table>").endswith(
+        "| x | a | \n| b | |"
+    )
+
+
+def test_table_empty_cells_and_rows():
+    "Empty cells are kept blank to keep columns aligned; rows that are entirely empty are dropped."
+    # an empty cell stays blank instead of collapsing the column
+    assert _table_md("<table><tr><td></td><td>b</td></tr></table>").endswith("|  | b |")
+    assert _table_md("<table><tr><td>a</td><td></td></tr></table>").endswith("| a |  |")
+    # a row of only-empty cells produces no row at all
+    assert _table_md("<table><tr><td>a</td><td>b</td></tr><tr><td></td><td></td></tr></table>").endswith("| a | b |")
+    # an all-empty row in the middle is dropped without merging the surrounding rows
+    assert _table_md(
+        "<table><tr><td>a</td><td>c</td></tr><tr><td></td><td></td></tr><tr><td>d</td><td>e</td></tr></table>"
+    ).endswith("| a | c | \n| d | e |")
+    # an empty <tr> is skipped while surrounding rows are kept
+    assert _table_md("<table><tr><td>a</td><td>c</td></tr><tr></tr><tr><td>d</td><td>e</td></tr></table>").endswith(
+        "| a | c | \n| d | e |"
+    )
+
+
+def test_table_cell_block_elements_inline():
+    "Block elements in a cell must not break the row: no stray newline (list) and no '##' marker (heading)."
+    list_row = _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>").split("\n\n")[-1]
+    assert "\n" not in list_row and list_row.endswith("| b |")
+    assert _table_md("<table><tr><td><h2>Title</h2></td><td>b</td></tr></table>").endswith("| Title | b |")
+    assert _table_md("<table><tr><td><p>para</p></td><td>b</td></tr></table>").endswith("| para | b |")
+    # flattened block content in a cell is space-separated, not mashed
+    assert _table_md("<table><tr><td><h2>Title</h2>txt</td><td>b</td></tr></table>").endswith("| Title txt | b |")
+    assert _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>", favor_recall=True).endswith(
+        "| i1 i2 | b |"
+    )
+
+
+def test_table_nested_in_cell_dropped():
+    "Known data-loss bug: a <table> inside a <td> currently drops the entire outer table from the output."
+    doc = "<table><tr><td>A</td></tr><tr><td><table><tr><td>inner</td></tr></table></td></tr><tr><td>AFTER</td></tr></table>"
+    # TODO: should flatten the nested table; today the whole outer table (A/inner/AFTER) vanishes
+    assert "A" not in _table_md(doc) and "AFTER" not in _table_md(doc)
+
+
+def test_table_caption_dropped():
+    "Known limitation: a <table><caption> is not preserved in output."
+    # TODO: caption text is currently lost
+    assert "My Caption" not in _table_md("<table><caption>My Caption</caption><tr><td>a</td><td>b</td></tr></table>")
+
+
+def test_list_item_attr_whitelist():
+    "Nested elements in a list item keep meaningful attrs only (no stray class/width leak)."
+    doc = (
+        "<html><body><article><p>enough intro text here for extraction</p>"
+        '<ul><li>x <img src="p.jpg" class="c" width="9" alt="a"/> '
+        '<a href="http://x.io" class="q">lnk</a> y</li></ul></article></body></html>'
+    )
+    out = extract(doc, output_format="xml", config=ZERO_CONFIG, include_links=True, include_images=True, favor_recall=True)
+    assert '<graphic src="p.jpg" alt="a"/>' in out  # class/width dropped
+    assert "class=" not in out and "width=" not in out
+    assert '<ref target="http://x.io">' in out  # target kept
+
+
+def test_image_tail_not_duplicated():
+    "regression: an image's tail text must not be emitted twice outside a table cell."
+    doc = "<html><body><article><p>enough intro here for extraction</p><ul><li>a <img src='i.jpg' alt='A'/> b</li></ul></article></body></html>"
+    assert extract(doc, output_format="markdown", config=ZERO_CONFIG, include_images=True).endswith("a ![A](i.jpg) b")
+
+
+def test_list_processing(options):
     # basic lists
     my_doc = "<html><body><article><p>P 1</p><ul><li>Item 1</li><li>Item 2</li></ul><p>P 2</p></article></body></html>"
     my_result = extract(my_doc, fast=True, output_format="txt", config=ZERO_CONFIG)
@@ -1954,9 +2089,8 @@ def test_config_loading():
         partial_path = tmp.name
     partial = use_config(filename=partial_path)
     options = core.Extractor(config=partial)
-    assert options.min_extracted_size == 9999  # overridden by the partial file
-    # unset key falls back to the on-disk default (read fresh: the DEFAULT_CONFIG
-    # singleton may have been mutated in-place by the extract() calls above)
+    assert options.min_extracted_size == 9999  # from the partial file
+    # unset key falls back to default; read fresh as DEFAULT_CONFIG may be mutated in-place elsewhere
     assert options.min_output_size == use_config().getint("DEFAULT", "MIN_OUTPUT_SIZE")
 
 
@@ -2131,8 +2265,7 @@ def test_html_conversion():
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
 
-    # regression #819/#777: internal table tags must become valid HTML in HTML output,
-    # mapping row->tr, head cell->th, plain cell->td and dropping the span/role attributes
+    # regression #819/#777: row->tr, head cell->th, plain cell->td, span/role dropped
     table_xml = (
         "<body><table>"
         '<row span="3"><cell role="head">Name</cell><cell role="head">Phone</cell></row>'
@@ -2146,6 +2279,16 @@ def test_html_conversion():
         "<tr><td>Jane</td><td>p1</td><td>p2</td></tr>"
         "</table></body></html>"
     )
+
+    # regression: internal <graphic> must become <img> in HTML output, keeping src/alt/title
+    img_xml = '<body><graphic src="a.jpg" alt="cap" title="t"/></body>'
+    img_html = etree.tostring(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(img_xml)), encoding="unicode")
+    assert img_html == '<html><body><img src="a.jpg" alt="cap" title="t"/></body></html>'
+
+    # end-to-end: an image reaches HTML output as <img> (not <graphic>)
+    doc = '<html><body><article><p>Body text here.</p><img src="pic.jpg" alt="a"/></article></body></html>'
+    out = extract(doc, output_format="html", include_images=True, config=ZERO_CONFIG)
+    assert '<img src="pic.jpg" alt="a"/>' in out and "<graphic" not in out
 
 
 def test_deprecations():

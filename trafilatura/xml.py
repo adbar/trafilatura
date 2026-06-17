@@ -291,7 +291,7 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
     if include_formatting and element.text:
         if element.tag in ("article", "list", "table"):
             elem_text = elem_text.strip()
-        elif element.tag == "head":
+        elif element.tag == "head" and not is_in_table_cell(element):
             try:
                 number = int(element.get("rend")[1])  # type: ignore[index]
             except (TypeError, ValueError):
@@ -351,7 +351,11 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
     if element.tail and element.tag != "graphic" and is_in_table_cell(element):
         # if element is in table cell, append tail after element text when element is not graphic since we deal with
         # graphic tail alone, textless elements like lb should be processed here too, otherwise process tail at the end
-        returnlist.append(element.tail.strip())
+        tail = element.tail.strip()
+        # separate the tail from preceding cell content unless a space/delimiter is already there
+        if tail and returnlist and returnlist[-1][-1:] not in (" ", "|", ""):
+            tail = f" {tail}"
+        returnlist.append(tail)
 
     for child in element:
         process_element(child, returnlist, include_formatting)
@@ -368,20 +372,20 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                cell_count = len(element.xpath(".//cell"))
-                # restrict columns to a maximum of 1000
+                cell_count = len(element.xpath("./cell"))
+                # a row spans at least its own cells; an explicit span may add colspan padding
                 span_info = element.get("colspan") or element.get("span")
-                if not span_info or not span_info.isdigit():
-                    max_span = 1
-                else:
-                    max_span = min(int(span_info), MAX_TABLE_WIDTH)
+                span = int(span_info) if span_info and span_info.isdigit() else 0
+                # restrict columns to a maximum of 1000
+                max_span = min(max(span, cell_count), MAX_TABLE_WIDTH)
                 # row ended so draw extra empty cells to match max_span
                 if cell_count < max_span:
                     returnlist.append(f"{'|' * (max_span - cell_count)}\n")
                 # if this is a head row, draw the separator below
                 if element.xpath("./cell[@role='head']"):
                     returnlist.append(f"\n|{'---|' * max_span}\n")
-            else:
+            elif not element.xpath("ancestor::cell"):
+                # block elements inside a cell must not inject a row-breaking newline
                 returnlist.append("\n")
         elif element.tag != "cell" and element.tag != "item":
             # cells still need to append vertical bars
@@ -396,14 +400,22 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
         returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
+    elif element.tag in ("head", "item") and is_in_table_cell(element) and not is_last_element_in_cell(element):
+        # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
+        returnlist.append(" ")
     elif element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element):  #  and not is_in_table_cell(element)
         returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
     # unless it's within a list item or a table
     is_in_cell = is_in_table_cell(element)
-    if element.tail and not is_in_cell:
-        returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag == "list" else element.tail)
+    if element.tail and not is_in_cell and element.tag != "graphic":  # graphic tail already handled above
+        in_item = is_element_in_item(element)
+        tail = element.tail.strip() if in_item or element.tag == "list" else element.tail
+        # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
+        if tail and in_item and returnlist and returnlist[-1][-1:] not in (" ", "\n", "|", ""):
+            tail = f" {tail}"
+        returnlist.append(tail)
 
     # deal with list items alone
     if is_last_element_in_item(element) and not is_in_cell:
