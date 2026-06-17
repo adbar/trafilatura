@@ -198,26 +198,27 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
     if isinstance(schema, dict):
         schema = [schema]
 
+    # collect content from every valid block, then process once (no short-circuit on a flat object)
+    parents: list[Any] = []
     for parent in schema:
         context = parent.get("@context")
 
         if context and isinstance(context, str) and JSON_SCHEMA_ORG.match(context):
             if "@graph" in parent:
-                parent = parent["@graph"] if isinstance(parent["@graph"], list) else [parent["@graph"]]
+                graph = parent["@graph"]
+                parents.extend(graph if isinstance(graph, list) else [graph])
             elif (
                 "@type" in parent
                 and isinstance(parent["@type"], str)
                 and "liveblogposting" in parent["@type"].lower()
                 and "liveBlogUpdate" in parent
             ):
-                parent = parent["liveBlogUpdate"] if isinstance(parent["liveBlogUpdate"], list) else [parent["liveBlogUpdate"]]
+                updates = parent["liveBlogUpdate"]
+                parents.extend(updates if isinstance(updates, list) else [updates])
             else:
-                # flat object (valid @context, no @graph/liveblog): treat it as content itself
-                parent = [parent]
+                parents.append(parent)
 
-            metadata = process_parent(parent, metadata)
-
-    return metadata
+    return process_parent(parents, metadata)
 
 
 def extract_json_author(elemtext: str, regular_expression: Pattern[str]) -> str | None:
