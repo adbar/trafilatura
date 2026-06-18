@@ -364,7 +364,10 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
         if element.tag == "graphic":
             # add source, default to ''
             text = f"{element.get('title', '')} {element.get('alt', '')}"
-            returnlist.append(f"![{text.strip()}]({element.get('src', '')})")
+            image = f"![{text.strip()}]({element.get('src', '')})"
+            if is_first_element_in_item(element) and not is_in_table_cell(element):
+                image = f"- {image}"
+            returnlist.append(image)
 
             if element.tail:
                 returnlist.append(f" {element.tail.strip()}")
@@ -403,7 +406,9 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
     elif element.tag in ("head", "item") and is_in_table_cell(element) and not is_last_element_in_cell(element):
         # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
         returnlist.append(" ")
-    elif element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element):  #  and not is_in_table_cell(element)
+    elif (
+        element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element) and not is_last_element_in_item(element)
+    ):
         returnlist.append(" ")
 
     # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
