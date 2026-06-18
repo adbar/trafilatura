@@ -42,6 +42,9 @@ TABLE_ALL = TABLE_ELEMS | P_FORMATTING
 FORMATTING = P_FORMATTING | {"span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
+KEEP_INLINE = {"hi", "ref", "graphic", "del", "code"}  # inline content carried into a rewired cell child
+# min text length for an adjacent-duplicate element to be treated as an extraction artifact and dropped
+DUPLICATE_ADJACENT_LIMIT = 50
 CODES_QUOTES = {"code", "quote"}
 NOT_AT_THE_END = {"head", "ref"}
 
@@ -163,14 +166,18 @@ def is_text_element(elem: _Element) -> bool:
     return elem is not None and text_chars_test("".join(elem.itertext())) is True
 
 
-def define_newelem(processed_elem: _Element | None, orig_elem: _Element) -> None:
-    "Create a new sub-element if necessary."
+def define_newelem(processed_elem: _Element | None, orig_elem: _Element, keep_children: bool = False) -> None:
+    "Create a new sub-element, optionally carrying its inline children (KEEP_INLINE)."
     if processed_elem is not None:
         childelem = SubElement(orig_elem, processed_elem.tag)
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
         for key, value in processed_elem.attrib.items():
             if key in KEEP_ATTRS:
                 childelem.set(key, value)
+        if keep_children:
+            for sub in processed_elem:
+                if sub.tag in KEEP_INLINE:
+                    define_newelem(sub, childelem, keep_children=True)
 
 
 def handle_lists(element: _Element, options: Extractor) -> _Element | None:
@@ -448,8 +455,7 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
                             processed_subchild = None  # don't handle it anymore
                     else:
                         processed_subchild = handle_textelem(child, potential_tags.union(["div"]), options)
-                    # add child element to processed_element (define_newelem no-ops on None)
-                    define_newelem(processed_subchild, new_child_elem)
+                    define_newelem(processed_subchild, new_child_elem, keep_children=True)
                     child.tag = "done"
             # add to tree (keep empty cells so column positions stay aligned)
             newrow.append(new_child_elem)
@@ -644,8 +650,8 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             delete_element(result_body[-1], keep_tail=False)
-        # exit the loop if the result has children
-        if len(result_body) > 1:
+        # exit once there is real content, not just a lone image
+        if sum(e.tag != "graphic" for e in result_body) > 1:
             LOGGER.debug(trim(str(expr)))
             break
     temp_text = " ".join(result_body.itertext()).strip()
@@ -668,6 +674,15 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = " ".join(result_body.itertext()).strip()
+    # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
+    # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards
+    previous = None
+    for el in list(result_body):
+        current = trim("".join(el.itertext()))
+        if current and current == previous and len(current) > DUPLICATE_ADJACENT_LIMIT:
+            delete_element(el, keep_tail=False)
+        else:
+            previous = current
     # filter output
     strip_elements(result_body, "done")
     strip_tags(result_body, "div")

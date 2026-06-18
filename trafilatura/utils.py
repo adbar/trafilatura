@@ -514,7 +514,7 @@ def is_first_element_in_item(element: _Element) -> bool:
     if item_ancestor is None:
         return False
     elif not item_ancestor.text:
-        return True
+        return element is next(item_ancestor.iterdescendants("*"), None)
     return False
 
 
