@@ -393,6 +393,12 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         for elem in tree.iter("a", "ref"):
             convert_link(elem, base_url)
 
+    # Yoast FAQ blocks: question headers are bold but act as titles (#471)
+    for elem in tree.xpath('.//strong[contains(@class, "schema-faq-question")]'):
+        elem.attrib.clear()
+        elem.set("rend", "h3")
+        elem.tag = "head"
+
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()

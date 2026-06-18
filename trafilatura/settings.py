@@ -433,6 +433,7 @@ MANUALLY_STRIPPED = [
     "ins",
     "mark",
     "meta",
+    "nobr",
     "ruby",
     "small",
     "tbody",

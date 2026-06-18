@@ -578,7 +578,7 @@ def test:
     print('hello')
     print('world')
     </code></pre>
-    </article></body></html> 
+    </article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_formatting=True)
     assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
@@ -593,6 +593,38 @@ def test:
     
 ```"""
         == my_result
+    )
+
+    my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
+    my_result = extract(my_document, output_format="xml", include_tables=True)
+    assert "AP-fonden" in my_result
+
+
+def test_yoast_faq_block():
+    "Yoast FAQ block questions are bold but act as headers and must be kept (issue #471)."
+    # a long lead paragraph keeps <div> out of the potential tags, as on the reported page
+    lead = (
+        "The wrap dress is a dress with a front closure formed by wrapping one side across the other "
+        "and knotting the attached ties that wrap around the back at the waist or fastening buttons. "
+        "It was popularised in the seventies and has remained a wardrobe staple ever since, flattering "
+        "many different body shapes thanks to its adjustable and forgiving cut. " * 2
+    )
+    htmlstring = (
+        "<html><body><article><h1>Wrap dress</h1><p>" + lead + "</p>"
+        '<div class="schema-faq wp-block-yoast-faq-block">'
+        '<div class="schema-faq-section" id="faq-question-1">'
+        '<strong class="schema-faq-question">Who invented the wrap dress?</strong> '
+        '<p class="schema-faq-answer">It was popularised by Diane von Furstenberg in 1974.</p>'
+        "</div></div></article></body></html>"
+    )
+    # default (no formatting): the question must not be dropped
+    assert "Who invented the wrap dress?" in extract(htmlstring, config=ZERO_CONFIG)
+    # with formatting: it is rendered as a header
+    assert "### Who invented the wrap dress?" in extract(
+        htmlstring, output_format="txt", include_formatting=True, config=ZERO_CONFIG
+    )
+    assert '<head rend="h3">Who invented the wrap dress?</head>' in extract(
+        htmlstring, output_format="xml", config=ZERO_CONFIG
     )
 
 
