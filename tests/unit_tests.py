@@ -578,7 +578,7 @@ def test:
     print('hello')
     print('world')
     </code></pre>
-    </article></body></html> 
+    </article></body></html>
     """)
     my_result = extract(my_document, output_format="markdown", include_formatting=True)
     assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
@@ -594,6 +594,10 @@ def test:
 ```"""
         == my_result
     )
+
+    my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
+    my_result = extract(my_document, output_format="xml", include_tables=True)
+    assert "AP-fonden" in my_result
 
 
 def test_include_formatting_markdown():
