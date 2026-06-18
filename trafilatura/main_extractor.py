@@ -43,6 +43,8 @@ FORMATTING = P_FORMATTING | {"span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 KEEP_INLINE = {"hi", "ref", "graphic", "del", "code"}  # inline content carried into a rewired cell child
+# min text length for an adjacent-duplicate element to be treated as an extraction artifact and dropped
+DUPLICATE_ADJACENT_LIMIT = 50
 CODES_QUOTES = {"code", "quote"}
 NOT_AT_THE_END = {"head", "ref"}
 
@@ -673,11 +675,11 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = " ".join(result_body.itertext()).strip()
     # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
-    # gated on min_duplcheck_size so short genuine repeats stay for the dedup and tree-size guards
+    # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards
     previous = None
     for el in list(result_body):
         current = trim("".join(el.itertext()))
-        if current and current == previous and len(current) > options.min_duplcheck_size:
+        if current and current == previous and len(current) > DUPLICATE_ADJACENT_LIMIT:
             delete_element(el, keep_tail=False)
         else:
             previous = current

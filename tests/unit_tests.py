@@ -1847,40 +1847,46 @@ def test_table_cell_block_elements_inline():
     )
 
 
-def test_table_cell_keeps_nested_formatting():
+@pytest.mark.parametrize(
+    "expected,cell,kwargs",
+    [
+        ("**bold**", "<p><b>bold</b></p>", {"include_formatting": True}),
+        ("![a](/i.jpg)", "<p><img src='/i.jpg' alt='a'></p>", {"include_images": True}),
+        ("pre **mid** post", "<p>pre <b>mid</b> post</p>", {"include_formatting": True}),
+        ("x ~~gone~~ y", "<p>x <del>gone</del> y</p>", {"include_formatting": True}),
+        ("x `c` y", "<p>x <code>c</code> y</p>", {"include_formatting": True}),
+    ],
+)
+def test_table_cell_keeps_nested_formatting(expected, cell, kwargs):
     "regression #829/#396: formatting/images wrapped in a block inside a cell must survive."
-    assert "**bold**" in _table_md("<table><tr><td><p><b>bold</b></p></td><td>x</td></tr></table>", include_formatting=True)
-    assert "![a](/i.jpg)" in _table_md(
-        "<table><tr><td><p><img src='/i.jpg' alt='a'></p></td><td>x</td></tr></table>", include_images=True
-    )
-    assert "pre **mid** post" in _table_md(
-        "<table><tr><td><p>pre <b>mid</b> post</p></td><td>x</td></tr></table>", include_formatting=True
-    )
-    assert "x ~~gone~~ y" in _table_md(
-        "<table><tr><td><p>x <del>gone</del> y</p></td><td>z</td></tr></table>", include_formatting=True
-    )
-    assert "x `c` y" in _table_md(
-        "<table><tr><td><p>x <code>c</code> y</p></td><td>z</td></tr></table>", include_formatting=True
-    )
+    assert expected in _table_md(f"<table><tr><td>{cell}</td><td>x</td></tr></table>", **kwargs)
 
 
 def test_include_images_does_not_truncate():
-    "regression #194/#842: a leading image must not let _extract commit a near-empty candidate, dropping the real content."
+    "regression #194/#842: a lead image plus one paragraph must not let _extract break early and drop later content."
+    # real config + a >250-char lead so wild-text recovery does not fire and mask the early break
+    real_config = use_config()
+    lead = "This single lead paragraph is deliberately long enough to exceed the minimum extracted size. " * 4
     doc = (
-        "<html><body><article><figure><img src='/lead.jpg' alt='lead'></figure>"
-        "<section><h2>Heading</h2><p>" + "Body sentence with enough words to be the real content. " * 4 + "</p></section>"
-        "</article></body></html>"
+        "<html><body>"
+        f"<article><img src='/lead.jpg' alt='lead'><p>{lead}</p></article>"
+        "<div id='content'>"
+        + "".join(f"<p>Continuation paragraph {i} that must also survive extraction in full here.</p>" for i in range(1, 5))
+        + "</div></body></html>"
     )
-    result = extract(doc, output_format="markdown", include_images=True, config=ZERO_CONFIG)
-    assert "## Heading" in result and "Body sentence" in result
+    result = extract(doc, output_format="txt", include_images=True, config=real_config) or ""
+    assert "/lead.jpg" in result
+    assert all(f"Continuation paragraph {i}" in result for i in range(1, 5))
 
 
 def test_no_duplicate_content():
     "regression #768/#817: content must not be emitted twice (overlapping candidates / wild-text recovery)."
+    # real config: ZERO_CONFIG's min_extracted_size=0 hides #817
+    real_config = use_config()
     dup768 = "<!doctype html><body><main><article><div><br>Line that has to have at least 125 characters for the bug to appear so here is some filler text text text text text text text</div></article></main></body></html>"
-    assert (extract(dup768, output_format="txt") or "").count("Line that has to have") == 1
+    assert (extract(dup768, output_format="txt", config=real_config) or "").count("Line that has to have") == 1
     dup817 = "<html><body><div id='content'><p>Authoritative taxonomy of but let us leave it as it is 1 2 3</p></div><p>some text long enough not to skip and printed twice on this line some text long enough not to skip and printed twice on this line</p></body></html>"
-    assert (extract(dup817, output_format="txt") or "").count("Authoritative taxonomy") == 1
+    assert (extract(dup817, output_format="txt", config=real_config) or "").count("Authoritative taxonomy") == 1
 
 
 def test_list_item_block_child_single_bullet():
