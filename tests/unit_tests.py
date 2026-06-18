@@ -595,8 +595,8 @@ def test:
         == my_result
     )
 
-    my_document = html.fromstring("<html><body><p>Sjätte<nobr>AP-fonden</nobr></p></body></html>")
-    my_result = extract(my_document, output_format="markdown")
+    my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
+    my_result = extract(my_document, output_format="xml", include_tables=True)
     assert "AP-fonden" in my_result
 
 
