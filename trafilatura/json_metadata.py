@@ -116,80 +116,103 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: str 
     return False
 
 
+def _get_content_type(content: dict[str, Any]) -> str | None:
+    """Return a normalized JSON-LD type name or None."""
+    raw_type = content.get("@type")
+    if not raw_type:
+        return None
+    content_type = raw_type[0] if isinstance(raw_type, list) else raw_type
+    return content_type.lower()
+
+
+def _handle_json_publisher_object(content: dict[str, Any], metadata: Document) -> None:
+    """Handle a nested publisher object, if one exists."""
+    publisher = content.get("publisher")
+    if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
+        metadata.sitename = publisher["name"]
+
+
+def _extract_json_author_name(author: Any) -> str | None:
+    """Extract a string author name from a JSON-LD author object."""
+    if isinstance(author, str):
+        author = {"name": author}
+    if "@type" in author and author["@type"] != "Person":
+        return None
+
+    author_name = None
+    if "name" in author:
+        author_name = author.get("name")
+        if isinstance(author_name, list):
+            author_name = "; ".join(author_name).strip("; ")
+        elif isinstance(author_name, dict) and "name" in author_name:
+            author_name = author_name["name"]
+    elif "givenName" in author and "familyName" in author:
+        author_name = " ".join(author[x] for x in AUTHOR_ATTRS if x in author)
+
+    return author_name if isinstance(author_name, str) else None
+
+
+def _handle_json_author_field(author_value: Any, metadata: Document) -> None:
+    """Parse and normalize a JSON-LD author field."""
+    if isinstance(author_value, str):
+        try:
+            author_value = json.loads(author_value)
+        except json.JSONDecodeError:
+            metadata.author = normalize_authors(metadata.author, author_value)
+            return
+
+    if not isinstance(author_value, list):
+        author_value = [author_value]
+
+    for author in author_value:
+        author_name = _extract_json_author_name(author)
+        if author_name:
+            metadata.author = normalize_authors(metadata.author, author_name)
+
+
+def _handle_json_article_fields(content: dict[str, Any], metadata: Document, content_type: str) -> None:
+    """Handle author, category, and title fields for article-like JSON-LD nodes."""
+    if "author" in content:
+        _handle_json_author_field(content["author"], metadata)
+
+    if not metadata.categories and "articleSection" in content:
+        if isinstance(content["articleSection"], str):
+            metadata.categories = [content["articleSection"]]
+        else:
+            metadata.categories = list(filter(None, content["articleSection"]))
+
+    if not metadata.title:
+        if "name" in content and content_type == "article":
+            metadata.title = content["name"]
+        elif "headline" in content:
+            metadata.title = content["headline"]
+
+
+def _handle_json_content(content: dict[str, Any], metadata: Document) -> None:
+    """Handle the main JSON-LD payload based on @type."""
+    content_type = _get_content_type(content)
+    if content_type is None:
+        return
+
+    if content_type in JSON_OGTYPE_SCHEMA and not metadata.pagetype:
+        metadata.pagetype = normalize_json(content_type)
+
+    if content_type in JSON_PUBLISHER_SCHEMA:
+        candidate = content.get("name") or content.get("legalName") or content.get("alternateName")
+        if is_plausible_sitename(metadata, candidate, content_type):
+            metadata.sitename = candidate
+    elif content_type == "person":
+        if isinstance(content.get("name"), str) and not content["name"].startswith("http"):
+            metadata.author = normalize_authors(metadata.author, content["name"])
+    elif content_type in JSON_ARTICLE_SCHEMA:
+        _handle_json_article_fields(content, metadata, content_type)
+
+
 def process_parent(parent: Any, metadata: Document) -> Document:
     "Find and extract selected metadata from JSON parts."
-    for content in filter(None, parent):  # type: dict[str, Any]
-        # publisher may be a bare string, not a dict
-        publisher = content.get("publisher")
-        if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):
-            metadata.sitename = publisher["name"]
-
-        if "@type" not in content or not content["@type"]:
-            continue
-
-        # some websites are using ['Person'] as type
-        content_type = content["@type"][0] if isinstance(content["@type"], list) else content["@type"]
-        content_type = content_type.lower()
-
-        # The "pagetype" should only be returned if the page is some kind of an article, category, website...
-        if content_type in JSON_OGTYPE_SCHEMA and not metadata.pagetype:
-            metadata.pagetype = normalize_json(content_type)
-
-        if content_type in JSON_PUBLISHER_SCHEMA:
-            candidate = content.get("name") or content.get("legalName") or content.get("alternateName")
-            if is_plausible_sitename(metadata, candidate, content_type):
-                metadata.sitename = candidate
-
-        elif content_type == "person":
-            if isinstance(content.get("name"), str) and not content["name"].startswith("http"):
-                metadata.author = normalize_authors(metadata.author, content["name"])
-
-        elif content_type in JSON_ARTICLE_SCHEMA:
-            # author and person
-            if "author" in content:
-                list_authors = content["author"]
-                if isinstance(list_authors, str):
-                    # try to convert to json object
-                    try:
-                        list_authors = json.loads(list_authors)
-                    except json.JSONDecodeError:
-                        # it is a normal string
-                        metadata.author = normalize_authors(metadata.author, list_authors)
-
-                if not isinstance(list_authors, list):
-                    list_authors = [list_authors]
-
-                for author in list_authors:
-                    if isinstance(author, str):
-                        author = {"name": author}
-                    if "@type" not in author or author["@type"] == "Person":
-                        author_name = None
-                        # error thrown: author['name'] can be a list (?)
-                        if "name" in author:
-                            author_name = author.get("name")
-                            if isinstance(author_name, list):
-                                author_name = "; ".join(author_name).strip("; ")
-                            elif isinstance(author_name, dict) and "name" in author_name:
-                                author_name = author_name["name"]
-                        elif "givenName" in author and "familyName" in author:
-                            author_name = " ".join(author[x] for x in AUTHOR_ATTRS if x in author)
-                        # additional check to prevent bugs
-                        if isinstance(author_name, str):
-                            metadata.author = normalize_authors(metadata.author, author_name)
-
-            # category
-            if not metadata.categories and "articleSection" in content:
-                if isinstance(content["articleSection"], str):
-                    metadata.categories = [content["articleSection"]]
-                else:
-                    metadata.categories = list(filter(None, content["articleSection"]))
-
-            # try to extract title
-            if not metadata.title:
-                if "name" in content and content_type == "article":
-                    metadata.title = content["name"]
-                elif "headline" in content:
-                    metadata.title = content["headline"]
+    for content in filter(None, parent):
+        _handle_json_publisher_object(content, metadata)
+        _handle_json_content(content, metadata)
     return metadata
 
 

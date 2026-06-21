@@ -143,6 +143,29 @@ OG_PROPERTIES = {
     "og:type": "pagetype",
 }
 
+# Flatten standard metadata mappings for O(1) dictionary lookups
+_NAME_FIELD_MAPPING = {}
+for text_set, field_name in [
+    (METANAME_AUTHOR, "author"),
+    (METANAME_TITLE, "title"),
+    (METANAME_DESCRIPTION, "description"),
+    (METANAME_PUBLISHER, "sitename"),
+    (METANAME_IMAGE, "image"),
+]:
+    for tag in text_set:
+        _NAME_FIELD_MAPPING[tag] = field_name
+
+_ITEMPROP_FIELD_MAPPING = {
+    "author": "author",
+    "description": "description",
+    "headline": "title",
+}
+
+# Mapping for specific property attribute actions to reduce if-else depth
+_PROPERTY_FIELD_MAPPING = {
+    "article:publisher": "sitename",
+}
+
 OG_AUTHOR = {"og:author", "og:article:author"}
 
 URL_SELECTORS = ['.//head//link[@rel="canonical"]', ".//head//base", './/head//link[@rel="alternate"][@hreflang="x-default"]']
@@ -201,100 +224,113 @@ def extract_opengraph(tree: HtmlElement) -> dict[str, str | None]:
     return result
 
 
-def examine_meta(tree: HtmlElement) -> Document:
-    """Search meta tags for relevant information"""
-    # bootstrap from potential OpenGraph tags
-    metadata = Document().from_dict(extract_opengraph(tree))
+def _is_metadata_complete(metadata: Document) -> bool:
+    """Check if all critical metadata fields are already extracted."""
+    if not metadata.title:
+        return False
+    return all(getattr(metadata, field) for field in ("author", "url", "description", "sitename", "image"))
 
-    # test if all values not assigned in the following have already been assigned
-    if all(
-        (
-            metadata.title,
-            metadata.author,
-            metadata.url,
-            metadata.description,
-            metadata.sitename,
-            metadata.image,
+
+def _handle_property_attribute(property_attr: str, content_attr: str, metadata: Document, tags: list) -> None:
+    """Process metadata extraction based on the 'property' attribute."""
+    if property_attr.startswith("og:"):
+        return
+    if property_attr == "article:tag":
+        tags.append(normalize_tags(content_attr))
+        return
+    if property_attr in PROPERTY_AUTHOR:
+        metadata.author = normalize_authors(metadata.author, content_attr)
+        return
+
+    field_name = _PROPERTY_FIELD_MAPPING.get(property_attr) or ("image" if property_attr in METANAME_IMAGE else None)
+    if field_name:
+        setattr(metadata, field_name, getattr(metadata, field_name) or content_attr)
+
+
+def _handle_name_fallbacks(name_attr: str, content_attr: str, metadata: Document, tags: list) -> str | None:
+    """Handle specific edge cases and fallbacks for name attributes."""
+    if name_attr in TWITTER_ATTRS or "twitter:app:name" in name_attr:
+        return content_attr
+    if name_attr == "twitter:url" and not metadata.url and is_valid_url(content_attr):
+        metadata.url = content_attr
+    elif name_attr in METANAME_TAG:
+        tags.append(normalize_tags(content_attr))
+    return None
+
+
+def _handle_name_attribute(name_attr: str, content_attr: str, metadata: Document, tags: list) -> str | None:
+    """Process metadata extraction based on the 'name' attribute."""
+    if name_attr in _NAME_FIELD_MAPPING:
+        field_name = _NAME_FIELD_MAPPING[name_attr]
+        if field_name == "author":
+            metadata.author = normalize_authors(metadata.author, content_attr)
+        else:
+            setattr(metadata, field_name, getattr(metadata, field_name) or content_attr)
+        return None
+
+    return _handle_name_fallbacks(name_attr, content_attr, metadata, tags)
+
+
+def _handle_itemprop_attribute(itemprop_attr: str, content_attr: str, metadata: Document) -> None:
+    """Process metadata extraction based on the 'itemprop' attribute."""
+    if itemprop_attr in _ITEMPROP_FIELD_MAPPING:
+        field_name = _ITEMPROP_FIELD_MAPPING[itemprop_attr]
+        if field_name == "author":
+            metadata.author = normalize_authors(metadata.author, content_attr)
+        else:
+            setattr(metadata, field_name, getattr(metadata, field_name) or content_attr)
+
+
+def _process_meta_element(
+    elem: HtmlElement,
+    metadata: Document,
+    tags: list,
+    backup_sitename: str | None,
+) -> str | None:
+    """Process a single <meta> element and return an updated backup sitename."""
+    content_attr = HTML_STRIP_TAGS.sub("", elem.get("content", "")).strip()
+    if not content_attr:
+        return backup_sitename
+
+    attribs = elem.attrib
+    if "property" in attribs:
+        _handle_property_attribute(elem.get("property", "").lower(), content_attr, metadata, tags)
+    elif "name" in attribs:
+        backup = _handle_name_attribute(elem.get("name", "").lower(), content_attr, metadata, tags)
+        return backup or backup_sitename
+    elif "itemprop" in attribs:
+        _handle_itemprop_attribute(elem.get("itemprop", "").lower(), content_attr, metadata)
+    elif all(key not in attribs for key in EXTRA_META):
+        LOGGER.debug(
+            "unknown attribute: %s",
+            tostring(elem, pretty_print=False, encoding="unicode").strip(),
         )
-    ):  # tags
+    return backup_sitename
+
+
+def _finalize_meta(metadata: Document, tags: list, backup_sitename: str | None) -> Document:
+    """Apply the last metadata assignments after the meta loop."""
+    metadata.sitename = metadata.sitename or backup_sitename
+    metadata.tags = tags
+    return metadata
+
+
+def examine_meta(tree: HtmlElement, metadata: Document | None = None) -> Document:
+    """Extract metadata from <meta> tags in the <head> section."""
+    if metadata is None:
+        metadata = Document()
+
+    if _is_metadata_complete(metadata):
         return metadata
 
-    tags, backup_sitename = [], None
+    tags: list[Any] = []
+    backup_sitename = None
 
     # iterate through meta tags
     for elem in tree.iterfind(".//head/meta[@content]"):
-        # content
-        content_attr = HTML_STRIP_TAGS.sub("", elem.get("content", "")).strip()
-        if not content_attr:
-            continue
-        # todo: image info
-        # ...
-        # property
-        if "property" in elem.attrib:
-            property_attr = elem.get("property", "").lower()
-            # no opengraph a second time
-            if property_attr.startswith("og:"):
-                continue
-            if property_attr == "article:tag":
-                tags.append(normalize_tags(content_attr))
-            elif property_attr in PROPERTY_AUTHOR:
-                metadata.author = normalize_authors(metadata.author, content_attr)
-            elif property_attr == "article:publisher":
-                metadata.sitename = metadata.sitename or content_attr
-            elif property_attr in METANAME_IMAGE:
-                metadata.image = metadata.image or content_attr
-        # name attribute
-        elif "name" in elem.attrib:
-            name_attr = elem.get("name", "").lower()
-            # author
-            if name_attr in METANAME_AUTHOR:
-                metadata.author = normalize_authors(metadata.author, content_attr)
-            # title
-            elif name_attr in METANAME_TITLE:
-                metadata.title = metadata.title or content_attr
-            # description
-            elif name_attr in METANAME_DESCRIPTION:
-                metadata.description = metadata.description or content_attr
-            # site name
-            elif name_attr in METANAME_PUBLISHER:
-                metadata.sitename = metadata.sitename or content_attr
-            # image
-            elif name_attr in METANAME_IMAGE:
-                metadata.image = metadata.image or content_attr
-            # twitter
-            elif name_attr in TWITTER_ATTRS or "twitter:app:name" in name_attr:
-                backup_sitename = content_attr
-            # url
-            elif name_attr == "twitter:url" and not metadata.url and is_valid_url(content_attr):
-                metadata.url = content_attr
-            # keywords
-            elif name_attr in METANAME_TAG:  # 'page-topic'
-                tags.append(normalize_tags(content_attr))
-        elif "itemprop" in elem.attrib:
-            itemprop_attr = elem.get("itemprop", "").lower()
-            if itemprop_attr == "author":
-                metadata.author = normalize_authors(metadata.author, content_attr)
-            elif itemprop_attr == "description":
-                metadata.description = metadata.description or content_attr
-            elif itemprop_attr == "headline":
-                metadata.title = metadata.title or content_attr
-            # to verify:
-            # elif itemprop_attr == 'name':
-            #    if title is None:
-            #        title = elem.get('content')
-        # other types
-        elif all(key not in elem.attrib for key in EXTRA_META):
-            LOGGER.debug(
-                "unknown attribute: %s",
-                tostring(elem, pretty_print=False, encoding="unicode").strip(),
-            )
+        backup_sitename = _process_meta_element(elem, metadata, tags, backup_sitename)
 
-    # backups
-    metadata.sitename = metadata.sitename or backup_sitename
-    # copy
-    metadata.tags = tags
-    # metadata.set_attributes(tags=tags)
-    return metadata
+    return _finalize_meta(metadata, tags, backup_sitename)
 
 
 def extract_metainfo(tree: HtmlElement, expressions: list[XPath], len_limit: int = 200) -> str | None:
@@ -483,8 +519,9 @@ def extract_metadata(
     if tree is None:
         return Document()
 
-    # initialize dict and try to strip meta tags
-    metadata = examine_meta(tree)
+    # initialize dict from OpenGraph and then inspect <meta> tags
+    metadata = Document().from_dict(extract_opengraph(tree))
+    metadata = examine_meta(tree, metadata)
 
     # to check: remove it and replace with author_blacklist in test case
     if metadata.author and " " not in metadata.author:

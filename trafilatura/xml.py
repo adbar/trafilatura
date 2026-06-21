@@ -368,95 +368,131 @@ def replace_element_text(element: _Element, include_formatting: bool, in_item: b
     return elem_text
 
 
-def process_element(
-    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool = False, in_item: bool = False
-) -> None:
-    "Recursively convert a LXML element and its children to a flattened string representation."
-    # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
-    in_cell = in_cell or element.tag == "cell"
-    in_item = in_item or element.tag == "item"
-    if element.tag == "cell" and element.getprevious() is None:
-        returnlist.append("| ")
+def _is_first_cell(element: _Element) -> bool:
+    """Check whether a cell is the first one in its row."""
+    return element.tag == "cell" and element.getprevious() is None
 
-    # a block element starts on its own line, not mashed onto preceding loose text (#661)
+
+def _append_textless_graphic(element: _Element, returnlist: list[str], in_item: bool) -> None:
+    """Append a graphic node that has no direct text."""
+    text = f"{element.get('title', '')} {element.get('alt', '')}"
+    image = f"{_list_marker(element, in_item)}![{text.strip()}]({element.get('src', '')})"
+    returnlist.append(image)
+    if element.tail:
+        returnlist.append(f" {element.tail.strip()}")
+
+
+def _append_pre_children(element: _Element, returnlist: list[str], in_cell: bool, in_item: bool) -> None:
+    """Insert separators before processing the current element content."""
     if element.tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
         returnlist.append("\n")
+    elif element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
+        returnlist.append("\n")
 
-    if element.text:
-        # this is the text that comes before the first child
-        returnlist.append(replace_element_text(element, include_formatting, in_item))
 
+def _append_textless_row(element: _Element, returnlist: list[str]) -> None:
+    """Append row padding and the trailing newline for a table row."""
+    cell_count = len(element.xpath("./cell"))
+    span_info = element.get("colspan") or element.get("span")
+    span = int(span_info) if span_info and span_info.isdecimal() else 0
+    max_span = min(max(span, cell_count), MAX_TABLE_WIDTH)
+    suffix = ""
+    if cell_count < max_span:
+        suffix += "|" * (max_span - cell_count)
+    if element.xpath("./cell[@role='head']"):
+        suffix += f"\n|{'---|' * max_span}"
+    suffix += "\n"
+    returnlist.append(suffix)
+
+
+def _append_textless_newline(element: _Element, returnlist: list[str], in_cell: bool) -> None:
+    """Append newline semantics for a textless block element."""
+    if element.tag == "row":
+        return
+    elif not in_cell:
+        returnlist.append("\n")
+
+
+def _process_textless_element(element: _Element, returnlist: list[str], in_cell: bool, in_item: bool) -> bool:
+    """Process a textless node and tell the caller whether to continue."""
+    if element.tag == "graphic":
+        _append_textless_graphic(element, returnlist, in_item)
+    elif element.tag in NEWLINE_ELEMS:
+        _append_textless_newline(element, returnlist, in_cell)
+    elif element.tag not in ("cell", "item"):
+        return False
+    return True
+
+
+def _append_table_cell_tail(element: _Element, returnlist: list[str], in_cell: bool) -> None:
+    """Append the tail text of an element inside a table cell before recursion."""
     if element.tail and element.tag != "graphic" and in_cell:
-        # textless elements like lb should be processed here too
+        # graphic tail is handled after the recursion; other inline tails stay in-place
         tail = element.tail.strip()
-        # separate the tail from preceding cell content unless a space/delimiter is already there
-        if tail and _last_char(returnlist) not in (" ", "|", ""):
+        if tail and returnlist and returnlist[-1][-1:] not in (" ", "|", ""):
             tail = f" {tail}"
         returnlist.append(tail)
 
-    # a sublist starts on its own line, not mashed onto the parent item
-    if element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
-        returnlist.append("\n")
 
-    for child in element:
-        process_element(child, returnlist, include_formatting, in_cell, in_item)
-
-    if not element.text:
-        if element.tag == "graphic":
-            # add source, default to ''
-            text = f"{element.get('title', '')} {element.get('alt', '')}"
-            image = f"{_list_marker(element, in_item)}![{text.strip()}]({element.get('src', '')})"
-            returnlist.append(image)
-
-            if element.tail:
-                returnlist.append(f" {element.tail.strip()}")
-        # newlines for textless elements
-        elif element.tag in NEWLINE_ELEMS:
-            # add line after table head
-            if element.tag == "row":
-                cells = element.findall("cell")
-                cell_count = len(cells)
-                # a row spans at least its own cells; an explicit span may add colspan padding
-                span_info = element.get("colspan") or element.get("span")
-                # isdecimal rejects the superscripts isdigit() admits
-                span = int(span_info) if span_info and span_info.isdecimal() else 0
-                # restrict columns to a maximum of 1000
-                max_span = min(max(span, cell_count), MAX_TABLE_WIDTH)
-                # row ended so draw extra empty cells to match max_span
-                if cell_count < max_span:
-                    returnlist.append(f"{'|' * (max_span - cell_count)}\n")
-                # if this is a head row, draw the separator below
-                if any(cell.get("role") == "head" for cell in cells):
-                    returnlist.append(f"\n|{'---|' * max_span}\n")
-            elif not in_cell:
-                # block elements inside a cell must not inject a row-breaking newline
-                returnlist.append("\n")
-        elif element.tag not in ("cell", "item"):
-            # cells still need to append vertical bars
-            return
-
-    last_in_item = in_item and is_last_element_in_item(element)
+def _append_post_children(
+    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool, in_item: bool
+) -> None:
+    """Append spacing and trailing text after all children were processed."""
+    if element.tag == "row":
+        _append_textless_row(element, returnlist)
+        return
     if element.tag in NEWLINE_ELEMS and not in_cell and not in_item:
         returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
     elif element.tag in ("head", "item") and in_cell and not is_last_element_in_cell(element):
-        # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
         returnlist.append(" ")
-    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not is_last_element_in_cell(element):
+    elif (
+        element.tag not in SPECIAL_FORMATTING and not is_last_element_in_item(element) and not is_last_element_in_cell(element)
+    ):
         returnlist.append(" ")
 
-    # text that comes after the closing tag
     if element.tail and not in_cell and element.tag != "graphic":  # graphic tail already handled above
         tail = element.tail.strip() if in_item or element.tag == "list" else element.tail
         # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
-        if tail and in_item and _last_char(returnlist) not in SEPARATORS:
+        if tail and in_item and returnlist and returnlist[-1][-1:] not in (" ", "\n", "|", ""):
             tail = f" {tail}"
         returnlist.append(tail)
 
-    # deal with list items alone
-    if last_in_item and not in_cell:
+    if is_last_element_in_item(element) and not in_cell:
         returnlist.append("\n")
+
+
+def _process_element(element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool, in_item: bool) -> None:
+    "Recursively convert a LXML element and its children to a flattened string representation."
+    in_cell = in_cell or element.tag == "cell"
+    in_item = in_item or element.tag == "item"
+    if _is_first_cell(element):
+        returnlist.append("| ")
+
+    _append_pre_children(element, returnlist, in_cell, in_item)
+
+    should_process_post = True
+    if element.text:
+        # this is the text that comes before the first child
+        returnlist.append(replace_element_text(element, include_formatting, in_item))
+    else:
+        should_process_post = _process_textless_element(element, returnlist, in_cell, in_item)
+
+    _append_table_cell_tail(element, returnlist, in_cell)
+
+    for child in element:
+        _process_element(child, returnlist, include_formatting, in_cell, in_item)
+
+    if should_process_post:
+        _append_post_children(element, returnlist, include_formatting, in_cell, in_item)
+
+
+def process_element(
+    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool = False, in_item: bool = False
+) -> None:
+    "Recursively convert a LXML element and its children to a flattened string representation."
+    _process_element(element, returnlist, include_formatting, in_cell, in_item)
 
 
 def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
