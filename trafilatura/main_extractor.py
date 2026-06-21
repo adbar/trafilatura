@@ -384,7 +384,8 @@ def define_cell_type(is_header: bool) -> _Element:
 def _colspan(cell: _Element) -> int:
     "Parse a cell's colspan, defaulting to 1 for a missing or non-numeric value."
     value = cell.get("colspan", "1")
-    return int(value) if value.isdigit() else 1
+    # isdecimal, not isdigit: int() rejects the superscripts isdigit() admits
+    return int(value) if value.isdecimal() else 1
 
 
 def _row_has_content(row: _Element) -> bool:

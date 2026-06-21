@@ -484,8 +484,7 @@ def is_last_element_in_cell(elem: _Element) -> bool:
         return False
 
     container = elem if elem.tag == "cell" else cast(_Element, elem.getparent())
-    children = container.getchildren()
-    return not children or children[-1] == elem
+    return len(container) == 0 or container[-1] == elem
 
 
 def is_element_in_item(element: _Element) -> bool:
@@ -498,24 +497,14 @@ def is_element_in_item(element: _Element) -> bool:
     return False
 
 
-def is_first_element_in_item(element: _Element) -> bool:
-    """Check whether an element is the first element in list item"""
-    if element.tag == "item" and element.text:
-        return True
-
-    current: _Element | None = element
-    item_ancestor = None
-    while current is not None:
-        if current.tag == "item":
-            item_ancestor = current
-            break
-        current = current.getparent()
-
-    if item_ancestor is None:
-        return False
-    elif not item_ancestor.text:
-        return element is next(item_ancestor.iterdescendants("*"), None)
-    return False
+def item_if_first_element(element: _Element) -> _Element | None:
+    """Return the enclosing list item if `element` carries its first content, else None"""
+    if element.tag == "item":
+        return element if element.text else None
+    item = next(element.iterancestors("item"), None)
+    if item is not None and not item.text and element is next(item.iterdescendants("*"), None):
+        return item
+    return None
 
 
 def is_last_element_in_item(element: _Element) -> bool:
@@ -525,10 +514,7 @@ def is_last_element_in_item(element: _Element) -> bool:
 
     # pure text only in list item
     if element.tag == "item":
-        return len(element.getchildren()) == 0
+        return len(element) == 0
     # element within list item
     next_element = element.getnext()
-    if next_element is None:
-        return True
-    else:
-        return next_element.tag == "item"
+    return next_element is None or next_element.tag == "item"

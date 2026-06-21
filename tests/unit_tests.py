@@ -26,6 +26,7 @@ from trafilatura import bare_extraction, baseline, extract, extract_with_metadat
 from trafilatura import core
 from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (
+    _colspan,
     handle_formatting,
     handle_image,
     handle_lists,
@@ -37,7 +38,7 @@ from trafilatura.main_extractor import (
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
 from trafilatura.readability_lxml import is_probably_readerable
-from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
+from trafilatura.settings import TAG_CATALOG, use_config
 from trafilatura.deduplication import LRU_TEST
 from trafilatura.utils import (
     LANGID_FLAG,
@@ -63,11 +64,31 @@ TEST_DIR = path.abspath(path.dirname(__file__))
 RESOURCES_DIR = path.join(TEST_DIR, "resources")
 SAMPLE_META = Document()
 
-ZERO_CONFIG = DEFAULT_CONFIG
+ZERO_CONFIG = use_config()  # fresh copy: must not mutate the package-global DEFAULT_CONFIG
 ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
 ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
 
 NEW_CONFIG = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
+
+
+def _extract_doc(body, *, intro=True, **kwargs):
+    "Wrap body in an article doc and extract; config defaults to ZERO_CONFIG (min-sizes 0)."
+    kwargs.setdefault("config", ZERO_CONFIG)
+    inner = f"<p>enough intro text here for extraction</p>{body}" if intro else body
+    return extract(f"<html><body><article>{inner}</article></body></html>", **kwargs)
+
+
+def _table_md(table, **kwargs):
+    return _extract_doc(table, output_format="markdown", include_tables=True, **kwargs)
+
+
+def _table_txt(table):
+    return _extract_doc(table, intro=False, output_format="txt", fast=True, include_tables=True)
+
+
+def _md_inline(body, **kwargs):
+    return _extract_doc(body, output_format="markdown", include_formatting=True, **kwargs) or ""
+
 
 MOCK_PAGES = {
     "http://exotic_tags": "exotic_tags.html",
@@ -122,7 +143,6 @@ def test_trim():
     # sanitize logic
     assert sanitize(None) is None
     # non-breaking spaces
-    print(sanitize("Test&nbsp;Text"))
     assert sanitize("Test&nbsp;Text") == "Test Text"
     # clear cache
     # reset caches: examine_date_elements used above
@@ -424,7 +444,6 @@ Here is a code sample:
         '<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code><span>import</span> <span>something</span><br/>something.run("somewhere")</code><p>Sometimes code is wrapped using <code>pre</code> and <code>code</code>:</p><pre><code>import trafilatura\ntrafilatura.extract("")</code></pre><p>Less often code is wrapped using just <code>pre</code>:</p><pre>\ntrafilatura.extract("")</pre></article></body></html>'
     )
     my_result = extract(my_document, output_format="txt", include_formatting=True, config=ZERO_CONFIG)
-    print(my_result)
     assert (
         my_result
         == """### Title
@@ -580,10 +599,10 @@ def test:
     </code></pre>
     </article></body></html>
     """)
-    my_result = extract(my_document, output_format="markdown", include_formatting=True)
+    my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
     assert "python code below:\n```\ndef test:\n    print('hello')\n    print('world')\n    \n```" == my_result
 
-    my_result = extract(my_document, output_format="markdown", include_formatting=True)
+    my_result = extract(my_document, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
     assert (
         """python code below:
 ```
@@ -596,7 +615,7 @@ def test:
     )
 
     my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
-    my_result = extract(my_document, output_format="xml", include_tables=True)
+    my_result = extract(my_document, output_format="xml", include_tables=True, config=ZERO_CONFIG)
     assert "AP-fonden" in my_result
 
 
@@ -639,7 +658,7 @@ def test_include_formatting_markdown():
 def test_markdown_list_item_inline_spacing():
     """Inline formatting tails inside list items must keep their leading space (issue #845)"""
     htmlstring = "<html><body><article><ol><li>Foo <em>bar</em> baz.</li></ol></article></body></html>"
-    assert extract(htmlstring, output_format="markdown", config=ZERO_CONFIG) == "- Foo *bar* baz."
+    assert extract(htmlstring, output_format="markdown", config=ZERO_CONFIG) == "1. Foo *bar* baz."
 
 
 def test_extract_with_metadata():
@@ -674,7 +693,7 @@ def test_extract_with_metadata():
     assert "AAA" in content and "BBB" in content and "CCC" in content
     assert url == parsed_doc.url and "2021-05-24" == parsed_doc.date and "title" == parsed_doc.title
 
-    parsed_doc = extract_with_metadata(my_document, output_format="xml")
+    parsed_doc = extract_with_metadata(my_document, output_format="xml", config=ZERO_CONFIG)
     assert "AAA, BBB , CCC." == parsed_doc.raw_text and "ee7d2fb6fcf2837d" == parsed_doc.fingerprint
     content = parsed_doc.text
     assert "AAA" in content and "BBB" in content and "CCC" in content
@@ -729,8 +748,8 @@ def test_external(options):
     assert "localhost:80" not in extract(teststring, fast=False, include_tables=False)
     with open(path.join(RESOURCES_DIR, "scam.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
-    assert extract(teststring, fast=True, include_tables=False) == ""
-    assert extract(teststring, fast=False, include_tables=False) == ""
+    assert extract(teststring, fast=True, include_tables=False, config=ZERO_CONFIG) == ""
+    assert extract(teststring, fast=False, include_tables=False, config=ZERO_CONFIG) == ""
     # invalid XML attributes: namespace colon in attribute key (issue #375). Those attributes should be stripped
     bad_xml = '<p>Testing</p><ul style="" padding:1px; margin:15px""><b>Features:</b> <li>Saves the cost of two dedicated phone lines.</li> al station using Internet or cellular technology.</li> <li>Requires no change to the existing Fire Alarm Control Panel configuration. The IPGSM-4G connects directly to the primary and secondary telephone ports.</li>'
     res = extract(bad_xml, output_format="xml")
@@ -759,90 +778,35 @@ def test_images(options):
     assert '<graphic src="test.jpg" title="Example image"/>' in extract(
         teststring, include_images=True, fast=True, output_format="xml", config=ZERO_CONFIG
     )
+
+    def img(body, **kw):
+        return _extract_doc(body, intro=False, include_images=True, fast=True, **kw)
+
+    assert img('<img data-src="test.jpg" alt="text" title="a title"/>') == "![a title text](test.jpg)"
+    assert img('<p><img data-src="test.jpg" alt="text" title="a title"/></p>') == "![a title text](test.jpg)"
+    assert img('<p><img other="test.jpg" alt="text" title="a title"/></p>') == ""
+    assert img('<div><p><img data-src="test.jpg" alt="text" title="a title"/></p></div>') == "![a title text](test.jpg)"
+    assert img('<div><p><img data-src-small="test.jpg" alt="text" title="a title"/></p></div>') == "![a title text](test.jpg)"
     assert (
-        extract(
-            '<html><body><article><img data-src="test.jpg" alt="text" title="a title"/></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
-        == "![a title text](test.jpg)"
-    )
-    assert (
-        extract(
-            '<html><body><article><p><img data-src="test.jpg" alt="text" title="a title"/></p></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
-        == "![a title text](test.jpg)"
-    )
-    assert (
-        extract(
-            '<html><body><article><p><img other="test.jpg" alt="text" title="a title"/></p></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
-        == ""
-    )
-    assert (
-        extract(
-            '<html><body><article><div><p><img data-src="test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
-        == "![a title text](test.jpg)"
-    )
-    assert (
-        extract(
-            '<html><body><article><div><p><img data-src-small="test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
-        == "![a title text](test.jpg)"
-    )
-    assert (
-        extract(
-            '<html><body><article><div><p><img src="https://a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            include_images=True,
-            fast=True,
-        )
+        img('<div><p><img src="https://a.b/test.jpg" alt="text" title="a title"/></p></div>')
         == "![a title text](https://a.b/test.jpg)"
     )
 
     url = "http://a.b/c/d.html"
     assert (
-        extract(
-            '<html><body><article><div><p><img src="//a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            url=url,
-            include_images=True,
-            fast=True,
-        )
+        img('<div><p><img src="//a.b/test.jpg" alt="text" title="a title"/></p></div>', url=url)
         == "![a title text](http://a.b/test.jpg)"
     )
     assert (
-        extract(
-            '<html><body><article><div><p><img src="/a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            url=url,
-            include_images=True,
-            fast=True,
-        )
+        img('<div><p><img src="/a.b/test.jpg" alt="text" title="a title"/></p></div>', url=url)
         == "![a title text](http://a.b/a.b/test.jpg)"
     )
     assert (
-        extract(
-            '<html><body><article><div><p><img src="./a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            url=url,
-            include_images=True,
-            fast=True,
-        )
+        img('<div><p><img src="./a.b/test.jpg" alt="text" title="a title"/></p></div>', url=url)
         == "![a title text](http://a.b/c/a.b/test.jpg)"
     )
     assert (
-        extract(
-            '<html><body><article><div><p><img src="../a.b/test.jpg" alt="text" title="a title"/></p></div></article></body></html>',
-            url=url,
-            include_images=True,
-            fast=True,
-        )
+        img('<div><p><img src="../a.b/test.jpg" alt="text" title="a title"/></p></div>', url=url)
         == "![a title text](http://a.b/a.b/test.jpg)"
     )
 
@@ -1003,10 +967,10 @@ def test_tei():
     expected = [("div", None, None), ("p", "text1 text2 has to be there", None)]
     assert result == expected
     htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
-    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei")
+    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert xml.validate_tei(etree.fromstring(extracted)) is True
     htmlstring = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
-    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei")
+    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert '<ab rend="h1" type="header">title</ab>' in extracted
     assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
     htmlstring = html.fromstring(
@@ -1022,7 +986,7 @@ def test_tei():
         </article></body>
         </html>"""
     )
-    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei")
+    extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
     # merge double elements
     tree = html.fromstring(
@@ -1319,8 +1283,8 @@ def test_precision_recall():
     assert len(result) > 0
 
     my_document = html.fromstring("<html><body><div><span>Text.</span></div></body></html>")
-    assert extract(copy(my_document), favor_precision=True, fast=True) == ""
-    assert extract(copy(my_document), favor_recall=True, fast=True) == "Text."
+    assert extract(copy(my_document), favor_precision=True, fast=True, config=ZERO_CONFIG) == ""
+    assert extract(copy(my_document), favor_recall=True, fast=True, config=ZERO_CONFIG) == "Text."
 
 
 def test_url_blacklist():
@@ -1393,7 +1357,7 @@ def test_table_processing(options):
               </article></body>
             </html>"""
     )
-    processed = extract(htmlstring, fast=True, output_format="xml", config=DEFAULT_CONFIG, include_links=True)
+    processed = extract(htmlstring, fast=True, output_format="xml", config=ZERO_CONFIG, include_links=True)
     result = processed.replace("\n", "").replace(" ", "")
     assert (
         """<table><rowspan="2"><cell>text<headrend="h4">more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>"""
@@ -1508,19 +1472,17 @@ def test_table_processing(options):
       </row>"""
         in my_result
     )
-    assert extract(htmlstring, fast=True, output_format="txt").startswith("| Present Tense | I buy | you buy |")
+    assert extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG).startswith(
+        "| Present Tense | I buy | you buy |"
+    )
     # table with links
     # todo: further tests and adjustments
-    htmlstring = (
-        '<html><body><article><table><tr><td><a href="test.html">'
-        + "ABCD" * 100
-        + "</a></td></tr></table></article></body></html>"
-    )
-    result = extract(htmlstring, fast=True, output_format="xml", config=ZERO_CONFIG, include_tables=True, include_links=True)
+    table = '<table><tr><td><a href="test.html">' + "ABCD" * 100 + "</a></td></tr></table>"
+    result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True, include_links=True)
     assert "ABCD" not in result
     # nested table
-    htmlstring = "<html><body><article><table><th>1</th><table><tr><td>2</td></tr></table></table></article></body></html>"
-    result = extract(htmlstring, fast=True, output_format="xml", config=ZERO_CONFIG, include_tables=True)
+    table = "<table><th>1</th><table><tr><td>2</td></tr></table></table>"
+    result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True)
     # todo: all elements are there, but output not nested
     assert '<cell role="head">1</cell>' in result and "<cell>2</cell>" in result
     nested_table = html.fromstring(
@@ -1598,44 +1560,33 @@ def test_table_processing(options):
         "cell",
     ]
     # table nested in figure https://github.com/adbar/trafilatura/issues/301
-    htmlstring = "<html><body><article><figure><table><th>1</th><tr><td>2</td></tr></table></figure></article></body></html>"
-    result = extract(htmlstring, fast=True, output_format="xml", config=ZERO_CONFIG, include_tables=True)
+    table = "<figure><table><th>1</th><tr><td>2</td></tr></table></figure>"
+    result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True)
     assert "1" in result and "2" in result
     # table headers in non-XML formats
-    htmlstring = "<html><body><article><table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table></article></body></html>"
-    assert "|---|---|" in extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
+    table = "<table><tr><th>head 1</th><th>head 2</th></tr><tr><td>1</td><td>2</td></tr></table>"
+    assert "|---|---|" in _table_txt(table)
     # regression: a header row's separator must match the column count even with no body row (was "|---|")
-    single_header = "<html><body><article><table><tr><th>a</th><th>b</th><th>c</th></tr></table></article></body></html>"
-    assert "|---|---|---|" in extract(single_header, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
+    single_header = "<table><tr><th>a</th><th>b</th><th>c</th></tr></table>"
+    assert "|---|---|---|" in _table_txt(single_header)
 
     # remove new lines in table cells in text format
-    htmlstring = "<html><body><article><table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table></article></body></html>"
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert "| cell 1 | cell 2 |" in result
+    table = "<table><tr><td>cell<br>1</td><td>cell<p>2</p></td></tr></table>"
+    assert "| cell 1 | cell 2 |" in _table_txt(table)
 
     # only one header row is allowed in text format
-    htmlstring = "<html><body><article><table><tr><th>a</th><th>b</th></tr><tr><th>c</th><th>d</th></tr></table></article></body></html>"
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result.count("---|") == 2
+    table = "<table><tr><th>a</th><th>b</th></tr><tr><th>c</th><th>d</th></tr></table>"
+    assert _table_txt(table).count("---|") == 2
 
     # colspan/span handling lives in test_table_colspan_* (parametrized)
 
     # links: this gets through (for now)
-    htmlstring = '<html><body><article><table><tr><td><a href="link.html">a</a></td></tr></table></article></body></html>'
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a |"
+    table = '<table><tr><td><a href="link.html">a</a></td></tr></table>'
+    assert _table_txt(table) == "| a |"
 
     # link: this is filtered out
-    htmlstring = (
-        f'<html><body><article><table><tr><td><a href="link.html">{"abc" * 100}</a></td></tr></table></article></body></html>'
-    )
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result == ""
-    htmlstring = (
-        f'<html><body><article><table><tr><td><a href="link.html">{" " * 100}</a></td></tr></table></article></body></html>'
-    )
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result == ""
+    assert _table_txt(f'<table><tr><td><a href="link.html">{"abc" * 100}</a></td></tr></table>') == ""
+    assert _table_txt(f'<table><tr><td><a href="link.html">{" " * 100}</a></td></tr></table>') == ""
 
     htmlstring = """
                  <html><body><article>
@@ -1781,16 +1732,6 @@ def test_combined_flags_toggle_off(off, expected):
     assert result == expected
 
 
-def _table_md(table, **kwargs):
-    doc = f"<html><body><article><p>enough intro text here for extraction</p>{table}</article></body></html>"
-    return extract(doc, output_format="markdown", config=ZERO_CONFIG, include_tables=True, **kwargs)
-
-
-def _table_txt(table):
-    doc = f"<html><body><article>{table}</article></body></html>"
-    return extract(doc, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-
-
 # a short first-row cell + a 3-cell second row; the short row should pad to 3 columns
 _COLSPAN_ROWS = "<td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table>"
 
@@ -1807,6 +1748,15 @@ def test_table_colspan_padding(first_cell):
 def test_table_huge_or_bad_colspan_no_crash(first_cell):
     "Huge or non-numeric colspan must not crash or discard the document (#657)."
     assert _table_txt(f"<table><tr>{first_cell}{_COLSPAN_ROWS}") is not None
+
+
+@pytest.mark.parametrize(
+    "colspan,expected",
+    [("1", 1), ("3", 3), ("12", 12), ("²", 1), ("1²", 1), ("2x", 1), ("", 1), ("-2", 1)],
+)
+def test_colspan_zero_trust(colspan, expected):
+    "_colspan must default to 1 for non-decimal values (isdigit() admits superscripts that int() rejects)."
+    assert _colspan(html.fromstring(f'<td colspan="{colspan}">x</td>')) == expected
 
 
 def test_table_rowspan_ignored():
@@ -1891,16 +1841,107 @@ def test_no_duplicate_content():
 
 def test_list_item_block_child_single_bullet():
     "regression: a list item wrapping content in a block gets one bullet, not one per child."
-    doc = "<html><body><article><p>enough intro text here for extraction to run.</p><ul><li><p>x <b>bold</b> y</p></li></ul></article></body></html>"
-    result = extract(doc, output_format="markdown", config=ZERO_CONFIG, include_formatting=True)
+    result = _md_inline("<ul><li><p>x <b>bold</b> y</p></li></ul>")
     assert "- x **bold** y" in result and "- x - " not in result
 
 
 def test_list_item_image_gets_bullet():
     "regression: an image alone in a list item gets a bullet like text items."
-    doc = "<html><body><article><p>enough intro text here for extraction to run.</p><ul><li><img src='/i.jpg' alt='a'></li><li>plain</li></ul></article></body></html>"
-    result = extract(doc, output_format="markdown", config=ZERO_CONFIG, include_images=True)
+    result = _extract_doc("<ul><li><img src='/i.jpg' alt='a'></li><li>plain</li></ul>", include_images=True)
     assert "- ![a](/i.jpg)\n" in result  # bulleted, no trailing space
+
+
+@pytest.mark.parametrize(
+    "snippet,expected",
+    [
+        ("<b> x </b>", "**x**"),
+        ("<i> x </i>", "*x*"),
+        ("<del> x </del>", "~~x~~"),
+        ("<code> x </code>", "`x`"),
+    ],
+)
+def test_inline_marker_flanking_whitespace(snippet, expected):
+    "regression #843: flanking whitespace stays outside markdown markers (valid CommonMark)."
+    assert expected in _md_inline(f"<p>a {snippet} b</p>")
+
+
+def test_inline_marker_edge_cases():
+    "regression #843: whitespace-only inline drops the marker; a link keeps flanking space outside [..](..)."
+    assert "**" not in _md_inline("<p>a <b>   </b> b</p>")
+    assert "[bold link](/x)" in _md_inline("<p>see <a href='/x'> bold link </a> ok</p>", include_links=True)
+
+
+def test_ordered_list_numbering():
+    "regression #843 family: ordered lists render as 1. 2. 3., unordered lists keep '- '."
+    ol = _md_inline("<ol><li>one</li><li>two</li><li>three</li></ol>")
+    assert "1. one" in ol and "2. two" in ol and "3. three" in ol
+    assert "- " not in _md_inline("<ol><li>only</li></ol>")  # ordered, not a bullet
+    ul = _md_inline("<ul><li>a</li><li>b</li></ul>")
+    assert "- a" in ul and "- b" in ul  # unordered unaffected
+
+
+def test_nested_list_indentation():
+    "regression A5: a nested list is indented and starts on its own line, not mashed onto the parent item."
+    nested = _md_inline("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>")
+    assert "  - b" in nested and "  - c" in nested  # sub-items indented
+    assert "- a- b" not in nested  # no mash onto the parent item
+    assert "  1. b" in _md_inline("<ul><li>a<ol><li>b</li></ol></li></ul>")  # nested ordered list
+
+
+def test_loose_text_tail_not_squished():
+    "regression #661: a block's loose-text tail must not mash onto the next sibling block."
+    html_string = """<!DOCTYPE html><html lang="en-us"><body><main><section>
+        <p>First</p>
+        This gets Squished
+        <div>
+            <h4>There should be a space</h4>
+            <p>Another sentence</p>
+            This also gets Squished
+        </div>
+        <div>
+            <h4>Where is the space</h4>
+            <p>This sentence has to be long enough. If it's long enough the duplication stops, but if it's not long enough then you'll get an extra first. This sentence has to be long enough.</p>
+        </div>
+    </section></main></body></html>"""
+    result = extract(html_string) or ""
+    assert "SquishedThere" not in result and "SquishedWhere" not in result
+
+
+@pytest.mark.parametrize(
+    "rend,expected",
+    [
+        ("h1", "# T"),
+        ("h2", "## T"),
+        ("h6", "###### T"),
+        (None, "## T"),  # absent -> default level 2
+        ("", "## T"),
+        ("h", "## T"),  # no digit
+        ("hx", "## T"),  # non-digit
+        ("h²", "## T"),  # superscript: isdigit() True but int() raises -> must not crash
+        ("h٤", "## T"),  # non-ASCII decimal digit -> not an accepted level
+        ("h0", "## T"),  # out of range
+        ("h9", "## T"),  # out of range
+    ],
+)
+def test_heading_level_zero_trust(rend, expected):
+    "replace_element_text must never crash on a malformed head rend and defaults to level 2."
+    el = etree.Element("head")
+    el.text = "T"
+    if rend is not None:
+        el.set("rend", rend)
+    assert xml.replace_element_text(el, True) == expected
+
+
+@pytest.mark.parametrize("span", ["2", "²", "1²", "2x", "12", "-3", ""])
+def test_row_span_zero_trust(span):
+    "process_element must not crash on a malformed row span (isdigit() passes superscripts that int() rejects)."
+    table = etree.Element("table")
+    row = etree.SubElement(table, "row")
+    row.set("span", span)
+    etree.SubElement(row, "cell").text = "a"
+    out: list = []
+    xml.process_element(table, out, False)  # must not raise
+    assert "a" in "".join(out)
 
 
 def test_table_nested_in_cell_dropped():
@@ -1918,12 +1959,8 @@ def test_table_caption_dropped():
 
 def test_list_item_attr_whitelist():
     "Nested elements in a list item keep meaningful attrs only (no stray class/width leak)."
-    doc = (
-        "<html><body><article><p>enough intro text here for extraction</p>"
-        '<ul><li>x <img src="p.jpg" class="c" width="9" alt="a"/> '
-        '<a href="http://x.io" class="q">lnk</a> y</li></ul></article></body></html>'
-    )
-    out = extract(doc, output_format="xml", config=ZERO_CONFIG, include_links=True, include_images=True, favor_recall=True)
+    body = '<ul><li>x <img src="p.jpg" class="c" width="9" alt="a"/> <a href="http://x.io" class="q">lnk</a> y</li></ul>'
+    out = _extract_doc(body, output_format="xml", include_links=True, include_images=True, favor_recall=True)
     assert '<graphic src="p.jpg" alt="a"/>' in out  # class/width dropped
     assert "class=" not in out and "width=" not in out
     assert '<ref target="http://x.io">' in out  # target kept
@@ -1931,8 +1968,8 @@ def test_list_item_attr_whitelist():
 
 def test_image_tail_not_duplicated():
     "regression: an image's tail text must not be emitted twice outside a table cell."
-    doc = "<html><body><article><p>enough intro here for extraction</p><ul><li>a <img src='i.jpg' alt='A'/> b</li></ul></article></body></html>"
-    assert extract(doc, output_format="markdown", config=ZERO_CONFIG, include_images=True).endswith("a ![A](i.jpg) b")
+    result = _extract_doc("<ul><li>a <img src='i.jpg' alt='A'/> b</li></ul>", include_images=True)
+    assert result.endswith("a ![A](i.jpg) b")
 
 
 def test_list_processing(options):
