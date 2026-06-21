@@ -16,10 +16,10 @@ from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring
 from .settings import Document, Extractor
 from .utils import (
     is_element_in_item,
-    is_first_element_in_item,
     is_in_table_cell,
     is_last_element_in_cell,
     is_last_element_in_item,
+    item_if_first_element,
     sanitize,
     sanitize_tree,
     text_chars_test,
@@ -78,6 +78,9 @@ META_ATTRIBUTES = [
 ]
 
 HI_FORMATTING = {"#b": "**", "#i": "*", "#u": "__", "#t": "`"}
+HEADING_LEVELS = frozenset("123456")
+# preceding characters that already separate content, so no extra space/newline is needed
+SEPARATORS = frozenset((" ", "\n", "|", ""))
 
 MAX_TABLE_WIDTH = 1000
 
@@ -284,25 +287,51 @@ def validate_tei(xmldoc: _Element) -> bool:
     return result
 
 
-def replace_element_text(element: _Element, include_formatting: bool) -> str:
+def _md_wrap(text: str, marker: str) -> str:
+    "Wrap text in a markdown marker, leaving any flanking whitespace outside it (valid CommonMark)."
+    stripped = text.strip()
+    return text.replace(stripped, f"{marker}{stripped}{marker}", 1) if stripped else text
+
+
+def _last_char(returnlist: list[str]) -> str:
+    "Last character emitted so far, or '' if nothing yet."
+    return returnlist[-1][-1:] if returnlist else ""
+
+
+def _list_marker(element: _Element, in_item: bool | None = None) -> str:
+    "Markdown marker for the first element of a list item ('N. '/'- ' with nesting indent), else '' (e.g. in a cell)."
+    # outside any list item there is no marker and no need to walk ancestors
+    if in_item is None:
+        in_item = is_element_in_item(element)
+    if not in_item:
+        return ""
+    item = item_if_first_element(element)
+    if item is None or is_in_table_cell(element):
+        return ""
+    indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
+    parent = item.getparent()
+    if parent is not None and parent.get("rend") == "ol":
+        return f"{indent}{sum(1 for _ in item.itersiblings('item', preceding=True)) + 1}. "
+    return f"{indent}- "
+
+
+def replace_element_text(element: _Element, include_formatting: bool, in_item: bool | None = None) -> str:
     """Determine element text based on just the text of the element. One must deal with the tail separately."""
     elem_text = element.text or ""
     # handle formatting: convert to markdown
-    if include_formatting and element.text:
+    if include_formatting and elem_text:
         if element.tag in ("article", "list", "table"):
             elem_text = elem_text.strip()
         elif element.tag == "head" and not is_in_table_cell(element):
-            try:
-                number = int(element.get("rend")[1])  # type: ignore[index]
-            except (TypeError, ValueError):
-                number = 2
+            level = element.get("rend") or ""
+            number = int(level[1]) if level[1:2] in HEADING_LEVELS else 2
             elem_text = f"{'#' * number} {elem_text}"
         elif element.tag == "del":
-            elem_text = f"~~{elem_text}~~"
+            elem_text = _md_wrap(elem_text, "~~")
         elif element.tag == "hi":
-            rend = element.get("rend")
-            if rend in HI_FORMATTING:
-                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
+            marker = HI_FORMATTING.get(element.get("rend") or "")
+            if marker:
+                elem_text = _md_wrap(elem_text, marker)
         elif element.tag == "code":
             lbs = element.xpath(".//lb")
             if "\n" in elem_text or lbs:  # Handle <br> inside <code>
@@ -312,61 +341,71 @@ def replace_element_text(element: _Element, include_formatting: bool) -> str:
                     lb.getparent().remove(lb)
                 elem_text = f"```\n{elem_text}\n```\n"
             else:
-                elem_text = f"`{elem_text}`"
+                elem_text = _md_wrap(elem_text, "`")
     # handle links
     if element.tag == "ref":
-        if elem_text:
-            link_text = f"[{elem_text}]"
+        stripped = elem_text.strip()
+        if stripped:
             target = element.get("target")
             if target:
-                elem_text = f"{link_text}({target})"
+                link_text = f"[{stripped}]({target})"
             else:
                 LOGGER.warning("missing link attribute: %s %s'", elem_text, element.attrib)
-                elem_text = link_text
+                link_text = f"[{stripped}]"
+            elem_text = elem_text.replace(stripped, link_text, 1)
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
     if element.tag == "cell":
         elem_text = elem_text.strip()
-
-        if elem_text and not is_last_element_in_cell(element):
+        # separate the cell's text from its children
+        if elem_text and len(element):
             elem_text = f"{elem_text} "
 
     # within lists
-    if is_first_element_in_item(element) and not is_in_table_cell(element):
-        elem_text = f"- {elem_text}"
+    elem_text = f"{_list_marker(element, in_item)}{elem_text}"
 
     return elem_text
 
 
-def process_element(element: _Element, returnlist: list[str], include_formatting: bool) -> None:
+def process_element(
+    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool = False, in_item: bool = False
+) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
+    # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
+    in_cell = in_cell or element.tag == "cell"
+    in_item = in_item or element.tag == "item"
     if element.tag == "cell" and element.getprevious() is None:
         returnlist.append("| ")
 
+    # a block element starts on its own line, not mashed onto preceding loose text (#661)
+    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
+        returnlist.append("\n")
+
     if element.text:
         # this is the text that comes before the first child
-        returnlist.append(replace_element_text(element, include_formatting))
+        returnlist.append(replace_element_text(element, include_formatting, in_item))
 
-    if element.tail and element.tag != "graphic" and is_in_table_cell(element):
-        # if element is in table cell, append tail after element text when element is not graphic since we deal with
-        # graphic tail alone, textless elements like lb should be processed here too, otherwise process tail at the end
+    if element.tail and element.tag != "graphic" and in_cell:
+        # textless elements like lb should be processed here too
         tail = element.tail.strip()
         # separate the tail from preceding cell content unless a space/delimiter is already there
-        if tail and returnlist and returnlist[-1][-1:] not in (" ", "|", ""):
+        if tail and _last_char(returnlist) not in (" ", "|", ""):
             tail = f" {tail}"
         returnlist.append(tail)
 
+    # a sublist starts on its own line, not mashed onto the parent item
+    if element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
+        returnlist.append("\n")
+
     for child in element:
-        process_element(child, returnlist, include_formatting)
+        process_element(child, returnlist, include_formatting, in_cell, in_item)
 
     if not element.text:
         if element.tag == "graphic":
             # add source, default to ''
             text = f"{element.get('title', '')} {element.get('alt', '')}"
-            image = f"![{text.strip()}]({element.get('src', '')})"
-            if is_first_element_in_item(element) and not is_in_table_cell(element):
-                image = f"- {image}"
+            image = f"{_list_marker(element, in_item)}![{text.strip()}]({element.get('src', '')})"
             returnlist.append(image)
 
             if element.tail:
@@ -375,55 +414,48 @@ def process_element(element: _Element, returnlist: list[str], include_formatting
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                cell_count = len(element.xpath("./cell"))
+                cells = element.findall("cell")
+                cell_count = len(cells)
                 # a row spans at least its own cells; an explicit span may add colspan padding
                 span_info = element.get("colspan") or element.get("span")
-                span = int(span_info) if span_info and span_info.isdigit() else 0
+                # isdecimal rejects the superscripts isdigit() admits
+                span = int(span_info) if span_info and span_info.isdecimal() else 0
                 # restrict columns to a maximum of 1000
                 max_span = min(max(span, cell_count), MAX_TABLE_WIDTH)
                 # row ended so draw extra empty cells to match max_span
                 if cell_count < max_span:
                     returnlist.append(f"{'|' * (max_span - cell_count)}\n")
                 # if this is a head row, draw the separator below
-                if element.xpath("./cell[@role='head']"):
+                if any(cell.get("role") == "head" for cell in cells):
                     returnlist.append(f"\n|{'---|' * max_span}\n")
-            elif not element.xpath("ancestor::cell"):
+            elif not in_cell:
                 # block elements inside a cell must not inject a row-breaking newline
                 returnlist.append("\n")
-        elif element.tag != "cell" and element.tag != "item":
+        elif element.tag not in ("cell", "item"):
             # cells still need to append vertical bars
-            # but nothing more to do with other textless elements
             return
 
-    # Process text
-
-    # Common elements (Now processes end-tag logic correctly)
-    if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell") and not is_element_in_item(element):
-        # spacing hack
+    last_in_item = in_item and is_last_element_in_item(element)
+    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item:
         returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
-    elif element.tag in ("head", "item") and is_in_table_cell(element) and not is_last_element_in_cell(element):
+    elif element.tag in ("head", "item") and in_cell and not is_last_element_in_cell(element):
         # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
         returnlist.append(" ")
-    elif (
-        element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element) and not is_last_element_in_item(element)
-    ):
+    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not is_last_element_in_cell(element):
         returnlist.append(" ")
 
-    # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
-    # unless it's within a list item or a table
-    is_in_cell = is_in_table_cell(element)
-    if element.tail and not is_in_cell and element.tag != "graphic":  # graphic tail already handled above
-        in_item = is_element_in_item(element)
+    # text that comes after the closing tag
+    if element.tail and not in_cell and element.tag != "graphic":  # graphic tail already handled above
         tail = element.tail.strip() if in_item or element.tag == "list" else element.tail
         # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
-        if tail and in_item and returnlist and returnlist[-1][-1:] not in (" ", "\n", "|", ""):
+        if tail and in_item and _last_char(returnlist) not in SEPARATORS:
             tail = f" {tail}"
         returnlist.append(tail)
 
     # deal with list items alone
-    if is_last_element_in_item(element) and not is_in_cell:
+    if last_in_item and not in_cell:
         returnlist.append("\n")
 
 
