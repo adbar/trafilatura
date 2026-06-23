@@ -2239,55 +2239,53 @@ from openai_function_call import openai_function</code>"""
 
 def test_markdown_escaping():
     "Markdown-mode output escapes metacharacters that would corrupt GFM structure."
-    from lxml.etree import fromstring
-
     # pipe in table cell text must be escaped so it doesn't split the column
-    tree = fromstring(b"<body><table><row><cell>a|b</cell><cell>c</cell></row></table></body>")
+    tree = etree.fromstring(b"<body><table><row><cell>a|b</cell><cell>c</cell></row></table></body>")
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "a\\|b" in result
 
     # pipe inside formatted text (hi) inside a cell must also be escaped
-    tree = fromstring(b'<body><table><row><cell><hi rend="#b">x|y</hi></cell></row></table></body>')
+    tree = etree.fromstring(b'<body><table><row><cell><hi rend="#b">x|y</hi></cell></row></table></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "x\\|y" in result
 
     # URL with a space must be wrapped in angle brackets
-    tree = fromstring(b'<body><p><ref target="http://a b/c">link</ref></p></body>')
+    tree = etree.fromstring(b'<body><p><ref target="http://a b/c">link</ref></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "[link](<http://a b/c>)" in result
 
     # square brackets in link text must be escaped
-    tree = fromstring(b'<body><p><ref target="http://x">a[b]c</ref></p></body>')
+    tree = etree.fromstring(b'<body><p><ref target="http://x">a[b]c</ref></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "[a\\[b\\]c](http://x)" in result
 
     # square brackets in image alt must be escaped
-    tree = fromstring(b'<body><graphic src="img.png" alt="a[b]c"/></body>')
+    tree = etree.fromstring(b'<body><graphic src="img.png" alt="a[b]c"/></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "![a\\[b\\]c](img.png)" in result
 
     # a ref with no/empty target renders as bare [text]; a graphic with no src keeps empty parens
-    assert xml.xmltotxt(fromstring(b"<body><p><ref>txt</ref></p></body>"), True).strip() == "[txt]"
-    assert xml.xmltotxt(fromstring(b'<body><p><ref target="">txt</ref></p></body>'), True).strip() == "[txt]"
-    assert xml.xmltotxt(fromstring(b'<body><graphic alt="a"/></body>'), True).strip() == "![a]()"
+    assert xml.xmltotxt(etree.fromstring(b"<body><p><ref>txt</ref></p></body>"), True).strip() == "[txt]"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><ref target="">txt</ref></p></body>'), True).strip() == "[txt]"
+    assert xml.xmltotxt(etree.fromstring(b'<body><graphic alt="a"/></body>'), True).strip() == "![a]()"
 
     # backtick in inline code needs a longer fence
-    tree = fromstring(b'<body><p><hi rend="#t">a\x60b</hi></p></body>')
+    tree = etree.fromstring(b'<body><p><hi rend="#t">a\x60b</hi></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "``a`b``" in result
 
     # inline code whose content abuts a backtick gets a space pad so the fence does not merge
-    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">\x60x</hi></p></body>'), True).strip() == "`` `x ``"
-    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">x\x60</hi></p></body>'), True).strip() == "`` x` ``"
-    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">\x60</hi></p></body>'), True).strip() == "`` ` ``"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">\x60x</hi></p></body>'), True).strip() == "`` `x ``"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">x\x60</hi></p></body>'), True).strip() == "`` x` ``"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">\x60</hi></p></body>'), True).strip() == "`` ` ``"
 
     # triple backtick in block code needs a 4-backtick fence
-    tree = fromstring(b"<body><code>a\x60\x60\x60b</code></body>")
+    tree = etree.fromstring(b"<body><code>a\x60\x60\x60b</code></body>")
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "````" in result and "a```b" in result
 
     # ~~ inside del content must not close the strikethrough early
-    tree = fromstring(b"<body><p><del>a~~b</del></p></body>")
+    tree = etree.fromstring(b"<body><p><del>a~~b</del></p></body>")
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "~~a~\\~b~~" in result
 
@@ -2301,37 +2299,35 @@ def test_markdown_escaping():
     assert result and "~~gone~~" in result
 
     # del wrapping an inline child must preserve the strikethrough marker
-    tree = fromstring(b'<body><p><del><hi rend="#b">bold</hi></del></p></body>')
+    tree = etree.fromstring(b'<body><p><del><hi rend="#b">bold</hi></del></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "~~**bold**~~" in result
 
     # pipe in graphic tail inside a table cell must be escaped
-    tree = fromstring(b'<body><table><row><cell><graphic src="img.png" alt="img"/>tail|text</cell></row></table></body>')
+    tree = etree.fromstring(b'<body><table><row><cell><graphic src="img.png" alt="img"/>tail|text</cell></row></table></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "tail\\|text" in result
 
     # block math in a cell must not inject newlines that split the table row
-    tree = fromstring(b"<body><table><row><cell>x \\[E=mc^2\\] y</cell></row></table></body>")
+    tree = etree.fromstring(b"<body><table><row><cell>x \\[E=mc^2\\] y</cell></row></table></body>")
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "\n" not in result.strip() and "$$ E=mc^2 $$" in result
 
     # bold wrapping a link must preserve both the bold marker and the link
-    tree = fromstring(b'<body><p><hi rend="#b"><ref target="http://x.com">link</ref></hi></p></body>')
+    tree = etree.fromstring(b'<body><p><hi rend="#b"><ref target="http://x.com">link</ref></hi></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "**[link](http://x.com)**" in result
 
     # a graphic wrapped in inline formatting must keep the image, not be dropped
     bold_img = b'<body><p><hi rend="#b">x <graphic src="i.jpg" alt="A"/> y</hi></p></body>'
-    assert xml.xmltotxt(fromstring(bold_img), True).strip() == "**x ![A](i.jpg) y**"
+    assert xml.xmltotxt(etree.fromstring(bold_img), True).strip() == "**x ![A](i.jpg) y**"
     struck_img = b'<body><p><del>x <graphic src="i.jpg" alt="A"/> y</del></p></body>'
-    assert xml.xmltotxt(fromstring(struck_img), True).strip() == "~~x ![A](i.jpg) y~~"
+    assert xml.xmltotxt(etree.fromstring(struck_img), True).strip() == "~~x ![A](i.jpg) y~~"
 
 
 def test_xmltotxt_no_mutation():
     "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
-    from lxml.etree import fromstring
-
-    tree = fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
+    tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
     before = etree.tostring(tree, encoding="unicode")
     out = xml.xmltotxt(tree, True)
     assert "$x$" in out and "***y***" in out  # output is converted
@@ -2340,29 +2336,45 @@ def test_xmltotxt_no_mutation():
 
 def test_math_conversion():
     "LaTeX math delimiters are converted to $ notation; unmatched delimiters and code are left alone."
-    from lxml.etree import fromstring
-
     # inline math \(...\) → $...$
-    assert xml.xmltotxt(fromstring(b"<body><p>\\(x^2\\)</p></body>"), True).strip() == "$x^2$"
+    assert xml.xmltotxt(etree.fromstring(b"<body><p>\\(x^2\\)</p></body>"), True).strip() == "$x^2$"
     # unmatched \( must not become a lone $
-    assert xml.xmltotxt(fromstring(b"<body><p>regex \\( open</p></body>"), True).strip() == "regex \\( open"
+    assert xml.xmltotxt(etree.fromstring(b"<body><p>regex \\( open</p></body>"), True).strip() == "regex \\( open"
     # math delimiters inside a fenced code block must not be converted
-    tree = fromstring(b"<body><code>prefix\n\\[E=mc^2\\]\nsuffix</code></body>")
+    tree = etree.fromstring(b"<body><code>prefix\n\\[E=mc^2\\]\nsuffix</code></body>")
     assert "\\[E=mc^2\\]" in xml.xmltotxt(tree, include_formatting=True)
     # math delimiters inside inline code must not be converted either
-    tree = fromstring(b'<body><p>use <hi rend="#t">a\\(x\\)b</hi> here</p></body>')
+    tree = etree.fromstring(b'<body><p>use <hi rend="#t">a\\(x\\)b</hi> here</p></body>')
     assert "`a\\(x\\)b`" in xml.xmltotxt(tree, include_formatting=True)
     # but math in a code element's prose tail is still converted
-    tree = fromstring(b"<body><p><code>k</code> then \\(t\\) end</p></body>")
+    tree = etree.fromstring(b"<body><p><code>k</code> then \\(t\\) end</p></body>")
     assert "`k` then $t$ end" in xml.xmltotxt(tree, include_formatting=True)
+
+
+def test_inline_edge_cases():
+    "Cover lb in inline context, structural-tag fallback, and redundant emphasis collapse."
+    # <lb/> inside an inline element (hi) renders as a newline
+    assert "**A\nB**" in xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#b">A<lb/>B</hi></p></body>'), True)
+    # structural tag (e.g. <span>) nested inside inline: its text is carried through
+    assert "**carried**" in xml.xmltotxt(
+        etree.fromstring(b'<body><p><hi rend="#b"><span>carried</span></hi></p></body>'),
+        True,
+    )
+    # redundant nested emphasis is collapsed: **x** not ****x****
+    assert (
+        xml.xmltotxt(
+            etree.fromstring(b'<body><p><hi rend="#b"><hi rend="#b">x</hi></hi></p></body>'),
+            True,
+        ).strip()
+        == "**x**"
+    )
 
 
 def test_heading_inline_formatting():
     "A heading keeps its # prefix even when it starts with an inline child (e.g. <h2><strong>...)."
-    from lxml.etree import fromstring
 
     def md(b):
-        return xml.xmltotxt(fromstring(b), include_formatting=True).strip()
+        return xml.xmltotxt(etree.fromstring(b), include_formatting=True).strip()
 
     # child-first headings must NOT lose the # prefix
     assert md(b'<body><head rend="h2"><hi rend="#b">B</hi> text</head></body>') == "## **B** text"
