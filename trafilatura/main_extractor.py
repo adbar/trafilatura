@@ -20,7 +20,7 @@ from .htmlprocessing import (
     process_node,
     prune_unwanted_nodes,
 )
-from .settings import TAG_CATALOG, Extractor
+from .settings import INLINE_CARRIED, TAG_CATALOG, Extractor
 from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (
@@ -38,15 +38,21 @@ LOGGER = logging.getLogger(__name__)
 
 P_FORMATTING = {"hi", "ref"}
 TABLE_ELEMS = {"td", "th"}
-TABLE_ALL = TABLE_ELEMS | P_FORMATTING
-FORMATTING = P_FORMATTING | {"span"}
+TABLE_ALL = TABLE_ELEMS | P_FORMATTING | {"del"}
+FORMATTING = P_FORMATTING | {"del", "span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
-KEEP_INLINE = {"hi", "ref", "graphic", "del", "code"}  # inline content carried into a rewired cell child
 # min text length for an adjacent-duplicate element to be treated as an extraction artifact and dropped
 DUPLICATE_ADJACENT_LIMIT = 50
 CODES_QUOTES = {"code", "quote"}
 NOT_AT_THE_END = {"head", "ref"}
+# tags allowed inside a blockquote paragraph
+_QUOTE_TAGS = set(TAG_CATALOG) | {"ref", "graphic"}
+
+
+def _wraps_inline(element: _Element) -> bool:
+    "A formatting element whose children must be carried verbatim: ref, or hi/del wrapping inline content."
+    return len(element) > 0 and (element.tag == "ref" or any(c.tag in INLINE_CARRIED for c in element))
 
 
 def _log_event(msg: str, tag: Any, text: bytes | str | None) -> None:
@@ -130,15 +136,6 @@ def handle_formatting(element: _Element, options: Extractor) -> _Element | None:
     return processed_element
 
 
-def add_sub_element(new_child_elem: _Element, subelem: _Element, processed_subchild: _Element) -> None:
-    "Add a sub-element to an existing child element."
-    sub_child_elem = SubElement(new_child_elem, processed_subchild.tag)
-    sub_child_elem.text, sub_child_elem.tail = processed_subchild.text, processed_subchild.tail
-    for attr in subelem.attrib:
-        if attr in KEEP_ATTRS:
-            sub_child_elem.set(attr, subelem.attrib[attr])
-
-
 def process_nested_elements(child: _Element, new_child_elem: _Element, options: Extractor) -> None:
     "Iterate through an element child and rewire its descendants."
     new_child_elem.text = child.text
@@ -147,12 +144,13 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
             processed_subchild = handle_lists(subelem, options)
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
+        elif subelem.tag in INLINE_CARRIED:
+            define_newelem(subelem, new_child_elem, keep_children=True)
         else:
             processed_subchild = handle_textnode(subelem, options, comments_fix=False)
             if processed_subchild is not None:
-                add_sub_element(new_child_elem, subelem, processed_subchild)
+                define_newelem(processed_subchild, new_child_elem)
         subelem.tag = "done"
-        # subelem.getparent().remove(subelem)
 
 
 def update_elem_rendition(elem: _Element, new_elem: _Element) -> None:
@@ -167,7 +165,7 @@ def is_text_element(elem: _Element) -> bool:
 
 
 def define_newelem(processed_elem: _Element | None, orig_elem: _Element, keep_children: bool = False) -> None:
-    "Create a new sub-element, optionally carrying its inline children (KEEP_INLINE)."
+    "Create a new sub-element, optionally carrying its inline children (INLINE_CARRIED)."
     if processed_elem is not None:
         childelem = SubElement(orig_elem, processed_elem.tag)
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
@@ -176,8 +174,11 @@ def define_newelem(processed_elem: _Element | None, orig_elem: _Element, keep_ch
                 childelem.set(key, value)
         if keep_children:
             for sub in processed_elem:
-                if sub.tag in KEEP_INLINE:
+                if sub.tag in INLINE_CARRIED:
                     define_newelem(sub, childelem, keep_children=True)
+                    # mark only the carried subtree done; non-carried siblings (e.g. nested <p>) stay processable
+                    for carried in sub.iter("*"):
+                        carried.tag = "done"
 
 
 def handle_lists(element: _Element, options: Extractor) -> _Element | None:
@@ -232,7 +233,7 @@ def is_code_block_element(element: _Element) -> bool:
         return True
     # highlightjs
     code = element.find("code")
-    if code is not None and len(element) == 1:
+    if code is not None and len(element) == 1 and not (element.text or "").strip() and not (code.tail or "").strip():
         return True
     return False
 
@@ -252,9 +253,20 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
-    for child in element.iter("*"):
-        processed_child = process_node(child, options)  # handle_textnode(child, comments_fix=True)
-        define_newelem(processed_child, processed_element)
+    processed_element.text = element.text  # direct text before first child
+    for child in element.iterdescendants():
+        if child.tag == "graphic":
+            processed_child = handle_image(child, options)
+            define_newelem(processed_child, processed_element)
+        elif child.tag == "p" and len(child) > 0:
+            processed_child = handle_paragraphs(child, _QUOTE_TAGS, options)
+            if processed_child is not None:
+                processed_element.append(processed_child)
+        elif child.tag in INLINE_CARRIED:
+            define_newelem(child, processed_element, keep_children=True)
+        else:
+            processed_child = process_node(child, options)
+            define_newelem(processed_child, processed_element)
         child.tag = "done"
     if is_text_element(processed_element):
         # avoid double/nested tags
@@ -321,10 +333,17 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
             # handle formatting
             newsub = Element(child.tag)
             if processed_child.tag in P_FORMATTING:
+                # carry inline children verbatim (ref/hi/del wrapping formatting)
+                if _wraps_inline(processed_child):
+                    define_newelem(processed_child, processed_element, keep_children=True)
+                    child.tag = "done"
+                    continue
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
-                        if item.text is not None and text_chars_test(item.text):
+                        if item.tag == "lb" and item.tail:
+                            item.tail = " " + item.tail.lstrip()
+                        elif item.text is not None and text_chars_test(item.text):
                             item.text = " " + item.text
                         strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
                 # correct attributes
