@@ -71,10 +71,13 @@ ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
 NEW_CONFIG = use_config(filename=path.join(RESOURCES_DIR, "newsettings.cfg"))
 
 
+_INTRO = "enough intro text here for extraction"
+
+
 def _extract_doc(body, *, intro=True, **kwargs):
     "Wrap body in an article doc and extract; config defaults to ZERO_CONFIG (min-sizes 0)."
     kwargs.setdefault("config", ZERO_CONFIG)
-    inner = f"<p>enough intro text here for extraction</p>{body}" if intro else body
+    inner = f"<p>{_INTRO}</p>{body}" if intro else body
     return extract(f"<html><body><article>{inner}</article></body></html>", **kwargs)
 
 
@@ -470,7 +473,7 @@ trafilatura.extract("")
     # nested
     my_document = html.fromstring("<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
-    assert '<hi rend="#b">This here is in bold and italic font.</hi>' in my_result
+    assert '<hi rend="#b">This here is in bold and <hi rend="#i">italic</hi> font.</hi>' in my_result
     # empty
     my_document = html.fromstring("<html><body><p><b><i></i></b></p></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
@@ -617,6 +620,19 @@ def test:
     my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
     my_result = extract(my_document, output_format="xml", include_tables=True, config=ZERO_CONFIG)
     assert "AP-fonden" in my_result
+
+
+def test_blockquote_inline_content():
+    "Inline formatting, links, and images inside blockquotes must be preserved."
+    assert _md_inline("<blockquote><p>A <b>bold</b> word</p></blockquote>") == f"{_INTRO}\n\nA **bold** word"
+    assert (
+        _md_inline("<blockquote><p>see <a href='http://x.com'>link</a></p></blockquote>", include_links=True)
+        == f"{_INTRO}\n\nsee [link](http://x.com)"
+    )
+    assert (
+        _md_inline("<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>", include_images=True)
+        == f"{_INTRO}\n\ntext\n\n![img](x.jpg)"
+    )
 
 
 def test_yoast_faq_block():
@@ -1208,6 +1224,16 @@ def test_htmlprocessing(options):
     para = etree.fromstring("<p>text<lb>x</lb></p>")
     processed = handle_paragraphs(para, {"p", "lb"}, options)
     assert processed is not None and not processed.findall(".//lb")
+
+    # handle_paragraphs: non-INLINE_CARRIED children of <hi> are stripped with a leading space
+    fmt_opts = core.Extractor(formatting=True)
+    para = etree.fromstring('<p><hi rend="#b">pre<quote>mid</quote>end</hi></p>')
+    hi = handle_paragraphs(para, set(TAG_CATALOG), fmt_opts).find("hi")
+    assert hi is not None and "pre" in hi.text and " mid" in hi.text
+
+    para = etree.fromstring('<p><hi rend="#b">start<lb/>tail</hi></p>')
+    hi = handle_paragraphs(para, set(TAG_CATALOG) | {"lb"}, fmt_opts).find("hi")
+    assert hi is not None and " tail" in hi.text
 
 
 def test_extraction_options():
@@ -1841,8 +1867,7 @@ def test_no_duplicate_content():
 
 def test_list_item_block_child_single_bullet():
     "regression: a list item wrapping content in a block gets one bullet, not one per child."
-    result = _md_inline("<ul><li><p>x <b>bold</b> y</p></li></ul>")
-    assert "- x **bold** y" in result and "- x - " not in result
+    assert _md_inline("<ul><li><p>x <b>bold</b> y</p></li></ul>") == f"{_INTRO}\n\n- x **bold** y"
 
 
 def test_list_item_image_gets_bullet():
@@ -1862,30 +1887,28 @@ def test_list_item_image_gets_bullet():
 )
 def test_inline_marker_flanking_whitespace(snippet, expected):
     "regression #843: flanking whitespace stays outside markdown markers (valid CommonMark)."
-    assert expected in _md_inline(f"<p>a {snippet} b</p>")
+    assert _md_inline(f"<p>a {snippet} b</p>") == f"{_INTRO}\n\na  {expected}  b"
 
 
 def test_inline_marker_edge_cases():
     "regression #843: whitespace-only inline drops the marker; a link keeps flanking space outside [..](..)."
-    assert "**" not in _md_inline("<p>a <b>   </b> b</p>")
-    assert "[bold link](/x)" in _md_inline("<p>see <a href='/x'> bold link </a> ok</p>", include_links=True)
+    assert _md_inline("<p>a <b>   </b> b</p>") == f"{_INTRO}\n\na     b"
+    assert (
+        _md_inline("<p>see <a href='/x'> bold link </a> ok</p>", include_links=True) == f"{_INTRO}\n\nsee  [bold link](/x)  ok"
+    )
 
 
 def test_ordered_list_numbering():
     "regression #843 family: ordered lists render as 1. 2. 3., unordered lists keep '- '."
-    ol = _md_inline("<ol><li>one</li><li>two</li><li>three</li></ol>")
-    assert "1. one" in ol and "2. two" in ol and "3. three" in ol
-    assert "- " not in _md_inline("<ol><li>only</li></ol>")  # ordered, not a bullet
-    ul = _md_inline("<ul><li>a</li><li>b</li></ul>")
-    assert "- a" in ul and "- b" in ul  # unordered unaffected
+    assert _md_inline("<ol><li>one</li><li>two</li><li>three</li></ol>") == f"{_INTRO}\n\n1. one\n2. two\n3. three"
+    assert _md_inline("<ol><li>only</li></ol>") == f"{_INTRO}\n\n1. only"
+    assert _md_inline("<ul><li>a</li><li>b</li></ul>") == f"{_INTRO}\n\n- a\n- b"
 
 
 def test_nested_list_indentation():
     "regression A5: a nested list is indented and starts on its own line, not mashed onto the parent item."
-    nested = _md_inline("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>")
-    assert "  - b" in nested and "  - c" in nested  # sub-items indented
-    assert "- a- b" not in nested  # no mash onto the parent item
-    assert "  1. b" in _md_inline("<ul><li>a<ol><li>b</li></ol></li></ul>")  # nested ordered list
+    assert _md_inline("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>") == f"{_INTRO}\n\n- a\n  - b\n  - c\n- d"
+    assert _md_inline("<ul><li>a<ol><li>b</li></ol></li></ul>") == f"{_INTRO}\n\n- a\n  1. b"
 
 
 def test_loose_text_tail_not_squished():
@@ -1970,6 +1993,70 @@ def test_image_tail_not_duplicated():
     "regression: an image's tail text must not be emitted twice outside a table cell."
     result = _extract_doc("<ul><li>a <img src='i.jpg' alt='A'/> b</li></ul>", include_images=True)
     assert result.endswith("a ![A](i.jpg) b")
+
+
+def test_list_item_link_with_inline_formatting():
+    "regression: a link whose only content is a bold/del/code span must not drop the href in list items."
+    # bold-only link: <a href="url"><b>text</b></a>  -> [**text**](url) not just **text**
+    assert (
+        _md_inline(
+            "<ul><li>see <a href='http://x.com'><b>bold link</b></a> here</li></ul>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\n- see [**bold link**](http://x.com) here"
+    )
+    # link with mixed text+bold: <a href="url">text <b>bold</b></a>
+    assert (
+        _md_inline(
+            "<ul><li>see <a href='http://x.com'>link <b>bold</b></a> here</li></ul>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\n- see [link **bold**](http://x.com) here"
+    )
+
+
+def test_paragraph_link_with_inline_formatting():
+    "regression: <p><a href><b>bold</b></a></p> must preserve both the link and the formatting."
+    assert (
+        _md_inline(
+            "<p>see <a href='http://x.com'><b>bold</b></a> more</p>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\nsee [**bold**](http://x.com) more"
+    )
+
+
+def test_nested_inline_formatting():
+    "regression: nested inline elements must compose markers correctly."
+    # <b><i>x</i></b> → ***x***
+    assert _md_inline("<p>text <b><i>nested</i></b> end</p>") == f"{_INTRO}\n\ntext ***nested*** end"
+    # <b>prefix <i>italic</i></b> → **prefix *italic***
+    assert _md_inline("<p><b>prefix <i>italic</i></b></p>") == f"{_INTRO}\n\n**prefix *italic***"
+    # list item context
+    assert _md_inline("<ul><li>text <b><i>nested</i></b> end</li></ul>") == f"{_INTRO}\n\n- text ***nested*** end"
+
+
+def test_blockquote_bare_inline():
+    "regression: bare inline element directly in blockquote must preserve its tail text."
+    assert _md_inline("<blockquote><b>bold</b> text here</blockquote>") == f"{_INTRO}\n\n**bold** text here"
+
+
+def test_del_and_code_in_non_paragraph_contexts():
+    "del and code inline elements work inside list items, blockquotes, and at the top level."
+    # del at top level (bare, no p/blockquote wrapper — exercises FORMATTING routing)
+    assert _md_inline("<del>gone</del>") == f"{_INTRO}\n\n~~gone~~"
+    # del in list item
+    assert _md_inline("<ul><li>text <del>struck</del> more</li></ul>") == f"{_INTRO}\n\n- text ~~struck~~ more"
+    # del in blockquote
+    assert _md_inline("<blockquote>text <del>struck</del> more</blockquote>") == f"{_INTRO}\n\ntext ~~struck~~ more"
+    # code in list item
+    assert _md_inline("<ul><li>use <code>func()</code> here</li></ul>") == f"{_INTRO}\n\n- use `func()` here"
+
+
+def test_hi_del_nesting_with_direct_text():
+    "bold wrapping strikethrough preserves both markers when the outer hi element has direct text."
+    # <b>text<del>struck</del></b> — outer has text 'text', del child is preserved
+    assert _md_inline("<p>before <b>bold <del>struck</del></b></p>") == f"{_INTRO}\n\nbefore **bold ~~struck~~**"
 
 
 def test_list_processing(options):
@@ -2153,6 +2240,164 @@ from openai_function_call import openai_function</code>"""
     expected = """<code>my code</code>"""
     testresult = extract(code_el, config=ZERO_CONFIG, output_format="xml")
     assert expected in testresult and "quote" not in testresult
+    # blockquote with surrounding text/tail must not be misdetected as a highlightjs code block
+    bq_text = "<html><body><article><blockquote>see <code>x</code> above</blockquote></article></body></html>"
+    assert "<quote>" in extract(bq_text, output_format="xml", config=ZERO_CONFIG)
+    bq_tail = "<html><body><article><blockquote><code>x</code> tail</blockquote></article></body></html>"
+    assert "<quote>" in extract(bq_tail, output_format="xml", config=ZERO_CONFIG)
+
+
+def test_markdown_escaping():
+    "Markdown-mode output escapes metacharacters that would corrupt GFM structure."
+    # pipe in table cell text must be escaped so it doesn't split the column
+    tree = etree.fromstring(b"<body><table><row><cell>a|b</cell><cell>c</cell></row></table></body>")
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "a\\|b" in result
+
+    # pipe inside formatted text (hi) inside a cell must also be escaped
+    tree = etree.fromstring(b'<body><table><row><cell><hi rend="#b">x|y</hi></cell></row></table></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "x\\|y" in result
+
+    # URL with a space must be wrapped in angle brackets
+    tree = etree.fromstring(b'<body><p><ref target="http://a b/c">link</ref></p></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "[link](<http://a b/c>)" in result
+
+    # square brackets in link text must be escaped
+    tree = etree.fromstring(b'<body><p><ref target="http://x">a[b]c</ref></p></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "[a\\[b\\]c](http://x)" in result
+
+    # square brackets in image alt must be escaped
+    tree = etree.fromstring(b'<body><graphic src="img.png" alt="a[b]c"/></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "![a\\[b\\]c](img.png)" in result
+
+    # a ref with no/empty target renders as bare [text]; a graphic with no src keeps empty parens
+    assert xml.xmltotxt(etree.fromstring(b"<body><p><ref>txt</ref></p></body>"), True).strip() == "[txt]"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><ref target="">txt</ref></p></body>'), True).strip() == "[txt]"
+    assert xml.xmltotxt(etree.fromstring(b'<body><graphic alt="a"/></body>'), True).strip() == "![a]()"
+
+    # backtick in inline code needs a longer fence
+    tree = etree.fromstring(b'<body><p><hi rend="#t">a\x60b</hi></p></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "``a`b``" in result
+
+    # inline code whose content abuts a backtick gets a space pad so the fence does not merge
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">\x60x</hi></p></body>'), True).strip() == "`` `x ``"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">x\x60</hi></p></body>'), True).strip() == "`` x` ``"
+    assert xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#t">\x60</hi></p></body>'), True).strip() == "`` ` ``"
+
+    # triple backtick in block code needs a 4-backtick fence
+    tree = etree.fromstring(b"<body><code>a\x60\x60\x60b</code></body>")
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "````" in result and "a```b" in result
+
+    # ~~ inside del content must not close the strikethrough early
+    tree = etree.fromstring(b"<body><p><del>a~~b</del></p></body>")
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "~~a~\\~b~~" in result
+
+    # del as a direct child of a table cell (no enclosing p)
+    result = extract(
+        "<html><body><table><tr><td><del>gone</del></td></tr></table></body>",
+        output_format="markdown",
+        include_formatting=True,
+        config=ZERO_CONFIG,
+    )
+    assert result and "~~gone~~" in result
+
+    # del wrapping an inline child must preserve the strikethrough marker
+    tree = etree.fromstring(b'<body><p><del><hi rend="#b">bold</hi></del></p></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "~~**bold**~~" in result
+
+    # pipe in graphic tail inside a table cell must be escaped
+    tree = etree.fromstring(b'<body><table><row><cell><graphic src="img.png" alt="img"/>tail|text</cell></row></table></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "tail\\|text" in result
+
+    # block math in a cell must not inject newlines that split the table row
+    tree = etree.fromstring(b"<body><table><row><cell>x \\[E=mc^2\\] y</cell></row></table></body>")
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "\n" not in result.strip() and "$$ E=mc^2 $$" in result
+
+    # bold wrapping a link must preserve both the bold marker and the link
+    tree = etree.fromstring(b'<body><p><hi rend="#b"><ref target="http://x.com">link</ref></hi></p></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "**[link](http://x.com)**" in result
+
+    # a graphic wrapped in inline formatting must keep the image, not be dropped
+    bold_img = b'<body><p><hi rend="#b">x <graphic src="i.jpg" alt="A"/> y</hi></p></body>'
+    assert xml.xmltotxt(etree.fromstring(bold_img), True).strip() == "**x ![A](i.jpg) y**"
+    struck_img = b'<body><p><del>x <graphic src="i.jpg" alt="A"/> y</del></p></body>'
+    assert xml.xmltotxt(etree.fromstring(struck_img), True).strip() == "~~x ![A](i.jpg) y~~"
+
+
+def test_xmltotxt_no_mutation():
+    "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
+    tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
+    before = etree.tostring(tree, encoding="unicode")
+    out = xml.xmltotxt(tree, True)
+    assert "$x$" in out and "***y***" in out  # output is converted
+    assert etree.tostring(tree, encoding="unicode") == before  # source tree untouched
+
+
+def test_math_conversion():
+    "LaTeX math delimiters are converted to $ notation; unmatched delimiters and code are left alone."
+    # inline math \(...\) → $...$
+    assert xml.xmltotxt(etree.fromstring(b"<body><p>\\(x^2\\)</p></body>"), True).strip() == "$x^2$"
+    # unmatched \( must not become a lone $
+    assert xml.xmltotxt(etree.fromstring(b"<body><p>regex \\( open</p></body>"), True).strip() == "regex \\( open"
+    # math delimiters inside a fenced code block must not be converted
+    tree = etree.fromstring(b"<body><code>prefix\n\\[E=mc^2\\]\nsuffix</code></body>")
+    assert "\\[E=mc^2\\]" in xml.xmltotxt(tree, include_formatting=True)
+    # math delimiters inside inline code must not be converted either
+    tree = etree.fromstring(b'<body><p>use <hi rend="#t">a\\(x\\)b</hi> here</p></body>')
+    assert "`a\\(x\\)b`" in xml.xmltotxt(tree, include_formatting=True)
+    # but math in a code element's prose tail is still converted
+    tree = etree.fromstring(b"<body><p><code>k</code> then \\(t\\) end</p></body>")
+    assert "`k` then $t$ end" in xml.xmltotxt(tree, include_formatting=True)
+
+
+def test_inline_edge_cases():
+    "Cover lb in inline context, structural-tag fallback, and redundant emphasis collapse."
+    # <lb/> inside an inline element (hi) renders as a newline
+    assert "**A\nB**" in xml.xmltotxt(etree.fromstring(b'<body><p><hi rend="#b">A<lb/>B</hi></p></body>'), True)
+    # structural tag (e.g. <span>) nested inside inline: its text is carried through
+    assert "**carried**" in xml.xmltotxt(
+        etree.fromstring(b'<body><p><hi rend="#b"><span>carried</span></hi></p></body>'),
+        True,
+    )
+    # redundant nested emphasis is collapsed: **x** not ****x****
+    assert (
+        xml.xmltotxt(
+            etree.fromstring(b'<body><p><hi rend="#b"><hi rend="#b">x</hi></hi></p></body>'),
+            True,
+        ).strip()
+        == "**x**"
+    )
+
+
+def test_heading_inline_formatting():
+    "A heading keeps its # prefix even when it starts with an inline child (e.g. <h2><strong>...)."
+
+    def md(b):
+        return xml.xmltotxt(etree.fromstring(b), include_formatting=True).strip()
+
+    # child-first headings must NOT lose the # prefix
+    assert md(b'<body><head rend="h2"><hi rend="#b">B</hi> text</head></body>') == "## **B** text"
+    assert md(b'<body><head rend="h2"><hi rend="#b">B</hi></head></body>') == "## **B**"
+    assert md(b'<body><head rend="h3"><hi rend="#i">I</hi> rest</head></body>') == "### *I* rest"
+    assert md(b'<body><head><hi rend="#b">B</hi> t</head></body>') == "## **B** t"  # no rend -> level 2
+    # text-first and plain headings are unchanged
+    assert md(b'<body><head rend="h2">x <hi rend="#b">B</hi></head></body>') == "## x **B**"
+    assert md(b'<body><head rend="h2">plain</head></body>') == "## plain"
+    # a heading inside a table cell stays prefix-less
+    assert (
+        md(b'<body><table><row><cell><head rend="h3"><hi rend="#b">H</hi></head></cell></row></table></body>') == "| **H** |"
+    )
 
 
 def test_mixed_content_extraction():

@@ -199,7 +199,7 @@ def delete_by_link_density(
             # link density of the whole list is checked separately, and
             # removing it here would leave the item empty (GH #788)
             parent = elem.getparent()
-            if tagname == "p" and parent is not None and parent.tag == "item":
+            if tagname == "p" and parent is not None and parent.tag in ("item", "td", "th"):
                 continue
             deletions.append(elem)
             # else: # and not re.search(r'[?!.]', text):

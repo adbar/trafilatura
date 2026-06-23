@@ -448,6 +448,11 @@ BASIC_CLEAN_XPATH = XPath(".//aside|.//div[contains(@class|@id, 'footer')]|.//fe
 TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
 # + list(CUT_EMPTY_ELEMS)
 
+# inline-tag ladder (single source of truth shared by extractor and serializer):
+INLINE_CONSUMING = {"hi", "ref", "del"}  # element folds its children into its own text
+INLINE_FORMATTABLE = INLINE_CONSUMING | {"code"}  # + code: has text, rendered verbatim
+INLINE_CARRIED = INLINE_FORMATTABLE | {"graphic"}  # + graphic: no text, rendered as image markup
+
 # mapping for languages known to py3langid
 JUSTEXT_LANGUAGES = {
     "af": "Afrikaans",
