@@ -625,8 +625,14 @@ def test:
 def test_blockquote_inline_content():
     "Inline formatting, links, and images inside blockquotes must be preserved."
     assert _md_inline("<blockquote><p>A <b>bold</b> word</p></blockquote>") == f"{_INTRO}\n\nA **bold** word"
-    assert _md_inline("<blockquote><p>see <a href='http://x.com'>link</a></p></blockquote>", include_links=True) == f"{_INTRO}\n\nsee [link](http://x.com)"
-    assert _md_inline("<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>", include_images=True) == f"{_INTRO}\n\ntext\n\n![img](x.jpg)"
+    assert (
+        _md_inline("<blockquote><p>see <a href='http://x.com'>link</a></p></blockquote>", include_links=True)
+        == f"{_INTRO}\n\nsee [link](http://x.com)"
+    )
+    assert (
+        _md_inline("<blockquote><p>text</p><img src='x.jpg' alt='img'/></blockquote>", include_images=True)
+        == f"{_INTRO}\n\ntext\n\n![img](x.jpg)"
+    )
 
 
 def test_yoast_faq_block():
@@ -1877,7 +1883,9 @@ def test_inline_marker_flanking_whitespace(snippet, expected):
 def test_inline_marker_edge_cases():
     "regression #843: whitespace-only inline drops the marker; a link keeps flanking space outside [..](..)."
     assert _md_inline("<p>a <b>   </b> b</p>") == f"{_INTRO}\n\na     b"
-    assert _md_inline("<p>see <a href='/x'> bold link </a> ok</p>", include_links=True) == f"{_INTRO}\n\nsee  [bold link](/x)  ok"
+    assert (
+        _md_inline("<p>see <a href='/x'> bold link </a> ok</p>", include_links=True) == f"{_INTRO}\n\nsee  [bold link](/x)  ok"
+    )
 
 
 def test_ordered_list_numbering():
@@ -1980,23 +1988,32 @@ def test_image_tail_not_duplicated():
 def test_list_item_link_with_inline_formatting():
     "regression: a link whose only content is a bold/del/code span must not drop the href in list items."
     # bold-only link: <a href="url"><b>text</b></a>  -> [**text**](url) not just **text**
-    assert _md_inline(
-        "<ul><li>see <a href='http://x.com'><b>bold link</b></a> here</li></ul>",
-        include_links=True,
-    ) == f"{_INTRO}\n\n- see [**bold link**](http://x.com) here"
+    assert (
+        _md_inline(
+            "<ul><li>see <a href='http://x.com'><b>bold link</b></a> here</li></ul>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\n- see [**bold link**](http://x.com) here"
+    )
     # link with mixed text+bold: <a href="url">text <b>bold</b></a>
-    assert _md_inline(
-        "<ul><li>see <a href='http://x.com'>link <b>bold</b></a> here</li></ul>",
-        include_links=True,
-    ) == f"{_INTRO}\n\n- see [link **bold**](http://x.com) here"
+    assert (
+        _md_inline(
+            "<ul><li>see <a href='http://x.com'>link <b>bold</b></a> here</li></ul>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\n- see [link **bold**](http://x.com) here"
+    )
 
 
 def test_paragraph_link_with_inline_formatting():
     "regression: <p><a href><b>bold</b></a></p> must preserve both the link and the formatting."
-    assert _md_inline(
-        "<p>see <a href='http://x.com'><b>bold</b></a> more</p>",
-        include_links=True,
-    ) == f"{_INTRO}\n\nsee [**bold**](http://x.com) more"
+    assert (
+        _md_inline(
+            "<p>see <a href='http://x.com'><b>bold</b></a> more</p>",
+            include_links=True,
+        )
+        == f"{_INTRO}\n\nsee [**bold**](http://x.com) more"
+    )
 
 
 def test_nested_inline_formatting():
@@ -2250,19 +2267,19 @@ def test_markdown_escaping():
     assert "![a\\[b\\]c](img.png)" in result
 
     # a ref with no/empty target renders as bare [text]; a graphic with no src keeps empty parens
-    assert xml.xmltotxt(fromstring(b'<body><p><ref>txt</ref></p></body>'), True).strip() == "[txt]"
+    assert xml.xmltotxt(fromstring(b"<body><p><ref>txt</ref></p></body>"), True).strip() == "[txt]"
     assert xml.xmltotxt(fromstring(b'<body><p><ref target="">txt</ref></p></body>'), True).strip() == "[txt]"
     assert xml.xmltotxt(fromstring(b'<body><graphic alt="a"/></body>'), True).strip() == "![a]()"
 
     # backtick in inline code needs a longer fence
-    tree = fromstring(b"<body><p><hi rend=\"#t\">a\x60b</hi></p></body>")
+    tree = fromstring(b'<body><p><hi rend="#t">a\x60b</hi></p></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "``a`b``" in result
 
     # inline code whose content abuts a backtick gets a space pad so the fence does not merge
-    assert xml.xmltotxt(fromstring(b"<body><p><hi rend=\"#t\">\x60x</hi></p></body>"), True).strip() == "`` `x ``"
-    assert xml.xmltotxt(fromstring(b"<body><p><hi rend=\"#t\">x\x60</hi></p></body>"), True).strip() == "`` x` ``"
-    assert xml.xmltotxt(fromstring(b"<body><p><hi rend=\"#t\">\x60</hi></p></body>"), True).strip() == "`` ` ``"
+    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">\x60x</hi></p></body>'), True).strip() == "`` `x ``"
+    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">x\x60</hi></p></body>'), True).strip() == "`` x` ``"
+    assert xml.xmltotxt(fromstring(b'<body><p><hi rend="#t">\x60</hi></p></body>'), True).strip() == "`` ` ``"
 
     # triple backtick in block code needs a 4-backtick fence
     tree = fromstring(b"<body><code>a\x60\x60\x60b</code></body>")
@@ -2356,7 +2373,9 @@ def test_heading_inline_formatting():
     assert md(b'<body><head rend="h2">x <hi rend="#b">B</hi></head></body>') == "## x **B**"
     assert md(b'<body><head rend="h2">plain</head></body>') == "## plain"
     # a heading inside a table cell stays prefix-less
-    assert md(b'<body><table><row><cell><head rend="h3"><hi rend="#b">H</hi></head></cell></row></table></body>') == "| **H** |"
+    assert (
+        md(b'<body><table><row><cell><head rend="h3"><hi rend="#b">H</hi></head></cell></row></table></body>') == "| **H** |"
+    )
 
 
 def test_mixed_content_extraction():
