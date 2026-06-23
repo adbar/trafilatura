@@ -85,7 +85,7 @@ HEADING_LEVELS = frozenset("123456")
 SEPARATORS = frozenset((" ", "\n", "|", ""))
 
 MAX_TABLE_WIDTH = 1000
-# display math \[...\] at a word boundary; inline math \(...\) paired (both leave unmatched delimiters alone)
+# block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
 
@@ -393,7 +393,7 @@ def _md_link(text: str, url: str | None, image: bool = False) -> str:
     "Markdown link/image with escaped text and a CommonMark-safe target."
     esc = text.replace("[", "\\[").replace("]", "\\]")
     prefix = "!" if image else ""
-    if url is None:  # missing target -> bare [text]
+    if url is None:
         return f"{prefix}[{esc}]"
     safe = f"<{url}>" if any(c in url for c in " <>()") else url
     return f"{prefix}[{esc}]({safe})"
@@ -606,8 +606,7 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     returnlist: list[str] = []
 
     if include_formatting:
-        # the markdown passes mutate the tree (math rewrite, emphasis collapse, <lb> removal);
-        # serialize a copy so callers keep their original tree (e.g. bare_extraction's document.body)
+        # math rewrite, emphasis collapse, lb removal mutate the tree; protect caller's copy
         xmloutput = deepcopy(xmloutput)
         _convert_math_tree(xmloutput)
         _collapse_emphasis(xmloutput)

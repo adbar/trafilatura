@@ -1225,6 +1225,16 @@ def test_htmlprocessing(options):
     processed = handle_paragraphs(para, {"p", "lb"}, options)
     assert processed is not None and not processed.findall(".//lb")
 
+    # handle_paragraphs: non-INLINE_CARRIED children of <hi> are stripped with a leading space
+    fmt_opts = core.Extractor(formatting=True)
+    para = etree.fromstring('<p><hi rend="#b">pre<quote>mid</quote>end</hi></p>')
+    hi = handle_paragraphs(para, set(TAG_CATALOG), fmt_opts).find("hi")
+    assert hi is not None and "pre" in hi.text and " mid" in hi.text
+
+    para = etree.fromstring('<p><hi rend="#b">start<lb/>tail</hi></p>')
+    hi = handle_paragraphs(para, set(TAG_CATALOG) | {"lb"}, fmt_opts).find("hi")
+    assert hi is not None and " tail" in hi.text
+
 
 def test_extraction_options():
     """Test the different parameters available in extract() and bare_extraction()"""

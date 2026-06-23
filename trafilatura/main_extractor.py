@@ -253,7 +253,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
-    processed_element.text = element.text  # direct text before first child
+    processed_element.text = element.text
     for child in element.iterdescendants():
         if child.tag == "graphic":
             processed_child = handle_image(child, options)
