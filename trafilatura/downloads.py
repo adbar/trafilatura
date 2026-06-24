@@ -22,6 +22,8 @@ import urllib3
 from courlan import UrlStore
 from courlan.network import redirection_test
 
+from courlan.filters import is_valid_url
+
 from .settings import DEFAULT_CONFIG, Extractor
 from .utils import (
     HAS_ZSTD,
@@ -55,10 +57,12 @@ except ImportError:
 
 LOGGER = logging.getLogger(__name__)
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
 RETRY_STRATEGY = None
+
+
+
 
 
 def create_pool(**args: Any) -> urllib3.PoolManager | Any:
@@ -311,6 +315,9 @@ def fetch_response(
     """
     dl_function = _send_urllib_request if not HAS_PYCURL else _send_pycurl_request
     LOGGER.debug("sending request: %s", url)
+    if not is_valid_url(url):
+        LOGGER.warning("URL validation failed, rejecting: %s", url)
+        return None
     response = dl_function(url, no_ssl, with_headers, config)  # Response
     if not response:  # None or ""
         LOGGER.debug("request failed: %s", url)
