@@ -1212,9 +1212,12 @@ def test_htmlprocessing(options):
     linkless_table = html.fromstring("<table><cell>" + "word " * 50 + '<ref target="/x"></ref></cell></table>')
     assert trafilatura.htmlprocessing.link_density_test_tables(linkless_table) is False
     # short table (elemlen < 200) is never removed regardless of link ratio
-    assert trafilatura.htmlprocessing.link_density_test_tables(
-        html.fromstring("<table><cell>short " + '<ref target="/x">link</ref> ' * 5 + "</cell></table>")
-    ) is False
+    assert (
+        trafilatura.htmlprocessing.link_density_test_tables(
+            html.fromstring("<table><cell>short " + '<ref target="/x">link</ref> ' * 5 + "</cell></table>")
+        )
+        is False
+    )
     # replace_element_text: an empty <ref> (no text) yields an empty string
     assert xml.replace_element_text(etree.Element("ref"), include_formatting=False) == ""
 
@@ -1343,12 +1346,12 @@ _STRADDLE_REF = '<ref target="/x">' + "x" * 360 + "</ref>"
     "html_str,expected",
     [
         # medium table (<1000 chars): 80% link threshold
-        (f"<table><cell>{'y' * 50}{_MED_REF}</cell></table>", True),   # 83% links → removed
+        (f"<table><cell>{'y' * 50}{_MED_REF}</cell></table>", True),  # 83% links → removed
         (f"<table><cell>{'y' * 200}{_MED_REF}</cell></table>", False),  # 56% links → kept
         # straddle table (500-999 chars): 60% links — kept by 0.8 threshold, removed by 0.5 (guards the 1000-char boundary)
         (f"<table><cell>{'y' * 240}{_STRADDLE_REF}</cell></table>", False),  # 60% links, ~600 chars → kept
         # large table (>=1000 chars): 50% link threshold
-        (f"<table><cell>{'y' * 400}{_BIG_REF}</cell></table>", True),   # 60% links → removed
+        (f"<table><cell>{'y' * 400}{_BIG_REF}</cell></table>", True),  # 60% links → removed
         (f"<table><cell>{'y' * 600}{_BIG_REF}</cell></table>", False),  # 40% links → kept
     ],
 )
@@ -1359,7 +1362,9 @@ def test_link_density_tables_threshold(html_str: str, expected: bool) -> None:
 def test_link_density_tables_textless_links_kept() -> None:
     "A text-rich table whose only own-depth ref is a textless icon link is not boilerplate (#lineups)."
     # 250 chars of real text + one image-wrapping link with no text -> elemnum 0, must be kept
-    icon_table = html.fromstring("<table><cell>" + "data " * 50 + '<ref target="/x"><graphic src="/i.png"/></ref></cell></table>')
+    icon_table = html.fromstring(
+        "<table><cell>" + "data " * 50 + '<ref target="/x"><graphic src="/i.png"/></ref></cell></table>'
+    )
     assert trafilatura.htmlprocessing.link_density_test_tables(icon_table) is False
 
 
@@ -1386,7 +1391,9 @@ _COLSPAN_CONTENT_ROW = "<tr><td>a</td><td colspan='2'><p>b</p><p>c</p></td></tr>
 )
 def test_table_colspan_content(rows, expected):
     "A colspan=2 cell with block children is flattened; the placeholder fills to max_cols."
-    html_str = f"<html><body><article><table>{_COLSPAN_CONTENT_BASE}{_COLSPAN_CONTENT_ROW * rows}</table></article></body></html>"
+    html_str = (
+        f"<html><body><article><table>{_COLSPAN_CONTENT_BASE}{_COLSPAN_CONTENT_ROW * rows}</table></article></body></html>"
+    )
     assert extract(html_str, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True) == expected
 
 
@@ -1697,11 +1704,11 @@ _IMG_TABLE_TAIL = "<td><p>b</p><p>c</p></td><td>d</td>"
 def test_table_image_in_cell(cell1, expected_cell1):
     "Images in table cells render as GFM inline images; link wrapping is preserved."
     html_str = (
-        f"<html><body><article><table>{_IMG_TABLE_HEADER}"
-        f"<tr>{cell1}{_IMG_TABLE_TAIL}</tr>"
-        "</table></article></body></html>"
+        f"<html><body><article><table>{_IMG_TABLE_HEADER}<tr>{cell1}{_IMG_TABLE_TAIL}</tr></table></article></body></html>"
     )
-    result = extract(html_str, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True)
+    result = extract(
+        html_str, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
+    )
     assert result == f"| a | b | c | \n| {expected_cell1} | b c | d |"
 
 
@@ -1793,12 +1800,7 @@ def test_table_rowspan_aligned():
 def test_table_rowspan_colspan_combined():
     "A cell with both rowspan and colspan registers all spanned columns in the rowspan map."
     # Col 0-1 spanned by rowspan=2 colspan=2 cell; row 2 must have 2 phantoms then 1 real cell.
-    result = _table_md(
-        "<table>"
-        "<tr><td rowspan='2' colspan='2'>big</td><td>c</td></tr>"
-        "<tr><td>x</td></tr>"
-        "</table>"
-    )
+    result = _table_md("<table><tr><td rowspan='2' colspan='2'>big</td><td>c</td></tr><tr><td>x</td></tr></table>")
     # Row 2: 2 phantoms (cols 0-1 rowspan-occupied) + real cell x at col 2
     assert "|  |  | x |" in result
 
@@ -1850,7 +1852,11 @@ def test_table_cell_list_no_row_break():
         ("<table><tr><td><h2>Title</h2></td><td>b</td></tr></table>", "| Title | b |", {}),
         ("<table><tr><td><p>para</p></td><td>b</td></tr></table>", "| para | b |", {}),
         ("<table><tr><td><h2>Title</h2>txt</td><td>b</td></tr></table>", "| Title txt | b |", {}),
-        ("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>", "| i1 i2 | b |", {"favor_recall": True}),
+        (
+            "<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>",
+            "| i1 i2 | b |",
+            {"favor_recall": True},
+        ),
     ],
     ids=["heading", "paragraph", "heading-plus-tail", "list-recall"],
 )
@@ -1991,7 +1997,6 @@ def test_heading_level_zero_trust(rend, expected):
     assert xml.replace_element_text(el, True) == expected
 
 
-
 def test_table_nested_in_cell():
     "Single-row nested table in a row with no other content is left for the outer walk, not inlined."
     doc = "<table><tr><td>A</td></tr><tr><td><table><tr><td>inner</td></tr></table></td></tr><tr><td>AFTER</td></tr></table>"
@@ -2052,7 +2057,8 @@ def test_table_stray_cell_descendant():
     opts = core.Extractor()
     result = handle_table(
         html.fromstring("<table><tr><td><div><td>inner</td></div></td></tr></table>"),
-        TAG_CATALOG, opts,
+        TAG_CATALOG,
+        opts,
     )
     assert result is not None
     assert any(c.text == "inner" for c in result.iter("cell"))
@@ -2079,21 +2085,18 @@ def test_table_colgroup_no_crash(colgroup_html):
 def test_aria_layout_table_reclassified(role):
     "Any table with role=presentation/none is reclassified as div (explicit WAI-ARIA layout declaration)."
     from trafilatura.htmlprocessing import tree_cleaning
+
     opts = core.Extractor()
     opts.tables = True
     # with nested table: outer reclassified, inner kept
     doc = html.fromstring(
-        f'<html><body><table role="{role}"><tr><td>'
-        "<table><tr><td>data</td></tr></table>"
-        "</td></tr></table></body></html>"
+        f'<html><body><table role="{role}"><tr><td><table><tr><td>data</td></tr></table></td></tr></table></body></html>'
     )
     tree_cleaning(doc, opts)
     assert doc.find(".//table[@role]") is None
     assert doc.find(".//table") is not None
     # without nested table: also reclassified
-    doc = html.fromstring(
-        f'<html><body><table role="{role}"><tr><td>text</td></tr></table></body></html>'
-    )
+    doc = html.fromstring(f'<html><body><table role="{role}"><tr><td>text</td></tr></table></body></html>')
     tree_cleaning(doc, opts)
     assert doc.find(".//table") is None
 
@@ -2101,6 +2104,7 @@ def test_aria_layout_table_reclassified(role):
 def test_sanitize_tree_th_dedup():
     "sanitize_tree marks only the first <th>-containing row per parent as role=head; subsequent th-rows are plain cells."
     from trafilatura.external import sanitize_tree
+
     opts = core.Extractor()
     opts.tables = True
     # two <th> rows: only the first should get role="head"
@@ -2114,7 +2118,7 @@ def test_sanitize_tree_th_dedup():
     tree, _, _ = sanitize_tree(doc, opts)
     head_cells = tree.xpath('.//cell[@role="head"]')
     plain_cells = [c for c in tree.xpath(".//cell") if c.get("role") != "head"]
-    assert len(head_cells) == 2          # only A and B
+    assert len(head_cells) == 2  # only A and B
     assert all(c.text in ("A", "B") for c in head_cells)
     assert all(c.text in ("C", "D", "1", "2") for c in plain_cells)
     # regression: a table with no <th> at all must not crash and produces no head cells

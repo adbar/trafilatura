@@ -423,9 +423,7 @@ def _flush_rowspan_phantoms(rowspan_map: dict[int, int], newrow: _Element) -> No
             del rowspan_map[col]
 
 
-def _finalize_row(
-    newtable: _Element, newrow: _Element, rowspan_map: dict[int, int], max_cols: int
-) -> None:
+def _finalize_row(newtable: _Element, newrow: _Element, rowspan_map: dict[int, int], max_cols: int) -> None:
     "Close a row: insert trailing rowspan placeholders, pad to width, append if non-empty."
     _flush_rowspan_phantoms(rowspan_map, newrow)
     while len(newrow) < max_cols:
