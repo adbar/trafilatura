@@ -38,7 +38,7 @@ LOGGER = logging.getLogger(__name__)
 
 P_FORMATTING = {"hi", "ref"}
 TABLE_ELEMS = {"td", "th"}
-TABLE_ALL = TABLE_ELEMS | P_FORMATTING | {"del"}
+_INLINE_WRAP_TAGS = P_FORMATTING | {"del"}
 FORMATTING = P_FORMATTING | {"del", "span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
@@ -174,7 +174,7 @@ def define_newelem(processed_elem: _Element | None, orig_elem: _Element, keep_ch
                 childelem.set(key, value)
         if keep_children:
             for sub in processed_elem:
-                if sub.tag in INLINE_CARRIED:
+                if sub.tag in INLINE_CARRIED or sub.tag == "lb":
                     define_newelem(sub, childelem, keep_children=True)
                     # mark only the carried subtree done; non-carried siblings (e.g. nested <p>) stay processable
                     for carried in sub.iter("*"):
@@ -393,18 +393,20 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
 
 def define_cell_type(is_header: bool) -> _Element:
     "Determine cell element type and mint new element."
-    # define tag
     cell_element = Element("cell")
     if is_header:
         cell_element.set("role", "head")
     return cell_element
 
 
-def _colspan(cell: _Element) -> int:
-    "Parse a cell's colspan, defaulting to 1 for a missing or non-numeric value."
-    value = cell.get("colspan", "1")
+_MAX_SPAN = 100
+
+
+def _span(cell: _Element, attr: str) -> int:
+    "Parse a cell's col/rowspan, defaulting to 1, capped at _MAX_SPAN."
     # isdecimal, not isdigit: int() rejects the superscripts isdigit() admits
-    return int(value) if value.isdecimal() else 1
+    value = cell.get(attr, "1")
+    return min(int(value), _MAX_SPAN) if value.isdecimal() else 1
 
 
 def _row_has_content(row: _Element) -> bool:
@@ -412,82 +414,162 @@ def _row_has_content(row: _Element) -> bool:
     return any(cell.text or len(cell) > 0 for cell in row)
 
 
+def _flush_rowspan_phantoms(rowspan_map: dict[int, int], newrow: _Element) -> None:
+    "Insert empty placeholder cells for rowspan-occupied columns at the current row position."
+    while (col := len(newrow)) in rowspan_map:
+        newrow.append(define_cell_type(False))
+        rowspan_map[col] -= 1
+        if rowspan_map[col] == 0:
+            del rowspan_map[col]
+
+
+def _finalize_row(
+    newtable: _Element, newrow: _Element, rowspan_map: dict[int, int], max_cols: int
+) -> None:
+    "Close a row: insert trailing rowspan placeholders, pad to width, append if non-empty."
+    _flush_rowspan_phantoms(rowspan_map, newrow)
+    while len(newrow) < max_cols:
+        newrow.append(define_cell_type(False))
+    if _row_has_content(newrow):
+        newtable.append(newrow)
+
+
+def _fill_cell(
+    new_child_elem: _Element,
+    cell: _Element,
+    nested_elems: set[_Element],
+    ptags_with_div: set[str],
+    options: Extractor,
+) -> None:
+    "Extract a source td/th cell's content into the new <cell>, rewiring inline and block children."
+    if len(cell) == 0:
+        processed_cell = process_node(cell, options)
+        if processed_cell is not None:
+            new_child_elem.text, new_child_elem.tail = processed_cell.text, processed_cell.tail
+        return
+    new_child_elem.text, new_child_elem.tail = cell.text, cell.tail
+    cell.tag = "done"  # rename before inner walk so handle_formatting wraps orphan spans in <p>
+    for child in cell.iterdescendants():
+        if not isinstance(child.tag, str) or child.tag == "done":
+            continue
+        if child in nested_elems:
+            # preserve tail text of nested tables (text after </table> inside the cell)
+            if child.tag == "table" and child.tail:
+                if len(new_child_elem) > 0:
+                    new_child_elem[-1].tail = (new_child_elem[-1].tail or "") + child.tail
+                else:
+                    new_child_elem.text = (new_child_elem.text or "") + child.tail
+            continue
+        if child.tag in TABLE_ELEMS:  # stray cell from malformed HTML
+            child.tag = "cell"
+            processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
+        elif child.tag in _INLINE_WRAP_TAGS:
+            processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
+            # handle_textnode drops inline wrappers (ref/hi/del) with children but no direct
+            # text (e.g. <ref><hi>link text</hi></ref>); carry the subtree directly instead
+            if processed_subchild is None and len(child) > 0:
+                define_newelem(child, new_child_elem, keep_children=True)
+                for el in child.iter("*"):  # iter() includes child itself
+                    el.tag = "done"
+                continue
+        # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
+        elif child.tag == "list" and options.focus == "recall":
+            processed_subchild = handle_lists(child, options)
+            if processed_subchild is not None:
+                new_child_elem.append(processed_subchild)
+            child.tag = "done"
+            continue
+        else:
+            processed_subchild = handle_textelem(child, ptags_with_div, options)
+        define_newelem(processed_subchild, new_child_elem, keep_children=True)
+        child.tag = "done"
+
+
 def handle_table(table_elem: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process single table element."
     newtable = Element("table")
+    ptags_with_div = potential_tags | {"div"}
 
     # strip these structural elements
     strip_tags(table_elem, "thead", "tbody", "tfoot")
 
-    # maximum number of columns per row, including colspan
-    max_cols = max(
-        (sum(_colspan(td) for td in tr.iter(TABLE_ELEMS)) for tr in table_elem.iter("tr")),
-        default=0,
-    )
+    # Collect elements inside nested <table> descendants.  Used only in the inner cell
+    # walk: skip without "done"-marking so the main extraction loop can call handle_table()
+    # on each nested table separately.  Must hold the elements (not id()) — lxml proxies are
+    # weakly referenced; id() values become stale as soon as the proxy is freed.
+    nested_elems: set[_Element] = set()
+    for nested_table in table_elem.iterdescendants("table"):
+        nested_elems.update(nested_table.iter())
 
-    # explore sub-elements
-    seen_header_row = False
-    seen_header = False
-    # every row carries the table's column count so short rows pad consistently (no last-row exception)
-    span_attr = str(max_cols) if max_cols > 1 else ""
+    # Count columns using only direct-child rows and direct-child cells (skipping nested tables).
+    # table_elem.iter("tr") would traverse nested table rows; findall("tr") stays at this table's level.
+    direct_rows = table_elem.findall("tr")
+    col_counts = [sum(_span(td, "colspan") for td in tr if td.tag in TABLE_ELEMS) for tr in direct_rows]
+    max_cols = min(max(col_counts, default=0), _MAX_SPAN)
+
+    # Handle caption: emit it as a header row before the table body.
+    # findall() stays at direct-child level; iter() would also hit nested tables' captions.
+    for caption_elem in table_elem.findall("caption"):
+        caption_text = " ".join(caption_elem.itertext()).strip()
+        if caption_text:
+            caption_row = Element("row")
+            caption_cell = define_cell_type(True)
+            caption_cell.text = caption_text
+            caption_row.append(caption_cell)
+            while len(caption_row) < max_cols:
+                caption_row.append(define_cell_type(False))
+            newtable.append(caption_row)
+        caption_elem.tag = "done"
+
+    header_row_emitted = False
+    row_has_th = False
     newrow = Element("row")
-    if span_attr:
-        newrow.set("span", span_attr)
+    rowspan_map: dict[int, int] = {}  # col_idx → rows still spanned from a rowspan cell
 
-    for subelement in table_elem.iterdescendants():
-        if not isinstance(subelement.tag, str):  # skip comments / PIs (non-writable .tag)
+    for elem in table_elem:
+        if not isinstance(elem.tag, str):
             continue
-        if subelement.tag == "tr":
+        if elem.tag == "tr":
             # flush the previous row (dropping it if all cells are empty), then start a fresh one
             if len(newrow) > 0:
-                if _row_has_content(newrow):
-                    newtable.append(newrow)
-                newrow = Element("row")
-                if span_attr:
-                    newrow.set("span", span_attr)
-                seen_header_row = seen_header_row or seen_header
-        elif subelement.tag in TABLE_ELEMS:
-            is_header = subelement.tag == "th" and not seen_header_row
-            seen_header = seen_header or is_header
+                _finalize_row(newtable, newrow, rowspan_map, max_cols)
+                header_row_emitted = header_row_emitted or row_has_th
+            newrow = Element("row")
+            row_has_th = False
+            _flush_rowspan_phantoms(rowspan_map, newrow)
+            cells: _Element | list[_Element] = elem
+        elif elem.tag in TABLE_ELEMS:
+            cells = [elem]  # orphan cell without <tr> wrapper (malformed HTML)
+        else:
+            if elem.tag != "table":  # leave nested tables for the main extraction loop
+                elem.tag = "done"
+            continue
+
+        for cell in cells:
+            if not isinstance(cell.tag, str):
+                continue
+            if cell.tag not in TABLE_ELEMS:
+                continue
+            is_header = cell.tag == "th" and not header_row_emitted
+            row_has_th = row_has_th or is_header
+            _flush_rowspan_phantoms(rowspan_map, newrow)
             new_child_elem = define_cell_type(is_header)
-            # process
-            if len(subelement) == 0:
-                processed_cell = process_node(subelement, options)
-                if processed_cell is not None:
-                    new_child_elem.text, new_child_elem.tail = processed_cell.text, processed_cell.tail
-            else:
-                # proceed with iteration, fix for nested elements
-                new_child_elem.text, new_child_elem.tail = subelement.text, subelement.tail
-                subelement.tag = "done"
-                for child in subelement.iterdescendants():
-                    if not isinstance(child.tag, str):  # skip comments / PIs
-                        continue
-                    if child.tag in TABLE_ALL:
-                        # todo: define attributes properly
-                        if child.tag in TABLE_ELEMS:
-                            child.tag = "cell"
-                        processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
-                    # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
-                    elif child.tag == "list" and options.focus == "recall":
-                        processed_subchild = handle_lists(child, options)
-                        if processed_subchild is not None:
-                            new_child_elem.append(processed_subchild)
-                            processed_subchild = None  # don't handle it anymore
-                    else:
-                        processed_subchild = handle_textelem(child, potential_tags.union(["div"]), options)
-                    define_newelem(processed_subchild, new_child_elem, keep_children=True)
-                    child.tag = "done"
+            colspan = _span(cell, "colspan")
+            # Track rowspan: mark all spanned columns as occupied for subsequent rows
+            rows = _span(cell, "rowspan")
+            if rows > 1:
+                for c in range(len(newrow), len(newrow) + colspan):
+                    rowspan_map[c] = rows - 1
+            _fill_cell(new_child_elem, cell, nested_elems, ptags_with_div, options)
             # add to tree (keep empty cells so column positions stay aligned)
             newrow.append(new_child_elem)
-        # beware of nested tables
-        elif subelement.tag == "table":
-            break
-        # cleanup
-        subelement.tag = "done"
+            # inline colspan: pad with empty cells so subsequent rows align
+            for _ in range(colspan - 1):
+                newrow.append(define_cell_type(is_header))
+            cell.tag = "done"
+        elem.tag = "done"
 
-    # end of processing
-    if _row_has_content(newrow):
-        newtable.append(newrow)
+    _finalize_row(newtable, newrow, rowspan_map, max_cols)
     if len(newtable) > 0:
         return newtable
     return None

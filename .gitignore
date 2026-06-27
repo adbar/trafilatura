@@ -37,3 +37,6 @@ Pipfile*
 # older stuff
 old/
 
+# local benchmark scripts and outputs (not published)
+benchmarks/
+

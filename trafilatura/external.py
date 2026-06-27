@@ -175,14 +175,21 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     strip_tags(cleaned_tree, "span")
     # 2. convert
     cleaned_tree = convert_tags(cleaned_tree, options)
+    # Mark first <th>-containing row per parent group as head (mirrors handle_table logic).
+    # Groups by direct parent (the enclosing table once tbody/thead/tfoot are stripped upstream);
+    # nested tables form their own group.
+    seen_group_elems: set[_Element | None] = set()
+    for tr in cleaned_tree.iter("tr"):
+        parent = tr.getparent()
+        if parent not in seen_group_elems and any(c.tag == "th" for c in tr):
+            seen_group_elems.add(parent)
+            for c in tr:
+                if c.tag == "th":
+                    c.set("role", "head")
     for elem in cleaned_tree.iter("td", "th", "tr"):
-        # elem.text, elem.tail = trim(elem.text), trim(elem.tail)
-        # finish table conversion
         if elem.tag == "tr":
             elem.tag = "row"
         elif elem.tag in ("td", "th"):
-            if elem.tag == "th":
-                elem.set("role", "head")
             elem.tag = "cell"
     # 3. sanitize
     sanitization_list = [
