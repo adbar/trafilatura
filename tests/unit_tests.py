@@ -2000,9 +2000,7 @@ def test_heading_level_zero_trust(rend, expected):
 def test_table_nested_in_cell():
     "Single-row nested table in a row with no other content is left for the outer walk, not inlined."
     doc = "<table><tr><td>A</td></tr><tr><td><table><tr><td>inner</td></tr></table></td></tr><tr><td>AFTER</td></tr></table>"
-    opts = core.Extractor()
-    result = handle_table(html.fromstring(doc), TAG_CATALOG, opts)
-    texts = list(result.itertext())
+    texts = list(handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).itertext())
     assert "A" in texts and "AFTER" in texts and "inner" not in texts
 
 
@@ -2022,10 +2020,22 @@ def test_table_nested_in_cell_pipeline():
 def test_table_nested_tail_preserved():
     "Tail text between </table> and next element in the same cell must not be dropped."
     doc = "<table><tr><td>before<table><tr><td>inner</td></tr></table>after-tail</td></tr></table>"
-    opts = core.Extractor()
-    result = handle_table(html.fromstring(doc), TAG_CATALOG, opts)
+    result = handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor())
     texts = "".join(result.itertext())
     assert "before" in texts and "after-tail" in texts and "inner" not in texts
+
+
+def test_table_nested_tail_with_prior_child():
+    "Nested-table tail text is appended to the last child when new_child_elem already has children."
+    doc = "<table><tr><td><del>struck</del><table><tr><td>inner</td></tr></table>after-tail</td></tr></table>"
+    texts = "".join(handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).itertext())
+    assert "after-tail" in texts and "inner" not in texts
+
+
+def test_table_comment_in_row():
+    "Comment nodes inside <tr> are skipped without crashing."
+    doc = "<table><tr><!-- ignored --><td>visible</td></tr></table>"
+    assert handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).find(".//cell").text == "visible"
 
 
 def test_table_caption():
@@ -2045,22 +2055,17 @@ def test_table_caption():
 
 def test_table_orphan_cells_no_tr():
     "A table with no <tr> at all (only orphan td/th children) still extracts."
-    opts = core.Extractor()
-    result = handle_table(html.fromstring("<table><td>a</td><td>b</td></table>"), TAG_CATALOG, opts)
-    assert result is not None
-    cells = list(result.iter("cell"))
-    assert [c.text for c in cells] == ["a", "b"]
+    result = handle_table(html.fromstring("<table><td>a</td><td>b</td></table>"), TAG_CATALOG, core.Extractor())
+    assert [c.text for c in result.iter("cell")] == ["a", "b"]
 
 
 def test_table_stray_cell_descendant():
     "A td/th nested inside a non-table element within a cell is renamed to <cell> and extracted."
-    opts = core.Extractor()
     result = handle_table(
         html.fromstring("<table><tr><td><div><td>inner</td></div></td></tr></table>"),
         TAG_CATALOG,
-        opts,
+        core.Extractor(),
     )
-    assert result is not None
     assert any(c.text == "inner" for c in result.iter("cell"))
 
 
@@ -2075,9 +2080,7 @@ def test_table_stray_cell_descendant():
 )
 def test_table_colgroup_no_crash(colgroup_html):
     "colgroup/col as direct table children are layout hints; must not crash and all cells must have text."
-    opts = core.Extractor()
-    result = handle_table(html.fromstring(colgroup_html), TAG_CATALOG, opts)
-    assert result is not None
+    result = handle_table(html.fromstring(colgroup_html), TAG_CATALOG, core.Extractor())
     assert all(c.text for c in result.iter("cell"))
 
 
