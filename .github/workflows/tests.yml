@@ -78,6 +78,13 @@ jobs:
       run: |
         python -m pytest --cov=./ --cov-report=xml
 
+    - name: Test docs
+      # version matches .readthedocs.yaml
+      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      run: |
+        uv pip install --system -e ".[docs]"
+        python -m pytest docs/docs_tests.py
+
     # coverage
     - name: Upload coverage to Codecov
       if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}

@@ -217,6 +217,7 @@ Further documentation
    usage
    tutorials
    evaluation
+   tests
    used-by
    corefunctions
    background
