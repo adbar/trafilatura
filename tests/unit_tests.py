@@ -26,7 +26,7 @@ from trafilatura import bare_extraction, baseline, extract, extract_with_metadat
 from trafilatura import core
 from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (
-    _colspan,
+    _span,
     handle_formatting,
     handle_image,
     handle_lists,
@@ -1207,11 +1207,17 @@ def test_htmlprocessing(options):
     processed = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [prune])
     assert node.text_content() == " span tail p tail "
 
-    # link_density_test_tables: a table whose <ref> links carry no text
-    # (elemnum == 0) is treated as boilerplate and discarded
+    # link_density_test_tables: a text-rich table whose only <ref> links carry no text
+    # (e.g. icon/flag links wrapping images) has zero link text -> not boilerplate, kept
     linkless_table = html.fromstring("<table><cell>" + "word " * 50 + '<ref target="/x"></ref></cell></table>')
-    assert trafilatura.htmlprocessing.link_density_test_tables(linkless_table) is True
-
+    assert trafilatura.htmlprocessing.link_density_test_tables(linkless_table) is False
+    # short table (elemlen < 200) is never removed regardless of link ratio
+    assert (
+        trafilatura.htmlprocessing.link_density_test_tables(
+            html.fromstring("<table><cell>short " + '<ref target="/x">link</ref> ' * 5 + "</cell></table>")
+        )
+        is False
+    )
     # replace_element_text: an empty <ref> (no text) yields an empty string
     assert xml.replace_element_text(etree.Element("ref"), include_formatting=False) == ""
 
@@ -1330,14 +1336,68 @@ def test_recover_wild_text_default_tags():
     assert result is not None
 
 
-def test_table_processing(options):
-    # regression #767: is_in_table_cell must check real ancestry, not "a cell exists somewhere"
+_MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
+_BIG_REF = '<ref target="/x">' + "x" * 600 + "</ref>"
+# 60% link density at ~600 chars: kept by the 0.8 (medium) threshold, removed by the 0.5 (large) threshold
+_STRADDLE_REF = '<ref target="/x">' + "x" * 360 + "</ref>"
+
+
+@pytest.mark.parametrize(
+    "html_str,expected",
+    [
+        # medium table (<1000 chars): 80% link threshold
+        (f"<table><cell>{'y' * 50}{_MED_REF}</cell></table>", True),  # 83% links → removed
+        (f"<table><cell>{'y' * 200}{_MED_REF}</cell></table>", False),  # 56% links → kept
+        # straddle table (500-999 chars): 60% links — kept by 0.8 threshold, removed by 0.5 (guards the 1000-char boundary)
+        (f"<table><cell>{'y' * 240}{_STRADDLE_REF}</cell></table>", False),  # 60% links, ~600 chars → kept
+        # large table (>=1000 chars): 50% link threshold
+        (f"<table><cell>{'y' * 400}{_BIG_REF}</cell></table>", True),  # 60% links → removed
+        (f"<table><cell>{'y' * 600}{_BIG_REF}</cell></table>", False),  # 40% links → kept
+    ],
+)
+def test_link_density_tables_threshold(html_str: str, expected: bool) -> None:
+    assert trafilatura.htmlprocessing.link_density_test_tables(html.fromstring(html_str)) is expected
+
+
+def test_link_density_tables_textless_links_kept() -> None:
+    "A text-rich table whose only own-depth ref is a textless icon link is not boilerplate (#lineups)."
+    # 250 chars of real text + one image-wrapping link with no text -> elemnum 0, must be kept
+    icon_table = html.fromstring(
+        "<table><cell>" + "data " * 50 + '<ref target="/x"><graphic src="/i.png"/></ref></cell></table>'
+    )
+    assert trafilatura.htmlprocessing.link_density_test_tables(icon_table) is False
+
+
+def test_is_in_table_cell():
+    "is_in_table_cell must check real ancestry, not 'a cell exists somewhere' (#767)."
     tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
     inside = tree.xpath(".//cell/p")[0]
     outside = tree.xpath("./p")[0]
     assert is_in_table_cell(inside) is True
     assert is_in_table_cell(outside) is False  # buggy '//ancestor::cell' would return True
 
+
+_COLSPAN_CONTENT_BASE = "<tr><td>a</td><td>b</td><td>c</td></tr>"
+_COLSPAN_CONTENT_ROW = "<tr><td>a</td><td colspan='2'><p>b</p><p>c</p></td></tr>"
+
+
+@pytest.mark.parametrize(
+    "rows,expected",
+    [
+        (1, "| a | b | c | \n| a | b c |  |"),
+        (2, "| a | b | c | \n| a | b c |  | \n| a | b c |  |"),
+    ],
+    ids=["one-colspan-row", "two-colspan-rows"],
+)
+def test_table_colspan_content(rows, expected):
+    "A colspan=2 cell with block children is flattened; the placeholder fills to max_cols."
+    html_str = (
+        f"<html><body><article><table>{_COLSPAN_CONTENT_BASE}{_COLSPAN_CONTENT_ROW * rows}</table></article></body></html>"
+    )
+    assert extract(html_str, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True) == expected
+
+
+def test_table_processing(options):
     # regression: comments/PIs in a <table> have a read-only .tag and must not crash handle_table
     table_with_comment = html.fromstring("<table><!-- c1 --><tr><td>cell text<!-- c2 --></td></tr></table>")
     processed = handle_table(table_with_comment, TAG_CATALOG, options)
@@ -1386,7 +1446,7 @@ def test_table_processing(options):
     processed = extract(htmlstring, fast=True, output_format="xml", config=ZERO_CONFIG, include_links=True)
     result = processed.replace("\n", "").replace(" ", "")
     assert (
-        """<table><rowspan="2"><cell>text<headrend="h4">more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>"""
+        """<table><row><cell>text<headrend="h4">more_text</head></cell><cell><reftarget="link">linktext</ref></cell></row></table>"""
         in result
     )
 
@@ -1461,7 +1521,7 @@ def test_table_processing(options):
         options,
     )
     first_row = processed_table[0]
-    assert len(first_row) == 3
+    assert len(first_row) == 4  # Name, Adress, Phone, Phone-colspan-placeholder
     assert {child.tag for child in first_row.iterdescendants()} == {"cell"}
     table_cell_with_hi = html.fromstring("<table><tr><td><hi>highlighted text</hi></td></tr></table>")
     processed_table = handle_table(table_cell_with_hi, TAG_CATALOG, options)
@@ -1485,7 +1545,7 @@ def test_table_processing(options):
     </table></article></body></html>"""
     my_result = extract(htmlstring, fast=True, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert (
-        """<row span="7">
+        """<row>
         <cell>
           <hi rend="#b">Present Tense</hi>
         </cell>
@@ -1502,14 +1562,13 @@ def test_table_processing(options):
         "| Present Tense | I buy | you buy |"
     )
     # table with links
-    # todo: further tests and adjustments
     table = '<table><tr><td><a href="test.html">' + "ABCD" * 100 + "</a></td></tr></table>"
     result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True, include_links=True)
     assert "ABCD" not in result
-    # nested table
+    # malformed source: <th> and inner <table> are siblings, not parent/child;
+    # pipeline extracts them as two separate flat tables, not one nested structure
     table = "<table><th>1</th><table><tr><td>2</td></tr></table></table>"
     result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True)
-    # todo: all elements are there, but output not nested
     assert '<cell role="head">1</cell>' in result and "<cell>2</cell>" in result
     nested_table = html.fromstring(
         """
@@ -1521,10 +1580,11 @@ def test_table_processing(options):
         </tr>
         </table>"""
     )
+    # handle_table processes only the outer table and drops the inner one; the extraction
+    # walk re-extracts it as a sibling (embedding caused duplication — see T7)
     processed_table = handle_table(nested_table, TAG_CATALOG, options)
     result = [(el.tag, el.text) if el.text is not None and el.text.strip() else el.tag for el in processed_table.iter()]
-    # assert result == ["table", "row", "cell", "table", "row", ("cell", "1")]
-    assert result == ["table", "row", "cell", ("cell", "1")]
+    assert result == ["table", "row", "cell"]
     complex_nested_table = html.fromstring(
         """
     <table>
@@ -1539,11 +1599,7 @@ def test_table_processing(options):
     )
     processed_table = handle_table(complex_nested_table, TAG_CATALOG, options)
     result = [(el.tag, el.text) if el.text is not None and el.text.strip() else el.tag for el in processed_table.iter()]
-    # assert (
-    #        result
-    #        == ["table", "row", "cell", "table", "row", ("cell", "1"), ("cell", "text1"), "row", ("cell", "text2")]
-    # )
-    assert result == ["table", "row", "cell", ("cell", "1"), ("cell", "text1"), "row", ("cell", "text2")]
+    assert result == ["table", "row", "cell", ("cell", "text1"), "row", ("cell", "text2"), "cell"]
     table_with_list = html.fromstring(
         """
     <table><tr><td>
@@ -1585,6 +1641,7 @@ def test_table_processing(options):
         "row",
         "cell",
     ]
+    # colgroup/col tests live in test_table_colgroup_no_crash (parametrized)
     # table nested in figure https://github.com/adbar/trafilatura/issues/301
     table = "<figure><table><th>1</th><tr><td>2</td></tr></table></figure>"
     result = _extract_doc(table, intro=False, fast=True, output_format="xml", include_tables=True)
@@ -1614,105 +1671,45 @@ def test_table_processing(options):
     assert _table_txt(f'<table><tr><td><a href="link.html">{"abc" * 100}</a></td></tr></table>') == ""
     assert _table_txt(f'<table><tr><td><a href="link.html">{" " * 100}</a></td></tr></table>') == ""
 
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr><td>a</td><td colspan="2">
-                 <p>b</p>
-                 <p>c</p>
-                 </td></tr>
-                 </table>
-                 </article></body></html>
-                 """
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a | b | c | \n| a | b c | |"
+    # image markdown tests live in test_table_image_in_cell (parametrized)
 
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr><td>a</td><td colspan="2">
-                 <p>b</p>
-                 <p>c</p>
-                 </td></tr>
-                 <tr><td>a</td><td colspan="2">
-                 <p>b</p>
-                 <p>c</p>
-                 </td></tr>
-                 </table>
-                 </article></body></html>
-                 """
-    result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG, include_tables=True)
-    assert result == "| a | b | c | \n| a | b c | |\n| a | b c | |"
 
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr>
-                    <td>a<img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></td>
-                    <td><p>b</p><p>c</p></td>
-                    <td>d</td>
-                 </tr>
-                 </table>
-                 </article></body></html>
-                 """
-    result = extract(
-        htmlstring, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
+_IMG_URL = "http://aa.bb/c.jpg"
+_IMG_TABLE_HEADER = "<tr><td>a</td><td>b</td><td>c</td></tr>"
+_IMG_TABLE_TAIL = "<td><p>b</p><p>c</p></td><td>d</td>"
+
+
+@pytest.mark.parametrize(
+    "cell1,expected_cell1",
+    [
+        (
+            f'<td>a<img src="{_IMG_URL}" alt="img"/><span>a</span></td>',
+            f"a ![img]({_IMG_URL}) a",
+        ),
+        (
+            f'<td><a href="{_IMG_URL}"><img src="{_IMG_URL}" alt="img"/><span>a</span></a></td>',
+            f"![img]({_IMG_URL}) a",
+        ),
+        (
+            f'<td><img src="{_IMG_URL}" alt="img"/><span>a</span></td>',
+            f"![img]({_IMG_URL}) a",
+        ),
+        (
+            f'<td><img src="{_IMG_URL}" alt="img1"/><span>a</span><img src="{_IMG_URL}" alt="img2"/></td>',
+            f"![img1]({_IMG_URL}) a ![img2]({_IMG_URL})",
+        ),
+    ],
+    ids=["text-img-span", "linked-img-span", "img-span", "two-imgs"],
+)
+def test_table_image_in_cell(cell1, expected_cell1):
+    "Images in table cells render as GFM inline images; link wrapping is preserved."
+    html_str = (
+        f"<html><body><article><table>{_IMG_TABLE_HEADER}<tr>{cell1}{_IMG_TABLE_TAIL}</tr></table></article></body></html>"
     )
-    assert result == "| a | b | c | \n| a ![img](http://aa.bb/c.jpg) a | b c | d |"
-
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr>
-                    <td><a href="http://aa.bb/"><img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></a></td>
-                    <td><p>b</p><p>c</p></td>
-                    <td>d</td>
-                 </tr>
-                 </table>
-                 </article></body></html>
-                 """
     result = extract(
-        htmlstring, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
+        html_str, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
     )
-    assert result == "| a | b | c | \n| ![img](http://aa.bb/c.jpg) a | b c | d |"
-
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr>
-                    <td><img src="http://aa.bb/c.jpg" alt="img"/><span>a</span></td>
-                    <td><p>b</p><p>c</p></td>
-                    <td>d</td>
-                 </tr>
-                 </table>
-                 </article></body></html>
-                 """
-    result = extract(
-        htmlstring, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
-    )
-    assert result == "| a | b | c | \n| ![img](http://aa.bb/c.jpg) a | b c | d |"
-
-    htmlstring = """
-                 <html><body><article>
-                 <table>
-                 <tr><td>a</td><td>b</td><td>c</td></tr>
-                 <tr>
-                    <td><img src="http://aa.bb/c.jpg" alt="img1"/><span>a</span><img src="http://aa.bb/c.jpg" alt="img2"/></td>
-                    <td><p>b</p><p>c</p></td>
-                    <td>d</td>
-                 </tr>
-                 </table>
-                 </article></body></html>
-                 """
-    result = extract(
-        htmlstring, fast=True, output_format="markdown", config=ZERO_CONFIG, include_images=True, include_tables=True
-    )
-    assert result == "| a | b | c | \n| ![img1](http://aa.bb/c.jpg) a ![img2](http://aa.bb/c.jpg) | b c | d |"
+    assert result == f"| a | b | c | \n| {expected_cell1} | b c | d |"
 
 
 # link + bold paragraph, plus a table cell with a link/bold and an image cell — shared by the combo tests
@@ -1728,11 +1725,11 @@ _COMBO_ALL_ON = dict(include_links=True, include_formatting=True, include_images
 
 
 def test_combined_links_formatting_images_tables():
-    "Pin current behavior with all four flags on; cells keep formatting + images but still drop the wrapping link."
+    "All four flags on: cells keep formatting + images, and a link wrapping formatting keeps its target."
     result = extract(_COMBO_DOC, output_format="markdown", config=ZERO_CONFIG, **_COMBO_ALL_ON)
-    # TODO: a link wrapping formatting in a cell still loses its target (ref/hi nesting); formatting now survives
     assert result == (
-        "Intro with a [link](http://x.io/p) and **bold** word.\n\n| h1 | h2 | \n| **bold link** | ![pic](http://x.io/i.jpg) |"
+        "Intro with a [link](http://x.io/p) and **bold** word.\n\n"
+        "| h1 | h2 | \n| [**bold link**](http://x.io/c) | ![pic](http://x.io/i.jpg) |"
     )
 
 
@@ -1743,12 +1740,14 @@ def test_combined_links_formatting_images_tables():
             "include_links",
             "Intro with a link and **bold** word.\n\n| h1 | h2 | \n| **bold link** | ![pic](http://x.io/i.jpg) |",
         ),
-        # TODO bug: a link wrapping formatting loses its target when formatting is on (cell ref/hi nesting); off "rescues" it
         (
             "include_formatting",
             "Intro with a [link](http://x.io/p) and bold word.\n| h1 | h2 | \n| [bold link](http://x.io/c) | ![pic](http://x.io/i.jpg) |",
         ),
-        ("include_images", "Intro with a [link](http://x.io/p) and **bold** word.\n\n| h1 | h2 | \n| **bold link** |  |"),
+        (
+            "include_images",
+            "Intro with a [link](http://x.io/p) and **bold** word.\n\n| h1 | h2 | \n| [**bold link**](http://x.io/c) |  |",
+        ),
         ("include_tables", "Intro with a [link](http://x.io/p) and **bold** word."),
     ],
 )
@@ -1758,14 +1757,20 @@ def test_combined_flags_toggle_off(off, expected):
     assert result == expected
 
 
-# a short first-row cell + a 3-cell second row; the short row should pad to 3 columns
+# first-row tail cell + a 3-cell second row that sets the table to 3 columns;
+# the first row fills to 3 via a colspan placeholder or a trailing pad depending on the span
 _COLSPAN_ROWS = "<td>b</td></tr><tr><td>c</td><td>d</td><td>e</td></tr></table>"
 
 
-@pytest.mark.parametrize("first_cell", ['colspan="2"', 'span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
-def test_table_colspan_padding(first_cell):
-    "A first-row cell with span/colspan info pads the short row to the table's column count."
-    assert "| a | b | |" in _table_txt(f"<table><tr><td {first_cell}>a</td>{_COLSPAN_ROWS}")
+def test_table_colspan_padding():
+    "A colspan=2 cell materializes an inline placeholder; the row fills to the table's column count."
+    assert "| a |  | b |" in _table_txt(f"<table><tr><td colspan='2'>a</td>{_COLSPAN_ROWS}")
+
+
+@pytest.mark.parametrize("bad_span", ['span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
+def test_table_bad_span_attr_treated_as_colspan1(bad_span):
+    "Non-colspan span attributes are ignored (colspan=1); trailing pad fills to max_cols."
+    assert "| a | b |  |" in _table_txt(f"<table><tr><td {bad_span}>a</td>{_COLSPAN_ROWS}")
 
 
 @pytest.mark.parametrize(
@@ -1781,46 +1786,83 @@ def test_table_huge_or_bad_colspan_no_crash(first_cell):
     [("1", 1), ("3", 3), ("12", 12), ("²", 1), ("1²", 1), ("2x", 1), ("", 1), ("-2", 1)],
 )
 def test_colspan_zero_trust(colspan, expected):
-    "_colspan must default to 1 for non-decimal values (isdigit() admits superscripts that int() rejects)."
-    assert _colspan(html.fromstring(f'<td colspan="{colspan}">x</td>')) == expected
+    "_span must default to 1 for non-decimal values (isdigit() admits superscripts that int() rejects)."
+    assert _span(html.fromstring(f'<td colspan="{colspan}">x</td>'), "colspan") == expected
 
 
-def test_table_rowspan_ignored():
-    "Pin: rowspan content is not propagated; the short row is padded to the column count, not filled with 'x'."
-    # TODO: rowspan unsupported — the spanned cell is not repeated into the next row (just blank-padded)
+def test_table_rowspan_aligned():
+    "A rowspan=2 cell leaves a placeholder in the continuation row so columns stay aligned."
     assert _table_md("<table><tr><td rowspan='2'>x</td><td>a</td></tr><tr><td>b</td></tr></table>").endswith(
-        "| x | a | \n| b | |"
+        "| x | a | \n|  | b |"
     )
 
 
-def test_table_empty_cells_and_rows():
+def test_table_rowspan_colspan_combined():
+    "A cell with both rowspan and colspan registers all spanned columns in the rowspan map."
+    # Col 0-1 spanned by rowspan=2 colspan=2 cell; row 2 must have 2 phantoms then 1 real cell.
+    result = _table_md("<table><tr><td rowspan='2' colspan='2'>big</td><td>c</td></tr><tr><td>x</td></tr></table>")
+    # Row 2: 2 phantoms (cols 0-1 rowspan-occupied) + real cell x at col 2
+    assert "|  |  | x |" in result
+
+
+def test_table_rowspan_decrement_on_padding():
+    "Rowspan entry is decremented when a short row is padded, so it does not bleed into subsequent rows."
+    # Col 1 has rowspan=2; row 2 is short (only col 0 filled). Row 3 must not receive a stale phantom.
+    result = _table_md(
+        "<table>"
+        "<tr><td>a</td><td rowspan='2'>b</td><td>c</td></tr>"
+        "<tr><td>x</td></tr>"
+        "<tr><td>d</td><td>e</td><td>f</td></tr>"
+        "</table>"
+    )
+    assert "| d | e | f |" in result
+
+
+@pytest.mark.parametrize(
+    "html,suffix",
+    [
+        ("<table><tr><td></td><td>b</td></tr></table>", "|  | b |"),
+        ("<table><tr><td>a</td><td></td></tr></table>", "| a |  |"),
+        ("<table><tr><td>a</td><td>b</td></tr><tr><td></td><td></td></tr></table>", "| a | b |"),
+        (
+            "<table><tr><td>a</td><td>c</td></tr><tr><td></td><td></td></tr><tr><td>d</td><td>e</td></tr></table>",
+            "| a | c | \n| d | e |",
+        ),
+        (
+            "<table><tr><td>a</td><td>c</td></tr><tr></tr><tr><td>d</td><td>e</td></tr></table>",
+            "| a | c | \n| d | e |",
+        ),
+    ],
+    ids=["leading-empty", "trailing-empty", "all-empty-row-dropped", "empty-row-middle", "empty-tr"],
+)
+def test_table_empty_cells_and_rows(html, suffix):
     "Empty cells are kept blank to keep columns aligned; rows that are entirely empty are dropped."
-    # an empty cell stays blank instead of collapsing the column
-    assert _table_md("<table><tr><td></td><td>b</td></tr></table>").endswith("|  | b |")
-    assert _table_md("<table><tr><td>a</td><td></td></tr></table>").endswith("| a |  |")
-    # a row of only-empty cells produces no row at all
-    assert _table_md("<table><tr><td>a</td><td>b</td></tr><tr><td></td><td></td></tr></table>").endswith("| a | b |")
-    # an all-empty row in the middle is dropped without merging the surrounding rows
-    assert _table_md(
-        "<table><tr><td>a</td><td>c</td></tr><tr><td></td><td></td></tr><tr><td>d</td><td>e</td></tr></table>"
-    ).endswith("| a | c | \n| d | e |")
-    # an empty <tr> is skipped while surrounding rows are kept
-    assert _table_md("<table><tr><td>a</td><td>c</td></tr><tr></tr><tr><td>d</td><td>e</td></tr></table>").endswith(
-        "| a | c | \n| d | e |"
-    )
+    assert _table_md(html).endswith(suffix)
 
 
-def test_table_cell_block_elements_inline():
-    "Block elements in a cell must not break the row: no stray newline (list) and no '##' marker (heading)."
-    list_row = _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>").split("\n\n")[-1]
-    assert "\n" not in list_row and list_row.endswith("| b |")
-    assert _table_md("<table><tr><td><h2>Title</h2></td><td>b</td></tr></table>").endswith("| Title | b |")
-    assert _table_md("<table><tr><td><p>para</p></td><td>b</td></tr></table>").endswith("| para | b |")
-    # flattened block content in a cell is space-separated, not mashed
-    assert _table_md("<table><tr><td><h2>Title</h2>txt</td><td>b</td></tr></table>").endswith("| Title txt | b |")
-    assert _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>", favor_recall=True).endswith(
-        "| i1 i2 | b |"
-    )
+def test_table_cell_list_no_row_break():
+    "A <ul> in a cell (no recall mode) must not inject a row-breaking newline."
+    row = _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>").split("\n\n")[-1]
+    assert "\n" not in row and row.endswith("| b |")
+
+
+@pytest.mark.parametrize(
+    "html,suffix,kwargs",
+    [
+        ("<table><tr><td><h2>Title</h2></td><td>b</td></tr></table>", "| Title | b |", {}),
+        ("<table><tr><td><p>para</p></td><td>b</td></tr></table>", "| para | b |", {}),
+        ("<table><tr><td><h2>Title</h2>txt</td><td>b</td></tr></table>", "| Title txt | b |", {}),
+        (
+            "<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>",
+            "| i1 i2 | b |",
+            {"favor_recall": True},
+        ),
+    ],
+    ids=["heading", "paragraph", "heading-plus-tail", "list-recall"],
+)
+def test_table_cell_block_elements_flattened(html, suffix, kwargs):
+    "Block elements in a cell are flattened to inline: no ## marker, space-separated, no mashing."
+    assert _table_md(html, **kwargs).endswith(suffix)
 
 
 @pytest.mark.parametrize(
@@ -1955,29 +1997,137 @@ def test_heading_level_zero_trust(rend, expected):
     assert xml.replace_element_text(el, True) == expected
 
 
-@pytest.mark.parametrize("span", ["2", "²", "1²", "2x", "12", "-3", ""])
-def test_row_span_zero_trust(span):
-    "process_element must not crash on a malformed row span (isdigit() passes superscripts that int() rejects)."
-    table = etree.Element("table")
-    row = etree.SubElement(table, "row")
-    row.set("span", span)
-    etree.SubElement(row, "cell").text = "a"
-    out: list = []
-    xml.process_element(table, out, False)  # must not raise
-    assert "a" in "".join(out)
-
-
-def test_table_nested_in_cell_dropped():
-    "Known data-loss bug: a <table> inside a <td> currently drops the entire outer table from the output."
+def test_table_nested_in_cell():
+    "Single-row nested table in a row with no other content is left for the outer walk, not inlined."
     doc = "<table><tr><td>A</td></tr><tr><td><table><tr><td>inner</td></tr></table></td></tr><tr><td>AFTER</td></tr></table>"
-    # TODO: should flatten the nested table; today the whole outer table (A/inner/AFTER) vanishes
-    assert "A" not in _table_md(doc) and "AFTER" not in _table_md(doc)
+    texts = list(handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).itertext())
+    assert "A" in texts and "AFTER" in texts and "inner" not in texts
 
 
-def test_table_caption_dropped():
-    "Known limitation: a <table><caption> is not preserved in output."
-    # TODO: caption text is currently lost
-    assert "My Caption" not in _table_md("<table><caption>My Caption</caption><tr><td>a</td><td>b</td></tr></table>")
+def test_table_nested_in_cell_pipeline():
+    "End-to-end: nested table is extracted as a separate table by the main walk, not inlined — no duplication."
+    outer_text = "This is the outer row with plenty of text to survive readability. " * 2
+    inner_text = "Inner nested table cell with sufficient content for extraction. " * 2
+    doc = f"<table><tr><td>{outer_text}</td></tr><tr><td><table><tr><td>{inner_text}</td></tr></table></td></tr></table>"
+    # intro=True ensures readability selects the full <article> (not just one <tr>)
+    result = _extract_doc(doc, intro=True, output_format="xml", include_tables=True)
+    assert outer_text.strip()[:20] in result
+    assert inner_text.strip()[:20] in result
+    # no duplication: inner text appears in exactly one cell
+    assert result.count(inner_text.strip()) == 1
+
+
+def test_table_nested_tail_preserved():
+    "Tail text between </table> and next element in the same cell must not be dropped."
+    doc = "<table><tr><td>before<table><tr><td>inner</td></tr></table>after-tail</td></tr></table>"
+    result = handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor())
+    texts = "".join(result.itertext())
+    assert "before" in texts and "after-tail" in texts and "inner" not in texts
+
+
+def test_table_nested_tail_with_prior_child():
+    "Nested-table tail text is appended to the last child when new_child_elem already has children."
+    doc = "<table><tr><td><del>struck</del><table><tr><td>inner</td></tr></table>after-tail</td></tr></table>"
+    texts = "".join(handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).itertext())
+    assert "after-tail" in texts and "inner" not in texts
+
+
+def test_table_comment_in_row():
+    "Comment nodes inside <tr> are skipped without crashing."
+    doc = "<table><tr><!-- ignored --><td>visible</td></tr></table>"
+    assert handle_table(html.fromstring(doc), TAG_CATALOG, core.Extractor()).find(".//cell").text == "visible"
+
+
+def test_table_caption():
+    "Table caption is emitted as a header row above the table body."
+    result = _table_md("<table><caption>My Caption</caption><tr><td>a</td><td>b</td></tr></table>")
+    assert "My Caption" in result
+    # caption row appears before the body row
+    assert result.index("My Caption") < result.index("| a |")
+    # separator must span all columns (2), not just the caption cell (1)
+    assert "|---|---|" in result
+    # whitespace-only caption is silently skipped; body row still extracted
+    opts = core.Extractor()
+    result2 = handle_table(html.fromstring("<table><caption>  </caption><tr><td>x</td></tr></table>"), TAG_CATALOG, opts)
+    assert result2 is not None and result2.find(".//cell").text == "x"
+    assert all(c.get("role") != "head" for c in result2.iter("cell"))
+
+
+def test_table_orphan_cells_no_tr():
+    "A table with no <tr> at all (only orphan td/th children) still extracts."
+    result = handle_table(html.fromstring("<table><td>a</td><td>b</td></table>"), TAG_CATALOG, core.Extractor())
+    assert [c.text for c in result.iter("cell")] == ["a", "b"]
+
+
+def test_table_stray_cell_descendant():
+    "A td/th nested inside a non-table element within a cell is renamed to <cell> and extracted."
+    result = handle_table(
+        html.fromstring("<table><tr><td><div><td>inner</td></div></td></tr></table>"),
+        TAG_CATALOG,
+        core.Extractor(),
+    )
+    assert any(c.text == "inner" for c in result.iter("cell"))
+
+
+@pytest.mark.parametrize(
+    "colgroup_html",
+    [
+        "<table><colgroup><col style='width:50%'><col style='width:50%'></colgroup><tr><td>a</td><td>b</td></tr></table>",
+        "<table><col span='2'><tr><td>x</td><td>y</td></tr></table>",
+        "<table><col><td>orphan</td><tr><td>normal</td></tr></table>",
+    ],
+    ids=["colgroup", "col-span", "col-orphan-td"],
+)
+def test_table_colgroup_no_crash(colgroup_html):
+    "colgroup/col as direct table children are layout hints; must not crash and all cells must have text."
+    result = handle_table(html.fromstring(colgroup_html), TAG_CATALOG, core.Extractor())
+    assert all(c.text for c in result.iter("cell"))
+
+
+@pytest.mark.parametrize("role", ["presentation", "none"])
+def test_aria_layout_table_reclassified(role):
+    "Any table with role=presentation/none is reclassified as div (explicit WAI-ARIA layout declaration)."
+    from trafilatura.htmlprocessing import tree_cleaning
+
+    opts = core.Extractor()
+    opts.tables = True
+    # with nested table: outer reclassified, inner kept
+    doc = html.fromstring(
+        f'<html><body><table role="{role}"><tr><td><table><tr><td>data</td></tr></table></td></tr></table></body></html>'
+    )
+    tree_cleaning(doc, opts)
+    assert doc.find(".//table[@role]") is None
+    assert doc.find(".//table") is not None
+    # without nested table: also reclassified
+    doc = html.fromstring(f'<html><body><table role="{role}"><tr><td>text</td></tr></table></body></html>')
+    tree_cleaning(doc, opts)
+    assert doc.find(".//table") is None
+
+
+def test_sanitize_tree_th_dedup():
+    "sanitize_tree marks only the first <th>-containing row per parent as role=head; subsequent th-rows are plain cells."
+    from trafilatura.external import sanitize_tree
+
+    opts = core.Extractor()
+    opts.tables = True
+    # two <th> rows: only the first should get role="head"
+    doc = html.fromstring(
+        "<html><body><table>"
+        "<tr><th>A</th><th>B</th></tr>"
+        "<tr><th>C</th><th>D</th></tr>"
+        "<tr><td>1</td><td>2</td></tr>"
+        "</table></body></html>"
+    )
+    tree, _, _ = sanitize_tree(doc, opts)
+    head_cells = tree.xpath('.//cell[@role="head"]')
+    plain_cells = [c for c in tree.xpath(".//cell") if c.get("role") != "head"]
+    assert len(head_cells) == 2  # only A and B
+    assert all(c.text in ("A", "B") for c in head_cells)
+    assert all(c.text in ("C", "D", "1", "2") for c in plain_cells)
+    # regression: a table with no <th> at all must not crash and produces no head cells
+    doc2 = html.fromstring("<html><body><table><tr><td>x</td></tr></table></body></html>")
+    tree2, _, _ = sanitize_tree(doc2, opts)
+    assert tree2.xpath('.//cell[@role="head"]') == []
 
 
 def test_list_item_attr_whitelist():
@@ -2317,6 +2467,10 @@ def test_markdown_escaping():
     tree = etree.fromstring(b'<body><table><row><cell><graphic src="img.png" alt="img"/>tail|text</cell></row></table></body>')
     result = xml.xmltotxt(tree, include_formatting=True)
     assert "tail\\|text" in result
+    # pipe in non-graphic element tail inside a cell must also be escaped (separate code path)
+    tree = etree.fromstring(b'<body><table><row><cell><hi rend="#b">bold</hi>tail|pipe</cell></row></table></body>')
+    result = xml.xmltotxt(tree, include_formatting=True)
+    assert "tail\\|pipe" in result
 
     # block math in a cell must not inject newlines that split the table row
     tree = etree.fromstring(b"<body><table><row><cell>x \\[E=mc^2\\] y</cell></row></table></body>")

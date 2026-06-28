@@ -84,7 +84,6 @@ HEADING_LEVELS = frozenset("123456")
 # preceding characters that already separate content, so no extra space/newline is needed
 SEPARATORS = frozenset((" ", "\n", "|", ""))
 
-MAX_TABLE_WIDTH = 1000
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
@@ -554,19 +553,9 @@ def process_element(
             # add line after table head
             if element.tag == "row":
                 cells = element.findall("cell")
-                cell_count = len(cells)
-                # a row spans at least its own cells; an explicit span may add colspan padding
-                span_info = element.get("colspan") or element.get("span")
-                # isdecimal rejects the superscripts isdigit() admits
-                span = int(span_info) if span_info and span_info.isdecimal() else 0
-                # restrict columns to a maximum of 1000
-                max_span = min(max(span, cell_count), MAX_TABLE_WIDTH)
-                # row ended so draw extra empty cells to match max_span
-                if cell_count < max_span:
-                    returnlist.append(f"{'|' * (max_span - cell_count)}\n")
-                # if this is a head row, draw the separator below
+                # rows are materialized to full width upstream; draw the head separator below
                 if any(cell.get("role") == "head" for cell in cells):
-                    returnlist.append(f"\n|{'---|' * max_span}\n")
+                    returnlist.append(f"\n|{'---|' * len(cells)}\n")
             elif not in_cell:
                 # block elements inside a cell must not inject a row-breaking newline
                 returnlist.append("\n")

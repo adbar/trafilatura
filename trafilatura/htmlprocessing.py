@@ -54,6 +54,9 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         # prevent this issue: https://github.com/adbar/trafilatura/issues/301
         for elem in tree.xpath(".//figure[descendant::table]"):
             elem.tag = "div"
+        # ARIA layout tables (role=presentation/none explicitly marks a non-data table)
+        for elem in tree.xpath('.//table[@role="presentation" or @role="none"]'):
+            elem.tag = "div"
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
@@ -171,10 +174,8 @@ def link_density_test_tables(element: HtmlElement) -> bool:
     if elemlen < 200:
         return False
 
-    linklen, elemnum, _, _ = collect_link_info(links_xpath)
-    if elemnum == 0:
-        return True
-
+    # links with no text (e.g. icon/flag links wrapping images) yield linklen 0 -> not boilerplate
+    linklen, _, _, _ = collect_link_info(links_xpath)
     LOGGER.debug("table link text: %s / total: %s", linklen, elemlen)
     return linklen > 0.8 * elemlen if elemlen < 1000 else linklen > 0.5 * elemlen
 
