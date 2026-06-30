@@ -622,6 +622,49 @@ def test:
     assert "AP-fonden" in my_result
 
 
+def test_markdown_metadata_yaml_safe():
+    "Markdown metadata header must stay valid YAML for special values (GH #814)."
+    # scalar rendering: plain when safe, double-quoted (json) otherwise
+    assert core._yaml_scalar("Indu K Murthy") == "Indu K Murthy"
+    assert core._yaml_scalar("https://example.com/a:b") == "https://example.com/a:b"
+    assert core._yaml_scalar("élan vital") == "élan vital"
+    assert core._yaml_scalar("COP30: a guide") == '"COP30: a guide"'
+    assert core._yaml_scalar("#1 ranking") == '"#1 ranking"'
+    assert core._yaml_scalar("&launch") == '"&launch"'
+    assert core._yaml_scalar("true") == '"true"'
+    assert core._yaml_scalar("2024") == '"2024"'
+    assert core._yaml_scalar("[draft]") == '"[draft]"'
+    assert core._yaml_scalar('say "hi": now') == '"say \\"hi\\": now"'
+
+    # the rendered scalars must round-trip exactly through a real YAML parser
+    yaml = pytest.importorskip("yaml")
+    for value in (
+        "COP30: a beginner’s guide",
+        "#1 ranking",
+        "&launch",
+        "true",
+        "[draft] note",
+        'a "quoted" word',
+        "Indu K Murthy",
+    ):
+        loaded = yaml.safe_load("title: " + core._yaml_scalar(value))
+        assert loaded["title"] == value
+
+    # end-to-end: a title with ": " used to emit invalid YAML, now it is quoted
+    my_html = (
+        "<html><head><title>COP30: a beginner’s guide</title>"
+        '<meta name="author" content="Indu K Murthy"/></head>'
+        "<body><article><p>Some body text with enough words to be extracted.</p>"
+        "</article></body></html>"
+    )
+    result = extract(my_html, output_format="markdown", config=ZERO_CONFIG, with_metadata=True)
+    header = result.split("---\n", 2)[1]
+    meta = yaml.safe_load(header)
+    assert meta["title"] == "COP30: a beginner’s guide"
+    assert meta["author"] == "Indu K Murthy"
+    assert 'title: "COP30: a beginner’s guide"' in result
+
+
 def test_blockquote_inline_content():
     "Inline formatting, links, and images inside blockquotes must be preserved."
     assert _md_inline("<blockquote><p>A <b>bold</b> word</p></blockquote>") == f"{_INTRO}\n\nA **bold** word"
