@@ -16,7 +16,7 @@ Duplicate tracking is performed on a per-thread basis. Each thread or process in
 
 
 .. note::
-    The functions habe been regrouped in ``trafilatura.deduplication`` in version 1.10.0 and are not accessible anymore from the ``filters`` or ``hashing`` submodules.
+    The functions have been regrouped in ``trafilatura.deduplication`` in version 1.10.0 and are not accessible anymore from the ``filters`` or ``hashing`` submodules.
 
 
 Element and paragraph level
@@ -136,7 +136,7 @@ The ``generate_hash_filename()`` function takes a string as input and returns a 
 .. code-block:: python
 
     # create a filename-safe string by hashing the given content
-    >>> from trafilatura.deduplication import generate_hash_filename
+    >>> from trafilatura.cli_utils import generate_hash_filename
     >>> generate_hash_filename("This is a text.")
     'qAgzZnskrcRgeftk'
 

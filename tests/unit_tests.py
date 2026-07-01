@@ -772,6 +772,17 @@ def test_external(options):
     assert "Features" in res
 
 
+def test_sanitize_tree_absolutizes_links():
+    "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
+    doc = html.fromstring(
+        '<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>"
+    )
+    options = core.Extractor(url="https://www.example.org", links=True)
+    tree, _, _ = sanitize_tree(doc, options)
+    targets = [elem.get("target") for elem in tree.iter("ref")]
+    assert "https://www.example.org/path/page" in targets
+
+
 def test_images(options):
     """Test image extraction function"""
     # file type
@@ -2862,3 +2873,29 @@ def test_deprecations():
         extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
         bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG)
     assert captured and all(captured)
+
+
+def test_incompatible_options(caplog):
+    "Incoherent option combinations warn (but do not raise) when building an Extractor."
+    with caplog.at_level(logging.WARNING):
+        # precision + recall: recall wins
+        options = core.Extractor(precision=True, recall=True)
+        assert options.focus == "recall"
+        assert "mutually exclusive" in caplog.text
+
+        # tei_validation only meaningful with xmltei output
+        caplog.clear()
+        core.Extractor(tei_validation=True, output_format="txt")
+        assert "tei_validation" in caplog.text
+
+        # include_formatting flattened away by JSON serialization
+        caplog.clear()
+        core.Extractor(formatting=True, output_format="json")
+        assert "JSON" in caplog.text
+
+        # coherent combinations stay silent
+        caplog.clear()
+        core.Extractor(tei_validation=True, output_format="xmltei")
+        core.Extractor(formatting=True, output_format="html")
+        core.Extractor(formatting=True, output_format="markdown")
+        assert caplog.text == ""

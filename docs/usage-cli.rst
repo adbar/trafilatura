@@ -87,7 +87,7 @@ Output as TXT without metadata is the default, another format can be selected in
 -  ``--output-format`` {csv,json,html,markdown,txt,xml,xmltei}
 
 .. hint::
-    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format. Selecting Markdown automatically includes text formatting.
+    Combining TXT and CSV formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format. Selecting Markdown automatically includes text formatting. Note: ``--formatting`` has no effect on JSON output.
 
 *HTML output is available from version 1.11, Markdown from version 1.9 onwards.*
 
@@ -129,6 +129,7 @@ Trafilatura will work as well provided web pages (HTML documents) are used as in
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
+-  ``--keep-dirs`` to mirror the input directory structure in the output (requires ``-o/--output-dir``)
 
 
 .. note::

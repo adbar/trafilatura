@@ -4,6 +4,7 @@ Listing a series of settings that are applied module-wide.
 """
 
 import argparse
+import logging
 import os
 from configparser import ConfigParser
 from datetime import datetime
@@ -14,6 +15,8 @@ from typing import Any
 from lxml.etree import Element, XPath, _Element
 
 from .utils import line_processing
+
+LOGGER = logging.getLogger(__name__)
 
 # sched_getaffinity (Linux-only) with fallback
 _get_affinity = getattr(os, "sched_getaffinity", None)
@@ -137,8 +140,14 @@ class Extractor:
         url_blacklist: set[str] | None = None,
         date_params: dict[str, str] | None = None,
     ):
+        if precision and recall:
+            LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
         self._set_source(url, source)
         self._set_format(output_format)
+        if tei_validation and self.format != "xmltei":
+            LOGGER.warning("tei_validation has no effect unless output_format is 'xmltei'")
+        if formatting and self.format == "json":
+            LOGGER.warning("include_formatting has no effect on JSON output")
         # single normalization point: an explicit config=None falls back to defaults
         self._add_config(config or DEFAULT_CONFIG)
         self.fast: bool = fast
@@ -184,14 +193,17 @@ class Extractor:
 
 def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
     "Derive extractor configuration from CLI args."
-    options = Extractor(
+    return Extractor(
         config=use_config(filename=args.config_file),
         output_format=args.output_format,
+        fast=args.fast,
         formatting=args.formatting,
         precision=args.precision,
         recall=args.recall,
-        comments=args.no_comments,
-        tables=args.no_tables,
+        comments=args.comments,
+        tables=args.tables,
+        images=args.images,
+        links=args.links,
         dedup=args.deduplicate,
         lang=args.target_language,
         url=url,
@@ -199,9 +211,6 @@ def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extra
         only_with_metadata=args.only_with_metadata,
         tei_validation=args.validate_tei,
     )
-    for attr in ("fast", "images", "links"):
-        setattr(options, attr, getattr(args, attr))
-    return options
 
 
 def set_date_params(extensive: bool = True) -> dict[str, Any]:

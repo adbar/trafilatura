@@ -263,13 +263,13 @@ def find_feed_urls(
         LOGGER.error("Could not download web page: %s", url)
         if url.strip("/") != baseurl:
             sleep(sleep_time)
-            return try_homepage(baseurl, target_lang)
+            return try_homepage(baseurl, target_lang, external, sleep_time)
 
     return probe_gnews(params, urlfilter)
 
 
-def try_homepage(baseurl: str, target_lang: str | None) -> list[str]:
+def try_homepage(baseurl: str, target_lang: str | None, external: bool, sleep_time: float) -> list[str]:
     """Shift into reverse and try the homepage instead of the particular feed
     page that was given as input."""
     LOGGER.debug("Probing homepage for feeds instead: %s", baseurl)
-    return find_feed_urls(baseurl, target_lang)
+    return find_feed_urls(baseurl, target_lang, external, sleep_time)

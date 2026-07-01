@@ -21,6 +21,15 @@ from .cli_utils import (
 )
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
 
+LOGGER = logging.getLogger(__name__)
+
+# options that --list neither downloads nor extracts, hence ignores
+_LIST_IGNORED_OPTS = {
+    "fast", "formatting", "precision", "recall", "images", "links",
+    "with_metadata", "only_with_metadata", "comments", "tables",
+    "deduplicate", "output_format", "archived", "backup_dir",
+}
+
 # fix output encoding on some systems
 if sys.stdout.encoding != "UTF-8" and hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -97,8 +106,8 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     group4.add_argument("--formatting", help="include text formatting (bold, italic, etc.)", action="store_true", default=None)
     group4.add_argument("--links", help="include links along with their targets (experimental)", action="store_true")
     group4.add_argument("--images", help="include image sources in output (experimental)", action="store_true")
-    group4.add_argument("--no-comments", help="don't output any comments", action="store_false")  # false = no comments
-    group4.add_argument("--no-tables", help="don't output any table elements", action="store_false")  # false = no tables
+    group4.add_argument("--no-comments", dest="comments", help="don't output any comments", action="store_false")
+    group4.add_argument("--no-tables", dest="tables", help="don't output any table elements", action="store_false")
     group4.add_argument(
         "--only-with-metadata", help="only output those documents with title, URL and date", action="store_true"
     )
@@ -136,12 +145,23 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     return parser
 
 
+def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> None:
+    "Catch cross-group incompatibilities that argparse cannot express."
+    if args.keep_dirs and not args.output_dir:
+        parser.error("--keep-dirs requires an output directory (-o/--output-dir)")
+    if args.list:
+        ignored = sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o))
+        if ignored:
+            LOGGER.warning("--list only prints URLs; these options are ignored: %s", ", ".join(ignored))
+
+
 def parse_args(args: list[str]) -> argparse.Namespace:
     """Define parser for command-line arguments"""
     parser = argparse.ArgumentParser(description="Command-line interface for Trafilatura")
     parser = add_args(parser)
-    # wrap in mapping to prevent invalid input
-    return map_args(parser.parse_args())
+    parsed = map_args(parser.parse_args(args))
+    _validate_args(parser, parsed)
+    return parsed
 
 
 def map_args(args: argparse.Namespace) -> argparse.Namespace:

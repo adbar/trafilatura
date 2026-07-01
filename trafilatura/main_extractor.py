@@ -460,9 +460,9 @@ def _fill_cell(
             continue
         if child.tag in TABLE_ELEMS:  # stray cell from malformed HTML
             child.tag = "cell"
-            processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
+            processed_subchild = handle_textnode(child, options, preserve_spaces=True)
         elif child.tag in _INLINE_WRAP_TAGS:
-            processed_subchild = handle_textnode(child, options, preserve_spaces=True, comments_fix=True)
+            processed_subchild = handle_textnode(child, options, preserve_spaces=True)
             # handle_textnode drops inline wrappers (ref/hi/del) with children but no direct
             # text (e.g. <ref><hi>link text</hi></ref>); carry the subtree directly instead
             if processed_subchild is None and len(child) > 0:

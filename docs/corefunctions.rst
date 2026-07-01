@@ -45,6 +45,11 @@ Extraction
 
 .. autofunction:: trafilatura.extract_metadata
 
+``extract_with_metadata()``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: trafilatura.extract_with_metadata
+
 ``extract_comments()``
 ~~~~~~~~~~~~~~~~~~~~~~
 
