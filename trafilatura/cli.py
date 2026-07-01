@@ -21,8 +21,6 @@ from .cli_utils import (
 )
 from .settings import PARALLEL_CORES, SUPPORTED_FMT_CLI
 
-LOGGER = logging.getLogger(__name__)
-
 # options that --list neither downloads nor extracts, hence ignores
 _LIST_IGNORED_OPTS = {
     "fast",
@@ -163,7 +161,8 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
     if args.list:
         ignored = sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o))
         if ignored:
-            LOGGER.warning("--list only prints URLs; these options are ignored: %s", ", ".join(ignored))
+            # emitted before logging is configured, so print directly
+            print(f"--list only prints URLs; these options are ignored: {', '.join(ignored)}", file=sys.stderr)
 
 
 def parse_args(args: list[str]) -> argparse.Namespace:
@@ -195,10 +194,8 @@ def process_args(args: argparse.Namespace) -> None:
     """Perform the actual processing according to the arguments"""
     exit_code = 0
 
-    if args.verbose == 1:
-        logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
-    elif args.verbose >= 2:
-        logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    level = logging.DEBUG if args.verbose >= 2 else logging.INFO if args.verbose == 1 else logging.WARNING
+    logging.basicConfig(stream=sys.stderr, level=level)
 
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)

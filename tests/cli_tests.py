@@ -124,12 +124,12 @@ def test_keep_dirs_requires_output_dir():
         cli.parse_args(["--keep-dirs"])
 
 
-def test_list_ignores_extraction_opts(caplog):
+def test_list_ignores_extraction_opts(capsys):
     "--list warns about extraction/format options that have no effect in list mode."
-    with caplog.at_level(logging.WARNING, logger="trafilatura.cli"):
-        cli.parse_args(["--list", "--json"])
-    assert "--list only prints URLs" in caplog.text
-    assert "output_format" in caplog.text
+    cli.parse_args(["--list", "--json"])
+    err = capsys.readouterr().err
+    assert "--list only prints URLs" in err
+    assert "output_format" in err
 
 
 def test_args_to_extractor_kwargs():
