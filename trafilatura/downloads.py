@@ -366,7 +366,7 @@ def is_live_page(url: str) -> bool:
 def add_to_compressed_dict(
     inputlist: list[str],
     blacklist: set[str] | None = None,
-    url_filter: str | None = None,
+    url_filter: list[str] | None = None,
     url_store: UrlStore | None = None,
     compression: bool = False,
     verbose: bool = False,
@@ -401,7 +401,7 @@ def _buffered_downloads(
     bufferlist: list[str],
     download_threads: int,
     worker: Callable[[str], Any],
-    chunksize: int = 10000,
+    chunksize: int = 10000,  # max URLs materialized per batch (bounds in-flight futures)
 ) -> Generator[tuple[str, Any], None, None]:
     "Use a thread pool to perform a series of downloads."
     with ThreadPoolExecutor(max_workers=download_threads) as executor:

@@ -34,35 +34,31 @@ settings.MAX_FILES_PER_DIRECTORY = 1
 def test_parser():
     """test argument parsing for the command-line interface"""
     testargs = ["", "-fvv", "--xmltei", "--no-tables", "-u", "https://www.example.org"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert args.fast is True
     assert args.verbose == 2
-    assert args.no_tables is False
+    assert args.tables is False
     assert args.xmltei is True
     assert args.URL == "https://www.example.org"
     args = cli.map_args(args)
     assert args.output_format == "xmltei"
     testargs = ["", "--output-format", "csv", "--no-tables", "-u", "https://www.example.org"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert args.fast is False
     assert args.verbose == 0
     assert args.output_format == "csv"
-    assert args.no_tables is False
+    assert args.tables is False
     # test args mapping
     testargs = ["", "--markdown"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     args = cli.map_args(args)
     assert args.output_format == "markdown"
-    testargs = ["", "--xml", "--no-comments", "--precision", "--recall"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    # precision + recall accepted at parse time; Extractor warns and recall wins
+    args = cli.parse_args(["--xml", "--no-comments", "--precision", "--recall"])
     args = cli.map_args(args)
-    assert args.output_format == "xml" and args.no_comments is False
-    # combination possible (?)
+    assert args.output_format == "xml" and args.comments is False
     assert args.precision is True and args.recall is True
+    assert settings.args_to_extractor(args).focus == "recall"
     args.xml, args.csv = False, True
     args = cli.map_args(args)
     assert args.output_format == "csv"
@@ -70,8 +66,7 @@ def test_parser():
     args = cli.map_args(args)
     assert args.output_format == "json"
     testargs = ["", "--only-with-metadata"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     args = cli.map_args(args)
     assert args.only_with_metadata is True
     # process_args
@@ -90,8 +85,7 @@ def test_parser():
         "test2",
         "-vvv",
     ]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert args.input_file == "resources/list-discard.txt"
     assert args.url_filter == ["test1", "test2"]
     args.input_file = path.join(RESOURCES_DIR, "list-discard.txt")
@@ -102,8 +96,7 @@ def test_parser():
     assert len(f.getvalue()) == 0
     # input directory
     testargs = ["", "--input-dir", "resources/test/"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -111,11 +104,43 @@ def test_parser():
     # version
     testargs = ["", "--version"]
     with pytest.raises(SystemExit) as e, redirect_stdout(f):
-        with patch.object(sys, "argv", testargs):
-            args = cli.parse_args(testargs)
+        args = cli.parse_args(testargs[1:])
     assert e.type is SystemExit
     assert e.value.code == 0
     assert re.match(r"Trafilatura [0-9]\.[0-9]+\.[0-9] - Python [0-9]\.[0-9]+\.[0-9]", f.getvalue())
+
+
+def test_parse_args_honors_argument():
+    "Regression: parse_args must parse its argument list, not sys.argv."
+    # no sys.argv patching: the old code ignored the parameter and read sys.argv
+    args = cli.parse_args(["--xml", "-u", "https://example.org"])
+    assert args.xml is True
+    assert args.URL == "https://example.org"
+
+
+def test_keep_dirs_requires_output_dir():
+    "--keep-dirs without -o must exit with an error."
+    with pytest.raises(SystemExit):
+        cli.parse_args(["--keep-dirs"])
+
+
+def test_list_ignores_extraction_opts(capsys):
+    "--list warns about extraction/format options that have no effect in list mode."
+    cli.parse_args(["--list", "--json"])
+    err = capsys.readouterr().err
+    assert "--list only prints URLs" in err
+    assert "output_format" in err
+
+
+def test_args_to_extractor_kwargs():
+    "args_to_extractor must propagate fast, images, links, comments, tables to Extractor."
+    args = cli.parse_args(["--fast", "--images", "--links", "--no-comments", "--no-tables"])
+    options = settings.args_to_extractor(args)
+    assert options.fast is True
+    assert options.images is True
+    assert options.links is True
+    assert options.comments is False
+    assert options.tables is False
 
 
 def test_climain(capfd):
@@ -156,8 +181,7 @@ def test_input_type():
     with patch.object(sys, "argv", testargs):
         assert cli.main() is None
     testargs = ["", "-v"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(testfile, "rb") as f:
         teststring = f.read(1024)
     assert cli.examine(teststring, args) is None
@@ -173,8 +197,7 @@ def test_input_type():
 def test_cli_stdin():
     "Input read directly from STDIN when no URL/file/dir is given."
     testargs = ["", "-v"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     html = b"<html><body><article>" + b"<p>Piped paragraph content.</p>" * 5 + b"</article></body></html>"
     f = io.StringIO()
     with patch("sys.stdin") as mock_stdin, redirect_stdout(f):
@@ -186,8 +209,7 @@ def test_cli_stdin():
 def test_cli_examine_error(monkeypatch, capsys):
     "examine() swallows extraction errors and reports them on stderr."
     testargs = ["", "-v"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
 
     def _boom(*args, **kwargs):
         raise RuntimeError("kaboom")
@@ -201,8 +223,7 @@ def test_cli_examine_error(monkeypatch, capsys):
 def test_sysoutput():
     """test command-line output with respect to CLI arguments"""
     testargs = ["", "--csv", "-o", "/root/forbidden/"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, "")
     assert len(filepath) >= 10 and filepath.endswith(".csv")
     assert destdir == "/root/forbidden/"
@@ -212,8 +233,7 @@ def test_sysoutput():
     else:
         assert cli_utils.check_outputdir_status(args.output_dir) is True
     testargs = ["", "--xml", "-o", "/tmp/you-touch-my-tralala"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert cli_utils.check_outputdir_status(args.output_dir) is True
     # test fileslug for name
     filepath, destdir = cli_utils.determine_output_path(args, args.output_dir, "", new_filename="AAZZ")
@@ -233,8 +253,7 @@ def test_sysoutput():
         assert cli_utils.determine_counter_dir("testdir", 0) == "testdir\\1"
     # test file writing
     testargs = ["", "--markdown", "-o", "/dev/null/", "-b", "/dev/null/"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     result = "DADIDA"
     cli_utils.write_result(result, args)
     args.output_dir = gettempdir()
@@ -252,8 +271,7 @@ def test_sysoutput():
 
     # test keeping dir structure
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     filepath, destdir = cli_utils.determine_output_path(args, "testfile.txt", "")
     assert filepath == "test/testfile.txt"
     # test hash as output file name
@@ -270,8 +288,7 @@ def test_download():
     assert cli_utils._define_exit_code(["a"], 2) == 1
 
     testargs = ["", "-v"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert cli.examine(None, args) is None
     assert cli.examine(" ", args) is None
     assert cli.examine("0" * int(10e7), args) is None
@@ -281,8 +298,7 @@ def test_download():
     assert cli.examine(teststring, args, url) is not None
     # test exit code for faulty URLs
     testargs = ["", "-u", "https://1234.yz/"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with pytest.raises(SystemExit) as e:
         cli.process_args(args)
     assert e.type is SystemExit and e.value.code == 126
@@ -296,14 +312,12 @@ def test_cli_pipeline():
 
     # test URL listing
     testargs = ["", "--list"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert cli_utils.url_processing_pipeline(args, UrlStore()) == 0
 
     # test inputlist + blacklist
     testargs = ["", "-i", path.join(RESOURCES_DIR, "list-process.txt")]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     my_urls = cli_utils.load_input_urls(args)
     assert my_urls is not None and len(my_urls) == 3
     testargs = [
@@ -314,8 +328,7 @@ def test_cli_pipeline():
         path.join(RESOURCES_DIR, "list-discard.txt"),
         "--archived",
     ]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     assert args.blacklist is not None
     # test backoff between domain requests
     url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
@@ -330,26 +343,22 @@ def test_cli_pipeline():
     cli_utils.url_processing_pipeline(args, url_store)
     # test backup
     testargs = ["", "--backup-dir", "/tmp/"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     cli_utils.archive_html("00Test", args)
     # test date-based exclusion
     testargs = ["", "--output-format", "xml", "--only-with-metadata"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     testargs = ["", "--output-format", "xml", "--only-with-metadata", "--precision"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     # test JSON output
     testargs = ["", "--output-format", "json", "--recall"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
@@ -362,24 +371,21 @@ def test_cli_pipeline():
         "--parallel",
         "1",
     ]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
     assert f.getvalue().strip().endswith("https://www.sitemaps.org/zh_TW/terms.html")
     # CLI options
     testargs = ["", "--links", "--images"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(path.join(RESOURCES_DIR, "http_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     result = cli.examine(teststring, args)
     assert "[link](testlink.html)" in result and "test.jpg" in result
     # HTML format as option
     testargs = ["", "--html"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     result = cli.examine(teststring, args)
     assert result.startswith("<html") and result.endswith("</html>")
 
@@ -391,8 +397,7 @@ def test_file_processing():
 
     # dry-run file processing pipeline
     testargs = ["", "--parallel", "1", "--input-dir", "/dev/null"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     cli_utils.file_processing_pipeline(args)
     # file processing pipeline on resources/
     args.input_dir = RESOURCES_DIR
@@ -411,8 +416,7 @@ def test_file_processing():
 def test_cli_config_file():
     "Test if the configuration file is loaded correctly from the CLI."
     testargs = ["", "--input-dir", "/dev/null", "--config-file", "newsettings.cfg"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     with open(path.join(RESOURCES_DIR, "httpbin_sample.html"), "r", encoding="utf-8") as f:
         teststring = f.read()
     args.config_file = path.join(RESOURCES_DIR, args.config_file)
@@ -423,8 +427,7 @@ def test_cli_config_file():
 def test_input_filtering():
     """test internal functions to filter urls"""
     testargs = [""]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
 
     # load dictionary
     args.input_file = path.join(RESOURCES_DIR, "list-process.txt")
@@ -497,18 +500,15 @@ def test_crawling():
     "Test crawling and exploration functions."
 
     testargs = ["", "--crawl", ""]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     cli_utils.cli_crawler(args)
 
     testargs = ["", "--crawl", " "]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     cli_utils.cli_crawler(args)
 
     testargs = ["", "--crawl", "https://httpbun.com/html"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -524,8 +524,7 @@ def test_crawling():
         "--parallel",
         "1",
     ]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
@@ -546,8 +545,7 @@ def test_crawling():
 
     # Exploration (Sitemap + Crawl)
     testargs = ["", "--explore", "https://httpbun.com/html", "--list"]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -559,8 +557,7 @@ def test_probing():
     url = "https://example.org/"
     conf = path.join(RESOURCES_DIR, "zerolength.cfg")
     testargs = ["", "--probe", url, "--target-language", "de", "--config-file", conf]
-    with patch.object(sys, "argv", testargs):
-        args = cli.parse_args(testargs)
+    args = cli.parse_args(testargs[1:])
 
     f = io.StringIO()
     with redirect_stdout(f):

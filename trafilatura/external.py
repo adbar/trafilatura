@@ -173,8 +173,8 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     if options.links is False:
         strip_tags(cleaned_tree, "a")
     strip_tags(cleaned_tree, "span")
-    # 2. convert
-    cleaned_tree = convert_tags(cleaned_tree, options)
+    # 2. convert (pass url so relative links are absolutized on the fallback path)
+    cleaned_tree = convert_tags(cleaned_tree, options, options.url)
     # Mark first <th>-containing row per parent group as head (mirrors handle_table logic).
     # Groups by direct parent (the enclosing table once tbody/thead/tfoot are stripped upstream);
     # nested tables form their own group.

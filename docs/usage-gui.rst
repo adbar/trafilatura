@@ -1,9 +1,13 @@
 Graphical user interface
 ========================
 
-For users who prefer a visual interface over writing scripts or typing commands, a graphical user interface (GUI) is the recommended option.
+.. deprecated:: 2.0
 
-Note that the GUI was a feature in Trafilatura until version 1.8.1, but it is currently available in a limited capacity and is no longer actively being developed. Get in touch if you are interested in working towards a more robust or feature-complete version.
+    The graphical user interface has been removed. Use the :doc:`command-line interface <usage-cli>` instead.
+
+For users who prefer a visual interface over writing scripts or typing commands, a graphical user interface (GUI) was offered.
+
+The GUI was a feature in Trafilatura until version 1.8.1 and is no longer available. Get in touch if you are interested in working towards a more robust or feature-complete version.
 
 If installation fails, usage on the command-line is recommended.
 

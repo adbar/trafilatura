@@ -19,6 +19,7 @@ from trafilatura.feeds import (
     find_feed_urls,
     handle_link_list,
     probe_gnews,
+    try_homepage,
 )
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -304,6 +305,19 @@ def test_feeds_helpers():
         "de",
     )
     assert probe_gnews(params, None) == ["https://www.handelsblatt.com/article-1"]
+
+
+def test_try_homepage_forwards_args():
+    "Regression: try_homepage must forward external and sleep_time, not reset them."
+    captured = {}
+
+    def _capture(url, target_lang, external, sleep_time):
+        captured.update(url=url, target_lang=target_lang, external=external, sleep_time=sleep_time)
+        return []
+
+    with patch("trafilatura.feeds.find_feed_urls", _capture):
+        try_homepage("https://example.org", "en", external=True, sleep_time=9.0)
+    assert captured == {"url": "https://example.org", "target_lang": "en", "external": True, "sleep_time": 9.0}
 
 
 def test_cli_behavior():

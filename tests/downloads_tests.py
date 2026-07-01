@@ -322,14 +322,12 @@ def test_queue():
     # CLI args
     url_store = add_to_compressed_dict(["https://www.example.org/"])
     testargs = ["", "--list"]
-    with patch.object(sys, "argv", testargs):
-        args = parse_args(testargs)
+    args = parse_args(testargs[1:])
     assert url_processing_pipeline(args, url_store) == 0
 
     # single/multiprocessing
     testargs = ["", "-v"]
-    with patch.object(sys, "argv", testargs):
-        args = parse_args(testargs)
+    args = parse_args(testargs[1:])
     inputurls = [f"https://httpbun.com/status/{i}" for i in (301, 304, 200, 300, 400, 505)]
     url_store = add_to_compressed_dict(inputurls)
     args.archived = True

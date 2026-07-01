@@ -192,7 +192,7 @@ def bare_extraction(
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
-            (present in XML format, converted to markdown otherwise).
+            (kept in XML, rendered as markdown for text formats; ignored for JSON).
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
@@ -212,6 +212,9 @@ def bare_extraction(
 
     Raises:
         ValueError: Extraction problem.
+
+    Note:
+        Low-level primitive: returns a Document with an unserialized .body tree; tei_validation only applies when serializing via extract().
     """
 
     # deprecations: stacklevel=3 → user → bare_extraction → _check_deprecation
@@ -409,7 +412,7 @@ def extract(
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
-            (only valuable if output_format is set to XML).
+            (kept in XML, rendered as markdown for text formats; ignored for JSON).
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
@@ -502,7 +505,7 @@ def extract_with_metadata(
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
-            (only valuable if output_format is set to XML).
+            (kept in XML, rendered as markdown for text formats; ignored for JSON).
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().

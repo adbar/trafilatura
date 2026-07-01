@@ -39,7 +39,7 @@ The functions can be imported using ``from trafilatura import ...`` and used on 
 Main text extraction, good balance between precision and recall:
 
 - ``extract``: Wrapper function, easiest way to perform text extraction and conversion
-- ``bare_extraction``: Internal function returning bare Python variables
+- ``bare_extraction``: Returns a ``Document`` object with extracted text, comments, and metadata as attributes
 
 Additional fallback functions:
 
@@ -76,7 +76,7 @@ Examples
     >>> extract(downloaded, output_format="json", with_metadata=True)
 
 
-Note that combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format (plain text with additional elements).
+Note that combining TXT and CSV formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format (plain text with additional elements). ``include_formatting`` has no effect on JSON output.
 
 
 
@@ -332,7 +332,7 @@ Python objects as output
 
 The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
+The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object containing metadata as attributes and the extracted body and comments as LXML elements. Call ``.as_dict()`` on the result to get a plain dictionary.
 
 .. code-block:: python
 
@@ -427,6 +427,8 @@ The function ``find_feed_urls`` is a all-in-one utility that attempts to discove
 
 An optional argument ``target_lang`` makes it possible to filter links according to their expected target language. A series of heuristics are applied on the link path and parameters to try to discard unwanted URLs, thus saving processing time and download bandwidth.
 
+An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
+
 
 .. code-block:: python
 
@@ -464,6 +466,8 @@ Sitemaps
     >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
 
 The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
+
+An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
 
 
 Web crawling
