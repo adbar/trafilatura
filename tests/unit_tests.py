@@ -774,9 +774,7 @@ def test_external(options):
 
 def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
-    doc = html.fromstring(
-        '<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>"
-    )
+    doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
     options = core.Extractor(url="https://www.example.org", links=True)
     tree, _, _ = sanitize_tree(doc, options)
     targets = [elem.get("target") for elem in tree.iter("ref")]

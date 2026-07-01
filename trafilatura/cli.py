@@ -25,9 +25,20 @@ LOGGER = logging.getLogger(__name__)
 
 # options that --list neither downloads nor extracts, hence ignores
 _LIST_IGNORED_OPTS = {
-    "fast", "formatting", "precision", "recall", "images", "links",
-    "with_metadata", "only_with_metadata", "comments", "tables",
-    "deduplicate", "output_format", "archived", "backup_dir",
+    "fast",
+    "formatting",
+    "precision",
+    "recall",
+    "images",
+    "links",
+    "with_metadata",
+    "only_with_metadata",
+    "comments",
+    "tables",
+    "deduplicate",
+    "output_format",
+    "archived",
+    "backup_dir",
 }
 
 # fix output encoding on some systems
