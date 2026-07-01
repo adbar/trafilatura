@@ -3,6 +3,7 @@
 Extraction configuration and processing functions.
 """
 
+import json
 import logging
 import warnings
 from configparser import ConfigParser
@@ -38,6 +39,28 @@ from .xpaths import REMOVE_COMMENTS_XPATH
 LOGGER = logging.getLogger(__name__)
 
 TXT_FORMATS = {"markdown", "txt"}
+
+# Metadata is emitted as a YAML-style Markdown header; values such as a title
+# containing ": " (or a leading indicator, or a reserved word) otherwise produce
+# invalid YAML or get reinterpreted as a non-string. See GH #814.
+_YAML_RESERVED = frozenset({"true", "false", "yes", "no", "on", "off", "y", "n", "null", "none", "~"})
+
+
+def _yaml_scalar(value: str) -> str:
+    "Render a metadata string as a plain or double-quoted YAML-safe scalar."
+    if (
+        value
+        and value == value.strip()
+        and value[0].isalpha()
+        and ": " not in value
+        and " #" not in value
+        and not value.endswith(":")
+        and value.lower() not in _YAML_RESERVED
+        and all(ch >= " " and ch != "\x7f" for ch in value)
+    ):
+        return value
+    # a JSON string is always a valid, exactly round-tripping YAML double-quoted scalar
+    return json.dumps(value, ensure_ascii=False)
 
 
 def determine_returnstring(document: Document, options: Extractor) -> str:
@@ -80,8 +103,13 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
                 "id",
                 "license",
             ):
-                if getattr(document, attr):
-                    header += f"{attr}: {str(getattr(document, attr))}\n"
+                value = getattr(document, attr)
+                if value:
+                    # quote scalar strings when needed; categories/tags are lists
+                    # rendered as their (already valid) flow-sequence repr
+                    if isinstance(value, str):
+                        value = _yaml_scalar(value)
+                    header += f"{attr}: {value}\n"
             header += "---\n"
         else:
             header = ""
