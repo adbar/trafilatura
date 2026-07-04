@@ -394,7 +394,14 @@ def _md_link(text: str, url: str | None, image: bool = False) -> str:
     prefix = "!" if image else ""
     if url is None:
         return f"{prefix}[{esc}]"
-    safe = f"<{url}>" if any(c in url for c in " <>()") else url
+    if any(c in url for c in " <>()"):
+        # angle-bracket destination: backslash-escape \, < and > so a literal
+        # bracket in the URL does not terminate the destination early (a bare '>'
+        # silently truncated the target, a bare '<' voided the link entirely)
+        inner = url.replace("\\", "\\\\").replace("<", "\\<").replace(">", "\\>")
+        safe = f"<{inner}>"
+    else:
+        safe = url
     return f"{prefix}[{esc}]({safe})"
 
 

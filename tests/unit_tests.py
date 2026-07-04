@@ -2541,6 +2541,52 @@ def test_markdown_escaping():
     assert xml.xmltotxt(etree.fromstring(struck_img), True).strip() == "~~x ![A](i.jpg) y~~"
 
 
+def test_markdown_link_angle_bracket_targets():
+    "A '<' or '>' in a link/image target must stay inside the angle-bracket destination."
+    # each URL forces the angle-bracket form (space/paren/</>) and must round-trip:
+    # a bare '>' used to end the destination early (truncated URL), '<' voided the link
+    cases = {
+        "http://x.com/a>b": "[t](<http://x.com/a\\>b>)",
+        "http://x.com/a<b": "[t](<http://x.com/a\\<b>)",
+        "http://x.com/a<b>c": "[t](<http://x.com/a\\<b\\>c>)",
+        "http://x.com/a b>c": "[t](<http://x.com/a b\\>c>)",
+        # brackets at the very edge (abutting the < > delimiters) must still escape
+        "http://x.com/end>": "[t](<http://x.com/end\\>>)",
+        "<start.example/p": "[t](<\\<start.example/p>)",
+        # a backslash already in the URL is itself escaped so it stays literal
+        "http://x.com/a\\>b": "[t](<http://x.com/a\\\\\\>b>)",
+        # consecutive brackets each pick up their own backslash
+        "http://x.com/a>>b": "[t](<http://x.com/a\\>\\>b>)",
+        # brackets abutting the opening/closing angle delimiter still escape
+        ">x.com/p": "[t](<\\>x.com/p>)",
+        "http://x.com/<>": "[t](<http://x.com/\\<\\>>)",
+        # targets that were already correct keep their previous minimal form
+        "http://x.com/a b/c": "[t](<http://x.com/a b/c>)",
+        "http://x.com/a(b)": "[t](<http://x.com/a(b)>)",
+        "http://x.com/a)b(c": "[t](<http://x.com/a)b(c>)",
+        # a single unbalanced paren forces the wrap but needs no character escaping
+        "http://x.com/a(b": "[t](<http://x.com/a(b>)",
+        "http://x.com/plain": "[t](http://x.com/plain)",
+    }
+    for target, expected in cases.items():
+        assert xml._md_link("t", target) == expected
+        # images share the destination handling, only gaining a '!' prefix
+        assert xml._md_link("t", target, image=True) == f"!{expected}"
+
+    # a missing target degrades to plain bracketed text (no destination at all)
+    assert xml._md_link("t", None) == "[t]"
+    assert xml._md_link("t", None, image=True) == "![t]"
+
+    # text-side escaping (brackets) and target escaping compose independently
+    assert xml._md_link("a[b]c", "http://x.com/p>q") == "[a\\[b\\]c](<http://x.com/p\\>q>)"
+
+    # end-to-end through xmltotxt: '>' and '<' arrive as entities in the attribute
+    gt = b'<body><p><ref target="http://x.com/a&gt;b">t</ref></p></body>'
+    assert xml.xmltotxt(etree.fromstring(gt), True).strip() == "[t](<http://x.com/a\\>b>)"
+    lt = b'<body><graphic src="http://x.com/a&lt;b" alt="A"/></body>'
+    assert xml.xmltotxt(etree.fromstring(lt), True).strip() == "![A](<http://x.com/a\\<b>)"
+
+
 def test_xmltotxt_no_mutation():
     "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
     tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
