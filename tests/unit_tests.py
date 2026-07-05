@@ -2689,6 +2689,34 @@ def test_config_loading():
     assert options.min_output_size == use_config().getint("DEFAULT", "MIN_OUTPUT_SIZE")
 
 
+def test_settings_element_lists():
+    "Modifying MANUALLY_CLEANED/MANUALLY_STRIPPED in place affects extraction (issue #746)."
+    from trafilatura.settings import MANUALLY_CLEANED
+
+    html = (
+        "<html><body><div>"
+        "<p>Alpha paragraph number one with more than enough length to be considered real body content.</p>"
+        "<blockquote>Quoted block of text which is normally retained within the trafilatura extraction output.</blockquote>"
+        "<p>Beta paragraph number two also with more than enough length to be treated as real body content.</p>"
+        "<p>Gamma paragraph number three providing extra padding for the document body content section here.</p>"
+        "<p>Delta paragraph number four keeping the extracted text comfortably above the minimum size limit.</p>"
+        "</div></body></html>"
+    )
+
+    # by default the blockquote and its content are part of the output
+    assert "Quoted block" in extract(html, fast=True)
+
+    # documented usage: an in-place change discards the element and its content
+    MANUALLY_CLEANED.append("blockquote")
+    try:
+        assert "Quoted block" not in extract(html, fast=True)
+    finally:
+        MANUALLY_CLEANED.remove("blockquote")
+
+    # restoring the list restores the default behavior
+    assert "Quoted block" in extract(html, fast=True)
+
+
 def test_is_probably_readerable():
     """
     Test is_probably_readerable function.
