@@ -26,19 +26,19 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def test_clean_title():
-    '''Test the clean_title helper function'''
+    """Test the clean_title helper function"""
     # prefer the part without dots (article title vs domain)
-    assert clean_title('Article Title - example.com') == 'Article Title'
-    assert clean_title('example.com - Article Title') == 'Article Title'
-    assert clean_title('Article Title | site.org') == 'Article Title'
-    assert clean_title('news.site.com - Article Title') == 'Article Title'
+    assert clean_title("Article Title - example.com") == "Article Title"
+    assert clean_title("example.com - Article Title") == "Article Title"
+    assert clean_title("Article Title | site.org") == "Article Title"
+    assert clean_title("news.site.com - Article Title") == "Article Title"
     # when both parts have no dots, returns the first part
-    assert clean_title('Article Title - Site Name') == 'Article Title'
-    assert clean_title('Site Name - Article Title') == 'Site Name'
+    assert clean_title("Article Title - Site Name") == "Article Title"
+    assert clean_title("Site Name - Article Title") == "Site Name"
     # no separator - return as is
-    assert clean_title('Simple Title') == 'Simple Title'
+    assert clean_title("Simple Title") == "Simple Title"
     # empty or whitespace
-    assert clean_title('') == ''
+    assert clean_title("") == ""
 
 
 def test_titles():
@@ -92,26 +92,38 @@ def test_titles():
     assert metadata.title == "My Title"  # TODO: and metadata.sitename == "My Website"
 
     # test that og:title gets cleaned of site name suffix
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Article Title - Site Name"/></head><body></body></html>')
-    assert metadata.title == 'Article Title'
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Article Title | example.com"/></head><body></body></html>')
-    assert metadata.title == 'Article Title'
+    metadata = extract_metadata(
+        '<html><head><meta property="og:title" content="Article Title - Site Name"/></head><body></body></html>'
+    )
+    assert metadata.title == "Article Title"
+    metadata = extract_metadata(
+        '<html><head><meta property="og:title" content="Article Title | example.com"/></head><body></body></html>'
+    )
+    assert metadata.title == "Article Title"
 
     # test that twitter:title gets cleaned
-    metadata = extract_metadata('<html><head><meta name="twitter:title" content="Article Title - Site Name"/></head><body></body></html>')
-    assert metadata.title == 'Article Title'
+    metadata = extract_metadata(
+        '<html><head><meta name="twitter:title" content="Article Title - Site Name"/></head><body></body></html>'
+    )
+    assert metadata.title == "Article Title"
 
     # test that meta name title gets cleaned
-    metadata = extract_metadata('<html><head><meta name="title" content="Article Title | My Website"/></head><body></body></html>')
-    assert metadata.title == 'Article Title'
+    metadata = extract_metadata(
+        '<html><head><meta name="title" content="Article Title | My Website"/></head><body></body></html>'
+    )
+    assert metadata.title == "Article Title"
 
     # test that itemprop headline gets cleaned
-    metadata = extract_metadata('<html><head><meta itemprop="headline" content="Article Title - News Site"/></head><body></body></html>')
-    assert metadata.title == 'Article Title'
+    metadata = extract_metadata(
+        '<html><head><meta itemprop="headline" content="Article Title - News Site"/></head><body></body></html>'
+    )
+    assert metadata.title == "Article Title"
 
     # test og:title without separator is preserved
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Simple Article Title"/></head><body></body></html>')
-    assert metadata.title == 'Simple Article Title'
+    metadata = extract_metadata(
+        '<html><head><meta property="og:title" content="Simple Article Title"/></head><body></body></html>'
+    )
+    assert metadata.title == "Simple Article Title"
 
 
 def test_author_blacklist():
