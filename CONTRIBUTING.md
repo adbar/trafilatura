@@ -29,10 +29,11 @@ Here is how you can run the tests and code quality checks. Pull requests will on
 - Install the necessary packages with `pip install trafilatura[dev]`
 - Run `pytest` from trafilatura's directory, or select a particular test suite, for example `realworld_tests.py`, and run `pytest realworld_tests.py` or simply `python3 realworld_tests.py`
 - Run `mypy` on the directory: `mypy trafilatura/`
+- Lint and format the code with `ruff`: `ruff check .` + `ruff format trafilatura tests`
 
 If you work on text extraction it is useful to check if performance is equal or better on the benchmark.
 
-See the [tests Readme](tests/README.rst) for more information.
+See the [tests Readme](tests/README.rst) and the testing page in the documentation for more information.
 
 
 For further questions you can use [GitHub issues](https://github.com/adbar/trafilatura/issues) and discussion pages, or [E-Mail](https://adrien.barbaresi.eu/).

@@ -4,25 +4,22 @@ Functions to process nodes in HTML code.
 """
 
 import logging
-
 from copy import deepcopy
-from typing import List, Optional, Tuple
 
 from courlan.urlutils import fix_relative_urls, get_base_url
-from lxml.etree import _Element, Element, SubElement, XPath, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
 from .settings import (
-    Document,
-    Extractor,
     CUT_EMPTY_ELEMS,
     MANUALLY_CLEANED,
     MANUALLY_STRIPPED,
+    Document,
+    Extractor,
 )
-from .utils import textfilter, trim, is_image_element
+from .utils import is_image_element, textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,7 +41,7 @@ HTML_TAG_MAPPING = {v: k for k, v in REND_TAG_MAPPING.items()}
 
 PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
-CODE_INDICATORS = ["{", "(\"", "('", "\n    "]
+CODE_INDICATORS = ["{", '("', "('", "\n    "]
 
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
@@ -56,6 +53,9 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     else:
         # prevent this issue: https://github.com/adbar/trafilatura/issues/301
         for elem in tree.xpath(".//figure[descendant::table]"):
+            elem.tag = "div"
+        # ARIA layout tables (role=presentation/none explicitly marks a non-data table)
+        for elem in tree.xpath('.//table[@role="presentation" or @role="none"]'):
             elem.tag = "div"
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
@@ -92,9 +92,7 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
     return tree
 
 
-def prune_unwanted_nodes(
-    tree: HtmlElement, nodelist: List[XPath], with_backup: bool = False
-) -> HtmlElement:
+def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
     if with_backup:
         old_len = len(tree.text_content())  # ' '.join(tree.itertext())
@@ -115,24 +113,25 @@ def prune_unwanted_nodes(
 
 
 def collect_link_info(
-    links_xpath: List[HtmlElement],
-) -> Tuple[int, int, int, List[str]]:
+    links_xpath: list[HtmlElement],
+) -> tuple[int, int, int, list[str]]:
     "Collect heuristics on link text"
     mylist = [e for e in (trim(elem.text_content()) for elem in links_xpath) if e]
     lengths = list(map(len, mylist))
     # longer strings impact recall in favor of precision
-    shortelems = sum(1 for l in lengths if l < 10)
+    shortelems = sum(1 for length in lengths if length < 10)
     return sum(lengths), len(mylist), shortelems, mylist
 
 
-def link_density_test(
-    element: HtmlElement, text: str, favor_precision: bool = False
-) -> Tuple[bool, List[str]]:
+def link_density_test(element: HtmlElement, text: str, favor_precision: bool = False) -> tuple[bool, list[str]]:
     "Remove sections which are rich in links (probably boilerplate)"
     links_xpath = element.findall(".//ref")
     if not links_xpath:
         return False, []
-    mylist: List[str] = []
+    # preserve image containers
+    if element.find(".//graphic") is not None:
+        return False, []
+    mylist: list[str] = []
     # shortcut
     if len(links_xpath) == 1:
         len_threshold = 10 if favor_precision else 100
@@ -141,13 +140,12 @@ def link_density_test(
             return True, []
     if element.tag == "p":
         limitlen = 60 if element.getnext() is None else 30
+    elif element.getnext() is None:
+        limitlen = 300
+    # elif re.search(r'[.?!:]', element.text_content()):
+    #    limitlen, threshold = 150, 0.66
     else:
-        if element.getnext() is None:
-            limitlen = 300
-        # elif re.search(r'[.?!:]', element.text_content()):
-        #    limitlen, threshold = 150, 0.66
-        else:
-            limitlen = 100
+        limitlen = 100
     elemlen = len(text)
     if elemlen < limitlen:
         linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
@@ -176,10 +174,8 @@ def link_density_test_tables(element: HtmlElement) -> bool:
     if elemlen < 200:
         return False
 
-    linklen, elemnum, _, _ = collect_link_info(links_xpath)
-    if elemnum == 0:
-        return True
-
+    # links with no text (e.g. icon/flag links wrapping images) yield linklen 0 -> not boilerplate
+    linklen, _, _, _ = collect_link_info(links_xpath)
     LOGGER.debug("table link text: %s / total: %s", linklen, elemlen)
     return linklen > 0.8 * elemlen if elemlen < 1000 else linklen > 0.5 * elemlen
 
@@ -199,12 +195,13 @@ def delete_by_link_density(
     for elem in subtree.iter(tagname):
         elemtext = trim(elem.text_content())
         result, templist = link_density_test(elem, elemtext, favor_precision)
-        if result or (
-            backtracking
-            and templist
-            and 0 < len(elemtext) < len_threshold
-            and len(elem) >= depth_threshold
-        ):
+        if result or (backtracking and templist and 0 < len(elemtext) < len_threshold and len(elem) >= depth_threshold):
+            # a paragraph that holds the content of a list item is kept: the
+            # link density of the whole list is checked separately, and
+            # removing it here would leave the item empty (GH #788)
+            parent = elem.getparent()
+            if tagname == "p" and parent is not None and parent.tag in ("item", "td", "th"):
+                continue
             deletions.append(elem)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
@@ -220,7 +217,7 @@ def handle_textnode(
     options: Extractor,
     comments_fix: bool = True,
     preserve_spaces: bool = False,
-) -> Optional[_Element]:
+) -> _Element | None:
     "Convert, format, and probe potential text elements."
     if elem.tag == "graphic" and is_image_element(elem):
         return elem
@@ -252,16 +249,12 @@ def handle_textnode(
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if (
-        not elem.text
-        and textfilter(elem)
-        or (options.dedup and duplicate_test(elem, options))
-    ):
+    if not elem.text and textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
         return None
     return elem
 
 
-def process_node(elem: _Element, options: Extractor) -> Optional[_Element]:
+def process_node(elem: _Element, options: Extractor) -> _Element | None:
     "Convert, format, and probe potential text elements (light format)."
     if elem.tag == "done" or (len(elem) == 0 and not elem.text and not elem.tail):
         return None
@@ -315,14 +308,13 @@ def convert_quotes(elem: _Element) -> None:
             code_flag = True
     elem.tag = "code" if code_flag else "quote"
 
-def _is_code_block(text: Optional[str]) -> bool:
+
+def _is_code_block(text: str | None) -> bool:
     "Check if the element text is part of a code block."
     if not text:
         return False
-    for indicator in CODE_INDICATORS:
-        if indicator in text:
-            return True
-    return False
+    return any(indicator in text for indicator in CODE_INDICATORS)
+
 
 def convert_headings(elem: _Element) -> None:
     "Add head tags and delete attributes."
@@ -372,7 +364,7 @@ CONVERSIONS = {
 }
 
 
-def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
+def convert_link(elem: HtmlElement, base_url: str | None) -> None:
     "Replace link tags and href attributes, delete the rest."
     elem.tag = "ref"
     target = elem.get("href")  # defaults to None
@@ -384,9 +376,7 @@ def convert_link(elem: HtmlElement, base_url: Optional[str]) -> None:
         elem.set("target", target)
 
 
-def convert_tags(
-    tree: HtmlElement, options: Extractor, url: Optional[str] = None
-) -> HtmlElement:
+def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing
     if not options.links:
@@ -404,6 +394,12 @@ def convert_tags(
         for elem in tree.iter("a", "ref"):
             convert_link(elem, base_url)
 
+    # Yoast FAQ blocks: question headers are bold but act as titles (#471)
+    for elem in tree.xpath('.//strong[contains(@class, "schema-faq-question")]'):
+        elem.attrib.clear()
+        elem.set("rend", "h3")
+        elem.tag = "head"
+
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
@@ -419,6 +415,18 @@ def convert_tags(
     if options.images:
         for elem in tree.iter("img"):
             elem.tag = "graphic"
+        # move images out of links to prevent duplication/loss
+        if options.links:
+            for ref in list(tree.iter("ref")):
+                graphics = list(ref.iter("graphic"))
+                # iterate in reverse so addnext preserves original order
+                for graphic in reversed(graphics):
+                    ref.addnext(graphic)
+                # remove ref if it only contained images (no text),
+                # its leftover children (picture, source) would
+                # otherwise trigger justext fallback and lose images
+                if graphics and not ref.text_content().strip():
+                    delete_element(ref)
 
     return tree
 
@@ -430,9 +438,11 @@ HTML_CONVERSIONS = {
     "quote": "blockquote",
     "head": lambda elem: f"h{int(elem.get('rend', 'h3')[1:])}",
     "lb": "br",
-    "img": "graphic",
+    "graphic": "img",
     "ref": "a",
     "hi": lambda elem: HTML_TAG_MAPPING[elem.get("rend", "#i")],
+    "row": "tr",
+    "cell": lambda elem: "th" if elem.get("role") == "head" else "td",
 }
 
 
@@ -448,7 +458,7 @@ def convert_to_html(tree: _Element) -> _Element:
         # handle attributes
         if elem.tag == "a":
             elem.set("href", elem.attrib.pop("target", ""))
-        else:
+        elif elem.tag != "img":  # keep <img> src/alt/title; drop everything else
             elem.attrib.clear()
     tree.tag = "body"
     root = Element("html")

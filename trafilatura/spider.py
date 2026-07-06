@@ -4,10 +4,8 @@ Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
-
 from configparser import ConfigParser
 from time import sleep
-from typing import List, Optional, Tuple
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
@@ -20,18 +18,17 @@ from courlan import (
 )
 
 try:
-    import py3langid  # type: ignore
+    import py3langid
 except ImportError:
     pass
 
 from lxml.etree import XPath, tostring
 
 from .baseline import baseline
-from .htmlprocessing import prune_unwanted_nodes
 from .downloads import Response, fetch_response, fetch_url
+from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
 from .utils import LANGID_FLAG, decode_file, load_html
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -44,24 +41,25 @@ MAX_KNOWN_URLS = 100000
 
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
+
     __slots__ = ["start", "base", "lang", "rules", "ref", "i", "known_num", "is_on", "prune_xpath"]
 
     def __init__(
         self,
         start: str,
-        lang: Optional[str] = None,
-        rules: Optional[RobotFileParser] = None,
-        prune_xpath: Optional[str] = None,
+        lang: str | None = None,
+        rules: RobotFileParser | None = None,
+        prune_xpath: str | None = None,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
         self.ref: str = self._get_reference(start)
-        self.lang: Optional[str] = lang
-        self.rules: Optional[RobotFileParser] = rules or get_rules(self.base)
+        self.lang: str | None = lang
+        self.rules: RobotFileParser | None = rules or get_rules(self.base)
         self.i: int = 0
         self.known_num: int = 0
         self.is_on: bool = True
-        self.prune_xpath: Optional[str] = prune_xpath
+        self.prune_xpath: str | None = prune_xpath
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."
@@ -79,7 +77,7 @@ class CrawlParameters:
         self.is_on = bool(url_store.find_unvisited_urls(self.base))
         self.known_num = len(url_store.find_known_urls(self.base))
 
-    def filter_list(self, todo: Optional[List[str]]) -> List[str]:
+    def filter_list(self, todo: list[str] | None) -> list[str]:
         "Prepare the todo list, excluding invalid URLs."
         if not todo:
             return []
@@ -87,16 +85,10 @@ class CrawlParameters:
 
     def is_valid_link(self, link: str) -> bool:
         "Run checks: robots.txt rules, URL type and crawl breadth."
-        return (
-            (not self.rules or self.rules.can_fetch("*", link))
-            and self.ref in link
-            and not is_not_crawlable(link)
-        )
+        return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
 
 
-def refresh_detection(
-    htmlstring: str, homepage: str
-) -> Tuple[Optional[str], Optional[str]]:
+def refresh_detection(htmlstring: str, homepage: str) -> tuple[str | None, str | None]:
     "Check if there could be a redirection by meta-refresh tag."
     if '"refresh"' not in htmlstring and '"REFRESH"' not in htmlstring:
         return htmlstring, homepage
@@ -107,14 +99,12 @@ def refresh_detection(
 
     # test meta-refresh redirection
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
-    results = html_tree.xpath(
-        './/meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content'
-    )
+    results = html_tree.xpath('.//meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content')
 
     result = results[0] if results else ""
 
     if not result or ";" not in result:
-        logging.info("no redirect found: %s", homepage)
+        LOGGER.info("no redirect found: %s", homepage)
         return htmlstring, homepage
 
     url2 = result.split(";")[1].strip().lower().replace("url=", "")
@@ -125,16 +115,16 @@ def refresh_detection(
     # second fetch
     newhtmlstring = fetch_url(url2)
     if newhtmlstring is None:
-        logging.warning("failed redirect: %s", url2)
+        LOGGER.warning("failed redirect: %s", url2)
         return None, None
     # else:
-    logging.info("successful redirect: %s", url2)
+    LOGGER.info("successful redirect: %s", url2)
     return newhtmlstring, url2
 
 
 def probe_alternative_homepage(
     homepage: str,
-) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+) -> tuple[str | None, str | None, str | None]:
     "Check if the homepage is redirected and return appropriate values."
     response = fetch_response(homepage, decode=False)
     if not response or not response.data:
@@ -142,7 +132,7 @@ def probe_alternative_homepage(
 
     # get redirected URL here?
     if response.url not in (homepage, "/"):
-        logging.info("followed homepage redirect: %s", response.url)
+        LOGGER.info("followed homepage redirect: %s", response.url)
         homepage = response.url
 
     # decode response
@@ -153,11 +143,11 @@ def probe_alternative_homepage(
     if new_homepage is None:  # malformed or malicious content
         return None, None, None
 
-    logging.debug("fetching homepage OK: %s", new_homepage)
+    LOGGER.debug("fetching homepage OK: %s", new_homepage)
     return new_htmlstring, new_homepage, get_base_url(new_homepage)
 
 
-def parse_robots(robots_url: str, data: str) -> Optional[RobotFileParser]:
+def parse_robots(robots_url: str, data: str) -> RobotFileParser | None:
     "Parse a robots.txt file with the standard library urllib.robotparser."
     # https://github.com/python/cpython/blob/main/Lib/urllib/robotparser.py
     rules = RobotFileParser()
@@ -171,14 +161,14 @@ def parse_robots(robots_url: str, data: str) -> Optional[RobotFileParser]:
     return rules
 
 
-def get_rules(base_url: str) -> Optional[RobotFileParser]:
+def get_rules(base_url: str) -> RobotFileParser | None:
     "Attempt to fetch and parse robots.txt file for a given website."
     robots_url = base_url + ROBOTS_TXT_URL
     data = fetch_url(robots_url)
     return parse_robots(robots_url, data) if data else None
 
 
-def is_target_language(htmlstring: str, language: Optional[str]) -> bool:
+def is_target_language(htmlstring: str, language: str | None) -> bool:
     """Run a baseline extraction and use a language detector to
     check if the content matches the target language.
     Return True if language checks are bypassed."""
@@ -189,7 +179,7 @@ def is_target_language(htmlstring: str, language: Optional[str]) -> bool:
     return True
 
 
-def is_still_navigation(todo: List[str]) -> bool:
+def is_still_navigation(todo: list[str]) -> bool:
     """Probe if there are still navigation URLs in the queue."""
     return any(is_navigation_page(url) for url in todo)
 
@@ -197,7 +187,7 @@ def is_still_navigation(todo: List[str]) -> bool:
 def process_links(
     htmlstring: str,
     params: CrawlParameters,
-    url: Optional[str] = "",
+    url: str | None = "",
 ) -> None:
     """Examine the HTML code and process the retrieved internal links.
     Extract and filter new internal links after an optional language check.
@@ -206,11 +196,7 @@ def process_links(
         return
 
     if htmlstring and params.prune_xpath is not None:
-        xpaths = (
-            [params.prune_xpath]
-            if isinstance(params.prune_xpath, str)
-            else params.prune_xpath
-        )
+        xpaths = [params.prune_xpath] if isinstance(params.prune_xpath, str) else params.prune_xpath
         tree = load_html(htmlstring)
         if tree is not None:
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
@@ -236,7 +222,7 @@ def process_links(
 
 
 def process_response(
-    response: Optional[Response],
+    response: Response | None,
     params: CrawlParameters,
 ) -> None:
     """Convert urllib3 response object and extract links."""
@@ -251,11 +237,11 @@ def process_response(
 
 def init_crawl(
     start: str,
-    lang: Optional[str] = None,
-    rules: Optional[RobotFileParser] = None,
-    todo: Optional[List[str]] = None,
-    known: Optional[List[str]] = None,
-    prune_xpath: Optional[str] = None,
+    lang: str | None = None,
+    rules: RobotFileParser | None = None,
+    todo: list[str] | None = None,
+    known: list[str] | None = None,
+    prune_xpath: str | None = None,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
@@ -311,13 +297,13 @@ def focused_crawler(
     homepage: str,
     max_seen_urls: int = MAX_SEEN_URLS,
     max_known_urls: int = MAX_KNOWN_URLS,
-    todo: Optional[List[str]] = None,
-    known_links: Optional[List[str]] = None,
-    lang: Optional[str] = None,
+    todo: list[str] | None = None,
+    known_links: list[str] | None = None,
+    lang: str | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
-    rules: Optional[RobotFileParser] = None,
-    prune_xpath: Optional[str] = None,
-) -> Tuple[List[str], List[str]]:
+    rules: RobotFileParser | None = None,
+    prune_xpath: str | None = None,
+) -> tuple[list[str], list[str]]:
     """Basic crawler targeting pages of interest within a website.
 
     Args:
@@ -338,14 +324,10 @@ def focused_crawler(
     """
     params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath)
 
-    sleep_time = URL_STORE.get_crawl_delay(
-        params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME")
-    )
+    sleep_time = URL_STORE.get_crawl_delay(params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME"))
 
     # visit pages until a limit is reached
-    while (
-        params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls
-    ):
+    while params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls:
         params = crawl_page(params)
         sleep(sleep_time)
 

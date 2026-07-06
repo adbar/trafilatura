@@ -6,7 +6,7 @@ All functions needed to steer and execute downloads of web documents.
 import logging
 import os
 import random
-
+from collections.abc import Callable, Generator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
 from functools import partial
@@ -15,19 +15,10 @@ from io import BytesIO
 from time import sleep
 from typing import (
     Any,
-    Callable,
-    Dict,
-    Generator,
-    List,
-    Optional,
-    Set,
-    Tuple,
-    Union,
 )
 
 import certifi
 import urllib3
-
 from courlan import UrlStore
 from courlan.network import redirection_test
 
@@ -48,7 +39,7 @@ except ImportError:
     PROXY_URL = None
 
 try:
-    import pycurl  # type: ignore
+    import pycurl
 
     CURL_SHARE = pycurl.CurlShare()
     # available options:
@@ -70,7 +61,7 @@ NO_CERT_POOL = None
 RETRY_STRATEGY = None
 
 
-def create_pool(**args: Any) -> Union[urllib3.PoolManager, Any]:
+def create_pool(**args: Any) -> urllib3.PoolManager | Any:
     "Configure urllib3 download pool according to user-defined settings."
     manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
     manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
@@ -87,9 +78,7 @@ def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 if HAS_ZSTD and "zstd" not in DEFAULT_HEADERS["accept-encoding"]:
     DEFAULT_HEADERS["accept-encoding"] += ",zstd"
-USER_AGENT = (
-    "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
-)
+USER_AGENT = "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 DEFAULT_HEADERS["User-Agent"] = USER_AGENT
 
 FORCE_STATUS = [
@@ -117,12 +106,13 @@ CURL_SSL_ERRORS = {35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91}
 
 class Response:
     "Store information gathered in a HTTP response object."
+
     __slots__ = ["data", "headers", "html", "status", "url"]
 
     def __init__(self, data: bytes, status: int, url: str) -> None:
         self.data = data
-        self.headers: Optional[Dict[str, str]] = None
-        self.html: Optional[str] = None
+        self.headers: dict[str, str] | None = None
+        self.html: str | None = None
         self.status = status
         self.url = url
 
@@ -132,7 +122,7 @@ class Response:
     def __repr__(self) -> str:
         return self.html or decode_file(self.data)
 
-    def store_headers(self, headerdict: Dict[str, str]) -> None:
+    def store_headers(self, headerdict: dict[str, str]) -> None:
         "Store response headers if required."
         # further control steps here
         self.headers = {k.lower(): v for k, v in headerdict.items()}
@@ -142,14 +132,15 @@ class Response:
         if decode and self.data:
             self.html = decode_file(self.data)
 
-    def as_dict(self) -> Dict[str, str]:
+    def as_dict(self) -> dict[str, Any]:
         "Convert the response object to a dictionary."
+        # heterogeneous value types (bytes, int, dict, str, None)
         return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
 # not cacheable: ConfigParser is unhashable (MutableMapping sets __hash__ = None),
 # so @lru_cache(maxsize=2) raises TypeError on call
-def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[str]]:
+def _parse_config(config: ConfigParser) -> tuple[list[str] | None, str | None]:
     "Read and extract HTTP header strings from the configuration file."
     # load a series of user-agents
     myagents = config.get("DEFAULT", "USER_AGENTS", fallback="").strip()
@@ -160,9 +151,7 @@ def _parse_config(config: ConfigParser) -> Tuple[Optional[List[str]], Optional[s
     return agent_list, mycookie
 
 
-def _determine_headers(
-    config: ConfigParser, headers: Optional[Dict[str, str]] = None
-) -> Dict[str, str]:
+def _determine_headers(config: ConfigParser, headers: dict[str, str] | None = None) -> dict[str, str]:
     "Internal function to decide on user-agent string."
     if config != DEFAULT_CONFIG:
         myagents, mycookie = _parse_config(config)
@@ -181,9 +170,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
         # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
         RETRY_STRATEGY = urllib3.util.Retry(
             total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint(
-                "DEFAULT", "MAX_REDIRECTS"
-            ),  # raise_on_redirect=False,
+            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
             connect=0,
             backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
             status_forcelist=FORCE_STATUS,
@@ -192,9 +179,7 @@ def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     return RETRY_STRATEGY
 
 
-def _initiate_pool(
-    config: ConfigParser, no_ssl: bool = False
-) -> Union[urllib3.PoolManager, Any]:
+def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager | Any:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
     pool = NO_CERT_POOL if no_ssl else HTTP_POOL
@@ -215,9 +200,7 @@ def _initiate_pool(
     return pool
 
 
-def _send_urllib_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Optional[Response]:
+def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
         pool_manager = _initiate_pool(config, no_ssl=no_ssl)
@@ -232,11 +215,13 @@ def _send_urllib_request(
         )
         data = bytearray()
         max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
-        for chunk in response.stream(2**17):
-            data.extend(chunk)
-            if len(data) > max_file_size:
-                raise ValueError("MAX_FILE_SIZE exceeded")
-        response.release_conn()
+        try:
+            for chunk in response.stream(2**17):
+                data.extend(chunk)
+                if len(data) > max_file_size:
+                    raise ValueError("MAX_FILE_SIZE exceeded")
+        finally:
+            response.release_conn()
 
         # necessary for standardization
         resp = Response(bytes(data), response.status, response.geturl())
@@ -267,7 +252,7 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
 
 def _handle_response(
     url: str, response: Response, decode: bool, options: Extractor
-) -> Optional[Union[Response, str]]:  # todo: only return str
+) -> Response | str | None:  # todo: only return str
     "Internal function to run safety checks on response result."
     if _is_suitable_response(url, response, options):
         return response.html if decode else response
@@ -279,8 +264,8 @@ def fetch_url(
     url: str,
     no_ssl: bool = False,
     config: ConfigParser = DEFAULT_CONFIG,
-    options: Optional[Extractor] = None,
-) -> Optional[str]:
+    options: Extractor | None = None,
+) -> str | None:
     """Downloads a web page and seamlessly decodes the response.
 
     Args:
@@ -310,7 +295,7 @@ def fetch_response(
     no_ssl: bool = False,
     with_headers: bool = False,
     config: ConfigParser = DEFAULT_CONFIG,
-) -> Optional[Response]:
+) -> Response | None:
     """Downloads a web page and returns a full response object.
 
     Args:
@@ -346,13 +331,13 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
-    curl.setopt(curl.NOBODY, True)
+    curl.setopt(pycurl.NOBODY, True)
     _apply_curl_proxy(curl)
     # Perform the request
     try:
         curl.perform()
         # Get the response code
-        page_exists = curl.getinfo(curl.RESPONSE_CODE) < 400
+        page_exists = curl.getinfo(pycurl.RESPONSE_CODE) < 400
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
         page_exists = False
@@ -379,10 +364,10 @@ def is_live_page(url: str) -> bool:
 
 
 def add_to_compressed_dict(
-    inputlist: List[str],
-    blacklist: Optional[Set[str]] = None,
-    url_filter: Optional[str] = None,
-    url_store: Optional[UrlStore] = None,
+    inputlist: list[str],
+    blacklist: set[str] | None = None,
+    url_filter: list[str] | None = None,
+    url_store: UrlStore | None = None,
     compression: bool = False,
     verbose: bool = False,
 ) -> UrlStore:
@@ -393,9 +378,7 @@ def add_to_compressed_dict(
     inputlist = list(dict.fromkeys(inputlist))
 
     if blacklist:
-        inputlist = [
-            u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist
-        ]
+        inputlist = [u for u in inputlist if URL_BLACKLIST_REGEX.sub("", u) not in blacklist]
 
     if url_filter:
         inputlist = [u for u in inputlist if any(f in u for f in url_filter)]
@@ -404,9 +387,7 @@ def add_to_compressed_dict(
     return url_store
 
 
-def load_download_buffer(
-    url_store: UrlStore, sleep_time: float = 5.0
-) -> Tuple[List[str], UrlStore]:
+def load_download_buffer(url_store: UrlStore, sleep_time: float = 5.0) -> tuple[list[str], UrlStore]:
     """Determine threading strategy and draw URLs respecting domain-based back-off rules."""
     while True:
         bufferlist = url_store.get_download_urls(time_limit=sleep_time, max_urls=10**5)
@@ -417,11 +398,11 @@ def load_download_buffer(
 
 
 def _buffered_downloads(
-    bufferlist: List[str],
+    bufferlist: list[str],
     download_threads: int,
     worker: Callable[[str], Any],
-    chunksize: int = 10000,
-) -> Generator[Tuple[str, Any], None, None]:
+    chunksize: int = 10000,  # max URLs materialized per batch (bounds in-flight futures)
+) -> Generator[tuple[str, Any], None, None]:
     "Use a thread pool to perform a series of downloads."
     with ThreadPoolExecutor(max_workers=download_threads) as executor:
         for chunk in make_chunks(bufferlist, chunksize):
@@ -431,10 +412,10 @@ def _buffered_downloads(
 
 
 def buffered_downloads(
-    bufferlist: List[str],
+    bufferlist: list[str],
     download_threads: int,
-    options: Optional[Extractor] = None,
-) -> Generator[Tuple[str, str], None, None]:
+    options: Extractor | None = None,
+) -> Generator[tuple[str, str], None, None]:
     "Download queue consumer, single- or multi-threaded."
     worker = partial(fetch_url, options=options)
 
@@ -442,10 +423,10 @@ def buffered_downloads(
 
 
 def buffered_response_downloads(
-    bufferlist: List[str],
+    bufferlist: list[str],
     download_threads: int,
-    options: Optional[Extractor] = None,
-) -> Generator[Tuple[str, Response], None, None]:
+    options: Extractor | None = None,
+) -> Generator[tuple[str, Response], None, None]:
     "Download queue consumer, returns full Response objects."
     config = options.config if options else DEFAULT_CONFIG
     worker = partial(fetch_response, config=config)
@@ -453,16 +434,12 @@ def buffered_response_downloads(
     return _buffered_downloads(bufferlist, download_threads, worker)
 
 
-def _send_pycurl_request(
-    url: str, no_ssl: bool, with_headers: bool, config: ConfigParser
-) -> Optional[Response]:
+def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
     """Experimental function using libcurl and pycurl to speed up downloads"""
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    headerlist = [
-        f"{header}: {content}" for header, content in _determine_headers(config).items()
-    ]
+    headerlist = [f"{header}: {content}" for header, content in _determine_headers(config).items()]
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
@@ -500,6 +477,7 @@ def _send_pycurl_request(
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
         LOGGER.error("pycurl error: %s %s", url, err)
+        curl.close()
         # retry in case of SSL-related error
         # see https://curl.se/libcurl/c/libcurl-errors.html
         # errmsg = curl.errstr_raw()
@@ -514,17 +492,13 @@ def _send_pycurl_request(
     # additional info
     # ip_info = curl.getinfo(curl.PRIMARY_IP)
 
-    resp = Response(
-        bufferbytes, curl.getinfo(curl.RESPONSE_CODE), curl.getinfo(curl.EFFECTIVE_URL)
-    )
+    resp = Response(bufferbytes, curl.getinfo(pycurl.RESPONSE_CODE), curl.getinfo(pycurl.EFFECTIVE_URL))
     curl.close()
 
     if with_headers:
         respheaders = {}
         # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
-        for line in (
-            headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines()
-        ):
+        for line in headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines():
             # re.split(r'\r?\n') ?
             # This will botch headers that are split on multiple lines...
             if ":" not in line:

@@ -3,44 +3,46 @@
 Listing a series of settings that are applied module-wide.
 """
 
+import argparse
+import logging
 import os
-
 from configparser import ConfigParser
 from datetime import datetime
 from html import unescape
-from typing import Any, Dict, List, Optional, Set
+from pathlib import Path
+from typing import Any
+
+from lxml.etree import Element, XPath, _Element
+
+from .utils import line_processing
+
+LOGGER = logging.getLogger(__name__)
 
 # sched_getaffinity (Linux-only) with fallback
 _get_affinity = getattr(os, "sched_getaffinity", None)
 CPU_COUNT = len(_get_affinity(0)) if _get_affinity is not None else (os.cpu_count() or 1)
-
-from pathlib import Path
-
-from lxml.etree import _Element, Element, XPath
-
-from .utils import line_processing
 
 
 SUPPORTED_FMT_CLI = ["csv", "json", "html", "markdown", "txt", "xml", "xmltei"]
 SUPPORTED_FORMATS = set(SUPPORTED_FMT_CLI) | {"python"}  # for bare_extraction() only
 
 
-def use_config(
-    filename: Optional[str] = None, config: Optional[ConfigParser] = None
-) -> ConfigParser:
+def use_config(filename: str | None = None, config: ConfigParser | None = None) -> ConfigParser:
     """
     Use configuration object or read and parse a settings file.
     """
     if config is not None:
         return config
 
-    if filename is None:
-        filename = str(Path(__file__).parent / "settings.cfg")
-    elif not Path(filename).is_file():
-        raise FileNotFoundError("The given config file does not exist")
-
     config = ConfigParser()
-    config.read(filename)
+    default_file = str(Path(__file__).parent / "settings.cfg")
+    if filename is None:
+        config.read(default_file)
+    else:
+        if not Path(filename).is_file():
+            raise FileNotFoundError("The given config file does not exist")
+        # seed defaults first so a partial user file only overrides the keys it sets
+        config.read([default_file, filename])
     return config
 
 
@@ -58,9 +60,16 @@ CONFIG_MAPPING = {
 }
 
 
+def _get_optional_int(config: ConfigParser, option: str) -> int | None:
+    "Read an optional positive integer setting; None when empty or non-numeric."
+    value = config.get("DEFAULT", option, fallback="").strip()
+    return int(value) if value.isdigit() else None
+
+
 # todo Python >= 3.10: use dataclass with slots=True
 class Extractor:
     "Defines a class to store all extraction options."
+
     __slots__ = [
         "config",
         # general
@@ -97,6 +106,16 @@ class Extractor:
         "url_blacklist",
     ]
 
+    # set by _add_config via CONFIG_MAPPING
+    min_extracted_size: int
+    min_output_size: int
+    min_output_comm_size: int
+    min_extracted_comm_size: int
+    min_duplcheck_size: int
+    max_repetitions: int
+    max_file_size: int
+    min_file_size: int
+
     def __init__(
         self,
         *,
@@ -106,54 +125,55 @@ class Extractor:
         precision: bool = False,
         recall: bool = False,
         comments: bool = True,
-        formatting: bool = False,
+        formatting: bool | None = None,
         links: bool = False,
         images: bool = False,
         tables: bool = True,
         dedup: bool = False,
-        lang: Optional[str] = None,
-        url: Optional[str] = None,
-        source: Optional[str] = None,
+        lang: str | None = None,
+        url: str | None = None,
+        source: str | None = None,
         with_metadata: bool = False,
         only_with_metadata: bool = False,
         tei_validation: bool = False,
-        author_blacklist: Optional[Set[str]] = None,
-        url_blacklist: Optional[Set[str]] = None,
-        date_params: Optional[Dict[str, str]] = None,
+        author_blacklist: set[str] | None = None,
+        url_blacklist: set[str] | None = None,
+        date_params: dict[str, str] | None = None,
     ):
+        if precision and recall:
+            LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
         self._set_source(url, source)
         self._set_format(output_format)
+        if tei_validation and self.format != "xmltei":
+            LOGGER.warning("tei_validation has no effect unless output_format is 'xmltei'")
+        if formatting and self.format == "json":
+            LOGGER.warning("include_formatting has no effect on JSON output")
         # single normalization point: an explicit config=None falls back to defaults
         self._add_config(config or DEFAULT_CONFIG)
         self.fast: bool = fast
-        self.focus: str = (
-            "recall" if recall else "precision" if precision else "balanced"
-        )
+        self.focus: str = "recall" if recall else "precision" if precision else "balanced"
         self.comments: bool = comments
-        self.formatting: bool = formatting or self.format == "markdown"
+        # markdown implies formatting by default, but an explicit formatting=False is honored
+        self.formatting: bool = (self.format == "markdown") if formatting is None else formatting
         self.links: bool = links
         self.images: bool = images
         self.tables: bool = tables
         self.dedup: bool = dedup
-        self.lang: Optional[str] = lang
-        self.url: Optional[str] = url
+        self.lang: str | None = lang
+        self.url: str | None = url
         self.only_with_metadata: bool = only_with_metadata
         self.tei_validation: bool = tei_validation
-        self.author_blacklist: Set[str] = author_blacklist or set()
-        self.url_blacklist: Set[str] = url_blacklist or set()
+        self.author_blacklist: set[str] = author_blacklist or set()
+        self.url_blacklist: set[str] = url_blacklist or set()
         self.with_metadata: bool = (
-            with_metadata
-            or only_with_metadata
-            or bool(url_blacklist)
-            or output_format == "xmltei"
+            with_metadata or only_with_metadata or bool(url_blacklist) or bool(author_blacklist) or output_format == "xmltei"
         )
-        self.date_params: Dict[str, Any] = date_params or set_date_params(
+        self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        max_tree = self.config.get("DEFAULT", "MAX_TREE_SIZE", fallback="").strip()
-        self.max_tree_size: Optional[int] = int(max_tree) if max_tree else None
+        self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
 
-    def _set_source(self, url: Optional[str], source: Optional[str]) -> None:
+    def _set_source(self, url: str | None, source: str | None) -> None:
         "Set the source attribute in a robust way."
         source = url or source
         self.source = source and source.encode("utf-8", "replace").decode("utf-8")
@@ -161,9 +181,7 @@ class Extractor:
     def _set_format(self, chosen_format: str) -> None:
         "Store the format if supported and raise an error otherwise."
         if chosen_format not in SUPPORTED_FORMATS:
-            raise AttributeError(
-                f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}"
-            )
+            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
         self.format = chosen_format
 
     def _add_config(self, config: ConfigParser) -> None:
@@ -173,16 +191,19 @@ class Extractor:
         self.config = config
 
 
-def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
+def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
     "Derive extractor configuration from CLI args."
-    options = Extractor(
+    return Extractor(
         config=use_config(filename=args.config_file),
         output_format=args.output_format,
+        fast=args.fast,
         formatting=args.formatting,
         precision=args.precision,
         recall=args.recall,
-        comments=args.no_comments,
-        tables=args.no_tables,
+        comments=args.comments,
+        tables=args.tables,
+        images=args.images,
+        links=args.links,
         dedup=args.deduplicate,
         lang=args.target_language,
         url=url,
@@ -190,12 +211,9 @@ def args_to_extractor(args: Any, url: Optional[str] = None) -> Extractor:
         only_with_metadata=args.only_with_metadata,
         tei_validation=args.validate_tei,
     )
-    for attr in ("fast", "images", "links"):
-        setattr(options, attr, getattr(args, attr))
-    return options
 
 
-def set_date_params(extensive: bool = True) -> Dict[str, Any]:
+def set_date_params(extensive: bool = True) -> dict[str, Any]:
     "Provide default parameters for date extraction."
     return {
         "original_date": True,
@@ -207,6 +225,7 @@ def set_date_params(extensive: bool = True) -> Dict[str, Any]:
 # todo Python >= 3.10: use dataclass with slots=True
 class Document:
     "Defines a class to store all necessary data and metadata fields for extracted information."
+
     __slots__ = [
         "title",
         "author",
@@ -235,52 +254,52 @@ class Document:
     def __init__(
         self,
         *,
-        title: Optional[str] = None,
-        author: Optional[str] = None,
-        url: Optional[str] = None,
-        hostname: Optional[str] = None,
-        description: Optional[str] = None,
-        sitename: Optional[str] = None,
-        date: Optional[str] = None,
-        categories: Optional[List[str]] = None,
-        tags: Optional[List[str]] = None,
-        fingerprint: Optional[str] = None,
-        idval: Optional[str] = None,
-        license_val: Optional[str] = None,
-        body: _Element = Element("body"),
-        comments: Optional[str] = None,
-        commentsbody: _Element = Element("body"),
-        raw_text: Optional[str] = None,
-        text: Optional[str] = None,
-        language: Optional[str] = None,
-        image: Optional[str] = None,
-        pagetype: Optional[str] = None,
-        filedate: Optional[str] = None,
+        title: str | None = None,
+        author: str | None = None,
+        url: str | None = None,
+        hostname: str | None = None,
+        description: str | None = None,
+        sitename: str | None = None,
+        date: str | None = None,
+        categories: list[str] | None = None,
+        tags: list[str] | None = None,
+        fingerprint: str | None = None,
+        idval: str | None = None,
+        license_val: str | None = None,
+        body: _Element | None = None,
+        comments: str | None = None,
+        commentsbody: _Element | None = None,
+        raw_text: str | None = None,
+        text: str | None = None,
+        language: str | None = None,
+        image: str | None = None,
+        pagetype: str | None = None,
+        filedate: str | None = None,
     ):
-        self.title: Optional[str] = title
-        self.author: Optional[str] = author
-        self.url: Optional[str] = url
-        self.hostname: Optional[str] = hostname
-        self.description: Optional[str] = description
-        self.sitename: Optional[str] = sitename
-        self.date: Optional[str] = date
-        self.categories: Optional[List[str]] = categories
-        self.tags: Optional[List[str]] = tags
-        self.fingerprint: Optional[str] = fingerprint
-        self.id: Optional[str] = idval
-        self.license: Optional[str] = license_val
-        self.body: _Element = body
-        self.comments: Optional[str] = comments
-        self.commentsbody: _Element = commentsbody
-        self.raw_text: Optional[str] = raw_text
-        self.text: Optional[str] = text
-        self.language: Optional[str] = language
-        self.image: Optional[str] = image
-        self.pagetype: Optional[str] = pagetype
-        self.filedate: Optional[str] = filedate
+        self.title: str | None = title
+        self.author: str | None = author
+        self.url: str | None = url
+        self.hostname: str | None = hostname
+        self.description: str | None = description
+        self.sitename: str | None = sitename
+        self.date: str | None = date
+        self.categories: list[str] | None = categories
+        self.tags: list[str] | None = tags
+        self.fingerprint: str | None = fingerprint
+        self.id: str | None = idval
+        self.license: str | None = license_val
+        self.body: _Element = body if body is not None else Element("body")
+        self.comments: str | None = comments
+        self.commentsbody: _Element = commentsbody if commentsbody is not None else Element("body")
+        self.raw_text: str | None = raw_text
+        self.text: str | None = text
+        self.language: str | None = language
+        self.image: str | None = image
+        self.pagetype: str | None = pagetype
+        self.filedate: str | None = filedate
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'Document':
+    def from_dict(cls, data: dict[str, Any]) -> "Document":
         "Set a series of attributes using a dictionary."
         doc = cls()
         for key, value in data.items():
@@ -299,8 +318,9 @@ class Document:
                 value = line_processing(unescape(value))
                 setattr(self, slot, value)
 
-    def as_dict(self) -> Dict[str, Optional[str]]:
+    def as_dict(self) -> dict[str, Any]:
         "Convert the document to a dictionary."
+        # heterogeneous value types (str, list, lxml _Element, None)
         return {attr: getattr(self, attr, None) for attr in self.__slots__}
 
 
@@ -351,6 +371,7 @@ MANUALLY_CLEANED = [
     # important
     "aside",
     "embed",
+    "fencedframe",
     "footer",
     "form",
     "head",
@@ -421,6 +442,7 @@ MANUALLY_STRIPPED = [
     "ins",
     "mark",
     "meta",
+    "nobr",
     "ruby",
     "small",
     "tbody",
@@ -430,47 +452,94 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-BASIC_CLEAN_XPATH = XPath(
-    ".//aside|.//div[contains(@class|@id, 'footer')]|.//footer|.//script|.//style"
-)
+BASIC_CLEAN_XPATH = XPath(".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style")
 
-TAG_CATALOG = frozenset(
-    ["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"]
-)
+TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
 # + list(CUT_EMPTY_ELEMS)
 
+# inline-tag ladder (single source of truth shared by extractor and serializer):
+INLINE_CONSUMING = {"hi", "ref", "del"}  # element folds its children into its own text
+INLINE_FORMATTABLE = INLINE_CONSUMING | {"code"}  # + code: has text, rendered verbatim
+INLINE_CARRIED = INLINE_FORMATTABLE | {"graphic"}  # + graphic: no text, rendered as image markup
 
+# mapping for languages known to py3langid
 JUSTEXT_LANGUAGES = {
+    "af": "Afrikaans",
+    "an": "Aragonese",
     "ar": "Arabic",
+    "az": "Azerbaijani",
+    "be": "Belarusian",
     "bg": "Bulgarian",
-    "cz": "Czech",
+    "bn": "Bengali",
+    "br": "Breton",
+    "bs": "Bosnian",
+    "ca": "Catalan",
+    "cs": "Czech",
+    "cy": "Welsh",
     "da": "Danish",
     "de": "German",
-    "en": "English",
     "el": "Greek",
+    "en": "English",
+    "eo": "Esperanto",
     "es": "Spanish",
+    "et": "Estonian",
+    "eu": "Basque",
     "fa": "Persian",
     "fi": "Finnish",
     "fr": "French",
+    "ga": "Irish",
+    "gl": "Galician",
+    "gu": "Gujarati",
+    "he": "Hebrew",
+    "hi": "Hindi",
     "hr": "Croatian",
+    "ht": "Haitian",
     "hu": "Hungarian",
-    # 'ja': '',
-    "ko": "Korean",
+    "hy": "Armenian",
     "id": "Indonesian",
+    "is": "Icelandic",
     "it": "Italian",
-    "no": "Norwegian_Nynorsk",
+    "jv": "Javanese",
+    "ka": "Georgian",
+    "kk": "Kazakh",
+    "kn": "Kannada",
+    "ko": "Korean",
+    "ku": "Kurdish",
+    "ky": "Kyrgyz",
+    "la": "Latin",
+    "lb": "Luxembourgish",
+    "lt": "Lithuanian",
+    "lv": "Latvian",
+    "mk": "Macedonian",
+    "ml": "Malayalam",
+    "mr": "Marathi",
+    "ms": "Malay",
+    "mt": "Maltese",
+    "nb": "Norwegian_Bokmal",
+    "ne": "Nepali",
     "nl": "Dutch",
+    "nn": "Norwegian_Nynorsk",
+    "no": "Norwegian_Bokmal",
+    "oc": "Occitan",
     "pl": "Polish",
     "pt": "Portuguese",
+    "qu": "Quechua",
     "ro": "Romanian",
     "ru": "Russian",
     "sk": "Slovak",
     "sl": "Slovenian",
+    "sq": "Albanian",
     "sr": "Serbian",
     "sv": "Swedish",
+    "sw": "Swahili",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "tl": "Tagalog",
     "tr": "Turkish",
     "uk": "Ukrainian",
     "ur": "Urdu",
     "vi": "Vietnamese",
-    # 'zh': '',
+    "vo": "Volapuk",
+    "wa": "Walloon",
+    # no justext stoplist available: 'ja' (Japanese), 'zh' (Chinese)
 }

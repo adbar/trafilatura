@@ -19,10 +19,9 @@ License of forked code: Apache-2.0.
 
 import logging
 import re
-
 from math import sqrt
 from operator import attrgetter
-from typing import Any, Dict, Optional, Set
+from typing import Any
 
 from lxml.etree import tostring
 from lxml.html import HtmlElement, fragment_fromstring
@@ -73,9 +72,7 @@ REGEXES = {
         r"button|combx|comment|com-|contact|figure|foot|footer|footnote|form|input|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
         re.I,
     ),
-    "divToPElementsRe": re.compile(
-        r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I
-    ),
+    "divToPElementsRe": re.compile(r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I),
     "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.I),
 }
 
@@ -128,7 +125,7 @@ class Document:
         Warning: It mutates internal DOM representation of the HTML document,
         so it is better to call other API methods before this one.
         """
-        for elem in self.doc.iter("script", "style"):
+        for elem in self.doc.iter("script", "style", "fencedframe"):
             elem.drop_tree()
 
         ruthless = True
@@ -145,15 +142,11 @@ class Document:
             else:
                 if ruthless is True:
                     ruthless = False
-                    LOGGER.debug(
-                        "Ended up stripping too much - going for a safer parse"
-                    )
+                    LOGGER.debug("Ended up stripping too much - going for a safer parse")
                     # try again
                     continue
                 # go ahead
-                LOGGER.debug(
-                    "Ruthless and lenient parsing did not work. Returning raw html"
-                )
+                LOGGER.debug("Ruthless and lenient parsing did not work. Returning raw html")
                 body = self.doc.find("body")
                 article = body if body is not None else self.doc
 
@@ -165,7 +158,7 @@ class Document:
                 continue
             return cleaned_article
 
-    def get_article(self, candidates: Dict[HtmlElement, Candidate], best_candidate: Candidate) -> HtmlElement:
+    def get_article(self, candidates: dict[HtmlElement, Candidate], best_candidate: Candidate) -> HtmlElement:
         # Now that we have the top candidate, look through its siblings for
         # content that might also be related.
         # Things like preambles, content split by ads that we removed, etc.
@@ -180,8 +173,7 @@ class Document:
             append = False
             # conditions
             if sibling == best_candidate.elem or (
-                sibling in candidates
-                and candidates[sibling].score >= sibling_score_threshold
+                sibling in candidates and candidates[sibling].score >= sibling_score_threshold
             ):
                 append = True
             elif sibling.tag == "p":
@@ -192,11 +184,7 @@ class Document:
                 if (
                     node_length > 80
                     and link_density < 0.25
-                    or (
-                        node_length <= 80
-                        and link_density == 0
-                        and DOT_SPACE.search(node_content)
-                    )
+                    or (node_length <= 80 and link_density == 0 and DOT_SPACE.search(node_content))
                 ):
                     append = True
             # append to the output div
@@ -206,12 +194,10 @@ class Document:
         #    output.append(best_candidate.elem)
         return output
 
-    def select_best_candidate(self, candidates: Dict[HtmlElement, Candidate]) -> Optional[Candidate]:
+    def select_best_candidate(self, candidates: dict[HtmlElement, Candidate]) -> Candidate | None:
         if not candidates:
             return None
-        sorted_candidates = sorted(
-            candidates.values(), key=attrgetter("score"), reverse=True
-        )
+        sorted_candidates = sorted(candidates.values(), key=attrgetter("score"), reverse=True)
         if LOGGER.isEnabledFor(logging.DEBUG):
             for candidate in sorted_candidates[:5]:
                 LOGGER.debug("Top 5: %s %s", candidate.elem.tag, candidate.score)
@@ -222,7 +208,7 @@ class Document:
         link_length = sum(text_length(link) for link in elem.findall(".//a"))
         return link_length / total_length
 
-    def score_paragraphs(self) -> Dict[HtmlElement, Candidate]:
+    def score_paragraphs(self) -> dict[HtmlElement, Candidate]:
         candidates = {}
 
         for elem in self.doc.iter("p", "pre", "td"):
@@ -304,9 +290,7 @@ class Document:
             # buried within an <a> for example
             # hurts precision:
             # if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
-            if not REGEXES["divToPElementsRe"].search(
-                "".join(map(_tostring, list(elem)))
-            ):
+            if not REGEXES["divToPElementsRe"].search("".join(map(_tostring, list(elem)))):
                 elem.tag = "p"
 
         for elem in self.doc.findall(".//div"):
@@ -323,7 +307,7 @@ class Document:
                 if child.tag == "br":
                     child.drop_tree()
 
-    def sanitize(self, node: HtmlElement, candidates: Dict[HtmlElement, Candidate]) -> str:
+    def sanitize(self, node: HtmlElement, candidates: dict[HtmlElement, Candidate]) -> str:
         for header in node.iter("h1", "h2", "h3", "h4", "h5", "h6"):
             if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
                 header.drop_tree()
@@ -337,11 +321,9 @@ class Document:
             else:
                 elem.drop_tree()
 
-        allowed: Set[HtmlElement] = set()
+        allowed: set[HtmlElement] = set()
         # Conditionally clean <table>s, <ul>s, and <div>s
-        for elem in reversed(
-            node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")
-        ):
+        for elem in reversed(node.xpath("//table|//ul|//div|//aside|//header|//footer|//section")):
             if elem in allowed:
                 continue
             weight = self.class_weight(elem)
@@ -356,9 +338,7 @@ class Document:
                 elem.drop_tree()
             elif elem.text_content().count(",") < 10:
                 to_remove = True
-                counts = {
-                    kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS
-                }
+                counts = {kind: len(elem.findall(f".//{kind}")) for kind in TEXT_CLEAN_ELEMS}
                 counts["li"] -= 100
                 counts["input"] -= len(elem.findall('.//input[@type="hidden"]'))
 
@@ -367,15 +347,11 @@ class Document:
                 link_density = self.get_link_density(elem)
                 parent_node = elem.getparent()
                 if parent_node is not None:
-                    score = (
-                        candidates[parent_node].score
-                        if parent_node in candidates
-                        else 0
-                    )
+                    score = candidates[parent_node].score if parent_node in candidates else 0
                 # if elem.tag == 'div' and counts["img"] >= 1:
                 #    continue
                 if counts["p"] and counts["img"] > 1 + counts["p"] * 1.3:
-                    reason = f'too many images ({counts["img"]})'
+                    reason = f"too many images ({counts['img']})"
                 elif counts["li"] > counts["p"] and elem.tag not in LIST_TAGS:
                     reason = "more <li>s than <p>s"
                 elif counts["input"] > (counts["p"] / 3):
@@ -383,23 +359,13 @@ class Document:
                 elif content_length < self.min_text_length and counts["img"] == 0:
                     reason = f"too short content length {content_length} without a single image"
                 elif content_length < self.min_text_length and counts["img"] > 2:
-                    reason = (
-                        f"too short content length {content_length} and too many images"
-                    )
+                    reason = f"too short content length {content_length} and too many images"
                 elif weight < 25 and link_density > 0.2:
-                    reason = (
-                        f"too many links {link_density:.3f} for its weight {weight}"
-                    )
+                    reason = f"too many links {link_density:.3f} for its weight {weight}"
                 elif weight >= 25 and link_density > 0.5:
-                    reason = (
-                        f"too many links {link_density:.3f} for its weight {weight}"
-                    )
-                elif (counts["embed"] == 1 and content_length < 75) or counts[
-                    "embed"
-                ] > 1:
-                    reason = (
-                        "<embed>s with too short content length, or too many <embed>s"
-                    )
+                    reason = f"too many links {link_density:.3f} for its weight {weight}"
+                elif (counts["embed"] == 1 and content_length < 75) or counts["embed"] > 1:
+                    reason = "<embed>s with too short content length, or too many <embed>s"
                 elif not content_length:
                     reason = "no content"
 
@@ -438,7 +404,6 @@ class Document:
         return _tostring(self.doc)
 
 
-
 # Port of isProbablyReaderable from mozilla/readability.js to Python.
 # https://github.com/mozilla/readability
 # License of forked code: Apache-2.0.
@@ -448,9 +413,7 @@ REGEXPS = {
         r"-ad-|ai2html|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|footer|gdpr|header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote",
         re.I,
     ),
-    "okMaybeItsACandidate": re.compile(
-        r"and|article|body|column|content|main|shadow", re.I
-    ),
+    "okMaybeItsACandidate": re.compile(r"and|article|body|column|content|main|shadow", re.I),
 }
 
 DISPLAY_NONE = re.compile(r"display:\s*none", re.I)
@@ -465,17 +428,16 @@ def is_node_visible(node: HtmlElement) -> bool:
         return False
     if "hidden" in node.attrib:
         return False
-    if node.get("aria-hidden") == "true" and "fallback-image" not in node.get(
-        "class", ""
-    ):
+    if node.get("aria-hidden") == "true" and "fallback-image" not in node.get("class", ""):
         return False
     return True
 
 
-def is_probably_readerable(html: HtmlElement, options: Any={}) -> bool:
+def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | None = None) -> bool:
     """
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
+    options = options or {}
     doc = load_html(html)
     if doc is None:
         return False
@@ -493,9 +455,7 @@ def is_probably_readerable(html: HtmlElement, options: Any={}) -> bool:
             continue
 
         class_and_id = f"{node.get('class', '')} {node.get('id', '')}"
-        if REGEXPS["unlikelyCandidates"].search(class_and_id) and not REGEXPS[
-            "okMaybeItsACandidate"
-        ].search(class_and_id):
+        if REGEXPS["unlikelyCandidates"].search(class_and_id) and not REGEXPS["okMaybeItsACandidate"].search(class_and_id):
             continue
 
         if node.xpath("./parent::li/p"):

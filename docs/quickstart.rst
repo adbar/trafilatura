@@ -46,7 +46,7 @@ To tailor the output to your specific requirements, Trafilatura allows you to co
     >>> result = extract(downloaded, output_format="xml")
 
     # discard potential comments, extract metadata and change the output to JSON
-    >>> extract(downloaded, output_format="json", include_comments=False)
+    >>> extract(downloaded, output_format="json", with_metadata=True, include_comments=False)
 
     # set the output to Markdown and extract metadata
     >>> extract(downloaded, output_format="markdown", with_metadata=True)

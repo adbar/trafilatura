@@ -5,50 +5,88 @@ All functions related to XML generation, processing and validation.
 
 import csv
 import logging
-
+import re
+from copy import deepcopy
 from html import unescape
 from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
-from typing import List, Optional
 
-from lxml.etree import (_Element, Element, SubElement, XMLParser,
-                        fromstring, tostring, DTD)
+from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring, tostring
 
-from .settings import Document, Extractor
-from .utils import is_element_in_item, is_first_element_in_item, is_in_table_cell, is_last_element_in_cell, \
-    is_last_element_in_item, sanitize, sanitize_tree, text_chars_test
-
+from .settings import INLINE_CONSUMING, INLINE_FORMATTABLE, Document, Extractor
+from .utils import (
+    is_element_in_item,
+    is_in_table_cell,
+    is_last_element_in_cell,
+    is_last_element_in_item,
+    item_if_first_element,
+    sanitize,
+    sanitize_tree,
+    text_chars_test,
+)
 
 LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
 
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / "data" / "tei_corpus.dtd")
-TEI_VALID_TAGS = {'ab', 'body', 'cell', 'code', 'del', 'div', 'graphic', 'head', 'hi', \
-                  'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
-TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
+TEI_VALID_TAGS = {
+    "ab",
+    "body",
+    "cell",
+    "code",
+    "del",
+    "div",
+    "graphic",
+    "head",
+    "hi",
+    "item",
+    "lb",
+    "list",
+    "p",
+    "quote",
+    "ref",
+    "row",
+    "table",
+}
+TEI_VALID_ATTRS = {"rend", "rendition", "role", "target", "type"}
 TEI_DTD = None  # to be downloaded later if necessary
 TEI_REMOVE_TAIL = {"ab", "p"}
 TEI_DIV_SIBLINGS = {"p", "list", "table", "quote", "ab"}
 
 CONTROL_PARSER = XMLParser(remove_blank_text=True)
 
-NEWLINE_ELEMS = {'graphic', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
-SPECIAL_FORMATTING = {'code', 'del', 'head', 'hi', 'ref', 'item', 'cell'}
-WITH_ATTRIBUTES = {'cell', 'row', 'del', 'graphic', 'head', 'hi', 'item', 'list', 'ref'}
+NEWLINE_ELEMS = {"graphic", "head", "lb", "list", "p", "quote", "row", "table"}
+SPECIAL_FORMATTING = {"code", "del", "head", "hi", "ref", "item", "cell"}
+WITH_ATTRIBUTES = {"cell", "row", "del", "graphic", "head", "hi", "item", "list", "ref"}
 NESTING_WHITELIST = {"cell", "figure", "item", "note", "quote"}
 
 META_ATTRIBUTES = [
-    'sitename', 'title', 'author', 'date', 'url', 'hostname',
-    'description', 'categories', 'tags', 'license', 'id',
-    'fingerprint', 'language'
+    "sitename",
+    "title",
+    "author",
+    "date",
+    "url",
+    "hostname",
+    "description",
+    "categories",
+    "tags",
+    "license",
+    "id",
+    "fingerprint",
+    "language",
 ]
 
-HI_FORMATTING = {'#b': '**', '#i': '*', '#u': '__', '#t': '`'}
+HI_FORMATTING = {"#b": "**", "#i": "*", "#u": "__", "#t": "`"}
+HEADING_LEVELS = frozenset("123456")
+# preceding characters that already separate content, so no extra space/newline is needed
+SEPARATORS = frozenset((" ", "\n", "|", ""))
 
-MAX_TABLE_WIDTH = 1000
+# block \[...\] and inline \(...\) math; only matched pairs are converted
+_MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
+_MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
@@ -72,7 +110,7 @@ def delete_element(element: _Element, keep_tail: bool = True) -> None:
 
 
 def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
-    '''Merge element with its parent and convert formatting to markdown.'''
+    """Merge element with its parent and convert formatting to markdown."""
     parent = element.getparent()
     if parent is None:
         return
@@ -84,22 +122,22 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
-        previous.tail = f'{previous.tail} {full_text}' if previous.tail else full_text
+        previous.tail = f"{previous.tail} {full_text}" if previous.tail else full_text
     elif parent.text is not None:
-        parent.text = f'{parent.text} {full_text}'
+        parent.text = f"{parent.text} {full_text}"
     else:
         parent.text = full_text
     parent.remove(element)
 
 
 def remove_empty_elements(tree: _Element) -> _Element:
-    '''Remove text elements without text.'''
-    for element in tree.iter('*'):  # 'head', 'hi', 'item', 'p'
+    """Remove text elements without text."""
+    for element in tree.iter("*"):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
             parent = element.getparent()
             # not root element or element which is naturally empty
             # do not remove elements inside <code> to preserve formatting
-            if parent is not None and element.tag != "graphic" and parent.tag != 'code':
+            if parent is not None and element.tag != "graphic" and parent.tag != "code":
                 parent.remove(element)
     return tree
 
@@ -114,51 +152,53 @@ def strip_double_tags(tree: _Element) -> _Element:
 
 
 def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
-    '''Build JSON output based on extracted information'''
+    """Build JSON output based on extracted information"""
     if with_metadata:
         outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
-        outputdict.update({
-            'source': outputdict.pop('url'),
-            'source-hostname': outputdict.pop('sitename'),
-            'excerpt': outputdict.pop('description'),
-            'categories': ';'.join(outputdict.pop('categories') or []),
-            'tags': ';'.join(outputdict.pop('tags') or []),
-            'text': xmltotxt(outputdict.pop('body'), include_formatting=False),
-        })
-        commentsbody = outputdict.pop('commentsbody')
+        outputdict.update(
+            {
+                "source": outputdict.pop("url"),
+                "source-hostname": outputdict.pop("sitename"),
+                "excerpt": outputdict.pop("description"),
+                "categories": ";".join(outputdict.pop("categories") or []),
+                "tags": ";".join(outputdict.pop("tags") or []),
+                "text": xmltotxt(outputdict.pop("body"), include_formatting=False),
+            }
+        )
+        commentsbody = outputdict.pop("commentsbody")
     else:
-        outputdict = {'text': xmltotxt(docmeta.body, include_formatting=False)}
+        outputdict = {"text": xmltotxt(docmeta.body, include_formatting=False)}
         commentsbody = docmeta.commentsbody
 
-    outputdict['comments'] = xmltotxt(commentsbody, include_formatting=False)
+    outputdict["comments"] = xmltotxt(commentsbody, include_formatting=False)
 
     return json_dumps(outputdict, ensure_ascii=False)
 
 
 def clean_attributes(tree: _Element) -> _Element:
-    '''Remove unnecessary attributes.'''
-    for elem in tree.iter('*'):
+    """Remove unnecessary attributes."""
+    for elem in tree.iter("*"):
         if elem.tag not in WITH_ATTRIBUTES:
             elem.attrib.clear()
     return tree
 
 
 def build_xml_output(docmeta: Document) -> _Element:
-    '''Build XML output tree based on extracted information'''
-    output = Element('doc')
+    """Build XML output tree based on extracted information"""
+    output = Element("doc")
     add_xml_meta(output, docmeta)
-    docmeta.body.tag = 'main'
+    docmeta.body.tag = "main"
 
     # clean XML tree
     output.append(clean_attributes(docmeta.body))
-    docmeta.commentsbody.tag = 'comments'
+    docmeta.commentsbody.tag = "comments"
     output.append(clean_attributes(docmeta.commentsbody))
 
     return output
 
 
 def control_xml_output(document: Document, options: Extractor) -> str:
-    '''Make sure the XML output is conform and valid if required'''
+    """Make sure the XML output is conform and valid if required"""
     strip_double_tags(document.body)
     remove_empty_elements(document.body)
 
@@ -167,25 +207,25 @@ def control_xml_output(document: Document, options: Extractor) -> str:
 
     output_tree = sanitize_tree(output_tree)
     # necessary for cleaning
-    output_tree = fromstring(tostring(output_tree, encoding='unicode'), CONTROL_PARSER)
+    output_tree = fromstring(tostring(output_tree, encoding="unicode"), CONTROL_PARSER)
 
     # validate
-    if options.format == 'xmltei' and options.tei_validation:
-        LOGGER.debug('TEI validation result: %s %s', validate_tei(output_tree), options.source)
+    if options.format == "xmltei" and options.tei_validation:
+        LOGGER.debug("TEI validation result: %s %s", validate_tei(output_tree), options.source)
 
-    return tostring(output_tree, pretty_print=True, encoding='unicode').strip()
+    return tostring(output_tree, pretty_print=True, encoding="unicode").strip()
 
 
 def add_xml_meta(output: _Element, docmeta: Document) -> None:
-    '''Add extracted metadata to the XML output tree'''
+    """Add extracted metadata to the XML output tree"""
     for attribute in META_ATTRIBUTES:
         value = getattr(docmeta, attribute, None)
         if value:
-            output.set(attribute, value if isinstance(value, str) else ';'.join(value))
+            output.set(attribute, value if isinstance(value, str) else ";".join(value))
 
 
 def build_tei_output(docmeta: Document) -> _Element:
-    '''Build TEI-XML output tree based on extracted information'''
+    """Build TEI-XML output tree based on extracted information"""
     # build TEI tree
     output = write_teitree(docmeta)
     # filter output (strip unwanted elements), just in case
@@ -194,12 +234,12 @@ def build_tei_output(docmeta: Document) -> _Element:
     return output
 
 
-def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
-    '''Check if the resulting XML file is conform and scrub remaining tags'''
+def check_tei(xmldoc: _Element, url: str | None) -> _Element:
+    """Check if the resulting XML file is conform and scrub remaining tags"""
     # convert head tags
-    for elem in xmldoc.iter('head'):
-        elem.tag = 'ab'
-        elem.set('type', 'header')
+    for elem in xmldoc.iter("head"):
+        elem.tag = "ab"
+        elem.set("type", "header")
         parent = elem.getparent()
         if parent is None:
             continue
@@ -212,14 +252,14 @@ def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
     # convert <lb/> when child of <div> to <p>
     for elem in xmldoc.findall(".//text/body//div/lb"):
         if elem.tail and elem.tail.strip():
-            elem.tag, elem.text, elem.tail = 'p', elem.tail, None
+            elem.tag, elem.text, elem.tail = "p", elem.tail, None
     # look for elements that are not valid
-    for elem in xmldoc.findall('.//text/body//*'):
+    for elem in xmldoc.findall(".//text/body//*"):
         # check elements
         if elem.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
-            LOGGER.warning('not a TEI element, removing: %s %s', elem.tag, url)
+            LOGGER.warning("not a TEI element, removing: %s %s", elem.tag, url)
             merge_with_parent(elem)
             continue
         if elem.tag in TEI_REMOVE_TAIL:
@@ -227,17 +267,17 @@ def check_tei(xmldoc: _Element, url: Optional[str]) -> _Element:
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
-            #if len(elem) == 0:
+            # if len(elem) == 0:
             #    elem.getparent().remove(elem)
         # check attributes
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
-            LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, elem.tag, url)
+            LOGGER.warning("not a valid TEI attribute, removing: %s in %s %s", attribute, elem.tag, url)
             elem.attrib.pop(attribute)
     return xmldoc
 
 
 def validate_tei(xmldoc: _Element) -> bool:
-    '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
+    """Check if an XML document is conform to the guidelines of the Text Encoding Initiative"""
     global TEI_DTD
 
     if TEI_DTD is None:
@@ -246,143 +286,319 @@ def validate_tei(xmldoc: _Element) -> bool:
 
     result = TEI_DTD.validate(xmldoc)
     if result is False:
-        LOGGER.warning('not a valid TEI document: %s', TEI_DTD.error_log.last_error)
+        LOGGER.warning("not a valid TEI document: %s", TEI_DTD.error_log.last_error)
 
     return result
 
 
-def replace_element_text(element: _Element, include_formatting: bool) -> str:
+def _code_fence(text: str, min_len: int = 1) -> str:
+    "Return the shortest backtick string of at least min_len that does not appear as a run in text."
+    fence_len = min_len
+    run = 0
+    for ch in text:
+        if ch == "`":
+            run += 1
+            if run >= fence_len:
+                fence_len = run + 1
+        else:
+            run = 0
+    return "`" * fence_len
+
+
+def _code_span(text: str) -> str:
+    "Inline code span: fence wider than any internal backtick run, padding an edge that abuts a backtick."
+    fence = _code_fence(text)
+    if text.startswith("`") or text.endswith("`"):
+        text = f" {text} "  # CommonMark: a space stops the edge backtick from merging with the fence
+    return f"{fence}{text}{fence}"
+
+
+def _md_wrap(text: str, marker: str) -> str:
+    "Wrap text in a markdown marker, leaving any flanking whitespace outside it (valid CommonMark)."
+    stripped = text.strip()
+    return text.replace(stripped, f"{marker}{stripped}{marker}", 1) if stripped else text
+
+
+def _md_code(text: str) -> str:
+    "Wrap text in an inline code span, leaving any flanking whitespace outside it."
+    stripped = text.strip()
+    return text.replace(stripped, _code_span(stripped), 1) if stripped else text
+
+
+def _convert_math(text: str) -> str:
+    "Convert LaTeX math delimiters to CommonMark $ notation."
+    text = _MATH_BLOCK_RE.sub(lambda m: f"\n$$\n{m.group(1).strip()}\n$$\n", text)
+    return _MATH_INLINE_RE.sub(lambda m: f"${m.group(1)}$", text)
+
+
+def _collapse_emphasis(element: _Element, active: frozenset[str] = frozenset()) -> None:
+    "Splice out redundant emphasis levels in linear hi chains (nested <font> junk → ***X*** not *******X*******)."
+    if element.tag == "hi":
+        here = HI_FORMATTING.get(element.get("rend") or "")
+        if here:
+            active = active | {here}
+        while (
+            not (element.text or "").strip()
+            and len(element) == 1
+            and element[0].tag == "hi"
+            and not (element[0].tail or "").strip()
+            and HI_FORMATTING.get(element[0].get("rend") or "") in active
+        ):
+            child = element[0]
+            element.text = (element.text or "") + (child.text or "")
+            element.extend(list(child))
+            element.remove(child)
+    for child in element:
+        _collapse_emphasis(child, active)
+
+
+def _convert_math_tree(element: _Element) -> None:
+    "Rewrite LaTeX math in text/tails in place, leaving code subtrees untouched."
+    # code content is verbatim: skip the whole subtree
+    if element.tag == "code" or (element.tag == "hi" and HI_FORMATTING.get(element.get("rend") or "") == "`"):
+        return
+    if element.text:
+        element.text = _convert_math(element.text)
+    for child in element:
+        _convert_math_tree(child)
+        if child.tail:  # a code element's tail is prose, so it is still converted
+            child.tail = _convert_math(child.tail)
+
+
+def _last_char(returnlist: list[str]) -> str:
+    "Last character emitted so far, or '' if nothing yet."
+    return returnlist[-1][-1:] if returnlist else ""
+
+
+def _list_marker(element: _Element, in_item: bool | None = None, include_formatting: bool = True) -> str:
+    "Markdown marker for the first element of a list item ('N. '/'- ' with nesting indent), else '' (e.g. in a cell)."
+    # outside any list item there is no marker and no need to walk ancestors
+    if in_item is None:
+        in_item = is_element_in_item(element)
+    if not in_item:
+        return ""
+    item = item_if_first_element(element)
+    if item is None or is_in_table_cell(element):
+        return ""
+    indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
+    parent = item.getparent()
+    # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
+    if include_formatting and parent is not None and parent.get("rend") == "ol":
+        return f"{indent}{sum(1 for _ in item.itersiblings('item', preceding=True)) + 1}. "
+    return f"{indent}- "
+
+
+def _md_link(text: str, url: str | None, image: bool = False) -> str:
+    "Markdown link/image with escaped text and a CommonMark-safe target."
+    esc = text.replace("[", "\\[").replace("]", "\\]")
+    prefix = "!" if image else ""
+    if url is None:
+        return f"{prefix}[{esc}]"
+    safe = f"<{url}>" if any(c in url for c in " <>()") else url
+    return f"{prefix}[{esc}]({safe})"
+
+
+def _consumes_inline_children(element: _Element) -> bool:
+    "Whether replace_element_text emits this element's children inline (vs. process_element recursion)."
+    return element.tag in INLINE_CONSUMING and len(element) > 0
+
+
+def _heading_prefix(element: _Element) -> str:
+    "Markdown #-marker for a head element, defaulting to level 2."
+    level = element.get("rend") or ""
+    number = int(level[1]) if level[1:2] in HEADING_LEVELS else 2
+    return "#" * number
+
+
+def _image_markup(element: _Element) -> str:
+    "Markdown image for a graphic element: ![alt](src)."
+    alt = f"{element.get('title', '')} {element.get('alt', '')}".strip()
+    return _md_link(alt, element.get("src", ""), image=True)
+
+
+def _collect_inline_text(element: _Element, include_formatting: bool) -> str:
+    "Collect text from an element's direct text and inline children (carried INLINE_CARRIED tags)."
+    parts: list[str] = [element.text] if element.text else []
+    for child in element:
+        if child.tag == "graphic":
+            parts.append(_image_markup(child))
+        elif child.tag == "lb":
+            parts.append("\n")
+        elif child.tag in INLINE_FORMATTABLE:
+            parts.append(replace_element_text(child, include_formatting))
+        elif child.text:  # fallback: e.g. structural tag nested inside inline (malformed input)
+            parts.append(child.text)
+        if child.tail:
+            parts.append(child.tail)
+    return "".join(parts)
+
+
+def _escape_cell(text: str) -> str:
+    "Escape characters that would break a GFM table row: pipes split columns, newlines split rows."
+    return text.replace("|", "\\|").replace("\n", " ")
+
+
+def replace_element_text(
+    element: _Element, include_formatting: bool, in_item: bool | None = None, in_cell: bool = False
+) -> str:
     """Determine element text based on just the text of the element. One must deal with the tail separately."""
-    elem_text = element.text or ""
+    if _consumes_inline_children(element):
+        elem_text = _collect_inline_text(element, include_formatting)
+    else:
+        elem_text = element.text or ""
     # handle formatting: convert to markdown
-    if include_formatting and element.text:
-        if element.tag in ('article', 'list', 'table'):
+    if include_formatting and elem_text:
+        if element.tag in ("article", "list", "table"):
             elem_text = elem_text.strip()
-        elif element.tag == "head":
-            try:
-                number = int(element.get("rend")[1])  # type: ignore[index]
-            except (TypeError, ValueError):
-                number = 2
-            elem_text = f'{"#" * number} {elem_text}'
+        elif element.tag == "head" and not in_cell:
+            elem_text = f"{_heading_prefix(element)} {elem_text}"
         elif element.tag == "del":
-            elem_text = f"~~{elem_text}~~"
+            elem_text = _md_wrap(elem_text.replace("~~", "~\\~"), "~~")
         elif element.tag == "hi":
-            rend = element.get("rend")
-            if rend in HI_FORMATTING:
-                elem_text = f"{HI_FORMATTING[rend]}{elem_text}{HI_FORMATTING[rend]}"
+            marker = HI_FORMATTING.get(element.get("rend") or "")
+            if marker == "`":
+                elem_text = _md_code(elem_text)  # inline code, flanking whitespace stays outside
+            elif marker:
+                elem_text = _md_wrap(elem_text, marker)
         elif element.tag == "code":
-            if "\n" in elem_text or element.xpath(".//lb"):  # Handle <br> inside <code>
+            lbs = element.xpath(".//lb")
+            if "\n" in elem_text or lbs:  # Handle <br> inside <code>
                 # Convert <br> to \n within code blocks
-                for lb in element.xpath(".//lb"):
-                    elem_text = f'{elem_text}\n{lb.tail or ""}'
+                for lb in lbs:
+                    elem_text = f"{elem_text}\n{lb.tail or ''}"
                     lb.getparent().remove(lb)
-                elem_text = f"```\n{elem_text}\n```\n"
+                fence = _code_fence(elem_text, min_len=3)
+                elem_text = f"{fence}\n{elem_text}\n{fence}\n"
             else:
-                elem_text = f"`{elem_text}`"
+                elem_text = _md_code(elem_text)
     # handle links
     if element.tag == "ref":
-        if elem_text:
-            link_text = f"[{elem_text}]"
+        stripped = elem_text.strip()
+        if stripped:
             target = element.get("target")
-            if target:
-                elem_text = f"{link_text}({target})"
-            else:
+            if not target:
                 LOGGER.warning("missing link attribute: %s %s'", elem_text, element.attrib)
-                elem_text = link_text
+            link_text = _md_link(stripped, target or None)
+            elem_text = elem_text.replace(stripped, link_text, 1)
         else:
             LOGGER.warning("empty link: %s %s", elem_text, element.attrib)
     # cells
-    if element.tag == 'cell':
+    if element.tag == "cell":
         elem_text = elem_text.strip()
-
-        if elem_text and not is_last_element_in_cell(element):
+        # separate the cell's text from its children
+        if elem_text and len(element):
             elem_text = f"{elem_text} "
 
     # within lists
-    if is_first_element_in_item(element) and not is_in_table_cell(element):
-        elem_text = f"- {elem_text}"
+    elem_text = f"{_list_marker(element, in_item, include_formatting)}{elem_text}"
+
+    # escape chars that would break GFM table cell boundaries
+    if in_cell:
+        elem_text = _escape_cell(elem_text)
 
     return elem_text
 
 
-def process_element(element: _Element, returnlist: List[str], include_formatting: bool) -> None:
+def process_element(
+    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool = False, in_item: bool = False
+) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
-    if element.tag == 'cell' and element.getprevious() is None:
-        returnlist.append('| ')
+    # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
+    in_cell = in_cell or element.tag == "cell"
+    in_item = in_item or element.tag == "item"
+    if element.tag == "cell" and element.getprevious() is None:
+        returnlist.append("| ")
 
-    if element.text:
-        # this is the text that comes before the first child
-        returnlist.append(replace_element_text(element, include_formatting))
+    # a block element starts on its own line, not mashed onto preceding loose text (#661)
+    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
+        returnlist.append("\n")
 
-    if element.tail and element.tag != 'graphic' and is_in_table_cell(element):
-        # if element is in table cell, append tail after element text when element is not graphic since we deal with
-        # graphic tail alone, textless elements like lb should be processed here too, otherwise process tail at the end
-        returnlist.append(element.tail.strip())
+    _consumes_children = _consumes_inline_children(element)
+    _renders_inline = bool(element.text) or _consumes_children
 
-    for child in element:
-        process_element(child, returnlist, include_formatting)
+    if _renders_inline:
+        returnlist.append(replace_element_text(element, include_formatting, in_item, in_cell))
+    elif include_formatting and element.tag == "head" and not in_cell and len(element):
+        # heading starting with an inline child still needs its # prefix (children render below)
+        returnlist.append(f"{_heading_prefix(element)} ")
 
-    if not element.text:
+    if element.tail and element.tag != "graphic" and in_cell:
+        # textless elements like lb should be processed here too
+        tail = element.tail.strip()
+        # separate the tail from preceding cell content unless a space/delimiter is already there
+        if tail and _last_char(returnlist) not in (" ", "|", ""):
+            tail = f" {tail}"
+        returnlist.append(_escape_cell(tail))
+
+    # a sublist starts on its own line, not mashed onto the parent item
+    if element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
+        returnlist.append("\n")
+
+    if not _consumes_children:
+        for child in element:
+            process_element(child, returnlist, include_formatting, in_cell, in_item)
+
+    if not _renders_inline:
         if element.tag == "graphic":
-            # add source, default to ''
-            text = f'{element.get("title", "")} {element.get("alt", "")}'
-            returnlist.append(f'![{text.strip()}]({element.get("src", "")})')
+            image = f"{_list_marker(element, in_item, include_formatting)}{_image_markup(element)}"
+            if in_cell:
+                image = _escape_cell(image)
+            returnlist.append(image)
 
             if element.tail:
-                returnlist.append(f' {element.tail.strip()}')
+                tail_text = f" {element.tail.strip()}"
+                returnlist.append(_escape_cell(tail_text) if in_cell else tail_text)
         # newlines for textless elements
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
             if element.tag == "row":
-                cell_count = len(element.xpath(".//cell"))
-                # restrict columns to a maximum of 1000
-                span_info = element.get("colspan") or element.get("span")
-                if not span_info or not span_info.isdigit():
-                    max_span = 1
-                else:
-                    max_span = min(int(span_info), MAX_TABLE_WIDTH)
-                # row ended so draw extra empty cells to match max_span
-                if cell_count < max_span:
-                    returnlist.append(f'{"|" * (max_span - cell_count)}\n')
-                # if this is a head row, draw the separator below
-                if element.xpath("./cell[@role='head']"):
-                    returnlist.append(f'\n|{"---|" * max_span}\n')
-            else:
+                cells = element.findall("cell")
+                # rows are materialized to full width upstream; draw the head separator below
+                if any(cell.get("role") == "head" for cell in cells):
+                    returnlist.append(f"\n|{'---|' * len(cells)}\n")
+            elif not in_cell:
+                # block elements inside a cell must not inject a row-breaking newline
                 returnlist.append("\n")
-        elif element.tag != "cell" and element.tag != 'item':
+        elif element.tag not in ("cell", "item"):
             # cells still need to append vertical bars
-            # but nothing more to do with other textless elements
             return
 
-    # Process text
-
-    # Common elements (Now processes end-tag logic correctly)
-    if element.tag in NEWLINE_ELEMS and not element.xpath("ancestor::cell") and not is_element_in_item(element):
-        # spacing hack
-        returnlist.append("\n\u2424\n" if include_formatting and element.tag != 'row' else "\n")
+    last_in_item = in_item and is_last_element_in_item(element)
+    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item:
+        returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
-    elif element.tag not in SPECIAL_FORMATTING and not is_last_element_in_cell(element): #  and not is_in_table_cell(element)
+    elif element.tag in ("head", "item") and in_cell and not is_last_element_in_cell(element):
+        # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
+        returnlist.append(" ")
+    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not is_last_element_in_cell(element):
         returnlist.append(" ")
 
-    # this is text that comes after the closing tag, so it should be after any NEWLINE_ELEMS
-    # unless it's within a list item or a table
-    is_in_cell = is_in_table_cell(element)
-    if element.tail and not is_in_cell:
-        returnlist.append(element.tail.strip() if is_element_in_item(element) or element.tag=='list' else element.tail)
+    # text that comes after the closing tag
+    if element.tail and not in_cell and element.tag != "graphic":  # graphic tail already handled above
+        tail = element.tail.strip() if in_item or element.tag == "list" else element.tail
+        # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
+        if tail and in_item and _last_char(returnlist) not in SEPARATORS:
+            tail = f" {tail}"
+        returnlist.append(tail)
 
     # deal with list items alone
-    if is_last_element_in_item(element) and not is_in_cell:
-        returnlist.append('\n')
+    if last_in_item and not in_cell:
+        returnlist.append("\n")
 
 
-def xmltotxt(xmloutput: Optional[_Element], include_formatting: bool) -> str:
+def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
     if xmloutput is None:
         return ""
 
-    returnlist: List[str] = []
+    returnlist: list[str] = []
 
+    if include_formatting:
+        # math rewrite, emphasis collapse, lb removal mutate the tree; protect caller's copy
+        xmloutput = deepcopy(xmloutput)
+        _convert_math_tree(xmloutput)
+        _collapse_emphasis(xmloutput)
     process_element(xmloutput, returnlist, include_formatting)
 
     return unescape(sanitize("".join(returnlist), True) or "")
@@ -399,119 +615,124 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
     outputwriter = csv.writer(output, delimiter=delim, quoting=csv.QUOTE_MINIMAL)
 
     # organize fields
-    outputwriter.writerow([d if d else null for d in (
-        document.url,
-        document.id,
-        document.fingerprint,
-        document.hostname,
-        document.title,
-        document.image,
-        document.date,
-        posttext,
-        commentstext,
-        document.license,
-        document.pagetype
-    )])
+    outputwriter.writerow(
+        [
+            d if d else null
+            for d in (
+                document.url,
+                document.id,
+                document.fingerprint,
+                document.hostname,
+                document.title,
+                document.image,
+                document.date,
+                posttext,
+                commentstext,
+                document.license,
+                document.pagetype,
+            )
+        ]
+    )
     return output.getvalue()
 
 
 def write_teitree(docmeta: Document) -> _Element:
-    '''Bundle the extracted post and comments into a TEI tree'''
-    teidoc = Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    """Bundle the extracted post and comments into a TEI tree"""
+    teidoc = Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")
     write_fullheader(teidoc, docmeta)
-    textelem = SubElement(teidoc, 'text')
-    textbody = SubElement(textelem, 'body')
+    textelem = SubElement(teidoc, "text")
+    textbody = SubElement(textelem, "body")
     # post
     postbody = clean_attributes(docmeta.body)
-    postbody.tag = 'div'
-    postbody.set('type', 'entry')
+    postbody.tag = "div"
+    postbody.set("type", "entry")
     textbody.append(postbody)
     # comments
     commentsbody = clean_attributes(docmeta.commentsbody)
-    commentsbody.tag = 'div'
-    commentsbody.set('type', 'comments')
+    commentsbody.tag = "div"
+    commentsbody.set("type", "comments")
     textbody.append(commentsbody)
     return teidoc
 
 
 def _define_publisher_string(docmeta: Document) -> str:
-    '''Construct a publisher string to include in TEI header'''
+    """Construct a publisher string to include in TEI header"""
     if docmeta.hostname and docmeta.sitename:
-        publisher = f'{docmeta.sitename.strip()} ({docmeta.hostname})'
+        publisher = f"{docmeta.sitename.strip()} ({docmeta.hostname})"
     else:
-        publisher = docmeta.hostname or docmeta.sitename or 'N/A'
-        if LOGGER.isEnabledFor(logging.WARNING) and publisher == 'N/A':
-            LOGGER.warning('no publisher for URL %s', docmeta.url)
+        publisher = docmeta.hostname or docmeta.sitename or "N/A"
+        if LOGGER.isEnabledFor(logging.WARNING) and publisher == "N/A":
+            LOGGER.warning("no publisher for URL %s", docmeta.url)
     return publisher
 
 
 def write_fullheader(teidoc: _Element, docmeta: Document) -> _Element:
-    '''Write TEI header based on gathered metadata'''
+    """Write TEI header based on gathered metadata"""
     # todo: add language info
-    header = SubElement(teidoc, 'teiHeader')
-    filedesc = SubElement(header, 'fileDesc')
-    bib_titlestmt = SubElement(filedesc, 'titleStmt')
-    SubElement(bib_titlestmt, 'title', type='main').text = docmeta.title
+    header = SubElement(teidoc, "teiHeader")
+    filedesc = SubElement(header, "fileDesc")
+    bib_titlestmt = SubElement(filedesc, "titleStmt")
+    SubElement(bib_titlestmt, "title", type="main").text = docmeta.title
     if docmeta.author:
-        SubElement(bib_titlestmt, 'author').text = docmeta.author
+        SubElement(bib_titlestmt, "author").text = docmeta.author
 
-    publicationstmt_a = SubElement(filedesc, 'publicationStmt')
+    publicationstmt_a = SubElement(filedesc, "publicationStmt")
     publisher_string = _define_publisher_string(docmeta)
     # license, if applicable
     if docmeta.license:
-        SubElement(publicationstmt_a, 'publisher').text = publisher_string
-        availability = SubElement(publicationstmt_a, 'availability')
-        SubElement(availability, 'p').text = docmeta.license
+        SubElement(publicationstmt_a, "publisher").text = publisher_string
+        availability = SubElement(publicationstmt_a, "availability")
+        SubElement(availability, "p").text = docmeta.license
     # insert an empty paragraph for conformity
     else:
-        SubElement(publicationstmt_a, 'p')
+        SubElement(publicationstmt_a, "p")
 
-    notesstmt = SubElement(filedesc, 'notesStmt')
+    notesstmt = SubElement(filedesc, "notesStmt")
     if docmeta.id:
-        SubElement(notesstmt, 'note', type='id').text = docmeta.id
-    SubElement(notesstmt, 'note', type='fingerprint').text = docmeta.fingerprint
+        SubElement(notesstmt, "note", type="id").text = docmeta.id
+    SubElement(notesstmt, "note", type="fingerprint").text = docmeta.fingerprint
 
-    sourcedesc = SubElement(filedesc, 'sourceDesc')
-    source_bibl = SubElement(sourcedesc, 'bibl')
+    sourcedesc = SubElement(filedesc, "sourceDesc")
+    source_bibl = SubElement(sourcedesc, "bibl")
 
-    sigle = ', '.join(filter(None, [docmeta.sitename, docmeta.date]))
+    sigle = ", ".join(filter(None, [docmeta.sitename, docmeta.date]))
     if not sigle:
-        LOGGER.warning('no sigle for URL %s', docmeta.url)
-    source_bibl.text = ', '.join(filter(None, [docmeta.title, sigle]))
-    SubElement(sourcedesc, 'bibl', type='sigle').text = sigle
+        LOGGER.warning("no sigle for URL %s", docmeta.url)
+    source_bibl.text = ", ".join(filter(None, [docmeta.title, sigle]))
+    SubElement(sourcedesc, "bibl", type="sigle").text = sigle
 
-    biblfull = SubElement(sourcedesc, 'biblFull')
-    bib_titlestmt = SubElement(biblfull, 'titleStmt')
-    SubElement(bib_titlestmt, 'title', type='main').text = docmeta.title
+    biblfull = SubElement(sourcedesc, "biblFull")
+    bib_titlestmt = SubElement(biblfull, "titleStmt")
+    SubElement(bib_titlestmt, "title", type="main").text = docmeta.title
     if docmeta.author:
-        SubElement(bib_titlestmt, 'author').text = docmeta.author
+        SubElement(bib_titlestmt, "author").text = docmeta.author
 
-    publicationstmt = SubElement(biblfull, 'publicationStmt')
-    SubElement(publicationstmt, 'publisher').text = publisher_string
+    publicationstmt = SubElement(biblfull, "publicationStmt")
+    SubElement(publicationstmt, "publisher").text = publisher_string
     if docmeta.url:
-        SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
-    SubElement(publicationstmt, 'date').text = docmeta.date
+        SubElement(publicationstmt, "ptr", type="URL", target=docmeta.url)
+    SubElement(publicationstmt, "date").text = docmeta.date
 
-    profiledesc = SubElement(header, 'profileDesc')
-    abstract = SubElement(profiledesc, 'abstract')
-    SubElement(abstract, 'p').text = docmeta.description
+    profiledesc = SubElement(header, "profileDesc")
+    abstract = SubElement(profiledesc, "abstract")
+    SubElement(abstract, "p").text = docmeta.description
 
     if docmeta.categories or docmeta.tags:
-        textclass = SubElement(profiledesc, 'textClass')
-        keywords = SubElement(textclass, 'keywords')
+        textclass = SubElement(profiledesc, "textClass")
+        keywords = SubElement(textclass, "keywords")
         if docmeta.categories:
-            SubElement(keywords, 'term', type='categories').text = ','.join(docmeta.categories)
+            SubElement(keywords, "term", type="categories").text = ",".join(docmeta.categories)
         if docmeta.tags:
-            SubElement(keywords, 'term', type='tags').text = ','.join(docmeta.tags)
+            SubElement(keywords, "term", type="tags").text = ",".join(docmeta.tags)
 
-    creation = SubElement(profiledesc, 'creation')
-    SubElement(creation, 'date', type="download").text = docmeta.filedate
+    creation = SubElement(profiledesc, "creation")
+    SubElement(creation, "date", type="download").text = docmeta.filedate
 
-    encodingdesc = SubElement(header, 'encodingDesc')
-    appinfo = SubElement(encodingdesc, 'appInfo')
-    application = SubElement(appinfo, 'application', version=PKG_VERSION, ident='Trafilatura')
-    SubElement(application, 'label').text = 'Trafilatura'
-    SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
+    encodingdesc = SubElement(header, "encodingDesc")
+    appinfo = SubElement(encodingdesc, "appInfo")
+    application = SubElement(appinfo, "application", version=PKG_VERSION, ident="Trafilatura")
+    SubElement(application, "label").text = "Trafilatura"
+    SubElement(application, "ptr", target="https://github.com/adbar/trafilatura")
 
     return header
 
@@ -520,7 +741,7 @@ def _handle_text_content_of_div_nodes(element: _Element) -> None:
     "Wrap loose text in <div> within <p> elements for TEI conformity."
     if element.text and element.text.strip():
         if len(element) > 0 and element[0].tag == "p":
-            element[0].text = f'{element.text} {element[0].text or ""}'.strip()
+            element[0].text = f"{element.text} {element[0].text or ''}".strip()
         else:
             new_child = Element("p")
             new_child.text = element.text
@@ -529,7 +750,7 @@ def _handle_text_content_of_div_nodes(element: _Element) -> None:
 
     if element.tail and element.tail.strip():
         if len(element) > 0 and element[-1].tag == "p":
-            element[-1].text = f'{element[-1].text or ""} {element.tail}'.strip()
+            element[-1].text = f"{element[-1].text or ''} {element.tail}".strip()
         else:
             new_child = Element("p")
             new_child.text = element.tail
@@ -546,24 +767,24 @@ def _handle_unwanted_tails(element: _Element) -> None:
     if element.tag == "p":
         element.text = " ".join(filter(None, [element.text, element.tail]))
     else:
-        new_sibling = Element('p')
+        new_sibling = Element("p")
         new_sibling.text = element.tail
         parent = element.getparent()
         if parent is not None:
-            parent.insert(parent.index(element) + 1 , new_sibling)
+            parent.insert(parent.index(element) + 1, new_sibling)
     element.tail = None
 
 
 def _tei_handle_complex_head(element: _Element) -> _Element:
     "Convert certain child elements to <ab> and <lb>."
-    new_element = Element('ab', attrib=element.attrib)
+    new_element = Element("ab", attrib=element.attrib)
     new_element.text = element.text.strip() if element.text else None
     for child in element.iterchildren():
-        if child.tag == 'p':
+        if child.tag == "p":
             if len(new_element) > 0 or new_element.text:
                 # add <lb> if <ab> has no children or last tail contains text
                 if len(new_element) == 0 or new_element[-1].tail:
-                    SubElement(new_element, 'lb')
+                    SubElement(new_element, "lb")
                 new_element[-1].tail = child.text
             else:
                 new_element.text = child.text
