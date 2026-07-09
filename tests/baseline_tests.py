@@ -6,6 +6,7 @@ import json
 import sys
 from html import escape
 
+import pytest
 from lxml import html
 from trafilatura import baseline, html2txt
 
@@ -168,8 +169,7 @@ def test_baseline_teaser_does_not_shadow_longer_body():
         for i in range(5)
     )
     jsonld = '{"@type": "Product", "description": "%s"}' % desc
-    doc = f'<html><head><script type="application/ld+json">{jsonld}</script></head><body>{divs}</body></html>'
-    _, text, _ = baseline(doc)
+    _, text, _ = baseline(jsonld_doc(jsonld, body=divs))
     assert "Real article paragraph number 3" in text
 
 
@@ -177,52 +177,57 @@ def test_baseline_teaser_used_when_body_shorter():
     "the teaser still wins when the body dump is shorter than it (near-empty body, e.g. a JS shell)."
     desc = "Full product description carrying the actual page content, comfortably longer than the sparse body below and past the gate."
     jsonld = '{"@type": "Product", "description": "%s"}' % desc
-    doc = f'<html><head><script type="application/ld+json">{jsonld}</script></head><body><div>x</div></body></html>'
-    _, text, _ = baseline(doc)
+    _, text, _ = baseline(jsonld_doc(jsonld, body="<div>x</div>"))
     assert "Full product description" in text
+
+
+@pytest.mark.parametrize("teaser_type", ["Product", "VideoObject"])
+def test_baseline_description_teaser_tier(teaser_type):
+    "Product/VideoObject descriptions are last-resort teasers: used when alone on the page, \
+    outranked by any full-text source (a JSON articleBody or an HTML paragraph)."
+    teaser = "Description teaser standing in for page content, comfortably longer than the one hundred character gate here."
+    fulltext = "The full body text which must take precedence over the description teaser and clears the gate comfortably."
+    teaser_json = json.dumps({"@type": teaser_type, "description": teaser})
+    assert teaser in baseline(jsonld_doc(teaser_json))[1]  # alone -> used
+    both = json.dumps([{"@type": teaser_type, "description": teaser}, {"@type": "Article", "articleBody": fulltext}])
+    outranked = baseline(jsonld_doc(both))[1]  # JSON full-text property wins
+    assert fulltext in outranked and teaser not in outranked
+    outranked = baseline(jsonld_doc(teaser_json, body=f"<p>{fulltext}</p>"))[1]  # HTML paragraph wins
+    assert fulltext in outranked and teaser not in outranked
 
 
 def test_baseline_jsonld_double_embed():
     "regression: the same JSON-LD block embedded twice (theme and SEO plugin both emitting \
     it) must not duplicate the article body; same for duplicated teaser descriptions."
     body = "Article body text embedded twice via duplicated JSON-LD scripts, comfortably longer than the one hundred character strategy gate."
-    script = f'<script type="application/ld+json">{{"articleBody": "{body}"}}</script>'
-    doc = f"<html><head>{script}{script}</head><body></body></html>"
-    _, text, _ = baseline(doc)
-    assert text.count(body) == 1
-
     desc = "Video description standing in for page content here, comfortably longer than the one hundred character gate."
-    v_script = f'<script type="application/ld+json">{{"@type": "VideoObject", "description": "{desc}"}}</script>'
-    doc = f"<html><head>{v_script}{v_script}</head><body></body></html>"
-    _, text, _ = baseline(doc)
-    assert text.count(desc) == 1
+    for content, payload in (
+        (body, '{"articleBody": "%s"}'),
+        (desc, '{"@type": "VideoObject", "description": "%s"}'),
+    ):
+        script = f'<script type="application/ld+json">{payload % content}</script>'
+        _, text, _ = baseline(f"<html><head>{script}{script}</head><body></body></html>")
+        assert text.count(content) == 1
 
 
-def test_baseline_jsonld_control_chars_tree_input():
-    "regression: non-whitespace control chars survive json.loads(strict=False) and caller-built \
-    trees (trafilatura's own parser strips them from str input, lxml.html.fromstring does not); \
-    they must not crash the lxml text assignment in _build_body."
-    body = "before\x01after, with plenty of padding words to pass the one hundred character strategy gate comfortably."
-    tree = html.fromstring(jsonld_doc('{"articleBody": "%s"}' % body))
-    _, text, length = baseline(tree)
+_CTRL = "before\x01after, with plenty of padding words to pass the one hundred character strategy gate comfortably."
+
+
+@pytest.mark.parametrize(
+    "doc",
+    [
+        jsonld_doc('{"articleBody": "%s"}' % _CTRL),
+        f"<html><body><p>{_CTRL}</p></body></html>",
+        f"<html><body><div>{_CTRL}</div></body></html>",
+    ],
+    ids=["json_build_body", "paragraph_build_body", "default_dump"],
+)
+def test_baseline_control_chars_tree_input(doc):
+    "regression: non-whitespace control chars survive json.loads(strict=False) and caller-built trees \
+    (trafilatura's parser strips them from str input, lxml.html.fromstring does not); they must not \
+    crash the lxml .text assignment at any baseline sink (JSON/paragraph _build_body, whole-body dump)."
+    _, text, length = baseline(html.fromstring(doc))
     assert length > 100 and "\x01" not in text and "before" in text and "after" in text
-
-
-def test_baseline_control_chars_paragraph_tree_input():
-    "regression: control chars in a caller-built tree must not crash the paragraph strategy \
-    (non-JSON entry into _build_body's lxml text assignment)."
-    para = "before\x01after, with plenty of padding words to pass the one hundred character strategy gate comfortably."
-    tree = html.fromstring(f"<html><body><p>{para}</p></body></html>")
-    _, text, length = baseline(tree)
-    assert length > 100 and "\x01" not in text and "before" in text and "after" in text
-
-
-def test_baseline_control_chars_default_dump_tree_input():
-    "regression: control chars in a caller-built tree must not crash the whole-body dump strategy \
-    (its own p_elem.text sink, reached when no JSON/article/paragraph source qualifies)."
-    tree = html.fromstring("<html><body><div>before\x01after visible text</div></body></html>")
-    _, text, _ = baseline(tree)
-    assert "\x01" not in text and "before" in text and "after" in text
 
 
 def test_baseline_nested_paragraph_not_duplicated():
@@ -270,7 +275,7 @@ def test_baseline_article_nested_not_duplicated():
 
 
 def test_baseline_schema_properties():
-    "schema.org text properties beyond articleBody: recipe steps, FAQ answers, Product description tiering."
+    "schema.org text properties beyond articleBody: recipe steps and FAQ answers."
     recipe = json.dumps(
         {
             "@type": "Recipe",
@@ -306,16 +311,6 @@ def test_baseline_schema_properties():
     )
     _, result, _ = baseline(jsonld_doc(faq))
     assert "This is the accepted answer" in result
-
-    # Product description is a teaser: used alone, outranked by a full-text property
-    teaser = "A fine product described in enough detail to pass the one hundred character length gate for baseline."
-    body_text = "The full article body which takes precedence over the product teaser and is long enough for the gate."
-    alone = json.dumps({"@type": "Product", "description": teaser})
-    _, result, _ = baseline(jsonld_doc(alone))
-    assert teaser in result
-    both = json.dumps([{"@type": "Product", "description": teaser}, {"@type": "Article", "articleBody": body_text}])
-    _, result, _ = baseline(jsonld_doc(both))
-    assert body_text in result and teaser not in result
 
 
 def test_baseline_discourse_preload():
@@ -365,8 +360,8 @@ def test_build_body_dedupe_cap(monkeypatch):
     assert text.count(dup) == 1  # under the cap: substring dedup fires
 
 
-def test_baseline_howto_and_video():
-    "HowTo step/itemListElement text is content; a VideoObject description is a last-resort teaser."
+def test_baseline_howto():
+    "HowTo step/itemListElement text is content (own text and nested itemListElement both kept)."
     step_text = "Measure the table and add the overhang you want on every side before cutting any fabric at all."
     howto = json.dumps(
         {
@@ -402,14 +397,6 @@ def test_baseline_howto_and_video():
     )
     _, result, _ = baseline(jsonld_doc(both))
     assert "preheat the oven" in result and "one hundred and eighty" in result
-
-    desc = "Video description standing in for page content, comfortably longer than the one hundred character gate."
-    video = json.dumps({"@type": "VideoObject", "description": desc})
-    para = "Genuine paragraph text on the page which must outrank the video description teaser, well over the gate."
-    _, result, _ = baseline(jsonld_doc(video))
-    assert desc in result  # nothing better on the page
-    _, result, _ = baseline(jsonld_doc(video, body=f"<p>{para}</p>"))
-    assert para in result and desc not in result  # paragraphs beat the teaser
 
 
 def test_baseline_element_input_not_mutated():

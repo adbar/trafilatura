@@ -1421,6 +1421,19 @@ def test_link_density_tables_textless_links_kept() -> None:
     assert trafilatura.htmlprocessing.link_density_test_tables(icon_table) is False
 
 
+def test_link_density_short_link_list_kept() -> None:
+    "regression: a short (100-150 char) link-heavy content list with sentence punctuation must be kept. \
+    Raising the length limit to 150 for such text pruned genuine affiliate/recommendation lists \
+    (real-world mixed.de 'Empfehlungen von Dennis'); the length limit stays at 100 in normal flow."
+    from trafilatura.utils import trim
+
+    items = "".join(f'<ref target="/p{i}">Recommended product number {i}: a nice gadget</ref> ' for i in range(3))
+    element = html.fromstring(f"<body><div>{items}</div><p>following content sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert 100 < len(text) < 150  # the band that a limit of 150 would wrongly subject to the density test
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is False  # kept, not pruned
+
+
 def test_is_in_table_cell():
     "is_in_table_cell must check real ancestry, not 'a cell exists somewhere' (#767)."
     tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
@@ -1958,6 +1971,17 @@ def test_no_duplicate_content():
     assert (extract(dup768, output_format="txt", config=real_config) or "").count("Line that has to have") == 1
     dup817 = "<html><body><div id='content'><p>Authoritative taxonomy of but let us leave it as it is 1 2 3</p></div><p>some text long enough not to skip and printed twice on this line some text long enough not to skip and printed twice on this line</p></body></html>"
     assert (extract(dup817, output_format="txt", config=real_config) or "").count("Authoritative taxonomy") == 1
+    # #879: a small <article>/<main> body (below min_extracted_size) triggers wild-text recovery,
+    # which must not re-append the paragraphs the main pass already collected (interleaved dupes)
+    dup879 = (
+        "<html><body><nav>menu chrome</nav><article><h1>The Example Chronicle</h1>"
+        "<p>First synthetic paragraph of adequate length for extraction to engage properly.</p>"
+        "<p>Second synthetic paragraph, also long enough to matter for the extractor.</p>"
+        "</article><footer>footer chrome</footer></body></html>"
+    )
+    for doc in (dup879, dup879.replace("article>", "main>")):
+        out = extract(doc, output_format="txt", config=real_config) or ""
+        assert out.count("First synthetic paragraph") == 1 and out.count("Second synthetic paragraph") == 1
 
 
 def test_no_duplicate_content_list_item():
