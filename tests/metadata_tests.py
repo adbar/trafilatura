@@ -12,6 +12,7 @@ from trafilatura.metadata import (
     JSON_MINIFY,
     Document,
     check_authors,
+    extract_meta_json,
     extract_metadata,
     extract_metainfo,
     extract_title,
@@ -419,6 +420,22 @@ def test_json_minify():
     assert '"Curtis Heyen"' in minified
 
 
+def test_extract_meta_json_control_char():
+    "regression: a non-whitespace control character (not neutralized by normalize_json's \
+    trim, unlike \\n/\\r/\\t) must not make the JSON-LD parse fail and fall back to the \
+    crude regex extractor, which cannot see past the first (non-article) @graph node."
+    payload = (
+        '{"@context": "https://schema.org", "@graph": ['
+        '{"@type": "Organization", "name": "Acme Corp"}, '
+        '{"@type": "Article", "headline": "Graph based headline", '
+        '"description": "Body text with a stray control char\x01 inside it."}]}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.pagetype == "article"
+    assert metadata.title == "Graph based headline"
+
+
 def test_extract_json_multiple_blocks():
     "regression: a flat JSON-LD object must not short-circuit the loop and drop later @graph blocks."
     schema = [
@@ -427,6 +444,15 @@ def test_extract_json_multiple_blocks():
     ]
     metadata = extract_json(schema, Document())
     assert metadata.title == "Graph Headline"
+
+
+def test_extract_json_null_author():
+    'regression: "author": null must not raise -- process_parent\'s author loop expects an \
+    iterable, not None.'
+    schema = {"@context": "https://schema.org", "@type": "Article", "headline": "Some Headline", "author": None}
+    metadata = extract_json(schema, Document())
+    assert metadata.title == "Some Headline"
+    assert metadata.author is None
 
 
 def test_extract_json_parse_error():

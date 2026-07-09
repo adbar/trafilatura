@@ -34,6 +34,7 @@ from trafilatura.main_extractor import (
     handle_quotes,
     handle_table,
     handle_textelem,
+    prune_unwanted_sections,
 )
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
@@ -1957,6 +1958,367 @@ def test_no_duplicate_content():
     assert (extract(dup768, output_format="txt", config=real_config) or "").count("Line that has to have") == 1
     dup817 = "<html><body><div id='content'><p>Authoritative taxonomy of but let us leave it as it is 1 2 3</p></div><p>some text long enough not to skip and printed twice on this line some text long enough not to skip and printed twice on this line</p></body></html>"
     assert (extract(dup817, output_format="txt", config=real_config) or "").count("Authoritative taxonomy") == 1
+
+
+def test_no_duplicate_content_list_item():
+    "regression T6: a <p> already folded into a <list> item by the main pass must not be re-added by \
+    recover_wild_text — backup_tree is a snapshot taken before the main pass marks consumed tags 'done'."
+    from trafilatura.htmlprocessing import convert_tags, tree_cleaning
+    from trafilatura.main_extractor import extract_content
+
+    options = core.Extractor(config=use_config())
+    para = "This is a moderately long description paragraph exceeding the fifty character dedup threshold here."
+    htmlstring = f"<html><body><article><dl><dt>Term</dt><dd><p>{para}</p></dd></dl></article></body></html>"
+    cleaned = convert_tags(tree_cleaning(html.fromstring(htmlstring), options), options)
+    _, text, _ = extract_content(cleaned, options)
+    assert text.count(para) == 1
+
+
+def test_no_duplicate_content_nonadjacent():
+    "regression T6 (non-adjacent case): the duplicate is not the element immediately preceding it in \
+    result_body once genuine wild text is recovered in between — an adjacent-only dedup check would miss it."
+    real_config = use_config()
+    dup = "X" * 30 + " short duplicate description text for the list item here right now please."
+    wild = (
+        "Y" * 30 + " this is genuinely separate wild text living outside the article container elsewhere"
+        " in the page body content over here, quite far removed from it."
+    )
+    htmlstring = f"<html><body><p>{wild}</p><article><dl><dt>Term</dt><dd><p>{dup}</p></dd></dl></article></body></html>"
+    result = extract(htmlstring, output_format="txt", fast=True, config=real_config) or ""
+    assert result.count(dup) == 1
+    assert result.count(wild) == 1
+    assert "Term" in result
+
+
+def test_no_duplicate_content_short_elements():
+    "regression #634: on short pages, recovery must not re-add elements the main pass already \
+    extracted, even when their text is below the substring-dedup length gate."
+    real_config = use_config()
+    body = (
+        '<p>this is sample intro</p><h3 class="wp-block-heading">intro 2</h3><p>table below</p>'
+        '<figure class="wp-block-table"><table><tbody><tr><td>a</td><td>b</td><td></td></tr>'
+        "<tr><td>f</td><td>s</td><td>s</td></tr><tr><td>g</td><td></td><td>b</td></tr></tbody></table></figure>"
+        "<p>header table below</p>"
+        '<figure class="wp-block-table"><table><thead><tr><th>b</th><th>s</th><th>h</th></tr></thead>'
+        "<tbody><tr><td>a</td><td>b</td><td></td></tr><tr><td>f</td><td>s</td><td>s</td></tr>"
+        "<tr><td>g</td><td></td><td>b</td></tr></tbody></table></figure>"
+        "<p>list below</p><ul><li>this is 1</li><li>this is 2</li><li>this is 3</li></ul>"
+        "<p>numbered list below</p><ol><li>this is 1</li><li>this is 2</li><li>this is 3</li></ol>"
+    )
+    doc = f'<html><body><div class="entry-content">{body}</div></body></html>'
+    result = extract(doc, output_format="txt", fast=True, config=real_config) or ""
+    assert result.count("this is sample intro") == 1
+
+
+def test_recover_wild_text_inline_formatting_dedup():
+    "regression: the recovery dedup must render accumulated text per element with plain \
+    concatenation, exactly like the candidates -- ' '.join across all text nodes invented \
+    spaces at inline-tag boundaries (Hyper<b>link</b>ed -> 'Hyper link ed'), so a paragraph \
+    folded into a list item escaped the substring check and was emitted twice."
+    real_config = use_config()
+    para = (
+        "This paragraph has Hyper<b>link</b>ed formatting inside and needs to be comfortably "
+        "longer than the fifty character dedup gate to be caught by the substring check."
+    )
+    doc = f"<html><body><article><dl><dt>Term one</dt><dd><p>{para}</p></dd></dl></article></body></html>"
+    result = extract(doc, output_format="txt", include_formatting=True, fast=True, config=real_config) or ""
+    assert result.count("formatting inside") == 1
+
+
+def test_recover_wild_text_dedup_scan_cap(monkeypatch):
+    "regression: DEDUPE_SCAN_CAP gates the O(n) substring scan against `existing` -- a \
+    >MIN_DUPLICATE_LENGTH-char substring duplicate is caught while `existing` is under the \
+    cap, and kept (scan skipped, exact-match set is the only check left) once past it."
+    import trafilatura.main_extractor as me
+
+    options = core.Extractor(config=use_config(), recall=True)
+    container = "The quick brown fox jumps over the lazy dog while the sun was setting slowly over the meadow today."
+    substring_dup = "quick brown fox jumps over the lazy dog while the sun was setting slowly"  # substring of container
+    assert substring_dup in container and len(substring_dup) > me.MIN_DUPLICATE_LENGTH
+    filler = "Zebra quokka platypus wallaby echidna kookaburra numbat bilby quoll dingo marsupial. " * 4
+
+    def run(cap):
+        monkeypatch.setattr(me, "DEDUPE_SCAN_CAP", cap)
+        htmlstring = f"<html><body><div>{filler}</div><div>{container}</div><div>{substring_dup}</div></body></html>"
+        tree = html.fromstring(htmlstring)
+        result_body = etree.Element("body")
+        me.recover_wild_text(tree, result_body, options)
+        return [trim("".join(el.itertext())) for el in result_body]
+
+    # cap comfortably covers filler+container: substring scan runs, duplicate dropped
+    assert substring_dup not in run(cap=len(filler) + len(container) + 100)
+    # cap smaller than filler alone: scan is skipped once `existing` passes it, duplicate kept
+    assert substring_dup in run(cap=len(filler) // 4)
+
+
+def test_prune_boilerplate_table_after_nested():
+    "regression: prune_unwanted_sections must not skip a boilerplate table that follows a deleted \
+    table containing a nested one (deleting mid tree.iter() made the iterator lose the following sibling)."
+    options = core.Extractor(config=use_config(), tables=True)
+    link = '<ref target="/x">link text that is reasonably long over here</ref>'
+    rows = "".join(f"<row><cell>{link}</cell></row>" for _ in range(6))
+    nested = "<row><cell><table><row><cell>x</cell></row></table></cell></row>"
+    real = "Real article content paragraph that should always survive the pruning pass intact here now."
+    htmlstring = f"<html><body><table>{rows}{nested}</table><table>{rows}</table><p>{real}</p></body></html>"
+    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"table", "p"}, options)
+    assert pruned.findall(".//table") == []
+    assert pruned.find(".//p") is not None
+
+
+def test_prune_keep_teasers():
+    "regression: keep_teasers spares teaser-class blocks (some sites wrap real article text in them); \
+    the recovery path uses it in fast mode so content isn't lost after the main extractor already failed."
+    options = core.Extractor(config=use_config(), tables=True)
+    htmlstring = (
+        '<html><body><div class="teaser"><p>Real article body text that is long enough '
+        "to count as genuine content here now.</p></div></body></html>"
+    )
+    assert prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options).find(".//p") is None
+    assert prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options, keep_teasers=True).find(".//p") is not None
+
+
+def test_link_density_punctuation_limit():
+    "link_density_test extends the length limit (100->150) for sentence-like text, so a link-heavy \
+    mid-document element between those lengths is pruned only when it carries sentence punctuation."
+    from trafilatura.htmlprocessing import link_density_test
+    from trafilatura.utils import trim
+
+    link = '<ref target="/x">navigate to some other page here</ref>' * 3  # link-heavy, ~105 chars
+    for tail, removed in (("See more.", True), ("See more", False)):
+        doc = f"<body><div>{link} {tail}</div><p>following sibling</p></body>"
+        div = html.fromstring(doc)[0]
+        text = trim(div.text_content())
+        assert 100 < len(text) < 150  # in the window where the punctuation branch matters
+        assert link_density_test(div, text)[0] is removed
+
+
+def test_recall_escalation():
+    "a short balanced extraction covering little of the page is retried in recall mode: \
+    wild paragraphs block the baseline rescue while the bulk of the content sits in bare divs."
+    real_config = use_config()
+    ps = "".join(
+        f"<p>Wild paragraph number {i} directly under body, with enough words to pass the paragraph checks in place.</p>"
+        for i in range(3)
+    )
+    divs = "".join(
+        f"<div>Main content block {i} living in a bare div element with plenty of meaningful words to matter here today.</div>"
+        for i in range(30)
+    )
+    doc = f"<html><body>{ps}{divs}</body></html>"
+    result = extract(doc, output_format="txt", fast=True, config=real_config) or ""
+    assert result.count("Wild paragraph") == 3
+    assert result.count("Main content block") == 30
+
+
+# shared by the recall-escalation tests: long enough to clear the minimum extraction size
+_ESCALATION_INTRO = (
+    "<p>"
+    + (
+        "Introductory paragraph with regular prose content that is moderately long and clearly "
+        "meaningful, providing enough text to exceed the minimum extraction size threshold used "
+        "by the extractor. " * 2
+    )
+    + "</p>"
+)
+
+
+def test_recall_escalation_justext():
+    "the recall escalation also tries justext, which reaches content the rule-based retry \
+    cannot: 'sidebar'-classed divs are discarded by both the main extractor/recall retry \
+    (OVERALL_DISCARD_XPATH) and readability (unlikelyCandidatesRe), but justext classifies \
+    them on paragraph density alone and keeps them."
+    real_config = use_config()
+    messages = "".join(
+        f"<div class='sidebar'>Message number {i} contains substantial discussion content with "
+        "plenty of genuine words and enough length to be recognized as real text by a paragraph "
+        f"density classifier, not boilerplate at all today, said the author.</div>"
+        for i in range(8)
+    )
+    doc = f"<html><body>{_ESCALATION_INTRO}{messages}</body></html>"
+    result = extract(doc, output_format="txt", config=real_config) or ""
+    assert "Introductory paragraph" in result
+    assert result.count("Message number") == 8
+
+
+_DFP_JSONLD = (
+    '<script type="application/ld+json">{"@context":"https://schema.org",'
+    '"@type":"DiscussionForumPosting","headline":"Test thread"}</script>'
+)
+
+
+def _thread_doc(jsonld: str, reply_tag: str = "div", intro: str = _ESCALATION_INTRO, wrap: bool = True) -> str:
+    "Thread page: article intro plus 8 replies in a comments-classed container."
+    replies = "".join(
+        f"<{reply_tag} class='comment-body'>Reply number {i} contains substantial discussion "
+        "content with plenty of genuine words and enough length to be recognized as real text "
+        f"by a paragraph density classifier, not boilerplate at all today, said the commenter.</{reply_tag}>"
+        for i in range(8)
+    )
+    # unwrapped: no article-region marker at all, so body selection stays broad
+    article = f"<article>{intro}</article>" if wrap else f"<div>{intro}</div>"
+    return (
+        f"<html><head>{jsonld}</head><body>{article}"
+        f"<div id='comments' class='comments-area'>{replies}</div></body></html>"
+    )
+
+
+@pytest.mark.parametrize(
+    "jsonld,expect_replies,fast",
+    [
+        ("", False, False),
+        (_DFP_JSONLD, True, False),
+        ("", False, True),
+    ],
+    ids=["blog_excludes_comments", "forum_keeps_posts", "blog_excludes_comments_fast"],
+)
+def test_recall_escalation_justext_comment_scoping(jsonld, expect_replies, fast):
+    "regression: justext has no article-region scoping of its own and will absorb a reader- \
+    comments thread as if it were content (AEB regression: a short article inviting comments, \
+    justext grabbed the replies too) -- comment containers must be stripped before it runs, \
+    UNLESS this is a thread-forum (schema.org DiscussionForumPosting), where those same \
+    containers hold the actual posts, not boilerplate replies (WCXB regression fixed by \
+    _forum_thread_page). The fast=True case is the rule-based retry alone (justext is skipped \
+    in fast mode): it must apply the same comment-scoping, or a reader-comments thread leaks \
+    into the body precisely when the caller asked to exclude comments."
+    real_config = use_config()
+    doc = _thread_doc(jsonld)
+    result = extract(doc, output_format="txt", include_comments=False, fast=fast, config=real_config) or ""
+    assert "Introductory paragraph" in result
+    assert result.count("Reply number") == (8 if expect_replies else 0)
+
+
+@pytest.mark.parametrize("reply_tag", ["p", "div"], ids=["captured_as_comments", "capture_missed"])
+def test_recall_escalation_no_comment_doubling(reply_tag):
+    "regression: with include_comments=True on a thread-forum page, posts must not appear in \
+    both text and comments (the escalation stage sees the raw tree, whose comment containers \
+    extract_comments already consumed). Policy: comment capture on a DFP page is re-routed \
+    into the body (the 'comments' are the posts); partial captures must not lose the rest \
+    of the thread either (WCXB regression: pruning all containers because a fragment was \
+    captured tanked 3 forum pages). <p> replies are capturable, <div> replies are not \
+    (process_comments_node rejects divs) -- either way: exactly one occurrence per post."
+    real_config = use_config()
+    doc = _thread_doc(_DFP_JSONLD, reply_tag)
+    # txt output concatenates text and comments: exactly one occurrence per post overall
+    result = extract(doc, output_format="txt", include_comments=True, config=real_config) or ""
+    assert "Introductory paragraph" in result
+    assert result.count("Reply number") == 8
+
+
+_LONG_OP = "".join(
+    f"<p>Opening post paragraph {i} lays out the question in full detail, with context, "
+    "history and several worked examples that make the thread starter alone longer than "
+    "the escalation length gate, so no rescue pass can be relied upon for the replies.</p>"
+    for i in range(16)
+)
+
+
+def test_dfp_long_opening_post_keeps_replies():
+    "regression (review round 3): the DFP re-route emptied the captured comments betting on \
+    the stage-4 escalation to restore the posts into the body, but the escalation is gated \
+    on len_text < ESCALATION_MAX_LENGTH -- a thread whose opening post alone exceeds the \
+    gate lost every reply from both channels. Captured posts must survive regardless of gates."
+    real_config = use_config()
+    doc = _thread_doc(_DFP_JSONLD, "p", intro=_LONG_OP)
+    result = extract(doc, output_format="txt", include_comments=True, config=real_config) or ""
+    assert "Opening post paragraph" in result
+    assert result.count("Reply number") == 8
+
+
+def test_dfp_precision_keeps_posts():
+    "regression (review round 3): precision mode pruned REMOVE_COMMENTS_XPATH from the very \
+    tree the forum re-route had just restored the posts into, and precision closes the \
+    stage-3/4 rescues, so a DFP page returned no posts at all."
+    real_config = use_config()
+    doc = _thread_doc(_DFP_JSONLD, "p")
+    result = (
+        extract(doc, output_format="txt", include_comments=True, favor_precision=True, config=real_config) or ""
+    )
+    assert result.count("Reply number") == 8
+
+
+@pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
+def test_recall_escalation_blog_comment_leak(fast):
+    "regression (review round 3): on a wrapper-less blog layout (broad body selection) with \
+    include_comments=True and an uncapturable div-based reply thread, the recall retry kept \
+    the comment containers (its prune gate checked options.comments, the justext branch \
+    checked len_comments) and emitted the reader comments as main body text."
+    real_config = use_config()
+    doc = _thread_doc("", wrap=False)
+    result = extract(doc, output_format="txt", include_comments=True, fast=fast, config=real_config) or ""
+    assert "Introductory paragraph" in result
+    assert result.count("Reply number") == 0
+
+
+def test_escalation_retry_no_comment_capture():
+    "regression (review round 3): the stage-4 retry re-ran extract_comments although the \
+    caller discards the retry's comments triple -- a container matching COMMENTS_XPATH but \
+    not REMOVE_COMMENTS_XPATH had its text captured and deleted inside the retry, so it \
+    vanished from both channels. The retry must not capture comments at all."
+    real_config = use_config()
+    intro = "".join(
+        f"<li>Point number {i} of the short visible article summary text here.</li>" for i in range(4)
+    )
+    cont = "".join(
+        f"<p>Continuation paragraph {i} with substantial article prose that only the "
+        "recall retry can recover from inside the form wrapper element.</p>"
+        for i in range(12)
+    )
+    replies = "".join(
+        f"<p>Reply {i} ZQXJKVREPLY says something reasonably long about the topic at hand "
+        "in this discussion thread below the article body.</p>"
+        for i in range(8)
+    )
+    doc = (
+        f"<html><body><article><h1>Title of the page</h1><ul>{intro}</ul>"
+        f"<form>{cont}<div class='user-comment-area'>{replies}</div></form></article></body></html>"
+    )
+    result = extract(doc, output_format="txt", include_comments=True, fast=True, config=real_config) or ""
+    assert "Continuation paragraph 5" in result
+    assert "ZQXJKVREPLY" in result
+
+
+def test_main_pass_excludes_comments_when_disabled():
+    "regression: with include_comments=False, comment containers must be pruned before the MAIN \
+    pass, not only in precision mode -- balanced/recall let the div-ladder pull a short article's \
+    comment thread into the body (a bare-div thread the comment extractor cannot capture)."
+    real_config = use_config()
+    intro = "<p>Short intro under the escalation and rescue thresholds here.</p>"
+    replies = "".join(
+        f"<div>Reader comment number {i} that must never appear when comments are excluded, long enough to matter.</div>"
+        for i in range(8)
+    )
+    doc = f"<html><body><article>{intro}</article><div id='comments' class='comments-area'>{replies}</div></body></html>"
+    for fast in (False, True):
+        result = extract(doc, output_format="txt", include_comments=False, fast=fast, config=real_config) or ""
+        assert "Short intro" in result
+        assert result.count("Reader comment number") == 0
+
+
+def test_compare_extraction_justext_ratio(monkeypatch):
+    "the justext override must not replace text more than JUSTEXT_OVERRIDE_RATIO times longer \
+    than its own output (calibrated 3x: at the previous 4x it replaced longer, closer-to-target \
+    extractions with shorter, comment-contaminated justext output)."
+    import trafilatura.external as external
+
+    jt_text = "j" * 100
+    jt_body = etree.Element("body")
+    etree.SubElement(jt_body, "p").text = jt_text
+    monkeypatch.setattr(external, "justext_rescue", lambda tree, options: (jt_body, jt_text, len(jt_text)))
+
+    options = core.Extractor()
+    # empty backup keeps readability out; the <aside> triggers the justext examination
+    empty_tree = html.fromstring("<html><body></body></html>")
+    body = html.fromstring("<body><p>text</p><aside>x</aside></body>")
+
+    # 3.5x longer than the justext candidate: must be kept (adopted at the old 4x)
+    kept = "a" * 350
+    _, text, _ = external.compare_extraction(empty_tree, empty_tree, body, kept, len(kept), options)
+    assert text == kept
+
+    # 2.5x longer: justext still overrides
+    replaced = "a" * 250
+    _, text, _ = external.compare_extraction(empty_tree, empty_tree, body, replaced, len(replaced), options)
+    assert text == jt_text
 
 
 def test_list_item_block_child_single_bullet():

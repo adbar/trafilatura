@@ -5,6 +5,7 @@ Extraction configuration and processing functions.
 
 import json
 import logging
+import re
 import warnings
 from configparser import ConfigParser
 from copy import copy, deepcopy
@@ -14,16 +15,16 @@ from lxml.etree import Element, XPath, _Element, strip_tags
 from lxml.html import HtmlElement
 
 # own
-from .baseline import baseline
+from .baseline import baseline, html2txt
 from .deduplication import content_fingerprint, duplicate_test
-from .external import compare_extraction
+from .external import compare_extraction, justext_rescue
 from .htmlprocessing import (
     build_html_output,
     convert_tags,
     prune_unwanted_nodes,
     tree_cleaning,
 )
-from .main_extractor import extract_comments, extract_content
+from .main_extractor import _elem_text, extract_comments, extract_content
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import (
@@ -37,6 +38,17 @@ from .xml import build_json_output, control_xml_output, xmltocsv, xmltotxt
 from .xpaths import REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
+
+# recall escalation (see trafilatura_sequence, stage 4): retry a short balanced extraction
+# in recall mode. Calibrated as a set against the benchmark suite (own-bench/WMB/WCXB/AEB) —
+# don't tune one value in isolation, and re-run the full suite after any change.
+ESCALATION_MAX_LENGTH = 3000  # only consider extractions below this size
+ESCALATION_PAGE_SHARE = 0.2  # ... covering less than this share of the page text
+ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
+# justext tends to over-include (whole pricing tables, unrelated sections) rather than stop at
+# page boundaries the way the rule-based retry does, so it needs a stricter bar than the
+# retry's own 1.5x: swept 1.5-10x, 2.0x is the best balance across the full suite.
+ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
 
@@ -120,33 +132,152 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
     return normalize_unicode(returnstring)
 
 
+# matches "@type": "DiscussionForumPosting" or an @type array containing it, anchored to the
+# key so it can't fire on the words appearing in ordinary prose (e.g. a description field)
+_DISCUSSION_FORUM_POSTING_RE = re.compile(
+    r'"@type"\s*:\s*"DiscussionForumPosting"|"@type"\s*:\s*\[[^\]]*"DiscussionForumPosting"'
+)
+
+
+def _forum_thread_page(tree: HtmlElement) -> bool:
+    """Detect a thread-forum page where posts live in the same containers
+    REMOVE_COMMENTS_XPATH would otherwise prune -- comments are content here, unlike on
+    a blog or article. Seeded by schema.org DiscussionForumPosting alone. Q&A forums
+    (StackExchange, schema.org QAPage) are deliberately not matched: their answers live
+    outside comment containers. Misses forums that don't emit DiscussionForumPosting
+    (e.g. old Reddit) -- an accepted gap. Meant as a reusable seed for a future page-type
+    router, not a one-off check.
+    """
+    return any(
+        script.text and _DISCUSSION_FORUM_POSTING_RE.search(script.text)
+        for script in tree.iterfind('.//script[@type="application/ld+json"]')
+    )
+
+
+def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tuple[HtmlElement, HtmlElement]:
+    "Clean and convert a raw tree, returning (converted, pre-conversion backup)."
+    cleaned = tree_cleaning(copy(tree), options)
+    backup = copy(cleaned)
+    cleaned = convert_tags(cleaned, options, url)
+    return cleaned, backup
+
+
 def trafilatura_sequence(
-    cleaned_tree: HtmlElement,
-    cleaned_tree_backup: HtmlElement,
-    tree_backup: HtmlElement,
+    tree: HtmlElement,
     options: Extractor,
-) -> tuple[_Element, str, int]:
-    "Execute the standard cascade of extractors used by Trafilatura."
-    # Trafilatura's main extractor
+    url: str | None = None,
+    retry: bool = False,
+) -> tuple[_Element, str, int, _Element, str, int]:
+    """Prepare the raw tree (cleaning, tag conversion, comment handling), then execute the
+    standard cascade of extractors used by Trafilatura, each stage only engaging if the
+    previous one under-delivered:
+    1. main extractor (includes wild-text recovery for short documents)
+    2. comparison with external extractors (readability/justext), skipped in fast mode
+    3. baseline rescue on the original, uncleaned tree
+    4. recall-mode retry of the whole cascade, if the result still covers little of the page,
+       plus a justext candidate tried alongside it (a different algorithm, not just stricter
+       rules, so it reaches content the rule-based retry cannot)
+    Stage 4 recurses into this function with focus="recall" and retry=True, which cannot
+    re-trigger stage 4 (its gate requires focus=="balanced") — recursion is naturally
+    bounded to one retry. Returns the body triple and the comments triple.
+
+    Internal helper: its signature and 6-tuple return are not a stable API — call
+    ``bare_extraction``/``extract`` instead.
+    """
+    # the retry neither routes nor escalates, so it never needs the page-type scan
+    is_forum = not retry and _forum_thread_page(tree)
+    # comments off: prune on the raw tree so all stages inherit it (only precision did before)
+    if not options.comments and (options.focus == "precision" or not is_forum):
+        tree = prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
+    cleaned_tree, cleaned_tree_backup = _prepare_tree(tree, options, url)
+
+    # never capture in the retry: the caller discards its comments triple
+    commentsbody, temp_comments, len_comments = Element("body"), "", 0
+    forum_posts = None
+    if options.comments and not retry:
+        commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
+        if len_comments > 0 and is_forum:
+            # thread-forum: the "comments" are the posts -> route into the body (backup predates
+            # capture); keep the capture aside, salvaged below if the cascade drops the posts
+            forum_posts = commentsbody
+            commentsbody, temp_comments, len_comments = Element("body"), "", 0
+            cleaned_tree = convert_tags(copy(cleaned_tree_backup), options, url)
+    if options.focus == "precision" and not is_forum:
+        cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
+
+    # 1. Trafilatura's main extractor
     postbody, temp_text, len_text = extract_content(cleaned_tree, options)
 
-    # comparison with external extractors
+    # 2. comparison with external extractors
     if not options.fast:
         postbody, temp_text, len_text = compare_extraction(
             cleaned_tree_backup,
-            deepcopy(tree_backup),
+            deepcopy(tree),
             postbody,
             temp_text,
             len_text,
             options,
         )
 
-    # rescue: baseline extraction on original/dirty tree
-    if len_text < options.min_extracted_size and options.focus != "precision":
-        postbody, temp_text, len_text = baseline(deepcopy(tree_backup))
+    # 3. rescue: baseline on the original tree. Not in the retry (baseline already ran on the
+    # full page there; on a comment-pruned tree it only yields an indistinguishable boilerplate dump)
+    if not retry and len_text < options.min_extracted_size and options.focus != "precision":
+        postbody, temp_text, len_text = baseline(tree)  # baseline copies element inputs
         LOGGER.debug("non-clean extracted length: %s (extraction)", len_text)
+        forum_posts = None  # the dump saw the whole page: missing posts are boilerplate, not lost
 
-    return postbody, temp_text, len_text
+    # 4. recall escalation: a short extraction covering little of the page suggests
+    # under-extraction (non-article layout) — retry in recall mode, keep if clearly bigger.
+    # NOTE: the page measure html2txt(tree) is coupled to BASIC_CLEAN_XPATH — see settings.py.
+    if (
+        options.focus == "balanced"
+        and 0 < len_text < ESCALATION_MAX_LENGTH
+        and len_text < ESCALATION_PAGE_SHARE * len(html2txt(tree))
+    ):
+        # a copy so a shared Extractor never leaks the "recall" focus back to the caller
+        r_options = copy(options)
+        r_options.focus = "recall"
+        # strip comments from the escalation input (dup risk if captured, reader comments if not);
+        # keep them on a thread-forum, where the retry rescues the posts
+        esc_tree = tree if is_forum else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
+        r_len = 0
+        try:
+            r_body, r_text, r_len, _, _, _ = trafilatura_sequence(esc_tree, r_options, url, retry=True)
+        except Exception as err:
+            LOGGER.warning("recall retry failed: %s %s", err, url)
+        # justext reaches div-buried content the rule retry misses (gated: ungated regressed
+        # own-fallback). No region scoping of its own -> esc_tree is comment-pruned above
+        j_len = 0
+        if not options.fast:
+            try:
+                j_body, j_text, j_len = justext_rescue(copy(esc_tree), options)
+            except Exception as err:
+                LOGGER.warning("justext candidate failed: %s %s", err, url)
+
+        # floor on the retry: a result below the pipeline's own minimum is noise (the retry's
+        # former internal baseline used to displace such outputs)
+        winner = via = None
+        if j_len > r_len and j_len > ESCALATION_JUSTEXT_RATIO * len_text:
+            winner, via = (j_body, j_text, j_len), "justext"
+        elif r_len >= options.min_extracted_size and r_len > ESCALATION_ACCEPT_RATIO * len_text:
+            winner, via = (r_body, r_text, r_len), "retry"
+        if winner:
+            LOGGER.debug("recall escalation accepted via %s: %s -> %s chars", via, len_text, winner[2])
+            postbody, temp_text, len_text = winner
+            forum_posts = None  # accepted candidate saw the full page; its exclusions are deliberate
+
+    if forum_posts is not None:
+        # a gate (escalation length, precision) blocked the cascade from restoring the posts:
+        # append the ones missing from the body
+        existing = "\n".join(filter(None, (_elem_text(el) for el in postbody)))
+        salvaged = [el for el in forum_posts if (t := _elem_text(el)) and t not in existing]
+        if salvaged:
+            LOGGER.debug("thread-forum salvage: %s captured posts appended to the body", len(salvaged))
+            postbody.extend(salvaged)
+            temp_text = " ".join(postbody.itertext()).strip()
+            len_text = len(temp_text)
+
+    return postbody, temp_text, len_text, commentsbody, temp_comments, len_comments
 
 
 def bare_extraction(
@@ -215,6 +346,7 @@ def bare_extraction(
 
     Note:
         Low-level primitive: returns a Document with an unserialized .body tree; tei_validation only applies when serializing via extract().
+        In the default balanced mode, a short extraction covering little of the page is automatically retried with recall settings.
     """
 
     # deprecations: stacklevel=3 → user → bare_extraction → _check_deprecation
@@ -292,22 +424,9 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        # clean and backup for further processing
-        cleaned_tree = tree_cleaning(copy(tree), options)
-        cleaned_tree_backup = copy(cleaned_tree)
-
-        # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, options, options.url or document.url)
-
-        # comments first, then remove
-        if options.comments:
-            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
-        else:
-            commentsbody, temp_comments, len_comments = Element("body"), "", 0
-        if options.focus == "precision":
-            cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
-
-        postbody, temp_text, len_text = trafilatura_sequence(cleaned_tree, cleaned_tree_backup, tree, options)
+        postbody, temp_text, len_text, commentsbody, temp_comments, len_comments = trafilatura_sequence(
+            tree, options, options.url or document.url
+        )
 
         # tree size sanity check
         if options.max_tree_size:

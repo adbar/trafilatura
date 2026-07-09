@@ -20,7 +20,7 @@ from .htmlprocessing import (
     process_node,
     prune_unwanted_nodes,
 )
-from .settings import INLINE_CARRIED, TAG_CATALOG, Extractor
+from .settings import DEDUPE_SCAN_CAP, INLINE_CARRIED, MIN_DUPLICATE_LENGTH, TAG_CATALOG, Extractor
 from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (
@@ -42,12 +42,19 @@ _INLINE_WRAP_TAGS = P_FORMATTING | {"del"}
 FORMATTING = P_FORMATTING | {"del", "span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
-# min text length for an adjacent-duplicate element to be treated as an extraction artifact and dropped
-DUPLICATE_ADJACENT_LIMIT = 50
 CODES_QUOTES = {"code", "quote"}
 NOT_AT_THE_END = {"head", "ref"}
 # tags allowed inside a blockquote paragraph
 _QUOTE_TAGS = set(TAG_CATALOG) | {"ref", "graphic"}
+
+
+def _elem_text(element: _Element) -> str:
+    """Text rendering for the recovery/adjacent dedup checks here: plain concatenation, so
+    inline-tag boundaries stay joined ("Hyper<b>link</b>ed" -> "Hyperlinked"). Both sides of
+    these checks must use it, or invented spaces defeat the comparison. (deduplication.py's
+    duplicate_test uses its own " "-joined rendering for the separate LRU dedup.)
+    Not text_content(): callers pass lxml.etree elements, which lack that lxml.html method."""
+    return trim("".join(element.itertext()))
 
 
 def _wraps_inline(element: _Element) -> bool:
@@ -649,32 +656,54 @@ def recover_wild_text(
     tree: HtmlElement, result_body: _Element, options: Extractor, potential_tags: set[str] | None = None
 ) -> _Element:
     """Look for all previously unconsidered wild elements, including outside of the determined
-    frame and throughout the document to recover potentially missing text parts"""
+    frame and throughout the document to recover potentially missing text parts.
+
+    Do not widen `search_expr` (e.g. headings, more div shapes) without benchmarking the
+    full suite: extra recovered text raises len_text, which can suppress the stronger
+    rescues that run after this one (compare_extraction, the baseline rescue, the recall
+    escalation).
+    """
     LOGGER.debug("Recovering wild text elements")
-    # TAG_CATALOG is a frozenset; the recall branch calls .update()
-    potential_tags = set(TAG_CATALOG) if potential_tags is None else potential_tags
-    search_expr = ".//blockquote|.//code|.//p|.//pre|.//q|.//quote|.//table|.//div[contains(@class, 'w3-code')]"
+    # copy: the recall branch below mutates potential_tags, must not leak back to the caller
+    potential_tags = set(TAG_CATALOG if potential_tags is None else potential_tags)
+    # blockquote/pre/q are already renamed to quote/code by convert_tags before this tree is built
+    search_expr = ".//code|.//p|.//quote|.//table|.//div[contains(@class, 'w3-code')]"
     if options.focus == "recall":
         potential_tags.update(["div", "lb"])
         search_expr += "|.//div|.//lb|.//list"
-    # prune
-    search_tree = prune_unwanted_sections(tree, potential_tags, options)
-    # decide if links are preserved
-    if "ref" not in potential_tags:
-        strip_tags(search_tree, "a", "ref", "span")
-    else:
-        strip_tags(search_tree, "span")
+    # prune; in fast mode (no external comparator to defer to) keep teaser-class blocks, some of
+    # which are real content — this is the last-resort path after the confident extractor failed
+    search_tree = prune_unwanted_sections(tree, potential_tags, options, keep_teasers=options.fast)
+    # spans are always flattened; links are stripped too unless preserved
+    unwanted = ("span",) if "ref" in potential_tags else ("a", "ref", "span")
+    strip_tags(search_tree, *unwanted)
     subelems = search_tree.xpath(search_expr)
-    result_body.extend(
-        filter(
-            lambda x: x is not None,  # type: ignore[arg-type]
-            (handle_textelem(e, potential_tags, options) for e in subelems),
-        )
-    )
+    # dedup against the pre-main-pass snapshot: skip what the main pass already took -- exact
+    # match (not length-gated, #634; accepted cost: identical-text elements collapse) or a
+    # length-gated substring (a <p> folded into its <list> container)
+    elem_texts = [_elem_text(el) for el in result_body]
+    # newline-joined (trimmed element text has no newline) so no substring match spans two elements
+    existing = "\n".join(filter(None, elem_texts))
+    existing_elems = set(elem_texts)
+    for subelem in subelems:
+        processed = handle_textelem(subelem, potential_tags, options)
+        if processed is None:
+            continue
+        text = _elem_text(processed)
+        # past the cap, the substring scan is skipped and `existing` stops growing
+        under_cap = len(existing) <= DEDUPE_SCAN_CAP
+        if text and (text in existing_elems or (len(text) > MIN_DUPLICATE_LENGTH and under_cap and text in existing)):
+            continue
+        result_body.append(processed)
+        if under_cap:
+            existing += "\n" + text
+        existing_elems.add(text)
     return result_body
 
 
-def prune_unwanted_sections(tree: HtmlElement, potential_tags: set[str], options: Extractor) -> HtmlElement:
+def prune_unwanted_sections(
+    tree: HtmlElement, potential_tags: set[str], options: Extractor, keep_teasers: bool = False
+) -> HtmlElement:
     "Rule-based deletion of targeted document sections"
     favor_precision = options.focus == "precision"
     # prune the rest
@@ -684,7 +713,10 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: set[str], options
         tree = prune_unwanted_nodes(tree, DISCARD_IMAGE_ELEMENTS)
     # balance precision/recall
     if options.focus != "recall":
-        tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
+        # teaser-class blocks are sometimes real content; keep them on the recovery path,
+        # which only runs once the confident extractor has already come up short
+        if not keep_teasers:
+            tree = prune_unwanted_nodes(tree, TEASER_DISCARD_XPATH)
         if favor_precision:
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density, several passes
@@ -694,11 +726,11 @@ def prune_unwanted_sections(tree: HtmlElement, potential_tags: set[str], options
         tree = delete_by_link_density(tree, "p", backtracking=False, favor_precision=favor_precision)
     # tables
     if "table" in potential_tags or favor_precision:
-        # tree = delete_by_link_density(tree, 'table', backtracking=False, favor_precision=favor_precision)
-        for elem in tree.iter("table"):
-            if link_density_test_tables(elem) is True:
-                delete_element(elem, keep_tail=False)
-    # also filter fw/head, table and quote elements?
+        # collect before deleting: removing a table mid-iteration can make tree.iter() skip a table
+        # that follows a deleted one containing a nested table (iterator descends into the detached subtree)
+        boilerplate_tables = [elem for elem in tree.iter("table") if link_density_test_tables(elem) is True]
+        for elem in boilerplate_tables:
+            delete_element(elem, keep_tail=False)
     if favor_precision:
         # delete trailing titles
         while len(tree) > 0 and (tree[-1].tag == "head"):
@@ -766,8 +798,6 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     backup_tree = deepcopy(cleaned_tree)
 
     result_body, temp_text, potential_tags = _extract(cleaned_tree, options)
-    # if len(result_body) == 0:
-    #    result_body, temp_text, potential_tags = _extract(tree_backup, options)
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
@@ -778,8 +808,8 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards
     previous = None
     for el in list(result_body):
-        current = trim("".join(el.itertext()))
-        if current and current == previous and len(current) > DUPLICATE_ADJACENT_LIMIT:
+        current = _elem_text(el)
+        if current and current == previous and len(current) > MIN_DUPLICATE_LENGTH:
             delete_element(el, keep_tail=False)
         else:
             previous = current

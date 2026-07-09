@@ -173,7 +173,9 @@ def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
             continue
         element_text = normalize_json(JSON_MINIFY.sub(r"\1", elem.text))
         try:
-            schema = json.loads(element_text)
+            # strict=False: trim() handles \n\r\t, but strict JSON rejects the full 0x00-0x1F
+            # range; rarer control chars (from encoding issues) would otherwise raise here
+            schema = json.loads(element_text, strict=False)
             metadata = extract_json(schema, metadata)
         except json.JSONDecodeError:
             metadata = extract_json_parse_error(element_text, metadata)

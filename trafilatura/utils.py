@@ -232,7 +232,11 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
 
 def load_html(htmlobject: Any) -> HtmlElement | None:
     """Load object given as input and validate its type
-    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string)
+    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
+
+    Expects a full document: the dubious-HTML check below rejects a single-block
+    fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
+    Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
     """
     # use tree directly
     if isinstance(htmlobject, HtmlElement):
@@ -359,6 +363,13 @@ def trim(string: str) -> str:
         return " ".join(string.split()).strip()
     except (AttributeError, TypeError):
         return ""
+
+
+def as_list(value: Any) -> list[Any]:
+    "Normalize a JSON-like value that may be a single object, a list of them, or None."
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
 
 
 def is_image_element(element: _Element) -> bool:
