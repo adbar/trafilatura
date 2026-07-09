@@ -122,7 +122,8 @@ def test_baseline_jsonld_shapes():
     flat = '{"articleBody": "%s"}' % body_text
     graph = '{"@context": "https://schema.org", "@graph": [{"@type": "Article", "articleBody": "%s"}]}' % body_text
     wrapped = '[{"@type": "Article", "articleBody": "%s"}]' % body_text
-    for payload in (flat, graph, wrapped):
+    mixed = '[42, {"@type": "Article", "articleBody": "%s"}]' % body_text  # non-dict list item is skipped
+    for payload in (flat, graph, wrapped, mixed):
         assert baseline(jsonld_doc(payload))[1].count(body_text) == 1
 
 
@@ -294,6 +295,19 @@ def test_baseline_schema_properties():
     _, result, _ = baseline(jsonld_doc(recipe))
     assert "Mix the flour" in result and "Bake for thirty five minutes" in result
 
+    # recipeInstructions can also be plain strings rather than step objects
+    str_recipe = json.dumps(
+        {
+            "@type": "Recipe",
+            "recipeInstructions": [
+                "Combine all the dry ingredients thoroughly in a large mixing bowl before adding any liquids.",
+                "Pour the batter into the tin and bake until a skewer inserted in the centre comes out clean.",
+            ],
+        }
+    )
+    _, result, _ = baseline(jsonld_doc(str_recipe))
+    assert "Combine all the dry ingredients" in result and "Pour the batter into the tin" in result
+
     faq = json.dumps(
         {
             "@type": "FAQPage",
@@ -325,7 +339,8 @@ def test_baseline_discourse_preload():
             }
         }
     )
-    preloaded = escape(json.dumps({"topic_12": topic}), quote=True)
+    # a non-"topic_" key (e.g. site settings) is skipped; only the topic_ key is parsed
+    preloaded = escape(json.dumps({"site_settings": "ignored", "topic_12": topic}), quote=True)
     doc = f'<html><body><div id="data-preloaded" data-preloaded="{preloaded}"></div></body></html>'
     _, result, _ = baseline(doc)
     assert "First forum post" in result and "Second forum post" in result

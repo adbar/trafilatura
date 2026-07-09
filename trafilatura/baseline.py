@@ -117,7 +117,7 @@ def _render_text(raw: str) -> str:
         # fragment parse: load_html targets full documents and rejects fragments
         try:
             return trim(fragment_fromstring(raw, create_parent="div").text_content())
-        except Exception:
+        except Exception:  # pragma: no cover
             pass
     return trim(raw)
 

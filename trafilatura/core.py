@@ -243,7 +243,7 @@ def trafilatura_sequence(
         r_len = 0
         try:
             r_body, r_text, r_len, _, _, _ = trafilatura_sequence(esc_tree, r_options, url, retry=True)
-        except Exception as err:
+        except Exception as err:  # pragma: no cover
             LOGGER.warning("recall retry failed: %s %s", err, url)
         # justext reaches div-buried content the rule retry misses (gated: ungated regressed
         # own-fallback). No region scoping of its own -> esc_tree is comment-pruned above
@@ -251,7 +251,7 @@ def trafilatura_sequence(
         if not options.fast:
             try:
                 j_body, j_text, j_len = justext_rescue(copy(esc_tree), options)
-            except Exception as err:
+            except Exception as err:  # pragma: no cover
                 LOGGER.warning("justext candidate failed: %s %s", err, url)
 
         # floor on the retry: a result below the pipeline's own minimum is noise (the retry's

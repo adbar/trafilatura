@@ -816,6 +816,13 @@ def test_external(options):
     assert "Features" in res
 
 
+@pytest.mark.skipif(not LANGID_FLAG, reason="py3langid not installed")
+def test_wrong_language_discarded():
+    "content whose detected language differs from target_language is discarded (the filter raises, caught -> None)."
+    doc = "<html><body>" + "<p>Questo testo non è affatto in lingua inglese.</p>" * 20 + "</body></html>"
+    assert extract(doc, target_language="en", config=ZERO_CONFIG) is None
+
+
 def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
     doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
