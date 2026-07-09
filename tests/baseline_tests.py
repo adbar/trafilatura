@@ -149,7 +149,9 @@ def test_baseline_jsonld_content():
     assert "x<y and z>0" in run(expr)
     # regression (review round 3): the letters after "<" are single-letter TAG names (p, q, u, s,
     # i, b) -- the old greedy [^>]* matched "<q ... c>" as one tag and deleted the whole span
-    tagletters = "If p<q then u<s or i<b and c>d holds, with extra padding to comfortably exceed the one hundred character gate."
+    tagletters = (
+        "If p<q then u<s or i<b and c>d holds, with extra padding to comfortably exceed the one hundred character gate."
+    )
     assert "p<q" in run(tagletters) and "i<b and c>d holds" in run(tagletters)
 
 
@@ -157,7 +159,9 @@ def test_baseline_teaser_does_not_shadow_longer_body():
     "regression (review round 3): a schema.org Product/VideoObject description is a short teaser \
     and must not preempt a longer whole-body dump carrying the real content in bare divs (no \
     <article>, no <p>-family, so no earlier tier reaches it)."
-    desc = "Short marketing product blurb standing in as a JSON-LD teaser, just past the one hundred character content gate here."
+    desc = (
+        "Short marketing product blurb standing in as a JSON-LD teaser, just past the one hundred character content gate here."
+    )
     divs = "".join(
         f"<div>Real article paragraph number {i} with genuine sentence content that only the "
         f"whole-body dump captures from these bare div elements on the page.</div>"
@@ -389,7 +393,9 @@ def test_baseline_howto_and_video():
                 {
                     "@type": "HowToStep",
                     "text": "Own step text: preheat the oven to a moderate temperature first.",
-                    "itemListElement": [{"@type": "HowToDirection", "text": "Set the dial to one hundred and eighty degrees."}],
+                    "itemListElement": [
+                        {"@type": "HowToDirection", "text": "Set the dial to one hundred and eighty degrees."}
+                    ],
                 }
             ],
         }

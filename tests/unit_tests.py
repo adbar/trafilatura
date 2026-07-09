@@ -2156,10 +2156,7 @@ def _thread_doc(jsonld: str, reply_tag: str = "div", intro: str = _ESCALATION_IN
     )
     # unwrapped: no article-region marker at all, so body selection stays broad
     article = f"<article>{intro}</article>" if wrap else f"<div>{intro}</div>"
-    return (
-        f"<html><head>{jsonld}</head><body>{article}"
-        f"<div id='comments' class='comments-area'>{replies}</div></body></html>"
-    )
+    return f"<html><head>{jsonld}</head><body>{article}<div id='comments' class='comments-area'>{replies}</div></body></html>"
 
 
 @pytest.mark.parametrize(
@@ -2230,9 +2227,7 @@ def test_dfp_precision_keeps_posts():
     stage-3/4 rescues, so a DFP page returned no posts at all."
     real_config = use_config()
     doc = _thread_doc(_DFP_JSONLD, "p")
-    result = (
-        extract(doc, output_format="txt", include_comments=True, favor_precision=True, config=real_config) or ""
-    )
+    result = extract(doc, output_format="txt", include_comments=True, favor_precision=True, config=real_config) or ""
     assert result.count("Reply number") == 8
 
 
@@ -2255,9 +2250,7 @@ def test_escalation_retry_no_comment_capture():
     not REMOVE_COMMENTS_XPATH had its text captured and deleted inside the retry, so it \
     vanished from both channels. The retry must not capture comments at all."
     real_config = use_config()
-    intro = "".join(
-        f"<li>Point number {i} of the short visible article summary text here.</li>" for i in range(4)
-    )
+    intro = "".join(f"<li>Point number {i} of the short visible article summary text here.</li>" for i in range(4))
     cont = "".join(
         f"<p>Continuation paragraph {i} with substantial article prose that only the "
         "recall retry can recover from inside the form wrapper element.</p>"
