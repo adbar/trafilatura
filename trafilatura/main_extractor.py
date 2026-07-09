@@ -774,15 +774,18 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
         temp_text = " ".join(result_body.itertext()).strip()
-    # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
-    # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards
-    previous = None
+    # drop substantial elements repeating an earlier one (overlapping-candidate / recovery artifact);
+    # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards.
+    # #879: wild-text recovery can re-append blocks already collected by the main extractor,
+    # interleaved rather than adjacent (head, p1, p2, p1, p2), so compare against all earlier
+    # substantial blocks instead of only the immediately preceding one.
+    seen: set[str] = set()
     for el in list(result_body):
         current = trim("".join(el.itertext()))
-        if current and current == previous and len(current) > DUPLICATE_ADJACENT_LIMIT:
+        if current and current in seen and len(current) > DUPLICATE_ADJACENT_LIMIT:
             delete_element(el, keep_tail=False)
-        else:
-            previous = current
+        elif current:
+            seen.add(current)
     # filter output
     strip_elements(result_body, "done")
     strip_tags(result_body, "div")

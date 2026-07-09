@@ -1957,6 +1957,23 @@ def test_no_duplicate_content():
     assert (extract(dup768, output_format="txt", config=real_config) or "").count("Line that has to have") == 1
     dup817 = "<html><body><div id='content'><p>Authoritative taxonomy of but let us leave it as it is 1 2 3</p></div><p>some text long enough not to skip and printed twice on this line some text long enough not to skip and printed twice on this line</p></body></html>"
     assert (extract(dup817, output_format="txt", config=real_config) or "").count("Authoritative taxonomy") == 1
+    # #879: a small <article>/<main> body (below min_extracted_size) triggers wild-text
+    # recovery which must not re-append paragraphs already collected by the main extractor
+    dup879 = (
+        "<html><body><nav>menu chrome</nav><article>"
+        "<h1>The Example Chronicle</h1>"
+        "<p>First synthetic paragraph of adequate length for extraction to engage properly.</p>"
+        "<p>Second synthetic paragraph, also long enough to matter for the extractor.</p>"
+        "</article><footer>footer chrome</footer></body></html>"
+    )
+    out879 = extract(dup879, output_format="txt", config=real_config) or ""
+    assert out879.count("First synthetic paragraph") == 1
+    assert out879.count("Second synthetic paragraph") == 1
+    # same trigger with a <main> wrapper
+    dup879_main = dup879.replace("article>", "main>")
+    out879_main = extract(dup879_main, output_format="txt", config=real_config) or ""
+    assert out879_main.count("First synthetic paragraph") == 1
+    assert out879_main.count("Second synthetic paragraph") == 1
 
 
 def test_list_item_block_child_single_bullet():
