@@ -11,7 +11,7 @@ from re import Pattern
 from typing import Any
 
 from .settings import Document
-from .utils import HTML_STRIP_TAGS, trim
+from .utils import HTML_STRIP_TAGS, as_list, trim
 
 LOGGER = logging.getLogger(__name__)
 
@@ -73,7 +73,6 @@ JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.
 JSON_TYPE = re.compile(r'"@type"\s*:\s*"([^"]*)"', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
-JSON_REMOVE_HTML = re.compile(r"<[^>]+>")
 JSON_SCHEMA_ORG = re.compile(r"^https?://schema\.org", flags=re.IGNORECASE)
 JSON_UNICODE_REPLACE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
@@ -156,10 +155,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
                         # it is a normal string
                         metadata.author = normalize_authors(metadata.author, list_authors)
 
-                if not isinstance(list_authors, list):
-                    list_authors = [list_authors]
-
-                for author in list_authors:
+                for author in as_list(list_authors):
                     if isinstance(author, str):
                         author = {"name": author}
                     if "@type" not in author or author["@type"] == "Person":
@@ -194,9 +190,14 @@ def process_parent(parent: Any, metadata: Document) -> Document:
 
 
 def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Document:
-    """Parse and extract metadata from JSON-LD data"""
-    if isinstance(schema, dict):
-        schema = [schema]
+    """Parse and extract metadata from JSON-LD data.
+
+    Note: baseline.py's `_walk_json` also walks JSON-LD, for page content rather than
+    metadata, and is intentionally not shared with this function: this one flattens one
+    level, gated per container, since metadata extraction should stay conservative, while
+    `_walk_json` recurses unconditionally since content rescue is a last resort.
+    """
+    schema = as_list(schema)
 
     # collect content from every valid block, then process once (no short-circuit on a flat object)
     parents: list[Any] = []
@@ -205,16 +206,14 @@ def extract_json(schema: list[Any] | dict[str, str], metadata: Document) -> Docu
 
         if context and isinstance(context, str) and JSON_SCHEMA_ORG.match(context):
             if "@graph" in parent:
-                graph = parent["@graph"]
-                parents.extend(graph if isinstance(graph, list) else [graph])
+                parents.extend(as_list(parent["@graph"]))
             elif (
                 "@type" in parent
                 and isinstance(parent["@type"], str)
                 and "liveblogposting" in parent["@type"].lower()
                 and "liveBlogUpdate" in parent
             ):
-                updates = parent["liveBlogUpdate"]
-                parents.extend(updates if isinstance(updates, list) else [updates])
+                parents.extend(as_list(parent["liveBlogUpdate"]))
             else:
                 parents.append(parent)
 
@@ -284,7 +283,7 @@ def normalize_json(string: str) -> str:
         string = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match[1], 16)), string)
         string = "".join(c for c in string if ord(c) < 0xD800 or ord(c) > 0xDFFF)
         string = unescape(string)
-    return trim(JSON_REMOVE_HTML.sub("", string))
+    return trim(HTML_STRIP_TAGS.sub("", string))
 
 
 def normalize_authors(current_authors: str | None, author_string: str) -> str | None:

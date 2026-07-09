@@ -452,10 +452,23 @@ MANUALLY_STRIPPED = [
 ]
 # 'center', 'rb', 'wbr'
 
-BASIC_CLEAN_XPATH = XPath(".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style")
+# baseline()/html2txt() only (not the main pipeline). NOTE: html2txt() also measures page length
+# for the recall-escalation gate (core.py) -- shrinking this set fires escalation less often, so
+# re-run the full benchmark suite before changing it.
+BASIC_CLEAN_XPATH = XPath(
+    ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style|.//svg|.//template"
+)
 
 TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
 # + list(CUT_EMPTY_ELEMS)
+
+# min length for a repeated span to count as an extraction artifact (not coincidental content).
+# Shared by main_extractor's recovery dedup and baseline's paragraph-strategy dedup
+MIN_DUPLICATE_LENGTH = 50
+
+# the substring-dedup scans are O(n^2) in accumulated text; skip beyond this size (guards a
+# pathological page -- no corpus page comes close, worst ~60KB)
+DEDUPE_SCAN_CAP = 200_000
 
 # inline-tag ladder (single source of truth shared by extractor and serializer):
 INLINE_CONSUMING = {"hi", "ref", "del"}  # element folds its children into its own text
