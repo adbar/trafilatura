@@ -180,6 +180,16 @@ def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
     return metadata
 
 
+def clean_title(title: str) -> str:
+    """Clean title by removing site name suffix/prefix using HTMLTITLE_REGEX."""
+    if match := HTMLTITLE_REGEX.match(title):
+        # prefer the part without dots (usually the article title, not the domain)
+        for part in (match[1], match[2]):
+            if part and "." not in part:
+                return part
+    return title
+
+
 def extract_opengraph(tree: HtmlElement) -> dict[str, str | None]:
     """Search meta tags following the OpenGraph guidelines (https://ogp.me/)"""
     result = dict.fromkeys(("title", "author", "url", "description", "sitename", "image", "pagetype"))
@@ -190,7 +200,11 @@ def extract_opengraph(tree: HtmlElement) -> dict[str, str | None]:
         # safeguard
         if content and not content.isspace():
             if property_name in OG_PROPERTIES:
-                result[OG_PROPERTIES[property_name]] = content
+                attr_name = OG_PROPERTIES[property_name]
+                # clean title to remove site name suffix/prefix
+                if attr_name == "title":
+                    content = clean_title(content)
+                result[attr_name] = content
             elif property_name == "og:url" and is_valid_url(content):
                 result["url"] = content
             elif property_name in OG_AUTHOR:
@@ -251,7 +265,7 @@ def examine_meta(tree: HtmlElement) -> Document:
                 metadata.author = normalize_authors(metadata.author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:
-                metadata.title = metadata.title or content_attr
+                metadata.title = metadata.title or clean_title(content_attr)
             # description
             elif name_attr in METANAME_DESCRIPTION:
                 metadata.description = metadata.description or content_attr
@@ -277,7 +291,7 @@ def examine_meta(tree: HtmlElement) -> Document:
             elif itemprop_attr == "description":
                 metadata.description = metadata.description or content_attr
             elif itemprop_attr == "headline":
-                metadata.title = metadata.title or content_attr
+                metadata.title = metadata.title or clean_title(content_attr)
             # to verify:
             # elif itemprop_attr == 'name':
             #    if title is None:
