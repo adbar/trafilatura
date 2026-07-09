@@ -4,7 +4,6 @@ Functions to process nodes in HTML code.
 """
 
 import logging
-import re
 from copy import deepcopy
 
 from courlan.urlutils import fix_relative_urls, get_base_url
@@ -23,8 +22,6 @@ from .utils import is_image_element, textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
 
 LOGGER = logging.getLogger(__name__)
-
-SENTENCE_PUNCT = re.compile(r"[.?!:]")
 
 REND_TAG_MAPPING = {
     "em": "#i",
@@ -145,9 +142,8 @@ def link_density_test(element: HtmlElement, text: str, favor_precision: bool = F
         limitlen = 60 if element.getnext() is None else 30
     elif element.getnext() is None:
         limitlen = 300
-    # sentence-like text may run longer before the link-density test applies
-    elif SENTENCE_PUNCT.search(text):
-        limitlen = 150
+    # elif re.search(r'[.?!:]', element.text_content()):
+    #    limitlen, threshold = 150, 0.66
     else:
         limitlen = 100
     elemlen = len(text)

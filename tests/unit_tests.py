@@ -2077,21 +2077,6 @@ def test_prune_keep_teasers():
     assert prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options, keep_teasers=True).find(".//p") is not None
 
 
-def test_link_density_punctuation_limit():
-    "link_density_test extends the length limit (100->150) for sentence-like text, so a link-heavy \
-    mid-document element between those lengths is pruned only when it carries sentence punctuation."
-    from trafilatura.htmlprocessing import link_density_test
-    from trafilatura.utils import trim
-
-    link = '<ref target="/x">navigate to some other page here</ref>' * 3  # link-heavy, ~105 chars
-    for tail, removed in (("See more.", True), ("See more", False)):
-        doc = f"<body><div>{link} {tail}</div><p>following sibling</p></body>"
-        div = html.fromstring(doc)[0]
-        text = trim(div.text_content())
-        assert 100 < len(text) < 150  # in the window where the punctuation branch matters
-        assert link_density_test(div, text)[0] is removed
-
-
 def test_recall_escalation():
     "a short balanced extraction covering little of the page is retried in recall mode: \
     wild paragraphs block the baseline rescue while the bulk of the content sits in bare divs."
