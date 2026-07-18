@@ -455,8 +455,20 @@ MANUALLY_STRIPPED = [
 # baseline()/html2txt() only (not the main pipeline). NOTE: html2txt() also measures page length
 # for the recall-escalation gate (core.py) -- shrinking this set fires escalation less often, so
 # re-run the full benchmark suite before changing it.
+# prune cookie/consent banners: fluent prose justext's density metric can't classify; class/id is
+# English even on localized templates. (role/aria-hidden/display:none tried too -- overfit WCXB dev.)
+# Anchored banner/CMP compounds, NOT bare 'cookie'/'consent' substrings: those matched WP Cookie
+# Notice BODY classes (cookies-not-set) and topical content classes, deleting up to 97% of a page's
+# text for baseline/html2txt. Vocabulary = high-signal compounds + CMP vendors (OneTrust, Borlabs,
+# CookieYes, Moove GDPR...), each validated against corpus banner markup.
+_COOKIE_CONSENT_RE = (
+    "cookie[-_]?(?:banner|bar|consent|law|notice|policy|description)|notice[-_]{0,2}cookie"
+    "|consent[-_]?(?:banner|manager|sdk)|borlabs|cookiebot|cmplz|onetrust|moove[-_]?gdpr"
+)
 BASIC_CLEAN_XPATH = XPath(
     ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style|.//svg|.//template"
+    f"|.//*[re:test(@class, '{_COOKIE_CONSENT_RE}', 'i') or re:test(@id, '{_COOKIE_CONSENT_RE}', 'i')]",
+    namespaces={"re": "http://exslt.org/regular-expressions"},
 )
 
 TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
