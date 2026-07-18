@@ -208,7 +208,13 @@ def baseline(filecontent: Any) -> tuple[_Element, str, int]:
 
     # scrape from text paragraphs, dropping repeats: a nested element (e.g. <p> in
     # <blockquote>) duplicates part of its container's text, collected first in document order
-    paragraphs = (trim(element.text_content()) for element in tree.iter("blockquote", "code", "p", "pre", "q", "quote"))
+    # skip inline <code> — text already captured by parent <p>/<li>/etc. (#849)
+    paragraphs = (
+        trim(element.text_content())
+        for element in tree.iter("blockquote", "code", "p", "pre", "q", "quote")
+        if not (element.tag == "code" and (parent := element.getparent()) is not None
+                and parent.tag in ("p", "li", "td", "th", "dd", "dt"))
+    )
     if result := _attempt(paragraphs, dedupe=True):
         return result
 

@@ -34,6 +34,7 @@ from trafilatura.main_extractor import (
     handle_quotes,
     handle_table,
     handle_textelem,
+    is_code_block_element,
     prune_unwanted_sections,
 )
 from trafilatura.meta import reset_caches
@@ -2975,6 +2976,115 @@ from openai_function_call import openai_function</code>"""
     assert "<quote>" in extract(bq_text, output_format="xml", config=ZERO_CONFIG)
     bq_tail = "<html><body><article><blockquote><code>x</code> tail</blockquote></article></body></html>"
     assert "<quote>" in extract(bq_tail, output_format="xml", config=ZERO_CONFIG)
+
+
+def test_inline_code_not_duplicated():
+    """Inline <code> inside paragraph-like parents must not be extracted as a
+    standalone code block — its text is already part of the parent element's
+    content.  Regression test for #849."""
+    # is_code_block_element must return False for inline contexts
+    for parent_tag in ("p", "li", "td", "th", "dd", "dt"):
+        parent = etree.fromstring(f"<{parent_tag}>text <code>x</code> more</{parent_tag}>")
+        assert not is_code_block_element(parent.find("code")), (
+            f"is_code_block_element() should be False for <code> inside <{parent_tag}>"
+        )
+    # block-code contexts must still return True
+    assert is_code_block_element(etree.fromstring("<code>import os</code>"))
+    assert is_code_block_element(etree.fromstring("<pre><code>import os</code></pre>").find("code"))
+    assert is_code_block_element(etree.fromstring('<code lang="python">import os</code>'))
+    # end-to-end: inline code appears exactly once in the extracted text
+    result = _extract_doc("<p>Use <code>pip install trafilatura</code> to install the package.</p>")
+    assert result is not None
+    assert result.count("pip install trafilatura") == 1
+    # short inline code (well below MIN_DUPLICATE_LENGTH) must not duplicate
+    result = _extract_doc("<p>Set <code>x</code> to 1.</p>")
+    assert result is not None and "Set x to 1." in result
+    lines = [line.strip() for line in result.split("\n") if line.strip()]
+    assert "x" not in lines, f"standalone 'x' code block leaked: {lines}"
+    # multiple inline <code> in one paragraph
+    result = _extract_doc(
+        "<p>The <code>in</code> operator checks membership. "
+        "It returns <code>True</code> or <code>False</code>.</p>"
+    )
+    assert result is not None
+    standalone = [l.strip() for l in result.split("\n") if l.strip() in ("in", "True", "False")]
+    assert len(standalone) == 0, f"inline code leaked as standalone blocks: {standalone}"
+    # inline <code> in list items
+    result = _extract_doc("<ul><li>Use <code>func()</code> to run it.</li></ul>")
+    assert result is not None and result.count("func()") == 1
+    # inline <code> in table cells
+    result = _extract_doc(
+        "<table><tr><td>The <code>NULL</code> value means empty.</td>"
+        "<td>Details here.</td></tr></table>",
+        include_tables=True,
+    )
+    assert result is not None and result.count("NULL") == 1
+    # mixed: inline code must not duplicate, block code must still appear
+    result = _extract_doc(
+        "<p>Install with <code>pip install trafilatura</code> and then:</p>"
+        "<pre><code>import trafilatura\nresult = trafilatura.extract(url)</code></pre>"
+        "<p>The <code>extract</code> function returns text.</p>"
+    )
+    assert result is not None
+    assert result.count("pip install trafilatura") == 1, "inline code duplicated"
+    assert "import trafilatura" in result, "block code missing"
+    # fast mode
+    result = _extract_doc(
+        "<p>Use <code>pip install trafilatura</code> to install the package.</p>",
+        fast=True,
+    )
+    assert result is not None and result.count("pip install trafilatura") == 1
+    # recall mode (triggers recover_wild_text)
+    result = _extract_doc(
+        "<p>Use <code>pip install trafilatura</code> to install the package.</p>",
+        favor_recall=True,
+    )
+    assert result is not None and result.count("pip install trafilatura") == 1
+
+
+def test_inline_code_baseline_not_duplicated():
+    """The baseline scraper must not duplicate inline <code> text.
+    baseline() iterates <code> elements via tree.iter(); an inline <code>
+    inside <p> would duplicate because text_content() on the <p> already
+    includes the child's text.  Regression test for #849."""
+    from trafilatura.baseline import baseline
+    # standard case
+    html_str = (
+        "<html><body>"
+        "<p>Use <code>pip install trafilatura</code> to install the package. "
+        "This paragraph has enough text to be extracted by the baseline scraper "
+        "and should demonstrate the inline code duplication bug clearly.</p>"
+        "</body></html>"
+    )
+    _, result_text, _ = baseline(html_str)
+    assert result_text.count("pip install trafilatura") == 1, (
+        f"baseline duplicated inline code: {result_text!r}"
+    )
+    # short inline code
+    html_str = (
+        "<html><body>"
+        "<p>Set the variable <code>x</code> to the desired value before running "
+        "the script to ensure correct behaviour in all environments.</p>"
+        "</body></html>"
+    )
+    _, result_text, _ = baseline(html_str)
+    assert not result_text.endswith(" x"), (
+        f"baseline appended standalone 'x': {result_text!r}"
+    )
+    # multiple inline codes
+    html_str = (
+        "<html><body>"
+        "<p>The function accepts <code>name</code>, <code>value</code>, and "
+        "<code>timeout</code> as parameters. Pass them in order to configure "
+        "the connection properly for your environment.</p>"
+        "</body></html>"
+    )
+    _, result_text, _ = baseline(html_str)
+    for keyword in ("name", "value", "timeout"):
+        count = result_text.count(keyword)
+        assert count == 1, (
+            f"baseline duplicated '{keyword}' ({count} times): {result_text!r}"
+        )
 
 
 def test_markdown_escaping():
