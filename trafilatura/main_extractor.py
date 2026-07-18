@@ -825,11 +825,8 @@ def process_comments_node(elem: _Element, potential_tags: set[str], options: Ext
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, options, comments_fix=True)
-        # test length and remove
-        if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
+        if processed_element is not None:
             processed_element.attrib.clear()
-            # if textfilter(elem) is True:  # ^Pingback
-            #    return None
             return processed_element
     return None
 

@@ -1441,6 +1441,140 @@ def test_link_density_short_link_list_kept() -> None:
     assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is False  # kept, not pruned
 
 
+def test_link_density_large_link_farm_pruned():
+    "regression (#584): a large near-total-link block (>3 links, link text >90% of total) is \
+    boilerplate. The pre-existing density test only checks blocks below limitlen, so it is blind \
+    to a big 'latest news' sidebar at any size; the added branch catches it."
+    from trafilatura.utils import trim
+
+    items = "".join(f'<ref target="/n{i}">Latest news headline number {i} about some topic today</ref> ' for i in range(20))
+    element = html.fromstring(f"<body><div>{items}</div><p>real article sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert len(text) > 300  # comfortably above limitlen: the size-gated path never tests it
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is True
+
+
+def test_link_density_whole_card_links_kept():
+    "regression (#584, WCXB test-split): a content catalog/listing where each item's whole \
+    title+description is one LONG link (avg link text >= 100 chars) is NOT a farm -- keep it, \
+    unlike a many-short-headlines nav sidebar. Guards the avg-link-length gate on the #584 branch."
+    from trafilatura.utils import trim
+
+    # each ref is a full 'card' (title + description sentence, ~110 chars): avg link len >= 100
+    card = "Align: a widget that aligns its child within itself and optionally sizes itself based on the child's given size"
+    items = "".join(f'<ref target="/w{i}">{card}</ref> ' for i in range(8))
+    element = html.fromstring(f"<body><div>{items}</div><p>real article sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert len(text) > 300  # large, >3 links, >90% link text -> trips the bare ratio, but...
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is False  # long links -> content, kept
+
+
+def test_overall_discard_legacy_tokens():
+    "regression on the legacy single-PR discard tokens, each decided by a full-WMB single-token A/B \
+    (see xpaths.py audit note): 'yin' STAYS (net-positive despite English '-ying'/'y+Info' \
+    collisions -- a prior removal was reverted after a sign-error), 'xg1' was REMOVED (net-negative \
+    -- it discarded the real content of a Chinese forum page to nothing)."
+    import trafilatura.xpaths as xp
+
+    def matches(class_value):
+        root = etree.fromstring(f'<html><body><div class="{class_value}"><p>content</p></div></body></html>')
+        return any(len(x(root)) > 0 for x in xp.OVERALL_DISCARD_XPATH)
+
+    for cls in ("yin", "zlylin", "mol-factbox"):
+        assert matches(cls), cls
+    assert not matches("xg1")  # removed 2026-07-10
+
+
+def test_overall_discard_matches_both_attributes():
+    "regression: discard tokens must match whichever of id/class carries them, regardless of \
+    attribute order in the source (re:test(@id|@class,...) alone only tests the source-FIRST one). \
+    Exception: 'cookie' stays first-attribute-only -- pages about cookies carry it on real content."
+    import trafilatura.xpaths as xp
+
+    def discarded(attrs):
+        root = etree.fromstring(f"<html><body><div {attrs}><p>content</p></div></body></html>")
+        return any(len(x(root)) > 0 for x in xp.OVERALL_DISCARD_XPATH)
+
+    assert discarded('class="x" id="author-box"')  # token in @id, class written first
+    assert discarded('id="x" class="sidebar"')  # token in @class, id written first
+    assert not discarded('class="hidden-x" id="cookieBanner"')  # cookie exception: class-first protects
+
+
+def test_xpath_alt_rejects_empty_group():
+    "regression: the concept-token composer _alt() must refuse an empty group -- '' would make \
+    re:test(@id|@class, '') match every element (a sole-token removal would silently over-discard). \
+    Uses ValueError not assert so the guard survives python -O."
+    import pytest as _pytest
+    import trafilatura.xpaths as xp
+
+    assert xp._alt(("a", "b")) == "a|b"
+    with _pytest.raises(ValueError):
+        xp._alt(())
+
+
+def test_precision_discard_link_token_only():
+    "regression: PRECISION_DISCARD_XPATH matches 'link' as a whole class TOKEN, not a bare \
+    substring (2026-07-11). class='link' is still dropped (intended, cf. test_precision_recall), \
+    but compound classes containing 'link' (permalink/headline-link/featured-link) must NOT be \
+    -- the bare substring discarded real content in precision mode. 'bottom'/'header' unchanged."
+    import trafilatura.xpaths as xp
+
+    def discarded(attr, value, tag="div"):
+        root = etree.fromstring(f'<html><body><{tag} {attr}="{value}"><p>content</p></{tag}></body></html>')
+        return any(len(x(root)) > 0 for x in xp.PRECISION_DISCARD_XPATH)
+
+    assert discarded("class", "link")  # standalone token still dropped (intended)
+    assert discarded("class", "nav link")  # token among others
+    assert not discarded("class", "article-permalink")  # compound: no longer dropped
+    assert not discarded("class", "headline-link")
+    assert not discarded("class", "featured-link--wrap")
+    assert discarded("class", "article-bottom")  # 'bottom' still substring-matched
+    assert discarded("class", "site-header", tag="header")  # .//header still discarded
+
+
+def test_body_xpath_fulltext_class():
+    "GH#780: BODY_XPATH's fulltext-class rule (re:test(@class,'fulltext','i'), replacing an \
+    obscure translate()-based case-fold hack) must still match every capitalization of a \
+    genuine 'fulltext' content class. #780's actual complaint -- the bare substring ALSO \
+    matching a wrapper div ('FulltextWrapper') that isn't the content itself -- is NOT fixed \
+    here: word-boundary anchoring can't separate that from a legitimate 'FullText' class, since \
+    both are equally well-bounded tokens (documented limitation, not a regression)."
+    import trafilatura.xpaths as xp
+
+    def matches(class_value):
+        root = etree.fromstring(f'<html><body><div class="{class_value}"><p>content</p></div></body></html>')
+        return any(len(x(root)) > 0 for x in xp.BODY_XPATH)
+
+    for cls in ("fulltext", "FullText", "fullText", "FULLTEXT", "article-fulltext"):
+        assert matches(cls), cls
+    # #780's reported false positive: still matches (documented, not fixed by this change)
+    assert matches("FulltextWrapper")
+
+
+def test_basic_cleaning_cookie_banner_scope():
+    "regression: BASIC_CLEAN_XPATH's cookie/consent tokens are ANCHORED banner/CMP compounds, not \
+    bare substrings -- the substrings matched WP Cookie Notice BODY classes (cookies-not-set) and \
+    topical content classes, deleting up to 97% of a page from baseline()/html2txt() and zeroing \
+    the escalation-gate denominator. Banner containers (incl. CMP vendors) must still be pruned."
+    from trafilatura.baseline import html2txt
+
+    content = "<p>" + "Real article text about a subject. " * 5 + "</p>"
+    banners = (
+        "<div id='onetrust-consent-sdk'><p>By clicking Accept you agree we can store cookies.</p></div>"
+        "<div class='cookie-notice-container'><p>We use cookies to improve our service.</p></div>"
+    )
+    doc = html.fromstring(
+        "<html><body class='single-post cookies-not-set'>"
+        f"<div class='cookie-recipe-content'>{content}</div>{banners}</body></html>"
+    )
+    _, text, _ = trafilatura.baseline(doc)
+    # body class + topical content class survive (the old substrings deleted both)
+    assert "Real article text" in text
+    assert "cookies" not in text  # banner containers pruned (substring lives only in banner prose)
+    page_measure = html2txt(doc)
+    assert "Real article text" in page_measure and "cookies" not in page_measure
+
+
 def test_is_in_table_cell():
     "is_in_table_cell must check real ancestry, not 'a cell exists somewhere' (#767)."
     tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
@@ -2301,6 +2435,26 @@ def test_main_pass_excludes_comments_when_disabled():
         result = extract(doc, output_format="txt", include_comments=False, fast=fast, config=real_config) or ""
         assert "Short intro" in result
         assert result.count("Reader comment number") == 0
+
+
+def test_main_pass_excludes_details_wrapped_comments(): #850
+    "regression (#850): comment containers wrapped in <details> must also be pruned when \
+    include_comments=False -- REMOVE_COMMENTS_XPATH matched only div/list/section, so a \
+    <details id='comments'> thread leaked into the body outside precision mode. A <details> \
+    without a comment id/class must be kept (no over-pruning)."
+    real_config = use_config()
+    body = "<article>" + "<p>Real article paragraph with enough content to be extracted normally here.</p>" * 3 + "</article>"
+    comments = "<details id='comments'><summary>Comments</summary>" + \
+        "".join(f"<p>Reader comment number {i} that must never leak into the body text.</p>" for i in range(6)) + "</details>"
+    doc = f"<html><body>{body}{comments}</body></html>"
+    for fast in (False, True):
+        result = extract(doc, output_format="txt", include_comments=False, fast=fast, config=real_config) or ""
+        assert "Real article paragraph" in result
+        assert result.count("Reader comment number") == 0
+    # a non-comment <details> is legitimate content and must survive
+    faq = "<details class='faq'><summary>More</summary><p>Kept expandable content paragraph that is genuine.</p></details>"
+    doc_faq = f"<html><body>{body}{faq}</body></html>"
+    assert "Kept expandable content" in (extract(doc_faq, output_format="txt", config=real_config) or "")
 
 
 def test_compare_extraction_justext_ratio(monkeypatch):

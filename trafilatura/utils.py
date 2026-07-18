@@ -93,14 +93,15 @@ SPACING_PROTECTED = {"code", "pre"}
 TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
 RE_HTML_LANG = re.compile(r"([a-z]{2})")
 
-# Mostly filters for social media
+# Mostly filters for social media (text-level analog of the xpaths social/share tokens)
 RE_FILTER = re.compile(
     r"\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|"
     "Linkedin|Mail|PDF|Pinterest|Pocket|Print|QQ|Reddit|Twitter|"
     "WeChat|WeiBo|Whatsapp|Xing|Mehr zum Thema:?|More on this.{,8}$)$",
     flags=re.IGNORECASE,
 )
-# COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
+# link text > this fraction of total text = link farm (htmlprocessing.link_density_test)
+LINK_FARM_RATIO = 0.9
 
 
 def handle_compressed_file(filecontent: bytes) -> bytes:

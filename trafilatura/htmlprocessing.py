@@ -18,7 +18,7 @@ from .settings import (
     Document,
     Extractor,
 )
-from .utils import is_image_element, textfilter, trim
+from .utils import LINK_FARM_RATIO, is_image_element, textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
 
 LOGGER = logging.getLogger(__name__)
@@ -160,6 +160,15 @@ def link_density_test(element: HtmlElement, text: str, favor_precision: bool = F
         )
         if linklen > elemlen * 0.8 or (elemnum > 1 and shortelems / elemnum > 0.8):
             return True, mylist
+    # large near-total-link farms ("latest news" sidebars) at/above limitlen, which the size gate
+    # above never tests (#584); small farms are already caught there at the plain 0.8 ratio.
+    # >4: a farm is MANY links -- a handful of long sentence-links is editorial (knowtechie realworld test)
+    elif len(links_xpath) > 4:
+        # local vars: leave mylist [] on fall-through so the caller's backtracking gate is unaffected
+        linklen, elemnum, _, farmlist = collect_link_info(links_xpath)
+        # avg link len >= 100 => catalog/listing content (one link per card), not a farm: keep it
+        if linklen > len(text) * LINK_FARM_RATIO and linklen < 100 * elemnum:
+            return True, farmlist
     return False, mylist
 
 

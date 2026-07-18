@@ -78,10 +78,11 @@ def _prefer_readability(
 
 
 def compare_extraction(
-    tree: HtmlElement, backup_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Extractor
+    cleaned_tree: HtmlElement, raw_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Extractor
 ) -> tuple[_Element, str, int]:
-    """Decide whether to choose own or external extraction
-    based on a series of heuristics"""
+    """Decide whether to choose own or external extraction based on a series of heuristics.
+    ``raw_tree`` (uncleaned) feeds readability; ``cleaned_tree`` (tree_cleaning'd, unconverted)
+    feeds justext."""
     # bypass for recall
     if options.focus == "recall" and len_text > options.min_extracted_size * 10:
         return body, text, len_text
@@ -89,10 +90,10 @@ def compare_extraction(
     jt_result = False
     # prior cleaning
     if options.focus == "precision":
-        backup_tree = prune_unwanted_nodes(backup_tree, OVERALL_DISCARD_XPATH)
+        raw_tree = prune_unwanted_nodes(raw_tree, OVERALL_DISCARD_XPATH)
 
     # try with readability
-    temppost_algo = try_readability(backup_tree)
+    temppost_algo = try_readability(raw_tree)
     # unicode fix necessary on certain systems (#331)
     algo_text = trim(tostring(temppost_algo, method="text", encoding="utf-8").decode("utf-8"))
     len_algo = len(algo_text)
@@ -106,7 +107,7 @@ def compare_extraction(
     # override faulty extraction: try with justext
     if body.xpath(SANITIZED_XPATH) or len_text < options.min_extracted_size:
         LOGGER.debug("unclean document triggering justext examination: %s", options.source)
-        body2, text2, len_text2 = justext_rescue(tree, options)
+        body2, text2, len_text2 = justext_rescue(cleaned_tree, options)
         # prevent too short documents from replacing the main text
         if text2 and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2:
             LOGGER.debug("using justext, length: %s", len_text2)

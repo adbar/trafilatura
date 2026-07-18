@@ -8,7 +8,7 @@ import logging
 import re
 import warnings
 from configparser import ConfigParser
-from copy import copy, deepcopy
+from copy import copy
 from typing import Any
 
 from lxml.etree import Element, XPath, _Element, strip_tags
@@ -162,11 +162,24 @@ def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tup
     return cleaned, backup
 
 
+def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None) -> tuple[_Element, str, int]:
+    """Stage-4 retry: re-run cascade stages 1-2 in recall mode on the escalation input
+    (arrives comment-pruned, or intact on a thread-forum where posts are content).
+    Deliberately no comment capture, no baseline (it already ran on the full page; on a
+    comment-pruned tree it only yields an indistinguishable boilerplate dump), no escalation."""
+    cleaned_tree, cleaned_tree_backup = _prepare_tree(esc_tree, r_options, url)
+    postbody, temp_text, len_text = extract_content(cleaned_tree, r_options)
+    if not r_options.fast:
+        postbody, temp_text, len_text = compare_extraction(
+            cleaned_tree_backup, copy(esc_tree), postbody, temp_text, len_text, r_options
+        )
+    return postbody, temp_text, len_text
+
+
 def trafilatura_sequence(
     tree: HtmlElement,
     options: Extractor,
     url: str | None = None,
-    retry: bool = False,
 ) -> tuple[_Element, str, int, _Element, str, int]:
     """Prepare the raw tree (cleaning, tag conversion, comment handling), then execute the
     standard cascade of extractors used by Trafilatura, each stage only engaging if the
@@ -174,27 +187,23 @@ def trafilatura_sequence(
     1. main extractor (includes wild-text recovery for short documents)
     2. comparison with external extractors (readability/justext), skipped in fast mode
     3. baseline rescue on the original, uncleaned tree
-    4. recall-mode retry of the whole cascade, if the result still covers little of the page,
-       plus a justext candidate tried alongside it (a different algorithm, not just stricter
-       rules, so it reaches content the rule-based retry cannot)
-    Stage 4 recurses into this function with focus="recall" and retry=True, which cannot
-    re-trigger stage 4 (its gate requires focus=="balanced") — recursion is naturally
-    bounded to one retry. Returns the body triple and the comments triple.
+    4. recall escalation, if the result still covers little of the page: stages 1-2 re-run
+       in recall mode (_recall_retry), plus a justext candidate tried alongside (a different
+       algorithm, not just stricter rules, so it reaches content the rule-based retry cannot)
+    Returns the body triple and the comments triple.
 
     Internal helper: its signature and 6-tuple return are not a stable API — call
     ``bare_extraction``/``extract`` instead.
     """
-    # the retry neither routes nor escalates, so it never needs the page-type scan
-    is_forum = not retry and _forum_thread_page(tree)
+    is_forum = _forum_thread_page(tree)
     # comments off: prune on the raw tree so all stages inherit it (only precision did before)
     if not options.comments and (options.focus == "precision" or not is_forum):
         tree = prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
     cleaned_tree, cleaned_tree_backup = _prepare_tree(tree, options, url)
 
-    # never capture in the retry: the caller discards its comments triple
     commentsbody, temp_comments, len_comments = Element("body"), "", 0
     forum_posts = None
-    if options.comments and not retry:
+    if options.comments:
         commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, options)
         if len_comments > 0 and is_forum:
             # thread-forum: the "comments" are the posts -> route into the body (backup predates
@@ -203,6 +212,8 @@ def trafilatura_sequence(
             commentsbody, temp_comments, len_comments = Element("body"), "", 0
             cleaned_tree = convert_tags(copy(cleaned_tree_backup), options, url)
     if options.focus == "precision" and not is_forum:
+        # NOT redundant with the raw-tree prune above: this runs POST-conversion, where
+        # <ul id="comments"> has become <list ...> and now matches the xpath's self::list
         cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
     # 1. Trafilatura's main extractor
@@ -212,16 +223,15 @@ def trafilatura_sequence(
     if not options.fast:
         postbody, temp_text, len_text = compare_extraction(
             cleaned_tree_backup,
-            deepcopy(tree),
+            copy(tree),  # lxml copy() is already a deep, independent copy
             postbody,
             temp_text,
             len_text,
             options,
         )
 
-    # 3. rescue: baseline on the original tree. Not in the retry (baseline already ran on the
-    # full page there; on a comment-pruned tree it only yields an indistinguishable boilerplate dump)
-    if not retry and len_text < options.min_extracted_size and options.focus != "precision":
+    # 3. rescue: baseline on the original tree
+    if len_text < options.min_extracted_size and options.focus != "precision":
         postbody, temp_text, len_text = baseline(tree)  # baseline copies element inputs
         LOGGER.debug("non-clean extracted length: %s (extraction)", len_text)
         forum_posts = None  # the dump saw the whole page: missing posts are boilerplate, not lost
@@ -242,7 +252,7 @@ def trafilatura_sequence(
         esc_tree = tree if is_forum else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
         r_len = 0
         try:
-            r_body, r_text, r_len, _, _, _ = trafilatura_sequence(esc_tree, r_options, url, retry=True)
+            r_body, r_text, r_len = _recall_retry(esc_tree, r_options, url)
         except Exception as err:  # pragma: no cover
             LOGGER.warning("recall retry failed: %s %s", err, url)
         # justext reaches div-buried content the rule retry misses (gated: ungated regressed
@@ -255,16 +265,13 @@ def trafilatura_sequence(
                 LOGGER.warning("justext candidate failed: %s %s", err, url)
 
         # floor on the retry: a result below the pipeline's own minimum is noise (the retry's
-        # former internal baseline used to displace such outputs)
-        winner = via = None
+        # former internal baseline used to displace such outputs). cookie/consent banners justext
+        # could pick up are pruned from its input in basic_cleaning. An accepted candidate saw the
+        # full page, so its exclusions are deliberate -> drop the forum-post salvage.
         if j_len > r_len and j_len > ESCALATION_JUSTEXT_RATIO * len_text:
-            winner, via = (j_body, j_text, j_len), "justext"
+            postbody, temp_text, len_text, forum_posts = j_body, j_text, j_len, None
         elif r_len >= options.min_extracted_size and r_len > ESCALATION_ACCEPT_RATIO * len_text:
-            winner, via = (r_body, r_text, r_len), "retry"
-        if winner:
-            LOGGER.debug("recall escalation accepted via %s: %s -> %s chars", via, len_text, winner[2])
-            postbody, temp_text, len_text = winner
-            forum_posts = None  # accepted candidate saw the full page; its exclusions are deliberate
+            postbody, temp_text, len_text, forum_posts = r_body, r_text, r_len, None
 
     if forum_posts is not None:
         # a gate (escalation length, precision) blocked the cascade from restoring the posts:
