@@ -408,9 +408,11 @@ class Evaluation:
                 print("counter", item)
             # examine
             if result is not None and isinstance(result, str):
-                true_positives = sum(1 for to_include in item["with"] if to_include in result)
+                # whitespace-normalize both sides so ws variants don't cost recall
+                resn = " ".join(result.split())
+                true_positives = sum(1 for x in item["with"] if " ".join(x.split()) in resn)
                 false_negatives = len(item["with"]) - true_positives
-                false_positives = sum(1 for to_exclude in item["without"] if to_exclude in result)
+                false_positives = sum(1 for x in item["without"] if " ".join(x.split()) in resn)
                 true_negatives = len(item["without"]) - false_positives
             # add up as bulk counts
             else:
