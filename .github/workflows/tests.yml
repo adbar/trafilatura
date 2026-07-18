@@ -82,6 +82,13 @@ jobs:
       run: |
         python -m pytest --cov=./ --cov-report=xml
 
+    - name: Evaluation quality gate
+      # own-bench F1 floor on tests/evaldata.json; single cell (deterministic
+      # given the corpus, no need to run across the whole matrix)
+      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      run: |
+        python tests/eval_gate.py
+
     - name: Test docs
       # version matches .readthedocs.yaml
       if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
