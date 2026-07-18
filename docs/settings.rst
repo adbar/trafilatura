@@ -126,5 +126,32 @@ Here is how to change them:
 These remaining variables greatly alter the functioning of the package!
 
 
+Adapting element lists in Python
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some of these variables are Python lists which can also be adapted on the fly, without editing and reinstalling the package. This is convenient to discard or keep particular HTML elements, e.g. for documents which are not news articles. The lists ``MANUALLY_CLEANED`` (elements removed along with their content) and ``MANUALLY_STRIPPED`` (elements whose tags are removed but whose text is kept) have to be modified **in place**, so that the changes are seen by the extraction functions:
+
+.. code-block:: python
+
+    >>> from trafilatura import extract
+    >>> from trafilatura.settings import MANUALLY_CLEANED, MANUALLY_STRIPPED
+
+    # discard additional elements along with their content
+    >>> MANUALLY_CLEANED.append("section")
+
+    # remove the tags of additional elements but keep their text
+    >>> MANUALLY_STRIPPED.append("u")
+
+    # keep elements which are discarded by default
+    >>> MANUALLY_CLEANED.remove("aside")
+
+    # the changes affect all subsequent extractions
+    >>> extract(my_document)
+
+
+.. warning::
+    Use the in-place methods ``.append()``, ``.remove()`` or ``.extend()``. Reassigning the names (e.g. ``MANUALLY_CLEANED = [...]``) only rebinds the local variable and has no effect on extraction. These lists are global to the process, so the change applies to all following extractions.
+
+
 .. hint::
     Starting from version 1.9, most extraction parameters and options can be defined in an object which is then passed to the extraction functions instead of the arguments and (in some cases) instead of the config file. See ``settings.py`` for an example.
