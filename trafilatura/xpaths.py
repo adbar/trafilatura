@@ -20,16 +20,41 @@ def _alt(tokens: tuple[str, ...]) -> str:
 
 # Content-area token vocabulary for BODY_XPATH, grouped per stage, composed via _alt() into the
 # re:test(...) alternations below.
-_ARTICLE_CONTENT_ID_TOKENS = ("(?:entry|article|art)-content", "article__content", "article(?:-|__)?body", "articleBody", "body-text")
+_ARTICLE_CONTENT_ID_TOKENS = (
+    "(?:entry|article|art)-content",
+    "article__content",
+    "article(?:-|__)?body",
+    "articleBody",
+    "body-text",
+)
 _ARTICLE_CONTENT_CLASS_TOKENS = (
-    "post[-_]text", "post-body", "post-?entry", "post[-_]?content", "postContent", "post_inner_wrapper",
-    "article-?text", "articleText", "(?:entry|page|text|article|art)-content", "article__content",
-    "article(?:-|__)?body", "articleBody", "ArticleContent", "body-text", "article__container",
+    "post[-_]text",
+    "post-body",
+    "post-?entry",
+    "post[-_]?content",
+    "postContent",
+    "post_inner_wrapper",
+    "article-?text",
+    "articleText",
+    "(?:entry|page|text|article|art)-content",
+    "article__content",
+    "article(?:-|__)?body",
+    "articleBody",
+    "ArticleContent",
+    "body-text",
+    "article__container",
 )
 _STORY_ID_TOKENS = ("^primary", "story-body")
 _STORY_CLASS_TOKENS = (
-    "^article ", "post-bodycopy", "story-?content", "(?:theme|blog|section|single)-content",
-    "single-post", "main-column", "wpb_text_column", "story-body", "field-body",
+    "^article ",
+    "post-bodycopy",
+    "story-?content",
+    "(?:theme|blog|section|single)-content",
+    "single-post",
+    "main-column",
+    "wpb_text_column",
+    "story-body",
+    "field-body",
 )
 _MAIN_CONTENT_ID_TOKENS = ("content-main", "content-body", "contentBody")
 _MAIN_CONTENT_CLASS_TOKENS = ("content[-_]main", "content(?:-|__)body")
@@ -164,8 +189,18 @@ _TAGS_CLASS_TOKENS = ("tag-list",)
 _CONSENT_CLASS_TOKENS = ("consent", "modal-content", "permission")
 _RELATED_CLASS_TOKENS = ("elated", "next-", "-stories", "most-popular")
 _UI_META_CLASS_TOKENS = (
-    "meta", "rating", "attachment", "timestamp", "user-info", "user-profile", "-icon",
-    "article-infos", "message-container", "slide", "viewport", "overlay",
+    "meta",
+    "rating",
+    "attachment",
+    "timestamp",
+    "user-info",
+    "user-profile",
+    "-icon",
+    "article-infos",
+    "message-container",
+    "slide",
+    "viewport",
+    "overlay",
 )
 _MISC_CLASS_TOKENS = ("options", "expand", "obfuscated", "blurred")
 _LEGACY_SITE_CLASS_TOKENS = ("mol-factbox", "yin", "zlylin", "nfoline")
@@ -175,17 +210,33 @@ _LEGACY_SITE_CLASS_TOKENS = ("mol-factbox", "yin", "zlylin", "nfoline")
 # per-attribute. 'cookie' (_CONSENT_ID_CLASS_TOKENS) is deliberately kept first-attr-only (via the
 # @id|@class clause): pages ABOUT cookies carry the token on real content, so both-attr over-discards.
 _OVERALL_DISCARD_BOTH_TOKENS = (
-    _SHARE_SOCIAL_ID_CLASS_TOKENS + _NEWSLETTER_ID_CLASS_TOKENS
-    + _TAGS_ID_CLASS_TOKENS + _UI_CHROME_ID_CLASS_TOKENS + _AUTHOR_ID_CLASS_TOKENS
+    _SHARE_SOCIAL_ID_CLASS_TOKENS
+    + _NEWSLETTER_ID_CLASS_TOKENS
+    + _TAGS_ID_CLASS_TOKENS
+    + _UI_CHROME_ID_CLASS_TOKENS
+    + _AUTHOR_ID_CLASS_TOKENS
 )
 _OVERALL_DISCARD_ID_TOKENS = (
-    _LEGACY_SITE_ID_TOKENS + _FOOTER_ID_TOKENS + _SHARE_ID_TOKENS + _NAV_ID_TOKENS
-    + _RELATED_ID_TOKENS + _UI_CHROME_ID_TOKENS + _PAYWALL_ID_TOKENS
+    _LEGACY_SITE_ID_TOKENS
+    + _FOOTER_ID_TOKENS
+    + _SHARE_ID_TOKENS
+    + _NAV_ID_TOKENS
+    + _RELATED_ID_TOKENS
+    + _UI_CHROME_ID_TOKENS
+    + _PAYWALL_ID_TOKENS
 )
 _OVERALL_DISCARD_CLASS_TOKENS = (
-    _NAV_CLASS_TOKENS + _AD_CLASS_TOKENS + _FOOTER_CLASS_TOKENS + _AUTHOR_CLASS_TOKENS
-    + _SHARE_CLASS_TOKENS + _TAGS_CLASS_TOKENS + _CONSENT_CLASS_TOKENS + _RELATED_CLASS_TOKENS
-    + _UI_META_CLASS_TOKENS + _MISC_CLASS_TOKENS + _LEGACY_SITE_CLASS_TOKENS
+    _NAV_CLASS_TOKENS
+    + _AD_CLASS_TOKENS
+    + _FOOTER_CLASS_TOKENS
+    + _AUTHOR_CLASS_TOKENS
+    + _SHARE_CLASS_TOKENS
+    + _TAGS_CLASS_TOKENS
+    + _CONSENT_CLASS_TOKENS
+    + _RELATED_CLASS_TOKENS
+    + _UI_META_CLASS_TOKENS
+    + _MISC_CLASS_TOKENS
+    + _LEGACY_SITE_CLASS_TOKENS
 )
 
 OVERALL_DISCARD_XPATH = [

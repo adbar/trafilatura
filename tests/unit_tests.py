@@ -2437,15 +2437,18 @@ def test_main_pass_excludes_comments_when_disabled():
         assert result.count("Reader comment number") == 0
 
 
-def test_main_pass_excludes_details_wrapped_comments(): #850
+def test_main_pass_excludes_details_wrapped_comments():  # 850
     "regression (#850): comment containers wrapped in <details> must also be pruned when \
     include_comments=False -- REMOVE_COMMENTS_XPATH matched only div/list/section, so a \
     <details id='comments'> thread leaked into the body outside precision mode. A <details> \
     without a comment id/class must be kept (no over-pruning)."
     real_config = use_config()
     body = "<article>" + "<p>Real article paragraph with enough content to be extracted normally here.</p>" * 3 + "</article>"
-    comments = "<details id='comments'><summary>Comments</summary>" + \
-        "".join(f"<p>Reader comment number {i} that must never leak into the body text.</p>" for i in range(6)) + "</details>"
+    comments = (
+        "<details id='comments'><summary>Comments</summary>"
+        + "".join(f"<p>Reader comment number {i} that must never leak into the body text.</p>" for i in range(6))
+        + "</details>"
+    )
     doc = f"<html><body>{body}{comments}</body></html>"
     for fast in (False, True):
         result = extract(doc, output_format="txt", include_comments=False, fast=fast, config=real_config) or ""
