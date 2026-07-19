@@ -84,7 +84,7 @@ LINES_TRIMMING = re.compile(r"(?<![p{P}>])\n", flags=re.UNICODE | re.MULTILINE)
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)")
+IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)", re.I)
 
 FORMATTING_PROTECTED = {"cell", "head", "hi", "item", "p", "quote", "ref", "td"}
 SPACING_PROTECTED = {"code", "pre"}
