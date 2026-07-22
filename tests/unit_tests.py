@@ -486,6 +486,17 @@ trafilatura.extract("")
     my_document = html.fromstring("<html><body><article><div><strong>Wild text</strong></div></article></body></html>")
     my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == "Wild text"
+    # short article recovery should not duplicate already extracted paragraphs
+    my_document = html.fromstring(
+        "<html><body><nav>menu chrome</nav><article><h1>The Example Chronicle</h1>"
+        "<p>First synthetic paragraph of adequate length for extraction to engage properly.</p>"
+        "<p>Second synthetic paragraph, also long enough to matter for the extractor.</p>"
+        "</article><footer>footer chrome</footer></body></html>"
+    )
+    my_result = extract(my_document, output_format="markdown")
+    assert "The Example Chronicle" in my_result
+    assert my_result.count("First synthetic paragraph of adequate length for extraction to engage properly.") == 1
+    assert my_result.count("Second synthetic paragraph, also long enough to matter for the extractor.") == 1
     # links
     doc = html.fromstring('<html><body><p><a href="">Link text</a></p></body></html>')
     my_result = extract(doc, config=ZERO_CONFIG)
