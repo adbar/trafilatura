@@ -80,6 +80,11 @@ META_ATTRIBUTES = [
 ]
 
 HI_FORMATTING = {"#b": "**", "#i": "*", "#u": "__", "#t": "`"}
+# markdown has no superscript/subscript syntax, so these are emitted as inline HTML
+# (CommonMark passes it through), matching what HTML_TAG_MAPPING already emits for the
+# html output format. The pandoc-style "~15ya~" is not usable: GitHub renders a single
+# tilde as strikethrough, so it would replace one wrong meaning with another.
+HI_HTML_TAGS = {"#sup": "sup", "#sub": "sub"}
 HEADING_LEVELS = frozenset("123456")
 # preceding characters that already separate content, so no extra space/newline is needed
 SEPARATORS = frozenset((" ", "\n", "|", ""))
@@ -313,10 +318,13 @@ def _code_span(text: str) -> str:
     return f"{fence}{text}{fence}"
 
 
-def _md_wrap(text: str, marker: str) -> str:
+def _md_wrap(text: str, opening: str, closing: str | None = None) -> str:
     "Wrap text in a markdown marker, leaving any flanking whitespace outside it (valid CommonMark)."
     stripped = text.strip()
-    return text.replace(stripped, f"{marker}{stripped}{marker}", 1) if stripped else text
+    if not stripped:
+        return text
+    closing = opening if closing is None else closing
+    return text.replace(stripped, f"{opening}{stripped}{closing}", 1)
 
 
 def _md_code(text: str) -> str:
@@ -462,11 +470,15 @@ def replace_element_text(
         elif element.tag == "del":
             elem_text = _md_wrap(elem_text.replace("~~", "~\\~"), "~~")
         elif element.tag == "hi":
-            marker = HI_FORMATTING.get(element.get("rend") or "")
+            rend = element.get("rend") or ""
+            marker = HI_FORMATTING.get(rend)
             if marker == "`":
                 elem_text = _md_code(elem_text)  # inline code, flanking whitespace stays outside
             elif marker:
                 elem_text = _md_wrap(elem_text, marker)
+            elif rend in HI_HTML_TAGS:
+                tag = HI_HTML_TAGS[rend]
+                elem_text = _md_wrap(elem_text, f"<{tag}>", f"</{tag}>")
         elif element.tag == "code":
             lbs = element.xpath(".//lb")
             if "\n" in elem_text or lbs:  # Handle <br> inside <code>
