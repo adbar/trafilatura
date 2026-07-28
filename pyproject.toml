@@ -138,6 +138,14 @@ docs = [
 line-length = 127
 target-version = "py310"
 
+[tool.ruff.lint]
+# select the rule set explicitly so linting stays deterministic across ruff
+# releases, for the same reason the mypy block below pins its options one by one.
+# ruff 0.16.0 widened its default selection from 59 rules to 413, and the dev
+# extra asks for an unpinned "ruff >= 0.15", so CI turns red on code nobody
+# touched. these four codes are ruff's pre-0.16 defaults.
+select = ["E4", "E7", "E9", "F"]
+
 [tool.mypy]
 # pin the target so type-checking is deterministic across contributor machines
 # and matches CI: check against the lowest supported version on Linux
