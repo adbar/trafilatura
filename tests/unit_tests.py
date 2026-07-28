@@ -838,7 +838,12 @@ def test_images(options):
     assert is_image_file(None) is False
     assert is_image_file("") is False
     assert is_image_file("test.jpg") is True
+    # Extensions are case-insensitive by convention (e.g. camera output IMG_1234.JPG).
+    assert is_image_file("test.JPG") is True
+    assert is_image_file("PIC.PNG") is True
+    assert is_image_file("photo.JPEG") is True
     assert is_image_file("test.txt") is False
+    assert is_image_file("test.TXT") is False
     assert is_image_file("test.jpg" * 2000) is False  # length threshold
     # tag with attributes
     assert handle_image(None) is None
