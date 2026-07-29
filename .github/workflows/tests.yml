@@ -53,6 +53,10 @@ jobs:
       run: uv pip install --system -e ".[dev]"
 
     - name: Lint and format check
+      # bash stops at the first failing command on every runner. The default
+      # shell on Windows is pwsh, which reports only the last command's status,
+      # so a `ruff check` failure there was discarded by the `ruff format` pass.
+      shell: bash
       run: |
         ruff check .
         ruff format --check --diff trafilatura tests
