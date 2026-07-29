@@ -409,6 +409,13 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         elem.set("rend", "h3")
         elem.tag = "head"
 
+    # an empty sup/sub carries nothing to raise or lower, and process_node() would later
+    # hand it the following text as its own, so the marker would wrap the wrong words.
+    # The tail is kept in every focus mode, unlike the pruning of CUT_EMPTY_ELEMS.
+    for elem in tree.iter("sub", "sup"):
+        if not elem.text and len(elem) == 0:
+            delete_element(elem)
+
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()

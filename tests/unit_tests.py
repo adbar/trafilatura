@@ -721,6 +721,35 @@ def test_markdown_list_item_inline_spacing():
     assert extract(htmlstring, output_format="markdown", config=ZERO_CONFIG) == "1. Foo *bar* baz."
 
 
+def test_markdown_sup_sub_keep_boundary():
+    """sup/sub must keep a boundary, else 100<sup>2</sup> reads as 1002 (issue #889)"""
+    sup = "<html><body><article><p>The layer has 100<sup>2</sup>=10000 nodes.</p></article></body></html>"
+    sub = "<html><body><article><p>Written 2011<sub>15ya</sub> in winter.</p></article></body></html>"
+    assert extract(sup, output_format="markdown", config=ZERO_CONFIG) == "The layer has 100<sup>2</sup>=10000 nodes."
+    assert extract(sub, output_format="markdown", config=ZERO_CONFIG) == "Written 2011<sub>15ya</sub> in winter."
+    # flanking whitespace stays outside the tags, exactly as for the symmetric markers
+    spaced = "<html><body><article><p>x <sup> 2 </sup> y</p></article></body></html>"
+    bold = "<html><body><article><p>x <b> 2 </b> y</p></article></body></html>"
+    assert extract(spaced, output_format="markdown", config=ZERO_CONFIG) == "x  <sup>2</sup>  y"
+    assert extract(bold, output_format="markdown", config=ZERO_CONFIG) == "x  **2**  y"
+
+
+def test_markdown_empty_sup_sub_are_dropped():
+    """An empty sup/sub must be removed without taking the text after it (issue #889)"""
+    # process_node() hands a textless element its tail as text, so without the removal in
+    # convert_tags() the new marker would wrap the *following* words: a<sup>b</sup>
+    for tag in ("sup", "sub"):
+        doc = f"<html><body><article><p>a<{tag}></{tag}>b</p></article></body></html>"
+        assert extract(doc, output_format="markdown", config=ZERO_CONFIG) == "ab"
+    # a footnote marker whose only child is dropped must still not swallow the sentence
+    footnote = '<html><body><article><p>Fact<sup><img src="x.png"/></sup> follows here.</p></article></body></html>'
+    assert extract(footnote, output_format="markdown", config=ZERO_CONFIG) == "Fact follows here."
+    # the tail survives in precision mode too, where CUT_EMPTY_ELEMS pruning would drop it
+    tailed = "<html><body><article><p>alpha<sup></sup>beta gamma.</p></article></body></html>"
+    assert extract(tailed, output_format="markdown", config=ZERO_CONFIG) == "alphabeta gamma."
+    assert extract(tailed, output_format="markdown", favor_precision=True, config=ZERO_CONFIG) == "alphabeta gamma."
+
+
 def test_extract_with_metadata():
     """Test extract_with_metadata method"""
     url = "http://aa.bb/cc.html"
