@@ -1,6 +1,37 @@
 ## History / Changelog
 
 
+## 2.2.0
+
+Major changes:
+- Revamped text recovery and extraction sequence: better recall overall and better extraction on forums by @adbar (#881)
+- More targeted boilerplate pruning to reduce over-extraction by @adbar (#887)
+- More robust tests and better processing for nested elements by @adbar (#866)
+- Better handling of text in sub-elements by @adbar (#869)
+
+Fixes:
+- Improve title extraction by @novucs (#848)
+- Restore text inside nobr-tags by @kod-kristoff (#826)
+- Keep space after inline formatting in Markdown list items by @cycsmail (#865)
+- Keep list items whose only content is a link by @cycsmail (#867)
+- Keep Yoast FAQ block question headers by @cycsmail (#868)
+- Address output formatting bugs by @adbar (#870)
+- Further improve subelem processing, mostly math, code and Markdown by @adbar (#872)
+- More accurate table processing by @adbar (#874)
+- Quote metadata values to keep the Markdown header valid YAML by @gaoflow (#875)
+- Escape angle brackets in Markdown link destinations by @gaoflow (#877)
+- Match image extensions case-insensitively in is_image_file by @lntutor (#888)
+- Keep sup and sub boundaries in Markdown output by @igorsaevets (#891)
+
+Maintenance:
+- Review function arguments and add warnings by @adbar (#876)
+- Code hardening and bug roundup by @adbar (#863)
+- Add tests and a page on testing by @cycsmail (#873)
+- Add example for adapting element lists in Python by @cycsmail (#878)
+- Select ruff rules explicitly so CI is deterministic by @igorsaevets (#892)
+- Run the lint step under bash so failures are not discarded on Windows by @igorsaevets (#893)
+
+
 ## 2.1.0
 
 Major changes:
