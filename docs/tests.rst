@@ -67,12 +67,31 @@ If you work on text extraction, it is useful to check whether the performance is
 equal or better on the benchmark. The evaluation allows for comparing changes
 made to Trafilatura, for example in a new version or pull request.
 
-Install the evaluation dependencies and run the evaluation script:
+The quality gate scores the whole benchmark corpus with Trafilatura alone and
+exits non-zero if the F1-scores fall below the pinned baseline. It needs no
+other extractor and is also run in CI:
+
+.. code-block:: bash
+
+    $ pip install -e .
+    $ python3 tests/eval_gate.py
+
+Editing the annotations or an HTML input requires a re-pin with
+``python3 tests/eval_gate.py --update``. A re-pin never lowers the baseline on its
+own: a measured F1 below a pinned floor keeps the floor and exits non-zero, and
+accepting a lower bar takes an explicit ``--allow-regression``.
+
+Comparing Trafilatura with other extractors needs the ``eval`` extra:
 
 .. code-block:: bash
 
     $ pip install -e ".[eval]"
     $ python3 tests/evaluate.py --help
+
+Each competitor library is imported only by the algorithm that uses it, so any
+algorithm whose library is missing or does not import is reported and dropped
+from the comparison instead of stopping the run. The ``magic-html`` package
+requires Python 3.12 or later; on older versions it is skipped.
 
 Use ``--small`` to run the Trafilatura-based components only, or ``--all`` to run
 all supported algorithms. See the `tests README

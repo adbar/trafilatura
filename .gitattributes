@@ -1,4 +1,5 @@
-# override github/linguist settings
-tests/cache/*	linguist-vendored
-tests/eval/*	linguist-vendored
-tests/resources/*	linguist-vendored
+# override github/linguist settings; -text keeps the fixtures byte-exact (hashed by eval_gate.py)
+tests/cache/*	linguist-vendored -text
+tests/evaldata.json	-text
+tests/eval/*	linguist-vendored -text
+tests/resources/*	linguist-vendored -text

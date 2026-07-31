@@ -34,9 +34,11 @@ Although a few corresponding Python packages are not actively maintained the fol
 
 These packages keep the structure intact but do not focus on main text extraction:
 
+- `BeautifulSoup <https://www.crummy.com/software/BeautifulSoup/>`_ is a general-purpose HTML parser, used here to grab all the text in the document
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language
 - `html_text <https://github.com/TeamHG-Memex/html-text>`_ converts HTML code to plain text
 - `inscriptis <https://github.com/weblyzard/inscriptis>`_ converts HTML to text with a particular emphasis on nested tables
+- `resiliparse <https://github.com/chatnoir-eu/chatnoir-resiliparse>`_ converts HTML to plain text with a focus on speed and robustness
 
 These packages focus on main text extraction:
 
@@ -44,10 +46,11 @@ These packages focus on main text extraction:
 - *dragnet* is not maintained anymore, it is provided for reference only (in older evaluations)
 - `goose3 <https://github.com/goose3/goose3>`_ can extract information for embedded content but doesn't preserve markup
 - `jusText <https://github.com/miso-belica/jusText>`_ is designed to preserve mainly text containing full sentences along with some markup, it has been explicitly developed to create linguistic resources
-- `newspaper3k <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
+- `magic-html <https://github.com/opendatalab/magic-html>`_ extracts the main content of a page as HTML, geared towards LLM training data
+- `newspaper4k <https://github.com/AndyTheFactory/newspaper4k>`_ (the maintained successor of *newspaper3k*) is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
 - `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
 - `readability-lxml <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
-- `readabilipy <https://github.com/alan-turing-institute/ReadabiliPy>`_ contains a Python wrapper for Mozilla's Node.js package, as well as article extraction routines written in pure Python
+- *readabilipy* is not part of the comparison anymore, it is provided for reference only (in older evaluations)
 - `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here, several options are tested regarding main text extraction only, without metadata or comments
 
 The tools are compared to the raw page source and to a meaningful baseline consisting of extracting the raw text contained in the JSON article element or in a combination of paragraph, code and quote elements.
@@ -60,9 +63,9 @@ Description
 
 **Evaluation**: Decisive document segments are singled out which are not statistically representative but very significant in the perspective of working with the texts, most notably left/right columns, additional header, author or footer information such as imprints or addresses, as well as affiliated and social network links, in short boilerplate. Raw text segments are expected which is also a way to evaluate the quality of HTML extraction in itself.
 
-**Time**: The execution time is provided as an indication. As the baseline extraction is simple and fast, it is used for the benchmark. Certain packages are noticeably slower than the rest: *goose3* and *newspaper*, while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction. ReadabiliPy is very slow for unclear reasons.
+**Time**: The execution time is provided as an indication. As the baseline extraction is simple and fast, it is used for the benchmark. Certain packages are noticeably slower than the rest: *goose3* and *newspaper*, while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction and is by far the slowest.
 
-**Errors**: The *boilerpy3*, *newspaper3k*, and *readabilipy* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
+**Errors**: The *boilerpy3* and *newspaper4k* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
 
 **Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions. Trafilatura consistently outperforms other open-source libraries, showcasing its efficiency and accuracy in extracting web content.
 
@@ -71,8 +74,41 @@ Description
 The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
-Results (2022-05-18)
+Results (2026-07-31)
 --------------------
+
+=============================== =========  ========== ========= ========= ======
+990 documents, 2951 text & 2966 boilerplate segments, Python 3.13
+--------------------------------------------------------------------------------
+Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
+=============================== =========  ========== ========= ========= ======
+html2text 2025.4.15             0.525      0.896      0.544     0.662     2.9x
+*raw HTML*                      0.528      0.902      0.549     0.666     0.04x
+beautifulsoup4 4.15.0           0.535      0.952      0.563     0.685     2.1x
+html_text 0.7.1                 0.531      0.985      0.559     0.690     0.7x
+inscriptis 2.7.3 (html to txt)  0.534      **0.987**  0.564     0.693     1.1x
+newspaper4k 0.9.6               0.878      0.737      0.818     0.801     6.5x
+boilerpy3 1.0.7 (article mode)  0.818      0.793      0.809     0.805     1.6x
+goose3 3.1.22                   **0.936**  0.714      0.833     0.810     10.3x
+resiliparse 1.0.9               0.705      0.955      0.778     0.811     0.3x
+*baseline (text markup)*        0.767      0.869      0.803     0.815     **1x**
+readability-lxml 0.8.4.1        0.898      0.760      0.837     0.823     2.7x
+news-please 1.6.16              0.932      0.753      0.850     0.833     20.4x
+justext 3.0.2 (custom)          0.864      0.859      0.862     0.862     2.2x
+magic-html 0.1.8                0.891      0.861      0.878     0.875     3.5x
+trafilatura 2.1.0 (recall)      0.899      0.939      0.917     0.918     2.1x
+trafilatura 2.1.0 (fast)        0.907      0.930      0.917     0.918     2.2x
+trafilatura 2.1.0 (precision)   0.925      0.915      0.921     0.920     3.2x
+trafilatura 2.1.0 (standard)    0.906      0.943      **0.923** **0.924** 3.2x
+=============================== =========  ========== ========= ========= ======
+
+
+Older results
+-------------
+
+
+Older results (2022-05-18)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 =============================== =========  ========== ========= ========= ======
 750 documents, 2236 text & 2250 boilerplate segments, Python 3.8
@@ -95,11 +131,6 @@ trafilatura 1.2.2 (fast)        0.914      0.886      0.902     0.900     4.8x
 trafilatura 1.2.2 (precision)   **0.932**  0.874      0.905     0.902     9.4x
 trafilatura 1.2.2 (standard)    0.914      0.904      **0.910** **0.909** 7.1x
 =============================== =========  ========== ========= ========= ======
-
-
-
-Older results
--------------
 
 
 Older results (2021-06-07)

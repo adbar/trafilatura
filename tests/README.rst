@@ -28,21 +28,31 @@ Running the code
 The results and a list of comparable benchmarks are available on the `evaluation page of the docs <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_.
 
 
-Evaluation
-----------
+Quality gate
+------------
 
 The following allows for comparing changes made to Trafilatura, for example in a new version or pull request:
 
-1. Install Trafilatura
-2. Run the script ``comparison_small.py``
+1. Install Trafilatura from the working tree: ``pip install -e .`` (from the repository root)
+2. Run ``python tests/eval_gate.py``
+
+``eval_gate.py`` scores the whole corpus with Trafilatura alone and compares the F1-scores with the pinned baseline, exiting non-zero on a regression. It needs no competitor library and is also run in CI.
+
+After editing the annotations or an HTML input, re-pin the corpus hash with ``python tests/eval_gate.py --update``. A re-pin never lowers the baseline on its own: an F1 below a pinned floor keeps the floor and exits non-zero, and accepting a lower bar takes an explicit ``--allow-regression``.
 
 
-A comparison with similar software is run periodically. As the packages tend to evolve the script may not always be up-to-date and all packages may not be available. If that happens, commenting out the corresponding sections is the most efficient solution. Fixes to the file can be submitted as pull requests.
+Comparison with other software
+------------------------------
+
+``evaluate.py`` additionally runs other extractors. Each competitor library is imported by the algorithm that uses it, not at module level, so ``pip install -e ".[eval]"`` is enough to get started and an algorithm whose library is missing or does not import is reported and dropped from the comparison rather than stopping the run. ``--small`` needs no competitor at all.
 
 Note: As numerous packages are installed it is recommended to create a virtual environment, for example with ``pyenv`` or ``venv``.
 
-1. Install the evaluation extra: ``uv pip install -e ".[eval]"`` (or ``pip install -e ".[eval]"``); optionally add ``magic_html`` with ``pip install git+https://github.com/opendatalab/magic-html``
-2. Run the script ``evaluate.py``
+1. Install the evaluation dependencies from the repository root: ``pip install -e ".[eval]"`` (``magic-html`` requires Python 3.12+ and is skipped on older versions)
+2. For ``news-please``, download the NLTK tokenizer data once: ``python -m nltk.downloader punkt punkt_tab`` (otherwise it attempts a network download per document)
+3. Run the script ``evaluate.py``
+
+The published results record the version of each package next to its name, since the packages evolve and their output changes with them.
 
 Options:
 

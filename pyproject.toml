@@ -108,8 +108,7 @@ all = [
     "urllib3[socks]",
     "zstandard >= 0.25.0",
 ]
-# Benchmark dependencies for tests/evaluate.py. magic_html is git-only: install
-# manually via "pip install git+https://github.com/opendatalab/magic-html".
+# Benchmark deps for tests/evaluate.py, which skips the competitors it cannot import.
 eval = [
     "pandas",
     "tabulate",
@@ -121,8 +120,16 @@ eval = [
     "html2text",
     "html-text",
     "inscriptis",
-    "newspaper3k",
+    # pinned: the PyPI upload is not an upstream release (audited: matches the 0.1.6 wheel)
+    "magic-html == 0.1.8 ; python_version >= '3.12'",
+    # not newspaper3k: clashes with newspaper4k on the "newspaper" namespace.
+    # newspaper4k is listed explicitly (not just via news-please) because
+    # evaluate.py looks its version up by name.
     "news-please",
+    # required by news-please on non-Latin scripts; also needs a one-time punkt
+    # download (see tests/README.rst), else it attempts one per document
+    "nltk",
+    "newspaper4k",
     "readability-lxml",
     "resiliparse",
 ]
