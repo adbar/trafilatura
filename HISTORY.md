@@ -18,10 +18,10 @@ Fixes:
 - Address output formatting bugs by @adbar (#870)
 - Further improve subelem processing, mostly math, code and Markdown by @adbar (#872)
 - More accurate table processing by @adbar (#874)
-- Quote metadata values to keep the Markdown header valid YAML by @gaoflow (#875, fixes #814)
+- Quote metadata values to keep the Markdown header valid YAML by @gaoflow (#875)
 - Escape angle brackets in Markdown link destinations by @gaoflow (#877)
 - Match image extensions case-insensitively in is_image_file by @lntutor (#888)
-- Keep sup and sub boundaries in Markdown output by @igorsaevets (#891, fixes #889)
+- Keep sup and sub boundaries in Markdown output by @igorsaevets (#891)
 
 Maintenance:
 - Review function arguments and add warnings by @adbar (#876)
