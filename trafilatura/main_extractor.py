@@ -229,8 +229,16 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
     return None
 
 
+_INLINE_CODE_PARENTS = frozenset(("p", "li", "td", "th", "dd", "dt"))
+
+
 def is_code_block_element(element: _Element) -> bool:
     "Check if it is a code element according to common structural markers."
+    # inline <code> inside paragraph-like parents is not a block element (#849)
+    if element.tag == "code":
+        parent = element.getparent()
+        if parent is not None and parent.tag in _INLINE_CODE_PARENTS:
+            return False
     # pip
     if element.get("lang") or element.tag == "code":
         return True
@@ -678,6 +686,12 @@ def recover_wild_text(
     unwanted = ("span",) if "ref" in potential_tags else ("a", "ref", "span")
     strip_tags(search_tree, *unwanted)
     subelems = search_tree.xpath(search_expr)
+    # filter out inline <code> to prevent duplication (#849)
+    subelems = [
+        e for e in subelems
+        if not (e.tag == "code" and e.getparent() is not None
+                and e.getparent().tag in _INLINE_CODE_PARENTS)
+    ]
     # dedup against the pre-main-pass snapshot: skip what the main pass already took -- exact
     # match (not length-gated, #634; accepted cost: identical-text elements collapse) or a
     # length-gated substring (a <p> folded into its <list> container)
@@ -774,6 +788,13 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         LOGGER.debug(sorted(potential_tags))
         # proper extraction
         subelems = subtree.xpath(".//*")
+        # filter out inline <code> — already part of their parent's text
+        # flow; processing them separately duplicates their content (#849)
+        subelems = [
+            e for e in subelems
+            if not (e.tag == "code" and e.getparent() is not None
+                    and e.getparent().tag in _INLINE_CODE_PARENTS)
+        ]
         # e.g. only lb-elems in a div
         if {e.tag for e in subelems} == {"lb"}:
             subelems = [subtree]
