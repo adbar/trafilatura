@@ -134,7 +134,6 @@ MOCK_PAGES = {
     "https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/": "buchperlen.wordpress.com.html",
     "http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/": "kulinariaathome.com.mandelplätzchen.html",
     "https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/": "de.creativecommons.org.endlich.html",
-    "https://blog.mondediplo.net/turpitude-et-architecture": "mondediplo.net.turpitude.html",
     "https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be": "scmp.com.playbook.html",
     "https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html": "faz.net.streaming.html",
     "https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html": "ndr.de.podcastcoronavirus140.html",

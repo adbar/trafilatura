@@ -82,6 +82,12 @@ jobs:
       run: |
         python -m pytest --cov=./ --cov-report=xml
 
+    - name: Evaluation quality gate
+      # deterministic given the corpus; one cell is enough, no need for the whole matrix
+      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      run: |
+        python tests/eval_gate.py
+
     - name: Test docs
       # version matches .readthedocs.yaml
       if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
