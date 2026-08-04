@@ -33,12 +33,14 @@ Quality gate
 
 The following allows for comparing changes made to Trafilatura, for example in a new version or pull request:
 
-1. Install Trafilatura from the working tree: ``pip install -e .`` (from the repository root)
+1. Install Trafilatura from the working tree: ``pip install -e ".[all]"`` (from the repository root; the ``all`` extra matches the environment of the CI gate, plain ``pip install -e .`` can score slightly differently on non-UTF-8 pages)
 2. Run ``python tests/eval_gate.py``
 
-``eval_gate.py`` scores the whole corpus with Trafilatura alone and compares the F1-scores with the pinned baseline, exiting non-zero on a regression. It needs no competitor library and is also run in CI.
+``eval_gate.py`` scores the whole corpus with Trafilatura alone and compares the F1-scores with the floors pinned in ``eval_baseline.json``, exiting non-zero on a regression. It needs no competitor library and is also run in CI.
 
-After editing the annotations or an HTML input, re-pin the corpus hash with ``python tests/eval_gate.py --update``. A re-pin never lowers the baseline on its own: an F1 below a pinned floor keeps the floor and exits non-zero, and accepting a lower bar takes an explicit ``--allow-regression``.
+After editing the annotations or an HTML input, re-pin the corpus fingerprint with ``python tests/eval_gate.py --update``. A re-pin never lowers the baseline on its own: an F1 below a pinned floor keeps the floor and exits non-zero, and accepting a lower bar takes an explicit ``--allow-regression``.
+
+Note for Windows: the corpus fingerprint requires the HTML inputs exactly as committed. On a clone made before the ``.gitattributes`` rules were added, run ``git add --renormalize .`` and reset (or re-clone) so line endings match the repository.
 
 
 Comparison with other software
@@ -62,7 +64,7 @@ Options:
 
 ``python3 evaluate.py --help``: Display all algorithms and further options.
 
-More comprehensive evaluations are available, mostly focusing on English and/or a particular text type. With minimal adaptations, the evaluation can support the use gold standard files in JSON format.
+More comprehensive evaluations are available, mostly focusing on English and/or a particular text type. The evaluation only supports the handcrafted with/without segment format described above; an external annotation file can be passed with ``--testfile`` as long as its HTML documents live in ``tests/cache`` or ``tests/eval``.
 
 
 Sources

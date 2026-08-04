@@ -1,15 +1,17 @@
 """Shared scoring primitives for evaluate.py and eval_gate.py.
 
-Stdlib-only, so eval_gate can import it without evaluate.py's heavy deps.
+Needs trafilatura but no competitor library, so eval_gate can import it
+without evaluate.py's heavy deps.
 """
 
 import json
 import os
 import re
-from collections.abc import Callable
 from dataclasses import dataclass
 from functools import partial
 from typing import Any, TypedDict
+
+from trafilatura import extract
 
 
 class _ExtractOpts(TypedDict):
@@ -24,12 +26,11 @@ class _ExtractOpts(TypedDict):
 EXTRACT_OPTS: _ExtractOpts = {"include_comments": False, "include_tables": True, "include_formatting": False}
 
 
-def make_runners(extract: Callable[..., Any]) -> dict[str, partial[Any]]:
-    "Canonical trafilatura runners; takes extract as an argument to stay stdlib-only."
-    return {
-        "fast": partial(extract, fast=True, **EXTRACT_OPTS),
-        "fallback": partial(extract, fast=False, **EXTRACT_OPTS),
-    }
+# canonical trafilatura runners, shared so the CI gate can't drift from the benchmark
+RUNNERS = {
+    "fast": partial(extract, fast=True, **EXTRACT_OPTS),
+    "fallback": partial(extract, fast=False, **EXTRACT_OPTS),
+}
 
 
 def load_evaldata(path: str) -> dict[str, dict[str, Any]]:
@@ -46,8 +47,14 @@ def norm(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
-def validate(evaldata: dict[str, dict[str, Any]]) -> None:
+# annotation bound per side, keeps single documents from dominating the scores
+MAX_CHUNKS = 6
+
+
+def validate(evaldata: Any) -> None:
     "Fail loudly on a malformed corpus edit."
+    if not isinstance(evaldata, dict) or not evaldata:
+        raise ValueError("unrecognized corpus format: expected a non-empty dict of annotations")
     for url, item in evaldata.items():
         if not item.get("file"):
             raise ValueError(f"{url}: missing or empty 'file'")
@@ -55,8 +62,8 @@ def validate(evaldata: dict[str, dict[str, Any]]) -> None:
             chunks = item.get(key)
             if not isinstance(chunks, list) or not all(isinstance(c, str) and c.strip() for c in chunks):
                 raise ValueError(f"{url}: {key!r} must be a list of non-empty strings")
-            if not 0 < len(chunks) <= 6:
-                raise ValueError(f"{url}: {key!r} must hold 1 to 6 chunks, found {len(chunks)}")
+            if not 0 < len(chunks) <= MAX_CHUNKS:
+                raise ValueError(f"{url}: {key!r} must hold 1 to {MAX_CHUNKS} chunks, found {len(chunks)}")
             if len({norm(c) for c in chunks}) != len(chunks):
                 raise ValueError(f"{url}: duplicate entry in {key!r}")
         # a 'without' chunk contained in a 'with' chunk can never be scored as a true negative
@@ -84,6 +91,20 @@ def read_document(here: str, filename: str) -> bytes | None:
         return f.read()
 
 
+def read_corpus(here: str, evaldata: dict[str, dict[str, Any]]) -> dict[str, tuple[str, bytes]]:
+    "Read every resolved HTML input once; returns {url: (posix relpath, bytes)}."
+    docs = {}
+    for url in sorted(evaldata):
+        path = resolve(here, evaldata[url]["file"])
+        if path is None:
+            raise ValueError(f"{url}: HTML file not found: {evaldata[url]['file']}")
+        # records which copy won the cache/eval lookup; posix, so the pin isn't OS-dependent
+        relpath = os.path.relpath(path, here).replace(os.sep, "/")
+        with open(path, "rb") as f:
+            docs[url] = (relpath, f.read())
+    return docs
+
+
 def count_item(item: dict[str, Any], result: str | None) -> tuple[int, int, int, int]:
     "Per-item (tp, fp, fn, tn) via whitespace-normalized substring matching."
     if isinstance(result, str):
@@ -93,6 +114,13 @@ def count_item(item: dict[str, Any], result: str | None) -> tuple[int, int, int,
     else:
         tp = fp = 0
     return tp, fp, len(item["with"]) - tp, len(item["without"]) - fp
+
+
+def report_first_error(reported: set[str], name: str, label: str, err: BaseException) -> None:
+    "Print a runner's first exception only; a crash already costs recall, this names it."
+    if name not in reported:
+        reported.add(name)
+        print(f"{name}: {label}: {type(err).__name__}: {err}")
 
 
 def run_and_count(
@@ -106,6 +134,10 @@ def run_and_count(
     except Exception as exc:
         return None, count_item(item, None), exc
     return result, count_item(item, result), None
+
+
+# column labels for ConfusionMatrix.scores(), in return order
+METRICS = ["precision", "recall", "accuracy", "f1"]
 
 
 @dataclass

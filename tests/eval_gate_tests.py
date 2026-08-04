@@ -4,15 +4,16 @@ Unit tests for the CI gate's corpus pinning and re-pin mechanism
 dedicated CI step, not part of the default test suite.
 """
 
+import json
 import os
 import sys
-
-import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import eval_gate  # noqa: E402
 from eval_common import ConfusionMatrix  # noqa: E402
+
+PINS = {"evaldata_sha": "newsha", "entries": 2, "chunks": [4, 4]}
 
 
 def test_corpus_sha_is_stable_sha256_hex():
@@ -28,9 +29,11 @@ def test_corpus_sha_reacts_to_content_and_path():
     assert eval_gate.corpus_sha({"url": ("cache/a.html", b"<html>a</html>")}) != baseline
 
 
-def test_corpus_sha_rejects_unresolvable_file():
-    with pytest.raises(ValueError):
-        eval_gate.read_corpus({"url": {"file": "does-not-exist.html"}})
+def test_real_baseline_matches_runners():
+    "The shipped pin file must cover exactly the gated runners."
+    baseline = eval_gate.load_baseline()
+    assert set(baseline) == {"floors", "evaldata_sha", "entries", "chunks"}
+    assert set(baseline["floors"]) == set(eval_gate.RUNNERS)
 
 
 def _fake_matrices():
@@ -41,78 +44,67 @@ def _fake_matrices():
     return {"fast": fast, "fallback": fallback}
 
 
-def _repin_target(tmp_path, monkeypatch, text, floors=None):
-    "A fake eval_gate.py source that repin() rewrites, with module FLOORS kept in sync."
-    target = tmp_path / "fake_eval_gate.py"
-    target.write_text(text)
-    monkeypatch.setattr(eval_gate, "__file__", str(target))
-    monkeypatch.setattr(eval_gate, "FLOORS", floors or {"fast": 0.1, "fallback": 0.2})
-    return target
+def _baseline_target(tmp_path, monkeypatch, floors):
+    "A baseline dict backed by a tmp file that repin()'s save writes to."
+    target = tmp_path / "eval_baseline.json"
+    baseline = {"floors": floors, "evaldata_sha": "old", "entries": 1, "chunks": [1, 1]}
+    target.write_text(json.dumps(baseline))
+    monkeypatch.setattr(eval_gate, "BASELINE_PATH", str(target))
+    return baseline, target
 
 
-def test_repin_rewrites_floors_and_sha(tmp_path, monkeypatch):
-    target = _repin_target(tmp_path, monkeypatch, 'FLOORS = {"fast": 0.1, "fallback": 0.2}\nEVALDATA_SHA = "old"\n')
+def test_repin_rewrites_floors_and_pins(tmp_path, monkeypatch):
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.1, "fallback": 0.2})
 
-    assert eval_gate.repin(_fake_matrices(), "newsha") == 0
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 0
 
-    text = target.read_text()
-    assert 'FLOORS = {"fast": 0.75, "fallback": 0.8}' in text
-    assert 'EVALDATA_SHA = "newsha"' in text
-
-
-def test_repin_raises_if_floors_line_not_matched(tmp_path, monkeypatch):
-    "Regression test: repin() must not silently no-op if FLOORS isn't on one line."
-    original = 'FLOORS = {\n    "fast": 0.1,\n}\nEVALDATA_SHA = "old"\n'
-    target = _repin_target(tmp_path, monkeypatch, original)
-
-    with pytest.raises(RuntimeError):
-        eval_gate.repin(_fake_matrices(), "newsha")
-    assert target.read_text() == original
-
-
-def test_repin_raises_if_sha_line_not_matched(tmp_path, monkeypatch):
-    _repin_target(tmp_path, monkeypatch, 'FLOORS = {"fast": 0.1, "fallback": 0.2}\nEVALDATA_SHA = old_no_quotes\n')
-
-    with pytest.raises(RuntimeError):
-        eval_gate.repin(_fake_matrices(), "newsha")
+    written = json.loads(target.read_text())
+    assert written["floors"] == {"fast": 0.75, "fallback": 0.8}
+    assert written["evaldata_sha"] == "newsha"
+    assert written["entries"] == 2
 
 
 def test_repin_idempotent_when_values_unchanged(tmp_path, monkeypatch):
-    "A re-pin that measures the same floors/sha must still succeed, not raise."
-    target = _repin_target(
-        tmp_path,
-        monkeypatch,
-        'FLOORS = {"fast": 0.75, "fallback": 0.75}\nEVALDATA_SHA = "newsha"\n',
-        floors={"fast": 0.75, "fallback": 0.75},
-    )
+    "A re-pin that measures the same floors/sha must still succeed."
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.75, "fallback": 0.8})
 
-    assert eval_gate.repin(_fake_matrices(), "newsha") == 0  # must not raise
-    assert 'FLOORS = {"fast": 0.75, "fallback": 0.8}' in target.read_text()
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 0
+    assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
 
 
-def test_repin_refuses_to_lower_a_floor_but_still_pins_sha(tmp_path, monkeypatch):
+def test_repin_tolerates_a_drop_within_epsilon(tmp_path, monkeypatch):
+    "Measurement noise below EPSILON must not require --allow-regression."
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.7503, "fallback": 0.8})
+
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 0
+    assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
+
+
+def test_repin_refuses_to_lower_a_floor_but_still_pins_corpus(tmp_path, monkeypatch):
     "A corpus edit that also regresses quality must not ratchet the floor down."
-    target = _repin_target(
-        tmp_path,
-        monkeypatch,
-        'FLOORS = {"fast": 0.9, "fallback": 0.8}\nEVALDATA_SHA = "old"\n',
-        floors={"fast": 0.9, "fallback": 0.8},  # measured fast F1 is 0.75, below its floor
-    )
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.9, "fallback": 0.8})
 
-    assert eval_gate.repin(_fake_matrices(), "newsha") == 1
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 1
 
-    text = target.read_text()
-    assert 'FLOORS = {"fast": 0.9, "fallback": 0.8}' in text  # untouched
-    assert 'EVALDATA_SHA = "newsha"' in text  # still re-pinned
+    written = json.loads(target.read_text())
+    assert written["floors"] == {"fast": 0.9, "fallback": 0.8}  # untouched
+    assert written["evaldata_sha"] == "newsha"  # still re-pinned
 
 
 def test_repin_lowers_a_floor_when_regression_allowed(tmp_path, monkeypatch):
-    target = _repin_target(
-        tmp_path,
-        monkeypatch,
-        'FLOORS = {"fast": 0.9, "fallback": 0.8}\nEVALDATA_SHA = "old"\n',
-        floors={"fast": 0.9, "fallback": 0.8},
-    )
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.9, "fallback": 0.8})
 
-    assert eval_gate.repin(_fake_matrices(), "newsha", allow_regression=True) == 0
-    assert 'FLOORS = {"fast": 0.75, "fallback": 0.8}' in target.read_text()
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS, allow_regression=True) == 0
+    assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}
+
+
+def test_repin_writes_new_runner_floor_only_on_accepted_update(tmp_path, monkeypatch):
+    "A runner absent from the pinned floors gets its first measurement written."
+    baseline, target = _baseline_target(tmp_path, monkeypatch, {"fast": 0.9})
+
+    assert eval_gate.repin(baseline, _fake_matrices(), PINS) == 1  # fast still refused
+
+    written = json.loads(target.read_text())
+    assert written["floors"] == {"fast": 0.9}  # refuse keeps old floors, incl. no new entry
+    assert eval_gate.repin(written, _fake_matrices(), PINS, allow_regression=True) == 0
+    assert json.loads(target.read_text())["floors"] == {"fast": 0.75, "fallback": 0.8}

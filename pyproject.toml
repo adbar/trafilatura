@@ -112,7 +112,6 @@ all = [
 eval = [
     "pandas",
     "tabulate",
-    "tqdm",
     # alternative extractors compared in tests/evaluate.py
     "beautifulsoup4",
     "boilerpy3",

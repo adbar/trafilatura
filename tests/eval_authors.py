@@ -18,6 +18,8 @@ def main():
         if not item.get("file") or not item.get("author"):
             continue
         author_gold = item["author"]
+        if isinstance(author_gold, list):  # match how trafilatura joins multiple authors
+            author_gold = "; ".join(author_gold)
         htmlbinary = read_document(HERE, item["file"])
         if htmlbinary is None:
             continue

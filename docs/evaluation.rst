@@ -21,7 +21,7 @@ The extraction focuses on the main content, which is usually the part displayed 
 External evaluations
 --------------------
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ (older evaluation)
 - Best overall tool according to `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (Lejeune & Barbaresi 2020)
 - Comparison on a small `sample of Polish news texts and forums <https://github.com/tsolewski/Text_extraction_comparison_PL>`_ (now integrated in the internal benchmark, Trafilatura has improved since)
 - Best single tool by ROUGE-LSum Mean F1 Page Scores in `An Empirical Comparison of Web Content Extraction Algorithms <https://webis.de/downloads/publications/papers/bevendorff_2023b.pdf>`_ (Bevendorff et al. 2023)
@@ -38,7 +38,6 @@ These packages keep the structure intact but do not focus on main text extractio
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language
 - `html_text <https://github.com/TeamHG-Memex/html-text>`_ converts HTML code to plain text
 - `inscriptis <https://github.com/weblyzard/inscriptis>`_ converts HTML to text with a particular emphasis on nested tables
-- `resiliparse <https://github.com/chatnoir-eu/chatnoir-resiliparse>`_ converts HTML to plain text with a focus on speed and robustness
 
 These packages focus on main text extraction:
 
@@ -50,6 +49,7 @@ These packages focus on main text extraction:
 - `newspaper4k <https://github.com/AndyTheFactory/newspaper4k>`_ (the maintained successor of *newspaper3k*) is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
 - `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
 - `readability-lxml <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
+- `resiliparse <https://github.com/chatnoir-eu/chatnoir-resiliparse>`_ converts HTML to plain text with a focus on speed and robustness, run here in main-content mode
 - *readabilipy* is not part of the comparison anymore, it is provided for reference only (in older evaluations)
 - `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here, several options are tested regarding main text extraction only, without metadata or comments
 
@@ -74,7 +74,7 @@ Description
 The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
-Results (2026-07-31)
+Results (2026-08-04)
 --------------------
 
 =============================== =========  ========== ========= ========= ======
@@ -82,25 +82,27 @@ Results (2026-07-31)
 --------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
 =============================== =========  ========== ========= ========= ======
-html2text 2025.4.15             0.525      0.896      0.544     0.662     2.9x
-*raw HTML*                      0.528      0.902      0.549     0.666     0.04x
-beautifulsoup4 4.15.0           0.535      0.952      0.563     0.685     2.1x
-html_text 0.7.1                 0.531      0.985      0.559     0.690     0.7x
-inscriptis 2.7.3 (html to txt)  0.534      **0.987**  0.564     0.693     1.1x
-newspaper4k 0.9.6               0.878      0.737      0.818     0.801     6.5x
-boilerpy3 1.0.7 (article mode)  0.818      0.793      0.809     0.805     1.6x
-goose3 3.1.22                   **0.936**  0.714      0.833     0.810     10.3x
+html2text 2025.4.15             0.525      0.900      0.544     0.663     2.8x
+*raw HTML*                      0.528      0.906      0.549     0.667     0.03x
+beautifulsoup4 4.15.0           0.532      0.980      0.561     0.690     2.1x
+html_text 0.7.1                 0.531      0.988      0.559     0.691     0.7x
+inscriptis 2.7.3 (html to txt)  0.534      **0.991**  0.564     0.694     1.1x
+newspaper4k 0.9.6               0.878      0.736      0.817     0.801     6.6x
+boilerpy3 1.0.7 (article mode)  0.818      0.796      0.810     0.807     1.6x
+goose3 3.1.22                   **0.936**  0.714      0.833     0.810     10.2x
 resiliparse 1.0.9               0.705      0.955      0.778     0.811     0.3x
 *baseline (text markup)*        0.767      0.869      0.803     0.815     **1x**
-readability-lxml 0.8.4.1        0.898      0.760      0.837     0.823     2.7x
-news-please 1.6.16              0.932      0.753      0.850     0.833     20.4x
-justext 3.0.2 (custom)          0.864      0.859      0.862     0.862     2.2x
-magic-html 0.1.8                0.891      0.861      0.878     0.875     3.5x
-trafilatura 2.1.0 (recall)      0.899      0.939      0.917     0.918     2.1x
-trafilatura 2.1.0 (fast)        0.907      0.930      0.917     0.918     2.2x
-trafilatura 2.1.0 (precision)   0.925      0.915      0.921     0.920     3.2x
-trafilatura 2.1.0 (standard)    0.906      0.943      **0.923** **0.924** 3.2x
+readability-lxml 0.8.4.1        0.898      0.764      0.839     0.826     2.6x
+news-please 1.6.16              0.932      0.758      0.852     0.836     20.5x
+justext 3.0.2 (custom)          0.864      0.859      0.862     0.862     2.3x
+magic-html 0.1.8                0.887      0.891      0.889     0.889     3.5x
+trafilatura 2.2.0 (recall)      0.899      0.939      0.917     0.918     2.1x
+trafilatura 2.2.0 (fast)        0.907      0.930      0.917     0.918     2.2x
+trafilatura 2.2.0 (precision)   0.925      0.915      0.921     0.920     3.2x
+trafilatura 2.2.0 (standard)    0.906      0.943      **0.923** **0.924** 3.2x
 =============================== =========  ========== ========= ========= ======
+
+Each package receives the raw HTML bytes and handles character encoding itself; packages evaluated on string input (*boilerpy3*, *html2text*, *html_text*, *inscriptis*, *magic-html*, *news-please*, *readability-lxml*) get it pre-decoded by the benchmark, with the conversion counted in their execution time.
 
 
 Older results

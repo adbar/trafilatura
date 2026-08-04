@@ -1,43 +1,52 @@
-"""CI quality gate: fails if own-benchmark F1 regresses below FLOORS.
+"""CI quality gate: fails if own-benchmark F1 regresses below the pinned floors.
 
 No competitor-extractor deps (unlike evaluate.py), so it's cheap to run in CI.
-EVALDATA_SHA pins evaldata.json plus every resolved HTML input — many double
-as unit-test mock pages in cache/, so a refresh there would otherwise change
-scores unnoticed. After editing either, re-pin with ``--update``: it re-pins the
-SHA but refuses to lower a floor without ``--allow-regression``.
+eval_baseline.json pins the floors plus a digest of evaldata.json and every
+resolved HTML input — many double as unit-test mock pages in cache/, so a
+refresh there would otherwise change scores unnoticed. After editing either,
+re-pin with ``--update``: it re-pins the corpus but refuses to lower a floor
+without ``--allow-regression``.
 """
 
+import argparse
 import hashlib
+import json
 import os
-import re
 import sys
 from typing import Any
 
-from eval_common import ConfusionMatrix, load_evaldata, make_runners, resolve, run_and_count, validate
-
-from trafilatura import extract
+from eval_common import RUNNERS, ConfusionMatrix, load_evaldata, read_corpus, report_first_error, run_and_count, validate
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+BASELINE_PATH = os.path.join(HERE, "eval_baseline.json")
 
-# full-corpus baseline
-FLOORS = {"fast": 0.918, "fallback": 0.9245}
-EVALDATA_SHA = "b443dcaae4d0aa2097a1abc780495635786b5cb2b33a01787f20879a25a8e133"
-
-RUNNERS = make_runners(extract)
+# one flipped segment moves F1 by ~0.0002; don't fail on measurement noise
+EPSILON = 0.0005
 
 
-def read_corpus(evaldata: dict[str, dict[str, Any]]) -> dict[str, tuple[str, bytes]]:
-    "Read every resolved HTML input once; returns {url: (posix relpath, bytes)}."
-    docs = {}
-    for url in sorted(evaldata):
-        path = resolve(HERE, evaldata[url]["file"])
-        if path is None:
-            raise ValueError(f"{url}: HTML file not found: {evaldata[url]['file']}")
-        # records which copy won the cache/eval lookup; posix, so the pin isn't OS-dependent
-        relpath = os.path.relpath(path, HERE).replace(os.sep, "/")
-        with open(path, "rb") as f:
-            docs[url] = (relpath, f.read())
-    return docs
+def measured_f1(cm: ConfusionMatrix) -> float:
+    "F1 at the floors' grain."
+    return round(cm.f1(), 4)
+
+
+def regressed(f1: float, floor: float) -> bool:
+    "Below the floor by more than measurement noise."
+    return f1 < floor - EPSILON
+
+
+def load_baseline() -> dict[str, Any]:
+    with open(BASELINE_PATH, encoding="utf-8") as f:
+        baseline: dict[str, Any] = json.load(f)
+    return baseline
+
+
+def save_baseline(baseline: dict[str, Any]) -> None:
+    "Atomic replace, so an interrupted --update can't truncate the pins."
+    tmp = BASELINE_PATH + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(baseline, f, indent=2)
+        f.write("\n")
+    os.replace(tmp, BASELINE_PATH)
 
 
 def corpus_sha(docs: dict[str, tuple[str, bytes]]) -> str:
@@ -51,6 +60,18 @@ def corpus_sha(docs: dict[str, tuple[str, bytes]]) -> str:
     return hashsum.hexdigest()
 
 
+def corpus_pins(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]]) -> dict[str, Any]:
+    "Corpus fingerprint: the SHA records 'corpus seen', the counts make a shrink reviewable."
+    return {
+        "evaldata_sha": corpus_sha(docs),
+        "entries": len(evaldata),
+        "chunks": [
+            sum(len(item["with"]) for item in evaldata.values()),
+            sum(len(item["without"]) for item in evaldata.values()),
+        ],
+    }
+
+
 def score(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]]) -> dict[str, ConfusionMatrix]:
     matrices = {name: ConfusionMatrix() for name in RUNNERS}
     reported: set[str] = set()  # runners whose first exception was printed
@@ -58,65 +79,69 @@ def score(evaldata: dict[str, dict[str, Any]], docs: dict[str, tuple[str, bytes]
         relpath, htmlbinary = docs[url]
         for name, fn in RUNNERS.items():
             _, counts, err = run_and_count(fn, htmlbinary, item)
-            if err is not None and name not in reported:
-                # a crash already costs recall; name it so CI shows more than a lower F1
-                reported.add(name)
-                print(f"{name}: {relpath}: {type(err).__name__}: {err}")
+            if err is not None:
+                report_first_error(reported, name, relpath, err)
             matrices[name].add(counts)
     return matrices
 
 
-def repin(matrices: dict[str, ConfusionMatrix], sha: str, allow_regression: bool = False) -> int:
-    "Rewrite EVALDATA_SHA and, unless that lowers a floor, FLOORS; returns the exit code."
-    measured = {name: round(cm.f1(), 4) for name, cm in matrices.items()}
+def repin(
+    baseline: dict[str, Any],
+    matrices: dict[str, ConfusionMatrix],
+    pins: dict[str, Any],
+    allow_regression: bool = False,
+) -> int:
+    "Rewrite the corpus pins and, unless that lowers a floor, the floors; returns the exit code."
+    measured = {name: measured_f1(cm) for name, cm in matrices.items()}
+    floors = baseline["floors"]
     drops = [
-        f"{name}: F1={f1:.4f} vs floor {FLOORS[name]:.4f} ({f1 - FLOORS[name]:+.4f})"
+        f"{name}: F1={f1:.4f} vs floor {floors[name]:.4f} ({f1 - floors[name]:+.4f})"
         for name, f1 in measured.items()
-        if name in FLOORS and f1 < FLOORS[name]
+        if name in floors and regressed(f1, floors[name])
     ]
-    floors = "{" + ", ".join(f'"{name}": {f1}' for name, f1 in measured.items()) + "}"
 
-    # the SHA only records "corpus seen"; the floors are the quality bar
-    substitutions = [(r'^EVALDATA_SHA = ".*"$', f'EVALDATA_SHA = "{sha}"', "EVALDATA_SHA")]
+    baseline.update(pins)
     if not drops or allow_regression:
-        substitutions.append((r"^FLOORS = \{.*\}$", f"FLOORS = {floors}", "FLOORS"))
-
-    # newline="" so a Windows run doesn't rewrite the whole file to CRLF
-    with open(__file__, encoding="utf-8", newline="") as f:
-        text = f.read()
-    for pattern, replacement, name in substitutions:
-        text, n = re.subn(pattern, replacement, text, count=1, flags=re.M)
-        if n == 0:
-            raise RuntimeError(f"repin: {name} line not found/matched — check formatting")
-    with open(__file__, "w", encoding="utf-8", newline="") as f:
-        f.write(text)
+        baseline["floors"] = measured
+    save_baseline(baseline)
 
     if drops and not allow_regression:
-        print("\n".join(["re-pinned EVALDATA_SHA only — refusing to lower the floor:", *drops]))
-        print("fix the regression, or re-run with --allow-regression to accept the lower bar")
+        print("\n".join(["re-pinned the corpus only — refusing to lower the floor:", *drops]))
+        print("fix the regression, or re-run with --update --allow-regression to accept the lower bar")
         return 1
-    print(f"re-pinned FLOORS={floors} EVALDATA_SHA={sha}")
+    print(f"re-pinned floors={measured} sha={pins['evaldata_sha']}")
     return 0
 
 
+def parse_args(argv: list[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--update", action="store_true", help="re-measure and re-pin eval_baseline.json")
+    parser.add_argument("--allow-regression", action="store_true", help="let --update lower a pinned floor")
+    return parser.parse_args(argv)
+
+
 def main(argv: list[str]) -> int:
-    update = "--update" in argv
+    args = parse_args(argv)
     evaldata = load_evaldata(HERE)
     validate(evaldata)
+    baseline = load_baseline()
 
-    docs = read_corpus(evaldata)
-    sha = corpus_sha(docs)
-    if not update and sha != EVALDATA_SHA:
-        sys.exit("corpus changed (annotations or HTML) — re-measure and re-pin:\n    python tests/eval_gate.py --update")
+    docs = read_corpus(HERE, evaldata)
+    pins = corpus_pins(evaldata, docs)
+    if not args.update:
+        if {key: baseline.get(key) for key in pins} != pins:
+            sys.exit("corpus changed (annotations or HTML) — re-measure and re-pin:\n    python tests/eval_gate.py --update")
+        if set(RUNNERS) != set(baseline["floors"]):
+            sys.exit("runners and pinned floors disagree — re-pin:\n    python tests/eval_gate.py --update")
 
     matrices = score(evaldata, docs)
-    if update:
-        return repin(matrices, sha, allow_regression="--allow-regression" in argv)
+    if args.update:
+        return repin(baseline, matrices, pins, allow_regression=args.allow_regression)
 
     regression = False
     for name, cm in matrices.items():
-        f1, floor = round(cm.f1(), 4), FLOORS[name]
-        regression = regression or f1 < floor
+        f1, floor = measured_f1(cm), baseline["floors"][name]
+        regression = regression or regressed(f1, floor)
         print(f"{name:>9}: F1={f1:.4f} (floor {floor:.4f})")
     return int(regression)
 

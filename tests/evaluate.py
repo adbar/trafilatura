@@ -8,16 +8,24 @@ import os
 import sys
 import time
 
-from contextlib import suppress
 from dataclasses import dataclass
 from functools import cache, partial
 from importlib.metadata import PackageNotFoundError, version
 
 import justext
 import pandas as pd
-import tqdm
 
-from eval_common import EXTRACT_OPTS, ConfusionMatrix, load_evaldata, make_runners, read_document, run_and_count, validate
+from eval_common import (
+    EXTRACT_OPTS,
+    METRICS,
+    RUNNERS,
+    ConfusionMatrix,
+    load_evaldata,
+    read_corpus,
+    report_first_error,
+    run_and_count,
+    validate,
+)
 
 from trafilatura import baseline, extract, html2txt
 from trafilatura.external import jt_stoplist_init
@@ -25,7 +33,7 @@ from trafilatura.external import jt_stoplist_init
 # for run_custom
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
 from trafilatura.baseline import basic_cleaning
-from trafilatura.utils import load_html
+from trafilatura.utils import decode_file, load_html
 
 
 # Competitors are imported in their runner, so a missing one only disables its own
@@ -34,15 +42,6 @@ from trafilatura.utils import load_html
 JT_STOPLIST = jt_stoplist_init()
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-
-
-@cache
-def get_detect():
-    try:
-        from cchardet import detect
-    except ImportError:
-        from charset_normalizer import detect
-    return detect
 
 
 @cache
@@ -64,16 +63,6 @@ def get_magic_html():
     from magic_html import GeneralExtractor
 
     return GeneralExtractor()
-
-
-def convert_to_str(htmlbinary):
-    "Conversion and encoding fix for the tests."
-    try:
-        guessed_encoding = get_detect()(htmlbinary)["encoding"]
-        htmlstring = htmlbinary.decode(guessed_encoding)
-    except (TypeError, UnicodeDecodeError):
-        htmlstring = htmlbinary
-    return htmlstring
 
 
 def run_custom(htmlbinary):
@@ -107,33 +96,33 @@ def run_readability(htmlbinary):
     """try with the Python3 port of readability.js"""
     from readability import Document
 
-    return Document(convert_to_str(htmlbinary)).summary()
+    return Document(decode_file(htmlbinary)).summary()
 
 
 def run_inscriptis(htmlbinary):
     """try with the inscriptis module"""
     from inscriptis import get_text
 
-    return get_text(convert_to_str(htmlbinary))
+    return get_text(decode_file(htmlbinary))
 
 
 def run_html2text(htmlbinary):
     """try with the html2text module"""
     import html2text
 
-    return html2text.html2text(convert_to_str(htmlbinary))
+    return html2text.html2text(decode_file(htmlbinary))
 
 
 def run_html_text(htmlbinary):
     """try with the html_text module"""
     import html_text
 
-    return html_text.extract_text(convert_to_str(htmlbinary), guess_layout=False)
+    return html_text.extract_text(decode_file(htmlbinary), guess_layout=False)
 
 
 def run_boilerpipe(htmlbinary):
     """try with the boilerpipe algorithm"""
-    return get_boilerpipe().get_content(convert_to_str(htmlbinary))
+    return get_boilerpipe().get_content(decode_file(htmlbinary))
 
 
 def run_newspaper(htmlbinary):
@@ -148,7 +137,7 @@ def run_newsplease(htmlbinary):
     from newsplease import NewsPlease
 
     # fetch_images=False: the default fetches images from each article's live host
-    return NewsPlease.from_html(convert_to_str(htmlbinary), url=None, fetch_images=False).maintext
+    return NewsPlease.from_html(decode_file(htmlbinary), url=None, fetch_images=False).maintext
 
 
 def run_resiliparse(htmlbinary):
@@ -157,11 +146,7 @@ def run_resiliparse(htmlbinary):
     from resiliparse.parse.encoding import bytes_to_str, detect_encoding
     from resiliparse.parse.html import HTMLTree
 
-    try:
-        htmlstring = bytes_to_str(htmlbinary, detect_encoding(htmlbinary))
-    except TypeError:  # already a string
-        htmlstring = htmlbinary
-    tree = HTMLTree.parse(htmlstring)
+    tree = HTMLTree.parse(bytes_to_str(htmlbinary, detect_encoding(htmlbinary)))
     return extract_plain_text(tree, main_content=True)
 
 
@@ -169,20 +154,22 @@ def run_bs4(htmlbinary):
     """try with the BeautifulSoup module"""
     from bs4 import BeautifulSoup
 
-    return BeautifulSoup(htmlbinary, features="lxml").get_text(strip=True)
+    # without a separator, gold chunks spanning an element boundary can never match
+    return BeautifulSoup(htmlbinary, features="lxml").get_text(separator=" ", strip=True)
 
 
 def run_magic_html(htmlbinary):
     """try with the magic_html package"""
-    return run_bs4(get_magic_html().extract(convert_to_str(htmlbinary), base_url="").get("html"))
+    return run_bs4(get_magic_html().extract(decode_file(htmlbinary), base_url="").get("html"))
 
 
 @dataclass
 class BenchmarkMatrix(ConfusionMatrix):
-    "Shared confusion matrix plus per-algorithm timing and skip bookkeeping."
+    "Shared confusion matrix plus per-algorithm timing, skip and error bookkeeping."
 
     time: float = 0.0
     skipped: int = 0
+    errors: int = 0
 
 
 def timed(fn, matrix):
@@ -201,12 +188,9 @@ def timed(fn, matrix):
 # marks a "library" with no version to look up
 NO_LIBRARY = "-"
 
-# canonical trafilatura runners, shared with eval_gate.py so the CI gate can't drift
-RUNNERS = make_runners(extract)
-
 # algorithm string, package, function, results
 ALGORITHMS = {
-    "everything": {"library": NO_LIBRARY, "function": convert_to_str},
+    "everything": {"library": NO_LIBRARY, "function": decode_file},
     "nothing": {"library": NO_LIBRARY, "function": lambda htmlbinary: ""},
     "custom": {"library": NO_LIBRARY, "function": run_custom},
     "baseline": {"library": NO_LIBRARY, "function": run_baseline},
@@ -235,9 +219,6 @@ ALGORITHMS = {
     },
 }
 
-# fixed order, matching what ConfusionMatrix.scores() returns
-METRICS = ["precision", "recall", "accuracy", "f1"]
-
 # next to the script, not relative to the working directory
 OUTPUT_DIR = os.path.join(HERE, "results")
 
@@ -258,106 +239,74 @@ def resolve_versions(algorithms):
 
 
 class Evaluation:
-    __slots__ = (
-        "algorithms",
-        "output_df",
-        "results",
-        "test_data",
-        "versions",
-    )
-
     def __init__(self, test_data: str, algorithms: list) -> None:
-        self.test_data = self.read_data(test_data)
+        self.test_data = load_evaldata(test_data)
+        validate(self.test_data)  # only handcrafted with/without chunks are supported
         self.versions = resolve_versions(algorithms)
-        self.algorithms = list(self.versions)
 
     def run(self) -> None:
         """run the benchmark and write the results"""
-        self.results = self.compute_results()
-        self.output_df = self.create_df()
+        df = self.create_df(self.compute_results())
         os.makedirs(OUTPUT_DIR, exist_ok=True)
-        self.output_csv()
-        self.output_md()
-        self.print_scores()
-
-    def read_data(self, path):
-        """read test data set from a file path"""
-        data = load_evaldata(path)
-        if not isinstance(data, dict) or not data:
-            raise ValueError(f"unrecognized test data format: {path}")
-        validate(data)  # only handcrafted with/without chunks are supported
-        return data
+        df.to_csv(os.path.join(OUTPUT_DIR, "results.csv"))
+        with open(os.path.join(OUTPUT_DIR, "results.md"), "w", encoding="utf-8") as f:
+            f.write(df.to_markdown())
+        print("\n" + df.to_string())
 
     def warm_up(self):
-        "Pay the lazy imports and one-time constructors before timing starts."
-        for a in self.algorithms:
-            with suppress(Exception):  # an unimportable library is handled in compute_results
+        """Pay the lazy imports and one-time constructors before timing starts;
+        an unimportable library disables its algorithm rather than publish an all-miss row."""
+        for a in list(self.versions):
+            try:
                 ALGORITHMS[a]["function"](b"<html><body><p>text</p></body></html>")
+            except ImportError as err:
+                print(f"skipping {a}: {type(err).__name__}: {err}")
+                del self.versions[a]
+            except Exception:  # other failures are reported per document in compute_results
+                pass
 
     def compute_results(self):
         """run every algorithm over the test dataset and tally confusion matrices"""
-        matrices = {a: BenchmarkMatrix() for a in self.algorithms}
-        reported = set()  # algorithms whose first exception was printed
-        disabled = set()  # installed but unimportable
         self.warm_up()
-        i = 0
-        for item in tqdm.tqdm(self.test_data.values()):
-            htmlbinary = read_document(HERE, item["file"])
-            if htmlbinary is None:
-                print("HTML file not found:", item["file"])
-                continue
-            i += 1
-            for a in self.algorithms:
-                if a in disabled:
-                    continue
-                cm = matrices[a]
-                result, counts, err = run_and_count(timed(ALGORITHMS[a]["function"], cm), htmlbinary, item)
-                if isinstance(err, ImportError):
-                    # drop it rather than publish an all-miss row
-                    print(f"skipping {a}: {type(err).__name__}: {err}")
-                    disabled.add(a)
-                    continue
-                if err is not None and a not in reported:
-                    # ignored so the run continues; first failure per algorithm is still printed
-                    reported.add(a)
-                    print(f"{a}: {item['file']}: {type(err).__name__}: {err}")
+        docs = read_corpus(HERE, self.test_data)
+        matrices = {a: BenchmarkMatrix() for a in self.versions}
+        wrapped = {a: timed(ALGORITHMS[a]["function"], matrices[a]) for a in self.versions}
+        reported = set()  # algorithms whose first exception was printed
+        for i, (url, item) in enumerate(self.test_data.items(), 1):
+            if i % 100 == 0:
+                print(f"{i}/{len(self.test_data)} documents")
+            htmlbinary = docs[url][1]
+            for a, cm in matrices.items():
+                result, counts, err = run_and_count(wrapped[a], htmlbinary, item)
+                if err is not None:
+                    # ignored so the run continues; the total makes a partly broken setup visible
+                    cm.errors += 1
+                    report_first_error(reported, a, item["file"], err)
                 # empty output from a real library counts as a skip
                 if not result and ALGORITHMS[a]["library"] != NO_LIBRARY:
                     cm.skipped += 1
                 cm.add(counts)
-        print(f"{i} from {len(self.test_data)} files read")
-        if disabled:
-            self.algorithms = [a for a in self.algorithms if a not in disabled]
-            matrices = {a: cm for a, cm in matrices.items() if a not in disabled}
         return matrices
 
-    def create_df(self):
+    def create_df(self, results):
         """results to pandas dataframe"""
-        columns = ["algorithm", "version"] + METRICS + ["time difference", "skipped instances"]
-        baseline_time = self.results["baseline"].time if "baseline" in self.results else 0.0
+        columns = ["algorithm", "version"] + METRICS + ["time difference", "skipped instances", "errors"]
+        baseline_time = results["baseline"].time if "baseline" in results else 0.0
         rows = []
-        for algo in self.algorithms:
-            cm = self.results[algo]
+        for algo, cm in results.items():
             time_ratio = cm.time / baseline_time if baseline_time else 0.0
-            rows.append([algo, self.versions[algo], *cm.scores(), time_ratio, cm.skipped])
+            rows.append([algo, self.versions[algo], *cm.scores(), time_ratio, cm.skipped, cm.errors])
         df = pd.DataFrame(rows, columns=columns)
         df.set_index("algorithm", inplace=True)
         return df.round(3)
 
-    def output_csv(self, path="results.csv"):
-        self.output_df.to_csv(os.path.join(OUTPUT_DIR, path))
 
-    def output_md(self, path="results.md"):
-        with open(os.path.join(OUTPUT_DIR, path), "w", encoding="utf-8") as f:
-            f.write(self.output_df.to_markdown())
-
-    def print_scores(self):
-        """print results"""
-        print("\n" + self.output_df.to_string())
+# always included: the ceiling rows and the timing reference
+DEFAULT_ALGORITHMS = ["everything", "nothing", "baseline"]
 
 
 def cmdparser():
-    """Parse command line arguments"""
+    """Parse command line arguments and resolve the algorithm selection"""
     parser = argparse.ArgumentParser(description="Run an evaluation benchmark")
     parser.add_argument("--small", action="store_true", help="Evaluate trafilatura and baselines only.")
     parser.add_argument("--all", action="store_true", help="Evaluate all available algorithms.")
@@ -365,14 +314,23 @@ def cmdparser():
     parser.add_argument(
         "--algorithms",
         nargs="+",
-        default=["everything", "nothing", "baseline"],
+        choices=list(ALGORITHMS),
+        metavar="ALGORITHM",
+        default=[],
         help=f"Algorithms to evaluate, implemented: {list(ALGORITHMS)}.",
     )
     parser.add_argument("--verbose", action="store_true", help="increase verbosity")
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.small:
+        args.algorithms = DEFAULT_ALGORITHMS + ["trafilatura fast", "trafilatura"]
+    elif args.all:
+        args.algorithms = list(ALGORITHMS)
+    else:
+        args.algorithms = sorted(set(DEFAULT_ALGORITHMS + args.algorithms))
+    return args
 
 
 if __name__ == "__main__":
@@ -381,13 +339,4 @@ if __name__ == "__main__":
     if not args.verbose:
         logging.basicConfig(level=logging.CRITICAL)
 
-    algorithms = ["everything", "nothing", "baseline"]
-    if args.small:
-        algorithms += ["trafilatura fast", "trafilatura"]
-    elif args.all:
-        algorithms = list(ALGORITHMS)
-    else:
-        algorithms += args.algorithms
-        algorithms = sorted(set(algorithms))
-
-    Evaluation(test_data=args.testfile, algorithms=algorithms).run()
+    Evaluation(test_data=args.testfile, algorithms=args.algorithms).run()

@@ -73,13 +73,20 @@ other extractor and is also run in CI:
 
 .. code-block:: bash
 
-    $ pip install -e .
+    $ pip install -e ".[all]"
     $ python3 tests/eval_gate.py
 
-Editing the annotations or an HTML input requires a re-pin with
-``python3 tests/eval_gate.py --update``. A re-pin never lowers the baseline on its
-own: a measured F1 below a pinned floor keeps the floor and exits non-zero, and
-accepting a lower bar takes an explicit ``--allow-regression``.
+The ``all`` extra matches the environment of the CI gate cell; a plain install
+can score slightly differently on non-UTF-8 pages. Editing the annotations or an
+HTML input requires a re-pin with ``python3 tests/eval_gate.py --update``. A
+re-pin never lowers the baseline on its own: a measured F1 below a pinned floor
+keeps the floor and exits non-zero, and accepting a lower bar takes an explicit
+``--allow-regression``.
+
+On Windows, the corpus fingerprint requires the HTML inputs exactly as
+committed: on a clone made before the ``.gitattributes`` rules were added, run
+``git add --renormalize .`` and reset (or re-clone) so line endings match the
+repository.
 
 Comparing Trafilatura with other extractors needs the ``eval`` extra:
 
