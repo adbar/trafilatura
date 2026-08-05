@@ -1562,8 +1562,93 @@ def test_precision_discard_link_token_only():
     assert not discarded("class", "article-permalink")  # compound: no longer dropped
     assert not discarded("class", "headline-link")
     assert not discarded("class", "featured-link--wrap")
-    assert discarded("class", "article-bottom")  # 'bottom' still substring-matched
+    assert discarded("class", "article-bottom")  # 'bottom' still matched at a token boundary
     assert discarded("class", "site-header", tag="header")  # .//header still discarded
+
+
+def test_precision_discard_bottom_token_boundary():
+    "regression: PRECISION_DISCARD_XPATH must match 'bottom' only where it starts or ends a \
+    class token. As a bare substring it also matched CSS spacing utilities -- alsumaria.tv wraps \
+    the article column in 'Padding-bottom-lg-30', so precision mode discarded the whole article."
+    import trafilatura.xpaths as xp
+
+    def discarded(attr, value, tag="div"):
+        root = etree.fromstring(f'<html><body><{tag} {attr}="{value}"><p>content</p></{tag}></body></html>')
+        return any(len(x(root)) > 0 for x in xp.PRECISION_DISCARD_XPATH)
+
+    # page-bottom chrome: still discarded, whichever end of the token 'bottom' sits at
+    assert discarded("class", "bottom")
+    assert discarded("class", "article-bottom")
+    assert discarded("class", "bottom-bar")
+    assert discarded("id", "bottom")
+    assert discarded("class", "wrapper bottom")
+    # spacing/border utilities on real content: 'bottom' mid-token, must NOT be discarded
+    assert not discarded("class", "Padding-bottom-lg-30")
+    assert not discarded("class", "col-8 Padding-bottom-lg-30 floatL")
+    assert not discarded("class", "border-bottom-0")
+    assert not discarded("class", "mb-bottom-3")
+
+
+def test_wrapper_form_kept():
+    "regression: ASP.NET WebForms and similar wrap the entire page in one <form id='aspnetForm'>. \
+    tree_cleaning() deletes every form, so on those sites (alsumaria.tv) the whole document was \
+    discarded and extraction fell back to unrelated sidebar chrome. A form holding most of the \
+    text is a layout wrapper and must survive; genuine widget forms must still be removed."
+    from trafilatura.htmlprocessing import tree_cleaning
+
+    article = (
+        "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
+    )
+    options = core.Extractor(config=ZERO_CONFIG)
+
+    # the wrapper form survives cleaning, so the content is still there to be selected --
+    # without this the whole document was gone and only the recovery path could save anything
+    wrapped = f'<html><body><form method="post" id="aspnetForm"><div>{article}</div></form></body></html>'
+    cleaned = tree_cleaning(load_html(wrapped), options)
+    assert "the actual article body" in cleaned.text_content()
+    assert cleaned.find(".//form") is None  # demoted, not left as a form
+    assert "the actual article body" in extract(wrapped, config=ZERO_CONFIG)
+
+    # a search/newsletter widget alongside real content is still removed outright
+    with_widget = (
+        f"<html><body><div>{article}</div>"
+        '<form><p>Search this site</p><input type="text"/></form>'
+        "</body></html>"
+    )
+    cleaned = tree_cleaning(load_html(with_widget), options)
+    assert "the actual article body" in cleaned.text_content()
+    assert "Search this site" not in cleaned.text_content()
+
+    # MANUALLY_CLEANED is mutated in place by users (cf. issue #746 and docs/settings.rst):
+    # taking "form" out must keep widget forms instead of raising on the internal removal
+    from trafilatura.settings import MANUALLY_CLEANED
+
+    MANUALLY_CLEANED.remove("form")
+    try:
+        cleaned = tree_cleaning(load_html(with_widget), options)
+        assert "Search this site" in cleaned.text_content()
+    finally:
+        MANUALLY_CLEANED.insert(5, "form")
+    assert "form" in MANUALLY_CLEANED
+
+
+def test_no_duplicate_paragraph_from_lb_tail():
+    "regression: handle_other_elements() emits a text-bearing div whole and appending it MOVES it \
+    into result_body, but _extract() iterates a subelems list captured beforehand -- so an <lb> \
+    inside that div was visited again and re-emitted its tail, duplicating a paragraph \
+    (alsumaria.tv). Whitespace-only <lb> tails left by pruned ad slots must not become blank lines."
+    html = (
+        "<html><body><article><div>"
+        "First paragraph of the article, long enough to be kept by the extractor.<br/>"
+        '        <div class="advert">        </div>        <br/>'
+        "Second paragraph of the article, also long enough to be kept here."
+        "</div></article></body></html>"
+    )
+    result = extract(html, config=ZERO_CONFIG)
+    assert result.count("Second paragraph of the article") == 1
+    assert "First paragraph of the article" in result
+    # no blank, space-filled lines from the pruned block's indentation
+    assert not any(line and line.isspace() for line in result.split("\n"))
 
 
 def test_body_xpath_fulltext_class():
