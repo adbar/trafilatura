@@ -1596,9 +1596,7 @@ def test_wrapper_form_kept():
     text is a layout wrapper and must survive; genuine widget forms must still be removed."
     from trafilatura.htmlprocessing import tree_cleaning
 
-    article = (
-        "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
-    )
+    article = "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
     options = core.Extractor(config=ZERO_CONFIG)
 
     # the wrapper form survives cleaning, so the content is still there to be selected --
@@ -1610,11 +1608,7 @@ def test_wrapper_form_kept():
     assert "the actual article body" in extract(wrapped, config=ZERO_CONFIG)
 
     # a search/newsletter widget alongside real content is still removed outright
-    with_widget = (
-        f"<html><body><div>{article}</div>"
-        '<form><p>Search this site</p><input type="text"/></form>'
-        "</body></html>"
-    )
+    with_widget = f'<html><body><div>{article}</div><form><p>Search this site</p><input type="text"/></form></body></html>'
     cleaned = tree_cleaning(load_html(with_widget), options)
     assert "the actual article body" in cleaned.text_content()
     assert "Search this site" not in cleaned.text_content()
