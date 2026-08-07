@@ -360,6 +360,42 @@ def _collapse_emphasis(element: _Element, active: frozenset[str] = frozenset()) 
         _collapse_emphasis(child, active)
 
 
+def _strip_block_whitespace(element: _Element) -> None:
+    "Strip leading/trailing whitespace from p and quote text nodes (not meaningful in block markdown)."
+    for p in element.iter("p", "quote"):
+        if p.text:
+            p.text = p.text.lstrip() if len(p) > 0 else p.text.strip()
+        if len(p) > 0 and p[-1].tail:
+            p[-1].tail = p[-1].tail.rstrip()
+
+
+def _merge_adjacent_hi(element: _Element) -> None:
+    "Merge adjacent <hi> siblings with identical rend into one to avoid **X** **Y** patterns."
+    for child in list(element):
+        _merge_adjacent_hi(child)
+
+    children = list(element)
+    i = 0
+    while i < len(children) - 1:
+        curr = children[i]
+        nxt = children[i + 1]
+        if (
+            curr.tag == "hi"
+            and nxt.tag == "hi"
+            and curr.get("rend") == nxt.get("rend")
+            and curr.get("rend") in HI_FORMATTING
+            and len(curr) == 0
+            and len(nxt) == 0
+            and not (curr.tail or "").strip()
+        ):
+            curr.text = (curr.text or "") + (curr.tail or "") + (nxt.text or "")
+            curr.tail = nxt.tail
+            element.remove(nxt)
+            children = list(element)
+        else:
+            i += 1
+
+
 def _convert_math_tree(element: _Element) -> None:
     "Rewrite LaTeX math in text/tails in place, leaving code subtrees untouched."
     # code content is verbatim: skip the whole subtree
@@ -618,6 +654,8 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
         xmloutput = deepcopy(xmloutput)
         _convert_math_tree(xmloutput)
         _collapse_emphasis(xmloutput)
+        _merge_adjacent_hi(xmloutput)
+        _strip_block_whitespace(xmloutput)
     process_element(xmloutput, returnlist, include_formatting)
 
     return unescape(sanitize("".join(returnlist), True) or "")
