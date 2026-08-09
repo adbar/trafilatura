@@ -1503,6 +1503,31 @@ def test_link_density_whole_card_links_kept():
     assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is False  # long links -> content, kept
 
 
+def test_link_density_paragraph_listing_kept():
+    "regression (#900): a document listing carries one short link per paragraph, which the #584 \
+    branch read as a farm because the only exemption was on average link length. Pruning it \
+    dropped the rest of the article with it, since the outermost matching div goes as a whole."
+    from trafilatura.utils import trim
+
+    items = "".join(f'<p><ref target="/d{i}.pdf">Instruktionsbok MC 258 part {i}</ref></p>' for i in range(14))
+    element = html.fromstring(f"<body><div>{items}</div><p>real article sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert len(text) > 300  # large, >4 short links, >90% link text: trips every other #584 gate
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is False
+
+
+def test_link_density_links_sharing_a_paragraph_pruned():
+    "the #900 exemption asks for one link per paragraph, so a farm that merely sits inside a \
+    paragraph is still pruned: wrapping 20 headlines in a single <p> must not buy an exemption."
+    from trafilatura.utils import trim
+
+    items = "".join(f'<ref target="/n{i}">Latest news headline number {i} about some topic today</ref> ' for i in range(20))
+    element = html.fromstring(f"<body><div><p>{items}</p></div><p>real article sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert len(text) > 300
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is True
+
+
 def test_overall_discard_legacy_tokens():
     "regression on the legacy single-PR discard tokens, each decided by a full-WMB single-token A/B \
     (see xpaths.py audit note): 'yin' STAYS (net-positive despite English '-ying'/'y+Info' \
