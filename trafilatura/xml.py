@@ -361,8 +361,8 @@ def _collapse_emphasis(element: _Element, active: frozenset[str] = frozenset()) 
 
 
 def _strip_block_whitespace(element: _Element) -> None:
-    "Strip leading/trailing whitespace from p and quote text nodes (not meaningful in block markdown)."
-    for p in element.iter("p", "quote"):
+    "Strip leading/trailing whitespace from p, quote and head text nodes (not meaningful in block markdown)."
+    for p in element.iter("p", "quote", "head"):
         if p.text:
             p.text = p.text.lstrip() if len(p) > 0 else p.text.strip()
         if len(p) > 0 and p[-1].tail:
@@ -631,7 +631,13 @@ def process_element(
 
     # text that comes after the closing tag
     if element.tail and not in_cell and element.tag != "graphic":  # graphic tail already handled above
-        tail = element.tail.strip() if in_item or element.tag == "list" else element.tail
+        if in_item or element.tag == "list":
+            tail = element.tail.strip()
+        elif element.tag in NEWLINE_ELEMS:
+            # block elements already end on their own line, so source HTML indentation in the tail is noise
+            tail = element.tail.lstrip()
+        else:
+            tail = element.tail
         # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
         if tail and in_item and _last_char(returnlist) not in SEPARATORS:
             tail = f" {tail}"
