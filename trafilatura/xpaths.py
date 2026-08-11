@@ -290,11 +290,15 @@ TEASER_DISCARD_XPATH = [
 PRECISION_DISCARD_XPATH = [
     XPath(""".//header"""),
     # 'link' matched as a whole class token, not a substring (that dropped permalink/headline-link/
-    # etc.); still drops class="link" (guarded by test_precision_recall). 'bottom'/'border' = substrings.
+    # etc.); still drops class="link" (guarded by test_precision_recall). 'border' = substring.
+    # 'bottom' must start or end a token: page-bottom chrome is named 'bottom'/'bottom-bar'/
+    # 'article-bottom', whereas a mid-token 'bottom' is a CSS spacing utility
+    # ('Padding-bottom-lg-30', 'border-bottom-0') that layout wrappers put on real content.
     XPath(
         r"""
     .//*[self::div or self::item or self::list or self::p or self::section or self::span][
-    contains(@id|@class, 'bottom') or re:test(@id|@class, '(^|\s)link(\s|$)') or contains(@style, 'border')]
+    re:test(@id|@class, '(^|\s)bottom|bottom(\s|$)') or re:test(@id|@class, '(^|\s)link(\s|$)') or
+    contains(@style, 'border')]
     """,
         namespaces={"re": regexpNS},
     ),

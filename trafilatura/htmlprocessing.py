@@ -44,10 +44,36 @@ PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 CODE_INDICATORS = ["{", '("', "('", "\n    "]
 
 
+def _handle_forms(tree: HtmlElement) -> None:
+    """Delete <form> elements, keeping those that wrap the page's main content.
+
+    Frameworks like ASP.NET WebForms put the whole document inside a single
+    <form id="aspnetForm">, so dropping every form leaves nothing to extract.
+    A form holding most of the remaining text is such a layout wrapper and gets
+    demoted to a plain container; genuine widgets (search, login, newsletter)
+    hold little text and are still removed.
+    """
+    forms = list(tree.iter("form"))
+    if not forms:
+        return
+    # run after the other elements are gone, so script/head text cannot skew the ratio
+    total = len(tree.text_content())
+    for form in forms:
+        if total and len(form.text_content()) > total / 2:
+            form.tag = "div"
+        else:
+            delete_element(form)
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
+    # forms are handled separately below, once the rest of the noise is gone. MANUALLY_CLEANED is
+    # public API users mutate in place, so honour a removed "form" instead of assuming it is there.
+    clean_forms = "form" in cleaning_list
+    if clean_forms:
+        cleaning_list.remove("form")
     if not options.tables:
         cleaning_list.extend(["table", "td", "th", "tr"])
     else:
@@ -78,6 +104,9 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         for expression in cleaning_list:
             for element in tree.iter(expression):
                 delete_element(element)
+
+    if clean_forms:
+        _handle_forms(tree)
 
     return prune_html(tree, options.focus)
 

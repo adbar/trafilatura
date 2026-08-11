@@ -21,7 +21,7 @@ from .htmlprocessing import (
     prune_unwanted_nodes,
 )
 from .settings import DEDUPE_SCAN_CAP, INLINE_CARRIED, MIN_DUPLICATE_LENGTH, TAG_CATALOG, Extractor
-from .utils import FORMATTING_PROTECTED, is_image_file, text_chars_test, trim
+from .utils import FORMATTING_PROTECTED, SPACING_PROTECTED, is_image_file, text_chars_test, trim
 from .xml import delete_element
 from .xpaths import (
     BODY_XPATH,
@@ -392,7 +392,10 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
         if last_elem.tag == "lb" and last_elem.tail is None:
             delete_element(last_elem)
         return processed_element
-    if processed_element.text:
+    # text_chars_test, not truthiness: layout wrappers (clearfix/spacer divs, cleared-out
+    # ad slots) leave indentation-only text, which used to be emitted as blank paragraphs
+    # and, sitting between two copies of a paragraph, also defeated the adjacent dedup
+    if text_chars_test(processed_element.text):
         return processed_element
     _log_event("discarding element:", "p", tostring(processed_element))
     return None
@@ -778,7 +781,17 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         if {e.tag for e in subelems} == {"lb"}:
             subelems = [subtree]
         # extract content
-        result_body.extend([el for el in (handle_textelem(e, potential_tags, options) for e in subelems) if el is not None])
+        for elem in subelems:
+            # handle_other_elements() emits a text-bearing div as-is, children and all, and
+            # appending it MOVES it into result_body. Its descendants are still in the list
+            # captured above, so revisiting one would emit its text twice -- an <lb> whose tail
+            # carries a paragraph turned into a duplicate of that paragraph. handle_paragraphs()
+            # marks the children it consumes "done"; this covers the elements it cannot retag.
+            if elem.getroottree().getroot() is result_body:
+                continue
+            processed_elem = handle_textelem(elem, potential_tags, options)
+            if processed_elem is not None:
+                result_body.append(processed_elem)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             delete_element(result_body[-1], keep_tail=False)
@@ -816,6 +829,17 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     # filter output
     strip_elements(result_body, "done")
     strip_tags(result_body, "div")
+    # stripping the divs above merges their indentation into the preceding <lb>'s tail, so an
+    # <lb> that only separated pruned blocks (ad slots, clearfix spacers) ends up carrying a
+    # run of whitespace -- rendered verbatim as blank, space-filled lines in txt/markdown.
+    # Inside code/pre that whitespace is the indentation itself, so leave those alone.
+    for linebreak in result_body.iter("lb"):
+        if (
+            linebreak.tail
+            and not text_chars_test(linebreak.tail)
+            and not any(anc.tag in SPACING_PROTECTED for anc in linebreak.iterancestors())
+        ):
+            linebreak.tail = None
     # return
     return result_body, temp_text, len(temp_text)
 
