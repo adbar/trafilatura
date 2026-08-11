@@ -1528,6 +1528,19 @@ def test_link_density_links_sharing_a_paragraph_pruned():
     assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is True
 
 
+def test_link_density_listing_with_one_shared_paragraph_pruned():
+    "the exemption is all-or-nothing on purpose: one paragraph holding two links makes the \
+    container a farm again, which is what lets the check work without a ratio or a threshold."
+    from trafilatura.utils import trim
+
+    items = "".join(f'<p><ref target="/d{i}.pdf">Instruktionsbok MC 258 part {i}</ref></p>' for i in range(14))
+    shared = '<p><ref target="/a">Also see this page</ref> <ref target="/b">and this other one</ref></p>'
+    element = html.fromstring(f"<body><div>{items}{shared}</div><p>real article sibling here</p></body>")[0]
+    text = trim(element.text_content())
+    assert len(text) > 300
+    assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is True
+
+
 def test_overall_discard_legacy_tokens():
     "regression on the legacy single-PR discard tokens, each decided by a full-WMB single-token A/B \
     (see xpaths.py audit note): 'yin' STAYS (net-positive despite English '-ying'/'y+Info' \
