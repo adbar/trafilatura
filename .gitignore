@@ -34,6 +34,9 @@ docs/_template/
 # pipenv
 Pipfile*
 
+# uv (library project: no committed lockfile)
+uv.lock
+
 # older stuff
 old/
 
