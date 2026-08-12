@@ -162,8 +162,12 @@ disallow_untyped_defs = true
 
 # third-party packages without type stubs
 [[tool.mypy.overrides]]
-module = ["brotli", "py3langid", "cchardet", "justext.*"]
+module = ["brotli", "py3langid", "cchardet", "justext.*", "zstandard"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "trafilatura.utils"
+warn_unused_ignores = false
 
 [tool.pytest.ini_options]
 testpaths = "tests/*test*.py"

@@ -51,18 +51,6 @@ _JSON_HOOKS_RE = re.compile("|".join(re.escape(hook) for hook in _JSON_HOOKS))
 # <article> must carry more than this to count as content)
 _MIN_CONTENT_LENGTH = 100
 
-_INLINE_CODE_PARENTS: frozenset[str] = frozenset(("p", "li", "td", "th", "dd", "dt"))
-
-
-def _is_inline_code(element: Any) -> bool:
-    # inline <code> inside paragraph-like ancestors (including wrapped in span/a etc.) is not standalone (#849, #884)
-    if element.tag != "code":
-        return False
-    for ancestor in element.iterancestors():
-        if ancestor.tag in _INLINE_CODE_PARENTS:
-            return True
-    return False
-
 
 def _walk_json(node: Any, bodies: list[str], teasers: list[str]) -> None:
     """Collect schema.org text content from parsed JSON-LD (list-wrapped and @graph-nested
@@ -220,11 +208,12 @@ def baseline(filecontent: Any) -> tuple[_Element, str, int]:
 
     # scrape from text paragraphs, dropping repeats: a nested element (e.g. <p> in
     # <blockquote>) duplicates part of its container's text, collected first in document order
-    # skip inline <code> — text already captured by parent <p>/<li>/etc. (#849, #884)
+    # skip any element whose ancestor is already in the scraped set (handles <p><code>, <blockquote><p>, etc. - #849, #884)
+    _SCRAPED_TAGS = {"blockquote", "code", "p", "pre", "q", "quote"}
     paragraphs = (
         trim(element.text_content())
         for element in tree.iter("blockquote", "code", "p", "pre", "q", "quote")
-        if not _is_inline_code(element)
+        if not any(anc.tag in _SCRAPED_TAGS for anc in element.iterancestors())
     )
     if result := _attempt(paragraphs, dedupe=True):
         return result
