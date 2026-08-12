@@ -51,10 +51,10 @@ _JSON_HOOKS_RE = re.compile("|".join(re.escape(hook) for hook in _JSON_HOOKS))
 # <article> must carry more than this to count as content)
 _MIN_CONTENT_LENGTH = 100
 
-_INLINE_CODE_PARENTS = ("p", "li", "td", "th", "dd", "dt")
+_INLINE_CODE_PARENTS: frozenset[str] = frozenset(("p", "li", "td", "th", "dd", "dt"))
 
 
-def _is_inline_code(element) -> bool:
+def _is_inline_code(element: Any) -> bool:
     # inline <code> inside paragraph-like ancestors (including wrapped in span/a etc.) is not standalone (#849, #884)
     if element.tag != "code":
         return False

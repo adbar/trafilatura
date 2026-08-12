@@ -51,9 +51,9 @@ except ImportError:
 
 # CChardet is faster and can be more accurate
 try:
-    from cchardet import detect as cchardet_detect
+    from cchardet import detect as cchardet_detect  # type: ignore
 except ImportError:
-    cchardet_detect = None
+    cchardet_detect = None  # type: ignore[assignment]
 
 from charset_normalizer import from_bytes
 from lxml.etree import _Element
