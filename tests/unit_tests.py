@@ -3,6 +3,7 @@
 Unit tests for the trafilatura library.
 """
 
+import json
 import logging
 import sys
 import time
@@ -2215,6 +2216,61 @@ def test_include_images_does_not_truncate():
     result = extract(doc, output_format="txt", include_images=True, config=real_config) or ""
     assert "/lead.jpg" in result
     assert all(f"Continuation paragraph {i}" in result for i in range(1, 5))
+
+
+def test_short_document_fallback_preserves_image():
+    """A text-only fallback must not erase a requested image when it recovers no text."""
+    first = (
+        "Some reasonably long paragraph of body text that trafilatura will keep because it "
+        "is clearly the main content of this document and not navigation furniture."
+    )
+    second = "A second paragraph that follows the figure and continues the argument at length."
+    doc = (
+        f"<html><body><article><p>{first}</p>"
+        '<img src="https://cdn.test/a.png" alt="a chart"/>'
+        f"<p>{second}</p></article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_images=True, include_links=True, config=use_config()) or ""
+    assert '<graphic src="https://cdn.test/a.png" alt="a chart"/>' in result
+
+
+def test_short_document_fallback_preserves_link():
+    """A text-only fallback must not erase a requested link when it recovers no text."""
+    paragraph = (
+        "Some reasonably long paragraph of body text that trafilatura will keep because it "
+        "is clearly the main content of this document and not navigation furniture."
+    )
+    doc = (
+        "<html><body><article><h1>Reference</h1>"
+        f'<p>{paragraph} <a href="https://example.test/source">primary source</a>.</p>'
+        "</article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_links=True, config=use_config()) or ""
+    assert '<ref target="https://example.test/source">primary source</ref>' in result
+
+
+def test_short_document_fallback_preserves_markdown_structure():
+    """Regression #896: a fallback must not flatten a valid short structured result."""
+    body = (
+        "This municipal notice is short but perfectly valid static content that a reader would expect to keep its structure. "
+    ) * 2
+    doc = f"<html><body><article><h1>Notice Title</h1><p>{body}</p></article></body></html>"
+    result = extract(doc, output_format="markdown", include_formatting=True, config=use_config()) or ""
+    assert result.startswith("# Notice Title\n\nThis municipal notice")
+
+
+def test_longer_fallback_can_replace_requested_structure():
+    """A real content recovery still wins even when its source cannot preserve an image."""
+    recovered = "Recovered canonical article body with meaningful information and complete sentences. " * 12
+    payload = json.dumps({"@type": "Article", "articleBody": recovered})
+    doc = (
+        f'<html><head><script type="application/ld+json">{payload}</script></head><body><article>'
+        '<p>A short visible article paragraph below the extraction threshold.</p><img src="chart.png" alt="chart"/>'
+        "</article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_images=True, config=use_config()) or ""
+    assert "Recovered canonical article body" in result
+    assert "<graphic" not in result
 
 
 def test_no_duplicate_content():

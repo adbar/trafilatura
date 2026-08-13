@@ -4,6 +4,8 @@ Functions grounding on third-party software.
 """
 
 import logging
+from collections import Counter
+from copy import copy
 from typing import Any
 
 # third-party
@@ -30,6 +32,41 @@ SANITIZED_XPATH = ".//aside|.//audio|.//button|.//fencedframe|.//fieldset|.//fig
 # adopt justext only when the text it replaces is at most this much longer (swept 2-4: every
 # (3, 4]-band page was justext wrongly replacing a longer, closer-to-target extraction)
 JUSTEXT_OVERRIDE_RATIO = 3
+
+# structures whose preservation callers request explicitly. Paragraph/list boundaries are
+# formatting in serialized outputs even though they do not carry a rend attribute themselves.
+_FORMATTING_TAGS = {"code", "del", "head", "hi", "item", "lb", "list", "p", "quote"}
+
+
+def _requested_structure(body: _Element, options: Extractor) -> Counter[str]:
+    """Count the structures which callers explicitly requested."""
+    protected_tags = set(_FORMATTING_TAGS) if options.formatting else set()
+    if options.links:
+        protected_tags.add("ref")
+    if options.images:
+        protected_tags.add("graphic")
+    if not protected_tags:
+        return Counter()
+    return Counter(element.tag for element in body.iter(*protected_tags))
+
+
+def _prefer_fallback(
+    body: _Element,
+    len_text: int,
+    candidate_body: _Element,
+    candidate_len: int,
+    options: Extractor,
+) -> bool:
+    """Accept a fallback unless it loses requested structure without recovering text."""
+    if candidate_len > len_text:
+        return True
+
+    current = _requested_structure(body, options)
+    if not current:
+        return True
+
+    candidate = _requested_structure(candidate_body, options)
+    return all(candidate[tag] >= count for tag, count in current.items())
 
 
 def try_readability(htmlinput: HtmlElement) -> HtmlElement:
@@ -100,6 +137,11 @@ def compare_extraction(
     LOGGER.debug("extracted length: %s (algorithm) %s (extraction)", len_algo, len_text)
 
     use_readability = _prefer_readability(body, temppost_algo, algo_text, len_text, len_algo, options)
+    if use_readability and _requested_structure(body, options):
+        # Compare the representation that would actually be returned. The raw readability
+        # tree still uses HTML tags (img/a/h1), while the main extractor uses graphic/ref/head.
+        structured_body, _, structured_len = sanitize_tree(copy(temppost_algo), options)
+        use_readability = _prefer_fallback(body, len_text, structured_body, structured_len, options)
     if use_readability:
         body, text, len_text = temppost_algo, algo_text, len_algo
     LOGGER.debug("using %s extraction: %s", "generic" if use_readability else "custom", options.source)
@@ -109,7 +151,11 @@ def compare_extraction(
         LOGGER.debug("unclean document triggering justext examination: %s", options.source)
         body2, text2, len_text2 = justext_rescue(cleaned_tree, options)
         # prevent too short documents from replacing the main text
-        if text2 and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2:
+        if (
+            text2
+            and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2
+            and _prefer_fallback(body, len_text, body2, len_text2, options)
+        ):
             LOGGER.debug("using justext, length: %s", len_text2)
             body, text, len_text = body2, text2, len_text2
             jt_result = True
