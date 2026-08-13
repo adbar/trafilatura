@@ -5,7 +5,6 @@ Functions grounding on third-party software.
 
 import logging
 from collections import Counter
-from copy import copy
 from typing import Any
 
 # third-party
@@ -18,7 +17,7 @@ from lxml.html import HtmlElement
 from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
-from .settings import JUSTEXT_LANGUAGES, Extractor
+from .settings import JUSTEXT_LANGUAGES, TAG_CATALOG, Extractor
 from .utils import fromstring_bytes, trim
 from .xml import TEI_VALID_TAGS
 from .xpaths import OVERALL_DISCARD_XPATH
@@ -33,9 +32,9 @@ SANITIZED_XPATH = ".//aside|.//audio|.//button|.//fencedframe|.//fieldset|.//fig
 # (3, 4]-band page was justext wrongly replacing a longer, closer-to-target extraction)
 JUSTEXT_OVERRIDE_RATIO = 3
 
-# structures whose preservation callers request explicitly. Paragraph/list boundaries are
-# formatting in serialized outputs even though they do not carry a rend attribute themselves.
-_FORMATTING_TAGS = {"code", "del", "head", "hi", "item", "lb", "list", "p", "quote"}
+# Extraction converts blockquote/pre to quote and list children to item. The remaining
+# catalog tags are the formatting structures that can occur in the output tree.
+_FORMATTING_TAGS = (TAG_CATALOG - {"blockquote", "pre"}) | {"item"}
 
 
 def _requested_structure(body: _Element, options: Extractor) -> Counter[str]:
@@ -137,11 +136,6 @@ def compare_extraction(
     LOGGER.debug("extracted length: %s (algorithm) %s (extraction)", len_algo, len_text)
 
     use_readability = _prefer_readability(body, temppost_algo, algo_text, len_text, len_algo, options)
-    if use_readability and _requested_structure(body, options):
-        # Compare the representation that would actually be returned. The raw readability
-        # tree still uses HTML tags (img/a/h1), while the main extractor uses graphic/ref/head.
-        structured_body, _, structured_len = sanitize_tree(copy(temppost_algo), options)
-        use_readability = _prefer_fallback(body, len_text, structured_body, structured_len, options)
     if use_readability:
         body, text, len_text = temppost_algo, algo_text, len_algo
     LOGGER.debug("using %s extraction: %s", "generic" if use_readability else "custom", options.source)
