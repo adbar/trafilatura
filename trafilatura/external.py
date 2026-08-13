@@ -109,7 +109,11 @@ def compare_extraction(
         LOGGER.debug("unclean document triggering justext examination: %s", options.source)
         body2, text2, len_text2 = justext_rescue(cleaned_tree, options)
         # prevent too short documents from replacing the main text
-        if text2 and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2:
+        if (
+            text2
+            and len_text <= JUSTEXT_OVERRIDE_RATIO * len_text2
+            and (len_text2 > len_text or not options.images or body.find(".//graphic") is None)
+        ):
             LOGGER.debug("using justext, length: %s", len_text2)
             body, text, len_text = body2, text2, len_text2
             jt_result = True
