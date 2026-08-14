@@ -3,6 +3,7 @@
 Unit tests for the trafilatura library.
 """
 
+import json
 import logging
 import sys
 import time
@@ -2253,6 +2254,36 @@ def test_include_images_does_not_truncate():
     result = extract(doc, output_format="txt", include_images=True, config=real_config) or ""
     assert "/lead.jpg" in result
     assert all(f"Continuation paragraph {i}" in result for i in range(1, 5))
+
+
+def test_short_document_fallback_preserves_image():
+    """A text-only fallback must not erase a requested image when it recovers no text."""
+    first = (
+        "Some reasonably long paragraph of body text that trafilatura will keep because it "
+        "is clearly the main content of this document and not navigation furniture."
+    )
+    second = "A second paragraph that follows the figure and continues the argument at length."
+    doc = (
+        f"<html><body><article><p>{first}</p>"
+        '<img src="https://cdn.test/a.png" alt="a chart"/>'
+        f"<p>{second}</p></article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_images=True, include_links=True, config=use_config()) or ""
+    assert '<graphic src="https://cdn.test/a.png" alt="a chart"/>' in result
+
+
+def test_longer_fallback_can_replace_requested_image():
+    """A real content recovery still wins even when its source cannot preserve an image."""
+    recovered = "Recovered canonical article body with meaningful information and complete sentences. " * 12
+    payload = json.dumps({"@type": "Article", "articleBody": recovered})
+    doc = (
+        f'<html><head><script type="application/ld+json">{payload}</script></head><body><article>'
+        '<p>A short visible article paragraph below the extraction threshold.</p><img src="chart.png" alt="chart"/>'
+        "</article></body></html>"
+    )
+    result = extract(doc, output_format="xml", include_images=True, config=use_config()) or ""
+    assert "Recovered canonical article body" in result
+    assert "<graphic" not in result
 
 
 def test_no_duplicate_content():
