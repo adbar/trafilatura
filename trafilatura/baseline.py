@@ -6,7 +6,7 @@ Module regrouping baseline and basic extraction functions.
 import json
 import re
 from collections.abc import Iterable
-from copy import copy
+from copy import copy, deepcopy
 from html import unescape
 from typing import Any
 
@@ -198,7 +198,8 @@ def baseline(filecontent: Any) -> tuple[_Element, str, int]:
     article_texts = [
         text
         for elem in tree.xpath(".//article[not(ancestor::article)]")
-        if len(text := trim(elem.text_content())) > _MIN_CONTENT_LENGTH
+        # spaced text: without it the text of adjacent elements fuses ("TitleThis body...")
+        if len(text := trim(_spaced_text_content(elem))) > _MIN_CONTENT_LENGTH
     ]
     if article_texts:
         # never None: the longest article passes both its own length gate and the cutoff
@@ -268,6 +269,29 @@ _BLOCK_ELEMS = {
 }
 
 
+def _space_block_boundaries(elem: HtmlElement) -> None:
+    """Pad block-element boundaries with spaces so adjacent text runs don't stick
+    together in text_content() (minified pages carry no whitespace there).
+
+    Modifies the element in place -- use _spaced_text_content on a shared tree.
+    """
+    # remove_control_characters guards the .text write against chars lxml rejects
+    # (short-circuits on printable; str input pre-cleaned)
+    for block in elem.iter(*_BLOCK_ELEMS):
+        block.text = f" {remove_control_characters(block.text)}" if block.text else " "
+        block.tail = f" {remove_control_characters(block.tail)}" if block.tail else " "
+
+
+def _spaced_text_content(elem: HtmlElement) -> str:
+    """Text of an element, with block boundaries spaced so adjacent runs don't fuse.
+
+    Works on a copy, so it is safe on a tree shared with other extraction steps.
+    """
+    spaced = deepcopy(elem)
+    _space_block_boundaries(spaced)
+    return spaced.text_content()
+
+
 def html2txt(content: Any, clean: bool = True) -> str:
     """Run basic html2txt on a document.
 
@@ -293,9 +317,7 @@ def html2txt(content: Any, clean: bool = True) -> str:
         body = tree
     if clean:
         body = basic_cleaning(body)
-    # space block boundaries so adjacent runs don't stick (minified pages). remove_control_characters
-    # guards the .text write against chars lxml rejects (short-circuits on printable; str input pre-cleaned)
-    for elem in body.iter(*_BLOCK_ELEMS):
-        elem.text = f" {remove_control_characters(elem.text)}" if elem.text else " "
-        elem.tail = f" {remove_control_characters(elem.tail)}" if elem.tail else " "
+    # space block boundaries so adjacent runs don't stick (minified pages); the tree
+    # here is freshly parsed or already copied, so it can be modified in place
+    _space_block_boundaries(body)
     return " ".join(body.text_content().split())
