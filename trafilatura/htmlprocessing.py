@@ -43,6 +43,25 @@ PRESERVE_IMG_CLEANING = {"figure", "picture", "source"}
 
 CODE_INDICATORS = ["{", '("', "('", "\n    "]
 
+# LaTeX source carried by MathML, in order of preference: the annotation holds the
+# original markup, alttext a rendering of it. local-name() also matches XHTML pages
+# where the subtree keeps its MathML namespace.
+TEX_ANNOTATION_XPATH = XPath('.//*[local-name()="annotation"][@encoding="application/x-tex"]')
+
+
+def recover_math(tree: HtmlElement) -> HtmlElement:
+    "Turn MathML into its LaTeX source so formulas survive the cleaning of <math>."
+    for element in tree.iter("math"):
+        annotation = TEX_ANNOTATION_XPATH(element)
+        latex = trim(annotation[0].text or "") if annotation else trim(element.get("alttext") or "")
+        if not latex:
+            continue
+        # delimiters the Markdown converter understands, see _convert_math()
+        opening, closing = ("\\[", "\\]") if element.get("display") == "block" else ("\\(", "\\)")
+        # the tail is kept when the element is deleted further down, the subtree is not
+        element.tail = f"{opening}{latex}{closing}{element.tail or ''}"
+    return tree
+
 
 def _handle_forms(tree: HtmlElement) -> None:
     """Delete <form> elements, keeping those that wrap the page's main content.
@@ -67,6 +86,8 @@ def _handle_forms(tree: HtmlElement) -> None:
 
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
+    # salvage formulas before <math> is discarded along with its subtree
+    recover_math(tree)
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     # forms are handled separately below, once the rest of the noise is gone. MANUALLY_CLEANED is

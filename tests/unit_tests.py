@@ -3292,6 +3292,50 @@ def test_math_conversion():
     assert "`k` then $t$ end" in xml.xmltotxt(tree, include_formatting=True)
 
 
+def test_math_recovery():
+    "MathML is replaced by its LaTeX source instead of being discarded with the <math> subtree."
+    options = core.Extractor()
+    options.tables = True
+
+    def clean(html_string):
+        return etree.tostring(
+            trafilatura.htmlprocessing.tree_cleaning(html.fromstring(html_string), options),
+            encoding="unicode",
+        )
+
+    # the annotation holds the original LaTeX and takes precedence over alttext
+    result = clean(
+        '<html><body><p>a <math alttext="rendered"><semantics>'
+        '<annotation encoding="application/x-tex">x^2</annotation>'
+        "</semantics></math> b</p></body></html>"
+    )
+    assert "\\(x^2\\)" in result and "rendered" not in result
+    # alttext is used when there is no LaTeX annotation
+    assert "\\(y_1\\)" in clean('<html><body><p>a <math alttext="y_1"><mi>y</mi></math> b</p></body></html>')
+    # display="block" yields block delimiters
+    assert "\\[z\\]" in clean('<html><body><p><math display="block" alttext="z"><mi>z</mi></math></p></body></html>')
+    # nothing to recover: unchanged behaviour, the element is dropped
+    result = clean("<html><body><p>a <math><mi>q</mi></math> b</p></body></html>")
+    assert "math" not in result and "q" not in result
+    # the tail of the formula survives alongside the recovered source
+    assert "\\(u\\) tail" in clean('<html><body><p><math alttext="u"><mi>u</mi></math> tail</p></body></html>')
+    # a formula in a table cell is no longer silently emptied
+    result = clean(
+        "<html><body><table><tr><td>name</td>"
+        '<td><math alttext="1.33\\times 10^{-4}"><mi>v</mi></math></td></tr></table></body></html>'
+    )
+    assert "1.33\\times 10^{-4}" in result
+
+    # end to end: Markdown output renders the recovered formula as $...$
+    doc = (
+        "<html><body><article><p>Some introductory prose that is long enough to be retained here.</p>"
+        '<p>The error was <math alttext="1.33\\times 10^{-4}"><semantics>'
+        '<annotation encoding="application/x-tex">1.33\\times 10^{-4}</annotation>'
+        "</semantics></math> overall.</p></article></body></html>"
+    )
+    assert "$1.33\\times 10^{-4}$" in extract(doc, output_format="markdown", config=ZERO_CONFIG)
+
+
 def test_inline_edge_cases():
     "Cover lb in inline context, structural-tag fallback, and redundant emphasis collapse."
     # <lb/> inside an inline element (hi) renders as a newline
