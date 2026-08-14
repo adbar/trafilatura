@@ -437,6 +437,53 @@ def test_baseline_article_dominance():
     assert all(post.format(i) in result2 for i in range(3))
 
 
+def test_baseline_article_block_boundaries():
+    "regression (#896): the article strategy fused the text of adjacent block elements -- a \
+    minified <article> carries no whitespace between </h1> and its <p>, so text_content() ran \
+    them together as 'Notice TitleMunicipal...'. Mirrors the block-spacing assertions in \
+    test_html2txt: block boundaries separate, inline runs inside a block stay joined."
+    # padded past the one hundred character gate so the article strategy accepts the text
+    para = "Municipal notice body sentence carrying the real page content here. " * 2
+    doc = f"<html><body><article><h1>Notice Title</h1><p>{para}</p><p>Hyper<b>link</b></p></article></body></html>"
+    _, text, _ = baseline(doc)
+    assert "TitleMunicipal" not in text  # block boundary no longer fused
+    assert "Notice Title Municipal notice body" in text
+    assert "Hyperlink" in text  # inline run inside a block stays joined
+
+
+_ARTICLE_BODY = "The article body text continues here with enough words to clear the length gate. " * 2
+
+
+@pytest.mark.parametrize(
+    "inner",
+    [
+        "<h2>Section Heading</h2><p>{body}</p>",
+        "<ul><li>Section Heading</li><li>{body}</li></ul>",
+        "<table><tr><td>Section Heading</td><td>{body}</td></tr></table>",
+    ],
+    ids=["h2_p", "li_li", "td_td"],
+)
+def test_baseline_article_spacing_covers_all_block_elements(inner):
+    "regression (#896): the fusion is not specific to the <h1> of the report -- every block \
+    boundary inside the article ran together, h2/p/li/td alike, so the spacing pass applies to \
+    the whole _BLOCK_ELEMS set rather than to headings only."
+    doc = f"<html><body><article>{inner.format(body=_ARTICLE_BODY)}</article></body></html>"
+    _, text, _ = baseline(doc)
+    assert "HeadingThe" not in text
+    assert "Section Heading The article body text" in text
+
+
+def test_spaced_text_content_does_not_mutate_input():
+    "the article tier's spacing pass writes .text/.tail, so _spaced_text_content must work \
+    on a copy -- baseline() shares one tree across all its strategies."
+    from trafilatura.baseline import _spaced_text_content
+
+    elem = html.fromstring("<article><h1>A</h1><p>B</p></article>")
+    before = html.tostring(elem)
+    _spaced_text_content(elem)
+    assert html.tostring(elem) == before
+
+
 def test_html2txt():
     mydoc = "<html><body>Here is the body text</body></html>"
     assert html2txt(mydoc) == "Here is the body text"
