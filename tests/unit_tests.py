@@ -3404,14 +3404,16 @@ def test_math_recovery():
         '<annotation encoding="application/x-tex">x^2</annotation>'
         "</semantics></math> b</p></body></html>"
     )
-    assert "\\(x^2\\)" in result and "rendered" not in result
+    assert "\\(x^2\\)" in result
+    assert "rendered" not in result
     # alttext is used when there is no LaTeX annotation
     assert "\\(y_1\\)" in clean('<html><body><p>a <math alttext="y_1"><mi>y</mi></math> b</p></body></html>')
     # display="block" yields block delimiters
     assert "\\[z\\]" in clean('<html><body><p><math display="block" alttext="z"><mi>z</mi></math></p></body></html>')
     # nothing to recover: unchanged behaviour, the element is dropped
     result = clean("<html><body><p>a <math><mi>q</mi></math> b</p></body></html>")
-    assert "math" not in result and "q" not in result
+    assert "math" not in result
+    assert "q" not in result
     # the tail of the formula survives alongside the recovered source
     assert "\\(u\\) tail" in clean('<html><body><p><math alttext="u"><mi>u</mi></math> tail</p></body></html>')
     # a formula in a table cell is no longer silently emptied
@@ -3781,16 +3783,20 @@ def test_html_conversion():
 def test_deprecations():
     "Test deprecated function parameters."
     htmlstring = "<html><body><article>ABC</article></body></html>"
-    assert extract(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
-    assert bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
-    assert bare_extraction(htmlstring, as_dict=True, config=ZERO_CONFIG) is not None
+    with pytest.deprecated_call():
+        assert extract(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
+    with pytest.deprecated_call():
+        assert bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG) is not None
+    with pytest.deprecated_call():
+        assert bare_extraction(htmlstring, as_dict=True, config=ZERO_CONFIG) is not None
     with pytest.raises(ValueError):
         extract(htmlstring, max_tree_size=100)
     with pytest.raises(ValueError):
         bare_extraction(htmlstring, max_tree_size=100)
 
     # single source of truth for the effective "fast" flag
-    assert core._check_deprecation(no_fallback=True) is True
+    with pytest.deprecated_call():
+        assert core._check_deprecation(no_fallback=True) is True
     assert core._check_deprecation(fast=True) is True
     assert core._check_deprecation() is False
 
@@ -3803,8 +3809,10 @@ def test_deprecations():
             captured.append(self.fast)
 
     with patch.object(core, "Extractor", _SpyExtractor):
-        extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
-        bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+        with pytest.deprecated_call():
+            extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+        with pytest.deprecated_call():
+            bare_extraction(htmlstring, no_fallback=True, config=ZERO_CONFIG)
     assert captured
     assert all(captured)
 

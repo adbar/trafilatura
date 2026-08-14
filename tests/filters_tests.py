@@ -73,7 +73,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="en-US"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=True,
+                fast=True,
                 target_language="en",
             )
             is not None
@@ -81,7 +81,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="en-US"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=True,
+                fast=True,
                 target_language="de",
             )
             is None
@@ -90,7 +90,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="de-DE"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=False,
+                fast=False,
                 target_language="de",
             )
             is None
@@ -100,7 +100,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="de-DE"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=False,
+                fast=False,
                 target_language="de",
             )
             is not None

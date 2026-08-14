@@ -52,7 +52,7 @@ except ImportError:
 
 # CChardet is faster and can be more accurate
 try:
-    from cchardet import detect as cchardet_detect  # type: ignore
+    from cchardet import detect as cchardet_detect
 except ImportError:
     cchardet_detect = None  # type: ignore[assignment]
 

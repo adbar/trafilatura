@@ -119,6 +119,7 @@ def test_response_object():
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
 
 
+@pytest.mark.filterwarnings("ignore::urllib3.exceptions.InsecureRequestWarning")
 def test_is_live_page():
     """Test if pages are available on the network."""
     # is_live general tests
@@ -132,6 +133,9 @@ def test_is_live_page():
         assert _pycurl_is_live_page("https://nonexistent.invalid.example/") is False
 
 
+@pytest.mark.filterwarnings("ignore::urllib3.exceptions.InsecureRequestWarning")
+# the empty-URL sanity check trips urllib3's scheme-less deprecation (v3 raises, downloads.py catches)
+@pytest.mark.filterwarnings("ignore:URLs without a scheme:FutureWarning")
 def test_fetch():
     """Test URL fetching."""
     # sanity check

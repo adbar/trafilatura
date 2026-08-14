@@ -170,7 +170,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, format
         htmlstring,
         url,
         record_id="0000",
-        no_fallback=False,
+        fast=False,
         output_format=output_format,
         target_language=langcheck,
         include_formatting=formatting,

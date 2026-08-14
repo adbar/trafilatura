@@ -212,11 +212,11 @@ def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     # scrape from text paragraphs, dropping repeats: a nested element (e.g. <p> in
     # <blockquote>) duplicates part of its container's text, collected first in document order
     # skip any element whose ancestor is already in the scraped set (handles <p><code>, <blockquote><p>, etc. - #849, #884)
-    _SCRAPED_TAGS = {"blockquote", "code", "p", "pre", "q", "quote"}
+    scraped_tags = {"blockquote", "code", "p", "pre", "q", "quote"}
     paragraphs = (
         trim(element.text_content())
         for element in tree.iter("blockquote", "code", "p", "pre", "q", "quote")
-        if not any(anc.tag in _SCRAPED_TAGS for anc in element.iterancestors())
+        if not any(anc.tag in scraped_tags for anc in element.iterancestors())
     )
     if result := _attempt(paragraphs, dedupe=True):
         return result

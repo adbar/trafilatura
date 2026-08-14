@@ -112,6 +112,16 @@ def test_baseline():
     assert result == "Document body..."
 
 
+def test_baseline_no_nested_element_duplication():
+    "regression #849/#884: a nested scraped element (inline <code>, <p> in <blockquote>) must not be scraped twice."
+    filler = "Some surrounding paragraph text that is comfortably long enough to pass the one hundred character length gate."
+    snippet = "pip install trafilatura"
+    doc = f"<html><body><p>{filler}</p><p>Use <code>{snippet}</code> for setup.</p></body></html>"
+    assert baseline(doc)[1].count(snippet) == 1
+    doc = f"<html><body><blockquote><p>{filler}</p><p>Second paragraph inside the quote.</p></blockquote></body></html>"
+    assert baseline(doc)[1].count(filler) == 1
+
+
 def test_baseline_strategy_fallthrough():
     "regression: a too-short JSON-LD body must not leave a stale postbody that blocks later strategies."
     para = "Real paragraph content that should be extracted by the paragraph strategy, comfortably long enough for the gate."
