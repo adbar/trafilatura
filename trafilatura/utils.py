@@ -23,7 +23,7 @@ except ImportError:
 
 from functools import lru_cache
 from itertools import islice
-from typing import TYPE_CHECKING, Any, Literal, cast
+from typing import TYPE_CHECKING, Any, Callable, Literal, Optional, cast
 from unicodedata import normalize
 
 # response compression
@@ -49,18 +49,21 @@ try:
 except ImportError:
     LANGID_FLAG = False
 
-# CChardet is faster and can be more accurate
-try:
-    from cchardet import detect as cchardet_detect
-except ImportError:
-    cchardet_detect = None
-
 from charset_normalizer import from_bytes
 from lxml.etree import _Element
 from lxml.html import HtmlElement, HTMLParser, fromstring
 
 # response types
 from urllib3.response import HTTPResponse
+
+# CChardet is faster and can be more accurate
+cchardet_detect: Optional[Callable[[bytes], Any]]
+try:
+    from cchardet import detect
+
+    cchardet_detect = detect
+except ImportError:
+    cchardet_detect = None
 
 if TYPE_CHECKING:  # pragma: no cover
     from .settings import Document, Extractor
