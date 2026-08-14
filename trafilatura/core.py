@@ -136,7 +136,7 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
 # matches "@type": "DiscussionForumPosting" or an @type array containing it, anchored to the
 # key so it can't fire on the words appearing in ordinary prose (e.g. a description field)
 _DISCUSSION_FORUM_POSTING_RE = re.compile(
-    r'"@type"\s*:\s*"DiscussionForumPosting"|"@type"\s*:\s*\[[^\]]*"DiscussionForumPosting"',
+    r'"@type"\s*:\s*"DiscussionForumPosting"|"@type"\s*:\s*\[[^\]]*"DiscussionForumPosting"'
 )
 
 

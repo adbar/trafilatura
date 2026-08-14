@@ -216,7 +216,7 @@ def examine_meta(tree: HtmlElement) -> Document:
             metadata.description,
             metadata.sitename,
             metadata.image,
-        ),
+        )
     ):  # tags
         return metadata
 

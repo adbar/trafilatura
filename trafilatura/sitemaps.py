@@ -28,7 +28,7 @@ LINK_REGEX = re.compile(r"<loc>(?:<!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
-    r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.",
+    r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
 
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<sitemap|<urlset")

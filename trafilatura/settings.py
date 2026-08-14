@@ -169,7 +169,7 @@ class Extractor:
             with_metadata or only_with_metadata or bool(url_blacklist) or bool(author_blacklist) or output_format == "xmltei"
         )
         self.date_params: dict[str, Any] = date_params or set_date_params(
-            self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH"),
+            self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
         self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
 

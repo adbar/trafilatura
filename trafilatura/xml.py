@@ -168,7 +168,7 @@ def build_json_output(docmeta: Document, with_metadata: bool = True) -> str:
                 "categories": ";".join(outputdict.pop("categories") or []),
                 "tags": ";".join(outputdict.pop("tags") or []),
                 "text": xmltotxt(outputdict.pop("body"), include_formatting=False),
-            },
+            }
         )
         commentsbody = outputdict.pop("commentsbody")
     else:
@@ -700,7 +700,7 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
                 document.license,
                 document.pagetype,
             )
-        ],
+        ]
     )
     return output.getvalue()
 

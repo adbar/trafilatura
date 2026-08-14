@@ -102,7 +102,7 @@ BODY_XPATH = [
         """
         (.//*[self::article or self::div or self::section][
         starts-with(@class, 'main') or starts-with(@id, 'main') or starts-with(@role, 'main')])[1]|(.//main)[1]
-        """,
+        """
     ),
 ]
 # starts-with(@id, "article") or
@@ -144,7 +144,7 @@ COMMENTS_XPATH = [
         """
         .//*[self::div or self::section][
         starts-with(@id, 'social') or contains(@class, 'comment')]
-        """,
+        """
     ),
 ]
 # or contains(@class, 'Comments')
@@ -157,7 +157,7 @@ REMOVE_COMMENTS_XPATH = [
         re:test(@class, '^[Cc]omment|(?:article|post)-comments')]
         """,
         namespaces={"re": REGEXP_NS},
-    ),
+    )
 ]
 # or self::span
 # or contains(@class, 'comment') or contains(@id, 'comment')
@@ -282,8 +282,8 @@ TEASER_DISCARD_XPATH = [
         """
     .//*[self::div or self::item or self::list or self::p or self::section or self::span][
     contains(translate(@id, 'T', 't'), 'teaser') or contains(translate(@class, 'T', 't'), 'teaser')]
-    """,
-    ),
+    """
+    )
 ]
 
 
@@ -311,8 +311,8 @@ DISCARD_IMAGE_ELEMENTS = [
         """
     .//*[self::div or self::item or self::list or self::p or self::section or self::span][
     contains(@id, 'caption') or contains(@class, 'caption')]
-    """,
-    ),
+    """
+    )
 ]
 
 
