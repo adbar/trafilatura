@@ -117,13 +117,12 @@ def load_input_dict(args: argparse.Namespace) -> UrlStore:
 
 def check_outputdir_status(directory: str) -> bool:
     "Check if the output directory is within reach and writable."
-    dirpath = Path(directory)
-    if not dirpath.is_dir():
-        try:
-            dirpath.mkdir(parents=True, exist_ok=True)
-        except OSError:
-            sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
-            return False
+    # no is_dir precheck: unlike os.path.isdir, Path.is_dir raises on an unreadable parent
+    try:
+        Path(directory).mkdir(parents=True, exist_ok=True)
+    except OSError:
+        sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
+        return False
     return True
 
 
@@ -140,7 +139,8 @@ def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     while True:
         filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
         output_path = dest / (filename + extension)
-        if not output_path.exists():
+        # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
+        if not os.path.exists(output_path):  # noqa: PTH110
             return str(output_path), filename
 
 
