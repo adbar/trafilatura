@@ -46,7 +46,12 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
 
 
 def _prefer_readability(
-    body: _Element, algo_body: HtmlElement, algo_text: str, len_text: int, len_algo: int, options: Extractor
+    body: _Element,
+    algo_body: HtmlElement,
+    algo_text: str,
+    len_text: int,
+    len_algo: int,
+    options: Extractor,
 ) -> bool:
     """Decide whether the readability output should replace the own extraction."""
     # readability empty, or same length as the own extraction (assumed same content)
@@ -78,7 +83,12 @@ def _prefer_readability(
 
 
 def compare_extraction(
-    cleaned_tree: HtmlElement, raw_tree: HtmlElement, body: _Element, text: str, len_text: int, options: Extractor
+    cleaned_tree: HtmlElement,
+    raw_tree: HtmlElement,
+    body: _Element,
+    text: str,
+    len_text: int,
+    options: Extractor,
 ) -> tuple[_Element, str, int]:
     """Decide whether to choose own or external extraction based on a series of heuristics.
     ``raw_tree`` (uncleaned) feeds readability; ``cleaned_tree`` (tree_cleaning'd, unconverted)

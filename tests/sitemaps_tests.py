@@ -7,7 +7,6 @@ import os
 import sys
 
 import pytest
-
 from courlan import get_hostinfo
 
 import trafilatura
@@ -37,28 +36,33 @@ def test_extraction():
     url, domain, baseurl = "https://www.sitemaps.org/sitemap.xml", "sitemaps.org", "https://www.sitemaps.org"
     sitemap = sitemaps.SitemapObject(baseurl, domain, [])
     sitemap.handle_link(url)
-    assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
+    assert len(sitemap.sitemap_urls) == 1
+    assert not sitemap.urls
 
     # same URL
     url, domain, baseurl = "https://www.sitemaps.org/sitemap.xml", "sitemaps.org", "https://www.sitemaps.org"
     sitemap = sitemaps.SitemapObject(baseurl, domain, [url])
     sitemap.current_url = url
     sitemap.handle_link(url)
-    assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
+    assert len(sitemap.sitemap_urls) == 1
+    assert not sitemap.urls
 
     sitemap = sitemaps.SitemapObject("https://example.org", "example.org", ["https://example.org/sitemap.xml"])
     sitemap.handle_link("https://mydomain")
-    assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
+    assert len(sitemap.sitemap_urls) == 1
+    assert not sitemap.urls
 
     sitemap = sitemaps.SitemapObject("https://example.org", "example.org", ["https://example.org/sitemap.xml"])
     sitemap.handle_link("https://mydomain.wordpress.com/1")
-    assert len(sitemap.sitemap_urls) == 1 and sitemap.urls == ["https://mydomain.wordpress.com/1"]
+    assert len(sitemap.sitemap_urls) == 1
+    assert sitemap.urls == ["https://mydomain.wordpress.com/1"]
 
     sitemap = sitemaps.SitemapObject("https://programtalk.com", "programtalk.com", ["https://programtalk.com/sitemap.xml"])
     sitemap.handle_link(
         "http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent"
     )
-    assert len(sitemap.sitemap_urls) == 1 and sitemap.urls == [
+    assert len(sitemap.sitemap_urls) == 1
+    assert sitemap.urls == [
         "http://programtalk.com/java-api-usage-examples/org.apache.xml.security.stax.securityEvent.SecurityEvent"
     ]
 
@@ -73,7 +77,8 @@ def test_extraction():
     domain, baseurl = get_hostinfo(sitemap_url)
     sitemap = sitemaps.SitemapObject(baseurl, domain, [])
     sitemap.handle_link(url)
-    assert not sitemap.sitemap_urls and sitemap.urls == [url]
+    assert not sitemap.sitemap_urls
+    assert sitemap.urls == [url]
 
     # diverging domains
     url = "https://www.software.info/1"
@@ -81,7 +86,8 @@ def test_extraction():
     domain, baseurl = get_hostinfo(sitemap_urls[0])
     sitemap = sitemaps.SitemapObject(baseurl, domain, sitemap_urls)
     sitemap.handle_link(url)
-    assert len(sitemap.sitemap_urls) == 1 and not sitemap.urls
+    assert len(sitemap.sitemap_urls) == 1
+    assert not sitemap.urls
 
     # don't take this one?
     # url = 'https://subdomain.sitemaps.org/1'
@@ -99,40 +105,40 @@ def test_extraction():
     sitemap = sitemaps.SitemapObject(baseurl, domain, [])
     sitemap.content = "<html>\n</html>"
     sitemap.extract_sitemap_links()
-    assert not sitemap.sitemap_urls and not sitemap.urls
+    assert not sitemap.sitemap_urls
+    assert not sitemap.urls
 
     # parsing a file
     url, domain, baseurl = "http://www.sitemaps.org/sitemap.xml", "sitemaps.org", "http://www.sitemaps.org"
     filepath = os.path.join(RESOURCES_DIR, "sitemap.xml")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     assert sitemaps.is_plausible_sitemap("http://sitemaps.org/sitemap.xml", teststring) is True
     sitemap = sitemaps.SitemapObject(baseurl, domain, [])
     sitemap.content = teststring
     sitemap.extract_sitemap_links()
-    assert not sitemap.sitemap_urls and len(sitemap.urls) == 84
+    assert not sitemap.sitemap_urls
+    assert len(sitemap.urls) == 84
     # hreflang
     sitemap.urls = []
     sitemap.extract_sitemap_langlinks()
-    assert not sitemap.sitemap_urls and not sitemap.urls
+    assert not sitemap.sitemap_urls
+    assert not sitemap.urls
 
     # nested sitemaps
     url, domain, baseurl = "http://www.example.com/sitemap.xml", "example.com", "http://www.example.com"
     filepath = os.path.join(RESOURCES_DIR, "sitemap2.xml")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, domain, [url])
     sitemap.content = teststring
     sitemap.extract_sitemap_links()
-    assert (
-        sitemap.sitemap_urls
-        == [
-            "http://www.example.com/sitemap.xml",
-            "http://www.example.com/sitemap1.xml.gz",
-            "http://www.example.com/sitemap2.xml.gz",
-        ]
-        and not sitemap.urls
-    )
+    assert sitemap.sitemap_urls == [
+        "http://www.example.com/sitemap.xml",
+        "http://www.example.com/sitemap1.xml.gz",
+        "http://www.example.com/sitemap2.xml.gz",
+    ]
+    assert not sitemap.urls
 
     # hreflang
     sitemap = sitemaps.SitemapObject("https://test.org/", "test.org", [], "en")
@@ -142,7 +148,7 @@ def test_extraction():
     sitemap.process()
     assert (sitemap.sitemap_urls, sitemap.urls) == ([], ["http://www.test.org/english/page.html"])
     filepath = os.path.join(RESOURCES_DIR, "sitemap-hreflang.xml")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     sitemap = sitemaps.SitemapObject(baseurl, domain, [], "de")
     sitemap.content = teststring
@@ -160,7 +166,8 @@ def test_extraction():
     sitemap = sitemaps.SitemapObject(baseurl, domain, [url])
     sitemap.content = teststring
     sitemap.extract_sitemap_links()
-    assert len(sitemap.sitemap_urls) == 1 and len(sitemap.urls) == 84
+    assert len(sitemap.sitemap_urls) == 1
+    assert len(sitemap.urls) == 84
 
     # check contents
     assert sitemaps.is_plausible_sitemap("http://example.org/sitemap.xml.gz?value=1", teststring) is True

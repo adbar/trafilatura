@@ -54,13 +54,13 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "certifi",
-    "charset_normalizer >= 3.4.9",
-    "courlan >= 1.4.0",
-    "htmldate >= 1.10.0",
-    "justext >= 3.0.2",
-    "lxml >= 6.1.1",
-    "urllib3 >= 1.26, < 3",
+    "certifi",  # never pin: CA-bundle updates are security fixes
+    "charset_normalizer == 3.5.0",
+    "courlan == 1.4.0",
+    "htmldate == 1.10.0",
+    "justext == 3.0.2",
+    "lxml == 6.1.1",
+    "urllib3 == 2.7.0",
 ]
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
@@ -90,63 +90,105 @@ trafilatura = "trafilatura.cli:main"
 # Development extras
 [project.optional-dependencies]
 dev = [
-    "ruff >= 0.16.1",
-    "mypy >= 2.3.0",
-    "pytest >= 9.1.1",
-    "pytest-cov >= 7.1.0",
-    "types-lxml >= 2026.2.16",
-    "types-pycurl >= 7.47.0.20260703",
-    "types-urllib3 >= 1.26.25.14",
+    "ruff == 0.16.3",
+    "mypy == 2.3.0",
+    "pytest == 9.1.1",
+    "pytest-cov == 7.1.0",
+    "types-lxml == 2026.2.16",
+    "types-pycurl == 7.47.0.20260703",
 ]
 all = [
-    "brotli",
-    # maintained drop-in fork of the unmaintained cchardet (imports as "cchardet")
-    "faust-cchardet >= 2.2.1",
-    "htmldate[speed] >= 1.10.0",
-    "py3langid >= 0.3.0",
-    "pycurl >= 7.47.0",
-    "urllib3[socks]",
-    "zstandard >= 0.25.0",
+    "brotli == 1.2.0",
+    # drop-in fork of the unmaintained cchardet (imports as "cchardet").
+    # do not upgrade: 3.x is broken (massive slowdown or encoding detection regression)
+    "faust-cchardet == 2.2.1",
+    "htmldate[speed] == 1.10.0",
+    "py3langid == 0.3.0",
+    "pycurl == 7.47.0",
+    "urllib3[socks] == 2.7.0",
+    "zstandard == 0.25.0",
 ]
 # Benchmark deps for tests/evaluate.py, which skips the competitors it cannot import.
 eval = [
-    "pandas",
-    "tabulate",
+    "pandas == 3.0.5 ; python_version >= '3.11'",
+    "tabulate == 0.10.0",
     # alternative extractors compared in tests/evaluate.py
-    "beautifulsoup4",
-    "boilerpy3",
-    "goose3",
-    "html2text",
-    "html-text",
-    "inscriptis",
+    "beautifulsoup4 == 4.15.0",
+    "boilerpy3 == 1.0.7",
+    "goose3 == 3.1.22",
+    "html2text == 2025.4.15",
+    "html-text == 0.7.1",
+    "inscriptis == 2.7.4",
     # pinned: the PyPI upload is not an upstream release (audited: matches the 0.1.6 wheel)
     "magic-html == 0.1.8 ; python_version >= '3.12'",
     # not newspaper3k: clashes with newspaper4k on the "newspaper" namespace.
     # newspaper4k is listed explicitly (not just via news-please) because
     # evaluate.py looks its version up by name.
-    "news-please",
+    "news-please == 1.6.16",
     # required by news-please on non-Latin scripts; also needs a one-time punkt
     # download (see tests/README.rst), else it attempts one per document
-    "nltk",
-    "newspaper4k",
-    "readability-lxml",
-    "resiliparse",
+    "nltk == 3.10.3",
+    "newspaper4k == 0.9.6",
+    "readability-lxml == 0.8.4.1",
+    "resiliparse == 1.0.9",
 ]
 # Documentation build dependencies (see .readthedocs.yaml)
 docs = [
-    "sphinx >= 8.1",
-    "pydata-sphinx-theme >= 0.18.0",
-    "docutils >= 0.21",
-    "sphinx-sitemap >= 2.9.0",
+    "sphinx == 9.1.0 ; python_version >= '3.12'",
+    "pydata-sphinx-theme == 0.20.0 ; python_version >= '3.11'",
+    "docutils == 0.22.4",
+    "sphinx-sitemap == 2.9.0",
 ]
 
 [tool.ruff]
 line-length = 127
 target-version = "py310"
+# not swept yet under select=["ALL"] — re-include once cleaned up
+extend-exclude = ["docs"]
 
 [tool.ruff.lint]
-# pin rules explicitly: ruff 0.16 widened its defaults from 59 to 413
-select = ["E4", "E7", "E9", "F"]
+select = ["ALL"]
+ignore = [
+    "COM812",                     # missing trailing comma — conflicts with the formatter
+    # too noisy or stylistic
+    "ANN401",                     # Any type in signatures — intentional
+    "D",                          # docstring style — not enforced
+    "ERA",                        # commented-out code
+    "FIX", "TD",                  # TODO/FIXME tags
+    "CPY",                        # copyright notices
+    # intentional patterns
+    "BLE",                        # blind except — used deliberately
+    "FBT",                        # boolean positional args — API is stable
+    "S",                          # bandit security — bare excepts are intentional
+    "EM",                         # string in exception — too verbose to fix
+    "TRY",                        # tryceratops — too opinionated
+    "RUF001",                     # ambiguous unicode — intentional in a web scraping library
+    "PTH118",                     # os.path.join — pathlib rewrites the separators the caller passed in
+    # too many violations, low value
+    "C901",                       # complexity — tracked but not enforced
+    "PLR",                        # pylint refactor (magic values, too-many-args, etc.)
+    "PLW",                        # pylint warnings (loop var redef, etc.)
+    "SIM",                        # simplify — many false positives
+    "E501",                       # line too long — handled by formatter, not lint
+]
+
+[tool.ruff.lint.per-file-ignores]
+# print is the intended output channel of the CLI
+"trafilatura/cli.py" = ["T20"]
+"trafilatura/cli_utils.py" = ["T20"]
+# a test suite is not a library: the exemptions below are deliberate
+"tests/*" = [
+    "T20",                        # print
+    "ANN",                        # annotations
+    "PLC0415",                    # imports inside functions — probes optional deps
+    "SLF001",                     # tests exercise internals on purpose
+    "PTH",                        # os.path
+    "ARG",                        # unused args in monkeypatch stand-ins
+    "PT006", "PT011",             # parametrize style, broad pytest.raises
+    "RUF003",                     # ambiguous unicode in fixtures
+    "PD002", "PERF203",
+    "W291", "W293",               # the fix strips significant whitespace inside expected-output literals
+]
 
 [tool.mypy]
 # pin the target so type-checking is deterministic across contributor machines
@@ -154,11 +196,8 @@ select = ["E4", "E7", "E9", "F"]
 python_version = "3.10"
 platform = "linux"
 packages = ["trafilatura"]
-# explicit strictness — stable across mypy upgrades, unlike `strict = true`
-warn_unused_ignores = true
-warn_redundant_casts = true
-no_implicit_reexport = true
-disallow_untyped_defs = true
+# the strict set cannot drift: the mypy version is pinned in the dev extra
+strict = true
 
 # third-party packages without type stubs
 [[tool.mypy.overrides]]
@@ -171,3 +210,5 @@ warn_unused_ignores = false
 
 [tool.pytest.ini_options]
 testpaths = "tests/*test*.py"
+# so `pytest tests/` also collects (default test_*.py matches nothing here)
+python_files = ["*_tests.py"]

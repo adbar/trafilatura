@@ -25,10 +25,10 @@ except ImportError:
 from lxml.etree import XPath, tostring
 
 from .baseline import baseline
-from .downloads import Response, fetch_response, fetch_url
+from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, decode_file, load_html
+from .utils import LANGID_FLAG, Response, decode_file, load_html
 
 LOGGER = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ MAX_KNOWN_URLS = 100000
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
 
-    __slots__ = ["start", "base", "lang", "rules", "ref", "i", "known_num", "is_on", "prune_xpath"]
+    __slots__ = ["base", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
 
     def __init__(
         self,

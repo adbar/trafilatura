@@ -239,10 +239,8 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
 
     # check content
     if (
-        POTENTIAL_SITEMAP.search(url)
-        and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
-        or "<html" in contents[:150].lower()
-    ):
+        POTENTIAL_SITEMAP.search(url) and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
+    ) or "<html" in contents[:150].lower():
         LOGGER.warning("not a valid XML sitemap: %s", url)
         return False
 

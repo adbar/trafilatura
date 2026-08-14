@@ -16,7 +16,7 @@ There are many ways to contribute:
 
 Here are some important resources:
 
-  * [List of currently open issues](https://github.com/adbar/trafilatura/issues) (no pretention to exhaustivity!)
+  * [List of currently open issues](https://github.com/adbar/trafilatura/issues) (no pretension to exhaustivity!)
   * [How to contribute to open source](https://opensource.guide/how-to-contribute/)
 
 A special thanks to all the [contributors](https://github.com/adbar/trafilatura/graphs/contributors) who have played a part in Trafilatura.
@@ -24,14 +24,23 @@ A special thanks to all the [contributors](https://github.com/adbar/trafilatura/
 
 ## Testing and evaluating the code
 
-Here is how you can run the tests and code quality checks. Pull requests will only be accepted if the changes are tested and if they there are no errors. 
+Here is how you can run the tests and code quality checks, these are the same checks CI runs. Pull requests will only be accepted if the changes are tested and if there are no errors.
 
-- Install the necessary packages with `pip install trafilatura[dev]`
-- Run `pytest` from trafilatura's directory, or select a particular test suite, for example `realworld_tests.py`, and run `pytest realworld_tests.py` or simply `python3 realworld_tests.py`
-- Run `mypy` on the directory: `mypy trafilatura/`
-- Lint and format the code with `ruff`: `ruff check .` + `ruff format trafilatura tests`
+```
+pip install -e ".[dev]"
+pytest
+mypy
+ruff check .
+ruff format --check .
+```
 
-If you work on text extraction it is useful to check if performance is equal or better on the benchmark.
+Notes:
+
+- The `-e` matters: plain `pip install trafilatura[dev]` would install the PyPI release instead of your changes.
+- A single test suite can be selected, for example `pytest tests/realworld_tests.py`.
+- Drop `--check` to let `ruff format` fix the formatting in place.
+
+If you work on text extraction, CI runs an evaluation quality gate: `python tests/eval_gate.py` fails if extraction quality regresses below the pinned scores, so run it locally before pushing. Checking that performance is equal or better on the benchmarks is useful as well.
 
 See the [tests Readme](tests/README.rst) and the testing page in the documentation for more information.
 

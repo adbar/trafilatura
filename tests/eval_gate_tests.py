@@ -10,8 +10,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import eval_gate  # noqa: E402
-from eval_common import ConfusionMatrix  # noqa: E402
+import eval_gate
+from eval_common import ConfusionMatrix
 
 PINS = {"evaldata_sha": "newsha", "entries": 2, "chunks": [4, 4]}
 

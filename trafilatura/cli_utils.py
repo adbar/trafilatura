@@ -11,6 +11,7 @@ except ImportError:
 
 import argparse
 import logging
+import os
 import random
 import re
 import string
@@ -21,7 +22,7 @@ from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
-from os import makedirs, path, stat, walk
+from pathlib import Path
 from threading import RLock
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
@@ -31,7 +32,7 @@ from trafilatura import spider
 from .baseline import html2txt
 from .core import extract
 from .deduplication import generate_bow_hash
-from .downloads import Response, add_to_compressed_dict, buffered_downloads, buffered_response_downloads, load_download_buffer
+from .downloads import add_to_compressed_dict, buffered_downloads, buffered_response_downloads, load_download_buffer
 from .feeds import find_feed_urls
 from .meta import reset_caches
 from .settings import (
@@ -44,6 +45,7 @@ from .sitemaps import sitemap_search
 from .utils import (
     LANGID_FLAG,
     URL_BLACKLIST_REGEX,
+    Response,
     is_acceptable_length,
     language_classifier,
     make_chunks,
@@ -76,7 +78,7 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
     if args.input_file:
         try:
             # optional: errors='strict', buffering=1
-            with open(args.input_file, encoding="utf-8") as inputfile:
+            with Path(args.input_file).open(encoding="utf-8") as inputfile:
                 input_urls.extend(line.strip() for line in inputfile)
         except UnicodeDecodeError:
             sys.exit("ERROR: system, file type or buffer encoding")
@@ -95,10 +97,9 @@ def load_input_urls(args: argparse.Namespace) -> list[str]:
 
 def load_blacklist(filename: str) -> set[str]:
     "Read list of unwanted URLs."
-    with open(filename, encoding="utf-8") as inputfh:
+    with Path(filename).open(encoding="utf-8") as inputfh:
         # if validate_url(url)[0] is True:
-        blacklist = {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
-    return blacklist
+        return {URL_BLACKLIST_REGEX.sub("", line.strip()) for line in inputfh}
 
 
 def load_input_dict(args: argparse.Namespace) -> UrlStore:
@@ -116,34 +117,31 @@ def load_input_dict(args: argparse.Namespace) -> UrlStore:
 
 def check_outputdir_status(directory: str) -> bool:
     "Check if the output directory is within reach and writable."
-    # check the directory status
-    if not path.exists(directory) or not path.isdir(directory):
-        try:
-            makedirs(directory, exist_ok=True)
-        except OSError:
-            # maybe the directory has already been created
-            # sleep(0.25)
-            # if not path.exists(directory) or not path.isdir(directory):
-            sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
-            # raise OSError()
-            return False
+    # no is_dir precheck: unlike os.path.isdir, Path.is_dir raises on an unreadable parent
+    try:
+        Path(directory).mkdir(parents=True, exist_ok=True)
+    except OSError:
+        sys.stderr.write("ERROR: Destination directory cannot be created: " + directory + "\n")
+        return False
     return True
 
 
 def determine_counter_dir(dirname: str, c: int) -> str:
     "Return a destination directory based on a file counter."
-    c_dir = str(int(c / MAX_FILES_PER_DIRECTORY) + 1) if c >= 0 else ""
-    return path.join(dirname, c_dir)
+    if c < 0:
+        return dirname
+    # os.path.join, not Path: pathlib rewrites the separators the caller passed in (test_sysoutput)
+    return os.path.join(dirname, str(int(c / MAX_FILES_PER_DIRECTORY) + 1))
 
 
 def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     "Find a writable path and return it along with its random file name."
-    output_path = None
-    while output_path is None or path.exists(output_path):
-        # generate a random filename of the desired length
+    while True:
         filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
-        output_path = path.join(destdir, filename + extension)
-    return output_path, filename
+        output_path = os.path.join(destdir, filename + extension)
+        # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
+        if not os.path.exists(output_path):  # noqa: PTH110
+            return output_path, filename
 
 
 def generate_hash_filename(content: str) -> str:
@@ -166,7 +164,7 @@ def determine_output_path(
     if args.keep_dirs:
         # strip directory
         original_dir = STRIP_DIR.sub("", orig_filename)
-        destination_dir = path.join(args.output_dir, original_dir)
+        destination_dir = os.path.join(args.output_dir, original_dir)
         # strip extension
         filename = STRIP_EXTENSION.sub("", orig_filename)
     else:
@@ -174,7 +172,7 @@ def determine_output_path(
         # use cryptographic hash on file contents to define name
         filename = new_filename or generate_hash_filename(content)
 
-    output_path = path.join(destination_dir, filename + extension)
+    output_path = os.path.join(destination_dir, filename + extension)
     return output_path, destination_dir
 
 
@@ -206,15 +204,16 @@ def write_result(
         destination_path, destination_dir = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_dir) is True:
-            with open(destination_path, mode="w", encoding="utf-8") as outputfile:
+            with Path(destination_path).open(mode="w", encoding="utf-8") as outputfile:
                 outputfile.write(result)
 
 
 def generate_filelist(inputdir: str) -> Generator[str, None, None]:
     "Walk the directory tree and output all file names."
-    for root, _, inputfiles in walk(inputdir):
-        for fname in inputfiles:
-            yield path.join(root, fname)
+    # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
+    for root, _, files in os.walk(inputdir):
+        for filename in files:
+            yield os.path.join(root, filename)
 
 
 def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None) -> None:
@@ -223,12 +222,12 @@ def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, 
         options = args_to_extractor(args)
     options.source = filename
 
-    with open(filename, "rb") as inputf:
+    with Path(filename).open("rb") as inputf:
         htmlstring = inputf.read()
 
-    file_stat = stat(filename)
+    file_stat = Path(filename).stat()
     ref_timestamp = min(file_stat.st_ctime, file_stat.st_mtime)
-    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).strftime("%Y-%m-%d")
+    options.date_params["max_date"] = datetime.fromtimestamp(ref_timestamp).astimezone().strftime("%Y-%m-%d")
 
     result = examine(htmlstring, args, options=options)
     write_result(result, args, filename, counter, new_filename=None)
@@ -248,7 +247,10 @@ def process_result(htmlstring: str, args: argparse.Namespace, counter: int, opti
 
 
 def download_queue_processing(
-    url_store: UrlStore, args: argparse.Namespace, counter: int, options: Extractor
+    url_store: UrlStore,
+    args: argparse.Namespace,
+    counter: int,
+    options: Extractor,
 ) -> tuple[list[str], int]:
     "Implement a download queue consumer, single- or multi-threaded."
     errors = []
@@ -461,5 +463,5 @@ def examine(
             result = extract(htmlstring, options=options)
         # ugly but efficient
         except Exception as err:
-            sys.stderr.write(f"ERROR: {str(err)}\n{traceback.format_exc()}\n")
+            sys.stderr.write(f"ERROR: {err!s}\n{traceback.format_exc()}\n")
     return result

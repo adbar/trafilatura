@@ -72,7 +72,6 @@ JSON_AUTHOR_REMOVE = re.compile(
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_TYPE = re.compile(r'"@type"\s*:\s*"([^"]*)"', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
-JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
 JSON_SCHEMA_ORG = re.compile(r"^https?://schema\.org", flags=re.IGNORECASE)
 JSON_UNICODE_REPLACE = re.compile(r"\\u([0-9a-fA-F]{4})")
 
@@ -117,7 +116,8 @@ def is_plausible_sitename(metadata: Document, candidate: Any, content_type: str 
 
 def process_parent(parent: Any, metadata: Document) -> Document:
     "Find and extract selected metadata from JSON parts."
-    for content in filter(None, parent):  # type: dict[str, Any]
+    content: dict[str, Any]
+    for content in filter(None, parent):
         # publisher may be a bare string, not a dict
         publisher = content.get("publisher")
         if isinstance(publisher, dict) and is_plausible_sitename(metadata, publisher.get("name")):

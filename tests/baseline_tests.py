@@ -8,6 +8,7 @@ from html import escape
 
 import pytest
 from lxml import html
+
 from trafilatura import baseline, html2txt
 
 
@@ -19,13 +20,15 @@ def jsonld_doc(payload: str, body: str = "") -> str:
 def test_baseline():
     # Empty input
     result = baseline(b"")
-    assert isinstance(result, tuple) and len(result) == 3
+    assert isinstance(result, tuple)
+    assert len(result) == 3
     assert result[0].tag == "body"
     assert result[1] == ""
     assert result[2] == 0
 
     result = baseline("")
-    assert isinstance(result, tuple) and len(result) == 3
+    assert isinstance(result, tuple)
+    assert len(result) == 3
     assert result[0].tag == "body"
     assert result[1] == ""
     assert result[2] == 0
@@ -95,23 +98,36 @@ def test_baseline():
         </html>
     """
     _, result, _ = baseline(filecontent)
-    assert result.startswith("This is the article body") and "<p>" not in result
+    assert result.startswith("This is the article body")
+    assert "<p>" not in result
 
     # Real-world examples
     my_document = r'<html><body><script type="application/ld+json">{"description":"In letzter Zeit kam man am Begriff \"Hygge\", was so viel wie \"angenehm\" oder \"gemütlich\" bedeutet, ja nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend ...","image":[{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/uncropped-0-0\/7d00b2658fd0a3b19e1b161f4657cc20\/Xw\/ikigai--1-.jpg","width":"2048","height":"1366","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-1280-720\/bf947c7c24167d7c0adae0be10942d57\/Uf\/ikigai--1-.jpg","width":"1280","height":"720","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-938-528\/bf947c7c24167d7c0adae0be10942d57\/JK\/ikigai--1-.jpg","width":"938","height":"528","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/large1x1-622-622\/f5544b7d67e1be04f7729b130e7e0485\/KN\/ikigai--1-.jpg","width":"622","height":"622","@type":"ImageObject"}],"mainEntityOfPage":{"@id":"https:\/\/www.brigitte.de\/liebe\/persoenlichkeit\/ikigai-macht-dich-sofort-gluecklicher--10972896.html","@type":"WebPage"},"headline":"Ikigai macht dich sofort glücklicher!","datePublished":"2019-06-19T14:29:08+0000","dateModified":"2019-06-19T14:29:10+0000","author":{"name":"BRIGITTE.de","@type":"Organization"},"publisher":{"name":"BRIGITTE.de","logo":{"url":"https:\/\/image.brigitte.de\/11476842\/uncropped-0-0\/f19537e97b9189bf0f25ce924168bedb\/kK\/bri-logo-schema-org.png","width":"167","height":"60","@type":"ImageObject"},"@type":"Organization"},"articleBody":"In letzter Zeit kam man am Begriff \"Hygge\" (\"gemütlich\" oder \"angenehm\") nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend Konkurrenz: \"Ikigai\". Bist du glücklich? Schwierige Frage, nicht wahr? Viele von uns müssen da erst mal überlegen.","@type":"NewsArticle"}</script></body></html>'
     _, result, _ = baseline(my_document)
-    assert result.startswith("In letzter Zeit kam man") and result.endswith("erst mal überlegen.")
+    assert result.startswith("In letzter Zeit kam man")
+    assert result.endswith("erst mal überlegen.")
 
     my_document = "<html><body><div>   Document body...   </div><script> console.log('Hello world') </script></body></html>"
     _, result, _ = baseline(my_document)
     assert result == "Document body..."
 
 
+def test_baseline_no_nested_element_duplication():
+    "regression #849/#884: a nested scraped element (inline <code>, <p> in <blockquote>) must not be scraped twice."
+    filler = "Some surrounding paragraph text that is comfortably long enough to pass the one hundred character length gate."
+    snippet = "pip install trafilatura"
+    doc = f"<html><body><p>{filler}</p><p>Use <code>{snippet}</code> for setup.</p></body></html>"
+    assert baseline(doc)[1].count(snippet) == 1
+    doc = f"<html><body><blockquote><p>{filler}</p><p>Second paragraph inside the quote.</p></blockquote></body></html>"
+    assert baseline(doc)[1].count(filler) == 1
+
+
 def test_baseline_strategy_fallthrough():
     "regression: a too-short JSON-LD body must not leave a stale postbody that blocks later strategies."
     para = "Real paragraph content that should be extracted by the paragraph strategy, comfortably long enough for the gate."
     _, result, length = baseline(jsonld_doc('{"articleBody": "Too short."}', body=f"<p>{para}</p>"))
-    assert para in result and length > 100
+    assert para in result
+    assert length > 100
 
 
 def test_baseline_jsonld_shapes():
@@ -119,10 +135,10 @@ def test_baseline_jsonld_shapes():
     body_text = (
         "Body text from structured data, made comfortably long enough to pass the one hundred character length threshold."
     )
-    flat = '{"articleBody": "%s"}' % body_text
-    graph = '{"@context": "https://schema.org", "@graph": [{"@type": "Article", "articleBody": "%s"}]}' % body_text
-    wrapped = '[{"@type": "Article", "articleBody": "%s"}]' % body_text
-    mixed = '[42, {"@type": "Article", "articleBody": "%s"}]' % body_text  # non-dict list item is skipped
+    flat = f'{{"articleBody": "{body_text}"}}'
+    graph = f'{{"@context": "https://schema.org", "@graph": [{{"@type": "Article", "articleBody": "{body_text}"}}]}}'
+    wrapped = f'[{{"@type": "Article", "articleBody": "{body_text}"}}]'
+    mixed = f'[42, {{"@type": "Article", "articleBody": "{body_text}"}}]'  # non-dict list item is skipped
     for payload in (flat, graph, wrapped, mixed):
         assert baseline(jsonld_doc(payload))[1].count(body_text) == 1
 
@@ -131,18 +147,20 @@ def test_baseline_jsonld_content():
     "regression: articleBody with raw control chars, p-less markup or HTML-escaped markup yields clean text."
 
     def run(body: str) -> str:
-        return baseline(jsonld_doc('{"articleBody": "%s"}' % body))[1]
+        return baseline(jsonld_doc(f'{{"articleBody": "{body}"}}'))[1]
 
     # raw newline/tab inside the JSON string (invalid in strict mode but common in the wild)
     ctrl = "First line of the body text\n\twith a raw newline and a tab inside the JSON string, comfortably long enough to pass the gate."
     assert "First line of the body text with a raw newline" in run(ctrl)
     # markup without <p> must not leak literal tags
     markup = "Opening text<br/>more after a break element<div>and inside a div</div> comfortably long enough to pass the one hundred character gate."
-    assert "<" not in run(markup) and "Opening text" in run(markup)
+    assert "<" not in run(markup)
+    assert "Opening text" in run(markup)
     # HTML-escaped markup must be unescaped and parsed, not emitted as entities
     escaped = "&lt;p&gt;Escaped paragraph body text that should come out clean, comfortably long enough to pass the one hundred character gate.&lt;/p&gt;"
     result = run(escaped)
-    assert "&lt;" not in result and "Escaped paragraph body text" in result
+    assert "&lt;" not in result
+    assert "Escaped paragraph body text" in result
     # a lone comparison operator in plain prose stays intact
     prose = "Comparing a < b in plain prose should stay intact, with padding to exceed the one hundred character gate."
     assert "a < b" in run(prose)
@@ -154,7 +172,8 @@ def test_baseline_jsonld_content():
     tagletters = (
         "If p<q then u<s or i<b and c>d holds, with extra padding to comfortably exceed the one hundred character gate."
     )
-    assert "p<q" in run(tagletters) and "i<b and c>d holds" in run(tagletters)
+    assert "p<q" in run(tagletters)
+    assert "i<b and c>d holds" in run(tagletters)
 
 
 def test_baseline_teaser_does_not_shadow_longer_body():
@@ -169,7 +188,7 @@ def test_baseline_teaser_does_not_shadow_longer_body():
         f"whole-body dump captures from these bare div elements on the page.</div>"
         for i in range(5)
     )
-    jsonld = '{"@type": "Product", "description": "%s"}' % desc
+    jsonld = f'{{"@type": "Product", "description": "{desc}"}}'
     _, text, _ = baseline(jsonld_doc(jsonld, body=divs))
     assert "Real article paragraph number 3" in text
 
@@ -177,7 +196,7 @@ def test_baseline_teaser_does_not_shadow_longer_body():
 def test_baseline_teaser_used_when_body_shorter():
     "the teaser still wins when the body dump is shorter than it (near-empty body, e.g. a JS shell)."
     desc = "Full product description carrying the actual page content, comfortably longer than the sparse body below and past the gate."
-    jsonld = '{"@type": "Product", "description": "%s"}' % desc
+    jsonld = f'{{"@type": "Product", "description": "{desc}"}}'
     _, text, _ = baseline(jsonld_doc(jsonld, body="<div>x</div>"))
     assert "Full product description" in text
 
@@ -192,9 +211,11 @@ def test_baseline_description_teaser_tier(teaser_type):
     assert teaser in baseline(jsonld_doc(teaser_json))[1]  # alone -> used
     both = json.dumps([{"@type": teaser_type, "description": teaser}, {"@type": "Article", "articleBody": fulltext}])
     outranked = baseline(jsonld_doc(both))[1]  # JSON full-text property wins
-    assert fulltext in outranked and teaser not in outranked
+    assert fulltext in outranked
+    assert teaser not in outranked
     outranked = baseline(jsonld_doc(teaser_json, body=f"<p>{fulltext}</p>"))[1]  # HTML paragraph wins
-    assert fulltext in outranked and teaser not in outranked
+    assert fulltext in outranked
+    assert teaser not in outranked
 
 
 def test_baseline_jsonld_double_embed():
@@ -217,7 +238,7 @@ _CTRL = "before\x01after, with plenty of padding words to pass the one hundred c
 @pytest.mark.parametrize(
     "doc",
     [
-        jsonld_doc('{"articleBody": "%s"}' % _CTRL),
+        jsonld_doc(f'{{"articleBody": "{_CTRL}"}}'),
         f"<html><body><p>{_CTRL}</p></body></html>",
         f"<html><body><div>{_CTRL}</div></body></html>",
     ],
@@ -228,7 +249,10 @@ def test_baseline_control_chars_tree_input(doc):
     (trafilatura's parser strips them from str input, lxml.html.fromstring does not); they must not \
     crash the lxml .text assignment at any baseline sink (JSON/paragraph _build_body, whole-body dump)."
     _, text, length = baseline(html.fromstring(doc))
-    assert length > 100 and "\x01" not in text and "before" in text and "after" in text
+    assert length > 100
+    assert "\x01" not in text
+    assert "before" in text
+    assert "after" in text
 
 
 def test_baseline_nested_paragraph_not_duplicated():
@@ -293,7 +317,8 @@ def test_baseline_schema_properties():
         }
     )
     _, result, _ = baseline(jsonld_doc(recipe))
-    assert "Mix the flour" in result and "Bake for thirty five minutes" in result
+    assert "Mix the flour" in result
+    assert "Bake for thirty five minutes" in result
 
     # recipeInstructions can also be plain strings rather than step objects
     str_recipe = json.dumps(
@@ -306,7 +331,8 @@ def test_baseline_schema_properties():
         }
     )
     _, result, _ = baseline(jsonld_doc(str_recipe))
-    assert "Combine all the dry ingredients" in result and "Pour the batter into the tin" in result
+    assert "Combine all the dry ingredients" in result
+    assert "Pour the batter into the tin" in result
 
     faq = json.dumps(
         {
@@ -343,7 +369,8 @@ def test_baseline_discourse_preload():
     preloaded = escape(json.dumps({"site_settings": "ignored", "topic_12": topic}), quote=True)
     doc = f'<html><body><div id="data-preloaded" data-preloaded="{preloaded}"></div></body></html>'
     _, result, _ = baseline(doc)
-    assert "First forum post" in result and "Second forum post" in result
+    assert "First forum post" in result
+    assert "Second forum post" in result
     assert "<p>" not in result
 
 
@@ -411,7 +438,8 @@ def test_baseline_howto():
         }
     )
     _, result, _ = baseline(jsonld_doc(both))
-    assert "preheat the oven" in result and "one hundred and eighty" in result
+    assert "preheat the oven" in result
+    assert "one hundred and eighty" in result
 
 
 def test_baseline_element_input_not_mutated():
@@ -419,7 +447,8 @@ def test_baseline_element_input_not_mutated():
     doc = "<html><body><aside>side text</aside><p>" + "Real paragraph content on the page. " * 4 + "</p></body></html>"
     tree = html.fromstring(doc)
     _, text, _ = baseline(tree)
-    assert "Real paragraph content" in text and "side text" not in text
+    assert "Real paragraph content" in text
+    assert "side text" not in text
     assert tree.find(".//aside") is not None  # basic_cleaning ran on a copy
 
 
@@ -429,7 +458,8 @@ def test_baseline_article_dominance():
     teaser = "Related article teaser text that comfortably exceeds the length gate...."  # >100, < max/5
     doc = f"<html><body><article>{main}</article><article>{teaser}{teaser[:40]}</article></body></html>"
     _, result, _ = baseline(doc)
-    assert "Main article content" in result and "Related article teaser" not in result
+    assert "Main article content" in result
+    assert "Related article teaser" not in result
 
     post = "Forum post number {} with a comparable amount of discussion text in every single post here."
     doc2 = "<html><body>" + "".join(f"<article>{post.format(i)}</article>" for i in range(3)) + "</body></html>"

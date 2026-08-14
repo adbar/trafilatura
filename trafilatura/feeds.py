@@ -62,7 +62,7 @@ LINK_VALIDATION_RE = re.compile(
     r"\?type=100$|"  # Typo3
     r"feeds/posts/default/?$|"  # Blogger
     r"\?feed=(?:atom|rdf|rss|rss2)|"
-    r"feed$"  # Generic
+    r"feed$",  # Generic
 )
 
 

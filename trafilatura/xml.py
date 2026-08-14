@@ -235,8 +235,7 @@ def build_tei_output(docmeta: Document) -> _Element:
     output = write_teitree(docmeta)
     # filter output (strip unwanted elements), just in case
     # check and repair
-    output = check_tei(output, docmeta.url)
-    return output
+    return check_tei(output, docmeta.url)
 
 
 def check_tei(xmldoc: _Element, url: str | None) -> _Element:
@@ -490,7 +489,10 @@ def _escape_cell(text: str) -> str:
 
 
 def replace_element_text(
-    element: _Element, include_formatting: bool, in_item: bool | None = None, in_cell: bool = False
+    element: _Element,
+    include_formatting: bool,
+    in_item: bool | None = None,
+    in_cell: bool = False,
 ) -> str:
     """Determine element text based on just the text of the element. One must deal with the tail separately."""
     if _consumes_inline_children(element):
@@ -555,7 +557,11 @@ def replace_element_text(
 
 
 def process_element(
-    element: _Element, returnlist: list[str], include_formatting: bool, in_cell: bool = False, in_item: bool = False
+    element: _Element,
+    returnlist: list[str],
+    include_formatting: bool,
+    in_cell: bool = False,
+    in_item: bool = False,
 ) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
@@ -680,7 +686,7 @@ def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t",
     # organize fields
     outputwriter.writerow(
         [
-            d if d else null
+            d or null
             for d in (
                 document.url,
                 document.id,

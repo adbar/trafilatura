@@ -66,11 +66,11 @@ def _get_optional_int(config: ConfigParser, option: str) -> int | None:
     return int(value) if value.isdigit() else None
 
 
-# todo Python >= 3.10: use dataclass with slots=True
+# not a dataclass: __init__ contains real logic
 class Extractor:
     "Defines a class to store all extraction options."
 
-    __slots__ = [
+    __slots__ = [  # noqa: RUF023 — grouped by purpose, not alphabetical
         "config",
         # general
         "format",
@@ -139,7 +139,7 @@ class Extractor:
         author_blacklist: set[str] | None = None,
         url_blacklist: set[str] | None = None,
         date_params: dict[str, str] | None = None,
-    ):
+    ) -> None:
         if precision and recall:
             LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
         self._set_source(url, source)
@@ -218,15 +218,15 @@ def set_date_params(extensive: bool = True) -> dict[str, Any]:
     return {
         "original_date": True,
         "extensive_search": extensive,
-        "max_date": datetime.now().strftime("%Y-%m-%d"),
+        "max_date": datetime.now().astimezone().strftime("%Y-%m-%d"),
     }
 
 
-# todo Python >= 3.10: use dataclass with slots=True
+# not a dataclass: idval/license_val keywords deliberately differ from the field names
 class Document:
     "Defines a class to store all necessary data and metadata fields for extracted information."
 
-    __slots__ = [
+    __slots__ = [  # noqa: RUF023 — ordered by output precedence, not alphabetical
         "title",
         "author",
         "url",
@@ -275,7 +275,7 @@ class Document:
         image: str | None = None,
         pagetype: str | None = None,
         filedate: str | None = None,
-    ):
+    ) -> None:
         self.title: str | None = title
         self.author: str | None = author
         self.url: str | None = url

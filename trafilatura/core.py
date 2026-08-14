@@ -29,6 +29,7 @@ from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import (
     LANGID_FLAG,
+    HtmlInput,
     check_html_lang,
     language_filter,
     load_html,
@@ -171,7 +172,12 @@ def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None) 
     postbody, temp_text, len_text = extract_content(cleaned_tree, r_options)
     if not r_options.fast:
         postbody, temp_text, len_text = compare_extraction(
-            cleaned_tree_backup, copy(esc_tree), postbody, temp_text, len_text, r_options
+            cleaned_tree_backup,
+            copy(esc_tree),
+            postbody,
+            temp_text,
+            len_text,
+            r_options,
         )
     return postbody, temp_text, len_text
 
@@ -290,7 +296,7 @@ def trafilatura_sequence(
 
 
 def bare_extraction(
-    filecontent: Any,
+    filecontent: HtmlInput,
     url: str | None = None,
     fast: bool = False,
     no_fallback: bool = False,
@@ -434,7 +440,9 @@ def bare_extraction(
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
         postbody, temp_text, len_text, commentsbody, temp_comments, len_comments = trafilatura_sequence(
-            tree, options, options.url or document.url
+            tree,
+            options,
+            options.url or document.url,
         )
 
         # tree size sanity check
@@ -494,7 +502,7 @@ def bare_extraction(
 
 
 def extract(
-    filecontent: Any,
+    filecontent: HtmlInput,
     url: str | None = None,
     record_id: str | None = None,
     fast: bool = False,
@@ -591,7 +599,7 @@ def extract(
 
 
 def extract_with_metadata(
-    filecontent: Any,
+    filecontent: HtmlInput,
     url: str | None = None,
     record_id: str | None = None,
     fast: bool = False,
@@ -703,7 +711,7 @@ def _check_deprecation(
 
 
 def _internal_extraction(
-    filecontent: Any,
+    filecontent: HtmlInput,
     url: str | None = None,
     record_id: str | None = None,
     fast: bool = False,

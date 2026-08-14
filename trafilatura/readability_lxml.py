@@ -19,6 +19,7 @@ License of forked code: Apache-2.0.
 
 import logging
 import re
+from dataclasses import dataclass
 from math import sqrt
 from operator import attrgetter
 from typing import Any
@@ -38,19 +39,6 @@ def _tostring(string: HtmlElement) -> str:
     return tostring(string, encoding=str, method="xml")
 
 
-DIV_TO_P_ELEMS = {
-    "a",
-    "blockquote",
-    "dl",
-    "div",
-    "img",
-    "ol",
-    "p",
-    "pre",
-    "table",
-    "ul",
-}
-
 DIV_SCORES = {"div", "article"}
 BLOCK_SCORES = {"pre", "td", "blockquote"}
 BAD_ELEM_SCORES = {"address", "ol", "ul", "dl", "dd", "dt", "li", "form", "aside"}
@@ -61,24 +49,23 @@ TEXT_CLEAN_ELEMS = {"p", "img", "li", "a", "embed", "input"}
 REGEXES = {
     "unlikelyCandidatesRe": re.compile(
         r"combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter",
-        re.I,
+        re.IGNORECASE,
     ),
-    "okMaybeItsACandidateRe": re.compile(r"and|article|body|column|main|shadow", re.I),
+    "okMaybeItsACandidateRe": re.compile(r"and|article|body|column|main|shadow", re.IGNORECASE),
     "positiveRe": re.compile(
         r"article|body|content|entry|hentry|main|page|pagination|post|text|blog|story",
-        re.I,
+        re.IGNORECASE,
     ),
     "negativeRe": re.compile(
         r"button|combx|comment|com-|contact|figure|foot|footer|footnote|form|input|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
-        re.I,
+        re.IGNORECASE,
     ),
-    "divToPElementsRe": re.compile(r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.I),
-    "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.I),
+    "divToPElementsRe": re.compile(r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.IGNORECASE),
+    "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.IGNORECASE),
 }
 
 FRAME_TAGS = {"body", "html"}
 LIST_TAGS = {"ol", "ul"}
-# DIV_TO_P_ELEMS = {'a', 'blockquote', 'dl', 'div', 'img', 'ol', 'p', 'pre', 'table', 'ul'}
 
 
 def text_length(elem: HtmlElement) -> int:
@@ -86,14 +73,12 @@ def text_length(elem: HtmlElement) -> int:
     return len(trim(elem.text_content()))
 
 
+@dataclass(slots=True, eq=False)
 class Candidate:
     "Defines a class to score candidate elements."
 
-    __slots__ = ["score", "elem"]
-
-    def __init__(self, score: float, elem: HtmlElement) -> None:
-        self.score: float = score
-        self.elem: HtmlElement = elem
+    score: float
+    elem: HtmlElement
 
 
 class Document:
@@ -181,10 +166,8 @@ class Document:
                 node_content = sibling.text or ""
                 node_length = len(node_content)
 
-                if (
-                    node_length > 80
-                    and link_density < 0.25
-                    or (node_length <= 80 and link_density == 0 and DOT_SPACE.search(node_content))
+                if (node_length > 80 and link_density < 0.25) or (
+                    node_length <= 80 and link_density == 0 and DOT_SPACE.search(node_content)
                 ):
                     append = True
             # append to the output div
@@ -411,12 +394,12 @@ class Document:
 REGEXPS = {
     "unlikelyCandidates": re.compile(
         r"-ad-|ai2html|banner|breadcrumbs|combx|comment|community|cover-wrap|disqus|extra|footer|gdpr|header|legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper|social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup|yom-remote",
-        re.I,
+        re.IGNORECASE,
     ),
-    "okMaybeItsACandidate": re.compile(r"and|article|body|column|content|main|shadow", re.I),
+    "okMaybeItsACandidate": re.compile(r"and|article|body|column|content|main|shadow", re.IGNORECASE),
 }
 
-DISPLAY_NONE = re.compile(r"display:\s*none", re.I)
+DISPLAY_NONE = re.compile(r"display:\s*none", re.IGNORECASE)
 
 
 def is_node_visible(node: HtmlElement) -> bool:

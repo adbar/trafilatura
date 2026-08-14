@@ -10,7 +10,6 @@ from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, Extractor, use_config
 from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
 
-
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
 ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
@@ -74,7 +73,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="en-US"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=True,
+                fast=True,
                 target_language="en",
             )
             is not None
@@ -82,7 +81,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="en-US"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=True,
+                fast=True,
                 target_language="de",
             )
             is None
@@ -91,7 +90,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="de-DE"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=False,
+                fast=False,
                 target_language="de",
             )
             is None
@@ -101,7 +100,7 @@ def test_filters():
         assert (
             extract(
                 html.fromstring('<html lang="de-DE"><body>' + my_p * 50 + "</body></html>"),
-                no_fallback=False,
+                fast=False,
                 target_language="de",
             )
             is not None

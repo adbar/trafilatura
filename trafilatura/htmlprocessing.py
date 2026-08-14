@@ -317,7 +317,7 @@ def handle_textnode(
 
     # filter content
     # or not re.search(r'\w', element.text):  # text_content()?
-    if not elem.text and textfilter(elem) or (options.dedup and duplicate_test(elem, options)):
+    if (not elem.text and textfilter(elem)) or (options.dedup and duplicate_test(elem, options)):
         return None
     return elem
 
@@ -350,7 +350,7 @@ def convert_lists(elem: _Element) -> None:
     for subelem in elem.iter("dd", "dt", "li"):
         # keep track of dd/dt items
         if subelem.tag in ("dd", "dt"):
-            subelem.set("rend", f"{str(subelem.tag)}-{i}")
+            subelem.set("rend", f"{subelem.tag!s}-{i}")
             # increment counter after <dd> in description list
             if subelem.tag == "dd":
                 i += 1

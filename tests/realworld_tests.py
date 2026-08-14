@@ -146,7 +146,7 @@ MOCK_PAGES = {
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, formatting=False, links=False):
     """load mock page from samples"""
     try:
-        with open(os.path.join(TEST_DIR, "cache", MOCK_PAGES[url]), "r", encoding="utf-8") as inputf:
+        with open(os.path.join(TEST_DIR, "cache", MOCK_PAGES[url]), encoding="utf-8") as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
@@ -170,7 +170,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, format
         htmlstring,
         url,
         record_id="0000",
-        no_fallback=False,
+        fast=False,
         output_format=output_format,
         target_language=langcheck,
         include_formatting=formatting,
@@ -181,7 +181,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False, format
 def load_mock_page_meta(url):
     """Load mock page from samples"""
     try:
-        with open(os.path.join(TEST_DIR, "cache", MOCK_PAGES[url]), "r", encoding="utf-8") as inputf:
+        with open(os.path.join(TEST_DIR, "cache", MOCK_PAGES[url]), encoding="utf-8") as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
@@ -205,468 +205,386 @@ def test_extract(xmloutput, formatting):
     do_load_page = functools.partial(load_mock_page, xml_flag=xmloutput, formatting=formatting)
 
     result = do_load_page("https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/")
-    assert "Impressum" not in result and "Die GEMA dreht völlig am Zeiger!" in result
+    assert "Impressum" not in result
+    assert "Die GEMA dreht völlig am Zeiger!" in result
 
     result = do_load_page(
         "https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html"
     )
-    assert "Impressum" not in result and "Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol" in result
+    assert "Impressum" not in result
+    assert "Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol" in result
 
     result = do_load_page("https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/")
-    assert (
-        "Two or three 10-15 min" in result
-        and "What type? Etc. (30 mins)" in result
-        and "Dieser Eintrag wurde veröffentlicht" not in result
-        and "Mit anderen Teillen" not in result
-    )
+    assert "Two or three 10-15 min" in result
+    assert "What type? Etc. (30 mins)" in result
+    assert "Dieser Eintrag wurde veröffentlicht" not in result
+    assert "Mit anderen Teillen" not in result
 
     result = do_load_page("https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess")
-    assert (
-        "Das Bukett präsentiert sich" in result
-        and "Kunden kauften auch" not in result
-        and "Gutschein sichern" not in result
-        and "Besonders gut passt er zu asiatischen Gerichten" in result
-    )
+    assert "Das Bukett präsentiert sich" in result
+    assert "Kunden kauften auch" not in result
+    assert "Gutschein sichern" not in result
+    assert "Besonders gut passt er zu asiatischen Gerichten" in result
 
     result = do_load_page("https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html")
-    assert (
-        "Überwachung der somatischen Zellen" in result
-        and "tragbaren Ultraschall-Geräten" in result
-        and "Kotkonsistenz" in result
-        and "Anzeigentarife" not in result
-        and "Aktuelle Berichte aus dieser Kategorie" not in result
-    )
+    assert "Überwachung der somatischen Zellen" in result
+    assert "tragbaren Ultraschall-Geräten" in result
+    assert "Kotkonsistenz" in result
+    assert "Anzeigentarife" not in result
+    assert "Aktuelle Berichte aus dieser Kategorie" not in result
 
     result = do_load_page("http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung")
     if xmloutput is False:
-        assert "Wir bearbeiten alle Leistungsbilder" in result and "Brückenbau" not in result
+        assert "Wir bearbeiten alle Leistungsbilder" in result
+        assert "Brückenbau" not in result
 
     result = do_load_page("http://www.shingon-reiki.de/reiki-und-schamanismus/")
-    assert (
-        "Catch Evolution" not in result
-        and "und gekennzeichnet mit" not in result
-        and "Heut geht es" in result
-        and "Ich komme dann zu dir vor Ort." in result
-    )
+    assert "Catch Evolution" not in result
+    assert "und gekennzeichnet mit" not in result
+    assert "Heut geht es" in result
+    assert "Ich komme dann zu dir vor Ort." in result
 
     result = do_load_page("http://love-hina.ch/news/0409.html")
-    assert "Kapitel 121 ist" in result and "Besucher online" not in result and "Kommentare schreiben" not in result
+    assert "Kapitel 121 ist" in result
+    assert "Besucher online" not in result
+    assert "Kommentare schreiben" not in result
 
     result = do_load_page(
         "http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html"
     )
-    assert (
-        "der steigenden Nachfrage gerecht zu werden." in result
-        and "Zurück zur Übersicht" not in result
-        and "Erhöhung für Zoo-Eintritt" not in result
-    )
+    assert "der steigenden Nachfrage gerecht zu werden." in result
+    assert "Zurück zur Übersicht" not in result
+    assert "Erhöhung für Zoo-Eintritt" not in result
 
     result = do_load_page(
         "https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/"
     )
-    assert (
-        "das letzte Wort sein kann." in result and "Ähnliche Beiträge" not in result
-    )  # and 'Michael Blahm' not in result # comments
+    assert "das letzte Wort sein kann." in result
+    assert "Ähnliche Beiträge" not in result
 
     result = do_load_page("https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/")
-    assert (
-        "Unter diesem Motto findet am 14. September" in result
-        and "Volksinitiative Schweiz zum Grundeinkommen." in result
-        and "getaggt mit:" not in result
-        and "Was denkst du?" not in result
-    )
+    assert "Unter diesem Motto findet am 14. September" in result
+    assert "Volksinitiative Schweiz zum Grundeinkommen." in result
+    assert "getaggt mit:" not in result
+    assert "Was denkst du?" not in result
 
     result = do_load_page("https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/")
-    assert (
-        "Zweitens wird der Genderstern" in result and "alldem leider – nichts." in result
-    )  # and 'Beitragsbild' not in result
+    assert "Zweitens wird der Genderstern" in result
+    assert "alldem leider – nichts." in result
 
     result = do_load_page("http://www.wehranlage-horka.de/veranstaltung/887/")
-    assert (
-        "In eine andere Zeit" in result
-        and "Während Sie über den Markt schlendern" in result
-        and "Infos zum Verein" not in result
-        and "nach oben" not in result
-        and "Datenschutzerklärung" not in result
-    )
+    assert "In eine andere Zeit" in result
+    assert "Während Sie über den Markt schlendern" in result
+    assert "Infos zum Verein" not in result
+    assert "nach oben" not in result
+    assert "Datenschutzerklärung" not in result
 
     # modified by taking only 1st article element...
     result = do_load_page("https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft")
     # print(result)
-    assert (
-        "Millionen Menschen fahren jeden Tag" in result
-        and "Clipdealer" not in result
-        and "Teste dein Wissen" not in result
-        and "Thema: Fußball" not in result
-    )  # and 'Eines der großen Probleme,' in result and 'versteinerte Dinosaurierknochen.' in result
+    assert "Millionen Menschen fahren jeden Tag" in result
+    assert "Clipdealer" not in result
+    assert "Teste dein Wissen" not in result
+    assert "Thema: Fußball" not in result
 
     result = do_load_page("http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html")
-    assert (
-        "Erdöl bildet nach Millionen" in result
-        and "Warum wird das Erdöl knapp?" in result
-        and "Die Natur ist aus chemischen Elementen aufgebaut" not in result
-    )
+    assert "Erdöl bildet nach Millionen" in result
+    assert "Warum wird das Erdöl knapp?" in result
+    assert "Die Natur ist aus chemischen Elementen aufgebaut" not in result
 
     result = do_load_page(
         "https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html"
     )
-    assert "Für einen Roman" in result and "Auszeichnung der Branche." in result
+    assert "Für einen Roman" in result
+    assert "Auszeichnung der Branche." in result
 
     result = do_load_page(
         "https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/"
     )
     if xmloutput is False:
-        assert (
-            "Dann sollten Sie erst recht" in result
-            and "als saure Gürkchen entlarvte Ex-Boyfriends." in result
-            and "Ähnliche Beiträge" not in result
-        )
+        assert "Dann sollten Sie erst recht" in result
+        assert "als saure Gürkchen entlarvte Ex-Boyfriends." in result
+        assert "Ähnliche Beiträge" not in result
 
     result = do_load_page("http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html")
-    assert (
-        "künftig das XADO-Schutzfett verwenden." in result
-        and "bis zu 50% Verschleiß." in result
-        and "Die Lebensdauer von Bauteilen erhöht sich beträchtlich." in result
-        and "Newsletter" not in result
-        and "Sie könnten auch an folgenden Artikeln interessiert sein" not in result
-    )
+    assert "künftig das XADO-Schutzfett verwenden." in result
+    assert "bis zu 50% Verschleiß." in result
+    assert "Die Lebensdauer von Bauteilen erhöht sich beträchtlich." in result
+    assert "Newsletter" not in result
+    assert "Sie könnten auch an folgenden Artikeln interessiert sein" not in result
 
     result = do_load_page("https://www.fairkom.eu/about")
-    assert (
-        "ein gemeinwohlorientiertes Partnerschaftsnetzwerk" in result
-        and "Stimmberechtigung bei der Generalversammlung." in result
-        and "support@fairkom.eu" not in result
-    )
+    assert "ein gemeinwohlorientiertes Partnerschaftsnetzwerk" in result
+    assert "Stimmberechtigung bei der Generalversammlung." in result
+    assert "support@fairkom.eu" not in result
 
     result = do_load_page(
         "https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461"
     )
-    assert (
-        "Einige Kunden des Fahrdienst-Vermittler Lyft" in result
-        and "zeitweise rund vier Prozent." in result
-        and "Allgemeine Nutzungsbedingungen" not in result
-        and "Waymo bittet Autohersteller um Geld" not in result
-    )
+    assert "Einige Kunden des Fahrdienst-Vermittler Lyft" in result
+    assert "zeitweise rund vier Prozent." in result
+    assert "Allgemeine Nutzungsbedingungen" not in result
+    assert "Waymo bittet Autohersteller um Geld" not in result
 
     result = do_load_page("http://www.hundeverein-kreisunna.de/unserverein.html")
-    assert (
-        "Beate und Norbert Olschewski" in result
-        and "ein Familienmitglied und unser Freund." in result
-        and "zurück zur Startseite" not in result
-    )
+    assert "Beate und Norbert Olschewski" in result
+    assert "ein Familienmitglied und unser Freund." in result
+    assert "zurück zur Startseite" not in result
 
     result = do_load_page("https://viehbacher.com/de/steuerrecht")
-    assert (
-        "und wirtschaftlich orientierte Privatpersonen" in result
-        and "rund um die Uhr." in result
-        and "Mensch im Mittelpunkt." in result
-        and "Was sind Cookies?" not in result
-    )
+    assert "und wirtschaftlich orientierte Privatpersonen" in result
+    assert "rund um die Uhr." in result
+    assert "Mensch im Mittelpunkt." in result
+    assert "Was sind Cookies?" not in result
 
     result = do_load_page("http://www.jovelstefan.de/2011/09/11/gefallt-mir/")
-    assert (
-        "Manchmal überrascht einen" in result
-        and "kein Meisterwerk war!" in result
-        and "Pingback von" not in result
-        and "Kommentare geschlossen" not in result
-    )
+    assert "Manchmal überrascht einen" in result
+    assert "kein Meisterwerk war!" in result
+    assert "Pingback von" not in result
+    assert "Kommentare geschlossen" not in result
 
     result = do_load_page("https://www.stuttgart.de/item/show/132240/1")
-    assert (
-        "Das Bohnenviertel entstand" in result
-        and "sich herrlich entspannen." in result
-        and "Nützliche Links" not in result
-        and "Mehr zum Thema" not in result
-    )
+    assert "Das Bohnenviertel entstand" in result
+    assert "sich herrlich entspannen." in result
+    assert "Nützliche Links" not in result
+    assert "Mehr zum Thema" not in result
 
     result = do_load_page("http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/")
-    assert (
-        "zu einem glatten Teig verarbeiten." in result
-        and "goldbraun sind." in result
-        and "200 g Zucker" in result
-        and "Ein Backblech mit Backpapier auslegen." in result
-        and "Sei der Erste" not in result
-        and "Gefällt mir" not in result
-        and "Trotz sorgfältiger inhaltlicher Kontrolle" not in result
-    )
+    assert "zu einem glatten Teig verarbeiten." in result
+    assert "goldbraun sind." in result
+    assert "200 g Zucker" in result
+    assert "Ein Backblech mit Backpapier auslegen." in result
+    assert "Sei der Erste" not in result
+    assert "Gefällt mir" not in result
+    assert "Trotz sorgfältiger inhaltlicher Kontrolle" not in result
 
     # justext performs better here
     result = do_load_page("http://schleifen.ucoz.de/blog/briefe/2010-10-26-18")
-    assert "Es war gesagt," in result and "Symbol auf dem Finger haben" in result and "Aufrufe:" not in result
+    assert "Es war gesagt," in result
+    assert "Symbol auf dem Finger haben" in result
+    assert "Aufrufe:" not in result
 
     result = do_load_page("https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg")
-    assert (
-        "Salzburg liebt seine Radfahrer." in result
-        and "Puls einsaugen zu lassen." in result
-        and "Das könnte Sie auch interessieren ..." not in result
-        and "So macht Radfahren sonst noch Spaß" not in result
-    )  # and 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
+    assert "Salzburg liebt seine Radfahrer." in result
+    assert "Puls einsaugen zu lassen." in result
+    assert "Das könnte Sie auch interessieren ..." not in result
+    assert "So macht Radfahren sonst noch Spaß" not in result
 
     result = do_load_page("https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/")
-    assert (
-        "Allerdings sieht es wie ein Dildo aus," in result
-        and "gibt Bescheid, ne?" in result
-        and "Ähnliche Beiträge" not in result
-        and "Deine E-Mail (bleibt natürlich unter uns)" not in result
-    )
+    assert "Allerdings sieht es wie ein Dildo aus," in result
+    assert "gibt Bescheid, ne?" in result
+    assert "Ähnliche Beiträge" not in result
+    assert "Deine E-Mail (bleibt natürlich unter uns)" not in result
 
     result = do_load_page("https://www.otto.de/twoforfashion/strohtasche/")
-    assert (
-        "Ob rund oder kastenförmig, ob dezent oder auffällig" in result
-        and "XX, Die Redaktion" in result
-        and " Kommentieren" not in result
-        and "Dienstag, 4. Juni 2019" not in result
-    )
+    assert "Ob rund oder kastenförmig, ob dezent oder auffällig" in result
+    assert "XX, Die Redaktion" in result
+    assert " Kommentieren" not in result
+    assert "Dienstag, 4. Juni 2019" not in result
 
     result = do_load_page("http://iloveponysmag.com/2018/05/24/barbour-coastal/")
-    assert (
-        "Eine meiner besten Entscheidungen bisher:" in result
-        and "Verlassenes Gewächshaus meets versteckter Deich" in result
-        and "Der Hundestrand in Stein an der Ostsee" in result
-        and "Tags: Barbour," not in result
-        and "Bitte (noch) mehr Bilder von Helle" in result
-        and "Hinterlasse einen Kommentar" not in result
-    )
+    assert "Eine meiner besten Entscheidungen bisher:" in result
+    assert "Verlassenes Gewächshaus meets versteckter Deich" in result
+    assert "Der Hundestrand in Stein an der Ostsee" in result
+    assert "Tags: Barbour," not in result
+    assert "Bitte (noch) mehr Bilder von Helle" in result
+    assert "Hinterlasse einen Kommentar" not in result
 
     result = do_load_page("https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/")
-    assert (
-        "Das ist alles nicht gekennzeichnet, wie soll ich wissen" in result
-        and "Instagramshops machen es Abmahnanwälten leicht" in result
-        and "Diese Geschichte teilen" not in result
-        and "Ähnliche Beiträge " not in result
-        and "Ich bin der Ansicht, abwarten und Tee trinken." in result
-        and "Danke für dein Feedback. Auch zum Look meiner Seite." in result
-        and "Diese Website verwendet Akismet, um Spam zu reduzieren." not in result
-    )
+    assert "Das ist alles nicht gekennzeichnet, wie soll ich wissen" in result
+    assert "Instagramshops machen es Abmahnanwälten leicht" in result
+    assert "Diese Geschichte teilen" not in result
+    assert "Ähnliche Beiträge " not in result
+    assert "Ich bin der Ansicht, abwarten und Tee trinken." in result
+    assert "Danke für dein Feedback. Auch zum Look meiner Seite." in result
+    assert "Diese Website verwendet Akismet, um Spam zu reduzieren." not in result
 
     result = do_load_page("http://www.womencantalksports.com/top-10-women-talking-sports/")
-    assert (
-        "Keep Talking Sports!" in result
-        and "Category: Blog Popular" not in result
-        and "Copyright Women Can Talk Sports." not in result
-        and "Submit your sports question below" not in result
-        and "3.Charlotte Jones Anderson" in result
-    )
+    assert "Keep Talking Sports!" in result
+    assert "Category: Blog Popular" not in result
+    assert "Copyright Women Can Talk Sports." not in result
+    assert "Submit your sports question below" not in result
+    assert "3.Charlotte Jones Anderson" in result
 
     result = do_load_page("https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html")
-    assert (
-        "Schönheit kommt für Pamela von Innen und Außen" in result
-        and "Die Workout Übungen kannte ich bereits" in result
-        and "Great post, I like your blog" in result
-        and "Links zu diesem Post" not in result
-        and "mehr über mich ♥" not in result
-        and "Bitte beachte auch die Datenschutzerklärung von Google." not in result
-    )  # and 'Vielen Dank an den den Verlag' in result
+    assert "Schönheit kommt für Pamela von Innen und Außen" in result
+    assert "Die Workout Übungen kannte ich bereits" in result
+    assert "Great post, I like your blog" in result
+    assert "Links zu diesem Post" not in result
+    assert "mehr über mich ♥" not in result
+    assert "Bitte beachte auch die Datenschutzerklärung von Google." not in result
 
     result = do_load_page(
         "https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html"
     )
-    assert (
-        "Grounded in sustainable architecture and refined Vietnamese craftsmanship," in result
-        and "and Carmelo Resort" in result
-        and "OMG what a beautiful place to stay! " in result
-        and "Food Advertising by" not in result
-        and "Dining and Drinking" in result
-        and "A lovely note makes a beautiful day!" not in result
-    )  # and 'Reply' not in result
+    assert "Grounded in sustainable architecture and refined Vietnamese craftsmanship," in result
+    assert "and Carmelo Resort" in result
+    assert "OMG what a beautiful place to stay! " in result
+    assert "Food Advertising by" not in result
+    assert "Dining and Drinking" in result
+    assert "A lovely note makes a beautiful day!" not in result
 
     result = do_load_page("https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/")
-    assert (
-        "Argentina, the birthplace of polo." in result
-        and "Simon Wittenberg travels to the Eternal City in Italy" in result
-        and "Luxury and lifestyle articles" not in result
-        and "Pinterest" not in result
-    )
+    assert "Argentina, the birthplace of polo." in result
+    assert "Simon Wittenberg travels to the Eternal City in Italy" in result
+    assert "Luxury and lifestyle articles" not in result
+    assert "Pinterest" not in result
 
     result = do_load_page("https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5")
-    assert "Werkzeug für Heimwerker und Baumarkt-Artikel" in result and "Newsletter" not in result
+    assert "Werkzeug für Heimwerker und Baumarkt-Artikel" in result
+    assert "Newsletter" not in result
 
     result = do_load_page(
         "https://www.gruen-digital.de/2015/01/digitalpolitisches-jahrestagung-2015-der-heinrich-boell-stiftung-baden-wuerttemberg/"
     )
-    assert (
-        "Prof. Dr. Caja Thimm" in result
-        and "zur Anmeldung." in result
-        and "Next post" not in result
-        and "Aus den Ländern" not in result
-    )
+    assert "Prof. Dr. Caja Thimm" in result
+    assert "zur Anmeldung." in result
+    assert "Next post" not in result
+    assert "Aus den Ländern" not in result
 
     result = do_load_page("https://www.rechtambild.de/2011/10/bgh-marions-kochbuch-de/")
-    assert (
-        "Leitsätze des Gerichts" in result
-        and "III. Die Revision der Beklagten"
-        and "twittern" not in result
-        and "Ähnliche Beiträge" not in result
-        and "d.toelle[at]rechtambild.de" not in result
-    )
+    assert "Leitsätze des Gerichts" in result
+    assert "III. Die Revision der Beklagten"
+    assert "twittern" not in result
+    assert "Ähnliche Beiträge" not in result
+    assert "d.toelle[at]rechtambild.de" not in result
 
     result = do_load_page(
         "http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html"
     )
     # print(result)
-    assert (
-        "Wann Blogs einer Impressumspflicht unterliegen," in result
-        and "Über mich" not in result
-        and "Gesetzes- und Rechtsprechungszitate werden automatisch" not in result
-        and "Mit Verlaub, ich halte das für groben Unsinn." in result
-    )
+    assert "Wann Blogs einer Impressumspflicht unterliegen," in result
+    assert "Über mich" not in result
+    assert "Gesetzes- und Rechtsprechungszitate werden automatisch" not in result
+    assert "Mit Verlaub, ich halte das für groben Unsinn." in result
     ## comments!
     # and 'Comment by' not in result
 
     result = do_load_page("https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html")
     if xmloutput is False:
-        assert (
-            "Aufbau und Inhalt" in result
-            and "Verlag Dr. Otto Schmidt" in result
-            and "Handbuch" not in result
-            and "Drucken" not in result
-            and "Ähnliche Artikel" not in result
-            and "Anzeige:" not in result
-        )  # and 'Kommentar schreiben' not in result
+        assert "Aufbau und Inhalt" in result
+        assert "Verlag Dr. Otto Schmidt" in result
+        assert "Handbuch" not in result
+        assert "Drucken" not in result
+        assert "Ähnliche Artikel" not in result
+        assert "Anzeige:" not in result
 
     result = do_load_page(
         "https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen"
     )
-    assert (
-        "Auch der Verweis auf ehrverletzende Bewertungen" in result
-        and "Fanden Sie diesen Artikel nützlich?" not in result
-        and "Kommentar hinzufügen" not in result
-    )  # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
+    assert "Auch der Verweis auf ehrverletzende Bewertungen" in result
+    assert "Fanden Sie diesen Artikel nützlich?" not in result
+    assert "Kommentar hinzufügen" not in result
     if xmloutput is False:
-        assert "Anja Schmoll-Trautmann" not in result and "Aktuell" not in result
+        assert "Anja Schmoll-Trautmann" not in result
+        assert "Aktuell" not in result
 
     result = do_load_page("https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage")
-    assert (
-        "Alle Artikel zu unseren Recherchen" not in result
-        and "Vorweg: Die beteiligten AfD-Politiker" in result
-        and "ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal" in result
-        and "Wir informieren Sie regelmäßig zum Thema Neue Rechte" not in result
-        and "Kommentar verfassen" not in result
-        and "weiterlesen" not in result
-    )
+    assert "Alle Artikel zu unseren Recherchen" not in result
+    assert "Vorweg: Die beteiligten AfD-Politiker" in result
+    assert "ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal" in result
+    assert "Wir informieren Sie regelmäßig zum Thema Neue Rechte" not in result
+    assert "Kommentar verfassen" not in result
+    assert "weiterlesen" not in result
 
     result = do_load_page(
         "https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845"
     )
-    assert (
-        "05:28 Uhr" not in result
-        and "Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt" in result
-        and "ICE im S-Bahn-Takt" not in result
-        and "Diskussion zu diesem Artikel auf:" not in result
-        and "Berater-Affäre bringt Bahnchef Lutz in Bedrängnis" not in result
-        and "auch der Bus ein klimafreundliches Verkehrsmittel sei" in result
-    )
+    assert "05:28 Uhr" not in result
+    assert "Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt" in result
+    assert "ICE im S-Bahn-Takt" not in result
+    assert "Diskussion zu diesem Artikel auf:" not in result
+    assert "Berater-Affäre bringt Bahnchef Lutz in Bedrängnis" not in result
+    assert "auch der Bus ein klimafreundliches Verkehrsmittel sei" in result
 
     result = do_load_page("https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/")
-    assert (
-        "Rund ums Fahrzeug" not in result
-        and "in punkto Sicherheit, Bedienung, Ergonomie" in result
-        and "Grenzwert der Richtlinie 2014/79/EU" in result
-        and "Diesel-Umtauschprämien" not in result
-        and "Besonders bei Babyschalen sollte geprüft werden" in result
-    )
+    assert "Rund ums Fahrzeug" not in result
+    assert "in punkto Sicherheit, Bedienung, Ergonomie" in result
+    assert "Grenzwert der Richtlinie 2014/79/EU" in result
+    assert "Diesel-Umtauschprämien" not in result
+    assert "Besonders bei Babyschalen sollte geprüft werden" in result
 
     result = do_load_page("https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/")
-    assert (
-        "Was I losing my mind?" in result
-        and "being cached after their first access." in result
-        and "Finding a Fix" in result
-        and "from django.conf import settings" in result
-        and "New Call-to-action" not in result
-        and "Contact us" not in result
-        and "Back to blog" not in result
-        and "You might also like:" not in result
-    )
+    assert "Was I losing my mind?" in result
+    assert "being cached after their first access." in result
+    assert "Finding a Fix" in result
+    assert "from django.conf import settings" in result
+    assert "New Call-to-action" not in result
+    assert "Contact us" not in result
+    assert "Back to blog" not in result
+    assert "You might also like:" not in result
 
     result = do_load_page("https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/")
-    assert (
-        "Vor knapp zwei Wochen" in result
-        and "gibt es in der dazugehörigen Vorstellungs-News." in result
-        and "Themen:" not in result
-        and "bis Januar 2009 Artikel für ComputerBase verfasst." not in result
-        and "Warum Werbebanner?" not in result
-        and "71 Kommentare" not in result
-    )
+    assert "Vor knapp zwei Wochen" in result
+    assert "gibt es in der dazugehörigen Vorstellungs-News." in result
+    assert "Themen:" not in result
+    assert "bis Januar 2009 Artikel für ComputerBase verfasst." not in result
+    assert "Warum Werbebanner?" not in result
+    assert "71 Kommentare" not in result
 
     result = do_load_page("http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html")
-    assert (
-        "就放心去吧" in result
-        and "Repeat Chorus" in result
-        and "Older post" not in result
-        and "Thank you for your support!" not in result
-    )
+    assert "就放心去吧" in result
+    assert "Repeat Chorus" in result
+    assert "Older post" not in result
+    assert "Thank you for your support!" not in result
 
     result = do_load_page("https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/")
-    assert (
-        "Frank Thelen, Investor" in result
-        and "Female founders must constantly consider" in result
-        and "Thema des öffentlichen Interesses" in result
-        and "Nach langjähriger Tätigkeit im Ausland" not in result
-        and "Schaut man ganz genau hin, ist der Habeck-Kommentar" in result
-        and "Mit Absendung des Formulars willige ich" not in result
-        and "Kommentieren" not in result
-    )  # and 'Auch interessant' not in result and 'Wir tun jeden Tag, was wir lieben.' not in result
+    assert "Frank Thelen, Investor" in result
+    assert "Female founders must constantly consider" in result
+    assert "Thema des öffentlichen Interesses" in result
+    assert "Nach langjähriger Tätigkeit im Ausland" not in result
+    assert "Schaut man ganz genau hin, ist der Habeck-Kommentar" in result
+    assert "Mit Absendung des Formulars willige ich" not in result
+    assert "Kommentieren" not in result
 
     result = do_load_page(
         "https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/"
     )
-    assert (
-        "Welche Werbeeinnahmen erwarten Sie hier langfristig?" in result
-        and "wir haben keinerlei Pläne, das zu verändern." in result
-        and "Nachrichtenüberblick abonnieren" not in result
-        and "über alle aktuellen Entwicklungen auf dem Laufenden." not in result
-        and "Schlagworte" not in result
-        and "Teilen" not in result
-        and "Dauerzoff um drohenden UKW-Blackout" not in result
-        and "Mobilcom Debitel has charged me for third party" in result
-    )
+    assert "Welche Werbeeinnahmen erwarten Sie hier langfristig?" in result
+    assert "wir haben keinerlei Pläne, das zu verändern." in result
+    assert "Nachrichtenüberblick abonnieren" not in result
+    assert "über alle aktuellen Entwicklungen auf dem Laufenden." not in result
+    assert "Schlagworte" not in result
+    assert "Teilen" not in result
+    assert "Dauerzoff um drohenden UKW-Blackout" not in result
+    assert "Mobilcom Debitel has charged me for third party" in result
 
     result = do_load_page("https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/")
-    assert (
-        "Zeit für Loslassen und Entspannung." in result
-        and "Wie sieht dein Alltag aus?" in result
-        and "Erfrischende, abschwellende Augencreme Phyto Contour" in result
-        and "Vielen Dank Anja für deine Tipps rund um Beauty" in result
-        and "Betreiberin von incurvy Plus Size" not in result
-        and "Wir verwenden Cookies" not in result
-    )  # and 'Das Thema könnte dich auch interessieren:' not in result
+    assert "Zeit für Loslassen und Entspannung." in result
+    assert "Wie sieht dein Alltag aus?" in result
+    assert "Erfrischende, abschwellende Augencreme Phyto Contour" in result
+    assert "Vielen Dank Anja für deine Tipps rund um Beauty" in result
+    assert "Betreiberin von incurvy Plus Size" not in result
+    assert "Wir verwenden Cookies" not in result
 
     result = do_load_page("https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843")
-    assert (
-        "No grape variety invites as much intrigue" in result
-        and "With just 0.9 hectares" in result
-        and "Related Subjects" not in result
-        and "Audios and videos on the topic" not in result
-    )  # and 'But boozers in Berlin' not in result
+    assert "No grape variety invites as much intrigue" in result
+    assert "With just 0.9 hectares" in result
+    assert "Related Subjects" not in result
+    assert "Audios and videos on the topic" not in result
 
     result = do_load_page("https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html")
-    assert (
-        "Adele feierte ausgelassen mit den Spice Girls" in result
-        and "wie sich Adele weiterentwickelt." in result
-        and "Sommerzeit ist Urlaubszeit," not in result
-        and "Lade weitere Inhalte" not in result
-    )
+    assert "Adele feierte ausgelassen mit den Spice Girls" in result
+    assert "wie sich Adele weiterentwickelt." in result
+    assert "Sommerzeit ist Urlaubszeit," not in result
+    assert "Lade weitere Inhalte" not in result
 
     result = do_load_page(
         "https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx"
     )
-    assert (
-        "Konflikte mag keiner." in result
-        and "Gespräche meistern können." in result
-        and "Weiterführender Link" not in result
-        and "Flexible Wege in die" not in result
-        and "Storage für den Mittelstand" not in result
-    )
+    assert "Konflikte mag keiner." in result
+    assert "Gespräche meistern können." in result
+    assert "Weiterführender Link" not in result
+    assert "Flexible Wege in die" not in result
+    assert "Storage für den Mittelstand" not in result
 
     result = do_load_page("https://novalanalove.com/ear-candy/")
-    assert (
-        "Earcuff: Zoeca" in result
-        and "mit längeren Ohrringen (:" in result
-        and "Kreole: Stella Hoops" in result
-        and "Jetzt heißt es schnell sein:" not in result
-        and "Diese Website speichert Cookies" not in result
-        and "VON Sina Giebel" not in result
-    )
+    assert "Earcuff: Zoeca" in result
+    assert "mit längeren Ohrringen (:" in result
+    assert "Kreole: Stella Hoops" in result
+    assert "Jetzt heißt es schnell sein:" not in result
+    assert "Diese Website speichert Cookies" not in result
+    assert "VON Sina Giebel" not in result
 
     result = do_load_page("http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/")
     assert "Zuerst dachte ich, ich könnte das" in result
@@ -680,157 +598,127 @@ def test_extract(xmloutput, formatting):
     assert "New York, New York" not in result
 
     result = do_load_page("https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html")
-    assert (
-        "Die Psyche spielt eine nicht unerhebliche Rolle" in result
-        and "Sportskanone oder Sportmuffel" not in result
-        and "PINNEN" not in result
-        and "2. Satt essen bei den Mahlzeiten" in result
-        and "Bringt die Kilos zum Purzeln!" not in result
-        and "Crash-Diäten ziehen meist den Jojo-Effekt" not in result
-    )
+    assert "Die Psyche spielt eine nicht unerhebliche Rolle" in result
+    assert "Sportskanone oder Sportmuffel" not in result
+    assert "PINNEN" not in result
+    assert "2. Satt essen bei den Mahlzeiten" in result
+    assert "Bringt die Kilos zum Purzeln!" not in result
+    assert "Crash-Diäten ziehen meist den Jojo-Effekt" not in result
 
     result = do_load_page("https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html")
-    assert (
-        "Glücks-Trend Konkurrenz" in result
-        and "Praktiziere Dankbarkeit" in result
-        and "dein Ikigai schon gefunden?" in result
-        and "14,90 Euro." in result
-        and "Neu in Liebe" not in result
-        and "Erfahre mehr" not in result
-        and "Erfahrung mit privater Arbeitsvermittlung?" not in result
-    )
+    assert "Glücks-Trend Konkurrenz" in result
+    assert "Praktiziere Dankbarkeit" in result
+    assert "dein Ikigai schon gefunden?" in result
+    assert "14,90 Euro." in result
+    assert "Neu in Liebe" not in result
+    assert "Erfahre mehr" not in result
+    assert "Erfahrung mit privater Arbeitsvermittlung?" not in result
 
     result = do_load_page(
         "https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/"
     )
-    assert (
-        "Gibt es weitere Top-Maßnahmen für Multi-Channel?" in result
-        and "Vielen Dank für das interessante Interview!" in result
-        and "akzeptiere die Datenschutzbestimmungen" not in result
-        and "Diese Beiträge solltest du nicht verpassen" not in result
-    )
+    assert "Gibt es weitere Top-Maßnahmen für Multi-Channel?" in result
+    assert "Vielen Dank für das interessante Interview!" in result
+    assert "akzeptiere die Datenschutzbestimmungen" not in result
+    assert "Diese Beiträge solltest du nicht verpassen" not in result
     if xmloutput is False:
         assert "Annette Henkel" not in result
 
     result = do_load_page(
         "https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/"
     )
-    assert (
-        "These messages include links to the ransomware" in result
-        and "using novel techniques to exfiltrate data." in result
-        and "Share this article:" not in result
-        and "Write a comment" not in result
-        and "Notify me when new comments are added." not in result
-        and "uses Akismet to reduce spam." not in result
-    )
+    assert "These messages include links to the ransomware" in result
+    assert "using novel techniques to exfiltrate data." in result
+    assert "Share this article:" not in result
+    assert "Write a comment" not in result
+    assert "Notify me when new comments are added." not in result
+    assert "uses Akismet to reduce spam." not in result
 
     result = do_load_page(
         "https://www.vice.com/en_uk/article/d3avvm/the-amazon-is-on-fire-and-the-smoke-can-be-seen-from-space"
     )
-    assert (
-        "Brazil went dark." in result
-        and "the highest number of deforestation warnings.”" in result
-        and "Tagged:" not in result
-        and "to the VICE newsletter." not in result
-        and "Watch this next" not in result
-    )
+    assert "Brazil went dark." in result
+    assert "the highest number of deforestation warnings.”" in result
+    assert "Tagged:" not in result
+    assert "to the VICE newsletter." not in result
+    assert "Watch this next" not in result
 
     result = do_load_page("https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html")
-    assert (
-        "Die Ökobilanz von Elektroautos" in result
-        and "Nur die Folie bleibt zurück" in result
-        and "Forum zum Thema:" not in result
-    )  # and 'Highlights aus dem Heft:' not in result and 'TR 7/2019' not in result
+    assert "Die Ökobilanz von Elektroautos" in result
+    assert "Nur die Folie bleibt zurück" in result
+    assert "Forum zum Thema:" not in result
 
     result = do_load_page("https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact")
-    assert (
-        "Normally, video calls tend to" in result
-        and "across both the eyes and nose." in result
-        and "Added ARKit explanation and tweet." in result
-        and "Singapore’s public health program" not in result
-        and "Command Line delivers daily updates" not in result
-    )
+    assert "Normally, video calls tend to" in result
+    assert "across both the eyes and nose." in result
+    assert "Added ARKit explanation and tweet." in result
+    assert "Singapore’s public health program" not in result
+    assert "Command Line delivers daily updates" not in result
 
     result = do_load_page("https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/")
-    assert (
-        "in keinem Braut-Beauty-Programm fehlen darf?" in result
-        and "nicht nur vor der Hochzeit ein absolutes Muss." in result
-        and "Gesundes, glänzendes Haar" in result
-        and "Neue Wandbilder von Posterlounge" not in result
-        and "mit meinen Texten und mit meinen Gedanken." not in result
-        and "Erforderliche Felder sind mit * markiert." not in result
-    )
+    assert "in keinem Braut-Beauty-Programm fehlen darf?" in result
+    assert "nicht nur vor der Hochzeit ein absolutes Muss." in result
+    assert "Gesundes, glänzendes Haar" in result
+    assert "Neue Wandbilder von Posterlounge" not in result
+    assert "mit meinen Texten und mit meinen Gedanken." not in result
+    assert "Erforderliche Felder sind mit * markiert." not in result
 
     result = do_load_page("https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis")
-    assert (
-        "Stilles Rackern, statt lautem Deklamieren." in result
-        and "Watt jibt’s n hier zu lachen?" in result
-        and "Das Brandenbuch. Ein Land in Stichworten." in result
-        and "Bürgerbeteiligung" not in result
-        and "Anmelden" not in result
-        and "Foto: Timur" not in result
-        and "Schlagworte" not in result
-        and "Zeilenumbrüche und Absätze werden automatisch erzeugt." not in result
-    )
+    assert "Stilles Rackern, statt lautem Deklamieren." in result
+    assert "Watt jibt’s n hier zu lachen?" in result
+    assert "Das Brandenbuch. Ein Land in Stichworten." in result
+    assert "Bürgerbeteiligung" not in result
+    assert "Anmelden" not in result
+    assert "Foto: Timur" not in result
+    assert "Schlagworte" not in result
+    assert "Zeilenumbrüche und Absätze werden automatisch erzeugt." not in result
 
     result = do_load_page(
         "https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html"
     )
-    assert (
-        "Wakebeach 257" in result
-        and "Be there or be square!" in result
-        and "Hier geht’s zur Facebook Veranstaltung" in result
-        and "More from News" not in result
-        and "von Redaktion MSM" not in result
-        and "add yours." not in result
-    )  # and 'Blue Tomato präsentiert die dritte' in result
+    assert "Wakebeach 257" in result
+    assert "Be there or be square!" in result
+    assert "Hier geht’s zur Facebook Veranstaltung" in result
+    assert "More from News" not in result
+    assert "von Redaktion MSM" not in result
+    assert "add yours." not in result
 
     result = do_load_page("https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/")
-    assert (
-        "Rocket Pass 4 will begin at 10:00 a.m. PDT" in result
-        and "Holy shit, Mortal Kombat 11" in result
-        and "Let us know down below in the comments" in result
-        and "Related Topics" not in result
-        and "You can keep up with me on Twitter" not in result
-        and "Hit the track today with Mario Kart Tour" not in result
-    )  # and 'what to do with thousands of crates tho' in result
+    assert "Rocket Pass 4 will begin at 10:00 a.m. PDT" in result
+    assert "Holy shit, Mortal Kombat 11" in result
+    assert "Let us know down below in the comments" in result
+    assert "Related Topics" not in result
+    assert "You can keep up with me on Twitter" not in result
+    assert "Hit the track today with Mario Kart Tour" not in result
 
     result = do_load_page("https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding")
-    assert (
-        "Given a set of high-dimensional objects" in result
-        and "Herein a heavy-tailed Student t-distribution" in result
-        and "Categories:" not in result
-        and "Conditional random field" not in result
-    )
+    assert "Given a set of high-dimensional objects" in result
+    assert "Herein a heavy-tailed Student t-distribution" in result
+    assert "Categories:" not in result
+    assert "Conditional random field" not in result
 
     result = do_load_page(
         "https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/"
     )
-    assert (
-        "Niedlicher Roboter-Spielkamerad: Anki Cozmo" in result
-        and "Empfehlungen von Dennis:" in result
-        and "Unterstütze unsere Arbeit" not in result
-        and "Deepfake-Hollywood" not in result
-        and "Avengers" not in result
-        and "Katzenschreck" not in result
-    )
+    assert "Niedlicher Roboter-Spielkamerad: Anki Cozmo" in result
+    assert "Empfehlungen von Dennis:" in result
+    assert "Unterstütze unsere Arbeit" not in result
+    assert "Deepfake-Hollywood" not in result
+    assert "Avengers" not in result
+    assert "Katzenschreck" not in result
 
     result = do_load_page("http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/")
-    assert (
-        "Hunderttausende von jungen Paaren" in result
-        and "wie flatterhaft das Mädl ist? :)" in result
-        and "Malte Welding" not in result
-        and "YouTube und die Alten" not in result
-        and "Autokorrektur" not in result
-    )
+    assert "Hunderttausende von jungen Paaren" in result
+    assert "wie flatterhaft das Mädl ist? :)" in result
+    assert "Malte Welding" not in result
+    assert "YouTube und die Alten" not in result
+    assert "Autokorrektur" not in result
 
     result = do_load_page("https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/")
-    assert (
-        "Rüschen und Volants." in result
-        and "ihr jedes Jahr tragen könnt?" in result
-        and "Das könnte dich auch interessieren" not in result
-        and "Catherine Classic Lac 602" not in result
-    )  # and 'mein Lieblingskleid vereint' in result
+    assert "Rüschen und Volants." in result
+    assert "ihr jedes Jahr tragen könnt?" in result
+    assert "Das könnte dich auch interessieren" not in result
+    assert "Catherine Classic Lac 602" not in result
 
     result = do_load_page("https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/")
     if formatting is False:
@@ -847,151 +735,123 @@ def test_extract(xmloutput, formatting):
     assert ", leading edge," not in result  # and 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result
 
     result = do_load_page("https://boingboing.net/2013/07/19/hating-millennials-the-preju.html")
-    assert (
-        "Click through for the whole thing." in result
-        and "The generation we love to dump on" in result
-        and "GET THE BOING BOING NEWSLETTER" not in result
-    )  # and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result
+    assert "Click through for the whole thing." in result
+    assert "The generation we love to dump on" in result
+    assert "GET THE BOING BOING NEWSLETTER" not in result
 
     result = do_load_page("https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/")
-    assert (
-        "Erin Spiceland is a Software Engineer for SpaceX." in result
-        and "make effective plans and goals for the future" in result
-        and "looking forward to next?" in result
-        and "Research Consultant at Adelard LLP" in result
-        and "Related posts" not in result
-        and "Jeremy Epling" not in result
-        and "Missed the main event?" not in result
-        and "Privacy" not in result
-    )
+    assert "Erin Spiceland is a Software Engineer for SpaceX." in result
+    assert "make effective plans and goals for the future" in result
+    assert "looking forward to next?" in result
+    assert "Research Consultant at Adelard LLP" in result
+    assert "Related posts" not in result
+    assert "Jeremy Epling" not in result
+    assert "Missed the main event?" not in result
+    assert "Privacy" not in result
 
     result = do_load_page("https://lady50plus.de/2019/06/19/sekre-mystery-bag/")
-    assert (
-        "ist eine echte Luxushandtasche" in result
-        and "Insgesamt 160 weibliche „Designerinnen“" in result
-        and "Sei herzlich gegrüßt" in result
-        and "Ein Mann alleine hätte niemals" in result
-        and "Erforderliche Felder sind mit" not in result
-        and "Benachrichtige mich" not in result
-        and "Reisen ist meine große Leidenschaft" not in result
-        and "Styling Tipps für Oktober" not in result
-        and "in den Bann ziehen!" in result
-    )
+    assert "ist eine echte Luxushandtasche" in result
+    assert "Insgesamt 160 weibliche „Designerinnen“" in result
+    assert "Sei herzlich gegrüßt" in result
+    assert "Ein Mann alleine hätte niemals" in result
+    assert "Erforderliche Felder sind mit" not in result
+    assert "Benachrichtige mich" not in result
+    assert "Reisen ist meine große Leidenschaft" not in result
+    assert "Styling Tipps für Oktober" not in result
+    assert "in den Bann ziehen!" in result
 
     result = do_load_page("https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer")
-    assert (
-        "Neuer Geschäftsführender Leiter" in result
-        and "nach Leipzig wechseln." in result
-        and "Mehr zum Thema" not in result
-        and "Folgen Sie uns auf Facebook und Twitter" not in result
-        and "Aktuelle Ausgabe" not in result
-    )
+    assert "Neuer Geschäftsführender Leiter" in result
+    assert "nach Leipzig wechseln." in result
+    assert "Mehr zum Thema" not in result
+    assert "Folgen Sie uns auf Facebook und Twitter" not in result
+    assert "Aktuelle Ausgabe" not in result
 
     result = do_load_page("https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite")
-    assert (
-        "Le décret n°2019-1130 validant" in result
-        and "restructurant à cet effet »." in result
-        and " utilise des cookies pour" not in result
-        and "En savoir plus" not in result
-    )  # and 'CNRS, Inserm, Inria.' not in result
+    assert "Le décret n°2019-1130 validant" in result
+    assert "restructurant à cet effet »." in result
+    assert " utilise des cookies pour" not in result
+    assert "En savoir plus" not in result
 
     result = do_load_page("https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html")
-    assert (
-        "Starke Hitze nur in der Mitte" in result
-        and "ca. 35,7×29,4 cm" in result
-        and "Wir sind im Steak-Himmel!" in result
-        and "Samsung Galaxy S10 128GB" not in result
-        and "Für Links auf dieser Seite" not in result
-    )  # and 'Inga Buller ist Head of Social' not in result
+    assert "Starke Hitze nur in der Mitte" in result
+    assert "ca. 35,7×29,4 cm" in result
+    assert "Wir sind im Steak-Himmel!" in result
+    assert "Samsung Galaxy S10 128GB" not in result
+    assert "Für Links auf dieser Seite" not in result
 
     result = do_load_page("http://www.sauvonsluniversite.fr/spip.php?article8532")
-    assert (
-        "L’AG Éducation Île-de-France inter-degrés" in result
-        and "Grève et mobilisation pour le climat" in result
-        and "suivi.reformes.blanquer@gmail.com" in result
-        and "Sauvons l’Université !" not in result
-        and "La semaine de SLU" not in result
-    )
+    assert "L’AG Éducation Île-de-France inter-degrés" in result
+    assert "Grève et mobilisation pour le climat" in result
+    assert "suivi.reformes.blanquer@gmail.com" in result
+    assert "Sauvons l’Université !" not in result
+    assert "La semaine de SLU" not in result
 
     result = do_load_page("https://www.spiegel.de/spiegel/print/d-161500790.html")
-    assert (
-        "Wie konnte es dazu kommen?" in result
-        and "Die Geschichte beginnt am 26. Oktober" in result
-        and "Es stützt seine Version." in result
-        and "und Vorteile sichern!" not in result
-        and "Verschickt" not in result
-        and "Die digitale Welt der Nachrichten." not in result
-        and "Vervielfältigung nur mit Genehmigung" not in result
-    )
+    assert "Wie konnte es dazu kommen?" in result
+    assert "Die Geschichte beginnt am 26. Oktober" in result
+    assert "Es stützt seine Version." in result
+    assert "und Vorteile sichern!" not in result
+    assert "Verschickt" not in result
+    assert "Die digitale Welt der Nachrichten." not in result
+    assert "Vervielfältigung nur mit Genehmigung" not in result
 
     result = do_load_page("https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/")
-    assert (
-        "I use a Skylake processor with GNU GCC 8.3." in result
-        and "gsoc-2018" in result
-        and "0.091 GB/s" in result
-        and "version 0.2 on vcpkg." in result
-        and "Leave a Reply" not in result
-        and "Science and Technology links" not in result
-        and "Proudly powered by WordPress" not in result
-    )
+    assert "I use a Skylake processor with GNU GCC 8.3." in result
+    assert "gsoc-2018" in result
+    assert "0.091 GB/s" in result
+    assert "version 0.2 on vcpkg." in result
+    assert "Leave a Reply" not in result
+    assert "Science and Technology links" not in result
+    assert "Proudly powered by WordPress" not in result
 
     result = do_load_page(
         "https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission"
     )
-    assert (
-        "36 Stunden." in result
-        and "Nationale Egoismen" in result
-        and "Deutschland kaum beschleunigt." in result
-        and "Durchgehende Tickets fehlen" not in result
-        and "geprägte Fehlentscheidung." in result
-        and "horrende Preise für miserablen Service bezahlen?" in result
-        and "Bitte melden Sie sich an, um zu kommentieren." not in result
-    )
+    assert "36 Stunden." in result
+    assert "Nationale Egoismen" in result
+    assert "Deutschland kaum beschleunigt." in result
+    assert "Durchgehende Tickets fehlen" not in result
+    assert "geprägte Fehlentscheidung." in result
+    assert "horrende Preise für miserablen Service bezahlen?" in result
+    assert "Bitte melden Sie sich an, um zu kommentieren." not in result
 
     result = do_load_page(
         "https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020"
     )
-    assert (
-        "Performativité" in result
-        and "Les individus productifs communiquent" in result
-        and "de nos espoirs et de nos désirs." in result
-        and "A la tribune je monterai" not in result
-        and "À découvrir" not in result
-        and "Le fil culture" not in result
-    )
+    assert "Performativité" in result
+    assert "Les individus productifs communiquent" in result
+    assert "de nos espoirs et de nos désirs." in result
+    assert "A la tribune je monterai" not in result
+    assert "À découvrir" not in result
+    assert "Le fil culture" not in result
 
     result = do_load_page(
         "https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/"
     )
-    assert (
-        "as further access is restored." in result
-        and "Read further in the pursuit of knowledge" not in result
-        and "Here’s what that means." not in result
-        and "Stay up-to-date on our work." not in result
-        and "Photo credits" not in result
-    )  # and 'Bu yazının Türkçe’sini buradan okuyabilirsiniz' in result
+    assert "as further access is restored." in result
+    assert "Read further in the pursuit of knowledge" not in result
+    assert "Here’s what that means." not in result
+    assert "Stay up-to-date on our work." not in result
+    assert "Photo credits" not in result
 
     result = do_load_page(
         "https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH"
     )
-    assert (
-        "4 Min Read" not in result
-        and "Factbox: Key winners" not in result
-        and "Despite an unknown cast," in result
-        and "Additional reporting by" in result
-    )  # and 'The Thomson Reuters Trust Principles' not in result
+    assert "4 Min Read" not in result
+    assert "Factbox: Key winners" not in result
+    assert "Despite an unknown cast," in result
+    assert "Additional reporting by" in result
 
     result = do_load_page(
         "https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2"
     )
     # print(result)
-    assert (
-        "Microsoft Corp said on Thursday" in result
-        and "Postmedia is committed" in result
-        and "I consent to receiving" not in result
-        and "It was not immediately clear if" in result
-        and "turns CO2 into soap" not in result
-    )
+    assert "Microsoft Corp said on Thursday" in result
+    assert "Postmedia is committed" in result
+    assert "I consent to receiving" not in result
+    assert "It was not immediately clear if" in result
+    assert "turns CO2 into soap" not in result
     if xmloutput is False:
         assert "Reuters files" not in result
 
@@ -1275,7 +1135,8 @@ def test_pages():
     assert metadata.sitename == "Salon.com"
     # in header
     assert "Science & Health" in metadata.categories
-    assert "Gas Industry" in metadata.tags and "coal emissions" in metadata.tags
+    assert "Gas Industry" in metadata.tags
+    assert "coal emissions" in metadata.tags
     assert metadata.url == url
 
     url = "https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html"
