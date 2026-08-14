@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
 name: Tests
 
 on:
@@ -9,29 +6,53 @@ on:
   pull_request:
     branches: [ master ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        enable-cache: true
+        cache-dependency-glob: pyproject.toml
+    - name: Install dependencies
+      run: uv pip install --system -e ".[dev]"
+    - name: Lint and format check
+      run: |
+        ruff check .
+        ruff format --check --diff .
+
   build:
 
     runs-on: ${{ matrix.os }}
+    # bound the live-network tests, which could otherwise hang for GitHub's 6h default
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
         # https://github.com/actions/python-versions/blob/main/versions-manifest.json
         python-version: ["3.10", "3.12", "3.14"]
-        env:
-          - MINIMAL: "true"
-          - MINIMAL: "false"
+        minimal: [true, false]
         include:
-          # custom OS / Python combinations
+          # custom OS / Python combinations (minimal dependencies)
           - os: macos-latest
             python-version: "3.11"
+            minimal: true
           - os: windows-latest
             python-version: "3.11"
+            minimal: true
           - os: ubuntu-latest
             python-version: "3.13"
-            env:
-              MINIMAL: "false"
+            minimal: false
 
     steps:
     # package setup
@@ -49,55 +70,40 @@ jobs:
         enable-cache: true
         cache-dependency-glob: pyproject.toml
 
-    - name: Install dependencies
-      run: uv pip install --system -e ".[dev]"
-
-    - name: Lint and format check
-      # bash stops at the first failing command on every runner. The default
-      # shell on Windows is pwsh, which reports only the last command's status,
-      # so a `ruff check` failure there was discarded by the `ruff format` pass.
-      shell: bash
-      run: |
-        ruff check .
-        ruff format --check --diff trafilatura tests
-
-    # pycurl installation fix
     - name: Install packages required by pycurl
-      if: ${{ matrix.env.MINIMAL == 'false' }}
+      if: ${{ !matrix.minimal }}
       run: |
         sudo apt-get update
         sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
-    # alternatively: sudo apt-get install libcurl4-openssl-dev libssl-dev
 
-    - name: Install full dependencies
-      if: ${{ matrix.env.MINIMAL == 'false' }}
-      run: uv pip install --system -e ".[all]"
+    - name: Install dependencies
+      run: uv pip install --system -e ".[dev${{ !matrix.minimal && ',all' || '' }}]"
 
     - name: Type checking
-      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      if: ${{ !matrix.minimal && matrix.python-version == '3.13' }}
       run: |
         mypy -p trafilatura
 
     - name: Test with pytest
-      run: |
-        python -m pytest --cov=./ --cov-report=xml
+      # coverage only in the cell that uploads it
+      run: python -m pytest ${{ !matrix.minimal && matrix.python-version == '3.13' && '--cov=./ --cov-report=xml' || '' }}
 
     - name: Evaluation quality gate
       # deterministic given the corpus; one cell is enough, no need for the whole matrix
-      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      if: ${{ !matrix.minimal && matrix.python-version == '3.13' }}
       run: |
         python tests/eval_gate.py
 
     - name: Test docs
       # version matches .readthedocs.yaml
-      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      if: ${{ !matrix.minimal && matrix.python-version == '3.13' }}
       run: |
         uv pip install --system -e ".[docs]"
         python -m pytest docs/docs_tests.py
 
     # coverage
     - name: Upload coverage to Codecov
-      if: ${{ matrix.env.MINIMAL == 'false' && matrix.python-version == '3.13' }}
+      if: ${{ !matrix.minimal && matrix.python-version == '3.13' }}
       uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

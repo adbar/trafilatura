@@ -53,7 +53,7 @@ CLEAN_META_TAGS = re.compile(r'["\']')
 LICENSE_REGEX = re.compile(r"/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])")
 TEXT_LICENSE_REGEX = re.compile(
     r"(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?",
-    re.I,
+    re.IGNORECASE,
 )
 
 METANAME_AUTHOR = {
@@ -117,7 +117,6 @@ METANAME_TITLE = {
     "title",
     "twitter:title",
 }
-METANAME_URL = {"rbmainurl", "twitter:url"}
 METANAME_IMAGE = {
     "image",
     "og:image",
@@ -217,7 +216,7 @@ def examine_meta(tree: HtmlElement) -> Document:
             metadata.description,
             metadata.sitename,
             metadata.image,
-        )
+        ),
     ):  # tags
         return metadata
 
@@ -381,7 +380,7 @@ def extract_url(tree: HtmlElement, default_url: str | None = None) -> str | None
     if url and url.startswith("/"):
         for element in tree.iterfind(".//head//meta[@content]"):
             attrtype = element.get("name") or element.get("property") or ""
-            if attrtype.startswith("og:") or attrtype.startswith("twitter:"):
+            if attrtype.startswith(("og:", "twitter:")):
                 base_url = get_base_url(element.attrib["content"])
                 if base_url:
                     # prepend URL
@@ -414,8 +413,10 @@ def extract_catstags(metatype: str, tree: HtmlElement) -> list[str]:
             break
     # category fallback
     if metatype == "category" and not results:
-        for element in tree.xpath('.//head//meta[@property="article:section" or contains(@name, "subject")][@content]'):
-            results.append(element.attrib["content"])
+        results.extend(
+            element.attrib["content"]
+            for element in tree.xpath('.//head//meta[@property="article:section" or contains(@name, "subject")][@content]')
+        )
         # optional: search through links
         # if not results:
         #    for elem in tree.xpath('.//a[@href]'):
@@ -528,12 +529,6 @@ def extract_metadata(
     if not metadata.sitename:
         metadata.sitename = extract_sitename(tree)
     if metadata.sitename:
-        # fix: take 1st element (['Westdeutscher Rundfunk'])
-        if isinstance(metadata.sitename, list):
-            metadata.sitename = metadata.sitename[0]
-        # hotfix: probably an error coming from json_metadata (#195)
-        elif isinstance(metadata.sitename, dict):
-            metadata.sitename = str(metadata.sitename)
         # scrap Twitter ID
         metadata.sitename = metadata.sitename.lstrip("@")
         # capitalize

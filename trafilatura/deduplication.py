@@ -4,7 +4,7 @@ import re
 import string
 import unicodedata
 from difflib import SequenceMatcher
-from functools import lru_cache
+from functools import cache, lru_cache
 from hashlib import blake2b
 from operator import add
 from threading import RLock
@@ -17,9 +17,13 @@ from .utils import trim
 
 STRIP_EXTENSION = re.compile(r"\.[^/?#]{2,63}$")
 
-BIN_COUNT_FUNC = getattr(int, "bit_count", lambda x: bin(x).count("1"))
+BIN_COUNT_FUNC = int.bit_count
 
-PUNCT_TBL = str.maketrans({i: " " for i in range(0x10FFFF) if unicodedata.category(chr(i))[0] == "P"})
+
+@cache
+def _punct_tbl() -> dict[int, str]:
+    "Punctuation translation table, built lazily: scans all of Unicode (~90ms)."
+    return str.maketrans({i: " " for i in range(0x10FFFF) if unicodedata.category(chr(i))[0] == "P"})
 
 
 @lru_cache(maxsize=1024)
@@ -47,7 +51,7 @@ def sample_tokens_fallback(inputstring: str, length: int = 64) -> list[str]:
     mandarin where none latin-based punctuation is used e.g.: 。
     """
     # Replace all punctuation with spaces using translation table
-    clean_text = inputstring.translate(PUNCT_TBL)
+    clean_text = inputstring.translate(_punct_tbl())
     tokens = [t for t in clean_text.split() if t.isalnum()]
     return _get_sample_by_length(tokens, length)
 
@@ -113,7 +117,7 @@ class Simhash:
 
     def to_hex(self) -> str:
         "Convert the numerical hash to a hexadecimal string."
-        return hex(self.hash)[2:]
+        return f"{self.hash:x}"
 
     def _hash_to_int(self, inputhash: str) -> int | None:
         "Convert the hexadecimal hash to a numerical value."
@@ -171,7 +175,7 @@ class LRUCache:
         self.root[:] = [self.root, self.root, None, None]
         self.full = False
 
-    def _move_link(self, link: Any) -> Any:
+    def _move_link(self, link: list[Any]) -> int:
         # Move the link to the front of the circular queue
         link_prev, link_next, _key, result = link
         link_prev[NEXT], link_next[PREV] = link_next, link_prev
@@ -179,9 +183,9 @@ class LRUCache:
         last[NEXT] = self.root[PREV] = link
         link[PREV] = last
         link[NEXT] = self.root
-        return result
+        return int(result)
 
-    def get(self, key: Any) -> Any:
+    def get(self, key: str) -> int:
         """Tests if the key that is asked for is in the cache
         and retrieve its value from the linked list."""
         with self.lock:
@@ -190,7 +194,7 @@ class LRUCache:
                 return self._move_link(link)
         return -1
 
-    def put(self, key: str, value: Any) -> None:
+    def put(self, key: str, value: int) -> None:
         "Stores a given key in the cache."
         # Size limited caching that tracks accesses by recency
         with self.lock:

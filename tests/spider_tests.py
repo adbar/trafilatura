@@ -5,11 +5,9 @@ Unit tests for the spidering part of the trafilatura library.
 
 import logging
 import sys
-
 from collections import deque
 
 import pytest
-
 from courlan import UrlStore
 
 from trafilatura import spider  # for global variables
@@ -86,7 +84,8 @@ def test_process_links():
 
     # same with content already seen
     spider.process_links(htmlstring, params)
-    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1 and len(spider.URL_STORE.find_known_urls(base_url)) == 1
+    assert len(spider.URL_STORE.find_unvisited_urls(base_url)) == 1
+    assert len(spider.URL_STORE.find_known_urls(base_url)) == 1
 
     # test navigation links
     url1 = "https://example.org/tag/number1"
@@ -96,7 +95,8 @@ def test_process_links():
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 3
-    assert len(todo) == 3 and todo[0] == url1
+    assert len(todo) == 3
+    assert todo[0] == url1
 
     # test cleaning and language
     url = "https://example.org/en/page1/?"
@@ -107,7 +107,8 @@ def test_process_links():
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
     assert len(known_links) == 4
-    assert len(todo) == 4 and target in todo  # TODO: remove slash?
+    assert len(todo) == 4
+    assert target in todo
 
     # test rejection of URLs out of scope
     url = "https://example.org/section2/page2"
@@ -116,7 +117,8 @@ def test_process_links():
     spider.process_links(htmlstring, params)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert url not in todo and len(known_links) == 4
+    assert url not in todo
+    assert len(known_links) == 4
 
     # wrong language
     url = "https://example.org/en/page2"
@@ -125,18 +127,21 @@ def test_process_links():
     spider.process_links(htmlstring, params)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert url not in todo and len(known_links) == 4
+    assert url not in todo
+    assert len(known_links) == 4
 
     # invalid links
     params = spider.CrawlParameters(base_url)
     htmlstring = '<html><body><a href="#anchor"/><a href="mailto:user@example.org"/><a href="tel:1234567890"/></body></html>'
     spider.process_links(htmlstring, params)
-    assert len(known_links) == 4 and len(todo) == 4
+    assert len(known_links) == 4
+    assert len(todo) == 4
 
     # not crawlable
     htmlstring = '<html><body><a href="https://example.org/login"/></body></html>'
     spider.process_links(htmlstring, params)
-    assert len(known_links) == 4 and len(todo) == 4
+    assert len(known_links) == 4
+    assert len(todo) == 4
 
     # test queue evaluation
     todo = deque()
@@ -162,13 +167,17 @@ def test_crawl_logic():
     spider.process_response(None, params)
     assert len(spider.URL_STORE.urldict) == 0
     assert params.start == params.base == params.ref == "https://example.org"
-    assert params.i == 0 and params.known_num == 0 and params.is_on
-    assert params.lang is None and params.rules is None
+    assert params.i == 0
+    assert params.known_num == 0
+    assert params.is_on
+    assert params.lang is None
+    assert params.rules is None
 
     # already visited
     params = spider.init_crawl(url, known=[url])
     assert params.base == "https://httpbun.com"
-    assert params.i == 0 and params.known_num == 1
+    assert params.i == 0
+    assert params.known_num == 1
     assert not params.is_on
     assert not spider.URL_STORE.find_unvisited_urls(params.base)
     assert spider.URL_STORE.find_known_urls(params.base) == ["https://httpbun.com/html"]
@@ -176,13 +185,11 @@ def test_crawl_logic():
     # normal webpage
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
     params = spider.init_crawl(url)
-    assert (
-        not spider.URL_STORE.find_unvisited_urls(params.base)
-        and [url] == spider.URL_STORE.find_known_urls(params.base)
-        and params.base == "https://httpbun.com"
-        and params.i == 1
-        and not params.is_on
-    )
+    assert not spider.URL_STORE.find_unvisited_urls(params.base)
+    assert [url] == spider.URL_STORE.find_known_urls(params.base)
+    assert params.base == "https://httpbun.com"
+    assert params.i == 1
+    assert not params.is_on
 
     # delay between requests
     assert spider.URL_STORE.get_crawl_delay("https://httpbun.com") == 5
@@ -191,13 +198,17 @@ def test_crawl_logic():
     # existing todo
     params = spider.init_crawl(url, todo=[url, "http://irrelevant.com"])
     assert not spider.URL_STORE.find_unvisited_urls(params.base)
-    assert params.base == "https://httpbun.com" and params.i == 0 and not params.is_on
+    assert params.base == "https://httpbun.com"
+    assert params.i == 0
+    assert not params.is_on
 
     # new todo
     params = spider.init_crawl(url, todo=["https://httpbun.com/links/1/1"])
     assert params.base == "https://httpbun.com"
     assert spider.URL_STORE.find_unvisited_urls(params.base) == ["https://httpbun.com/links/1/1"]
-    assert params.i == 0 and params.is_on and params.known_num == 2
+    assert params.i == 0
+    assert params.is_on
+    assert params.known_num == 2
 
 
 def test_crawl_page():
@@ -214,7 +225,9 @@ def test_crawl_page():
         "https://httpbun.com/links/2/0",
         "https://httpbun.com/links/2/1",
     ]
-    assert params.i == 1 and params.is_on and params.known_num == 3
+    assert params.i == 1
+    assert params.is_on
+    assert params.known_num == 3
 
     # prune path
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
@@ -223,7 +236,8 @@ def test_crawl_page():
     params = spider.crawl_page(params)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
 
-    assert len(todo) == 0 and params.i == 1
+    assert len(todo) == 0
+    assert params.i == 1
 
     # prune path with initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
@@ -232,7 +246,8 @@ def test_crawl_page():
     params = spider.crawl_page(params, initial=True)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
 
-    assert len(todo) == 0 and params.i == 1
+    assert len(todo) == 0
+    assert params.i == 1
 
     # initial page
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
@@ -242,14 +257,16 @@ def test_crawl_page():
     params = spider.crawl_page(params, initial=True)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)
     known_links = spider.URL_STORE.find_known_urls(base_url)
-    assert len(todo) == 0 and len(known_links) == 1 and params.i == 1
+    assert len(todo) == 0
+    assert len(known_links) == 1
+    assert params.i == 1
     ## TODO: find a better page for language tests
 
 
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
-    todo, known_links = spider.focused_crawler("https://httpbun.com/links/2/2", max_seen_urls=2)
+    _todo, known_links = spider.focused_crawler("https://httpbun.com/links/2/2", max_seen_urls=2)
     assert len(known_links) > 0
     ## fails on Github Actions
     # assert sorted(known_links) == ['https://httpbun.com/links/2/0', 'https://httpbun.com/links/2/1', 'https://httpbun.com/links/2/2']
@@ -267,17 +284,21 @@ def test_robots():
     assert spider.parse_robots(robots_url, b"123") is None
 
     rules = spider.parse_robots(robots_url, "Allow: *")
-    assert rules and rules.can_fetch("*", "https://example.org/1")
+    assert rules
+    assert rules.can_fetch("*", "https://example.org/1")
 
     rules = spider.parse_robots(robots_url, "User-agent: *\nDisallow: /")
-    assert rules and not rules.can_fetch("*", "https://example.org/1")
+    assert rules
+    assert not rules.can_fetch("*", "https://example.org/1")
 
     rules = spider.parse_robots(robots_url, "User-agent: *\nDisallow: /private")
-    assert rules and not rules.can_fetch("*", "https://example.org/private")
+    assert rules
+    assert not rules.can_fetch("*", "https://example.org/private")
     assert rules.can_fetch("*", "https://example.org/public")
 
     rules = spider.parse_robots(robots_url, "Allow: *\nUser-agent: *\nCrawl-delay: 10")
-    assert rules and rules.crawl_delay("*") == 10
+    assert rules
+    assert rules.crawl_delay("*") == 10
 
     # rules = spider.parse_robots(robots_url, "User-agent: *\nAllow: /public")
     # assert rules is not None and rules.can_fetch("*", "https://example.org/public")

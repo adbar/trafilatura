@@ -27,23 +27,22 @@ from time import sleep
 from unittest.mock import MagicMock, patch
 
 import pytest
-
 from courlan import UrlStore
 
+import trafilatura.downloads as dl
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import Extractor, extract
-import trafilatura.downloads as dl
 from trafilatura.downloads import (
     DEFAULT_HEADERS,
     HAS_PYCURL,
     USER_AGENT,
     Response,
     _determine_headers,
-    _handle_response,
+    _initiate_pool,
+    _is_suitable_response,
     _parse_config,
     _pycurl_is_live_page,
-    _initiate_pool,
     _send_pycurl_request,
     _send_urllib_request,
     _urllib3_is_live_page,
@@ -54,7 +53,6 @@ from trafilatura.downloads import (
 )
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
 from trafilatura.utils import decode_file, handle_compressed_file, load_html
-
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -111,11 +109,11 @@ def test_response_object():
     response = Response("", 200, "https://httpbin.org/encoding/utf8")
     for size in (10000000, 1):
         response.data = b"ABC" * size
-        assert _handle_response(response.url, response, False, DEFAULT_OPTS) is None
+        assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is False
     # straight handling of response object
     with open(os.path.join(RESOURCES_DIR, "utf8.html"), "rb") as filehandle:
         response.data = filehandle.read()
-    assert _handle_response(response.url, response, False, DEFAULT_OPTS) is not None
+    assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is True
     assert load_html(response) is not None
     # nothing to see here
     assert extract(response, url=response.url, config=ZERO_CONFIG) is None
@@ -147,16 +145,15 @@ def test_fetch():
     url = "https://httpbun.com/status/200"
     for no_ssl in (True, False):
         response = _send_urllib_request(url, no_ssl, True, DEFAULT_CONFIG)
-        assert b"200" in response.data and b"OK" in response.data  # JSON
+        assert b"200" in response.data
+        assert b"OK" in response.data
         assert response.headers["x-powered-by"].startswith("httpbun")
     if HAS_PYCURL:
         response1 = _send_pycurl_request(url, True, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
-        assert (
-            _handle_response(url, response1, False, DEFAULT_OPTS).data
-            == _handle_response(url, response, False, DEFAULT_OPTS).data
-        )
-        assert _handle_response(url, response1, True, DEFAULT_OPTS) == _handle_response(url, response, True, DEFAULT_OPTS)
+        assert _is_suitable_response(url, response1, DEFAULT_OPTS) is True
+        assert _is_suitable_response(url, response, DEFAULT_OPTS) is True
+        assert response1.data == response.data
 
     # test handling of redirects
     res = fetch_url("https://httpbun.com/redirect/2")
@@ -335,4 +332,5 @@ def test_queue():
     options = args_to_extractor(args)
     options.config["DEFAULT"]["SLEEP_TIME"] = "0.2"
     results = download_queue_processing(url_store, args, -1, options)
-    assert len(results[0]) == 5 and results[1] is -1
+    assert len(results[0]) == 5
+    assert results[1] == -1

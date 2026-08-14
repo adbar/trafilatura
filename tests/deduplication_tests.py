@@ -4,17 +4,14 @@ Unit tests for the trafilatura's text hashing and cache.
 """
 
 import pytest
-
 from lxml import etree, html
 
 import trafilatura.deduplication
-
 from trafilatura import extract
 from trafilatura.cli_utils import generate_hash_filename
 from trafilatura.core import Extractor
 from trafilatura.deduplication import LRUCache, Simhash, content_fingerprint, duplicate_test
 from trafilatura.meta import reset_caches
-
 
 DEFAULT_OPTIONS = Extractor()
 
@@ -66,11 +63,12 @@ def test_simhash():
     hashes.append(Simhash("The words are completely different but let's see." * factor))
 
     sims = [hashes[0].similarity(h) for h in hashes]
-    assert sims[0] == 1.0 and min(sims) == sims[-1]
+    assert sims[0] == 1.0
+    assert min(sims) == sims[-1]
 
     # sanity checks
     assert Simhash(existing_hash=hashes[0].to_hex()).hash == hashes[0].hash
-    assert int(hex(hashes[0].hash)[2:], 16) == hashes[0].hash
+    assert int(hex(hashes[0].hash), 0) == hashes[0].hash
     assert Simhash(existing_hash=hashes[0].to_hex()).hash == hashes[0].hash
 
     # re-hashed
@@ -158,7 +156,8 @@ def test_dedup_reset_caches():
     try:
         doc = html.fromstring("<html><body>" + "<p>abc</p>" * 50 + "</body></html>")
         results = [extract(doc, deduplicate=True) for _ in range(6)]
-        assert results[0] is not None and results[-1] is None
+        assert results[0] is not None
+        assert results[-1] is None
         reset_caches()
         assert extract(doc, deduplicate=True) is not None
     finally:

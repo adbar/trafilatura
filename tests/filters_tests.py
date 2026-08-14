@@ -10,7 +10,6 @@ from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, Extractor, use_config
 from trafilatura.utils import LANGID_FLAG, check_html_lang, language_filter
 
-
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
 ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"

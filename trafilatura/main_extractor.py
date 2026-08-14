@@ -6,7 +6,6 @@ Functions related to the main Trafilatura extractor.
 import logging
 import re  # import regex as re
 from copy import deepcopy
-from typing import Any
 from urllib.parse import urljoin
 
 from lxml.etree import Element, SubElement, _Element, strip_elements, strip_tags, tostring
@@ -62,7 +61,7 @@ def _wraps_inline(element: _Element) -> bool:
     return len(element) > 0 and (element.tag == "ref" or any(c.tag in INLINE_CARRIED for c in element))
 
 
-def _log_event(msg: str, tag: Any, text: bytes | str | None) -> None:
+def _log_event(msg: str, tag: object, text: bytes | str | None) -> None:
     "Format extraction event for debugging purposes."
     LOGGER.debug("%s: %s %s", msg, tag, trim(text or "") or "None")
 
@@ -311,7 +310,7 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
 
 def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process paragraphs along with their children, trim and clean the content."
-    element.attrib.clear()  # todo: test if necessary
+    # attrib.clear() verified unnecessary here (output_diff 0/1501, 2026-08)
     # strip_tags(element, 'p') # change in precision due to spaces?
 
     # no children
@@ -656,7 +655,10 @@ def handle_textelem(element: _Element, potential_tags: set[str], options: Extrac
 
 
 def recover_wild_text(
-    tree: HtmlElement, result_body: _Element, options: Extractor, potential_tags: set[str] | None = None
+    tree: HtmlElement,
+    result_body: _Element,
+    options: Extractor,
+    potential_tags: set[str] | None = None,
 ) -> _Element:
     """Look for all previously unconsidered wild elements, including outside of the determined
     frame and throughout the document to recover potentially missing text parts.
@@ -705,7 +707,10 @@ def recover_wild_text(
 
 
 def prune_unwanted_sections(
-    tree: HtmlElement, potential_tags: set[str], options: Extractor, keep_teasers: bool = False
+    tree: HtmlElement,
+    potential_tags: set[str],
+    options: Extractor,
+    keep_teasers: bool = False,
 ) -> HtmlElement:
     "Rule-based deletion of targeted document sections"
     favor_precision = options.focus == "precision"
@@ -878,7 +883,10 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         # processed_elems = (process_comments_node(elem, potential_tags, options) for elem in
         #                    subtree.xpath('.//*'))
         comments_body.extend(
-            filter(lambda x: x is not None, (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*")))  # type: ignore[arg-type]
+            filter(
+                lambda x: x is not None,  # type: ignore[arg-type]
+                (process_comments_node(e, potential_tags, options) for e in subtree.xpath(".//*")),
+            ),
         )
         # control
         if len(comments_body) > 0:  # if it has children

@@ -13,7 +13,10 @@ import hashlib
 import json
 import os
 import sys
+from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from eval_common import RUNNERS, ConfusionMatrix, load_evaldata, read_corpus, report_first_error, run_and_count, validate
 

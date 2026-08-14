@@ -9,7 +9,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from eval_common import (  # noqa: E402
+from eval_common import (
     MAX_CHUNKS,
     ConfusionMatrix,
     count_item,

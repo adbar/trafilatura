@@ -26,7 +26,7 @@ from .settings import DEFAULT_CONFIG, Extractor
 from .utils import (
     HAS_ZSTD,
     URL_BLACKLIST_REGEX,
-    decode_file,
+    Response,
     is_acceptable_length,
     make_chunks,
 )
@@ -102,40 +102,6 @@ FORCE_STATUS = [
 ]
 
 CURL_SSL_ERRORS = {35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91}
-
-
-class Response:
-    "Store information gathered in a HTTP response object."
-
-    __slots__ = ["data", "headers", "html", "status", "url"]
-
-    def __init__(self, data: bytes, status: int, url: str) -> None:
-        self.data = data
-        self.headers: dict[str, str] | None = None
-        self.html: str | None = None
-        self.status = status
-        self.url = url
-
-    def __bool__(self) -> bool:
-        return self.data is not None
-
-    def __repr__(self) -> str:
-        return self.html or decode_file(self.data)
-
-    def store_headers(self, headerdict: dict[str, str]) -> None:
-        "Store response headers if required."
-        # further control steps here
-        self.headers = {k.lower(): v for k, v in headerdict.items()}
-
-    def decode_data(self, decode: bool) -> None:
-        "Decode the bytestring in data and store a string in html."
-        if decode and self.data:
-            self.html = decode_file(self.data)
-
-    def as_dict(self) -> dict[str, Any]:
-        "Convert the response object to a dictionary."
-        # heterogeneous value types (bytes, int, dict, str, None)
-        return {attr: getattr(self, attr) for attr in self.__slots__}
 
 
 # not cacheable: ConfigParser is unhashable (MutableMapping sets __hash__ = None),
@@ -224,7 +190,7 @@ def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Con
             response.release_conn()
 
         # necessary for standardization
-        resp = Response(bytes(data), response.status, response.geturl())
+        resp = Response(bytes(data), response.status, response.geturl() or url)
         if with_headers:
             resp.store_headers(response.headers)
         return resp
@@ -248,16 +214,6 @@ def _is_suitable_response(url: str, response: Response, options: Extractor) -> b
     if not is_acceptable_length(lentest, options):
         return False
     return True
-
-
-def _handle_response(
-    url: str, response: Response, decode: bool, options: Extractor
-) -> Response | str | None:  # todo: only return str
-    "Internal function to run safety checks on response result."
-    if _is_suitable_response(url, response, options):
-        return response.html if decode else response
-    # catchall
-    return None
 
 
 def fetch_url(

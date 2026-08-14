@@ -7,7 +7,6 @@ import sys
 
 from lxml import html
 
-from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
 from trafilatura.json_metadata import (
     JSON_AUTHOR_1,
     JSON_AUTHOR_2,
@@ -16,6 +15,7 @@ from trafilatura.json_metadata import (
     normalize_json,
     process_parent,
 )
+from trafilatura.metadata import Document, extract_meta_json, extract_metadata, normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -384,13 +384,11 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert (
-        metadata.title == "Mickelson comments hurt new league: Norman"
-        and metadata.sitename == "7NEWS"
-        and metadata.author == "Digital Staff"
-        and "Golf" in metadata.categories
-        and metadata.pagetype == "newsarticle"
-    )
+    assert metadata.title == "Mickelson comments hurt new league: Norman"
+    assert metadata.sitename == "7NEWS"
+    assert metadata.author == "Digital Staff"
+    assert "Golf" in metadata.categories
+    assert metadata.pagetype == "newsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -434,12 +432,10 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert (
-        metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee"
-        and metadata.author == "Bill Birtles"
-        and metadata.sitename == "ABC News"
-        and metadata.pagetype == "newsarticle"
-    )
+    assert metadata.title == "Australians stuck in Shanghai's COVID lockdown beg consular officials to help them flee"
+    assert metadata.author == "Bill Birtles"
+    assert metadata.sitename == "ABC News"
+    assert metadata.pagetype == "newsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -547,12 +543,10 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert (
-        metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise"
-        and metadata.author == "Sharon Otterman; Emma G Fitzsimmons"
-        and metadata.sitename == "The New York Times"
-        and metadata.pagetype == "newsarticle"
-    )
+    assert metadata.title == "New York City Enters Higher Coronavirus Risk Level as Case Numbers Rise"
+    assert metadata.author == "Sharon Otterman; Emma G Fitzsimmons"
+    assert metadata.sitename == "The New York Times"
+    assert metadata.pagetype == "newsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -597,11 +591,9 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert (
-        metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp"
-        and metadata.author == "Caio Mello"
-        and metadata.sitename == "UOL"
-    )
+    assert metadata.title == "Decreto permite que consumidor cancele serviços de empresas via WhatsApp"
+    assert metadata.author == "Caio Mello"
+    assert metadata.sitename == "UOL"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -652,12 +644,10 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert (
-        metadata.title == "12 words and phrases you need to survive in Hamburg"
-        and metadata.author == "Alexander Johnstone"
-        and metadata.sitename == "The Local"
-        and metadata.pagetype == "newsarticle"
-    )
+    assert metadata.title == "12 words and phrases you need to survive in Hamburg"
+    assert metadata.author == "Alexander Johnstone"
+    assert metadata.sitename == "The Local"
+    assert metadata.pagetype == "newsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -710,7 +700,9 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert metadata.author is None and metadata.sitename == "Andreessen Horowitz" and metadata.pagetype == "website"
+    assert metadata.author is None
+    assert metadata.sitename == "Andreessen Horowitz"
+    assert metadata.pagetype == "website"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -729,7 +721,9 @@ def test_json_extraction():
         metadata,
     )
 
-    assert metadata.author is None and metadata.sitename is None and metadata.pagetype is None
+    assert metadata.author is None
+    assert metadata.sitename is None
+    assert metadata.pagetype is None
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -761,7 +755,9 @@ def test_json_extraction():
         metadata,
     )
 
-    assert metadata.author is None and metadata.sitename is None and metadata.pagetype == "liveblogposting"
+    assert metadata.author is None
+    assert metadata.sitename is None
+    assert metadata.pagetype == "liveblogposting"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -792,7 +788,8 @@ def test_json_extraction():
 </body></html>"""),
         metadata,
     )
-    assert metadata.title == "Apple Spring Forward Event Live Blog" and metadata.pagetype == "liveblogposting"
+    assert metadata.title == "Apple Spring Forward Event Live Blog"
+    assert metadata.pagetype == "liveblogposting"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -846,11 +843,9 @@ def test_json_extraction():
         metadata,
     )
 
-    assert (
-        metadata.title == "EastEnders' June Brown leaves soap 'for good'"
-        and metadata.sitename == "BBC News"
-        and metadata.pagetype == "reportagenewsarticle"
-    )
+    assert metadata.title == "EastEnders' June Brown leaves soap 'for good'"
+    assert metadata.sitename == "BBC News"
+    assert metadata.pagetype == "reportagenewsarticle"
 
     metadata = Document()
     metadata.sitename = "https://bbcnews.com"
@@ -877,7 +872,8 @@ def test_json_extraction():
         metadata,
     )
 
-    assert metadata.sitename == "BBC News" and metadata.pagetype == "reportagenewsarticle"
+    assert metadata.sitename == "BBC News"
+    assert metadata.pagetype == "reportagenewsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -912,7 +908,9 @@ def test_json_extraction():
         metadata,
     )
 
-    assert metadata.author == "John Doe" and metadata.title == "How to Tie a Reef Knot" and metadata.pagetype == "article"
+    assert metadata.author == "John Doe"
+    assert metadata.title == "How to Tie a Reef Knot"
+    assert metadata.pagetype == "article"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -934,7 +932,8 @@ def test_json_extraction():
     </body></html>"""),
         metadata,
     )
-    assert metadata.author == "Bill Birtles; John Smith" and metadata.pagetype == "newsarticle"
+    assert metadata.author == "Bill Birtles; John Smith"
+    assert metadata.pagetype == "newsarticle"
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -955,7 +954,9 @@ def test_json_extraction():
         metadata,
     )
 
-    assert metadata.title is None and metadata.sitename is None and metadata.pagetype is None
+    assert metadata.title is None
+    assert metadata.sitename is None
+    assert metadata.pagetype is None
 
     metadata = Document()
     metadata = extract_meta_json(
@@ -1014,12 +1015,10 @@ def test_json_extraction():
         metadata,
     )
 
-    assert (
-        metadata.title == "Find perfection in these places where land meets water."
-        and metadata.sitename == "National Geographic"
-        and metadata.author == "Kimberley Lovato"
-        and metadata.pagetype == "article"
-    )
+    assert metadata.title == "Find perfection in these places where land meets water."
+    assert metadata.sitename == "National Geographic"
+    assert metadata.author == "Kimberley Lovato"
+    assert metadata.pagetype == "article"
 
     # tests that "@type": [] in the JSON doesn't cause an exception
 

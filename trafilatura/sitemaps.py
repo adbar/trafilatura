@@ -28,7 +28,7 @@ LINK_REGEX = re.compile(r"<loc>(?:<!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>")
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
-    r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
+    r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.",
 )
 
 SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<sitemap|<urlset")
@@ -239,10 +239,8 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
 
     # check content
     if (
-        POTENTIAL_SITEMAP.search(url)
-        and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
-        or "<html" in contents[:150].lower()
-    ):
+        POTENTIAL_SITEMAP.search(url) and (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents))
+    ) or "<html" in contents[:150].lower():
         LOGGER.warning("not a valid XML sitemap: %s", url)
         return False
 

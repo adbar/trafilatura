@@ -8,15 +8,15 @@ import sys
 from unittest.mock import patch
 
 import pytest
-
 from courlan import get_hostinfo
+
 from trafilatura.cli import main
 from trafilatura.feeds import (
     FeedParameters,
     determine_feed,
     extract_links,
-    find_links,
     find_feed_urls,
+    find_links,
     handle_link_list,
     probe_gnews,
     try_homepage,
@@ -39,7 +39,7 @@ def test_atom_extraction():
     assert len(extract_links("<html></html>", params)) == 0
 
     filepath = os.path.join(RESOURCES_DIR, "feed1.atom")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     assert len(extract_links(teststring, params)) > 0
 
@@ -117,7 +117,7 @@ def test_rss_extraction():
 
     params = FeedParameters("https://example.org", "example.org", "")
     filepath = os.path.join(RESOURCES_DIR, "feed2.rss")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     assert len(extract_links(teststring, params)) > 0
 
@@ -140,7 +140,7 @@ def test_json_extraction():
     assert not extract_links("{/}", params)
 
     filepath = os.path.join(RESOURCES_DIR, "feed.json")
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         teststring = f.read()
     params = FeedParameters("https://npr.org", "npr.org", "")
     links = extract_links(teststring, params)
@@ -159,7 +159,8 @@ def test_feeds_helpers():
     """Test helper functions for feed extraction"""
     params = FeedParameters("https://example.org", "example.org", "https://example.org")
     domainname, baseurl = get_hostinfo("https://example.org")
-    assert domainname == params.domain and baseurl == params.base
+    assert domainname == params.domain
+    assert baseurl == params.base
 
     # empty page
     assert find_links("<feed></feed>", params) == []

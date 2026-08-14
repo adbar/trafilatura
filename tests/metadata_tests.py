@@ -8,6 +8,7 @@ import sys
 from lxml import html
 from lxml.etree import XPath
 
+from trafilatura.json_metadata import extract_json, extract_json_parse_error, process_parent
 from trafilatura.metadata import (
     JSON_MINIFY,
     Document,
@@ -19,7 +20,6 @@ from trafilatura.metadata import (
     extract_url,
     normalize_tags,
 )
-from trafilatura.json_metadata import extract_json, extract_json_parse_error, process_parent
 from trafilatura.settings import Extractor, use_config
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -330,7 +330,8 @@ def test_meta():
     metadata = extract_metadata(
         '<html><head><meta property="og:title" content="T"/><meta property="og:author" content="A B"/><meta property="og:url" content="https://e.org"/><meta property="og:description" content="D"/><meta property="og:site_name" content="S"/><meta property="og:image" content="https://e.org/i.jpg"/></head><body/></html>'
     )
-    assert metadata.title == "T" and metadata.image == "https://e.org/i.jpg"
+    assert metadata.title == "T"
+    assert metadata.image == "https://e.org/i.jpg"
 
     metadata = extract_metadata(
         '<html><head><meta name="dc.title" content="Open Graph Title"/><meta name="dc.creator" content="Jenny Smith"/><meta name="dc.description" content="This is an Open Graph description"/></head><body></body></html>'
@@ -349,7 +350,8 @@ def test_meta():
     metadata = extract_metadata("<html><title></title></html>")
     assert metadata.sitename is None
     metadata = extract_metadata("<html><head><title>" + "AAA" * 10000 + "</title></head></html>")
-    assert metadata.title.endswith("…") and len(metadata.title) == 10000
+    assert metadata.title.endswith("…")
+    assert len(metadata.title) == 10000
     assert extract_metadata('<html><head><meta otherkey="example" content="Unknown text"/></head></html>').title is None
     assert extract_metadata("<html><head><title></title><title></title><title></title></head></html>").title is None
     assert extract_metadata('<html><body><script type="application/ld+json"></script></body></html>').title is None

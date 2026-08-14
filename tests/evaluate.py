@@ -7,14 +7,12 @@ import logging
 import os
 import sys
 import time
-
 from dataclasses import dataclass
 from functools import cache, partial
 from importlib.metadata import PackageNotFoundError, version
 
 import justext
 import pandas as pd
-
 from eval_common import (
     EXTRACT_OPTS,
     METRICS,
@@ -27,14 +25,13 @@ from eval_common import (
     validate,
 )
 
-from trafilatura import baseline, extract, html2txt
-from trafilatura.external import jt_stoplist_init
-
 # for run_custom
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
-from trafilatura.baseline import basic_cleaning
-from trafilatura.utils import decode_file, load_html
 
+from trafilatura import baseline, extract, html2txt
+from trafilatura.baseline import basic_cleaning
+from trafilatura.external import jt_stoplist_init
+from trafilatura.utils import decode_file, load_html
 
 # Competitors are imported in their runner, so a missing one only disables its own
 # algorithm (see resolve_versions). justext is a Trafilatura dependency, always there.
@@ -290,7 +287,7 @@ class Evaluation:
 
     def create_df(self, results):
         """results to pandas dataframe"""
-        columns = ["algorithm", "version"] + METRICS + ["time difference", "skipped instances", "errors"]
+        columns = ["algorithm", "version", *METRICS, "time difference", "skipped instances", "errors"]
         baseline_time = results["baseline"].time if "baseline" in results else 0.0
         rows = []
         for algo, cm in results.items():
@@ -325,7 +322,7 @@ def cmdparser():
         sys.exit(1)
     args = parser.parse_args()
     if args.small:
-        args.algorithms = DEFAULT_ALGORITHMS + ["trafilatura fast", "trafilatura"]
+        args.algorithms = [*DEFAULT_ALGORITHMS, "trafilatura fast", "trafilatura"]
     elif args.all:
         args.algorithms = list(ALGORITHMS)
     else:

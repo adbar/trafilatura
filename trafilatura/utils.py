@@ -21,9 +21,10 @@ try:
 except ImportError:
     HAS_ZLIB = False
 
+from collections.abc import Iterable, Iterator, Mapping
 from functools import lru_cache
 from itertools import islice
-from typing import TYPE_CHECKING, Any, Literal, cast
+from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
 from unicodedata import normalize
 
 # response compression
@@ -65,12 +66,50 @@ from urllib3.response import HTTPResponse
 if TYPE_CHECKING:  # pragma: no cover
     from .settings import Document, Extractor
 
+
+class Response:
+    "Store information gathered in a HTTP response object."
+
+    __slots__ = ["data", "headers", "html", "status", "url"]
+
+    def __init__(self, data: bytes, status: int, url: str) -> None:
+        self.data = data
+        self.headers: dict[str, str] | None = None
+        self.html: str | None = None
+        self.status = status
+        self.url = url
+
+    def __bool__(self) -> bool:
+        return self.data is not None
+
+    def __repr__(self) -> str:
+        return self.html or decode_file(self.data)
+
+    def store_headers(self, headerdict: Mapping[str, str]) -> None:
+        "Store response headers if required."
+        # further control steps here
+        self.headers = {k.lower(): v for k, v in headerdict.items()}
+
+    def decode_data(self, decode: bool) -> None:
+        "Decode the bytestring in data and store a string in html."
+        if decode and self.data:
+            self.html = decode_file(self.data)
+
+    def as_dict(self) -> dict[str, Any]:
+        "Convert the response object to a dictionary."
+        # heterogeneous value types (bytes, int, dict, str, None)
+        return {attr: getattr(self, attr) for attr in self.__slots__}
+
+
+# accepted input for HTML loading
+HtmlInput: TypeAlias = HtmlElement | HTTPResponse | Response | bytes | str
+
 LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {"utf-8", "utf_8"}
 
-DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<>]*>", re.I)
-FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.I)
+DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<>]*>", re.IGNORECASE)
+FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.IGNORECASE)
 HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 # control characters
 INVALID_XML_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
@@ -84,7 +123,7 @@ LINES_TRIMMING = re.compile(r"(?<![p{P}>])\n", flags=re.UNICODE | re.MULTILINE)
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)", re.I)
+IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)", re.IGNORECASE)
 
 FORMATTING_PROTECTED = {"cell", "head", "hi", "item", "p", "quote", "ref", "td"}
 SPACING_PROTECTED = {"code", "pre"}
@@ -127,7 +166,7 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
     # try brotli
     if HAS_BROTLI:
         try:
-            return brotli.decompress(filecontent)
+            return cast("bytes", brotli.decompress(filecontent))
         except brotli.error:
             pass  # logging.debug('invalid Brotli file')
     # try zlib/deflate
@@ -189,7 +228,7 @@ def decode_file(filecontent: bytes | str) -> str:
     for guessed_encoding in detect_encoding(filecontent):
         try:
             htmltext = filecontent.decode(guessed_encoding)
-        except (LookupError, UnicodeDecodeError):  # VISCII: lookup
+        except (LookupError, UnicodeDecodeError):  # noqa: PERF203 -- VISCII: lookup
             LOGGER.warning("wrong encoding detected: %s", guessed_encoding)
             htmltext = None
         else:
@@ -231,7 +270,7 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     return tree
 
 
-def load_html(htmlobject: Any) -> HtmlElement | None:
+def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
 
@@ -314,7 +353,7 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
         elif trailing_space:
             space_before = " " if line[0].isspace() else ""
             space_after = " " if line[-1].isspace() else ""
-            new_line = "".join([space_before, new_line, space_after])
+            new_line = f"{space_before}{new_line}{space_after}"
     return new_line
 
 
@@ -326,7 +365,8 @@ def sanitize(text: str, preserve_space: bool = False, trailing_space: bool = Fal
     # process line by line
     try:
         return "\n".join(filter(None, (line_processing(line, preserve_space) for line in text.splitlines()))).replace(
-            "\u2424", ""
+            "\u2424",
+            "",
         )
     except AttributeError:
         return None
@@ -343,8 +383,8 @@ def sanitize_tree(tree: _Element) -> _Element:
         preserve_space = elem.tag in SPACING_PROTECTED or parent_tag in SPACING_PROTECTED
         trailing_space = elem.tag in FORMATTING_PROTECTED or parent_tag in FORMATTING_PROTECTED or preserve_space
 
-        # remove invalid attributes
-        for attribute in elem.attrib:
+        # remove invalid attributes (copy: pop() during iteration)
+        for attribute in list(elem.attrib):
             if ":" in attribute:  # colon is reserved for namespaces in XML
                 if not elem.attrib[attribute] or attribute.split(":", 1)[0] not in tree.nsmap:
                     elem.attrib.pop(attribute)
@@ -394,7 +434,7 @@ def is_image_file(imagesrc: str | None) -> bool:
     return bool(IMAGE_EXTENSION.search(imagesrc))
 
 
-def make_chunks(iterable: Any, n: int) -> Any:
+def make_chunks(iterable: Iterable[str], n: int) -> Iterator[tuple[str, ...]]:
     "Chunk data into smaller pieces."
     # 3.12+: https://docs.python.org/3/library/itertools.html#itertools.batched
     iterator = iter(iterable)
@@ -441,10 +481,9 @@ def language_classifier(temp_text: str, temp_comments: str) -> str | None:
     """Run external component (if installed) for language identification"""
     if LANGID_FLAG is True:
         result, _ = py3langid.classify(temp_text) if len(temp_text) > len(temp_comments) else py3langid.classify(temp_comments)
-    else:  # pragma: no cover
-        LOGGER.warning("Language detector not installed, skipping detection")
-        result = None
-    return result
+        return cast("str", result)
+    LOGGER.warning("Language detector not installed, skipping detection")  # pragma: no cover
+    return None  # pragma: no cover
 
 
 def language_filter(temp_text: str, temp_comments: str, target_language: str, docmeta: "Document") -> tuple[bool, "Document"]:
@@ -495,7 +534,7 @@ def is_last_element_in_cell(elem: _Element) -> bool:
     if not is_in_table_cell(elem):  # shortcut
         return False
 
-    container = elem if elem.tag == "cell" else cast(_Element, elem.getparent())
+    container = elem if elem.tag == "cell" else cast("_Element", elem.getparent())
     return len(container) == 0 or container[-1] == elem
 
 

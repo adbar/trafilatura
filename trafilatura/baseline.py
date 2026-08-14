@@ -14,7 +14,7 @@ from lxml.etree import Element, SubElement, _Element
 from lxml.html import HtmlElement, fragment_fromstring
 
 from .settings import BASIC_CLEAN_XPATH, DEDUPE_SCAN_CAP, MIN_DUPLICATE_LENGTH
-from .utils import as_list, load_html, remove_control_characters, trim
+from .utils import HtmlInput, as_list, load_html, remove_control_characters, trim
 from .xml import delete_element
 
 # detection (not removal, unlike HTML_STRIP_TAGS): must not fire on comparison-operator prose
@@ -44,7 +44,10 @@ _DESCRIPTION_TYPES = ("Product", "VideoObject")
 # property names, quoted ones match @type values. "step" is deliberately not a hook
 # (too generic a substring); a schema.org HowTo carrying it is caught via its @type
 _JSON_HOOKS = (
-    _JSON_TEXT_KEYS + ("recipeInstructions", "acceptedAnswer") + tuple(f'"{t}"' for t in _DESCRIPTION_TYPES + ("HowTo",))
+    *_JSON_TEXT_KEYS,
+    "recipeInstructions",
+    "acceptedAnswer",
+    *tuple(f'"{t}"' for t in (*_DESCRIPTION_TYPES, "HowTo")),
 )
 _JSON_HOOKS_RE = re.compile("|".join(re.escape(hook) for hook in _JSON_HOOKS))
 # a strategy must accumulate more than this much text to be accepted (and a single
@@ -162,7 +165,7 @@ def _collect_json_content(tree: HtmlElement) -> tuple[list[str], list[str]]:
     return bodies, teasers
 
 
-def baseline(filecontent: Any) -> tuple[_Element, str, int]:
+def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     """Use baseline extraction function targeting content in embedded JSON or text elements.
 
     Tries a series of sources and takes the first that yields enough text:
@@ -274,7 +277,7 @@ _BLOCK_ELEMS = {
 }
 
 
-def html2txt(content: Any, clean: bool = True) -> str:
+def html2txt(content: HtmlInput, clean: bool = True) -> str:
     """Run basic html2txt on a document.
 
     Args:
