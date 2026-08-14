@@ -152,6 +152,15 @@ def collect_link_info(
     return sum(lengths), len(mylist), shortelems, mylist
 
 
+def is_paragraph_listing(links_xpath: list[HtmlElement]) -> bool:
+    "Tell a document listing (every link alone in its paragraph) from a farm (links running together)"
+    for link in links_xpath:
+        parent = link.getparent()
+        if parent is None or parent.tag != "p" or len(parent.findall(".//ref")) > 1:
+            return False
+    return True
+
+
 def link_density_test(element: HtmlElement, text: str, favor_precision: bool = False) -> tuple[bool, list[str]]:
     "Remove sections which are rich in links (probably boilerplate)"
     links_xpath = element.findall(".//ref")
@@ -196,7 +205,7 @@ def link_density_test(element: HtmlElement, text: str, favor_precision: bool = F
         # local vars: leave mylist [] on fall-through so the caller's backtracking gate is unaffected
         linklen, elemnum, _, farmlist = collect_link_info(links_xpath)
         # avg link len >= 100 => catalog/listing content (one link per card), not a farm: keep it
-        if linklen > len(text) * LINK_FARM_RATIO and linklen < 100 * elemnum:
+        if linklen > len(text) * LINK_FARM_RATIO and linklen < 100 * elemnum and not is_paragraph_listing(links_xpath):
             return True, farmlist
     return False, mylist
 
