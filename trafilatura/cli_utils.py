@@ -130,18 +130,18 @@ def determine_counter_dir(dirname: str, c: int) -> str:
     "Return a destination directory based on a file counter."
     if c < 0:
         return dirname
-    return str(Path(dirname) / str(int(c / MAX_FILES_PER_DIRECTORY) + 1))
+    # os.path.join, not Path: pathlib rewrites the separators the caller passed in (test_sysoutput)
+    return os.path.join(dirname, str(int(c / MAX_FILES_PER_DIRECTORY) + 1))
 
 
 def get_writable_path(destdir: str, extension: str) -> tuple[str, str]:
     "Find a writable path and return it along with its random file name."
-    dest = Path(destdir)
     while True:
         filename = "".join(random.choice(CHAR_CLASS) for _ in range(FILENAME_LEN))
-        output_path = dest / (filename + extension)
+        output_path = os.path.join(destdir, filename + extension)
         # not Path.exists: it raises on an unreadable parent, and the dir status is checked later
         if not os.path.exists(output_path):  # noqa: PTH110
-            return str(output_path), filename
+            return output_path, filename
 
 
 def generate_hash_filename(content: str) -> str:
@@ -164,7 +164,7 @@ def determine_output_path(
     if args.keep_dirs:
         # strip directory
         original_dir = STRIP_DIR.sub("", orig_filename)
-        destination_dir = str(Path(args.output_dir) / original_dir)
+        destination_dir = os.path.join(args.output_dir, original_dir)
         # strip extension
         filename = STRIP_EXTENSION.sub("", orig_filename)
     else:
@@ -172,7 +172,7 @@ def determine_output_path(
         # use cryptographic hash on file contents to define name
         filename = new_filename or generate_hash_filename(content)
 
-    output_path = str(Path(destination_dir) / (filename + extension))
+    output_path = os.path.join(destination_dir, filename + extension)
     return output_path, destination_dir
 
 
@@ -213,7 +213,7 @@ def generate_filelist(inputdir: str) -> Generator[str, None, None]:
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
     for root, _, files in os.walk(inputdir):
         for filename in files:
-            yield str(Path(root, filename))
+            yield os.path.join(root, filename)
 
 
 def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, options: Extractor | None = None) -> None:

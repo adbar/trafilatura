@@ -163,6 +163,7 @@ ignore = [
     "EM",                         # string in exception — too verbose to fix
     "TRY",                        # tryceratops — too opinionated
     "RUF001",                     # ambiguous unicode — intentional in a web scraping library
+    "PTH118",                     # os.path.join — pathlib rewrites the separators the caller passed in
     # too many violations, low value
     "C901",                       # complexity — tracked but not enforced
     "PLR",                        # pylint refactor (magic values, too-many-args, etc.)
