@@ -145,7 +145,7 @@ For relatively small and focused corpora, human supervision is key. It is advisa
 
 A crawling method using diverse seeds for corpus building can yield better results and notably ensure better randomness in a population of web documents (see Henzinger et al. 2000).
 
-Screening and refining the lists of URLs you use for your projects can also enhance corpus quality, see for example the implementation details in the papers mentioned below as well as the filtering tool `courlan <https://github.com/adbar/courlan>`_ included with Trafilatura.
+Screening and refining the lists of URLs you use for your projects can also enhance corpus quality, see for example the implementation details in the papers mentioned below as well as the filtering tool `courlan <https://courlan.readthedocs.io/en/latest/>`_ included with Trafilatura.
 
 The following blog posts give more insights on aspects of web corpus construction:
 

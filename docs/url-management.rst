@@ -14,7 +14,7 @@ Filtering input URLs is essential to avoid unwanted URLs, such as those with unn
 
 
 .. hint::
-    See the `Courlan documentation <https://github.com/adbar/courlan>`_ for more examples.
+    See the `Courlan documentation <https://courlan.readthedocs.io/en/latest/>`_ for more examples.
 
 
 Filtering a list of URLs
@@ -142,4 +142,7 @@ You can provide a blacklist of URLs which will not be processed and included in 
 - on the CLI: ``--blacklist`` arguments (expects a file containing URLs)
 
 In Python, you can also pass a blacklist of author names as argument, see `documentation <corefunctions.html>`_.
+
+.. seealso::
+    `Download web pages <downloads.html>`_, `Web crawling <crawls.html>`_
 

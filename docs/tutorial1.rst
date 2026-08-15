@@ -137,3 +137,6 @@ Assuming the output directory you are working with is called ``xmlfiles``:
     $ somajo-tokenizer --xml xmlfiles/filename.xml | sed -e "s|</*.*>||g" -e "/^$/d"
     # continue with the steps above...
 
+.. seealso::
+    `Tutorial: Gathering a custom web corpus <tutorial0.html>`_, `With Python <usage-python.html>`_
+

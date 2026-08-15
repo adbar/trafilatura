@@ -1,4 +1,4 @@
-## How to contribute
+# How to contribute
 
 
 If you value this software or depend on it for your product,
@@ -8,7 +8,7 @@ Your support will help ensure the sustainability and growth of the project.
 There are many ways to contribute:
 
   * Sponsor the project: Show your appreciation [on GitHub](https://github.com/sponsors/adbar) or [ko-fi.com](https://ko-fi.com/adbarbaresi).
-  * Find bugs and submit bug reports: Help making Trafilatura an even more robust tool.
+  * Find bugs and submit bug reports: Help make Trafilatura an even more robust tool.
   * Write code: Fix bugs or add new features by writing [pull requests](https://docs.github.com/en/pull-requests) with a list of what you have done.
   * Improve the documentation: Write tutorials and guides, correct mistakes, or translate existing content.
   * Submit feature requests: Share your feedback and suggestions.
@@ -16,7 +16,7 @@ There are many ways to contribute:
 
 Here are some important resources:
 
-  * [List of currently open issues](https://github.com/adbar/trafilatura/issues) (no pretension to exhaustivity!)
+  * [List of currently open issues](https://github.com/adbar/trafilatura/issues) (not exhaustive!)
   * [How to contribute to open source](https://opensource.guide/how-to-contribute/)
 
 A special thanks to all the [contributors](https://github.com/adbar/trafilatura/graphs/contributors) who have played a part in Trafilatura.

@@ -45,7 +45,7 @@ In order to gather web documents it can be useful to download the portions of a 
 
 A comprehensive overview of the available documents can be obtained faster and more efficiently using the first two methods than by systematically extracting and following links within a website.
 
-The formats supported are all machine-readable rather than human-readable they can also be used to automatically transfer information from one website to another without any human intervention. However, link inspection and filtering prior to systematic download is recommended to avoid undesired content or overstreching computing resources.
+The formats supported are all machine-readable rather than human-readable they can also be used to automatically transfer information from one website to another without any human intervention. However, link inspection and filtering prior to systematic download is recommended to avoid undesired content or overstretching computing resources.
 
 In addition, *trafilatura* includes support for multilingual and multinational sitemaps. For example, a site can target English language users through links like ``http://www.example.com/en/…`` and German language users through ``http://www.example.com/de/…``.
 
@@ -214,5 +214,8 @@ Alternatively, you can download a series of web documents with generic command-l
     $ wget --directory-prefix=download/ --wait 5 --input-file=mylist.txt
     # process a directory with archived HTML files
     $ trafilatura --input-dir download/ --output-dir corpus/ --xmltei --no-comments
+
+.. seealso::
+    `Download web pages <downloads.html>`_, `Web crawling <crawls.html>`_
 
 

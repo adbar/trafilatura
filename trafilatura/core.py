@@ -336,10 +336,10 @@ def bare_extraction(
             Other values: "csv", "html", "json", "markdown", "txt", "xml", and "xmltei".
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
-        include_images: Take images into account (experimental).
+        include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (kept in XML, rendered as markdown for text formats; ignored for JSON).
-        include_links: Keep links along with their targets (experimental).
+        include_links: Keep links along with their targets.
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Extract metadata fields and add them to the output.
@@ -546,10 +546,10 @@ def extract(
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
-        include_images: Take images into account (experimental).
+        include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (kept in XML, rendered as markdown for text formats; ignored for JSON).
-        include_links: Keep links along with their targets (experimental).
+        include_links: Keep links along with their targets.
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Extract metadata fields and add them to the output.
@@ -639,10 +639,10 @@ def extract_with_metadata(
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
-        include_images: Take images into account (experimental).
+        include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (kept in XML, rendered as markdown for text formats; ignored for JSON).
-        include_links: Keep links along with their targets (experimental).
+        include_links: Keep links along with their targets.
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.

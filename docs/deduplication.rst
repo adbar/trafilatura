@@ -25,7 +25,7 @@ Element and paragraph level
 
 When extracting multiple texts from a website, deduplication helps identify and remove redundant content, such as navigation menus or footers, which are often repeated across the site. This process can be thought of as an automated way to detect boilerplate elements.
 
-While Trafilatura has built-in filters to remove these elements, websites can be highly variable, and some may slip through. The functions in this section provide a way to precisely target and remove repeated segments. Fine-tuning this feature allows for retrieval of more precise textual data..
+While Trafilatura has built-in filters to remove these elements, websites can be highly variable, and some may slip through. The functions in this section provide a way to precisely target and remove repeated segments. Fine-tuning this feature allows for retrieval of more precise textual data.
 
 
 Extraction functions
@@ -141,6 +141,24 @@ The ``generate_hash_filename()`` function takes a string as input and returns a 
     'qAgzZnskrcRgeftk'
 
 
+Clearing the cache
+------------------
+
+The deduplication cache (``LRU_TEST``) is a module-level singleton that persists for the lifetime of the Python process. When processing multiple unrelated sites or batches, previously seen content may cause false positives — new text rejected as a duplicate of content from an earlier batch.
+
+To reset the cache between batches, call ``reset_caches()``:
+
+.. code-block:: python
+
+    >>> from trafilatura.meta import reset_caches
+    >>> reset_caches()  # clears dedup cache, plus other internal caches
+
+This also frees memory held by other internal caches (jusText stopwords, htmldate, courlan).
+
+.. note::
+    Each thread maintains its own dedup state, but ``reset_caches()`` clears the shared caches. Call it from the main thread between independent processing runs.
+
+
 Configuration
 -------------
 
@@ -148,3 +166,6 @@ The deduplication process can be customized on two different levels:
 
 - Extraction options with ``Extractor()`` object: see example above
 - Package-wide settings in ``settings.py``: define cache size with ``LRU_SIZE`` variable
+
+.. seealso::
+    `Settings and customization <settings.html>`_, `Download web pages <downloads.html>`_

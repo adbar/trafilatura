@@ -115,15 +115,16 @@ The ``html2txt`` function extracts all possible text on the webpage, it can be u
 Python syntax
 ^^^^^^^^^^^^^
 
-You can also use Python functions and objects from R. For example:
+For more complex operations beyond simple function calls, you can use ``py_run_string()`` to run arbitrary Python code:
 
 
 .. code-block:: R
 
     > py_run_string("import trafilatura")
     > url <- "https://www.example.com"
-    > py_df <- py_run_string("trafilatura.extract(url)")
-    > df <- py_to_r(py_df)
+    > py_run_string(paste0("result = trafilatura.fetch_url('", url, "')"))
+    > py_run_string("result = trafilatura.extract(result)")
+    > result <- py$result
 
 
 Other functions
@@ -176,3 +177,6 @@ Further resources:
 Working with the content:
 
 - `Basic Text Processing in R <https://programminghistorian.org/en/lessons/basic-text-processing-in-r>`_
+
+.. seealso::
+    `With Python <usage-python.html>`_, `Core functions <corefunctions.html>`_

@@ -67,11 +67,11 @@ Description
 
 **Errors**: The *boilerpy3* and *newspaper4k* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs. These errors are ignored in order to complete the benchmark.
 
-**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions. Trafilatura consistently outperforms other open-source libraries, showcasing its efficiency and accuracy in extracting web content.
+**Results**: The baseline beats a few systems, showing its interest. *justext* is highly configurable and tweaking its configuration (as it is done here) can lead to better performance than its generic settings. *goose3* is the most precise algorithm, albeit at a significant cost in terms of recall. The packages focusing on raw text extraction *html_text* and *inscriptis* are roughly comparable and achieve the best recall as they try to extract all the text. Rule-based approaches such as *trafilatura*'s obtain balanced results despite a lack of precision. Combined with an algorithmic approach they perform significantly better than the other tested solutions.
 
-**Roadmap**: Further evaluations will be run, including additional tools and languages. Comment extraction still has to be evaluated, although most libraries don not offer this functionality.
+Comment extraction still has to be evaluated, although most libraries do not offer this functionality.
 
-The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
 Results (2026-08-04)
@@ -107,6 +107,8 @@ Each package receives the raw HTML bytes and handles character encoding itself; 
 
 Older results
 -------------
+
+Historical results are preserved below to show how trafilatura and alternatives have evolved over time.
 
 
 Older results (2022-05-18)
@@ -258,3 +260,6 @@ news-please 1.4.25              0.900      0.714      0.827     0.797     22.99
 trafilatura 0.3.1 (rule-based)  0.872      0.895      0.887     0.883     1.87
 trafilatura 0.3.1 (+ justext)   0.889      0.936      **0.914** **0.912** 2.19
 =============================== =========  ========== ========= ========= =====
+
+.. seealso::
+    `Core functions <corefunctions.html>`_

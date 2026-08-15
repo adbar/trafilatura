@@ -49,35 +49,33 @@ Features
 ~~~~~~~~
 
 - Advanced web crawling and text discovery:
-   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - Smart crawling and URL management (filtering and deduplication)
+  - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
+  - Smart crawling and URL management (filtering and deduplication)
 - Parallel processing of online and offline input:
-   - Live URLs, efficient and polite processing of download queues
-   - Previously downloaded HTML files and parsed HTML trees
+  - Live URLs, efficient and polite processing of download queues
+  - Previously downloaded HTML files and parsed HTML trees
 - Robust and configurable extraction of key elements:
-   - Main text (common patterns and generic algorithms like jusText and readability)
-   - Metadata (title, author, date, site name, categories and tags)
-   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-   - Optional elements: comments, links, images, tables
+  - Main text (own rule-based extractor with jusText and readability as fallbacks)
+  - Metadata (title, author, date, site name, categories and tags)
+  - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+  - Optional elements: comments, links, images, tables
 - Multiple output formats:
-   - TXT and Markdown
-   - CSV
-   - JSON
-   - HTML, XML and `XML-TEI <https://tei-c.org/>`_
+  - TXT and Markdown
+  - CSV
+  - JSON
+  - HTML, XML and `XML-TEI <https://tei-c.org/>`_
 - Optional add-ons:
-   - Language detection on extracted content
-   - Speed optimizations
+  - Language detection on extracted content
+  - Speed optimizations
 - Actively maintained with support from the open-source community:
-   - Regular updates, feature additions, and optimizations
-   - Comprehensive documentation
+  - Regular updates, feature additions, and optimizations
+  - Comprehensive documentation
 
 
-Evaluation and alternatives
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Evaluation
+~~~~~~~~~~
 
-Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks, showcasing its efficiency and accuracy in extracting web content. The extractor tries to strike a balance between limiting noise and including all valid parts.
-
-The `benchmark section <evaluation.html>`_ details alternatives and results, the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ describes how to reproduce the evaluation.
+Trafilatura consistently outperforms other open-source libraries in text extraction benchmarks. The `benchmark section <evaluation.html>`_ details alternatives and results, the `evaluation readme <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ describes how to reproduce the evaluation.
 
 
 In a nutshell
@@ -143,8 +141,8 @@ Author
 Reach out via the software repository or the `contact page <https://adrien.barbaresi.eu/>`_ for inquiries, collaborations, or feedback. See also social networks for the latest updates.
 
 - Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, Proceedings of ACL/IJCNLP 2021: System Demonstrations, 2021, p. 122-131.
--  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
--  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
+- Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
+- Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 
 Citing Trafilatura
@@ -200,26 +198,37 @@ Starting from the ``docs/`` folder of the repository:
 
 
 
-Changes
--------
-
-For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
-
-
-
 Further documentation
 =====================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Getting started
 
    installation
    usage
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Guides & tutorials
+
    tutorials
    evaluation
    tests
-   used-by
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+
+   extraction-overview
    corefunctions
+   used-by
+   ../HISTORY
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Background
+
    background
 
 :ref:`genindex`

@@ -1,6 +1,10 @@
 Tutorials
 =========
 
+.. meta::
+    :description lang=en:
+        Trafilatura tutorials: build web corpora, generate frequency lists, validate TEI files, and more.
+
 
 Learn through practical examples. The following tutorials cover various scenarios, from text embedding for vector search to building custom web corpora and generating word frequency lists.
 
@@ -11,7 +15,6 @@ Learn through practical examples. The following tutorials cover various scenario
    tutorial0
    tutorial1
    tutorial2
-   tutorial-epsilla
    tutorial-dwds
 
 

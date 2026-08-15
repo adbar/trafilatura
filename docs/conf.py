@@ -53,7 +53,10 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
-    'sphinx_sitemap'
+    'sphinx_sitemap',
+    'myst_parser',
+    'sphinxcontrib.programoutput',
+    'sphinxext.opengraph',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -135,7 +138,14 @@ html_context = {
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
+    "courlan": ("https://courlan.readthedocs.io/en/latest/", None),
+    "htmldate": ("https://htmldate.readthedocs.io/en/latest/", None),
 }
+
+ogp_site_url = "https://trafilatura.readthedocs.io/"
+ogp_image = "https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-logo.png"
+ogp_description_length = 200
+ogp_type = "website"
 
 html_baseurl = 'https://trafilatura.readthedocs.io/'
 sitemap_url_scheme = "{lang}latest/{link}"

@@ -25,7 +25,7 @@ Data science
 Natural language processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For a first hand approach to NLP pipelines, see `Textblob <https://textblob.readthedocs.io/en/dev/>`_ or the `Natural Language Toolkit (NTLK) <https://www.nltk.org/>`_.
+For a first hand approach to NLP pipelines, see `Textblob <https://textblob.readthedocs.io/en/dev/>`_ or the `Natural Language Toolkit (NLTK) <https://www.nltk.org/>`_.
 
 
 Accessible tutorials:

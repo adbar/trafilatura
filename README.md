@@ -13,16 +13,21 @@
 [![Downloads](https://static.pepy.tech/badge/trafilatura/month)](https://pepy.tech/project/trafilatura)
 [![Reference DOI: 10.18653/v1/2021.acl-demo.15](https://img.shields.io/badge/DOI-10.18653%2Fv1%2F2021.acl--demo.15-blue)](https://aclanthology.org/2021.acl-demo.15/)
 
-<br/>
 
-<img alt="Demo as GIF image" src="https://raw.githubusercontent.com/adbar/trafilatura/master/docs/trafilatura-demo.gif" align="center" width="80%"/>
+``` python
+>>> import trafilatura
+>>> downloaded = trafilatura.fetch_url("https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/")
+>>> trafilatura.extract(downloaded)
+'Erin Spiceland is a software engineer and ...'
+>>> trafilatura.extract(downloaded, output_format="json", include_comments=False)
+```
 
 <br/>
 
 
 ## Introduction
 
-Trafilatura is a cutting-edge **Python package and command-line tool**
+Trafilatura is a comprehensive **Python package and command-line tool**
 designed to **gather text on the Web and simplify the process of turning
 raw HTML into structured, meaningful data**. It includes all necessary
 discovery and text processing components to perform **web crawling,
@@ -47,47 +52,44 @@ the University of Munich.
 ### Features
 
 - Advanced web crawling and text discovery:
-   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
-   - Smart crawling and URL management (filtering and deduplication)
+  - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
+  - Smart crawling and URL management (filtering and deduplication)
 
 - Parallel processing of online and offline input:
-   - Live URLs, efficient and polite processing of download queues
-   - Previously downloaded HTML files and parsed HTML trees
+  - Live URLs, efficient and polite processing of download queues
+  - Previously downloaded HTML files and parsed HTML trees
 
 - Robust and configurable extraction of key elements:
-   - Main text (common patterns and generic algorithms like jusText and readability)
-   - Metadata (title, author, date, site name, categories and tags)
-   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-   - Optional elements: comments, links, images, tables
+  - Main text (own rule-based extractor with jusText and readability as fallbacks)
+  - Metadata (title, author, date, site name, categories and tags)
+  - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+  - Optional elements: comments, links, images, tables
 
 - Multiple output formats:
-   - TXT and Markdown
-   - CSV
-   - JSON
-   - HTML, XML and [XML-TEI](https://tei-c.org/)
+  - TXT and Markdown
+  - CSV
+  - JSON
+  - HTML, XML and [XML-TEI](https://tei-c.org/)
 
 - Optional add-ons:
-   - Language detection on extracted content
-   - Speed optimizations
+  - Language detection on extracted content
+  - Speed optimizations
 
 - Actively maintained with support from the open-source community:
-   - Regular updates, feature additions, and optimizations
-   - Comprehensive documentation
+  - Regular updates, feature additions, and optimizations
+  - Comprehensive documentation
 
 
-### Evaluation and alternatives
+### Evaluation
 
 Trafilatura consistently outperforms other open-source libraries in text
-extraction benchmarks, showcasing its efficiency and accuracy in
-extracting web content. The extractor tries to strike a balance between
-limiting noise and including all valid parts.
-
-For more information see the [benchmark section](https://trafilatura.readthedocs.io/en/latest/evaluation.html)
+extraction benchmarks. For more information see the
+[benchmark section](https://trafilatura.readthedocs.io/en/latest/evaluation.html)
 and the [evaluation readme](https://github.com/adbar/trafilatura/blob/master/tests/README.rst)
 to run the evaluation with the latest data and packages.
 
 
-#### Other evaluations:
+#### Other evaluations
 
 - Most efficient open-source library in *ScrapingHub*'s [article extraction benchmark](https://github.com/scrapinghub/article-extraction-benchmark)
 - Best overall tool according to [Bien choisir son outil d'extraction de contenu à partir du Web](https://hal.archives-ouvertes.fr/hal-02768510v3/document)
@@ -108,7 +110,7 @@ is straightforward. For more information and detailed guides, visit
   [With Python](https://trafilatura.readthedocs.io/en/latest/usage-python.html),
   [With R](https://trafilatura.readthedocs.io/en/latest/usage-r.html)
 - [Core Python functions](https://trafilatura.readthedocs.io/en/latest/corefunctions.html)
-- Interactive Python Notebook: [Trafilatura Overview](docs/Trafilatura_Overview.ipynb)
+- Interactive Python Notebook: [Trafilatura Overview](docs/Trafilatura_Overview.ipynb) (in the repository)
 - [Tutorials and use cases](https://trafilatura.readthedocs.io/en/latest/tutorials.html)
 
 Youtube playlist with video tutorials in several languages:
@@ -123,7 +125,7 @@ This package is distributed under the [Apache 2.0 license](https://www.apache.or
 Versions prior to v1.8.0 are under GPLv3+ license.
 
 
-### Contributing
+## Contributing
 
 Contributions of all kinds are welcome. Visit the [Contributing
 page](https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md)
@@ -155,7 +157,7 @@ are formed.
 
 ### Author
 
-Reach out via ia the software repository or the [contact
+Reach out via the software repository or the [contact
 page](https://adrien.barbaresi.eu/) for inquiries, collaborations, or
 feedback. See also social networks for the latest updates.
 

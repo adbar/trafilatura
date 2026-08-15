@@ -1,6 +1,10 @@
 Tutorial: Validation of TEI files
 =================================
 
+.. meta::
+    :description lang=en:
+        Tutorial on producing and validating TEI-compliant XML files with Trafilatura for data integrity and interoperability.
+
 
 Trafilatura can produce and validate XML documents according to the TEI guidelines. In this tutorial, you will see how to use it to ensure data integrity and interoperability.
 
@@ -15,7 +19,7 @@ Producing TEI files
 -------------------
 
 
-Trafilatura can extract information from web pages and convert it into TEI-compliant XML files. Here is how to procude a TEI file in Python:
+Trafilatura can extract information from web pages and convert it into TEI-compliant XML files. Here is how to produce a TEI file in Python:
 
 .. code-block:: python
 
@@ -63,3 +67,6 @@ The ``validate_tei`` function takes an XML file as input and returns ``True`` if
 
 
 For more information please refer to this blog post: `Validating TEI-XML documents with Python <https://adrien.barbaresi.eu/blog/validating-tei-xml-python.html>`_
+
+.. seealso::
+    `With Python <usage-python.html>`_, `Core functions <corefunctions.html>`_

@@ -32,7 +32,7 @@ Some systems already have such an environment installed, to check it just run th
 Trafilatura package
 -------------------
 
-Trafilatura is packaged as a software library available from the package repository `PyPI <https://pypi.org/>`_. As such it can notably be installed with a package manager like ``pip`` or ``pipenv``.
+Trafilatura is packaged as a software library available from the package repository `PyPI <https://pypi.org/>`_. As such it can notably be installed with a package manager like ``pip``, ``uv`` or ``pipenv``.
 
 
 Installing Python packages
@@ -72,13 +72,14 @@ In case this does not happen automatically, specify the version number:
 
 ``pip install trafilatura==number``
 
+- Last version for Python 3.8 and 3.9: ``2.0.0``
 - Last version for Python 3.6 and 3.7: ``1.12.2``
 - Last version for Python 3.5: ``0.9.3``
 - Last version for Python 3.4: ``0.8.2``
 
 
-Command-line tool
-~~~~~~~~~~~~~~~~~
+Troubleshooting the command-line tool
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you installed the library successfully but cannot start the command-line tool, try adding the user-level ``bin`` directory to your ``PATH`` environment variable.
 If you are using a Unix derivative (e.g. Linux, OS X), you can achieve this by running the following command: ``export PATH="$HOME/.local/bin:$PATH"``.
@@ -129,3 +130,6 @@ urllib3[socks]
     Downloads through SOCKS proxy with urllib3
 zstandard
     Additional compression algorithm for downloads
+
+.. seealso::
+    `Quickstart <quickstart.html>`_
