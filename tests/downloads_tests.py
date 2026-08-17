@@ -93,6 +93,27 @@ def test_urllib_request_releases_conn_on_oversize():
     resp.release_conn.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    "geturl_result, expected",
+    [
+        # request URI passed down to the connection pool, no redirect involved
+        ("/news/news", "https://example.org/news/news"),
+        # raw Location header after a redirect, relative form is legal
+        ("/section/", "https://example.org/section/"),
+        ("https://example.com/elsewhere", "https://example.com/elsewhere"),
+    ],
+)
+def test_urllib_request_resolves_relative_url(geturl_result, expected):
+    "regression: a relative geturl() must not reach Response.url."
+    resp = MagicMock(status=200)
+    resp.stream.return_value = iter([b"<html><body><p>ABC</p></body></html>"])
+    resp.geturl.return_value = geturl_result
+    pool = MagicMock(request=MagicMock(return_value=resp))
+    with patch.object(dl, "_initiate_pool", return_value=pool):
+        result = _send_urllib_request("https://example.org/news/news", False, False, DEFAULT_CONFIG)
+    assert result.url == expected
+
+
 def test_response_object():
     "Test if the Response class is functioning as expected."
     my_html = b"<html><body><p>ABC</p></body></html>"
