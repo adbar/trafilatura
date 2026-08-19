@@ -33,17 +33,20 @@ Python API
 - ``fetch_url(decode=...)`` → use ``fetch_response()`` instead
 - ``decode_response()`` in utils → use ``decode_file()``
 - ``trafilatura.hashing`` module → renamed to ``trafilatura.deduplication`` (since v1.10)
+- ``max_tree_size`` parameter → moved to ``settings.cfg``
 
 **Deprecated** (still works but will warn):
 
 - ``no_fallback`` parameter on ``bare_extraction()`` and ``extract()`` → use ``fast`` instead
 - ``bare_extraction(as_dict=True)`` → the function returns a ``Document`` object, use ``.as_dict()`` method on it
-- ``max_tree_size`` parameter → moved to ``settings.cfg``
 
 **Changed defaults:**
 
 - ``bare_extraction()`` now returns a ``Document`` object instead of a dict. Use ``.as_dict()`` on the return value if you need a dictionary.
 - Metadata is no longer included by default (since v1.11). Pass ``with_metadata=True`` to ``extract()`` or use ``--with-metadata`` on the CLI.
+
+.. note::
+    ``with_metadata`` previously had the effect of today's ``only_with_metadata`` (filtering to documents with necessary metadata). It now simply includes metadata in the output.
 
 **Example migration:**
 
@@ -63,7 +66,7 @@ Python API
 Command-line interface
 ^^^^^^^^^^^^^^^^^^^^^^
 
-The following CLI arguments were renamed:
+The following CLI arguments were renamed or removed:
 
 ================================ ================================
 Old                              New
@@ -74,8 +77,9 @@ Old                              New
 ``--inputdir``                   ``--input-dir``
 ``--outputdir``                  ``--output-dir``
 ``-out``                         ``--output-format``
-``--hash-as-name``               removed (hashes used by default)
 ================================ ================================
+
+- ``--hash-as-name`` was removed (hashes are used by default).
 
 .. note::
     ``--with-metadata`` previously had the effect of today's ``--only-with-metadata`` (filtering to documents with necessary metadata). It now simply includes metadata in the output.
@@ -95,7 +99,7 @@ Changes in v2.1
 - Python 3.8 and 3.9 support dropped (minimum is now 3.10)
 
 
-For the full version history, see the `changelog <../HISTORY.html>`_.
+For the full version history, see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
 
 .. seealso::
-    `Installation <installation.html>`_, `With Python <usage-python.html>`_, `On the command-line <usage-cli.html>`_
+    `Installation <installation.html>`_, `Python usage <usage-python.html>`_, `Command-line usage <usage-cli.html>`_

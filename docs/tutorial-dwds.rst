@@ -95,7 +95,7 @@ Für die eigenhändige Zusammenstellung von Korpusdaten brauchen Sie:
 
 Im Grunde geben Sie Links (URLs) in der Form einer Liste ein und erhalten als Ausgabe eine Reihe von Dateien als TXT, CSV oder XML. Für weitere Informationen können Sie die folgende Anleitung sowie diese Dokumentationsseiten auf Englisch lesen:
 
-- `Tutorial zum Korpusaufbau <tutorial0.html>`_;
+- `Tutorial zum Korpusaufbau <tutorial-corpus.html>`_;
 - `Download und Verarbeitung mit Python, R, auf der Kommandozeile oder mit einer graphischen Oberfläche <usage.html>`_.
 
 Mehrfach vorhandene URLs in der Eingabeliste werden automatisch dedupliziert und die Reihenfolge der Downloads wird optimiert, Sie müssen diese Schritte also nicht selber durchführen.

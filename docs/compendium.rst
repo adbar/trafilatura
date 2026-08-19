@@ -74,7 +74,7 @@ Corpus building comprises three phases:
 
 
 .. hint::
-   For more information, see the tutorial `Gathering a custom web corpus <tutorial0.html>`_
+   For more information, see the tutorial `Building a web corpus <tutorial-corpus.html>`_
 
 
 In-between

@@ -223,7 +223,8 @@ Further documentation
    extraction-overview
    corefunctions
    used-by
-   ../HISTORY
+
+For version history and changes see the `changelog <https://github.com/adbar/trafilatura/blob/master/HISTORY.md>`_.
 
 .. toctree::
    :maxdepth: 2

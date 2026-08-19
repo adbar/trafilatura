@@ -19,17 +19,18 @@ Companies and research centers
 
 - Allen Institute for AI with the `Dolma toolkit <https://github.com/allenai/dolma>`_ used to pre-train the OLMo LLM
 - HuggingFace with `DataTrove <https://github.com/huggingface/datatrove>`_ to process, filter and deduplicate text data
-- IBM's `Data-Prep-Kit <https://github.com/IBM/data-prep-kit>`_, a toolkit for data preparation in a LLM context
+- `Data-Prep-Kit <https://github.com/data-prep-kit/data-prep-kit>`_ (formerly IBM), a toolkit for data preparation in a LLM context
 - `Media Cloud platform <https://www.mediacloud.org>`_ for media analysis
+- NVIDIA with `NeMo Curator <https://github.com/NVIDIA-NeMo/Curator>`_, a data curation toolkit for LLM pretraining
 - SciencesPo médialab through its `Minet <https://github.com/medialab/minet>`_ webmining package
 - Stanford Open Virtual Assistant Lab's `STORM <https://github.com/stanford-oval/storm>`_, a LLM system that writes Wikipedia-like articles
-- Swedish national center for applied AI with `SWEB: A large dataset for Scandinavian languages <https://arxiv.org/pdf/2410.04456>`_
 - Technology Innovation Institute Abu Dhabi with Falcon LLM and its underlying `RefinedWeb Dataset <https://arxiv.org/abs/2306.01116>`_
 - `Teclis search engine <https://teclis.com/>`_ (related to Kagi)
 - The Internet Archive's `sandcrawler <https://github.com/internetarchive/sandcrawler>`_ which crawls and processes the scholarly web
 - Tokyo Institute of Technology with a `Japanese Web Corpus for Large Language Models <https://arxiv.org/pdf/2404.17733>`_
 - Turku University, NLP department with `FinGPT <https://turkunlp.org/gpt3-finnish>`_ models
 - University of Munich (LMU), Center for Language and Information Processing, `GlotWeb project <https://github.com/cisnlp/GlotWeb>`_
+- Volcengine (ByteDance) with `OpenViking <https://github.com/volcengine/OpenViking>`_, a context database for AI agents
 
 The Go port `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_ is used at Microsoft Research.
 
@@ -41,10 +42,10 @@ Various software repositories
 - `CommonCrawl downloader <https://github.com/leogao2/commoncrawl_downloader>`_, to derive massive amounts of language data
 - `Ethical ad server <https://github.com/readthedocs/ethical-ad-server>`_ on ReadTheDocs (hosting these doc pages)
 - `GLAM Workbench <https://glam-workbench.net/web-archives/>`_ for cultural heritage (web archives section)
+- `Haystack <https://github.com/deepset-ai/haystack>`_ (deepset), an LLM/RAG orchestration framework, as the backend of its ``HTMLToDocument`` converter
 - `LlamaIndex <https://github.com/run-llama/llama_index>`_, a data framework for LLM applications
 - `Obsei <https://www.obsei.com/>`_, a text collection and analysis tool
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
-- `Website-to-Chatbot <https://github.com/Anil-matcha/Chatbase-Alternative>`_, a personalized chatbot
 
 For more see this list of `software using Trafilatura <https://github.com/adbar/trafilatura/network/dependents>`_.
 

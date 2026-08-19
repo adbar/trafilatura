@@ -1,5 +1,5 @@
-Evaluation
-==========
+Benchmarks and evaluation
+=========================
 
 .. meta::
     :description lang=en:
@@ -86,7 +86,7 @@ html2text 2025.4.15             0.525      0.900      0.544     0.663     2.8x
 *raw HTML*                      0.528      0.906      0.549     0.667     0.03x
 beautifulsoup4 4.15.0           0.532      0.980      0.561     0.690     2.1x
 html_text 0.7.1                 0.531      0.988      0.559     0.691     0.7x
-inscriptis 2.7.3 (html to txt)  0.534      **0.991**  0.564     0.694     1.1x
+inscriptis 2.7.4 (html to txt)  0.534      **0.991**  0.564     0.694     1.1x
 newspaper4k 0.9.6               0.878      0.736      0.817     0.801     6.6x
 boilerpy3 1.0.7 (article mode)  0.818      0.796      0.810     0.807     1.6x
 goose3 3.1.22                   **0.936**  0.714      0.833     0.810     10.2x

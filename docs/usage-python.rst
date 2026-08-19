@@ -1,5 +1,5 @@
-With Python
-===========
+Python usage
+============
 
 .. meta::
     :description lang=en:
@@ -61,7 +61,7 @@ By default, the output is in plain text (TXT) format without metadata. The follo
 
 To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``.
 
-The ``bare_extraction`` function also accepts an additional ``python`` format to work with Python on the output.
+The ``bare_extraction`` function uses the ``python`` format by default and returns a ``Document`` object for direct use in Python.
 
 To extract and include metadata in the output, use the ``with_metadata=True`` argument.
 
@@ -113,7 +113,8 @@ To operate on these elements, pass the corresponding parameters to the ``extract
     >>> result = extract(downloaded, include_tables=False, include_links=True)
 
     # convert relative links to absolute links where possible
-    >>> extract(downloaded, output_format='xml', include_links=True, url=url)
+    # (pass the same URL used to fetch "downloaded")
+    >>> extract(downloaded, output_format='xml', include_links=True, url="https://www.example.org")
 
 
 Important notes
@@ -149,7 +150,12 @@ Precision
 
 - Use when your results contain too much boilerplate or irrelevant content.
 - Comments are pruned more aggressively, link-heavy sections are discarded, and fallback stages are skipped.
-- Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions.
+- Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions:
+
+.. code-block:: python
+
+    # remove elements matching a custom XPath before extraction
+    >>> extract(downloaded, prune_xpath='//div[@class="ad"]')
 
 
 Recall
@@ -201,7 +207,7 @@ The function ``is_probably_readerable()`` (ported from Mozilla's Readability.js)
 .. code-block:: python
 
     >>> from trafilatura.readability_lxml import is_probably_readerable
-    >>> is_probably_readerable(html)  # HTML string or already parsed tree
+    >>> is_probably_readerable(downloaded)  # HTML string or already parsed tree
 
 
 Language identification
@@ -264,7 +270,7 @@ Here is how to use the class:
     >>> options.source = "My Source"  # useful for debugging
 
     # use the options in an extraction function
-    >>> extract(my_doc, options=options)
+    >>> extract(downloaded, options=options)
 
 
 See the ``settings.py`` file for a full example.
@@ -275,6 +281,11 @@ Metadata extraction
 
 - ``with_metadata=True``: extract metadata fields and include them in the output
 - ``only_with_metadata=True``: only output documents featuring all essential metadata (date, title, url)
+- ``record_id``: attach a custom ID to the ``id`` metadata field, useful for tracking documents through a corpus-building pipeline (see `building a training corpus <tutorial-datasets.html>`_)
+
+.. code-block:: python
+
+    >>> extract(downloaded, record_id="doc-042", output_format="json", with_metadata=True)
 
 
 Date
@@ -322,7 +333,7 @@ Memory use
 
 Trafilatura uses caches to speed up extraction and cleaning processes. This may lead to memory leaks in some cases, particularly in large-scale applications. If that happens you can reset all cached information in order to release RAM:
 
-.. code-block:: python
+.. doctest::
 
     # import the function
     >>> from trafilatura.meta import reset_caches
@@ -339,7 +350,7 @@ Python objects as output
 
 The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object containing metadata as attributes and the extracted body and comments as LXML elements. Call ``.as_dict()`` on the result to get a plain dictionary.
+The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object with metadata as string attributes (``.title``, ``.author``, ``.text``, ``.comments``, etc.) and the extracted content as LXML elements (``.body``, ``.commentsbody``). Call ``.as_dict()`` on the result to get a plain dictionary.
 
 .. code-block:: python
 
@@ -371,14 +382,14 @@ LXML objects
 
 The input can consist of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
-.. code-block:: python
+.. doctest::
 
     # define document and load it with LXML
     >>> from trafilatura import extract
     >>> from lxml import html
     >>> my_doc = """<html><body><article><p>
-                    Here is the main text.
-                    </p></article></body></html>"""
+    ...                 Here is the main text.
+    ...                 </p></article></body></html>"""
     >>> mytree = html.fromstring(my_doc)
 
     # extract from the already loaded LXML tree
@@ -391,15 +402,24 @@ Interaction with BeautifulSoup
 
 Trafilatura works with LXML trees, not BeautifulSoup objects. If you already have a BS4 parse tree, convert it first:
 
-.. code-block:: python
+.. doctest::
 
     >>> from bs4 import BeautifulSoup
     >>> from lxml.html.soupparser import convert_tree
+    >>> from lxml import etree, html
     >>> from trafilatura import extract
 
-    >>> soup = BeautifulSoup("<html><body><time>The date is Feb 2, 2024</time></body></html>", "lxml")
+    >>> soup = BeautifulSoup("<html><body><article><p>The date is Feb 2, 2024.</p></article></body></html>", "lxml")
     >>> lxml_tree = convert_tree(soup)[0]
-    >>> extract(lxml_tree)
+
+.. warning::
+    ``convert_tree()`` returns a tree rooted at ``<body>``, not ``<html>``. Passing it to ``extract()`` as-is returns ``None`` regardless of content, since the extractor expects a document rooted at ``<html>``. Re-wrap it first:
+
+.. doctest::
+
+    >>> wrapped = html.fromstring("<html>" + etree.tostring(lxml_tree).decode() + "</html>")
+    >>> extract(wrapped)
+    'The date is Feb 2, 2024.'
 
 
 Navigation
@@ -472,12 +492,12 @@ Sitemaps
     >>> from trafilatura import sitemaps
 
     # automatically find sitemaps by providing the homepage
-    >>> mylinks = sitemaps.sitemap_search('https://www.theguardian.com/')
+    >>> mylinks = sitemaps.sitemap_search('https://developer.mozilla.org/')
 
     # the target_lang argument works as explained above
-    >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
+    >>> mylinks = sitemaps.sitemap_search('https://developer.mozilla.org/', target_lang='en')
 
-The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
+The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://developer.mozilla.org/en-US/docs/Web/CSS`` as argument implies taking all URLs corresponding to the CSS documentation category.
 
 An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
 
@@ -498,4 +518,4 @@ Deprecations
 See the `deprecations and migration <deprecations.html>`_ page for a full list of deprecated functions, arguments, and migration instructions.
 
 .. seealso::
-    `Settings and customization <settings.html>`_, `On the command-line <usage-cli.html>`_, `Core functions <corefunctions.html>`_
+    `Settings and customization <settings.html>`_, `Command-line usage <usage-cli.html>`_, `Core functions <corefunctions.html>`_

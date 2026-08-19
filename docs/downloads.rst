@@ -30,7 +30,7 @@ Running simple downloads is straightforward with the ``fetch_url()`` function. T
     downloaded = fetch_url('https://www.example.org')
 
     # sequential downloads using a list
-    mylist = ["https://www.example.org", "https://httpbin.org"]
+    mylist = ["https://www.example.org", "https://www.wikipedia.org/"]
     for url in mylist:
         downloaded = fetch_url(url)
         # do something with it
@@ -79,7 +79,7 @@ The following variant of multi-threaded downloads with throttling is implemented
     from trafilatura.downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 
     # list of URLs
-    mylist = ['https://www.example.org', 'https://www.httpbin.org/html']
+    mylist = ['https://www.example.org', 'https://www.wikipedia.org/']
     # number of threads to use
     threads = 4
 

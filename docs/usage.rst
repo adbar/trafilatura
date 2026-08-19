@@ -12,6 +12,7 @@ Usage
    quickstart
    usage-python
    usage-cli
+   usage-gui
    usage-r
    usage-api
    downloads

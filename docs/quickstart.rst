@@ -136,4 +136,4 @@ For more information please refer to `usage documentation <usage.html>`_ and `tu
      Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_
 
 .. seealso::
-    `With Python <usage-python.html>`_, `On the command-line <usage-cli.html>`_, `Installation <installation.html>`_
+    `Python usage <usage-python.html>`_, `Command-line usage <usage-cli.html>`_, `Installation <installation.html>`_, `FAQ <faq.html>`_, `Troubleshooting <troubleshooting.html>`_

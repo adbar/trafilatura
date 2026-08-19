@@ -3,7 +3,7 @@ How extraction works
 
 .. meta::
     :description lang=en:
-        Overview of Trafilatura's extraction pipeline: how raw HTML is turned into clean text, from cleaning to fallback cascade.
+        How Trafilatura extracts main content from HTML: cleaning, rule-based extraction, readability/jusText fallbacks, and boilerplate removal pipeline.
 
 
 This page gives a high-level view of what happens when you call ``extract()``. Understanding the pipeline helps when tuning settings or diagnosing unexpected output.
@@ -90,16 +90,16 @@ This stage only activates in **standard mode** — not in precision or recall mo
 Extraction modes
 ----------------
 
-The ``focus`` parameter (or CLI flags) shifts the precision/recall balance:
+The ``favor_precision``/``favor_recall`` parameters (or CLI flags) shift the precision/recall balance:
 
-================ ================================== ==========================================
-Mode             Python                             CLI
-================ ================================== ==========================================
-Standard         ``extract(html)``                  ``trafilatura -u URL``
-Fast             ``extract(html, fast=True)``       ``trafilatura -u URL --fast``
-Precision        ``extract(html, favor_precision=True)``  ``trafilatura -u URL --precision``
-Recall           ``extract(html, favor_recall=True)``     ``trafilatura -u URL --recall``
-================ ================================== ==========================================
+========= ======================================= ==================================
+Mode      Python                                  CLI
+========= ======================================= ==================================
+Standard  ``extract(html)``                       ``trafilatura -u URL``
+Fast      ``extract(html, fast=True)``            ``trafilatura -u URL --fast``
+Precision ``extract(html, favor_precision=True)`` ``trafilatura -u URL --precision``
+Recall    ``extract(html, favor_recall=True)``    ``trafilatura -u URL --recall``
+========= ======================================= ==================================
 
 - **Standard** (balanced): runs all stages including recall escalation if needed. Best overall accuracy.
 - **Fast**: skips fallback cascade entirely — roughly twice as fast but may miss content on difficult pages.
@@ -144,4 +144,4 @@ After extraction, the internal tree is serialized to the requested format:
 
 
 .. seealso::
-    `Settings and customization <settings.html>`_, `With Python <usage-python.html>`_, `Evaluation <evaluation.html>`_
+    `Settings and customization <settings.html>`_, `Python usage <usage-python.html>`_, `Benchmarks and evaluation <evaluation.html>`_, `FAQ <faq.html>`_

@@ -12,10 +12,13 @@ Learn through practical examples. The following tutorials cover various scenario
 .. toctree::
    :maxdepth: 2
 
-   tutorial0
-   tutorial1
-   tutorial2
+   tutorial-corpus
+   tutorial-frequencies
+   tutorial-tei
    tutorial-dwds
+   tutorial-chromadb
+   tutorial-rag
+   tutorial-datasets
 
 
 

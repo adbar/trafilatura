@@ -1,5 +1,5 @@
-On the command-line
-===================
+Command-line usage
+==================
 
 .. meta::
     :description lang=en:
@@ -221,7 +221,7 @@ Both the homepage and a particular page can be used as input depending on the se
 
 The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
-For more information please refer to the `tutorial on content discovery <tutorial0.html#content-discovery>`_.
+For more information please refer to the `tutorial on content discovery <tutorial-corpus.html#content-discovery>`_.
 
 Feeds
 ~~~~~
@@ -293,12 +293,12 @@ URL inspection prior to download and processing
 
 .. code-block:: bash
 
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "https://www.sitemaps.org/de"
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "protocol"
+    # --url-filter selects which seed URLs get processed — combine with -i/--input-file
+    $ trafilatura --sitemap -i seeds.txt --list --url-filter "sitemaps.org"
 
-Using a subpart of the site also acts like a filter, for example ``--sitemap "https://www.sitemaps.org/de/"``.
+To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL — for example ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-i``) are processed in the first place.
 
-For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
+For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial-corpus.html#link-filtering>`_.
 
 
 Deprecations
@@ -321,5 +321,5 @@ For all usage instructions see ``trafilatura -h``:
 .. program-output:: trafilatura -h
 
 .. seealso::
-    `Settings and customization <settings.html>`_, `With Python <usage-python.html>`_
+    `Settings and customization <settings.html>`_, `Python usage <usage-python.html>`_
 

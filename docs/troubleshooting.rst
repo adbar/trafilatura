@@ -49,7 +49,7 @@ Output is empty or ``None``
 
 Walk through these causes in order:
 
-1. **Is the HTML valid?** Pass it to ``load_html()`` first — it returns ``None`` on unparseable input.
+1. **Is the HTML valid?** Pass it to ``load_html()`` first — it returns ``None`` on empty or severely malformed input. Note that lxml's parser is lenient: sufficiently long non-HTML text can still come back as a (meaningless) parsed element rather than ``None``, so a non-``None`` result here doesn't guarantee the input was actually HTML.
 2. **Is the page JavaScript-rendered?** Trafilatura works on raw HTML. See `Page requires JavaScript`_ below.
 3. **Is language filtering active?** If ``target_language`` is set and the detected language doesn't match, ``extract()`` returns ``None``. Remove the filter to test.
 4. **Is metadata filtering active?** With ``only_with_metadata=True``, pages missing a title, URL, or date are discarded. Try without it.
@@ -75,10 +75,14 @@ Escalate through these steps:
 
 3. **Modify the element lists:** for site-wide patterns, add elements to ``MANUALLY_CLEANED`` so they're stripped before extraction:
 
-   .. code-block:: python
+   .. doctest::
 
-       from trafilatura.settings import MANUALLY_CLEANED
-       MANUALLY_CLEANED.append("aside")  # must use in-place methods
+       >>> from trafilatura.settings import MANUALLY_CLEANED
+       >>> MANUALLY_CLEANED.append("aside")  # must use in-place methods
+
+   .. testcleanup::
+
+       MANUALLY_CLEANED.remove("aside")
 
 See `settings and customization <settings.html>`_ for more options.
 
@@ -113,7 +117,7 @@ Encoding issues
 
 If the output contains garbled characters (mojibake), the HTML encoding was not detected correctly. Trafilatura handles encoding automatically via ``charset_normalizer``, but edge cases exist:
 
-- **Force re-encoding:** download with ``fetch_response()`` and check ``response.encoding`` before extraction.
+- **Force re-encoding:** download with ``fetch_response(url, decode=True, with_headers=True)`` and check ``response.headers.get("content-type")`` for a declared charset, or use the already-decoded ``response.html`` string directly instead of the raw ``response.data`` bytes.
 - **Provide the HTML as a properly decoded string:** if you download with another tool, make sure you decode the bytes with the correct encoding before passing to ``extract()``.
 - **Install optional dependencies:** ``pip install trafilatura[all]`` includes ``pycurl`` which may handle encoding better for certain servers.
 
@@ -174,10 +178,10 @@ Memory keeps growing
 
 Trafilatura uses internal caches (deduplication, stopwords, URL processing) that grow over time. Call ``reset_caches()`` between unrelated batches:
 
-.. code-block:: python
+.. doctest::
 
-    from trafilatura.meta import reset_caches
-    reset_caches()  # clears all internal caches and triggers garbage collection
+    >>> from trafilatura.meta import reset_caches
+    >>> reset_caches()  # clears all internal caches and triggers garbage collection
 
 See `deduplication <deduplication.html#clearing-the-cache>`_ for details.
 

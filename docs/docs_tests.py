@@ -23,3 +23,18 @@ def test_docs_build(tmp_path):
             f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
         )
     assert (tmp_path / "index.html").exists()
+
+
+def test_docs_doctest(tmp_path):
+    """`.. doctest::`-marked examples run and match their documented output."""
+    result = subprocess.run(
+        ["sphinx-build", "-b", "doctest", str(DOCS), str(tmp_path)],
+        capture_output=True,
+        text=True,
+        timeout=300,
+    )
+    if result.returncode != 0:
+        pytest.fail(
+            f"Doctest build failed (exit {result.returncode})\n"
+            f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+        )

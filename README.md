@@ -1,4 +1,4 @@
-# Trafilatura: Discover and Extract Text Data on the Web
+# Trafilatura: Discover Web Content, Extract Text and Metadata
 
 <br/>
 
@@ -20,6 +20,7 @@
 >>> trafilatura.extract(downloaded)
 'Erin Spiceland is a software engineer and ...'
 >>> trafilatura.extract(downloaded, output_format="json", include_comments=False)
+'{"text": "Erin Spiceland is a software engineer and ...", "comments": ""}'
 ```
 
 <br/>
