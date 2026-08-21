@@ -1,6 +1,10 @@
 Graphical user interface
 ========================
 
+.. meta::
+    :description lang=en:
+        The Trafilatura graphical user interface was removed in version 2.0. Use the command-line interface instead.
+
 .. deprecated:: 2.0
 
     The graphical user interface has been removed. Use the :doc:`command-line interface <usage-cli>` instead.

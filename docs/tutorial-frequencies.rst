@@ -1,5 +1,5 @@
-Tutorial: From a list of links to a frequency list
-==================================================
+Tutorial: Word frequency lists from web pages
+=============================================
 
 
 .. meta::
@@ -25,7 +25,7 @@ The following sections will use command-line instructions. If you're new to comm
 Process a list of links
 -----------------------
 
-For the collection and filtering of links see `this tutorial <tutorial0.html>`_ and this `blog post <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+For the collection and filtering of links see `this tutorial <tutorial-corpus.html>`_ and this `blog post <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
 Two major options are necessary here:
 
@@ -39,7 +39,7 @@ Here is how it works:
 - The output directory will be created if it does not exist, but it must be writable.
 
 
-The first instruction uses TXT as output whereas the second one creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_. Both file types can be edited with a basic text editor or a full-fledged text-editing package or IDE such as Atom.
+The first instruction uses TXT as output whereas the second one creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_. Both file types can be edited with a basic text editor or a full-fledged text-editing package or IDE such as `Visual Studio Code <https://code.visualstudio.com/>`_.
 
 .. code-block:: bash
 
@@ -136,4 +136,7 @@ Assuming the output directory you are working with is called ``xmlfiles``:
     # remove tags
     $ somajo-tokenizer --xml xmlfiles/filename.xml | sed -e "s|</*.*>||g" -e "/^$/d"
     # continue with the steps above...
+
+.. seealso::
+    `Tutorial: Building a web corpus <tutorial-corpus.html>`_, `Python usage <usage-python.html>`_
 

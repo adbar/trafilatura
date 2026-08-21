@@ -9,8 +9,8 @@ Settings and customization
 
 Tailor Trafilatura to your needs, its modular design and configuration options allow for extensive customization. In a nutshell, there are two main files which can be edited in order to modify the default download and extraction behavior:
 
-1. ``settings.cfg`` (values designed to be adapted by the user)
-2. ``settings.py`` (package-wide settings, advanced)
+1. ``settings.cfg`` — user-facing configuration: download timeouts, extraction thresholds, deduplication. Safe to override with a custom file.
+2. ``settings.py`` — package-wide constants and element lists. Editing requires reinstalling the package (advanced).
 
 
 Configuration file
@@ -60,7 +60,7 @@ The standard `settings file <https://github.com/adbar/trafilatura/blob/master/tr
 
 In the following, a single default value is changed, which has an immediate effect on extraction. The resulting text is indeed too short and ends up being discarded. On the contrary, lowering default values can trigger a more opportunistic extraction.
 
-.. code-block:: python
+.. doctest::
 
     # load necessary functions and data
     >>> from copy import deepcopy
@@ -74,15 +74,15 @@ In the following, a single default value is changed, which has an immediate effe
     >>> my_config = deepcopy(DEFAULT_CONFIG)
     >>> my_config['DEFAULT']['MIN_OUTPUT_SIZE'] = '1000'
 
-    # apply new settings, extraction will fail
+    # apply new settings, extraction will fail (returns None)
     >>> extract(my_html, config=my_config)
-    >>>
+
     # default extraction works
     >>> extract(my_html)
     'Text.'
 
 
-Alternatively, it is possible to override all standard settings by loading a new configuration file where all necessary values have been specified.
+Alternatively, for persistent or shared settings, load a custom configuration file where all necessary values have been specified:
 
 .. code-block:: python
 
@@ -123,6 +123,9 @@ Here is how to change them:
 2. Edit ``settings.py``
 3. Reinstall the package locally: ``pip install --no-deps -U .`` in the home directory of the cloned repository
 
+.. warning::
+    These changes will be overwritten when upgrading the package. Consider using the ``Extractor`` object or in-place list modification (below) for changes that should survive upgrades.
+
 These remaining variables greatly alter the functioning of the package!
 
 
@@ -154,4 +157,7 @@ Some of these variables are Python lists which can also be adapted on the fly, w
 
 
 .. hint::
-    Starting from version 1.9, most extraction parameters and options can be defined in an object which is then passed to the extraction functions instead of the arguments and (in some cases) instead of the config file. See ``settings.py`` for an example.
+    Most extraction parameters and options can be defined in an ``Extractor`` object which is then passed to the extraction functions instead of the arguments and (in some cases) instead of the config file. See ``settings.py`` for an example.
+
+.. seealso::
+    `Python usage <usage-python.html>`_, `Command-line usage <usage-cli.html>`_

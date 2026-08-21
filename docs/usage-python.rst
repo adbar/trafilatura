@@ -1,5 +1,5 @@
-With Python
-===========
+Python usage
+============
 
 .. meta::
     :description lang=en:
@@ -38,13 +38,14 @@ The functions can be imported using ``from trafilatura import ...`` and used on 
 
 Main text extraction, good balance between precision and recall:
 
-- ``extract``: Wrapper function, easiest way to perform text extraction and conversion
-- ``bare_extraction``: Returns a ``Document`` object with extracted text, comments, and metadata as attributes
+- ``extract``: Main extraction function — runs Trafilatura's own rule-based extractor, then falls back to readability and jusText if the result is too short (see `how extraction works <extraction-overview.html>`_)
+- ``bare_extraction``: Same cascade as ``extract()``, but returns a ``Document`` object with structured access to text, comments, and metadata
+- ``extract_with_metadata``: Shorthand for ``extract()`` with ``with_metadata=True``
 
-Additional fallback functions:
+Simpler alternatives (no cascade, faster):
 
-- ``baseline``: Faster extraction function targeting text paragraphs and/or JSON metadata
-- ``html2txt``: Extract all text in a document, maximizing recall
+- ``baseline``: Targets text paragraphs and/or JSON metadata only
+- ``html2txt``: Extracts all text in the document, including navigation and footers
 
 
 Output
@@ -53,14 +54,14 @@ Output
 By default, the output is in plain text (TXT) format without metadata. The following additional formats are available:
 
 - CSV
-- HTML (from version 1.11 onwards)
+- HTML
 - JSON
-- Markdown (from version 1.9 onwards)
+- Markdown
 - XML and XML-TEI (following the guidelines of the Text Encoding Initiative)
 
 To specify the output format, use one of the following strings: ``"csv", "json", "html", "markdown", "txt", "xml", "xmltei"``.
 
-The ``bare_extraction`` function also accepts an additional ``python`` format to work with Python on the output.
+The ``bare_extraction`` function uses the ``python`` format by default and returns a ``Document`` object for direct use in Python.
 
 To extract and include metadata in the output, use the ``with_metadata=True`` argument.
 
@@ -112,7 +113,8 @@ To operate on these elements, pass the corresponding parameters to the ``extract
     >>> result = extract(downloaded, include_tables=False, include_links=True)
 
     # convert relative links to absolute links where possible
-    >>> extract(downloaded, output_format='xml', include_links=True, url=url)
+    # (pass the same URL used to fetch "downloaded")
+    >>> extract(downloaded, output_format='xml', include_links=True, url="https://www.example.org")
 
 
 Important notes
@@ -132,27 +134,38 @@ Important notes
 The precision and recall presets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The main extraction functions offer two presets to adjust to focus of the extraction process: ``favor_precision`` and ``favor_recall``.
-
-These parameters allow you to change the balance between accuracy and comprehensiveness of the output.
+The main extraction functions offer two presets to adjust the focus of the extraction process:
 
 .. code-block:: python
 
-    >>> result = extract(downloaded, url, favor_precision=True)
+    # less noise, possibly less text
+    >>> result = extract(downloaded, favor_precision=True)
+
+    # more text, possibly more noise
+    >>> result = extract(downloaded, favor_recall=True)
 
 
 Precision
 ~~~~~~~~~
 
-- If your results contain too much noise, prioritize precision to focus on the most central and relevant elements.
-- Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions.
+- Use when your results contain too much boilerplate or irrelevant content.
+- Comments are pruned more aggressively, link-heavy sections are discarded, and fallback stages are skipped.
+- Additionally, you can use the ``prune_xpath`` parameter to target specific HTML elements using a list of XPath expressions:
+
+.. code-block:: python
+
+    # remove elements matching a custom XPath before extraction
+    >>> extract(downloaded, prune_xpath='//div[@class="ad"]')
 
 
 Recall
 ~~~~~~
 
-- If parts of your documents are missing, try this preset to take more elements into account.
-- If content is still missing, refer to the `troubleshooting guide <troubleshooting.html>`_.
+- Use when parts of your documents are missing.
+- Lists inside discarded sections are kept, text tails are preserved, and link density thresholds are relaxed.
+- If content is still missing, try ``html2txt()`` or refer to the `troubleshooting guide <troubleshooting.html>`_.
+
+For a detailed comparison of what each mode changes, see `how extraction works <extraction-overview.html#extraction-modes>`_.
 
 
 
@@ -189,12 +202,12 @@ For more advanced use cases, consider using other functions in the package that 
 Guessing if text can be found
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The function ``is_probably_readerable()`` has been ported from Mozilla's Readability.js, it is available from version 1.10 onwards and provides a way to guess if a page probably has a main text to extract.
+The function ``is_probably_readerable()`` (ported from Mozilla's Readability.js) provides a way to guess if a page probably has a main text to extract.
 
 .. code-block:: python
 
     >>> from trafilatura.readability_lxml import is_probably_readerable
-    >>> is_probably_readerable(html)  # HTML string or already parsed tree
+    >>> is_probably_readerable(downloaded)  # HTML string or already parsed tree
 
 
 Language identification
@@ -202,13 +215,13 @@ Language identification
 
 The target language can also be set using 2-letter codes (ISO 639-1), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_) or if the target language is not available.
 
+.. note::
+    This feature requires additional components: ``pip install trafilatura[all]``.
+    It currently uses the `py3langid package <https://github.com/adbar/py3langid>`_ and is dependent on language availability and performance of the original model.
+
 .. code-block:: python
 
-    >>> result = extract(downloaded, url, target_language="de")
-
-.. note::
-    Additional components are required: ``pip install trafilatura[all]``.
-    This feature currently uses the `py3langid package <https://github.com/adbar/py3langid>`_ and is dependent on language availability and performance of the original model.
+    >>> result = extract(downloaded, target_language="de")
 
 
 Optimizing for speed
@@ -216,7 +229,7 @@ Optimizing for speed
 
 Execution speed not only depends on the platform and on supplementary packages (``trafilatura[all]``, ``htmldate[speed]``), but also on the extraction strategy.
 
-The available fallbacks make extraction more precise but also slower. The use of fallback algorithms can also be bypassed in *fast* mode, which should make extraction about twice as fast:
+By default, ``extract()`` runs a cascade: its own rule-based extractor first, then readability and jusText as fallbacks if the initial result is too short. These fallbacks improve accuracy but are slower. In *fast* mode they are skipped entirely, making extraction about twice as fast:
 
 .. code-block:: python
 
@@ -240,7 +253,7 @@ Extraction settings
 Function parameters
 ^^^^^^^^^^^^^^^^^^^
 
-Starting from version 1.9, the ``Extractor`` class provides a convenient way to define and manage extraction parameters. It allows users to customize all options used by the extraction functions and offers a convenient shortcut compared to multiple function parameters.
+The ``Extractor`` class provides a convenient way to define and manage extraction parameters. It is useful when reusing the same settings across multiple extractions or when configuring options not exposed as ``extract()`` parameters.
 
 Here is how to use the class:
 
@@ -257,7 +270,7 @@ Here is how to use the class:
     >>> options.source = "My Source"  # useful for debugging
 
     # use the options in an extraction function
-    >>> extract(my_doc, options=options)
+    >>> extract(downloaded, options=options)
 
 
 See the ``settings.py`` file for a full example.
@@ -268,6 +281,11 @@ Metadata extraction
 
 - ``with_metadata=True``: extract metadata fields and include them in the output
 - ``only_with_metadata=True``: only output documents featuring all essential metadata (date, title, url)
+- ``record_id``: attach a custom ID to the ``id`` metadata field, useful for tracking documents through a corpus-building pipeline (see `building a training corpus <tutorial-datasets.html>`_)
+
+.. code-block:: python
+
+    >>> extract(downloaded, record_id="doc-042", output_format="json", with_metadata=True)
 
 
 Date
@@ -315,7 +333,7 @@ Memory use
 
 Trafilatura uses caches to speed up extraction and cleaning processes. This may lead to memory leaks in some cases, particularly in large-scale applications. If that happens you can reset all cached information in order to release RAM:
 
-.. code-block:: python
+.. doctest::
 
     # import the function
     >>> from trafilatura.meta import reset_caches
@@ -332,7 +350,7 @@ Python objects as output
 
 The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
 
-The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object containing metadata as attributes and the extracted body and comments as LXML elements. Call ``.as_dict()`` on the result to get a plain dictionary.
+The function ``bare_extraction`` can be used to bypass output conversion. It returns a ``Document`` object with metadata as string attributes (``.title``, ``.author``, ``.text``, ``.comments``, etc.) and the extracted content as LXML elements (``.body``, ``.commentsbody``). Call ``.as_dict()`` on the result to get a plain dictionary.
 
 .. code-block:: python
 
@@ -345,7 +363,7 @@ Raw HTTP response objects
 
 The ``fetch_response()`` function can pass a response object straight to the extraction.
 
-This can be useful to get the final redirection URL with ``response.url`` and then pass is directly as a URL argument to the extraction function:
+This can be useful to get the final redirection URL with ``response.url`` and then pass it directly as a URL argument to the extraction function:
 
 .. code-block:: python
 
@@ -364,13 +382,14 @@ LXML objects
 
 The input can consist of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
-.. code-block:: python
+.. doctest::
 
     # define document and load it with LXML
+    >>> from trafilatura import extract
     >>> from lxml import html
     >>> my_doc = """<html><body><article><p>
-                    Here is the main text.
-                    </p></article></body></html>"""
+    ...                 Here is the main text.
+    ...                 </p></article></body></html>"""
     >>> mytree = html.fromstring(my_doc)
 
     # extract from the already loaded LXML tree
@@ -381,23 +400,36 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
 Interaction with BeautifulSoup
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Here is how to convert a BS4 object to LXML format in order to use it with Trafilatura:
+Trafilatura works with LXML trees, not BeautifulSoup objects. If you already have a BS4 parse tree, convert it first:
 
-.. code-block:: python
+.. doctest::
 
     >>> from bs4 import BeautifulSoup
     >>> from lxml.html.soupparser import convert_tree
+    >>> from lxml import etree, html
     >>> from trafilatura import extract
 
-    >>> soup = BeautifulSoup("<html><body><time>The date is Feb 2, 2024</time></body></html>", "lxml")
+    >>> soup = BeautifulSoup("<html><body><article><p>The date is Feb 2, 2024.</p></article></body></html>", "lxml")
     >>> lxml_tree = convert_tree(soup)[0]
-    >>> extract(lxml_tree)
+
+.. warning::
+    ``convert_tree()`` returns a tree rooted at ``<body>``, not ``<html>``. Passing it to ``extract()`` as-is returns ``None`` regardless of content, since the extractor expects a document rooted at ``<html>``. Re-wrap it first:
+
+.. doctest::
+
+    >>> wrapped = html.fromstring("<html>" + etree.tostring(lxml_tree).decode() + "</html>")
+    >>> extract(wrapped)
+    'The date is Feb 2, 2024.'
 
 
 Navigation
 ----------
 
-Three potential navigation strategies are currently available: feeds (mostly for fresh content), sitemaps (for exhaustivity, all potential pages as listed by the owners) and discovery by web crawling (i.e. by following the internal links, more experimental).
+Trafilatura can discover URLs to extract from via three strategies:
+
+- **Feeds** (Atom/RSS): mostly for fresh content
+- **Sitemaps**: for exhaustivity — all potential pages as listed by the site owners
+- **Web crawling**: follow internal links to discover pages
 
 
 Feeds
@@ -417,7 +449,7 @@ The function ``find_feed_urls`` is a all-in-one utility that attempts to discove
 
     # use a predetermined feed URL directly
     >>> mylist = feeds.find_feed_urls('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
-    >>> mylist is not []
+    >>> bool(mylist)
     True # it's not empty
 
 
@@ -435,7 +467,7 @@ An optional ``external`` argument controls whether URLs from other domains are i
     # the feeds module has to be imported
     # search for feeds in English
     >>> mylist = feeds.find_feed_urls('https://www.un.org/en/rss.xml', target_lang='en')
-    >>> mylist is not []
+    >>> bool(mylist)
     True # links found as expected
 
     # target_lang set to Japanese, the English links are discarded
@@ -460,12 +492,12 @@ Sitemaps
     >>> from trafilatura import sitemaps
 
     # automatically find sitemaps by providing the homepage
-    >>> mylinks = sitemaps.sitemap_search('https://www.theguardian.com/')
+    >>> mylinks = sitemaps.sitemap_search('https://developer.mozilla.org/')
 
     # the target_lang argument works as explained above
-    >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
+    >>> mylinks = sitemaps.sitemap_search('https://developer.mozilla.org/', target_lang='en')
 
-The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
+The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://developer.mozilla.org/en-US/docs/Web/CSS`` as argument implies taking all URLs corresponding to the CSS documentation category.
 
 An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
 
@@ -483,14 +515,7 @@ See the `documentation page on web crawling <crawls.html>`_ for more information
 Deprecations
 ------------
 
-The following functions and arguments are deprecated:
+See the `deprecations and migration <deprecations.html>`_ page for a full list of deprecated functions, arguments, and migration instructions.
 
-- extraction:
-   - ``process_record()`` function → use ``extract()`` instead
-   - ``csv_output``, ``json_output``, ``tei_output``, ``xml_output`` → use ``output_format`` parameter instead
-   - ``bare_extraction(as_dict=True)`` → the function returns a ``Document`` object, use ``.as_dict()`` method on it
-   - ``bare_extraction()`` and ``extract()``: ``no_fallback`` → use ``fast`` instead
-   - ``max_tree_size`` parameter moved to ``settings.cfg`` file
-- downloads: ``decode`` argument in ``fetch_url()`` → use ``fetch_response`` instead
-- utils: ``decode_response()`` function → use ``decode_file()`` instead
-- metadata: ``with_metadata`` (include metadata) had once the effect of today's ``only_with_metadata`` (only documents with necessary metadata)
+.. seealso::
+    `Settings and customization <settings.html>`_, `Command-line usage <usage-cli.html>`_, `Core functions <corefunctions.html>`_

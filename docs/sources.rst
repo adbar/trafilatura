@@ -38,8 +38,8 @@ Corpora
 
 URL lists from corpus linguistic projects can be a starting ground to derive information from, either to recreate existing corpora or to re-crawl the websites and find new content. If the websites do not exist anymore, the links can still be useful as the corresponding web pages can be retrieved from web archives.
 
-- `Sources for the Internet Corpora <http://corpus.leeds.ac.uk/internet.html>`_ of the Leeds Centre for Translation Studies
-- `Link data sets <http://www.webcorpora.org/opendata/links/>`_  of the COW project
+- Sources for the Internet Corpora of the Leeds Centre for Translation Studies (no longer online)
+- Link data sets of the `COW project <https://rolandschaefer.net/>`_ (no longer online at its former URL)
 
 
 URL directories
@@ -89,11 +89,13 @@ Here is how to make this method work in a modular way:
 1. First, you need a list of words in the target language(s). For German see for instance the `DWDS list <https://www.dwds.de/lemma/list>`_.
 2. Then, draw random word tuples, e.g. with Python:
 
-.. code-block:: python
+.. doctest::
 
     >>> import random
+
     # use the list gathered in (1)
     >>> wordlist = ['word1', 'word2', 'word3', 'word4']  # and so on
+
     # draw 3 random words from the list
     >>> selection = random.sample(wordlist, k=3)
 
@@ -145,7 +147,7 @@ For relatively small and focused corpora, human supervision is key. It is advisa
 
 A crawling method using diverse seeds for corpus building can yield better results and notably ensure better randomness in a population of web documents (see Henzinger et al. 2000).
 
-Screening and refining the lists of URLs you use for your projects can also enhance corpus quality, see for example the implementation details in the papers mentioned below as well as the filtering tool `courlan <https://github.com/adbar/courlan>`_ included with Trafilatura.
+Screening and refining the lists of URLs you use for your projects can also enhance corpus quality, see for example the implementation details in the papers mentioned below as well as the filtering tool `courlan <https://courlan.readthedocs.io/en/latest/>`_ included with Trafilatura.
 
 The following blog posts give more insights on aspects of web corpus construction:
 

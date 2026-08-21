@@ -1,6 +1,10 @@
 Quickstart
 ==========
 
+.. meta::
+    :description lang=en:
+        Get started with Trafilatura: install, download a web page, and extract its main text in Python or on the command-line.
+
 
 Trafilatura is a tool that simplifies the process of turning raw HTML into structured, meaningful data. This quickstart guide will walk you through the main functions of the software package using Python or the command-line.
 
@@ -45,7 +49,7 @@ To tailor the output to your specific requirements, Trafilatura allows you to co
     # change the output format to XML (allowing for preservation of document structure)
     >>> result = extract(downloaded, output_format="xml")
 
-    # discard potential comments, extract metadata and change the output to JSON
+    # discard potential comments, extract metadata (off by default) and change the output to JSON
     >>> extract(downloaded, output_format="json", with_metadata=True, include_comments=False)
 
     # set the output to Markdown and extract metadata
@@ -56,7 +60,7 @@ To tailor the output to your specific requirements, Trafilatura allows you to co
 Fast mode
 ^^^^^^^^^
 
-You can bypass the use of fallback algorithms in fast mode. This can improve performance, but may affect the accuracy of the extraction:
+By default, ``extract()`` uses a cascade of extractors (its own rules, then readability and jusText as fallbacks). In fast mode these fallbacks are skipped, making extraction roughly twice as fast at the cost of potentially missing content on difficult pages:
 
 .. code-block:: python
 
@@ -70,7 +74,7 @@ For a full list of options see `Python usage <usage-python.html>`_.
 Extracting all text content
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While the previous examples focused on extracting the main text from a webpage, Trafilatura also offers a function to extract all text content in a ``html2txt`` manner:
+Unlike ``extract()`` which focuses on the main content, ``html2txt()`` returns all text from the page, including navigation, footers, etc.:
 
 .. code-block:: python
 
@@ -117,6 +121,7 @@ Extraction options are also available on the command-line and they can be combin
 
 .. code-block:: bash
 
+    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/" --json
     $ < myfile.html trafilatura --json --no-tables
 
 
@@ -129,3 +134,6 @@ For more information please refer to `usage documentation <usage.html>`_ and `tu
 
 .. hint::
      Explore Trafilatura's features interactively with this Python Notebook: `Trafilatura overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_
+
+.. seealso::
+    `Python usage <usage-python.html>`_, `Command-line usage <usage-cli.html>`_, `Installation <installation.html>`_, `FAQ <faq.html>`_, `Troubleshooting <troubleshooting.html>`_

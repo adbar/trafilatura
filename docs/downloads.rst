@@ -30,7 +30,7 @@ Running simple downloads is straightforward with the ``fetch_url()`` function. T
     downloaded = fetch_url('https://www.example.org')
 
     # sequential downloads using a list
-    mylist = ["https://www.example.org", "https://httpbin.org"]
+    mylist = ["https://www.example.org", "https://www.wikipedia.org/"]
     for url in mylist:
         downloaded = fetch_url(url)
         # do something with it
@@ -79,11 +79,11 @@ The following variant of multi-threaded downloads with throttling is implemented
     from trafilatura.downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 
     # list of URLs
-    mylist = ['https://www.example.org', 'https://www.httpbin.org/html']
+    mylist = ['https://www.example.org', 'https://www.wikipedia.org/']
     # number of threads to use
     threads = 4
 
-    # converted the input list to an internal format
+    # convert the input list to a courlan UrlStore (internal format for URL management)
     url_store = add_to_compressed_dict(mylist)
     # processing loop
     while url_store.done is False:
@@ -172,11 +172,10 @@ Python features a module addressing the issue in its core packages, the gist of 
 .. code-block:: python
 
     import urllib.robotparser
-    from trafilatura import get_crawl_delay
-    
+
     # define a website to look for rules
     base_url = 'https://www.example.org'
-    
+
     # load the necessary components, fetch and parse the file
     rules = urllib.robotparser.RobotFileParser()
     rules.set_url(base_url + '/robots.txt')
@@ -205,7 +204,7 @@ To prevent the execution of too many requests within too little time, the option
     from trafilatura.downloads import load_download_buffer
 
     # 30 seconds is a safe choice
-    mybuffer, threads, domain_dict, backoff_dict = load_download_buffer(url_store, sleep_time=30)
+    bufferlist, url_store = load_download_buffer(url_store, sleep_time=30)
     # then proceed as instructed above...
 
 
@@ -214,10 +213,11 @@ One of the rules that can be defined by a ``robots.txt`` file is the crawl delay
 
 .. code-block:: python
 
-    # get the desired information
-    seconds = get_crawl_delay(rules)
+    # get the desired information (returns None if not set)
+    seconds = rules.crawl_delay("*")
     # provide a backup value in case no rule exists (happens quite often)
-    seconds = get_crawl_delay(rules, default=30)
+    if seconds is None:
+        seconds = 30
 
 
 .. note::
@@ -241,7 +241,7 @@ You can also decide to store the rules for convenience and later use, for exampl
     domain = extract_domain(base_url)
     rules_dict[domain] = rules
     # retrieving rules info
-    seconds = get_crawl_delay(rules_dict[domain])
+    seconds = rules_dict[domain].crawl_delay("*")
 
 
 You can then use such rules with the `crawling module <crawls.html>`_.
@@ -257,3 +257,6 @@ Here is the simplest way to stay polite while taking all potential constraints i
 2. Use the framework described above and set the throttling variable to a safe value (your main bottleneck is your connection speed anyway)
 3. Optional: for longer crawls, keep track of the throttling info and revisit ``robots.txt`` regularly
 4. See also `page on troubleshooting <troubleshooting.html>`_.
+
+.. seealso::
+    `Web crawling <crawls.html>`_, `URL management <url-management.html>`_, `Troubleshooting <troubleshooting.html>`_

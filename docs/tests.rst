@@ -1,6 +1,10 @@
 Running the tests
 =================
 
+.. meta::
+    :description lang=en:
+        How to run Trafilatura's test suite and code quality checks: pytest, mypy, ruff, and the evaluation gate.
+
 This page regroups the instructions needed to run the test suite and the code
 quality checks. Pull requests are only accepted if the changes are tested and if
 there are no errors.
@@ -14,7 +18,7 @@ virtual environment (for example with ``venv`` or ``pyenv``):
 
 .. code-block:: bash
 
-    $ pip install trafilatura[dev]
+    $ pip install -e ".[dev]"
 
 The ``dev`` extra pulls in everything required to run the tests and the checks:
 ``pytest`` (with ``pytest-cov``), ``mypy`` and ``ruff``.
@@ -104,3 +108,15 @@ Use ``--small`` to run the Trafilatura-based components only, or ``--all`` to ru
 all supported algorithms. See the `tests README
 <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ for more
 information on the evaluation and its data sources.
+
+Building the documentation
+--------------------------
+
+Starting from the ``docs/`` folder of the repository:
+
+1. ``pip install -r requirements.txt``
+2. ``sphinx-build -b html . _build/`` (where ``_build`` is the target directory)
+
+
+.. seealso::
+    `Installation <installation.html>`_

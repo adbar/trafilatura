@@ -56,7 +56,7 @@ General-purpose corpora are supposed to encompass a large amount of texts and a 
 
 Such corpora can also strive to be representative of a genre or of a particular source, in the case of web corpus, like a Mini web, because the Web is too large to be completely retrieved and stored in a database (see Tanguy 2013).
 
-They are often found at dedicated research institutions, as the building and maintenance is costly in time and resources. In the case of web corpora, this involves first an extensive web crawling phase, using mostly breadth-first techniques. Second, the text pre-processed. Meaning that a selection of resources of the documents or relevant extracts. Finally, loaded into corpus tool, which in that case, mostly involves tailored database applications.
+They are often found at dedicated research institutions, as the building and maintenance is costly in time and resources. In the case of web corpora, this involves first an extensive web crawling phase, using mostly breadth-first techniques. Second, the text is pre-processed, meaning that a selection of relevant extracts from the documents is made. Finally, the result is loaded into a corpus tool, which in that case mostly involves tailored database applications.
 
 
 Specialized corpora
@@ -74,7 +74,7 @@ Corpus building comprises three phases:
 
 
 .. hint::
-   For more information, see the tutorial `Gathering a custom web corpus <tutorial0.html>`_
+   For more information, see the tutorial `Building a web corpus <tutorial-corpus.html>`_
 
 
 In-between
@@ -153,7 +153,7 @@ In case a search engine is used to find documents, pre- and post-processing phas
 
 *N.B.: unlike in BootCat corpora, in this approach words from the general lexicon as used as seeds.*
 
-In the case of a corpus based on web feeds, four steps can be distinguished: feed discovery, validation, scheduling and crawling (Minocha et al. 2013).
+In the case of a corpus based on web feeds, four steps can be distinguished: feed discovery, validation, scheduling and crawling (Minocha et al. 2014).
 
 
 Crawling and download
@@ -249,7 +249,7 @@ Creating a corpus means finding a “balance academic integrity with practical r
 Data sparsity
 ~~~~~~~~~~~~~
 
-The above deals with texts published in the form of web pages. There are also a number of platforms and social networks which sadly cannot be comprehensively studied without the agreement of the company running them. It is although possible to gather data on a smaller scale (Barbaresi 2016).
+The above deals with texts published in the form of web pages. There are also a number of platforms and social networks which sadly cannot be comprehensively studied without the agreement of the company running them. It is also possible to gather data on a smaller scale (Barbaresi 2016).
 
 The Web constantly evolves and hyperlinks cannot be expected to remain stable in time. Page display is also affected by technological or commercial evolutions, for example prominent news outlets may disappear behind pay walls. See the Wikipedia page on `link rot <https://en.wikipedia.org/wiki/Link_rot>`_ for ideas on how to prevent it (chiefly using clean URLs and web archives).
 

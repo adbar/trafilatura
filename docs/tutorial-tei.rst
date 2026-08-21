@@ -1,6 +1,10 @@
 Tutorial: Validation of TEI files
 =================================
 
+.. meta::
+    :description lang=en:
+        Tutorial on producing and validating TEI-compliant XML files with Trafilatura for data integrity and interoperability.
+
 
 Trafilatura can produce and validate XML documents according to the TEI guidelines. In this tutorial, you will see how to use it to ensure data integrity and interoperability.
 
@@ -15,7 +19,7 @@ Producing TEI files
 -------------------
 
 
-Trafilatura can extract information from web pages and convert it into TEI-compliant XML files. Here is how to procude a TEI file in Python:
+Trafilatura can extract information from web pages and convert it into TEI-compliant XML files. Here is how to produce a TEI file in Python:
 
 .. code-block:: python
 
@@ -35,7 +39,7 @@ You can also achieve this from the command line using the following command:
 
 .. code-block:: bash
 
-    trafilatura --xmltei --validate --URL "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
+    trafilatura --xmltei --validate-tei --URL "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
 
 
 
@@ -43,7 +47,7 @@ Validating existing files
 -------------------------
 
 
-If you already have a TEI file and want to validate it, you can use the ``validate_tei`` function from Trafilatura. The following code returns `True` if a document is valid and outputs a message related to the first error impeding validation otherwise:
+If you already have a TEI file and want to validate it, you can use the ``validate_tei`` function from Trafilatura. It returns ``True`` if the document is valid and ``False`` otherwise, logging a warning with the first error impeding validation:
 
 .. code-block:: python
 
@@ -56,10 +60,13 @@ If you already have a TEI file and want to validate it, you can use the ``valida
 
     # validate it
     validate_tei(mytree)
-    # returns True or an error message
+    # returns True or False
 
 
-The ``validate_tei`` function takes an XML file as input and returns ``True`` if the file is valid according to the TEI schema. Otherwise, the function outputs an error message indicating the first error impeding validation.
+The ``validate_tei`` function takes an XML file as input and returns ``True`` if the file is valid according to the TEI schema, ``False`` otherwise. On failure it logs a warning indicating the first error impeding validation.
 
 
 For more information please refer to this blog post: `Validating TEI-XML documents with Python <https://adrien.barbaresi.eu/blog/validating-tei-xml-python.html>`_
+
+.. seealso::
+    `Python usage <usage-python.html>`_, `Core functions <corefunctions.html>`_

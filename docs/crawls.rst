@@ -82,15 +82,21 @@ The following example demonstrates how to set up a focused crawler to extract in
 Step by step
 ~~~~~~~~~~~~
 
-The function returns two values, a snapshot of the current crawling state. Since the collected links can be downloaded and processed at a later time, it is recommended to progress in a step-by-step manner to save and examine data between runs.
+The function returns two values representing the current crawling state:
 
-The ``to_visit`` variable keeps track of what is ahead and the ``known_links`` variable ensures that the same pages are not visited twice. As this requirement can vary depending on the use case (e.g. checking new pages every day on a homepage) these variables are optional. Other parameters include ``config`` (see settings file) and ``rules`` (politeness rules, defaults to the ones provided by the website or safe values).
+- ``to_visit``: URLs still to be crawled
+- ``known_links``: URLs already seen (prevents revisiting)
+
+Since the collected links can be downloaded and processed at a later time, it is recommended to progress in a step-by-step manner to save and examine data between runs. Both variables are optional — pass them back in on subsequent calls to resume where you left off. Other parameters include ``config`` (see settings file) and ``rules`` (politeness rules, defaults to the ones provided by the website or safe values).
 
 
 .. code-block:: python
 
     # perform another iteration using previously collected information
-    >>> to_visit, known_links = focused_crawler("https://example.org", max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_links)
+    >>> to_visit, known_links = focused_crawler(
+    ...     "https://example.org", max_seen_urls=10, max_known_urls=100000,
+    ...     todo=to_visit, known_links=known_links,
+    ... )
 
 
 In this example, the crawler stops after seeing a maximum of 10 URLs or registering a total of 100,000 URLs on the website, whichever comes first. Setting both parameters to high values can result in a significant increase in processing time.
@@ -128,7 +134,7 @@ On the CLI the crawler automatically works its way through a website, stopping a
 It can also crawl websites in parallel by reading a list of target sites from a list using the ``-i``/``--input-file`` option.
 
 .. note::
-    The ``--list`` option does not apply here. Unlike with the ``--sitemap`` or ``--feed`` options, the URLs are simply returned as a list instead of being retrieved and processed. This allows for examination of the collected URLs prior to further downloads. For more information on refining and filtering URL collections, see the underlying `courlan package <https://github.com/adbar/courlan>`_.
+    The ``--list`` option does not apply here: unlike ``--sitemap`` or ``--feed``, crawling already returns a URL list without retrieving page content. This allows for examination of the collected URLs prior to further downloads. For more information on refining and filtering URL collections, see the underlying `courlan package <https://courlan.readthedocs.io/en/latest/>`_.
 
 
 
@@ -154,3 +160,6 @@ Shkapenyuk, V., & Suel, T. (2002). Design and implementation of a high-performan
     <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3140&rep=rep1&type=pdf>`_
     <https://dl.acm.org/doi/abs/10.1561/1500000017>`_
     <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.13.4762&rep=rep1&type=pdf>`_
+
+.. seealso::
+    `Download web pages <downloads.html>`_, `URL management <url-management.html>`_

@@ -1,5 +1,5 @@
-On the command-line
-===================
+Command-line usage
+==================
 
 .. meta::
     :description lang=en:
@@ -89,7 +89,18 @@ Output as TXT without metadata is the default, another format can be selected in
 .. hint::
     Combining TXT and CSV formats with certain structural elements (e.g. formatting or links) triggers output in Markdown format. Selecting Markdown automatically includes text formatting. Note: ``--formatting`` has no effect on JSON output.
 
-*HTML output is available from version 1.11, Markdown from version 1.9 onwards.*
+
+
+Fast mode
+~~~~~~~~~
+
+The ``--fast`` or ``-f`` flag skips the fallback extraction cascade (readability and jusText), making extraction roughly twice as fast. Use it when speed matters more than completeness:
+
+.. code-block:: bash
+
+    $ trafilatura --fast -u "https://example.org"
+
+See `how extraction works <extraction-overview.html>`_ for details on what is skipped.
 
 
 Optimizing for precision and recall
@@ -97,9 +108,11 @@ Optimizing for precision and recall
 
 The arguments ``--precision`` or ``--recall`` can be passed to adjust the focus of the extraction process.
 
-- If your results contain too much noise, prioritize precision to focus on the most central and relevant elements.
-- If parts of your documents are missing, try this preset to take more elements into account.
+- ``--precision``: use when results contain too much boilerplate — comments are pruned more aggressively, link-heavy sections are discarded, and fallback stages are skipped.
+- ``--recall``: use when parts of documents are missing — more elements are kept, link density thresholds are relaxed.
 - If parts of the contents are still missing, see `troubleshooting <troubleshooting.html>`_.
+
+For details on what each mode changes internally, see `how extraction works <extraction-overview.html#extraction-modes>`_.
 
 
 Language identification
@@ -113,10 +126,29 @@ Passing the argument ``--target-language`` along with a 2-letter code (ISO 639-1
 
 
 
+Metadata
+~~~~~~~~
+
+- ``--with-metadata``: extract metadata (title, author, date, etc.) and include it in the output. Off by default.
+- ``--only-with-metadata``: only output documents that have all essential metadata (title, URL, date).
+
+
+Deduplication
+~~~~~~~~~~~~~
+
+The ``--deduplicate`` flag activates duplicate detection across documents and within documents. Repeated segments (e.g. navigation text) are removed from the output. See `deduplication <deduplication.html>`_.
+
+
+Blacklist
+~~~~~~~~~
+
+The ``-b`` / ``--blacklist`` flag accepts a file containing URLs to skip during batch processing (one URL per line).
+
+
 Changing default settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-See `documentation page on settings <settings.html>`_.
+The ``--config-file`` flag overrides extraction settings with a custom configuration file. See `documentation page on settings <settings.html>`_.
 
 
 
@@ -125,7 +157,7 @@ Process files locally
 
 In case web pages have already been downloaded and stored, it is possible to process single files or directories as a whole. It can be especially helpful to separate download and extraction to circumvent blocking mechanisms, either by scrambling IPs used to access the pages or by using web browser automation software to bypass issues related to cookies and paywalls.
 
-Trafilatura will work as well provided web pages (HTML documents) are used as input. Two major command line arguments are necessary:
+Trafilatura will work as well provided web pages (HTML documents) are used as input. The following command line arguments are relevant:
 
 -  ``--input-dir`` to select a directory to read files from
 -  ``-o`` or ``--output-dir`` to define a directory to eventually store the results
@@ -148,7 +180,7 @@ Process a list of links
     For more information see the `page on downloads <downloads.html>`_.
 
 
-Two major command line arguments are necessary here:
+The following command line arguments are relevant:
 
 -  ``-i`` or ``--input-file`` to select an input list to read links from.
 
@@ -163,6 +195,7 @@ Two major command line arguments are necessary here:
 
     $ trafilatura -i list.txt -o txtfiles/		# output as raw text
     $ trafilatura --xml -i list.txt -o xmlfiles/	# output in XML format
+    $ trafilatura --parallel 4 -i list.txt -o txtfiles/	# use 4 threads
 
 
 .. hint::
@@ -188,7 +221,7 @@ Both the homepage and a particular page can be used as input depending on the se
 
 The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
-For more information please refer to the `tutorial on content discovery <tutorial0.html#content-discovery>`_.
+For more information please refer to the `tutorial on content discovery <tutorial-corpus.html#content-discovery>`_.
 
 Feeds
 ~~~~~
@@ -247,30 +280,31 @@ Selecting the ``--crawl`` option automatically looks for pages by following a fi
 See the `page on web crawling <crawls.html>`_ for more information.
 
 
+Explore and probe
+~~~~~~~~~~~~~~~~~
+
+- ``--explore``: combines sitemap and crawl discovery for broader coverage.
+- ``--probe``: probes pages for extractable content, works best with ``--target-language`` to find pages in a specific language.
+
+
 URL inspection prior to download and processing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 .. code-block:: bash
 
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "https://www.sitemaps.org/de"
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "protocol"
+    # --url-filter selects which seed URLs get processed — combine with -i/--input-file
+    $ trafilatura --sitemap -i seeds.txt --list --url-filter "sitemaps.org"
 
-Using a subpart of the site also acts like a filter, for example ``--sitemap "https://www.sitemaps.org/de/"``.
+To filter the discovered *links* by pattern instead, pass a subpart of the site directly as the sitemap URL — for example ``--sitemap "https://www.sitemaps.org/de/"`` only lists German-language pages. ``--url-filter`` does not filter individual discovered links, only which seed URLs (from ``-i``) are processed in the first place.
 
-For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
+For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial-corpus.html#link-filtering>`_.
 
 
 Deprecations
 ------------
 
-The following arguments have been deprecated since inception:
-
-- ``--nocomments`` and ``--notables`` → ``--no-comments`` and ``--no-tables``
-- ``--inputfile``, ``--inputdir``, and ``--outputdir`` → ``--input-file``, ``--input-dir``, and ``--output-dir``
-- ``-out`` → ``--output-format``
-- ``--hash-as-name`` → hashes used by default
-- ``--with-metadata`` (include metadata) had once the effect of today's ``--only-with-metadata`` (only documents with necessary metadata)
+See the `deprecations and migration <deprecations.html>`_ page for a full list of deprecated CLI arguments and migration instructions.
 
 
 
@@ -284,102 +318,8 @@ Further information
 
 For all usage instructions see ``trafilatura -h``:
 
-.. code-block:: bash
+.. program-output:: trafilatura -h
 
-    trafilatura [-h] [-i INPUTFILE | --input-dir INPUTDIR | -u URL]
-                   [--parallel PARALLEL] [-b BLACKLIST] [--list]
-                   [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
-                   [--feed [FEED] | --sitemap [SITEMAP] | --crawl [CRAWL] |
-                   --explore [EXPLORE] | --probe [PROBE]] [--archived]
-                   [--url-filter URL_FILTER [URL_FILTER ...]] [-f]
-                   [--formatting] [--links] [--images] [--no-comments]
-                   [--no-tables] [--only-with-metadata] [--with-metadata]
-                   [--target-language TARGET_LANGUAGE] [--deduplicate]
-                   [--config-file CONFIG_FILE] [--precision] [--recall]
-                   [--output-format {csv,json,html,markdown,txt,xml,xmltei} | 
-                   --csv | --html | --json | --markdown | --xml | --xmltei]
-                   [--validate-tei] [-v] [--version]
-
-
-Command-line interface for Trafilatura
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --verbose         increase logging verbosity (-v or -vv)
-  --version             show version information and exit
-
-Input:
-  URLs, files or directories to process
-
-  -i INPUT_FILE, --input-file INPUT_FILE
-                        name of input file for batch processing
-  --input-dir INPUT_DIR
-                        read files from a specified directory (relative path)
-  -u URL, --URL URL     custom URL download
-  --parallel PARALLEL   specify a number of cores/threads for downloads and/or
-                        processing
-  -b BLACKLIST, --blacklist BLACKLIST
-                        file containing unwanted URLs to discard during
-                        processing
-
-Output:
-  Determines if and how files will be written
-
-  --list                display a list of URLs without downloading them
-  -o OUTPUT_DIR, --output-dir OUTPUT_DIR
-                        write results in a specified directory (relative path)
-  --backup-dir BACKUP_DIR
-                        preserve a copy of downloaded files in a backup
-                        directory
-  --keep-dirs           keep input directory structure and file names
-
-Navigation:
-  Link discovery and web crawling
-
-.. code-block:: bash
-
-  --feed [FEED]         look for feeds and/or pass a feed URL as input
-  --sitemap [SITEMAP]   look for sitemaps for the given website and/or enter a sitemap URL
-  --crawl [CRAWL]       crawl a fixed number of pages within a website starting from the given URL
-  --explore [EXPLORE]   explore the given websites (combination of sitemap and crawl)
-  --probe [PROBE]       probe for extractable content (works best with target language)
-  --archived            try to fetch URLs from the Internet Archive if downloads fail
-  --url-filter URL_FILTER [URL_FILTER ...] only process/output URLs containing these patterns (space-separated strings)
-
-Extraction:
-  Customization of text and metadata processing
-
-  -f, --fast            fast (without fallback detection)
-  --formatting          include text formatting (bold, italic, etc.)
-  --links               include links along with their targets (experimental)
-  --images              include image sources in output (experimental)
-  --no-comments         don't output any comments
-  --no-tables           don't output any table elements
-  --only-with-metadata  only output those documents with title, URL and date
-  --with-metadata       extract and add metadata to the output
-  --target-language TARGET_LANGUAGE
-                        select a target language (ISO 639-1 codes)
-  --deduplicate         filter out duplicate documents and sections
-  --config-file CONFIG_FILE
-                        override standard extraction parameters with a custom
-                        config file
-  --precision           favor extraction precision (less noise, possibly less
-                        text)
-  --recall              favor extraction recall (more text, possibly more
-                        noise)
-
-Format:
-  Selection of the output format
-
-.. code-block:: bash
-
-  --output-format {csv,json,html,markdown,txt,xml,xmltei}
-                        determine output format
-  --csv                 shorthand for CSV output
-  --html                shorthand for HTML output
-  --json                shorthand for JSON output
-  --markdown            shorthand for MD output
-  --xml                 shorthand for XML output
-  --xmltei              shorthand for XML TEI output
-  --validate-tei        validate XML TEI output
+.. seealso::
+    `Settings and customization <settings.html>`_, `Python usage <usage-python.html>`_
 

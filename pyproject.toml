@@ -138,6 +138,9 @@ docs = [
     "pydata-sphinx-theme == 0.20.0 ; python_version >= '3.11'",
     "docutils == 0.22.4",
     "sphinx-sitemap == 2.9.0",
+    "myst-parser == 5.1.0",
+    "sphinxcontrib-programoutput == 0.20",
+    "sphinxext-opengraph == 0.13.0",
 ]
 
 [tool.ruff]

@@ -1,6 +1,10 @@
 Core functions
 ==============
 
+.. meta::
+    :description lang=en:
+        API reference for Trafilatura's core Python functions: extraction, link discovery, downloads, and XML processing.
+
 .. contents:: Table of contents
     :depth: 2
     :local:

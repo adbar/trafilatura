@@ -50,6 +50,9 @@ Examples
 
 Here are some examples of the Trafilatura API to get you started:
 
+.. note::
+    As noted above, the hosted API is currently unavailable, so these examples are for reference only — they cannot be run as-is until service is restored.
+
 
 Command-line
 ~~~~~~~~~~~~
