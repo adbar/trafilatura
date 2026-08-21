@@ -162,6 +162,20 @@ REMOVE_COMMENTS_XPATH = [
 # or self::span
 # or contains(@class, 'comment') or contains(@id, 'comment')
 
+# Infinite-scroll containers holding whole follow-up articles ("mvp-post-add": Zox News theme).
+# Not in OVERALL_DISCARD_XPATH: such pages are mostly appended articles, which trips
+# prune_unwanted_nodes()'s over-pruning guard.
+REMOVE_APPENDED_ARTICLES_XPATH = [
+    XPath(
+        """
+        .//*[self::div or self::section or self::aside][
+        re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
+        re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')]
+        """,
+        namespaces={"re": REGEXP_NS},
+    )
+]
+
 
 # OVERALL_DISCARD_XPATH boilerplate token vocabulary, grouped by concept, composed via _alt()
 # below. _LEGACY_SITE_* = single-site/legacy tokens (provenance + per-token audit in memory).
