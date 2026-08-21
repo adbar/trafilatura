@@ -16,6 +16,7 @@ from time import sleep
 from typing import (
     Any,
 )
+from urllib.parse import urljoin
 
 import certifi
 import urllib3
@@ -190,7 +191,9 @@ def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Con
             response.release_conn()
 
         # necessary for standardization
-        resp = Response(bytes(data), response.status, response.geturl() or url)
+        # geturl() returns the raw Location header after a redirect and the request
+        # URI otherwise, both of which can be relative
+        resp = Response(bytes(data), response.status, urljoin(url, response.geturl() or url))
         if with_headers:
             resp.store_headers(response.headers)
         return resp
