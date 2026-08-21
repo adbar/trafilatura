@@ -36,7 +36,7 @@ from .utils import (
     normalize_unicode,
 )
 from .xml import build_json_output, control_xml_output, xmltocsv, xmltotxt
-from .xpaths import REMOVE_COMMENTS_XPATH
+from .xpaths import REMOVE_APPENDED_ARTICLES_XPATH, REMOVE_COMMENTS_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
@@ -202,6 +202,9 @@ def trafilatura_sequence(
     ``bare_extraction``/``extract`` instead.
     """
     is_forum = _forum_thread_page(tree)
+    # raw-tree prune so the external extractors inherit it too: readability would otherwise
+    # pick the longest appended article over the real one
+    tree = prune_unwanted_nodes(copy(tree), REMOVE_APPENDED_ARTICLES_XPATH)
     # comments off: prune on the raw tree so all stages inherit it (only precision did before)
     if not options.comments and (options.focus == "precision" or not is_forum):
         tree = prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
