@@ -109,5 +109,14 @@ all supported algorithms. See the `tests README
 <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_ for more
 information on the evaluation and its data sources.
 
+Building the documentation
+--------------------------
+
+Starting from the ``docs/`` folder of the repository:
+
+1. ``pip install -r requirements.txt``
+2. ``sphinx-build -b html . _build/`` (where ``_build`` is the target directory)
+
+
 .. seealso::
     `Installation <installation.html>`_

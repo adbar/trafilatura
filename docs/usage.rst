@@ -3,7 +3,10 @@ Usage
 
 .. meta::
     :description lang=en:
-        Trafilatura usage guides: Python, command-line, R, downloads, crawling, settings, and more.
+        Trafilatura usage guides: Python, command-line, R, downloads, crawling, and more.
+
+
+Detailed guides for using Trafilatura with Python, on the command-line, with R, and for web data collection tasks.
 
 
 .. toctree::
@@ -17,9 +20,5 @@ Usage
    usage-api
    downloads
    crawls
-   settings
    deduplication
-   troubleshooting
-   faq
    url-management
-   deprecations

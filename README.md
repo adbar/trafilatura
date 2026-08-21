@@ -15,39 +15,34 @@
 
 
 ``` python
->>> import trafilatura
->>> downloaded = trafilatura.fetch_url("https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/")
->>> trafilatura.extract(downloaded)
+>>> from trafilatura import fetch_url, extract
+>>> downloaded = fetch_url("https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/")
+>>> extract(downloaded)
 'Erin Spiceland is a software engineer and ...'
->>> trafilatura.extract(downloaded, output_format="json", include_comments=False)
-'{"text": "Erin Spiceland is a software engineer and ...", "comments": ""}'
+>>> extract(downloaded, output_format="json", with_metadata=True)
+'{"title": "Leader spotlight: Erin Spiceland", "author": "Jessica Rudder", "text": "Erin Spiceland is a software engineer and ..."}'
 ```
-
-<br/>
 
 
 ## Introduction
 
 Trafilatura is a comprehensive **Python package and command-line tool**
-designed to **gather text on the Web and simplify the process of turning
-raw HTML into structured, meaningful data**. It includes all necessary
+designed to **gather text from the Web and turn raw HTML into structured,
+meaningful data**. It includes all necessary
 discovery and text processing components to perform **web crawling,
 downloads, scraping, and extraction** of main texts, metadata and
 comments. It aims at staying **handy and modular**: no database is
 required, the output can be converted to commonly used formats.
 
-Going from HTML bulk to essential parts can alleviate many problems
-related to text quality, by **focusing on the actual content**,
-**avoiding the noise** caused by recurring elements like headers and footers
-and by **making sense of the data and metadata** with selected information.
+Going from raw HTML to essential parts, it **focuses on the actual
+content**, **avoids noise** caused by recurring elements (headers,
+footers, boilerplate), and **makes sense of the data and metadata**.
 The extractor strikes a balance between limiting noise (precision) and
 including all valid parts (recall). It is **robust and reasonably fast**.
 
 Trafilatura is [widely used](https://trafilatura.readthedocs.io/en/latest/used-by.html)
-and integrated into [thousands of projects](https://github.com/adbar/trafilatura/network/dependents)
-by companies like HuggingFace, IBM, and Microsoft Research as well as institutions like
-the Allen Institute, Stanford, the Tokyo Institute of Technology, and
-the University of Munich.
+across [thousands of projects](https://github.com/adbar/trafilatura/network/dependents),
+including by HuggingFace, IBM, Microsoft Research, NVIDIA, the Allen Institute for AI, Stanford, and the Internet Archive.
 
 
 ### Features
@@ -61,24 +56,17 @@ the University of Munich.
   - Previously downloaded HTML files and parsed HTML trees
 
 - Robust and configurable extraction of key elements:
-  - Main text (own rule-based extractor with jusText and readability as fallbacks)
+  - Main text (own rule-based extractor with jusText and readability-lxml as fallbacks)
   - Metadata (title, author, date, site name, categories and tags)
   - Formatting and structure: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
   - Optional elements: comments, links, images, tables
+  - Optional add-ons: language detection, speed optimizations
 
 - Multiple output formats:
   - TXT and Markdown
   - CSV
   - JSON
   - HTML, XML and [XML-TEI](https://tei-c.org/)
-
-- Optional add-ons:
-  - Language detection on extracted content
-  - Speed optimizations
-
-- Actively maintained with support from the open-source community:
-  - Regular updates, feature additions, and optimizations
-  - Comprehensive documentation
 
 
 ### Evaluation
@@ -99,7 +87,7 @@ to run the evaluation with the latest data and packages.
   (Bevendorff et al. 2023)
 
 
-## Usage and documentation
+## Documentation
 
 [Getting started with Trafilatura](https://trafilatura.readthedocs.io/en/latest/quickstart.html)
 is straightforward. For more information and detailed guides, visit
@@ -114,9 +102,7 @@ is straightforward. For more information and detailed guides, visit
 - Interactive Python Notebook: [Trafilatura Overview](docs/Trafilatura_Overview.ipynb) (in the repository)
 - [Tutorials and use cases](https://trafilatura.readthedocs.io/en/latest/tutorials.html)
 
-Youtube playlist with video tutorials in several languages:
-
-- [Web scraping tutorials and how-tos](https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci)
+See the [video tutorials playlist](https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci) (multiple languages).
 
 
 ## License
@@ -138,18 +124,21 @@ Many thanks to the
 who extended the docs or submitted bug reports, features and bugfixes!
 
 
+## Support
+
+**If you value this software or depend on it for your product, consider
+sponsoring it and contributing to its codebase.** Your support
+[on GitHub](https://github.com/sponsors/adbar) or [ko-fi.com](https://ko-fi.com/adbarbaresi)
+will help maintain and enhance this package.
+
+
 ## Context
 
 This work started as a PhD project at the crossroads of linguistics and
-NLP, this expertise has been instrumental in shaping Trafilatura over
+NLP. This expertise has been instrumental in shaping Trafilatura over
 the years. Initially launched to create text databases for research purposes
 at the Berlin-Brandenburg Academy of Sciences (DWDS and ZDL units),
-this package continues to be maintained but its future depends on community support.
-
-**If you value this software or depend on it for your product, consider
-sponsoring it and contributing to its codebase**. Your support
-[on GitHub](https://github.com/sponsors/adbar) or [ko-fi.com](https://ko-fi.com/adbarbaresi)
-will help maintain and enhance this popular package.
+this package continues to be maintained and its future depends on community support.
 
 *Trafilatura* is an Italian word for [wire
 drawing](https://en.wikipedia.org/wiki/Wire_drawing) symbolizing the
@@ -201,10 +190,8 @@ acquisition. Here is how to cite it:
 Jointly developed plugins and additional packages also contribute to the
 field of web data extraction and analysis:
 
-<img alt="Software ecosystem" src="https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png" align="center" width="65%"/>
+<img alt="Diagram of trafilatura and related packages (htmldate, courlan, jusText)" src="https://raw.githubusercontent.com/adbar/htmldate/master/docs/software-ecosystem.png" align="center" width="65%"/>
 
 Corresponding posts can be found on [Bits of
 Language](https://adrien.barbaresi.eu/blog/tag/trafilatura.html).
 
-Impressive, you have reached the end of the page: Thank you for your
-interest!
