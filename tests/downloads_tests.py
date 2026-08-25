@@ -311,6 +311,17 @@ def test_decode():
         assert handle_compressed_file(compressed_string) == html_string.encode("utf-8")
         assert decode_file(compressed_string) == html_string
 
+    # GZip-only detection: still decompresses GZip but leaves the rest untouched
+    gzipped = gzip.compress(html_string.encode("utf-8"))
+    assert handle_compressed_file(gzipped, full_detection=False) == html_string.encode("utf-8")
+    assert decode_file(gzipped, full_detection=False) == html_string
+    for other in compressed_strings[1:]:
+        assert handle_compressed_file(other, full_detection=False) == other
+    # load_html only expects GZip and still parses an archived document
+    tree = load_html(gzipped)
+    assert tree is not None
+    assert tree.findtext(".//div") == "ABC"
+
     # errors
     for bad_file in ("äöüß", b"\x1f\x8b\x08abc", b"\x28\xb5\x2f\xfdabc"):
         assert handle_compressed_file(bad_file) == bad_file

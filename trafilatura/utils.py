@@ -143,10 +143,12 @@ RE_FILTER = re.compile(
 LINK_FARM_RATIO = 0.9
 
 
-def handle_compressed_file(filecontent: bytes) -> bytes:
+def handle_compressed_file(filecontent: bytes, full_detection: bool = True) -> bytes:
     """
     Don't trust response headers and try to decompress a binary string
     with a cascade of installed packages. Use magic numbers when available.
+    With full_detection set to False only GZip is tested, which is enough for
+    local files downloaded and archived by Trafilatura (see load_html()).
     """
     if not isinstance(filecontent, bytes):
         return filecontent
@@ -157,6 +159,9 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
             return gzip.decompress(filecontent)
         except Exception:  # EOFError, OSError, gzip.BadGzipFile
             LOGGER.warning("invalid GZ file")
+    # the other formats only come up in downloads, skip them for local files
+    if not full_detection:
+        return filecontent
     # try zstandard
     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
         try:
@@ -213,17 +218,18 @@ def detect_encoding(bytesobject: bytes) -> list[str]:
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_file(filecontent: bytes | str) -> str:
-    """Check if the bytestring could be GZip and eventually decompress it,
+def decode_file(filecontent: bytes | str, full_detection: bool = True) -> str:
+    """Check if the bytestring could be compressed and eventually decompress it,
     guess bytestring encoding and try to decode to Unicode string.
-    Resort to destructive conversion otherwise."""
+    Resort to destructive conversion otherwise. With full_detection set to False
+    only GZip is tested during decompression (see handle_compressed_file())."""
     if isinstance(filecontent, str):
         return filecontent
 
     htmltext = None
 
-    # GZip and Brotli test
-    filecontent = handle_compressed_file(filecontent)
+    # decompression test
+    filecontent = handle_compressed_file(filecontent, full_detection)
     # encoding
     for guessed_encoding in detect_encoding(filecontent):
         try:
@@ -290,7 +296,8 @@ def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
     # start processing
     tree = None
     # try to guess encoding and decode file: if None then keep original
-    htmlobject = decode_file(htmlobject)
+    # only GZip is expected here (archived by Trafilatura), skip full detection
+    htmlobject = decode_file(htmlobject, full_detection=False)
     # sanity checks
     beginning = htmlobject[:50].lower()
     check_flag = is_dubious_html(beginning)
