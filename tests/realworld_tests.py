@@ -729,7 +729,7 @@ def test_extract(xmloutput, formatting):
     if formatting is False:
         assert "von The unbelievable Machine Company (*um) zur Verfügung gestellt." in result
     else:
-        assert "von **The unbelievable Machine Company (*um)** zur Verfügung gestellt.\n" in result
+        assert "von **The unbelievable Machine Company (\\*um)** zur Verfügung gestellt.\n" in result
     assert "Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung." not in result
     assert "Die Top 5 digitalen Trends für den Mittelstand" not in result
     assert ", leading edge," not in result  # and 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result

@@ -89,6 +89,24 @@ HEADING_LEVELS = frozenset("123456")
 # preceding characters that already separate content, so no extra space/newline is needed
 SEPARATORS = frozenset((" ", "\n", "|", ""))
 
+# CommonMark inline-syntax characters that are ambiguous wherever they appear in prose text:
+# emphasis/strikethrough (*, _, ~), code spans (`), link/image brackets ([, ]) and
+# autolinks/raw HTML (<). Unlike '#', '-', '+', '>' and '.'/')' after a digit run, these are
+# risky mid-line too, not just at the start of a block (see _escape_block_start for those).
+_INLINE_SPECIAL_CHARS = ("*", "_", "`", "~", "[", "]", "<")
+# each entry matches that character preceded by any run of backslashes already in the source text
+_INLINE_SPECIAL_RUN_RES = {ch: re.compile(r"\\*" + re.escape(ch)) for ch in _INLINE_SPECIAL_CHARS}
+
+# a leading heading/blockquote/list marker, only meaningful at the very start of a block line
+_HEADING_START_RE = re.compile(r"^( {0,3})(#{1,6})(?=[ \t]|$)")
+_QUOTE_START_RE = re.compile(r"^( {0,3})(>)")
+_BULLET_START_RE = re.compile(r"^( {0,3})([-+])(?=[ \t]|$)")
+_ORDERED_START_RE = re.compile(r"^( {0,3})(\d{1,9})([.)])(?=[ \t]|$)")
+_BLOCK_START_RES = (_HEADING_START_RE, _QUOTE_START_RE, _BULLET_START_RE, _ORDERED_START_RE)
+
+# an unescaped '[' or ']', used as a safety net for text that never went through the tree-wide pass
+_UNESCAPED_BRACKET_RE = re.compile(r"(?<!\\)([\[\]])")
+
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
@@ -408,6 +426,50 @@ def _convert_math_tree(element: _Element) -> None:
             child.tail = _convert_math(child.tail)
 
 
+def _escape_inline_specials(text: str) -> str:
+    """Escape literal CommonMark inline-syntax characters so they render as themselves rather than
+    emphasis/strikethrough, a code span, link/image brackets or an autolink/raw HTML tag.
+
+    Any backslashes already sitting in front of a target character are doubled (so they still
+    render as literal backslashes) before the new escaping backslash is added, which keeps the
+    escape correct even if the source text happened to already contain an escaped occurrence.
+    """
+    if not any(ch in text for ch in _INLINE_SPECIAL_CHARS):
+        return text
+
+    def _escape_run(match: "re.Match[str]") -> str:
+        run: str = match.group()
+        return "\\" * (2 * run.count("\\") + 1) + run[-1]
+
+    for ch in _INLINE_SPECIAL_CHARS:
+        if ch in text:
+            text = _INLINE_SPECIAL_RUN_RES[ch].sub(_escape_run, text)
+    return text
+
+
+def _escape_inline_specials_tree(element: _Element) -> None:
+    "Escape literal inline-syntax characters in text/tails in place, leaving code subtrees untouched (their content is verbatim)."
+    # code content is verbatim: skip the whole subtree
+    if element.tag == "code" or (element.tag == "hi" and HI_FORMATTING.get(element.get("rend") or "") == "`"):
+        return
+    if element.text:
+        element.text = _escape_inline_specials(element.text)
+    for child in element:
+        _escape_inline_specials_tree(child)
+        if child.tail:  # a code element's tail is prose, so it is still escaped
+            child.tail = _escape_inline_specials(child.tail)
+
+
+def _escape_block_start(text: str) -> str:
+    "Escape a leading heading/blockquote/list marker so a fresh paragraph/item line isn't misread as block syntax."
+    for regex in _BLOCK_START_RES:
+        match = regex.match(text)
+        if match and match.lastindex is not None:  # every _BLOCK_START_RES pattern has a marker group
+            pos = match.start(match.lastindex)
+            return f"{text[:pos]}\\{text[pos:]}"
+    return text
+
+
 def _last_char(returnlist: list[str]) -> str:
     "Last character emitted so far, or '' if nothing yet."
     return returnlist[-1][-1:] if returnlist else ""
@@ -432,8 +494,14 @@ def _list_marker(element: _Element, in_item: bool | None = None, include_formatt
 
 
 def _md_link(text: str, url: str | None, image: bool = False) -> str:
-    "Markdown link/image with escaped text and a CommonMark-safe target."
-    esc = text.replace("[", "\\[").replace("]", "\\]")
+    """Markdown link/image with escaped text and a CommonMark-safe target.
+
+    Text coming from the tree-wide escaping pass already has its brackets escaped; only
+    brackets not already escaped are touched here, so this is safe to call on both
+    pre-escaped and raw text (e.g. link text is linkified even when include_formatting is
+    False, in which case the tree-wide pass never ran).
+    """
+    esc = _UNESCAPED_BRACKET_RE.sub(r"\\\1", text)
     prefix = "!" if image else ""
     if url is None:
         return f"{prefix}[{esc}]"
@@ -460,9 +528,12 @@ def _heading_prefix(element: _Element) -> str:
     return "#" * number
 
 
-def _image_markup(element: _Element) -> str:
+def _image_markup(element: _Element, include_formatting: bool = True) -> str:
     "Markdown image for a graphic element: ![alt](src)."
     alt = f"{element.get('title', '')} {element.get('alt', '')}".strip()
+    # alt/title come from attributes, so the text/tail tree pass never reaches them
+    if include_formatting:
+        alt = _escape_inline_specials(alt)
     return _md_link(alt, element.get("src", ""), image=True)
 
 
@@ -471,7 +542,7 @@ def _collect_inline_text(element: _Element, include_formatting: bool) -> str:
     parts: list[str] = [element.text] if element.text else []
     for child in element:
         if child.tag == "graphic":
-            parts.append(_image_markup(child))
+            parts.append(_image_markup(child, include_formatting))
         elif child.tag == "lb":
             parts.append("\n")
         elif child.tag in INLINE_FORMATTABLE:
@@ -499,6 +570,10 @@ def replace_element_text(
         elem_text = _collect_inline_text(element, include_formatting)
     else:
         elem_text = element.text or ""
+    # a fresh paragraph/list-item/quote line must not start with a marker that reads as block
+    # syntax; table cells are inline-only in GFM, so this never applies there
+    if include_formatting and elem_text and not in_cell and element.tag in ("p", "quote", "item"):
+        elem_text = _escape_block_start(elem_text)
     # handle formatting: convert to markdown
     if include_formatting and elem_text:
         if element.tag in ("article", "list", "table"):
@@ -506,7 +581,8 @@ def replace_element_text(
         elif element.tag == "head" and not in_cell:
             elem_text = f"{_heading_prefix(element)} {elem_text}"
         elif element.tag == "del":
-            elem_text = _md_wrap(elem_text.replace("~~", "~\\~"), "~~")
+            # the tree-wide pass already escaped every '~' in elem_text, so no literal "~~" survives
+            elem_text = _md_wrap(elem_text, "~~")
         elif element.tag == "hi":
             rend = element.get("rend") or ""
             marker = HI_FORMATTING.get(rend)
@@ -601,7 +677,7 @@ def process_element(
 
     if not _renders_inline:
         if element.tag == "graphic":
-            image = f"{_list_marker(element, in_item, include_formatting)}{_image_markup(element)}"
+            image = f"{_list_marker(element, in_item, include_formatting)}{_image_markup(element, include_formatting)}"
             if in_cell:
                 image = _escape_cell(image)
             returnlist.append(image)
@@ -662,9 +738,10 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     returnlist: list[str] = []
 
     if include_formatting:
-        # math rewrite, emphasis collapse, lb removal mutate the tree; protect caller's copy
+        # math rewrite, special-char escaping, emphasis collapse, lb removal mutate the tree; protect caller's copy
         xmloutput = deepcopy(xmloutput)
         _convert_math_tree(xmloutput)
+        _escape_inline_specials_tree(xmloutput)
         _collapse_emphasis(xmloutput)
         _merge_adjacent_hi(xmloutput)
         _strip_block_whitespace(xmloutput)

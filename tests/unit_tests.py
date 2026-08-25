@@ -3270,7 +3270,7 @@ def test_markdown_escaping():
     # ~~ inside del content must not close the strikethrough early
     tree = etree.fromstring(b"<body><p><del>a~~b</del></p></body>")
     result = xml.xmltotxt(tree, include_formatting=True)
-    assert "~~a~\\~b~~" in result
+    assert "~~a\\~\\~b~~" in result
 
     # del as a direct child of a table cell (no enclosing p)
     result = extract(
@@ -3312,6 +3312,174 @@ def test_markdown_escaping():
     assert xml.xmltotxt(etree.fromstring(bold_img), True).strip() == "**x ![A](i.jpg) y**"
     struck_img = b'<body><p><del>x <graphic src="i.jpg" alt="A"/> y</del></p></body>'
     assert xml.xmltotxt(etree.fromstring(struck_img), True).strip() == "~~x ![A](i.jpg) y~~"
+
+
+def test_markdown_asterisk_escaping():
+    "Literal '*' in source text must be escaped so CommonMark renders it literally, not as emphasis."
+
+    def md(b):
+        return xml.xmltotxt(etree.fromstring(b), include_formatting=True)
+
+    # a bare asterisk in plain paragraph text must not turn into emphasis
+    assert (
+        md(b"<body><p>This *should* not be italic and 3*4=12</p></body>").strip()
+        == "This \\*should\\* not be italic and 3\\*4=12"
+    )
+
+    # a real <hi> bold marker must survive untouched next to escaped literal asterisks
+    tree = etree.fromstring(b'<body><p><hi rend="#b">bold</hi> and *literal* asterisks</p></body>')
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "**bold** and \\*literal\\* asterisks"
+
+    # asterisks inside a heading are escaped, the '#' prefix is untouched
+    assert md(b'<body><head rend="h2">Title *with* asterisk</head></body>').strip() == "## Title \\*with\\* asterisk"
+
+    # asterisks inside a list item are escaped, the '- ' marker is untouched
+    assert md(b"<body><list><item>list item *text*</item></list></body>").strip() == "- list item \\*text\\*"
+
+    # asterisks inside table cell text are escaped alongside the pre-existing pipe escaping
+    tree = etree.fromstring(b"<body><table><row><cell>a*b|c</cell></row></table></body>")
+    assert "a\\*b\\|c" in xml.xmltotxt(tree, include_formatting=True)
+
+    # asterisks inside link text are escaped, the [text](url) syntax is untouched
+    tree = etree.fromstring(b'<body><p><ref target="http://x.com">link *text*</ref></p></body>')
+    assert "[link \\*text\\*](http://x.com)" in xml.xmltotxt(tree, include_formatting=True)
+
+    # asterisks inside image alt text are escaped
+    tree = etree.fromstring(b'<body><graphic src="i.png" alt="a*b"/></body>')
+    assert "![a\\*b](i.png)" in xml.xmltotxt(tree, include_formatting=True)
+
+    # asterisks inside struck-through (del) text are escaped, the ~~ markers are untouched
+    tree = etree.fromstring(b"<body><p><del>a*b</del></p></body>")
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "~~a\\*b~~"
+
+    # a bold link keeps both its ** markers and its brackets: nested markup must not be
+    # re-escaped as if it were literal source text
+    tree = etree.fromstring(b'<body><p><ref target="http://x.com"><hi rend="#b">bold link</hi></ref></p></body>')
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "[**bold link**](http://x.com)"
+
+    # asterisks inside verbatim code (block and inline) must NOT be escaped
+    assert xml.xmltotxt(etree.fromstring(b"<body><code>a * b</code></body>"), True).strip() == "`a * b`"
+    tree = etree.fromstring(b'<body><p><hi rend="#t">a*b</hi></p></body>')
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "`a*b`"
+
+    # a run of consecutive asterisks (e.g. a plain-text divider) must not be read as emphasis
+    assert md(b"<body><p>*** section break ***</p></body>").strip() == "\\*\\*\\* section break \\*\\*\\*"
+
+    # an even-length run must also be escaped character-by-character, not skipped as a pair
+    assert md(b"<body><p>**not bold**</p></body>").strip() == "\\*\\*not bold\\*\\*"
+
+    # a literal '*' touching a real <hi> open/close boundary (immediately inside or outside
+    # the tag, singly or doubled) must be escaped without disturbing the real emphasis
+    # marker. #i is the higher-risk case since its marker is a single '*', the same
+    # character being escaped, while #b's '**' is a different-looking two-char sequence.
+    for rend, marker in (("#i", "*"), ("#b", "**")):
+        # just outside the opening tag
+        assert md(f'<body><p>*<hi rend="{rend}">x</hi></p></body>'.encode()).strip() == f"\\*{marker}x{marker}"
+        # just inside the opening tag (first character of the hi's own text)
+        assert md(f'<body><p><hi rend="{rend}">*x</hi></p></body>'.encode()).strip() == f"{marker}\\*x{marker}"
+        # just outside the closing tag
+        assert md(f'<body><p><hi rend="{rend}">x</hi>*</p></body>'.encode()).strip() == f"{marker}x{marker}\\*"
+        # just inside the closing tag (last character of the hi's own text)
+        assert md(f'<body><p><hi rend="{rend}">x*</hi></p></body>'.encode()).strip() == f"{marker}x\\*{marker}"
+        # wrapping the text from inside the tag on both sides
+        assert md(f'<body><p><hi rend="{rend}">*x*</hi></p></body>'.encode()).strip() == f"{marker}\\*x\\*{marker}"
+        # wrapping the whole <hi> element from outside on both sides
+        assert md(f'<body><p>*<hi rend="{rend}">x</hi>*</p></body>'.encode()).strip() == f"\\*{marker}x{marker}\\*"
+        # a literal '**' run just inside the tag on both sides
+        assert md(f'<body><p><hi rend="{rend}">**x**</hi></p></body>'.encode()).strip() == f"{marker}\\*\\*x\\*\\*{marker}"
+        # a literal '**' run just outside the tag on both sides
+        assert md(f'<body><p>**<hi rend="{rend}">x</hi>**</p></body>'.encode()).strip() == f"\\*\\*{marker}x{marker}\\*\\*"
+
+    # a pre-existing literal backslash immediately before an asterisk must round-trip:
+    # rendered output should still show exactly one backslash then one asterisk
+    tree = etree.fromstring(b"<body><p>Edge case: a\\*b</p></body>")
+    assert xml.xmltotxt(tree, include_formatting=True).strip() == "Edge case: a\\\\\\*b"
+
+    # include_formatting=False is plain-text mode: asterisks must be left completely alone
+    assert xml.xmltotxt(etree.fromstring(b"<body><p>This *stays* as-is</p></body>"), False).strip() == "This *stays* as-is"
+
+
+def test_markdown_special_char_escaping():
+    """Literal CommonMark metacharacters other than '*' must also be escaped so they render as
+    themselves: '_', '`', '[', ']', '<', '~' are ambiguous wherever they appear in prose, while
+    '#', '-', '+', '.'/')' after digits and '>' only matter at the very start of a fresh block
+    line (heading/list/blockquote syntax). Everything else (quotes, parens, punctuation) is inert
+    in body text and must be left alone.
+    """
+
+    def md(b, include_formatting=True):
+        return xml.xmltotxt(etree.fromstring(b), include_formatting=include_formatting).strip()
+
+    # underscore, backtick, brackets and '<' are escaped anywhere in a paragraph
+    assert (
+        md(b"<body><p>a_b_c and `code` and [bracket] and &lt;tag&gt; text</p></body>")
+        == "a\\_b\\_c and \\`code\\` and \\[bracket\\] and \\<tag> text"
+    )
+    # a lone '~' is also escaped: GitHub renders a single tilde as strikethrough, not just '~~'
+    assert md(b"<body><p>~single~ tilde</p></body>") == "\\~single\\~ tilde"
+
+    # a leading '#' in a plain paragraph must not become an ATX heading
+    assert md(b"<body><p># not a heading</p></body>") == "\\# not a heading"
+    # a leading '>' in a plain paragraph must not become a blockquote
+    assert md(b"<body><p>&gt; not a quote</p></body>") == "\\> not a quote"
+    # a leading '-'/'+' in a plain paragraph must not become a bullet list
+    assert md(b"<body><p>- not a list</p></body>") == "\\- not a list"
+    assert md(b"<body><p>+ not a list</p></body>") == "\\+ not a list"
+    # a leading digit + '.'/')' in a plain paragraph must not become an ordered list
+    assert md(b"<body><p>1. not a list</p></body>") == "1\\. not a list"
+    assert md(b"<body><p>1) not a list</p></body>") == "1\\) not a list"
+
+    # the same markers are safe mid-line and must be left alone (only line-start is risky)
+    assert (
+        md(b"<body><p>mid-line - and 3.14 and 100% and word) stay put</p></body>")
+        == "mid-line - and 3.14 and 100% and word) stay put"
+    )
+
+    # a list item's own content starting with a marker-like character must not nest as a
+    # sub-list; the item's real '- '/'N. ' marker (added separately) is untouched
+    assert md(b"<body><list><item>- nested looking</item></list></body>") == "- \\- nested looking"
+    assert (
+        md(b'<body><list rend="ol"><item>2. nested ordered looking</item></list></body>') == "1. 2\\. nested ordered looking"
+    )
+
+    # a blockquote element's own leading '>' must also be escaped
+    assert md(b"<body><quote>&gt; quoted text with - marker</quote></body>") == "\\> quoted text with - marker"
+
+    # a heading's own '#' prefix already claims the line, so an inner leading '#' is inert
+    assert md(b'<body><head rend="h2"># nested hash in heading</head></body>') == "## # nested hash in heading"
+
+    # table cells are inline-only in GFM: a leading marker-like character there is never risky
+    assert "| - looks like a list |" in md(b"<body><table><row><cell>- looks like a list</cell></row></table></body>")
+
+    # inert punctuation (quotes, parens, and other characters with no CommonMark meaning in
+    # body text) must be left completely alone
+    inert = b"<body><p>quote &quot; apostrophe ' paren ( ) percent % dollar $ at @ caret ^ eq = brace { } colon : semi ; comma , bang !</p></body>"
+    assert (
+        md(inert)
+        == "quote \" apostrophe ' paren ( ) percent % dollar $ at @ caret ^ eq = brace { } colon : semi ; comma , bang !"
+    )
+    # '!' alone (not immediately escaping a '[') does not need its own escaping
+    assert md(b"<body><p>! not an image on its own</p></body>") == "! not an image on its own"
+
+    # verbatim code (block and inline) must not have any of these characters escaped
+    assert md(b"<body><code>a_b`c[d]e&lt;f&gt;</code></body>") == "``a_b`c[d]e<f>``"
+    assert md(b'<body><p><hi rend="#t">a_b`c</hi></p></body>') == "``a_b`c``"
+
+    # brackets in link/image text are still escaped so a false image ('![...]') can't form,
+    # without needing to escape '!' itself: an escaped '[' already blocks the image syntax
+    assert (
+        md(b'<body><p><ref target="http://x.com">![img]-like text</ref></p></body>') == "[!\\[img\\]-like text](http://x.com)"
+    )
+
+    # a pre-existing literal backslash immediately before an underscore must round-trip:
+    # rendered output should still show exactly one backslash then one underscore
+    assert md(b"<body><p>Edge case: a\\_b</p></body>") == "Edge case: a\\\\\\_b"
+
+    # include_formatting=False is plain-text mode: none of these characters are touched
+    assert (
+        md(b"<body><p>This _stays_ as-is with `code` [b] &lt;tag&gt;</p></body>", include_formatting=False)
+        == "This _stays_ as-is with `code` [b] <tag>"
+    )
 
 
 def test_markdown_link_angle_bracket_targets():
