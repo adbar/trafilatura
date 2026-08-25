@@ -176,6 +176,12 @@ REMOVE_APPENDED_ARTICLES_XPATH = [
     )
 ]
 
+# Not in OVERALL_DISCARD_XPATH: its "share-" token matches these already, but its "widget" token
+# also matches the article body ("elementor-widget"), so the over-pruning guard reverts both.
+REMOVE_SHARE_WIDGETS_XPATH = [
+    XPath(".//*[self::div or self::section or self::aside][contains(@class, 'elementor-share-buttons')]")
+]
+
 
 # OVERALL_DISCARD_XPATH boilerplate token vocabulary, grouped by concept, composed via _alt()
 # below. _LEGACY_SITE_* = single-site/legacy tokens (provenance + per-token audit in memory).
@@ -193,9 +199,20 @@ _NAV_ID_TOKENS = ("nav", "Nav", "menu")
 _RELATED_ID_TOKENS = ("related",)
 _UI_CHROME_ID_TOKENS = ("message-container",)
 _PAYWALL_ID_TOKENS = ("premium",)
+_AD_ID_TOKENS = ("^ad-",)
 
 _NAV_CLASS_TOKENS = ("^(?:nav|post-nav|ZendeskForm)", "subnav", "avigation", "navbar", "navbox", "menu", "bar")
-_AD_CLASS_TOKENS = (" ad ", "-ad-", "outbrain", "taboola", "criteo", "paid-?content", "widget")
+_AD_CLASS_TOKENS = (
+    " ad ",
+    "-ad-",
+    "(?:^| )ad-",
+    "dfp[Aa]d",
+    "outbrain",
+    "taboola",
+    "criteo",
+    "paid-?content",
+    "widget",
+)
 _FOOTER_CLASS_TOKENS = ("footer", "Footer")
 _AUTHOR_CLASS_TOKENS = ("byline", "Byline")
 _SHARE_CLASS_TOKENS = ("share-", "sociable", "embedded", "embed")
@@ -238,6 +255,7 @@ _OVERALL_DISCARD_ID_TOKENS = (
     + _RELATED_ID_TOKENS
     + _UI_CHROME_ID_TOKENS
     + _PAYWALL_ID_TOKENS
+    + _AD_ID_TOKENS
 )
 _OVERALL_DISCARD_CLASS_TOKENS = (
     _NAV_CLASS_TOKENS

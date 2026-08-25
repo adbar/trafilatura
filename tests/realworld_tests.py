@@ -39,6 +39,8 @@ MOCK_PAGES = {
     "https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html": "landwirt.com.sensortechnik.html",
     "http://schleifen.ucoz.de/blog/briefe/2010-10-26-18": "schleifen.ucoz.de.briefe.html",
     "https://kulu-media.com/meta-outage-hits-facebook-instagram-and-messenger/": "kulu-media.com.meta-outage.html",
+    "https://www.infobae.com/colombia/2026/08/24/terremoto-sacudio-el-bolsillo-de-los-colombianos-el-consumo-cayo-89-tras-el-fuerte-sismo-del-10-de-agosto/": "infobae.com.terremoto.html",
+    "https://www.eluniverso.com/noticias/seguridad/kenia-brindara-apoyo-para-repatriar-restos-de-michele-sensi-contugi-y-su-esposa-tras-accidente-de-helicoptero-nota/": "eluniverso.com.repatriar.html",
     "http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung": "rs-ingenieure.de.tragwerksplanung.html",
     "http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html": "simplyscience.ch.erdoel.html",
     "http://www.shingon-reiki.de/reiki-und-schamanismus/": "shingon-reiki.de.schamanismus.html",
@@ -364,6 +366,20 @@ def test_extract(xmloutput, formatting):
     assert "Many users reported being automatically logged out of their accounts" in result
     assert "Artemis" not in result
     assert "splashdown" not in result
+
+    # ad slot labels interleaved with the paragraphs (Arc XP / DFP "ad-wrapper" shells)
+    result = do_load_page(
+        "https://www.infobae.com/colombia/2026/08/24/terremoto-sacudio-el-bolsillo-de-los-colombianos-el-consumo-cayo-89-tras-el-fuerte-sismo-del-10-de-agosto/"
+    )
+    assert "el consumo real del país cayó 8,9%" in result
+    assert "PUBLICIDAD" not in result
+
+    # same, but the ad marker is on the id only: Tailwind classes carry no ad token
+    result = do_load_page(
+        "https://www.eluniverso.com/noticias/seguridad/kenia-brindara-apoyo-para-repatriar-restos-de-michele-sensi-contugi-y-su-esposa-tras-accidente-de-helicoptero-nota/"
+    )
+    assert "Kenia facilitará el apoyo necesario" in result
+    assert "Publicidad" not in result
 
     # justext performs better here
     result = do_load_page("http://schleifen.ucoz.de/blog/briefe/2010-10-26-18")
