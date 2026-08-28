@@ -160,8 +160,11 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
     # try zstandard
     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
         try:
-            return zstandard.decompress(filecontent)  # max_output_size=???
-        except zstandard.ZstdError:
+            decompressed = zstandard.ZstdDecompressor().stream_reader(filecontent).read()
+            if decompressed:
+                return decompressed
+            LOGGER.warning("invalid ZSTD file")
+        except Exception:
             LOGGER.warning("invalid ZSTD file")
     # try brotli
     if HAS_BROTLI:
