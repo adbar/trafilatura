@@ -62,7 +62,7 @@ CANNED_RESPONSES = {
 }
 
 
-def _fake_send(url, no_ssl, with_headers, config):
+def _fake_send(url, no_ssl, config):
     canned = CANNED_RESPONSES.get(url)
     if canned is None:
         return None

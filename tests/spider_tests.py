@@ -6,11 +6,13 @@ Unit tests for the spidering part of the trafilatura library.
 import logging
 import sys
 from collections import deque
+from unittest.mock import patch
 
 import pytest
 from courlan import UrlStore
 
 from trafilatura import spider  # for global variables
+from trafilatura.utils import Response
 
 # from trafilatura.utils import LANGID_FLAG
 
@@ -261,6 +263,29 @@ def test_crawl_page():
     assert len(known_links) == 1
     assert params.i == 1
     ## TODO: find a better page for language tests
+
+
+def test_scheme_upgrade():
+    "An http crawl of a site redirecting to https must follow the upgrade and keep its links."
+    spider.URL_STORE = UrlStore()
+    links = "".join(f'<a href="https://scheme-upgrade.org/p{i}.html">x</a>' for i in range(3))
+    html = f"<html><body>{links}</body></html>"
+
+    def fake_fetch_response(url, *, decode=False, config=None, **kw):
+        return Response(html.encode(), 200, url.replace("http://", "https://"))
+
+    with (
+        patch.object(spider, "fetch_response", fake_fetch_response),
+        patch.object(spider, "get_rules", lambda *a, **kw: None),
+        patch.object(spider, "sleep", lambda s: None),
+    ):
+        _todo, known_links = spider.focused_crawler("http://scheme-upgrade.org", max_seen_urls=10)
+    assert sorted(known_links) == [
+        "https://scheme-upgrade.org/",
+        "https://scheme-upgrade.org/p0.html",
+        "https://scheme-upgrade.org/p1.html",
+        "https://scheme-upgrade.org/p2.html",
+    ]
 
 
 def test_focused_crawler():
