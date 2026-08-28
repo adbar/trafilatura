@@ -110,6 +110,9 @@ _UNESCAPED_BRACKET_RE = re.compile(r"(?<!\\)([\[\]])")
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
+# the very same spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
+# escaping has to step over exactly the regions _convert_math rewrites, and nothing else
+_MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\))")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
@@ -413,19 +416,6 @@ def _merge_adjacent_hi(element: _Element) -> None:
             i += 1
 
 
-def _convert_math_tree(element: _Element) -> None:
-    "Rewrite LaTeX math in text/tails in place, leaving code subtrees untouched."
-    # code content is verbatim: skip the whole subtree
-    if element.tag == "code" or (element.tag == "hi" and HI_FORMATTING.get(element.get("rend") or "") == "`"):
-        return
-    if element.text:
-        element.text = _convert_math(element.text)
-    for child in element:
-        _convert_math_tree(child)
-        if child.tail:  # a code element's tail is prose, so it is still converted
-            child.tail = _convert_math(child.tail)
-
-
 def _escape_inline_specials(text: str) -> str:
     """Escape literal CommonMark inline-syntax characters so they render as themselves rather than
     emphasis/strikethrough, a code span, link/image brackets or an autolink/raw HTML tag.
@@ -447,17 +437,34 @@ def _escape_inline_specials(text: str) -> str:
     return text
 
 
-def _escape_inline_specials_tree(element: _Element) -> None:
-    "Escape literal inline-syntax characters in text/tails in place, leaving code subtrees untouched (their content is verbatim)."
+def _escape_and_convert_math(text: str) -> str:
+    """Escape the prose and rewrite the formulas in one pass over the text.
+
+    Inside a formula '_', '*', '[', ']', '<', '`' and '~' are LaTeX notation, so a backslash put
+    there is read by the math renderer rather than by CommonMark and breaks the formula. The two
+    jobs cannot run as separate passes in either order: escaping first turns a literal "[x]" into
+    "\\[x\\]", which the math pass then reads as block math, and converting first hands the
+    escaping pass a "$...$" span whose LaTeX it mangles ("$a_1$" -> "$a\\_1$"). Split on the math
+    delimiters once instead, and give each kind of region the treatment it needs.
+    """
+    parts = _MATH_SPAN_RE.split(text)
+    # re.split on one capturing group alternates prose, math, prose, ...
+    parts[::2] = [_escape_inline_specials(part) for part in parts[::2]]
+    parts[1::2] = [_convert_math(part) for part in parts[1::2]]
+    return "".join(parts)
+
+
+def _escape_and_convert_math_tree(element: _Element) -> None:
+    "Escape inline-syntax characters and rewrite LaTeX math in text/tails in place, leaving code subtrees untouched (their content is verbatim)."
     # code content is verbatim: skip the whole subtree
     if element.tag == "code" or (element.tag == "hi" and HI_FORMATTING.get(element.get("rend") or "") == "`"):
         return
     if element.text:
-        element.text = _escape_inline_specials(element.text)
+        element.text = _escape_and_convert_math(element.text)
     for child in element:
-        _escape_inline_specials_tree(child)
-        if child.tail:  # a code element's tail is prose, so it is still escaped
-            child.tail = _escape_inline_specials(child.tail)
+        _escape_and_convert_math_tree(child)
+        if child.tail:  # a code element's tail is prose, so it is still escaped and converted
+            child.tail = _escape_and_convert_math(child.tail)
 
 
 def _escape_block_start(text: str) -> str:
@@ -740,8 +747,7 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     if include_formatting:
         # math rewrite, special-char escaping, emphasis collapse, lb removal mutate the tree; protect caller's copy
         xmloutput = deepcopy(xmloutput)
-        _convert_math_tree(xmloutput)
-        _escape_inline_specials_tree(xmloutput)
+        _escape_and_convert_math_tree(xmloutput)
         _collapse_emphasis(xmloutput)
         _merge_adjacent_hi(xmloutput)
         _strip_block_whitespace(xmloutput)

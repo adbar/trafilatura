@@ -3605,6 +3605,25 @@ def test_math_conversion():
     assert "`k` then $t$ end" in xml.xmltotxt(tree, include_formatting=True)
 
 
+def test_math_is_not_commonmark_escaped():
+    """Inside a formula '_', '*', '[', ']', '<', '`' and '~' are LaTeX notation, so the
+    CommonMark escaping pass must step over math spans while still escaping the prose
+    around them."""
+
+    def md(b):
+        return xml.xmltotxt(etree.fromstring(b), include_formatting=True).strip()
+
+    # subscripts and '<' survive inline math verbatim
+    assert md(b"<body><p>we write \\(a_1 &lt; a_2\\) here</p></body>") == "we write $a_1 < a_2$ here"
+    # block math too, including braces, stars and brackets
+    assert md(b"<body><p>\\[ x_i = \\sum_j A_{ij} y_j^* \\]</p></body>") == "$$\nx_i = \\sum_j A_{ij} y_j^*\n$$"
+    assert md(b"<body><p>\\(\\left[u_0\\right]\\)</p></body>") == "$\\left[u_0\\right]$"
+    # prose on both sides of a formula is still escaped
+    assert md(b"<body><p>file_one has \\(n_1\\) rows in dir_two</p></body>") == "file\\_one has $n_1$ rows in dir\\_two"
+    # an unmatched delimiter is not a math span, so its text is escaped as ordinary prose
+    assert md(b"<body><p>regex \\( a_b open</p></body>") == "regex \\( a\\_b open"
+
+
 def test_math_recovery():
     "MathML is replaced by its LaTeX source instead of being discarded with the <math> subtree."
     options = core.Extractor()
