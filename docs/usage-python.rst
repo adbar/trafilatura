@@ -209,6 +209,11 @@ The function ``is_probably_readerable()`` (ported from Mozilla's Readability.js)
     >>> from trafilatura.readability_lxml import is_probably_readerable
     >>> is_probably_readerable(downloaded)  # HTML string or already parsed tree
 
+The optional ``options`` argument accepts either a dictionary with
+``min_content_length``, ``min_score``, or ``visibility_checker`` values, or an
+``Extractor`` object. With an ``Extractor``, its ``min_extracted_size`` setting
+is used as the content-length threshold.
+
 
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^

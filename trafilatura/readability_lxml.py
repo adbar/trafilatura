@@ -27,6 +27,7 @@ from typing import Any
 from lxml.etree import tostring
 from lxml.html import HtmlElement, fragment_fromstring
 
+from .settings import Extractor
 from .utils import load_html, trim
 
 LOGGER = logging.getLogger(__name__)
@@ -416,11 +417,18 @@ def is_node_visible(node: HtmlElement) -> bool:
     return True
 
 
-def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | None = None) -> bool:
+def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | Extractor | None = None) -> bool:
     """
     Decides whether or not the document is reader-able without parsing the whole thing.
+
+    ``options`` can be a mapping with readerability-specific values or an
+    :class:`Extractor`. For an ``Extractor``, only ``min_extracted_size`` is
+    relevant to this heuristic and is used as ``min_content_length``.
     """
-    options = options or {}
+    if isinstance(options, Extractor):
+        options = {"min_content_length": options.min_extracted_size}
+    else:
+        options = options or {}
     doc = load_html(html)
     if doc is None:
         return False
