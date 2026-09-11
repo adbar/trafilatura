@@ -293,6 +293,12 @@ def test_config():
     assert custom["Cookie"] == "yummy_cookie=choco; tasty_cookie=strawberry"
 
 
+def zstd_stream_compress(data: bytes) -> bytes:
+    "Compress data into a zstd frame which does not declare its content size."
+    chunker = zstandard.ZstdCompressor().chunker()
+    return b"".join(chunker.compress(data)) + b"".join(chunker.finish())
+
+
 def test_decode():
     """Test how responses are being decoded."""
     html_string = "<html><head/><body><div>ABC</div></body></html>"
@@ -306,13 +312,31 @@ def test_decode():
         compressed_strings.append(brotli.compress(html_string.encode("utf-8")))
     if HAS_ZSTD:
         compressed_strings.append(zstandard.compress(html_string.encode("utf-8")))
+        # servers compressing on the fly emit frames without a declared content
+        # size, and concatenated frames are equally valid
+        compressed_strings.append(zstd_stream_compress(html_string.encode("utf-8")))
+        compressed_strings.append(
+            zstandard.compress(html_string[:20].encode("utf-8")) + zstandard.compress(html_string[20:].encode("utf-8"))
+        )
 
     for compressed_string in compressed_strings:
         assert handle_compressed_file(compressed_string) == html_string.encode("utf-8")
         assert decode_file(compressed_string) == html_string
 
     # errors
-    for bad_file in ("äöüß", b"\x1f\x8b\x08abc", b"\x28\xb5\x2f\xfdabc"):
+    bad_files = ["äöüß", b"\x1f\x8b\x08abc", b"\x28\xb5\x2f\xfdabc"]
+    if HAS_ZSTD:
+        # a truncated frame decompresses to a prefix, which must not be mistaken
+        # for the whole document
+        truncated = zstd_stream_compress(html_string.encode("utf-8") * 500)
+        bad_files.append(truncated[: len(truncated) // 2])
+        # reserved bit set in the frame header descriptor (the byte after the
+        # magic): rejected by the decompressor itself rather than by the
+        # end-of-frame check
+        frame = bytearray(zstandard.compress(html_string.encode("utf-8")))
+        frame[4] |= 0x08
+        bad_files.append(bytes(frame))
+    for bad_file in bad_files:
         assert handle_compressed_file(bad_file) == bad_file
 
 

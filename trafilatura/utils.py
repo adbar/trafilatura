@@ -143,6 +143,25 @@ RE_FILTER = re.compile(
 LINK_FARM_RATIO = 0.9
 
 
+def _decompress_zstd(filecontent: bytes) -> bytes | None:
+    """Decompress a Zstandard payload, or return None if it is not intact.
+    The one-shot API only accepts frames declaring their decompressed size in
+    the header, which servers compressing their responses on the fly omit."""
+    chunks: list[bytes] = []
+    remaining = filecontent
+    while remaining:
+        decompressor = zstandard.ZstdDecompressor().decompressobj()
+        try:
+            chunks.append(decompressor.decompress(remaining))
+        except zstandard.ZstdError:
+            return None
+        # a truncated frame decompresses to a plausible-looking prefix, reject it
+        if not decompressor.eof:
+            return None
+        remaining = decompressor.unused_data
+    return b"".join(chunks)
+
+
 def handle_compressed_file(filecontent: bytes) -> bytes:
     """
     Don't trust response headers and try to decompress a binary string
@@ -159,10 +178,10 @@ def handle_compressed_file(filecontent: bytes) -> bytes:
             LOGGER.warning("invalid GZ file")
     # try zstandard
     if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
-        try:
-            return zstandard.decompress(filecontent)  # max_output_size=???
-        except zstandard.ZstdError:
-            LOGGER.warning("invalid ZSTD file")
+        decompressed = _decompress_zstd(filecontent)
+        if decompressed is not None:
+            return decompressed
+        LOGGER.warning("invalid ZSTD file")
     # try brotli
     if HAS_BROTLI:
         try:
