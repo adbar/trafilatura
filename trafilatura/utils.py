@@ -14,12 +14,9 @@ from itertools import islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
 from unicodedata import normalize
 
-# response compression, same detection as urllib3
+# response compression
 try:
-    try:
-        import brotli
-    except ImportError:
-        import brotlicffi as brotli  # type: ignore[no-redef]
+    import brotli
 
     HAS_BROTLI = True
 except ImportError:
@@ -28,7 +25,7 @@ except ImportError:
 # zstd: stdlib from 3.14 on, official backport before
 try:
     if sys.version_info >= (3, 14):
-        from compression import zstd
+        from compression import zstd  # pragma: no cover
     else:
         from backports import zstd  # type: ignore[no-redef]
 
@@ -146,42 +143,30 @@ def _capped(chunks: Iterable[bytes], max_size: int) -> bytes:
     return bytes(out)
 
 
+# bgzip output needs ~320 members for 20MB
+MAX_MEMBERS = 1000
+
+
 def _bounded_members(raw: bytes, make_dec: Callable[[], Any], max_size: int) -> bytes:
     "Decompress a concatenated multi-member stream, rejecting output over max_size."
     out = bytearray()
-    empty_runs = 0
-    while raw:
+    for _ in range(MAX_MEMBERS):
         dec = make_dec()
         # single capped call, no flush(): pending input must stay compressed or the cap is void
-        chunk = dec.decompress(raw, max_size + 1 - len(out))
-        out += chunk
+        out += dec.decompress(raw, max_size + 1 - len(out))
         # covers cap-truncated, oversized, and incomplete streams
         if len(out) > max_size or not dec.eof:
             raise ValueError("oversized or incomplete compressed stream")
-        empty_runs = 0 if chunk else empty_runs + 1
-        if empty_runs > 4:
-            raise ValueError("too many empty compressed members")
-        raw = dec.unused_data  # next member of a concatenated stream
-    return bytes(out)
-
-
-def _bounded_inflate(raw: bytes, wbits: int, max_size: int) -> bytes:
-    "Inflate a possibly multi-member gzip/zlib stream, capped at max_size."
-    return _bounded_members(raw, lambda: zlib.decompressobj(wbits), max_size)
-
-
-def _bounded_unzstd(raw: bytes, max_size: int) -> bytes:
-    "Decompress a possibly multi-frame zstd stream, capped at max_size."
-    return _bounded_members(raw, zstd.ZstdDecompressor, max_size)
+        raw = dec.unused_data  # copied each round, hence the cap
+        if not raw:
+            return bytes(out)
+    raise ValueError("too many compressed members")
 
 
 def _bounded_unbrotli(raw: bytes, max_size: int) -> bytes:
     "Decompress a brotli stream, output-capped at max_size."
     dec = brotli.Decompressor()
-    try:
-        out: bytes = dec.process(raw, output_buffer_limit=max_size + 1)
-    except TypeError:  # brotlicffi lacks the output cap: bound between input chunks instead
-        out = _capped((dec.process(raw[i : i + 2**16]) for i in range(0, len(raw), 2**16)), max_size)
+    out: bytes = dec.process(raw, output_buffer_limit=max_size + 1)
     # is_finished(): non-brotli input can yield b"" without raising
     if len(out) > max_size or not dec.is_finished():
         raise ValueError("oversized or incomplete compressed stream")
@@ -208,12 +193,12 @@ def handle_compressed_file(filecontent: bytes, max_size: int | None = None) -> b
     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
     if filecontent[:3] == b"\x1f\x8b\x08":
         try:
-            return _bounded_inflate(filecontent, 31, max_size)  # 31 = gzip header
+            return _bounded_members(filecontent, lambda: zlib.decompressobj(31), max_size)  # 31 = gzip header
         except (zlib.error, ValueError):
             LOGGER.warning("invalid or oversized GZ file")
     elif HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
         try:
-            return _bounded_unzstd(filecontent, max_size)
+            return _bounded_members(filecontent, zstd.ZstdDecompressor, max_size)
         except (zstd.ZstdError, ValueError):
             LOGGER.warning("invalid or oversized ZSTD file")
     # no magic numbers: try brotli, then zlib/deflate speculatively
@@ -224,7 +209,7 @@ def handle_compressed_file(filecontent: bytes, max_size: int | None = None) -> b
             except (brotli.error, ValueError):
                 pass
         try:
-            return _bounded_inflate(filecontent, zlib.MAX_WBITS, max_size)
+            return _bounded_members(filecontent, lambda: zlib.decompressobj(zlib.MAX_WBITS), max_size)
         except (zlib.error, ValueError):
             pass
 

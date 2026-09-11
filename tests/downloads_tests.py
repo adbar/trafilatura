@@ -56,7 +56,7 @@ from trafilatura.downloads import (
     load_download_buffer,
 )
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
-from trafilatura.utils import decode_file, handle_compressed_file, load_html
+from trafilatura.utils import MAX_MEMBERS, decode_file, handle_compressed_file, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -511,9 +511,11 @@ def test_decode():
     # a raised per-request cap is honored
     assert handle_compressed_file(bomb, max_size=30_000_000) == b"0" * 25_000_000
 
-    # empty-member flood is rejected (DoS guard)
-    flood = gzip.compress(b"") * 6
+    # member flood is rejected
+    member = gzip.compress(b"a")
+    flood = member * (MAX_MEMBERS + 1)
     assert handle_compressed_file(flood) == flood
+    assert handle_compressed_file(member * MAX_MEMBERS) == b"a" * MAX_MEMBERS
 
     if HAS_ZSTD:
         multi_frame = zstd.compress(b"<html>a ") + zstd.compress(b"b</html>")

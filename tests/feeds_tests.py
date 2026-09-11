@@ -288,6 +288,12 @@ def test_feeds_helpers():
     links = find_feed_urls("https://example.com/blog")
     assert links == ["https://example.com/blog/post-1"]
 
+    # several candidate feeds, paused in between
+    with patch("trafilatura.feeds.sleep") as mock_sleep:
+        links = find_feed_urls("https://multi.example.com/", sleep_time=0.5)
+    assert links == ["https://multi.example.com/post-1", "https://multi.example.com/post-2"]
+    mock_sleep.assert_called_once_with(0.5)
+
     # web page that advertises no feed -> no usable feed links
     assert find_feed_urls("https://example.com/plain") == []
 
