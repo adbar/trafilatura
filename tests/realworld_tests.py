@@ -41,6 +41,7 @@ MOCK_PAGES = {
     "https://kulu-media.com/meta-outage-hits-facebook-instagram-and-messenger/": "kulu-media.com.meta-outage.html",
     "https://www.infobae.com/colombia/2026/08/24/terremoto-sacudio-el-bolsillo-de-los-colombianos-el-consumo-cayo-89-tras-el-fuerte-sismo-del-10-de-agosto/": "infobae.com.terremoto.html",
     "https://www.eluniverso.com/noticias/seguridad/kenia-brindara-apoyo-para-repatriar-restos-de-michele-sensi-contugi-y-su-esposa-tras-accidente-de-helicoptero-nota/": "eluniverso.com.repatriar.html",
+    "https://www.aljazeera.com/news/2026/6/11/thousands-of-malawians-flee-homes-in-south-africa-amid-xenophobic-threats": "aljazeera.com.malawians.html",
     "http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung": "rs-ingenieure.de.tragwerksplanung.html",
     "http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html": "simplyscience.ch.erdoel.html",
     "http://www.shingon-reiki.de/reiki-und-schamanismus/": "shingon-reiki.de.schamanismus.html",
@@ -380,6 +381,14 @@ def test_extract(xmloutput, formatting):
     )
     assert "Kenia facilitará el apoyo necesario" in result
     assert "Publicidad" not in result
+
+    # "Recommended Stories" widget ("more-on" section) interleaved between article paragraphs
+    result = do_load_page(
+        "https://www.aljazeera.com/news/2026/6/11/thousands-of-malawians-flee-homes-in-south-africa-amid-xenophobic-threats"
+    )
+    assert "More than 3,000 Malawians" in result
+    assert "Recommended Stories" not in result
+    assert "Fearful foreign nationals in South Africa forced out of their homes" not in result
 
     # justext performs better here
     result = do_load_page("http://schleifen.ucoz.de/blog/briefe/2010-10-26-18")

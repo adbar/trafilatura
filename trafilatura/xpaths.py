@@ -218,7 +218,7 @@ _AUTHOR_CLASS_TOKENS = ("byline", "Byline")
 _SHARE_CLASS_TOKENS = ("share-", "sociable", "embedded", "embed")
 _TAGS_CLASS_TOKENS = ("tag-list",)
 _CONSENT_CLASS_TOKENS = ("consent", "modal-content", "permission")
-_RELATED_CLASS_TOKENS = ("elated", "next-", "-stories", "most-popular")
+_RELATED_CLASS_TOKENS = ("elated", "next-", "-stories", "most-popular", "more-on")
 _UI_META_CLASS_TOKENS = (
     "meta",
     "rating",
