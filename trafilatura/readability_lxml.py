@@ -60,7 +60,8 @@ REGEXES = {
         r"button|combx|comment|com-|contact|figure|foot|footer|footnote|form|input|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget",
         re.IGNORECASE,
     ),
-    "divToPElementsRe": re.compile(r"<(?:a|blockquote|dl|div|img|ol|p|pre|table|ul)", re.IGNORECASE),
+    # Anchors are inline; their block descendants still prevent paragraph conversion.
+    "divToPElementsRe": re.compile(r"<(?:address|article|aside|audio|blockquote|dl|div|img|ol|p|pre|table|ul)", re.IGNORECASE),
     "videoRe": re.compile(r"https?:\/\/(?:www\.)?(?:youtube|vimeo)\.com", re.IGNORECASE),
 }
 
@@ -273,7 +274,11 @@ class Document:
             # buried within an <a> for example
             # hurts precision:
             # if not any(e.tag in DIV_TO_P_ELEMS for e in list(elem)):
-            if not REGEXES["divToPElementsRe"].search("".join(map(_tostring, list(elem)))):
+            # Keep link wrappers' scoring unchanged; only join anchors into paragraphs
+            # when the div has loose text that would otherwise be split around them.
+            if not REGEXES["divToPElementsRe"].search("".join(map(_tostring, list(elem)))) and (
+                elem.find(".//a") is None or elem.xpath("text()[normalize-space()]")
+            ):
                 elem.tag = "p"
 
         for elem in self.doc.findall(".//div"):

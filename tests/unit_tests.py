@@ -36,6 +36,7 @@ from trafilatura.main_extractor import (
 )
 from trafilatura.meta import reset_caches
 from trafilatura.metadata import Document
+from trafilatura.readability_lxml import Document as ReadabilityDocument
 from trafilatura.readability_lxml import is_probably_readerable
 from trafilatura.settings import TAG_CATALOG, use_config
 from trafilatura.utils import (
@@ -1370,6 +1371,68 @@ def test_htmlprocessing(options):
     hi = handle_paragraphs(para, set(TAG_CATALOG) | {"lb"}, fmt_opts).find("hi")
     assert hi is not None
     assert " tail" in hi.text
+
+
+@pytest.mark.parametrize(
+    "link",
+    ['<a href="https://example.org/plots">three plots</a>', '<a href="https://example.org/plots"><b>three plots</b></a>'],
+)
+def test_readability_div_keeps_inline_link(link):
+    "An inline anchor must not split a div's sentence into separate paragraphs (#585)."
+    sentence = f"The garden team measured {link} before planting the seeds."
+    tree = html.fromstring(f"<html><body><div>{sentence}</div></body></html>")
+    ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
+    paragraph = tree.find(".//body/p")
+    assert paragraph is not None
+    assert paragraph.text_content() == "The garden team measured three plots before planting the seeds."
+    assert paragraph.find("a").get("href") == "https://example.org/plots"
+    assert paragraph.find("p") is None
+
+
+@pytest.mark.parametrize("block", ["div", "p", "blockquote", "article", "aside", "address"])
+def test_readability_div_keeps_linked_blocks(block):
+    "A link wrapping a block still prevents conversion of its containing div to a paragraph."
+    tree = html.fromstring(
+        f'<html><body><div><a href="https://example.org/plots"><{block}>Plot measurements</{block}></a></div></body></html>'
+    )
+    ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
+    assert tree.find(".//body/div/a") is not None
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        '<a href="https://example.org/plots">Plot measurements</a>',
+        '<span>Garden plan</span><span><a href="https://example.org/plots">Plot measurements</a></span>',
+    ],
+)
+def test_readability_div_keeps_link_wrappers(content):
+    "Containers without loose text retain their existing role in Readability's scoring."
+    tree = html.fromstring(f"<html><body><div>{content}</div></body></html>")
+    ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
+    assert tree.find(".//body/div") is not None
+
+
+def test_extract_div_keeps_inline_link():
+    "Exercise the Readability fallback with default size thresholds and self-created HTML."
+    following = (
+        " before planting the seeds. They recorded the width of each plot, checked the soil, "
+        "and marked every corner with a wooden stake. The measurements will help the volunteers "
+        "leave enough space between rows when they return to plant beans next week."
+    )
+    document = (
+        '<html><body><div>The garden team measured <a href="https://example.org/plots">three plots</a>'
+        f"{following}</div></body></html>"
+    )
+    assert extract(document, output_format="markdown", include_links=True, config=use_config()) == (
+        f"The garden team measured [three plots](https://example.org/plots){following}"
+    )
+    result = etree.fromstring(extract(document, output_format="xml", include_links=True, config=use_config()))
+    link = result.find(".//ref")
+    assert link is not None
+    assert link.getparent().tag == "p"
+    assert link.getparent().text == "The garden team measured "
+    assert link.tail == following
 
 
 def test_extraction_options():
