@@ -283,6 +283,7 @@ def cli_discovery(args: argparse.Namespace) -> int:
         target_lang=args.target_language,
         external=options.config.getboolean("DEFAULT", "EXTERNAL_URLS"),
         sleep_time=options.config.getfloat("DEFAULT", "SLEEP_TIME"),
+        config=options.config,
     )
     lock = RLock()
 
@@ -349,18 +350,23 @@ def cli_crawler(
         if spider.URL_STORE.urldict[hostname].tuples:
             startpage = spider.URL_STORE.get_url(hostname, as_visited=False)
             if startpage:
-                param_dict[hostname] = spider.init_crawl(startpage, lang=args.target_language)
-            # update info
-            # TODO: register changes?
-            # if base_url != hostname:
-            # ...
+                params = spider.init_crawl(startpage, lang=args.target_language, config=options.config)
+                # key by the crawl base: it may differ from hostname after a https upgrade,
+                # but the store may still hold URLs under the original base
+                param_dict[params.base] = params
+                param_dict.setdefault(get_base_url(startpage), params)
 
     # iterate until the threshold is reached
     while not spider.URL_STORE.done:
         bufferlist, spider.URL_STORE = load_download_buffer(spider.URL_STORE, sleep_time)
         for url, result in buffered_response_downloads(bufferlist, args.parallel, options=options):
             if result and isinstance(result, Response):
-                spider.process_response(result, param_dict[get_base_url(url)])
+                # not necessarily registered, e.g. after a cross-host homepage redirect
+                crawl_params = param_dict.get(get_base_url(url))
+                if crawl_params is not None:
+                    spider.process_response(result, crawl_params)
+                else:
+                    LOGGER.warning("no crawl parameters for %s", url)
         # early exit if maximum count is reached
         if any(c >= n for c in spider.URL_STORE.get_all_counts()):
             break

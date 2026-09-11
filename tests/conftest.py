@@ -46,6 +46,23 @@ CANNED_RESPONSES = {
         b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Blog feed</title>'
         b'<entry><link href="https://example.com/blog/post-1"/></entry></feed>'
     ),
+    # two candidate feeds
+    "https://multi.example.com/": (
+        b"<html><head><title>Multi</title>"
+        b'<link rel="alternate" type="application/rss+xml" href="https://multi.example.com/feed1.xml"/>'
+        b'<link rel="alternate" type="application/atom+xml" href="https://multi.example.com/feed2.xml"/>'
+        b"</head><body><p>posts</p></body></html>"
+    ),
+    "https://multi.example.com/feed1.xml": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>First feed</title>'
+        b'<entry><link href="https://multi.example.com/post-1"/></entry></feed>'
+    ),
+    "https://multi.example.com/feed2.xml": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Second feed</title>'
+        b'<entry><link href="https://multi.example.com/post-2"/></entry></feed>'
+    ),
     # a plain page with no feeds at all (exercises the "no usable feed links" path)
     "https://example.com/plain": b"<html><head><title>Plain</title></head><body><p>nothing</p></body></html>",
     # Google News fallback feed
@@ -62,7 +79,7 @@ CANNED_RESPONSES = {
 }
 
 
-def _fake_send(url, no_ssl, with_headers, config):
+def _fake_send(url, no_ssl, config):
     canned = CANNED_RESPONSES.get(url)
     if canned is None:
         return None

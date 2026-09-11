@@ -5,6 +5,7 @@ Examining feeds and extracting links for further processing.
 import json
 import logging
 import re
+from configparser import ConfigParser
 from itertools import islice
 from time import sleep
 
@@ -19,7 +20,7 @@ from courlan import (
 
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
-from .settings import MAX_LINKS
+from .settings import DEFAULT_CONFIG, MAX_FEEDS_CHECKED, MAX_LINKS
 from .utils import load_html
 
 LOGGER = logging.getLogger(__name__)
@@ -124,7 +125,7 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
                 # fallback: https://www.jsonfeed.org/version/1.1/
                 candidates = [item.get("url") or item.get("id") for item in json.loads(feed_string).get("items", [])]
                 return [c for c in candidates if c is not None]
-            except json.decoder.JSONDecodeError:
+            except (json.decoder.JSONDecodeError, RecursionError):
                 LOGGER.debug("JSON decoding error: %s", params.domain)
         else:
             LOGGER.debug("Possibly invalid feed: %s", params.domain)
@@ -177,7 +178,8 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     feed_urls = [
         link.get("href", "")
         for link in tree.xpath('//link[@rel="alternate"][@href]')
-        if link.get("type") in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
+        # normalize the type attribute (e.g. "application/rss+xml; charset=UTF-8")
+        if link.get("type", "").split(";")[0].strip().lower() in FEED_TYPES or LINK_VALIDATION_RE.search(link.get("href", ""))
     ]
 
     # backup
@@ -199,10 +201,13 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     return output_urls
 
 
-def probe_gnews(params: FeedParameters, urlfilter: str | None) -> list[str]:
+def probe_gnews(params: FeedParameters, urlfilter: str | None, config: ConfigParser = DEFAULT_CONFIG) -> list[str]:
     "Alternative way to gather feed links: Google News."
     if params.lang:
-        downloaded = fetch_url(f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100")
+        downloaded = fetch_url(
+            f"https://news.google.com/rss/search?q=site:{params.domain}&hl={params.lang}&scoring=n&num=100",
+            config=config,
+        )
         if downloaded:
             feed_links = extract_links(downloaded, params)
             feed_links = filter_urls(feed_links, urlfilter)
@@ -216,6 +221,7 @@ def find_feed_urls(
     target_lang: str | None = None,
     external: bool = False,
     sleep_time: float = 2.0,
+    config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
     """Try to find feed URLs.
 
@@ -227,6 +233,7 @@ def find_feed_urls(
         external: Similar hosts only or external URLs
                   (boolean, defaults to False).
         sleep_time: Wait between requests on the same website.
+        config: Pass configuration values for download control.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -239,15 +246,17 @@ def find_feed_urls(
 
     params = FeedParameters(baseurl, domain, url, external, target_lang)
     urlfilter = None
-    downloaded = fetch_url(url)
+    downloaded = fetch_url(url, config=config)
 
     if downloaded is not None:
         # assume it's a feed
         feed_links = extract_links(downloaded, params)
         if not feed_links:
             # assume it's a web page
-            for feed in determine_feed(downloaded, params):
-                feed_string = fetch_url(feed)
+            for i, feed in enumerate(determine_feed(downloaded, params)[:MAX_FEEDS_CHECKED]):
+                if i:
+                    sleep(sleep_time)
+                feed_string = fetch_url(feed, config=config)
                 if feed_string:
                     feed_links.extend(extract_links(feed_string, params))
             # filter triggered, prepare it
@@ -263,13 +272,19 @@ def find_feed_urls(
         LOGGER.error("Could not download web page: %s", url)
         if url.strip("/") != baseurl:
             sleep(sleep_time)
-            return try_homepage(baseurl, target_lang, external, sleep_time)
+            return try_homepage(baseurl, target_lang, external, sleep_time, config)
 
-    return probe_gnews(params, urlfilter)
+    return probe_gnews(params, urlfilter, config)
 
 
-def try_homepage(baseurl: str, target_lang: str | None, external: bool, sleep_time: float) -> list[str]:
+def try_homepage(
+    baseurl: str,
+    target_lang: str | None,
+    external: bool,
+    sleep_time: float,
+    config: ConfigParser = DEFAULT_CONFIG,
+) -> list[str]:
     """Shift into reverse and try the homepage instead of the particular feed
     page that was given as input."""
     LOGGER.debug("Probing homepage for feeds instead: %s", baseurl)
-    return find_feed_urls(baseurl, target_lang, external, sleep_time)
+    return find_feed_urls(baseurl, target_lang, external, sleep_time, config)

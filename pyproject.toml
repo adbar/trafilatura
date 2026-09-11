@@ -106,7 +106,8 @@ all = [
     "py3langid == 0.3.0",
     "pycurl == 7.47.0",
     "urllib3[socks] == 2.7.0",
-    "zstandard == 0.25.0",
+    # stdlib compression.zstd backport, same detection as urllib3; self-retires with 3.14
+    "backports.zstd == 1.7.0; python_version < '3.14'",
 ]
 # Benchmark deps for tests/evaluate.py, which skips the competitors it cannot import.
 eval = [
@@ -204,7 +205,7 @@ strict = true
 
 # third-party packages without type stubs
 [[tool.mypy.overrides]]
-module = ["brotli", "py3langid", "cchardet", "justext.*", "zstandard"]
+module = ["backports.*", "brotli", "py3langid", "cchardet", "justext.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]

@@ -3,9 +3,11 @@
 All functions needed to steer and execute downloads of web documents.
 """
 
+import ipaddress
 import logging
 import os
 import random
+import socket
 from collections.abc import Callable, Generator
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from configparser import ConfigParser
@@ -13,9 +15,7 @@ from functools import partial
 from importlib.metadata import version
 from io import BytesIO
 from time import sleep
-from typing import (
-    Any,
-)
+from typing import Any
 from urllib.parse import urljoin
 
 import certifi
@@ -25,9 +25,9 @@ from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
 from .utils import (
-    HAS_ZSTD,
     URL_BLACKLIST_REGEX,
     Response,
+    _capped,
     is_acceptable_length,
     make_chunks,
 )
@@ -59,15 +59,14 @@ LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = None
 NO_CERT_POOL = None
-RETRY_STRATEGY = None
 
 
-def create_pool(**args: Any) -> urllib3.PoolManager | Any:
+def create_pool(ssrf_protection: bool = True, **args: Any) -> urllib3.PoolManager | Any:
     "Configure urllib3 download pool according to user-defined settings."
-    manager_class = SOCKSProxyManager if PROXY_URL else urllib3.PoolManager
-    manager_args = {"proxy_url": PROXY_URL} if PROXY_URL else {}
-    manager_args["num_pools"] = 50  # type: ignore[assignment]
-    return manager_class(**manager_args, **args)  # type: ignore[arg-type]
+    if PROXY_URL:
+        return SOCKSProxyManager(proxy_url=PROXY_URL, num_pools=50, **args)
+    manager_class = _SafePoolManager if ssrf_protection else urllib3.PoolManager
+    return manager_class(num_pools=50, **args)
 
 
 def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
@@ -76,89 +75,121 @@ def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
 
 
+# advertises exactly the encodings urllib3 can decode
 DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
-if HAS_ZSTD and "zstd" not in DEFAULT_HEADERS["accept-encoding"]:
-    DEFAULT_HEADERS["accept-encoding"] += ",zstd"
 USER_AGENT = "trafilatura/" + version("trafilatura") + " (+https://github.com/adbar/trafilatura)"
 DEFAULT_HEADERS["User-Agent"] = USER_AGENT
 
-FORCE_STATUS = [
-    429,
-    499,
-    500,
-    502,
-    503,
-    504,
-    509,
-    520,
-    521,
-    522,
-    523,
-    524,
-    525,
-    526,
-    527,
-    530,
-    598,
-]
+# includes unofficial codes: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
+FORCE_STATUS = frozenset({429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598})
 
 CURL_SSL_ERRORS = {35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91}
 
+# cap in seconds for backoff and Retry-After sleeps
+MAX_BACKOFF = 30
 
-# not cacheable: ConfigParser is unhashable (MutableMapping sets __hash__ = None),
-# so @lru_cache(maxsize=2) raises TypeError on call
-def _parse_config(config: ConfigParser) -> tuple[list[str] | None, str | None]:
-    "Read and extract HTTP header strings from the configuration file."
-    # load a series of user-agents
-    myagents = config.get("DEFAULT", "USER_AGENTS", fallback="").strip()
-    agent_list = myagents.splitlines() if myagents else None
+
+class _SSLRetryError(Exception):
+    "Internal signal: the secure transfer failed for SSL reasons, retry without verification."
+
+
+def _normalize_ip(addr: str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:
+    "Parse an IP string, mapping IPv4-mapped IPv6 to plain IPv4."
+    ip = ipaddress.ip_address(addr)
+    return getattr(ip, "ipv4_mapped", None) or ip
+
+
+def _ssrf_active(config: ConfigParser) -> bool:
+    "SSRF filtering applies only to direct connections: with a proxy, the vetted address would be the proxy's."
+    return not PROXY_URL and config.getboolean("DEFAULT", "SSRF_PROTECTION", fallback=True)
+
+
+def _vet_peer(host: str) -> None:
+    "Raise on a non-global peer address."
+    if not _normalize_ip(host).is_global:
+        raise OSError(f"SSRF protection: connection to non-public address blocked: {host}")
+
+
+def _ssrf_opensocket(_purpose: int, address: Any) -> socket.socket:
+    "pycurl OPENSOCKETFUNCTION that rejects non-global resolved IPs."
+    _vet_peer(address.addr[0])
+    return socket.socket(address.family, address.socktype, address.protocol)
+
+
+class _SafeHTTPConnection(urllib3.connection.HTTPConnection):
+    "Connection rejecting non-global peers, vetted post-connect so DNS rebinding cannot bypass it."
+
+    def _new_conn(self) -> socket.socket:
+        sock = super()._new_conn()
+        try:
+            _vet_peer(sock.getpeername()[0].split("%", 1)[0])  # strip IPv6 zone id
+        except OSError as err:
+            sock.close()
+            # a connect error: aborts immediately under Retry(connect=0)
+            raise urllib3.exceptions.NewConnectionError(self, str(err)) from err
+        return sock
+
+
+class _SafeHTTPSConnection(_SafeHTTPConnection, urllib3.connection.HTTPSConnection):
+    pass
+
+
+class _SafeHTTPConnectionPool(urllib3.HTTPConnectionPool):
+    ConnectionCls = _SafeHTTPConnection
+
+
+class _SafeHTTPSConnectionPool(urllib3.HTTPSConnectionPool):
+    ConnectionCls = _SafeHTTPSConnection
+
+
+class _SafePoolManager(urllib3.PoolManager):
+    "PoolManager whose connections reject non-global IP addresses on every hop."
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.pool_classes_by_scheme = {"http": _SafeHTTPConnectionPool, "https": _SafeHTTPSConnectionPool}
+
+
+def _determine_headers(config: ConfigParser) -> dict[str, str]:
+    "Overlay user-agent and cookie from the config file on the default headers."
+    headers = dict(DEFAULT_HEADERS)
+    # rotate over a series of user-agents
+    if myagents := config.get("DEFAULT", "USER_AGENTS", fallback="").strip():
+        headers["User-Agent"] = random.choice(myagents.splitlines())
     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
     # todo: support for several cookies?
-    mycookie = config.get("DEFAULT", "COOKIE") or None
-    return agent_list, mycookie
-
-
-def _determine_headers(config: ConfigParser, headers: dict[str, str] | None = None) -> dict[str, str]:
-    "Internal function to decide on user-agent string."
-    if config != DEFAULT_CONFIG:
-        myagents, mycookie = _parse_config(config)
-        headers = {}
-        if myagents:
-            headers["User-Agent"] = random.choice(myagents)
-        if mycookie:
-            headers["Cookie"] = mycookie
-    return headers or DEFAULT_HEADERS
+    if mycookie := config.get("DEFAULT", "COOKIE", fallback=None):
+        headers["Cookie"] = mycookie
+    return headers
 
 
 def _get_retry_strategy(config: ConfigParser) -> urllib3.util.Retry:
     "Define a retry strategy according to the config file."
-    global RETRY_STRATEGY
-    if not RETRY_STRATEGY:
-        # or RETRY_STRATEGY.redirect != config.getint("DEFAULT", "MAX_REDIRECTS")
-        RETRY_STRATEGY = urllib3.util.Retry(
-            total=config.getint("DEFAULT", "MAX_REDIRECTS"),
-            redirect=config.getint("DEFAULT", "MAX_REDIRECTS"),  # raise_on_redirect=False,
-            connect=0,
-            backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
-            status_forcelist=FORCE_STATUS,
-            # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
-        )
-    return RETRY_STRATEGY
+    max_redirects = config.getint("DEFAULT", "MAX_REDIRECTS")
+    return urllib3.util.Retry(
+        total=max_redirects,
+        redirect=max_redirects,  # raise_on_redirect=False,
+        connect=0,
+        backoff_factor=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2,
+        backoff_max=MAX_BACKOFF,
+        retry_after_max=MAX_BACKOFF,
+        status_forcelist=FORCE_STATUS,
+    )
 
 
 def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolManager | Any:
     "Create a urllib3 pool manager according to options in the config file and HTTPS setting."
     global HTTP_POOL, NO_CERT_POOL
+    ssrf_protection = _ssrf_active(config)
     pool = NO_CERT_POOL if no_ssl else HTTP_POOL
 
-    if not pool:
-        # define settings
+    # never latch the SSRF setting
+    if pool is None or isinstance(pool, _SafePoolManager) != ssrf_protection:
         pool = create_pool(
-            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
+            ssrf_protection=ssrf_protection,
             ca_certs=None if no_ssl else certifi.where(),
             cert_reqs="CERT_NONE" if no_ssl else "CERT_REQUIRED",
         )
-        # update variables
         if no_ssl:
             NO_CERT_POOL = pool
         else:
@@ -167,7 +198,7 @@ def _initiate_pool(config: ConfigParser, no_ssl: bool = False) -> urllib3.PoolMa
     return pool
 
 
-def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
+def _send_urllib_request(url: str, no_ssl: bool, config: ConfigParser) -> Response | None:
     "Internal function to robustly send a request (SSL or not) and return its result."
     try:
         pool_manager = _initiate_pool(config, no_ssl=no_ssl)
@@ -178,29 +209,28 @@ def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Con
             url,
             headers=_determine_headers(config),
             retries=_get_retry_strategy(config),
+            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
             preload_content=False,
         )
-        data = bytearray()
-        max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
         try:
-            for chunk in response.stream(2**17):
-                data.extend(chunk)
-                if len(data) > max_file_size:
-                    raise ValueError("MAX_FILE_SIZE exceeded")
+            # stream() yields decoded chunks: the cap applies to decompressed bytes
+            data = _capped(response.stream(2**17), config.getint("DEFAULT", "MAX_FILE_SIZE"))
         finally:
             response.release_conn()
 
         # necessary for standardization
         # geturl() returns the raw Location header after a redirect and the request
         # URI otherwise, both of which can be relative
-        resp = Response(bytes(data), response.status, urljoin(url, response.geturl() or url))
-        if with_headers:
-            resp.store_headers(response.headers)
+        resp = Response(data, response.status, urljoin(url, response.geturl() or url))
+        resp.store_headers(response.headers)
         return resp
 
-    except urllib3.exceptions.SSLError:
-        LOGGER.warning("retrying after SSLError: %s", url)
-        return _send_urllib_request(url, True, with_headers, config)
+    except (urllib3.exceptions.SSLError, urllib3.exceptions.MaxRetryError) as err:
+        # handshake failures surface as MaxRetryError with an SSLError reason
+        cause = err.reason if isinstance(err, urllib3.exceptions.MaxRetryError) else err
+        if not no_ssl and isinstance(cause, urllib3.exceptions.SSLError):
+            raise _SSLRetryError(str(err)) from err
+        LOGGER.error("download error: %s %s", url, err)
     except Exception as err:
         LOGGER.error("download error: %s %s", url, err)  # sys.exc_info()[0]
 
@@ -209,14 +239,10 @@ def _send_urllib_request(url: str, no_ssl: bool, with_headers: bool, config: Con
 
 def _is_suitable_response(url: str, response: Response, options: Extractor) -> bool:
     "Check if the response conforms to formal criteria."
-    lentest = len(response.html or response.data or "")
     if response.status != 200:
         LOGGER.error("not a 200 response: %s for URL %s", response.status, url)
         return False
-    # raise error instead?
-    if not is_acceptable_length(lentest, options):
-        return False
-    return True
+    return is_acceptable_length(len(response.html or response.data or ""), options)
 
 
 def fetch_url(
@@ -239,12 +265,10 @@ def fetch_url(
     """
     config = options.config if options else config
     response = fetch_response(url, decode=True, no_ssl=no_ssl, config=config)
-    if response and response.data:
-        if not options:
-            options = Extractor(config=config)
-        if _is_suitable_response(url, response, options):
-            return response.html
-    return None
+    if not response or not response.data:
+        return None
+    options = options or Extractor(config=config)
+    return response.html if _is_suitable_response(url, response, options) else None
 
 
 def fetch_response(
@@ -252,7 +276,7 @@ def fetch_response(
     *,
     decode: bool = False,
     no_ssl: bool = False,
-    with_headers: bool = False,
+    with_headers: bool = False,  # noqa: ARG001  # deprecated, kept for API compatibility
     config: ConfigParser = DEFAULT_CONFIG,
 ) -> Response | None:
     """Downloads a web page and returns a full response object.
@@ -261,54 +285,61 @@ def fetch_response(
         url: URL of the page to fetch.
         decode: Use html attribute to decode the data (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
-        with_headers: Keep track of the response headers.
+        with_headers: Deprecated and ignored, headers are always stored.
         config: Pass configuration values for output control.
 
     Returns:
         Response object or None in case of failed downloads and invalid results.
 
     """
-    dl_function = _send_urllib_request if not HAS_PYCURL else _send_pycurl_request
+    dl_function = _send_pycurl_request if HAS_PYCURL else _send_urllib_request
     LOGGER.debug("sending request: %s", url)
-    response = dl_function(url, no_ssl, with_headers, config)  # Response
-    if not response:  # None or ""
+    try:
+        response = dl_function(url, no_ssl, config)
+    except _SSLRetryError as err:
+        # senders raise only when verification was on, so this cannot recurse
+        LOGGER.warning("retrying after SSL error: %s %s", url, err)
+        response = dl_function(url, True, config)
+    if not response:  # None or data missing
         LOGGER.debug("request failed: %s", url)
         return None
-    response.decode_data(decode)
+    response.decode_data(decode, config.getint("DEFAULT", "MAX_FILE_SIZE"))
     return response
 
 
 def _pycurl_is_live_page(url: str) -> bool:
     "Send a basic HTTP HEAD request with pycurl."
-    page_exists = False
     # Initialize pycurl object
     curl = pycurl.Curl()
     # Set the URL and HTTP method (HEAD)
     curl.setopt(pycurl.URL, url.encode("utf-8"))
     curl.setopt(pycurl.CONNECTTIMEOUT, 10)
+    curl.setopt(pycurl.TIMEOUT, 30)
+    curl.setopt(pycurl.USERAGENT, USER_AGENT)
+    # follow redirects to test the final page, like the urllib3 fallback
+    curl.setopt(pycurl.FOLLOWLOCATION, 1)
+    curl.setopt(pycurl.MAXREDIRS, 5)
     # no SSL verification
     curl.setopt(pycurl.SSL_VERIFYPEER, 0)
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(pycurl.NOBODY, True)
     _apply_curl_proxy(curl)
-    # Perform the request
     try:
         curl.perform()
-        # Get the response code
-        page_exists = curl.getinfo(pycurl.RESPONSE_CODE) < 400
+        # int(): getinfo is untyped
+        return int(curl.getinfo(pycurl.RESPONSE_CODE)) < 400
     except pycurl.error as err:
         LOGGER.debug("pycurl HEAD error: %s %s", url, err)
-        page_exists = False
-    # Clean up
-    curl.close()
-    return page_exists
+        return False
+    finally:
+        curl.close()
 
 
 def _urllib3_is_live_page(url: str) -> bool:
     "Use courlan redirection test (based on urllib3) to send a HEAD request."
     try:
-        _ = redirection_test(url)
+        redirection_test(url)
     except Exception as err:
         LOGGER.debug("urllib3 HEAD error: %s %s", url, err)
         return False
@@ -393,12 +424,30 @@ def buffered_response_downloads(
     return _buffered_downloads(bufferlist, download_threads, worker)
 
 
-def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: ConfigParser) -> Response | None:
+def _parse_curl_headers(raw: bytes) -> dict[str, str]:
+    "Parse accumulated header bytes, keeping only the last response of a redirect chain."
+    # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
+    # This will botch headers that are split on multiple lines...
+    headers: dict[str, str] = {}
+    for line in raw.decode("iso-8859-1", errors="replace").splitlines():
+        # a new status line marks the next response in a redirect chain
+        if line.startswith("HTTP/"):
+            headers = {}
+            continue
+        name, sep, value = line.partition(":")
+        if sep:
+            headers[name.strip()] = value.strip()
+    return headers
+
+
+def _send_pycurl_request(url: str, no_ssl: bool, config: ConfigParser) -> Response | None:
     """Experimental function using libcurl and pycurl to speed up downloads"""
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
-    # init
-    headerlist = [f"{header}: {content}" for header, content in _determine_headers(config).items()]
+    # init, let libcurl advertise and decompress the encodings it supports
+    headerlist = [
+        f"{header}: {content}" for header, content in _determine_headers(config).items() if header.lower() != "accept-encoding"
+    ]
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
@@ -407,65 +456,66 @@ def _send_pycurl_request(url: str, no_ssl: bool, with_headers: bool, config: Con
     # share data
     curl.setopt(pycurl.SHARE, CURL_SHARE)
     curl.setopt(pycurl.HTTPHEADER, headerlist)
-    # curl.setopt(pycurl.USERAGENT, '')
+    curl.setopt(pycurl.ACCEPT_ENCODING, "")
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
     curl.setopt(pycurl.MAXREDIRS, config.getint("DEFAULT", "MAX_REDIRECTS"))
+    curl.setopt(pycurl.REDIR_PROTOCOLS, pycurl.PROTO_HTTP | pycurl.PROTO_HTTPS)
     curl.setopt(pycurl.CONNECTTIMEOUT, config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"))
     curl.setopt(pycurl.TIMEOUT, config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"))
-    curl.setopt(pycurl.MAXFILESIZE, config.getint("DEFAULT", "MAX_FILE_SIZE"))
+    # pre-transfer abort on a known Content-Length; the write callback is the actual enforcement
+    max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
+    curl.setopt(pycurl.MAXFILESIZE, max_file_size)
     curl.setopt(pycurl.NOSIGNAL, 1)
 
-    if no_ssl is True:
+    # short write aborts the transfer once the decoded body exceeds the cap
+    bodybytes = bytearray()
+
+    def _capped_write(chunk: bytes) -> int | None:
+        bodybytes.extend(chunk)
+        return 0 if len(bodybytes) > max_file_size else None
+
+    curl.setopt(pycurl.WRITEFUNCTION, _capped_write)
+
+    if no_ssl:
         curl.setopt(pycurl.SSL_VERIFYPEER, 0)
         curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     else:
         curl.setopt(pycurl.CAINFO, certifi.where())
 
-    if with_headers:
-        headerbytes = BytesIO()
-        curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
+    headerbytes = BytesIO()
+    curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
 
     _apply_curl_proxy(curl)
 
-    # TCP_FASTOPEN
-    # curl.setopt(pycurl.FAILONERROR, 1)
-    # curl.setopt(pycurl.ACCEPT_ENCODING, '')
+    if _ssrf_active(config):
+        curl.setopt(pycurl.OPENSOCKETFUNCTION, _ssrf_opensocket)
 
-    # send request
+    # send request, retrying on transient statuses like the urllib3 retry strategy
+    retries = config.getint("DEFAULT", "MAX_REDIRECTS")
+    backoff_factor = config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2
+    status = 0  # the loop is empty if MAX_REDIRECTS < 0
     try:
-        bufferbytes = curl.perform_rb()
+        for attempt in range(retries + 1):
+            if attempt:
+                sleep(min(MAX_BACKOFF, backoff_factor * 2 ** (attempt - 1)))
+                headerbytes.seek(0)
+                headerbytes.truncate()
+                bodybytes.clear()
+            curl.perform()
+            status = curl.getinfo(pycurl.RESPONSE_CODE)
+            if status not in FORCE_STATUS:
+                break
+            LOGGER.debug("retrying after status %s: %s", status, url)
+        resp = Response(bytes(bodybytes), status, curl.getinfo(pycurl.EFFECTIVE_URL))
     except pycurl.error as err:
-        LOGGER.error("pycurl error: %s %s", url, err)
-        curl.close()
-        # retry in case of SSL-related error
-        # see https://curl.se/libcurl/c/libcurl-errors.html
-        # errmsg = curl.errstr_raw()
+        # SSL-related error class, see https://curl.se/libcurl/c/libcurl-errors.html
         # additional error codes: 80, 90, 96, 98
-        if no_ssl is False and err.args[0] in CURL_SSL_ERRORS:
-            LOGGER.debug("retrying after SSL error: %s %s", url, err)
-            return _send_pycurl_request(url, True, with_headers, config)
-        # traceback.print_exc(file=sys.stderr)
-        # sys.stderr.flush()
+        if not no_ssl and err.args[0] in CURL_SSL_ERRORS:
+            raise _SSLRetryError(str(err)) from err
+        LOGGER.error("pycurl error: %s %s", url, err)
         return None
+    finally:
+        curl.close()
 
-    # additional info
-    # ip_info = curl.getinfo(curl.PRIMARY_IP)
-
-    resp = Response(bufferbytes, curl.getinfo(pycurl.RESPONSE_CODE), curl.getinfo(pycurl.EFFECTIVE_URL))
-    curl.close()
-
-    if with_headers:
-        respheaders = {}
-        # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
-        for line in headerbytes.getvalue().decode("iso-8859-1", errors="replace").splitlines():
-            # re.split(r'\r?\n') ?
-            # This will botch headers that are split on multiple lines...
-            if ":" not in line:
-                continue
-            # Break the header line into header name and value.
-            name, value = line.split(":", 1)
-            # Now we can actually record the header name and value.
-            respheaders[name.strip()] = value.strip()  # name.strip().lower() ?
-        resp.store_headers(respheaders)
-
+    resp.store_headers(_parse_curl_headers(headerbytes.getvalue()))
     return resp

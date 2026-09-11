@@ -28,6 +28,7 @@ The default file included in the package is `settings.cfg <https://github.com/ad
    * ``DOWNLOAD_TIMEOUT = 30`` the time (in seconds) before requests are dropped
    * ``SLEEP_TIME = 5`` time between requests (higher is better to avoid detection)
    * ``USER_AGENTS`` and ``COOKIE`` are empty by default
+   * ``SSRF_PROTECTION = on`` block requests to non-public IP addresses; set to ``off`` for intranet use cases (also inactive when a proxy is configured)
 - Input
    * ``MAX_FILE_SIZE = 20000000`` maximum acceptable size of input (in bytes)
    * ``MIN_FILE_SIZE = 10`` minimum acceptable size of input (in bytes)

@@ -5,6 +5,7 @@ Deriving link info from sitemaps.
 import logging
 import re
 from collections.abc import Callable
+from configparser import ConfigParser
 from itertools import islice
 from re import Pattern
 from time import sleep
@@ -20,7 +21,7 @@ from courlan import (
 
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
-from .settings import MAX_LINKS, MAX_SITEMAPS_SEEN
+from .settings import DEFAULT_CONFIG, MAX_LINKS, MAX_SITEMAPS_SEEN
 
 LOGGER = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ class SitemapObject:
 
     __slots__ = [
         "base_url",
+        "config",
         "content",
         "current_url",
         "domain",
@@ -68,8 +70,10 @@ class SitemapObject:
         sitemapsurls: list[str],
         target_lang: str | None = None,
         external: bool = False,
+        config: ConfigParser = DEFAULT_CONFIG,
     ) -> None:
         self.base_url: str = base_url
+        self.config: ConfigParser = config
         self.content: str = ""
         self.domain: str = domain
         self.external: bool = external
@@ -82,7 +86,7 @@ class SitemapObject:
     def fetch(self) -> None:
         "Fetch a sitemap over the network."
         LOGGER.debug("fetching sitemap: %s", self.current_url)
-        self.content = fetch_url(self.current_url) or ""
+        self.content = fetch_url(self.current_url, config=self.config) or ""
         self.seen.add(self.current_url)
 
     def handle_link(self, link: str) -> None:
@@ -92,9 +96,11 @@ class SitemapObject:
             return
         # fix, check, clean and normalize
         link = fix_relative_urls(self.base_url, link)
+        # filter before cleaning: slash-stripping can hide language markers
+        if not lang_filter(link, self.target_lang):
+            return
         link = clean_url(link, self.target_lang) or ""
-
-        if not link or not lang_filter(link, self.target_lang):
+        if not link:
             return
 
         newdomain = extract_domain(link, fast=True)
@@ -129,7 +135,7 @@ class SitemapObject:
         if "hreflang=" not in self.content:
             return
 
-        lang_regex = re.compile(rf"hreflang=[\"']({self.target_lang}.*?|x-default)[\"']", re.DOTALL)
+        lang_regex = re.compile(rf"hreflang=[\"']({re.escape(self.target_lang or '')}.*?|x-default)[\"']", re.DOTALL)
 
         def handle_lang_link(attrs: str) -> None:
             "Examine language code attributes."
@@ -156,8 +162,10 @@ class SitemapObject:
             return
         # process XML sitemap
         if self.target_lang is not None:
+            # only skip the generic extraction if hreflang links were found here
+            found_before = len(self.sitemap_urls) + len(self.urls)
             self.extract_sitemap_langlinks()
-            if self.sitemap_urls or self.urls:
+            if len(self.sitemap_urls) + len(self.urls) > found_before:
                 return
         self.extract_sitemap_links()
 
@@ -168,6 +176,7 @@ def sitemap_search(
     external: bool = False,
     sleep_time: float = 2.0,
     max_sitemaps: int = MAX_SITEMAPS_SEEN,
+    config: ConfigParser = DEFAULT_CONFIG,
 ) -> list[str]:
     """Look for sitemaps for the given URL and gather links.
 
@@ -180,6 +189,7 @@ def sitemap_search(
                   (boolean, defaults to False).
         sleep_time: Wait between requests on the same website.
         max_sitemaps: Maximum number of sitemaps to process.
+        config: Pass configuration values for download control.
 
     Returns:
         The extracted links as a list (sorted list of unique links).
@@ -204,11 +214,12 @@ def sitemap_search(
         if len(url) > len(baseurl) + 2:
             urlfilter = url
 
-    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external)
+    sitemap = SitemapObject(baseurl, domainname, sitemapurls, target_lang, external, config)
 
     # try sitemaps in robots.txt file, additional URLs just in case
     if not sitemap.sitemap_urls:
-        sitemap.sitemap_urls = find_robots_sitemaps(baseurl) or [f"{baseurl}/{g}" for g in GUESSES]
+        # reversed: the queue is consumed from the end, so the most likely guess is tried first
+        sitemap.sitemap_urls = find_robots_sitemaps(baseurl, config) or [f"{baseurl}/{g}" for g in reversed(GUESSES)]
 
     # iterate through nested sitemaps and results
     while sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
@@ -218,7 +229,7 @@ def sitemap_search(
         # sanity check: keep track of visited sitemaps and exclude them
         sitemap.sitemap_urls = [s for s in sitemap.sitemap_urls if s not in sitemap.seen]
 
-        if len(sitemap.seen) < max_sitemaps:
+        if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
     if urlfilter:
@@ -247,10 +258,10 @@ def is_plausible_sitemap(url: str, contents: str | None) -> bool:
     return True
 
 
-def find_robots_sitemaps(baseurl: str) -> list[str]:
+def find_robots_sitemaps(baseurl: str, config: ConfigParser = DEFAULT_CONFIG) -> list[str]:
     """Guess the location of the robots.txt file and try to extract
     sitemap URLs from it"""
-    robotstxt = fetch_url(baseurl + "/robots.txt")
+    robotstxt = fetch_url(baseurl + "/robots.txt", config=config)
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 

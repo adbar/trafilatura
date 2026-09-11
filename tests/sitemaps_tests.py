@@ -5,6 +5,7 @@ Unit tests for sitemaps parsing.
 import logging
 import os
 import sys
+from unittest.mock import patch
 
 import pytest
 from courlan import get_hostinfo
@@ -156,6 +157,13 @@ def test_extraction():
     assert sitemap.sitemap_urls == ["http://www.example.com/sitemap-de.xml.gz"]
     assert len(sitemap.urls) > 0
 
+    # target_lang is escaped: a regex-hostile value stays inert
+    sitemap = sitemaps.SitemapObject(baseurl, domain, [], "de)|(.")
+    sitemap.content = teststring
+    sitemap.extract_sitemap_langlinks()
+    assert not sitemap.sitemap_urls
+    assert not sitemap.urls
+
     # GZ-compressed sitemaps
     url, domain, baseurl = "https://www.sitemaps.org/sitemap.xml", "sitemaps.org", "https://www.sitemaps.org"
     filepath = os.path.join(RESOURCES_DIR, "sitemap.xml.gz")
@@ -210,6 +218,69 @@ def test_robotstxt():
     assert sitemaps.extract_robots_sitemaps("sitemap: https://example.org/sitemap.xml", baseurl) == [
         "https://example.org/sitemap.xml"
     ]
+
+
+def test_sitemap_index_with_target_lang():
+    "Regression: with target_lang, sitemaps processed while others are queued must keep their links."
+    pages = {
+        "https://example.org/robots.txt": "Sitemap: https://example.org/sitemap_index.xml\n",
+        "https://example.org/sitemap_index.xml": (
+            '<?xml version="1.0" encoding="UTF-8"?><sitemapindex>'
+            "<sitemap><loc>https://example.org/sub1.xml</loc></sitemap>"
+            "<sitemap><loc>https://example.org/sub2.xml</loc></sitemap>"
+            "</sitemapindex>"
+        ),
+        "https://example.org/sub1.xml": (
+            '<?xml version="1.0" encoding="UTF-8"?><urlset>'
+            "<url><loc>https://example.org/de/a1.html</loc></url>"
+            "<url><loc>https://example.org/de/a2.html</loc></url></urlset>"
+        ),
+        "https://example.org/sub2.xml": (
+            '<?xml version="1.0" encoding="UTF-8"?><urlset>'
+            "<url><loc>https://example.org/de/b1.html</loc></url>"
+            "<url><loc>https://example.org/de/b2.html</loc></url></urlset>"
+        ),
+    }
+    expected = [
+        "https://example.org/de/a1.html",
+        "https://example.org/de/a2.html",
+        "https://example.org/de/b1.html",
+        "https://example.org/de/b2.html",
+    ]
+    with (
+        patch.object(sitemaps, "fetch_url", lambda url, *a, **kw: pages.get(url)),
+        patch.object(sitemaps, "is_live_page", lambda u: True),
+        patch.object(sitemaps, "sleep", lambda s: None),
+    ):
+        assert sorted(sitemaps.sitemap_search("https://example.org")) == expected
+        assert sorted(sitemaps.sitemap_search("https://example.org", target_lang="de")) == expected
+
+
+def test_lang_filter_before_cleaning():
+    "Language-root URLs with trailing slashes must be filtered even if cleaning strips the slash."
+    sitemap = sitemaps.SitemapObject("https://www.sitemaps.org", "sitemaps.org", [], target_lang="de")
+    sitemap.handle_link("https://www.sitemaps.org/da/")
+    sitemap.handle_link("https://www.sitemaps.org/da/faq.html")
+    assert not sitemap.urls
+    sitemap.handle_link("https://www.sitemaps.org/de/faq.html")
+    assert sitemap.urls == ["https://www.sitemaps.org/de/faq.html"]
+
+
+def test_guess_order():
+    "Without robots.txt hints, the most common sitemap location must be tried first."
+    fetched = []
+
+    def fake_fetch(url, *a, **kw):
+        fetched.append(url)
+
+    with (
+        patch.object(sitemaps, "fetch_url", fake_fetch),
+        patch.object(sitemaps, "is_live_page", lambda u: True),
+        patch.object(sitemaps, "sleep", lambda s: None),
+    ):
+        sitemaps.sitemap_search("https://example.org")
+    assert fetched[0] == "https://example.org/robots.txt"
+    assert fetched[1] == "https://example.org/sitemap.xml"
 
 
 def test_whole():

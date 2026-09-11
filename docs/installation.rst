@@ -128,8 +128,8 @@ pycurl
     Faster downloads, useful where urllib3 fails
 urllib3[socks]
     Downloads through SOCKS proxy with urllib3
-zstandard
-    Additional compression algorithm for downloads
+backports.zstd
+    Zstandard compression algorithm for downloads (Python < 3.14 only, part of the standard library afterwards)
 
 .. seealso::
     `Quickstart <quickstart.html>`_

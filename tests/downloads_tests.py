@@ -17,12 +17,16 @@ except ImportError:
     HAS_BROTLI = False
 
 try:
-    import zstandard
+    if sys.version_info >= (3, 14):
+        from compression import zstd
+    else:
+        from backports import zstd
 
     HAS_ZSTD = True
 except ImportError:
     HAS_ZSTD = False
 
+from configparser import ConfigParser
 from time import sleep
 from unittest.mock import MagicMock, patch
 
@@ -41,7 +45,7 @@ from trafilatura.downloads import (
     _determine_headers,
     _initiate_pool,
     _is_suitable_response,
-    _parse_config,
+    _parse_curl_headers,
     _pycurl_is_live_page,
     _send_pycurl_request,
     _send_urllib_request,
@@ -52,11 +56,12 @@ from trafilatura.downloads import (
     load_download_buffer,
 )
 from trafilatura.settings import DEFAULT_CONFIG, args_to_extractor, use_config
-from trafilatura.utils import decode_file, handle_compressed_file, load_html
+from trafilatura.utils import MAX_MEMBERS, decode_file, handle_compressed_file, load_html
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-ZERO_CONFIG = DEFAULT_CONFIG
+# independent copy: must not mutate the session-wide DEFAULT_CONFIG
+ZERO_CONFIG = use_config()
 ZERO_CONFIG["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
 ZERO_CONFIG["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
 
@@ -73,12 +78,12 @@ def _reset_downloads_global_objects():
     dl.PROXY_URL = None
     dl.HTTP_POOL = None
     dl.NO_CERT_POOL = None
-    dl.RETRY_STRATEGY = None
 
 
 @pytest.fixture(autouse=True)
 def _reset_downloads_globals():
-    "Reset cached download globals (pools, retry strategy) after every test."
+    "Reset cached download globals (pools, proxy) before and after every test."
+    _reset_downloads_global_objects()
     yield
     _reset_downloads_global_objects()
 
@@ -89,7 +94,7 @@ def test_urllib_request_releases_conn_on_oversize():
     resp.stream.return_value = iter([b"x" * (2**17)] * 1000)  # exceeds MAX_FILE_SIZE → ValueError mid-stream
     pool = MagicMock(request=MagicMock(return_value=resp))
     with patch.object(dl, "_initiate_pool", return_value=pool):
-        assert _send_urllib_request("https://example.org", False, False, DEFAULT_CONFIG) is None
+        assert _send_urllib_request("https://example.org", False, DEFAULT_CONFIG) is None
     resp.release_conn.assert_called_once()
 
 
@@ -110,7 +115,7 @@ def test_urllib_request_resolves_relative_url(geturl_result, expected):
     resp.geturl.return_value = geturl_result
     pool = MagicMock(request=MagicMock(return_value=resp))
     with patch.object(dl, "_initiate_pool", return_value=pool):
-        result = _send_urllib_request("https://example.org/news/news", False, False, DEFAULT_CONFIG)
+        result = _send_urllib_request("https://example.org/news/news", False, DEFAULT_CONFIG)
     assert result.url == expected
 
 
@@ -160,7 +165,7 @@ def test_is_live_page():
 def test_fetch():
     """Test URL fetching."""
     # sanity check
-    assert _send_urllib_request("", True, False, DEFAULT_CONFIG) is None
+    assert _send_urllib_request("", True, DEFAULT_CONFIG) is None
 
     # fetch_url
     assert fetch_url("#@1234") is None
@@ -169,12 +174,12 @@ def test_fetch():
     # no SSL, no decoding
     url = "https://httpbun.com/status/200"
     for no_ssl in (True, False):
-        response = _send_urllib_request(url, no_ssl, True, DEFAULT_CONFIG)
+        response = _send_urllib_request(url, no_ssl, DEFAULT_CONFIG)
         assert b"200" in response.data
         assert b"OK" in response.data
         assert response.headers["x-powered-by"].startswith("httpbun")
     if HAS_PYCURL:
-        response1 = _send_pycurl_request(url, True, True, DEFAULT_CONFIG)
+        response1 = _send_pycurl_request(url, True, DEFAULT_CONFIG)
         assert response1.headers["x-powered-by"].startswith("httpbun")
         assert _is_suitable_response(url, response1, DEFAULT_OPTS) is True
         assert _is_suitable_response(url, response, DEFAULT_OPTS) is True
@@ -186,33 +191,88 @@ def test_fetch():
     new_config = use_config()  # get a new config instance to avoid mutating the default one
     # patch max directs: limit to 0. We won't fetch any page as a result
     new_config.set("DEFAULT", "MAX_REDIRECTS", "0")
-    _reset_downloads_global_objects()  # force Retry strategy and PoolManager to be recreated with the new config value
     res = fetch_url("https://httpbun.com/redirect/1", config=new_config)
     assert res is None
     # also test max redir implementation on pycurl if available
     if HAS_PYCURL:
-        assert _send_pycurl_request("https://httpbun.com/redirect/1", True, False, new_config) is None
+        assert _send_pycurl_request("https://httpbun.com/redirect/1", True, new_config) is None
 
     # test timeout
     new_config.set("DEFAULT", "DOWNLOAD_TIMEOUT", "1")
-    args = ("https://httpbun.com/delay/2", True, False, new_config)
+    args = ("https://httpbun.com/delay/2", True, new_config)
     assert _send_urllib_request(*args) is None
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
 
     # test MAX_FILE_SIZE
-    backup = ZERO_CONFIG.getint("DEFAULT", "MAX_FILE_SIZE")
-    ZERO_CONFIG.set("DEFAULT", "MAX_FILE_SIZE", "1")
-    args = ("https://httpbun.com/html", True, False, ZERO_CONFIG)
+    size_config = use_config()
+    size_config.set("DEFAULT", "MAX_FILE_SIZE", "1")
+    args = ("https://httpbun.com/html", True, size_config)
     assert _send_urllib_request(*args) is None
     if HAS_PYCURL:
         assert _send_pycurl_request(*args) is None
-    ZERO_CONFIG.set("DEFAULT", "MAX_FILE_SIZE", str(backup))
+
+
+def test_ssrf_protection():
+    "SSRF filter blocks loopback, private, and link-local addresses."
+    # unit: _normalize_ip
+    import ipaddress
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    from trafilatura.downloads import _normalize_ip, _vet_peer
+
+    assert _normalize_ip("127.0.0.1") == ipaddress.ip_address("127.0.0.1")
+    assert _normalize_ip("::ffff:10.0.0.1") == ipaddress.ip_address("10.0.0.1")
+    assert _normalize_ip("::1") == ipaddress.ip_address("::1")
+
+    # unit: _vet_peer
+    with pytest.raises(OSError, match="SSRF protection"):
+        _vet_peer("10.0.0.1")
+    _vet_peer("93.184.216.34")  # public: no exception
+
+    # local server: the guard runs post-connect, so a live listener is needed
+    class _Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            body = b"<html><body><p>local</p></body></html>"
+            self.send_response(200)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    url = f"http://127.0.0.1:{server.server_port}/"
+    config = ConfigParser()
+    config.read_dict(DEFAULT_CONFIG)
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+
+    try:
+        # blocked by default
+        assert _send_urllib_request(url, False, DEFAULT_CONFIG) is None
+        # opt-out honored in the same process: no pool reset, the setting is not latched
+        response = _send_urllib_request(url, False, config)
+        assert response is not None
+        assert response.status == 200
+        # flipped back on without a reset: blocked again
+        assert _send_urllib_request(url, False, DEFAULT_CONFIG) is None
+
+        if HAS_PYCURL:
+            assert _send_pycurl_request(url, False, DEFAULT_CONFIG) is None
+            response = _send_pycurl_request(url, False, config)
+            assert response is not None
+            assert response.status == 200
+            # _pycurl_is_live_page has no SSRF guard (boolean-only, low impact)
+    finally:
+        server.shutdown()
+        server.server_close()
 
 
 def test_no_ssl_pool():
     "no_ssl skips cert verification in the urllib3 pool; the default verifies."
-    _reset_downloads_global_objects()
     insecure = _initiate_pool(DEFAULT_CONFIG, no_ssl=True)
     assert insecure.connection_pool_kw["cert_reqs"] == "CERT_NONE"
     assert insecure.connection_pool_kw["ca_certs"] is None
@@ -222,17 +282,43 @@ def test_no_ssl_pool():
 
 
 def test_urllib_request_ssl_retry():
-    "An SSLError triggers a retry with no_ssl=True."
+    "An SSLError triggers a retry with no_ssl=True, handled in fetch_response."
     import urllib3
 
-    resp = MagicMock(status=200)
+    resp = MagicMock(status=200, headers={})
     resp.stream.return_value = [b"<html>ok</html>"]
     resp.geturl.return_value = "https://ssl.example/"
     # one pool, reused: first request raises SSLError, the retry succeeds
     pool = MagicMock(request=MagicMock(side_effect=[urllib3.exceptions.SSLError("bad cert"), resp]))
-    with patch.object(dl, "_initiate_pool", return_value=pool):
-        assert _send_urllib_request("https://ssl.example/", False, False, DEFAULT_CONFIG) is not None
+    with patch.object(dl, "_initiate_pool", return_value=pool), patch.object(dl, "HAS_PYCURL", False):
+        assert dl.fetch_response("https://ssl.example/") is not None
     assert pool.request.call_count == 2
+
+    # both attempts fail: None, exactly one retry
+    pool = MagicMock(request=MagicMock(side_effect=urllib3.exceptions.SSLError("bad cert")))
+    with patch.object(dl, "_initiate_pool", return_value=pool), patch.object(dl, "HAS_PYCURL", False):
+        assert dl.fetch_response("https://ssl.example/") is None
+    assert pool.request.call_count == 2
+
+
+def test_fetch_response_decode_cap():
+    "The per-request MAX_FILE_SIZE reaches the decompression stage."
+    body = gzip.compress(b"0" * 25_000_000)  # expands beyond the 20MB default cap
+
+    def make_pool():
+        resp = MagicMock(status=200, headers={})
+        resp.stream.return_value = [body]
+        resp.geturl.return_value = "https://example.org/"
+        return MagicMock(request=MagicMock(return_value=resp))
+
+    raised = ConfigParser()
+    raised.read_dict(DEFAULT_CONFIG)
+    raised.set("DEFAULT", "MAX_FILE_SIZE", "30000000")
+    with patch.object(dl, "HAS_PYCURL", False), patch.object(dl, "_initiate_pool", return_value=make_pool()):
+        assert dl.fetch_response("https://example.org/", decode=True, config=raised).html.startswith("000")
+    with patch.object(dl, "HAS_PYCURL", False), patch.object(dl, "_initiate_pool", return_value=make_pool()):
+        # default cap: decompression refused, raw bytes kept
+        assert not dl.fetch_response("https://example.org/", decode=True).html.startswith("000")
 
 
 def test_pycurl_ssl_retry(monkeypatch):
@@ -242,12 +328,62 @@ def test_pycurl_ssl_retry(monkeypatch):
     import pycurl
 
     curl = MagicMock()  # one handle reused for both attempts
-    curl.perform_rb.side_effect = [pycurl.error(35, "SSL error"), b"<html>ok</html>"]  # 35 ∈ CURL_SSL_ERRORS
+    state = {}
+
+    def record_setopt(opt, value):
+        if opt == pycurl.WRITEFUNCTION:
+            state["write"] = value
+
+    def perform():
+        if "failed" not in state:
+            state["failed"] = True
+            raise pycurl.error(35, "SSL error")  # 35 ∈ CURL_SSL_ERRORS
+        state["write"](b"<html>ok</html>")
+
+    curl.setopt.side_effect = record_setopt
+    curl.perform.side_effect = perform
     curl.getinfo.side_effect = [200, "https://ssl.example/"]  # consumed only by the retry's Response()
     monkeypatch.setattr(pycurl, "Curl", lambda: curl)
 
-    assert _send_pycurl_request("https://ssl.example/", False, False, DEFAULT_CONFIG) is not None
-    assert curl.perform_rb.call_count == 2
+    resp = dl.fetch_response("https://ssl.example/")
+    assert resp is not None
+    assert resp.data == b"<html>ok</html>"
+    assert curl.perform.call_count == 2
+
+
+@pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
+def test_pycurl_status_retry(monkeypatch):
+    "Transient statuses are retried with backoff."
+    import pycurl
+
+    curl = MagicMock()
+    curl.getinfo.side_effect = [503, 200, "https://example.org/"]
+    monkeypatch.setattr(pycurl, "Curl", lambda: curl)
+    naps = []
+    monkeypatch.setattr(dl, "sleep", naps.append)
+
+    resp = _send_pycurl_request("https://example.org/", True, DEFAULT_CONFIG)
+    assert resp is not None
+    assert resp.status == 200
+    assert curl.perform.call_count == 2
+    assert naps == [15.0]  # backoff_factor = DOWNLOAD_TIMEOUT / 2
+
+
+@pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
+def test_pycurl_proxy_skips_ssrf_hook(monkeypatch):
+    "With a proxy, the SSRF opensocket hook must not be installed."
+    import pycurl
+
+    opts = {}
+    curl = MagicMock()
+    curl.setopt.side_effect = opts.__setitem__
+    curl.getinfo.side_effect = [200, "https://example.org/"]
+    monkeypatch.setattr(pycurl, "Curl", lambda: curl)
+    monkeypatch.setattr(dl, "PROXY_URL", "socks5://localhost:1080")
+
+    assert _send_pycurl_request("https://example.org/", True, DEFAULT_CONFIG) is not None
+    assert pycurl.OPENSOCKETFUNCTION not in opts
+    assert opts[pycurl.PRE_PROXY] == "socks5://localhost:1080"
 
 
 def test_proxy_plumbing(monkeypatch):
@@ -259,6 +395,10 @@ def test_proxy_plumbing(monkeypatch):
     assert seen["proxy_url"] == "socks5://user:pass@localhost:1080"
     monkeypatch.setattr(dl, "PROXY_URL", None)
     assert isinstance(dl.create_pool(), dl.urllib3.PoolManager)
+    # proxy disables SSRF filtering on both backends
+    assert dl._ssrf_active(DEFAULT_CONFIG) is True
+    monkeypatch.setattr(dl, "PROXY_URL", "socks5://localhost:1080")
+    assert dl._ssrf_active(DEFAULT_CONFIG) is False
 
 
 @pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
@@ -272,8 +412,6 @@ def test_pycurl_proxy(monkeypatch):
 
 def test_config():
     """Test how configuration options are read and stored."""
-    # default config is none
-    assert _parse_config(DEFAULT_CONFIG) == (None, None)
     # default accept-encoding
     accepted = ["deflate", "gzip"]
     if HAS_BROTLI:
@@ -287,7 +425,6 @@ def test_config():
     assert default["User-Agent"] == USER_AGENT
     assert "Cookie" not in default
     # user-agents rotation
-    assert _parse_config(UA_CONFIG) == (["Firefox", "Chrome"], "yummy_cookie=choco; tasty_cookie=strawberry")
     custom = _determine_headers(UA_CONFIG)
     assert custom["User-Agent"] in ["Chrome", "Firefox"]
     assert custom["Cookie"] == "yummy_cookie=choco; tasty_cookie=strawberry"
@@ -295,8 +432,36 @@ def test_config():
 
 def zstd_stream_compress(data: bytes) -> bytes:
     "Compress data into a zstd frame which does not declare its content size."
-    chunker = zstandard.ZstdCompressor().chunker()
-    return b"".join(chunker.compress(data)) + b"".join(chunker.finish())
+    compressor = zstd.ZstdCompressor()
+    return compressor.compress(data) + compressor.flush()
+
+
+def test_partial_config_headers():
+    "Configs missing USER_AGENTS or COOKIE must not crash header selection."
+    partial = ConfigParser()
+    partial.read_dict({"DEFAULT": {"USER_AGENTS": "Firefox"}})
+    assert _determine_headers(partial) == {**DEFAULT_HEADERS, "User-Agent": "Firefox"}
+    # nothing set: fall back to default headers
+    assert _determine_headers(ConfigParser()) == DEFAULT_HEADERS
+
+
+def test_parse_curl_headers():
+    "Only the last response of a redirect chain should be kept."
+    raw = (
+        b"HTTP/1.1 301 Moved Permanently\r\n"
+        b"Location: /final\r\n"
+        b"\r\n"
+        b"HTTP/2 200\r\n"
+        b"Content-Type: text/html; charset=utf-8\r\n"
+        b"X-Colon: a:b:c\r\n"
+        b"junk line without separator\r\n"
+        b"\r\n"
+    )
+    assert _parse_curl_headers(raw) == {
+        "Content-Type": "text/html; charset=utf-8",
+        "X-Colon": "a:b:c",
+    }
+    assert _parse_curl_headers(b"") == {}
 
 
 def test_decode():
@@ -311,13 +476,10 @@ def test_decode():
     if HAS_BROTLI:
         compressed_strings.append(brotli.compress(html_string.encode("utf-8")))
     if HAS_ZSTD:
-        compressed_strings.append(zstandard.compress(html_string.encode("utf-8")))
+        compressed_strings.append(zstd.compress(html_string.encode("utf-8")))
         # servers compressing on the fly emit frames without a declared content
         # size, and concatenated frames are equally valid
         compressed_strings.append(zstd_stream_compress(html_string.encode("utf-8")))
-        compressed_strings.append(
-            zstandard.compress(html_string[:20].encode("utf-8")) + zstandard.compress(html_string[20:].encode("utf-8"))
-        )
 
     for compressed_string in compressed_strings:
         assert handle_compressed_file(compressed_string) == html_string.encode("utf-8")
@@ -333,11 +495,38 @@ def test_decode():
         # reserved bit set in the frame header descriptor (the byte after the
         # magic): rejected by the decompressor itself rather than by the
         # end-of-frame check
-        frame = bytearray(zstandard.compress(html_string.encode("utf-8")))
+        frame = bytearray(zstd.compress(html_string.encode("utf-8")))
         frame[4] |= 0x08
         bad_files.append(bytes(frame))
     for bad_file in bad_files:
         assert handle_compressed_file(bad_file) == bad_file
+
+    # multi-member gzip streams are concatenated (pigz/bgzip output)
+    multi = gzip.compress(b"<html>part1 ") + gzip.compress(b"part2</html>")
+    assert handle_compressed_file(multi) == b"<html>part1 part2</html>"
+
+    # decompression-bomb guard: content expanding beyond MAX_FILE_SIZE is left unchanged
+    bomb = gzip.compress(b"0" * 25_000_000)
+    assert handle_compressed_file(bomb) == bomb
+    # a raised per-request cap is honored
+    assert handle_compressed_file(bomb, max_size=30_000_000) == b"0" * 25_000_000
+
+    # member flood is rejected
+    member = gzip.compress(b"a")
+    flood = member * (MAX_MEMBERS + 1)
+    assert handle_compressed_file(flood) == flood
+    assert handle_compressed_file(member * MAX_MEMBERS) == b"a" * MAX_MEMBERS
+
+    if HAS_ZSTD:
+        multi_frame = zstd.compress(b"<html>a ") + zstd.compress(b"b</html>")
+        assert handle_compressed_file(multi_frame) == b"<html>a b</html>"
+        truncated = zstd.compress(html_string.encode("utf-8"))[:-4]
+        assert handle_compressed_file(truncated) == truncated
+        zstd_bomb = zstd.compress(b"0" * 25_000_000)
+        assert handle_compressed_file(zstd_bomb) == zstd_bomb
+    if HAS_BROTLI:
+        brotli_bomb = brotli.compress(b"0" * 25_000_000)
+        assert handle_compressed_file(brotli_bomb) == brotli_bomb
 
 
 @pytest.mark.usefixtures("mock_network")
