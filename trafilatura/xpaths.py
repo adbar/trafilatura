@@ -105,6 +105,13 @@ BODY_XPATH = [
         """
     ),
 ]
+
+# Listing layouts (blog index, archive, category) hold several <article> siblings in one container,
+# each a teaser with its own heading. BODY_XPATH's "(.//article)[1]" keeps the first entry only, so
+# the page escalates to justext, which flattens every heading into a paragraph (#774). Recall only:
+# on an article page the same shape is a related-posts strip, whose container would hide the body.
+LISTING_BODY_XPATH = [XPath("(.//article[preceding-sibling::article])[1]/..")]
+
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
 # starts-with(@class, "content ") or contains(@class, " content")

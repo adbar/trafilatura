@@ -27,6 +27,7 @@ from .xpaths import (
     COMMENTS_DISCARD_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
+    LISTING_BODY_XPATH,
     OVERALL_DISCARD_XPATH,
     PRECISION_DISCARD_XPATH,
     TEASER_DISCARD_XPATH,
@@ -758,8 +759,10 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
     if options.links is True:
         potential_tags.add("ref")
     result_body = Element("body")
+    # kept out of the confident passes: see LISTING_BODY_XPATH
+    expressions = BODY_XPATH if options.focus != "recall" else LISTING_BODY_XPATH + BODY_XPATH
     # iterate
-    for expr in BODY_XPATH:
+    for expr in expressions:
         # select tree if the expression has been found
         subtree = next((s for s in expr(tree) if s is not None), None)
         if subtree is None:
