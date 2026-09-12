@@ -280,3 +280,13 @@ def test_sitemap_namespace_link_limit(monkeypatch):
     )
     sitemap.extract_sitemap_links()
     assert sitemap.urls == ["https://example.org/first?a=1&b=2"]
+
+
+@pytest.mark.parametrize("content", ["", "not an XML document"])
+def test_sitemap_xml_without_a_root_is_ignored(content):
+    """Malformed input cannot yield a sitemap location."""
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = content
+    sitemap.extract_sitemap_links()
+    assert sitemap.urls == []
+    assert sitemap.sitemap_urls == []
