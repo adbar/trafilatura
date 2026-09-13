@@ -2413,6 +2413,51 @@ def test_no_duplicate_content():
         assert out.count("Second synthetic paragraph") == 1
 
 
+def _listing_page(entries):
+    "Blog-index markup: sibling <article> teasers, each a link-only heading plus its lead paragraph."
+    # each teaser clears min_extracted_size on its own, so only the page-share
+    # test flags the layout as under-extracted and escalates to recall
+    articles = "".join(
+        f'<article><header class="entry-header"><h2 class="entry-title">'
+        f'<a href="/{i}">{title}</a></h2></header>'
+        f"<div class=\"entry-summary\"><p>{text}</p></div></article>"
+        for i, (title, text) in enumerate(entries)
+    )
+    return f'<html><body><div id="wrapper"><main>{articles}</main></div></body></html>'
+
+
+def test_listing_page_keeps_every_entry_heading():
+    "regression #774: an index page must not collapse to its first entry, losing every other heading."
+    entries = [
+        (
+            f"Entry number {i} about a self contained subject",
+            f"Teaser {i} carries enough prose to pass the extractor thresholds on its own, running "
+            f"over several clauses and a couple of sentences. It reads as a lead paragraph would, "
+            f"so nothing about this entry looks like boilerplate to the extractor, and the index "
+            f"page as a whole reads as a real body of text rather than a stub.",
+        )
+        for i in range(8)
+    ]
+    result = extract(_listing_page(entries), output_format="markdown", config=use_config()) or ""
+    for title, _ in entries:
+        assert f"## {title}" in result
+
+
+def test_article_page_ignores_related_posts_strip():
+    "the other side of #774: the same shape is a related-posts strip, which must not displace the body."
+    body = " ".join(
+        f"Sentence {i} of the actual article body, long enough that the extractor never escalates." for i in range(8)
+    )
+    related = "".join(f"<article><h2><a href='/r{i}'>Related teaser {i}</a></h2></article>" for i in range(3))
+    doc = (
+        f'<html><body><main><article class="post"><h1>The Real Headline</h1><p>{body}</p></article>'
+        f'<aside class="related"><div>{related}</div></aside></main></body></html>'
+    )
+    result = extract(doc, output_format="txt", config=use_config()) or ""
+    assert "Sentence 3 of the actual article body" in result
+    assert "Related teaser 1" not in result
+
+
 def test_short_document_keeps_structure():
     "regression #896: the baseline rescue must not flatten a valid short extraction it cannot improve on."
     doc = (
