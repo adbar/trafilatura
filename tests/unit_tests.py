@@ -2303,6 +2303,31 @@ def test_table_empty_cells_and_rows(html, suffix):
     assert _table_md(html).endswith(suffix)
 
 
+@pytest.mark.parametrize("output_format", ["xml", "xmltei"])
+@pytest.mark.parametrize(
+    "first_row,expected",
+    [
+        ("<td></td><td>b</td><td>c</td>", [None, "b", "c"]),
+        ("<td>a</td><td></td><td>c</td>", ["a", None, "c"]),
+        ("<td>a</td><td>b</td><td></td>", ["a", "b", None]),
+        ("<td colspan='2'>a</td><td>c</td>", ["a", None, "c"]),
+    ],
+    ids=["leading-empty", "middle-empty", "trailing-empty", "colspan-placeholder"],
+)
+def test_xml_table_preserves_empty_cells(output_format, first_row, expected):
+    "XML cleanup must retain blank cells so following values stay in their columns."
+    result = _extract_doc(
+        f"<table><tr>{first_row}</tr><tr><td>d</td><td>e</td><td>f</td></tr></table>",
+        output_format=output_format,
+        include_tables=True,
+    )
+    tree = etree.fromstring(result)
+    rows = tree.xpath(".//*[local-name()='table']/*[local-name()='row']")
+    assert len(rows) == 2
+    assert [cell.text for cell in rows[0]] == expected
+    assert [cell.text for cell in rows[1]] == ["d", "e", "f"]
+
+
 def test_table_cell_list_no_row_break():
     "A <ul> in a cell (no recall mode) must not inject a row-breaking newline."
     row = _table_md("<table><tr><td><ul><li>i1</li><li>i2</li></ul></td><td>b</td></tr></table>").split("\n\n")[-1]
