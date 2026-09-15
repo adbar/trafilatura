@@ -2,9 +2,11 @@
 Unit tests for JSON metadata extraction.
 """
 
+import json
 import logging
 import sys
 
+import pytest
 from lxml import html
 
 from trafilatura.json_metadata import (
@@ -1155,6 +1157,33 @@ def test_json_metadata_robustness():
     )
     # malformed JSON-LD (non-dict items) is swallowed by extract_metadata, not raised
     assert extract_metadata('<html><body><script type="application/ld+json">[123]</script></body></html>') is not None
+
+
+@pytest.mark.parametrize("as_array", [False, True])
+@pytest.mark.parametrize(
+    ("author", "expected"),
+    [
+        ({"name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": "Person", "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": ["Person"], "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": ["Thing", "Person"], "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": ["Person", "Thing"], "name": "Jane Doe"}, "Jane Doe"),
+        ({"@type": "Organization", "name": "Example News"}, None),
+        ({"@type": ["Organization"], "name": "Example News"}, None),
+        ({"@type": [], "name": "Jane Doe"}, None),
+        ({"@type": None, "name": "Jane Doe"}, None),
+    ],
+)
+def test_json_author_type_arrays(author, expected, as_array):
+    "Extract Person authors regardless of whether their type is a string or an array."
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "author": [author] if as_array else author,
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert metadata is not None
+    assert metadata.author == expected
 
 
 def test_extract_json_processes_list_once():
