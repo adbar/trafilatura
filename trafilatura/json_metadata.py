@@ -158,7 +158,7 @@ def process_parent(parent: Any, metadata: Document) -> Document:
                 for author in as_list(list_authors):
                     if isinstance(author, str):
                         author = {"name": author}
-                    if "@type" not in author or author["@type"] == "Person":
+                    if "@type" not in author or "Person" in as_list(author["@type"]):
                         author_name = None
                         # error thrown: author['name'] can be a list (?)
                         if "name" in author:
