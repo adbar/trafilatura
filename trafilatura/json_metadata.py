@@ -64,6 +64,7 @@ JSON_OGTYPE_SCHEMA = {
     "jobposting",
 }
 JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
+JSON_SCHEMA_TYPES = JSON_ARTICLE_SCHEMA | JSON_OGTYPE_SCHEMA | JSON_PUBLISHER_SCHEMA | {"person"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(
@@ -126,9 +127,16 @@ def process_parent(parent: Any, metadata: Document) -> Document:
         if "@type" not in content or not content["@type"]:
             continue
 
-        # some websites are using ['Person'] as type
-        content_type = content["@type"][0] if isinstance(content["@type"], list) else content["@type"]
-        content_type = content_type.lower()
+        # Prefer the first recognized type, preserving order among recognized types.
+        content_types = as_list(content["@type"])
+        content_type = next(
+            (
+                schema_type
+                for schema_type in content_types
+                if isinstance(schema_type, str) and schema_type.lower() in JSON_SCHEMA_TYPES
+            ),
+            content_types[0],
+        ).lower()
 
         # The "pagetype" should only be returned if the page is some kind of an article, category, website...
         if content_type in JSON_OGTYPE_SCHEMA and not metadata.pagetype:

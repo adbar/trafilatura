@@ -1186,6 +1186,72 @@ def test_json_author_type_arrays(author, expected, as_array):
     assert metadata.author == expected
 
 
+@pytest.mark.parametrize("author_type", ["Person", ["Person"]])
+@pytest.mark.parametrize(
+    ("article_type", "pagetype"),
+    [
+        ("NewsArticle", "newsarticle"),
+        (["NewsArticle"], "newsarticle"),
+        (["NewsArticle", "Thing"], "newsarticle"),
+        (["Thing", "NewsArticle"], "newsarticle"),
+        (["CreativeWork", "Article"], "article"),
+        (["Thing", "nEwSaRtIcLe"], "newsarticle"),
+    ],
+)
+def test_json_article_type_arrays(article_type, pagetype, author_type):
+    "Extract article metadata when an unrecognized type precedes the article type."
+    schema = {
+        "@context": "https://schema.org",
+        "@type": article_type,
+        "author": {"@type": author_type, "name": "Jane Doe"},
+        "publisher": {"@type": "Organization", "name": "Example News"},
+        "headline": "Example headline",
+        "articleSection": "News",
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert metadata is not None
+    assert metadata.author == "Jane Doe"
+    assert metadata.pagetype == pagetype
+    assert metadata.sitename == "Example News"
+    assert metadata.title == "Example headline"
+    assert metadata.categories == ["News"]
+
+
+@pytest.mark.parametrize(
+    ("node_type", "author", "pagetype", "sitename"),
+    [
+        ("Person", "Example Name", None, None),
+        (["Person"], "Example Name", None, None),
+        (["Thing", "Person"], "Example Name", None, None),
+        (["Thing", "Organization"], None, None, "Example Name"),
+        (["Thing", "WebSite"], None, "website", "Example Name"),
+        (["Thing", "FAQPage"], None, "faqpage", None),
+        (["Person", "Article"], "Example Name", None, None),
+        (["Article", "Person"], "Nested Author", "article", None),
+        (["WebPage", "NewsArticle"], None, "webpage", "Example Name"),
+        (["NewsArticle", "WebPage"], "Nested Author", "newsarticle", None),
+        (["TechArticle", "Article"], None, "techarticle", None),
+        (["NewsArticle", None], "Nested Author", "newsarticle", None),
+        (["Thing", "Unknown"], None, None, None),
+        (["Thing", None], None, None, None),
+        ("Thing", None, None, None),
+        ([], None, None, None),
+        (None, None, None, None),
+    ],
+)
+def test_json_node_type_arrays(node_type, author, pagetype, sitename):
+    "Recognize supported node types without changing precedence among known types."
+    schema = {
+        "@context": "https://schema.org",
+        "@type": node_type,
+        "name": "Example Name",
+        "author": {"@type": "Person", "name": "Nested Author"},
+    }
+    metadata = extract_metadata(f'<html><head><script type="application/ld+json">{json.dumps(schema)}</script></head></html>')
+    assert metadata is not None
+    assert (metadata.author, metadata.pagetype, metadata.sitename) == (author, pagetype, sitename)
+
+
 def test_extract_json_processes_list_once():
     "A flat list of @context objects is processed once, not once per item."
     import trafilatura.json_metadata as jm
