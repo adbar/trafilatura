@@ -28,6 +28,8 @@ In order to gather web documents it can be useful to download the portions of a 
 
 A comprehensive overview of the available documents can be obtained faster and more efficiently using sitemaps and feeds than by systematically crawling. These formats are machine-readable and can reveal content that may not be reachable through the browsable interface. However, link inspection and filtering prior to download is recommended to avoid undesired content — see `link filtering`_ below.
 
+XML sitemap locations are resolved by namespace, so default and prefixed sitemap namespaces are supported. Location tags in extension namespaces (such as image sitemaps) are ignored. Legacy XML without a namespace is also supported.
+
 In addition, Trafilatura supports multilingual and multinational sitemaps, for example when a site targets different languages through paths like ``/en/…`` and ``/de/…``.
 
 .. hint::
