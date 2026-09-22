@@ -82,6 +82,27 @@ def test_atom_extraction():
     ]  # TODO: remove slash?
 
 
+@pytest.mark.parametrize(
+    "link, expected",
+    [
+        ("<link href='https://example.org/post' rel='alternate'/>", ["https://example.org/post"]),
+        ('<link\nhref="https://example.org/post"/>', ["https://example.org/post"]),
+        ('<link href = "https://example.org/post"/>', ["https://example.org/post"]),
+        ('<link title="One > zero" href="https://example.org/post"/>', ["https://example.org/post"]),
+        (
+            '<link href="https://example.org/post" title="See href=\'https://example.org/other\'"/>',
+            ["https://example.org/post"],
+        ),
+        ('<link href="https://example.org/updates/latest" rel="self"/>', []),
+        ("<link rel='self' href='https://example.org/updates/latest'/>", []),
+        ('<link href="https://example.org/updates/latest" type="application/atom+xml"/>', []),
+    ],
+)
+def test_atom_link_attributes(link, expected):
+    params = FeedParameters("https://example.org", "example.org", "")
+    assert extract_links(f"<feed>{link}</feed>", params) == expected
+
+
 def test_rss_extraction():
     """Test link extraction from a RSS feed"""
     params = FeedParameters("http://example.org/", "example.org", "")
