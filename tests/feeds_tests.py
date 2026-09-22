@@ -155,6 +155,24 @@ def test_json_extraction():
     assert len(links) == 1
 
 
+@pytest.mark.parametrize("items", ["null", "false", '"invalid"', "{}"])
+def test_json_feed_invalid_items_container(items):
+    params = FeedParameters("https://example.org", "example.org", "")
+    assert extract_links(f'{{"items": {items}}}', params) == []
+
+
+def test_json_feed_skips_invalid_entries():
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = """{"items": [
+        null, 42, "invalid", {},
+        {"url": ["https://example.org/not-a-string"]},
+        {"url": 123},
+        {"url": "https://example.org/first"},
+        {"url": false, "id": "https://example.org/second"}
+    ]}"""
+    assert extract_links(feed, params) == ["https://example.org/first", "https://example.org/second"]
+
+
 def test_feeds_helpers():
     """Test helper functions for feed extraction"""
     params = FeedParameters("https://example.org", "example.org", "https://example.org")
