@@ -25,6 +25,26 @@ from trafilatura.settings import Extractor, use_config
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
+def test_tags_with_complete_opengraph_metadata():
+    document = """<html><head>
+        <meta property="og:title" content="Example article"/>
+        <meta property="og:author" content="Jane Smith"/>
+        <meta property="og:url" content="https://example.org/post"/>
+        <meta property="og:description" content="Example description"/>
+        <meta property="og:site_name" content="Example News"/>
+        <meta property="og:image" content="https://example.org/image.jpg"/>
+        <meta name="keywords" content="science, research"/>
+        <meta property="article:tag" content="astronomy"/>
+        <meta name="twitter:title" content="Alternative title"/>
+        </head><body><article>Example article content.</article></body></html>"""
+
+    metadata = extract_metadata(document)
+    assert metadata.tags == ["science, research", "astronomy"]
+    assert metadata.title == "Example article"
+    assert metadata.author == "Jane Smith"
+    assert metadata.image == "https://example.org/image.jpg"
+
+
 def test_titles():
     """Test the extraction of titles"""
     tests = [

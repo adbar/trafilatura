@@ -208,19 +208,6 @@ def examine_meta(tree: HtmlElement) -> Document:
     # bootstrap from potential OpenGraph tags
     metadata = Document().from_dict(extract_opengraph(tree))
 
-    # test if all values not assigned in the following have already been assigned
-    if all(
-        (
-            metadata.title,
-            metadata.author,
-            metadata.url,
-            metadata.description,
-            metadata.sitename,
-            metadata.image,
-        )
-    ):  # tags
-        return metadata
-
     tags, backup_sitename = [], None
 
     # iterate through meta tags
