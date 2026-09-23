@@ -2420,7 +2420,7 @@ def _listing_page(entries):
     articles = "".join(
         f'<article><header class="entry-header"><h2 class="entry-title">'
         f'<a href="/{i}">{title}</a></h2></header>'
-        f"<div class=\"entry-summary\"><p>{text}</p></div></article>"
+        f'<div class="entry-summary"><p>{text}</p></div></article>'
         for i, (title, text) in enumerate(entries)
     )
     return f'<html><body><div id="wrapper"><main>{articles}</main></div></body></html>'
@@ -2431,16 +2431,50 @@ def test_listing_page_keeps_every_entry_heading():
     entries = [
         (
             f"Entry number {i} about a self contained subject",
-            f"Teaser {i} carries enough prose to pass the extractor thresholds on its own, running "
-            f"over several clauses and a couple of sentences. It reads as a lead paragraph would, "
-            f"so nothing about this entry looks like boilerplate to the extractor, and the index "
-            f"page as a whole reads as a real body of text rather than a stub.",
+            (
+                f"Teaser {i} carries enough prose to pass the extractor thresholds on its own, running "
+                f"over several clauses and a couple of sentences. It reads as a lead paragraph would, "
+                f"so nothing about this entry looks like boilerplate to the extractor, and the index "
+                f"page as a whole reads as a real body of text rather than a stub."
+            ),
         )
         for i in range(8)
     ]
     result = extract(_listing_page(entries), output_format="markdown", config=use_config()) or ""
     for title, _ in entries:
         assert f"## {title}" in result
+
+
+def _article_with_related_posts(body, related):
+    "Article markup carrying a teaser strip: sibling <article> elements beside the real body."
+    teasers = "".join(
+        f'<article><header><h2 class="entry-title"><a href="/r{i}">{title}</a></h2></header><p>{text}</p></article>'
+        for i, (title, text) in enumerate(related)
+    )
+    return (
+        f'<html><body><div id="wrapper"><main>'
+        f"<article><h1>The main article</h1>{body}</article>"
+        f'<div class="related-posts"><h2>Recommended stories</h2>{teasers}</div>'
+        f"</main></div></body></html>"
+    )
+
+
+def test_related_posts_strip_does_not_replace_the_article_body():
+    "a teaser strip has the same shape as a listing, so recall must still return the body"
+    body = "".join(
+        f"<p>Body paragraph {i} runs long enough to carry the page on its own, with several "
+        f"clauses and a couple of sentences so the article clearly outweighs anything beside "
+        f"it. Nothing here looks like a teaser or like boilerplate to the extractor.</p>"
+        for i in range(6)
+    )
+    related = [(f"Recommended story {i}", f"Teaser {i}.") for i in range(3)]
+    html_doc = _article_with_related_posts(body, related)
+
+    result = extract(html_doc, output_format="markdown", favor_recall=True, config=use_config()) or ""
+
+    assert "Body paragraph 0" in result
+    assert "Body paragraph 5" in result
+    assert "Recommended story 0" not in result
 
 
 def test_article_page_ignores_related_posts_strip():
