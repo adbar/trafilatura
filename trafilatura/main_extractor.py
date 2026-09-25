@@ -8,7 +8,7 @@ import re  # import regex as re
 from copy import deepcopy
 from urllib.parse import urljoin
 
-from lxml.etree import Element, SubElement, _Element, strip_elements, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
@@ -27,6 +27,7 @@ from .xpaths import (
     COMMENTS_DISCARD_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
+    LISTING_BODY_XPATH,
     OVERALL_DISCARD_XPATH,
     PRECISION_DISCARD_XPATH,
     TEASER_DISCARD_XPATH,
@@ -752,6 +753,23 @@ def prune_unwanted_sections(
     return tree
 
 
+# A sibling-article container is the body of a listing page, but on an article page the same
+# shape is a teaser strip ("recommended stories") sitting beside the body. Only the listing
+# container carries the bulk of the page, so that share is what tells the two apart.
+LISTING_TEXT_SHARE = 0.6
+
+
+def _holds_most_of_the_text(tree: HtmlElement, expr: XPath) -> bool:
+    "Whether the first element matched by expr carries most of the text of the tree."
+    match = next((s for s in expr(tree) if s is not None), None)
+    if match is None:
+        return False
+    page_length = len(trim(" ".join(tree.itertext())))
+    if not page_length:
+        return False
+    return len(trim(" ".join(match.itertext()))) / page_length >= LISTING_TEXT_SHARE
+
+
 def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
@@ -762,8 +780,11 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
     if options.links is True:
         potential_tags.add("ref")
     result_body = Element("body")
+    expressions = BODY_XPATH
+    if options.focus == "recall" and _holds_most_of_the_text(tree, LISTING_BODY_XPATH[0]):
+        expressions = LISTING_BODY_XPATH + BODY_XPATH
     # iterate
-    for expr in BODY_XPATH:
+    for expr in expressions:
         # select tree if the expression has been found
         subtree = next((s for s in expr(tree) if s is not None), None)
         if subtree is None:
