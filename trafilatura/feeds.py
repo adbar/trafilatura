@@ -122,8 +122,19 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         if feed_string.startswith("{"):
             try:
                 # fallback: https://www.jsonfeed.org/version/1.1/
-                candidates = [item.get("url") or item.get("id") for item in json.loads(feed_string).get("items", [])]
-                return [c for c in candidates if c is not None]
+                items = json.loads(feed_string).get("items", [])
+                if not isinstance(items, list):
+                    return []
+                candidates = []
+                for item in items:
+                    if not isinstance(item, dict):
+                        continue
+                    for key in ("url", "id"):
+                        candidate = item.get(key)
+                        if isinstance(candidate, str) and candidate:
+                            candidates.append(candidate)
+                            break
+                return candidates
             except json.decoder.JSONDecodeError:
                 LOGGER.debug("JSON decoding error: %s", params.domain)
         else:
