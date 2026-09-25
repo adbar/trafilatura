@@ -299,19 +299,17 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
         if not isinstance(content, HtmlElement):
             return ""
         body = tree
-    if clean:
-        body = basic_cleaning(body)
-    # space block boundaries so adjacent runs don't stick (minified pages). remove_control_characters
-    # guards the .text write against chars lxml rejects (short-circuits on printable; str input pre-cleaned)
-    for elem in body.iter(*_BLOCK_ELEMS):
-        elem.text = f" {remove_control_characters(elem.text)}" if elem.text else " "
-        elem.tail = f" {remove_control_characters(elem.tail)}" if elem.tail else " "
-    return " ".join(body.text_content().split())
+    return _spaced_text(basic_cleaning(body) if clean else body)
 
 
 def block_text(element: HtmlElement) -> str:
     """text_content() alternative that preserves word boundaries at block tags (#896)."""
-    element = copy(element)
+    return _spaced_text(copy(element))
+
+
+def _spaced_text(element: HtmlElement) -> str:
+    "Collect the text, spacing block boundaries in place so adjacent runs don't stick (minified pages)."
+    # remove_control_characters guards the .text write against chars lxml rejects
     for elem in element.iter(*_BLOCK_ELEMS):
         elem.text = f" {remove_control_characters(elem.text)}" if elem.text else " "
         elem.tail = f" {remove_control_characters(elem.tail)}" if elem.tail else " "

@@ -21,7 +21,7 @@ except ImportError:
 
 import trafilatura.htmlprocessing
 from trafilatura import bare_extraction, baseline, core, extract, extract_with_metadata, xml
-from trafilatura.deduplication import LRU_TEST
+from trafilatura.deduplication import LRU_TEST, LRUCache
 from trafilatura.external import sanitize_tree, try_justext, try_readability
 from trafilatura.main_extractor import (
     _span,
@@ -44,7 +44,6 @@ from trafilatura.utils import (
     detect_encoding,
     is_dubious_html,
     is_image_file,
-    is_in_table_cell,
     language_classifier,
     line_processing,
     load_html,
@@ -311,8 +310,8 @@ def test_python_output():
     assert len(dict_result) == 21
 
 
-def test_exotic_tags(options):
-    options._add_config(ZERO_CONFIG)
+def test_exotic_tags():
+    options = core.Extractor(config=ZERO_CONFIG)
     # cover some edge cases with a specially crafted file
     result = load_mock_page("http://exotic_tags", xml_flag=False, tei_output=True)
     assert "Teletype text" in result
@@ -512,7 +511,7 @@ trafilatura.extract("")
     element = etree.Element("hi")
     element.text = "Here is the text."
     element.tail = "And a tail."
-    options._add_config(ZERO_CONFIG)
+    options = core.Extractor(config=ZERO_CONFIG)
     converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b"<p><hi>Here is the text.</hi>And a tail.</p>"
     # empty elements
@@ -830,22 +829,24 @@ def test_external(options):
     options.tables = True
     # remove unwanted elements
     mydoc = html.fromstring("<html><body><footer>Test text</footer></body></html>")
-    _, _, mylen = sanitize_tree(mydoc, options)
+    _, text = sanitize_tree(mydoc, options)
+    mylen = len(text)
     assert mylen == 0
     mydoc = html.fromstring("<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>")
-    _, _, mylen = sanitize_tree(mydoc, options)
+    _, text = sanitize_tree(mydoc, options)
+    mylen = len(text)
     assert mylen > 0
     # strip fancy tags while including links and images
     mydoc = html.fromstring(
         '<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>'
     )
-    mytree, _, _ = sanitize_tree(mydoc, options)
+    mytree, _ = sanitize_tree(mydoc, options)
     assert len(mytree) == 1
     mydoc = html.fromstring(
         '<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>'
     )
     options.links, options.images = True, True
-    mytree, _, _ = sanitize_tree(mydoc, options)
+    mytree, _ = sanitize_tree(mydoc, options)
     myelems = {element.tag for element in set(mytree.iter())}
     assert "graphic" in myelems
     assert "ref" in myelems
@@ -879,7 +880,7 @@ def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
     doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
     options = core.Extractor(url="https://www.example.org", links=True)
-    tree, _, _ = sanitize_tree(doc, options)
+    tree, _ = sanitize_tree(doc, options)
     targets = [elem.get("target") for elem in tree.iter("ref")]
     assert "https://www.example.org/path/page" in targets
 
@@ -898,7 +899,6 @@ def test_images(options):
     assert is_image_file("test.TXT") is False
     assert is_image_file("test.jpg" * 2000) is False  # length threshold
     # tag with attributes
-    assert handle_image(None) is None
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
@@ -971,9 +971,9 @@ def test_images(options):
     assert myimage.get("src").startswith("http")
 
 
-def test_links(options):
+def test_links():
     """Test link extraction function"""
-    options._add_config(ZERO_CONFIG)
+    options = core.Extractor(config=ZERO_CONFIG)
     assert handle_textelem(etree.Element("ref"), [], options) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
@@ -1122,6 +1122,7 @@ def test_tei():
                 <li>text2</li>
               </ul>
             </div></h2>
+            <p>Following paragraph.</p>
         </article></body>
         </html>"""
     )
@@ -1373,6 +1374,28 @@ def test_htmlprocessing(options):
     assert " tail" in hi.text
 
 
+def test_prune_unwanted_nodes_restores_backup_in_document():
+    "An over-pruning trip must put the untouched subtree back where the caller's tree holds it."
+    doc = html.fromstring("<html><body><div><p>real</p><div class='widget'>" + "x " * 300 + "</div></div></body></html>")
+    node = doc.find(".//div")
+    before = doc.text_content()
+    result = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [etree.XPath(".//div[@class='widget']")], with_backup=True)
+    assert result.getparent() is doc.find(".//body")
+    assert doc.text_content() == before
+
+
+def test_extract_restored_subtree_not_extracted_twice():
+    "A later BODY_XPATH pass sees the restored subtree with its consumed paragraph marked done."
+    hidden = "<div style='display:none'>" + "Hidden block sentence. " * 30 + "</div>"
+    page = (
+        "<html><body><main id='content'><article><p>Lead paragraph of the story.</p>"
+        f"{hidden}</article><p>Outside paragraph one.</p></main></body></html>"
+    )
+    result = extract(page, fast=True, config=ZERO_CONFIG)
+    assert result.count("Lead paragraph of the story.") == 1
+    assert "Outside paragraph one." in result
+
+
 @pytest.mark.parametrize(
     "link",
     ['<a href="https://example.org/plots">three plots</a>', '<a href="https://example.org/plots"><b>three plots</b></a>'],
@@ -1466,6 +1489,62 @@ def test_extraction_options():
     assert bare_extraction(my_html, config=ZERO_CONFIG, with_metadata=True).date is not None
     assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=True).date is None
     assert bare_extraction(my_html, config=NEW_CONFIG, with_metadata=False).date is None
+
+
+@pytest.mark.parametrize(
+    "case",
+    [
+        {
+            "favor_precision": True,
+            "config": ZERO_CONFIG,
+            "only_with_metadata": True,
+            "url_blacklist": {"https://example.org/blocked"},
+            "author_blacklist": {"Jane Doe"},
+        },
+        # no blacklists here: they would mask a dropped with_metadata
+        {"favor_recall": True, "settingsfile": path.join(RESOURCES_DIR, "newsettings.cfg"), "with_metadata": True},
+    ],
+    ids=["blacklists", "settingsfile"],
+)
+def test_extractor_parity(monkeypatch, case):
+    "extract(), extract_with_metadata() and bare_extraction() must translate the same arguments into the same Extractor."
+    built = []
+
+    class SpyExtractor(core.Extractor):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            built.append(self)
+
+    monkeypatch.setattr(core, "Extractor", SpyExtractor)
+    # non-default values everywhere, so a dropped argument shows up as a mismatch
+    kwargs = {
+        "url": "https://example.org/page",
+        "fast": True,
+        "include_comments": False,
+        "output_format": "xml",
+        "target_language": "en",
+        "include_tables": False,
+        "include_images": True,
+        "include_formatting": True,
+        "include_links": True,
+        "deduplicate": LRUCache(maxsize=2),
+        "date_extraction_params": {"extensive_search": False},
+        **case,
+    }
+    bare_kwargs = dict(kwargs)
+    if "settingsfile" in bare_kwargs:
+        bare_kwargs["config"] = use_config(bare_kwargs.pop("settingsfile"))
+    my_html = "<html><body><article><p>Some text.</p></article></body></html>"
+    extract(my_html, **kwargs)
+    bare_extraction(my_html, **bare_kwargs)
+    if "only_with_metadata" not in kwargs:
+        extract_with_metadata(my_html, **{k: v for k, v in kwargs.items() if k != "with_metadata"})
+    assert len(built) == (2 if "only_with_metadata" in kwargs else 3)
+    # config objects differ with settingsfile, the values read from them are slots
+    for other in built[1:]:
+        for slot in core.Extractor.__slots__:
+            if slot != "config":
+                assert getattr(built[0], slot) == getattr(other, slot), slot
 
 
 def test_precision_recall():
@@ -1643,6 +1722,14 @@ def test_link_density_listing_with_one_shared_paragraph_pruned():
     assert trafilatura.htmlprocessing.link_density_test(element, text)[0] is True
 
 
+def test_delete_by_link_density_backtracking():
+    "a short div with 3+ children and some link text is not dense, but backtracking still drops it"
+    htmlstring = "<html><body><div><p>Some intro text</p><p>More words</p><ref>A link text</ref></div></body></html>"
+    delete = trafilatura.htmlprocessing.delete_by_link_density
+    assert delete(html.fromstring(htmlstring), "div").find(".//div") is not None
+    assert delete(html.fromstring(htmlstring), "div", backtracking=True).find(".//div") is None
+
+
 def test_overall_discard_legacy_tokens():
     "regression on the legacy single-PR discard tokens, each decided by a full-WMB single-token A/B \
     (see xpaths.py audit note): 'yin' STAYS (net-positive despite English '-ying'/'y+Info' \
@@ -1766,10 +1853,7 @@ def test_wrapper_form_kept():
 
 
 def test_no_duplicate_paragraph_from_lb_tail():
-    "regression: handle_other_elements() emits a text-bearing div whole and appending it MOVES it \
-    into result_body, but _extract() iterates a subelems list captured beforehand -- so an <lb> \
-    inside that div was visited again and re-emitted its tail, duplicating a paragraph \
-    (alsumaria.tv). Whitespace-only <lb> tails left by pruned ad slots must not become blank lines."
+    "A text-bearing div moved into result_body is not revisited (alsumaria.tv), whitespace-only <lb> tails are dropped."
     html = (
         "<html><body><article><div>"
         "First paragraph of the article, long enough to be kept by the extractor.<br/>"
@@ -1782,6 +1866,40 @@ def test_no_duplicate_paragraph_from_lb_tail():
     assert "First paragraph of the article" in result
     # no blank, space-filled lines from the pruned block's indentation
     assert not any(line and line.isspace() for line in result.split("\n"))
+
+
+def test_lb_only_subtree_stays_one_paragraph():
+    "A body subtree holding only <lb> is emitted as one paragraph, not one <p> per line."
+    html_str = (
+        '<html><body><div class="entry-content">'
+        "<br/>First line of text long enough to be kept by the extractor here."
+        "<br/>Second line of text long enough to be kept by the extractor here."
+        "</div></body></html>"
+    )
+    result = extract(html_str, config=ZERO_CONFIG, output_format="xml")
+    assert result.count("<p>") == 1
+    assert result.count("<lb/>") == 2
+
+
+def test_extract_deep_caller_supplied_tree():
+    "Caller-supplied trees have no depth cap, so the content walk must not recurse."
+    tree = html.fromstring("<html><body><p>root text</p></body></html>")
+    node = tree.find("body")
+    for _ in range(3000):
+        node = etree.SubElement(node, "div")
+    node.text = "Deep text long enough to be kept by the extractor, appearing at the very bottom."
+    result = extract(tree, config=ZERO_CONFIG)
+    assert "Deep text long enough" in result
+
+
+def test_extract_leaves_caller_tree_intact():
+    "A caller-supplied tree must come back unchanged, prune_xpath included."
+    tree = html.fromstring("<html><body><p>First paragraph.</p><p>Second paragraph.</p></body></html>")
+    before = html.tostring(tree)
+    result = extract(tree, prune_xpath="//p[1]", config=ZERO_CONFIG)
+    assert result is not None
+    assert "First paragraph" not in result
+    assert html.tostring(tree) == before
 
 
 def test_body_xpath_fulltext_class():
@@ -1828,13 +1946,11 @@ def test_basic_cleaning_cookie_banner_scope():
     assert "cookies" not in page_measure
 
 
-def test_is_in_table_cell():
-    "is_in_table_cell must check real ancestry, not 'a cell exists somewhere' (#767)."
+def test_cell_context_follows_real_ancestry():
+    "Cell handling must follow real ancestry, not 'a cell exists somewhere' (#767)."
     tree = etree.fromstring("<body><table><row><cell><p>inside</p></cell></row></table><p>outside</p></body>")
-    inside = tree.xpath(".//cell/p")[0]
-    outside = tree.xpath("./p")[0]
-    assert is_in_table_cell(inside) is True
-    assert is_in_table_cell(outside) is False  # buggy '//ancestor::cell' would return True
+    assert xml.xmltotxt(tree, include_formatting=True) == "| inside | \n\noutside\n"
+    assert xml.xmltotxt(tree, include_formatting=False) == "| inside | \noutside"
 
 
 _COLSPAN_CONTENT_BASE = "<tr><td>a</td><td>b</td><td>c</td></tr>"
@@ -1989,9 +2105,11 @@ def test_table_processing(options):
     result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
     assert result == "<cell><hi>highlighted text</hi></cell>"
     table_cell_with_span = html.fromstring("<table><tr><td><span style='sth'>span text</span></td></tr></table>")
+    # spans are stripped before dispatch (prune_unwanted_sections)
+    etree.strip_tags(table_cell_with_span, "span")
     processed_table = handle_table(table_cell_with_span, TAG_CATALOG, options)
     result = etree.tostring(processed_table.find(".//cell"), encoding="unicode")
-    assert result == "<cell><p/></cell>"
+    assert result == "<cell>span text</cell>"
     # tables with nested elements
     htmlstring = """<html><body><article>
 <table>
@@ -2095,6 +2213,10 @@ def test_table_processing(options):
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
     assert result == ["table", "row", "cell", "row", "cell"]
+    # an orphan cell after a <tr> joins that row
+    broken_table = html.fromstring("<table><tr><td>a</td></tr><td>b</td><tr><td>c</td></tr></table>")
+    processed_table = handle_table(broken_table, TAG_CATALOG, options)
+    assert [[cell.text for cell in row] for row in processed_table] == [["a", "b"], ["c"]]
     broken_table = html.fromstring("<table><tr><p>text</p></tr><tr><td>cell</td></tr></table>")
     processed_table = handle_table(broken_table, TAG_CATALOG, options)
     result = [el.tag for el in processed_table.iter()]
@@ -2281,6 +2403,14 @@ def test_table_rowspan_decrement_on_padding():
     assert "| d | e | f |" in result
 
 
+def test_table_rowspan_through_empty_row():
+    "An empty <tr> still consumes one row of a pending rowspan."
+    result = _table_md("<table><tr><td rowspan='3'>a</td><td>b</td></tr><tr></tr><tr><td>c</td></tr></table>")
+    assert result.endswith("| a | b | \n|  | c |")
+    result = _table_md("<table><tr><td rowspan='2'>a</td><td>b</td></tr><tr></tr><tr><td>c</td><td>d</td></tr></table>")
+    assert result.endswith("| a | b | \n| c | d |")
+
+
 @pytest.mark.parametrize(
     "html,suffix",
     [
@@ -2342,6 +2472,20 @@ def test_table_cell_block_elements_flattened(html, suffix, kwargs):
 def test_table_cell_keeps_nested_formatting(expected, cell, kwargs):
     "regression #829/#396: formatting/images wrapped in a block inside a cell must survive."
     assert expected in _table_md(f"<table><tr><td>{cell}</td><td>x</td></tr></table>", **kwargs)
+
+
+@pytest.mark.parametrize("fmt", ["xml", "xmltei"])
+def test_table_cell_escaping_stays_out_of_xml(fmt):
+    "GFM cell escaping is markdown-only: a nested element in a cell keeps its literal pipe."
+    doc = (
+        "<html><body><article>"
+        f"<p>{'A paragraph long enough to clear the minimum extracted size without any trouble. ' * 3}</p>"
+        "<table><tr><td><code>x | y<code>z | w</code></code></td></tr></table>"
+        "</article></body></html>"
+    )
+    result = extract(doc, output_format=fmt, include_tables=True, include_formatting=True, fast=True) or ""
+    assert "x | y z | w" in result
+    assert "\\|" not in result
 
 
 def test_include_images_does_not_truncate():
@@ -2446,7 +2590,7 @@ def test_no_duplicate_content_list_item():
     para = "This is a moderately long description paragraph exceeding the fifty character dedup threshold here."
     htmlstring = f"<html><body><article><dl><dt>Term</dt><dd><p>{para}</p></dd></dl></article></body></html>"
     cleaned = convert_tags(tree_cleaning(html.fromstring(htmlstring), options), options)
-    _, text, _ = extract_content(cleaned, options)
+    _, text = extract_content(cleaned, options)
     assert text.count(para) == 1
 
 
@@ -2540,6 +2684,19 @@ def test_prune_boilerplate_table_after_nested():
     pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"table", "p"}, options)
     assert pruned.findall(".//table") == []
     assert pruned.find(".//p") is not None
+
+
+def test_prune_strips_span_and_ref():
+    "spans are always flattened, refs only when links are not kept"
+    options = core.Extractor(config=use_config())
+    htmlstring = '<html><body><p>One <span>two</span> <ref target="/x">three</ref> four.</p></body></html>'
+    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options)
+    assert pruned.find(".//span") is None
+    assert pruned.find(".//ref") is None
+    assert trim(pruned.find(".//p").text_content()) == "One two three four."
+    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"p", "ref"}, options)
+    assert pruned.find(".//span") is None
+    assert pruned.find(".//ref") is not None
 
 
 def test_prune_keep_teasers():
@@ -2781,7 +2938,7 @@ def test_compare_extraction_justext_ratio(monkeypatch):
     jt_text = "j" * 100
     jt_body = etree.Element("body")
     etree.SubElement(jt_body, "p").text = jt_text
-    monkeypatch.setattr(external, "justext_rescue", lambda tree, options: (jt_body, jt_text, len(jt_text)))
+    monkeypatch.setattr(external, "justext_rescue", lambda tree, options: (jt_body, jt_text))
 
     options = core.Extractor()
     # empty backup keeps readability out; the <aside> triggers the justext examination
@@ -2790,12 +2947,12 @@ def test_compare_extraction_justext_ratio(monkeypatch):
 
     # 3.5x longer than the justext candidate: must be kept (adopted at the old 4x)
     kept = "a" * 350
-    _, text, _ = external.compare_extraction(empty_tree, empty_tree, body, kept, len(kept), options)
+    _, text = external.compare_extraction(empty_tree, empty_tree, body, kept, options)
     assert text == kept
 
     # 2.5x longer: justext still overrides
     replaced = "a" * 250
-    _, text, _ = external.compare_extraction(empty_tree, empty_tree, body, replaced, len(replaced), options)
+    _, text = external.compare_extraction(empty_tree, empty_tree, body, replaced, options)
     assert text == jt_text
 
 
@@ -2807,7 +2964,7 @@ def test_compare_extraction_justext_short_trigger(monkeypatch):
     def fake_justext(text):
         body = etree.Element("body")
         etree.SubElement(body, "p").text = text
-        return lambda tree, options: (body, text, len(text))
+        return lambda tree, options: (body, text)
 
     options = core.Extractor()
     options.min_extracted_size = 250  # set here: the shared config is mutated by other tests
@@ -2817,13 +2974,27 @@ def test_compare_extraction_justext_short_trigger(monkeypatch):
 
     # justext no longer than the own extraction: keep the own one (the old gate replaced it)
     monkeypatch.setattr(external, "justext_rescue", fake_justext("j" * 149))
-    _, text, _ = external.compare_extraction(empty_tree, empty_tree, clean_body, own, len(own), options)
+    _, text = external.compare_extraction(empty_tree, empty_tree, clean_body, own, options)
     assert text == own
 
     # justext actually adds text: it overrides
     monkeypatch.setattr(external, "justext_rescue", fake_justext("j" * 300))
-    _, text, _ = external.compare_extraction(empty_tree, empty_tree, clean_body, own, len(own), options)
+    _, text = external.compare_extraction(empty_tree, empty_tree, clean_body, own, options)
     assert text == "j" * 300
+
+
+def test_prefer_readability_rejects_raw_json():
+    "readability output that is raw JSON must not win on length alone (GH #632)"
+    from trafilatura.external import _prefer_readability
+
+    body = etree.fromstring("<body><p>own text</p></body>")
+    algo_body = etree.fromstring("<body><p>x</p></body>")
+    prose, json_text = "a" * 300, "{" + "a" * 299
+    for recall in (False, True):
+        options = core.Extractor(recall=recall)
+        options.min_extracted_size = 250  # set here: the shared config is mutated by other tests
+        assert _prefer_readability(body, algo_body, prose, 100, 300, options)
+        assert not _prefer_readability(body, algo_body, json_text, 100, 300, options)
 
 
 def test_list_item_block_child_single_bullet():
@@ -2870,6 +3041,15 @@ def test_nested_list_indentation():
     "regression A5: a nested list is indented and starts on its own line, not mashed onto the parent item."
     assert _md_inline("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>") == f"{_INTRO}\n\n- a\n  - b\n  - c\n- d"
     assert _md_inline("<ul><li>a<ol><li>b</li></ol></li></ul>") == f"{_INTRO}\n\n- a\n  1. b"
+    # an item holding only a sublist emits no empty marker line
+    assert _md_inline("<ul><li><ul><li>b</li></ul></li><li>d</li></ul>") == f"{_INTRO}\n\n  - b\n- d"
+    # an item wrapping a paragraph renders it once
+    assert _md_inline("<ul><li><p>a</p></li><li>b</li></ul>") == f"{_INTRO}\n\n- a\n- b"
+    # a leading line break does not split the marker from the item text
+    assert _md_inline("<ul><li><br/>a</li><li>b<br/>c</li></ul>") == f"{_INTRO}\n\n- a\n- b\nc"
+    # an item rendering nothing emits no marker for the next item to run into
+    html = '<ul><li><a href="/x"></a></li><li><a href="/y">b</a></li><li>c</li></ul>'
+    assert _md_inline(html, include_links=True) == f"{_INTRO}\n\n- [b](/y)\n- c"
 
 
 def test_loose_text_tail_not_squished():
@@ -3044,7 +3224,7 @@ def test_sanitize_tree_th_dedup():
         "<tr><td>1</td><td>2</td></tr>"
         "</table></body></html>"
     )
-    tree, _, _ = sanitize_tree(doc, opts)
+    tree, _ = sanitize_tree(doc, opts)
     head_cells = tree.xpath('.//cell[@role="head"]')
     plain_cells = [c for c in tree.xpath(".//cell") if c.get("role") != "head"]
     assert len(head_cells) == 2  # only A and B
@@ -3052,7 +3232,7 @@ def test_sanitize_tree_th_dedup():
     assert all(c.text in ("C", "D", "1", "2") for c in plain_cells)
     # regression: a table with no <th> at all must not crash and produces no head cells
     doc2 = html.fromstring("<html><body><table><tr><td>x</td></tr></table></body></html>")
-    tree2, _, _ = sanitize_tree(doc2, opts)
+    tree2, _ = sanitize_tree(doc2, opts)
     assert tree2.xpath('.//cell[@role="head"]') == []
 
 
@@ -4141,3 +4321,17 @@ def test_incompatible_options(caplog):
         core.Extractor(formatting=True, output_format="html")
         core.Extractor(formatting=True, output_format="markdown")
         assert caplog.text == ""
+
+
+def test_merge_adjacent_hi_chain():
+    "Three adjacent <hi> with the same rend collapse into one marker pair."
+    tree = etree.fromstring('<body><p><hi rend="#b">a</hi><hi rend="#b">b</hi><hi rend="#b">c</hi> tail</p></body>')
+    assert xml.xmltotxt(tree, include_formatting=True) == "**abc** tail\n"
+
+
+def test_tree_cleaning_recall_keeps_paragraphs(options):
+    "Recall undoes the deletions when they would remove every paragraph."
+    doc = "<html><body><aside><p>only text</p></aside></body></html>"
+    assert trafilatura.htmlprocessing.tree_cleaning(html.fromstring(doc), options).find(".//p") is None
+    options.focus = "recall"
+    assert trafilatura.htmlprocessing.tree_cleaning(html.fromstring(doc), options).find(".//p") is not None

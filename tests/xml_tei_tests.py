@@ -492,7 +492,7 @@ def test_replace_element_text():
     elem = Element("item")
     elem.text = "Test text"
     elem.tag = "item"
-    assert replace_element_text(elem, True) == "- Test text"
+    assert replace_element_text(elem, True) == "Test text"  # the list marker is added by the serializer
 
     elem = Element("ref")
     elem.text = "Link"
@@ -502,3 +502,10 @@ def test_replace_element_text():
     elem = Element("ref")
     elem.text = "Link"
     assert replace_element_text(elem, True) == "[Link]"
+
+
+def test_no_markdown_marker_in_merged_item_content():
+    "Merging an invalid element into its list item must not inject a markdown list marker into the TEI tree."
+    doc = fromstring("<TEI><text><body><div><list><item><foo>bar</foo></item></list></div></body></text></TEI>")
+    check_tei(doc, None)
+    assert tostring(doc, encoding="unicode").endswith("<list><item>bar</item></list></div></body></text></TEI>")
