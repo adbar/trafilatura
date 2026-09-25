@@ -300,3 +300,73 @@ def test_whole():
     trafilatura.settings.MAX_SITEMAPS_SEEN = 1
     results = sitemaps.sitemap_search("https://www.sitemaps.org", target_lang="de")
     assert len(results) == 8
+
+
+@pytest.mark.parametrize("prefix", ["", "sm:", "site-map:"])
+@pytest.mark.parametrize("declaration", ["", '<?xml version="1.0" encoding="UTF-8"?>'])
+@pytest.mark.parametrize("index", [False, True])
+def test_sitemap_namespaces(prefix, declaration, index):
+    """Namespace prefixes do not change page or nested sitemap discovery."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    namespace = f'xmlns{":" + prefix[:-1] if prefix else ""}="http://www.sitemaps.org/schemas/sitemap/0.9"'
+    url = "https://example.org/nested.xml" if index else "https://example.org/page"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.current_url = "https://example.org/sitemap.xml"
+    sitemap.content = (
+        f"{declaration}<{prefix}{root} {namespace}>"
+        f"<{prefix}{child}><{prefix}loc><![CDATA[{url}]]></{prefix}loc></{prefix}{child}>"
+        f"</{prefix}{root}>"
+    )
+    sitemap.process()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
+
+
+def test_sitemap_namespace_scope():
+    """Ignore extension locations even when a prefix is rebound locally."""
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.current_url = "https://example.org/sitemap.xml"
+    sitemap.content = (
+        '<s:urlset xmlns:s="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="urn:image">'
+        "<s:url><s:loc>https://example.org/page</s:loc>"
+        "<image:loc>https://example.org/image</image:loc>"
+        '<s:loc xmlns:s="urn:other">https://example.org/other</s:loc>'
+        "</s:url></s:urlset>"
+    )
+    sitemap.process()
+    assert sitemap.urls == ["https://example.org/page"]
+
+
+@pytest.mark.parametrize("location", ["&external;", "https://example.org/&external;", "https://example.org/<nested/>"])
+def test_sitemap_locations_do_not_expand_entities(location):
+    """Location extraction does not resolve entities or concatenate child markup."""
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = (
+        '<!DOCTYPE urlset [<!ENTITY external SYSTEM "file:///not-a-sitemap-resource">]>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"<url><loc>{location}</loc></url></urlset>"
+    )
+    sitemap.extract_sitemap_links()
+    assert not sitemap.urls
+
+
+def test_sitemap_namespace_link_limit(monkeypatch):
+    """Namespaced extraction keeps the existing maximum-location bound."""
+    monkeypatch.setattr(sitemaps, "MAX_LINKS", 1)
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = (
+        '<s:urlset xmlns:s="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        "<s:url><s:loc>https://example.org/first?a=1&amp;b=2</s:loc></s:url>"
+        "<s:url><s:loc>https://example.org/second</s:loc></s:url></s:urlset>"
+    )
+    sitemap.extract_sitemap_links()
+    assert sitemap.urls == ["https://example.org/first?a=1&b=2"]
+
+
+@pytest.mark.parametrize("content", ["", "not an XML document"])
+def test_sitemap_xml_without_a_root_is_ignored(content):
+    """Malformed input cannot yield a sitemap location."""
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = content
+    sitemap.extract_sitemap_links()
+    assert sitemap.urls == []
+    assert sitemap.sitemap_urls == []

@@ -83,6 +83,27 @@ def test_atom_extraction():
     ]  # TODO: remove slash?
 
 
+@pytest.mark.parametrize(
+    "link, expected",
+    [
+        ("<link href='https://example.org/post' rel='alternate'/>", ["https://example.org/post"]),
+        ('<link\nhref="https://example.org/post"/>', ["https://example.org/post"]),
+        ('<link href = "https://example.org/post"/>', ["https://example.org/post"]),
+        ('<link title="One > zero" href="https://example.org/post"/>', ["https://example.org/post"]),
+        (
+            '<link href="https://example.org/post" title="See href=\'https://example.org/other\'"/>',
+            ["https://example.org/post"],
+        ),
+        ('<link href="https://example.org/updates/latest" rel="self"/>', []),
+        ("<link rel='self' href='https://example.org/updates/latest'/>", []),
+        ('<link href="https://example.org/updates/latest" type="application/atom+xml"/>', []),
+    ],
+)
+def test_atom_link_attributes(link, expected):
+    params = FeedParameters("https://example.org", "example.org", "")
+    assert extract_links(f"<feed>{link}</feed>", params) == expected
+
+
 def test_rss_extraction():
     """Test link extraction from a RSS feed"""
     params = FeedParameters("http://example.org/", "example.org", "")
@@ -160,6 +181,24 @@ def test_json_extraction():
         params,
     )
     assert len(links) == 1
+
+
+@pytest.mark.parametrize("items", ["null", "false", '"invalid"', "{}"])
+def test_json_feed_invalid_items_container(items):
+    params = FeedParameters("https://example.org", "example.org", "")
+    assert extract_links(f'{{"items": {items}}}', params) == []
+
+
+def test_json_feed_skips_invalid_entries():
+    params = FeedParameters("https://example.org", "example.org", "")
+    feed = """{"items": [
+        null, 42, "invalid", {},
+        {"url": ["https://example.org/not-a-string"]},
+        {"url": 123},
+        {"url": "https://example.org/first"},
+        {"url": false, "id": "https://example.org/second"}
+    ]}"""
+    assert extract_links(feed, params) == ["https://example.org/first", "https://example.org/second"]
 
 
 def test_feeds_helpers():

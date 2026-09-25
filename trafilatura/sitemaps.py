@@ -17,6 +17,7 @@ from courlan import (
     get_hostinfo,
     lang_filter,
 )
+from lxml import etree
 
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
@@ -25,14 +26,14 @@ from .utils import safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
-LINK_REGEX = re.compile(r"<loc>(?:<!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>")
+SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9"
 XHTML_REGEX = re.compile(r"<xhtml:link.+?>", re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(
     r"(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\."
 )
 
-SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<sitemap|<urlset")
+SITEMAP_FORMAT = re.compile(r"^.{0,5}<\?xml|<(?:[\w.-]+:)?(?:sitemapindex|sitemap|urlset)\b")
 DETECT_SITEMAP_LINK = re.compile(r"\.xml(\..{2,4})?$|\.xml[?#]")
 DETECT_LINKS = re.compile(r'https?://[^\s<"]+')
 SCRUB_REGEX = re.compile(r"\?.*$|#.*$")
@@ -147,8 +148,18 @@ class SitemapObject:
         self.extract_links(XHTML_REGEX, 0, handle_lang_link)
 
     def extract_sitemap_links(self) -> None:
-        "Extract sitemap links and web page links from a sitemap file."
-        self.extract_links(LINK_REGEX, 1, self.handle_link)  # process middle part of the match tuple
+        "Extract locations in the sitemap namespace (or legacy unnamespaced XML)."
+        parser = etree.XMLParser(encoding="utf-8", resolve_entities=False, no_network=True, recover=True)
+        try:
+            tree = etree.fromstring(self.content.encode("utf-8"), parser)
+        except etree.XMLSyntaxError:
+            return
+        if tree is None:
+            return
+        for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
+            # Entity references and nested markup are not part of a location URL.
+            if len(element) == 0 and element.text and element.text.startswith("http"):
+                self.handle_link(element.text)
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
