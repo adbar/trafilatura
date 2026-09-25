@@ -265,6 +265,15 @@ def test_url():
         )
         == "https://example.org/p"
     )
+    # malformed base skipped
+    assert (
+        extract_url(
+            html.fromstring(
+                '<html><head><link rel="canonical" href="/p"/><meta property="og:url" content="//[::1"/><meta name="twitter:url" content="https://example.org"/></head><body></body></html>'
+            )
+        )
+        == "https://example.org/p"
+    )
 
 
 def test_description():

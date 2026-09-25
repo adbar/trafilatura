@@ -1,11 +1,13 @@
 """Canned-response fixture: opt in per module with
-`pytestmark = pytest.mark.usefixtures("mock_network")`."""
+`pytestmark = pytest.mark.usefixtures("mock_network")`.
+Politeness delays are disabled suite-wide."""
 
 from pathlib import Path
 
 import pytest
 
 import trafilatura.downloads as dl
+from trafilatura import feeds, settings, sitemaps, spider
 from trafilatura.downloads import Response
 
 RESOURCES_DIR = Path(__file__).parent / "resources"
@@ -46,6 +48,23 @@ CANNED_RESPONSES = {
         b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Blog feed</title>'
         b'<entry><link href="https://example.com/blog/post-1"/></entry></feed>'
     ),
+    # two candidate feeds
+    "https://multi.example.com/": (
+        b"<html><head><title>Multi</title>"
+        b'<link rel="alternate" type="application/rss+xml" href="https://multi.example.com/feed1.xml"/>'
+        b'<link rel="alternate" type="application/atom+xml" href="https://multi.example.com/feed2.xml"/>'
+        b"</head><body><p>posts</p></body></html>"
+    ),
+    "https://multi.example.com/feed1.xml": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>First feed</title>'
+        b'<entry><link href="https://multi.example.com/post-1"/></entry></feed>'
+    ),
+    "https://multi.example.com/feed2.xml": (
+        b'<?xml version="1.0" encoding="utf-8"?>'
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><title>Second feed</title>'
+        b'<entry><link href="https://multi.example.com/post-2"/></entry></feed>'
+    ),
     # a plain page with no feeds at all (exercises the "no usable feed links" path)
     "https://example.com/plain": b"<html><head><title>Plain</title></head><body><p>nothing</p></body></html>",
     # Google News fallback feed
@@ -62,7 +81,7 @@ CANNED_RESPONSES = {
 }
 
 
-def _fake_send(url, no_ssl, with_headers, config):
+def _fake_send(url, no_ssl, config):
     canned = CANNED_RESPONSES.get(url)
     if canned is None:
         return None
@@ -70,7 +89,7 @@ def _fake_send(url, no_ssl, with_headers, config):
     return Response(data, 200, final_url)
 
 
-def _fake_is_live(url):
+def _fake_is_live(url, config=None):
     return any(known.startswith(url.rstrip("/")) for known in CANNED_RESPONSES)
 
 
@@ -80,3 +99,17 @@ def mock_network(monkeypatch):
     monkeypatch.setattr(dl, "_send_pycurl_request", _fake_send)
     monkeypatch.setattr(dl, "_urllib3_is_live_page", _fake_is_live)
     monkeypatch.setattr(dl, "_pycurl_is_live_page", _fake_is_live)
+
+
+def _zero_sleep(config):
+    config.set("DEFAULT", "SLEEP_TIME", "0")
+    return config
+
+
+@pytest.fixture(autouse=True)
+def no_politeness_delay(monkeypatch):
+    "Politeness waits only slow the suite down."
+    for module in (feeds, sitemaps, spider):
+        monkeypatch.setattr(module, "sleep", lambda s: None)
+    use_config = settings.use_config
+    monkeypatch.setattr(settings, "use_config", lambda filename=None: _zero_sleep(use_config(filename)))

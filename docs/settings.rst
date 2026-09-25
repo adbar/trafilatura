@@ -28,6 +28,8 @@ The default file included in the package is `settings.cfg <https://github.com/ad
    * ``DOWNLOAD_TIMEOUT = 30`` the time (in seconds) before requests are dropped
    * ``SLEEP_TIME = 5`` time between requests (higher is better to avoid detection)
    * ``USER_AGENTS`` and ``COOKIE`` are empty by default
+   * ``SSRF_PROTECTION = on`` block requests to non-public IP addresses, set to ``off`` for intranet use cases. Inactive when a proxy is configured, and for pycurl downloads when a proxy is set by environment variables such as ``https_proxy``: hosts listed in ``no_proxy`` (e.g. ``169.254.169.254``) are then reached unchecked
+   * ``INSECURE_SSL_FALLBACK = on`` retry without certificate verification after an SSL error. This keeps sites with broken certificates reachable but lets an attacker on the network path read or alter the download, including a configured ``COOKIE``. Set to ``off`` to refuse unverified connections
 - Input
    * ``MAX_FILE_SIZE = 20000000`` maximum acceptable size of input (in bytes)
    * ``MIN_FILE_SIZE = 10`` minimum acceptable size of input (in bytes)

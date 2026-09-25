@@ -6,12 +6,12 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 from configparser import ConfigParser
 from time import sleep
+from urllib.parse import urljoin
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
     UrlStore,
     extract_links,
-    fix_relative_urls,
     get_base_url,
     is_navigation_page,
     is_not_crawlable,
@@ -42,24 +42,26 @@ MAX_KNOWN_URLS = 100000
 class CrawlParameters:
     "Store necessary information to manage a focused crawl."
 
-    __slots__ = ["base", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
+    __slots__ = ["base", "config", "i", "is_on", "known_num", "lang", "prune_xpath", "ref", "rules", "start"]
 
     def __init__(
         self,
         start: str,
         lang: str | None = None,
         rules: RobotFileParser | None = None,
-        prune_xpath: str | None = None,
+        prune_xpath: str | list[str] | None = None,
+        config: ConfigParser = DEFAULT_CONFIG,
     ) -> None:
         self.start: str = start
         self.base: str = self._get_base_url(start)
         self.ref: str = self._get_reference(start)
         self.lang: str | None = lang
-        self.rules: RobotFileParser | None = rules or get_rules(self.base)
+        self.config: ConfigParser = config
+        self.rules: RobotFileParser | None = rules or get_rules(self.base, config)
         self.i: int = 0
         self.known_num: int = 0
         self.is_on: bool = True
-        self.prune_xpath: str | None = prune_xpath
+        self.prune_xpath: str | list[str] | None = prune_xpath
 
     def _get_base_url(self, start: str) -> str:
         "Set reference domain for the crawl."
@@ -74,7 +76,7 @@ class CrawlParameters:
 
     def update_metadata(self, url_store: UrlStore) -> None:
         "Adjust crawl data based on URL store info."
-        self.is_on = bool(url_store.find_unvisited_urls(self.base))
+        self.is_on = self.base in url_store.urldict and not url_store.is_exhausted_domain(self.base)
         self.known_num = len(url_store.find_known_urls(self.base))
 
     def filter_list(self, todo: list[str] | None) -> list[str]:
@@ -88,9 +90,9 @@ class CrawlParameters:
         return (not self.rules or self.rules.can_fetch("*", link)) and self.ref in link and not is_not_crawlable(link)
 
 
-def refresh_detection(htmlstring: str, homepage: str) -> tuple[str | None, str | None]:
+def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEFAULT_CONFIG) -> tuple[str | None, str | None]:
     "Check if there could be a redirection by meta-refresh tag."
-    if '"refresh"' not in htmlstring and '"REFRESH"' not in htmlstring:
+    if "refresh" not in htmlstring.lower():
         return htmlstring, homepage
 
     html_tree = load_html(htmlstring)
@@ -99,39 +101,39 @@ def refresh_detection(htmlstring: str, homepage: str) -> tuple[str | None, str |
 
     # test meta-refresh redirection
     # https://stackoverflow.com/questions/2318446/how-to-follow-meta-refreshes-in-python
-    results = html_tree.xpath('.//meta[@http-equiv="refresh" or @http-equiv="REFRESH"]/@content')
-
-    result = results[0] if results else ""
-
-    if not result or ";" not in result:
+    result = next(
+        (e.get("content", "") for e in html_tree.iter("meta") if e.get("http-equiv", "").lower() == "refresh"),
+        "",
+    )
+    if ";" not in result:
         LOGGER.info("no redirect found: %s", homepage)
         return htmlstring, homepage
 
-    url2 = result.split(";")[1].strip().lower().replace("url=", "")
-    if not url2.startswith("http"):
-        # Relative URL, adapt
-        base_url = get_base_url(url2)
-        url2 = fix_relative_urls(base_url, url2)
+    url2 = result.split(";", 1)[1].strip()
+    if url2.lower().startswith("url="):
+        url2 = url2[4:].strip("'\"")
+    if not url2.lower().startswith("http"):
+        # relative URL, adapt using the page being processed
+        url2 = urljoin(homepage, url2)
     # second fetch
-    newhtmlstring = fetch_url(url2)
+    newhtmlstring = fetch_url(url2, config=config)
     if newhtmlstring is None:
         LOGGER.warning("failed redirect: %s", url2)
         return None, None
-    # else:
     LOGGER.info("successful redirect: %s", url2)
     return newhtmlstring, url2
 
 
 def probe_alternative_homepage(
     homepage: str,
+    config: ConfigParser = DEFAULT_CONFIG,
 ) -> tuple[str | None, str | None, str | None]:
     "Check if the homepage is redirected and return appropriate values."
-    response = fetch_response(homepage, decode=False)
+    response = fetch_response(homepage, decode=False, config=config)
     if not response or not response.data:
         return None, None, None
 
-    # get redirected URL here?
-    if response.url not in (homepage, "/"):
+    if response.url != homepage:
         LOGGER.info("followed homepage redirect: %s", response.url)
         homepage = response.url
 
@@ -139,7 +141,7 @@ def probe_alternative_homepage(
     htmlstring = decode_file(response.data)
 
     # is there a meta-refresh on the page?
-    new_htmlstring, new_homepage = refresh_detection(htmlstring, homepage)
+    new_htmlstring, new_homepage = refresh_detection(htmlstring, homepage, config)
     if new_homepage is None:  # malformed or malicious content
         return None, None, None
 
@@ -161,10 +163,10 @@ def parse_robots(robots_url: str, data: str) -> RobotFileParser | None:
     return rules
 
 
-def get_rules(base_url: str) -> RobotFileParser | None:
+def get_rules(base_url: str, config: ConfigParser = DEFAULT_CONFIG) -> RobotFileParser | None:
     "Attempt to fetch and parse robots.txt file for a given website."
     robots_url = base_url + ROBOTS_TXT_URL
-    data = fetch_url(robots_url)
+    data = fetch_url(robots_url, config=config)
     return parse_robots(robots_url, data) if data else None
 
 
@@ -195,22 +197,28 @@ def process_links(
     if not is_target_language(htmlstring, params.lang):
         return
 
-    if htmlstring and params.prune_xpath is not None:
+    if htmlstring and params.prune_xpath:
         xpaths = [params.prune_xpath] if isinstance(params.prune_xpath, str) else params.prune_xpath
         tree = load_html(htmlstring)
         if tree is not None:
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
             htmlstring = tostring(tree).decode()
 
+    try:
+        candidates = extract_links(
+            pagecontent=htmlstring,
+            url=url or params.base,
+            external_bool=False,
+            language=params.lang,
+            with_nav=True,
+            strict=False,
+        )
+    except ValueError:  # malformed relative link
+        LOGGER.warning("link extraction failed: %s", url or params.base)
+        return
+
     links, links_priority = [], []
-    for link in extract_links(
-        pagecontent=htmlstring,
-        url=url or params.base,
-        external_bool=False,
-        language=params.lang,
-        with_nav=True,
-        strict=False,
-    ):
+    for link in candidates:
         if not params.is_valid_link(link):
             continue
         if is_navigation_page(link):
@@ -232,7 +240,8 @@ def process_response(
     URL_STORE.add_urls([response.url], visited=True)
 
     # convert urllib3 response to string and proceed to link extraction
-    process_links(decode_file(response.data), params, params.base)
+    url = response.url if get_base_url(response.url) == params.base else params.base
+    process_links(decode_file(response.data), params, url)
 
 
 def init_crawl(
@@ -241,11 +250,12 @@ def init_crawl(
     rules: RobotFileParser | None = None,
     todo: list[str] | None = None,
     known: list[str] | None = None,
-    prune_xpath: str | None = None,
+    prune_xpath: str | list[str] | None = None,
+    config: ConfigParser = DEFAULT_CONFIG,
 ) -> CrawlParameters:
     """Initialize crawl by setting variables, copying values to the
     URL store and retrieving the initial page if the crawl starts."""
-    params = CrawlParameters(start, lang, rules, prune_xpath)
+    params = CrawlParameters(start, lang, rules, prune_xpath, config)
 
     # todo: just known or also visited?
     URL_STORE.add_urls(urls=known or [], visited=True)
@@ -267,25 +277,27 @@ def crawl_page(
     initial: bool = False,
 ) -> CrawlParameters:
     """Examine a webpage, extract navigation links and links."""
-    # config=DEFAULT_CONFIG
     url = URL_STORE.get_url(params.base)
     if not url:
-        params.is_on = False
-        params.known_num = len(URL_STORE.find_known_urls(params.base))
+        params.update_metadata(URL_STORE)
         return params
 
     params.i += 1
 
     if initial:
         # probe and process homepage
-        htmlstring, homepage, new_base_url = probe_alternative_homepage(url)
+        htmlstring, homepage, new_base_url = probe_alternative_homepage(url, params.config)
         if htmlstring and homepage and new_base_url:
+            # follow the site's http -> https upgrade (same host only)
+            if params.base.startswith("http://") and new_base_url == "https://" + params.base.removeprefix("http://"):
+                params.base = new_base_url
+                params.ref = "https://" + params.ref.removeprefix("http://")
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
-            # extract links on homepage
-            process_links(htmlstring, params, url=url)
+            # resolve links against the final URL unless the redirect left the crawled host
+            process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
-        response = fetch_response(url, decode=False)
+        response = fetch_response(url, decode=False, config=params.config)
         process_response(response, params)
 
     # optional backup of gathered pages without nav-pages ? ...
@@ -302,7 +314,7 @@ def focused_crawler(
     lang: str | None = None,
     config: ConfigParser = DEFAULT_CONFIG,
     rules: RobotFileParser | None = None,
-    prune_xpath: str | None = None,
+    prune_xpath: str | list[str] | None = None,
 ) -> tuple[list[str], list[str]]:
     """Basic crawler targeting pages of interest within a website.
 
@@ -318,18 +330,19 @@ def focused_crawler(
         prune_xpath: remove unwanted elements from the HTML pages using XPath.
 
     Returns:
-        List of pages to visit, deque format, possibly empty if there are no further pages to visit.
-        Set of known links.
+        List of pages to visit, possibly empty if there are no further pages to visit.
+        List of known links.
 
     """
-    params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath)
+    params = init_crawl(homepage, lang, rules, todo, known_links, prune_xpath, config)
 
-    sleep_time = URL_STORE.get_crawl_delay(params.base, default=config.getfloat("DEFAULT", "SLEEP_TIME"))
+    sleep_time = URL_STORE.get_crawl_delay(params.base, default=params.config.getfloat("DEFAULT", "SLEEP_TIME"))
 
     # visit pages until a limit is reached
     while params.is_on and params.i < max_seen_urls and params.known_num < max_known_urls:
         params = crawl_page(params)
-        sleep(sleep_time)
+        if params.is_on:
+            sleep(sleep_time)
 
     # refocus todo-list on URLs without navigation?
     todo = list(dict.fromkeys(URL_STORE.find_unvisited_urls(params.base)))

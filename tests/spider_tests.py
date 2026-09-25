@@ -6,11 +6,13 @@ Unit tests for the spidering part of the trafilatura library.
 import logging
 import sys
 from collections import deque
+from unittest.mock import patch
 
 import pytest
 from courlan import UrlStore
 
 from trafilatura import spider  # for global variables
+from trafilatura.utils import Response
 
 # from trafilatura.utils import LANGID_FLAG
 
@@ -57,8 +59,23 @@ def test_meta_redirections():
             "http://test.org/",
             "https://httpbun.com/html",
         ),
-        # relative URL
-        # ('<html><meta http-equiv="refresh" content="0; url=/html"/></html>', 'http://test.org/', 'http://test.org/html'),
+        # no "url=" prefix
+        (
+            '<html><meta http-equiv="refresh" content="0; https://httpbun.com/html"/></html>',
+            "http://test.org/",
+            "https://httpbun.com/html",
+        ),
+        # relative URLs, resolved against the page
+        (
+            '<html><meta http-equiv="refresh" content="0; url=/html"/></html>',
+            "https://httpbun.com/status/404",
+            "https://httpbun.com/html",
+        ),
+        (
+            '<html><meta http-equiv="refresh" content="0; url=200"/></html>',
+            "https://httpbun.com/status/404",
+            "https://httpbun.com/status/200",
+        ),
     ]
 
     for htmlstring, homepage, expected_homepage in tests:
@@ -97,6 +114,10 @@ def test_process_links():
     assert len(known_links) == 3
     assert len(todo) == 3
     assert todo[0] == url1
+
+    # malformed relative link
+    spider.process_links('<html><body><a href="//[::1"/></body></html>', params)
+    assert len(spider.URL_STORE.find_known_urls(base_url)) == 3
 
     # test cleaning and language
     url = "https://example.org/en/page1/?"
@@ -261,6 +282,46 @@ def test_crawl_page():
     assert len(known_links) == 1
     assert params.i == 1
     ## TODO: find a better page for language tests
+
+
+def test_scheme_upgrade():
+    "An http crawl of a site redirecting to https must follow the upgrade and keep its links."
+    spider.URL_STORE = UrlStore()
+    links = "".join(f'<a href="https://scheme-upgrade.org/p{i}.html">x</a>' for i in range(3))
+    html = f"<html><body>{links}</body></html>"
+
+    def fake_fetch_response(url, *, decode=False, config=None, **kw):
+        return Response(html.encode(), 200, url.replace("http://", "https://"))
+
+    with (
+        patch.object(spider, "fetch_response", fake_fetch_response),
+        patch.object(spider, "get_rules", lambda *a, **kw: None),
+        patch.object(spider, "sleep", lambda s: None),
+    ):
+        _todo, known_links = spider.focused_crawler("http://scheme-upgrade.org", max_seen_urls=10)
+    assert sorted(known_links) == [
+        "https://scheme-upgrade.org/",
+        "https://scheme-upgrade.org/p0.html",
+        "https://scheme-upgrade.org/p1.html",
+        "https://scheme-upgrade.org/p2.html",
+    ]
+
+
+def test_host_redirect():
+    "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
+    spider.URL_STORE = UrlStore()
+    html = '<html><body><a href="/p1.html">x</a><a href="https://www.host-redirect.org/p2.html">y</a></body></html>'
+
+    def fake_fetch_response(url, *, decode=False, config=None, **kw):
+        return Response(html.encode(), 200, "https://www.host-redirect.org/")
+
+    with (
+        patch.object(spider, "fetch_response", fake_fetch_response),
+        patch.object(spider, "get_rules", lambda *a, **kw: None),
+    ):
+        params = spider.init_crawl("http://host-redirect.org")
+    assert params.base == "http://host-redirect.org"
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
 
 
 def test_focused_crawler():

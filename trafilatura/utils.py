@@ -4,24 +4,11 @@ Module bundling functions related to HTML and text processing,
 content filtering and language detection.
 """
 
-try:
-    import gzip
-
-    HAS_GZIP = True
-except ImportError:
-    HAS_GZIP = False
-
 import logging
 import re
-
-try:
-    import zlib
-
-    HAS_ZLIB = True
-except ImportError:
-    HAS_ZLIB = False
-
-from collections.abc import Iterable, Iterator, Mapping
+import sys
+import zlib
+from collections.abc import Callable, Iterable, Iterator, Mapping
 from functools import lru_cache
 from itertools import islice
 from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
@@ -31,12 +18,22 @@ from unicodedata import normalize
 try:
     import brotli
 
-    HAS_BROTLI = True
+    # output_buffer_limit (brotli >= 1.2) is the only way to bound the output:
+    # process() otherwise returns the whole expansion, which voids the bomb cap
+    try:
+        brotli.Decompressor().process(b"", output_buffer_limit=1)
+        HAS_BROTLI = True
+    except Exception:  # pragma: no cover
+        HAS_BROTLI = False
 except ImportError:
     HAS_BROTLI = False
 
+# zstd: stdlib from 3.14 on, official backport before
 try:
-    import zstandard
+    if sys.version_info >= (3, 14):
+        from compression import zstd  # pragma: no cover
+    else:
+        from backports import zstd  # type: ignore[no-redef]
 
     HAS_ZSTD = True
 except ImportError:
@@ -57,6 +54,7 @@ except ImportError:
     cchardet_detect = None  # type: ignore[assignment]
 
 from charset_normalizer import from_bytes
+from courlan import fix_relative_urls, get_base_url
 from lxml.etree import _Element
 from lxml.html import HtmlElement, HTMLParser, fromstring
 
@@ -86,14 +84,13 @@ class Response:
         return self.html or decode_file(self.data)
 
     def store_headers(self, headerdict: Mapping[str, str]) -> None:
-        "Store response headers if required."
-        # further control steps here
+        "Store response headers with lowercase names."
         self.headers = {k.lower(): v for k, v in headerdict.items()}
 
-    def decode_data(self, decode: bool) -> None:
+    def decode_data(self, decode: bool, max_size: int | None = None) -> None:
         "Decode the bytestring in data and store a string in html."
         if decode and self.data:
-            self.html = decode_file(self.data)
+            self.html = decode_file(self.data, max_size)
 
     def as_dict(self) -> dict[str, Any]:
         "Convert the response object to a dictionary."
@@ -143,77 +140,109 @@ RE_FILTER = re.compile(
 LINK_FARM_RATIO = 0.9
 
 
-def _decompress_zstd(filecontent: bytes) -> bytes | None:
-    """Decompress a Zstandard payload, or return None if it is not intact.
-    The one-shot API only accepts frames declaring their decompressed size in
-    the header, which servers compressing their responses on the fly omit."""
-    chunks: list[bytes] = []
-    remaining = filecontent
-    while remaining:
-        decompressor = zstandard.ZstdDecompressor().decompressobj()
-        try:
-            chunks.append(decompressor.decompress(remaining))
-        except zstandard.ZstdError:
-            return None
-        # a truncated frame decompresses to a plausible-looking prefix, reject it
-        if not decompressor.eof:
-            return None
-        remaining = decompressor.unused_data
-    return b"".join(chunks)
+def _capped(chunks: Iterable[bytes], max_size: int) -> bytes:
+    "Accumulate decompressed chunks, rejecting payloads over max_size."
+    out = bytearray()
+    for chunk in chunks:
+        out += chunk
+        if len(out) > max_size:
+            raise ValueError("decompressed content exceeds MAX_FILE_SIZE")
+    return bytes(out)
 
 
-def handle_compressed_file(filecontent: bytes) -> bytes:
+# bgzip output needs ~320 members for 20MB
+MAX_MEMBERS = 1000
+
+
+def _bounded_members(raw: bytes, make_dec: Callable[[], Any], max_size: int) -> bytes:
+    "Decompress a concatenated multi-member stream, rejecting output over max_size."
+    out = bytearray()
+    for _ in range(MAX_MEMBERS):
+        dec = make_dec()
+        # single capped call, no flush(): pending input must stay compressed or the cap is void
+        out += dec.decompress(raw, max_size + 1 - len(out))
+        # covers cap-truncated, oversized, and incomplete streams
+        if len(out) > max_size or not dec.eof:
+            raise ValueError("oversized or incomplete compressed stream")
+        raw = dec.unused_data.lstrip(b"\0")  # NUL padding as gzip.decompress, copied each round
+        if not raw:
+            return bytes(out)
+    raise ValueError("too many compressed members")
+
+
+def _bounded_inflate(raw: bytes, max_size: int) -> bytes:
+    "Decompress a single zlib/deflate stream, ignoring trailing bytes as zlib.decompress does."
+    dec = zlib.decompressobj(zlib.MAX_WBITS)
+    out = dec.decompress(raw, max_size + 1)
+    if len(out) > max_size or not dec.eof:
+        raise ValueError("oversized or incomplete compressed stream")
+    return out
+
+
+def _bounded_unbrotli(raw: bytes, max_size: int) -> bytes:
+    "Decompress a brotli stream, output-capped at max_size."
+    dec = brotli.Decompressor()
+    out: bytes = dec.process(raw, output_buffer_limit=max_size + 1)
+    # is_finished(): non-brotli input can yield b"" without raising
+    if len(out) > max_size or not dec.is_finished():
+        raise ValueError("oversized or incomplete compressed stream")
+    return out
+
+
+def handle_compressed_file(filecontent: bytes, max_size: int | None = None) -> bytes:
     """
     Don't trust response headers and try to decompress a binary string
-    with a cascade of installed packages. Use magic numbers when available.
+    with a cascade of installed packages, capped at max_size (the configured
+    MAX_FILE_SIZE by default) to guard against decompression bombs.
+    Use magic numbers when available.
     """
     if not isinstance(filecontent, bytes):
         return filecontent
 
+    if max_size is None:
+        # deferred: circular import (settings imports utils)
+        from .settings import DEFAULT_CONFIG  # noqa: PLC0415
+
+        max_size = DEFAULT_CONFIG.getint("DEFAULT", "MAX_FILE_SIZE")
+
+    # magic-numbered formats are terminal: failure means a corrupt file, not another format
     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    if HAS_GZIP and filecontent[:3] == b"\x1f\x8b\x08":
+    if filecontent[:3] == b"\x1f\x8b\x08":
         try:
-            return gzip.decompress(filecontent)
-        except Exception:  # EOFError, OSError, gzip.BadGzipFile
-            LOGGER.warning("invalid GZ file")
-    # try zstandard
-    if HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
-        decompressed = _decompress_zstd(filecontent)
-        if decompressed is not None:
-            return decompressed
-        LOGGER.warning("invalid ZSTD file")
-    # try brotli
-    if HAS_BROTLI:
+            return _bounded_members(filecontent, lambda: zlib.decompressobj(31), max_size)  # 31 = gzip header
+        except (zlib.error, ValueError):
+            LOGGER.warning("invalid or oversized GZ file")
+    elif HAS_ZSTD and filecontent[:4] == b"\x28\xb5\x2f\xfd":
         try:
-            return cast("bytes", brotli.decompress(filecontent))
-        except brotli.error:
-            pass  # logging.debug('invalid Brotli file')
-    # try zlib/deflate
-    if HAS_ZLIB:
+            return _bounded_members(filecontent, zstd.ZstdDecompressor, max_size)
+        except (zstd.ZstdError, ValueError):
+            LOGGER.warning("invalid or oversized ZSTD file")
+    # no magic numbers: try brotli, then zlib/deflate speculatively
+    else:
+        if HAS_BROTLI:
+            try:
+                return _bounded_unbrotli(filecontent, max_size)
+            except (brotli.error, ValueError):
+                pass
+        # single stream: multi-member concatenation is a gzip/zstd property, not a deflate one
         try:
-            return zlib.decompress(filecontent)
-        except zlib.error:
+            return _bounded_inflate(filecontent, max_size)
+        except (zlib.error, ValueError):
             pass
 
     # return content unchanged if decompression failed
     return filecontent
 
 
-def isutf8(data: bytes) -> bool:
-    """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
-    try:
-        data.decode("UTF-8")
-    except UnicodeDecodeError:
-        return False
-    return True
-
-
 def detect_encoding(bytesobject: bytes) -> list[str]:
     """ "Read all input or first chunk and return a list of encodings"""
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
-    if isutf8(bytesobject):
+    try:
+        bytesobject.decode("UTF-8")
         return ["utf-8"]
+    except UnicodeDecodeError:
+        pass
     guesses = []
     # additional module
     if cchardet_detect is not None:
@@ -232,29 +261,28 @@ def detect_encoding(bytesobject: bytes) -> list[str]:
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
-def decode_file(filecontent: bytes | str) -> str:
-    """Check if the bytestring could be GZip and eventually decompress it,
-    guess bytestring encoding and try to decode to Unicode string.
-    Resort to destructive conversion otherwise."""
+def decode_file(filecontent: bytes | str, max_size: int | None = None) -> str:
+    """Decompress the bytestring if necessary, guess its encoding and
+    decode to a Unicode string, resorting to destructive conversion otherwise."""
     if isinstance(filecontent, str):
         return filecontent
 
-    htmltext = None
+    filecontent = handle_compressed_file(filecontent, max_size)
+    # fast path: valid UTF-8 (avoid decoding twice via detect_encoding)
+    try:
+        return filecontent.decode("utf-8")
+    except UnicodeDecodeError:
+        pass
 
-    # GZip and Brotli test
-    filecontent = handle_compressed_file(filecontent)
     # encoding
     for guessed_encoding in detect_encoding(filecontent):
         try:
-            htmltext = filecontent.decode(guessed_encoding)
+            return filecontent.decode(guessed_encoding)
         except (LookupError, UnicodeDecodeError):  # noqa: PERF203 -- VISCII: lookup
             LOGGER.warning("wrong encoding detected: %s", guessed_encoding)
-            htmltext = None
-        else:
-            break
 
-    # return original content if nothing else succeeded
-    return htmltext or str(filecontent, encoding="utf-8", errors="replace")
+    # destructive fallback if nothing else succeeded
+    return str(filecontent, encoding="utf-8", errors="replace")
 
 
 def is_dubious_html(beginning: str) -> bool:
@@ -289,7 +317,7 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     return tree
 
 
-def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
+def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
 
@@ -309,7 +337,7 @@ def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
     # start processing
     tree = None
     # try to guess encoding and decode file: if None then keep original
-    htmlobject = decode_file(htmlobject)
+    htmlobject = decode_file(htmlobject, max_size)
     # sanity checks
     beginning = htmlobject[:50].lower()
     check_flag = is_dubious_html(beginning)
@@ -334,6 +362,22 @@ def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
     return tree
+
+
+def safe_base_url(url: str) -> str:
+    "Get the base URL, empty string if malformed."
+    try:
+        return get_base_url(url)
+    except ValueError:
+        return ""
+
+
+def safe_relative_url(baseurl: str, url: str) -> str:
+    "Resolve a link against the base URL, empty string if malformed."
+    try:
+        return fix_relative_urls(baseurl, url)
+    except ValueError:
+        return ""
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111
