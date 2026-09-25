@@ -59,6 +59,12 @@ def test_meta_redirections():
             "http://test.org/",
             "https://httpbun.com/html",
         ),
+        # no "url=" prefix
+        (
+            '<html><meta http-equiv="refresh" content="0; https://httpbun.com/html"/></html>',
+            "http://test.org/",
+            "https://httpbun.com/html",
+        ),
         # relative URLs, resolved against the page
         (
             '<html><meta http-equiv="refresh" content="0; url=/html"/></html>',
@@ -108,6 +114,10 @@ def test_process_links():
     assert len(known_links) == 3
     assert len(todo) == 3
     assert todo[0] == url1
+
+    # malformed relative link
+    spider.process_links('<html><body><a href="//[::1"/></body></html>', params)
+    assert len(spider.URL_STORE.find_known_urls(base_url)) == 3
 
     # test cleaning and language
     url = "https://example.org/en/page1/?"

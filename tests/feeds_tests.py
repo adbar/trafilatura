@@ -111,6 +111,12 @@ def test_rss_extraction():
     params = FeedParameters("http://example.org", "example.org", "")
     assert len(extract_links(f"{XMLDECL}<link>https://example.org</link>", params)) == 0
 
+    # malformed link is skipped
+    params = FeedParameters("https://example.org", "example.org", "")
+    assert extract_links(f"{XMLDECL}<link>http://[::1</link><link>https://example.org/article1</link>", params) == [
+        "https://example.org/article1"
+    ]
+
     params = FeedParameters("https://www.dwds.de", "dwds.de", "https://www.dwds.de")
     assert extract_links(f"{XMLDECL}<link>/api/feed/themenglossar/Corona</link>", params) == [
         "https://www.dwds.de/api/feed/themenglossar/Corona"
@@ -168,6 +174,7 @@ def test_feeds_helpers():
 
     # nothing useful
     assert len(determine_feed("", params)) == 0
+    assert determine_feed('<html><link rel="alternate" type="application/rss+xml" href="http://[::1"/></html>', params) == []
     assert (
         len(
             determine_feed(

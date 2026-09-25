@@ -23,7 +23,7 @@ try:
     try:
         brotli.Decompressor().process(b"", output_buffer_limit=1)
         HAS_BROTLI = True
-    except Exception:
+    except Exception:  # pragma: no cover
         HAS_BROTLI = False
 except ImportError:
     HAS_BROTLI = False
@@ -54,6 +54,7 @@ except ImportError:
     cchardet_detect = None  # type: ignore[assignment]
 
 from charset_normalizer import from_bytes
+from courlan import fix_relative_urls, get_base_url
 from lxml.etree import _Element
 from lxml.html import HtmlElement, HTMLParser, fromstring
 
@@ -361,6 +362,22 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
     return tree
+
+
+def safe_base_url(url: str) -> str:
+    "Get the base URL, empty string if malformed."
+    try:
+        return get_base_url(url)
+    except ValueError:
+        return ""
+
+
+def safe_relative_url(baseurl: str, url: str) -> str:
+    "Resolve a link against the base URL, empty string if malformed."
+    try:
+        return fix_relative_urls(baseurl, url)
+    except ValueError:
+        return ""
 
 
 @lru_cache(maxsize=2**14)  # sys.maxunicode = 1114111

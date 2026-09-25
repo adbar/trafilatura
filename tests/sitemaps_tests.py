@@ -48,6 +48,12 @@ def test_extraction():
     assert len(sitemap.sitemap_urls) == 1
     assert not sitemap.urls
 
+    # malformed link
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", ["https://example.org/sitemap.xml"])
+    sitemap.handle_link("http://[::1")
+    assert len(sitemap.sitemap_urls) == 1
+    assert not sitemap.urls
+
     sitemap = sitemaps.SitemapObject("https://example.org", "example.org", ["https://example.org/sitemap.xml"])
     sitemap.handle_link("https://mydomain")
     assert len(sitemap.sitemap_urls) == 1
@@ -217,6 +223,9 @@ def test_robotstxt():
     assert not sitemaps.extract_robots_sitemaps("# test" * 10000, baseurl)
     assert sitemaps.extract_robots_sitemaps("sitemap: https://example.org/sitemap.xml", baseurl) == [
         "https://example.org/sitemap.xml"
+    ]
+    assert sitemaps.extract_robots_sitemaps("sitemap: http://[::1\nsitemap: /sitemap.xml", baseurl) == [
+        "https://httpbun.com/sitemap.xml"
     ]
 
 

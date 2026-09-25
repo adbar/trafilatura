@@ -45,6 +45,7 @@ from trafilatura.utils import (
     is_dubious_html,
     is_image_file,
     is_in_table_cell,
+    is_last_element_in_item,
     language_classifier,
     line_processing,
     load_html,
@@ -991,6 +992,14 @@ def test_links(options):
     assert "[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough." in extract(
         copy(mydoc), url="https://www.example.com/", include_links=True, fast=True, config=ZERO_CONFIG
     )
+    # malformed target or page URL, target kept as is
+    mydoc = html.fromstring(
+        '<html><body><p><a href="http://[::1">Test link text.</a> This part of the text has to be long enough.</p></body></html>'
+    )
+    for url in ("https://www.example.com/", "https://ex]ample.org/"):
+        assert "[Test link text.](http://[::1) This part of the text has to be long enough." in extract(
+            copy(mydoc), url=url, include_links=True, fast=True, config=ZERO_CONFIG
+        )
     # link without target
     mydoc = html.fromstring(
         "<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>"
@@ -1835,6 +1844,14 @@ def test_is_in_table_cell():
     outside = tree.xpath("./p")[0]
     assert is_in_table_cell(inside) is True
     assert is_in_table_cell(outside) is False  # buggy '//ancestor::cell' would return True
+
+
+def test_is_last_element_in_item():
+    tree = etree.fromstring("<body><list><item>a<hi>b</hi><hi>c</hi></item></list><p>d</p></body>")
+    first, last = tree.xpath(".//hi")
+    assert is_last_element_in_item(last) is True
+    assert is_last_element_in_item(first) is False
+    assert is_last_element_in_item(tree.find("p")) is False
 
 
 _COLSPAN_CONTENT_BASE = "<tr><td>a</td><td>b</td><td>c</td></tr>"

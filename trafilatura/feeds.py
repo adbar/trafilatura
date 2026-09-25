@@ -13,7 +13,6 @@ from courlan import (
     check_url,
     clean_url,
     filter_urls,
-    fix_relative_urls,
     get_hostinfo,
     is_valid_url,
 )
@@ -21,7 +20,7 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
 from .settings import DEFAULT_CONFIG, MAX_FEEDS_CHECKED, MAX_LINKS
-from .utils import load_html
+from .utils import load_html, safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
@@ -101,7 +100,7 @@ def handle_link_list(linklist: list[str], params: FeedParameters) -> list[str]:
     output_links = []
 
     for item in sorted(set(linklist)):
-        link = fix_relative_urls(params.base, item)
+        link = safe_relative_url(params.base, item)
         checked = check_url(link, language=params.lang)
 
         if checked is not None:
@@ -191,7 +190,7 @@ def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     # refine
     output_urls = []
     for link in dict.fromkeys(feed_urls):
-        link = fix_relative_urls(params.base, link)
+        link = safe_relative_url(params.base, link)
         link = clean_url(link)
         if link and link != params.ref and is_valid_url(link) and not BLACKLIST.search(link):
             output_urls.append(link)

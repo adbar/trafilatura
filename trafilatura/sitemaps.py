@@ -14,7 +14,6 @@ from courlan import (
     clean_url,
     extract_domain,
     filter_urls,
-    fix_relative_urls,
     get_hostinfo,
     lang_filter,
 )
@@ -22,6 +21,7 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url, is_live_page
 from .settings import DEFAULT_CONFIG, MAX_LINKS, MAX_SITEMAPS_SEEN
+from .utils import safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ class SitemapObject:
         if link == self.current_url:  # safety check
             return
         # fix, check, clean and normalize
-        link = fix_relative_urls(self.base_url, link)
+        link = safe_relative_url(self.base_url, link)
         # filter before cleaning: slash-stripping can hide language markers
         if not lang_filter(link, self.target_lang):
             return
@@ -289,7 +289,7 @@ def extract_robots_sitemaps(robotstxt: str | None, baseurl: str) -> list[str]:
                 candidates.append(line_parts[1].strip())
 
     candidates = list(dict.fromkeys(candidates))
-    sitemapurls = [fix_relative_urls(baseurl, u) for u in candidates if u]
+    sitemapurls = [url for u in candidates if u and (url := safe_relative_url(baseurl, u))]
 
     LOGGER.debug("%s sitemaps found in robots.txt", len(sitemapurls))
     return sitemapurls
