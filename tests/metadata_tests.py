@@ -5,6 +5,7 @@ Unit tests for the metadata parts.
 import logging
 import sys
 
+import pytest
 from lxml import html
 from lxml.etree import XPath
 
@@ -481,6 +482,21 @@ def test_process_parent_keeps_good_sitename():
     metadata.sitename = "A Long Established Site Name"
     process_parent([{"publisher": {"@type": "Organization", "name": "Pub"}}], metadata)
     assert metadata.sitename == "A Long Established Site Name"
+
+
+@pytest.mark.parametrize("rel", ["license noopener", "noopener license noreferrer", "LICENSE", "\tlicense\nnoopener"])
+def test_license_rel_tokens(rel):
+    metadata = extract_metadata(
+        f'<html><body><a href="https://example.org/terms" rel="{rel}">Publication terms</a></body></html>'
+    )
+    assert metadata.license == "Publication terms"
+
+
+def test_license_rel_requires_complete_token():
+    metadata = extract_metadata(
+        '<html><body><a href="https://example.org/terms" rel="not-license">Publication terms</a></body></html>'
+    )
+    assert metadata.license is None
 
 
 def test_license():
