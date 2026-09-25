@@ -87,15 +87,15 @@ def compare_extraction(
     raw_tree: HtmlElement,
     body: _Element,
     text: str,
-    len_text: int,
     options: Extractor,
-) -> tuple[_Element, str, int]:
+) -> tuple[_Element, str]:
     """Decide whether to choose own or external extraction based on a series of heuristics.
     ``raw_tree`` (uncleaned) feeds readability; ``cleaned_tree`` (tree_cleaning'd, unconverted)
     feeds justext."""
+    len_text = len(text)
     # bypass for recall
     if options.focus == "recall" and len_text > options.min_extracted_size * 10:
-        return body, text, len_text
+        return body, text
 
     jt_result = False
     # prior cleaning
@@ -118,7 +118,8 @@ def compare_extraction(
     unclean = bool(body.xpath(SANITIZED_XPATH))
     if unclean or len_text < options.min_extracted_size:
         LOGGER.debug("unclean or short document triggering justext examination: %s", options.source)
-        body2, text2, len_text2 = justext_rescue(cleaned_tree, options)
+        body2, text2 = justext_rescue(cleaned_tree, options)
+        len_text2 = len(text2)
         # unclean: allow shorter (boilerplate dropped), guard image-heavy pages;
         # merely short: must add text, len_text2 > len_text is implied (#896)
         if unclean:
@@ -134,9 +135,9 @@ def compare_extraction(
 
     # post-processing: remove unwanted sections
     if use_readability and not jt_result:
-        body, text, len_text = sanitize_tree(body, options)  # type: ignore[arg-type]
+        body, text = sanitize_tree(body, options)  # type: ignore[arg-type]
 
-    return body, text, len_text
+    return body, text
 
 
 def jt_stoplist_init() -> tuple[str]:
@@ -181,17 +182,16 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
     return result_body
 
 
-def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, int]:
+def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
     # additional cleaning
     tree = basic_cleaning(tree)
     # proceed
     temppost_algo = try_justext(tree, options.url, options.lang)
-    temp_text = trim(" ".join(temppost_algo.itertext()))
-    return temppost_algo, temp_text, len(temp_text)
+    return temppost_algo, trim(" ".join(temppost_algo.itertext()))
 
 
-def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str, int]:
+def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)
@@ -212,15 +212,8 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
                 if c.tag == "th":
                     c.set("role", "head")
     for elem in cleaned_tree.iter("td", "th", "tr"):
-        if elem.tag == "tr":
-            elem.tag = "row"
-        elif elem.tag in ("td", "th"):
-            elem.tag = "cell"
+        elem.tag = "row" if elem.tag == "tr" else "cell"
     # 3. sanitize
-    sanitization_list = [
-        tagname for tagname in [element.tag for element in set(cleaned_tree.iter("*"))] if tagname not in TEI_VALID_TAGS
-    ]
-    strip_tags(cleaned_tree, *sanitization_list)  # type: ignore[arg-type]
+    strip_tags(cleaned_tree, *({str(elem.tag) for elem in cleaned_tree.iter("*")} - TEI_VALID_TAGS))
     # 4. return
-    text = trim(" ".join(cleaned_tree.itertext()))
-    return cleaned_tree, text, len(text)
+    return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))

@@ -16,16 +16,7 @@ from pathlib import Path
 from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring, tostring
 
 from .settings import INLINE_CONSUMING, INLINE_FORMATTABLE, Document, Extractor
-from .utils import (
-    is_element_in_item,
-    is_in_table_cell,
-    is_last_element_in_cell,
-    is_last_element_in_item,
-    item_if_first_element,
-    sanitize,
-    sanitize_tree,
-    text_chars_test,
-)
+from .utils import sanitize, sanitize_tree, text_chars_test
 
 LOGGER = logging.getLogger(__name__)
 PKG_VERSION = version("trafilatura")
@@ -158,7 +149,8 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
 
 def remove_empty_elements(tree: _Element) -> _Element:
     """Remove text elements without text."""
-    for element in tree.iter("*"):  # 'head', 'hi', 'item', 'p'
+    # bottom-up: document order never revisits a parent that its own children just emptied
+    for element in reversed(list(tree.iter("*"))):  # 'head', 'hi', 'item', 'p'
         if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
             parent = element.getparent()
             # not root element or element which is naturally empty
@@ -252,11 +244,7 @@ def add_xml_meta(output: _Element, docmeta: Document) -> None:
 
 def build_tei_output(docmeta: Document) -> _Element:
     """Build TEI-XML output tree based on extracted information"""
-    # build TEI tree
-    output = write_teitree(docmeta)
-    # filter output (strip unwanted elements), just in case
-    # check and repair
-    return check_tei(output, docmeta.url)
+    return check_tei(write_teitree(docmeta), docmeta.url)
 
 
 def check_tei(xmldoc: _Element, url: str | None) -> _Element:
@@ -282,8 +270,6 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
     for elem in xmldoc.findall(".//text/body//*"):
         # check elements
         if elem.tag not in TEI_VALID_TAGS:
-            # disable warnings for chosen categories
-            # if element.tag not in ('div', 'span'):
             LOGGER.warning("not a TEI element, removing: %s %s", elem.tag, url)
             merge_with_parent(elem)
             continue
@@ -292,8 +278,6 @@ def check_tei(xmldoc: _Element, url: str | None) -> _Element:
         elif elem.tag == "div":
             _handle_text_content_of_div_nodes(elem)
             _wrap_unwanted_siblings_of_div(elem)
-            # if len(elem) == 0:
-            #    elem.getparent().remove(elem)
         # check attributes
         for attribute in [a for a in elem.attrib if a not in TEI_VALID_ATTRS]:
             LOGGER.warning("not a valid TEI attribute, removing: %s in %s %s", attribute, elem.tag, url)
@@ -391,14 +375,12 @@ def _strip_block_whitespace(element: _Element) -> None:
 
 def _merge_adjacent_hi(element: _Element) -> None:
     "Merge adjacent <hi> siblings with identical rend into one to avoid **X** **Y** patterns."
-    for child in list(element):
+    for child in element:
         _merge_adjacent_hi(child)
-
+    # reverse pass: removing nxt never disturbs the pairs still to be visited
     children = list(element)
-    i = 0
-    while i < len(children) - 1:
-        curr = children[i]
-        nxt = children[i + 1]
+    for i in range(len(children) - 2, -1, -1):
+        curr, nxt = children[i], children[i + 1]
         if (
             curr.tag == "hi"
             and nxt.tag == "hi"
@@ -411,9 +393,6 @@ def _merge_adjacent_hi(element: _Element) -> None:
             curr.text = (curr.text or "") + (curr.tail or "") + (nxt.text or "")
             curr.tail = nxt.tail
             element.remove(nxt)
-            children = list(element)
-        else:
-            i += 1
 
 
 def _escape_inline_specials(text: str) -> str:
@@ -482,16 +461,8 @@ def _last_char(returnlist: list[str]) -> str:
     return returnlist[-1][-1:] if returnlist else ""
 
 
-def _list_marker(element: _Element, in_item: bool | None = None, include_formatting: bool = True) -> str:
-    "Markdown marker for the first element of a list item ('N. '/'- ' with nesting indent), else '' (e.g. in a cell)."
-    # outside any list item there is no marker and no need to walk ancestors
-    if in_item is None:
-        in_item = is_element_in_item(element)
-    if not in_item:
-        return ""
-    item = item_if_first_element(element)
-    if item is None or is_in_table_cell(element):
-        return ""
+def _list_marker(item: _Element, include_formatting: bool = True) -> str:
+    "Markdown marker of a list item: 'N. ' or '- ' with nesting indent."
     indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
     parent = item.getparent()
     # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
@@ -561,17 +532,35 @@ def _collect_inline_text(element: _Element, include_formatting: bool) -> str:
     return "".join(parts)
 
 
-def _escape_cell(text: str) -> str:
-    "Escape characters that would break a GFM table row: pipes split columns, newlines split rows."
-    return text.replace("|", "\\|").replace("\n", " ")
+def _closes_container(element: _Element, tag: str) -> bool:
+    "Whether the element carries the trailing content of its enclosing item/cell."
+    if element.tag == tag:
+        return len(element) == 0
+    nxt = element.getnext()
+    # a following item closes the current one, any other sibling continues it
+    return nxt is None or (tag == "item" and nxt.tag == "item")
 
 
-def replace_element_text(
-    element: _Element,
-    include_formatting: bool,
-    in_item: bool | None = None,
-    in_cell: bool = False,
-) -> str:
+def _item_needs_marker(item: _Element) -> bool:
+    "Whether the item renders content of its own before any sublist (whose items carry their markers)."
+    if text_chars_test(item.text):
+        return True
+    for child in item:
+        if child.tag == "list":
+            return False
+        # iter() includes the child itself, itertext() excludes its tail
+        if text_chars_test("".join(child.itertext()) + (child.tail or "")) or next(child.iter("graphic"), None) is not None:
+            return True
+    return False
+
+
+def _escape_cell(text: str, in_cell: bool = True) -> str:
+    """Escape characters that would break a GFM table row: pipes split columns, newlines split rows.
+    Serializer only: replace_element_text also runs tree-level (merge_with_parent)."""
+    return text.replace("|", "\\|").replace("\n", " ") if in_cell else text
+
+
+def replace_element_text(element: _Element, include_formatting: bool, in_cell: bool = False) -> str:
     """Determine element text based on just the text of the element. One must deal with the tail separately."""
     if _consumes_inline_children(element):
         elem_text = _collect_inline_text(element, include_formatting)
@@ -629,13 +618,6 @@ def replace_element_text(
         if elem_text and len(element):
             elem_text = f"{elem_text} "
 
-    # within lists
-    elem_text = f"{_list_marker(element, in_item, include_formatting)}{elem_text}"
-
-    # escape chars that would break GFM table cell boundaries
-    if in_cell:
-        elem_text = _escape_cell(elem_text)
-
     return elem_text
 
 
@@ -660,8 +642,11 @@ def process_element(
     _consumes_children = _consumes_inline_children(element)
     _renders_inline = bool(element.text) or _consumes_children
 
+    if element.tag == "item" and not in_cell and _item_needs_marker(element):
+        returnlist.append(_list_marker(element, include_formatting))
+
     if _renders_inline:
-        returnlist.append(replace_element_text(element, include_formatting, in_item, in_cell))
+        returnlist.append(_escape_cell(replace_element_text(element, include_formatting, in_cell), in_cell))
     elif include_formatting and element.tag == "head" and not in_cell and len(element):
         # heading starting with an inline child still needs its # prefix (children render below)
         returnlist.append(f"{_heading_prefix(element)} ")
@@ -684,14 +669,9 @@ def process_element(
 
     if not _renders_inline:
         if element.tag == "graphic":
-            image = f"{_list_marker(element, in_item, include_formatting)}{_image_markup(element, include_formatting)}"
-            if in_cell:
-                image = _escape_cell(image)
-            returnlist.append(image)
-
+            returnlist.append(_escape_cell(_image_markup(element, include_formatting), in_cell))
             if element.tail:
-                tail_text = f" {element.tail.strip()}"
-                returnlist.append(_escape_cell(tail_text) if in_cell else tail_text)
+                returnlist.append(_escape_cell(f" {element.tail.strip()}", in_cell))
         # newlines for textless elements
         elif element.tag in NEWLINE_ELEMS:
             # add line after table head
@@ -700,22 +680,29 @@ def process_element(
                 # rows are materialized to full width upstream; draw the head separator below
                 if any(cell.get("role") == "head" for cell in cells):
                     returnlist.append(f"\n|{'---|' * len(cells)}\n")
-            elif not in_cell:
-                # block elements inside a cell must not inject a row-breaking newline
+            # block elements inside a cell must not inject a row-breaking newline,
+            # a leading line break in an item must not split the marker from the text
+            elif not in_cell and not (
+                element.tag == "lb"
+                and in_item
+                and element.getprevious() is None
+                and not getattr(element.getparent(), "text", None)
+            ):
                 returnlist.append("\n")
         elif element.tag not in ("cell", "item"):
             # cells still need to append vertical bars
             return
 
-    last_in_item = in_item and is_last_element_in_item(element)
+    last_in_item = in_item and _closes_container(element, "item")
+    last_in_cell = in_cell and _closes_container(element, "cell")
     if element.tag in NEWLINE_ELEMS and not in_cell and not in_item:
         returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
     elif element.tag == "cell":
         returnlist.append(" | ")
-    elif element.tag in ("head", "item") and in_cell and not is_last_element_in_cell(element):
+    elif element.tag in ("head", "item") and in_cell and not last_in_cell:
         # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
         returnlist.append(" ")
-    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not is_last_element_in_cell(element):
+    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not last_in_cell:
         returnlist.append(" ")
 
     # text that comes after the closing tag
@@ -794,16 +781,10 @@ def write_teitree(docmeta: Document) -> _Element:
     write_fullheader(teidoc, docmeta)
     textelem = SubElement(teidoc, "text")
     textbody = SubElement(textelem, "body")
-    # post
-    postbody = clean_attributes(docmeta.body)
-    postbody.tag = "div"
-    postbody.set("type", "entry")
-    textbody.append(postbody)
-    # comments
-    commentsbody = clean_attributes(docmeta.commentsbody)
-    commentsbody.tag = "div"
-    commentsbody.set("type", "comments")
-    textbody.append(commentsbody)
+    for body, kind in ((docmeta.body, "entry"), (docmeta.commentsbody, "comments")):
+        clean_attributes(body).tag = "div"
+        body.set("type", kind)
+        textbody.append(body)
     return teidoc
 
 
@@ -813,7 +794,7 @@ def _define_publisher_string(docmeta: Document) -> str:
         publisher = f"{docmeta.sitename.strip()} ({docmeta.hostname})"
     else:
         publisher = docmeta.hostname or docmeta.sitename or "N/A"
-        if LOGGER.isEnabledFor(logging.WARNING) and publisher == "N/A":
+        if publisher == "N/A":
             LOGGER.warning("no publisher for URL %s", docmeta.url)
     return publisher
 
@@ -921,9 +902,7 @@ def _handle_unwanted_tails(element: _Element) -> None:
     else:
         new_sibling = Element("p")
         new_sibling.text = element.tail
-        parent = element.getparent()
-        if parent is not None:
-            parent.insert(parent.index(element) + 1, new_sibling)
+        element.addnext(new_sibling)
     element.tail = None
 
 
@@ -986,7 +965,7 @@ def _move_element_one_level_up(element: _Element) -> None:
     new_elem = Element("p")
     new_elem.extend(list(element.itersiblings()))
 
-    grand_parent.insert(grand_parent.index(parent) + 1, element)
+    parent.addnext(element)
 
     tail = element.tail.strip() if element.tail else None
     if tail:
@@ -999,7 +978,7 @@ def _move_element_one_level_up(element: _Element) -> None:
         parent.tail = None
 
     if len(new_elem) > 0 or new_elem.text or new_elem.tail:
-        grand_parent.insert(grand_parent.index(element) + 1, new_elem)
+        element.addnext(new_elem)
 
     if len(parent) == 0 and not parent.text:
         grand_parent.remove(parent)
