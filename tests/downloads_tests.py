@@ -385,6 +385,16 @@ def test_fetch_response_decode_cap():
         assert not dl.fetch_response("https://example.org/", decode=True).html.startswith("000")
 
 
+def test_extract_decode_cap():
+    "The user's MAX_FILE_SIZE reaches the decompression of bytes passed to extract."
+    body = "<p>" + "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " * 5 + "</p>"
+    gz = gzip.compress(f"<html><body><article>{body}</article></body></html>".encode())
+    assert "Lorem ipsum" in extract(gz)
+    lowered = use_config()
+    lowered.set("DEFAULT", "MAX_FILE_SIZE", "100")
+    assert extract(gz, config=lowered) is None
+
+
 def test_pycurl_ssl_retry(monkeypatch):
     "An SSL-class pycurl error triggers one retry with verification disabled."
     if not HAS_PYCURL:
@@ -414,6 +424,14 @@ def test_pycurl_ssl_retry(monkeypatch):
     assert resp.data == b"<html>ok</html>"
     assert curl.perform.call_count == 2
 
+    # fallback disabled: no unverified retry
+    config = use_config()
+    config.set("DEFAULT", "INSECURE_SSL_FALLBACK", "off")
+    state.clear()
+    curl.perform.reset_mock()
+    assert dl.fetch_response("https://ssl.example/", config=config) is None
+    assert curl.perform.call_count == 1
+
 
 @pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
 def test_pycurl_status_retry(monkeypatch):
@@ -431,6 +449,15 @@ def test_pycurl_status_retry(monkeypatch):
     assert resp.status == 200
     assert curl.perform.call_count == 2
     assert naps == [15.0]  # backoff_factor = DOWNLOAD_TIMEOUT / 2
+
+    # retries exhausted: last status kept
+    curl.reset_mock()
+    curl.getinfo.side_effect = [503, 503, 503, "https://example.org/"]
+    naps.clear()
+    resp = _send_pycurl_request("https://example.org/", True, DEFAULT_CONFIG)
+    assert resp.status == 503
+    assert curl.perform.call_count == 3
+    assert naps == [15.0, 30.0]
 
 
 @pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")

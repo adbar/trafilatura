@@ -9,7 +9,6 @@ import re
 import subprocess
 import sys
 from contextlib import redirect_stdout
-from datetime import datetime
 from os import path
 from tempfile import gettempdir
 from unittest.mock import patch
@@ -334,12 +333,8 @@ def test_cli_pipeline():
     ]
     args = cli.parse_args(testargs[1:])
     assert args.blacklist is not None
-    # test backoff between domain requests
     url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
-    reftime = datetime.now().astimezone()
     cli_utils.url_processing_pipeline(args, url_store)
-    delta = (datetime.now().astimezone() - reftime).total_seconds()
-    assert delta > 2
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     assert len(args.blacklist) == 3

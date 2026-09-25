@@ -6,12 +6,12 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 from configparser import ConfigParser
 from time import sleep
+from urllib.parse import urljoin
 from urllib.robotparser import RobotFileParser
 
 from courlan import (
     UrlStore,
     extract_links,
-    fix_relative_urls,
     get_base_url,
     is_navigation_page,
     is_not_crawlable,
@@ -114,7 +114,7 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
         url2 = url2[4:].strip("'\"")
     if not url2.lower().startswith("http"):
         # relative URL, adapt using the page being processed
-        url2 = fix_relative_urls(get_base_url(homepage), url2)
+        url2 = urljoin(homepage, url2)
     # second fetch
     newhtmlstring = fetch_url(url2, config=config)
     if newhtmlstring is None:

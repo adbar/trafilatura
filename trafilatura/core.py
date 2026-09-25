@@ -403,7 +403,7 @@ def bare_extraction(
 
     try:
         # load the HTML tree
-        tree = load_html(filecontent)
+        tree = load_html(filecontent, options.max_file_size)
         if tree is None:
             LOGGER.error("empty HTML tree: %s", url)
             raise ValueError

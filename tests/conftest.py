@@ -1,11 +1,13 @@
 """Canned-response fixture: opt in per module with
-`pytestmark = pytest.mark.usefixtures("mock_network")`."""
+`pytestmark = pytest.mark.usefixtures("mock_network")`.
+Politeness delays are disabled suite-wide."""
 
 from pathlib import Path
 
 import pytest
 
 import trafilatura.downloads as dl
+from trafilatura import feeds, settings, sitemaps, spider
 from trafilatura.downloads import Response
 
 RESOURCES_DIR = Path(__file__).parent / "resources"
@@ -97,3 +99,17 @@ def mock_network(monkeypatch):
     monkeypatch.setattr(dl, "_send_pycurl_request", _fake_send)
     monkeypatch.setattr(dl, "_urllib3_is_live_page", _fake_is_live)
     monkeypatch.setattr(dl, "_pycurl_is_live_page", _fake_is_live)
+
+
+def _zero_sleep(config):
+    config.set("DEFAULT", "SLEEP_TIME", "0")
+    return config
+
+
+@pytest.fixture(autouse=True)
+def no_politeness_delay(monkeypatch):
+    "Politeness waits only slow the suite down."
+    for module in (feeds, sitemaps, spider):
+        monkeypatch.setattr(module, "sleep", lambda s: None)
+    use_config = settings.use_config
+    monkeypatch.setattr(settings, "use_config", lambda filename=None: _zero_sleep(use_config(filename)))

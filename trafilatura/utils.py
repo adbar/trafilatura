@@ -316,7 +316,7 @@ def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     return tree
 
 
-def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
+def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
 
@@ -336,7 +336,7 @@ def load_html(htmlobject: HtmlInput) -> HtmlElement | None:
     # start processing
     tree = None
     # try to guess encoding and decode file: if None then keep original
-    htmlobject = decode_file(htmlobject)
+    htmlobject = decode_file(htmlobject, max_size)
     # sanity checks
     beginning = htmlobject[:50].lower()
     check_flag = is_dubious_html(beginning)

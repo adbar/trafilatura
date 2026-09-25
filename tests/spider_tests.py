@@ -59,8 +59,17 @@ def test_meta_redirections():
             "http://test.org/",
             "https://httpbun.com/html",
         ),
-        # relative URL
-        # ('<html><meta http-equiv="refresh" content="0; url=/html"/></html>', 'http://test.org/', 'http://test.org/html'),
+        # relative URLs, resolved against the page
+        (
+            '<html><meta http-equiv="refresh" content="0; url=/html"/></html>',
+            "https://httpbun.com/status/404",
+            "https://httpbun.com/html",
+        ),
+        (
+            '<html><meta http-equiv="refresh" content="0; url=200"/></html>',
+            "https://httpbun.com/status/404",
+            "https://httpbun.com/status/200",
+        ),
     ]
 
     for htmlstring, homepage, expected_homepage in tests:
