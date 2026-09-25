@@ -87,7 +87,7 @@ def _fake_send(url, no_ssl, config):
     return Response(data, 200, final_url)
 
 
-def _fake_is_live(url):
+def _fake_is_live(url, config=None):
     return any(known.startswith(url.rstrip("/")) for known in CANNED_RESPONSES)
 
 

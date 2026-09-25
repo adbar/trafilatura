@@ -18,7 +18,13 @@ from unicodedata import normalize
 try:
     import brotli
 
-    HAS_BROTLI = True
+    # output_buffer_limit (brotli >= 1.2) is the only way to bound the output:
+    # process() otherwise returns the whole expansion, which voids the bomb cap
+    try:
+        brotli.Decompressor().process(b"", output_buffer_limit=1)
+        HAS_BROTLI = True
+    except Exception:
+        HAS_BROTLI = False
 except ImportError:
     HAS_BROTLI = False
 
@@ -157,10 +163,19 @@ def _bounded_members(raw: bytes, make_dec: Callable[[], Any], max_size: int) -> 
         # covers cap-truncated, oversized, and incomplete streams
         if len(out) > max_size or not dec.eof:
             raise ValueError("oversized or incomplete compressed stream")
-        raw = dec.unused_data  # copied each round, hence the cap
+        raw = dec.unused_data.lstrip(b"\0")  # NUL padding as gzip.decompress, copied each round
         if not raw:
             return bytes(out)
     raise ValueError("too many compressed members")
+
+
+def _bounded_inflate(raw: bytes, max_size: int) -> bytes:
+    "Decompress a single zlib/deflate stream, ignoring trailing bytes as zlib.decompress does."
+    dec = zlib.decompressobj(zlib.MAX_WBITS)
+    out = dec.decompress(raw, max_size + 1)
+    if len(out) > max_size or not dec.eof:
+        raise ValueError("oversized or incomplete compressed stream")
+    return out
 
 
 def _bounded_unbrotli(raw: bytes, max_size: int) -> bytes:
@@ -208,8 +223,9 @@ def handle_compressed_file(filecontent: bytes, max_size: int | None = None) -> b
                 return _bounded_unbrotli(filecontent, max_size)
             except (brotli.error, ValueError):
                 pass
+        # single stream: multi-member concatenation is a gzip/zstd property, not a deflate one
         try:
-            return _bounded_members(filecontent, lambda: zlib.decompressobj(zlib.MAX_WBITS), max_size)
+            return _bounded_inflate(filecontent, max_size)
         except (zlib.error, ValueError):
             pass
 

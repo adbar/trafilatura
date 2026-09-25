@@ -200,7 +200,7 @@ def sitemap_search(
         LOGGER.warning("invalid URL: %s", url)
         return []
 
-    if not is_live_page(baseurl):
+    if not is_live_page(baseurl, config):
         LOGGER.warning("base URL unreachable, dropping sitemap: %s", url)
         return []
 

@@ -27,6 +27,7 @@ except ImportError:
     HAS_ZSTD = False
 
 from configparser import ConfigParser
+from pathlib import Path
 from time import sleep
 from unittest.mock import MagicMock, patch
 
@@ -34,6 +35,7 @@ import pytest
 from courlan import UrlStore
 
 import trafilatura.downloads as dl
+from trafilatura import utils
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import Extractor, extract
@@ -240,6 +242,10 @@ def test_ssrf_protection():
             self.end_headers()
             self.wfile.write(body)
 
+        def do_HEAD(self):
+            self.send_response(200)
+            self.end_headers()
+
         def log_message(self, *_args):
             pass
 
@@ -265,7 +271,57 @@ def test_ssrf_protection():
             response = _send_pycurl_request(url, False, config)
             assert response is not None
             assert response.status == 200
-            # _pycurl_is_live_page has no SSRF guard (boolean-only, low impact)
+            assert _pycurl_is_live_page(url) is False
+            assert _pycurl_is_live_page(url, config) is True
+        assert _urllib3_is_live_page(url) is False
+        assert _urllib3_is_live_page(url, config) is True
+        assert is_live_page(url) is False
+        assert is_live_page(url, config) is True
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+def test_urllib3_live_page_retries(monkeypatch):
+    "Long redirect chains count as live, transient statuses are retried, Retry-After sleeps are capped."
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+    hits = []
+
+    class _Handler(BaseHTTPRequestHandler):
+        def do_HEAD(self):
+            hits.append(self.path)
+            if self.path.startswith("/chain/") and self.path != "/chain/0":
+                self.send_response(301)
+                self.send_header("Location", f"/chain/{int(self.path[7:]) - 1}")
+            elif (self.path == "/flaky" and hits.count("/flaky") == 1) or self.path == "/stall":
+                self.send_response(503)
+                self.send_header("Retry-After", "86400")
+            else:
+                self.send_response(200)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+
+        def log_message(self, *_args):
+            pass
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{server.server_port}"
+    config = use_config()
+    config.set("DEFAULT", "SSRF_PROTECTION", "off")
+    naps = []
+    monkeypatch.setattr(dl.urllib3.util.retry.time, "sleep", naps.append)
+
+    try:
+        assert _urllib3_is_live_page(f"{base}/chain/2", config) is True
+        assert _urllib3_is_live_page(f"{base}/chain/3", config) is True
+        assert _urllib3_is_live_page(f"{base}/flaky", config) is True
+        assert naps == [dl.MAX_BACKOFF]
+        naps.clear()
+        assert _urllib3_is_live_page(f"{base}/stall", config) is False
+        assert naps == [dl.MAX_BACKOFF, dl.MAX_BACKOFF]
     finally:
         server.shutdown()
         server.server_close()
@@ -299,6 +355,14 @@ def test_urllib_request_ssl_retry():
     with patch.object(dl, "_initiate_pool", return_value=pool), patch.object(dl, "HAS_PYCURL", False):
         assert dl.fetch_response("https://ssl.example/") is None
     assert pool.request.call_count == 2
+
+    # fallback disabled: no unverified retry
+    config = use_config()
+    config.set("DEFAULT", "INSECURE_SSL_FALLBACK", "off")
+    pool = MagicMock(request=MagicMock(side_effect=[urllib3.exceptions.SSLError("bad cert"), resp]))
+    with patch.object(dl, "_initiate_pool", return_value=pool), patch.object(dl, "HAS_PYCURL", False):
+        assert dl.fetch_response("https://ssl.example/", config=config) is None
+    assert pool.request.call_count == 1
 
 
 def test_fetch_response_decode_cap():
@@ -402,12 +466,35 @@ def test_proxy_plumbing(monkeypatch):
 
 
 @pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
-def test_pycurl_proxy(monkeypatch):
-    "PROXY_URL is applied to the pycurl handle."
-    rec = {}
+def test_pycurl_network(monkeypatch):
+    "HTTP(S) only, PROXY_URL applied, SSRF hook skipped when libcurl reads a proxy from the environment."
+    pycurl = dl.pycurl
+    for var in dl.CURL_PROXY_VARS:
+        monkeypatch.delenv(var, raising=False)
+
+    def options():
+        rec = {}
+        dl._apply_curl_network(type("C", (), {"setopt": lambda s, o, v: rec.__setitem__(o, v)})(), DEFAULT_CONFIG)
+        return rec
+
+    rec = options()
+    assert rec[pycurl.PROTOCOLS] == pycurl.PROTO_HTTP | pycurl.PROTO_HTTPS
+    assert pycurl.PRE_PROXY not in rec
+    assert rec[pycurl.OPENSOCKETFUNCTION] is dl._ssrf_opensocket
+    monkeypatch.setenv("https_proxy", "http://10.0.0.5:3128")
+    assert pycurl.OPENSOCKETFUNCTION not in options()
+    monkeypatch.delenv("https_proxy")
     monkeypatch.setattr(dl, "PROXY_URL", "socks5://localhost:1080")
-    dl._apply_curl_proxy(type("C", (), {"setopt": lambda s, o, v: rec.__setitem__(o, v)})())
-    assert rec[dl.pycurl.PRE_PROXY] == "socks5://localhost:1080"
+    rec = options()
+    assert rec[pycurl.PRE_PROXY] == "socks5://localhost:1080"
+    assert pycurl.OPENSOCKETFUNCTION not in rec
+
+
+@pytest.mark.skipif(not HAS_PYCURL, reason="pycurl not installed")
+def test_pycurl_local_schemes():
+    "Non-HTTP schemes never reach the file system."
+    assert _send_pycurl_request(Path(__file__).as_uri(), False, DEFAULT_CONFIG) is None
+    assert dl._pycurl_is_live_page(Path(__file__).as_uri()) is False
 
 
 def test_config():
@@ -516,6 +603,8 @@ def test_decode():
     flood = member * (MAX_MEMBERS + 1)
     assert handle_compressed_file(flood) == flood
     assert handle_compressed_file(member * MAX_MEMBERS) == b"a" * MAX_MEMBERS
+    padded = gzip.compress(b"<html>a ") + b"\0" * 8 + gzip.compress(b"b</html>") + b"\0" * 8
+    assert handle_compressed_file(padded) == b"<html>a b</html>"
 
     if HAS_ZSTD:
         multi_frame = zstd.compress(b"<html>a ") + zstd.compress(b"b</html>")
@@ -527,6 +616,11 @@ def test_decode():
     if HAS_BROTLI:
         brotli_bomb = brotli.compress(b"0" * 25_000_000)
         assert handle_compressed_file(brotli_bomb) == brotli_bomb
+        # brotli < 1.2 is left unused: its output cannot be capped
+        brotli_html = brotli.compress(b"<html>a</html>")
+        assert handle_compressed_file(brotli_html) == b"<html>a</html>"
+        with patch.object(utils, "HAS_BROTLI", False):
+            assert handle_compressed_file(brotli_html) == brotli_html
 
 
 @pytest.mark.usefixtures("mock_network")

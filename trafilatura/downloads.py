@@ -21,7 +21,6 @@ from urllib.parse import urljoin
 import certifi
 import urllib3
 from courlan import UrlStore
-from courlan.network import redirection_test
 
 from .settings import DEFAULT_CONFIG, Extractor
 from .utils import (
@@ -69,10 +68,19 @@ def create_pool(ssrf_protection: bool = True, **args: Any) -> urllib3.PoolManage
     return manager_class(num_pools=50, **args)
 
 
-def _apply_curl_proxy(curl: "pycurl.Curl") -> None:
-    "Route the pycurl request through PROXY_URL when one is configured."
+# proxies libcurl reads from the environment on its own
+CURL_PROXY_VARS = ("http_proxy", "https_proxy", "HTTPS_PROXY", "all_proxy", "ALL_PROXY")
+
+
+def _apply_curl_network(curl: "pycurl.Curl", config: ConfigParser) -> None:
+    "Restrict the pycurl handle to HTTP(S), apply PROXY_URL and the SSRF hook."
+    # also applies to redirects
+    curl.setopt(pycurl.PROTOCOLS, pycurl.PROTO_HTTP | pycurl.PROTO_HTTPS)
     if PROXY_URL:
         curl.setopt(pycurl.PRE_PROXY, PROXY_URL)
+    # the hook would vet the proxy address instead of the target
+    if _ssrf_active(config) and not any(os.environ.get(var) for var in CURL_PROXY_VARS):
+        curl.setopt(pycurl.OPENSOCKETFUNCTION, _ssrf_opensocket)
 
 
 # advertises exactly the encodings urllib3 can decode
@@ -87,6 +95,9 @@ CURL_SSL_ERRORS = {35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91}
 
 # cap in seconds for backoff and Retry-After sleeps
 MAX_BACKOFF = 30
+
+# status retries, kept apart from the redirect budget libcurl spends on MAXREDIRS
+MAX_STATUS_RETRIES = 2
 
 
 class _SSLRetryError(Exception):
@@ -110,9 +121,14 @@ def _vet_peer(host: str) -> None:
         raise OSError(f"SSRF protection: connection to non-public address blocked: {host}")
 
 
-def _ssrf_opensocket(_purpose: int, address: Any) -> socket.socket:
+def _ssrf_opensocket(_purpose: int, address: Any) -> socket.socket | int:
     "pycurl OPENSOCKETFUNCTION that rejects non-global resolved IPs."
-    _vet_peer(address.addr[0])
+    try:
+        _vet_peer(address.addr[0])
+    except OSError as err:
+        # pycurl only prints exceptions raised here
+        LOGGER.warning("%s", err)
+        return int(pycurl.SOCKET_BAD)
     return socket.socket(address.family, address.socktype, address.protocol)
 
 
@@ -297,6 +313,9 @@ def fetch_response(
     try:
         response = dl_function(url, no_ssl, config)
     except _SSLRetryError as err:
+        if not config.getboolean("DEFAULT", "INSECURE_SSL_FALLBACK", fallback=True):
+            LOGGER.error("SSL error, INSECURE_SSL_FALLBACK is off: %s %s", url, err)
+            return None
         # senders raise only when verification was on, so this cannot recurse
         LOGGER.warning("retrying after SSL error: %s %s", url, err)
         response = dl_function(url, True, config)
@@ -307,7 +326,7 @@ def fetch_response(
     return response
 
 
-def _pycurl_is_live_page(url: str) -> bool:
+def _pycurl_is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bool:
     "Send a basic HTTP HEAD request with pycurl."
     # Initialize pycurl object
     curl = pycurl.Curl()
@@ -324,7 +343,7 @@ def _pycurl_is_live_page(url: str) -> bool:
     curl.setopt(pycurl.SSL_VERIFYHOST, 0)
     # Set option to avoid getting the response body
     curl.setopt(pycurl.NOBODY, True)
-    _apply_curl_proxy(curl)
+    _apply_curl_network(curl, config)
     try:
         curl.perform()
         # int(): getinfo is untyped
@@ -336,21 +355,36 @@ def _pycurl_is_live_page(url: str) -> bool:
         curl.close()
 
 
-def _urllib3_is_live_page(url: str) -> bool:
-    "Use courlan redirection test (based on urllib3) to send a HEAD request."
+def _urllib3_is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bool:
+    "Send a HEAD request through the configured urllib3 pool, following redirects."
     try:
-        redirection_test(url)
+        response = _initiate_pool(config, no_ssl=True).request(
+            "HEAD",
+            url,
+            headers=_determine_headers(config),
+            # exhausted redirects return the last 3xx, counted as live
+            retries=urllib3.util.Retry(
+                total=config.getint("DEFAULT", "MAX_REDIRECTS"),
+                connect=0,
+                raise_on_redirect=False,
+                status_forcelist=FORCE_STATUS,
+                backoff_factor=1,
+                backoff_max=MAX_BACKOFF,
+                retry_after_max=MAX_BACKOFF,
+            ),
+            timeout=config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"),
+        )
     except Exception as err:
         LOGGER.debug("urllib3 HEAD error: %s %s", url, err)
         return False
-    return True
+    return int(response.status) < 400
 
 
-def is_live_page(url: str) -> bool:
+def is_live_page(url: str, config: ConfigParser = DEFAULT_CONFIG) -> bool:
     "Send a HTTP HEAD request without taking anything else into account."
-    result = _pycurl_is_live_page(url) if HAS_PYCURL else False
+    result = _pycurl_is_live_page(url, config) if HAS_PYCURL else False
     # use urllib3 as backup
-    return result or _urllib3_is_live_page(url)
+    return result or _urllib3_is_live_page(url, config)
 
 
 def add_to_compressed_dict(
@@ -459,10 +493,9 @@ def _send_pycurl_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
     curl.setopt(pycurl.ACCEPT_ENCODING, "")
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
     curl.setopt(pycurl.MAXREDIRS, config.getint("DEFAULT", "MAX_REDIRECTS"))
-    curl.setopt(pycurl.REDIR_PROTOCOLS, pycurl.PROTO_HTTP | pycurl.PROTO_HTTPS)
     curl.setopt(pycurl.CONNECTTIMEOUT, config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"))
     curl.setopt(pycurl.TIMEOUT, config.getint("DEFAULT", "DOWNLOAD_TIMEOUT"))
-    # pre-transfer abort on a known Content-Length; the write callback is the actual enforcement
+    # pre-transfer abort on a known Content-Length, the write callback is the actual enforcement
     max_file_size = config.getint("DEFAULT", "MAX_FILE_SIZE")
     curl.setopt(pycurl.MAXFILESIZE, max_file_size)
     curl.setopt(pycurl.NOSIGNAL, 1)
@@ -485,17 +518,13 @@ def _send_pycurl_request(url: str, no_ssl: bool, config: ConfigParser) -> Respon
     headerbytes = BytesIO()
     curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
 
-    _apply_curl_proxy(curl)
-
-    if _ssrf_active(config):
-        curl.setopt(pycurl.OPENSOCKETFUNCTION, _ssrf_opensocket)
+    _apply_curl_network(curl, config)
 
     # send request, retrying on transient statuses like the urllib3 retry strategy
-    retries = config.getint("DEFAULT", "MAX_REDIRECTS")
     backoff_factor = config.getint("DEFAULT", "DOWNLOAD_TIMEOUT") / 2
-    status = 0  # the loop is empty if MAX_REDIRECTS < 0
+    status = 0
     try:
-        for attempt in range(retries + 1):
+        for attempt in range(MAX_STATUS_RETRIES + 1):
             if attempt:
                 sleep(min(MAX_BACKOFF, backoff_factor * 2 ** (attempt - 1)))
                 headerbytes.seek(0)

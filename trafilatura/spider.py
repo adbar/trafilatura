@@ -234,7 +234,8 @@ def process_response(
     URL_STORE.add_urls([response.url], visited=True)
 
     # convert urllib3 response to string and proceed to link extraction
-    process_links(decode_file(response.data), params, response.url)
+    url = response.url if get_base_url(response.url) == params.base else params.base
+    process_links(decode_file(response.data), params, url)
 
 
 def init_crawl(
@@ -287,8 +288,8 @@ def crawl_page(
                 params.ref = "https://" + params.ref.removeprefix("http://")
             # register potentially new homepage
             URL_STORE.add_urls([homepage])
-            # extract links on homepage, resolving against the final URL
-            process_links(htmlstring, params, url=homepage)
+            # resolve links against the final URL unless the redirect left the crawled host
+            process_links(htmlstring, params, url=homepage if get_base_url(homepage) == params.base else url)
     else:
         response = fetch_response(url, decode=False, config=params.config)
         process_response(response, params)

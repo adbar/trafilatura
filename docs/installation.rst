@@ -117,7 +117,8 @@ A few additional libraries can be installed for extended functionality and faste
 
 
 brotli
-    Additional compression algorithm for downloads
+    Additional compression algorithm for downloads, version 1.2 or higher
+    (earlier versions cannot bound the decompressed output and are not used)
 faust-cchardet
     Faster encoding detection, also possibly more accurate (especially for encodings used in Asia)
 htmldate[all] / htmldate[speed]

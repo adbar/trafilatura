@@ -249,7 +249,7 @@ def test_sitemap_index_with_target_lang():
     ]
     with (
         patch.object(sitemaps, "fetch_url", lambda url, *a, **kw: pages.get(url)),
-        patch.object(sitemaps, "is_live_page", lambda u: True),
+        patch.object(sitemaps, "is_live_page", lambda u, c: True),
         patch.object(sitemaps, "sleep", lambda s: None),
     ):
         assert sorted(sitemaps.sitemap_search("https://example.org")) == expected
@@ -275,7 +275,7 @@ def test_guess_order():
 
     with (
         patch.object(sitemaps, "fetch_url", fake_fetch),
-        patch.object(sitemaps, "is_live_page", lambda u: True),
+        patch.object(sitemaps, "is_live_page", lambda u, c: True),
         patch.object(sitemaps, "sleep", lambda s: None),
     ):
         sitemaps.sitemap_search("https://example.org")

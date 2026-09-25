@@ -288,6 +288,23 @@ def test_scheme_upgrade():
     ]
 
 
+def test_host_redirect():
+    "A homepage redirecting to another host keeps the crawl on the start host, links resolved against the start URL."
+    spider.URL_STORE = UrlStore()
+    html = '<html><body><a href="/p1.html">x</a><a href="https://www.host-redirect.org/p2.html">y</a></body></html>'
+
+    def fake_fetch_response(url, *, decode=False, config=None, **kw):
+        return Response(html.encode(), 200, "https://www.host-redirect.org/")
+
+    with (
+        patch.object(spider, "fetch_response", fake_fetch_response),
+        patch.object(spider, "get_rules", lambda *a, **kw: None),
+    ):
+        params = spider.init_crawl("http://host-redirect.org")
+    assert params.base == "http://host-redirect.org"
+    assert spider.URL_STORE.find_unvisited_urls(params.base) == ["http://host-redirect.org/p1.html"]
+
+
 def test_focused_crawler():
     "Test the whole focused crawler mechanism."
     spider.URL_STORE = UrlStore()
