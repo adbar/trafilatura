@@ -82,7 +82,7 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
     if "xml" in options.format:
         # last cleaning
         for element in document.body.iter("*"):
-            if element.tag != "graphic" and len(element) == 0 and not element.text and not element.tail:
+            if element.tag not in {"graphic", "cell"} and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 # do not remove elements inside <code> to preserve formatting
                 if parent is not None and parent.tag != "code":
