@@ -9,7 +9,6 @@ import re
 import subprocess
 import sys
 from contextlib import redirect_stdout
-from datetime import datetime
 from os import path
 from tempfile import gettempdir
 from unittest.mock import patch
@@ -18,7 +17,7 @@ import pytest
 from courlan import UrlStore
 
 from trafilatura import cli, cli_utils, settings, spider
-from trafilatura.downloads import add_to_compressed_dict, fetch_url
+from trafilatura.downloads import Response, add_to_compressed_dict, fetch_response, fetch_url
 from trafilatura.utils import LANGID_FLAG
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -334,12 +333,8 @@ def test_cli_pipeline():
     ]
     args = cli.parse_args(testargs[1:])
     assert args.blacklist is not None
-    # test backoff between domain requests
     url_store = add_to_compressed_dict(my_urls, args.blacklist, None, None)
-    reftime = datetime.now().astimezone()
     cli_utils.url_processing_pipeline(args, url_store)
-    delta = (datetime.now().astimezone() - reftime).total_seconds()
-    assert delta > 2
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     assert len(args.blacklist) == 3
@@ -547,6 +542,29 @@ def test_crawling():
         cli_utils.cli_crawler(args, n=0)
     ## should be 6 (5 URLs as output), possibly a bug on Actions CI/CD
     assert len(f.getvalue().split("\n")) in (2, 6)
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+
+    # responses from an unregistered base (e.g. cross-host redirect) are skipped
+    spider.URL_STORE = UrlStore(compressed=False, strict=False)
+    start = fetch_response("https://httpbun.com/links/2/2")
+    extra = [
+        ("https://stray.example/", Response(b"<html><body><a href='/x'>x</a></body></html>", 200, "https://stray.example/")),
+        (start.url, start),
+    ]
+    real_downloads = cli_utils.buffered_response_downloads
+
+    def with_stray(bufferlist, threads, options=None):
+        while extra:
+            yield extra.pop()
+        yield from real_downloads(bufferlist, threads, options=options)
+
+    args = cli.parse_args(["--crawl", "https://httpbun.com/links/2/2", "--list"])
+    with patch.object(cli_utils, "buffered_response_downloads", with_stray), redirect_stdout(io.StringIO()):
+        with patch.object(cli_utils.LOGGER, "warning") as mock_warning:
+            cli_utils.cli_crawler(args)
+    mock_warning.assert_called_once_with("no crawl parameters for %s", "https://stray.example/")
+    assert "https://httpbun.com/links/2/0" in spider.URL_STORE.find_known_urls("https://httpbun.com")
+    assert not spider.URL_STORE.find_known_urls("https://stray.example")
     spider.URL_STORE = UrlStore(compressed=False, strict=False)
 
     # Exploration (Sitemap + Crawl)

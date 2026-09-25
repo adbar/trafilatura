@@ -44,7 +44,7 @@ For efficiency reasons the function makes use of a connection pool where connect
 
 The content retrieved by ``fetch_url()`` (stored here in the variable ``downloaded``) is seamlessly decoded to a Unicode string.
 
-Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (optional dict), ``html`` (optional str), ``status``, and ``url``:
+Using the ``fetch_response()`` function instead provides access to more information stored in a ``Response`` object which comprises the attributes ``data`` (bytestring), ``headers`` (dict), ``html`` (optional str), ``status``, and ``url``:
 
 .. code-block:: python
 
@@ -56,8 +56,8 @@ Using the ``fetch_response()`` function instead provides access to more informat
     'https://www.example.org'
     >>> response.data
     # raw HTML in binary format
-    >>> response = fetch_response('https://www.example.org', decode=True, with_headers=True)
-    # headers and html attributes used
+    >>> response = fetch_response('https://www.example.org', decode=True)
+    # html attribute populated, headers are always stored
 
 .. note::
     New in version 1.7.0.

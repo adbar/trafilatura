@@ -995,6 +995,14 @@ def test_links():
     assert "[Test link text.](https://www.example.com/testlink.html) This part of the text has to be long enough." in extract(
         copy(mydoc), url="https://www.example.com/", include_links=True, fast=True, config=ZERO_CONFIG
     )
+    # malformed target or page URL, target kept as is
+    mydoc = html.fromstring(
+        '<html><body><p><a href="http://[::1">Test link text.</a> This part of the text has to be long enough.</p></body></html>'
+    )
+    for url in ("https://www.example.com/", "https://ex]ample.org/"):
+        assert "[Test link text.](http://[::1) This part of the text has to be long enough." in extract(
+            copy(mydoc), url=url, include_links=True, fast=True, config=ZERO_CONFIG
+        )
     # link without target
     mydoc = html.fromstring(
         "<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>"

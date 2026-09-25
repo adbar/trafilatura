@@ -315,6 +315,7 @@ FILENAME_LEN = 8
 
 # Network
 MAX_LINKS = 10**6
+MAX_FEEDS_CHECKED = 10**3  # candidate feeds fetched from a single web page
 MAX_SITEMAPS_SEEN = 10**4
 
 

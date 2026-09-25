@@ -117,7 +117,7 @@ Encoding issues
 
 If the output contains garbled characters (mojibake), the HTML encoding was not detected correctly. Trafilatura handles encoding automatically via ``charset_normalizer``, but edge cases exist:
 
-- **Force re-encoding:** download with ``fetch_response(url, decode=True, with_headers=True)`` and check ``response.headers.get("content-type")`` for a declared charset, or use the already-decoded ``response.html`` string directly instead of the raw ``response.data`` bytes.
+- **Force re-encoding:** download with ``fetch_response(url, decode=True)`` and check ``response.headers.get("content-type")`` for a declared charset, or use the already-decoded ``response.html`` string directly instead of the raw ``response.data`` bytes.
 - **Provide the HTML as a properly decoded string:** if you download with another tool, make sure you decode the bytes with the correct encoding before passing to ``extract()``.
 - **Install optional dependencies:** ``pip install trafilatura[all]`` includes ``pycurl`` which may handle encoding better for certain servers.
 

@@ -6,7 +6,6 @@ Functions to process nodes in HTML code.
 import logging
 from copy import deepcopy
 
-from courlan.urlutils import fix_relative_urls, get_base_url
 from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
@@ -18,7 +17,7 @@ from .settings import (
     Document,
     Extractor,
 )
-from .utils import LINK_FARM_RATIO, image_src, textfilter, trim
+from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
 from .xml import META_ATTRIBUTES, delete_element
 
 LOGGER = logging.getLogger(__name__)
@@ -413,7 +412,7 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
     if target:
         # convert relative URLs
         if base_url:
-            target = fix_relative_urls(base_url, target)
+            target = safe_relative_url(base_url, target) or target
         elem.set("target", target)
 
 
@@ -431,7 +430,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         strip_tags(tree, "a")
     else:
         # get base URL for converting relative URLs
-        base_url = url and get_base_url(url)
+        base_url = url and safe_base_url(url)
         for elem in tree.iter("a", "ref"):
             convert_link(elem, base_url)
 
