@@ -514,6 +514,10 @@ trafilatura.extract("")
     options = core.Extractor(config=ZERO_CONFIG)
     converted = handle_formatting(element, options)
     assert etree.tostring(converted) == b"<p><hi>Here is the text.</hi>And a tail.</p>"
+    # no wrapper inside a protected parent
+    element = etree.SubElement(etree.Element("item"), "hi")
+    element.text = "Here is the text."
+    assert etree.tostring(handle_formatting(element, options)) == b"<hi>Here is the text.</hi>"
     # empty elements
     my_document = html.fromstring("<html><body><div>\t\n</div><div>There is text here.</div></body></html>")
     my_result = extract(my_document, output_format="xml", config=ZERO_CONFIG)
@@ -3432,6 +3436,21 @@ def test_list_processing(options):
     processed_list = handle_lists(list_item_with_tail_and_nested_list, options)
     target_element = processed_list.find(".//item/list")
     assert target_element.tail == "tail"
+
+
+def test_nested_list_first_item_not_duplicated(options):
+    "regression: the first item of a nested list must not come back as an extra item of the parent list."
+    # it has to carry child elements: a leaf item marked "done" was already dropped by process_node
+    nested = html.fromstring("<list><item>a<list><item>b<list><item>c</item></list></item></list></item></list>")
+    processed_list = handle_lists(nested, options)
+    assert [item.text for item in processed_list.iterchildren("item")] == ["a"]
+
+    three_levels = "<ul><li>a<ul><li>b<ul><li>c</li></ul></li><li>b2</li></ul></li><li>d</li></ul>"
+    assert _extract_doc(three_levels) == f"{_INTRO}\n- a\n  - b\n    - c\n  - b2\n- d"
+    assert "<item>b</item>" not in _extract_doc(three_levels, output_format="xml")
+
+    with_link = "<ul><li>a<ul><li>see <a href='https://example.org/x'>link</a></li><li>c</li></ul></li><li>d</li></ul>"
+    assert _extract_doc(with_link, include_links=True) == f"{_INTRO}\n- a\n  - see [link](https://example.org/x)\n  - c\n- d"
 
 
 def test_code_blocks():

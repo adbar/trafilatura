@@ -159,6 +159,10 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
         new_child_elem.text = element.text
 
     for child in element.iterdescendants("item"):
+        # items of a nested list are processed by the recursive call and renamed "done",
+        # but lxml fetches the first of them before that happens: skip it here
+        if child.tag == "done":
+            continue
         new_child_elem = Element("item")
         if len(child) == 0:
             processed_child = process_node(child, options)

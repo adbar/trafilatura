@@ -50,8 +50,8 @@ FEED_TYPES = {
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
 
-LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
-LINK_HREF = re.compile(r'href="(.+?)"')
+LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
+LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
 LINK_ELEMENTS = re.compile(r"<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>", re.DOTALL)
 
 BLACKLIST = re.compile(r"\bcomments\b")  # no comment feed
@@ -122,8 +122,19 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         if feed_string.startswith("{"):
             try:
                 # fallback: https://www.jsonfeed.org/version/1.1/
-                candidates = [item.get("url") or item.get("id") for item in json.loads(feed_string).get("items", [])]
-                return [c for c in candidates if c is not None]
+                items = json.loads(feed_string).get("items", [])
+                if not isinstance(items, list):
+                    return []
+                candidates = []
+                for item in items:
+                    if not isinstance(item, dict):
+                        continue
+                    for key in ("url", "id"):
+                        candidate = item.get(key)
+                        if isinstance(candidate, str) and candidate:
+                            candidates.append(candidate)
+                            break
+                return candidates
             except json.decoder.JSONDecodeError:
                 LOGGER.debug("JSON decoding error: %s", params.domain)
         else:
@@ -131,14 +142,13 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         return []
 
     # Atom
-    if "<link " in feed_string:
-        return [
-            LINK_HREF.search(link)[1]  # type: ignore[index]
-            for link in (m[0] for m in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS))
-            if "atom+xml" not in link and 'rel="self"' not in link
-        ]
-        # if '"' in feedlink:
-        #    feedlink = feedlink.split('"')[0]
+    if LINK_ATTRS.search(feed_string):
+        links = []
+        for match in islice(LINK_ATTRS.finditer(feed_string), MAX_LINKS):
+            attributes = {attr[1]: attr[3] for attr in LINK_ATTRIBUTES.finditer(match[0])}
+            if attributes.get("href") and attributes.get("rel") != "self" and "atom+xml" not in attributes.get("type", ""):
+                links.append(attributes["href"])
+        return links
 
     # RSS
     if "<link>" in feed_string:

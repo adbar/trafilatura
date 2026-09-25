@@ -441,7 +441,9 @@ def parse_license_element(element: HtmlElement, strict: bool = False) -> str | N
 def extract_license(tree: HtmlElement) -> str | None:
     """Search the HTML code for license information and parse it."""
     # look for links labeled as license
-    for element in tree.findall('.//a[@rel="license"][@href]'):
+    for element in tree.findall(".//a[@rel][@href]"):
+        if "license" not in element.get("rel", "").lower().split():
+            continue
         result = parse_license_element(element, strict=False)
         if result is not None:
             return result
