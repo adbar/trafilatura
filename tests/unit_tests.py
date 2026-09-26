@@ -3978,6 +3978,19 @@ def test_is_probably_readerable():
     assert is_probably_readerable(large_doc, options)
     assert is_probably_readerable(very_large_doc, options)
 
+    # Extractor options use only the extraction-size threshold relevant to
+    # readerability; unrelated output settings do not change the heuristic.
+    readerability_config = use_config()
+    readerability_config["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "120"
+    readerability_config["DEFAULT"]["MIN_OUTPUT_SIZE"] = "10000"
+    threshold_doc = load_html(f"<html><p>{'x' * 525}</p></html>")
+    assert not is_probably_readerable(threshold_doc)
+    assert is_probably_readerable(threshold_doc, core.Extractor(config=readerability_config))
+
+    # Existing mapping and None input behavior remain unchanged.
+    assert not is_probably_readerable(threshold_doc, None)
+    assert is_probably_readerable(threshold_doc, {"min_content_length": 120})
+
     # should check id and class attributes
     assert is_probably_readerable(likely_doc)
     assert not is_probably_readerable(unlikely_doc)
