@@ -548,7 +548,8 @@ def build_html_output(document: Document, with_metadata: bool = False) -> str:
         head = Element("head")
         for item in META_ATTRIBUTES:
             if value := getattr(document, item):
-                SubElement(head, "meta", name=item, content=value)
+                # categories and tags are lists
+                SubElement(head, "meta", name=item, content=value if isinstance(value, str) else ";".join(value))
         html_tree.insert(0, head)
 
     return tostring(html_tree, pretty_print=True, encoding="unicode").strip()
