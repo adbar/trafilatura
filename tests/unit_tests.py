@@ -1791,7 +1791,8 @@ def test_misnested_main_hoisted():
     assert "the actual article body" in cleaned.text_content()
     assert "Featured" not in cleaned.text_content()
     result = extract(broken, config=ZERO_CONFIG)
-    assert "the actual article body" in result and "Featured" not in result
+    assert "the actual article body" in result
+    assert "Featured" not in result
 
 
 def test_no_duplicate_paragraph_from_lb_tail():
