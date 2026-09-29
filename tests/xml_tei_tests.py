@@ -45,6 +45,13 @@ def test_sanity():
     assert result == head
 
 
+def test_wrap_unwanted_siblings_of_div_runs():
+    "Each run of block siblings after a div gets its own wrapper, up to the next div."
+    body = fromstring("<body><div/><p>a</p><p>b</p><lb/><p>c</p><div/><p>d</p></body>")
+    _wrap_unwanted_siblings_of_div(body[0])
+    assert tostring(body) == b"<body><div/><div><p>a</p><p>b</p></div><lb/><div><p>c</p></div><div/><p>d</p></body>"
+
+
 def test_publisher_added_before_availability_in_publicationStmt():  # noqa: N802 — TEI element name
     # add publisher string
     teidoc = Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")

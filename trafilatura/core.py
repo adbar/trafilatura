@@ -35,7 +35,7 @@ from .utils import (
     load_html,
     normalize_unicode,
 )
-from .xml import build_json_output, control_xml_output, xmltocsv, xmltotxt
+from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
 from .xpaths import REMOVE_APPENDED_ARTICLES_XPATH, REMOVE_COMMENTS_XPATH, REMOVE_SHARE_WIDGETS_XPATH
 
 LOGGER = logging.getLogger(__name__)
@@ -52,6 +52,7 @@ ESCALATION_ACCEPT_RATIO = 1.5  # accept the retry if it is this much longer
 ESCALATION_JUSTEXT_RATIO = 2.0
 
 TXT_FORMATS = {"markdown", "txt"}
+_YAML_FIELDS = "title author url hostname description sitename date categories tags fingerprint id license".split()
 
 # Metadata is emitted as a YAML-style Markdown header; values such as a title
 # containing ": " (or a leading indicator, or a reserved word) otherwise produce
@@ -82,11 +83,8 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
     if "xml" in options.format:
         # last cleaning
         for element in document.body.iter("*"):
-            if element.tag != "graphic" and len(element) == 0 and not element.text and not element.tail:
-                parent = element.getparent()
-                # do not remove elements inside <code> to preserve formatting
-                if parent is not None and parent.tag != "code":
-                    parent.remove(element)
+            if len(element) == 0 and not element.text and not element.tail and not keeps_empty(element):
+                delete_element(element, keep_tail=False)
         # build output tree
         returnstring = control_xml_output(document, options)
     # CSV
@@ -100,32 +98,15 @@ def determine_returnstring(document: Document, options: Extractor) -> str:
         returnstring = build_html_output(document, options.with_metadata)
     # Markdown and TXT
     else:
+        header = ""
         if options.with_metadata:
-            header = "---\n"
-            for attr in (
-                "title",
-                "author",
-                "url",
-                "hostname",
-                "description",
-                "sitename",
-                "date",
-                "categories",
-                "tags",
-                "fingerprint",
-                "id",
-                "license",
-            ):
-                value = getattr(document, attr)
-                if value:
-                    # quote scalar strings when needed; categories/tags are lists
-                    # rendered as their (already valid) flow-sequence repr
-                    if isinstance(value, str):
-                        value = _yaml_scalar(value)
-                    header += f"{attr}: {value}\n"
-            header += "---\n"
-        else:
-            header = ""
+            # categories/tags are lists, their repr is a valid flow sequence
+            fields = "".join(
+                f"{attr}: {_yaml_scalar(value) if isinstance(value, str) else value}\n"
+                for attr in _YAML_FIELDS
+                if (value := getattr(document, attr))
+            )
+            header = f"---\n{fields}---\n"
         returnstring = f"{header}{xmltotxt(document.body, options.formatting)}"
         if document.commentsbody is not None:
             returnstring = f"{returnstring}\n{xmltotxt(document.commentsbody, options.formatting)}".strip()
@@ -245,9 +226,9 @@ def trafilatura_sequence(
         # a copy so a shared Extractor never leaks the "recall" focus back to the caller
         r_options = copy(options)
         r_options.focus = "recall"
-        # strip comments from the escalation input (dup risk if captured, reader comments if not);
-        # keep them on a thread-forum, where the retry rescues the posts
-        esc_tree = tree if is_forum else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
+        # strip comments from the escalation input (dup risk if captured, reader comments if not),
+        # except on a thread-forum where the retry rescues the posts. Comments off: already pruned
+        esc_tree = tree if is_forum or not options.comments else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
         r_text = ""
         try:
             r_body, r_text = _recall_retry(esc_tree, r_options, url)

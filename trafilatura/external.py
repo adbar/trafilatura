@@ -9,16 +9,17 @@ from typing import Any
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
 from justext.utils import get_stoplist, get_stoplists
-from lxml.etree import Element, _Element, strip_tags, tostring
+from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
 from .baseline import basic_cleaning
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
+from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES, Extractor
 from .utils import fromstring_bytes, trim
-from .xml import TEI_VALID_TAGS
+from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
@@ -34,9 +35,8 @@ JUSTEXT_OVERRIDE_RATIO = 3
 
 def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     """Safety net: try with the generic algorithm readability"""
-    # defaults: min_text_length=25, retry_length=250
     try:
-        doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
+        doc = ReadabilityDocument(htmlinput, min_text_length=25)
         # force conversion to utf-8 (see #319)
         summary = fromstring_bytes(doc.summary())
         return summary if summary is not None else HtmlElement()
@@ -76,7 +76,7 @@ def _prefer_readability(
         or (
             options.focus == "recall"
             and not body.xpath(".//head")
-            and algo_body.xpath(".//h2|.//h3|.//h4")
+            and next(algo_body.iter("h2", "h3", "h4"), None) is not None
             and len_algo > len_text
         )
     )
@@ -97,7 +97,6 @@ def compare_extraction(
     if options.focus == "recall" and len_text > options.min_extracted_size * 10:
         return body, text
 
-    jt_result = False
     # prior cleaning
     if options.focus == "precision":
         raw_tree = prune_unwanted_nodes(raw_tree, OVERALL_DISCARD_XPATH)
@@ -131,10 +130,10 @@ def compare_extraction(
         if text2 and accept:
             LOGGER.debug("using justext, length: %s", len_text2)
             body, text, len_text = body2, text2, len_text2
-            jt_result = True
+            use_readability = False
 
     # post-processing: remove unwanted sections
-    if use_readability and not jt_result:
+    if use_readability:
         body, text = sanitize_tree(body, options)  # type: ignore[arg-type]
 
     return body, text
@@ -143,10 +142,7 @@ def compare_extraction(
 def jt_stoplist_init() -> tuple[str]:
     "Retrieve and return the content of all JusText stoplists"
     global JT_STOPLIST
-    stoplist = set()
-    for language in get_stoplists():
-        stoplist.update(get_stoplist(language))
-    JT_STOPLIST = tuple(stoplist)
+    JT_STOPLIST = tuple({word for language in get_stoplists() for word in get_stoplist(language)})
     return JT_STOPLIST
 
 
@@ -174,20 +170,14 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
         LOGGER.error("justext %s %s", err, url)
     else:
         for paragraph in paragraphs:
-            if paragraph.is_boilerplate:
-                continue
-            # if duplicate_test(paragraph) is not True:
-            elem, elem.text = Element("p"), paragraph.text
-            result_body.append(elem)
+            if not paragraph.is_boilerplate:
+                SubElement(result_body, "p").text = paragraph.text
     return result_body
 
 
 def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     """Try to use justext algorithm as a second fallback"""
-    # additional cleaning
-    tree = basic_cleaning(tree)
-    # proceed
-    temppost_algo = try_justext(tree, options.url, options.lang)
+    temppost_algo = try_justext(basic_cleaning(tree), options.url, options.lang)
     return temppost_algo, trim(" ".join(temppost_algo.itertext()))
 
 
@@ -195,22 +185,26 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)
-    if options.links is False:
-        strip_tags(cleaned_tree, "a")
-    strip_tags(cleaned_tree, "span")
+    strip_tags(cleaned_tree, "span", *(() if options.links else ("a",)))
     # 2. convert (pass url so relative links are absolutized on the fallback path)
     cleaned_tree = convert_tags(cleaned_tree, options, options.url)
+    for elem in list(cleaned_tree.iter("graphic")):
+        image = handle_image(elem, options)
+        if image is None:
+            delete_element(elem)
+        else:
+            elem.attrib.clear()
+            elem.attrib.update(image.attrib)
     # Mark first <th>-containing row per parent group as head (mirrors handle_table logic).
     # Groups by direct parent (the enclosing table once tbody/thead/tfoot are stripped upstream);
     # nested tables form their own group.
     seen_group_elems: set[_Element | None] = set()
     for tr in cleaned_tree.iter("tr"):
         parent = tr.getparent()
-        if parent not in seen_group_elems and any(c.tag == "th" for c in tr):
+        if parent not in seen_group_elems and tr.find("th") is not None:
             seen_group_elems.add(parent)
-            for c in tr:
-                if c.tag == "th":
-                    c.set("role", "head")
+            for c in tr.iterchildren("th"):
+                c.set("role", "head")
     for elem in cleaned_tree.iter("td", "th", "tr"):
         elem.tag = "row" if elem.tag == "tr" else "cell"
     # 3. sanitize

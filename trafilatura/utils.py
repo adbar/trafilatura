@@ -255,8 +255,7 @@ def detect_encoding(bytesobject: bytes) -> list[str]:
     else:
         detection_results = from_bytes(bytesobject[:5000] + bytesobject[-5000:]) or from_bytes(bytesobject)
     # return alternatives
-    if len(detection_results) > 0:
-        guesses.extend([r.encoding for r in detection_results])
+    guesses.extend(r.encoding for r in detection_results)
     # it cannot be utf-8 (tested above)
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
@@ -297,24 +296,21 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
         htmlstring = DOCTYPE_TAG.sub("", firstline, count=1) + "\n" + rest
-    # other issue with malformed documents: check first three lines
-    for i, line in enumerate(iter(htmlstring.splitlines())):
+    # self-closing <html/> in the first lines
+    for line in htmlstring[:4096].splitlines()[:4]:
         if "<html" in line and line.endswith("/>"):
             htmlstring = FAULTY_HTML.sub(r"\1>", htmlstring, count=1)
-            break
-        if i > 2:
             break
     return htmlstring
 
 
 def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     "Try to pass bytes to LXML parser."
-    tree = None
     try:
-        tree = fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
     except Exception as err:
         LOGGER.error("lxml parser bytestring %s", err)
-    return tree
+    return None
 
 
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:

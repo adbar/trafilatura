@@ -427,6 +427,8 @@ MANUALLY_STRIPPED = [
     "template",
     "tfoot",
     "thead",
+    # the HTML parser does not treat it as void: it would swallow the rest of the paragraph
+    "wbr",
 ]
 
 # baseline()/html2txt() only (not the main pipeline). NOTE: html2txt() also measures page length

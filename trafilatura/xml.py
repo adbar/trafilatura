@@ -15,7 +15,7 @@ from pathlib import Path
 
 from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring, tostring
 
-from .settings import INLINE_CONSUMING, INLINE_FORMATTABLE, Document, Extractor
+from .settings import INLINE_CARRIED, INLINE_CONSUMING, INLINE_FORMATTABLE, Document, Extractor
 from .utils import sanitize, sanitize_tree, text_chars_test
 
 LOGGER = logging.getLogger(__name__)
@@ -70,12 +70,12 @@ META_ATTRIBUTES = [
     "language",
 ]
 
-HI_FORMATTING = {"#b": "**", "#i": "*", "#u": "__", "#t": "`"}
-# markdown has no superscript/subscript syntax, so these are emitted as inline HTML
-# (CommonMark passes it through), matching what HTML_TAG_MAPPING already emits for the
-# html output format. The pandoc-style "~15ya~" is not usable: GitHub renders a single
-# tilde as strikethrough, so it would replace one wrong meaning with another.
-HI_HTML_TAGS = {"#sup": "sup", "#sub": "sub"}
+HI_FORMATTING = {"#b": "**", "#i": "*", "#t": "`"}
+# no markdown syntax for these: inline HTML, as in the html output format.
+# Pandoc-style "~x~" is not usable: GitHub renders it as strikethrough.
+HI_HTML_TAGS = {"#sup": "sup", "#sub": "sub", "#u": "u"}
+# adjacent sup/sub stay apart: they are often distinct footnote references
+MERGEABLE_RENDS = {*HI_FORMATTING, "#u"}
 HEADING_LEVELS = frozenset("123456")
 # preceding characters that already separate content, so no extra space/newline is needed
 SEPARATORS = frozenset((" ", "\n", "|", ""))
@@ -147,17 +147,42 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
     parent.remove(element)
 
 
+def separates_inline(element: _Element) -> bool:
+    "Whether the element is a line break before inline content."
+    nxt = element.getnext()
+    return element.tag == "lb" and nxt is not None and nxt.tag in INLINE_CARRIED
+
+
 def remove_empty_elements(tree: _Element) -> _Element:
     """Remove text elements without text."""
     # bottom-up: document order never revisits a parent that its own children just emptied
     for element in reversed(list(tree.iter("*"))):  # 'head', 'hi', 'item', 'p'
-        if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
-            parent = element.getparent()
-            # not root element or element which is naturally empty
-            # do not remove elements inside <code> to preserve formatting
-            if parent is not None and element.tag != "graphic" and parent.tag != "code":
-                parent.remove(element)
+        if (
+            len(element) == 0
+            and text_chars_test(element.text) is False
+            and text_chars_test(element.tail) is False
+            and not keeps_empty(element)
+        ):
+            delete_element(element, keep_tail=False)
     return tree
+
+
+def keeps_empty(element: _Element) -> bool:
+    "Whether an empty element must stay."
+    parent = element.getparent()
+    return (
+        parent is None
+        or element.tag == "graphic"
+        or parent.tag == "code"
+        or separates_inline(element)
+        or is_padding_cell(element)
+    )
+
+
+def is_padding_cell(element: _Element) -> bool:
+    "Whether the element is an empty cell keeping the following values of its row in their columns (#633)."
+    parent = element.getparent()
+    return element.tag == "cell" and parent is not None and text_chars_test("".join(parent.itertext())) is True
 
 
 def strip_double_tags(tree: _Element) -> _Element:
@@ -385,7 +410,7 @@ def _merge_adjacent_hi(element: _Element) -> None:
             curr.tag == "hi"
             and nxt.tag == "hi"
             and curr.get("rend") == nxt.get("rend")
-            and curr.get("rend") in HI_FORMATTING
+            and curr.get("rend") in MERGEABLE_RENDS
             and len(curr) == 0
             and len(nxt) == 0
             and not (curr.tail or "").strip()
@@ -541,6 +566,16 @@ def _closes_container(element: _Element, tag: str) -> bool:
     return nxt is None or (tag == "item" and nxt.tag == "item")
 
 
+def _opens_item(element: _Element) -> bool:
+    "Whether nothing in the enclosing item renders before the element."
+    while element.tag != "item":
+        parent = element.getparent()
+        if parent is None or element.getprevious() is not None or text_chars_test(parent.text):
+            return False
+        element = parent
+    return True
+
+
 def _item_needs_marker(item: _Element) -> bool:
     "Whether the item renders content of its own before any sublist (whose items carry their markers)."
     if text_chars_test(item.text):
@@ -621,6 +656,42 @@ def replace_element_text(element: _Element, include_formatting: bool, in_cell: b
     return elem_text
 
 
+def _append_spaced(returnlist: list[str], text: str) -> None:
+    "Append text, dropping a leading space after a separator."
+    if text[:1] == " " and _last_char(returnlist) in SEPARATORS:
+        text = text[1:]
+    if text:
+        returnlist.append(text)
+
+
+def _append_tail(
+    element: _Element, returnlist: list[str], in_cell: bool, in_item: bool, include_formatting: bool = False
+) -> None:
+    "Append the element's tail."
+    tail = element.tail
+    if not tail:
+        return
+    parent = element.getparent()
+    if include_formatting and element.tag == "list" and in_item and not in_cell and parent is not None and tail.strip():
+        # blank line and parent item indent, else CommonMark continues the last sub-item
+        returnlist.append(f"\u2424\n{' ' * len(_list_marker(parent))}{tail.strip()}")
+        return
+    if in_cell or in_item or element.tag == "list":
+        core = tail.strip()
+        # keep the source separators, block elements lost theirs during extraction
+        if core and (tail[0].isspace() or element.tag not in INLINE_FORMATTABLE):
+            core = f" {core}"
+        nxt = element.getnext()
+        if tail[-1].isspace() and nxt is not None and nxt.tag in INLINE_CARRIED:
+            core += " "
+        _append_spaced(returnlist, _escape_cell(core, in_cell))
+        return
+    if element.tag in NEWLINE_ELEMS:
+        # block elements already end on their own line, so source HTML indentation in the tail is noise
+        tail = tail.lstrip()
+    returnlist.append(tail)
+
+
 def process_element(
     element: _Element,
     returnlist: list[str],
@@ -638,6 +709,14 @@ def process_element(
     # a block element starts on its own line, not mashed onto preceding loose text (#661)
     if element.tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
         returnlist.append("\n")
+    # flattened into an item or cell, it still needs a separator
+    elif (
+        element.tag in ("head", "p", "quote", "table")
+        and not _last_char(returnlist).isspace()
+        and _last_char(returnlist) not in SEPARATORS
+        and (element.text or len(element) == 0 or element[0].tag != "lb")
+    ):
+        returnlist.append(" ")
 
     _consumes_children = _consumes_inline_children(element)
     _renders_inline = bool(element.text) or _consumes_children
@@ -645,19 +724,12 @@ def process_element(
     if element.tag == "item" and not in_cell and _item_needs_marker(element):
         returnlist.append(_list_marker(element, include_formatting))
 
-    if _renders_inline:
+    # whitespace-only item text would split the marker from the content
+    if _renders_inline and (element.tag != "item" or _consumes_children or text_chars_test(element.text)):
         returnlist.append(_escape_cell(replace_element_text(element, include_formatting, in_cell), in_cell))
     elif include_formatting and element.tag == "head" and not in_cell and len(element):
         # heading starting with an inline child still needs its # prefix (children render below)
         returnlist.append(f"{_heading_prefix(element)} ")
-
-    if element.tail and element.tag != "graphic" and in_cell:
-        # textless elements like lb should be processed here too
-        tail = element.tail.strip()
-        # separate the tail from preceding cell content unless a space/delimiter is already there
-        if tail and _last_char(returnlist) not in (" ", "|", ""):
-            tail = f" {tail}"
-        returnlist.append(_escape_cell(tail))
 
     # a sublist starts on its own line, not mashed onto the parent item
     if element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
@@ -682,15 +754,12 @@ def process_element(
                     returnlist.append(f"\n|{'---|' * len(cells)}\n")
             # block elements inside a cell must not inject a row-breaking newline,
             # a leading line break in an item must not split the marker from the text
-            elif not in_cell and not (
-                element.tag == "lb"
-                and in_item
-                and element.getprevious() is None
-                and not getattr(element.getparent(), "text", None)
-            ):
+            elif not in_cell and not (element.tag == "lb" and in_item and _opens_item(element)):
                 returnlist.append("\n")
         elif element.tag not in ("cell", "item"):
             # cells still need to append vertical bars
+            if in_cell:
+                _append_tail(element, returnlist, in_cell, in_item)
             return
 
     last_in_item = in_item and _closes_container(element, "item")
@@ -701,23 +770,12 @@ def process_element(
         returnlist.append(" | ")
     elif element.tag in ("head", "item") and in_cell and not last_in_cell:
         # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
-        returnlist.append(" ")
+        _append_spaced(returnlist, " ")
     elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not last_in_cell:
-        returnlist.append(" ")
+        _append_spaced(returnlist, " ")
 
-    # text that comes after the closing tag
-    if element.tail and not in_cell and element.tag != "graphic":  # graphic tail already handled above
-        if in_item or element.tag == "list":
-            tail = element.tail.strip()
-        elif element.tag in NEWLINE_ELEMS:
-            # block elements already end on their own line, so source HTML indentation in the tail is noise
-            tail = element.tail.lstrip()
-        else:
-            tail = element.tail
-        # restore a separator lost during extraction so inline content isn't mashed (e.g. **bold**y)
-        if tail and in_item and _last_char(returnlist) not in SEPARATORS:
-            tail = f" {tail}"
-        returnlist.append(tail)
+    if element.tag != "graphic":  # graphic tail already handled above
+        _append_tail(element, returnlist, in_cell, in_item, include_formatting)
 
     # deal with list items alone
     if last_in_item and not in_cell:
@@ -928,28 +986,20 @@ def _tei_handle_complex_head(element: _Element) -> _Element:
 
 
 def _wrap_unwanted_siblings_of_div(div_element: _Element) -> None:
-    "Wrap unwanted siblings of a div element in a new div element."
-    new_sibling = Element("div")
-    new_sibling_index = None
-    parent = div_element.getparent()
-    if parent is None:
-        return
-    # check siblings after target element
+    "Wrap each run of block siblings following a div element in a new div element."
+    # other elements (e.g. <lb/>) end a run, so the order of elements is kept
+    runs: list[list[_Element]] = [[]]
     for sibling in div_element.itersiblings():
         if sibling.tag == "div":
             break
         if sibling.tag in TEI_DIV_SIBLINGS:
-            new_sibling_index = new_sibling_index or parent.index(sibling)
-            new_sibling.append(sibling)
-        # some elements (e.g. <lb/>) can appear next to div, but
-        # order of elements should be kept, thus add and reset new_sibling
-        else:
-            if new_sibling_index and len(new_sibling) > 0:
-                parent.insert(new_sibling_index, new_sibling)
-                new_sibling = Element("div")
-                new_sibling_index = None
-    if new_sibling_index and len(new_sibling) != 0:
-        parent.insert(new_sibling_index, new_sibling)
+            runs[-1].append(sibling)
+        elif runs[-1]:
+            runs.append([])
+    for run in filter(None, runs):
+        wrapper = Element("div")
+        run[0].addprevious(wrapper)
+        wrapper.extend(run)
 
 
 def _move_element_one_level_up(element: _Element) -> None:

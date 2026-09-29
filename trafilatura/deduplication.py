@@ -36,12 +36,7 @@ def is_similar_domain(reference: str, new_string: str, threshold: float = 0.5) -
 def sample_tokens(inputstring: str, length: int = 64) -> list[str]:
     """Split input into list of tokens and adjust length threshold to make sure
     there is enough data."""
-    tokens = []
-    for token in inputstring.split():
-        token = token.strip(string.punctuation)
-        if token.isalnum():
-            tokens.append(token)
-
+    tokens = [t for token in inputstring.split() if (t := token.strip(string.punctuation)).isalnum()]
     if not tokens:
         # non-latin punctuation, e.g. mandarin 。
         tokens = [t for t in inputstring.translate(_punct_tbl()).split() if t.isalnum()]

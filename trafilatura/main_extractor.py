@@ -28,7 +28,7 @@ from .settings import (
     Extractor,
 )
 from .utils import FORMATTING_PROTECTED, SPACING_PROTECTED, image_src, text_chars_test, trim
-from .xml import delete_element
+from .xml import delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
@@ -105,16 +105,37 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
     new_child_elem.text = child.text
     for subelem in child.iterdescendants("*"):
         if subelem.tag == "list":
-            processed_subchild = handle_lists(subelem, options)
-            if processed_subchild is not None:
-                new_child_elem.append(processed_subchild)
+            _append_block(new_child_elem, handle_lists(subelem, options), subelem)
+        elif subelem.tag == "p" and len(subelem) > 0:
+            _append_block(new_child_elem, handle_paragraphs(subelem, _QUOTE_TAGS, options), subelem)
+        elif subelem.tag == "graphic":
+            image = handle_image(subelem, options)
+            if image is not None:
+                define_newelem(image, new_child_elem)
+            elif subelem.tail:
+                _append_text(new_child_elem, subelem.tail)
         elif subelem.tag in INLINE_CARRIED:
             define_newelem(subelem, new_child_elem, keep_children=True)
         else:
-            processed_subchild = handle_textnode(subelem, options, comments_fix=False)
-            if processed_subchild is not None:
-                define_newelem(processed_subchild, new_child_elem)
+            define_newelem(handle_textnode(subelem, options, comments_fix=False), new_child_elem)
         subelem.tag = "done"
+
+
+def _append_text(elem: _Element, text: str) -> None:
+    "Append text after the last child of elem, or to its text."
+    if len(elem) > 0:
+        elem[-1].tail = (elem[-1].tail or "") + text
+    else:
+        elem.text = (elem.text or "") + text
+
+
+def _append_block(parent: _Element, processed: _Element | None, source: _Element) -> None:
+    "Append a processed block with the source tail, or keep that tail as text."
+    if processed is not None:
+        processed.tail = source.tail
+        parent.append(processed)
+    elif source.tail and text_chars_test(source.tail):
+        _append_text(parent, source.tail)
 
 
 def update_elem_rendition(elem: _Element, new_elem: _Element) -> None:
@@ -172,12 +193,9 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
                     new_child_elem.text += " " + processed_child.tail
         else:
             process_nested_elements(child, new_child_elem, options)
-            if child.tail is not None and child.tail.strip() and len(new_child_elem) > 0:
-                last_subchild = new_child_elem[-1]
-                if last_subchild.tail is None or not last_subchild.tail.strip():
-                    last_subchild.tail = child.tail
-                else:
-                    last_subchild.tail += " " + child.tail
+            if text_chars_test(child.tail) and len(new_child_elem) > 0:
+                last = new_child_elem[-1]
+                last.tail = f"{last.tail} {child.tail}" if text_chars_test(last.tail) else child.tail
         if new_child_elem.text or len(new_child_elem) > 0:
             update_elem_rendition(child, new_child_elem)
             processed_element.append(new_child_elem)
@@ -218,21 +236,7 @@ def handle_quotes(element: _Element, options: Extractor) -> _Element | None:
         return handle_code_blocks(element)
 
     processed_element = Element(element.tag)
-    processed_element.text = element.text
-    for child in element.iterdescendants():
-        if child.tag == "graphic":
-            processed_child = handle_image(child, options)
-            define_newelem(processed_child, processed_element)
-        elif child.tag == "p" and len(child) > 0:
-            processed_child = handle_paragraphs(child, _QUOTE_TAGS, options)
-            if processed_child is not None:
-                processed_element.append(processed_child)
-        elif child.tag in INLINE_CARRIED:
-            define_newelem(child, processed_element, keep_children=True)
-        else:
-            processed_child = process_node(child, options)
-            define_newelem(processed_child, processed_element)
-        child.tag = "done"
+    process_nested_elements(element, processed_element, options)
     if is_text_element(processed_element):
         # avoid double/nested tags
         strip_tags(processed_element, "quote")
@@ -388,10 +392,11 @@ def _fill_cell(
         if child in nested_elems:
             # preserve tail text of nested tables (text after </table> inside the cell)
             if child.tag == "table" and child.tail:
-                if len(new_child_elem) > 0:
-                    new_child_elem[-1].tail = (new_child_elem[-1].tail or "") + child.tail
-                else:
-                    new_child_elem.text = (new_child_elem.text or "") + child.tail
+                _append_text(new_child_elem, child.tail)
+            continue
+        if separates_inline(child) and not text_chars_test(child.tail):
+            new_child_elem.append(Element("lb"))
+            child.tag = "done"
             continue
         if child.tag in TABLE_ELEMS:  # stray cell from malformed HTML
             child.tag = "cell"
@@ -401,15 +406,10 @@ def _fill_cell(
             # handle_textnode drops inline wrappers (ref/hi/del) with children but no direct
             # text (e.g. <ref><hi>link text</hi></ref>); carry the subtree directly instead
             if processed_subchild is None and len(child) > 0:
-                define_newelem(child, new_child_elem, keep_children=True)
-                for el in child.iter("*"):  # iter() includes child itself
-                    el.tag = "done"
-                continue
+                processed_subchild = child
         # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
         elif child.tag == "list" and options.focus == "recall":
-            processed_subchild = handle_lists(child, options)
-            if processed_subchild is not None:
-                new_child_elem.append(processed_subchild)
+            _append_block(new_child_elem, handle_lists(child, options), child)
             child.tag = "done"
             continue
         else:
