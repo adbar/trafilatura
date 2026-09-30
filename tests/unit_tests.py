@@ -1793,6 +1793,30 @@ def test_no_duplicate_paragraph_from_lb_tail():
     assert not any(line and line.isspace() for line in result.split("\n"))
 
 
+@pytest.mark.parametrize(
+    "block",
+    [
+        "<ul><li>Improve the tram network</li><li>Expand the bicycle lanes</li></ul>",
+        "<table><tr><td>Budget</td><td>40</td></tr><tr><td>Staff</td><td>12</td></tr></table>",
+        "<blockquote><p>We will deliver the plan on time and on budget.</p></blockquote>",
+        "<pre>total = sum(values)</pre>",
+    ],
+)
+def test_text_after_block_is_kept(block):
+    "regression: text directly after a list, table, quote or code block (its tail) was dropped: \
+    _extract() rebuilds those blocks as new elements and left the source tail behind. It is now \
+    kept as a paragraph of its own, exactly once."
+    html = (
+        "<html><body><article><h1>Headline</h1>"
+        f"<p>{'The committee reviewed the proposal over several sessions. ' * 4}</p>"
+        f"{block}These totals include every department that submitted figures in time."
+        f"<p>{'The findings were published together with the underlying data. ' * 4}</p>"
+        "</article></body></html>"
+    )
+    result = extract(html, config=ZERO_CONFIG)
+    assert result.count("These totals include every department") == 1
+
+
 def test_body_xpath_fulltext_class():
     "GH#780: BODY_XPATH's fulltext-class rule (re:test(@class,'fulltext','i'), replacing an \
     obscure translate()-based case-fold hack) must still match every capitalization of a \

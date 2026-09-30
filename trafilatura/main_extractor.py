@@ -42,6 +42,8 @@ FORMATTING = P_FORMATTING | {"del", "span"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 CODES_QUOTES = {"code", "quote"}
+# blocks rebuilt as new elements by handle_textelem(), which leaves the source tail behind
+REBUILT_BLOCKS = CODES_QUOTES | {"list", "table"}
 NOT_AT_THE_END = {"head", "ref"}
 # tags allowed inside a blockquote paragraph
 _QUOTE_TAGS = set(TAG_CATALOG) | {"ref", "graphic"}
@@ -798,9 +800,17 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
             # marks the children it consumes "done"; this covers the elements it cannot retag.
             if elem.getroottree().getroot() is result_body:
                 continue
+            # handlers may rename the element to "done", so read these first
+            tag, tail = elem.tag, elem.tail
             processed_elem = handle_textelem(elem, potential_tags, options)
             if processed_elem is not None:
                 result_body.append(processed_elem)
+            # text right after a rebuilt block is a paragraph of its own, like an <lb> tail
+            if tag in REBUILT_BLOCKS and text_chars_test(tail):
+                tail_elem = Element("p")
+                tail_elem.text = tail
+                if process_node(tail_elem, options) is not None:
+                    result_body.append(tail_elem)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             delete_element(result_body[-1], keep_tail=False)
