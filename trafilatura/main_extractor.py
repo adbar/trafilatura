@@ -662,6 +662,24 @@ def _holds_most_of_the_text(tree: HtmlElement, expr: XPath) -> bool:
     return len(trim(" ".join(match.itertext()))) / page_length >= LISTING_TEXT_SHARE
 
 
+def _is_listing_page(tree: HtmlElement, options: Extractor) -> bool:
+    """Whether the sibling-article container is the body of a listing page. The container only
+    widens what BODY_XPATH would take on its own: that element has to be one of its entries and a
+    short teaser. A body outside the container means a teaser strip beside the article, and an
+    entry that already clears the recall "sure thing" length is a full article, as on pages that
+    preload the next stories below the current one."""
+    listing_expr = LISTING_BODY_XPATH[0]
+    container = next((s for s in listing_expr(tree) if s is not None), None)
+    if container is None:
+        return False
+    entry = next((s for expr in BODY_XPATH for s in expr(tree) if s is not None), None)
+    if entry is None or entry.getparent() is not container:
+        return False
+    if len(trim(" ".join(entry.itertext()))) > options.min_extracted_size * 10:
+        return False
+    return _holds_most_of_the_text(tree, listing_expr)
+
+
 def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
@@ -673,7 +691,7 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         potential_tags.add("ref")
     result_body = Element("body")
     expressions = BODY_XPATH
-    if options.focus == "recall" and _holds_most_of_the_text(tree, LISTING_BODY_XPATH[0]):
+    if options.focus == "recall" and _is_listing_page(tree, options):
         expressions = LISTING_BODY_XPATH + BODY_XPATH
     # iterate
     for expr in expressions:
