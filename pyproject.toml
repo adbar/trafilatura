@@ -60,7 +60,7 @@ dependencies = [
     "htmldate == 1.10.0",
     "justext == 3.0.2",
     "lxml == 6.1.1",
-    "urllib3 == 2.7.0",
+    "urllib3 == 2.8.0",
 ]
 
 # https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
@@ -105,7 +105,7 @@ all = [
     "htmldate[speed] == 1.10.0",
     "py3langid == 0.3.0",
     "pycurl == 7.47.0",
-    "urllib3[socks] == 2.7.0",
+    "urllib3[socks] == 2.8.0",
     # stdlib compression.zstd backport, same detection as urllib3, self-retires with 3.14
     "backports.zstd == 1.7.0; python_version < '3.14'",
 ]
