@@ -8,8 +8,7 @@ import re  # import regex as re
 from copy import deepcopy
 from urllib.parse import urljoin
 
-from lxml.etree import Element, SubElement, _Element, strip_elements, strip_tags, tostring
-from lxml.html import HtmlElement
+from .dom import Element, HtmlElement, SubElement, _Element, strip_elements, strip_tags, tostring
 
 # own
 from .htmlprocessing import (
@@ -355,7 +354,7 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
                             item.tail = " " + item.tail.lstrip()
                         elif item.text is not None and text_chars_test(item.text):
                             item.text = " " + item.text
-                        strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
+                        strip_tags(processed_child, item.tag)
                 # correct attributes
                 if child.tag == "hi":
                     newsub.set("rend", child.get("rend", ""))
@@ -483,8 +482,7 @@ def _fill_cell(
                 for el in child.iter("*"):  # iter() includes child itself
                     el.tag = "done"
                 continue
-        # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
-        elif child.tag == "list" and options.focus == "recall":
+        elif child.tag == "list":
             processed_subchild = handle_lists(child, options)
             if processed_subchild is not None:
                 new_child_elem.append(processed_subchild)
@@ -663,6 +661,7 @@ def recover_wild_text(
     result_body: _Element,
     options: Extractor,
     potential_tags: set[str] | None = None,
+    forum: bool = False,
 ) -> _Element:
     """Look for all previously unconsidered wild elements, including outside of the determined
     frame and throughout the document to recover potentially missing text parts.
@@ -682,7 +681,7 @@ def recover_wild_text(
         search_expr += "|.//div|.//lb|.//list"
     # prune; in fast mode (no external comparator to defer to) keep teaser-class blocks, some of
     # which are real content — this is the last-resort path after the confident extractor failed
-    search_tree = prune_unwanted_sections(tree, potential_tags, options, keep_teasers=options.fast)
+    search_tree = prune_unwanted_sections(tree, potential_tags, options, keep_teasers=options.fast, forum=forum)
     # spans are always flattened; links are stripped too unless preserved
     unwanted = ("span",) if "ref" in potential_tags else ("a", "ref", "span")
     strip_tags(search_tree, *unwanted)
@@ -715,9 +714,17 @@ def prune_unwanted_sections(
     potential_tags: set[str],
     options: Extractor,
     keep_teasers: bool = False,
+    forum: bool = False,
 ) -> HtmlElement:
     "Rule-based deletion of targeted document sections"
     favor_precision = options.focus == "precision"
+    if forum:
+        # Profile definition lists add member statistics to post text.
+        for article in tree.iter("article"):
+            if article.find(".//article") is not None:
+                for details in list(article.iter("list")):
+                    if details.get("rend") == "dl" and details.xpath("ancestor::article[1]")[0] is article:
+                        delete_element(details, keep_tail=False)
     # prune the rest
     tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH, with_backup=True)
     # decide if images are preserved
@@ -733,9 +740,9 @@ def prune_unwanted_sections(
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density, several passes
     for _ in range(2):
-        tree = delete_by_link_density(tree, "div", backtracking=True, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, "list", backtracking=False, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, "p", backtracking=False, favor_precision=favor_precision)
+        tree = delete_by_link_density(tree, "div", backtracking=True, favor_precision=favor_precision, forum=forum)
+        tree = delete_by_link_density(tree, "list", backtracking=False, favor_precision=favor_precision, forum=forum)
+        tree = delete_by_link_density(tree, "p", backtracking=False, favor_precision=favor_precision, forum=forum)
     # tables
     if "table" in potential_tags or favor_precision:
         # collect before deleting: removing a table mid-iteration can make tree.iter() skip a table
@@ -747,12 +754,12 @@ def prune_unwanted_sections(
         # delete trailing titles
         while len(tree) > 0 and (tree[-1].tag == "head"):
             delete_element(tree[-1], keep_tail=False)
-        tree = delete_by_link_density(tree, "head", backtracking=False, favor_precision=True)
-        tree = delete_by_link_density(tree, "quote", backtracking=False, favor_precision=True)
+        tree = delete_by_link_density(tree, "head", backtracking=False, favor_precision=True, forum=forum)
+        tree = delete_by_link_density(tree, "quote", backtracking=False, favor_precision=True, forum=forum)
     return tree
 
 
-def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
+def _extract(tree: HtmlElement, options: Extractor, forum: bool = False) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
     if options.tables is True:
@@ -769,7 +776,7 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         if subtree is None:
             continue
         # prune the subtree
-        subtree = prune_unwanted_sections(subtree, potential_tags, options)
+        subtree = prune_unwanted_sections(subtree, potential_tags, options, forum=forum)
         # skip if empty tree
         if len(subtree) == 0:
             continue
@@ -812,19 +819,19 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
     return result_body, temp_text, potential_tags
 
 
-def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Element, str, int]:
+def extract_content(cleaned_tree: HtmlElement, options: Extractor, forum: bool = False) -> tuple[_Element, str, int]:
     """Find the main content of a page using a set of XPath expressions,
     then extract relevant elements, strip them of unwanted subparts and
     convert them"""
     # backup
     backup_tree = deepcopy(cleaned_tree)
 
-    result_body, temp_text, potential_tags = _extract(cleaned_tree, options)
+    result_body, temp_text, potential_tags = _extract(cleaned_tree, options, forum=forum)
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
-        result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
+        result_body = recover_wild_text(backup_tree, result_body, options, potential_tags, forum=forum)
         temp_text = " ".join(result_body.itertext()).strip()
     # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
     # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards

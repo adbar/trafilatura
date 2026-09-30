@@ -143,8 +143,7 @@ def test_response_object():
         response.data = filehandle.read()
     assert _is_suitable_response(response.url, response, DEFAULT_OPTS) is True
     assert load_html(response) is not None
-    # nothing to see here
-    assert extract(response, url=response.url, config=ZERO_CONFIG) is None
+    assert "UTF-8 encoded sample plain-text file" in extract(response, url=response.url, config=ZERO_CONFIG)
 
 
 @pytest.mark.filterwarnings("ignore::urllib3.exceptions.InsecureRequestWarning")

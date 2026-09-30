@@ -4,20 +4,19 @@ Functions grounding on third-party software.
 """
 
 import logging
-from typing import Any
+from copy import copy
 
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
 from justext.utils import get_stoplist, get_stoplists
-from lxml.etree import Element, _Element, strip_tags, tostring
-from lxml.html import HtmlElement
 
 # own
 from .baseline import basic_cleaning
+from .dom import Element, HtmlElement, _Element, strip_tags, to_lxml_html, tostring
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES, Extractor
-from .utils import fromstring_bytes, trim
+from .utils import trim
 from .xml import TEI_VALID_TAGS
 from .xpaths import OVERALL_DISCARD_XPATH
 
@@ -37,12 +36,14 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
-        # force conversion to utf-8 (see #319)
-        summary = fromstring_bytes(doc.summary())
-        return summary if summary is not None else HtmlElement()
+        doc.summary()
+        # the summarized element itself, instead of parsing its serialization again
+        summary = copy(doc.doc)
+        summary.tail = None
+        return summary
     except Exception as err:
         LOGGER.warning("readability_lxml failed: %s", err)
-        return HtmlElement()
+        return Element("body")
 
 
 def _prefer_readability(
@@ -134,7 +135,7 @@ def compare_extraction(
 
     # post-processing: remove unwanted sections
     if use_readability and not jt_result:
-        body, text, len_text = sanitize_tree(body, options)  # type: ignore[arg-type]
+        body, text, len_text = sanitize_tree(body, options)
 
     return body, text, len_text
 
@@ -149,14 +150,6 @@ def jt_stoplist_init() -> tuple[str]:
     return JT_STOPLIST
 
 
-def custom_justext(tree: HtmlElement, stoplist: tuple[str]) -> Any:
-    "Customized version of JusText processing"
-    paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
-    revise_paragraph_classification(paragraphs, 150)
-    return paragraphs
-
-
 def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
     """Second safety net: try with the generic algorithm justext"""
     # init
@@ -168,7 +161,9 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
         justext_stoplist = JT_STOPLIST or jt_stoplist_init()
     # extract
     try:
-        paragraphs = custom_justext(tree, justext_stoplist)
+        paragraphs = ParagraphMaker.make_paragraphs(to_lxml_html(tree))
+        classify_paragraphs(paragraphs, justext_stoplist, 50, 150, 0.1, 0.2, 0.25, True)
+        revise_paragraph_classification(paragraphs, 150)
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
     else:
@@ -220,7 +215,7 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     sanitization_list = [
         tagname for tagname in [element.tag for element in set(cleaned_tree.iter("*"))] if tagname not in TEI_VALID_TAGS
     ]
-    strip_tags(cleaned_tree, *sanitization_list)  # type: ignore[arg-type]
+    strip_tags(cleaned_tree, *sanitization_list)
     # 4. return
     text = trim(" ".join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

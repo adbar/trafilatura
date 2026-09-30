@@ -4,9 +4,7 @@ X-Path expressions used to extract or filter the main text content,
 and to extract metadata.
 """
 
-from lxml.etree import XPath
-
-REGEXP_NS = "http://exslt.org/regular-expressions"
+from .dom import XPath
 
 
 def _alt(tokens: tuple[str, ...]) -> str:
@@ -60,6 +58,7 @@ _MAIN_CONTENT_ID_TOKENS = ("content-main", "content-body", "contentBody")
 _MAIN_CONTENT_CLASS_TOKENS = ("content[-_]main", "content(?:-|__)body")
 
 BODY_XPATH = [
+    XPath("(.//div[contains(concat(' ', normalize-space(@class), ' '), ' js-replyNewMessageContainer ')])[1]"),
     XPath(
         f"""
         .//*[self::article or self::div or self::main or self::section][
@@ -68,8 +67,7 @@ BODY_XPATH = [
         re:test(@id, '{_alt(_ARTICLE_CONTENT_ID_TOKENS)}') or
         re:test(@class, '{_alt(_ARTICLE_CONTENT_CLASS_TOKENS)}')
         ][1]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     # (…)[1] = first occurrence
     XPath("(.//article)[1]"),
@@ -83,8 +81,7 @@ BODY_XPATH = [
         re:test(@class, 'fulltext', 'i') or
         re:test(@class, '{_alt(_STORY_CLASS_TOKENS)}')
         ])[1]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         f"""
@@ -95,8 +92,7 @@ BODY_XPATH = [
         contains(translate(@id, 'CM','cm'), 'main-content') or contains(translate(@class, 'CM','cm'), 'main-content') or
         contains(translate(@class, 'CP','cp'), 'page-content')
         ])[1]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         """
@@ -122,23 +118,20 @@ COMMENTS_XPATH = [
         .//*[self::div or self::list or self::section][
         re:test(@id|@class, 'comment-?list') or
         re:test(@class, 'comment-page|comments-content|post-comments')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         """
         .//*[self::div or self::section or self::list][
         re:test(@id|@class, '^comment[s-]') or
         re:test(@class, '^Comments|article-comments')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         """
         .//*[self::div or self::section or self::list][
         re:test(@id, '^(?:comol|disqus_thread|dsq-comments)')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         """
@@ -155,8 +148,7 @@ REMOVE_COMMENTS_XPATH = [
         .//*[self::div or self::list or self::section or self::details][
         re:test(@id, '^(?:[Cc]omment|comol|disqus_thread|dsq-comments)') or
         re:test(@class, '^[Cc]omment|(?:article|post)-comments')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     )
 ]
 # or self::span
@@ -171,8 +163,7 @@ REMOVE_APPENDED_ARTICLES_XPATH = [
         .//*[self::div or self::section or self::aside][
         re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
         re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     )
 ]
 
@@ -281,8 +272,7 @@ OVERALL_DISCARD_XPATH = [
         re:test(@id|@class, '{_alt(_CONSENT_ID_CLASS_TOKENS)}') or
         re:test(@id, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_ID_TOKENS)}') or
         re:test(@class, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_CLASS_TOKENS)}')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         """
@@ -292,8 +282,7 @@ OVERALL_DISCARD_XPATH = [
         contains(@style, 'display:none') or contains(@style, 'display: none') or
         re:test(@id, 'reader-comments|akismet') or
         re:test(@class, '^hide-|comments-title|nocomments|-reply-|message|akismet|suggest-links|-hide-|hide-print| hidden| hide|noprint|notloaded') or @aria-hidden='true']
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
 ]
 
@@ -331,8 +320,7 @@ PRECISION_DISCARD_XPATH = [
     .//*[self::div or self::item or self::list or self::p or self::section or self::span][
     re:test(@id|@class, '(^|\s)bottom|bottom(\s|$)') or re:test(@id|@class, '(^|\s)link(\s|$)') or
     contains(@style, 'border')]
-    """,
-        namespaces={"re": REGEXP_NS},
+    """
     ),
 ]
 # or contains(@id, "-comments") or contains(@class, "-comments")
@@ -358,8 +346,7 @@ COMMENTS_DISCARD_XPATH = [
         contains(@style, 'display:none') or
         re:test(@class, 'comments-title|nocomments|-reply-|message|signin') or
         re:test(@id|@class, '^reply-|akismet')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
 ]
 
@@ -376,8 +363,7 @@ AUTHOR_XPATHS = [
         @rel='author' or @id='author' or @class='author' or @itemprop='author name' or rel='me' or
         @data-testid='AuthorCard' or @data-testid='AuthorURL' or
         re:test(@class, 'author-?name|AuthorName|authorName')]|//author
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         # almost generic and generic, last ones not common
@@ -387,8 +373,7 @@ AUTHOR_XPATHS = [
         contains(@itemprop, 'author') or
         re:test(@id, 'author|zuozhe|bianji|xiaobian') or
         re:test(@class, 'author|channel-name|zuozhe|bianji|xiaobian|submitted-by|posted-by|journalist-name')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath(
         # last resort: any element
@@ -397,8 +382,7 @@ AUTHOR_XPATHS = [
         contains(@data-component, 'Byline') or contains(@itemprop, 'author') or
         re:test(@id, '[Aa]uthor') or
         re:test(@class, '[Aa]uthor|screenname|writer|[Bb]yline')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
 ]
 
@@ -411,8 +395,7 @@ AUTHOR_DISCARD_XPATHS = [
         re:test(@id, '^comments|comment-?list|ProductReviews') or
         re:test(@class, '^[Cc]omments|commentlist|comments-list|sidebar|is-hidden|quote|embedly-instagram|article-(?:share|support)|print|category|meta-date|meta-reviewer') or
         contains(@data-component, 'Figure')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath("//time|//figure"),
 ]
@@ -424,8 +407,7 @@ CATEGORIES_XPATHS = [
         //div[
         re:test(@class, '^(?:post-?info|post-?meta|meta|entry-meta|entry-info|entry-utility)') or
         starts-with(@id, 'postpath')]//a[@href]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath("""//p[starts-with(@class, 'postmeta') or starts-with(@class, 'entry-categories') or
      @class='postinfo' or @id='filedunder']//a[@href]"""),
@@ -443,8 +425,7 @@ TAGS_XPATHS = [
     XPath("""//p[starts-with(@class, 'entry-tags')]//a[@href]"""),
     XPath(
         """//div[@class='row' or @class='jp-relatedposts' or @class='entry-utility' or
-    re:test(@class, '^(?:tag|postmeta|meta)')]//a[@href]""",
-        namespaces={"re": REGEXP_NS},
+    re:test(@class, '^(?:tag|postmeta|meta)')]//a[@href]"""
     ),
     XPath("""//*[@class='entry-meta' or contains(@class, 'topics') or
      contains(@class, 'tags-links')]//a[@href]"""),
@@ -459,8 +440,7 @@ TITLE_XPATHS = [
         //*[self::h1 or self::h2][
         re:test(@class, '(?:post-|entry-|article-|post__)title|headline') or
         contains(@id, 'headline') or contains(@itemprop, 'headline')]
-        """,
-        namespaces={"re": REGEXP_NS},
+        """
     ),
     XPath("""//*[@class='entry-title' or @class='post-title']"""),
     XPath("""//*[self::h1 or self::h2 or self::h3][

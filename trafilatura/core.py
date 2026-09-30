@@ -11,12 +11,12 @@ from configparser import ConfigParser
 from copy import copy
 from typing import Any
 
-from lxml.etree import Element, XPath, _Element, strip_tags
-from lxml.html import HtmlElement
+from lxml.etree import strip_tags
 
 # own
-from .baseline import baseline, html2txt
+from .baseline import baseline_tree, html2txt
 from .deduplication import LRUCache, content_fingerprint, duplicate_test
+from .dom import Element, HtmlElement, XPath, _Element, document_context, to_lxml
 from .external import compare_extraction, justext_rescue
 from .htmlprocessing import (
     build_html_output,
@@ -163,13 +163,15 @@ def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tup
     return cleaned, backup
 
 
-def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None) -> tuple[_Element, str, int]:
+def _recall_retry(
+    esc_tree: HtmlElement, r_options: Extractor, url: str | None, forum: bool = False
+) -> tuple[_Element, str, int]:
     """Stage-4 retry: re-run cascade stages 1-2 in recall mode on the escalation input
     (arrives comment-pruned, or intact on a thread-forum where posts are content).
     Deliberately no comment capture, no baseline (it already ran on the full page; on a
     comment-pruned tree it only yields an indistinguishable boilerplate dump), no escalation."""
     cleaned_tree, cleaned_tree_backup = _prepare_tree(esc_tree, r_options, url)
-    postbody, temp_text, len_text = extract_content(cleaned_tree, r_options)
+    postbody, temp_text, len_text = extract_content(cleaned_tree, r_options, forum=forum)
     if not r_options.fast:
         postbody, temp_text, len_text = compare_extraction(
             cleaned_tree_backup,
@@ -227,7 +229,7 @@ def trafilatura_sequence(
         cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
     # 1. Trafilatura's main extractor
-    postbody, temp_text, len_text = extract_content(cleaned_tree, options)
+    postbody, temp_text, len_text = extract_content(cleaned_tree, options, forum=is_forum)
 
     # 2. comparison with external extractors
     if not options.fast:
@@ -242,7 +244,7 @@ def trafilatura_sequence(
 
     # 3. rescue: baseline on the original tree, accepted only if it adds text (#896)
     if len_text < options.min_extracted_size and options.focus != "precision":
-        b_body, b_text, b_len = baseline(tree)  # baseline copies element inputs
+        b_body, b_text, b_len = baseline_tree(tree)  # baseline copies element inputs
         LOGGER.debug("non-clean extracted length: %s (extraction)", b_len)
         if b_len > len_text:
             postbody, temp_text, len_text = b_body, b_text, b_len
@@ -264,7 +266,7 @@ def trafilatura_sequence(
         esc_tree = tree if is_forum else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
         r_len = 0
         try:
-            r_body, r_text, r_len = _recall_retry(esc_tree, r_options, url)
+            r_body, r_text, r_len = _recall_retry(esc_tree, r_options, url, forum=is_forum)
         except Exception as err:  # pragma: no cover
             LOGGER.warning("recall retry failed: %s %s", err, url)
         # justext reaches div-buried content the rule retry misses (gated: ungated regressed
@@ -296,9 +298,20 @@ def trafilatura_sequence(
             temp_text = " ".join(postbody.itertext()).strip()
             len_text = len(temp_text)
 
+    # Thread titles often sit outside the selected post container.
+    if is_forum and (headings := tree.xpath(".//body//h1[not(ancestor-or-self::*[@hidden or @aria-hidden='true'])]")):
+        title = " ".join(headings[0].text_content().split())
+        if title and title not in " ".join(temp_text.split()):
+            heading = Element("head")
+            heading.text = title
+            postbody.insert(0, heading)
+            temp_text = " ".join(postbody.itertext()).strip()
+            len_text = len(temp_text)
+
     return postbody, temp_text, len_text, commentsbody, temp_comments, len_comments
 
 
+@document_context
 def bare_extraction(
     filecontent: HtmlInput,
     url: str | None = None,
@@ -444,11 +457,12 @@ def bare_extraction(
                 prune_xpath = [prune_xpath]
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in prune_xpath])
 
-        postbody, temp_text, len_text, commentsbody, temp_comments, len_comments = trafilatura_sequence(
+        body_tree, temp_text, len_text, comments_tree, temp_comments, len_comments = trafilatura_sequence(
             tree,
             options,
             options.url or document.url,
         )
+        postbody, commentsbody = to_lxml(body_tree), to_lxml(comments_tree)
 
         # tree size sanity check
         if options.max_tree_size:
