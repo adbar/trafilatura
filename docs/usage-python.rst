@@ -48,6 +48,88 @@ Simpler alternatives (no cascade, faster):
 - ``html2txt``: Extracts all text in the document, including navigation and footers
 
 
+Article lists and category pages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An archive, search result, or category page often contains many short article
+links rather than one main text. ``extract()`` is designed to find a page's
+main content; its output is not a complete inventory of article URLs.
+Likewise, ``include_links=True`` preserves links in retained content, so it
+should not be used as a substitute for link discovery.
+
+Use two separate steps: select candidate URLs from the listing HTML, then
+retrieve each candidate and pass its HTML to ``extract()``. The following
+self-contained example uses fictional pages and makes no network requests.
+Adapt the XPath and article-path rule to the website you are processing.
+
+.. code-block:: python
+
+    from urllib.parse import urljoin, urlsplit
+
+    from lxml.html import fromstring
+    from trafilatura import extract
+
+    listing_url = "https://example.org/news/"
+    listing_html = """
+    <html><body><main>
+      <a href="/articles/garden">Community garden opens</a>
+      <a href="/articles/library">Library extends opening hours</a>
+      <a href="/articles/garden#photos">Garden photos</a>
+      <a href="https://other.example/articles/update">External article</a>
+      <a href="mailto:editor@example.org">Contact</a>
+      <a href="#top">Back to top</a>
+    </main></body></html>
+    """
+
+    tree = fromstring(listing_html)
+    origin = urlsplit(listing_url)
+    article_urls = []
+    for href in tree.xpath("//main//a[@href]/@href"):
+        candidate = urlsplit(urljoin(listing_url, href))
+        if (
+            (candidate.scheme, candidate.netloc) == (origin.scheme, origin.netloc)
+            and candidate.path.startswith("/articles/")
+        ):
+            article_urls.append(candidate._replace(fragment="").geturl())
+    article_urls = list(dict.fromkeys(article_urls))
+
+    print(article_urls)
+    # ['https://example.org/articles/garden',
+    #  'https://example.org/articles/library']
+
+    # One fictional article, representing HTML retrieved in the second step.
+    article_html = """
+    <html><body><article>
+      <h1>Community garden opens</h1>
+      <p>A new community garden opened on Saturday after volunteers spent
+      several months preparing the ground and planting vegetables. Residents
+      can visit the garden every weekend and join the regular planting sessions.</p>
+      <p>The organizers will hold a workshop next month to explain how to grow
+      seasonal vegetables in small spaces. Tools and seeds will be available
+      for participants, and the library will provide a collection of guides.</p>
+    </article></body></html>
+    """
+    text = extract(article_html, url=article_urls[0], include_comments=False)
+    if text is not None:
+        print(text)
+
+For real pages, use ``fetch_url()`` to retrieve the listing and each article;
+handle a ``None`` download or extraction result before processing it further.
+Set request limits and follow the site's applicable crawling rules. The example
+only removes fragments and exact duplicate URLs; query strings are retained
+because they can identify distinct articles.
+
+The XPath and path prefix are site-specific filters, not a general article
+classifier. HTML generated only after JavaScript execution and links on later
+pagination pages require a separate retrieval or discovery step. If the site
+provides them, consider `feeds <feeds.html>`_ or `sitemaps <sitemaps.html>`_.
+For broader exploration, see `web crawling <crawls.html>`_ and
+`URL management <url-management.html>`_. If your goal is all visible listing
+text rather than article URLs, consider ``html2txt()`` and expect navigation
+and other boilerplate in its output.
+
+
+
 Output
 ^^^^^^
 
