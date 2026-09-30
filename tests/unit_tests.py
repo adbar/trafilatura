@@ -2563,6 +2563,37 @@ def test_article_page_ignores_related_posts_strip():
     assert "Related teaser 1" not in result
 
 
+def test_teaser_strip_beside_a_short_body_does_not_replace_it():
+    "a teaser strip can outweigh a short article, but the body sits outside it, so recall keeps the body"
+    body = "<p>The short body of the story, a single paragraph that is still the actual article.</p>"
+    teasers = "".join(
+        f"<article><h2><a href='/r{i}'>Teaser headline {i}</a></h2>"
+        f"<p>Teaser text {i} runs over a clause or two, as a lead paragraph on a strip would.</p></article>"
+        for i in range(12)
+    )
+    doc = (
+        f"<html><body><main><article><h1>The Real Headline</h1>{body}</article>"
+        f"<section>{teasers}</section></main></body></html>"
+    )
+    result = extract(doc, output_format="markdown", favor_recall=True, config=use_config()) or ""
+    assert "The short body of the story" in result
+    assert "Teaser headline 3" not in result
+
+
+@pytest.mark.parametrize("settings", [{}, {"favor_recall": True}, {"favor_recall": True, "fast": True}])
+def test_preloaded_full_articles_are_not_a_listing(settings):
+    "an article page preloading the next full stories (correctiv) must not extract all of them"
+    with open(path.join(TEST_DIR, "cache", "correctiv.org.zusage.html"), "rb") as f:
+        doc = f.read()
+    with _without_listing_expression():
+        expected = extract(doc, config=use_config(), **settings)
+    result = extract(doc, config=use_config(), **settings)
+    assert result == expected
+    assert "Vorweg: Die beteiligten AfD-Politiker" in result
+    assert "Die AfD und der Deutschland-Kurier" not in result
+    assert "Geldstrafe für die AfD" not in result
+
+
 def test_short_document_keeps_structure():
     "regression #896: the baseline rescue must not flatten a valid short extraction it cannot improve on."
     doc = (
