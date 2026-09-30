@@ -18,7 +18,7 @@ from .settings import (
     Extractor,
 )
 from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
-from .xml import META_ATTRIBUTES, delete_element, separates_inline
+from .xml import delete_element, meta_items, separates_inline
 
 LOGGER = logging.getLogger(__name__)
 
@@ -504,9 +504,8 @@ def build_html_output(document: Document, with_metadata: bool = False) -> str:
 
     if with_metadata:
         head = Element("head")
-        for item in META_ATTRIBUTES:
-            if value := getattr(document, item):
-                SubElement(head, "meta", name=item, content=value)
+        for item, value in meta_items(document):
+            SubElement(head, "meta", name=item, content=value)
         html_tree.insert(0, head)
 
     return tostring(html_tree, pretty_print=True, encoding="unicode").strip()

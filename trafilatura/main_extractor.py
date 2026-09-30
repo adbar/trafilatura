@@ -42,11 +42,12 @@ from .xpaths import (
 LOGGER = logging.getLogger(__name__)
 
 
-P_FORMATTING = {"hi", "ref"}
 TABLE_ELEMS = {"td", "th"}
 # meaningful internal attributes to carry onto a rewired sub-element (drop stray class/style/width/etc.)
 KEEP_ATTRS = {"rend", "role", "target", "src", "alt", "title"}
 CODES_QUOTES = {"code", "quote"}
+# blocks rebuilt as new elements by handle_textelem(), which leaves the source tail behind
+REBUILT_BLOCKS = CODES_QUOTES | {"list", "table"}
 NOT_AT_THE_END = {"head", "ref"}
 # tags allowed inside a blockquote paragraph
 _QUOTE_TAGS = set(TAG_CATALOG) | {"ref", "graphic"}
@@ -109,33 +110,32 @@ def process_nested_elements(child: _Element, new_child_elem: _Element, options: 
         elif subelem.tag == "p" and len(subelem) > 0:
             _append_block(new_child_elem, handle_paragraphs(subelem, _QUOTE_TAGS, options), subelem)
         elif subelem.tag == "graphic":
-            image = handle_image(subelem, options)
-            if image is not None:
-                define_newelem(image, new_child_elem)
-            elif subelem.tail:
-                _append_text(new_child_elem, subelem.tail)
+            _append_block(new_child_elem, handle_image(subelem, options), subelem)
         elif subelem.tag in INLINE_CARRIED:
             define_newelem(subelem, new_child_elem, keep_children=True)
         else:
+            if len(subelem) > 0 and text_chars_test(subelem.tail):
+                # the tail follows the children, which are appended after this element
+                subelem[-1].tail, subelem.tail = f"{subelem[-1].tail or ''}{subelem.tail}", None
             define_newelem(handle_textnode(subelem, options, comments_fix=False), new_child_elem)
         subelem.tag = "done"
 
 
-def _append_text(elem: _Element, text: str) -> None:
-    "Append text after the last child of elem, or to its text."
-    if len(elem) > 0:
-        elem[-1].tail = (elem[-1].tail or "") + text
-    else:
-        elem.text = (elem.text or "") + text
-
-
 def _append_block(parent: _Element, processed: _Element | None, source: _Element) -> None:
-    "Append a processed block with the source tail, or keep that tail as text."
+    "Append a processed block with the source tail, or keep that tail as text after the parent's content."
     if processed is not None:
         processed.tail = source.tail
         parent.append(processed)
     elif source.tail and text_chars_test(source.tail):
-        _append_text(parent, source.tail)
+        last = parent[-1] if len(parent) > 0 else None
+        before, tail = (parent.text if last is None else last.tail) or "", source.tail
+        # a dropped block still separates the text around it, a dropped image does not
+        if source.tag != "graphic" and (before or last is not None) and not before[-1:].isspace() and not tail[0].isspace():
+            tail = f" {tail}"
+        if last is None:
+            parent.text = before + tail
+        else:
+            last.tail = before + tail
 
 
 def update_elem_rendition(elem: _Element, new_elem: _Element) -> None:
@@ -175,7 +175,7 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
     "Process lists elements including their descendants."
     processed_element = Element(element.tag)
 
-    if element.text is not None and element.text.strip():
+    if text_chars_test(element.text):
         new_child_elem = SubElement(processed_element, "item")
         new_child_elem.text = element.text
 
@@ -188,15 +188,13 @@ def handle_lists(element: _Element, options: Extractor) -> _Element | None:
         if len(child) == 0:
             processed_child = process_node(child, options)
             if processed_child is not None:
-                new_child_elem.text = processed_child.text or ""
-                if processed_child.tail and processed_child.tail.strip():
-                    new_child_elem.text += " " + processed_child.tail
+                new_child_elem.text = " ".join(filter(None, (processed_child.text, processed_child.tail)))
         else:
             process_nested_elements(child, new_child_elem, options)
             if text_chars_test(child.tail) and len(new_child_elem) > 0:
                 last = new_child_elem[-1]
                 last.tail = f"{last.tail} {child.tail}" if text_chars_test(last.tail) else child.tail
-        if new_child_elem.text or len(new_child_elem) > 0:
+        if is_text_element(new_child_elem) or next(new_child_elem.iter("graphic"), None) is not None:
             update_elem_rendition(child, new_child_elem)
             processed_element.append(new_child_elem)
         child.tag = "done"
@@ -273,38 +271,33 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
 
     # children
     processed_element = Element(element.tag)
+    # unexpected children: keep their text in place
+    strip_tags(element, *{str(c.tag) for c in element.iterdescendants("*") if c.tag not in {*potential_tags, "done"}})
     for child in element.iter("*"):
-        if child.tag not in potential_tags and child.tag != "done":
-            _log_event("unexpected in p", child.tag, child.text)
-            continue
         # todo: act on spacing here?
         processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
         if processed_child is not None:
             # todo: needing attention!
             if processed_child.tag == "p":
                 _log_event("extra in p", "p", processed_child.text)
-                if processed_element.text:
-                    processed_element.text += " " + (processed_child.text or "")
-                else:
-                    processed_element.text = processed_child.text
+                processed_element.text = " ".join(filter(None, (processed_element.text, processed_child.text)))
                 child.tag = "done"
                 continue
             # handle formatting
             newsub = Element(child.tag)
-            if processed_child.tag in P_FORMATTING:
+            if processed_child.tag in INLINE_CONSUMING:
                 # carry inline children verbatim (ref/hi/del wrapping formatting)
                 if _wraps_inline(processed_child):
                     define_newelem(processed_child, processed_element, keep_children=True)
                     child.tag = "done"
                     continue
                 # check depth and clean
-                if len(processed_child) > 0:
-                    for item in processed_child:  # children are lists
-                        if item.tag == "lb" and item.tail:
-                            item.tail = " " + item.tail.lstrip()
-                        elif item.text is not None and text_chars_test(item.text):
-                            item.text = " " + item.text
-                        strip_tags(processed_child, item.tag)  # type: ignore[arg-type]
+                for item in processed_child:
+                    if item.tag == "lb" and item.tail:
+                        item.tail = " " + item.tail.lstrip()
+                    elif text_chars_test(item.text):
+                        item.text = f" {item.text}"
+                strip_tags(processed_child, *{str(item.tag) for item in processed_child})
                 _copy_attrs(child, newsub)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
 
@@ -348,11 +341,6 @@ def _span(cell: _Element, attr: str) -> int:
     return min(int(value), _MAX_SPAN) if value.isdecimal() else 1
 
 
-def _row_has_content(row: _Element) -> bool:
-    "Whether any cell in a row carries text or children."
-    return any(cell.text or len(cell) > 0 for cell in row)
-
-
 def _flush_rowspan_phantoms(rowspan_map: dict[int, int], newrow: _Element) -> None:
     "Insert empty placeholder cells for rowspan-occupied columns at the current row position."
     while (col := len(newrow)) in rowspan_map:
@@ -367,7 +355,7 @@ def _finalize_row(newtable: _Element, newrow: _Element, rowspan_map: dict[int, i
     _flush_rowspan_phantoms(rowspan_map, newrow)
     while len(newrow) < max_cols:
         newrow.append(define_cell_type(False))
-    if _row_has_content(newrow):
+    if any(cell.text or len(cell) > 0 for cell in newrow):
         newtable.append(newrow)
 
 
@@ -390,9 +378,9 @@ def _fill_cell(
         if not isinstance(child.tag, str) or child.tag == "done":
             continue
         if child in nested_elems:
-            # preserve tail text of nested tables (text after </table> inside the cell)
-            if child.tag == "table" and child.tail:
-                _append_text(new_child_elem, child.tail)
+            # nested tables are left to the main loop, their tail stays in the cell
+            if child.tag == "table":
+                _append_block(new_child_elem, None, child)
             continue
         if separates_inline(child) and not text_chars_test(child.tail):
             new_child_elem.append(Element("lb"))
@@ -408,9 +396,9 @@ def _fill_cell(
             if processed_subchild is None and len(child) > 0:
                 processed_subchild = child
         # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
-        elif child.tag == "list" and options.focus == "recall":
-            _append_block(new_child_elem, handle_lists(child, options), child)
-            child.tag = "done"
+        elif child.tag == "list":
+            processed_list = handle_lists(child, options)
+            _append_block(new_child_elem, processed_list if options.focus == "recall" else None, child)
             continue
         else:
             processed_subchild = handle_textelem(child, ptags_with_div, options)
@@ -434,34 +422,31 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
     for nested_table in table_elem.iterdescendants("table"):
         nested_elems.update(nested_table.iter())
 
-    # Count columns using only direct-child rows and direct-child cells (skipping nested tables).
-    # table_elem.iter("tr") would traverse nested table rows; findall("tr") stays at this table's level.
-    direct_rows = table_elem.findall("tr")
-    col_counts = [sum(_span(td, "colspan") for td in tr if td.tag in TABLE_ELEMS) for tr in direct_rows]
-    max_cols = min(max(col_counts, default=0), _MAX_SPAN)
-
-    # Handle caption: emit it as a header row before the table body.
-    # findall() stays at direct-child level; iter() would also hit nested tables' captions.
-    for caption_elem in table_elem.findall("caption"):
-        caption_text = " ".join(caption_elem.itertext()).strip()
-        if caption_text:
-            caption_row = Element("row")
-            caption_cell = define_cell_type(True)
-            caption_cell.text = caption_text
-            caption_row.append(caption_cell)
-            _finalize_row(newtable, caption_row, {}, max_cols)
-        caption_elem.tag = "done"
-
-    # orphan cells without a <tr> join the current row
+    # direct children only, nested tables are left to the main loop.
+    # Orphan cells join the current row but do not count for max_cols.
     rows: list[list[_Element]] = [[]]
+    captions: list[str] = []
+    max_cols = 0
     for elem in table_elem:
         if elem.tag == "tr":
-            rows.append(list(elem))
-            elem.tag = "done"
+            rows.append([cell for cell in elem if cell.tag in TABLE_ELEMS])
+            max_cols = max(max_cols, sum(_span(cell, "colspan") for cell in rows[-1]))
         elif elem.tag in TABLE_ELEMS:
             rows[-1].append(elem)
-        elif isinstance(elem.tag, str) and elem.tag != "table":  # nested tables are left to the main loop
-            elem.tag = "done"
+            continue
+        elif elem.tag == "caption":
+            captions.append(" ".join(elem.itertext()).strip())
+        elif not isinstance(elem.tag, str) or elem.tag == "table":
+            continue
+        elem.tag = "done"
+    max_cols = min(max_cols, _MAX_SPAN)
+
+    for caption_text in filter(None, captions):
+        caption_cell = define_cell_type(True)
+        caption_cell.text = caption_text
+        caption_row = Element("row")
+        caption_row.append(caption_cell)
+        _finalize_row(newtable, caption_row, {}, max_cols)
 
     header_row_emitted = False
     rowspan_map: dict[int, int] = {}  # col_idx → rows still spanned from a rowspan cell
@@ -469,8 +454,6 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
         newrow = Element("row")
         row_has_th = False
         for cell in cells:
-            if cell.tag not in TABLE_ELEMS:
-                continue
             is_header = cell.tag == "th" and not header_row_emitted
             row_has_th = row_has_th or is_header
             _flush_rowspan_phantoms(rowspan_map, newrow)
@@ -678,9 +661,17 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
             # marks the children it consumes "done"; this covers the elements it cannot retag.
             if elem.getroottree().getroot() is result_body:
                 continue
+            # handlers may rename the element to "done", so read these first
+            tag, tail = elem.tag, elem.tail
             processed_elem = handle_textelem(elem, potential_tags, options)
             if processed_elem is not None:
                 result_body.append(processed_elem)
+            # text right after a rebuilt block is a paragraph of its own, like an <lb> tail
+            if tag in REBUILT_BLOCKS and text_chars_test(tail):
+                tail_elem = Element("p")
+                tail_elem.text = tail
+                if process_node(tail_elem, options) is not None:
+                    result_body.append(tail_elem)
         # remove trailing titles
         while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             delete_element(result_body[-1], keep_tail=False)
@@ -732,16 +723,6 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     return result_body, temp_text
 
 
-def process_comments_node(elem: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
-    """Process comment node and determine how to deal with its content"""
-    if elem.tag in potential_tags:
-        processed_element = handle_textnode(elem, options, comments_fix=True)
-        if processed_element is not None:
-            processed_element.attrib.clear()
-            return processed_element
-    return None
-
-
 def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, HtmlElement]:
     "Try to extract comments out of potential sections in the HTML."
     comments_body = Element("body")
@@ -756,9 +737,10 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
         strip_tags(subtree, "ref", "span")
-        comments_body.extend(
-            p for e in subtree.xpath(".//*") if (p := process_comments_node(e, potential_tags, options)) is not None
-        )
+        for elem in subtree.xpath(".//*"):
+            if elem.tag in potential_tags and (processed := handle_textnode(elem, options, comments_fix=True)) is not None:
+                processed.attrib.clear()
+                comments_body.append(processed)
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)

@@ -123,8 +123,11 @@ class Extractor:
     ) -> None:
         if precision and recall:
             LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
-        self._set_source(url, source)
-        self._set_format(output_format)
+        if output_format not in SUPPORTED_FORMATS:
+            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
+        self.format = output_format
+        source = url or source
+        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
         if tei_validation and self.format != "xmltei":
             LOGGER.warning("tei_validation has no effect unless output_format is 'xmltei'")
         if formatting and self.format == "json":
@@ -160,17 +163,6 @@ class Extractor:
         self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-
-    def _set_source(self, url: str | None, source: str | None) -> None:
-        "Set the source attribute in a robust way."
-        source = url or source
-        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
-
-    def _set_format(self, chosen_format: str) -> None:
-        "Store the format if supported and raise an error otherwise."
-        if chosen_format not in SUPPORTED_FORMATS:
-            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
-        self.format = chosen_format
 
 
 def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:

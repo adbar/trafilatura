@@ -4,7 +4,6 @@ Functions grounding on third-party software.
 """
 
 import logging
-from typing import Any
 
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
@@ -146,14 +145,6 @@ def jt_stoplist_init() -> tuple[str]:
     return JT_STOPLIST
 
 
-def custom_justext(tree: HtmlElement, stoplist: tuple[str]) -> Any:
-    "Customized version of JusText processing"
-    paragraphs = ParagraphMaker.make_paragraphs(tree)
-    classify_paragraphs(paragraphs, stoplist, 50, 150, 0.1, 0.2, 0.25, True)
-    revise_paragraph_classification(paragraphs, 150)
-    return paragraphs
-
-
 def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
     """Second safety net: try with the generic algorithm justext"""
     # init
@@ -165,7 +156,9 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
         justext_stoplist = JT_STOPLIST or jt_stoplist_init()
     # extract
     try:
-        paragraphs = custom_justext(tree, justext_stoplist)
+        paragraphs = ParagraphMaker.make_paragraphs(tree)
+        classify_paragraphs(paragraphs, justext_stoplist, 50, 150, 0.1, 0.2, 0.25, True)
+        revise_paragraph_classification(paragraphs, 150)
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
     else:

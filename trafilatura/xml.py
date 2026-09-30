@@ -6,6 +6,7 @@ All functions related to XML generation, processing and validation.
 import csv
 import logging
 import re
+from collections.abc import Iterator
 from copy import deepcopy
 from html import unescape
 from importlib.metadata import version
@@ -259,12 +260,17 @@ def control_xml_output(document: Document, options: Extractor) -> str:
     return tostring(output_tree, pretty_print=True, encoding="unicode").strip()
 
 
+def meta_items(docmeta: Document) -> Iterator[tuple[str, str]]:
+    "Non-empty metadata fields as strings, lists joined with semicolons."
+    for attribute in META_ATTRIBUTES:
+        if value := getattr(docmeta, attribute, None):
+            yield attribute, value if isinstance(value, str) else ";".join(value)
+
+
 def add_xml_meta(output: _Element, docmeta: Document) -> None:
     """Add extracted metadata to the XML output tree"""
-    for attribute in META_ATTRIBUTES:
-        value = getattr(docmeta, attribute, None)
-        if value:
-            output.set(attribute, value if isinstance(value, str) else ";".join(value))
+    for attribute, value in meta_items(docmeta):
+        output.set(attribute, value)
 
 
 def build_tei_output(docmeta: Document) -> _Element:
