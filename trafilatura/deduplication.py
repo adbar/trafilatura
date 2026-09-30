@@ -13,6 +13,7 @@ from typing import Any
 
 from lxml.etree import _Element
 
+from .dom import HtmlElement
 from .settings import LRU_SIZE, Extractor
 from .utils import lru_cache, trim
 
@@ -203,7 +204,7 @@ class LRUCache:
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 
-def duplicate_test(element: _Element, options: Extractor) -> bool:
+def duplicate_test(element: _Element | HtmlElement, options: Extractor) -> bool:
     "Check for duplicate text with LRU cache, each text is counted once per extraction."
     teststring = trim(" ".join(element.itertext()))
     lru = options.dedup if isinstance(options.dedup, LRUCache) else LRU_TEST

@@ -19,10 +19,9 @@ from courlan import (
     validate_url,
 )
 from htmldate import find_date
-from lxml.etree import XPath
-from lxml.html import HtmlElement, tostring
 
 from .baseline import block_text
+from .dom import HtmlElement, XPath, document_context, to_lxml_html, tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (
     extract_json,
@@ -553,6 +552,7 @@ def extract_license(tree: HtmlElement) -> str | None:
     return None
 
 
+@document_context
 def extract_metadata(
     filecontent: HtmlElement | str,
     default_url: str | None = None,
@@ -627,7 +627,7 @@ def extract_metadata(
 
     # extract date with external module htmldate
     date_config["url"] = metadata.url
-    metadata.date = find_date(tree, **date_config)
+    metadata.date = find_date(to_lxml_html(tree), **date_config)
 
     # sitename, URLs (e.g. Facebook pages) fall back to the hostname
     if metadata.sitename and metadata.sitename.lower().startswith(("http://", "https://", "www.")):
