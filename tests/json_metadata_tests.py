@@ -1135,6 +1135,10 @@ def test_extract_json_shapes():
         ).sitename
         == "ABCD Corp"
     )
+    # schema.org Organization subtypes name the publisher too
+    assert process_parent([{"@type": "NGO", "name": "International Crisis Group"}], Document()).sitename == (
+        "International Crisis Group"
+    )
 
 
 def test_json_metadata_robustness():

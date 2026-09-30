@@ -1774,6 +1774,27 @@ def test_wrapper_form_kept():
     assert "form" in MANUALLY_CLEANED
 
 
+def test_misnested_main_hoisted():
+    "regression: an unclosed <div> in a mega menu (crisisgroup.org) makes libxml2 swallow <main> \
+    into <header><nav>, so the article was deleted with the navigation and only the baseline \
+    fallback's boilerplate dump came out. Browsers recover; <main> must survive cleaning."
+    from trafilatura.htmlprocessing import tree_cleaning
+
+    article = "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
+    broken = (
+        "<html><body><header><nav><ul><li><div><div>Featured</div></li></ul></nav></header>"
+        f"<main><article>{article}</article></main></body></html>"
+    )
+    tree = load_html(broken)
+    assert tree.find(".//main").getparent().tag == "div"
+    cleaned = tree_cleaning(tree, core.Extractor(config=ZERO_CONFIG))
+    assert "the actual article body" in cleaned.text_content()
+    assert "Featured" not in cleaned.text_content()
+    result = extract(broken, config=ZERO_CONFIG)
+    assert "the actual article body" in result
+    assert "Featured" not in result
+
+
 def test_no_duplicate_paragraph_from_lb_tail():
     "regression: handle_other_elements() emits a text-bearing div whole and appending it MOVES it \
     into result_body, but _extract() iterates a subelems list captured beforehand -- so an <lb> \
