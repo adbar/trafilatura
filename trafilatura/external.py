@@ -8,17 +8,16 @@ from collections.abc import Iterator
 from copy import copy
 
 # third-party
-from lxml import html
-from lxml.etree import SubElement, _Element, strip_tags, tostring
-from lxml.html import HtmlElement
+from lxml import etree, html
 
 # own
+from .dom import Element, HtmlElement, _Element, from_lxml, strip_tags, to_lxml_html, tostring
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .justext_lite import HEADINGS, extract_paragraphs, tidy_spacing
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import Extractor
-from .utils import fromstring_bytes, trim
+from .utils import trim
 from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
@@ -35,12 +34,14 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     """Safety net: try with the generic algorithm readability"""
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25)
-        # force conversion to utf-8 (see #319)
-        summary = fromstring_bytes(doc.summary())
-        return summary if summary is not None else HtmlElement()
+        doc.summary()
+        # the summarized element itself, instead of parsing its serialization again
+        summary = copy(doc.doc)
+        summary.tail = None
+        return summary
     except Exception as err:
         LOGGER.warning("readability_lxml failed: %s", err)
-        return HtmlElement()
+        return Element("body")
 
 
 def _prefer_readability(
@@ -129,7 +130,7 @@ def compare_extraction(
 
     # post-processing: remove unwanted sections
     if use_readability:
-        body, text = sanitize_tree(body, options)  # type: ignore[arg-type]
+        body, text = sanitize_tree(body, options)
 
     return body, text
 
@@ -146,13 +147,14 @@ def try_justext(tree: HtmlElement, url: str | None, *, options: Extractor | None
     if options is None:
         options = Extractor()
         options.url = url
-    result_body = html.Element("body")
+    # the paragraph walker runs on lxml, the conversion on the extraction tree
+    paragraphs = html.Element("body")
     try:
         current_list, current_id = None, 0
-        for _, kind, list_id, block in extract_paragraphs(tree):
+        for _, kind, list_id, block in extract_paragraphs(to_lxml_html(tree)):
             if kind in ("ol", "ul"):
                 if current_list is None or list_id != current_id:
-                    current_list, current_id = SubElement(result_body, "list", rend=kind), list_id
+                    current_list, current_id = etree.SubElement(paragraphs, "list", rend=kind), list_id
                 block.tag = "item"
                 current_list.append(block)
                 continue
@@ -162,14 +164,15 @@ def try_justext(tree: HtmlElement, url: str | None, *, options: Extractor | None
                 block.set("rend", kind)
             else:
                 block.tag = kind
-            result_body.append(block)
+            paragraphs.append(block)
+        result_body = from_lxml(paragraphs)
         convert_markup(result_body, options)
         for elem in _blocks(result_body):
             if elem.tag != "code":
                 tidy_spacing(elem)
     except Exception as err:
         LOGGER.error("justext %s %s", err, url)
-        result_body = html.Element("body")
+        result_body = Element("body")
     return result_body
 
 

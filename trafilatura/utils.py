@@ -55,11 +55,14 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls, get_base_url
-from lxml.etree import ElementDefaultClassLookup, _Element
-from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
+from lxml.etree import _Element
+from lxml.html import HtmlElement as LxmlHtmlElement
 
 # response types
 from urllib3.response import HTTPResponse
+
+from .dom import HtmlElement, from_lxml
+from .dom import fromstring as dom_fromstring
 
 if TYPE_CHECKING:  # pragma: no cover
     from .settings import Document, Extractor
@@ -99,7 +102,7 @@ class Response:
 
 
 # accepted input for HTML loading
-HtmlInput: TypeAlias = HtmlElement | HTTPResponse | Response | bytes | str
+HtmlInput: TypeAlias = HtmlElement | LxmlHtmlElement | HTTPResponse | Response | bytes | str
 
 LOGGER = logging.getLogger(__name__)
 
@@ -119,14 +122,6 @@ INVALID_XML_CHARREFS = re.compile(
     r"|[xX]0*(?:[0-8bBcCeEfF]|1[0-9a-fA-F]|[fF]{3}[eEfF])(?![0-9a-fA-F]));?"
 )
 _INVALID_XML_CHARREFS_BYTES = re.compile(INVALID_XML_CHARREFS.pattern.encode())
-
-# note: htmldate could use HTML comments
-# huge_tree=True, remove_blank_text=True
-HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
-# one element class instead of the per-tag lxml.html lookup
-HTML_PARSER.set_element_class_lookup(
-    ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
-)
 
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
@@ -322,11 +317,11 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
 
 
 def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
-    "Try to pass bytes to LXML parser."
+    "Replace unpaired surrogates through a UTF-8 round trip."
     try:
-        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
+        return dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
     except Exception as err:
-        LOGGER.error("lxml parser bytestring %s", err)
+        LOGGER.error("HTML parser %s", err)
     return None
 
 
@@ -344,6 +339,8 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     # use tree directly
     if isinstance(htmlobject, HtmlElement):
         return htmlobject
+    if isinstance(htmlobject, LxmlHtmlElement):
+        return from_lxml(htmlobject)
     # use trafilatura or urllib3 responses directly
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
@@ -359,19 +356,7 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     check_flag = is_dubious_html(beginning)
     # repair first
     htmlobject = repair_faulty_html(htmlobject, beginning)
-    # first pass: use Unicode string
-    fallback_parse = False
-    try:
-        tree = fromstring(htmlobject, parser=HTML_PARSER)
-    except ValueError:
-        # "Unicode strings with encoding declaration are not supported."
-        tree = fromstring_bytes(htmlobject)
-        fallback_parse = True
-    except Exception as err:  # pragma: no cover
-        LOGGER.error("lxml parsing failed: %s", err)
-    # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 1) and not fallback_parse:
-        tree = fromstring_bytes(htmlobject)
+    tree = fromstring_bytes(htmlobject)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
@@ -490,7 +475,7 @@ def as_list(value: Any) -> list[Any]:
     return value if isinstance(value, list) else [value]
 
 
-def image_src(element: _Element) -> str | None:
+def image_src(element: _Element | HtmlElement) -> str | None:
     "Image source of an element: src, data-src, or the first data-src* attribute pointing to an image file."
     for attr in ("data-src", "src"):
         src = element.get(attr, "")
@@ -572,7 +557,7 @@ def language_filter(temp_text: str, temp_comments: str, target_language: str, do
     return False, docmeta
 
 
-def textfilter(element: _Element) -> bool:
+def textfilter(element: _Element | HtmlElement) -> bool:
     """Filter out unwanted text"""
     testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5
