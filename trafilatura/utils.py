@@ -255,8 +255,7 @@ def detect_encoding(bytesobject: bytes) -> list[str]:
     else:
         detection_results = from_bytes(bytesobject[:5000] + bytesobject[-5000:]) or from_bytes(bytesobject)
     # return alternatives
-    if len(detection_results) > 0:
-        guesses.extend([r.encoding for r in detection_results])
+    guesses.extend(r.encoding for r in detection_results)
     # it cannot be utf-8 (tested above)
     return [g for g in guesses if g not in UNICODE_ALIASES]
 
@@ -297,24 +296,21 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
         htmlstring = DOCTYPE_TAG.sub("", firstline, count=1) + "\n" + rest
-    # other issue with malformed documents: check first three lines
-    for i, line in enumerate(iter(htmlstring.splitlines())):
+    # self-closing <html/> in the first lines
+    for line in htmlstring[:4096].splitlines()[:4]:
         if "<html" in line and line.endswith("/>"):
             htmlstring = FAULTY_HTML.sub(r"\1>", htmlstring, count=1)
-            break
-        if i > 2:
             break
     return htmlstring
 
 
 def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
     "Try to pass bytes to LXML parser."
-    tree = None
     try:
-        tree = fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
     except Exception as err:
         LOGGER.error("lxml parser bytestring %s", err)
-    return tree
+    return None
 
 
 def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
@@ -476,17 +472,13 @@ def as_list(value: Any) -> list[Any]:
     return value if isinstance(value, list) else [value]
 
 
-def is_image_element(element: _Element) -> bool:
-    """Check if an element is a valid img element"""
+def image_src(element: _Element) -> str | None:
+    "Image source of an element: src, data-src, or the first data-src* attribute pointing to an image file."
     for attr in ("data-src", "src"):
         src = element.get(attr, "")
         if is_image_file(src):
-            return True
-    # take the first corresponding attribute
-    for attr, value in element.attrib.items():
-        if attr.startswith("data-src") and is_image_file(value):
-            return True
-    return False
+            return src
+    return next((v for a, v in element.attrib.items() if a.startswith("data-src") and is_image_file(v)), None)
 
 
 def is_image_file(imagesrc: str | None) -> bool:
@@ -556,10 +548,6 @@ def language_filter(temp_text: str, temp_comments: str, target_language: str, do
         # more thorough: detection on actual text content
         docmeta.language = language_classifier(temp_text, temp_comments)
         # HTML lang check? sometimes contradicted by detection above
-        # if docmeta.language is None:
-        #    if check_html_lang(tree, target_language) is False:
-        #        LOGGER.error('wrong HTML meta language for URL %s', url)
-        #        raise ValueError
         if docmeta.language is not None and docmeta.language != target_language:
             LOGGER.warning("wrong language: %s %s", docmeta.language, docmeta.url)
             return True, docmeta
@@ -575,60 +563,4 @@ def textfilter(element: _Element) -> bool:
 
 def text_chars_test(string: str | None) -> bool:
     """Determine if a string is only composed of spaces and/or control characters"""
-    # or not re.search(r'\w', string)
-    # return string is not None and len(string) != 0 and not string.isspace()
     return bool(string and not string.isspace())
-
-
-def is_in_table_cell(elem: _Element) -> bool:
-    """Check whether an element is in a table cell"""
-    if elem.getparent() is None:
-        return False
-    current: _Element | None = elem
-    while current is not None:
-        if current.tag == "cell":
-            return True
-        current = current.getparent()
-    return False
-
-
-def is_last_element_in_cell(elem: _Element) -> bool:
-    """Check whether an element is the last element in table cell"""
-    if not is_in_table_cell(elem):  # shortcut
-        return False
-
-    container = elem if elem.tag == "cell" else cast("_Element", elem.getparent())
-    return len(container) == 0 or container[-1] == elem
-
-
-def is_element_in_item(element: _Element) -> bool:
-    """Check whether an element is a list item or within a list item"""
-    current: _Element | None = element
-    while current is not None:
-        if current.tag == "item":
-            return True
-        current = current.getparent()
-    return False
-
-
-def item_if_first_element(element: _Element) -> _Element | None:
-    """Return the enclosing list item if `element` carries its first content, else None"""
-    if element.tag == "item":
-        return element if element.text else None
-    item = next(element.iterancestors("item"), None)
-    if item is not None and not item.text and element is next(item.iterdescendants("*"), None):
-        return item
-    return None
-
-
-def is_last_element_in_item(element: _Element) -> bool:
-    """Check whether an element is the last element in list item"""
-    if not is_element_in_item(element):
-        return False
-
-    # pure text only in list item
-    if element.tag == "item":
-        return len(element) == 0
-    # element within list item
-    next_element = element.getnext()
-    return next_element is None or next_element.tag == "item"

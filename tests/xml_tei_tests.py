@@ -45,6 +45,13 @@ def test_sanity():
     assert result == head
 
 
+def test_wrap_unwanted_siblings_of_div_runs():
+    "Each run of block siblings after a div gets its own wrapper, up to the next div."
+    body = fromstring("<body><div/><p>a</p><p>b</p><lb/><p>c</p><div/><p>d</p></body>")
+    _wrap_unwanted_siblings_of_div(body[0])
+    assert tostring(body) == b"<body><div/><div><p>a</p><p>b</p></div><lb/><div><p>c</p></div><div/><p>d</p></body>"
+
+
 def test_publisher_added_before_availability_in_publicationStmt():  # noqa: N802 — TEI element name
     # add publisher string
     teidoc = Element("TEI", xmlns="http://www.tei-c.org/ns/1.0")
@@ -492,7 +499,7 @@ def test_replace_element_text():
     elem = Element("item")
     elem.text = "Test text"
     elem.tag = "item"
-    assert replace_element_text(elem, True) == "- Test text"
+    assert replace_element_text(elem, True) == "Test text"  # the list marker is added by the serializer
 
     elem = Element("ref")
     elem.text = "Link"
@@ -502,3 +509,10 @@ def test_replace_element_text():
     elem = Element("ref")
     elem.text = "Link"
     assert replace_element_text(elem, True) == "[Link]"
+
+
+def test_no_markdown_marker_in_merged_item_content():
+    "Merging an invalid element into its list item must not inject a markdown list marker into the TEI tree."
+    doc = fromstring("<TEI><text><body><div><list><item><foo>bar</foo></item></list></div></body></text></TEI>")
+    check_tei(doc, None)
+    assert tostring(doc, encoding="unicode").endswith("<list><item>bar</item></list></div></body></text></TEI>")

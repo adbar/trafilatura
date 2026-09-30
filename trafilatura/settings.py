@@ -51,17 +51,6 @@ def use_config(filename: str | None = None, config: ConfigParser | None = None) 
 
 DEFAULT_CONFIG = use_config()
 
-CONFIG_MAPPING = {
-    "min_extracted_size": "MIN_EXTRACTED_SIZE",
-    "min_output_size": "MIN_OUTPUT_SIZE",
-    "min_output_comm_size": "MIN_OUTPUT_COMM_SIZE",
-    "min_extracted_comm_size": "MIN_EXTRACTED_COMM_SIZE",
-    "min_duplcheck_size": "MIN_DUPLCHECK_SIZE",
-    "max_repetitions": "MAX_REPETITIONS",
-    "max_file_size": "MAX_FILE_SIZE",
-    "min_file_size": "MIN_FILE_SIZE",
-}
-
 
 def _get_optional_int(config: ConfigParser, option: str) -> int | None:
     "Read an optional positive integer setting; None when empty or non-numeric."
@@ -90,7 +79,6 @@ class Extractor:
         "min_extracted_size",
         "min_output_size",
         "min_output_comm_size",
-        "min_extracted_comm_size",
         # deduplication
         "min_duplcheck_size",
         "max_repetitions",
@@ -108,16 +96,6 @@ class Extractor:
         "author_blacklist",
         "url_blacklist",
     ]
-
-    # set by _add_config via CONFIG_MAPPING
-    min_extracted_size: int
-    min_output_size: int
-    min_output_comm_size: int
-    min_extracted_comm_size: int
-    min_duplcheck_size: int
-    max_repetitions: int
-    max_file_size: int
-    min_file_size: int
 
     def __init__(
         self,
@@ -145,14 +123,25 @@ class Extractor:
     ) -> None:
         if precision and recall:
             LOGGER.warning("'precision' and 'recall' are mutually exclusive, 'recall' takes precedence")
-        self._set_source(url, source)
-        self._set_format(output_format)
+        if output_format not in SUPPORTED_FORMATS:
+            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
+        self.format = output_format
+        source = url or source
+        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
         if tei_validation and self.format != "xmltei":
             LOGGER.warning("tei_validation has no effect unless output_format is 'xmltei'")
         if formatting and self.format == "json":
             LOGGER.warning("include_formatting has no effect on JSON output")
         # single normalization point: an explicit config=None falls back to defaults
-        self._add_config(config or DEFAULT_CONFIG)
+        self.config: ConfigParser = config or DEFAULT_CONFIG
+        self.min_extracted_size: int = self.config.getint("DEFAULT", "MIN_EXTRACTED_SIZE")
+        self.min_output_size: int = self.config.getint("DEFAULT", "MIN_OUTPUT_SIZE")
+        self.min_output_comm_size: int = self.config.getint("DEFAULT", "MIN_OUTPUT_COMM_SIZE")
+        self.min_duplcheck_size: int = self.config.getint("DEFAULT", "MIN_DUPLCHECK_SIZE")
+        self.max_repetitions: int = self.config.getint("DEFAULT", "MAX_REPETITIONS")
+        self.max_file_size: int = self.config.getint("DEFAULT", "MAX_FILE_SIZE")
+        self.min_file_size: int = self.config.getint("DEFAULT", "MIN_FILE_SIZE")
+        self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
         self.fast: bool = fast
         self.focus: str = "recall" if recall else "precision" if precision else "balanced"
         self.comments: bool = comments
@@ -174,24 +163,6 @@ class Extractor:
         self.date_params: dict[str, Any] = date_params or set_date_params(
             self.config.getboolean("DEFAULT", "EXTENSIVE_DATE_SEARCH")
         )
-        self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
-
-    def _set_source(self, url: str | None, source: str | None) -> None:
-        "Set the source attribute in a robust way."
-        source = url or source
-        self.source = source and source.encode("utf-8", "replace").decode("utf-8")
-
-    def _set_format(self, chosen_format: str) -> None:
-        "Store the format if supported and raise an error otherwise."
-        if chosen_format not in SUPPORTED_FORMATS:
-            raise AttributeError(f"Cannot set format, must be one of: {', '.join(sorted(SUPPORTED_FORMATS))}")
-        self.format = chosen_format
-
-    def _add_config(self, config: ConfigParser) -> None:
-        "Store options loaded from config file."
-        for key, value in CONFIG_MAPPING.items():
-            setattr(self, key, config.getint("DEFAULT", value))
-        self.config = config
 
 
 def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extractor:
@@ -251,7 +222,6 @@ class Document:
         "image",
         "pagetype",
         "filedate",
-        # 'locale'?
     ]
 
     def __init__(
@@ -366,9 +336,6 @@ CUT_EMPTY_ELEMS = {
     "span",
     "strong",
 }
-# 'meta', 'td', 'a', 'caption', 'dl', 'header',
-# 'colgroup', 'col',
-# CUT_EMPTY_ELEMS = {'div', 'span'}
 
 # order could matter, using lists to keep extraction deterministic
 MANUALLY_CLEANED = [
@@ -403,7 +370,6 @@ MANUALLY_CLEANED = [
     "fieldset",
     "link",
     "input",
-    "ins",
     "label",
     "legend",
     "marquee",
@@ -453,8 +419,9 @@ MANUALLY_STRIPPED = [
     "template",
     "tfoot",
     "thead",
+    # the HTML parser does not treat it as void: it would swallow the rest of the paragraph
+    "wbr",
 ]
-# 'center', 'rb', 'wbr'
 
 # baseline()/html2txt() only (not the main pipeline). NOTE: html2txt() also measures page length
 # for the recall-escalation gate (core.py) -- shrinking this set fires escalation less often, so
@@ -475,8 +442,7 @@ BASIC_CLEAN_XPATH = XPath(
     namespaces={"re": "http://exslt.org/regular-expressions"},
 )
 
-TAG_CATALOG = frozenset(["blockquote", "code", "del", "head", "hi", "lb", "list", "p", "pre", "quote"])
-# + list(CUT_EMPTY_ELEMS)
+TAG_CATALOG = frozenset(["code", "del", "head", "hi", "lb", "list", "p", "quote"])
 
 # min length for a repeated span to count as an extraction artifact (not coincidental content).
 # Shared by main_extractor's recovery dedup and baseline's paragraph-strategy dedup

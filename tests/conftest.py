@@ -113,3 +113,17 @@ def no_politeness_delay(monkeypatch):
         monkeypatch.setattr(module, "sleep", lambda s: None)
     use_config = settings.use_config
     monkeypatch.setattr(settings, "use_config", lambda filename=None: _zero_sleep(use_config(filename)))
+
+
+def _config_state(config):
+    return {name: dict(section) for name, section in config.items()}
+
+
+_PRISTINE_CONFIG = _config_state(settings.DEFAULT_CONFIG)
+
+
+@pytest.fixture(autouse=True)
+def pristine_default_config():
+    "Tests using the default thresholds rely on nobody mutating DEFAULT_CONFIG."
+    yield
+    assert _config_state(settings.DEFAULT_CONFIG) == _PRISTINE_CONFIG, "DEFAULT_CONFIG was mutated, copy it with use_config()"
