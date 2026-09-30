@@ -4109,6 +4109,11 @@ def test_html_conversion():
     result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
     assert result == excepted_html
 
+    # list-valued metadata (tags, categories) is joined as in the XML output
+    html = '<html><head><meta name="keywords" content="k1"/><meta property="article:tag" content="k2"/></head><body><article><h1>Title 1</h1><p>Text.</p></article></body></html>'
+    result = extract(html, output_format="html", config=ZERO_CONFIG, with_metadata=True)
+    assert '<meta name="tags" content="k1;k2"/>' in result
+
     # regression #819/#777: row->tr, head cell->th, plain cell->td, span/role dropped
     table_xml = (
         "<body><table>"
