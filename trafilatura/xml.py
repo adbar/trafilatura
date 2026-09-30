@@ -13,13 +13,18 @@ from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
 from pathlib import Path
+from typing import TypeVar
 
 from lxml.etree import DTD, Element, SubElement, XMLParser, _Element, fromstring, tostring
 
+from .dom import HtmlElement
 from .settings import INLINE_CARRIED, INLINE_CONSUMING, INLINE_FORMATTABLE, Document, Extractor
 from .utils import sanitize, sanitize_tree, text_chars_test
 
 LOGGER = logging.getLogger(__name__)
+
+# delete_element() serves the parsed page (trafilatura.dom) and the output tree (lxml)
+_AnyElement = TypeVar("_AnyElement", _Element, HtmlElement)
 PKG_VERSION = version("trafilatura")
 
 # validation
@@ -109,7 +114,7 @@ _MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\))")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
-def delete_element(element: _Element, keep_tail: bool = True) -> None:
+def delete_element(element: _AnyElement, keep_tail: bool = True) -> None:
     """
     Removes this element from the tree, including its children and
     text. The tail text is joined to the previous element or parent.

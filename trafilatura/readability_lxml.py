@@ -25,9 +25,7 @@ from math import sqrt
 from operator import attrgetter
 from typing import Any
 
-from lxml.etree import tostring
-from lxml.html import HtmlElement, fragment_fromstring
-
+from .dom import HtmlElement, fragment_fromstring, tostring
 from .utils import load_html, trim
 
 LOGGER = logging.getLogger(__name__)

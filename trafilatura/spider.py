@@ -22,9 +22,8 @@ try:
 except ImportError:
     pass
 
-from lxml.etree import XPath, tostring
-
-from .baseline import baseline
+from .baseline import baseline_tree
+from .dom import XPath, tostring
 from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
@@ -175,7 +174,7 @@ def is_target_language(htmlstring: str, language: str | None) -> bool:
     check if the content matches the target language.
     Return True if language checks are bypassed."""
     if htmlstring and language and LANGID_FLAG:
-        _, text, _ = baseline(htmlstring)
+        _, text, _ = baseline_tree(htmlstring)
         result, _ = py3langid.classify(text)
         return bool(result == language)
     return True

@@ -10,9 +10,10 @@ from copy import copy
 from html import unescape
 from typing import Any
 
-from lxml.etree import Element, SubElement, _Element
-from lxml.html import HtmlElement, fragment_fromstring
+from lxml.etree import _Element as LxmlElement
+from lxml.html import HtmlElement as LxmlHtmlElement
 
+from .dom import Element, HtmlElement, SubElement, _Element, document_context, fragment_fromstring, to_lxml
 from .settings import BASIC_CLEAN_XPATH, DEDUPE_SCAN_CAP, MIN_DUPLICATE_LENGTH
 from .utils import HtmlInput, as_list, load_html, remove_control_characters, trim
 from .xml import delete_element
@@ -164,7 +165,8 @@ def _collect_json_content(tree: HtmlElement) -> tuple[list[str], list[str]]:
     return bodies, teasers
 
 
-def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
+@document_context
+def baseline(filecontent: HtmlInput) -> tuple[LxmlElement, str, int]:
     """Use baseline extraction function targeting content in embedded JSON or text elements.
 
     Tries a series of sources and takes the first that yields enough text:
@@ -181,6 +183,12 @@ def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
         the main text as string, and its length as integer.
 
     """
+    body, text, length = baseline_tree(filecontent)
+    return to_lxml(body), text, length
+
+
+def baseline_tree(filecontent: HtmlInput) -> tuple[_Element, str, int]:
+    "baseline() on the internal tree type, for the extraction cascade."
     tree = load_html(filecontent)
     if tree is None:
         return Element("body"), "", 0
@@ -276,6 +284,7 @@ _BLOCK_ELEMS = {
 }
 
 
+@document_context
 def html2txt(content: HtmlInput, clean: bool = True) -> str:
     """Run basic html2txt on a document.
 
@@ -296,7 +305,7 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
     if body is None:
         # a caller-supplied element without <body> is itself the content; a parsed
         # document without one (e.g. a feed) is not HTML text
-        if not isinstance(content, HtmlElement):
+        if not isinstance(content, (HtmlElement, LxmlHtmlElement)):
             return ""
         body = tree
     return _spaced_text(basic_cleaning(body) if clean else body)
