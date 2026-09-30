@@ -769,6 +769,7 @@ def test_include_formatting_markdown():
         ("<table><row><cell>a<ref target='u'/> b</cell></row></table>", "| a b |"),
         ("<table><row><cell>x<p>y</p>z mid<p>w</p></cell></row></table>", "| x y z mid w |"),
         ("<list><item>a<p>b</p>c<p>d</p></item></list>", "- a b c d"),
+        ("<list><item><lb/></item><item>b</item></list>", "- b"),
         ('<p><hi rend="#b">a</hi><hi rend="#b">b</hi><hi rend="#b">c</hi> tail</p>', "**abc** tail"),
     ],
     ids=[
@@ -786,6 +787,7 @@ def test_include_formatting_markdown():
         "cell-textless-child-tail",
         "cell-block-after-text",
         "item-block-after-text",
+        "item-empty-child-no-marker",
         "adjacent-hi-chain-merged",
     ],
 )
