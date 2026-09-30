@@ -9,6 +9,7 @@ import pytest
 from lxml import html
 from lxml.etree import XPath
 
+from trafilatura import dom
 from trafilatura.json_metadata import extract_json, extract_json_parse_error, process_parent
 from trafilatura.metadata import (
     JSON_MINIFY,
@@ -440,10 +441,10 @@ def test_date_config():
 
 def test_extract_title_fallbacks():
     "Fallback titles are trimmed; nothing found returns None."
-    assert extract_title(html.fromstring("<html><body><h1>  A  </h1><h1>B</h1></body></html>")) == "A"
-    assert extract_title(html.fromstring("<html><body><p>x</p></body></html>")) is None
+    assert extract_title(dom.fromstring("<html><body><h1>  A  </h1><h1>B</h1></body></html>")) == "A"
+    assert extract_title(dom.fromstring("<html><body><p>x</p></body></html>")) is None
     # regression #400: an empty single <h1> must not block a non-empty <h2>
-    assert extract_title(html.fromstring("<html><body><h1></h1><h2>Real Title</h2></body></html>")) == "Real Title"
+    assert extract_title(dom.fromstring("<html><body><h1></h1><h2>Real Title</h2></body></html>")) == "Real Title"
 
 
 def test_json_minify():
@@ -650,8 +651,8 @@ def test_block_boundaries_not_fused():
     assert title.title == "Kicker Main headline"
 
     cats = extract_metadata(
-        '<html><body><h1>T</h1><p class="entry-categories">'
-        '<a href="/category/local"><div>Local</div><div>News</div></a></p></body></html>'
+        '<html><body><h1>T</h1><span class="post-category">'
+        '<a href="/category/local"><div>Local</div><div>News</div></a></span></body></html>'
     )
     assert cats.categories == ["Local News"]
 

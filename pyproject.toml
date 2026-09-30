@@ -60,6 +60,7 @@ dependencies = [
     "htmldate == 1.10.0",
     "justext == 3.0.2",
     "lxml == 6.1.1",
+    "turbohtml >= 1.12.0",
     "urllib3 == 2.7.0",
 ]
 
