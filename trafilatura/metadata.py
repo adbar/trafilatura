@@ -359,8 +359,11 @@ def extract_url(tree: HtmlElement, default_url: str | None = None) -> str | None
         if url:
             break
 
+    # protocol-relative URL: only the scheme is missing
+    if url and url.startswith("//"):
+        url = f"https:{url}"
     # fix relative URLs
-    if url and url.startswith("/"):
+    elif url and url.startswith("/"):
         for element in tree.iterfind(".//head//meta[@content]"):
             attrtype = element.get("name") or element.get("property") or ""
             if attrtype.startswith(("og:", "twitter:")):

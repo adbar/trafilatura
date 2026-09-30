@@ -274,6 +274,12 @@ def test_url():
         )
         == "https://example.org/p"
     )
+    # protocol-relative canonical keeps its own host
+    for doc in (
+        '<html><head><link rel="canonical" href="//example.org/p"/></head><body></body></html>',
+        '<html><head><link rel="canonical" href="//example.org/p"/><meta property="og:image" content="https://cdn.example.net/i.png"/></head><body></body></html>',
+    ):
+        assert extract_url(html.fromstring(doc)) == "https://example.org/p"
 
 
 def test_description():
