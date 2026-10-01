@@ -704,7 +704,8 @@ def _internal_extraction(
     if not document or not isinstance(document, Document):
         return None
 
-    if options.format not in TXT_FORMATS:
+    # TXT formats only output the ID and fingerprint in their metadata header
+    if options.format not in TXT_FORMATS or options.with_metadata:
         # control output
         if options.format == "python":
             raise ValueError("'python' format only usable in bare_extraction() function")
