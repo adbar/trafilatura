@@ -33,6 +33,7 @@ _LIST_IGNORED_OPTS = {
     "only_with_metadata",
     "comments",
     "tables",
+    "spans",
     "deduplicate",
     "output_format",
     "archived",
@@ -131,6 +132,12 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     group4.add_argument("--images", help="include image sources in output", action="store_true")
     group4.add_argument("--no-comments", dest="comments", help="don't output any comments", action="store_false")
     group4.add_argument("--no-tables", dest="tables", help="don't output any table elements", action="store_false")
+    group4.add_argument(
+        "--include-spans",
+        dest="spans",
+        help="keep <span> elements and attributes (HTML output only)",
+        action="store_true",
+    )
     group4.add_argument(
         "--only-with-metadata",
         help="only output those documents with title, URL and date",

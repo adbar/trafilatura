@@ -277,6 +277,7 @@ def bare_extraction(
     output_format: str = "python",
     target_language: str | None = None,
     include_tables: bool = True,
+    include_spans: bool = False,
     include_images: bool = False,
     include_formatting: bool | None = None,
     include_links: bool = False,
@@ -307,6 +308,8 @@ def bare_extraction(
             Other values: "csv", "html", "json", "markdown", "txt", "xml", and "xmltei".
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
+        include_spans: Keep <span> elements (and their attributes) in the output;
+            only meaningful for HTML output.
         include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (kept in XML, rendered as markdown for text formats; ignored for JSON).
@@ -358,6 +361,7 @@ def bare_extraction(
             links=include_links,
             images=include_images,
             tables=include_tables,
+            spans=include_spans,
             dedup=deduplicate,
             lang=target_language,
             url=url,
@@ -483,6 +487,7 @@ def extract(
     tei_validation: bool = False,
     target_language: str | None = None,
     include_tables: bool = True,
+    include_spans: bool = False,
     include_images: bool = False,
     include_formatting: bool | None = None,
     include_links: bool = False,
@@ -554,6 +559,7 @@ def extract_with_metadata(
     tei_validation: bool = False,
     target_language: str | None = None,
     include_tables: bool = True,
+    include_spans: bool = False,
     include_images: bool = False,
     include_formatting: bool | None = None,
     include_links: bool = False,
@@ -643,6 +649,7 @@ def _internal_extraction(
     tei_validation: bool = False,
     target_language: str | None = None,
     include_tables: bool = True,
+    include_spans: bool = False,
     include_images: bool = False,
     include_formatting: bool | None = None,
     include_links: bool = False,
@@ -681,6 +688,7 @@ def _internal_extraction(
             links=include_links,
             images=include_images,
             tables=include_tables,
+            spans=include_spans,
             dedup=deduplicate,
             lang=target_language,
             url=url,
