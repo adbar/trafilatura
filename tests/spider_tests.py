@@ -122,7 +122,7 @@ def test_process_links():
     # test cleaning and language
     url = "https://example.org/en/page1/?"
     target = "https://example.org/en/page1/"
-    htmlstring = f'<html><body><a href="{url}"/></body></html>'
+    htmlstring = f'<html><body><p>This is an English page.</p><a href="{url}"/></body></html>'
     params = spider.CrawlParameters(base_url, lang="en")
     spider.process_links(htmlstring, params)
     todo = spider.URL_STORE.find_unvisited_urls(base_url)

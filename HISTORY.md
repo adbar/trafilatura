@@ -1,6 +1,27 @@
 ## History / Changelog
 
 
+## 2.3.0
+
+Major changes:
+- Downloads and decompression overhaul by @adbar (#921)
+- Simplified document handling code and better correctness by @adbar (#938)
+- Simpler and faster deduplication, scoped caches accepted by @adbar (#919)
+- Dependencies updated, stricter linting and typing (ruff, mypy) by @adbar (#907)
+
+Fixes:
+- Better text extraction: forms, link farms, inline code, infinite scroll, boilerplate widgets, inline links, nested lists and text after blocks by @cvl01, @ebarkhordar, @bobtheskull-flameeyes, @emecii, @SulimanAbdulrazzaq and @r0h1tb (#884, #898, #901, #911, #916, #927, #929, #937, #940)
+- Better Markdown output: spacing, bold spans, CommonMark escaping and LaTeX math by @cvl01, @scottwulf, @ebarkhordar and @jonathanavis96 (#899, #902, #915, #924)
+- Preserve requested images in fallbacks by @vvsotnikov (#904)
+- Better metadata: word boundaries, JSON-LD types, OpenGraph, license links, list values, canonical URLs and TXT/Markdown header by @adbar, @xblwh, @mfurkanakinci and @MohammadHijjawi97 (#918, #932, #934, #936, #941, #942, #947)
+- More robust downloads and link discovery: relative URLs, zstd frames, sitemap namespaces, Atom links and JSON feeds by @ebarkhordar, @audi0417, @be-student and @mfurkanakinci (#909, #920, #926, #933, #935)
+
+Maintenance:
+- Update benchmark, dependencies and docs by @adbar (#894)
+- Refine and restructure the docs by @adbar (#908)
+- Link URL discovery tools from extraction guidance by @workstonedai-collab (#944)
+
+
 ## 2.2.0
 
 Major changes:
