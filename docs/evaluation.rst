@@ -74,7 +74,7 @@ Comment extraction still has to be evaluated, although most libraries do not off
 The evaluation script is available on the project repository: `tests/README.rst <https://github.com/adbar/trafilatura/blob/master/tests/README.rst>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
-Results (2026-08-04)
+Results (2026-10-02)
 --------------------
 
 =============================== =========  ========== ========= ========= ======
@@ -82,24 +82,24 @@ Results (2026-08-04)
 --------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
 =============================== =========  ========== ========= ========= ======
-html2text 2025.4.15             0.525      0.900      0.544     0.663     2.8x
-*raw HTML*                      0.528      0.906      0.549     0.667     0.03x
-beautifulsoup4 4.15.0           0.532      0.980      0.561     0.690     2.1x
-html_text 0.7.1                 0.531      0.988      0.559     0.691     0.7x
-inscriptis 2.7.4 (html to txt)  0.534      **0.991**  0.564     0.694     1.1x
-newspaper4k 0.9.6               0.878      0.736      0.817     0.801     6.6x
+html2text 2025.4.15             0.525      0.900      0.544     0.663     2.9x
+*raw HTML*                      0.528      0.906      0.549     0.667     0.02x
+beautifulsoup4 4.15.0           0.532      0.980      0.561     0.690     2.0x
+html_text 0.7.1                 0.531      0.988      0.559     0.691     0.6x
+inscriptis 2.7.5 (html to txt)  0.534      **0.991**  0.564     0.694     1.1x
+newspaper4k 0.9.6               0.878      0.739      0.819     0.803     6.8x
 boilerpy3 1.0.7 (article mode)  0.818      0.796      0.810     0.807     1.6x
-goose3 3.1.22                   **0.936**  0.714      0.833     0.810     10.2x
+goose3 3.1.22                   **0.936**  0.713      0.833     0.810     10.6x
 resiliparse 1.0.9               0.705      0.955      0.778     0.811     0.3x
-*baseline (text markup)*        0.767      0.869      0.803     0.815     **1x**
-readability-lxml 0.8.4.1        0.898      0.764      0.839     0.826     2.6x
-news-please 1.6.16              0.932      0.758      0.852     0.836     20.5x
-justext 3.0.2 (custom)          0.864      0.859      0.862     0.862     2.3x
+*baseline (text markup)*        0.767      0.869      0.803     0.814     **1x**
+news-please 1.6.16              0.932      0.757      0.851     0.836     20.9x
+readability-lxml 0.9            0.892      0.817      0.859     0.853     3.0x
+justext 3.0.2 (custom)          0.864      0.859      0.862     0.862     2.2x
 magic-html 0.1.8                0.887      0.891      0.889     0.889     3.5x
-trafilatura 2.2.0 (recall)      0.899      0.939      0.917     0.918     2.1x
-trafilatura 2.2.0 (fast)        0.907      0.930      0.917     0.918     2.2x
-trafilatura 2.2.0 (precision)   0.925      0.915      0.921     0.920     3.2x
-trafilatura 2.2.0 (standard)    0.906      0.943      **0.923** **0.924** 3.2x
+trafilatura 2.3.0 (recall)      0.898      0.942      0.917     0.919     2.0x
+trafilatura 2.3.0 (fast)        0.907      0.933      0.919     0.920     2.2x
+trafilatura 2.3.0 (precision)   0.924      0.921      0.922     0.922     3.1x
+trafilatura 2.3.0 (standard)    0.906      0.946      **0.924** **0.926** 2.9x
 =============================== =========  ========== ========= ========= ======
 
 Each package receives the raw HTML bytes and handles character encoding itself; packages evaluated on string input (*boilerpy3*, *html2text*, *html_text*, *inscriptis*, *magic-html*, *news-please*, *readability-lxml*) get it pre-decoded by the benchmark, with the conversion counted in their execution time.

@@ -99,7 +99,7 @@ In Python, use the ``target_language`` parameter to discard pages that don't mat
     html = fetch_url("https://www.example.com/de/artikel")
     text = extract(html, target_language="de")  # None if language doesn't match
 
-Language detection relies on the ``py3langid`` package (installed with trafilatura) and checks both HTML metadata and the extracted text. Use `ISO 639-1 codes <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_ (e.g. ``de``, ``fr``, ``zh``).
+Language detection relies on the ``py3langid`` package (optional, install it with ``pip install trafilatura[all]``) and checks both HTML metadata and the extracted text. Use `ISO 639-1 codes <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_ (e.g. ``de``, ``fr``, ``zh``).
 
 
 Link filtering
