@@ -178,7 +178,7 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
     # 1. clean
     cleaned_tree = tree_cleaning(tree, options)
-    strip_tags(cleaned_tree, "span", *(() if options.links else ("a",)))
+    strip_tags(cleaned_tree, *(("span",) if not options.spans else ()), *(() if options.links else ("a",)))
     # 2. convert (pass url so relative links are absolutized on the fallback path)
     cleaned_tree = convert_tags(cleaned_tree, options, options.url)
     for elem in list(cleaned_tree.iter("graphic")):
@@ -201,6 +201,13 @@ def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, s
     for elem in cleaned_tree.iter("td", "th", "tr"):
         elem.tag = "row" if elem.tag == "tr" else "cell"
     # 3. sanitize
-    strip_tags(cleaned_tree, *({str(elem.tag) for elem in cleaned_tree.iter("*")} - TEI_VALID_TAGS))
+    strip_tags(
+        cleaned_tree,
+        *(
+            {str(elem.tag) for elem in cleaned_tree.iter("*")}
+            - TEI_VALID_TAGS
+            - ({"span"} if options.spans and options.format == "html" else set())
+        ),
+    )
     # 4. return
     return cleaned_tree, trim(" ".join(cleaned_tree.itertext()))

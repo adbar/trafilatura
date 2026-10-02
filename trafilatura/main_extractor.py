@@ -261,6 +261,28 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
     return processed_element
 
 
+def _build_span(orig: _Element, new_span: _Element, options: Extractor) -> bool:
+    "Rebuild a kept <span>, including nested spans, in document order. Non-span inline tags have already been flattened by strip_tags, so the only surviving element children are nested spans."
+    processed = handle_textnode(orig, options, comments_fix=False, preserve_spaces=True)
+    if processed is None:
+        return False
+    new_span.text = processed.text
+    # spans carry their attributes verbatim (style, class, ...), outside KEEP_ATTRS
+    for key, value in orig.attrib.items():
+        new_span.set(key, value)
+    for child in orig:
+        if child.tag == "span":
+            inner = SubElement(new_span, "span")
+            if _build_span(child, inner, options):
+                inner.tail = child.tail
+            else:
+                new_span.remove(inner)
+    # the whole subtree is consumed here; mark it done so the flat loop skips it
+    for node in orig.iter("*"):
+        node.tag = "done"
+    return True
+
+
 def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process paragraphs along with their children, trim and clean the content."
     # attrib.clear() verified unnecessary here (output_diff 0/1501, 2026-08)
@@ -280,6 +302,15 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
         # todo: act on spacing here?
         processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
         if processed_child is not None:
+            # span with element children: rebuild the nested span subtree verbatim
+            # instead of letting the flat loop hoist the inner span and its tail out
+            if child.tag == "span" and len(child) > 0:
+                span_elem = Element("span")
+                if _build_span(child, span_elem, options):
+                    span_elem.tail = child.tail
+                    processed_element.append(span_elem)
+                child.tag = "done"
+                continue
             # todo: needing attention!
             if processed_child.tag == "p":
                 _log_event("extra in p", "p", processed_child.text)
@@ -407,6 +438,14 @@ def _fill_cell(
         elif child.tag == "list":
             processed_list = handle_lists(child, options)
             _append_block(new_child_elem, processed_list if options.focus == "recall" else None, child)
+            child.tag = "done"
+            continue
+        elif child.tag == "span" and options.spans and options.format == "html":
+            new_span = Element("span")
+            if _build_span(child, new_span, options):
+                new_span.tail = child.tail
+                new_child_elem.append(new_span)
+            child.tag = "done"
             continue
         else:
             processed_subchild = handle_textelem(child, ptags_with_div, options)
