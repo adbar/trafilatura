@@ -272,7 +272,10 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
     # children
     processed_element = Element(element.tag)
     # unexpected children: keep their text in place
-    strip_tags(element, *{str(c.tag) for c in element.iterdescendants("*") if c.tag not in {*potential_tags, "done"}})
+    keep_tags = {*potential_tags, "done"}
+    if options.spans:
+        keep_tags.add("span")
+    strip_tags(element, *{str(c.tag) for c in element.iterdescendants("*") if c.tag not in keep_tags})
     for child in element.iter("*"):
         # todo: act on spacing here?
         processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
@@ -300,6 +303,11 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
                 strip_tags(processed_child, *{str(item.tag) for item in processed_child})
                 _copy_attrs(child, newsub)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
+            # kept-through spans must carry their original attributes verbatim
+            # (style, class, etc.), which are not in the internal KEEP_ATTRS whitelist
+            if newsub.tag == "span":
+                for key, value in child.attrib.items():
+                    newsub.set(key, value)
 
             if processed_child.tag == "graphic":
                 image_elem = handle_image(processed_child, options)
@@ -615,8 +623,13 @@ def prune_unwanted_sections(
             delete_element(tree[-1], keep_tail=False)
         tree = delete_by_link_density(tree, "head", backtracking=False, favor_precision=True)
         tree = delete_by_link_density(tree, "quote", backtracking=False, favor_precision=True)
-    # after the link density tests, which need the refs
-    strip_tags(tree, "span", *(() if "ref" in potential_tags else ("ref",)))
+    # after the link density tests, which need the refs; spans are kept (for HTML output)
+    # only when explicitly requested
+    strip_tags(
+        tree,
+        *(("span",) if not options.spans else ()),
+        *(("ref",) if "ref" not in potential_tags else ()),
+    )
     return tree
 
 
@@ -736,7 +749,7 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         # prune
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
-        strip_tags(subtree, "ref", "span")
+        strip_tags(subtree, "ref", *(("span",) if not options.spans else ()))
         for elem in subtree.xpath(".//*"):
             if elem.tag in potential_tags and (processed := handle_textnode(elem, options, comments_fix=True)) is not None:
                 processed.attrib.clear()
