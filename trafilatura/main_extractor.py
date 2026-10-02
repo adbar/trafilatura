@@ -560,15 +560,21 @@ def recover_wild_text(
     # newline-joined (trimmed element text has no newline) so no substring match spans two elements
     existing = "\n".join(filter(None, elem_texts))
     existing_elems = set(elem_texts)
+    # image-only blocks have no text to compare, compare their sources instead
+    existing_images = {img.get("src") for img in result_body.iter("graphic")}
     for subelem in subelems:
         processed = handle_textelem(subelem, potential_tags, options)
         if processed is None:
             continue
         text = _elem_text(processed)
+        images = {img.get("src") for img in processed.iter("graphic")}
+        if not text and images and images <= existing_images:
+            continue
         # past the cap, the substring scan is skipped and `existing` stops growing
         under_cap = len(existing) <= DEDUPE_SCAN_CAP
         if text and (text in existing_elems or (len(text) > MIN_DUPLICATE_LENGTH and under_cap and text in existing)):
             continue
+        existing_images |= images
         result_body.append(processed)
         if under_cap:
             existing += "\n" + text
