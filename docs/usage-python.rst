@@ -48,6 +48,17 @@ Simpler alternatives (no cascade, faster):
 - ``html2txt``: Extracts all text in the document, including navigation and footers
 
 
+.. note::
+
+    For article lists or category pages, discover URLs with
+    `Courlan's link extraction <url-management.html#extracting-links-from-a-page>`_
+    or Trafilatura's `feeds`_, `sitemaps`_ and
+    `web crawler <crawls.html>`_, then extract each article separately.
+    ``include_links=True`` only keeps links in the extracted content; it is not
+    a link discovery function.
+
+
+
 Output
 ^^^^^^
 
