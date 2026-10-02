@@ -2953,6 +2953,62 @@ def test_preloaded_full_articles_are_not_a_listing(settings):
     assert "Geldstrafe für die AfD" not in result
 
 
+def test_listing_page_with_links_keeps_every_entry_heading():
+    "with links kept the heading targets live in another attribute, the listing must still be found"
+    entries = _listing_entries()
+    doc = _listing_page(entries)
+    result = extract(doc, output_format="markdown", include_links=True, config=use_config()) or ""
+    for i, (title, text) in enumerate(entries):
+        assert f"## [{title}](/{i})" in result
+        assert text in result
+
+
+def _forum_thread(posters, linked=True, forum_markup=False):
+    "Thread markup: sibling <article> posts, each opening with a user card that names its poster in a heading."
+    name_markup = '<a href="/members/{0}/">{0}</a>' if linked else "<span>{0}</span>"
+    posts = "".join(
+        f'<article><div class="poster"><h4>{name_markup.format(name)}</h4>'
+        "<dl><dt>Joined</dt><dd>March 2015</dd><dt>Messages</dt><dd>1,447</dd></dl></div>"
+        f"<div><p>Reply {i} from {name} carries enough prose to count as a post, running over a couple "
+        "of clauses so the thread reads as a real discussion between people.</p></div></article>"
+        for i, name in enumerate(posters)
+    )
+    json_ld = (
+        '<script type="application/ld+json">{"@context": "https://schema.org", '
+        '"@type": "DiscussionForumPosting", "headline": "A thread"}</script>'
+        if forum_markup
+        else ""
+    )
+    return (
+        f"<html><head>{json_ld}</head><body><div id='wrapper'><main>"
+        f"<div class='thread'>{posts}</div></main></div></body></html>"
+    )
+
+
+@pytest.mark.parametrize(
+    "posters,linked,forum_markup",
+    [
+        # the same poster comes back along the thread
+        (["alice", "bob", "alice", "carol", "bob", "alice"], True, False),
+        # poster names without a link
+        (["alice", "bob", "carol", "dave", "erin", "frank"], False, False),
+        # every poster different, but the page declares itself a forum thread
+        (["alice", "bob", "carol", "dave", "erin", "frank"], True, True),
+    ],
+)
+@pytest.mark.parametrize("settings", [{"favor_recall": True}, {"favor_recall": True, "fast": True}])
+def test_forum_thread_is_not_a_listing(posters, linked, forum_markup, settings):
+    "forum posts line up like listing entries, but taking their container brings every user card along"
+    doc = _forum_thread(posters, linked, forum_markup)
+    with _without_listing_expression():
+        expected = extract(doc, output_format="markdown", config=use_config(), **settings)
+    result = extract(doc, output_format="markdown", config=use_config(), **settings) or ""
+    assert result == expected
+    assert result.count("Joined") < len(posters)
+    for i in range(len(posters)):
+        assert f"Reply {i} from" in result
+
+
 def test_short_document_keeps_structure():
     "regression #896: the baseline rescue must not flatten a valid short extraction it cannot improve on."
     doc = (
