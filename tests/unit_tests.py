@@ -454,7 +454,15 @@ def test_formatting(options):
 
     meta_string = "<html><head><title>Test</title></head><body><p>ABC.</p></body></html>"
     meta_result = extract(meta_string, output_format="markdown", config=ZERO_CONFIG, with_metadata=True)
-    assert " ".join(meta_result.split()) == "--- title: Test --- ABC."
+    assert meta_result.startswith("---\ntitle: Test\nfingerprint: ")
+    assert meta_result.endswith("---\nABC.")
+    # the record ID and fingerprint are in the header, as in the other formats
+    json_result = json.loads(
+        extract(meta_string, output_format="json", config=ZERO_CONFIG, with_metadata=True, record_id="doc-1")
+    )
+    for fmt in ("markdown", "txt"):
+        meta_result = extract(meta_string, output_format=fmt, config=ZERO_CONFIG, with_metadata=True, record_id="doc-1")
+        assert f"\nfingerprint: {json_result['fingerprint']}\nid: doc-1\n" in meta_result
 
     # space between paragraphs
     my_document = html.fromstring(
