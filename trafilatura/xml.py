@@ -96,8 +96,9 @@ _BULLET_START_RE = re.compile(r"^( {0,3})([-+])(?=[ \t]|$)")
 _ORDERED_START_RE = re.compile(r"^( {0,3})(\d{1,9})([.)])(?=[ \t]|$)")
 _BLOCK_START_RES = (_HEADING_START_RE, _QUOTE_START_RE, _BULLET_START_RE, _ORDERED_START_RE)
 
-# an unescaped '[' or ']', used as a safety net for text that never went through the tree-wide pass
-_UNESCAPED_BRACKET_RE = re.compile(r"(?<!\\)([\[\]])")
+# an unescaped '[' or ']', used as a safety net for text that never went through the tree-wide pass;
+# code spans are matched first and kept as-is, since backslash escapes are literal inside them
+_UNESCAPED_BRACKET_RE = re.compile(r"((?<![\\`])(`+)(?!`).+?(?<!`)\2(?!`))|(?<!\\)([\[\]])", re.DOTALL)
 
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
@@ -510,7 +511,7 @@ def _md_link(text: str, url: str | None, image: bool = False) -> str:
     pre-escaped and raw text (e.g. link text is linkified even when include_formatting is
     False, in which case the tree-wide pass never ran).
     """
-    esc = _UNESCAPED_BRACKET_RE.sub(r"\\\1", text)
+    esc = _UNESCAPED_BRACKET_RE.sub(lambda m: m[1] or f"\\{m[3]}", text)
     prefix = "!" if image else ""
     if url is None:
         return f"{prefix}[{esc}]"

@@ -3748,6 +3748,22 @@ def test_markdown_special_char_escaping():
     )
 
 
+def test_markdown_link_code_brackets():
+    "Backslash escapes are literal inside a code span, so brackets in inline code within link text stay as-is."
+    target = b' target="http://x.com"'
+    cases = {
+        b"<code>a[b]c</code>": "[`a[b]c`](http://x.com)",
+        # code spans bind tighter than link brackets, unbalanced ones included
+        b"<code>a]b</code>": "[`a]b`](http://x.com)",
+        b'<hi rend="#t">x[0]</hi>': "[`x[0]`](http://x.com)",
+        b"<code>a`b[1]</code>": "[``a`b[1]``](http://x.com)",
+        # brackets in the surrounding link text are still escaped
+        b"f <code>a]b</code> [q]": "[f `a]b` \\[q\\]](http://x.com)",
+    }
+    for inner, expected in cases.items():
+        assert _md(b"<body><p><ref" + target + b">" + inner + b"</ref></p></body>") == expected
+
+
 def test_markdown_link_angle_bracket_targets():
     "A '<' or '>' in a link/image target must stay inside the angle-bracket destination."
     # each URL forces the angle-bracket form (space/paren/</>) and must round-trip:
