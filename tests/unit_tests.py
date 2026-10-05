@@ -2136,6 +2136,20 @@ def test_text_after_block_is_kept(block):
     assert result.count("These totals include every department") == 1
 
 
+def test_text_after_inline_code_not_duplicated():
+    "GH#951: inline code in a div is copied whole, tail included, so the tail must not also be     emitted as a paragraph of its own."
+    html = (
+        "<html><body><article>"
+        f"<p>{'The committee reviewed the proposal over several sessions. ' * 4}</p>"
+        "<div>Tool events such as <code>PreToolUse</code> and <code>PostToolUse</code> fire the same hooks.</div>"
+        f"<p>{'The findings were published together with the underlying data. ' * 4}</p>"
+        "</article></body></html>"
+    )
+    result = extract(html, config=ZERO_CONFIG)
+    assert "PreToolUse and PostToolUse fire the same hooks." in result
+    assert result.count("fire the same hooks") == 1
+
+
 def test_body_xpath_fulltext_class():
     "GH#780: BODY_XPATH's fulltext-class rule (re:test(@class,'fulltext','i'), replacing an \
     obscure translate()-based case-fold hack) must still match every capitalization of a \
