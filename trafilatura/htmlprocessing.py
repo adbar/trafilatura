@@ -78,8 +78,19 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
+def hoist_misnested_main(tree: HtmlElement) -> None:
+    """HTML forbids <main> inside header/nav/footer/aside, so finding it there means libxml2
+    failed to recover from unclosed tags (a stray <div> in a mega menu keeps the <header> open)
+    where browsers would. Move it out so it is not deleted along with the navigation."""
+    for main in list(tree.iter("main")):
+        wrappers = list(main.iterancestors("aside", "footer", "header", "nav"))
+        if wrappers:
+            wrappers[-1].addnext(main)
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
+    hoist_misnested_main(tree)
     # salvage formulas before <math> is discarded along with its subtree
     recover_math(tree)
     # determine cleaning strategy, use lists to keep it deterministic

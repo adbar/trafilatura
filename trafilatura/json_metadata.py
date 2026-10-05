@@ -63,7 +63,17 @@ JSON_OGTYPE_SCHEMA = {
     "blog",
     "jobposting",
 }
-JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
+JSON_PUBLISHER_SCHEMA = {
+    "corporation",
+    "educationalorganization",
+    "governmentorganization",
+    "newsmediaorganization",
+    "ngo",
+    "organization",
+    "researchorganization",
+    "webpage",
+    "website",
+}
 JSON_SCHEMA_TYPES = JSON_ARTICLE_SCHEMA | JSON_OGTYPE_SCHEMA | JSON_PUBLISHER_SCHEMA | {"person"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
