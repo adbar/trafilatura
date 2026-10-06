@@ -134,23 +134,19 @@ def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
 
 def prune_unwanted_nodes(tree: HtmlElement, nodelist: list[XPath], with_backup: bool = False) -> HtmlElement:
     "Prune the HTML tree by removing unwanted sections."
-    if with_backup:
-        old_len = len(tree.text_content())
-        backup = deepcopy(tree)
-
-    for expression in nodelist:
-        for subtree in expression(tree):
-            delete_element(subtree)  # the tail text is preserved
-
-    if with_backup:
-        # todo: adjust for recall and precision settings
-        if len(tree.text_content()) > old_len / 7:
-            return tree
-        # over-pruned: restore the backup in the document
-        parent = tree.getparent()
-        if parent is not None:
-            parent.replace(tree, backup)
-        return backup
+    if not with_backup:
+        for expression in nodelist:
+            for subtree in expression(tree):
+                delete_element(subtree)  # the tail text is preserved
+        return tree
+    # guard: prune nothing if it would remove too much text, the tree keeps its elements
+    matches = dict.fromkeys(elem for expression in nodelist for elem in expression(tree))
+    outer = [elem for elem in matches if not any(a in matches for a in elem.iterancestors())]
+    old_len = len(tree.text_content())
+    # todo: adjust for recall and precision settings
+    if old_len - sum(len(elem.text_content()) for elem in outer) > old_len / 7:
+        for elem in outer:
+            delete_element(elem)
     return tree
 
 

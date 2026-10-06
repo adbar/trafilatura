@@ -149,12 +149,24 @@ COMMENTS_XPATH = [
 ]
 # or contains(@class, 'Comments')
 
+_COMMENTS_ID = "[Cc]omment(?!ary)|comol"
+_COMMENTS_CLASS = "^[Cc]omment(?!ary)|(?:article|post)-comments"
 REMOVE_COMMENTS_XPATH = [
     XPath(
-        """
+        f"""
         .//*[self::div or self::list or self::section or self::details][
-        re:test(@id, '^(?:[Cc]omment|comol|disqus_thread|dsq-comments)') or
-        re:test(@class, '^[Cc]omment|(?:article|post)-comments')]
+        re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)') or
+        re:test(@class, '{_COMMENTS_CLASS}')]
+        """,
+        namespaces={"re": REGEXP_NS},
+    )
+]
+REMOVE_COMMENT_LISTS_XPATH = [
+    XPath(
+        f"""
+        .//*[self::ol or self::ul][
+        re:test(@id, '^(?:{_COMMENTS_ID})') or
+        re:test(@class, '{_COMMENTS_CLASS}')]
         """,
         namespaces={"re": REGEXP_NS},
     )
@@ -162,24 +174,22 @@ REMOVE_COMMENTS_XPATH = [
 # or self::span
 # or contains(@class, 'comment') or contains(@id, 'comment')
 
-# Infinite-scroll containers holding whole follow-up articles ("mvp-post-add": Zox News theme).
-# Not in OVERALL_DISCARD_XPATH: such pages are mostly appended articles, which trips
-# prune_unwanted_nodes()'s over-pruning guard.
-REMOVE_APPENDED_ARTICLES_XPATH = [
+# Raw-tree prune, kept out of OVERALL_DISCARD_XPATH because its over-pruning guard would revert it.
+RAW_TREE_PRUNE_XPATH = [
+    # infinite-scroll containers holding whole follow-up articles ("mvp-post-add": Zox News theme),
+    # such pages are mostly appended articles, a generic container holding the h1 is the real one
     XPath(
         """
         .//*[self::div or self::section or self::aside][
-        re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
-        re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')]
+        re:test(@id, 'mvp-post-add-(?:box|wrap)') or
+        re:test(@class, 'mvp-post-add-(?:box|wrap)') or
+        ((re:test(@id, 'infinite-?scroll') or re:test(@class, 'infinite-?scroll')) and not(.//h1))]
         """,
         namespaces={"re": REGEXP_NS},
-    )
-]
-
-# Not in OVERALL_DISCARD_XPATH: its "share-" token matches these already, but its "widget" token
-# also matches the article body ("elementor-widget"), so the over-pruning guard reverts both.
-REMOVE_SHARE_WIDGETS_XPATH = [
-    XPath(".//*[self::div or self::section or self::aside][contains(@class, 'elementor-share-buttons')]")
+    ),
+    # OVERALL_DISCARD_XPATH's "share-" token matches these already, but its "widget" token
+    # also matches the article body ("elementor-widget")
+    XPath(".//*[self::div or self::section or self::aside][contains(@class, 'elementor-share-buttons')]"),
 ]
 
 

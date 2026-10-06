@@ -36,7 +36,11 @@ from .utils import (
     normalize_unicode,
 )
 from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
-from .xpaths import REMOVE_APPENDED_ARTICLES_XPATH, REMOVE_COMMENTS_XPATH, REMOVE_SHARE_WIDGETS_XPATH
+from .xpaths import (
+    RAW_TREE_PRUNE_XPATH,
+    REMOVE_COMMENT_LISTS_XPATH,
+    REMOVE_COMMENTS_XPATH,
+)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -184,10 +188,10 @@ def trafilatura_sequence(
     is_forum = _forum_thread_page(tree)
     # raw-tree prune so the external extractors inherit it too: readability would otherwise
     # pick the longest appended article over the real one
-    tree = prune_unwanted_nodes(tree, REMOVE_APPENDED_ARTICLES_XPATH + REMOVE_SHARE_WIDGETS_XPATH)
-    # comments off: prune the raw tree so all stages inherit it
+    tree = prune_unwanted_nodes(tree, RAW_TREE_PRUNE_XPATH)
+    # comments off: prune the raw tree so all stages inherit it, lists are still ol/ul here
     if not options.comments and (options.focus == "precision" or not is_forum):
-        tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH)
+        tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH + REMOVE_COMMENT_LISTS_XPATH)
     cleaned_tree, cleaned_tree_backup = _prepare_tree(tree, options, url)
 
     commentsbody, temp_comments = Element("body"), ""
@@ -201,8 +205,8 @@ def trafilatura_sequence(
             commentsbody, temp_comments = Element("body"), ""
             cleaned_tree = convert_tags(copy(cleaned_tree_backup), options, url)
     if options.focus == "precision" and not is_forum:
-        # NOT redundant with the raw-tree prune above: this runs POST-conversion, where
-        # <ul id="comments"> has become <list ...> and now matches the xpath's self::list
+        # NOT redundant with the raw-tree prune above: this runs POST-conversion, where lists are <list>
+        # and match the xpath's self::list (dl lists, disqus ids, and all lists if comments are on)
         cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
     postbody, temp_text = _extract_and_compare(cleaned_tree, cleaned_tree_backup, tree, options)
@@ -226,9 +230,16 @@ def trafilatura_sequence(
         # a copy so a shared Extractor never leaks the "recall" focus back to the caller
         r_options = copy(options)
         r_options.focus = "recall"
-        # strip comments from the escalation input (dup risk if captured, reader comments if not),
-        # except on a thread-forum where the retry rescues the posts. Comments off: already pruned
-        esc_tree = tree if is_forum or not options.comments else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_XPATH)
+        # strip comment containers from the escalation input (dup risk if captured, reader comments if not),
+        # ol/ul comment lists only if captured (#881). Not on a thread-forum, where the retry rescues the posts.
+        # Comments off: already pruned
+        esc_tree = (
+            tree
+            if is_forum or not options.comments
+            else prune_unwanted_nodes(
+                copy(tree), REMOVE_COMMENTS_XPATH + (REMOVE_COMMENT_LISTS_XPATH if temp_comments else [])
+            )
+        )
         r_text = ""
         try:
             r_body, r_text = _recall_retry(esc_tree, r_options, url)

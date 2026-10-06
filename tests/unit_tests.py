@@ -1599,14 +1599,18 @@ def test_htmlprocessing(options):
     assert " tail" in hi.text
 
 
-def test_prune_unwanted_nodes_restores_backup_in_document():
-    "An over-pruning trip must put the untouched subtree back where the caller's tree holds it."
-    doc = html.fromstring("<html><body><div><p>real</p><div class='widget'>" + "x " * 300 + "</div></div></body></html>")
+@pytest.mark.parametrize("widget_words,pruned", [(300, False), (3, True)])
+def test_prune_unwanted_nodes_guard(widget_words, pruned):
+    "An over-pruning trip leaves the same subtree in place, recovery matches elements by identity."
+    doc = html.fromstring(
+        "<html><body><div><p>real text</p><div class='widget'>" + "x " * widget_words + "</div></div></body></html>"
+    )
     node = doc.find(".//div")
     before = doc.text_content()
     result = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [etree.XPath(".//div[@class='widget']")], with_backup=True)
+    assert result is node
     assert result.getparent() is doc.find(".//body")
-    assert doc.text_content() == before
+    assert (doc.text_content() != before) is pruned
 
 
 def test_extract_restored_subtree_not_extracted_twice():
@@ -3051,6 +3055,25 @@ def test_recall_escalation_blog_comment_leak(fast):
     assert result.count("Reply number") == 0
 
 
+@pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
+def test_recall_escalation_captured_comment_list(fast):
+    "regression (#881): a captured ol/ul comment list must not come back in the body through the recall escalation."
+    intro = "".join(
+        f"<p>Article paragraph {i} stays above the rescue floor but under the escalation gate.</p>" for i in range(5)
+    )
+    replies = "".join(
+        f"<li><p>Reply number {i} contains substantial discussion content with plenty of genuine words "
+        "and enough length to be recognized as real text, said the commenter.</p></li>"
+        for i in range(20)
+    )
+    doc = f"<html><body><div>{intro}</div><ol class='commentlist'>{replies}</ol></body></html>"
+    result = extract(doc, output_format="xml", include_comments=True, fast=fast) or ""
+    body, comments = result.split("<comments")
+    assert "Article paragraph" in body
+    assert body.count("Reply number") == 0
+    assert comments.count("Reply number") == 20
+
+
 def test_escalation_retry_no_comment_capture():
     "regression (review round 3): the stage-4 retry re-ran extract_comments although the \
     caller discards the retry's comments triple -- a container matching COMMENTS_XPATH but \
@@ -3086,10 +3109,17 @@ def test_main_pass_excludes_comments_when_disabled():
         for i in range(8)
     )
     doc = f"<html><body><article>{intro}</article><div id='comments' class='comments-area'>{replies}</div></body></html>"
-    for fast in (False, True):
-        result = extract(doc, output_format="txt", include_comments=False, fast=fast) or ""
-        assert "Short intro" in result
-        assert result.count("Reader comment number") == 0
+    # WordPress comment lists: still ol/ul on the raw tree
+    items = replies.replace("<div>", "<li>").replace("</div>", "</li>")
+    doc_lists = [
+        f"<html><body><article>{intro}</article><{tag} class='{cls}'>{items}</{tag}></body></html>"
+        for tag, cls in (("ol", "commentlist"), ("ul", "comment-list"))
+    ]
+    for page in (doc, *doc_lists):
+        for fast in (False, True):
+            result = extract(page, output_format="txt", include_comments=False, fast=fast) or ""
+            assert "Short intro" in result
+            assert result.count("Reader comment number") == 0
 
 
 def test_main_pass_excludes_details_wrapped_comments():  # 850
@@ -3112,6 +3142,32 @@ def test_main_pass_excludes_details_wrapped_comments():  # 850
     faq = "<details class='faq'><summary>More</summary><p>Kept expandable content paragraph that is genuine.</p></details>"
     doc_faq = f"<html><body>{body}{faq}</body></html>"
     assert "Kept expandable content" in (extract(doc_faq, output_format="txt") or "")
+    # "commentary" is content, not reader comments
+    for attr in ("id", "class"):
+        commentary = f"<section {attr}='commentary'><p>Expert commentary paragraph that is part of the article.</p></section>"
+        doc_commentary = f"<html><body>{body}{commentary}</body></html>"
+        assert "Expert commentary" in (extract(doc_commentary, output_format="txt", include_comments=False) or "")
+
+
+def test_infinite_scroll_container_with_h1_kept():
+    "regression: the #911 prune deleted the real article when the scroll container holds the h1 (BGR)."
+    real = "<p>Real article paragraph with enough content to be extracted normally here.</p>" * 4
+    appended = "<p>Appended follow-up story text that belongs to another article entirely.</p>" * 4
+    for fast in (False, True):
+        doc = (
+            "<html><body><div class='site-content infinite-scroll-container'>"
+            f"<article><h1>Real title</h1>{real}</article></div></body></html>"
+        )
+        assert "Real article paragraph" in (extract(doc, output_format="txt", fast=fast) or "")
+        # still pruned: an infinite-scroll container without an h1, an mvp container even with one
+        for cls, head in (("infinite-scroll", "h2"), ("mvp-post-add-box", "h1")):
+            doc = (
+                f"<html><body><article><h1>Real title</h1>{real}<div class='{cls}'>"
+                f"<{head}>Next story</{head}>{appended}</div></article></body></html>"
+            )
+            result = extract(doc, output_format="txt", fast=fast) or ""
+            assert "Real article paragraph" in result
+            assert "Appended follow-up" not in result
 
 
 def test_compare_extraction_justext_ratio(monkeypatch):
@@ -3306,6 +3362,19 @@ def test_table_caption():
     assert result.index("My Caption") < result.index("| a |")
     # separator must span all columns (2), not just the caption cell (1)
     assert "|---|---|" in result
+
+
+def test_table_caption_image_kept():
+    "An image in a caption is emitted once, its caption text is not repeated."
+    words = "Article words go here and they are plentiful. " * 3
+    doc = (
+        f"<html><body><article><p>Intro {words}</p><table><caption><img src='https://e.com/c.png' alt='Chart'/>"
+        f" Caption words</caption><tr><td>Cell one {words}</td><td>Cell two</td></tr></table>"
+        f"<p>Outro {words}</p></article></body></html>"
+    )
+    result = extract(doc, include_images=True, output_format="markdown", fast=True)
+    assert result.count("![Chart](https://e.com/c.png)") == 1
+    assert result.count("Caption words") == 1
 
 
 @pytest.mark.parametrize("role", ["presentation", "none"])
