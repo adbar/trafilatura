@@ -670,8 +670,9 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
             processed_elem = handle_textelem(elem, potential_tags, options)
             if processed_elem is not None:
                 result_body.append(processed_elem)
-            # text right after a rebuilt block is a paragraph of its own, like an <lb> tail
-            if tag in REBUILT_BLOCKS and text_chars_test(tail):
+            # text right after a rebuilt block is a paragraph of its own, like an <lb> tail,
+            # unless the handler already carried it over (a code block copied as a whole)
+            if tag in REBUILT_BLOCKS and text_chars_test(tail) and (processed_elem is None or processed_elem.tail is None):
                 tail_elem = Element("p")
                 tail_elem.text = tail
                 if process_node(tail_elem, options) is not None:
