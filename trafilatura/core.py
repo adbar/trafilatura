@@ -38,7 +38,7 @@ from .utils import (
 from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
 from .xpaths import (
     RAW_TREE_PRUNE_XPATH,
-    REMOVE_COMMENT_LISTS_XPATH,
+    REMOVE_COMMENTS_AND_LISTS_XPATH,
     REMOVE_COMMENTS_XPATH,
 )
 
@@ -191,7 +191,7 @@ def trafilatura_sequence(
     tree = prune_unwanted_nodes(tree, RAW_TREE_PRUNE_XPATH)
     # comments off: prune the raw tree so all stages inherit it, lists are still ol/ul here
     if not options.comments and (options.focus == "precision" or not is_forum):
-        tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_XPATH + REMOVE_COMMENT_LISTS_XPATH)
+        tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_AND_LISTS_XPATH)
     cleaned_tree, cleaned_tree_backup = _prepare_tree(tree, options, url)
 
     commentsbody, temp_comments = Element("body"), ""
@@ -236,9 +236,7 @@ def trafilatura_sequence(
         esc_tree = (
             tree
             if is_forum or not options.comments
-            else prune_unwanted_nodes(
-                copy(tree), REMOVE_COMMENTS_XPATH + (REMOVE_COMMENT_LISTS_XPATH if temp_comments else [])
-            )
+            else prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_AND_LISTS_XPATH if temp_comments else REMOVE_COMMENTS_XPATH)
         )
         r_text = ""
         try:

@@ -161,12 +161,14 @@ REMOVE_COMMENTS_XPATH = [
         namespaces={"re": REGEXP_NS},
     )
 ]
-REMOVE_COMMENT_LISTS_XPATH = [
+# plus ol/ul comment lists, without the disqus ids, in one tree walk
+REMOVE_COMMENTS_AND_LISTS_XPATH = [
     XPath(
         f"""
-        .//*[self::ol or self::ul][
-        re:test(@id, '^(?:{_COMMENTS_ID})') or
-        re:test(@class, '{_COMMENTS_CLASS}')]
+        .//*[self::div or self::list or self::section or self::details or self::ol or self::ul][
+        re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)') or
+        re:test(@class, '{_COMMENTS_CLASS}')][
+        not(self::ol or self::ul) or re:test(@id, '^(?:{_COMMENTS_ID})') or re:test(@class, '{_COMMENTS_CLASS}')]
         """,
         namespaces={"re": REGEXP_NS},
     )
@@ -181,9 +183,9 @@ RAW_TREE_PRUNE_XPATH = [
     XPath(
         """
         .//*[self::div or self::section or self::aside][
-        re:test(@id, 'mvp-post-add-(?:box|wrap)') or
-        re:test(@class, 'mvp-post-add-(?:box|wrap)') or
-        ((re:test(@id, 'infinite-?scroll') or re:test(@class, 'infinite-?scroll')) and not(.//h1))]
+        re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
+        re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')][
+        not(.//h1) or re:test(@id, 'mvp-post-add-(?:box|wrap)') or re:test(@class, 'mvp-post-add-(?:box|wrap)')]
         """,
         namespaces={"re": REGEXP_NS},
     ),

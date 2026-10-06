@@ -2728,6 +2728,14 @@ def test_short_document_fallback_preserves_image():
         result = extract(doc, output_format="xml", include_images=True, fast=fast, favor_recall=True) or ""
         assert result.count('<graphic src="https://cdn.test/t.png"') == 1
 
+    # an image inside inline code is kept by the main pass, recovery must not append it again
+    doc = (
+        "<html><body><article><p>First paragraph with enough words here.</p><span>Some words "
+        '<b><code><img src="https://cdn.test/c.png" alt="code"/></code></b> more words.</span></article></body></html>'
+    )
+    result = extract(doc, output_format="xml", include_images=True, include_formatting=True) or ""
+    assert result.count('<graphic src="https://cdn.test/c.png"') == 1
+
 
 def test_longer_fallback_can_replace_requested_image():
     """A real content recovery still wins even when its source cannot preserve an image."""
