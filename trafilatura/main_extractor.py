@@ -23,6 +23,7 @@ from .settings import (
     DEDUPE_SCAN_CAP,
     INLINE_CARRIED,
     INLINE_CONSUMING,
+    INLINE_FORMATTABLE,
     MIN_DUPLICATE_LENGTH,
     TAG_CATALOG,
     Extractor,
@@ -378,9 +379,10 @@ def _fill_cell(
         if not isinstance(child.tag, str) or child.tag == "done":
             continue
         if child in nested_elems:
-            # nested tables are left to the main loop, their tail stays in the cell
-            if child.tag == "table":
+            # nested tables are left to the main loop, their tail moves to the cell holding them
+            if child.tag == "table" and next(child.iterancestors("table")) not in nested_elems:
                 _append_block(new_child_elem, None, child)
+                child.tail = None
             continue
         if separates_inline(child) and not text_chars_test(child.tail):
             new_child_elem.append(Element("lb"))
@@ -436,6 +438,12 @@ def handle_table(table_elem: _Element, potential_tags: set[str], options: Extrac
             continue
         elif elem.tag == "caption":
             captions.append(" ".join(elem.itertext()).strip())
+            # text consumed above, not to be emitted again, images are left to the main loop
+            for sub in elem.iterdescendants("*"):
+                if sub.tag == "graphic":
+                    sub.tail = None
+                else:
+                    sub.tag = "done"
         elif not isinstance(elem.tag, str) or elem.tag == "table":
             continue
         elem.tag = "done"
@@ -532,6 +540,7 @@ def recover_wild_text(
     result_body: _Element,
     options: Extractor,
     potential_tags: set[str] | None = None,
+    consumed: set[_Element] | None = None,
 ) -> _Element:
     """Look for all previously unconsidered wild elements, including outside of the determined
     frame and throughout the document to recover potentially missing text parts.
@@ -560,10 +569,16 @@ def recover_wild_text(
     # newline-joined (trimmed element text has no newline) so no substring match spans two elements
     existing = "\n".join(filter(None, elem_texts))
     existing_elems = set(elem_texts)
+    # elements emitted or deduped whole: their descendants are covered
+    handled: set[_Element] = set()
     for subelem in subelems:
+        if (consumed and subelem in consumed) or any(a in handled for a in subelem.iterancestors()):
+            continue
         processed = handle_textelem(subelem, potential_tags, options)
         if processed is None:
             continue
+        if processed is subelem:
+            handled.add(subelem)
         text = _elem_text(processed)
         # image-only blocks have no text to compare, check their sources against the live body
         images = {img.get("src") for img in processed.iter("graphic")}
@@ -571,11 +586,16 @@ def recover_wild_text(
             continue
         # past the cap, the substring scan is skipped and `existing` stops growing
         under_cap = len(existing) <= DEDUPE_SCAN_CAP
-        if text and (text in existing_elems or (len(text) > MIN_DUPLICATE_LENGTH and under_cap and text in existing)):
+        # a copy carrying its source tail is a fragment of a text run: no length gate
+        fragment = trim(text + (processed.tail or "")) if text_chars_test(processed.tail) else ""
+        if text and (
+            text in existing_elems
+            or (under_cap and ((len(text) > MIN_DUPLICATE_LENGTH and text in existing) or (fragment and fragment in existing)))
+        ):
             continue
         result_body.append(processed)
         if under_cap:
-            existing += "\n" + text
+            existing += "\n" + (fragment or text)
         existing_elems.add(text)
     return result_body
 
@@ -653,9 +673,17 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         LOGGER.debug(sorted(potential_tags))
 
         subelems = subtree.xpath(".//*")
-        # e.g. only lb-elems in a div
-        if {e.tag for e in subelems} == {"lb"}:
+        # a single text run (only lb or inline elements): process the frame itself
+        # lb-only frames go there unconditionally, a failed main pass then hands them to the recovery
+        tags = {e.tag for e in subelems}
+        if tags == {"lb"} or (subtree.tag == "div" and "div" in potential_tags and tags <= INLINE_FORMATTABLE | {"lb"}):
             subelems = [subtree]
+        # the frame's own text before its first child, kept if the frame is accepted
+        lead, start = None, len(result_body)
+        if subelems != [subtree] and text_chars_test(subtree.text):
+            lead = Element("p")
+            lead.text = subtree.text
+            lead = process_node(lead, options)
         # extract content
         for elem in subelems:
             # handle_other_elements() emits a text-bearing div as-is, children and all, and
@@ -670,6 +698,9 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
             processed_elem = handle_textelem(elem, potential_tags, options)
             if processed_elem is not None:
                 result_body.append(processed_elem)
+                # a copy leaves its source behind for a later, wider subtree
+                if elem.getroottree().getroot() is not result_body:
+                    elem.tag = "done"
             # text right after a rebuilt block is a paragraph of its own, like an <lb> tail,
             # unless the handler already carried it over (a code block copied as a whole)
             if tag in REBUILT_BLOCKS and text_chars_test(tail) and (processed_elem is None or processed_elem.tail is None):
@@ -683,6 +714,8 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
         # exit once there is real content, not just a lone image
         if sum(e.tag != "graphic" for e in result_body) > 1:
             LOGGER.debug(trim(str(expr)))
+            if lead is not None:
+                result_body.insert(start, lead)
             break
     temp_text = " ".join(result_body.itertext()).strip()
     return result_body, temp_text, potential_tags
@@ -694,13 +727,17 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     convert them"""
     # backup
     backup_tree = deepcopy(cleaned_tree)
+    # source order before the main pass moves elements, the backup keeps it
+    order = list(cleaned_tree.iter())
 
     result_body, temp_text, potential_tags = _extract(cleaned_tree, options)
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
-        result_body = recover_wild_text(backup_tree, result_body, options, potential_tags)
+        # copies of what the main pass consumed are not recovered again
+        consumed: set[_Element] = {twin for elem, twin in zip(order, backup_tree.iter(), strict=True) if elem.tag == "done"}
+        result_body = recover_wild_text(backup_tree, result_body, options, potential_tags, consumed)
         temp_text = " ".join(result_body.itertext()).strip()
     # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
     # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards

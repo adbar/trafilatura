@@ -7,9 +7,12 @@ Not included in releases due to cached pages.
 import functools
 import logging
 import os
+import re
 import sys
+from collections import Counter
 
 import pytest
+from lxml import etree
 
 # https://docs.pytest.org/en/latest/
 
@@ -21,6 +24,7 @@ except ImportError:
 
 from trafilatura import extract
 from trafilatura.metadata import extract_metadata
+from trafilatura.utils import load_html, normalize_unicode, trim
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -201,6 +205,34 @@ def load_mock_page_meta(url):
         else:
             print("Encoding error")
     return htmlstring
+
+
+def _ngrams(text, n=10):
+    "Word n-grams within each line, markdown link targets and soft hyphens removed."
+    text = re.sub(r"\]\([^)]*\)", "]", text.replace("\xad", "").lower())
+    grams = Counter()
+    for line in text.splitlines():
+        toks = re.findall(r"\w+", line)
+        grams.update(zip(*(toks[i:] for i in range(n)), strict=False))
+    return grams
+
+
+def _source_text(htmlstring):
+    "Source text without scripts and styles, whitespace-collapsed and NFC like the output."
+    tree = load_html(htmlstring)
+    etree.strip_elements(tree, "script", "style", with_tail=False)
+    return normalize_unicode(trim(" ".join(tree.itertext())))
+
+
+@pytest.mark.parametrize("url", MOCK_PAGES)
+def test_no_repeated_segments(url):
+    "Text segments must not be output more often than they appear in the source (GH#951)."
+    htmlstring = load_mock_page_meta(url)
+    source = _ngrams(_source_text(htmlstring))
+    for options in ({}, {"output_format": "markdown", "include_formatting": True, "include_links": True}):
+        output = _ngrams(extract(htmlstring, url, **options) or "")
+        repeated = [g for g, c in output.items() if 0 < source[g] < c]
+        assert not repeated, (options, [" ".join(g) for g in repeated[:3]])
 
 
 @pytest.mark.parametrize("xmloutput,formatting", [(True, False), (False, False), (False, True)])

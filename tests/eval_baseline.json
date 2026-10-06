@@ -1,7 +1,7 @@
 {
   "floors": {
-    "fast": 0.9198,
-    "fallback": 0.9257
+    "fast": 0.9204,
+    "fallback": 0.9261
   },
   "evaldata_sha": "b443dcaae4d0aa2097a1abc780495635786b5cb2b33a01787f20879a25a8e133",
   "entries": 990,
