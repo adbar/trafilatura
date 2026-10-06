@@ -2692,6 +2692,24 @@ def test_short_document_fallback_preserves_image():
     result = extract(doc, output_format="xml", include_images=True, include_links=True) or ""
     assert '<graphic src="https://cdn.test/a.png" alt="a chart"/>' in result
 
+    # wild-text recovery must not append an image paragraph the main pass already kept
+    img = '<img src="https://cdn.test/a.png" alt="a chart"/>'
+    doc = doc.replace(img, f"<p>{img}</p>")
+    for fast in (True, False):
+        result = extract(doc, output_format="xml", include_images=True, fast=fast) or ""
+        assert result.count("<graphic") == 1
+
+    # recall-mode recovery moves the outer div into the body before reaching its nested table,
+    # so the image in the table cell has to be checked against the live body
+    doc = (
+        "<html><body><div>Intro text <table><tr><td>"
+        '<img src="https://cdn.test/t.png" alt="cell"/>'
+        "</td></tr></table></div><p>Short page text.</p></body></html>"
+    )
+    for fast in (True, False):
+        result = extract(doc, output_format="xml", include_images=True, fast=fast, favor_recall=True) or ""
+        assert result.count('<graphic src="https://cdn.test/t.png"') == 1
+
 
 def test_longer_fallback_can_replace_requested_image():
     """A real content recovery still wins even when its source cannot preserve an image."""

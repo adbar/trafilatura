@@ -565,6 +565,10 @@ def recover_wild_text(
         if processed is None:
             continue
         text = _elem_text(processed)
+        # image-only blocks have no text to compare, check their sources against the live body
+        images = {img.get("src") for img in processed.iter("graphic")}
+        if not text and images and images <= {g.get("src") for g in result_body.iter("graphic")}:
+            continue
         # past the cap, the substring scan is skipped and `existing` stops growing
         under_cap = len(existing) <= DEDUPE_SCAN_CAP
         if text and (text in existing_elems or (len(text) > MIN_DUPLICATE_LENGTH and under_cap and text in existing)):
