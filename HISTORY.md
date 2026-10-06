@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+## 2.3.1
+
+- Fewer duplicated segments in the output and a new test series by @adbar (#955)
+- Do not repeat image paragraphs or the text after inline code by @MohammadHijjawi97 (#946, #952)
+- Keep brackets inside inline code in link text unescaped by @Sriram-PR (#954)
+
+
 ## 2.3.0
 
 Major changes:
