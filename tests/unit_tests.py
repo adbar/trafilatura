@@ -4300,6 +4300,14 @@ def test_html_conversion():
     assert '<img src="pic.jpg" alt="a"/>' in out
     assert "<graphic" not in out
 
+    # ordered lists stay ordered in HTML output
+    list_xml = '<body><list rend="ol"><item>a</item></list><list rend="ul"><item>b</item></list></body>'
+    list_html = etree.tostring(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(list_xml)), encoding="unicode")
+    assert list_html == "<html><body><ol><li>a</li></ol><ul><li>b</li></ul></body></html>"
+    doc = "<html><body><article><p>Body text here.</p><ol><li>first</li><li>second</li></ol></article></body></html>"
+    out = extract(doc, output_format="html", config=ZERO_CONFIG)
+    assert "<ol>\n      <li>first</li>\n      <li>second</li>\n    </ol>" in out
+
 
 def test_deprecations():
     "Test deprecated function parameters."
