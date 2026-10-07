@@ -156,6 +156,15 @@ def normalize_tags(tags: str) -> str:
     return ", ".join(filter(None, tags.split(", ")))
 
 
+def invert_citation_name(name: str) -> str:
+    "citation_author holds one name per tag, often as 'Last, First': turn it into 'First Last'."
+    last, sep, first = (part.strip() for part in name.partition(","))
+    # leave lists of full names ("Jane Doe, John Roe") to the regular splitting
+    if sep and last and first and "," not in first and (" " not in last or " " not in first):
+        return f"{first} {last}"
+    return name
+
+
 def check_authors(authors: str, author_blacklist: set[str]) -> str | None:
     "Check if the authors string correspond to expected values."
     author_blacklist = {a.lower() for a in author_blacklist}
@@ -236,6 +245,8 @@ def examine_meta(tree: HtmlElement) -> Document:
             name_attr = elem.get("name", "").lower()
             # author
             if name_attr in METANAME_AUTHOR:
+                if name_attr == "citation_author":
+                    content_attr = invert_citation_name(content_attr)
                 metadata.author = normalize_authors(metadata.author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:

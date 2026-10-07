@@ -142,6 +142,13 @@ def test_author_from_meta():
         (f'{begin}<meta name="author" content="Hank O&#39;Hop"/>{end}', "Hank O'Hop"),
         (f'{begin}<meta name="author" content="Jenny Smith ❤️"/>{end}', "Jenny Smith"),
         (f'{begin}<meta name="citation_author" content="Jenny Smith and John Smith"/>{end}', "Jenny Smith; John Smith"),
+        # one name per citation_author tag, often written as "Last, First"
+        (
+            f'{begin}<meta name="citation_author" content="Smith, Jenny"/><meta name="citation_author" content="Smith, John"/>{end}',
+            "Jenny Smith; John Smith",
+        ),
+        (f'{begin}<meta name="citation_author" content="van der Berg, Jan"/>{end}', "Jan van der Berg"),
+        (f'{begin}<meta name="citation_author" content="Jenny Smith, John Smith"/>{end}', "Jenny Smith; John Smith"),
         (
             f'{begin}<meta property="author" content="Jenny Smith"/><meta property="author" content="John Smith"/>{end}',
             "Jenny Smith; John Smith",
