@@ -464,7 +464,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
 
 
 HTML_CONVERSIONS = {
-    "list": "ul",
+    "list": lambda elem: "ol" if elem.get("rend") == "ol" else "ul",
     "item": "li",
     "code": "pre",
     "quote": "blockquote",
