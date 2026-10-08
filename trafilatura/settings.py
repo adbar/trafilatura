@@ -73,6 +73,7 @@ class Extractor:
         "links",
         "images",
         "tables",
+        "spans",
         "dedup",
         "lang",
         # extraction size
@@ -110,6 +111,7 @@ class Extractor:
         links: bool = False,
         images: bool = False,
         tables: bool = True,
+        spans: bool = False,
         dedup: "bool | LRUCache" = False,
         lang: str | None = None,
         url: str | None = None,
@@ -150,6 +152,10 @@ class Extractor:
         self.links: bool = links
         self.images: bool = images
         self.tables: bool = tables
+        # <span> has no TEI/Markdown equivalent; it is only meaningful for HTML output
+        if spans and self.format != "html":
+            LOGGER.warning("include_spans has no effect unless output_format is 'html'")
+        self.spans: bool = spans
         self.dedup: bool | LRUCache = dedup
         self.lang: str | None = lang
         self.url: str | None = url
@@ -176,6 +182,7 @@ def args_to_extractor(args: argparse.Namespace, url: str | None = None) -> Extra
         recall=args.recall,
         comments=args.comments,
         tables=args.tables,
+        spans=getattr(args, "spans", False),
         images=args.images,
         links=args.links,
         dedup=args.deduplicate,
