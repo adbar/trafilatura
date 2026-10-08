@@ -187,7 +187,7 @@ RAW_TREE_PRUNE_XPATH = [
         re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')][
         re:test(@id, 'mvp-post-add-(?:box|wrap)') or
         re:test(@class, 'mvp-post-add-(?:box|wrap)') or
-        (not(.//h1) and not(.//h2[not(preceding::h1) and not(preceding::h2)]))]
+        (not(.//h1) and not(.//h2[not(//h1) and not(preceding::h2)]))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
