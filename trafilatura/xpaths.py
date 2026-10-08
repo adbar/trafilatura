@@ -178,14 +178,16 @@ REMOVE_COMMENTS_AND_LISTS_XPATH = [
 
 # Raw-tree prune, kept out of OVERALL_DISCARD_XPATH because its over-pruning guard would revert it.
 RAW_TREE_PRUNE_XPATH = [
-    # infinite-scroll containers holding whole follow-up articles ("mvp-post-add": Zox News theme),
-    # such pages are mostly appended articles, a generic container holding the h1 is the real one
+    # Keep an infinite-scroll shell holding an h1, or the first h2 if no h1
+    # exists in the document. Always remove Zox News follow-up boxes.
     XPath(
         """
         .//*[self::div or self::section or self::aside][
         re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
         re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')][
-        not(.//h1) or re:test(@id, 'mvp-post-add-(?:box|wrap)') or re:test(@class, 'mvp-post-add-(?:box|wrap)')]
+        re:test(@id, 'mvp-post-add-(?:box|wrap)') or
+        re:test(@class, 'mvp-post-add-(?:box|wrap)') or
+        (not(.//h1) and not(.//h2[not(preceding::h1) and not(preceding::h2)]))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
