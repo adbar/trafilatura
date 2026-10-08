@@ -2,6 +2,7 @@
 
 Synthetic prose preserves the reported DOM structure without copying news text.
 """
+
 import pytest
 from lxml import html
 
@@ -33,7 +34,7 @@ def shell(count):
 
 
 @pytest.mark.parametrize("mode", MODES, ids=("default", "precision", "fast"))
-@pytest.mark.parametrize("count", (4, 6))
+@pytest.mark.parametrize("count", [4, 6])
 def test_primary_h2_shell_extracts_all_article_paragraphs(mode, count):
     result = extract(f"<html><body>{shell(count)}</body></html>", **mode) or ""
     for text in PARAGRAPHS[:count]:
@@ -46,7 +47,8 @@ def test_primary_h2_shell_extracts_all_article_paragraphs(mode, count):
 def test_rendered_shell_excludes_page_chrome(mode):
     page = (
         "<html><body><noscript><p>Enable JavaScript to view the page.</p>"
-        "</noscript>" + shell(6).replace(
+        "</noscript>"
+        + shell(6).replace(
             "</div></div></div>",
             "</div></div><div class='recommender'><h3>Recommended reads</h3>"
             "<p>Another workshop announces a separate event.</p></div></div>",
@@ -63,27 +65,42 @@ def test_rendered_shell_excludes_page_chrome(mode):
 
 @pytest.mark.parametrize(
     "document, expected",
-    (
-        ("<div id='preview' class='infinite-scroll'><h2>Preview</h2></div>"
-         "<article><h1>Actual title</h1></article>", {"preview"}),
-        ("<h2>Navigation heading</h2><div id='primary' class='infinite-scroll'>"
-         "<h1>Actual title</h1></div>", set()),
-        ("<div id='primary' class='infinite-scroll'><h2>Actual title</h2></div>"
-         "<div id='append' class='infinite-scroll'><h2>Next title</h2></div>",
-         {"append"}),
-        ("<div id='append' class='infinite-scroll'><p>No heading</p></div>",
-         {"append"}),
-        ("<div id='mvp-post-add-box'><h1>Next title</h1></div>",
-         {"mvp-post-add-box"}),
-        ("<div id='mvp' class='mvp-post-add-wrap'><h2>Next title</h2></div>",
-         {"mvp"}),
-        ("<section id='primary' class='infinite-scroll'><h2>Actual title</h2>"
-         "</section><aside id='append' class='infinite-scroll'><h2>Next</h2>"
-         "</aside>", {"append"}),
+    [
+        (
+            "<div id='preview' class='infinite-scroll'><h2>Preview</h2></div><article><h1>Actual title</h1></article>",
+            {"preview"},
+        ),
+        ("<h2>Navigation heading</h2><div id='primary' class='infinite-scroll'><h1>Actual title</h1></div>", set()),
+        (
+            (
+                "<div id='primary' class='infinite-scroll'><h2>Actual title</h2></div>"
+                "<div id='append' class='infinite-scroll'><h2>Next title</h2></div>"
+            ),
+            {"append"},
+        ),
+        ("<div id='append' class='infinite-scroll'><p>No heading</p></div>", {"append"}),
+        ("<div id='mvp-post-add-box'><h1>Next title</h1></div>", {"mvp-post-add-box"}),
+        ("<div id='mvp' class='mvp-post-add-wrap'><h2>Next title</h2></div>", {"mvp"}),
+        (
+            (
+                "<section id='primary' class='infinite-scroll'><h2>Actual title</h2>"
+                "</section><aside id='append' class='infinite-scroll'><h2>Next</h2>"
+                "</aside>"
+            ),
+            {"append"},
+        ),
         ("<div id='infinite-scroll'><h2>Actual title</h2></div>", set()),
+    ],
+    ids=(
+        "preview-before-h1",
+        "h1-after-other-h2",
+        "first-h2-only",
+        "no-heading",
+        "mvp-h1",
+        "mvp-h2",
+        "section-aside",
+        "id-shell",
     ),
-    ids=("preview-before-h1", "h1-after-other-h2", "first-h2-only",
-         "no-heading", "mvp-h1", "mvp-h2", "section-aside", "id-shell"),
 )
 def test_raw_pruning_matches_primary_heading_rule(document, expected):
     tree = html.fromstring(f"<html><body>{document}</body></html>")
@@ -91,7 +108,7 @@ def test_raw_pruning_matches_primary_heading_rule(document, expected):
 
 
 @pytest.mark.parametrize("mode", MODES, ids=("default", "precision", "fast"))
-@pytest.mark.parametrize("placement", ("after", "before", "mvp"))
+@pytest.mark.parametrize("placement", ["after", "before", "mvp"])
 def test_follow_up_regions_do_not_leak_into_article(mode, placement):
     real = "<article><h1>Repair workshop</h1>" + paragraphs() + "</article>"
     follow_up = (
@@ -100,9 +117,9 @@ def test_follow_up_regions_do_not_leak_into_article(mode, placement):
         "not be included in the workshop article.</p></div>"
     )
     if placement == "mvp":
-        follow_up = follow_up.replace(
-            "class='infinite-scroll'", "id='mvp-post-add-box'"
-        ).replace("<h2>Next story</h2>", "<h1>Next story</h1>")
+        follow_up = follow_up.replace("class='infinite-scroll'", "id='mvp-post-add-box'").replace(
+            "<h2>Next story</h2>", "<h1>Next story</h1>"
+        )
     body = follow_up + real if placement == "before" else real + follow_up
     result = extract(f"<html><body>{body}</body></html>", **mode) or ""
     assert PARAGRAPHS[0] in result
@@ -112,7 +129,6 @@ def test_follow_up_regions_do_not_leak_into_article(mode, placement):
 @pytest.mark.parametrize("mode", MODES, ids=("default", "precision", "fast"))
 def test_nav_only_shell_is_not_an_article(mode):
     page = (
-        "<html><body><div class='infinite-scroll'><nav>"
-        "<a href='/'>Home</a><a href='/news'>News</a></nav></div></body></html>"
+        "<html><body><div class='infinite-scroll'><nav><a href='/'>Home</a><a href='/news'>News</a></nav></div></body></html>"
     )
     assert extract(page, **mode) is None
