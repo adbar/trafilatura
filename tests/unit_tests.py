@@ -3448,7 +3448,10 @@ def test_image_tail_not_duplicated():
     [
         ("<b>pre</b> <img src='a.png'/> tail", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">pre</hi> tail</ref>'),
         ("<b>x <img src='a.png'/> y</b> z", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">x y</hi> z</ref>'),
-        ("<img src='a.png'/>mid<img src='b.png'/>end", '<graphic src="a.png"/><graphic src="b.png"/><ref target="/u">midend</ref>'),
+        (
+            "<img src='a.png'/>mid<img src='b.png'/>end",
+            '<graphic src="a.png"/><graphic src="b.png"/><ref target="/u">midend</ref>',
+        ),
     ],
 )
 def test_image_in_link_tail_stays_in_place(link, expected):
