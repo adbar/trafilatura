@@ -1439,6 +1439,15 @@ def test_tei():
     assert (
         etree.tostring(tree, encoding="unicode") == "<doc><code>a def f():<lb/>    return 1<lb/>print(f()) tail</code></doc>"
     )
+    # previous sibling, nested head and nested p keep their children
+    for tag, src, expected in (
+        ("code", "<doc><code>a<hi>z</hi><code>x<lb/>y</code> tail</code></doc>", "<doc><code>a<hi>z</hi> x<lb/>y tail</code></doc>"),
+        ("head", "<doc><head>a<head>x<hi>b</hi>y</head> tail</head></doc>", "<doc><head>a x<hi>b</hi>y tail</head></doc>"),
+        ("p", "<doc><p>a<p>x<hi>b</hi>y</p> tail</p></doc>", "<doc><p>a x<hi>b</hi>y tail</p></doc>"),
+    ):
+        tree = etree.XML(src)
+        xml.strip_double_tags(tree)
+        assert etree.tostring(tree, encoding="unicode") == expected, tag
 
 
 @pytest.mark.parametrize(

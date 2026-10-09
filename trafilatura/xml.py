@@ -136,7 +136,7 @@ def merge_with_parent(element: _Element, include_formatting: bool = False, keep_
 
     full_text = replace_element_text(element, include_formatting)
     # children not folded into the text (e.g. <lb/> in code) can move up and keep their place
-    children = list(element) if keep_children and not _consumes_inline_children(element) else []
+    children = list(element) if keep_children else []
     if element.tail is not None and not children:
         full_text += element.tail
 
