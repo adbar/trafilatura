@@ -23,6 +23,7 @@ except ImportError:
     from charset_normalizer import detect
 
 from trafilatura import extract
+from trafilatura.dom import to_lxml
 from trafilatura.metadata import extract_metadata
 from trafilatura.utils import load_html, normalize_unicode, trim
 
@@ -219,7 +220,7 @@ def _ngrams(text, n=10):
 
 def _source_text(htmlstring):
     "Source text without scripts and styles, whitespace-collapsed and NFC like the output."
-    tree = load_html(htmlstring)
+    tree = to_lxml(load_html(htmlstring))
     etree.strip_elements(tree, "script", "style", with_tail=False)
     return normalize_unicode(trim(" ".join(tree.itertext())))
 

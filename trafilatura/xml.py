@@ -154,7 +154,7 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
     parent.remove(element)
 
 
-def separates_inline(element: _Element) -> bool:
+def separates_inline(element: _Element | HtmlElement) -> bool:
     "Whether the element is a line break before inline content."
     nxt = element.getnext()
     return element.tag == "lb" and nxt is not None and nxt.tag in INLINE_CARRIED

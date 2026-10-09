@@ -399,7 +399,7 @@ def _fill_cell(
         # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
         elif child.tag == "list":
             processed_list = handle_lists(child, options)
-            _append_block(new_child_elem, processed_list if options.focus == "recall" or forum else None, child)
+            _append_block(new_child_elem, processed_list if options.focus == "recall" else None, child)
             continue
         else:
             processed_subchild = handle_textelem(child, ptags_with_div, options)

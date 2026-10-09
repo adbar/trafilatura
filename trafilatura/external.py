@@ -4,7 +4,6 @@ Functions grounding on third-party software.
 """
 
 import logging
-from copy import copy
 
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
@@ -12,7 +11,7 @@ from justext.utils import get_stoplist, get_stoplists
 
 # own
 from .baseline import basic_cleaning
-from .dom import Element, HtmlElement, _Element, strip_tags, to_lxml_html, tostring
+from .dom import Element, HtmlElement, SubElement, _Element, strip_tags, to_lxml_html, tostring
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
@@ -36,11 +35,7 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     """Safety net: try with the generic algorithm readability"""
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25)
-        doc.summary()
-        # the summarized element itself, instead of parsing its serialization again
-        summary = copy(doc.doc)
-        summary.tail = None
-        return summary
+        return doc.summary_tree()
     except Exception as err:
         LOGGER.warning("readability_lxml failed: %s", err)
         return Element("body")

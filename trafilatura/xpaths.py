@@ -142,8 +142,8 @@ COMMENTS_XPATH = [
 ]
 # or contains(@class, 'Comments')
 
-_COMMENTS_ID = "[Cc]omment(?!ary)|comol"
-_COMMENTS_CLASS = "^[Cc]omment(?!ary)|(?:article|post)-comments"
+_COMMENTS_ID = "[Cc]omment(?:$|[^a]|a(?:$|[^r])|ar(?:$|[^y]))|comol"
+_COMMENTS_CLASS = "^[Cc]omment(?:$|[^a]|a(?:$|[^r])|ar(?:$|[^y]))|(?:article|post)-comments"
 REMOVE_COMMENTS_XPATH = [
     XPath(
         f"""
