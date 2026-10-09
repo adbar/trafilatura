@@ -451,9 +451,16 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         if options.links:
             for ref in list(tree.iter("ref")):
                 graphics = list(ref.iter("graphic"))
-                # iterate in reverse so addnext preserves original order
-                for graphic in reversed(graphics):
-                    ref.addnext(graphic)
+                # addnext() would land after the tail text of the link
+                for graphic in graphics:
+                    if graphic.tail:  # keep the text where the image was
+                        prev, parent = graphic.getprevious(), graphic.getparent()
+                        if prev is not None:
+                            prev.tail = (prev.tail or "") + graphic.tail
+                        elif parent is not None:
+                            parent.text = (parent.text or "") + graphic.tail
+                        graphic.tail = None
+                    ref.addprevious(graphic)
                 # remove ref if it only contained images (no text),
                 # its leftover children (picture, source) would
                 # otherwise trigger justext fallback and lose images

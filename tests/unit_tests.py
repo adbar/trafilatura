@@ -3444,6 +3444,36 @@ def test_image_tail_not_duplicated():
 
 
 @pytest.mark.parametrize(
+    "link,expected",
+    [
+        ("<b>pre</b> <img src='a.png'/> tail", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">pre</hi> tail</ref>'),
+        ("<b>x <img src='a.png'/> y</b> z", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">x y</hi> z</ref>'),
+        (
+            "<img src='a.png'/>mid<img src='b.png'/>end",
+            '<graphic src="a.png"/><graphic src="b.png"/><ref target="/u">midend</ref>',
+        ),
+    ],
+)
+def test_image_in_link_tail_stays_in_place(link, expected):
+    "regression: text after an image nested in or following markup keeps its position."
+    body = f"<p>See <a href='/u'>{link}</a> after.</p>"
+    result = _extract_doc(body, output_format="xml", include_links=True, include_images=True, include_formatting=True)
+    assert expected in result
+
+
+def test_image_in_link_keeps_order():
+    "regression: an image lifted out of a link stays before the text following the link."
+    body = (
+        "<p>Intro. See <a href='/u'><img src='a.png' alt='A'/> linked words</a> after text. And <a href='/v'>plain</a> ok.</p>"
+    )
+    result = _extract_doc(body, output_format="xml", include_links=True, include_images=True)
+    assert (
+        '<p>Intro. See <graphic src="a.png" alt="A"/><ref target="/u"> linked words</ref> after text. And <ref target="/v">plain</ref> ok.</p>'
+        in result
+    )
+
+
+@pytest.mark.parametrize(
     "items,expected",
     [
         # malformed list (common error): loose text becomes an item
