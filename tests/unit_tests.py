@@ -4385,3 +4385,17 @@ def test_convert_tags_links_off_keeps_contained_links(options):
     options.tables = False
     converted = convert_tags(html.fromstring(doc), options)
     assert [ref.text for ref in converted.iter("ref")] == ["para"]
+
+
+def test_xml_keeps_space_between_inline_siblings():
+    "A whitespace-only tail between adjacent inline elements stays a single space in XML output."
+    doc = "<html><body><article><p>Read <b>bold</b> <i>ital</i> and <kbd>Ctrl</kbd> <kbd>C</kbd> text.</p></article></body></html>"
+    result = extract(doc, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
+    assert '<hi rend="#b">bold</hi> <hi rend="#i">ital</hi> and <hi rend="#t">Ctrl</hi> <hi rend="#t">C</hi> text.' in result
+    doc = "<html><body><article><p>Read <b>bold</b> </p></article></body></html>"
+    result = extract(doc, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
+    assert "</hi> <" not in result
+    tree = trafilatura.utils.sanitize_tree(etree.fromstring("<div><p>a</p>\n<p>b</p></div>"))
+    assert etree.tostring(tree) == b"<div><p>a</p><p>b</p></div>"
+    tree = trafilatura.utils.sanitize_tree(etree.fromstring("<p><hi>a</hi>\n<lb/></p>"))
+    assert etree.tostring(tree) == b"<p><hi>a</hi><lb/></p>"
