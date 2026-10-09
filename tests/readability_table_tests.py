@@ -1,9 +1,14 @@
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 import pytest
 
 from trafilatura import extract
+from trafilatura.dom import HtmlElement, fromstring
+from trafilatura.readability_lxml import Document
 from trafilatura.settings import use_config
+
+if TYPE_CHECKING:
+    from configparser import ConfigParser
 
 
 @pytest.mark.parametrize(
@@ -15,7 +20,7 @@ def test_readability_preserves_table_filter(include_tables: bool) -> None:
     source: Final[str] = (
         "<html><body><table><tbody>" + "".join(f"<tr><td>{row}</td></tr>" for row in rows) + "</tbody></table></body></html>"
     )
-    config = use_config()
+    config: Final[ConfigParser] = use_config()
     config["DEFAULT"]["MIN_OUTPUT_SIZE"] = "0"
     config["DEFAULT"]["MIN_EXTRACTED_SIZE"] = "0"
     expected: Final[str] = "\n".join(f"| {row} | " for row in rows).rstrip() if include_tables else ""
@@ -23,9 +28,6 @@ def test_readability_preserves_table_filter(include_tables: bool) -> None:
 
 
 def test_readability_summary_serializes_article() -> None:
-    from trafilatura.dom import fromstring
-    from trafilatura.readability_lxml import Document
-
     text: Final[str] = "Garden measurements, planting observations and soil analysis. " * 5
-    tree = fromstring(f"<html><body><article><p>{text}</p></article></body></html>")
+    tree: Final[HtmlElement] = fromstring(f"<html><body><article><p>{text}</p></article></body></html>")
     assert Document(tree).summary() == f"<div><article><p>{text}</p></article></div>"
