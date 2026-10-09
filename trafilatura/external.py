@@ -34,11 +34,7 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     """Safety net: try with the generic algorithm readability"""
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25)
-        doc.summary()
-        # the summarized element itself, instead of parsing its serialization again
-        summary = copy(doc.doc)
-        summary.tail = None
-        return summary
+        return doc.summary_tree()
     except Exception as err:
         LOGGER.warning("readability_lxml failed: %s", err)
         return Element("body")
