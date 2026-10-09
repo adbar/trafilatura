@@ -452,6 +452,9 @@ def sanitize_tree(tree: _Element) -> _Element:
             elem.text = sanitize(elem.text, preserve_space, trailing_space)
         if elem.tail:
             elem.tail = sanitize(elem.tail, preserve_space, trailing_space)
+            # keep one space between inline siblings
+            if elem.tail is None and trailing_space and elem.getnext() is not None:
+                elem.tail = " "
     return tree
 
 
