@@ -128,14 +128,16 @@ def delete_element(element: _Element, keep_tail: bool = True) -> None:
     parent.remove(element)
 
 
-def merge_with_parent(element: _Element, include_formatting: bool = False) -> None:
+def merge_with_parent(element: _Element, include_formatting: bool = False, keep_children: bool = False) -> None:
     """Merge element with its parent and convert formatting to markdown."""
     parent = element.getparent()
     if parent is None:
         return
 
     full_text = replace_element_text(element, include_formatting)
-    if element.tail is not None:
+    # children not folded into the text (e.g. <lb/> in code) can move up and keep their place
+    children = list(element) if keep_children and not _consumes_inline_children(element) else []
+    if element.tail is not None and not children:
         full_text += element.tail
 
     previous = element.getprevious()
@@ -146,6 +148,11 @@ def merge_with_parent(element: _Element, include_formatting: bool = False) -> No
         parent.text = f"{parent.text} {full_text}"
     else:
         parent.text = full_text
+    if children:
+        index = parent.index(element)
+        children[-1].tail = (children[-1].tail or "") + (element.tail or "")
+        for offset, child in enumerate(children):
+            parent.insert(index + offset, child)
     parent.remove(element)
 
 
@@ -192,7 +199,7 @@ def strip_double_tags(tree: _Element) -> _Element:
     for elem in reversed(tree.xpath(".//head | .//code | .//p")):
         for subelem in elem.iterdescendants("code", "head", "p"):
             if subelem.tag == elem.tag and subelem.getparent().tag not in NESTING_WHITELIST:
-                merge_with_parent(subelem)
+                merge_with_parent(subelem, keep_children=True)
     return tree
 
 
