@@ -4392,9 +4392,10 @@ def test_xml_keeps_space_between_inline_siblings():
     doc = "<html><body><article><p>Read <b>bold</b> <i>ital</i> and <kbd>Ctrl</kbd> <kbd>C</kbd> text.</p></article></body></html>"
     result = extract(doc, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">bold</hi> <hi rend="#i">ital</hi> and <hi rend="#t">Ctrl</hi> <hi rend="#t">C</hi> text.' in result
-    assert extract("<html><body><article><p>Read <b>bold</b> </p></article></body></html>", output_format="xml", include_formatting=True, config=ZERO_CONFIG).count("</hi> <") == 0
-    from trafilatura.utils import sanitize_tree as sanitize_xml_tree
-    tree = sanitize_xml_tree(etree.fromstring("<div><p>a</p>\n<p>b</p></div>"))
+    doc = "<html><body><article><p>Read <b>bold</b> </p></article></body></html>"
+    result = extract(doc, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
+    assert "</hi> <" not in result
+    tree = trafilatura.utils.sanitize_tree(etree.fromstring("<div><p>a</p>\n<p>b</p></div>"))
     assert etree.tostring(tree) == b"<div><p>a</p><p>b</p></div>"
-    tree = sanitize_xml_tree(etree.fromstring("<p><hi>a</hi>\n<lb/></p>"))
+    tree = trafilatura.utils.sanitize_tree(etree.fromstring("<p><hi>a</hi>\n<lb/></p>"))
     assert etree.tostring(tree) == b"<p><hi>a</hi><lb/></p>"

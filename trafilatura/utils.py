@@ -455,7 +455,12 @@ def sanitize_tree(tree: _Element) -> _Element:
             whitespace_only = elem.tail.isspace()
             elem.tail = sanitize(elem.tail, preserve_space, trailing_space)
             # keep one space between inline siblings
-            if whitespace_only and elem.tail is None and elem.tag in INLINE_TAGS and getattr(elem.getnext(), "tag", None) in INLINE_TAGS:
+            if (
+                whitespace_only
+                and elem.tail is None
+                and elem.tag in INLINE_TAGS
+                and getattr(elem.getnext(), "tag", None) in INLINE_TAGS
+            ):
                 elem.tail = " "
     return tree
 
