@@ -1432,6 +1432,26 @@ def test_tei():
     xml.strip_double_tags(tree)
     for parent_tag in ["item", "cell", "quote", "note", "figure"]:
         assert tree.find(f".//{parent_tag}/p") is not None
+    # nested code keeps its line breaks and the tail (#966)
+    tree = etree.XML("<doc><code>a<code>def f():<lb/>    return 1<lb/>print(f())</code> tail</code></doc>")
+    xml.strip_double_tags(tree)
+    assert tree.find(".//code/code") is None
+    assert (
+        etree.tostring(tree, encoding="unicode") == "<doc><code>a def f():<lb/>    return 1<lb/>print(f()) tail</code></doc>"
+    )
+    # previous sibling, nested head and nested p keep their children
+    for tag, src, expected in (
+        (
+            "code",
+            "<doc><code>a<hi>z</hi><code>x<lb/>y</code> tail</code></doc>",
+            "<doc><code>a<hi>z</hi>x<lb/>y tail</code></doc>",
+        ),
+        ("head", "<doc><head>a<head>x<hi>b</hi>y</head> tail</head></doc>", "<doc><head>a x<hi>b</hi>y tail</head></doc>"),
+        ("p", "<doc><p>a<p>x<hi>b</hi>y</p> tail</p></doc>", "<doc><p>a x<hi>b</hi>y tail</p></doc>"),
+    ):
+        tree = etree.XML(src)
+        xml.strip_double_tags(tree)
+        assert etree.tostring(tree, encoding="unicode") == expected, tag
 
 
 @pytest.mark.parametrize(
