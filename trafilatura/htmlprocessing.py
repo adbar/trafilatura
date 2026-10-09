@@ -5,6 +5,7 @@ Functions to process nodes in HTML code.
 
 import logging
 from copy import deepcopy
+from urllib.parse import urljoin
 
 from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
@@ -17,7 +18,7 @@ from .settings import (
     Document,
     Extractor,
 )
-from .utils import LINK_FARM_RATIO, image_src, safe_base_url, safe_relative_url, textfilter, trim
+from .utils import LINK_FARM_RATIO, image_src, textfilter, trim
 from .xml import delete_element, meta_items, separates_inline
 
 LOGGER = logging.getLogger(__name__)
@@ -78,8 +79,39 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
-def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
+def _absolutize_links(tree: HtmlElement, url: str | None) -> None:
+    "Resolve relative URLs against the page URL, honoring <base href>."
+    if not url:
+        return
+    # urljoin replaces href="" with the page URL; those links have no target
+    blanks = [elem for elem in tree.iter() if elem.get("href") == ""]
+    for elem in blanks:
+        del elem.attrib["href"]
+    # a relative base href is joined against the document, not used as a bare path
+    for base in tree.iter("base"):
+        href = base.get("href")
+        if not href:
+            continue
+        try:
+            base.set("href", urljoin(url, href))
+        except ValueError:
+            continue
+    try:
+        # make_links_absolute does not forward handle_failures to resolve_base_href,
+        # so one bad URL would otherwise abort resolution of every link
+        tree.resolve_base_href(handle_failures="ignore")
+        tree.make_links_absolute(url, resolve_base_href=True, handle_failures="ignore")
+    except (TypeError, ValueError):
+        LOGGER.debug("could not resolve links against %s", url)
+    for elem in blanks:
+        elem.set("href", "")
+
+
+def tree_cleaning(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
+    # <base href> lives in <head>, which is discarded below
+    if options.links:
+        _absolutize_links(tree, url or options.url)
     # salvage formulas before <math> is discarded along with its subtree
     recover_math(tree)
     # determine cleaning strategy, use lists to keep it deterministic
@@ -389,19 +421,16 @@ CONVERSIONS = {
 }
 
 
-def convert_link(elem: HtmlElement, base_url: str | None) -> None:
+def convert_link(elem: HtmlElement) -> None:
     "Replace link tags and href attributes, delete the rest."
     elem.tag = "ref"
     target = elem.get("href")  # defaults to None
     elem.attrib.clear()
     if target:
-        # convert relative URLs
-        if base_url:
-            target = safe_relative_url(base_url, target) or target
         elem.set("target", target)
 
 
-def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
+def convert_tags(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
     # delete links for faster processing
     if not options.links:
@@ -413,10 +442,8 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         # strip the rest
         strip_tags(tree, "a")
     else:
-        # get base URL for converting relative URLs
-        base_url = url and safe_base_url(url)
         for elem in tree.iter("a", "ref"):
-            convert_link(elem, base_url)
+            convert_link(elem)
 
     # Yoast FAQ blocks: question headers are bold but act as titles (#471)
     for elem in tree.iter("strong"):
