@@ -3443,6 +3443,21 @@ def test_image_tail_not_duplicated():
     assert result.endswith("a ![A](i.jpg) b")
 
 
+@pytest.mark.parametrize(
+    "link,expected",
+    [
+        ("<b>pre</b> <img src='a.png'/> tail", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">pre</hi> tail</ref>'),
+        ("<b>x <img src='a.png'/> y</b> z", '<graphic src="a.png"/><ref target="/u"><hi rend="#b">x y</hi> z</ref>'),
+        ("<img src='a.png'/>mid<img src='b.png'/>end", '<graphic src="a.png"/><graphic src="b.png"/><ref target="/u">midend</ref>'),
+    ],
+)
+def test_image_in_link_tail_stays_in_place(link, expected):
+    "regression: text after an image nested in or following markup keeps its position."
+    body = f"<p>See <a href='/u'>{link}</a> after.</p>"
+    result = _extract_doc(body, output_format="xml", include_links=True, include_images=True, include_formatting=True)
+    assert expected in result
+
+
 def test_image_in_link_keeps_order():
     "regression: an image lifted out of a link stays before the text following the link."
     body = (

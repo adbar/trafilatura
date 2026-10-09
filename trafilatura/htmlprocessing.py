@@ -453,8 +453,12 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
                 graphics = list(ref.iter("graphic"))
                 # addnext() would land after the tail text of the link
                 for graphic in graphics:
-                    if graphic.tail:  # keep the text inside the link
-                        ref.text = (ref.text or "") + graphic.tail
+                    if graphic.tail:  # keep the text where the image was
+                        prev, parent = graphic.getprevious(), graphic.getparent()
+                        if prev is not None:
+                            prev.tail = (prev.tail or "") + graphic.tail
+                        else:
+                            parent.text = (parent.text or "") + graphic.tail
                         graphic.tail = None
                     ref.addprevious(graphic)
                 # remove ref if it only contained images (no text),
