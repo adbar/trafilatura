@@ -457,7 +457,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
                         prev, parent = graphic.getprevious(), graphic.getparent()
                         if prev is not None:
                             prev.tail = (prev.tail or "") + graphic.tail
-                        else:
+                        elif parent is not None:
                             parent.text = (parent.text or "") + graphic.tail
                         graphic.tail = None
                     ref.addprevious(graphic)
