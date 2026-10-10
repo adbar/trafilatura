@@ -6,7 +6,7 @@ Functions related to the main Trafilatura extractor.
 import logging
 import re  # import regex as re
 from copy import deepcopy
-from typing import Final
+from typing import Final, cast
 from urllib.parse import urljoin
 
 from .dom import Element, HtmlElement, SubElement, _Element, strip_elements, strip_tags, tostring
@@ -160,7 +160,7 @@ def _copy_attrs(source: _Element, target: _Element) -> None:
 def define_newelem(processed_elem: _Element | None, orig_elem: _Element, keep_children: bool = False) -> None:
     "Create a new sub-element, optionally carrying its inline children (INLINE_CARRIED)."
     if processed_elem is not None:
-        childelem = SubElement(orig_elem, processed_elem.tag)
+        childelem = SubElement(orig_elem, cast("str", processed_elem.tag))
         childelem.text, childelem.tail = processed_elem.text, processed_elem.tail
         _copy_attrs(processed_elem, childelem)
         if keep_children:

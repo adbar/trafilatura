@@ -1,3 +1,4 @@
+import sys
 from types import ModuleType
 
 import pytest
@@ -89,12 +90,14 @@ def test_iter_filtered_detached_subtree(backend: ModuleType) -> None:
     "invalid_name",
     [pytest.param("", id="empty"), pytest.param("bad name", id="space"), pytest.param("bad\x00name", id="null")],
 )
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="turbohtml name normalization requires Python 3.11")
 def test_element_invalid_attribute_keeps_later_attributes(invalid_name: str) -> None:
     element = dom.Element("p", {"id": "before", invalid_name: "invalid", "title": "after"})
 
     assert dict(element.attrib) == {"id": "before", "title": "after"}
 
 
+@pytest.mark.skipif(sys.version_info < (3, 11), reason="turbohtml name normalization requires Python 3.11")
 def test_to_lxml_invalid_attribute_keeps_later_attributes() -> None:
     element = dom.Element("g:p", {"id": "before", 'x":': "invalid", "title": "after"})
 

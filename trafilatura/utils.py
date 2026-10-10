@@ -356,6 +356,8 @@ def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> Html
     fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
     Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
     """
+    if sys.version_info < (3, 11):
+        return load_html(htmlobject, max_size)
     # use tree directly
     if isinstance(htmlobject, HtmlElement):
         return htmlobject
