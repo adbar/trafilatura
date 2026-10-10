@@ -349,51 +349,26 @@ def fromstring_bytes(htmlobject: str) -> LxmlHtmlElement | None:
 
 
 def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
-    """Load object given as input and validate its type
-    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
-
-    Expects a full document: the dubious-HTML check below rejects a single-block
-    fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
-    Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
-    """
+    """Reject bare single-block fragments; wrap them in an extra element before extraction."""
     if sys.version_info < (3, 11):
         return load_html(htmlobject, max_size)
-    # use tree directly
     if isinstance(htmlobject, HtmlElement):
         return htmlobject
     if isinstance(htmlobject, LxmlHtmlElement):
         return from_lxml(htmlobject)
-    # use trafilatura or urllib3 responses directly
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
-    # do not accept any other type after this point
     if not isinstance(htmlobject, (bytes, str)):
         raise TypeError("incompatible input type", type(htmlobject))
-    # start processing
-    tree = None
-    # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject, max_size)
-    # sanity checks
-    beginning = htmlobject[:50].lower()
-    check_flag = is_dubious_html(beginning)
-    # repair first
+    beginning: Final = htmlobject[:50].lower()
     htmlobject = repair_faulty_html(htmlobject, beginning)
-    tree = _native_fromstring(htmlobject)
-    # rejection test: is it (well-formed) HTML at all?
-    # log parsing errors
-    if tree is not None and check_flag is True and len(tree) < 2:
+    # Replace unpaired surrogates before passing text to the native parser.
+    tree: Final = dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
+    if is_dubious_html(beginning) and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
-        tree = None
+        return None
     return tree
-
-
-def _native_fromstring(htmlobject: str) -> HtmlElement | None:
-    "Replace unpaired surrogates through a UTF-8 round trip."
-    try:
-        return dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
-    except Exception as err:
-        LOGGER.error("HTML parser %s", err)
-    return None
 
 
 def safe_base_url(url: str) -> str:

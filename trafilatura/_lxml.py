@@ -26,8 +26,7 @@ class XPath(_XPath):
 
 
 def _sub_element(parent: HtmlElement, tag: str, attrib: dict[str, str] | None = None, **extra: str) -> HtmlElement:
-    attributes: Final = (attrib or {}) | extra
-    return _SubElement(parent, tag, attributes)
+    return _SubElement(parent, tag, (attrib or {}) | extra)
 
 
 SubElement: Final = _sub_element
