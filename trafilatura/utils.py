@@ -11,7 +11,7 @@ import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from functools import lru_cache
 from itertools import islice
-from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeAlias, cast
 from unicodedata import normalize
 
 # response compression
@@ -55,13 +55,14 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls, get_base_url
-from lxml.etree import _Element
+from lxml.etree import LxmlError, _Element
 from lxml.html import HtmlElement as LxmlHtmlElement
+from lxml.html import HTMLParser, fromstring
 
 # response types
 from urllib3.response import HTTPResponse
 
-from .dom import HtmlElement, from_lxml
+from .dom import HtmlElement, from_lxml, to_lxml_html
 from .dom import fromstring as dom_fromstring
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -303,16 +304,51 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     return htmlstring
 
 
-def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
-    "Replace unpaired surrogates through a UTF-8 round trip."
+_HTML_PARSER: Final = HTMLParser(
+    collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True
+)
+
+
+def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> LxmlHtmlElement | None:
+    """Retain lxml interoperability and caller-supplied tree identity."""
+    if isinstance(htmlobject, LxmlHtmlElement):
+        return htmlobject
+    if isinstance(htmlobject, HtmlElement):
+        return to_lxml_html(htmlobject)
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
+        htmlobject = htmlobject.data
+    if not isinstance(htmlobject, (bytes, str)):
+        raise TypeError("incompatible input type", type(htmlobject))
+    htmlobject = decode_file(htmlobject, max_size)
+    beginning: Final = htmlobject[:50].lower()
+    htmlobject = repair_faulty_html(htmlobject, beginning)
+    tree = None
+    fallback = False
     try:
-        return dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
-    except Exception as err:
-        LOGGER.error("HTML parser %s", err)
-    return None
+        tree = fromstring(htmlobject, parser=_HTML_PARSER)
+    except ValueError:
+        tree = fromstring_bytes(htmlobject)
+        fallback = True
+    except LxmlError as error:
+        LOGGER.error("lxml parsing failed: %s", error)
+    if (tree is None or len(tree) < 1) and not fallback:
+        tree = fromstring_bytes(htmlobject)
+    if tree is not None and is_dubious_html(beginning) and len(tree) < 2:
+        LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
+        return None
+    return tree
 
 
-def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
+def fromstring_bytes(htmlobject: str) -> LxmlHtmlElement | None:
+    """Support encoding declarations and unpaired surrogates through lxml's byte parser."""
+    try:
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=_HTML_PARSER)
+    except (LxmlError, ValueError) as error:
+        LOGGER.error("lxml parser bytestring %s", error)
+        return None
+
+
+def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
     """Load object given as input and validate its type
     (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
 
@@ -340,13 +376,22 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     check_flag = is_dubious_html(beginning)
     # repair first
     htmlobject = repair_faulty_html(htmlobject, beginning)
-    tree = fromstring_bytes(htmlobject)
+    tree = _native_fromstring(htmlobject)
     # rejection test: is it (well-formed) HTML at all?
     # log parsing errors
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
         tree = None
     return tree
+
+
+def _native_fromstring(htmlobject: str) -> HtmlElement | None:
+    "Replace unpaired surrogates through a UTF-8 round trip."
+    try:
+        return dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
+    except Exception as err:
+        LOGGER.error("HTML parser %s", err)
+    return None
 
 
 def safe_base_url(url: str) -> str:

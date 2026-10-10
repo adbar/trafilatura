@@ -27,7 +27,7 @@ from .json_metadata import (
     normalize_json,
 )
 from .settings import Document, set_date_params
-from .utils import HTML_STRIP_TAGS, line_processing, load_html, safe_base_url, trim
+from .utils import HTML_STRIP_TAGS, line_processing, load_html_native, safe_base_url, trim
 from .xpaths import (
     AUTHOR_DISCARD_XPATHS,
     AUTHOR_XPATHS,
@@ -469,7 +469,7 @@ def extract_metadata(
     date_config = {**date_config} if date_config else set_date_params(extensive)
 
     # load contents
-    tree = load_html(filecontent)
+    tree = load_html_native(filecontent)
     if tree is None:
         return Document()
 

@@ -32,7 +32,7 @@ from .utils import (
     HtmlInput,
     check_html_lang,
     language_filter,
-    load_html,
+    load_html_native,
     normalize_unicode,
 )
 from .xml import build_json_output, control_xml_output, delete_element, keeps_empty, xmltocsv, xmltotxt
@@ -389,7 +389,7 @@ def bare_extraction(
 
     try:
         # load the HTML tree
-        tree = load_html(filecontent, options.max_file_size)
+        tree = load_html_native(filecontent, options.max_file_size)
         if tree is None:
             LOGGER.error("empty HTML tree: %s", url)
             raise ValueError

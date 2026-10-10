@@ -27,7 +27,7 @@ from .dom import XPath, tostring
 from .downloads import fetch_response, fetch_url
 from .htmlprocessing import prune_unwanted_nodes
 from .settings import DEFAULT_CONFIG
-from .utils import LANGID_FLAG, Response, decode_file, load_html
+from .utils import LANGID_FLAG, Response, decode_file, load_html_native
 
 LOGGER = logging.getLogger(__name__)
 
@@ -94,7 +94,7 @@ def refresh_detection(htmlstring: str, homepage: str, config: ConfigParser = DEF
     if "refresh" not in htmlstring.lower():
         return htmlstring, homepage
 
-    html_tree = load_html(htmlstring)
+    html_tree = load_html_native(htmlstring)
     if html_tree is None:
         return htmlstring, homepage
 
@@ -198,7 +198,7 @@ def process_links(
 
     if htmlstring and params.prune_xpath:
         xpaths = [params.prune_xpath] if isinstance(params.prune_xpath, str) else params.prune_xpath
-        tree = load_html(htmlstring)
+        tree = load_html_native(htmlstring)
         if tree is not None:
             tree = prune_unwanted_nodes(tree, [XPath(x) for x in xpaths])
             htmlstring = tostring(tree).decode()

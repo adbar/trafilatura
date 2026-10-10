@@ -56,7 +56,7 @@ from trafilatura.utils import (
     is_image_file,
     language_classifier,
     line_processing,
-    load_html,
+    load_html_native,
     normalize_unicode,
     repair_faulty_html,
     return_printables_and_spaces,
@@ -241,13 +241,13 @@ def test_input(options):
     assert extract(page, fast=True) is not None
 
     with pytest.raises(TypeError) as err:
-        assert load_html(123) is None
+        assert load_html_native(123) is None
     assert "incompatible" in str(err.value)
 
-    assert load_html("<html><body>ÄÖÜ</body></html>") is not None
-    assert load_html(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
-    assert load_html("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
-    # assert load_html(b'0'*int(10e3)) is None
+    assert load_html_native("<html><body>ÄÖÜ</body></html>") is not None
+    assert load_html_native(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
+    assert load_html_native("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
+    # assert load_html_native(b'0'*int(10e3)) is None
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, "url", "0000", target_language=None) is None
     # GZip
@@ -259,7 +259,7 @@ def test_input(options):
     class _RespLike:
         data = b"<html><body><p>response data</p></body></html>"
 
-    assert load_html(_RespLike()) is not None
+    assert load_html_native(_RespLike()) is not None
 
     # unicode normalization
     assert normalize_unicode("A\u0308ffin") != "A\u0308ffin"
@@ -2047,14 +2047,14 @@ def test_wrapper_form_kept():
     # the wrapper form survives cleaning, so the content is still there to be selected --
     # without this the whole document was gone and only the recovery path could save anything
     wrapped = f'<html><body><form method="post" id="aspnetForm"><div>{article}</div></form></body></html>'
-    cleaned = tree_cleaning(load_html(wrapped), options)
+    cleaned = tree_cleaning(load_html_native(wrapped), options)
     assert "the actual article body" in cleaned.text_content()
     assert cleaned.find(".//form") is None  # demoted, not left as a form
     assert "the actual article body" in extract(wrapped, config=ZERO_CONFIG)
 
     # a search/newsletter widget alongside real content is still removed outright
     with_widget = f'<html><body><div>{article}</div><form><p>Search this site</p><input type="text"/></form></body></html>'
-    cleaned = tree_cleaning(load_html(with_widget), options)
+    cleaned = tree_cleaning(load_html_native(with_widget), options)
     assert "the actual article body" in cleaned.text_content()
     assert "Search this site" not in cleaned.text_content()
 
@@ -2062,7 +2062,7 @@ def test_wrapper_form_kept():
     # taking "form" out must keep widget forms instead of raising on the internal removal
     MANUALLY_CLEANED.remove("form")
     try:
-        cleaned = tree_cleaning(load_html(with_widget), options)
+        cleaned = tree_cleaning(load_html_native(with_widget), options)
         assert "Search this site" in cleaned.text_content()
     finally:
         MANUALLY_CLEANED.insert(5, "form")
@@ -4275,22 +4275,22 @@ def test_is_probably_readerable():
     very_large_str = "hello there " * 50
     linebreaks_str = f"{large_str} <br>" * 10
 
-    very_small_doc = load_html(f"<html><p id='main'>{very_small_str}</p></html>")
-    small_doc = load_html(f"<html><p id='main'>{small_str}</p></html>")
-    large_doc = load_html(f"<html><p id='main'>{large_str}</p></html>")
-    very_large_doc = load_html(f"<html><p id='main'>{very_large_str}</p></html>")
-    likely_doc = load_html(
+    very_small_doc = load_html_native(f"<html><p id='main'>{very_small_str}</p></html>")
+    small_doc = load_html_native(f"<html><p id='main'>{small_str}</p></html>")
+    large_doc = load_html_native(f"<html><p id='main'>{large_str}</p></html>")
+    very_large_doc = load_html_native(f"<html><p id='main'>{very_large_str}</p></html>")
+    likely_doc = load_html_native(
         f"<html><p id='main' class='header'>{very_large_str}</p><p id='header' class='article'>{very_large_str}</p><p id='footer' class='body'>{very_large_str}</p></html>"
     )
-    unlikely_doc = load_html(f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>")
-    visible_doc = load_html(
+    unlikely_doc = load_html_native(f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>")
+    visible_doc = load_html_native(
         f"<html><p id='main' style='display: block'>{very_large_str}</p><p id='main'>{very_large_str}</p><p id='main' aria-hidden='false'>{very_large_str}</p></html>"
     )
-    invisible_doc = load_html(
+    invisible_doc = load_html_native(
         f"<html><p id='main' style='display: none'>{very_large_str}</p><p id='main' hidden>{very_large_str}</p><p id='main' aria-hidden='true'>{very_large_str}</p></html>"
     )
-    linebreaks_doc = load_html(f"<html><div>{linebreaks_str * 10}</div></html>")
-    no_linebreaks_doc = load_html(f"<html><div>{large_str * 10}</div></html>")
+    linebreaks_doc = load_html_native(f"<html><div>{linebreaks_str * 10}</div></html>")
+    no_linebreaks_doc = load_html_native(f"<html><div>{large_str * 10}</div></html>")
 
     docs = (very_small_doc, small_doc, large_doc, very_large_doc)
     for options, expected in (
@@ -4305,7 +4305,7 @@ def test_is_probably_readerable():
     # should check id and class attributes
     assert is_probably_readerable(likely_doc)
     assert not is_probably_readerable(unlikely_doc)
-    assert not is_probably_readerable(load_html(f"<html><p class='FOOTER'>{very_large_str}</p></html>"))
+    assert not is_probably_readerable(load_html_native(f"<html><p class='FOOTER'>{very_large_str}</p></html>"))
 
     # should check linebreaks in div elements
     assert is_probably_readerable(linebreaks_doc)
@@ -4329,7 +4329,7 @@ def test_is_probably_readerable():
     ) as f:
         teststring = f.read()
 
-    doc = load_html(teststring)
+    doc = load_html_native(teststring)
     assert not is_probably_readerable(doc)
 
 

@@ -26,7 +26,7 @@ from operator import attrgetter
 from typing import Any
 
 from .dom import HtmlElement, fragment_fromstring, tostring
-from .utils import load_html, trim
+from .utils import load_html_native, trim
 
 LOGGER = logging.getLogger(__name__)
 
@@ -354,7 +354,7 @@ def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | None = N
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
     options = options or {}
-    doc = load_html(html)
+    doc = load_html_native(html)
     if doc is None:
         return False
 
