@@ -6,7 +6,7 @@ Functions to process nodes in HTML code.
 import logging
 from collections.abc import Callable, Sequence
 from copy import deepcopy
-from typing import Any, Final
+from typing import Any, Final, cast
 
 from lxml.etree import Element, SubElement, tostring
 from lxml.etree import _Element as LxmlElement
@@ -524,7 +524,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
-            elem.set("rend", REND_TAG_MAPPING[elem.tag])
+            elem.set("rend", REND_TAG_MAPPING[cast("str", elem.tag)])
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
@@ -534,7 +534,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)
+        CONVERSIONS[cast("str", elem.tag)](elem)
     # images
     if options.images:
         for elem in tree.iter("img"):
