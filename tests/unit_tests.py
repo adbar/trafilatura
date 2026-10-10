@@ -2964,6 +2964,71 @@ def test_recall_escalation_justext():
     assert result.count("Message number") == 8
 
 
+def _formatted_comment_doc(comment):
+    article = "".join(
+        f"<p>Article paragraph number {i} with plenty of text to be extracted properly by the main extractor here.</p>"
+        for i in range(6)
+    )
+    return (
+        f'<html><body><article>{article}</article><div id="comments"><div class="comment">{comment}</div></div></body></html>'
+    )
+
+
+@pytest.mark.parametrize("output_format", ["txt", "markdown", "json", "xml"])
+@pytest.mark.parametrize("fast", [False, True])
+def test_comments_keep_inline_formatting_in_paragraph(output_format, fast):
+    first = "I really love this post, thanks a lot for sharing it with everybody here."
+    second = "Another reader also found this article useful and left a separate comment."
+    document = _formatted_comment_doc(
+        f"<p>I really <b>love</b> this post, <i>thanks</i> a lot for sharing it with everybody here.</p><p>{second}</p>"
+    )
+    result = extract(document, output_format=output_format, include_formatting=True, include_comments=True, fast=fast)
+    assert result is not None
+    if output_format == "xml":
+        tree = etree.fromstring(result)
+        comments = tree.find("comments")
+        assert comments is not None
+        assert [elem.tag for elem in comments] == ["p", "p"]
+        assert "".join(comments[0].itertext()) == first
+        assert [elem.get("rend") for elem in comments[0]] == ["#b", "#i"]
+        assert comments[1].text == second
+    else:
+        if output_format == "json":
+            result = json.loads(result)["comments"]
+            expected = first
+        else:
+            expected = "I really **love** this post, *thanks* a lot for sharing it with everybody here."
+        assert result.count(expected) == 1
+        assert result.count(second) == 1
+
+
+@pytest.mark.parametrize(
+    "comment,expected",
+    [
+        (
+            "<p><b>Really <i>useful</i></b> article for everybody reading it today.</p>",
+            "Really useful article for everybody reading it today.",
+        ),
+        (
+            "<p>Hyper<b>link</b>ed words stay connected in this reader comment.</p>",
+            "Hyperlinked words stay connected in this reader comment.",
+        ),
+    ],
+)
+def test_comments_preserve_nested_inline_text(comment, expected):
+    document = extract_with_metadata(_formatted_comment_doc(comment), include_formatting=True, include_comments=True)
+    assert document is not None
+    assert [elem.tag for elem in document.commentsbody] == ["p"]
+    assert "".join(document.commentsbody[0].itertext()) == expected
+
+
+def test_comments_without_formatting_still_preserve_text():
+    comment = "<p>I really <b>love</b> this post, <i>thanks</i> a lot for sharing it with everybody here.</p>"
+    result = extract(_formatted_comment_doc(comment), include_formatting=False, include_comments=True)
+    assert result is not None
+    assert result.count("I really love this post, thanks a lot for sharing it with everybody here.") == 1
+
+
 _DFP_JSONLD = (
     '<script type="application/ld+json">{"@context":"https://schema.org",'
     '"@type":"DiscussionForumPosting","headline":"Test thread"}</script>'
