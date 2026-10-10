@@ -6,6 +6,7 @@ Functions related to the main Trafilatura extractor.
 import logging
 import re  # import regex as re
 from copy import deepcopy
+from typing import Final
 from urllib.parse import urljoin
 
 from .dom import Element, HtmlElement, SubElement, _Element, strip_elements, strip_tags, tostring
@@ -373,6 +374,11 @@ def _fill_cell(
             new_child_elem.text, new_child_elem.tail = processed_cell.text, processed_cell.tail
         return
     new_child_elem.text, new_child_elem.tail = cell.text, cell.tail
+    keep_lists: Final[bool] = options.focus == "recall" or (
+        options.focus == "balanced"
+        and not text_chars_test(cell.text)
+        and all(child.tag == "list" and not text_chars_test(child.tail) for child in cell)
+    )
     cell.tag = "done"  # rename before inner walk so handle_formatting wraps orphan spans in <p>
     for child in cell.iterdescendants():
         if not isinstance(child.tag, str) or child.tag == "done":
@@ -396,10 +402,10 @@ def _fill_cell(
             # text (e.g. <ref><hi>link text</hi></ref>); carry the subtree directly instead
             if processed_subchild is None and len(child) > 0:
                 processed_subchild = child
-        # lists in cells only in recall mode: keeping them otherwise is noise (measured precision loss)
+        # Keep list-only data cells; mixed-content lists remain recall-only to limit boilerplate.
         elif child.tag == "list":
             processed_list = handle_lists(child, options)
-            _append_block(new_child_elem, processed_list if options.focus == "recall" else None, child)
+            _append_block(new_child_elem, processed_list if keep_lists else None, child)
             continue
         else:
             processed_subchild = handle_textelem(child, ptags_with_div, options)
