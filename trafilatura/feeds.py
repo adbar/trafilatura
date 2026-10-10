@@ -20,7 +20,7 @@ from courlan import (
 from .deduplication import is_similar_domain
 from .downloads import fetch_url
 from .settings import DEFAULT_CONFIG, MAX_FEEDS_CHECKED, MAX_LINKS
-from .utils import load_html, safe_relative_url
+from .utils import load_html_native, safe_relative_url
 
 LOGGER = logging.getLogger(__name__)
 
@@ -178,7 +178,7 @@ def extract_links(feed_string: str, params: FeedParameters) -> list[str]:
 def determine_feed(htmlstring: str, params: FeedParameters) -> list[str]:
     """Parse the HTML and try to extract feed URLs from the home page.
     Adapted from http://www.aaronsw.com/2002/feedfinder/"""
-    tree = load_html(htmlstring)
+    tree = load_html_native(htmlstring)
     if tree is None:
         LOGGER.debug("Invalid HTML/Feed page: %s", params.base)
         return []

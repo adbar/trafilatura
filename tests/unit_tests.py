@@ -15,6 +15,8 @@ from unittest.mock import patch
 import pytest
 from lxml import etree, html
 
+from trafilatura import dom
+
 try:
     from cchardet import detect
 except ImportError:
@@ -54,7 +56,7 @@ from trafilatura.utils import (
     is_image_file,
     language_classifier,
     line_processing,
-    load_html,
+    load_html_native,
     normalize_unicode,
     repair_faulty_html,
     return_printables_and_spaces,
@@ -95,6 +97,15 @@ def _table_txt(table):
     return _extract_doc(table, intro=False, output_format="txt", fast=True, include_tables=True)
 
 
+def _html_tree(markup):
+    "Parse with libxml2 as before, then convert to trafilatura's own tree type for the internals."
+    return dom.from_lxml(html.fromstring(markup))
+
+
+def _xml_tree(markup):
+    return dom.from_lxml(etree.fromstring(markup))
+
+
 def _md_inline(body, **kwargs):
     return _extract_doc(body, output_format="markdown", include_formatting=True, **kwargs) or ""
 
@@ -106,12 +117,12 @@ def _md(body, include_formatting=True):
 
 def _xpath_hits(xpaths, attrs, tag="div"):
     "Whether any of the expressions selects a <tag attrs> wrapping a paragraph."
-    root = etree.fromstring(f"<html><body><{tag} {attrs}><p>content</p></{tag}></body></html>")
+    root = _xml_tree(f"<html><body><{tag} {attrs}><p>content</p></{tag}></body></html>")
     return any(len(x(root)) > 0 for x in xpaths)
 
 
 def _handle_table(table, recall=False):
-    return handle_table(html.fromstring(table), TAG_CATALOG, core.Extractor(recall=recall))
+    return handle_table(_html_tree(table), TAG_CATALOG, core.Extractor(recall=recall))
 
 
 MOCK_PAGES = {
@@ -230,13 +241,13 @@ def test_input(options):
     assert extract(page, fast=True) is not None
 
     with pytest.raises(TypeError) as err:
-        assert load_html(123) is None
+        assert load_html_native(123) is None
     assert "incompatible" in str(err.value)
 
-    assert load_html("<html><body>ÄÖÜ</body></html>") is not None
-    assert load_html(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
-    assert load_html("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
-    # assert load_html(b'0'*int(10e3)) is None
+    assert load_html_native("<html><body>ÄÖÜ</body></html>") is not None
+    assert load_html_native(b"<html><body>\x2f\x2e\x9f</body></html>") is not None
+    assert load_html_native("<html><body>\x2f\x2e\x9f</body></html>".encode("latin-1")) is not None
+    # assert load_html_native(b'0'*int(10e3)) is None
     # old: with pytest.raises(TypeError) as err:
     assert extract(None, "url", "0000", target_language=None) is None
     # GZip
@@ -248,7 +259,7 @@ def test_input(options):
     class _RespLike:
         data = b"<html><body><p>response data</p></body></html>"
 
-    assert load_html(_RespLike()) is not None
+    assert load_html_native(_RespLike()) is not None
 
     # unicode normalization
     assert normalize_unicode("A\u0308ffin") != "A\u0308ffin"
@@ -267,10 +278,10 @@ def test_input(options):
         assert bare_extraction("<html><body><p>ABC</p></body></html>", output_format="xyz") is not None
 
     # text elements
-    elem = etree.Element("p")
+    elem = dom.Element("p")
     elem.text = "text"
     assert handle_textelem(elem, [], options).text == "text"
-    elem = etree.Element("unexpected")
+    elem = dom.Element("unexpected")
     elem.text = "text"
     assert handle_textelem(elem, [], options) is None
 
@@ -343,7 +354,7 @@ def test_exotic_tags():
     with open(filepath, encoding="utf-8") as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, "http://dummy")
-    assert etree.tostring(res).startswith(
+    assert etree.tostring(dom.to_lxml(res)).startswith(
         b'<html>\n<text>\n<body>\n<div>\n\n<hi rend="uppercase">Hello</hi>\n<p>Teletype text</p>'
     )
     # misformed HTML declaration
@@ -351,16 +362,16 @@ def test_exotic_tags():
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
     assert "ABC" in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
-    assert handle_quotes(etree.Element("quote"), options) is None
-    assert handle_table(etree.Element("table"), TAG_CATALOG, options) is None
+    assert handle_quotes(dom.Element("quote"), options) is None
+    assert handle_table(dom.Element("table"), TAG_CATALOG, options) is None
     # p within p
-    element, second = etree.Element("p"), etree.Element("p")
+    element, second = dom.Element("p"), dom.Element("p")
     element.text, second.text = "1st part.", "2nd part."
     element.append(second)
     # delete last <lb>
-    element.append(etree.Element("lb"))
+    element.append(dom.Element("lb"))
     converted = handle_paragraphs(element, ["p"], options)
-    assert etree.tostring(converted) == b"<p>1st part. 2nd part.</p>"
+    assert etree.tostring(dom.to_lxml(converted)) == b"<p>1st part. 2nd part.</p>"
     # naked div with <lb>
     assert "1.\n2.\n3." in extract(
         "<html><body><main><div>1.<br/>2.<br/>3.<br/></div></main></body></html>", fast=True, config=ZERO_CONFIG
@@ -433,23 +444,23 @@ def test_formatting(options):
     """Test HTML formatting conversion and extraction"""
 
     # trailing <lb>
-    my_document = html.fromstring("<html><body><p>This here is the text.<br/></p></body></html>")
+    my_document = _html_tree("<html><body><p>This here is the text.<br/></p></body></html>")
     my_result = extract(my_document, output_format="xml", config=ZERO_CONFIG)
     assert "lb" not in my_result
     # simple formatting
-    my_document = html.fromstring("<html><body><p><b>This here is in bold font.</b></p></body></html>")
+    my_document = _html_tree("<html><body><p><b>This here is in bold font.</b></p></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # titles as markdown
     my_string = (
         "<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b>Non-bold here</p></article></body></html>"
     )
-    my_document = html.fromstring(my_string)
+    my_document = _html_tree(my_string)
     my_result = extract(my_document, output_format="txt", include_formatting=True, config=ZERO_CONFIG)
     assert my_result == "### Title\n\n**This here is in bold font.**Non-bold here"
     assert extract(my_string, output_format="markdown", config=ZERO_CONFIG) == my_result
     assert '<hi rend="#b">' in etree.tostring(
-        bare_extraction(my_string, output_format="markdown", config=ZERO_CONFIG).body, encoding="unicode"
+        dom.to_lxml(bare_extraction(my_string, output_format="markdown", config=ZERO_CONFIG).body), encoding="unicode"
     )
 
     meta_string = "<html><head><title>Test</title></head><body><p>ABC.</p></body></html>"
@@ -465,14 +476,12 @@ def test_formatting(options):
         assert f"\nfingerprint: {json_result['fingerprint']}\nid: doc-1\n" in meta_result
 
     # space between paragraphs
-    my_document = html.fromstring(
-        "<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>"
-    )
+    my_document = _html_tree("<html><body><article><h3>Title</h3><p>Paragraph 1</p><p>Paragraph 2</p></article></body></html>")
     my_result = extract(my_document, output_format="txt", include_formatting=True, config=ZERO_CONFIG)
     assert my_result.endswith("Paragraph 1\n\nParagraph 2")
 
     # code sections
-    my_document = html.fromstring(
+    my_document = _html_tree(
         "<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code>import trafilatura</code></p></article></body></html>"
     )
     my_result = extract(my_document, output_format="txt", include_formatting=True, config=ZERO_CONFIG)
@@ -484,7 +493,7 @@ Here is a code sample:
 
 `import trafilatura`"""
     )
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><article><h3>Title</h3><p>Here is a code sample:</p><code><span>import</span> <span>something</span><br/>something.run("somewhere")</code><p>Sometimes code is wrapped using <code>pre</code> and <code>code</code>:</p><pre><code>import trafilatura\ntrafilatura.extract("")</code></pre><p>Less often code is wrapped using just <code>pre</code>:</p><pre>\ntrafilatura.extract("")</pre></article></body></html>'
     )
     my_result = extract(my_document, output_format="txt", include_formatting=True, config=ZERO_CONFIG)
@@ -512,55 +521,55 @@ trafilatura.extract("")
     )
 
     # nested
-    my_document = html.fromstring("<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>")
+    my_document = _html_tree("<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold and <hi rend="#i">italic</hi> font.</hi>' in my_result
     # empty
-    my_document = html.fromstring("<html><body><p><b><i></i></b></p></body></html>")
+    my_document = _html_tree("<html><body><p><b><i></i></b></p></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert "<main/>" in my_result
     # wild div
-    my_document = html.fromstring("<html><body><article><div><strong>Wild text</strong></div></article></body></html>")
+    my_document = _html_tree("<html><body><article><div><strong>Wild text</strong></div></article></body></html>")
     my_result = extract(my_document, output_format="xml", include_formatting=True, config=ZERO_CONFIG)
     assert "<p>" in my_result
     assert '<hi rend="#b">Wild text</hi>' in my_result
-    my_document = html.fromstring("<html><body><article><div><strong>Wild text</strong></div></article></body></html>")
+    my_document = _html_tree("<html><body><article><div><strong>Wild text</strong></div></article></body></html>")
     my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == "Wild text"
     # links
-    doc = html.fromstring('<html><body><p><a href="">Link text</a></p></body></html>')
+    doc = _html_tree('<html><body><p><a href="">Link text</a></p></body></html>')
     my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == "Link text"
     # line-breaks
-    doc = html.fromstring("<html><body><p><br/></p></body></html>")
+    doc = _html_tree("<html><body><p><br/></p></body></html>")
     my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == ""
-    doc = html.fromstring("<html><body><p><br/>Here is the text.</p></body></html>")
+    doc = _html_tree("<html><body><p><br/>Here is the text.</p></body></html>")
     my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == "Here is the text."
     # handle formatting tails
-    element = etree.Element("hi")
+    element = dom.Element("hi")
     element.text = "Here is the text."
     element.tail = "And a tail."
     options = core.Extractor(config=ZERO_CONFIG)
     converted = handle_formatting(element, options)
-    assert etree.tostring(converted) == b"<p><hi>Here is the text.</hi>And a tail.</p>"
+    assert etree.tostring(dom.to_lxml(converted)) == b"<p><hi>Here is the text.</hi>And a tail.</p>"
     # no wrapper inside a protected parent
-    element = etree.SubElement(etree.Element("item"), "hi")
+    element = dom.SubElement(dom.Element("item"), "hi")
     element.text = "Here is the text."
-    assert etree.tostring(handle_formatting(element, options)) == b"<hi>Here is the text.</hi>"
+    assert etree.tostring(dom.to_lxml(handle_formatting(element, options))) == b"<hi>Here is the text.</hi>"
     # empty elements
-    my_document = html.fromstring("<html><body><div>\t\n</div><div>There is text here.</div></body></html>")
+    my_document = _html_tree("<html><body><div>\t\n</div><div>There is text here.</div></body></html>")
     my_result = extract(my_document, output_format="xml", config=ZERO_CONFIG)
     assert "<main>\n    <p>There is text here.</p>\n  </main>" in my_result
     # lists with links
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><article><ul><li>Number 1</li><li>Number <a href="test.html">2</a></li><li>Number 3</li><p>Test</p></article></body></html>'
     )
     my_result = extract(my_document, output_format="xml", include_links=True, config=ZERO_CONFIG)
     assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
 
-    my_document = html.fromstring("""<html><body><article>
+    my_document = _html_tree("""<html><body><article>
         <ul>
             <li>Number 0</li>
             <li>Number <a href="test.html">1</a></li>
@@ -573,7 +582,7 @@ trafilatura.extract("")
     my_result = extract(my_document, output_format="markdown", include_links=True, config=ZERO_CONFIG)
     assert my_result == "- Number 0\n- Number [1](test.html)\n- [Number 2](test.html) n2\n- Number 3\n- Number 4 n4\n\nTest"
     # XML and Markdown formatting within <p>-tag
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a> and additional text to bypass detection.</p></body></html>'
     )
     plain = "bold, italics, tt, deleted, underlined, link and additional text to bypass detection."
@@ -597,7 +606,7 @@ trafilatura.extract("")
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
-    my_document = html.fromstring("<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>")
+    my_document = _html_tree("<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>")
     my_result = extract(
         my_document, output_format="xml", include_formatting=True, include_links=True, fast=True, config=ZERO_CONFIG
     )
@@ -606,7 +615,7 @@ trafilatura.extract("")
     assert "CCC" in my_result
 
     # line-break following formatting
-    my_document = html.fromstring(
+    my_document = _html_tree(
         "<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>"
     )
     my_result = extract(my_document, output_format="txt", fast=True, config=ZERO_CONFIG)
@@ -615,7 +624,7 @@ trafilatura.extract("")
         == "Staff Review of the Financial Situation\nDomestic financial conditions remained accommodative over the intermeeting period."
     )
     # title with formatting
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><article><h4 id="1theinoperator">1) The <code>in</code> Operator</h4><p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p></article></body></html>'
     )
     my_result = extract(my_document, output_format="xml", fast=True, include_formatting=True, config=ZERO_CONFIG)
@@ -625,7 +634,7 @@ trafilatura.extract("")
         in my_result
     )
 
-    my_document = html.fromstring("""
+    my_document = _html_tree("""
     <html><head><body><article>python code below:
 <pre><code>
 def test:
@@ -649,7 +658,7 @@ def test:
         == my_result
     )
 
-    my_document = html.fromstring("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
+    my_document = _html_tree("<html><body><table><td><p>Sjätte <nobr>AP-fonden</nobr></p></td></table></body></html>")
     my_result = extract(my_document, output_format="xml", include_tables=True, config=ZERO_CONFIG)
     assert "AP-fonden" in my_result
 
@@ -673,12 +682,12 @@ def test_subelement_text_kept():
 
 def test_subelement_tails_unit(options):
     "Whitespace-only tails are not moved, consumed children are not merged back."
-    item = handle_lists(etree.fromstring("<list><item><div>A <hi>B</hi></div>\n\t </item></list>"), options)
+    item = handle_lists(_xml_tree("<list><item><div>A <hi>B</hi></div>\n\t </item></list>"), options)
     assert item.find(".//hi").tail is None
-    paragraph = handle_paragraphs(etree.fromstring("<p>a <done>old</done> b</p>"), TAG_CATALOG, options)
+    paragraph = handle_paragraphs(_xml_tree("<p>a <done>old</done> b</p>"), TAG_CATALOG, options)
     assert "old" not in "".join(paragraph.itertext())
     # a teaser heading whose lead was consumed earlier is not emitted again (lanacion)
-    assert handle_titles(etree.fromstring("<head><done>Lead. </done>Teaser</head>"), options) is None
+    assert handle_titles(_xml_tree("<head><done>Lead. </done>Teaser</head>"), options) is None
 
 
 def test_markdown_metadata_yaml_safe():
@@ -902,9 +911,9 @@ def test_nested_element_tail_kept(body, expected):
 
 def test_srcless_graphic_dropped_text_kept():
     "A src-less image is dropped from a quote, the text around it in a paragraph is kept."
-    quote = handle_quotes(etree.fromstring("<quote>a<graphic/></quote>"), core.Extractor())
-    assert etree.tostring(quote) == b"<quote>a</quote>"
-    para = handle_paragraphs(etree.fromstring("<p>a<graphic/>b</p>"), {*TAG_CATALOG, "graphic"}, core.Extractor())
+    quote = handle_quotes(_xml_tree("<quote>a<graphic/></quote>"), core.Extractor())
+    assert etree.tostring(dom.to_lxml(quote)) == b"<quote>a</quote>"
+    para = handle_paragraphs(_xml_tree("<p>a<graphic/>b</p>"), {*TAG_CATALOG, "graphic"}, core.Extractor())
     assert "".join(para.itertext()) == "ab"
 
 
@@ -938,12 +947,12 @@ def test_srcless_graphic_dropped_text_kept():
 )
 def test_nested_block_tail_kept(block, expected):
     "The tail of a nested list or paragraph is kept, whether the block itself is kept or dropped."
-    element = etree.fromstring(block)
+    element = _xml_tree(block)
     if element.tag == "quote":
         result = handle_quotes(element, core.Extractor())
     else:
         result = handle_table(element, {*TAG_CATALOG, "table"}, core.Extractor(recall=True))
-    assert etree.tostring(result).decode() == expected
+    assert etree.tostring(dom.to_lxml(result)).decode() == expected
 
 
 @pytest.mark.parametrize(
@@ -980,7 +989,7 @@ def test_markdown_empty_sup_sub_are_dropped():
 def test_extract_with_metadata():
     """Test extract_with_metadata method"""
     url = "http://aa.bb/cc.html"
-    my_document = html.fromstring("""<html>
+    my_document = _html_tree("""<html>
         <head></head>
         <body>
         <article>
@@ -998,7 +1007,7 @@ def test_extract_with_metadata():
     assert parsed_doc.date is None
     assert parsed_doc.title is None
 
-    my_document = html.fromstring("""<html>
+    my_document = _html_tree("""<html>
         <head><title>title</title></head>
         <body>
         <article>
@@ -1025,7 +1034,7 @@ def test_extract_with_metadata():
     assert "BBB" in content
     assert "CCC" in content
 
-    my_document = html.fromstring("""<html>
+    my_document = _html_tree("""<html>
         <head><meta http-equiv="content-language" content="es"></head>
         <body>
         <article>
@@ -1044,7 +1053,7 @@ def test_extract_with_metadata():
 def test_sanitize_tree_normalizes_images(options):
     "Fallback images get handle_image: src from data-src, stray attributes dropped, src-less images removed."
     options.images = True
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<html><body><p>a<img data-src="x.jpg" class="c" alt="Arm, 8" Dynamic Links, 12" Post">b<img alt="y">c</p></body></html>'
     )
     mytree, _ = sanitize_tree(mydoc, options)
@@ -1057,21 +1066,21 @@ def test_external(options):
     """Test external components"""
     options.tables = True
     # remove unwanted elements
-    mydoc = html.fromstring("<html><body><footer>Test text</footer></body></html>")
+    mydoc = _html_tree("<html><body><footer>Test text</footer></body></html>")
     _, text = sanitize_tree(mydoc, options)
     mylen = len(text)
     assert mylen == 0
-    mydoc = html.fromstring("<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>")
+    mydoc = _html_tree("<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>")
     _, text = sanitize_tree(mydoc, options)
     mylen = len(text)
     assert mylen > 0
     # strip fancy tags while including links and images
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>'
     )
     mytree, _ = sanitize_tree(mydoc, options)
     assert len(mytree) == 1
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>'
     )
     options.links, options.images = True, True
@@ -1081,7 +1090,7 @@ def test_external(options):
     assert "ref" in myelems
     # test langid
     if LANGID_FLAG is True:
-        doc = html.fromstring("<html><body>" + "<p>Non è inglese.</p>" * 20 + "</body></html>")
+        doc = _html_tree("<html><body>" + "<p>Non è inglese.</p>" * 20 + "</body></html>")
         assert extract(doc, fast=False, target_language="en", deduplicate=False) is None
     # no tables
     with open(path.join(RESOURCES_DIR, "apache.html"), encoding="utf-8") as f:
@@ -1107,7 +1116,7 @@ def test_wrong_language_discarded():
 
 def test_sanitize_tree_absolutizes_links():
     "Regression: sanitize_tree must absolutize relative links when url is set (convert_tags fix)."
-    doc = html.fromstring('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
+    doc = _html_tree('<html><body><p><a href="/path/page">link</a> ' + "padding " * 10 + "</p></body></html>")
     options = core.Extractor(url="https://www.example.org", links=True)
     tree, _ = sanitize_tree(doc, options)
     targets = [elem.get("target") for elem in tree.iter("ref")]
@@ -1128,11 +1137,11 @@ def test_images(options):
     assert is_image_file("test.TXT") is False
     assert is_image_file("test.jpg" * 2000) is False  # length threshold
     # tag with attributes
-    assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
-    assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
-    assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
+    assert handle_image(_html_tree('<img src="test.jpg"/>')) is not None
+    assert handle_image(_html_tree('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
+    assert handle_image(_html_tree('<img other="test.jpg"/>')) is None
     # HTML conversion
-    assert handle_textelem(etree.Element("graphic"), [], options) is None
+    assert handle_textelem(dom.Element("graphic"), [], options) is None
     with open(path.join(RESOURCES_DIR, "http_sample.html"), encoding="utf-8") as f:
         teststring = f.read()
     assert "![Example image](test.jpg)" not in extract(teststring)
@@ -1174,7 +1183,7 @@ def test_images(options):
 
     assert (
         handle_image(
-            html.fromstring(
+            _html_tree(
                 '<img src="data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="text"></img>'
             )
         )
@@ -1182,7 +1191,7 @@ def test_images(options):
     )
 
     # CNN example
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781" src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-eq-state="mini xsmall small medium" data-src="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg">'
     )
     myimage = handle_image(mydoc)
@@ -1190,7 +1199,7 @@ def test_images(options):
     assert "alt" in myimage.attrib
     assert "src" in myimage.attrib
     # modified CNN example
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<img class="media__image media__image--responsive" alt="Harry and Meghan last March, in their final royal engagement." data-src-mini="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-169.jpg" data-src-xsmall="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-medium-plus-169.jpg" data-src-small="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-large-169.jpg" data-src-medium="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-exlarge-169.jpg" data-src-large="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-super-169.jpg" data-src-full16x9="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-full-169.jpg" data-src-mini1x1="//cdn.cnn.com/cnnnext/dam/assets/210307091919-harry-meghan-commonwealth-day-small-11.jpg" data-demand-load="loaded" data-eq-pts="mini: 0, xsmall: 221, small: 308, medium: 461, large: 781">'
     )
     myimage = handle_image(mydoc)
@@ -1203,13 +1212,13 @@ def test_images(options):
 def test_links():
     """Test link extraction function"""
     options = core.Extractor(config=ZERO_CONFIG)
-    assert handle_textelem(etree.Element("ref"), [], options) is None
-    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), options) is not None
+    assert handle_textelem(dom.Element("ref"), [], options) is None
+    assert handle_formatting(_html_tree('<a href="testlink.html">Test link text.</a>'), options) is not None
     # empty link
-    mydoc = html.fromstring("<html><body><p><a></a><b>Some text.</b></p></body></html>")
+    mydoc = _html_tree("<html><body><p><a></a><b>Some text.</b></p></body></html>")
     assert extract(mydoc) is not None
     # link with target
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<html><body><p><a href="testlink.html">Test link text.</a> This part of the text has to be long enough.</p></body></html>'
     )
     assert "testlink.html" not in extract(copy(mydoc))
@@ -1221,7 +1230,7 @@ def test_links():
         copy(mydoc), url="https://www.example.com/", include_links=True, fast=True, config=ZERO_CONFIG
     )
     # malformed target or page URL, target kept as is
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         '<html><body><p><a href="http://[::1">Test link text.</a> This part of the text has to be long enough.</p></body></html>'
     )
     for url in ("https://www.example.com/", "https://ex]ample.org/"):
@@ -1229,13 +1238,11 @@ def test_links():
             copy(mydoc), url=url, include_links=True, fast=True, config=ZERO_CONFIG
         )
     # link without target
-    mydoc = html.fromstring(
-        "<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>"
-    )
+    mydoc = _html_tree("<html><body><p><a>Test link text.</a> This part of the text has to be long enough.</p></body></html>")
     assert "[Test link text.] This part of the text has to be long enough." in extract(
         copy(mydoc), include_links=True, fast=True, config=ZERO_CONFIG
     )
-    mydoc = html.fromstring(
+    mydoc = _html_tree(
         "<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>"
     )
     result = extract(copy(mydoc), output_format="xml", include_links=True, fast=True, config=ZERO_CONFIG)
@@ -1250,13 +1257,13 @@ def test_links():
         teststring, include_links=True, fast=True, output_format="xml", config=ZERO_CONFIG
     )
     # test license link
-    mydoc = html.fromstring('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
+    mydoc = _html_tree('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
     assert 'license="CC BY-SA license"' in extract(
         mydoc, include_links=True, fast=True, output_format="xml", config=ZERO_CONFIG, with_metadata=True
     )
 
     # link in p, length threshold
-    mydoc = html.fromstring(f"<html><body><article><p><a>f{'abcd' * 20}</a></p></article></body></html>")
+    mydoc = _html_tree(f"<html><body><article><p><a>f{'abcd' * 20}</a></p></article></body></html>")
     assert "abc" in extract(copy(mydoc), fast=True, config=ZERO_CONFIG, favor_precision=False)
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
@@ -1310,14 +1317,14 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
-    htmlstring = html.fromstring("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
+    htmlstring = _html_tree("<html><head/><body><div><h2><p>text</p></h2></div></body></html>")
     extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert xml.validate_tei(etree.fromstring(extracted)) is True
-    htmlstring = html.fromstring("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
+    htmlstring = _html_tree("<html><body><article><h1>title</h1><h2>subtitle</h2><p>text</p></article></body></html>")
     extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert '<ab rend="h1" type="header">title</ab>' in extracted
     assert '<ab rend="h2" type="header">subtitle</ab>' in extracted
-    htmlstring = html.fromstring(
+    htmlstring = _html_tree(
         """<html>
         <body><article>
             <h2><div>
@@ -1334,7 +1341,7 @@ def test_tei():
     extracted = extract(htmlstring, url="mocked", fast=True, output_format="xmltei", config=ZERO_CONFIG)
     assert '<ab rend="h2" type="header">content<list rend="ul"><item>text1' in extracted.replace("\n", "")
     # merge double elements
-    tree = html.fromstring(
+    tree = _html_tree(
         """<html>
         <body>
             <p><p>
@@ -1344,9 +1351,9 @@ def test_tei():
         </html>"""
     )
     tree = xml.remove_empty_elements(xml.strip_double_tags(tree))
-    result = sanitize(etree.tostring(tree, encoding="unicode")).replace("\n", "")
+    result = sanitize(etree.tostring(dom.to_lxml(tree), encoding="unicode")).replace("\n", "")
     assert result == "<html><body><p><span>content</span></p></body></html>"
-    tree = html.fromstring(
+    tree = _html_tree(
         """
     <html>
         <body>
@@ -1388,9 +1395,9 @@ def test_tei():
     )
     xml.strip_double_tags(tree)
     assert tree.find(".//p/p") is None
-    assert "text7" in etree.tostring(tree, encoding="unicode")
+    assert "text7" in etree.tostring(dom.to_lxml(tree), encoding="unicode")
     # nested elements with same tag not merged
-    tree = html.fromstring(
+    tree = _html_tree(
         """<html>
         <body>
             <div>
@@ -1451,7 +1458,7 @@ def test_tei():
 def test_check_tei_loose_text(div, expected):
     "check_tei wraps loose text and merges it into the neighbouring paragraph."
     cleaned = xml.check_tei(etree.fromstring(f"<TEI><text><body><div>{div}</div></body></text></TEI>"), "fake_url")
-    assert etree.tostring(cleaned.find(".//body/div"), encoding="unicode") == f"<div>{expected}</div>"
+    assert etree.tostring(dom.to_lxml(cleaned.find(".//body/div")), encoding="unicode") == f"<div>{expected}</div>"
 
 
 def test_htmlprocessing(options):
@@ -1459,9 +1466,9 @@ def test_htmlprocessing(options):
     assert xml.xmltotxt(None, include_formatting=False) == ""
 
     options.tables = True
-    assert tree_cleaning(etree.Element("html"), options) is not None
-    assert trafilatura.htmlprocessing.prune_html(etree.Element("unwanted")) is not None
-    mydoc = html.fromstring(
+    assert tree_cleaning(dom.Element("html"), options) is not None
+    assert trafilatura.htmlprocessing.prune_html(dom.Element("unwanted")) is not None
+    mydoc = _html_tree(
         '<html><body><table><a href="">Link</a></table><img src="test.jpg"/><u>Underlined</u><tt>True Type</tt><sub>Text</sub><sup>Text</sup></body></html>'
     )
     options.formatting, options.images, options.links = True, True, True
@@ -1473,9 +1480,7 @@ def test_htmlprocessing(options):
 
     # multiple images inside a link must keep their original order after being
     # lifted out of the <ref> (addnext reverses order if iterated forward)
-    multi_img = html.fromstring(
-        '<html><body><a href="/x"><img src="a.jpg"/><img src="b.jpg"/><img src="c.jpg"/></a></body></html>'
-    )
+    multi_img = _html_tree('<html><body><a href="/x"><img src="a.jpg"/><img src="b.jpg"/><img src="c.jpg"/></a></body></html>')
     options.images, options.links = True, True
     multi_converted = convert_tags(multi_img, options)
     srcs = [g.get("src") for g in multi_converted.iter("graphic")]
@@ -1485,28 +1490,28 @@ def test_htmlprocessing(options):
     myconverted = tree_cleaning(mydoc, options)
     assert myconverted.xpath(".//graphic")
     assert not myconverted.xpath(".//table")
-    mydoc = html.fromstring("<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>")
+    mydoc = _html_tree("<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>")
     assert '<head rend="h1">Test headline</head>' in extract(copy(mydoc), output_format="xml", config=ZERO_CONFIG, fast=True)
     assert '<ab rend="h1" type="header">Test headline</ab>' in extract(
         copy(mydoc), output_format="xmltei", config=ZERO_CONFIG, fast=True
     )
 
     # merge with parent function
-    element = etree.Element("test")
+    element = dom.Element("test")
     xml.delete_element(element)
-    assert etree.tostring(element) == b"<test/>"
-    element = etree.Element("test")
+    assert etree.tostring(dom.to_lxml(element)) == b"<test/>"
+    element = dom.Element("test")
     xml.merge_with_parent(element)
-    assert etree.tostring(element) == b"<test/>"
+    assert etree.tostring(dom.to_lxml(element)) == b"<test/>"
 
-    mydoc = html.fromstring("<html><body><p><span>A</span><span>B</span><span>C</span></p></body></html>")
+    mydoc = _html_tree("<html><body><p><span>A</span><span>B</span><span>C</span></p></body></html>")
     for element in mydoc.iter("span"):
         xml.merge_with_parent(element)
-    assert b"<p>A B C</p>" in etree.tostring(mydoc)
-    mydoc = html.fromstring("<html><body><p><span>A</span><span>B</span> tail<span>C</span></p></body></html>")
+    assert b"<p>A B C</p>" in etree.tostring(dom.to_lxml(mydoc))
+    mydoc = _html_tree("<html><body><p><span>A</span><span>B</span> tail<span>C</span></p></body></html>")
     for element in mydoc.iter("span"):
         xml.merge_with_parent(element)
-    assert b"<p>A B tail C</p>" in etree.tostring(mydoc)
+    assert b"<p>A B tail C</p>" in etree.tostring(dom.to_lxml(mydoc))
 
     # paywalls
     my_html = '<html><body><main><p>1</p><p id="premium">2</p><p>3</p></main></body></html>'
@@ -1520,80 +1525,80 @@ def test_htmlprocessing(options):
     assert "ad" not in extract(fenced_outer, config=ZERO_CONFIG, fast=False)
     assert extract(fenced_outer) is None
     # test tail of node deleted if set as text
-    node = etree.fromstring("<div><p></p>tail</div>")[0]
+    node = _xml_tree("<div><p></p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "tail"
     assert node.tail is None
-    node = etree.fromstring("<list><item></item>text in tail</list>")[0]
+    node = _xml_tree("<list><item></item>text in tail</list>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "text in tail"
     assert node.tail is None
-    line_break = etree.fromstring("<p><lb/>tail</p>")[0]
+    line_break = _xml_tree("<p><lb/>tail</p>")[0]
     trafilatura.htmlprocessing.process_node(line_break, options)
     assert line_break.text is None
     assert line_break.tail == "tail"
-    node = etree.fromstring("<div><p>some text</p>tail</div>")[0]
+    node = _xml_tree("<div><p>some text</p>tail</div>")[0]
     trafilatura.htmlprocessing.process_node(node, options)
     assert node.text == "some text"
     assert node.tail == "tail"
-    node = etree.fromstring("<p><ref target='url'><hi rend='#b'>bold</hi>inner</ref>outer</p>")[0]
+    node = _xml_tree("<p><ref target='url'><hi rend='#b'>bold</hi>inner</ref>outer</p>")[0]
     processed = trafilatura.htmlprocessing.handle_textnode(node, options)
     assert processed.tail == "outer"
-    node = etree.fromstring("<p><ref target='url'>text</ref>tail</p>")[0]
+    node = _xml_tree("<p><ref target='url'>text</ref>tail</p>")[0]
     processed = trafilatura.htmlprocessing.handle_textnode(node, options)
     assert processed.tail == "tail"
     assert processed.text == "text"
-    node = etree.fromstring("<p><ref target='url'></ref>tail</p>")[0]
+    node = _xml_tree("<p><ref target='url'></ref>tail</p>")[0]
     processed = trafilatura.htmlprocessing.handle_textnode(node, options)
     assert processed.tail == ""
     assert processed.text == "tail"
-    node = etree.fromstring("<p><ref target='url'>text<hi rend='#b'>bold</hi></ref>tail</p>")[0]
+    node = _xml_tree("<p><ref target='url'>text<hi rend='#b'>bold</hi></ref>tail</p>")[0]
     processed = trafilatura.htmlprocessing.handle_textnode(node, options)
     assert processed.tail == "tail"
     assert processed.text == "text"
 
     # fix for bug 807
-    node = html.fragment_fromstring("<div><p><span>span</span> span tail</p> p tail </div>")
+    node = dom.from_lxml(html.fragment_fromstring("<div><p><span>span</span> span tail</p> p tail </div>"))
     assert node.text_content() == "span span tail p tail "
-    prune = etree.XPath(".//span")
+    prune = dom.XPath(".//span")
     processed = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [prune])
     assert node.text_content() == " span tail p tail "
 
     # link_density_test_tables: a text-rich table whose only <ref> links carry no text
     # (e.g. icon/flag links wrapping images) has zero link text -> not boilerplate, kept
-    linkless_table = html.fromstring("<table><cell>" + "word " * 50 + '<ref target="/x"></ref></cell></table>')
+    linkless_table = _html_tree("<table><cell>" + "word " * 50 + '<ref target="/x"></ref></cell></table>')
     assert trafilatura.htmlprocessing.link_density_test_tables(linkless_table) is False
     # short table (elemlen < 200) is never removed regardless of link ratio
     assert (
         trafilatura.htmlprocessing.link_density_test_tables(
-            html.fromstring("<table><cell>short " + '<ref target="/x">link</ref> ' * 5 + "</cell></table>")
+            _html_tree("<table><cell>short " + '<ref target="/x">link</ref> ' * 5 + "</cell></table>")
         )
         is False
     )
     # replace_element_text: an empty <ref> (no text) yields an empty string
-    assert xml.replace_element_text(etree.Element("ref"), include_formatting=False) == ""
+    assert xml.replace_element_text(dom.Element("ref"), include_formatting=False) == ""
 
     # regression #797: a code block with a tailless <lb> must not emit a literal "None"
-    code = etree.fromstring("<code>print(1)<lb/></code>")
+    code = _xml_tree("<code>print(1)<lb/></code>")
     code_md = xml.replace_element_text(code, include_formatting=True)
     assert "None" not in code_md
     assert "print(1)" in code_md
 
     # handle_paragraphs: a trailing <lb> with no tail is stripped from the output
-    para = etree.fromstring("<p>text<lb>x</lb></p>")
+    para = _xml_tree("<p>text<lb>x</lb></p>")
     processed = handle_paragraphs(para, {"p", "lb"}, options)
     assert processed is not None
     assert not processed.findall(".//lb")
 
     # handle_paragraphs: non-INLINE_CARRIED children of <hi> are stripped with a leading space
     fmt_opts = core.Extractor(formatting=True)
-    para = etree.fromstring('<p><hi rend="#b">pre<quote>mid</quote>end</hi></p>')
+    para = _xml_tree('<p><hi rend="#b">pre<quote>mid</quote>end</hi></p>')
     hi = handle_paragraphs(para, set(TAG_CATALOG), fmt_opts).find("hi")
     assert hi is not None
     assert "pre" in hi.text
     assert " mid" in hi.text
 
-    para = etree.fromstring('<p><hi rend="#b">start<lb/>tail</hi></p>')
+    para = _xml_tree('<p><hi rend="#b">start<lb/>tail</hi></p>')
     hi = handle_paragraphs(para, set(TAG_CATALOG) | {"lb"}, fmt_opts).find("hi")
     assert hi is not None
     assert " tail" in hi.text
@@ -1602,12 +1607,12 @@ def test_htmlprocessing(options):
 @pytest.mark.parametrize("widget_words,pruned", [(300, False), (3, True)])
 def test_prune_unwanted_nodes_guard(widget_words, pruned):
     "An over-pruning trip leaves the same subtree in place, recovery matches elements by identity."
-    doc = html.fromstring(
+    doc = _html_tree(
         "<html><body><div><p>real text</p><div class='widget'>" + "x " * widget_words + "</div></div></body></html>"
     )
     node = doc.find(".//div")
     before = doc.text_content()
-    result = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [etree.XPath(".//div[@class='widget']")], with_backup=True)
+    result = trafilatura.htmlprocessing.prune_unwanted_nodes(node, [dom.XPath(".//div[@class='widget']")], with_backup=True)
     assert result is node
     assert result.getparent() is doc.find(".//body")
     assert (doc.text_content() != before) is pruned
@@ -1632,7 +1637,7 @@ def test_extract_restored_subtree_not_extracted_twice():
 def test_readability_div_keeps_inline_link(link):
     "An inline anchor must not split a div's sentence into separate paragraphs (#585)."
     sentence = f"The garden team measured {link} before planting the seeds."
-    tree = html.fromstring(f"<html><body><div>{sentence}</div></body></html>")
+    tree = _html_tree(f"<html><body><div>{sentence}</div></body></html>")
     ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
     paragraph = tree.find(".//body/p")
     assert paragraph is not None
@@ -1644,7 +1649,7 @@ def test_readability_div_keeps_inline_link(link):
 @pytest.mark.parametrize("block", ["div", "p", "blockquote", "article", "aside", "address"])
 def test_readability_div_keeps_linked_blocks(block):
     "A link wrapping a block still prevents conversion of its containing div to a paragraph."
-    tree = html.fromstring(
+    tree = _html_tree(
         f'<html><body><div><a href="https://example.org/plots"><{block}>Plot measurements</{block}></a></div></body></html>'
     )
     ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
@@ -1663,21 +1668,21 @@ def test_readability_div_keeps_linked_blocks(block):
 )
 def test_readability_div_keeps_link_wrappers(content):
     "Containers without loose text, or with a block below an inline child, retain their role in Readability's scoring."
-    tree = html.fromstring(f"<html><body><div>{content}</div></body></html>")
+    tree = _html_tree(f"<html><body><div>{content}</div></body></html>")
     ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
     assert tree.find(".//body/div") is not None
 
 
 def test_readability_div_tails_keep_order():
     "Tails wrapped into paragraphs stay in document order."
-    tree = html.fromstring("<html><body><div><p>one</p>two<p>three</p>four</div></body></html>")
+    tree = _html_tree("<html><body><div><p>one</p>two<p>three</p>four</div></body></html>")
     ReadabilityDocument(tree).transform_misused_divs_into_paragraphs()
     assert [p.text for p in tree.find(".//body/div")] == ["one", "two", "three", "four"]
 
 
 def test_readability_sanitize_drops_all_matches():
     "Dropping an element does not stop the iteration over the remaining ones."
-    tree = html.fromstring(
+    tree = _html_tree(
         '<div><h2 class="comment"><span><h3 class="comment">a</h3></span></h2><h3 class="comment">b</h3>'
         "<form>c</form><textarea>d</textarea><form>e</form>text</div>"
     )
@@ -1686,7 +1691,7 @@ def test_readability_sanitize_drops_all_matches():
 
 def test_readability_unlikely_candidates():
     "Unlikely classes are removed case-insensitively, content containers are kept."
-    tree = html.fromstring(
+    tree = _html_tree(
         '<html><body><div class="Sidebar">a</div><div class="sidebar">b</div>'
         '<div class="sidebar-content">c</div></body></html>'
     )
@@ -1700,7 +1705,7 @@ def test_readability_scoring_edge_cases():
     paragraph.text = "Some long enough paragraph text. " * 3
     assert not ReadabilityDocument(paragraph).score_paragraphs()
     items = "".join(f"<li>item number {i} with some words</li>" for i in range(101))
-    tree = html.fromstring(f"<div><div><ul>{items}</ul></div></div>")
+    tree = _html_tree(f"<div><div><ul>{items}</ul></div></div>")
     assert ReadabilityDocument(tree).sanitize(tree, {}) == "<div/>"
 
 
@@ -1708,7 +1713,7 @@ def test_readability_scoring_edge_cases():
 def test_readability_sanitize_textless_block_between_long_neighbours(words, kept):
     "A textless block stays only if its nearest non-empty siblings are long."
     text = "word " * words
-    tree = html.fromstring(f'<article><p>{text}</p><div><img src="a.png"/></div><p>{text}</p></article>')
+    tree = _html_tree(f'<article><p>{text}</p><div><img src="a.png"/></div><p>{text}</p></article>')
     assert ("a.png" in ReadabilityDocument(tree).sanitize(tree, {})) is kept
 
 
@@ -1748,20 +1753,20 @@ def test_extraction_options():
     assert extract(my_html, target_language="de", fast=True, config=ZERO_CONFIG) is None
 
     # justext hardening
-    assert etree.tostring(try_justext(html.fromstring(my_html), None, "de")) == b"<body/>"
-    assert etree.tostring(try_justext(None, None, "de")) == b"<body/>"
+    assert etree.tostring(dom.to_lxml(try_justext(_html_tree(my_html), None, "de"))) == b"<body/>"
+    assert etree.tostring(dom.to_lxml(try_justext(None, None, "de"))) == b"<body/>"
     # assert extract(my_html) is None
 
     # readability
     my_html = "<html><body><p>" + "Text. " * 10 + "</p></body></html>"
-    result = etree.tostring(try_readability(html.fromstring(my_html)))
+    result = etree.tostring(dom.to_lxml(try_readability(_html_tree(my_html))))
     assert len(result) > 10
     assert b"Text" in result
     my_html = (
         "<html><body><div><p>" + "Text. " * 10 + "</p>"
         "<div><p>A caption that is long enough to count.</p><embed>Test</embed></div></div></body></html>"
     )
-    result = etree.tostring(try_readability(html.fromstring(my_html)))
+    result = etree.tostring(dom.to_lxml(try_readability(_html_tree(my_html))))
     assert b"Text" in result
     assert b"Test" not in result
 
@@ -1830,18 +1835,18 @@ def test_extractor_parity(monkeypatch, case):
 def test_precision_recall():
     """test precision- and recall-oriented settings"""
     # the test cases could be better
-    my_document = html.fromstring("<html><body><p>This here is the text.</p></body></html>")
+    my_document = _html_tree("<html><body><p>This here is the text.</p></body></html>")
     assert extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True) is not None
     assert extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True) is not None
 
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>'
     )
     assert "teaser text" in extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert "teaser text" not in extract(copy(my_document), config=ZERO_CONFIG, fast=True)
     assert "teaser text" not in extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
 
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><article><div><p><a href="test.html">1.</a><br/><a href="test2.html">2.</a></p></div></article></body></html>'
     )
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
@@ -1849,7 +1854,7 @@ def test_precision_recall():
     result = extract(copy(my_document), favor_precision=True, config=ZERO_CONFIG, fast=True)
     assert "1" not in result
 
-    my_document = html.fromstring(
+    my_document = _html_tree(
         '<html><body><div class="article-body"><p>content</p><p class="link">Test</p></div></body></html>'
     )
     result = extract(copy(my_document), favor_precision=False, config=ZERO_CONFIG, fast=True)
@@ -1859,17 +1864,17 @@ def test_precision_recall():
     assert "content" in result
     assert "Test" not in result
 
-    my_document = html.fromstring("<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>")
+    my_document = _html_tree("<html><body><article><aside><p>Here is the text.</p></aside></article></body></html>")
     result = extract(copy(my_document), favor_recall=False, config=ZERO_CONFIG, fast=True)
     assert result != "Here is the text."
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=True)
     assert result == "Here is the text."
 
-    my_document = html.fromstring("<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>")
+    my_document = _html_tree("<html><body><div><h2>Title</h2><small>Text.</small></div></body></html>")
     result = extract(copy(my_document), favor_recall=True, config=ZERO_CONFIG, fast=False)
     assert len(result) > 0
 
-    my_document = html.fromstring("<html><body><div><span>Text.</span></div></body></html>")
+    my_document = _html_tree("<html><body><div><span>Text.</span></div></body></html>")
     assert extract(copy(my_document), favor_precision=True, fast=True, config=ZERO_CONFIG) == ""
     assert extract(copy(my_document), favor_recall=True, fast=True, config=ZERO_CONFIG) == "Text."
 
@@ -1884,8 +1889,8 @@ def test_url_blacklist():
 def test_recover_wild_text_default_tags():
     "recover_wild_text with default tags in recall mode must not crash (frozenset .update())"
     options = core.Extractor(recall=True)
-    tree = html.fromstring("<body><div>some wild text outside the main frame, long enough to be recovered</div></body>")
-    result = recover_wild_text(tree, etree.Element("body"), options)
+    tree = _html_tree("<body><div>some wild text outside the main frame, long enough to be recovered</div></body>")
+    result = recover_wild_text(tree, dom.Element("body"), options)
     assert result is not None
 
 
@@ -1909,15 +1914,13 @@ _STRADDLE_REF = '<ref target="/x">' + "x" * 360 + "</ref>"
     ],
 )
 def test_link_density_tables_threshold(html_str: str, expected: bool) -> None:
-    assert trafilatura.htmlprocessing.link_density_test_tables(html.fromstring(html_str)) is expected
+    assert trafilatura.htmlprocessing.link_density_test_tables(_html_tree(html_str)) is expected
 
 
 def test_link_density_tables_textless_links_kept() -> None:
     "A text-rich table whose only own-depth ref is a textless icon link is not boilerplate (#lineups)."
     # 250 chars of real text + one image-wrapping link with no text -> elemnum 0, must be kept
-    icon_table = html.fromstring(
-        "<table><cell>" + "data " * 50 + '<ref target="/x"><graphic src="/i.png"/></ref></cell></table>'
-    )
+    icon_table = _html_tree("<table><cell>" + "data " * 50 + '<ref target="/x"><graphic src="/i.png"/></ref></cell></table>')
     assert trafilatura.htmlprocessing.link_density_test_tables(icon_table) is False
 
 
@@ -1957,7 +1960,7 @@ _CARD = "Align: a widget that aligns its child within itself and optionally size
 )
 def test_link_density_test(items, short, expected):
     "Link-density verdict on a div followed by a content sibling (#584, #900)."
-    element = html.fromstring(f"<body><div>{items}</div><p>real article sibling here</p></body>")[0]
+    element = _html_tree(f"<body><div>{items}</div><p>real article sibling here</p></body>")[0]
     length = len(trim(element.text_content()))
     assert 100 < length < 150 if short else length > 300
     assert trafilatura.htmlprocessing.link_density_test(element)[0] is expected
@@ -1967,8 +1970,8 @@ def test_delete_by_link_density_backtracking():
     "a short div with 3+ children and some link text is not dense, but backtracking still drops it"
     htmlstring = "<html><body><div><p>Some intro text</p><p>More words</p><ref>A link text</ref></div></body></html>"
     delete = trafilatura.htmlprocessing.delete_by_link_density
-    assert delete(html.fromstring(htmlstring), "div").find(".//div") is not None
-    assert delete(html.fromstring(htmlstring), "div", backtracking=True).find(".//div") is None
+    assert delete(_html_tree(htmlstring), "div").find(".//div") is not None
+    assert delete(_html_tree(htmlstring), "div", backtracking=True).find(".//div") is None
 
 
 def test_overall_discard_legacy_tokens():
@@ -2044,14 +2047,14 @@ def test_wrapper_form_kept():
     # the wrapper form survives cleaning, so the content is still there to be selected --
     # without this the whole document was gone and only the recovery path could save anything
     wrapped = f'<html><body><form method="post" id="aspnetForm"><div>{article}</div></form></body></html>'
-    cleaned = tree_cleaning(load_html(wrapped), options)
+    cleaned = tree_cleaning(load_html_native(wrapped), options)
     assert "the actual article body" in cleaned.text_content()
     assert cleaned.find(".//form") is None  # demoted, not left as a form
     assert "the actual article body" in extract(wrapped, config=ZERO_CONFIG)
 
     # a search/newsletter widget alongside real content is still removed outright
     with_widget = f'<html><body><div>{article}</div><form><p>Search this site</p><input type="text"/></form></body></html>'
-    cleaned = tree_cleaning(load_html(with_widget), options)
+    cleaned = tree_cleaning(load_html_native(with_widget), options)
     assert "the actual article body" in cleaned.text_content()
     assert "Search this site" not in cleaned.text_content()
 
@@ -2059,7 +2062,7 @@ def test_wrapper_form_kept():
     # taking "form" out must keep widget forms instead of raising on the internal removal
     MANUALLY_CLEANED.remove("form")
     try:
-        cleaned = tree_cleaning(load_html(with_widget), options)
+        cleaned = tree_cleaning(load_html_native(with_widget), options)
         assert "Search this site" in cleaned.text_content()
     finally:
         MANUALLY_CLEANED.insert(5, "form")
@@ -2097,10 +2100,10 @@ def test_lb_only_subtree_stays_one_paragraph():
 
 def test_extract_deep_caller_supplied_tree():
     "Caller-supplied trees have no depth cap, so the content walk must not recurse."
-    tree = html.fromstring("<html><body><p>root text</p></body></html>")
+    tree = _html_tree("<html><body><p>root text</p></body></html>")
     node = tree.find("body")
     for _ in range(3000):
-        node = etree.SubElement(node, "div")
+        node = dom.SubElement(node, "div")
     node.text = "Deep text long enough to be kept by the extractor, appearing at the very bottom."
     result = extract(tree, config=ZERO_CONFIG)
     assert "Deep text long enough" in result
@@ -2108,12 +2111,12 @@ def test_extract_deep_caller_supplied_tree():
 
 def test_extract_leaves_caller_tree_intact():
     "A caller-supplied tree must come back unchanged, prune_xpath included."
-    tree = html.fromstring("<html><body><p>First paragraph.</p><p>Second paragraph.</p></body></html>")
-    before = html.tostring(tree)
+    tree = _html_tree("<html><body><p>First paragraph.</p><p>Second paragraph.</p></body></html>")
+    before = etree.tostring(dom.to_lxml(tree))
     result = extract(tree, prune_xpath="//p[1]", config=ZERO_CONFIG)
     assert result is not None
     assert "First paragraph" not in result
-    assert html.tostring(tree) == before
+    assert etree.tostring(dom.to_lxml(tree)) == before
 
 
 @pytest.mark.parametrize(
@@ -2177,7 +2180,7 @@ def test_basic_cleaning_cookie_banner_scope():
         "<div id='onetrust-consent-sdk'><p>By clicking Accept you agree we can store cookies.</p></div>"
         "<div class='cookie-notice-container'><p>We use cookies to improve our service.</p></div>"
     )
-    doc = html.fromstring(
+    doc = _html_tree(
         "<html><body class='single-post cookies-not-set'>"
         f"<div class='cookie-recipe-content'>{content}</div>{banners}</body></html>"
     )
@@ -2320,12 +2323,12 @@ def test_table_colspan_content(rows, expected):
 )
 def test_handle_table(table, recall, expected):
     "handle_table output structure on small and broken tables."
-    assert etree.tostring(_handle_table(table, recall), encoding="unicode") == f"<table>{expected}</table>"
+    assert etree.tostring(dom.to_lxml(_handle_table(table, recall)), encoding="unicode") == f"<table>{expected}</table>"
 
 
 def test_table_processing():
     # complex table that hasn't been cleaned yet
-    htmlstring = html.fromstring(
+    htmlstring = _html_tree(
         """<html>
               <body><article>
                 <table>
@@ -2552,7 +2555,7 @@ def test_table_huge_or_bad_colspan_no_crash(first_cell):
 )
 def test_colspan_zero_trust(colspan, expected):
     "_span must default to 1 for non-decimal values (isdigit() admits superscripts that int() rejects)."
-    assert _span(html.fromstring(f'<td colspan="{colspan}">x</td>'), "colspan") == expected
+    assert _span(_html_tree(f'<td colspan="{colspan}">x</td>'), "colspan") == expected
 
 
 @pytest.mark.parametrize(
@@ -2801,7 +2804,7 @@ def test_no_duplicate_content_list_item():
     options = core.Extractor()
     para = "This is a moderately long description paragraph exceeding the fifty character dedup threshold here."
     htmlstring = f"<html><body><article><dl><dt>Term</dt><dd><p>{para}</p></dd></dl></article></body></html>"
-    cleaned = convert_tags(tree_cleaning(html.fromstring(htmlstring), options), options)
+    cleaned = convert_tags(tree_cleaning(_html_tree(htmlstring), options), options)
     _, text = extract_content(cleaned, options)
     assert text.count(para) == 1
 
@@ -2868,8 +2871,8 @@ def test_recover_wild_text_dedup_scan_cap(monkeypatch):
     def run(cap):
         monkeypatch.setattr(me, "DEDUPE_SCAN_CAP", cap)
         htmlstring = f"<html><body><div>{filler}</div><div>{container}</div><div>{substring_dup}</div></body></html>"
-        tree = html.fromstring(htmlstring)
-        result_body = etree.Element("body")
+        tree = _html_tree(htmlstring)
+        result_body = dom.Element("body")
         me.recover_wild_text(tree, result_body, options)
         return [trim("".join(el.itertext())) for el in result_body]
 
@@ -2888,7 +2891,7 @@ def test_prune_boilerplate_table_after_nested():
     nested = "<row><cell><table><row><cell>x</cell></row></table></cell></row>"
     real = "Real article content paragraph that should always survive the pruning pass intact here now."
     htmlstring = f"<html><body><table>{rows}{nested}</table><table>{rows}</table><p>{real}</p></body></html>"
-    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"table", "p"}, options)
+    pruned = prune_unwanted_sections(_html_tree(htmlstring), {"table", "p"}, options)
     assert pruned.findall(".//table") == []
     assert pruned.find(".//p") is not None
 
@@ -2897,11 +2900,11 @@ def test_prune_strips_span_and_ref():
     "spans are always flattened, refs only when links are not kept"
     options = core.Extractor()
     htmlstring = '<html><body><p>One <span>two</span> <ref target="/x">three</ref> four.</p></body></html>'
-    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options)
+    pruned = prune_unwanted_sections(_html_tree(htmlstring), {"p"}, options)
     assert pruned.find(".//span") is None
     assert pruned.find(".//ref") is None
     assert trim(pruned.find(".//p").text_content()) == "One two three four."
-    pruned = prune_unwanted_sections(html.fromstring(htmlstring), {"p", "ref"}, options)
+    pruned = prune_unwanted_sections(_html_tree(htmlstring), {"p", "ref"}, options)
     assert pruned.find(".//span") is None
     assert pruned.find(".//ref") is not None
 
@@ -2914,8 +2917,8 @@ def test_prune_keep_teasers():
         '<html><body><div class="teaser"><p>Real article body text that is long enough '
         "to count as genuine content here now.</p></div></body></html>"
     )
-    assert prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options).find(".//p") is None
-    assert prune_unwanted_sections(html.fromstring(htmlstring), {"p"}, options, keep_teasers=True).find(".//p") is not None
+    assert prune_unwanted_sections(_html_tree(htmlstring), {"p"}, options).find(".//p") is None
+    assert prune_unwanted_sections(_html_tree(htmlstring), {"p"}, options, keep_teasers=True).find(".//p") is not None
 
 
 def test_recall_escalation():
@@ -3049,6 +3052,127 @@ def test_dfp_precision_keeps_posts():
     doc = _thread_doc(_DFP_JSONLD, "p")
     result = extract(doc, output_format="txt", include_comments=True, favor_precision=True) or ""
     assert result.count("Reply number") == 8
+
+
+@pytest.mark.parametrize("fast", [pytest.param(True, id="fast"), pytest.param(False, id="fallback")])
+@pytest.mark.parametrize(
+    ("source_name", "expected"),
+    [
+        pytest.param(
+            "villagersandheroes.com.forums.patchnotes.html",
+            "Patch Notes 4.47.4\nVerbesserungen und Balance\n",
+            id="opening",
+        ),
+        pytest.param(
+            "villagersandheroes.com.forums.patchnotes.html",
+            "Gegen Ende der Zone wird es grad immer schlimmer.",
+            id="reply",
+        ),
+        pytest.param(
+            "villagersandheroes.com.forums.patchnotes.html",
+            "Schade das die Lichtrunen bei Okyris weg sind.",
+            id="textless-link-reply",
+        ),
+        pytest.param(
+            "villagersandheroes.com.forums.patchnotes.html",
+            "Bibi Blocksberg",
+            id="post-author",
+        ),
+        pytest.param(
+            "katzen-forum.net-Pepe.html",
+            "Sich rot verfärbende Krümel sind Flohkot.",
+            id="textless-link-advice",
+        ),
+    ],
+)
+def test_forum_preserves_posts(fast: bool, source_name: str, expected: str) -> None:
+    source = path.join(TEST_DIR, "eval", source_name)
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read(), fast=fast)
+    assert result is not None
+    assert expected in result
+
+
+@pytest.mark.parametrize(
+    ("source_name", "title"),
+    [
+        pytest.param(
+            "katzen-forum.net-Pepe.html",
+            "Jede Nacht verliert Pepe soviel Dreck aus dem Fell",
+            id="thread-title",
+        ),
+        pytest.param(
+            "pocketpc.ch.auslieferung.html",
+            "Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!",
+            id="thread-title-without-post-heading",
+        ),
+    ],
+)
+def test_forum_preserves_thread_title(source_name: str, title: str) -> None:
+    source = path.join(TEST_DIR, "eval", source_name)
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read())
+    assert result is not None
+    assert result.count(title) == 1
+
+
+def test_forum_does_not_repeat_extracted_title() -> None:
+    source = _thread_doc(_DFP_JSONLD, intro=f"<h1>Test thread</h1>{_ESCALATION_INTRO}")
+    result = extract(source)
+    assert result is not None
+    assert result.count("Test thread") == 1
+
+
+def test_forum_discards_profile_details() -> None:
+    source = path.join(TEST_DIR, "eval", "katzen-forum.net-Pepe.html")
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read())
+    assert result is not None
+    assert "Mitglied seit" not in result
+
+
+@pytest.mark.parametrize("expected", ["Lehrzeit: 2 Jahre", "Lehrzeit: 1,5 Jahre"])
+def test_placeholder_heading_links_preserve_course_duration(expected: str) -> None:
+    source = path.join(TEST_DIR, "eval", "siegfried-marcus-berufsschule.at.kft.html")
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read())
+    assert result is not None
+    assert expected in result
+
+
+@pytest.mark.parametrize(
+    "expected",
+    ["2. Februar 2022", "Die SAP Arena am Tag eines Heimspiels der Rhein-Neckar Löwen."],
+)
+def test_dated_article_preserves_lead_text(expected: str) -> None:
+    source = path.join(TEST_DIR, "eval", "rhein-neckar-loewen.de-vorverkauf.html")
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read())
+    assert result is not None
+    assert expected in result
+
+
+@pytest.mark.parametrize(
+    ("source_name", "excluded"),
+    [
+        pytest.param(
+            "cache/phys.org.tool.html",
+            "Comparison of Modern Human and Neanderthal skulls",
+            id="image-credit",
+        ),
+        pytest.param(
+            "eval/advents-shopping.de.weihnachtsmaerkte.html",
+            "Finden Sie mit dem Weihnachtsmarkt-Finder Weihnachtsmärkte in Ihrer Umgebung!",
+            id="promotional-caption",
+        ),
+    ],
+)
+def test_dated_article_excludes_other_captions(source_name: str, excluded: str) -> None:
+    source = path.join(TEST_DIR, source_name)
+    with open(source, "rb") as inputf:
+        result = extract(inputf.read())
+    assert result is not None
+    assert excluded not in result
 
 
 @pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
@@ -3189,8 +3313,8 @@ def test_compare_extraction_justext_ratio(monkeypatch):
 
     options = core.Extractor()
     # empty backup keeps readability out; the <aside> triggers the justext examination
-    empty_tree = html.fromstring("<html><body></body></html>")
-    body = html.fromstring("<body><p>text</p><aside>x</aside></body>")
+    empty_tree = _html_tree("<html><body></body></html>")
+    body = _html_tree("<body><p>text</p><aside>x</aside></body>")
 
     # 3.5x longer than the justext candidate: must be kept (adopted at the old 4x)
     kept = "a" * 350
@@ -3214,8 +3338,8 @@ def test_compare_extraction_justext_short_trigger(monkeypatch):
 
     options = core.Extractor()
     options.min_extracted_size = 250  # the lengths below are relative to it
-    empty_tree = html.fromstring("<html><body></body></html>")
-    clean_body = html.fromstring("<body><p>text</p></body>")  # no SANITIZED_XPATH match
+    empty_tree = _html_tree("<html><body></body></html>")
+    clean_body = _html_tree("<body><p>text</p></body>")  # no SANITIZED_XPATH match
     own = "a" * 150  # below min_extracted_size -> the short clause triggers the examination
 
     # justext no longer than the own extraction: keep the own one (the old gate replaced it)
@@ -3391,14 +3515,14 @@ def test_aria_layout_table_reclassified(role):
     opts = core.Extractor()
     opts.tables = True
     # with nested table: outer reclassified, inner kept
-    doc = html.fromstring(
+    doc = _html_tree(
         f'<html><body><table role="{role}"><tr><td><table><tr><td>data</td></tr></table></td></tr></table></body></html>'
     )
     tree_cleaning(doc, opts)
     assert doc.find(".//table[@role]") is None
     assert doc.find(".//table") is not None
     # without nested table: also reclassified
-    doc = html.fromstring(f'<html><body><table role="{role}"><tr><td>text</td></tr></table></body></html>')
+    doc = _html_tree(f'<html><body><table role="{role}"><tr><td>text</td></tr></table></body></html>')
     tree_cleaning(doc, opts)
     assert doc.find(".//table") is None
 
@@ -3408,7 +3532,7 @@ def test_sanitize_tree_th_dedup():
     opts = core.Extractor()
     opts.tables = True
     # two <th> rows: only the first should get role="head"
-    doc = html.fromstring(
+    doc = _html_tree(
         "<html><body><table>"
         "<tr><th>A</th><th>B</th></tr>"
         "<tr><th>C</th><th>D</th></tr>"
@@ -3422,7 +3546,7 @@ def test_sanitize_tree_th_dedup():
     assert all(c.text in ("A", "B") for c in head_cells)
     assert all(c.text in ("C", "D", "1", "2") for c in plain_cells)
     # regression: a table with no <th> at all must not crash and produces no head cells
-    doc2 = html.fromstring("<html><body><table><tr><td>x</td></tr></table></body></html>")
+    doc2 = _html_tree("<html><body><table><tr><td>x</td></tr></table></body></html>")
     tree2, _ = sanitize_tree(doc2, opts)
     assert tree2.xpath('.//cell[@role="head"]') == []
 
@@ -3469,7 +3593,7 @@ def test_image_tail_not_duplicated():
 def test_handle_lists(items, expected, options):
     "handle_lists output structure on small and malformed lists."
     assert (
-        etree.tostring(handle_lists(etree.fromstring(f"<list>{items}</list>"), options), encoding="unicode")
+        etree.tostring(dom.to_lxml(handle_lists(_xml_tree(f"<list>{items}</list>"), options)), encoding="unicode")
         == f"<list>{expected}</list>"
     )
 
@@ -3922,11 +4046,11 @@ def test_markdown_link_angle_bracket_targets():
 def test_xmltotxt_no_mutation():
     "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
     tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
-    before = etree.tostring(tree, encoding="unicode")
+    before = etree.tostring(dom.to_lxml(tree), encoding="unicode")
     out = xml.xmltotxt(tree, True)
     assert "$x$" in out
     assert "***y***" in out
-    assert etree.tostring(tree, encoding="unicode") == before  # source tree untouched
+    assert etree.tostring(dom.to_lxml(tree), encoding="unicode") == before  # source tree untouched
 
 
 def test_math_conversion():
@@ -3969,7 +4093,7 @@ def test_math_recovery():
 
     def clean(html_string):
         return etree.tostring(
-            tree_cleaning(html.fromstring(html_string), options),
+            dom.to_lxml(tree_cleaning(_html_tree(html_string), options)),
             encoding="unicode",
         )
 
@@ -4151,22 +4275,22 @@ def test_is_probably_readerable():
     very_large_str = "hello there " * 50
     linebreaks_str = f"{large_str} <br>" * 10
 
-    very_small_doc = load_html(f"<html><p id='main'>{very_small_str}</p></html>")
-    small_doc = load_html(f"<html><p id='main'>{small_str}</p></html>")
-    large_doc = load_html(f"<html><p id='main'>{large_str}</p></html>")
-    very_large_doc = load_html(f"<html><p id='main'>{very_large_str}</p></html>")
-    likely_doc = load_html(
+    very_small_doc = load_html_native(f"<html><p id='main'>{very_small_str}</p></html>")
+    small_doc = load_html_native(f"<html><p id='main'>{small_str}</p></html>")
+    large_doc = load_html_native(f"<html><p id='main'>{large_str}</p></html>")
+    very_large_doc = load_html_native(f"<html><p id='main'>{very_large_str}</p></html>")
+    likely_doc = load_html_native(
         f"<html><p id='main' class='header'>{very_large_str}</p><p id='header' class='article'>{very_large_str}</p><p id='footer' class='body'>{very_large_str}</p></html>"
     )
-    unlikely_doc = load_html(f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>")
-    visible_doc = load_html(
+    unlikely_doc = load_html_native(f"<html><p id='header'>{very_large_str}</p><p class='footer'>{very_large_str}</p></html>")
+    visible_doc = load_html_native(
         f"<html><p id='main' style='display: block'>{very_large_str}</p><p id='main'>{very_large_str}</p><p id='main' aria-hidden='false'>{very_large_str}</p></html>"
     )
-    invisible_doc = load_html(
+    invisible_doc = load_html_native(
         f"<html><p id='main' style='display: none'>{very_large_str}</p><p id='main' hidden>{very_large_str}</p><p id='main' aria-hidden='true'>{very_large_str}</p></html>"
     )
-    linebreaks_doc = load_html(f"<html><div>{linebreaks_str * 10}</div></html>")
-    no_linebreaks_doc = load_html(f"<html><div>{large_str * 10}</div></html>")
+    linebreaks_doc = load_html_native(f"<html><div>{linebreaks_str * 10}</div></html>")
+    no_linebreaks_doc = load_html_native(f"<html><div>{large_str * 10}</div></html>")
 
     docs = (very_small_doc, small_doc, large_doc, very_large_doc)
     for options, expected in (
@@ -4181,7 +4305,7 @@ def test_is_probably_readerable():
     # should check id and class attributes
     assert is_probably_readerable(likely_doc)
     assert not is_probably_readerable(unlikely_doc)
-    assert not is_probably_readerable(load_html(f"<html><p class='FOOTER'>{very_large_str}</p></html>"))
+    assert not is_probably_readerable(load_html_native(f"<html><p class='FOOTER'>{very_large_str}</p></html>"))
 
     # should check linebreaks in div elements
     assert is_probably_readerable(linebreaks_doc)
@@ -4205,7 +4329,7 @@ def test_is_probably_readerable():
     ) as f:
         teststring = f.read()
 
-    doc = load_html(teststring)
+    doc = load_html_native(teststring)
     assert not is_probably_readerable(doc)
 
 
@@ -4243,7 +4367,7 @@ def test_html_conversion():
     <a href="https://example.com">Link</a>
     <a href="">No href</a>
 </body></html>"""
-    assert etree.tostring(html_tree, method="html").decode() == expected_html
+    assert etree.tostring(dom.to_lxml(html_tree), method="html").decode() == expected_html
 
     html = "<html><body><article><h1>Title</h1><p>Text.</p></article></body></html>"
     excepted_html = """<html>
@@ -4281,7 +4405,9 @@ def test_html_conversion():
         '<row span="3"><cell>Jane</cell><cell>p1</cell><cell>p2</cell></row>'
         "</table></body>"
     )
-    table_html = etree.tostring(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(table_xml)), encoding="unicode")
+    table_html = etree.tostring(
+        dom.to_lxml(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(table_xml))), encoding="unicode"
+    )
     assert table_html == (
         "<html><body><table>"
         "<tr><th>Name</th><th>Phone</th></tr>"
@@ -4291,7 +4417,9 @@ def test_html_conversion():
 
     # regression: internal <graphic> must become <img> in HTML output, keeping src/alt/title
     img_xml = '<body><graphic src="a.jpg" alt="cap" title="t"/></body>'
-    img_html = etree.tostring(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(img_xml)), encoding="unicode")
+    img_html = etree.tostring(
+        dom.to_lxml(trafilatura.htmlprocessing.convert_to_html(etree.fromstring(img_xml))), encoding="unicode"
+    )
     assert img_html == '<html><body><img src="a.jpg" alt="cap" title="t"/></body></html>'
 
     # end-to-end: an image reaches HTML output as <img> (not <graphic>)
@@ -4367,21 +4495,21 @@ def test_incompatible_options(caplog):
 def test_tree_cleaning_recall_keeps_paragraphs(options, monkeypatch):
     "Recall undoes the deletions when they would remove every paragraph."
     doc = "<html><body><aside><p>only text</p></aside></body></html>"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is None
+    assert tree_cleaning(_html_tree(doc), options).find(".//p") is None
     options.focus = "recall"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+    assert tree_cleaning(_html_tree(doc), options).find(".//p") is not None
     # a user-added "p" deletes the paragraphs themselves
     monkeypatch.setattr(trafilatura.htmlprocessing, "MANUALLY_CLEANED", ["p"])
     doc = "<html><body><div><p>only text</p></div></body></html>"
-    assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+    assert tree_cleaning(_html_tree(doc), options).find(".//p") is not None
 
 
 def test_convert_tags_links_off_keeps_contained_links(options):
     "Without links, only links inside div, li, p (or tables) stay as ref, the tree root does not count."
     doc = "<div><a>root</a><span><a>loose</a></span><p><a>para</a></p><table><tr><td><a>cell</a></td></tr></table></div>"
     options.links, options.tables = False, True
-    converted = convert_tags(html.fromstring(doc), options)
+    converted = convert_tags(_html_tree(doc), options)
     assert [ref.text for ref in converted.iter("ref")] == ["para", "cell"]
     options.tables = False
-    converted = convert_tags(html.fromstring(doc), options)
+    converted = convert_tags(_html_tree(doc), options)
     assert [ref.text for ref in converted.iter("ref")] == ["para"]

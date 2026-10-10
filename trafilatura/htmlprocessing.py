@@ -5,11 +5,13 @@ Functions to process nodes in HTML code.
 
 import logging
 from copy import deepcopy
+from typing import Final, cast
 
-from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
-from lxml.html import HtmlElement
+from lxml.etree import Element, SubElement, tostring
+from lxml.etree import _Element as LxmlElement
 
 from .deduplication import duplicate_test
+from .dom import HtmlElement, XPath, _Element, strip_tags
 from .settings import (
     CUT_EMPTY_ELEMS,
     MANUALLY_CLEANED,
@@ -78,10 +80,21 @@ def _handle_forms(tree: HtmlElement) -> None:
             delete_element(form)
 
 
+_DATED_ARTICLES: Final[XPath] = XPath(".//article[h1[preceding-sibling::p/time]]")
+
+
 def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
     recover_math(tree)
+    for article in _DATED_ARTICLES(tree):
+        heading: HtmlElement = article.xpath("./h1")[0]
+        for stamp in heading.xpath("preceding-sibling::p/time"):
+            stamp.drop_tag()
+        if not options.images:
+            for figure, caption in reversed(_lead_captions(heading)):
+                caption.tag = "p"
+                figure.addnext(caption)
     # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     # forms are handled separately below, once the rest of the noise is gone. MANUALLY_CLEANED is
@@ -122,6 +135,17 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         _handle_forms(tree)
 
     return prune_html(tree, options.focus)
+
+
+def _lead_captions(heading: HtmlElement) -> list[tuple[HtmlElement, HtmlElement]]:
+    captions: Final[list[tuple[HtmlElement, HtmlElement]]] = []
+    for sibling in heading.itersiblings():
+        for element in sibling.iter("*"):
+            if element.tag == "p" and trim(element.text_content()):
+                return captions
+            if element.tag == "figcaption" and (parent := element.getparent()) is not None and parent.tag == "figure":
+                captions.append((parent, element))
+    return captions
 
 
 def prune_html(tree: HtmlElement, focus: str = "balanced") -> HtmlElement:
@@ -170,7 +194,7 @@ def is_paragraph_listing(links_xpath: list[HtmlElement]) -> bool:
     return True
 
 
-def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tuple[bool, bool]:
+def link_density_test(element: HtmlElement, favor_precision: bool = False, forum: bool = False) -> tuple[bool, bool]:
     "Remove sections which are rich in links (probably boilerplate), flag short linked ones."
     links_xpath = element.findall(".//ref")
     if not links_xpath:
@@ -195,7 +219,7 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
     if elemlen < limitlen:
         linklen, elemnum, shortelems, _ = collect_link_info(links_xpath)
         if elemnum == 0:
-            return True, False
+            return not (forum and element.find(".//article") is not None), False
         LOGGER.debug(
             "list link text/total: %s/%s – short elems/total: %s/%s",
             linklen,
@@ -237,6 +261,7 @@ def delete_by_link_density(
     tagname: str,
     backtracking: bool = False,
     favor_precision: bool = False,
+    forum: bool = False,
 ) -> HtmlElement:
     """Determine the link density of elements with respect to their length,
     and remove the elements identified as boilerplate."""
@@ -245,7 +270,7 @@ def delete_by_link_density(
     depth_threshold = 1 if favor_precision else 3
 
     for elem in subtree.iter(tagname):
-        result, short_with_links = link_density_test(elem, favor_precision)
+        result, short_with_links = link_density_test(elem, favor_precision, forum)
         if result or (
             backtracking
             and short_with_links
@@ -401,8 +426,15 @@ def convert_link(elem: HtmlElement, base_url: str | None) -> None:
         elem.set("target", target)
 
 
+_PLACEHOLDER_HEADING_LINKS: Final[XPath] = XPath(".//a[@href='#'][.//h1 or .//h2 or .//h3 or .//h4 or .//h5 or .//h6]")
+
+
 def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) -> HtmlElement:
     "Simplify markup and convert relevant HTML tags to an XML standard."
+    # Placeholder anchors around headings wrap cards; link pruning drops their details.
+    for elem in _PLACEHOLDER_HEADING_LINKS(tree):
+        elem.drop_tag()
+
     # delete links for faster processing
     if not options.links:
         containers = ("div", "li", "p", "table") if options.tables else ("div", "li", "p")
@@ -435,14 +467,14 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     if options.formatting:
         for elem in tree.iter(REND_TAG_MAPPING.keys()):
             elem.attrib.clear()
-            elem.set("rend", REND_TAG_MAPPING[elem.tag])  # type: ignore[index]
+            elem.set("rend", REND_TAG_MAPPING[cast("str", elem.tag)])
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
-        CONVERSIONS[elem.tag](elem)  # type: ignore[index]
+        CONVERSIONS[cast("str", elem.tag)](elem)
     # images
     if options.images:
         for elem in tree.iter("img"):
@@ -478,7 +510,7 @@ HTML_CONVERSIONS = {
 }
 
 
-def convert_to_html(tree: _Element) -> _Element:
+def convert_to_html(tree: LxmlElement) -> LxmlElement:
     "Convert XML to simplified HTML."
     for elem in tree.iter(HTML_CONVERSIONS.keys()):
         conversion = HTML_CONVERSIONS[str(elem.tag)]

@@ -8,13 +8,14 @@ import re
 from collections.abc import Iterable
 from copy import copy
 from html import unescape
-from typing import Any
+from typing import Any, Final
 
-from lxml.etree import Element, SubElement, _Element
-from lxml.html import HtmlElement, fragment_fromstring
+from lxml.etree import _Element as LxmlElement
+from lxml.html import HtmlElement as LxmlHtmlElement
 
+from .dom import Element, HtmlElement, SubElement, _Element, document_context, fragment_fromstring, to_lxml
 from .settings import BASIC_CLEAN_XPATH, DEDUPE_SCAN_CAP, MIN_DUPLICATE_LENGTH
-from .utils import HtmlInput, as_list, load_html, remove_control_characters, trim
+from .utils import HtmlInput, as_list, load_html_native, remove_control_characters, trim
 from .xml import delete_element
 
 # detection (not removal, unlike HTML_STRIP_TAGS): must not fire on comparison-operator prose
@@ -129,7 +130,7 @@ def _build_body(texts: Iterable[str], dedupe: bool = False) -> tuple[_Element, s
     postbody = Element("body")
     temp_text = ""
     for text in texts:
-        # strip control chars lxml rejects in .text (element inputs skip load_html's cleaning)
+        # strip control chars lxml rejects in .text (element inputs skip load_html_native's cleaning)
         text = remove_control_characters(text)
         # keep short paragraphs (<= MIN_DUPLICATE_LENGTH) even if they recur -- only long substring
         # repeats (e.g. a <p> nested in its <blockquote>) are artifacts. Scan capped at
@@ -164,7 +165,8 @@ def _collect_json_content(tree: HtmlElement) -> tuple[list[str], list[str]]:
     return bodies, teasers
 
 
-def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
+@document_context
+def baseline(filecontent: HtmlInput) -> tuple[LxmlElement, str, int]:
     """Use baseline extraction function targeting content in embedded JSON or text elements.
 
     Tries a series of sources and takes the first that yields enough text:
@@ -181,7 +183,12 @@ def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
         the main text as string, and its length as integer.
 
     """
-    tree = load_html(filecontent)
+    result: Final = baseline_tree(filecontent)
+    return to_lxml(result[0]), result[1], result[2]
+
+
+def baseline_tree(filecontent: HtmlInput) -> tuple[_Element, str, int]:
+    tree = load_html_native(filecontent)
     if tree is None:
         return Element("body"), "", 0
     if isinstance(filecontent, HtmlElement):
@@ -229,7 +236,7 @@ def baseline(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     body_elem = tree.find(".//body")
     if body_elem is not None:
         p_elem = SubElement(postbody, "p")
-        # strip control chars lxml rejects in .text (element inputs skip load_html's cleaning)
+        # strip control chars lxml rejects in .text (element inputs skip load_html_native's cleaning)
         p_elem.text = remove_control_characters("\n".join(text for e in body_elem.itertext() if (text := trim(e))))
         if not teaser or len(p_elem.text) >= teaser[2]:
             return postbody, p_elem.text, len(p_elem.text)
@@ -276,6 +283,7 @@ _BLOCK_ELEMS = {
 }
 
 
+@document_context
 def html2txt(content: HtmlInput, clean: bool = True) -> str:
     """Run basic html2txt on a document.
 
@@ -287,7 +295,7 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
         The extracted text in the form of a string or an empty string.
 
     """
-    tree = load_html(content)
+    tree = load_html_native(content)
     if tree is None:
         return ""
     if isinstance(content, HtmlElement):
@@ -296,7 +304,7 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
     if body is None:
         # a caller-supplied element without <body> is itself the content; a parsed
         # document without one (e.g. a feed) is not HTML text
-        if not isinstance(content, HtmlElement):
+        if not isinstance(content, (HtmlElement, LxmlHtmlElement)):
             return ""
         body = tree
     return _spaced_text(basic_cleaning(body) if clean else body)

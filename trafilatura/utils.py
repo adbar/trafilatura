@@ -11,7 +11,7 @@ import zlib
 from collections.abc import Callable, Iterable, Iterator, Mapping
 from functools import lru_cache
 from itertools import islice
-from typing import TYPE_CHECKING, Any, Literal, TypeAlias, cast
+from typing import TYPE_CHECKING, Any, Final, Literal, TypeAlias, cast
 from unicodedata import normalize
 
 # response compression
@@ -55,11 +55,15 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls, get_base_url
-from lxml.etree import _Element
-from lxml.html import HtmlElement, HTMLParser, fromstring
+from lxml.etree import LxmlError, _Element
+from lxml.html import HtmlElement as LxmlHtmlElement
+from lxml.html import HTMLParser, fromstring
 
 # response types
 from urllib3.response import HTTPResponse
+
+from .dom import HtmlElement, from_lxml, to_lxml_html
+from .dom import fromstring as dom_fromstring
 
 if TYPE_CHECKING:  # pragma: no cover
     from .settings import Document, Extractor
@@ -99,7 +103,7 @@ class Response:
 
 
 # accepted input for HTML loading
-HtmlInput: TypeAlias = HtmlElement | HTTPResponse | Response | bytes | str
+HtmlInput: TypeAlias = HtmlElement | LxmlHtmlElement | HTTPResponse | Response | bytes | str
 
 LOGGER = logging.getLogger(__name__)
 
@@ -110,10 +114,6 @@ FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.IGNORECASE)
 HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 # control characters
 INVALID_XML_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
-
-# note: htmldate could use HTML comments
-# huge_tree=True, remove_blank_text=True
-HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
 
 LINES_TRIMMING = re.compile(r"(?<![p{P}>])\n", flags=re.UNICODE | re.MULTILINE)
 
@@ -304,59 +304,70 @@ def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     return htmlstring
 
 
-def fromstring_bytes(htmlobject: str) -> HtmlElement | None:
-    "Try to pass bytes to LXML parser."
-    try:
-        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=HTML_PARSER)
-    except Exception as err:
-        LOGGER.error("lxml parser bytestring %s", err)
-    return None
+_HTML_PARSER: Final = HTMLParser(
+    collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True
+)
 
 
-def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
-    """Load object given as input and validate its type
-    (accepted: lxml.html tree, trafilatura/urllib3 response, bytestring and string).
-
-    Expects a full document: the dubious-HTML check below rejects a single-block
-    fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
-    Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
-    """
-    # use tree directly
-    if isinstance(htmlobject, HtmlElement):
+def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> LxmlHtmlElement | None:
+    """Retain lxml interoperability and caller-supplied tree identity."""
+    if isinstance(htmlobject, LxmlHtmlElement):
         return htmlobject
-    # use trafilatura or urllib3 responses directly
+    if isinstance(htmlobject, HtmlElement):
+        return to_lxml_html(htmlobject)
     if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
         htmlobject = htmlobject.data
-    # do not accept any other type after this point
     if not isinstance(htmlobject, (bytes, str)):
         raise TypeError("incompatible input type", type(htmlobject))
-    # start processing
-    tree = None
-    # try to guess encoding and decode file: if None then keep original
     htmlobject = decode_file(htmlobject, max_size)
-    # sanity checks
-    beginning = htmlobject[:50].lower()
-    check_flag = is_dubious_html(beginning)
-    # repair first
+    beginning: Final = htmlobject[:50].lower()
     htmlobject = repair_faulty_html(htmlobject, beginning)
-    # first pass: use Unicode string
-    fallback_parse = False
+    tree = None
+    fallback = False
     try:
-        tree = fromstring(htmlobject, parser=HTML_PARSER)
+        tree = fromstring(htmlobject, parser=_HTML_PARSER)
     except ValueError:
-        # "Unicode strings with encoding declaration are not supported."
         tree = fromstring_bytes(htmlobject)
-        fallback_parse = True
-    except Exception as err:  # pragma: no cover
-        LOGGER.error("lxml parsing failed: %s", err)
-    # second pass: try passing bytes to LXML
-    if (tree is None or len(tree) < 1) and not fallback_parse:
+        fallback = True
+    except LxmlError as error:
+        LOGGER.error("lxml parsing failed: %s", error)
+    if (tree is None or len(tree) < 1) and not fallback:
         tree = fromstring_bytes(htmlobject)
-    # rejection test: is it (well-formed) HTML at all?
-    # log parsing errors
-    if tree is not None and check_flag is True and len(tree) < 2:
+    if tree is not None and is_dubious_html(beginning) and len(tree) < 2:
         LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
-        tree = None
+        return None
+    return tree
+
+
+def fromstring_bytes(htmlobject: str) -> LxmlHtmlElement | None:
+    """Support encoding declarations and unpaired surrogates through lxml's byte parser."""
+    try:
+        return fromstring(htmlobject.encode("utf8", "surrogatepass"), parser=_HTML_PARSER)
+    except (LxmlError, ValueError) as error:
+        LOGGER.error("lxml parser bytestring %s", error)
+        return None
+
+
+def load_html_native(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement | None:
+    """Reject bare single-block fragments; wrap them in an extra element before extraction."""
+    if sys.version_info < (3, 11):
+        return load_html(htmlobject, max_size)
+    if isinstance(htmlobject, HtmlElement):
+        return htmlobject
+    if isinstance(htmlobject, LxmlHtmlElement):
+        return from_lxml(htmlobject)
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, "data"):
+        htmlobject = htmlobject.data
+    if not isinstance(htmlobject, (bytes, str)):
+        raise TypeError("incompatible input type", type(htmlobject))
+    htmlobject = decode_file(htmlobject, max_size)
+    beginning: Final = htmlobject[:50].lower()
+    htmlobject = repair_faulty_html(htmlobject, beginning)
+    # Replace unpaired surrogates before passing text to the native parser.
+    tree: Final = dom_fromstring(htmlobject.encode("utf8", "surrogatepass").decode("utf8", "replace"))
+    if is_dubious_html(beginning) and len(tree) < 2:
+        LOGGER.error("parsed tree length: %s, wrong data type or not valid HTML", len(tree))
+        return None
     return tree
 
 
@@ -472,7 +483,7 @@ def as_list(value: Any) -> list[Any]:
     return value if isinstance(value, list) else [value]
 
 
-def image_src(element: _Element) -> str | None:
+def image_src(element: _Element | HtmlElement) -> str | None:
     "Image source of an element: src, data-src, or the first data-src* attribute pointing to an image file."
     for attr in ("data-src", "src"):
         src = element.get(attr, "")
@@ -554,7 +565,7 @@ def language_filter(temp_text: str, temp_comments: str, target_language: str, do
     return False, docmeta
 
 
-def textfilter(element: _Element) -> bool:
+def textfilter(element: _Element | HtmlElement) -> bool:
     """Filter out unwanted text"""
     testtext = element.tail if element.text is None else element.text
     # to check: line len → continue if len(line) <= 5

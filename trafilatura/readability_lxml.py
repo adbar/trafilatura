@@ -25,10 +25,8 @@ from math import sqrt
 from operator import attrgetter
 from typing import Any
 
-from lxml.etree import tostring
-from lxml.html import HtmlElement, fragment_fromstring
-
-from .utils import load_html, trim
+from .dom import HtmlElement, fragment_fromstring, tostring
+from .utils import load_html_native, trim
 
 LOGGER = logging.getLogger(__name__)
 
@@ -103,6 +101,9 @@ class Document:
         self.min_text_length = min_text_length
 
     def summary(self) -> str:
+        return tostring(self.summary_tree(), encoding=str, method="xml")
+
+    def summary_tree(self) -> HtmlElement:
         """
         Given a HTML file, extracts the text of the article.
 
@@ -123,7 +124,7 @@ class Document:
             LOGGER.debug("No candidate found, returning raw html")
             body = self.doc.find("body")
             article = body if body is not None else self.doc
-        return self.sanitize(article, candidates)
+        return self.sanitize_tree(article, candidates)
 
     def get_article(self, candidates: dict[HtmlElement, Candidate], best_candidate: Candidate) -> HtmlElement:
         # Now that we have the top candidate, look through its siblings for
@@ -246,6 +247,9 @@ class Document:
                     child.drop_tree()
 
     def sanitize(self, node: HtmlElement, candidates: dict[HtmlElement, Candidate]) -> str:
+        return tostring(self.sanitize_tree(node, candidates), encoding=str, method="xml")
+
+    def sanitize_tree(self, node: HtmlElement, candidates: dict[HtmlElement, Candidate]) -> HtmlElement:
         for header in list(node.iter("h1", "h2", "h3", "h4", "h5", "h6")):
             if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
                 header.drop_tree()
@@ -315,7 +319,7 @@ class Document:
                         reason or "",
                     )
 
-        return tostring(node, encoding=str, method="xml")
+        return node
 
 
 # Port of isProbablyReaderable from mozilla/readability.js to Python.
@@ -350,7 +354,7 @@ def is_probably_readerable(html: HtmlElement, options: dict[str, Any] | None = N
     Decides whether or not the document is reader-able without parsing the whole thing.
     """
     options = options or {}
-    doc = load_html(html)
+    doc = load_html_native(html)
     if doc is None:
         return False
 

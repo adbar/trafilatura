@@ -8,16 +8,15 @@ import logging
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
 from justext.utils import get_stoplist, get_stoplists
-from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
-from lxml.html import HtmlElement
 
 # own
 from .baseline import basic_cleaning
+from .dom import Element, HtmlElement, SubElement, _Element, strip_tags, to_lxml_html, tostring
 from .htmlprocessing import convert_tags, prune_unwanted_nodes, tree_cleaning
 from .main_extractor import handle_image
 from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES, Extractor
-from .utils import fromstring_bytes, trim
+from .utils import trim
 from .xml import TEI_VALID_TAGS, delete_element
 from .xpaths import OVERALL_DISCARD_XPATH
 
@@ -36,12 +35,10 @@ def try_readability(htmlinput: HtmlElement) -> HtmlElement:
     """Safety net: try with the generic algorithm readability"""
     try:
         doc = ReadabilityDocument(htmlinput, min_text_length=25)
-        # force conversion to utf-8 (see #319)
-        summary = fromstring_bytes(doc.summary())
-        return summary if summary is not None else HtmlElement()
+        return doc.summary_tree()
     except Exception as err:
         LOGGER.warning("readability_lxml failed: %s", err)
-        return HtmlElement()
+        return Element("body")
 
 
 def _prefer_readability(
@@ -133,7 +130,7 @@ def compare_extraction(
 
     # post-processing: remove unwanted sections
     if use_readability:
-        body, text = sanitize_tree(body, options)  # type: ignore[arg-type]
+        body, text = sanitize_tree(body, options)
 
     return body, text
 
@@ -156,7 +153,7 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
         justext_stoplist = JT_STOPLIST or jt_stoplist_init()
     # extract
     try:
-        paragraphs = ParagraphMaker.make_paragraphs(tree)
+        paragraphs = ParagraphMaker.make_paragraphs(to_lxml_html(tree))
         classify_paragraphs(paragraphs, justext_stoplist, 50, 150, 0.1, 0.2, 0.25, True)
         revise_paragraph_classification(paragraphs, 150)
     except Exception as err:

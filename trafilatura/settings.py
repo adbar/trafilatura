@@ -12,8 +12,9 @@ from html import unescape
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from lxml.etree import Element, XPath, _Element
+from lxml.etree import Element, _Element
 
+from .dom import XPath
 from .utils import line_processing
 
 if TYPE_CHECKING:
@@ -438,8 +439,7 @@ _COOKIE_CONSENT_RE = (
 )
 BASIC_CLEAN_XPATH = XPath(
     ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style|.//svg|.//template"
-    f"|.//*[re:test(@class, '{_COOKIE_CONSENT_RE}', 'i') or re:test(@id, '{_COOKIE_CONSENT_RE}', 'i')]",
-    namespaces={"re": "http://exslt.org/regular-expressions"},
+    f"|.//*[re:test(@class, '{_COOKIE_CONSENT_RE}', 'i') or re:test(@id, '{_COOKIE_CONSENT_RE}', 'i')]"
 )
 
 TAG_CATALOG = frozenset(["code", "del", "head", "hi", "lb", "list", "p", "quote"])

@@ -16,10 +16,9 @@ from courlan import (
     validate_url,
 )
 from htmldate import find_date
-from lxml.etree import XPath
-from lxml.html import HtmlElement, tostring
 
 from .baseline import block_text
+from .dom import HtmlElement, XPath, document_context, to_lxml_html, tostring
 from .htmlprocessing import prune_unwanted_nodes
 from .json_metadata import (
     extract_json,
@@ -28,7 +27,7 @@ from .json_metadata import (
     normalize_json,
 )
 from .settings import Document, set_date_params
-from .utils import HTML_STRIP_TAGS, line_processing, load_html, safe_base_url, trim
+from .utils import HTML_STRIP_TAGS, line_processing, load_html_native, safe_base_url, trim
 from .xpaths import (
     AUTHOR_DISCARD_XPATHS,
     AUTHOR_XPATHS,
@@ -274,7 +273,7 @@ def examine_meta(tree: HtmlElement) -> Document:
         elif all(key not in elem.attrib for key in EXTRA_META):
             LOGGER.debug(
                 "unknown attribute: %s",
-                tostring(elem, pretty_print=False, encoding="unicode").strip(),
+                tostring(elem, encoding="unicode").strip(),
             )
 
     # backups
@@ -444,6 +443,7 @@ def extract_license(tree: HtmlElement) -> str | None:
     return None
 
 
+@document_context
 def extract_metadata(
     filecontent: HtmlElement | str,
     default_url: str | None = None,
@@ -469,7 +469,7 @@ def extract_metadata(
     date_config = {**date_config} if date_config else set_date_params(extensive)
 
     # load contents
-    tree = load_html(filecontent)
+    tree = load_html_native(filecontent)
     if tree is None:
         return Document()
 
@@ -510,7 +510,7 @@ def extract_metadata(
 
     # extract date with external module htmldate
     date_config["url"] = metadata.url
-    metadata.date = find_date(tree, **date_config)
+    metadata.date = find_date(to_lxml_html(tree), **date_config)
 
     # sitename
     if not metadata.sitename:
