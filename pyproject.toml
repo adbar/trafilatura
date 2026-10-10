@@ -59,7 +59,7 @@ dependencies = [
     "charset_normalizer >= 3.5.2",
     "courlan >= 1.4.0",
     "htmldate >= 1.11.0",
-    "turbohtml >= 1.14.1",
+    "turbohtml >= 1.14.1; python_version >= '3.11'",
     "lxml >= 6.1.3",
     "urllib3 >= 2.8.0, < 3",
 ]
