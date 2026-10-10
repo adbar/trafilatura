@@ -15,7 +15,7 @@ from lxml.html import HtmlElement as LxmlHtmlElement
 
 from .dom import Element, HtmlElement, SubElement, _Element, document_context, fragment_fromstring, to_lxml
 from .settings import BASIC_CLEAN_XPATH, DEDUPE_SCAN_CAP, MIN_DUPLICATE_LENGTH
-from .utils import HtmlInput, as_list, load_html, remove_control_characters, trim
+from .utils import HtmlInput, as_list, load_html_native, remove_control_characters, trim
 from .xml import delete_element
 
 # detection (not removal, unlike HTML_STRIP_TAGS): must not fire on comparison-operator prose
@@ -130,7 +130,7 @@ def _build_body(texts: Iterable[str], dedupe: bool = False) -> tuple[_Element, s
     postbody = Element("body")
     temp_text = ""
     for text in texts:
-        # strip control chars lxml rejects in .text (element inputs skip load_html's cleaning)
+        # strip control chars lxml rejects in .text (element inputs skip load_html_native's cleaning)
         text = remove_control_characters(text)
         # keep short paragraphs (<= MIN_DUPLICATE_LENGTH) even if they recur -- only long substring
         # repeats (e.g. a <p> nested in its <blockquote>) are artifacts. Scan capped at
@@ -189,7 +189,7 @@ def baseline(filecontent: HtmlInput) -> tuple[LxmlElement, str, int]:
 
 def baseline_tree(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     "baseline() on the internal tree type, for the extraction cascade."
-    tree = load_html(filecontent)
+    tree = load_html_native(filecontent)
     if tree is None:
         return Element("body"), "", 0
     if isinstance(filecontent, HtmlElement):
@@ -237,7 +237,7 @@ def baseline_tree(filecontent: HtmlInput) -> tuple[_Element, str, int]:
     body_elem = tree.find(".//body")
     if body_elem is not None:
         p_elem = SubElement(postbody, "p")
-        # strip control chars lxml rejects in .text (element inputs skip load_html's cleaning)
+        # strip control chars lxml rejects in .text (element inputs skip load_html_native's cleaning)
         p_elem.text = remove_control_characters("\n".join(text for e in body_elem.itertext() if (text := trim(e))))
         if not teaser or len(p_elem.text) >= teaser[2]:
             return postbody, p_elem.text, len(p_elem.text)
@@ -296,7 +296,7 @@ def html2txt(content: HtmlInput, clean: bool = True) -> str:
         The extracted text in the form of a string or an empty string.
 
     """
-    tree = load_html(content)
+    tree = load_html_native(content)
     if tree is None:
         return ""
     if isinstance(content, HtmlElement):
