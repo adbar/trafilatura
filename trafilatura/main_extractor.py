@@ -665,9 +665,12 @@ def _holds_most_of_the_text(tree: HtmlElement, expr: XPath) -> bool:
 def _entries_link_out(container: _Element) -> bool:
     """Whether every entry of the container is a teaser: its first heading links to a page of its
     own, which no other entry links to. Forum posts share the shape but open with the poster's
-    name, which comes back along the thread or carries no link at all."""
+    name, which comes back along the thread or carries no link at all, and they hold user cards
+    (description lists) and quotes, which teasers do not."""
     targets: set[str] = set()
     for entry in container.iterchildren("article"):
+        if entry.find(".//list[@rend='dl']") is not None or entry.find(".//quote") is not None:
+            return False
         heading = entry.find(".//head")
         link = heading.find(".//ref") if heading is not None else None
         if link is None:

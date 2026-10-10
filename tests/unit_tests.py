@@ -2963,13 +2963,18 @@ def test_listing_page_with_links_keeps_every_entry_heading():
         assert text in result
 
 
-def _forum_thread(posters, linked=True, forum_markup=False):
+def _forum_thread(posters, linked=True, forum_markup=False, card_in_dl=False, quoting=False):
     "Thread markup: sibling <article> posts, each opening with a user card that names its poster in a heading."
     name_markup = '<a href="/members/{0}/">{0}</a>' if linked else "<span>{0}</span>"
+    card = (
+        "<dl><dt>Joined</dt><dd>March 2015</dd><dt>Messages</dt><dd>1,447</dd></dl>"
+        if card_in_dl
+        else '<div class="user-title">Joined March 2015, 1,447 messages</div>'
+    )
     posts = "".join(
-        f'<article><div class="poster"><h4>{name_markup.format(name)}</h4>'
-        "<dl><dt>Joined</dt><dd>March 2015</dd><dt>Messages</dt><dd>1,447</dd></dl></div>"
-        f"<div><p>Reply {i} from {name} carries enough prose to count as a post, running over a couple "
+        f'<article><div class="poster"><h4>{name_markup.format(name)}</h4>{card}</div>'
+        + (f"<blockquote><p>{posters[i - 1]} wrote: see my reply above.</p></blockquote>" if quoting and i else "")
+        + f"<div><p>Reply {i} from {name} carries enough prose to count as a post, running over a couple "
         "of clauses so the thread reads as a real discussion between people.</p></div></article>"
         for i, name in enumerate(posters)
     )
@@ -2986,20 +2991,24 @@ def _forum_thread(posters, linked=True, forum_markup=False):
 
 
 @pytest.mark.parametrize(
-    "posters,linked,forum_markup",
+    "posters,markup",
     [
         # the same poster comes back along the thread
-        (["alice", "bob", "alice", "carol", "bob", "alice"], True, False),
+        (["alice", "bob", "alice", "carol", "bob", "alice"], {}),
         # poster names without a link
-        (["alice", "bob", "carol", "dave", "erin", "frank"], False, False),
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"linked": False}),
         # every poster different, but the page declares itself a forum thread
-        (["alice", "bob", "carol", "dave", "erin", "frank"], True, True),
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"forum_markup": True}),
+        # every poster different and no forum markup, but the user card is a description list
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"card_in_dl": True}),
+        # every poster different and no forum markup, but the replies quote the post before them
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"quoting": True}),
     ],
 )
 @pytest.mark.parametrize("settings", [{"favor_recall": True}, {"favor_recall": True, "fast": True}])
-def test_forum_thread_is_not_a_listing(posters, linked, forum_markup, settings):
+def test_forum_thread_is_not_a_listing(posters, markup, settings):
     "forum posts line up like listing entries, but taking their container brings every user card along"
-    doc = _forum_thread(posters, linked, forum_markup)
+    doc = _forum_thread(posters, **markup)
     with _without_listing_expression():
         expected = extract(doc, output_format="markdown", config=use_config(), **settings)
     result = extract(doc, output_format="markdown", config=use_config(), **settings) or ""
