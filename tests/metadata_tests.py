@@ -282,6 +282,39 @@ def test_url():
         assert extract_url(html.fromstring(doc)) == "https://example.org/p"
 
 
+@pytest.mark.parametrize("source", ["canonical", "og:url", "twitter:url", "default"])
+def test_metadata_url_query_parameters_are_not_html_entities(source):
+    target = "https://example.org/p?copy=4&id=7&not=6&reg=5&region=us&section=2&timestamp=5"
+    encoded = target.replace("&", "&amp;")
+    if source == "canonical":
+        tag = f'<link rel="canonical" href="{encoded}">'
+    elif source == "default":
+        tag = ""
+    elif source == "og:url":
+        tag = f'<meta property="{source}" content="{encoded}">'
+    else:
+        tag = f'<meta name="{source}" content="{encoded}">'
+    document = f"<html><head>{tag}</head><body><p>Article text.</p></body></html>"
+    metadata = extract_metadata(document, default_url=target if source == "default" else None)
+    assert metadata.url == target
+    assert metadata.hostname == "example.org"
+
+
+def test_metadata_image_query_parameters_are_not_html_entities():
+    target = "https://example.org/image.png?id=7&region=us&section=2&times=3"
+    document = f'<html><head><meta property="og:image" content="{target.replace("&", "&amp;")}"></head><body/></html>'
+    assert extract_metadata(document).image == target
+
+
+@pytest.mark.parametrize("slot", ["url", "image"])
+def test_clean_and_trim_preserves_url_fields(slot):
+    target = "https://example.org/?region=us&section=2&times=3&literal=&amp;copy;"
+    metadata = Document.from_dict({slot: f"  {target}\n", "description": "  Tom &amp; Jerry\n"})
+    metadata.clean_and_trim()
+    assert getattr(metadata, slot) == target
+    assert metadata.description == "Tom & Jerry"
+
+
 def test_description():
     """Test the extraction of descriptions"""
     metadata = extract_metadata('<html><head><meta itemprop="description" content="Description"/></head><body></body></html>')

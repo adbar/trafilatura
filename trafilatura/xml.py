@@ -8,7 +8,6 @@ import logging
 import re
 from collections.abc import Iterator
 from copy import deepcopy
-from html import unescape
 from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
@@ -805,7 +804,8 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
         _strip_block_whitespace(xmloutput)
     process_element(xmloutput, returnlist, include_formatting)
 
-    return unescape(sanitize("".join(returnlist), True) or "")
+    # The XML parser has already decoded entities in text and attributes.
+    return sanitize("".join(returnlist), True) or ""
 
 
 def xmltocsv(document: Document, include_formatting: bool, *, delim: str = "\t", null: str = "null") -> str:

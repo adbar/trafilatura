@@ -3919,6 +3919,34 @@ def test_markdown_link_angle_bracket_targets():
     assert _md(lt) == "![A](<http://x.com/a\\<b>)"
 
 
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_xmltotxt_does_not_decode_entities_twice(include_formatting):
+    body = b"<body><p>Decoded &amp; &lt; &gt; &#169;; literal &amp;copy; &amp;#169; &amp;region=us.</p></body>"
+    expected = "Decoded & < > ©; literal &copy; &#169; &region=us."
+    if include_formatting:
+        expected = expected.replace("<", "\\<")
+    assert _md(body, include_formatting=include_formatting) == expected
+
+
+@pytest.mark.parametrize("output_format", ["txt", "markdown", "json", "csv"])
+def test_link_query_parameters_are_not_html_entities(output_format):
+    target = "https://example.org/list?lang=en&region=us&section=2&times=3&copy=4&reg=5&not=6"
+    body = f'<p>See <a href="{target.replace("&", "&amp;")}">pricing page</a> now.</p>'
+    result = _extract_doc(body, output_format=output_format, include_links=True, fast=True)
+    assert result is not None
+    if output_format == "json":
+        result = json.loads(result)["text"]
+    assert f"[pricing page]({target})" in result
+
+
+def test_image_query_parameters_are_not_html_entities():
+    target = "https://example.org/image.png?id=7&region=us&section=2&times=3"
+    body = f'<p>Illustration <img src="{target.replace("&", "&amp;")}" alt="Example"> follows.</p>'
+    result = _extract_doc(body, output_format="markdown", include_images=True, fast=True)
+    assert result is not None
+    assert f"![Example]({target})" in result
+
+
 def test_xmltotxt_no_mutation():
     "xmltotxt must not mutate its input tree (math/emphasis passes run on a deepcopy)."
     tree = etree.fromstring(b'<body><p>formula \\(x\\) <hi rend="#b"><hi rend="#i">y</hi></hi></p></body>')
