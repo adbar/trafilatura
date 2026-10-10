@@ -138,7 +138,7 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
 
 
 def _lead_captions(heading: HtmlElement) -> list[tuple[HtmlElement, HtmlElement]]:
-    captions: list[tuple[HtmlElement, HtmlElement]] = []
+    captions: Final[list[tuple[HtmlElement, HtmlElement]]] = []
     for sibling in heading.itersiblings():
         for element in sibling.iter("*"):
             if element.tag == "p" and trim(element.text_content()):

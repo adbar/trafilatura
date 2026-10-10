@@ -9,7 +9,7 @@ import re
 import warnings
 from configparser import ConfigParser
 from copy import copy
-from typing import Any
+from typing import Any, Final
 
 from lxml.etree import strip_tags
 
@@ -274,9 +274,9 @@ def trafilatura_sequence(
 
     # Thread titles often sit outside the selected post container.
     if is_forum and (headings := tree.xpath(".//body//h1[not(ancestor-or-self::*[@hidden or @aria-hidden='true'])]")):
-        title = " ".join(headings[0].text_content().split())
+        title: Final = " ".join(headings[0].text_content().split())
         if title and title not in " ".join(temp_text.split()):
-            heading = Element("head")
+            heading: Final = Element("head")
             heading.text = title
             postbody.insert(0, heading)
             temp_text = " ".join(postbody.itertext()).strip()

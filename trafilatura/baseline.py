@@ -8,7 +8,7 @@ import re
 from collections.abc import Iterable
 from copy import copy
 from html import unescape
-from typing import Any
+from typing import Any, Final
 
 from lxml.etree import _Element as LxmlElement
 from lxml.html import HtmlElement as LxmlHtmlElement
@@ -183,12 +183,11 @@ def baseline(filecontent: HtmlInput) -> tuple[LxmlElement, str, int]:
         the main text as string, and its length as integer.
 
     """
-    body, text, length = baseline_tree(filecontent)
-    return to_lxml(body), text, length
+    result: Final = baseline_tree(filecontent)
+    return to_lxml(result[0]), result[1], result[2]
 
 
 def baseline_tree(filecontent: HtmlInput) -> tuple[_Element, str, int]:
-    "baseline() on the internal tree type, for the extraction cascade."
     tree = load_html_native(filecontent)
     if tree is None:
         return Element("body"), "", 0
