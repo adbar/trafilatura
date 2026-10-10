@@ -780,7 +780,16 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         # todo: unified stripping function, taking include_links into account
         strip_tags(subtree, "ref", "span")
         for elem in subtree.xpath(".//*"):
-            if elem.tag in potential_tags and (processed := handle_textnode(elem, options, comments_fix=True)) is not None:
+            # Descendants of an appended block already belong to the output.
+            if elem.tag not in potential_tags or comments_body in elem.iterancestors():
+                continue
+            if elem.tag == "p" and len(elem) > 0:
+                processed = handle_paragraphs(elem, potential_tags, options)
+                if processed is not None:
+                    processed.tail = elem.tail
+            else:
+                processed = handle_textnode(elem, options, comments_fix=True)
+            if processed is not None:
                 processed.attrib.clear()
                 comments_body.append(processed)
         # control
