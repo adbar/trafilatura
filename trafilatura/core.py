@@ -149,21 +149,21 @@ def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tup
 
 
 def _extract_and_compare(
-    cleaned_tree: HtmlElement, cleaned_tree_backup: HtmlElement, tree: HtmlElement, options: Extractor
+    cleaned_tree: HtmlElement, cleaned_tree_backup: HtmlElement, tree: HtmlElement, options: Extractor, is_forum: bool
 ) -> tuple[_Element, str]:
     "Cascade stages 1-2: main extractor, then the external comparison unless in fast mode."
-    postbody, temp_text = extract_content(cleaned_tree, options)
+    postbody, temp_text = extract_content(cleaned_tree, options, is_forum)
     if not options.fast:
         postbody, temp_text = compare_extraction(cleaned_tree_backup, copy(tree), postbody, temp_text, options)
     return postbody, temp_text
 
 
-def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None) -> tuple[_Element, str]:
+def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None, is_forum: bool) -> tuple[_Element, str]:
     """Stage-4 retry: re-run cascade stages 1-2 in recall mode on the escalation input
     (arrives comment-pruned, or intact on a thread-forum where posts are content).
     Deliberately no comment capture, no baseline (it already ran on the full page; on a
     comment-pruned tree it only yields an indistinguishable boilerplate dump), no escalation."""
-    return _extract_and_compare(*_prepare_tree(esc_tree, r_options, url), esc_tree, r_options)
+    return _extract_and_compare(*_prepare_tree(esc_tree, r_options, url), esc_tree, r_options, is_forum)
 
 
 def trafilatura_sequence(
@@ -209,7 +209,7 @@ def trafilatura_sequence(
         # and match the xpath's self::list (dl lists, disqus ids, and all lists if comments are on)
         cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
-    postbody, temp_text = _extract_and_compare(cleaned_tree, cleaned_tree_backup, tree, options)
+    postbody, temp_text = _extract_and_compare(cleaned_tree, cleaned_tree_backup, tree, options, is_forum)
 
     # 3. rescue: baseline on the original tree, accepted only if it adds text (#896)
     if len(temp_text) < options.min_extracted_size and options.focus != "precision":
@@ -240,7 +240,7 @@ def trafilatura_sequence(
         )
         r_text = ""
         try:
-            r_body, r_text = _recall_retry(esc_tree, r_options, url)
+            r_body, r_text = _recall_retry(esc_tree, r_options, url, is_forum)
         except Exception as err:  # pragma: no cover
             LOGGER.warning("recall retry failed: %s %s", err, url)
         # justext reaches div-buried content the rule retry misses (gated: ungated regressed

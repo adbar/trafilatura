@@ -2772,6 +2772,252 @@ def test_no_duplicate_content():
         assert out.count("Second synthetic paragraph") == 1
 
 
+def _listing_page(entries, container="main"):
+    "Blog-index markup: sibling <article> teasers, each a link-only heading plus its lead paragraph."
+    # each teaser clears min_extracted_size on its own, so only the page-share
+    # test flags the layout as under-extracted and escalates to recall
+    articles = "".join(
+        f'<article><header class="entry-header"><h2 class="entry-title">'
+        f'<a href="/{i}">{title}</a></h2></header>'
+        f'<div class="entry-summary"><p>{text}</p></div></article>'
+        for i, (title, text) in enumerate(entries)
+    )
+    tag = container.split()[0]
+    return f'<html><body><div id="wrapper"><{container}>{articles}</{tag}></div></body></html>'
+
+
+def _listing_entries():
+    return [
+        (
+            f"Entry number {i} about a self contained subject",
+            (
+                f"Teaser {i} carries enough prose to pass the extractor thresholds on its own, running "
+                f"over several clauses and a couple of sentences. It reads as a lead paragraph would, "
+                f"so nothing about this entry looks like boilerplate to the extractor, and the index "
+                f"page as a whole reads as a real body of text rather than a stub."
+            ),
+        )
+        for i in range(8)
+    ]
+
+
+def _without_listing_expression():
+    "The extractor as it was before #774: the listing expression never matches."
+    return patch("trafilatura.main_extractor.LISTING_BODY_XPATH", [etree.XPath("self::listing-disabled")])
+
+
+@pytest.mark.parametrize(
+    "settings",
+    [{}, {"fast": True}, {"favor_recall": True}, {"favor_recall": True, "fast": True}],
+)
+@pytest.mark.parametrize("container", ["main", 'div class="posts"'])
+def test_listing_page_keeps_every_entry_heading(settings, container):
+    "regression #774: an index page must not collapse to its first entry, losing every other heading."
+    entries = _listing_entries()
+    result = extract(_listing_page(entries, container), output_format="markdown", config=use_config(), **settings) or ""
+    for title, text in entries:
+        assert f"## {title}" in result
+        assert text in result
+
+
+@pytest.mark.parametrize("container", ["main", 'div class="posts"'])
+def test_listing_page_precision_unchanged(container):
+    "favor_precision never takes the listing container (#774), its output stays what it was."
+    doc = _listing_page(_listing_entries(), container)
+    with _without_listing_expression():
+        expected = extract(doc, output_format="markdown", favor_precision=True, config=use_config())
+    result = extract(doc, output_format="markdown", favor_precision=True, config=use_config())
+    assert result
+    assert result == expected
+
+
+@pytest.mark.parametrize("settings", [{}, {"favor_recall": True}, {"favor_precision": True}])
+def test_single_article_page_unaffected_by_listing_expression(settings):
+    "a page with one <article> has no sibling entries, so the listing expression must not change anything."
+    body = "".join(
+        f"<h2>Section {i} of the story</h2><p>Body paragraph {i} runs long enough to carry the page on "
+        "its own, with several clauses and a couple of sentences so the article clearly outweighs "
+        "anything beside it.</p>"
+        for i in range(5)
+    )
+    doc = (
+        f"<html><body><main><article><h1>The main article</h1>{body}</article>"
+        "<div><p>The author writes about gardens, soil and seasons, and has kept "
+        "a small allotment on the edge of town for more than twenty years now.</p></div>"
+        "</main></body></html>"
+    )
+    with _without_listing_expression():
+        expected = extract(doc, output_format="markdown", config=use_config(), **settings)
+    result = extract(doc, output_format="markdown", config=use_config(), **settings)
+    assert result == expected
+    for i in range(5):
+        assert f"## Section {i} of the story" in result
+    assert "allotment" not in result
+
+
+def test_listing_container_text_share():
+    "the listing expression only applies when the sibling-article container carries most of the page text"
+    from trafilatura.main_extractor import _holds_most_of_the_text
+    from trafilatura.xpaths import LISTING_BODY_XPATH
+
+    listing_expr = LISTING_BODY_XPATH[0]
+    listing = html.fromstring(_listing_page(_listing_entries()))
+    assert _holds_most_of_the_text(listing, listing_expr) is True
+
+    body = "<p>" + "A long body sentence that dominates the page. " * 20 + "</p>"
+    strip = _article_with_related_posts(body, [(f"Story {i}", f"Teaser {i}.") for i in range(3)])
+    assert _holds_most_of_the_text(html.fromstring(strip), listing_expr) is False
+
+    single = html.fromstring(f"<html><body><main><article>{body}</article></main></body></html>")
+    assert _holds_most_of_the_text(single, listing_expr) is False
+
+    empty = html.fromstring("<html><body><main><article></article><article></article></main></body></html>")
+    assert _holds_most_of_the_text(empty, listing_expr) is False
+
+
+def _article_with_related_posts(body, related):
+    "Article markup carrying a teaser strip: sibling <article> elements beside the real body."
+    teasers = "".join(
+        f'<article><header><h2 class="entry-title"><a href="/r{i}">{title}</a></h2></header><p>{text}</p></article>'
+        for i, (title, text) in enumerate(related)
+    )
+    return (
+        f'<html><body><div id="wrapper"><main>'
+        f"<article><h1>The main article</h1>{body}</article>"
+        f'<div class="related-posts"><h2>Recommended stories</h2>{teasers}</div>'
+        f"</main></div></body></html>"
+    )
+
+
+def test_related_posts_strip_does_not_replace_the_article_body():
+    "a teaser strip has the same shape as a listing, so recall must still return the body"
+    body = "".join(
+        f"<p>Body paragraph {i} runs long enough to carry the page on its own, with several "
+        f"clauses and a couple of sentences so the article clearly outweighs anything beside "
+        f"it. Nothing here looks like a teaser or like boilerplate to the extractor.</p>"
+        for i in range(6)
+    )
+    related = [(f"Recommended story {i}", f"Teaser {i}.") for i in range(3)]
+    html_doc = _article_with_related_posts(body, related)
+
+    result = extract(html_doc, output_format="markdown", favor_recall=True, config=use_config()) or ""
+
+    assert "Body paragraph 0" in result
+    assert "Body paragraph 5" in result
+    assert "Recommended story 0" not in result
+
+
+def test_article_page_ignores_related_posts_strip():
+    "the other side of #774: the same shape is a related-posts strip, which must not displace the body."
+    body = " ".join(
+        f"Sentence {i} of the actual article body, long enough that the extractor never escalates." for i in range(8)
+    )
+    related = "".join(f"<article><h2><a href='/r{i}'>Related teaser {i}</a></h2></article>" for i in range(3))
+    doc = (
+        f'<html><body><main><article class="post"><h1>The Real Headline</h1><p>{body}</p></article>'
+        f'<aside class="related"><div>{related}</div></aside></main></body></html>'
+    )
+    result = extract(doc, output_format="txt", config=use_config()) or ""
+    assert "Sentence 3 of the actual article body" in result
+    assert "Related teaser 1" not in result
+
+
+def test_teaser_strip_beside_a_short_body_does_not_replace_it():
+    "a teaser strip can outweigh a short article, but the body sits outside it, so recall keeps the body"
+    body = "<p>The short body of the story, a single paragraph that is still the actual article.</p>"
+    teasers = "".join(
+        f"<article><h2><a href='/r{i}'>Teaser headline {i}</a></h2>"
+        f"<p>Teaser text {i} runs over a clause or two, as a lead paragraph on a strip would.</p></article>"
+        for i in range(12)
+    )
+    doc = (
+        f"<html><body><main><article><h1>The Real Headline</h1>{body}</article>"
+        f"<section>{teasers}</section></main></body></html>"
+    )
+    result = extract(doc, output_format="markdown", favor_recall=True, config=use_config()) or ""
+    assert "The short body of the story" in result
+    assert "Teaser headline 3" not in result
+
+
+@pytest.mark.parametrize("settings", [{}, {"favor_recall": True}, {"favor_recall": True, "fast": True}])
+def test_preloaded_full_articles_are_not_a_listing(settings):
+    "an article page preloading the next full stories (correctiv) must not extract all of them"
+    with open(path.join(TEST_DIR, "cache", "correctiv.org.zusage.html"), "rb") as f:
+        doc = f.read()
+    with _without_listing_expression():
+        expected = extract(doc, config=use_config(), **settings)
+    result = extract(doc, config=use_config(), **settings)
+    assert result == expected
+    assert "Vorweg: Die beteiligten AfD-Politiker" in result
+    assert "Die AfD und der Deutschland-Kurier" not in result
+    assert "Geldstrafe für die AfD" not in result
+
+
+def test_listing_page_with_links_keeps_every_entry_heading():
+    "with links kept the heading targets live in another attribute, the listing must still be found"
+    entries = _listing_entries()
+    doc = _listing_page(entries)
+    result = extract(doc, output_format="markdown", include_links=True, config=use_config()) or ""
+    for i, (title, text) in enumerate(entries):
+        assert f"## [{title}](/{i})" in result
+        assert text in result
+
+
+def _forum_thread(posters, linked=True, forum_markup=False, card_in_dl=False, quoting=False):
+    "Thread markup: sibling <article> posts, each opening with a user card that names its poster in a heading."
+    name_markup = '<a href="/members/{0}/">{0}</a>' if linked else "<span>{0}</span>"
+    card = (
+        "<dl><dt>Joined</dt><dd>March 2015</dd><dt>Messages</dt><dd>1,447</dd></dl>"
+        if card_in_dl
+        else '<div class="user-title">Joined March 2015, 1,447 messages</div>'
+    )
+    posts = "".join(
+        f'<article><div class="poster"><h4>{name_markup.format(name)}</h4>{card}</div>'
+        + (f"<blockquote><p>{posters[i - 1]} wrote: see my reply above.</p></blockquote>" if quoting and i else "")
+        + f"<div><p>Reply {i} from {name} carries enough prose to count as a post, running over a couple "
+        "of clauses so the thread reads as a real discussion between people.</p></div></article>"
+        for i, name in enumerate(posters)
+    )
+    json_ld = (
+        '<script type="application/ld+json">{"@context": "https://schema.org", '
+        '"@type": "DiscussionForumPosting", "headline": "A thread"}</script>'
+        if forum_markup
+        else ""
+    )
+    return (
+        f"<html><head>{json_ld}</head><body><div id='wrapper'><main>"
+        f"<div class='thread'>{posts}</div></main></div></body></html>"
+    )
+
+
+@pytest.mark.parametrize(
+    "posters,markup",
+    [
+        # the same poster comes back along the thread
+        (["alice", "bob", "alice", "carol", "bob", "alice"], {}),
+        # poster names without a link
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"linked": False}),
+        # every poster different, but the page declares itself a forum thread
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"forum_markup": True}),
+        # every poster different and no forum markup, but the user card is a description list
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"card_in_dl": True}),
+        # every poster different and no forum markup, but the replies quote the post before them
+        (["alice", "bob", "carol", "dave", "erin", "frank"], {"quoting": True}),
+    ],
+)
+@pytest.mark.parametrize("settings", [{"favor_recall": True}, {"favor_recall": True, "fast": True}])
+def test_forum_thread_is_not_a_listing(posters, markup, settings):
+    "forum posts line up like listing entries, but taking their container brings every user card along"
+    doc = _forum_thread(posters, **markup)
+    with _without_listing_expression():
+        expected = extract(doc, output_format="markdown", config=use_config(), **settings)
+    result = extract(doc, output_format="markdown", config=use_config(), **settings) or ""
+    assert result == expected
+    assert result.count("Joined") < len(posters)
+    for i in range(len(posters)):
+        assert f"Reply {i} from" in result
+
+
 def test_short_document_keeps_structure():
     "regression #896: the baseline rescue must not flatten a valid short extraction it cannot improve on."
     doc = (

@@ -8,7 +8,7 @@ import re  # import regex as re
 from copy import deepcopy
 from urllib.parse import urljoin
 
-from lxml.etree import Element, SubElement, _Element, strip_elements, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
 
 # own
@@ -35,6 +35,7 @@ from .xpaths import (
     COMMENTS_DISCARD_XPATH,
     COMMENTS_XPATH,
     DISCARD_IMAGE_ELEMENTS,
+    LISTING_BODY_XPATH,
     OVERALL_DISCARD_XPATH,
     PRECISION_DISCARD_XPATH,
     TEASER_DISCARD_XPATH,
@@ -644,7 +645,66 @@ def prune_unwanted_sections(
     return tree
 
 
-def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[str]]:
+# A sibling-article container is the body of a listing page, but on an article page the same
+# shape is a teaser strip ("recommended stories") sitting beside the body. Only the listing
+# container carries the bulk of the page, so that share is what tells the two apart.
+LISTING_TEXT_SHARE = 0.6
+
+
+def _holds_most_of_the_text(tree: HtmlElement, expr: XPath) -> bool:
+    "Whether the first element matched by expr carries most of the text of the tree."
+    match = next((s for s in expr(tree) if s is not None), None)
+    if match is None:
+        return False
+    page_length = len(trim(" ".join(tree.itertext())))
+    if not page_length:
+        return False
+    return len(trim(" ".join(match.itertext()))) / page_length >= LISTING_TEXT_SHARE
+
+
+def _entries_link_out(container: _Element) -> bool:
+    """Whether every entry of the container is a teaser: its first heading links to a page of its
+    own, which no other entry links to. Forum posts share the shape but open with the poster's
+    name, which comes back along the thread or carries no link at all, and they hold user cards
+    (description lists) and quotes, which teasers do not."""
+    targets: set[str] = set()
+    for entry in container.iterchildren("article"):
+        if entry.find(".//list[@rend='dl']") is not None or entry.find(".//quote") is not None:
+            return False
+        heading = entry.find(".//head")
+        link = heading.find(".//ref") if heading is not None else None
+        if link is None:
+            return False
+        # convert_tags keeps the href when links are off and moves it to target when they are on
+        target = link.get("href") or link.get("target")
+        if not target or target in targets:
+            return False
+        targets.add(target)
+    return True
+
+
+def _is_listing_page(tree: HtmlElement, options: Extractor) -> bool:
+    """Whether the sibling-article container is the body of a listing page. The container only
+    widens what BODY_XPATH would take on its own: that element has to be one of its entries and a
+    short teaser. A body outside the container means a teaser strip beside the article, and an
+    entry that already clears the recall "sure thing" length is a full article, as on pages that
+    preload the next stories below the current one. Every entry also has to be a teaser that
+    links out from its heading."""
+    listing_expr = LISTING_BODY_XPATH[0]
+    container = next((s for s in listing_expr(tree) if s is not None), None)
+    if container is None:
+        return False
+    entry = next((s for expr in BODY_XPATH for s in expr(tree) if s is not None), None)
+    if entry is None or entry.getparent() is not container:
+        return False
+    if len(trim(" ".join(entry.itertext()))) > options.min_extracted_size * 10:
+        return False
+    if not _entries_link_out(container):
+        return False
+    return _holds_most_of_the_text(tree, listing_expr)
+
+
+def _extract(tree: HtmlElement, options: Extractor, is_forum: bool = False) -> tuple[_Element, str, set[str]]:
     # init
     potential_tags = set(TAG_CATALOG)
     if options.tables is True:
@@ -654,8 +714,12 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
     if options.links is True:
         potential_tags.add("ref")
     result_body = Element("body")
+    expressions = BODY_XPATH
+    # the posts of a thread forum line up the same way, each with its user card and quotes
+    if options.focus == "recall" and not is_forum and _is_listing_page(tree, options):
+        expressions = LISTING_BODY_XPATH + BODY_XPATH
     # iterate
-    for expr in BODY_XPATH:
+    for expr in expressions:
         # select tree if the expression has been found
         subtree = next((s for s in expr(tree) if s is not None), None)
         if subtree is None:
@@ -721,16 +785,17 @@ def _extract(tree: HtmlElement, options: Extractor) -> tuple[_Element, str, set[
     return result_body, temp_text, potential_tags
 
 
-def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
+def extract_content(cleaned_tree: HtmlElement, options: Extractor, is_forum: bool = False) -> tuple[_Element, str]:
     """Find the main content of a page using a set of XPath expressions,
     then extract relevant elements, strip them of unwanted subparts and
-    convert them"""
+    convert them. is_forum marks a thread forum, whose posts are never
+    read as the entries of a listing page."""
     # backup
     backup_tree = deepcopy(cleaned_tree)
     # source order before the main pass moves elements, the backup keeps it
     order = list(cleaned_tree.iter())
 
-    result_body, temp_text, potential_tags = _extract(cleaned_tree, options)
+    result_body, temp_text, potential_tags = _extract(cleaned_tree, options, is_forum)
 
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
