@@ -3525,6 +3525,12 @@ def test_list_processing():
     </list>"""
         in my_result
     )
+    # txt/markdown output: definition follows its term without a list marker (GH #4)
+    expected_dl_render = "- Coffee\n  Black hot drink\n- Milk\n  White cold drink"
+    my_result = extract(htmlstring, fast=True, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
+    assert expected_dl_render in my_result
+    my_result = extract(htmlstring, fast=True, output_format="txt", config=ZERO_CONFIG)
+    assert expected_dl_render in my_result
     # list items whose only content is a link must be kept (GH #788)
     htmlstring = """<html><body><article>
 <p>If your eye is twitching and you do not have other symptoms, here are some common everyday causes worth knowing about.</p>
