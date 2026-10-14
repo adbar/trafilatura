@@ -31,6 +31,40 @@ def test_search():
     assert not sitemaps.sitemap_search("https://bogusdomain.net/")
 
 
+@pytest.mark.parametrize(("nested", "plain_text"), [(False, False), (True, False), (False, True)])
+def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
+    root = "https://example.org/sitemap.xml" if nested or not plain_text else "https://example.org/sitemap"
+    first = ["https://example.org/b", "https://example.org/a", "https://example.org/b"]
+    second = ["https://example.org/b", "https://example.org/c"]
+
+    def content(urls):
+        if plain_text:
+            return "\n".join(urls)
+        return "<urlset>" + "".join(f"<url><loc>{url}</loc></url>" for url in urls) + "</urlset>"
+
+    pages = {root: content(first)}
+    expected = ["https://example.org/a", "https://example.org/b"]
+    if nested:
+        first_url = "https://example.org/sitemap-a.xml"
+        second_url = "https://example.org/sitemap-b.xml"
+        pages = {
+            root: (
+                "<sitemapindex>"
+                f"<sitemap><loc>{first_url}</loc></sitemap>"
+                f"<sitemap><loc>{second_url}</loc></sitemap>"
+                "</sitemapindex>"
+            ),
+            first_url: content(first),
+            second_url: content(second),
+        }
+        expected.append("https://example.org/c")
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: pages.get(url))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(root) == expected
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling
