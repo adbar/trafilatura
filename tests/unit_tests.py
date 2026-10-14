@@ -4026,6 +4026,54 @@ def test_xmltotxt_no_mutation():
     assert etree.tostring(tree, encoding="unicode") == before  # source tree untouched
 
 
+@pytest.mark.parametrize("include_formatting", [True, False])
+@pytest.mark.parametrize("nested", [True, False])
+def test_ordered_list_numbering_does_not_rescan_sibling_prefixes(include_formatting, nested):
+    "Number flat and nested lists without repeated sibling scans or source mutations."
+    visits = 0
+
+    class CountedElement(etree.ElementBase):
+        def itersiblings(self, *args, **kwargs):
+            nonlocal visits
+            for sibling in super().itersiblings(*args, **kwargs):
+                visits += 1
+                yield sibling
+
+    parser = etree.XMLParser()
+    parser.set_element_class_lookup(etree.ElementDefaultClassLookup(element=CountedElement))
+    size = 100
+    source = '<body><list rend="ol">' + "".join(f"<item>Entry {i}</item>" for i in range(size)) + "</list></body>"
+    if nested:
+        source = source.replace(
+            "Entry 99</item>",
+            'Entry 99<list rend="ol"><item>Nested entry</item></list>after nested</item>',
+        )
+    tree = etree.fromstring(source, parser)
+    before = etree.tostring(tree)
+
+    result = xml.xmltotxt(tree, include_formatting)
+
+    expected = [f"{i + 1}. Entry {i}" if include_formatting else f"- Entry {i}" for i in range(size)]
+    if nested:
+        expected.extend(
+            ["     1. Nested entry", "", "     after nested"] if include_formatting else ["  - Nested entry", "after nested"]
+        )
+    assert result.strip().splitlines() == expected
+    assert visits == 0
+    assert etree.tostring(tree) == before
+    assert xml._list_marker(tree[0][-1], include_formatting) == ("100. " if include_formatting else "- ")
+
+
+def test_ordered_list_numbers_ignore_non_item_children():
+    "Preserve numbering when malformed lists contain nested lists without item wrappers."
+    tree = etree.fromstring(
+        '<body><list rend="ol"><item>Outer<list rend="ol"><item>First</item>'
+        '<list rend="ol"><list rend="ol"><item>Nested</item></list>after</list>'
+        "</list></item></list></body>"
+    )
+    assert xml.xmltotxt(tree, True) == "1. Outer\n   1. First\n   1. Nested\n\n      after\n"
+
+
 def test_math_conversion():
     "LaTeX math delimiters are converted to $ notation; unmatched delimiters and code are left alone."
     # inline math \(...\) → $...$
