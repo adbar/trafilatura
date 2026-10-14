@@ -93,6 +93,100 @@ def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
     assert fetched == ([root, nested] if index else [root])
 
 
+@pytest.fixture
+def no_sitemap_network(monkeypatch):
+    def unexpected_request(*args, **kwargs):
+        pytest.fail("Parsing supplied sitemap text must not make network requests")
+
+    monkeypatch.setattr(sitemaps, "fetch_url", unexpected_request)
+    monkeypatch.setattr(sitemaps, "is_live_page", unexpected_request)
+
+
+@pytest.mark.parametrize(
+    ("content", "url", "expected"),
+    [
+        (
+            (
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+                "<url><loc>https://example.org/z</loc></url>"
+                "<url><loc>https://example.org/a</loc></url>"
+                "<url><loc>https://example.org/z</loc></url></urlset>"
+            ),
+            "https://example.org/sitemap.xml",
+            ["https://example.org/a", "https://example.org/z"],
+        ),
+        (
+            "<urlset><url><loc>https://example.org/article.xml</loc></url></urlset>",
+            "https://example.org/sitemap.xml",
+            ["https://example.org/article.xml"],
+        ),
+        (
+            "\n  <urlset><url><loc>https://example.org/a</loc></url></urlset>",
+            "https://example.org/sitemap.xml",
+            ["https://example.org/a"],
+        ),
+        (
+            "\ufeff<urlset><url><loc>https://example.org/a</loc></url></urlset>",
+            "https://example.org/sitemap.xml",
+            ["https://example.org/a"],
+        ),
+        (
+            (
+                "<sitemapindex><sitemap><loc>https://example.org/part.xml</loc></sitemap>"
+                "<sitemap><loc>https://example.org/custom-map</loc></sitemap></sitemapindex>"
+            ),
+            "https://example.org/sitemap.xml",
+            ["https://example.org/custom-map", "https://example.org/part.xml"],
+        ),
+        (
+            "https://example.org/z\nhttps://example.org/a\nhttps://example.org/z",
+            "https://example.org/sitemap.txt",
+            ["https://example.org/a", "https://example.org/z"],
+        ),
+        ("<urlset/>", "invalid-url", []),
+        ("", "https://example.org/sitemap.xml", []),
+        ("not a sitemap", "https://example.org/sitemap.xml", []),
+        ('<html><a href="https://example.org/a">a</a></html>', "https://example.org/sitemap.txt", []),
+        ("<urlset>\ud800</urlset>", "https://example.org/sitemap.xml", []),
+    ],
+)
+def test_parse_sitemap_text_without_fetching(no_sitemap_network, content, url, expected):
+    assert sitemaps.parse_sitemap(content, url) == expected
+
+
+@pytest.mark.parametrize("external", [False, True])
+def test_parse_sitemap_text_domain_filter(no_sitemap_network, external):
+    content = "<urlset><url><loc>https://example.org/a</loc></url><url><loc>https://otherdomain.net/b</loc></url></urlset>"
+    expected = ["https://example.org/a"]
+    if external:
+        expected.append("https://otherdomain.net/b")
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", external=external) == expected
+
+
+@pytest.mark.parametrize("target_lang", ["en", "de"])
+def test_parse_sitemap_text_language_filter(no_sitemap_network, target_lang):
+    content = "<urlset><url><loc>https://example.org/en/a</loc></url><url><loc>https://example.org/de/b</loc></url></urlset>"
+    expected = [f"https://example.org/{target_lang}/{'a' if target_lang == 'en' else 'b'}"]
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", target_lang=target_lang) == expected
+
+
+@pytest.mark.parametrize("content", [b"<urlset/>", None, 42])
+@pytest.mark.parametrize("url", ["https://example.org/sitemap.xml", "https://example.org/sitemap.txt"])
+def test_parse_sitemap_text_rejects_non_text_content(no_sitemap_network, content, url):
+    with pytest.raises(TypeError, match="content must be a string"):
+        sitemaps.parse_sitemap(content, url)
+
+
+def test_parse_sitemap_text_relative_language_alternate(no_sitemap_network):
+    content = (
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+        "<url><loc>https://example.org/en/a</loc>"
+        '<xhtml:link rel="alternate" hreflang="de" href="/de/a"/>'
+        "</url></urlset>"
+    )
+    assert sitemaps.parse_sitemap(content, "https://example.org/sitemap.xml", target_lang="de") == ["https://example.org/de/a"]
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling

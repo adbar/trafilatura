@@ -190,6 +190,44 @@ class SitemapObject:
         self.extract_sitemap_links()
 
 
+def parse_sitemap(
+    content: str,
+    url: str,
+    target_lang: str | None = None,
+    external: bool = False,
+) -> list[str]:
+    """Extract links from caller-provided sitemap text without network requests.
+
+    Args:
+        content: Decoded XML or plain-text sitemap content.
+        url: The sitemap URL, used for domain filtering.
+        target_lang: Optional two-letter language code for URL filtering.
+        external: Include links from other domains.
+
+    Returns:
+        Sorted unique links. For an index, these are nested sitemap URLs;
+        their contents must be fetched and parsed separately by the caller.
+
+    Raises:
+        TypeError: If content is not a string.
+    """
+    if not isinstance(content, str):
+        raise TypeError("content must be a string")
+    domainname, baseurl = get_hostinfo(url)
+    if domainname is None:
+        LOGGER.warning("invalid URL: %s", url)
+        return []
+    sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
+    sitemap.current_url = url
+    sitemap.content = content.lstrip("\ufeff \t\r\n")
+    try:
+        sitemap.process()
+    except UnicodeEncodeError:
+        LOGGER.warning("invalid Unicode in sitemap: %s", url)
+        return []
+    return filter_urls(sitemap.urls + sitemap.sitemap_urls, None)
+
+
 def sitemap_search(
     url: str,
     target_lang: str | None = None,
