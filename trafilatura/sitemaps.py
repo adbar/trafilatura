@@ -90,7 +90,7 @@ class SitemapObject:
         self.content = fetch_url(self.current_url, config=self.config) or ""
         self.seen.add(self.current_url)
 
-    def handle_link(self, link: str) -> None:
+    def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
         """Examine a link and determine if it's valid and if it leads to
         a sitemap or a web page."""
         if link == self.current_url:  # safety check
@@ -115,7 +115,9 @@ class SitemapObject:
             LOGGER.warning("link discarded, diverging domain names: %s %s", self.domain, newdomain)
             return
 
-        if DETECT_SITEMAP_LINK.search(link):
+        if is_sitemap is None:
+            is_sitemap = bool(DETECT_SITEMAP_LINK.search(link))
+        if is_sitemap:
             self.sitemap_urls.append(link)
         else:
             self.urls.append(link)
@@ -159,7 +161,14 @@ class SitemapObject:
         for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
             if len(element) == 0 and element.text and element.text.startswith("http"):
-                self.handle_link(element.text)
+                parent = element.getparent()
+                parent_tag = parent.tag if parent is not None else None
+                is_sitemap = None
+                if parent_tag in ("sitemap", f"{{{SITEMAP_NAMESPACE}}}sitemap"):
+                    is_sitemap = True
+                elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
+                    is_sitemap = False
+                self.handle_link(element.text, is_sitemap=is_sitemap)
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."

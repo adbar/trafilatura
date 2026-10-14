@@ -65,6 +65,34 @@ def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
     assert sitemaps.sitemap_search(root) == expected
 
 
+@pytest.mark.parametrize("namespace", ["", ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'])
+@pytest.mark.parametrize("index", [False, True])
+def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
+    root = "https://example.org/sitemap.xml"
+    page = "https://example.org/article.xml"
+    nested = "https://example.org/custom-map"
+    page_map = f"<urlset{namespace}><url><loc>{page}</loc></url></urlset>"
+    if index:
+        pages = {
+            root: f"<sitemapindex{namespace}><sitemap><loc>{nested}</loc></sitemap></sitemapindex>",
+            nested: page_map,
+        }
+    else:
+        pages = {root: page_map}
+    fetched = []
+
+    def fetch(url, **kwargs):
+        fetched.append(url)
+        return pages.get(url)
+
+    monkeypatch.setattr(sitemaps, "fetch_url", fetch)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(root) == [page]
+    assert fetched == ([root, nested] if index else [root])
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling
