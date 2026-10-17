@@ -103,9 +103,13 @@ _UNESCAPED_BRACKET_RE = re.compile(r"((?<![\\`])(`+)(?!`).+?(?<!`)\2(?!`))|(?<!\
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
-# the very same spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
-# escaping has to step over exactly the regions _convert_math rewrites, and nothing else
-_MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\))")
+# formulas already in $ notation, recognized with Pandoc's tex_math_dollars rules so that dollar
+# amounts stay prose: $$...$$, or $...$ on one line whose opening $ is followed by a non-space and
+# whose closing $ is preceded by a non-space and not followed by a digit; \$ is never a delimiter
+_DOLLAR_MATH = r"(?<![\\$])\$\$[^$]+?\$\$|(?<![\\$])\$(?=[^\s$])[^$\n]*?(?<=[^\s\\])\$(?!\d)"
+# all of these spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
+# escaping has to step over exactly the formulas, and nothing else (_convert_math leaves $ ones as is)
+_MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\)|" + _DOLLAR_MATH + ")")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
