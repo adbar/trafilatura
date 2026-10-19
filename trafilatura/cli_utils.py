@@ -18,6 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
+from collections import deque
 from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -433,7 +434,6 @@ def file_processing_pipeline(args: argparse.Namespace) -> None:
     "Define batches for parallel file processing and perform the extraction."
     filecounter = -1
     options = args_to_extractor(args)
-    timeout = options.config.getint("DEFAULT", "EXTRACTION_TIMEOUT")
 
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
@@ -442,7 +442,7 @@ def file_processing_pipeline(args: argparse.Namespace) -> None:
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(file_processing, args=args, counter=filecounter, options=options)
-            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
+            deque(executor.map(worker, filebatch, chunksize=10), maxlen=0)
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)
