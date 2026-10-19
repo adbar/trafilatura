@@ -223,8 +223,12 @@ def write_result(
 
 def generate_filelist(inputdir: str) -> Generator[str, None, None]:
     "Walk the directory tree and output all file names."
+
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
-    for root, _, files in os.walk(inputdir):
+    def raise_error(error: OSError) -> None:
+        raise error
+
+    for root, _, files in os.walk(inputdir, onerror=raise_error):
         for filename in files:
             yield os.path.join(root, filename)
 
