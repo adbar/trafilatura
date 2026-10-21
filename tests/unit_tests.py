@@ -3981,6 +3981,10 @@ def test_dollar_math_is_not_commonmark_escaped():
     # an opening $ needs a non-space after it, and an escaped \\$ is no delimiter
     assert _md(b"<body><p>a $ b_c $ d</p></body>") == "a $ b\\_c $ d"
     assert _md(b"<body><p>\\$a_b$</p></body>") == "\\$a\\_b$"
+    # shell variables are not math: a closing $ is not followed by a word character, "(" or "{"
+    assert _md(b'<body><p>set $env:MY_PATH = "$(pwd)/bin"</p></body>') == 'set $env:MY\\_PATH = "$(pwd)/bin"'
+    assert _md(b"<body><p>export PATH=$HOME/my_bin:$PATH</p></body>") == "export PATH=$HOME/my\\_bin:$PATH"
+    assert _md(b"<body><p>echo $my_dir/${file_name}</p></body>") == "echo $my\\_dir/${file\\_name}"
     # end to end, as reported in #986
     doc = (
         "<html><body><article><p>The measured response follows $V_i = B V^h$. Each parameter is "

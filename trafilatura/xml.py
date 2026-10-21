@@ -105,8 +105,10 @@ _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
 # formulas already in $ notation, recognized with Pandoc's tex_math_dollars rules so that dollar
 # amounts stay prose: $$...$$, or $...$ on one line whose opening $ is followed by a non-space and
-# whose closing $ is preceded by a non-space and not followed by a digit; \$ is never a delimiter
-_DOLLAR_MATH = r"(?<![\\$])\$\$[^$]+?\$\$|(?<![\\$])\$(?=[^\s$])[^$\n]*?(?<=[^\s\\])\$(?!\d)"
+# whose closing $ is preceded by a non-space and not followed by a digit; \$ is never a delimiter.
+# The closing $ is also not followed by a letter, "_", "(" or "{", so that shell variables such as
+# $HOME/bin:$PATH or "$(pwd)" stay prose
+_DOLLAR_MATH = r"(?<![\\$])\$\$[^$]+?\$\$|(?<![\\$])\$(?=[^\s$])[^$\n]*?(?<=[^\s\\])\$(?![\w({])"
 # all of these spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
 # escaping has to step over exactly the formulas, and nothing else (_convert_math leaves $ ones as is)
 _MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\)|" + _DOLLAR_MATH + ")")
