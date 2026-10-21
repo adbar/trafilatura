@@ -18,7 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -221,14 +221,16 @@ def write_result(
                 outputfile.write(result)
 
 
-def generate_filelist(inputdir: str) -> Generator[str, None, None]:
-    "Walk the directory tree and output all file names."
+def generate_filelist(inputdir: str, onerror: Callable[[OSError], None] | None = None) -> Generator[str, None, None]:
+    "Walk the directory tree and report errors without skipping readable paths."
+
+    def handle_error(error: OSError) -> None:
+        LOGGER.error("Cannot read input directory %s", error)
+        if onerror is not None:
+            onerror(error)
 
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
-    def raise_error(error: OSError) -> None:
-        raise error
-
-    for root, _, files in os.walk(inputdir, onerror=raise_error):
+    for root, _, files in os.walk(inputdir, onerror=handle_error):
         for filename in files:
             yield os.path.join(root, filename)
 
@@ -463,10 +465,14 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     exit_code = 0
     options = args_to_extractor(args)
 
+    def handle_walk_error(_error: OSError) -> None:
+        nonlocal exit_code
+        exit_code = 1
+
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+        for filebatch in make_chunks(generate_filelist(args.input_dir, onerror=handle_walk_error), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
