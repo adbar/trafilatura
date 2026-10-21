@@ -735,8 +735,12 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < options.min_extracted_size:
-        # copies of what the main pass consumed are not recovered again
-        consumed: set[_Element] = {twin for elem, twin in zip(order, backup_tree.iter(), strict=True) if elem.tag == "done"}
+        # Consumed sources are marked done or have moved into the output tree.
+        consumed: set[_Element] = {
+            twin
+            for elem, twin in zip(order, backup_tree.iter(), strict=True)
+            if elem.tag == "done" or elem.getroottree().getroot() is result_body
+        }
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags, consumed)
         temp_text = " ".join(result_body.itertext()).strip()
     # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
