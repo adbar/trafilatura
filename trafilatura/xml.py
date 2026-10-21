@@ -495,7 +495,13 @@ def _last_char(returnlist: list[str]) -> str:
 
 def _list_marker(item: _Element, include_formatting: bool = True) -> str:
     "Markdown marker of a list item: 'N. ' or '- ' with nesting indent."
-    indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
+    # a nested list starts where the text of its parent item starts (CommonMark):
+    # 2 spaces after '- ', but 3 after '1. ' and 4 after '10. '
+    outer = next(item.iterancestors("item"), None)
+    if outer is not None:
+        indent = " " * len(_list_marker(outer, include_formatting))
+    else:
+        indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
     parent = item.getparent()
     # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
     if include_formatting and parent is not None and parent.get("rend") == "ol":

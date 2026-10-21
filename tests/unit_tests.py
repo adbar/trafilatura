@@ -3256,6 +3256,13 @@ def test_prefer_readability_rejects_raw_json():
         pytest.param("<ul><li>a</li><li>b</li></ul>", "- a\n- b", id="843-unordered"),
         pytest.param("<ul><li>a<ul><li>b</li><li>c</li></ul></li><li>d</li></ul>", "- a\n  - b\n  - c\n- d", id="A5-nested"),
         pytest.param("<ul><li>a<ol><li>b</li></ol></li></ul>", "- a\n  1. b", id="A5-nested-ordered"),
+        pytest.param("<ol><li>a<ol><li>b</li></ol></li><li>c</li></ol>", "1. a\n   1. b\n2. c", id="nested-in-ordered"),
+        pytest.param("<ol><li>a<ul><li>b</li></ul></li></ol>", "1. a\n   - b", id="bullets-in-ordered"),
+        pytest.param(
+            "<ol>" + "<li>x</li>" * 9 + "<li>ten<ul><li>b</li></ul></li></ol>",
+            "\n".join(f"{i}. x" for i in range(1, 10)) + "\n10. ten\n    - b",
+            id="nested-in-two-digit-item",
+        ),
         pytest.param("<ul><li><ul><li>b</li></ul></li><li>d</li></ul>", "  - b\n- d", id="A5-sublist-only-item"),
         pytest.param("<ul><li><p>a</p></li><li>b</li></ul>", "- a\n- b", id="A5-item-paragraph"),
         pytest.param("<ul><li><br/>a</li><li>b<br/>c</li></ul>", "- a\n- b\nc", id="A5-item-leading-br"),
