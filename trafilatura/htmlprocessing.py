@@ -96,6 +96,12 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         for elem in tree.iter("figure", "table"):
             if elem.find(".//table") is not None if elem.tag == "figure" else elem.get("role") in ("presentation", "none"):
                 elem.tag = "div"
+        # a footer row group may come before the body in the markup but is shown below it, so it is
+        # moved last before <tfoot> is stripped: a "Total" row stays under the rows it sums
+        for tfoot in list(tree.iter("tfoot")):
+            parent = tfoot.getparent()
+            if parent is not None and parent.tag == "table":
+                parent.append(tfoot)
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
@@ -456,9 +462,16 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         if options.links:
             for ref in list(tree.iter("ref")):
                 graphics = list(ref.iter("graphic"))
-                # iterate in reverse so addnext preserves original order
-                for graphic in reversed(graphics):
-                    ref.addnext(graphic)
+                # addnext() would land after the tail text of the link
+                for graphic in graphics:
+                    if graphic.tail:  # keep the text where the image was
+                        prev, parent = graphic.getprevious(), graphic.getparent()
+                        if prev is not None:
+                            prev.tail = (prev.tail or "") + graphic.tail
+                        elif parent is not None:
+                            parent.text = (parent.text or "") + graphic.tail
+                        graphic.tail = None
+                    ref.addprevious(graphic)
                 # remove ref if it only contained images (no text),
                 # its leftover children (picture, source) would
                 # otherwise trigger justext fallback and lose images
@@ -469,7 +482,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
 
 
 HTML_CONVERSIONS = {
-    "list": "ul",
+    "list": lambda elem: "ol" if elem.get("rend") == "ol" else "ul",
     "item": "li",
     "code": "pre",
     "quote": "blockquote",

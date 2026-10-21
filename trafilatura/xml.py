@@ -103,9 +103,15 @@ _UNESCAPED_BRACKET_RE = re.compile(r"((?<![\\`])(`+)(?!`).+?(?<!`)\2(?!`))|(?<!\
 # block \[...\] and inline \(...\) math; only matched pairs are converted
 _MATH_BLOCK_RE = re.compile(r"(?<!\S)\\\[(.+?)\\\]", re.DOTALL)
 _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
-# the very same spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
-# escaping has to step over exactly the regions _convert_math rewrites, and nothing else
-_MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\))")
+# formulas already in $ notation, recognized with Pandoc's tex_math_dollars rules so that dollar
+# amounts stay prose: $$...$$, or $...$ on one line whose opening $ is followed by a non-space and
+# whose closing $ is preceded by a non-space and not followed by a digit; \$ is never a delimiter.
+# The closing $ is also not followed by a letter, "_", "(" or "{", so that shell variables such as
+# $HOME/bin:$PATH or "$(pwd)" stay prose
+_DOLLAR_MATH = r"(?<![\\$])\$\$[^$]+?\$\$|(?<![\\$])\$(?=[^\s$])[^$\n]*?(?<=[^\s\\])\$(?![\w({])"
+# all of these spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
+# escaping has to step over exactly the formulas, and nothing else (_convert_math leaves $ ones as is)
+_MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\)|" + _DOLLAR_MATH + ")")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
@@ -495,11 +501,20 @@ def _last_char(returnlist: list[str]) -> str:
 
 def _list_marker(item: _Element, include_formatting: bool = True) -> str:
     "Markdown marker of a list item: 'N. ' or '- ' with nesting indent."
-    indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
+    # a nested list starts where the text of its parent item starts (CommonMark):
+    # 2 spaces after '- ', but 3 after '1. ' and 4 after '10. '
+    outer = next(item.iterancestors("item"), None)
+    if outer is not None:
+        indent = " " * len(_list_marker(outer, include_formatting))
+    else:
+        indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
     parent = item.getparent()
     # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
     if include_formatting and parent is not None and parent.get("rend") == "ol":
         return f"{indent}{sum(1 for _ in item.itersiblings('item', preceding=True)) + 1}. "
+    if parent is not None and parent.get("rend") == "dl" and (item.get("rend") or "").startswith("dd-"):
+        # description list: the definition continues under its term, no bullet (GH #4)
+        return f"{indent}  "
     return f"{indent}- "
 
 
