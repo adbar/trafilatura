@@ -124,6 +124,7 @@ IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|
 
 FORMATTING_PROTECTED = {"cell", "head", "hi", "item", "p", "quote", "ref", "td"}
 SPACING_PROTECTED = {"code", "pre"}
+INLINE_TAGS = {"hi", "ref"}
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
 TARGET_LANG_ATTRS = ('http-equiv="content-language"', 'property="og:locale"')
@@ -451,7 +452,16 @@ def sanitize_tree(tree: _Element) -> _Element:
         if elem.text:
             elem.text = sanitize(elem.text, preserve_space, trailing_space)
         if elem.tail:
+            whitespace_only = elem.tail.isspace()
             elem.tail = sanitize(elem.tail, preserve_space, trailing_space)
+            # keep one space between inline siblings
+            if (
+                whitespace_only
+                and elem.tail is None
+                and elem.tag in INLINE_TAGS
+                and getattr(elem.getnext(), "tag", None) in INLINE_TAGS
+            ):
+                elem.tail = " "
     return tree
 
 
