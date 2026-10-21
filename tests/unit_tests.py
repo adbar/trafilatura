@@ -2033,6 +2033,21 @@ def test_precision_discard_bottom_token_boundary():
     assert not discarded('class="mb-bottom-3"')
 
 
+def test_template_content_dropped():
+    "A <template> is inert and never shown, except a declarative shadow root, which is rendered in place."
+    article = "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
+    options = core.Extractor(config=ZERO_CONFIG)
+    page = (
+        f"<html><body><div>{article}<template><p>Hidden template row</p></template>tail text"
+        '<div><template shadowrootmode="open"><p>Shadow root text</p></template></div></div></body></html>'
+    )
+    cleaned = tree_cleaning(load_html(page), options).text_content()
+    assert "Hidden template row" not in cleaned
+    assert "tail text" in cleaned
+    assert "Shadow root text" in cleaned
+    assert "Hidden template row" not in extract(page, config=ZERO_CONFIG)
+
+
 def test_wrapper_form_kept():
     "regression: ASP.NET WebForms and similar wrap the entire page in one <form id='aspnetForm'>. \
     tree_cleaning() deletes every form, so on those sites (alsumaria.tv) the whole document was \
