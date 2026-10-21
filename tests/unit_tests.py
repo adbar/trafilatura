@@ -3193,6 +3193,33 @@ def test_infinite_scroll_container_with_h1_kept():
             assert "Appended follow-up" not in result
 
 
+@pytest.mark.parametrize("mode", [{}, {"favor_precision": True}, {"fast": True}])
+def test_infinite_scroll_container_with_primary_h2_kept(mode):
+    "regression (#961): the primary article may use an h2 inside an infinite-scroll shell."
+    paragraphs = [
+        f"Workshop paragraph {i}: volunteers repaired bicycles and recorded the spare parts needed. "
+        "Organizers demonstrated the tools and explained safe maintenance procedures to visitors."
+        for i in range(4)
+    ]
+    body = "".join(f"<p>{text}</p>" for text in paragraphs)
+    doc = (
+        "<html><body><div class='infinite-scroll'><nav><a href='/'>Home</a></nav>"
+        f"<div class='article'><h2>Community workshop</h2><div id='content'>{body}</div></div></div></body></html>"
+    )
+    result = extract(doc, **mode) or ""
+    for text in paragraphs:
+        assert text in result
+    assert "Home" not in result
+
+
+def test_infinite_scroll_h2_preview_before_h1_pruned():
+    "The no-h1 condition must inspect the whole document, including a later real article."
+    tree = html.fromstring(
+        "<html><body><div class='infinite-scroll'><h2>Preview</h2></div><article><h1>Real title</h1></article></body></html>"
+    )
+    assert xp.RAW_TREE_PRUNE_XPATH[0](tree) == tree.xpath("//div")
+
+
 def test_compare_extraction_justext_ratio(monkeypatch):
     "the justext override must not replace text more than JUSTEXT_OVERRIDE_RATIO times longer \
     than its own output (calibrated 3x: at the previous 4x it replaced longer, closer-to-target \
