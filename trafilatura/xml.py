@@ -506,6 +506,9 @@ def _list_marker(item: _Element, include_formatting: bool = True) -> str:
     # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
     if include_formatting and parent is not None and parent.get("rend") == "ol":
         return f"{indent}{sum(1 for _ in item.itersiblings('item', preceding=True)) + 1}. "
+    if parent is not None and parent.get("rend") == "dl" and (item.get("rend") or "").startswith("dd-"):
+        # description list: the definition continues under its term, no bullet (GH #4)
+        return f"{indent}  "
     return f"{indent}- "
 
 
