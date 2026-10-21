@@ -68,6 +68,7 @@ class Extractor:
         "format",
         "fast",
         "focus",
+        "is_listing",
         "comments",
         "formatting",
         "links",
@@ -144,6 +145,9 @@ class Extractor:
         self.max_tree_size: int | None = _get_optional_int(self.config, "MAX_TREE_SIZE")
         self.fast: bool = fast
         self.focus: str = "recall" if recall else "precision" if precision else "balanced"
+        # set per-document by trafilatura_sequence() from the page's own og:type (#811);
+        # never set at construction time
+        self.is_listing: bool = False
         self.comments: bool = comments
         # markdown implies formatting by default, but an explicit formatting=False is honored
         self.formatting: bool = (self.format == "markdown") if formatting is None else formatting

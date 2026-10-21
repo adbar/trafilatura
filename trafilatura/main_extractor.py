@@ -623,9 +623,15 @@ def prune_unwanted_sections(
             tree = prune_unwanted_nodes(tree, PRECISION_DISCARD_XPATH)
     # remove elements by link density, several passes
     for _ in range(2):
-        tree = delete_by_link_density(tree, "div", backtracking=True, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, "list", backtracking=False, favor_precision=favor_precision)
-        tree = delete_by_link_density(tree, "p", backtracking=False, favor_precision=favor_precision)
+        tree = delete_by_link_density(
+            tree, "div", backtracking=True, favor_precision=favor_precision, is_listing_page=options.is_listing
+        )
+        tree = delete_by_link_density(
+            tree, "list", backtracking=False, favor_precision=favor_precision, is_listing_page=options.is_listing
+        )
+        tree = delete_by_link_density(
+            tree, "p", backtracking=False, favor_precision=favor_precision, is_listing_page=options.is_listing
+        )
     # tables
     if "table" in potential_tags or favor_precision:
         # collect before deleting: removing a table mid-iteration can make tree.iter() skip a table

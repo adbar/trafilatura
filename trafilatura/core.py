@@ -140,6 +140,18 @@ def _forum_thread_page(tree: HtmlElement) -> bool:
     )
 
 
+def _listing_page(tree: HtmlElement) -> bool:
+    """Detect a page that self-declares, via its Open Graph og:type meta tag, as a plain
+    website/listing page rather than an article (#811) -- e.g. a news homepage or section
+    front whose one-link-per-card teaser grid would otherwise pass the catalog-listing
+    exemption in link_density_test() meant for real content such as product listings.
+    Deliberately narrow (just the standard "website" value, the one CMSs use for exactly
+    this kind of page) to avoid misclassifying real articles with incidental og:type use.
+    """
+    content = next(iter(tree.xpath('.//meta[@property="og:type"]/@content')), None)
+    return isinstance(content, str) and content.strip().lower() == "website"
+
+
 def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tuple[HtmlElement, HtmlElement]:
     "Clean and convert a raw tree, returning (converted, pre-conversion backup)."
     cleaned = tree_cleaning(copy(tree), options)
@@ -151,9 +163,12 @@ def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tup
 def _extract_and_compare(
     cleaned_tree: HtmlElement, cleaned_tree_backup: HtmlElement, tree: HtmlElement, options: Extractor
 ) -> tuple[_Element, str]:
-    "Cascade stages 1-2: main extractor, then the external comparison unless in fast mode."
+    """Cascade stages 1-2: main extractor, then the external comparison unless in fast mode.
+    Also skipped on a self-declared listing page (#811): readability/justext have no
+    link-density awareness of their own and will re-select a teaser card stage 1 correctly
+    discarded, when stage 1's (possibly short or empty) result was already correct."""
     postbody, temp_text = extract_content(cleaned_tree, options)
-    if not options.fast:
+    if not options.fast and not options.is_listing:
         postbody, temp_text = compare_extraction(cleaned_tree_backup, copy(tree), postbody, temp_text, options)
     return postbody, temp_text
 
@@ -185,6 +200,9 @@ def trafilatura_sequence(
     Internal helper: its signature and 4-tuple return are not a stable API — call
     ``bare_extraction``/``extract`` instead.
     """
+    # copied, never mutated in place: options may be a caller-owned, reused Extractor instance
+    options = copy(options)
+    options.is_listing = _listing_page(tree)
     is_forum = _forum_thread_page(tree)
     # raw-tree prune so the external extractors inherit it too: readability would otherwise
     # pick the longest appended article over the real one
@@ -211,8 +229,11 @@ def trafilatura_sequence(
 
     postbody, temp_text = _extract_and_compare(cleaned_tree, cleaned_tree_backup, tree, options)
 
-    # 3. rescue: baseline on the original tree, accepted only if it adds text (#896)
-    if len(temp_text) < options.min_extracted_size and options.focus != "precision":
+    # 3. rescue: baseline on the original tree, accepted only if it adds text (#896).
+    # Skipped on a self-declared listing page (#811): baseline has none of the main
+    # extractor's teaser/link-density pruning, so it readily re-dumps the whole card grid
+    # that stage 1 correctly discarded, when stage 1's short result was already correct.
+    if len(temp_text) < options.min_extracted_size and options.focus != "precision" and not options.is_listing:
         b_body, b_text, b_len = baseline(tree)  # baseline copies element inputs
         LOGGER.debug("non-clean extracted length: %s (extraction)", b_len)
         if b_len > len(temp_text):
@@ -221,9 +242,12 @@ def trafilatura_sequence(
 
     # 4. recall escalation: a short extraction covering little of the page suggests
     # under-extraction (non-article layout) — retry in recall mode, keep if clearly bigger.
+    # Skipped on a self-declared listing page (#811): there a short result is the correct
+    # outcome, not under-extraction, and retrying in recall mode only pulls in more teasers.
     # NOTE: the page measure html2txt(tree) is coupled to BASIC_CLEAN_XPATH — see settings.py.
     if (
         options.focus == "balanced"
+        and not options.is_listing
         and 0 < len(temp_text) < ESCALATION_MAX_LENGTH
         and len(temp_text) < ESCALATION_PAGE_SHARE * len(html2txt(tree))
     ):

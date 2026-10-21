@@ -170,7 +170,7 @@ def is_paragraph_listing(links_xpath: list[HtmlElement]) -> bool:
     return True
 
 
-def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tuple[bool, bool]:
+def link_density_test(element: HtmlElement, favor_precision: bool = False, is_listing_page: bool = False) -> tuple[bool, bool]:
     "Remove sections which are rich in links (probably boilerplate), flag short linked ones."
     links_xpath = element.findall(".//ref")
     if not links_xpath:
@@ -209,8 +209,16 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
     # >4: a farm is MANY links -- a handful of long sentence-links is editorial (knowtechie realworld test)
     if len(links_xpath) > 4:
         linklen, elemnum, _, _ = collect_link_info(links_xpath)
-        # avg link len >= 100 => catalog/listing content (one link per card), not a farm: keep it
-        if linklen > len(text) * LINK_FARM_RATIO and linklen < 100 * elemnum and not is_paragraph_listing(links_xpath):
+        # avg link len >= 100 => catalog/listing content (one link per card), not a farm: keep
+        # it -- UNLESS the page itself says it isn't an article (#811, og:type != "article"):
+        # a news index page's teaser grid (one link per card, headline + byline inside it)
+        # looks structurally identical to a legitimate product catalog, so only the page's own
+        # declared type -- not link length -- can tell them apart here.
+        if (
+            linklen > len(text) * LINK_FARM_RATIO
+            and not is_paragraph_listing(links_xpath)
+            and (linklen < 100 * elemnum or is_listing_page)
+        ):
             return True, False
     return False, False
 
@@ -237,6 +245,7 @@ def delete_by_link_density(
     tagname: str,
     backtracking: bool = False,
     favor_precision: bool = False,
+    is_listing_page: bool = False,
 ) -> HtmlElement:
     """Determine the link density of elements with respect to their length,
     and remove the elements identified as boilerplate."""
@@ -245,7 +254,7 @@ def delete_by_link_density(
     depth_threshold = 1 if favor_precision else 3
 
     for elem in subtree.iter(tagname):
-        result, short_with_links = link_density_test(elem, favor_precision)
+        result, short_with_links = link_density_test(elem, favor_precision, is_listing_page)
         if result or (
             backtracking
             and short_with_links

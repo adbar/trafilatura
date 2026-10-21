@@ -3042,6 +3042,50 @@ def test_dfp_long_opening_post_keeps_replies():
     assert result.count("Reply number") == 8
 
 
+@pytest.mark.parametrize(
+    "og_type,expected",
+    [("website", True), ("article", False), ("WEBSITE", True), (None, False)],
+    ids=["website", "article", "case_insensitive", "no_og_type"],
+)
+def test_listing_page_detection(og_type, expected):
+    "_listing_page() keys on the page's own og:type (#811), not on markup shape."
+    meta = f'<meta property="og:type" content="{og_type}"/>' if og_type else ""
+    doc = f"<html><head>{meta}</head><body><p>irrelevant</p></body></html>"
+    assert core._listing_page(html.fromstring(doc)) is expected
+
+
+_TEASER_CARDS = "".join(
+    f'<div><a href="/story{i}"><h2>Headline number {i} about an unrelated topic happening today</h2>'
+    f"<p>Summary describing headline number {i} in a bit more detail for readers who want more context.</p>"
+    f"<span>{i} hours ago</span></a></div>"
+    for i in range(8)
+)
+
+
+@pytest.mark.parametrize(
+    "og_type,expect_merged",
+    [("website", False), ("article", True), (None, True)],
+    ids=["listing_page_discarded", "article_kept", "no_og_type_kept"],
+)
+def test_listing_page_discards_teaser_grid(og_type, expect_merged):
+    "regression (#811): a news index/overview page wraps its whole teaser grid in one bare \
+    <article> tag, and each card's single link carries headline + summary + timestamp (avg \
+    link text > 100 chars), which link_density_test()'s catalog-listing exemption (#584, #900) \
+    otherwise protects -- correctly, for a real catalog page. Only the page's own og:type \
+    (not link length, indistinguishable between the two cases) can tell a self-declared \
+    listing page apart: there the whole grid must be dropped instead of merged into one blob; \
+    a page that doesn't make that declaration keeps its prior (unrelated-snippets) behavior \
+    unchanged, i.e. this is additive, not a general tightening of the catalog exemption."
+    meta = f'<meta property="og:type" content="{og_type}"/>' if og_type else ""
+    doc = f"<html><head>{meta}</head><body><article><div>{_TEASER_CARDS}</div></article></body></html>"
+    result = extract(doc, output_format="txt")
+    if expect_merged:
+        assert result is not None
+        assert result.count("Headline number") == 8
+    else:
+        assert result is None or result.count("Headline number") <= 1
+
+
 def test_dfp_precision_keeps_posts():
     "regression (review round 3): precision mode pruned REMOVE_COMMENTS_XPATH from the very \
     tree the forum re-route had just restored the posts into, and precision closes the \
