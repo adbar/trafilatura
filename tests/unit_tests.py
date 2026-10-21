@@ -2532,6 +2532,21 @@ def test_table_colspan_padding():
     assert "| a |  | b |" in _table_txt(f"<table><tr><td colspan='2'>a</td>{_COLSPAN_ROWS}")
 
 
+def test_table_footer_after_body():
+    "A <tfoot> written before <tbody> is shown below it, so its rows come last."
+    result = _table_txt(
+        "<table><thead><tr><th>Item</th><th>Qty</th></tr></thead>"
+        "<tfoot><tr><td>Total</td><td>19</td></tr></tfoot>"
+        "<tbody><tr><td>Cable</td><td>12</td></tr><tr><td>Hub</td><td>7</td></tr></tbody></table>"
+    )
+    assert (
+        result.index("| Item | Qty |")
+        < result.index("| Cable | 12 |")
+        < result.index("| Hub | 7 |")
+        < result.index("| Total | 19 |")
+    )
+
+
 @pytest.mark.parametrize("bad_span", ['span="2"', 'span="2.1"', 'span="-1"', 'span="abc"'])
 def test_table_bad_span_attr_treated_as_colspan1(bad_span):
     "Non-colspan span attributes are ignored (colspan=1); trailing pad fills to max_cols."
