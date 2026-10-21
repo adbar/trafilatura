@@ -18,8 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections import deque
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -430,9 +429,19 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     return _define_exit_code(errors, url_count)
 
 
-def file_processing_pipeline(args: argparse.Namespace) -> None:
+def _file_processing_worker(worker: Callable[[str], None], filename: str) -> str | None:
+    "Report file failures without discarding the rest of a worker chunk."
+    try:
+        worker(filename)
+    except Exception as error:
+        return f"{type(error).__name__} {error}"
+    return None
+
+
+def file_processing_pipeline(args: argparse.Namespace) -> int:
     "Define batches for parallel file processing and perform the extraction."
     filecounter = -1
+    exit_code = 0
     options = args_to_extractor(args)
 
     # max_tasks_per_child available in Python >= 3.11
@@ -441,11 +450,18 @@ def file_processing_pipeline(args: argparse.Namespace) -> None:
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            worker = partial(file_processing, args=args, counter=filecounter, options=options)
-            deque(executor.map(worker, filebatch, chunksize=10), maxlen=0)
+            worker = partial(
+                _file_processing_worker, partial(file_processing, args=args, counter=filecounter, options=options)
+            )
+            for filename, error in zip(filebatch, executor.map(worker, filebatch, chunksize=10), strict=True):
+                if error is not None:
+                    LOGGER.error("Cannot process file %s %s", filename, error)
+                    exit_code = 1
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)
+
+    return exit_code
 
 
 def examine(
