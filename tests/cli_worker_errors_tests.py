@@ -1,3 +1,4 @@
+import pickle
 import subprocess
 import sys
 from concurrent.futures import ProcessPoolExecutor
@@ -11,6 +12,37 @@ import pytest
 from trafilatura import cli_utils, settings
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import file_processing_pipeline
+
+
+def test_worker_returns_serializable_details_for_unpickleable_errors():
+    class ProcessingError(Exception):
+        pass
+
+    error = ProcessingError("could not write output")
+    with pytest.raises((AttributeError, TypeError, pickle.PicklingError)):
+        pickle.dumps(error)
+
+    def fail(_filename):
+        raise error
+
+    result = cli_utils._file_processing_worker(fail, "page.html")
+    assert result == "ProcessingError could not write output"
+    assert pickle.loads(pickle.dumps(result)) == result
+
+
+def test_worker_passes_the_filename_and_reports_success():
+    processed = []
+    assert cli_utils._file_processing_worker(processed.append, "page.html") is None
+    assert processed == ["page.html"]
+
+
+@pytest.mark.parametrize("error", [KeyboardInterrupt(), SystemExit(2)])
+def test_worker_does_not_swallow_control_flow(error):
+    def fail(_filename):
+        raise error
+
+    with pytest.raises(type(error)):
+        cli_utils._file_processing_worker(fail, "page.html")
 
 
 @pytest.mark.parametrize("start_method", [None, "spawn"])
