@@ -243,8 +243,7 @@ def sitemap_search(
         if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
-    if urlfilter:
-        sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
