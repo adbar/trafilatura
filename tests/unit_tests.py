@@ -3172,6 +3172,18 @@ def test_main_pass_excludes_details_wrapped_comments():  # 850
         assert "Expert commentary" in (extract(doc_commentary, output_format="txt", include_comments=False) or "")
 
 
+def test_comment_container_with_h1_kept():
+    "a comment-named container holding the page h1 is the main content, the comment prune keeps it"
+    body = "".join(f"<p>Article paragraph {i} with enough real prose to be the main text.</p>" for i in range(4))
+    for tag, cls in (("div", "comments-page"), ("section", "post-comments"), ("ul", "comment-list")):
+        inner = f"<h1>Page title</h1>{body}"
+        inner = f"<li>{inner}</li>" if tag == "ul" else inner
+        doc = f"<html><body><{tag} class='{cls}'>{inner}</{tag}></body></html>"
+        for fast in (False, True):
+            result = extract(doc, output_format="txt", include_comments=False, fast=fast) or ""
+            assert "Article paragraph 2" in result
+
+
 def test_infinite_scroll_container_with_h1_kept():
     "regression: the #911 prune deleted the real article when the scroll container holds the h1 (BGR)."
     real = "<p>Real article paragraph with enough content to be extracted normally here.</p>" * 4

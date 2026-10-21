@@ -168,7 +168,8 @@ REMOVE_COMMENTS_AND_LISTS_XPATH = [
         .//*[self::div or self::list or self::section or self::details or self::ol or self::ul][
         re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)') or
         re:test(@class, '{_COMMENTS_CLASS}')][
-        not(self::ol or self::ul) or re:test(@id, '^(?:{_COMMENTS_ID})') or re:test(@class, '{_COMMENTS_CLASS}')]
+        not(self::ol or self::ul) or re:test(@id, '^(?:{_COMMENTS_ID})') or re:test(@class, '{_COMMENTS_CLASS}')][
+        not(.//h1)]
         """,
         namespaces={"re": REGEXP_NS},
     )

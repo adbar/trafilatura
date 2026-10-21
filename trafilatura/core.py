@@ -213,7 +213,9 @@ def trafilatura_sequence(
 
     # 3. rescue: baseline on the original tree, accepted only if it adds text (#896)
     if len(temp_text) < options.min_extracted_size and options.focus != "precision":
-        b_body, b_text, b_len = baseline(tree)  # baseline copies element inputs
+        # captured comments are output separately, keep them out of the dump (comments off: already pruned)
+        b_tree = prune_unwanted_nodes(copy(tree), REMOVE_COMMENTS_AND_LISTS_XPATH) if temp_comments else tree
+        b_body, b_text, b_len = baseline(b_tree)  # baseline copies element inputs
         LOGGER.debug("non-clean extracted length: %s (extraction)", b_len)
         if b_len > len(temp_text):
             postbody, temp_text = b_body, b_text
