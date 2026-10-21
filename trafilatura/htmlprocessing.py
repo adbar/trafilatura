@@ -96,6 +96,12 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         for elem in tree.iter("figure", "table"):
             if elem.find(".//table") is not None if elem.tag == "figure" else elem.get("role") in ("presentation", "none"):
                 elem.tag = "div"
+        # a footer row group may come before the body in the markup but is shown below it, so it is
+        # moved last before <tfoot> is stripped: a "Total" row stays under the rows it sums
+        for tfoot in list(tree.iter("tfoot")):
+            parent = tfoot.getparent()
+            if parent is not None and parent.tag == "table":
+                parent.append(tfoot)
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
