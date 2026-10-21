@@ -4005,6 +4005,38 @@ def test_math_is_not_commonmark_escaped():
     assert _md(b"<body><p>regex \\( a_b open</p></body>") == "regex \\( a\\_b open"
 
 
+def test_dollar_math_is_not_commonmark_escaped():
+    """Formulas already written as $...$ or $$...$$ in the source are LaTeX too (#986). They are
+    recognized with the Pandoc rules, so dollar amounts in prose are still escaped as text."""
+
+    # inline $...$ keeps its subscripts, braces and superscripts
+    assert _md(b"<body><p>follows $V_i = B V^h$ here</p></body>") == "follows $V_i = B V^h$ here"
+    assert _md(b"<body><p>rate $k_{on}$ and $x_i^2$</p></body>") == "rate $k_{on}$ and $x_i^2$"
+    # display $$...$$, also over several lines
+    assert _md(b"<body><p>$$x_i = \\sum_j A_{ij} y_j^*$$</p></body>") == "$$x_i = \\sum_j A_{ij} y_j^*$$"
+    assert _md(b"<body><p>$$\na_1 &lt; a_2\n$$</p></body>") == "$$\na_1 < a_2\n$$"
+    # prose around a formula is still escaped
+    assert _md(b"<body><p>file_one has $n_1$ rows</p></body>") == "file\\_one has $n_1$ rows"
+    # dollar amounts are not math: a closing $ needs a non-space before it and no digit after it
+    assert _md(b"<body><p>from $5 to $10_000</p></body>") == "from $5 to $10\\_000"
+    assert _md(b"<body><p>from $1_000-$2_000</p></body>") == "from $1\\_000-$2\\_000"
+    assert _md(b"<body><p>set $user_name and $host</p></body>") == "set $user\\_name and $host"
+    # an opening $ needs a non-space after it, and an escaped \\$ is no delimiter
+    assert _md(b"<body><p>a $ b_c $ d</p></body>") == "a $ b\\_c $ d"
+    assert _md(b"<body><p>\\$a_b$</p></body>") == "\\$a\\_b$"
+    # shell variables are not math: a closing $ is not followed by a word character, "(" or "{"
+    assert _md(b'<body><p>set $env:MY_PATH = "$(pwd)/bin"</p></body>') == 'set $env:MY\\_PATH = "$(pwd)/bin"'
+    assert _md(b"<body><p>export PATH=$HOME/my_bin:$PATH</p></body>") == "export PATH=$HOME/my\\_bin:$PATH"
+    assert _md(b"<body><p>echo $my_dir/${file_name}</p></body>") == "echo $my\\_dir/${file\\_name}"
+    # end to end, as reported in #986
+    doc = (
+        "<html><body><article><p>The measured response follows $V_i = B V^h$. Each parameter is "
+        "estimated from independent measurements to describe the observed biological process and its "
+        "quantitative response, reported here together with the methods and results.</p></article></body></html>"
+    )
+    assert "$V_i = B V^h$" in extract(doc, output_format="markdown", include_formatting=True, config=ZERO_CONFIG)
+
+
 def test_math_recovery():
     "MathML is replaced by its LaTeX source instead of being discarded with the <math> subtree."
     options = core.Extractor()
