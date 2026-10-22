@@ -22,7 +22,7 @@ from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
-from hashlib import sha256
+from hashlib import blake2b
 from pathlib import Path
 from threading import RLock
 from urllib.parse import unquote, urlsplit
@@ -153,13 +153,10 @@ def generate_hash_filename(content: str) -> str:
 
 
 def generate_url_filename(url: str) -> str:
-    "Create a portable, bounded name with a readable prefix and a URL-specific suffix."
-    parsed = urlsplit(url)
-    prefix = re.sub(r"[^A-Za-z0-9._-]+", "_", (parsed.hostname or "") + unquote(parsed.path))
-    prefix = prefix[:120].strip("._-") or "url"
-    # Include the full URL so query strings and truncated/sanitized paths remain distinct.
-    digest = sha256(url.encode("utf-8")).hexdigest()[:16]
-    return f"{prefix}-{digest}"
+    "Create a readable file name from a URL, with a hash suffix to distinguish URLs."
+    parts = urlsplit(url)
+    prefix = re.sub(r"[^\w.-]+", "_", f"{parts.hostname}{unquote(parts.path)}", flags=re.ASCII)[:120].strip("._-")
+    return f"{prefix}-{blake2b(url.encode(), digest_size=8).hexdigest()}"
 
 
 def determine_output_path(

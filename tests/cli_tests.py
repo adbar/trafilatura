@@ -152,15 +152,20 @@ def test_url_filenames_require_output_dir(capsys):
         ("https://example.com/../../CON:a?b=1", "example.com_.._.._CON_a-"),
         ("https://example.com/" + "x" * 500, "example.com_"),
         ("https://example.com/中文", "example.com-"),
+        ("https://例子.测试/中文", "-"),
     ],
-    ids=["readable", "credentials-and-query", "unsafe-characters", "long-path", "unicode"],
+    ids=["readable", "credentials-and-query", "unsafe-characters", "long-path", "unicode", "empty-prefix"],
 )
 def test_url_filenames_are_portable(url, prefix):
     filename = cli_utils.generate_url_filename(url)
     assert filename.startswith(prefix)
-    assert re.fullmatch(r"[A-Za-z0-9._-]+-[a-f0-9]{16}", filename)
+    assert re.fullmatch(r"[A-Za-z0-9._-]*-[a-f0-9]{16}", filename)
     assert len(filename) <= 137
     assert filename == cli_utils.generate_url_filename(url)
+
+
+def test_url_filename_blake2b_suffix():
+    assert cli_utils.generate_url_filename("https://www.example.com/page3") == "www.example.com_page3-67eb6bd757a48a52"
 
 
 @pytest.mark.parametrize(
