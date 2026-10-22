@@ -558,6 +558,11 @@ def recover_wild_text(
     if options.focus == "recall":
         potential_tags.update(["div", "lb"])
         search_expr += "|.//div|.//lb|.//list"
+    elif options.focus == "balanced":
+        # a list introduced by a paragraph ending in a colon continues that paragraph (#431)
+        search_expr += (
+            "|.//list[preceding-sibling::*[1][self::p][substring(normalize-space(), string-length(normalize-space()))=':']]"
+        )
     # prune; in fast mode (no external comparator to defer to) keep teaser-class blocks, some of
     # which are real content — this is the last-resort path after the confident extractor failed
     search_tree = prune_unwanted_sections(tree, potential_tags, options, keep_teasers=options.fast)

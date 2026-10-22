@@ -1889,6 +1889,26 @@ def test_recover_wild_text_default_tags():
     assert result is not None
 
 
+def test_recover_wild_text_list_after_colon():
+    "regression #431: a list introduced by a paragraph ending in a colon is recovered in the default mode"
+    intro = "The personal information we collect about you may be used to:"
+    items = "".join(f"<item><span>{t}</span></item>" for t in ("provide services as requested", "conduct data analysis"))
+    other = "<list><item>Home</item><item>Contact</item></list>"
+    htmlstring = f"<body><div><p>{intro}</p><list>{items}</list><p>Unrelated closing paragraph.</p>{other}</div></body>"
+
+    def recovered(options):
+        result = recover_wild_text(html.fromstring(htmlstring), etree.Element("body"), options)
+        return "".join(result.itertext())
+
+    text = recovered(core.Extractor())
+    assert intro in text
+    assert "conduct data analysis" in text
+    # a list without such an introduction is still left out
+    assert "Contact" not in text
+    # precision mode is unchanged
+    assert "conduct data analysis" not in recovered(core.Extractor(precision=True))
+
+
 _MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
 _BIG_REF = '<ref target="/x">' + "x" * 600 + "</ref>"
 # 60% link density at ~600 chars: kept by the 0.8 (medium) threshold, removed by the 0.5 (large) threshold
