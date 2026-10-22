@@ -389,7 +389,7 @@ CONVERSIONS = {
     **dict.fromkeys(("dl", "ol", "ul"), convert_lists),
     **dict.fromkeys(("h1", "h2", "h3", "h4", "h5", "h6"), convert_headings),
     **dict.fromkeys(("br", "hr"), convert_line_breaks),
-    **dict.fromkeys(("blockquote", "pre", "q"), convert_quotes),
+    **dict.fromkeys(("blockquote", "pre"), convert_quotes),
     **dict.fromkeys(("del", "s", "strike"), convert_deletions),
     "details": convert_details,
 }
@@ -445,6 +445,16 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
+
+    # <q> is an inline quotation: it stays in its sentence, between the marks browsers add
+    for elem in tree.iter("q"):
+        opening, closing = ("\u2018", "\u2019") if any(True for _ in elem.iterancestors("q")) else ("\u201c", "\u201d")
+        elem.text = opening + (elem.text or "")
+        if len(elem):
+            elem[-1].tail = (elem[-1].tail or "") + closing
+        else:
+            elem.text += closing
+    strip_tags(tree, "q")
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
