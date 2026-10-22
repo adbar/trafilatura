@@ -18,7 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Callable, Generator
+from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -429,12 +429,12 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     return _define_exit_code(errors, url_count)
 
 
-def _file_processing_worker(worker: Callable[[str], None], filename: str) -> str | None:
+def _process_file(filename: str, args: argparse.Namespace, counter: int, options: Extractor) -> str | None:
     "Report file failures without discarding the rest of a worker chunk."
     try:
-        worker(filename)
+        file_processing(filename, args, counter, options)
     except Exception as error:
-        return f"{type(error).__name__} {error}"
+        return f"{filename} {error}"
     return None
 
 
@@ -450,12 +450,10 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            worker = partial(
-                _file_processing_worker, partial(file_processing, args=args, counter=filecounter, options=options)
-            )
-            for filename, error in zip(filebatch, executor.map(worker, filebatch, chunksize=10), strict=True):
+            worker = partial(_process_file, args=args, counter=filecounter, options=options)
+            for error in executor.map(worker, filebatch, chunksize=10):
                 if error is not None:
-                    LOGGER.error("Cannot process file %s %s", filename, error)
+                    LOGGER.error("Cannot process file %s", error)
                     exit_code = 1
             # update counter
             if filecounter >= 0:

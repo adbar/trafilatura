@@ -10,6 +10,7 @@ import subprocess
 import sys
 from contextlib import redirect_stdout
 from os import path
+from pathlib import Path
 from tempfile import gettempdir
 from unittest.mock import patch
 
@@ -389,6 +390,30 @@ def test_cli_pipeline():
     result = cli.examine(teststring, args)
     assert result.startswith("<html")
     assert result.endswith("</html>")
+
+
+def test_file_processing_continues_after_error(tmp_path, caplog):
+    source = tmp_path / "inputs"
+    source.mkdir()
+    missing = source / "missing.html"
+    try:
+        missing.symlink_to(tmp_path / "missing-target.html")
+    except OSError as error:
+        pytest.skip(f"Cannot create symlink on this system {error}")
+    valid = source / "page.html"
+    valid.write_bytes(Path(RESOURCES_DIR, "httpbin_sample.html").read_bytes())
+    output = tmp_path / "output"
+    args = cli.parse_args(["--input-dir", str(source), "--output-dir", str(output), "--parallel", "1", "--fast"])
+    with pytest.raises(SystemExit) as error:
+        cli.process_args(args)
+    assert error.value.code == 1
+    assert f"Cannot process file {missing}" in caplog.text
+    results = list(output.rglob("*.txt"))
+    assert len(results) == 1
+    assert "blacksmith" in results[0].read_text(encoding="utf-8")
+    options = settings.args_to_extractor(args)
+    assert str(missing) in cli_utils._process_file(str(missing), args, -1, options)
+    assert cli_utils._process_file(str(valid), args, -1, options) is None
 
 
 def test_file_processing():
