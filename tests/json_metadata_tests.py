@@ -1139,6 +1139,8 @@ def test_extract_json_shapes():
     assert process_parent([{"@type": "NGO", "name": "International Crisis Group"}], Document()).sitename == (
         "International Crisis Group"
     )
+    # Corporation is skipped: its legalName would supersede a shorter og:site_name
+    assert process_parent([{"@type": "Corporation", "name": "FinCompare GmbH"}], Document()).sitename is None
 
 
 def test_json_metadata_robustness():

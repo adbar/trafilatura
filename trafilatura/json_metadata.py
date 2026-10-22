@@ -64,7 +64,6 @@ JSON_OGTYPE_SCHEMA = {
     "jobposting",
 }
 JSON_PUBLISHER_SCHEMA = {
-    "corporation",
     "educationalorganization",
     "governmentorganization",
     "newsmediaorganization",
