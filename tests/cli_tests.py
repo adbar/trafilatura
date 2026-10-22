@@ -2,6 +2,7 @@
 Unit tests for the command-line interface.
 """
 
+import gzip
 import io
 import logging
 import os
@@ -10,6 +11,7 @@ import subprocess
 import sys
 from contextlib import redirect_stdout
 from os import path
+from pathlib import Path
 from tempfile import gettempdir
 from unittest.mock import patch
 
@@ -121,6 +123,114 @@ def test_keep_dirs_requires_output_dir():
     "--keep-dirs without -o must exit with an error."
     with pytest.raises(SystemExit):
         cli.parse_args(["--keep-dirs"])
+
+
+@pytest.mark.parametrize(
+    "extra_args",
+    [[], ["--keep-dirs"], ["--input-dir", "input"], ["--crawl"], ["--probe"]],
+    ids=["stdin", "keep-dirs", "local-files", "crawl", "probe"],
+)
+def test_url_filenames_reject_incompatible_inputs(extra_args, capsys):
+    with pytest.raises(SystemExit) as exc:
+        cli.parse_args(["--name-from-url", "-o", "output", *extra_args])
+    assert exc.value.code == 2
+    assert "--name-from-url requires" in capsys.readouterr().err
+
+
+def test_url_filenames_require_output_dir(capsys):
+    with pytest.raises(SystemExit) as exc:
+        cli.parse_args(["--name-from-url", "-u", "https://example.org/"])
+    assert exc.value.code == 2
+    assert "--name-from-url requires" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize(
+    "url, prefix",
+    [
+        ("https://www.example.com/page3", "www.example.com_page3-"),
+        ("https://user:password@example.com/a%20b?q=secret", "example.com_a_b-"),
+        ("https://example.com/../../CON:a?b=1", "example.com_.._.._CON_a-"),
+        ("https://example.com/" + "x" * 500, "example.com_"),
+        ("https://example.com/中文", "example.com-"),
+        ("https://例子.测试/中文", "-"),
+    ],
+    ids=["readable", "credentials-and-query", "unsafe-characters", "long-path", "unicode", "empty-prefix"],
+)
+def test_url_filenames_are_portable(url, prefix):
+    filename = cli_utils.generate_url_filename(url)
+    assert filename.startswith(prefix)
+    assert re.fullmatch(r"[A-Za-z0-9._-]*-[a-f0-9]{16}", filename)
+    assert len(filename) <= 137
+    assert filename == cli_utils.generate_url_filename(url)
+
+
+def test_url_filename_blake2b_suffix():
+    assert cli_utils.generate_url_filename("https://www.example.com/page3") == "www.example.com_page3-67eb6bd757a48a52"
+
+
+@pytest.mark.parametrize(
+    "urls",
+    [
+        ("https://example.com/a/b", "https://example.com/a_b"),
+        ("https://example.com/page?a=1", "https://example.com/page?a=2"),
+        ("http://example.com/page", "https://example.com/page"),
+        ("https://example.com/Page", "https://example.com/page"),
+        ("https://example.com/" + "x" * 500 + "a", "https://example.com/" + "x" * 500 + "b"),
+    ],
+    ids=["sanitized-path", "query", "scheme", "case-insensitive-filesystem", "truncated-path"],
+)
+def test_url_filenames_distinguish_urls(urls):
+    assert cli_utils.generate_url_filename(urls[0]).lower() != cli_utils.generate_url_filename(urls[1]).lower()
+
+
+@pytest.mark.parametrize("backup", [False, True], ids=["extraction", "paired-backup"])
+@pytest.mark.parametrize("counter", [-1, 0], ids=["flat-directory", "counter-directory"])
+def test_url_filenames_write_results(tmp_path, backup, counter):
+    output_dir, backup_dir = tmp_path / "output", tmp_path / "backup"
+    args = cli.parse_args(["--name-from-url", "-o", str(output_dir), "-u", "https://example.org/", "--json"])
+    if backup:
+        args.backup_dir = str(backup_dir)
+    options = settings.args_to_extractor(args)
+    html = Path(RESOURCES_DIR, "httpbin_sample.html").read_text(encoding="utf-8")
+    urls = ["https://example.org/a/b", "https://example.org/a_b"]
+    for url in urls:
+        options.url = url
+        assert cli_utils.process_result(html, args, counter, options) == (counter + 1 if counter >= 0 else -1)
+    files = sorted(output_dir.rglob("*.json"))
+    assert len(files) == 2
+    assert all(file.name.startswith("example.org_a_b-") for file in files)
+    assert all("Availing himself" in file.read_text(encoding="utf-8") for file in files)
+    assert all(file.parent == (output_dir if counter < 0 else output_dir / "1") for file in files)
+    if backup:
+        for file in files:
+            archive = backup_dir / file.relative_to(output_dir).with_suffix(".html.gz")
+            with gzip.open(archive, "rt", encoding="utf-8") as saved:
+                assert saved.read() == html
+
+
+@pytest.mark.parametrize("batch", [False, True], ids=["single-url", "url-list"])
+def test_url_filenames_cli_download(tmp_path, batch):
+    args_list = ["--name-from-url", "-o", str(tmp_path / "output")]
+    if batch:
+        input_file = tmp_path / "urls.txt"
+        input_file.write_text("https://example.org/\nhttps://httpbun.com/html\n", encoding="utf-8")
+        args_list.extend(["-i", str(input_file)])
+    else:
+        args_list.extend(["-u", "https://example.org/"])
+    cli.process_args(cli.parse_args(args_list))
+    files = list((tmp_path / "output").rglob("*.txt"))
+    assert len(files) == (2 if batch else 1)
+    assert any(file.name.startswith("example.org-") for file in files)
+    if batch:
+        assert any(file.name.startswith("httpbun.com_html-") for file in files)
+    assert all("Availing himself" in file.read_text(encoding="utf-8") for file in files)
+
+
+def test_url_filenames_ignored_for_list(capsys):
+    args = cli.parse_args(["--name-from-url", "--list", "-u", "https://example.org/", "-o", "output"])
+    assert "name_from_url" in capsys.readouterr().err
+    cli.process_args(args)
+    assert capsys.readouterr().out.strip() == "https://example.org/"
 
 
 def test_list_ignores_extraction_opts(capsys):

@@ -22,8 +22,10 @@ from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
+from hashlib import blake2b
 from pathlib import Path
 from threading import RLock
+from urllib.parse import unquote, urlsplit
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
@@ -150,6 +152,13 @@ def generate_hash_filename(content: str) -> str:
     return urlsafe_b64encode(generate_bow_hash(CLEAN_XML.sub("", content), 12)).decode()
 
 
+def generate_url_filename(url: str) -> str:
+    "Create a readable file name from a URL, with a hash suffix to distinguish URLs."
+    parts = urlsplit(url)
+    prefix = re.sub(r"[^\w.-]+", "_", f"{parts.hostname}{unquote(parts.path)}", flags=re.ASCII)[:120].strip("._-")
+    return f"{prefix}-{blake2b(url.encode(), digest_size=8).hexdigest()}"
+
+
 def determine_output_path(
     args: argparse.Namespace,
     orig_filename: str,
@@ -176,10 +185,14 @@ def determine_output_path(
     return output_path, destination_dir
 
 
-def archive_html(htmlstring: str, args: argparse.Namespace, counter: int = -1) -> str:
+def archive_html(htmlstring: str, args: argparse.Namespace, counter: int = -1, new_filename: str | None = None) -> str:
     "Write a copy of raw HTML in backup directory."
     destination_directory = determine_counter_dir(args.backup_dir, counter)
-    output_path, filename = get_writable_path(destination_directory, ".html.gz")
+    if new_filename:
+        filename = new_filename
+        output_path = os.path.join(destination_directory, filename + ".html.gz")
+    else:
+        output_path, filename = get_writable_path(destination_directory, ".html.gz")
     # check the directory status
     if check_outputdir_status(destination_directory) is True and HAS_GZIP:
         # write
@@ -235,8 +248,10 @@ def file_processing(filename: str, args: argparse.Namespace, counter: int = -1, 
 
 def process_result(htmlstring: str, args: argparse.Namespace, counter: int, options: Extractor | None) -> int:
     "Extract text and metadata from a download webpage and eventually write out the result."
+    fileslug = generate_url_filename(options.url) if args.name_from_url and options and options.url else ""
     # backup option
-    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else ""
+    if args.backup_dir:
+        fileslug = archive_html(htmlstring, args, counter, new_filename=fileslug)
     # process
     result = examine(htmlstring, args, options=options)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)

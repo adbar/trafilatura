@@ -204,6 +204,31 @@ The following command line arguments are relevant:
     ``$ trafilatura --input-file links.txt --output-dir converted/ --backup-dir html-sources/ --xml``
 
 
+Source-based file names
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Use ``--name-from-url`` to identify downloaded pages by their output file names:
+
+.. code-block:: bash
+
+    $ trafilatura --input-file links.txt --output-dir converted/ --name-from-url
+
+For example, ``https://www.example.com/page3`` produces
+``www.example.com_page3-<url-hash>.txt``. The readable prefix contains the host
+and path, with unsafe characters replaced by underscores and a limit of 120
+ASCII characters. A 16-character hash of the full URL distinguishes query
+strings, sanitized paths, and truncated names. Credentials and query strings
+are not included in the readable prefix. The selected output format still
+determines the extension.
+
+This option requires ``--output-dir`` and URL extraction input (``--URL``,
+``--input-file``, ``--feed``, ``--sitemap``, or ``--explore``). It cannot be
+combined with ``--keep-dirs``, local directory input, ``--crawl``, or ``--probe``.
+With ``--backup-dir``, the HTML backup uses the same base name with the
+``.html.gz`` extension. Processing the same URL again replaces its previous
+output and backup. Without this option, the existing naming behavior is unchanged.
+
+
 Internet Archive
 ~~~~~~~~~~~~~~~~
 
