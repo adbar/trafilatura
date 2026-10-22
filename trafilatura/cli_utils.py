@@ -444,11 +444,20 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     return _define_exit_code(errors, url_count)
 
 
-def file_processing_pipeline(args: argparse.Namespace) -> None:
+def _process_file(filename: str, args: argparse.Namespace, counter: int, options: Extractor) -> str | None:
+    "Report file failures without discarding the rest of a worker chunk."
+    try:
+        file_processing(filename, args, counter, options)
+    except Exception as error:
+        return f"{filename} {error}"
+    return None
+
+
+def file_processing_pipeline(args: argparse.Namespace) -> int:
     "Define batches for parallel file processing and perform the extraction."
     filecounter = -1
+    exit_code = 0
     options = args_to_extractor(args)
-    timeout = options.config.getint("DEFAULT", "EXTRACTION_TIMEOUT")
 
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
@@ -456,11 +465,16 @@ def file_processing_pipeline(args: argparse.Namespace) -> None:
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
-            worker = partial(file_processing, args=args, counter=filecounter, options=options)
-            executor.map(worker, filebatch, chunksize=10, timeout=timeout)
+            worker = partial(_process_file, args=args, counter=filecounter, options=options)
+            for error in executor.map(worker, filebatch, chunksize=10):
+                if error is not None:
+                    LOGGER.error("Cannot process file %s", error)
+                    exit_code = 1
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)
+
+    return exit_code
 
 
 def examine(

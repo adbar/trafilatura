@@ -245,7 +245,7 @@ def process_args(args: argparse.Namespace) -> None:
 
     # read files from an input directory
     elif args.input_dir:
-        file_processing_pipeline(args)
+        exit_code = file_processing_pipeline(args)
 
     # read url list from input file or process input URL
     elif args.input_file or args.URL:
