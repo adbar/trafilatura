@@ -26,7 +26,7 @@ _HTML_TAG_NAMES = (
     "ol|p|pre|q|quote|s|section|small|span|strong|sub|summary|sup|table|tbody|td|tfoot|th|"
     "thead|time|title|tr|u|ul"
 )
-_HTML_MARKUP = re.compile(rf"</({_HTML_TAG_NAMES})>|<({_HTML_TAG_NAMES})(\s[^<>]*=[^<>]*)?/?>", re.IGNORECASE)
+_HTML_MARKUP = re.compile(rf"</({_HTML_TAG_NAMES})>|<({_HTML_TAG_NAMES})(?:/?>|\s[^<>=]*=[^<>]*>)", re.IGNORECASE)
 
 
 def basic_cleaning(tree: HtmlElement) -> HtmlElement:

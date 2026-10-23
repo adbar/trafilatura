@@ -7,6 +7,8 @@ and to extract metadata.
 from lxml.etree import XPath
 
 REGEXP_NS = "http://exslt.org/regular-expressions"
+# re:test() is a Python callback even on a missing attribute: "(@id and re:test(@id, ...))" skips
+# it (up to -30% per expression). Left out where it measured slower (COMMENTS_XPATH[0:2], PRECISION_DISCARD_XPATH[1]).
 
 
 def _alt(tokens: tuple[str, ...]) -> str:
@@ -65,8 +67,8 @@ BODY_XPATH = [
         .//*[self::article or self::div or self::main or self::section][
         @class='post' or @class='entry' or
         @itemprop='articleBody' or @id='articleContent' or
-        re:test(@id, '{_alt(_ARTICLE_CONTENT_ID_TOKENS)}') or
-        re:test(@class, '{_alt(_ARTICLE_CONTENT_CLASS_TOKENS)}')
+        (@id and re:test(@id, '{_alt(_ARTICLE_CONTENT_ID_TOKENS)}')) or
+        (@class and re:test(@class, '{_alt(_ARTICLE_CONTENT_CLASS_TOKENS)}'))
         ][1]
         """,
         namespaces={"re": REGEXP_NS},
@@ -79,9 +81,9 @@ BODY_XPATH = [
         @role='article' or
         @id='article' or @id='story' or
         @class='postarea' or @class='art-postcontent' or @class='text' or @class='cell' or @class='story' or
-        re:test(@id, '{_alt(_STORY_ID_TOKENS)}') or
-        re:test(@class, 'fulltext', 'i') or
-        re:test(@class, '{_alt(_STORY_CLASS_TOKENS)}')
+        (@id and re:test(@id, '{_alt(_STORY_ID_TOKENS)}')) or
+        (@class and re:test(@class, 'fulltext', 'i')) or
+        (@class and re:test(@class, '{_alt(_STORY_CLASS_TOKENS)}'))
         ])[1]
         """,
         namespaces={"re": REGEXP_NS},
@@ -90,8 +92,8 @@ BODY_XPATH = [
         f"""
         (.//*[self::article or self::div or self::main or self::section][
         @id='content' or @class='content' or
-        re:test(@id, '{_alt(_MAIN_CONTENT_ID_TOKENS)}') or
-        re:test(@class, '{_alt(_MAIN_CONTENT_CLASS_TOKENS)}') or
+        (@id and re:test(@id, '{_alt(_MAIN_CONTENT_ID_TOKENS)}')) or
+        (@class and re:test(@class, '{_alt(_MAIN_CONTENT_CLASS_TOKENS)}')) or
         contains(translate(@id, 'CM','cm'), 'main-content') or contains(translate(@class, 'CM','cm'), 'main-content') or
         contains(translate(@class, 'CP','cp'), 'page-content')
         ])[1]
@@ -136,7 +138,7 @@ COMMENTS_XPATH = [
     XPath(
         """
         .//*[self::div or self::section or self::list][
-        re:test(@id, '^(?:comol|disqus_thread|dsq-comments)')]
+        (@id and re:test(@id, '^(?:comol|disqus_thread|dsq-comments)'))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -155,8 +157,8 @@ REMOVE_COMMENTS_XPATH = [
     XPath(
         f"""
         .//*[self::div or self::list or self::section or self::details][
-        re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)') or
-        re:test(@class, '{_COMMENTS_CLASS}')]
+        (@id and re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)')) or
+        (@class and re:test(@class, '{_COMMENTS_CLASS}'))]
         """,
         namespaces={"re": REGEXP_NS},
     )
@@ -166,9 +168,9 @@ REMOVE_COMMENTS_AND_LISTS_XPATH = [
     XPath(
         f"""
         .//*[self::div or self::list or self::section or self::details or self::ol or self::ul][
-        re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)') or
-        re:test(@class, '{_COMMENTS_CLASS}')][
-        not(self::ol or self::ul) or re:test(@id, '^(?:{_COMMENTS_ID})') or re:test(@class, '{_COMMENTS_CLASS}')][
+        (@id and re:test(@id, '^(?:{_COMMENTS_ID}|disqus_thread|dsq-comments)')) or
+        (@class and re:test(@class, '{_COMMENTS_CLASS}'))][
+        not(self::ol or self::ul) or (@id and re:test(@id, '^(?:{_COMMENTS_ID})')) or (@class and re:test(@class, '{_COMMENTS_CLASS}'))][
         not(.//h1)]
         """,
         namespaces={"re": REGEXP_NS},
@@ -184,10 +186,10 @@ RAW_TREE_PRUNE_XPATH = [
     XPath(
         """
         .//*[self::div or self::section or self::aside][
-        re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll') or
-        re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')][
-        re:test(@id, 'mvp-post-add-(?:box|wrap)') or
-        re:test(@class, 'mvp-post-add-(?:box|wrap)') or
+        (@id and re:test(@id, 'mvp-post-add-(?:box|wrap)|infinite-?scroll')) or
+        (@class and re:test(@class, 'mvp-post-add-(?:box|wrap)|infinite-?scroll'))][
+        (@id and re:test(@id, 'mvp-post-add-(?:box|wrap)')) or
+        (@class and re:test(@class, 'mvp-post-add-(?:box|wrap)')) or
         (not(.//h1) and not(.//h2[not(//h1) and not(preceding::h2)]))]
         """,
         namespaces={"re": REGEXP_NS},
@@ -293,9 +295,9 @@ OVERALL_DISCARD_XPATH = [
         @data-lp-replacement-content or
         contains(translate(@role, 'N', 'n'), 'nav') or
         contains(@data-component, 'MostPopularStories') or
-        re:test(@id|@class, '{_alt(_CONSENT_ID_CLASS_TOKENS)}') or
-        re:test(@id, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_ID_TOKENS)}') or
-        re:test(@class, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_CLASS_TOKENS)}')]
+        ((@id or @class) and re:test(@id|@class, '{_alt(_CONSENT_ID_CLASS_TOKENS)}')) or
+        (@id and re:test(@id, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_ID_TOKENS)}')) or
+        (@class and re:test(@class, '{_alt(_OVERALL_DISCARD_BOTH_TOKENS + _OVERALL_DISCARD_CLASS_TOKENS)}'))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -303,10 +305,10 @@ OVERALL_DISCARD_XPATH = [
         """
         .//*[@class='comments-title' or
         starts-with(@id|@class, 'reply-') or
-        re:test(@id|@style, 'hidden') or
+        ((@id or @style) and re:test(@id|@style, 'hidden')) or
         contains(@style, 'display:none') or contains(@style, 'display: none') or
-        re:test(@id, 'reader-comments|akismet') or
-        re:test(@class, '^hide-|comments-title|nocomments|-reply-|message|akismet|suggest-links|-hide-|hide-print| hidden| hide|noprint|notloaded') or @aria-hidden='true']
+        (@id and re:test(@id, 'reader-comments|akismet')) or
+        (@class and re:test(@class, '^hide-|comments-title|nocomments|-reply-|message|akismet|suggest-links|-hide-|hide-print| hidden| hide|noprint|notloaded')) or @aria-hidden='true']
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -371,8 +373,8 @@ COMMENTS_DISCARD_XPATH = [
         .//*[
         @class='comments-title' or
         contains(@style, 'display:none') or
-        re:test(@class, 'comments-title|nocomments|-reply-|message|signin') or
-        re:test(@id|@class, '^reply-|akismet')]
+        (@class and re:test(@class, 'comments-title|nocomments|-reply-|message|signin')) or
+        ((@id or @class) and re:test(@id|@class, '^reply-|akismet'))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -390,7 +392,7 @@ AUTHOR_XPATHS = [
         //*[self::a or self::address or self::div or self::link or self::p or self::span or self::strong][
         @rel='author' or @id='author' or @class='author' or @itemprop='author name' or rel='me' or
         @data-testid='AuthorCard' or @data-testid='AuthorURL' or
-        re:test(@class, 'author-?name|AuthorName|authorName')]|//author
+        (@class and re:test(@class, 'author-?name|AuthorName|authorName'))]|//author
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -400,8 +402,8 @@ AUTHOR_XPATHS = [
         //*[self::a or self::div or self::h3 or self::h4 or self::p or self::span][
         @class='byline' or @class='username' or @class='byl' or @class='BBL' or
         contains(@itemprop, 'author') or
-        re:test(@id, 'author|zuozhe|bianji|xiaobian') or
-        re:test(@class, 'author|channel-name|zuozhe|bianji|xiaobian|submitted-by|posted-by|journalist-name')]
+        (@id and re:test(@id, 'author|zuozhe|bianji|xiaobian')) or
+        (@class and re:test(@class, 'author|channel-name|zuozhe|bianji|xiaobian|submitted-by|posted-by|journalist-name'))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -410,8 +412,8 @@ AUTHOR_XPATHS = [
         """
         //*[
         contains(@data-component, 'Byline') or contains(@itemprop, 'author') or
-        re:test(@id, '[Aa]uthor') or
-        re:test(@class, '[Aa]uthor|screenname|writer|[Bb]yline')]
+        (@id and re:test(@id, '[Aa]uthor')) or
+        (@class and re:test(@class, '[Aa]uthor|screenname|writer|[Bb]yline'))]
         """,
         namespaces={"re": REGEXP_NS},
     ),
@@ -423,8 +425,8 @@ AUTHOR_DISCARD_XPATHS = [
         """
         .//*[self::a or self::div or self::section or self::span][
         @id='comments' or @class='comments' or @class='title' or @class='date' or
-        re:test(@id, '^comments|comment-?list|ProductReviews') or
-        re:test(@class, '^[Cc]omments|commentlist|comments-list|sidebar|is-hidden|quote|embedly-instagram|article-(?:share|support)|print|category|meta-date|meta-reviewer') or
+        (@id and re:test(@id, '^comments|comment-?list|ProductReviews')) or
+        (@class and re:test(@class, '^[Cc]omments|commentlist|comments-list|sidebar|is-hidden|quote|embedly-instagram|article-(?:share|support)|print|category|meta-date|meta-reviewer')) or
         contains(@data-component, 'Figure')]
         """,
         namespaces={"re": REGEXP_NS},
@@ -437,7 +439,7 @@ CATEGORIES_XPATHS = [
     XPath(
         """
         //div[
-        re:test(@class, '^(?:post-?info|post-?meta|meta|entry-meta|entry-info|entry-utility)') or
+        (@class and re:test(@class, '^(?:post-?info|post-?meta|meta|entry-meta|entry-info|entry-utility)')) or
         starts-with(@id, 'postpath')]//a[@href]
         """,
         namespaces={"re": REGEXP_NS},
@@ -458,7 +460,7 @@ TAGS_XPATHS = [
     XPath("""//p[starts-with(@class, 'entry-tags')]//a[@href]"""),
     XPath(
         """//div[@class='row' or @class='jp-relatedposts' or @class='entry-utility' or
-    re:test(@class, '^(?:tag|postmeta|meta)')]//a[@href]""",
+    (@class and re:test(@class, '^(?:tag|postmeta|meta)'))]//a[@href]""",
         namespaces={"re": REGEXP_NS},
     ),
     XPath("""//*[@class='entry-meta' or contains(@class, 'topics') or
@@ -472,7 +474,7 @@ TITLE_XPATHS = [
     XPath(
         """
         //*[self::h1 or self::h2][
-        re:test(@class, '(?:post-|entry-|article-|post__)title|headline') or
+        (@class and re:test(@class, '(?:post-|entry-|article-|post__)title|headline')) or
         contains(@id, 'headline') or contains(@itemprop, 'headline')]
         """,
         namespaces={"re": REGEXP_NS},

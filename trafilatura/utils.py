@@ -55,8 +55,8 @@ except ImportError:
 
 from charset_normalizer import from_bytes
 from courlan import fix_relative_urls, get_base_url
-from lxml.etree import _Element
-from lxml.html import HtmlElement, HTMLParser, fromstring
+from lxml.etree import ElementDefaultClassLookup, _Element
+from lxml.html import HtmlComment, HtmlElement, HtmlEntity, HTMLParser, HtmlProcessingInstruction, fromstring
 
 # response types
 from urllib3.response import HTTPResponse
@@ -109,18 +109,22 @@ DOCTYPE_TAG = re.compile("^< ?! ?DOCTYPE[^>]*/[^<>]*>", re.IGNORECASE)
 FAULTY_HTML = re.compile(r"(<html.*?)\s*/>", re.IGNORECASE)
 HTML_STRIP_TAGS = re.compile(r"(<!--.*?-->|<[^>]*>)")
 # control characters
-INVALID_XML_CHARS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\ufffe\uffff]")
+_INVALID_XML_BYTES = bytes(range(9)) + b"\x0b\x0c" + bytes(range(14, 32))
+_INVALID_XML_NONASCII = "\ufffe\uffff"
+INVALID_XML_CHARS = re.compile(f"[{re.escape(_INVALID_XML_BYTES.decode() + _INVALID_XML_NONASCII)}]")
 
 # note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = HTMLParser(collect_ids=False, default_doctype=False, encoding="utf-8", remove_comments=True, remove_pis=True)
-
-LINES_TRIMMING = re.compile(r"(?<![p{P}>])\n", flags=re.UNICODE | re.MULTILINE)
+# one element class instead of the per-tag lxml.html lookup
+HTML_PARSER.set_element_class_lookup(
+    ElementDefaultClassLookup(element=HtmlElement, comment=HtmlComment, pi=HtmlProcessingInstruction, entity=HtmlEntity)
+)
 
 URL_BLACKLIST_REGEX = re.compile(r"^https?://|/+$")
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r"[^\s]+\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)", re.IGNORECASE)
+IMAGE_EXTENSION = re.compile(r"\S\.(avif|bmp|gif|hei[cf]|jpe?g|png|webp)(\b|$)", re.IGNORECASE)
 
 FORMATTING_PROTECTED = {"cell", "head", "hi", "item", "p", "quote", "ref", "td"}
 SPACING_PROTECTED = {"code", "pre"}
@@ -289,9 +293,16 @@ def is_dubious_html(beginning: str) -> bool:
     return "html" not in beginning
 
 
+def _has_invalid_xml_chars(text: str) -> bool:
+    "Cheaper than the regex: the invalid C0 characters are ASCII and survive the projection."
+    data = text.encode("ascii", "ignore")
+    return len(data.translate(None, _INVALID_XML_BYTES)) != len(data) or any(c in text for c in _INVALID_XML_NONASCII)
+
+
 def repair_faulty_html(htmlstring: str, beginning: str) -> str:
     "Repair faulty HTML strings to make then palatable for libxml2."
-    htmlstring = INVALID_XML_CHARS.sub("", htmlstring)
+    if _has_invalid_xml_chars(htmlstring):
+        htmlstring = INVALID_XML_CHARS.sub("", htmlstring)
     # libxml2/LXML issue: https://bugs.launchpad.net/lxml/+bug/1955915
     if "doctype" in beginning:
         firstline, _, rest = htmlstring.partition("\n")
@@ -320,6 +331,9 @@ def load_html(htmlobject: HtmlInput, max_size: int | None = None) -> HtmlElement
     Expects a full document: the dubious-HTML check below rejects a single-block
     fragment (e.g. "<p>x</p>" alone has one child and is treated as not-quite-HTML).
     Wrap bare fragments in an extra element (e.g. f"<div>{fragment}</div>") first.
+
+    Parsed elements are plain HtmlElement objects, without lxml.html's form helpers
+    (FormElement, InputElement...). Use lxml.html.fromstring() if they are needed.
     """
     # use tree directly
     if isinstance(htmlobject, HtmlElement):
@@ -385,7 +399,7 @@ def return_printables_and_spaces(char: str) -> str:
 def remove_control_characters(string: str) -> str:
     """Prevent non-printable and XML invalid character errors"""
     # in case most strings are already clean
-    if string.isprintable():
+    if string.isprintable() or "".join(string.split()).isprintable():
         return string
     return "".join(map(return_printables_and_spaces, string))
 
@@ -403,11 +417,10 @@ def line_processing(line: str, preserve_space: bool = False, trailing_space: boo
     # unique code spaces
     new_line = remove_control_characters(line.replace("&#13;", "\r").replace("&#10;", "\n").replace("&nbsp;", "\u00a0"))
     if not preserve_space:
-        # remove newlines that are not related to punctuation or markup
-        # remove non-printable chars and normalize space characters (including Unicode spaces)
-        new_line = trim(LINES_TRIMMING.sub(r" ", new_line))
+        # normalize space characters (including newlines and Unicode spaces)
+        new_line = trim(new_line)
         # prune empty lines
-        if all(map(str.isspace, new_line)):
+        if not new_line:
             new_line = None  # type: ignore[assignment]
         elif trailing_space:
             space_before = " " if line[0].isspace() else ""
@@ -459,8 +472,7 @@ def sanitize_tree(tree: _Element) -> _Element:
 def trim(string: str) -> str:
     "Remove unnecessary spaces within a text string."
     try:
-        # remove newlines that are not related to punctuation or markup + proper trimming
-        return " ".join(string.split()).strip()
+        return " ".join(string.split())
     except (AttributeError, TypeError):
         return ""
 
