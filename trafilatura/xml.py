@@ -499,19 +499,28 @@ def _last_char(returnlist: list[str]) -> str:
     return returnlist[-1][-1:] if returnlist else ""
 
 
-def _list_marker(item: _Element, include_formatting: bool = True) -> str:
+def _list_marker(item: _Element, include_formatting: bool = True, list_positions: dict[_Element, int] | None = None) -> str:
     "Markdown marker of a list item: 'N. ' or '- ' with nesting indent."
     # a nested list starts where the text of its parent item starts (CommonMark):
     # 2 spaces after '- ', but 3 after '1. ' and 4 after '10. '
+    if list_positions is None:
+        list_positions = {}
     outer = next(item.iterancestors("item"), None)
     if outer is not None:
-        indent = " " * len(_list_marker(outer, include_formatting))
+        indent = " " * len(_list_marker(outer, include_formatting, list_positions))
     else:
         indent = "  " * (sum(1 for _ in item.iterancestors("list")) - 1)
     parent = item.getparent()
     # numbering is markdown-only: in plain text it injects digit tokens, so fall back to '-'
     if include_formatting and parent is not None and parent.get("rend") == "ol":
-        return f"{indent}{sum(1 for _ in item.itersiblings('item', preceding=True)) + 1}. "
+        # Cache direct item numbers once per list, including those needed for nested markers.
+        if item not in list_positions:
+            position = 1
+            for child in parent.iterchildren():
+                list_positions[child] = position
+                if child.tag == "item":
+                    position += 1
+        return f"{indent}{list_positions[item]}. "
     if parent is not None and parent.get("rend") == "dl" and (item.get("rend") or "").startswith("dd-"):
         # description list: the definition continues under its term, no bullet (GH #4)
         return f"{indent}  "
@@ -687,7 +696,12 @@ def _append_spaced(returnlist: list[str], text: str) -> None:
 
 
 def _append_tail(
-    element: _Element, returnlist: list[str], in_cell: bool, in_item: bool, include_formatting: bool = False
+    element: _Element,
+    returnlist: list[str],
+    in_cell: bool,
+    in_item: bool,
+    include_formatting: bool = False,
+    list_positions: dict[_Element, int] | None = None,
 ) -> None:
     "Append the element's tail."
     tail = element.tail
@@ -696,7 +710,7 @@ def _append_tail(
     parent = element.getparent()
     if include_formatting and element.tag == "list" and in_item and not in_cell and parent is not None and tail.strip():
         # blank line and parent item indent, else CommonMark continues the last sub-item
-        returnlist.append(f"\u2424\n{' ' * len(_list_marker(parent))}{tail.strip()}")
+        returnlist.append(f"\u2424\n{' ' * len(_list_marker(parent, list_positions=list_positions))}{tail.strip()}")
         return
     if in_cell or in_item or element.tag == "list":
         core = tail.strip()
@@ -720,8 +734,11 @@ def process_element(
     include_formatting: bool,
     in_cell: bool = False,
     in_item: bool = False,
+    list_positions: dict[_Element, int] | None = None,
 ) -> None:
     "Recursively convert a LXML element and its children to a flattened string representation."
+    if list_positions is None:
+        list_positions = {}
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
     in_cell = in_cell or element.tag == "cell"
     in_item = in_item or element.tag == "item"
@@ -744,7 +761,7 @@ def process_element(
     _renders_inline = bool(element.text) or _consumes_children
 
     if element.tag == "item" and not in_cell and _item_needs_marker(element):
-        returnlist.append(_list_marker(element, include_formatting))
+        returnlist.append(_list_marker(element, include_formatting, list_positions))
 
     # whitespace-only item text would split the marker from the content
     if _renders_inline and (element.tag != "item" or _consumes_children or text_chars_test(element.text)):
@@ -759,7 +776,7 @@ def process_element(
 
     if not _consumes_children:
         for child in element:
-            process_element(child, returnlist, include_formatting, in_cell, in_item)
+            process_element(child, returnlist, include_formatting, in_cell, in_item, list_positions)
 
     if not _renders_inline:
         if element.tag == "graphic":
@@ -797,7 +814,7 @@ def process_element(
         _append_spaced(returnlist, " ")
 
     if element.tag != "graphic":  # graphic tail already handled above
-        _append_tail(element, returnlist, in_cell, in_item, include_formatting)
+        _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
 
     # deal with list items alone
     if last_in_item and not in_cell:
