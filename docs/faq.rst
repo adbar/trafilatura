@@ -192,11 +192,10 @@ For a DataFrame from multiple URLs, use JSON output:
 How to handle large or slow pages
 ---------------------------------
 
-Three settings in ``settings.cfg`` control resource limits:
+Two settings in ``settings.cfg`` control resource limits:
 
 - ``MAX_FILE_SIZE = 20000000``: reject input larger than this (bytes). Lower it to skip bloated pages.
 - ``MAX_TREE_SIZE``: discard documents with more HTML elements than this (empty = no limit). For example, set it to ``50000`` to prevent extraction from running on huge DOM trees.
-- ``EXTRACTION_TIMEOUT = 30``: CLI only — abort extraction after this many seconds. Set to ``0`` to disable (also needed if you see ``signal``-related errors on some platforms).
 
 In Python, pass a custom config:
 
