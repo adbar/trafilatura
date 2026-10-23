@@ -106,6 +106,11 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         cleaning_list -= PRESERVE_IMG_CLEANING
         stripping_list.discard("img")
 
+    # a <template> is inert markup a script may clone and is never shown as it is, unless it is a
+    # declarative shadow root, which the browser renders in place (and which stays stripped below)
+    for template in [t for t in tree.iter("template") if t.get("shadowrootmode", t.get("shadowroot")) is None]:
+        delete_element(template)
+
     # strip targeted elements
     strip_tags(tree, *stripping_list)
 
@@ -386,7 +391,7 @@ CONVERSIONS = {
     **dict.fromkeys(("dl", "ol", "ul"), convert_lists),
     **dict.fromkeys(("h1", "h2", "h3", "h4", "h5", "h6"), convert_headings),
     **dict.fromkeys(("br", "hr"), convert_line_breaks),
-    **dict.fromkeys(("blockquote", "pre", "q"), convert_quotes),
+    **dict.fromkeys(("blockquote", "pre"), convert_quotes),
     **dict.fromkeys(("del", "s", "strike"), convert_deletions),
     "details": convert_details,
 }
@@ -442,6 +447,9 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
             elem.tag = "hi"
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
+
+    # <q> is an inline quotation: unwrapped, it stays in its sentence
+    strip_tags(tree, "q")
 
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):

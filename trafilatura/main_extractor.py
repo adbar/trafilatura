@@ -553,7 +553,7 @@ def recover_wild_text(
     LOGGER.debug("Recovering wild text elements")
     # copy: the recall branch below mutates potential_tags, must not leak back to the caller
     potential_tags = set(TAG_CATALOG if potential_tags is None else potential_tags)
-    # blockquote/pre/q are already renamed to quote/code by convert_tags before this tree is built
+    # blockquote/pre are already renamed to quote/code by convert_tags before this tree is built
     search_expr = ".//code|.//p|.//quote|.//table|.//div[contains(@class, 'w3-code')]"
     if options.focus == "recall":
         potential_tags.update(["div", "lb"])

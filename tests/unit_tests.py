@@ -933,6 +933,22 @@ def test_nested_element_tail_kept(body, expected):
     assert expected in _extract_doc(body, output_format="xml", include_formatting=True, include_images=True)
 
 
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        ("<p>He said <q>hello there</q> loudly.</p>", "He said hello there loudly."),
+        ("<p>See <q>a <b>bold</b> claim</q> here.</p>", "See a **bold** claim here."),
+        ("<p>She wrote <q>he said <q>no</q> twice</q> today.</p>", "She wrote he said no twice today."),
+        ("<p>He said \u201c<q>hello there</q>\u201d loudly.</p>", "He said \u201chello there\u201d loudly."),
+    ],
+    ids=["plain", "formatted", "nested", "site-marks-kept"],
+)
+def test_inline_quotation_stays_in_its_paragraph(body, expected):
+    "An inline <q> is unwrapped, so its sentence stays in one paragraph in every output format."
+    assert expected in _md_inline(body).splitlines()
+    assert expected.replace("**", "") in _extract_doc(body, output_format="txt").splitlines()
+
+
 def test_srcless_graphic_dropped_text_kept():
     "A src-less image is dropped from a quote, the text around it in a paragraph is kept."
     quote = handle_quotes(etree.fromstring("<quote>a<graphic/></quote>"), core.Extractor())
@@ -2067,6 +2083,21 @@ def test_precision_discard_bottom_token_boundary():
     assert not discarded('class="col-8 Padding-bottom-lg-30 floatL"')
     assert not discarded('class="border-bottom-0"')
     assert not discarded('class="mb-bottom-3"')
+
+
+def test_template_content_dropped():
+    "A <template> is inert and never shown, except a declarative shadow root, which is rendered in place."
+    article = "<p>" + "This is the actual article body with enough text to be extracted. " * 4 + "</p>"
+    options = core.Extractor(config=ZERO_CONFIG)
+    page = (
+        f"<html><body><div>{article}<template><p>Hidden template row</p></template>tail text"
+        '<div><template shadowrootmode="open"><p>Shadow root text</p></template></div></div></body></html>'
+    )
+    cleaned = tree_cleaning(load_html(page), options).text_content()
+    assert "Hidden template row" not in cleaned
+    assert "tail text" in cleaned
+    assert "Shadow root text" in cleaned
+    assert "Hidden template row" not in extract(page, config=ZERO_CONFIG)
 
 
 def test_wrapper_form_kept():
