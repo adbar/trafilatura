@@ -446,14 +446,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
-    # <q> is an inline quotation: it stays in its sentence, between the marks browsers add
-    for elem in tree.iter("q"):
-        opening, closing = ("\u2018", "\u2019") if any(True for _ in elem.iterancestors("q")) else ("\u201c", "\u201d")
-        elem.text = opening + (elem.text or "")
-        if len(elem):
-            elem[-1].tail = (elem[-1].tail or "") + closing
-        else:
-            elem.text += closing
+    # <q> is an inline quotation: unwrapped, it stays in its sentence
     strip_tags(tree, "q")
 
     # iterate over all concerned elements
