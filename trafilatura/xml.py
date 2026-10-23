@@ -8,6 +8,8 @@ import logging
 import re
 from collections.abc import Iterator
 from copy import deepcopy
+from html import unescape
+from html.entities import html5
 from importlib.metadata import version
 from io import StringIO
 from json import dumps as json_dumps
@@ -105,6 +107,9 @@ _MATH_INLINE_RE = re.compile(r"\\\((.+?)\\\)")
 # the very same spans, as a splitter: math is LaTeX, not CommonMark, so the inline-special
 # escaping has to step over exactly the regions _convert_math rewrites, and nothing else
 _MATH_SPAN_RE = re.compile(r"((?s:(?<!\S)\\\[.+?\\\])|\\\(.+?\\\))")
+
+# Require a complete entity: HTML's permissive decoding corrupts text such as '&region=us'.
+_HTML_ENTITY_RE = re.compile(r"&(#(?:[0-9]+|[xX][0-9a-fA-F]+);|[A-Za-z][A-Za-z0-9]+;)")
 
 
 # https://github.com/lxml/lxml/blob/master/src/lxml/html/__init__.py
@@ -788,6 +793,13 @@ def process_element(
         returnlist.append("\n")
 
 
+def _unescape_text(text: str) -> str:
+    "Decode complete entities without interpreting unknown names as entity prefixes."
+    return _HTML_ENTITY_RE.sub(
+        lambda match: unescape(match[0]) if match[1].startswith("#") else html5.get(match[1], match[0]), text
+    )
+
+
 def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
     "Convert to plain text format and optionally preserve formatting as markdown."
     if xmloutput is None:
@@ -795,16 +807,25 @@ def xmltotxt(xmloutput: _Element | None, include_formatting: bool) -> str:
 
     returnlist: list[str] = []
 
+    # Decode double-encoded prose before Markdown escaping, preserving URL attributes and the caller's tree.
+    xmloutput = deepcopy(xmloutput)
+    for element in xmloutput.iter():
+        if element.text:
+            element.text = _unescape_text(element.text)
+        if element.tail:
+            element.tail = _unescape_text(element.tail)
+        if element.tag == "graphic":
+            for attribute in ("title", "alt"):
+                if value := element.get(attribute):
+                    element.set(attribute, _unescape_text(value))
+
     if include_formatting:
-        # math rewrite, special-char escaping, emphasis collapse, lb removal mutate the tree; protect caller's copy
-        xmloutput = deepcopy(xmloutput)
         _escape_and_convert_math_tree(xmloutput)
         _collapse_emphasis(xmloutput)
         _merge_adjacent_hi(xmloutput)
         _strip_block_whitespace(xmloutput)
     process_element(xmloutput, returnlist, include_formatting)
 
-    # The XML parser has already decoded entities in text and attributes.
     return sanitize("".join(returnlist), True) or ""
 
 

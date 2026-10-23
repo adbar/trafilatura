@@ -3920,12 +3920,54 @@ def test_markdown_link_angle_bracket_targets():
 
 
 @pytest.mark.parametrize("include_formatting", [False, True])
-def test_xmltotxt_does_not_decode_entities_twice(include_formatting):
-    body = b"<body><p>Decoded &amp; &lt; &gt; &#169;; literal &amp;copy; &amp;#169; &amp;region=us.</p></body>"
-    expected = "Decoded & < > ©; literal &copy; &#169; &region=us."
+def test_xmltotxt_decodes_complete_text_entities(include_formatting):
+    body = (
+        b"<body><p>Decoded &amp; &lt; &gt; &#169;; double &amp;rsquo; AT&amp;amp;T &amp;copy; &amp;#169; &amp;#xA9;; "
+        b"literal &amp;region=us &amp;notanentity;.</p></body>"
+    )
+    expected = "Decoded & < > ©; double ’ AT&T © © ©; literal &region=us &notanentity;."
     if include_formatting:
         expected = expected.replace("<", "\\<")
     assert _md(body, include_formatting=include_formatting) == expected
+
+
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_double_encoded_text_is_decoded_before_markdown_escaping(include_formatting):
+    body = b"<body><p>&amp;lt;tag&amp;gt; &amp;#42;bold&amp;#42; &amp;#91;text&amp;#93;</p></body>"
+    expected = r"\<tag> \*bold\* \[text\]" if include_formatting else "<tag> *bold* [text]"
+    assert _md(body, include_formatting=include_formatting) == expected
+
+
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_text_entity_decoding_does_not_mutate_tree(include_formatting):
+    tree = etree.fromstring(b'<body><p>It&amp;rsquo;s <hi rend="#b">AT&amp;amp;T</hi> &amp;#169;.</p></body>')
+    before = etree.tostring(tree)
+    expected = "It’s **AT&T** ©." if include_formatting else "It’s AT&T ©."
+    assert xml.xmltotxt(tree, include_formatting).strip() == expected
+    assert xml.xmltotxt(tree, include_formatting).strip() == expected
+    assert etree.tostring(tree) == before
+
+
+@pytest.mark.parametrize("output_format", ["txt", "markdown", "json", "csv"])
+def test_double_encoded_text_preserves_link_destinations(output_format):
+    target = "https://example.org/list?id=7&region=us&section=2&times=3&literal=&copy;"
+    body = f'<p>It&amp;rsquo;s AT&amp;amp;T: <a href="{target.replace("&", "&amp;")}">AT&amp;amp;T</a>.</p>'
+    result = _extract_doc(body, output_format=output_format, include_links=True, fast=True)
+    assert result is not None
+    if output_format == "json":
+        result = json.loads(result)["text"]
+    assert f"It’s AT&T: [AT&T]({target})." in result
+
+
+@pytest.mark.parametrize("include_formatting", [False, True])
+def test_image_text_entity_decoding_preserves_source(include_formatting):
+    target = "https://example.org/image.png?id=7&region=us&literal=&copy;"
+    tree = etree.Element("body")
+    image = etree.SubElement(tree, "graphic", src=target, title="It&rsquo;s", alt="AT&amp;T")
+    before = etree.tostring(tree)
+    assert xml.xmltotxt(tree, include_formatting).strip() == f"![It’s AT&T]({target})"
+    assert etree.tostring(tree) == before
+    assert image.get("src") == target
 
 
 @pytest.mark.parametrize("output_format", ["txt", "markdown", "json", "csv"])
