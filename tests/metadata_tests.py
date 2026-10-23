@@ -22,6 +22,7 @@ from trafilatura.metadata import (
     normalize_tags,
 )
 from trafilatura.settings import Extractor, use_config
+from trafilatura.xml import build_json_output
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -479,6 +480,41 @@ def test_extract_meta_json_control_char():
     metadata = extract_meta_json(html.fromstring(doc), Document())
     assert metadata.pagetype == "article"
     assert metadata.title == "Graph based headline"
+
+
+def test_extract_meta_json_escaped_characters():
+    "regression: JSON-LD escapes must be decoded by the parser, not in the raw text where an escaped \
+    quote would end the string and escaped angle brackets would be stripped as a tag spanning fields."
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", '
+        '"headline": "A \\u0022quoted\\u0022 title", "author": {"@type": "Person", "name": "Jane Doe"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == 'A "quoted" title'
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Why 3 \\u003c 5", '
+        '"publisher": {"@type": "Organization", "name": "<b>Acme</b> \\u003e News"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == "Why 3 < 5"
+    # markup in the values is still stripped
+    assert metadata.sitename == "Acme > News"
+
+
+def test_extract_meta_json_entities_and_surrogates():
+    "regression: parsed JSON-LD strings contain no backslash, entities and lone surrogates must be removed anyway."
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food &amp; Drink"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food & Drink"]
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food\\ud800"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food"]
+    # the JSON output can be encoded as UTF-8
+    assert b'"categories": "Food"' in build_json_output(metadata).encode("utf-8")
 
 
 def test_extract_json_multiple_blocks():

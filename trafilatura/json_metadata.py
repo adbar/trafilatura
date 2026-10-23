@@ -293,14 +293,31 @@ def extract_json_parse_error(elem: str, metadata: Document) -> Document:
     return metadata
 
 
+def unescape_json_string(string: str) -> str:
+    "Remove lone surrogates and unescape HTML entities"
+    string = "".join(c for c in string if ord(c) < 0xD800 or ord(c) > 0xDFFF)
+    return unescape(string)
+
+
 def normalize_json(string: str) -> str:
     "Normalize unicode strings and trim the output"
     if "\\" in string:
         string = string.replace("\\n", "").replace("\\r", "").replace("\\t", "")
         string = JSON_UNICODE_REPLACE.sub(lambda match: chr(int(match[1], 16)), string)
-        string = "".join(c for c in string if ord(c) < 0xD800 or ord(c) > 0xDFFF)
-        string = unescape(string)
+        string = unescape_json_string(string)
     return trim(HTML_STRIP_TAGS.sub("", string))
+
+
+def normalize_json_values(value: Any) -> Any:
+    "Normalize all strings of a parsed JSON object."
+    if isinstance(value, str):
+        # JSON escapes are already decoded by the parser, entities and surrogates are not
+        return trim(HTML_STRIP_TAGS.sub("", unescape_json_string(value)))
+    if isinstance(value, list):
+        return [normalize_json_values(item) for item in value]
+    if isinstance(value, dict):
+        return {key: normalize_json_values(item) for key, item in value.items()}
+    return value
 
 
 def normalize_authors(current_authors: str | None, author_string: str) -> str | None:
