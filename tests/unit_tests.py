@@ -1908,16 +1908,24 @@ def test_recover_wild_text_list_after_colon():
     # precision mode is unchanged
     assert "conduct data analysis" not in recovered(core.Extractor(precision=True))
 
-    # the recovered list is left out of the length that gates the later rescues
+    # the rest of the text is short: the recovered list counts toward the rescue lengths
     body, text = extract_content(html.fromstring(htmlstring), core.Extractor())
+    assert intro in text
+    assert "conduct data analysis" in text
+
+    # the rest is long enough on its own: the list is left out of the length that gates the later rescues
+    closing = "Unrelated closing paragraph. " + "Some more words here. " * 12
+    long_html = htmlstring.replace("Unrelated closing paragraph.", closing)
+    body, text = extract_content(html.fromstring(long_html), core.Extractor())
     assert "conduct data analysis" in "".join(body.itertext())
     assert intro in text
     assert "conduct data analysis" not in text
 
     # once the cascade has chosen, the list is counted and the marker is gone
-    result = extract(htmlstring, output_format="xml", config=ZERO_CONFIG)
-    assert "conduct data analysis" in result
-    assert "deferred" not in result
+    for doc in (htmlstring, long_html):
+        result = extract(doc, output_format="xml", config=ZERO_CONFIG)
+        assert "conduct data analysis" in result
+        assert "deferred" not in result
 
 
 _MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
