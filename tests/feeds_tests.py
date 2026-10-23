@@ -18,6 +18,7 @@ from trafilatura.feeds import (
     find_feed_urls,
     find_links,
     handle_link_list,
+    has_rss_root,
     probe_gnews,
     try_homepage,
 )
@@ -153,6 +154,13 @@ def test_rss_extraction():
             f"</item><item><link>https://example.org/article2</link></item></channel>{closing}"
         )
         assert extract_links(feed, params) == ["https://example.org/article1", "https://example.org/article2"]
+
+    # the root is found in linear time, whatever precedes it
+    assert has_rss_root("\ufeff <?xml version='1.0'?>\n<!-- c --><!DOCTYPE rss><rss>")
+    assert not has_rss_root("<?xml version='1.0'?><feed>")
+    assert not has_rss_root("<!-- unclosed <rss>")
+    assert not has_rss_root("<?" + "?><?" * 50_000 + "x")
+    assert not has_rss_root("<!--" + "--><!--" * 50_000 + "x")
 
     params = FeedParameters("https://example.org", "example.org", "")
     filepath = os.path.join(RESOURCES_DIR, "feed2.rss")
