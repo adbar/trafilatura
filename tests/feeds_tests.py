@@ -143,6 +143,17 @@ def test_rss_extraction():
         "https://www.dwds.de/api/feed/themenglossar/Corona"
     ]
 
+    # <link .../> tags in the HTML of an item do not make an RSS feed an Atom one
+    params = FeedParameters("https://example.org", "example.org", "")
+    for root in ('<rss version="2.0">', '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'):
+        closing = "</rss>" if root.startswith("<rss") else "</rdf:RDF>"
+        feed = (
+            f"{XMLDECL}<!-- generator -->{root}<channel><item><link>https://example.org/article1</link>"
+            '<description><![CDATA[<p>Hi</p><link rel="stylesheet" href="https://example.org/style.css">]]></description>'
+            f"</item><item><link>https://example.org/article2</link></item></channel>{closing}"
+        )
+        assert extract_links(feed, params) == ["https://example.org/article1", "https://example.org/article2"]
+
     params = FeedParameters("https://example.org", "example.org", "")
     filepath = os.path.join(RESOURCES_DIR, "feed2.rss")
     with open(filepath, encoding="utf-8") as f:

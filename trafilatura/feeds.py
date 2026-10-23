@@ -49,6 +49,8 @@ FEED_TYPES = {
 }
 
 FEED_OPENING = re.compile(r"<(feed|rss|\?xml)")
+# root element after the XML declaration, processing instructions, comments and doctype
+RSS_ROOT = re.compile(r"\ufeff?\s*(?:<\?.*?\?>\s*|<!--.*?-->\s*|<!DOCTYPE[^>]*>\s*)*<(?:rss|(?:\w+:)?RDF)\b", re.DOTALL)
 
 LINK_ATTRS = re.compile(r"""<link\s+(?:[^>"']|"[^"]*"|'[^']*')*["']?/?>""")
 LINK_ATTRIBUTES = re.compile(r"""\s([\w:-]+)\s*=\s*(["'])(.*?)\2""", re.DOTALL)
@@ -140,6 +142,10 @@ def find_links(feed_string: str, params: FeedParameters) -> list[str]:
         else:
             LOGGER.debug("Possibly invalid feed: %s", params.domain)
         return []
+
+    # RSS first when the root says so: the HTML of its items can contain <link .../> tags
+    if "<link>" in feed_string and RSS_ROOT.match(feed_string):
+        return [m[1].strip() for m in islice(LINK_ELEMENTS.finditer(feed_string), MAX_LINKS)]
 
     # Atom
     if LINK_ATTRS.search(feed_string):
