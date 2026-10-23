@@ -481,6 +481,27 @@ def test_extract_meta_json_control_char():
     assert metadata.title == "Graph based headline"
 
 
+def test_extract_meta_json_escaped_characters():
+    "regression: JSON-LD escapes must be decoded by the parser, not in the raw text where an escaped \
+    quote would end the string and escaped angle brackets would be stripped as a tag spanning fields."
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", '
+        '"headline": "A \\u0022quoted\\u0022 title", "author": {"@type": "Person", "name": "Jane Doe"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == 'A "quoted" title'
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Why 3 \\u003c 5", '
+        '"publisher": {"@type": "Organization", "name": "<b>Acme</b> \\u003e News"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == "Why 3 < 5"
+    # markup in the values is still stripped
+    assert metadata.sitename == "Acme > News"
+
+
 def test_extract_json_multiple_blocks():
     "regression: a flat JSON-LD object must not short-circuit the loop and drop later @graph blocks."
     schema = [

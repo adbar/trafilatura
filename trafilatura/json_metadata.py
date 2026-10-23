@@ -303,6 +303,17 @@ def normalize_json(string: str) -> str:
     return trim(HTML_STRIP_TAGS.sub("", string))
 
 
+def normalize_json_values(value: Any) -> Any:
+    "Normalize all strings of a parsed JSON object."
+    if isinstance(value, str):
+        return normalize_json(value)
+    if isinstance(value, list):
+        return [normalize_json_values(item) for item in value]
+    if isinstance(value, dict):
+        return {key: normalize_json_values(item) for key, item in value.items()}
+    return value
+
+
 def normalize_authors(current_authors: str | None, author_string: str) -> str | None:
     """Normalize author info to focus on author names only"""
     new_authors = []
