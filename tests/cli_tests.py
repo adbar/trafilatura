@@ -30,7 +30,7 @@ pytestmark = pytest.mark.usefixtures("mock_network")
 settings.MAX_FILES_PER_DIRECTORY = 1
 
 
-def test_parser():
+def test_parser(tmp_path):
     """test argument parsing for the command-line interface"""
     testargs = ["", "-fvv", "--xmltei", "--no-tables", "-u", "https://www.example.org"]
     args = cli.parse_args(testargs[1:])
@@ -71,7 +71,7 @@ def test_parser():
     args = cli.map_args(args)
     assert args.only_with_metadata is True
     # process_args
-    args.input_dir = "/dev/null"
+    args.input_dir = str(tmp_path)
     args.verbose = 1
     args.blacklist = path.join(RESOURCES_DIR, "list-discard.txt")
     cli.process_args(args)
@@ -96,7 +96,7 @@ def test_parser():
         cli.process_args(args)
     assert len(f.getvalue()) == 0
     # input directory
-    testargs = ["", "--input-dir", "resources/test/"]
+    testargs = ["", "--input-dir", str(tmp_path)]
     args = cli.parse_args(testargs[1:])
     f = io.StringIO()
     with redirect_stdout(f):
@@ -525,13 +525,13 @@ def test_file_processing_continues_after_error(tmp_path, caplog):
     assert cli_utils._process_file(str(valid), args, -1, options) is None
 
 
-def test_file_processing():
+def test_file_processing(tmp_path):
     "Test file processing pipeline on actual directories."
     backup = settings.MAX_FILES_PER_DIRECTORY
     settings.MAX_FILES_PER_DIRECTORY = 0
 
     # dry-run file processing pipeline
-    testargs = ["", "--parallel", "1", "--input-dir", "/dev/null"]
+    testargs = ["", "--parallel", "1", "--input-dir", str(tmp_path)]
     args = cli.parse_args(testargs[1:])
     cli_utils.file_processing_pipeline(args)
     # file processing pipeline on resources/
