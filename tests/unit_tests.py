@@ -2980,7 +2980,7 @@ def test_comments_keep_inline_formatting_in_paragraph(output_format, fast):
     first = "I really love this post, thanks a lot for sharing it with everybody here."
     second = "Another reader also found this article useful and left a separate comment."
     document = _formatted_comment_doc(
-        f"<p>I really <b>love</b> this post, <i>thanks</i> a lot for sharing it with everybody here.</p><p>{second}</p>"
+        f"<p>I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.</p><p>{second}</p>"
     )
     result = extract(document, output_format=output_format, include_formatting=True, include_comments=True, fast=fast)
     assert result is not None
@@ -3012,6 +3012,10 @@ def test_comments_keep_inline_formatting_in_paragraph(output_format, fast):
         (
             "<p>Hyper<b>link</b>ed words stay connected in this reader comment.</p>",
             "Hyperlinked words stay connected in this reader comment.",
+        ),
+        (
+            "<p>I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.</p>",
+            "I really love this post, thanks a lot for sharing it with everybody here.",
         ),
     ],
 )

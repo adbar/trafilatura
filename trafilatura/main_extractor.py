@@ -28,7 +28,7 @@ from .settings import (
     TAG_CATALOG,
     Extractor,
 )
-from .utils import FORMATTING_PROTECTED, SPACING_PROTECTED, image_src, text_chars_test, trim
+from .utils import FORMATTING_PROTECTED, SPACING_PROTECTED, image_src, sanitize_tree, text_chars_test, trim
 from .xml import delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
@@ -798,4 +798,5 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
             # remove corresponding subtree
             delete_element(subtree, keep_tail=False)
             break
+    comments_body = sanitize_tree(comments_body)
     return comments_body, " ".join(comments_body.itertext()).strip(), tree
