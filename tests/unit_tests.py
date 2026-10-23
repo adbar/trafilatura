@@ -1908,6 +1908,17 @@ def test_recover_wild_text_list_after_colon():
     # precision mode is unchanged
     assert "conduct data analysis" not in recovered(core.Extractor(precision=True))
 
+    # the recovered list is left out of the length that gates the later rescues
+    body, text = extract_content(html.fromstring(htmlstring), core.Extractor())
+    assert "conduct data analysis" in "".join(body.itertext())
+    assert intro in text
+    assert "conduct data analysis" not in text
+
+    # once the cascade has chosen, the list is counted and the marker is gone
+    result = extract(htmlstring, output_format="xml", config=ZERO_CONFIG)
+    assert "conduct data analysis" in result
+    assert "deferred" not in result
+
 
 _MED_REF = '<ref target="/x">' + "x" * 250 + "</ref>"
 _BIG_REF = '<ref target="/x">' + "x" * 600 + "</ref>"

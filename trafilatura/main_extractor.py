@@ -50,6 +50,9 @@ CODES_QUOTES = {"code", "quote"}
 # blocks rebuilt as new elements by handle_textelem(), which leaves the source tail behind
 REBUILT_BLOCKS = CODES_QUOTES | {"list", "table"}
 NOT_AT_THE_END = {"head", "ref"}
+# marks a list recovered after a colon paragraph (#431): left out of the length that gates the
+# later rescues, counted once the cascade has chosen (trafilatura_sequence)
+DEFERRED_ATTR = "deferred"
 # tags allowed inside a blockquote paragraph
 _QUOTE_TAGS = set(TAG_CATALOG) | {"ref", "graphic"}
 
@@ -598,6 +601,9 @@ def recover_wild_text(
             or (under_cap and ((len(text) > MIN_DUPLICATE_LENGTH and text in existing) or (fragment and fragment in existing)))
         ):
             continue
+        # in the default mode only the colon rule above adds lists here
+        if options.focus == "balanced" and processed.tag == "list":
+            processed.set(DEFERRED_ATTR, "1")
         result_body.append(processed)
         if under_cap:
             existing += "\n" + (fragment or text)
@@ -744,6 +750,12 @@ def extract_content(cleaned_tree: HtmlElement, options: Extractor) -> tuple[_Ele
         consumed: set[_Element] = {twin for elem, twin in zip(order, backup_tree.iter(), strict=True) if elem.tag == "done"}
         result_body = recover_wild_text(backup_tree, result_body, options, potential_tags, consumed)
         temp_text = " ".join(result_body.itertext()).strip()
+        # the recovered lists must not make the text look long enough to skip the stronger rescues
+        if result_body.find(f"list[@{DEFERRED_ATTR}]") is not None:
+            gated = deepcopy(result_body)
+            for elem in gated.findall(f"list[@{DEFERRED_ATTR}]"):
+                delete_element(elem, keep_tail=False)
+            temp_text = " ".join(gated.itertext()).strip()
     # drop substantial elements repeating the previous one (overlapping-candidate / recovery artifact);
     # length-gated so short genuine repeats stay for the dedup (#778) and tree-size guards
     previous = None

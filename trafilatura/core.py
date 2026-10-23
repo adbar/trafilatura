@@ -24,7 +24,7 @@ from .htmlprocessing import (
     prune_unwanted_nodes,
     tree_cleaning,
 )
-from .main_extractor import _elem_text, extract_comments, extract_content
+from .main_extractor import DEFERRED_ATTR, _elem_text, extract_comments, extract_content
 from .metadata import Document, extract_metadata
 from .settings import DEFAULT_CONFIG, Extractor, use_config
 from .utils import (
@@ -263,6 +263,13 @@ def trafilatura_sequence(
             postbody, temp_text, forum_posts = j_body, j_text, None
         elif r_len >= options.min_extracted_size and r_len > ESCALATION_ACCEPT_RATIO * len_text:
             postbody, temp_text, forum_posts = r_body, r_text, None
+
+    # lists recovered after a colon (#431) stayed out of the lengths above, count them now
+    deferred = postbody.findall(f"list[@{DEFERRED_ATTR}]")
+    if deferred:
+        for elem in deferred:
+            del elem.attrib[DEFERRED_ATTR]
+        temp_text = " ".join(postbody.itertext()).strip()
 
     if forum_posts is not None:
         # a gate (escalation length, precision) blocked the cascade from restoring the posts:
