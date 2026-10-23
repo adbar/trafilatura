@@ -18,7 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Generator
+from collections.abc import Generator, Iterable
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -221,10 +221,18 @@ def write_result(
                 outputfile.write(result)
 
 
-def generate_filelist(inputdir: str) -> Generator[str, None, None]:
+def generate_filelist(inputdir: str, exclude_dirs: Iterable[str | None] = ()) -> Generator[str, None, None]:
     "Walk the directory tree and output all file names."
+
+    def absolute_path(path: str) -> str:
+        # Compare destinations and input roots through their filesystem aliases.
+        return os.path.normcase(os.path.realpath(path))
+
+    excluded = {absolute_path(path) for path in exclude_dirs if path}
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
-    for root, _, files in os.walk(inputdir):
+    for root, directories, files in os.walk(inputdir):
+        if excluded:
+            directories[:] = [name for name in directories if absolute_path(os.path.join(root, name)) not in excluded]
         for filename in files:
             yield os.path.join(root, filename)
 
@@ -462,7 +470,9 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+        for filebatch in make_chunks(
+            generate_filelist(args.input_dir, exclude_dirs=(args.output_dir, args.backup_dir)), MAX_FILES_PER_DIRECTORY
+        ):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
