@@ -142,9 +142,9 @@ def _forum_thread_page(tree: HtmlElement) -> bool:
 
 def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tuple[HtmlElement, HtmlElement]:
     "Clean and convert a raw tree, returning (converted, pre-conversion backup)."
-    cleaned = tree_cleaning(copy(tree), options)
+    cleaned = tree_cleaning(copy(tree), options, url)
     backup = copy(cleaned)
-    cleaned = convert_tags(cleaned, options, url)
+    cleaned = convert_tags(cleaned, options)
     return cleaned, backup
 
 
@@ -203,7 +203,7 @@ def trafilatura_sequence(
             # capture); keep the capture aside, salvaged below if the cascade drops the posts
             forum_posts = commentsbody
             commentsbody, temp_comments = Element("body"), ""
-            cleaned_tree = convert_tags(copy(cleaned_tree_backup), options, url)
+            cleaned_tree = convert_tags(copy(cleaned_tree_backup), options)
     if options.focus == "precision" and not is_forum:
         # NOT redundant with the raw-tree prune above: this runs POST-conversion, where lists are <list>
         # and match the xpath's self::list (dl lists, disqus ids, and all lists if comments are on)

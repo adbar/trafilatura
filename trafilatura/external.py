@@ -176,11 +176,11 @@ def justext_rescue(tree: HtmlElement, options: Extractor) -> tuple[_Element, str
 
 def sanitize_tree(tree: HtmlElement, options: Extractor) -> tuple[HtmlElement, str]:
     """Convert and sanitize the output from the generic algorithm (post-processing)"""
-    # 1. clean
+    # 1. clean (resolves relative links, including <base href>, when a URL is known)
     cleaned_tree = tree_cleaning(tree, options)
     strip_tags(cleaned_tree, "span", *(() if options.links else ("a",)))
-    # 2. convert (pass url so relative links are absolutized on the fallback path)
-    cleaned_tree = convert_tags(cleaned_tree, options, options.url)
+    # 2. convert
+    cleaned_tree = convert_tags(cleaned_tree, options)
     for elem in list(cleaned_tree.iter("graphic")):
         image = handle_image(elem, options)
         if image is None:

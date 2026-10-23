@@ -1261,6 +1261,32 @@ def test_links():
     assert extract(mydoc, fast=True, config=ZERO_CONFIG, favor_precision=True) == ""
 
 
+def test_relative_links_keep_directory_and_base_href():
+    """Relative links resolve against the page URL, not the site root, and <base href> wins."""
+    page = "https://docs.python.org/3/library/os.path.html"
+    text = "This part of the text has to be long enough."
+
+    def linked(href, base=None, url=page):
+        head = f'<head><base href="{base}"></head>' if base else ""
+        doc = f'<html>{head}<body><p><a href="{href}">Link text</a> {text}</p></body></html>'
+        return extract(doc, url=url, include_links=True, fast=True, config=ZERO_CONFIG)
+
+    # same directory as the page, including the fragment (os.path.html -> os.html)
+    assert "[Link text](https://docs.python.org/3/library/os.html#module-os)" in linked("os.html#module-os")
+    # parent directory
+    assert "[Link text](https://docs.python.org/3/reference/index.html)" in linked("../reference/index.html")
+    # <base href> replaces the page URL as the base
+    assert "[Link text](https://docs.python.org/3/os.html#module-os)" in linked(
+        "os.html#module-os", "https://docs.python.org/3/"
+    )
+    # a relative base href is resolved against the page first
+    assert "[Link text](https://example.com/a/other/file.html)" in linked(
+        "file.html", "../other/", "https://example.com/a/b/page.html"
+    )
+    # empty href stays empty (urljoin would substitute the page URL)
+    assert f"[Link text] {text}" in linked("")
+
+
 def test_tei():
     """test TEI-related functions"""
     # open local resources to avoid redownloading at each run
