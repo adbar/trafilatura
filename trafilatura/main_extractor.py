@@ -262,6 +262,28 @@ def handle_other_elements(element: _Element, potential_tags: set[str], options: 
     return processed_element
 
 
+def _build_span(orig: _Element, new_span: _Element, options: Extractor) -> bool:
+    "Rebuild a kept <span>, including nested spans, in document order. Non-span inline tags have already been flattened by strip_tags, so the only surviving element children are nested spans."
+    processed = handle_textnode(orig, options, comments_fix=False, preserve_spaces=True)
+    if processed is None:
+        return False
+    new_span.text = processed.text
+    # spans carry their attributes verbatim (style, class, ...), outside KEEP_ATTRS
+    for key, value in orig.attrib.items():
+        new_span.set(key, value)
+    for child in orig:
+        if child.tag == "span":
+            inner = SubElement(new_span, "span")
+            if _build_span(child, inner, options):
+                inner.tail = child.tail
+            else:
+                new_span.remove(inner)
+    # the whole subtree is consumed here; mark it done so the flat loop skips it
+    for node in orig.iter("*"):
+        node.tag = "done"
+    return True
+
+
 def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extractor) -> _Element | None:
     "Process paragraphs along with their children, trim and clean the content."
     # attrib.clear() verified unnecessary here (output_diff 0/1501, 2026-08)
@@ -273,11 +295,23 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
     # children
     processed_element = Element(element.tag)
     # unexpected children: keep their text in place
-    strip_tags(element, *{str(c.tag) for c in element.iterdescendants("*") if c.tag not in {*potential_tags, "done"}})
+    keep_tags = {*potential_tags, "done"}
+    if options.spans:
+        keep_tags.add("span")
+    strip_tags(element, *{str(c.tag) for c in element.iterdescendants("*") if c.tag not in keep_tags})
     for child in element.iter("*"):
         # todo: act on spacing here?
         processed_child = handle_textnode(child, options, comments_fix=False, preserve_spaces=True)
         if processed_child is not None:
+            # span with element children: rebuild the nested span subtree verbatim
+            # instead of letting the flat loop hoist the inner span and its tail out
+            if child.tag == "span" and len(child) > 0:
+                span_elem = Element("span")
+                if _build_span(child, span_elem, options):
+                    span_elem.tail = child.tail
+                    processed_element.append(span_elem)
+                child.tag = "done"
+                continue
             # todo: needing attention!
             if processed_child.tag == "p":
                 _log_event("extra in p", "p", processed_child.text)
@@ -301,6 +335,11 @@ def handle_paragraphs(element: _Element, potential_tags: set[str], options: Extr
                 strip_tags(processed_child, *{str(item.tag) for item in processed_child})
                 _copy_attrs(child, newsub)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
+            # kept-through spans must carry their original attributes verbatim
+            # (style, class, etc.), which are not in the internal KEEP_ATTRS whitelist
+            if newsub.tag == "span":
+                for key, value in child.attrib.items():
+                    newsub.set(key, value)
 
             if processed_child.tag == "graphic":
                 image_elem = handle_image(processed_child, options)
@@ -401,6 +440,14 @@ def _fill_cell(
         elif child.tag == "list":
             processed_list = handle_lists(child, options)
             _append_block(new_child_elem, processed_list if options.focus == "recall" else None, child)
+            child.tag = "done"
+            continue
+        elif child.tag == "span" and options.spans and options.format == "html":
+            new_span = Element("span")
+            if _build_span(child, new_span, options):
+                new_span.tail = child.tail
+                new_child_elem.append(new_span)
+            child.tag = "done"
             continue
         else:
             processed_subchild = handle_textelem(child, ptags_with_div, options)
@@ -639,8 +686,13 @@ def prune_unwanted_sections(
             delete_element(tree[-1], keep_tail=False)
         tree = delete_by_link_density(tree, "head", backtracking=False, favor_precision=True)
         tree = delete_by_link_density(tree, "quote", backtracking=False, favor_precision=True)
-    # after the link density tests, which need the refs
-    strip_tags(tree, "span", *(() if "ref" in potential_tags else ("ref",)))
+    # after the link density tests, which need the refs; spans are kept (for HTML output)
+    # only when explicitly requested
+    strip_tags(
+        tree,
+        *(("span",) if not options.spans else ()),
+        *(("ref",) if "ref" not in potential_tags else ()),
+    )
     return tree
 
 
@@ -778,7 +830,7 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
         # prune
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         # todo: unified stripping function, taking include_links into account
-        strip_tags(subtree, "ref", "span")
+        strip_tags(subtree, "ref", *(("span",) if not options.spans else ()))
         for elem in subtree.xpath(".//*"):
             if elem.tag in potential_tags and (processed := handle_textnode(elem, options, comments_fix=True)) is not None:
                 processed.attrib.clear()
