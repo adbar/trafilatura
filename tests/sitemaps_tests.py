@@ -93,6 +93,38 @@ def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
     assert fetched == ([root, nested] if index else [root])
 
 
+def test_parse_sitemap_without_fetching(monkeypatch):
+    def unexpected_request(*args, **kwargs):
+        pytest.fail("Parsing supplied sitemap text must not make network requests")
+
+    monkeypatch.setattr(sitemaps, "fetch_url", unexpected_request)
+    monkeypatch.setattr(sitemaps, "is_live_page", unexpected_request)
+    url = "https://example.org/sitemap.xml"
+    content = (
+        "\ufeff \n<urlset>"
+        "<url><loc>https://example.org/en/a</loc></url>"
+        "<url><loc>https://example.org/de/b</loc></url>"
+        "<url><loc>https://example.org/en/a</loc></url>"
+        "<url><loc>https://otherdomain.net/en/c</loc></url></urlset>"
+    )
+    assert sitemaps.parse_sitemap(content, url) == ["https://example.org/de/b", "https://example.org/en/a"]
+    assert sitemaps.parse_sitemap(content, url, target_lang="en", external=True) == [
+        "https://example.org/en/a",
+        "https://otherdomain.net/en/c",
+    ]
+    index = "<sitemapindex><sitemap><loc>https://example.org/part.xml</loc></sitemap></sitemapindex>"
+    assert sitemaps.parse_sitemap(index, url) == ["https://example.org/part.xml"]
+    assert sitemaps.parse_sitemap("https://example.org/a", "https://example.org/sitemap.txt") == ["https://example.org/a"]
+
+
+def test_parse_sitemap_invalid_input():
+    url = "https://example.org/sitemap.xml"
+    with pytest.raises(TypeError, match="content must be a string"):
+        sitemaps.parse_sitemap(b"<urlset/>", url)
+    assert sitemaps.parse_sitemap("<urlset><url><loc>https://example.org/a</loc></url></urlset>", "invalid-url") == []
+    assert sitemaps.parse_sitemap("<urlset>\ud800</urlset>", url) == []
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling

@@ -63,6 +63,11 @@ Extraction
 Link discovery
 --------------
 
+``parse_sitemap()``
+~~~~~~~~~~~~~~~~~~~
+
+.. autofunction:: trafilatura.sitemaps.parse_sitemap
+
 ``sitemap_search()``
 ~~~~~~~~~~~~~~~~~~~~
 

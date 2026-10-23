@@ -512,6 +512,18 @@ The links are also seamlessly filtered for patterns given by the user, e.g. usin
 
 An optional ``external`` argument controls whether URLs from other domains are included. By default, only URLs matching the input domain are returned (``external=False``).
 
+Pass your HTTP client's decoded response text or a cached sitemap to ``parse_sitemap()`` to parse one file without network requests:
+
+.. code-block:: python
+
+    from pathlib import Path
+    from trafilatura.sitemaps import parse_sitemap
+
+    sitemap_text = Path("sitemap.xml").read_text(encoding="utf-8")
+    links = parse_sitemap(sitemap_text, "https://example.org/sitemap.xml")
+
+The result contains sorted unique links. For a sitemap index, these are nested sitemap addresses. Fetch and parse those separately with your own HTTP client. The ``target_lang`` and ``external`` options apply the existing link filters.
+
 
 Web crawling
 ^^^^^^^^^^^^
