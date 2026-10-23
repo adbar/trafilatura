@@ -900,6 +900,22 @@ def test_nested_element_tail_kept(body, expected):
     assert expected in _extract_doc(body, output_format="xml", include_formatting=True, include_images=True)
 
 
+@pytest.mark.parametrize(
+    "body,expected",
+    [
+        ("<p>He said <q>hello there</q> loudly.</p>", "He said hello there loudly."),
+        ("<p>See <q>a <b>bold</b> claim</q> here.</p>", "See a **bold** claim here."),
+        ("<p>She wrote <q>he said <q>no</q> twice</q> today.</p>", "She wrote he said no twice today."),
+        ("<p>He said \u201c<q>hello there</q>\u201d loudly.</p>", "He said \u201chello there\u201d loudly."),
+    ],
+    ids=["plain", "formatted", "nested", "site-marks-kept"],
+)
+def test_inline_quotation_stays_in_its_paragraph(body, expected):
+    "An inline <q> is unwrapped, so its sentence stays in one paragraph in every output format."
+    assert expected in _md_inline(body).splitlines()
+    assert expected.replace("**", "") in _extract_doc(body, output_format="txt").splitlines()
+
+
 def test_srcless_graphic_dropped_text_kept():
     "A src-less image is dropped from a quote, the text around it in a paragraph is kept."
     quote = handle_quotes(etree.fromstring("<quote>a<graphic/></quote>"), core.Extractor())
