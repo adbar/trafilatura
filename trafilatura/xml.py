@@ -464,6 +464,9 @@ def _escape_and_convert_math(text: str) -> str:
     escaping pass a "$...$" span whose LaTeX it mangles ("$a_1$" -> "$a\\_1$"). Split on the math
     delimiters once instead, and give each kind of region the treatment it needs.
     """
+    # every math delimiter holds a backslash or a dollar sign
+    if "\\" not in text and "$" not in text:
+        return _escape_inline_specials(text)
     parts = _MATH_SPAN_RE.split(text)
     # re.split on one capturing group alternates prose, math, prose, ...
     parts[::2] = [_escape_inline_specials(part) for part in parts[::2]]
@@ -486,6 +489,10 @@ def _escape_and_convert_math_tree(element: _Element) -> None:
 
 def _escape_block_start(text: str) -> str:
     "Escape a leading heading/blockquote/list marker so a fresh paragraph/item line isn't misread as block syntax."
+    # necessary condition of every pattern below
+    first = text.lstrip(" ")[:1]
+    if first not in "#>-+" and not first.isdecimal():
+        return text
     for regex in _BLOCK_START_RES:
         match = regex.match(text)
         if match and match.lastindex is not None:  # every _BLOCK_START_RES pattern has a marker group
@@ -739,18 +746,19 @@ def process_element(
     "Recursively convert a LXML element and its children to a flattened string representation."
     if list_positions is None:
         list_positions = {}
+    tag = element.tag
     # in_cell/in_item are inherited down the recursion instead of re-walking ancestors at every node
-    in_cell = in_cell or element.tag == "cell"
-    in_item = in_item or element.tag == "item"
-    if element.tag == "cell" and element.getprevious() is None:
+    in_cell = in_cell or tag == "cell"
+    in_item = in_item or tag == "item"
+    if tag == "cell" and element.getprevious() is None:
         returnlist.append("| ")
 
     # a block element starts on its own line, not mashed onto preceding loose text (#661)
-    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
+    if tag in NEWLINE_ELEMS and not in_cell and not in_item and _last_char(returnlist) not in SEPARATORS:
         returnlist.append("\n")
     # flattened into an item or cell, it still needs a separator
     elif (
-        element.tag in ("head", "p", "quote", "table")
+        tag in ("head", "p", "quote", "table")
         and not _last_char(returnlist).isspace()
         and _last_char(returnlist) not in SEPARATORS
         and (element.text or len(element) == 0 or element[0].tag != "lb")
@@ -760,18 +768,18 @@ def process_element(
     _consumes_children = _consumes_inline_children(element)
     _renders_inline = bool(element.text) or _consumes_children
 
-    if element.tag == "item" and not in_cell and _item_needs_marker(element):
+    if tag == "item" and not in_cell and _item_needs_marker(element):
         returnlist.append(_list_marker(element, include_formatting, list_positions))
 
     # whitespace-only item text would split the marker from the content
-    if _renders_inline and (element.tag != "item" or _consumes_children or text_chars_test(element.text)):
+    if _renders_inline and (tag != "item" or _consumes_children or text_chars_test(element.text)):
         returnlist.append(_escape_cell(replace_element_text(element, include_formatting, in_cell), in_cell))
-    elif include_formatting and element.tag == "head" and not in_cell and len(element):
+    elif include_formatting and tag == "head" and not in_cell and len(element):
         # heading starting with an inline child still needs its # prefix (children render below)
         returnlist.append(f"{_heading_prefix(element)} ")
 
     # a sublist starts on its own line, not mashed onto the parent item
-    if element.tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
+    if tag == "list" and in_item and _last_char(returnlist) not in ("\n", ""):
         returnlist.append("\n")
 
     if not _consumes_children:
@@ -779,23 +787,23 @@ def process_element(
             process_element(child, returnlist, include_formatting, in_cell, in_item, list_positions)
 
     if not _renders_inline:
-        if element.tag == "graphic":
+        if tag == "graphic":
             returnlist.append(_escape_cell(_image_markup(element, include_formatting), in_cell))
             if element.tail:
                 returnlist.append(_escape_cell(f" {element.tail.strip()}", in_cell))
         # newlines for textless elements
-        elif element.tag in NEWLINE_ELEMS:
+        elif tag in NEWLINE_ELEMS:
             # add line after table head
-            if element.tag == "row":
+            if tag == "row":
                 cells = element.findall("cell")
                 # rows are materialized to full width upstream; draw the head separator below
                 if any(cell.get("role") == "head" for cell in cells):
                     returnlist.append(f"\n|{'---|' * len(cells)}\n")
             # block elements inside a cell must not inject a row-breaking newline,
             # a leading line break in an item must not split the marker from the text
-            elif not in_cell and not (element.tag == "lb" and in_item and _opens_item(element)):
+            elif not in_cell and not (tag == "lb" and in_item and _opens_item(element)):
                 returnlist.append("\n")
-        elif element.tag not in ("cell", "item"):
+        elif tag not in ("cell", "item"):
             # cells still need to append vertical bars
             if in_cell:
                 _append_tail(element, returnlist, in_cell, in_item)
@@ -803,17 +811,17 @@ def process_element(
 
     last_in_item = in_item and _closes_container(element, "item")
     last_in_cell = in_cell and _closes_container(element, "cell")
-    if element.tag in NEWLINE_ELEMS and not in_cell and not in_item:
-        returnlist.append("\n\u2424\n" if include_formatting and element.tag != "row" else "\n")
-    elif element.tag == "cell":
+    if tag in NEWLINE_ELEMS and not in_cell and not in_item:
+        returnlist.append("\n\u2424\n" if include_formatting and tag != "row" else "\n")
+    elif tag == "cell":
         returnlist.append(" | ")
-    elif element.tag in ("head", "item") and in_cell and not last_in_cell:
+    elif tag in ("head", "item") and in_cell and not last_in_cell:
         # separate flattened block elements inside a cell (e.g. list items) instead of mashing them
         _append_spaced(returnlist, " ")
-    elif element.tag not in SPECIAL_FORMATTING and not last_in_item and not last_in_cell:
+    elif tag not in SPECIAL_FORMATTING and not last_in_item and not last_in_cell:
         _append_spaced(returnlist, " ")
 
-    if element.tag != "graphic":  # graphic tail already handled above
+    if tag != "graphic":  # graphic tail already handled above
         _append_tail(element, returnlist, in_cell, in_item, include_formatting, list_positions)
 
     # deal with list items alone

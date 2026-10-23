@@ -140,21 +140,16 @@ def _forum_thread_page(tree: HtmlElement) -> bool:
     )
 
 
-def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> tuple[HtmlElement, HtmlElement]:
-    "Clean and convert a raw tree, returning (converted, pre-conversion backup)."
-    cleaned = tree_cleaning(copy(tree), options)
-    backup = copy(cleaned)
-    cleaned = convert_tags(cleaned, options, url)
-    return cleaned, backup
+def _prepare_tree(tree: HtmlElement, options: Extractor, url: str | None) -> HtmlElement:
+    "Clean and convert a copy of the raw tree."
+    return convert_tags(tree_cleaning(copy(tree), options), options, url)
 
 
-def _extract_and_compare(
-    cleaned_tree: HtmlElement, cleaned_tree_backup: HtmlElement, tree: HtmlElement, options: Extractor
-) -> tuple[_Element, str]:
+def _extract_and_compare(cleaned_tree: HtmlElement, tree: HtmlElement, options: Extractor) -> tuple[_Element, str]:
     "Cascade stages 1-2: main extractor, then the external comparison unless in fast mode."
     postbody, temp_text = extract_content(cleaned_tree, options)
     if not options.fast:
-        postbody, temp_text = compare_extraction(cleaned_tree_backup, copy(tree), postbody, temp_text, options)
+        postbody, temp_text = compare_extraction(tree, postbody, temp_text, options)
     return postbody, temp_text
 
 
@@ -163,7 +158,7 @@ def _recall_retry(esc_tree: HtmlElement, r_options: Extractor, url: str | None) 
     (arrives comment-pruned, or intact on a thread-forum where posts are content).
     Deliberately no comment capture, no baseline (it already ran on the full page; on a
     comment-pruned tree it only yields an indistinguishable boilerplate dump), no escalation."""
-    return _extract_and_compare(*_prepare_tree(esc_tree, r_options, url), esc_tree, r_options)
+    return _extract_and_compare(_prepare_tree(esc_tree, r_options, url), esc_tree, r_options)
 
 
 def trafilatura_sequence(
@@ -192,24 +187,24 @@ def trafilatura_sequence(
     # comments off: prune the raw tree so all stages inherit it, lists are still ol/ul here
     if not options.comments and (options.focus == "precision" or not is_forum):
         tree = prune_unwanted_nodes(tree, REMOVE_COMMENTS_AND_LISTS_XPATH)
-    cleaned_tree, cleaned_tree_backup = _prepare_tree(tree, options, url)
+    cleaned_tree = _prepare_tree(tree, options, url)
 
     commentsbody, temp_comments = Element("body"), ""
     forum_posts = None
     if options.comments:
         commentsbody, temp_comments, cleaned_tree = extract_comments(cleaned_tree, options)
         if temp_comments and is_forum:
-            # thread-forum: the "comments" are the posts -> route into the body (backup predates
-            # capture); keep the capture aside, salvaged below if the cascade drops the posts
+            # thread-forum: the "comments" are the posts -> rebuild the body from the raw tree;
+            # keep the capture aside, salvaged below if the cascade drops the posts
             forum_posts = commentsbody
             commentsbody, temp_comments = Element("body"), ""
-            cleaned_tree = convert_tags(copy(cleaned_tree_backup), options, url)
+            cleaned_tree = _prepare_tree(tree, options, url)
     if options.focus == "precision" and not is_forum:
         # NOT redundant with the raw-tree prune above: this runs POST-conversion, where lists are <list>
         # and match the xpath's self::list (dl lists, disqus ids, and all lists if comments are on)
         cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
-    postbody, temp_text = _extract_and_compare(cleaned_tree, cleaned_tree_backup, tree, options)
+    postbody, temp_text = _extract_and_compare(cleaned_tree, tree, options)
 
     # 3. rescue: baseline on the original tree, accepted only if it adds text (#896)
     if len(temp_text) < options.min_extracted_size and options.focus != "precision":

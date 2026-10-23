@@ -438,7 +438,7 @@ _COOKIE_CONSENT_RE = (
 )
 BASIC_CLEAN_XPATH = XPath(
     ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style|.//svg|.//template"
-    f"|.//*[re:test(@class, '{_COOKIE_CONSENT_RE}', 'i') or re:test(@id, '{_COOKIE_CONSENT_RE}', 'i')]",
+    f"|.//*[(@class and re:test(@class, '{_COOKIE_CONSENT_RE}', 'i')) or (@id and re:test(@id, '{_COOKIE_CONSENT_RE}', 'i'))]",
     namespaces={"re": "http://exslt.org/regular-expressions"},
 )
 

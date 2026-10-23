@@ -3,12 +3,14 @@
 Unit tests for the trafilatura library.
 """
 
+import importlib
 import json
 import logging
+import pkgutil
 import sys
 import time
 from copy import copy
-from functools import partial
+from functools import _lru_cache_wrapper, partial
 from os import path
 from unittest.mock import patch
 
@@ -25,7 +27,7 @@ import trafilatura.xpaths as xp
 from trafilatura import bare_extraction, baseline, core, external, extract, extract_with_metadata, xml
 from trafilatura import main_extractor as me
 from trafilatura.baseline import html2txt
-from trafilatura.deduplication import LRU_TEST, LRUCache
+from trafilatura.deduplication import LRU_TEST, LRUCache, _punct_tbl
 from trafilatura.external import _prefer_readability, sanitize_tree, try_justext, try_readability
 from trafilatura.htmlprocessing import convert_tags, tree_cleaning
 from trafilatura.main_extractor import (
@@ -56,8 +58,8 @@ from trafilatura.utils import (
     line_processing,
     load_html,
     normalize_unicode,
+    remove_control_characters,
     repair_faulty_html,
-    return_printables_and_spaces,
     sanitize,
     textfilter,
     trim,
@@ -168,24 +170,55 @@ def test_trim():
     assert sanitize(None) is None
     # non-breaking spaces
     assert sanitize("Test&nbsp;Text") == "Test Text"
-    # clear cache
-    # reset caches: examine_date_elements used above
-    old_values = trim.cache_info()
-    reset_caches()
-    assert trim.cache_info() != old_values
 
 
-def test_reset_caches():
-    "reset_caches() must empty every trafilatura-owned cache, not just trim."
-    caches = (trim, line_processing, return_printables_and_spaces)
-    for fn in caches:
-        fn("x")
+def test_reset_caches(monkeypatch):
+    "reset_caches() must clear every functools cache found in trafilatura modules (bar the costly _punct_tbl)."
+    caches = {
+        id(obj): obj
+        for info in pkgutil.iter_modules(trafilatura.__path__)
+        for obj in vars(importlib.import_module(f"trafilatura.{info.name}")).values()
+        if isinstance(obj, _lru_cache_wrapper) and obj is not _punct_tbl and obj.__module__ != "urllib.parse"
+    }
+    cleared = set()
+    for key, fn in caches.items():
+        monkeypatch.setattr(fn, "cache_clear", partial(cleared.add, key), raising=False)
     LRU_TEST.put("k", 1)
-    assert all(fn.cache_info().currsize for fn in caches)
-    assert LRU_TEST.cache
     reset_caches()
-    assert not any(fn.cache_info().currsize for fn in caches)
+    assert [fn.__qualname__ for key, fn in caches.items() if key not in cleared] == []
     assert not LRU_TEST.cache
+
+
+def test_remove_control_characters():
+    "Printable text and whitespace pass through, other non-printables are dropped."
+    for text in ("plain text", "a\nb\tc\u00a0d\u2028e", ""):
+        assert remove_control_characters(text) == text
+    assert remove_control_characters("a\nb\x07c\u200bd") == "a\nbcd"
+    assert remove_control_characters("\x00\x07") == ""
+
+
+@pytest.mark.parametrize(
+    "line,preserve_space,trailing_space,expected",
+    [
+        ("  Test \t text\n", False, False, "Test text"),
+        ("a\nb.\nc", False, False, "a b. c"),
+        ("a&nbsp;b&#10;c&#13;d", False, False, "a b c d"),
+        ("a\u2028b\u00a0c\u3000d", False, False, "a b c d"),
+        ("a\x07b\u200bc", False, False, "abc"),
+        (" \t\n\u00a0", False, False, None),
+        ("&nbsp;", False, False, None),
+        ("\x07", False, False, None),
+        ("  keep \n  spacing\x07 ", True, False, "  keep \n  spacing "),
+        ("&nbsp;x&#10;", True, False, "\u00a0x\n"),
+        (" a  b\n", False, True, " a b "),
+        ("a  b", False, True, "a b"),
+        ("\ta b", False, True, " a b"),
+        (" ", False, True, None),
+    ],
+)
+def test_line_processing(line, preserve_space, trailing_space, expected):
+    "Space entities are decoded, control characters dropped, spaces collapsed unless preserved, empty lines pruned."
+    assert line_processing(line, preserve_space, trailing_space) == expected
 
 
 def test_input(options):
@@ -1127,6 +1160,9 @@ def test_images(options):
     assert is_image_file("test.txt") is False
     assert is_image_file("test.TXT") is False
     assert is_image_file("test.jpg" * 2000) is False  # length threshold
+    # long data URI below the threshold: no extension
+    assert is_image_file("data:image/png;base64," + "A" * 8000) is False
+    assert is_image_file("A" * 8000 + ".png") is True
     # tag with attributes
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
@@ -2998,46 +3034,6 @@ def _thread_doc(jsonld: str, reply_tag: str = "div", intro: str = _ESCALATION_IN
     return f"<html><head>{jsonld}</head><body>{article}<div id='comments' class='comments-area'>{replies}</div></body></html>"
 
 
-@pytest.mark.parametrize(
-    "jsonld,expect_replies,fast",
-    [
-        ("", False, False),
-        (_DFP_JSONLD, True, False),
-        ("", False, True),
-    ],
-    ids=["blog_excludes_comments", "forum_keeps_posts", "blog_excludes_comments_fast"],
-)
-def test_recall_escalation_justext_comment_scoping(jsonld, expect_replies, fast):
-    "regression: justext has no article-region scoping of its own and will absorb a reader- \
-    comments thread as if it were content (AEB regression: a short article inviting comments, \
-    justext grabbed the replies too) -- comment containers must be stripped before it runs, \
-    UNLESS this is a thread-forum (schema.org DiscussionForumPosting), where those same \
-    containers hold the actual posts, not boilerplate replies (WCXB regression fixed by \
-    _forum_thread_page). The fast=True case is the rule-based retry alone (justext is skipped \
-    in fast mode): it must apply the same comment-scoping, or a reader-comments thread leaks \
-    into the body precisely when the caller asked to exclude comments."
-    doc = _thread_doc(jsonld)
-    result = extract(doc, output_format="txt", include_comments=False, fast=fast) or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Reply number") == (8 if expect_replies else 0)
-
-
-@pytest.mark.parametrize("reply_tag", ["p", "div"], ids=["captured_as_comments", "capture_missed"])
-def test_recall_escalation_no_comment_doubling(reply_tag):
-    "regression: with include_comments=True on a thread-forum page, posts must not appear in \
-    both text and comments (the escalation stage sees the raw tree, whose comment containers \
-    extract_comments already consumed). Policy: comment capture on a DFP page is re-routed \
-    into the body (the 'comments' are the posts); partial captures must not lose the rest \
-    of the thread either (WCXB regression: pruning all containers because a fragment was \
-    captured tanked 3 forum pages). <p> replies are capturable, <div> replies are not \
-    (extract_comments rejects divs) -- either way: exactly one occurrence per post."
-    doc = _thread_doc(_DFP_JSONLD, reply_tag)
-    # txt output concatenates text and comments: exactly one occurrence per post overall
-    result = extract(doc, output_format="txt", include_comments=True) or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Reply number") == 8
-
-
 _LONG_OP = "".join(
     f"<p>Opening post paragraph {i} lays out the question in full detail, with context, "
     "history and several worked examples that make the thread starter alone longer than "
@@ -3046,36 +3042,41 @@ _LONG_OP = "".join(
 )
 
 
-def test_dfp_long_opening_post_keeps_replies():
-    "regression (review round 3): the DFP re-route emptied the captured comments betting on \
-    the stage-4 escalation to restore the posts into the body, but the escalation is gated \
-    on len_text < ESCALATION_MAX_LENGTH -- a thread whose opening post alone exceeds the \
-    gate lost every reply from both channels. Captured posts must survive regardless of gates."
-    doc = _thread_doc(_DFP_JSONLD, "p", intro=_LONG_OP)
-    result = extract(doc, output_format="txt", include_comments=True) or ""
-    assert "Opening post paragraph" in result
-    assert result.count("Reply number") == 8
-
-
-def test_dfp_precision_keeps_posts():
-    "regression (review round 3): precision mode pruned REMOVE_COMMENTS_XPATH from the very \
-    tree the forum re-route had just restored the posts into, and precision closes the \
-    stage-3/4 rescues, so a DFP page returned no posts at all."
-    doc = _thread_doc(_DFP_JSONLD, "p")
-    result = extract(doc, output_format="txt", include_comments=True, favor_precision=True) or ""
-    assert result.count("Reply number") == 8
-
-
-@pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
-def test_recall_escalation_blog_comment_leak(fast):
-    "regression (review round 3): on a wrapper-less blog layout (broad body selection) with \
-    include_comments=True and an uncapturable div-based reply thread, the recall retry kept \
-    the comment containers (its prune gate checked options.comments, the justext branch \
-    checked len_comments) and emitted the reader comments as main body text."
-    doc = _thread_doc("", wrap=False)
-    result = extract(doc, output_format="txt", include_comments=True, fast=fast) or ""
-    assert "Introductory paragraph" in result
-    assert result.count("Reply number") == 0
+@pytest.mark.parametrize(
+    "page,options,replies",
+    [
+        ({}, {}, 0),
+        ({}, {"fast": True}, 0),
+        ({"jsonld": _DFP_JSONLD}, {}, 8),
+        ({"wrap": False}, {"include_comments": True}, 0),
+        ({"wrap": False}, {"include_comments": True, "fast": True}, 0),
+        ({"jsonld": _DFP_JSONLD, "reply_tag": "p"}, {"include_comments": True}, 8),
+        ({"jsonld": _DFP_JSONLD}, {"include_comments": True}, 8),
+        ({"jsonld": _DFP_JSONLD, "reply_tag": "p", "intro": _LONG_OP}, {"include_comments": True}, 8),
+        ({"jsonld": _DFP_JSONLD, "reply_tag": "p"}, {"include_comments": True, "favor_precision": True}, 8),
+        ({"jsonld": _DFP_JSONLD, "reply_tag": "p"}, {"include_comments": True, "fast": True}, 8),
+    ],
+    ids=[
+        "blog_excludes_comments",
+        "blog_excludes_comments_fast",
+        "forum_keeps_posts",
+        "blog_comment_leak",
+        "blog_comment_leak_fast",
+        "dfp_captured_as_comments",
+        "dfp_capture_missed",
+        "dfp_long_opening_post",
+        "dfp_precision",
+        "dfp_fast",
+    ],
+)
+def test_thread_page_reply_count(page, options, replies):
+    """Thread page with 8 replies in a comments container. Blogs: the containers are stripped
+    before justext and the recall retry (AEB), also without an article wrapper. Forums
+    (DiscussionForumPosting): they hold the posts (WCXB), each appears once with include_comments."""
+    page = {"jsonld": "", **page}
+    result = extract(_thread_doc(**page), output_format="txt", **options) or ""
+    assert ("Opening post paragraph" if "intro" in page else "Introductory paragraph") in result
+    assert result.count("Reply number") == replies
 
 
 @pytest.mark.parametrize("fast", [False, True], ids=["full", "fast"])
@@ -3232,55 +3233,25 @@ def test_infinite_scroll_h2_preview_before_h1_pruned():
     assert xp.RAW_TREE_PRUNE_XPATH[0](tree) == tree.xpath("//div")
 
 
-def test_compare_extraction_justext_ratio(monkeypatch):
-    "the justext override must not replace text more than JUSTEXT_OVERRIDE_RATIO times longer \
-    than its own output (calibrated 3x: at the previous 4x it replaced longer, closer-to-target \
-    extractions with shorter, comment-contaminated justext output)."
-    jt_text = "j" * 100
+@pytest.mark.parametrize(
+    "unclean,own_len,jt_len,expect_jt",
+    [(True, 350, 100, False), (True, 250, 100, True), (False, 150, 149, False), (False, 150, 300, True)],
+    ids=["unclean_ratio_keeps_own", "unclean_ratio_justext", "short_keeps_own", "short_justext_adds"],
+)
+def test_compare_extraction_justext_override(monkeypatch, unclean, own_len, jt_len, expect_jt):
+    "Unclean body: justext may be shorter, up to JUSTEXT_OVERRIDE_RATIO (3x, 4x let comments in). \
+    Short body: justext must add text (#896)."
+    jt_text = "j" * jt_len
     jt_body = etree.Element("body")
     etree.SubElement(jt_body, "p").text = jt_text
     monkeypatch.setattr(external, "justext_rescue", lambda tree, options: (jt_body, jt_text))
 
-    options = core.Extractor()
-    # empty backup keeps readability out; the <aside> triggers the justext examination
+    # lengths are relative to the default min_extracted_size (250), empty tree keeps readability out
     empty_tree = html.fromstring("<html><body></body></html>")
-    body = html.fromstring("<body><p>text</p><aside>x</aside></body>")
-
-    # 3.5x longer than the justext candidate: must be kept (adopted at the old 4x)
-    kept = "a" * 350
-    _, text = external.compare_extraction(empty_tree, empty_tree, body, kept, options)
-    assert text == kept
-
-    # 2.5x longer: justext still overrides
-    replaced = "a" * 250
-    _, text = external.compare_extraction(empty_tree, empty_tree, body, replaced, options)
-    assert text == jt_text
-
-
-def test_compare_extraction_justext_short_trigger(monkeypatch):
-    "on a merely-short body the justext override must add text; JUSTEXT_OVERRIDE_RATIO's \
-    tolerance for a shorter result applies only to an unclean body (GH #896, one stage earlier)"
-
-    def fake_justext(text):
-        body = etree.Element("body")
-        etree.SubElement(body, "p").text = text
-        return lambda tree, options: (body, text)
-
-    options = core.Extractor()
-    options.min_extracted_size = 250  # the lengths below are relative to it
-    empty_tree = html.fromstring("<html><body></body></html>")
-    clean_body = html.fromstring("<body><p>text</p></body>")  # no SANITIZED_XPATH match
-    own = "a" * 150  # below min_extracted_size -> the short clause triggers the examination
-
-    # justext no longer than the own extraction: keep the own one (the old gate replaced it)
-    monkeypatch.setattr(external, "justext_rescue", fake_justext("j" * 149))
-    _, text = external.compare_extraction(empty_tree, empty_tree, clean_body, own, options)
-    assert text == own
-
-    # justext actually adds text: it overrides
-    monkeypatch.setattr(external, "justext_rescue", fake_justext("j" * 300))
-    _, text = external.compare_extraction(empty_tree, empty_tree, clean_body, own, options)
-    assert text == "j" * 300
+    body = html.fromstring("<body><p>text</p><aside>x</aside></body>" if unclean else "<body><p>text</p></body>")
+    own = "a" * own_len
+    _, text = external.compare_extraction(empty_tree, body, own, core.Extractor())
+    assert text == (jt_text if expect_jt else own)
 
 
 def test_prefer_readability_rejects_raw_json():
@@ -4559,6 +4530,14 @@ def test_tree_cleaning_recall_keeps_paragraphs(options, monkeypatch):
     monkeypatch.setattr(trafilatura.htmlprocessing, "MANUALLY_CLEANED", ["p"])
     doc = "<html><body><div><p>only text</p></div></body></html>"
     assert tree_cleaning(html.fromstring(doc), options).find(".//p") is not None
+
+
+def test_tree_cleaning_same_tag_after_nested(options):
+    "A nested same-tag element must not end the deletion walk before later matches."
+    doc = "<html><body><div><aside>one<aside>inner</aside></aside>tail1<p>text</p><aside>two</aside>tail2</div></body></html>"
+    cleaned = tree_cleaning(html.fromstring(doc), options)
+    assert cleaned.find(".//aside") is None
+    assert "".join(cleaned.itertext()) == "tail1texttail2"
 
 
 def test_convert_tags_links_off_keeps_contained_links(options):

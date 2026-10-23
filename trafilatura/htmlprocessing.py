@@ -6,7 +6,7 @@ Functions to process nodes in HTML code.
 import logging
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
@@ -82,15 +82,14 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
     recover_math(tree)
-    # determine cleaning strategy, use lists to keep it deterministic
-    cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
+    # determine cleaning strategy
+    cleaning_list, stripping_list = set(MANUALLY_CLEANED), set(MANUALLY_STRIPPED)
     # forms are handled separately below, once the rest of the noise is gone. MANUALLY_CLEANED is
     # public API users mutate in place, so honour a removed "form" instead of assuming it is there.
     clean_forms = "form" in cleaning_list
-    if clean_forms:
-        cleaning_list.remove("form")
+    cleaning_list.discard("form")
     if not options.tables:
-        cleaning_list.extend(["table", "td", "th", "tr"])
+        cleaning_list |= {"table", "td", "th", "tr"}
     else:
         # figures holding a table (#301) and ARIA layout tables (role=presentation/none)
         for elem in tree.iter("figure", "table"):
@@ -104,11 +103,11 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
                 parent.append(tfoot)
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
-        cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
-        stripping_list.remove("img")
+        cleaning_list -= PRESERVE_IMG_CLEANING
+        stripping_list.discard("img")
 
     # strip targeted elements
-    strip_tags(tree, stripping_list)
+    strip_tags(tree, *stripping_list)
 
     # recall: undo the deletions if they remove every paragraph (copy only if none can survive)
     tcopy = None
@@ -118,9 +117,7 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         and ("p" in cleaning_list or not any(next(p.iterancestors(cleaning_list), tree) is tree for p in tree.iter("p")))
     ):
         tcopy = deepcopy(tree)
-    for expression in cleaning_list:
-        for element in tree.iter(expression):
-            delete_element(element)
+    strip_elements(tree, *cleaning_list, with_tail=False)
     if tcopy is not None and tree.find(".//p") is None:
         tree = tcopy
 
@@ -171,18 +168,18 @@ def is_paragraph_listing(links_xpath: list[HtmlElement]) -> bool:
     "Tell a document listing (every link alone in its paragraph) from a farm (links running together)"
     for link in links_xpath:
         parent = link.getparent()
-        if parent is None or parent.tag != "p" or len(parent.findall(".//ref")) > 1:
+        if parent is None or parent.tag != "p" or len(list(parent.iterdescendants("ref"))) > 1:
             return False
     return True
 
 
 def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tuple[bool, bool]:
     "Remove sections which are rich in links (probably boilerplate), flag short linked ones."
-    links_xpath = element.findall(".//ref")
+    links_xpath = list(element.iterdescendants("ref"))
     if not links_xpath:
         return False, False
     # preserve image containers
-    if element.find(".//graphic") is not None:
+    if next(element.iterdescendants("graphic"), None) is not None:
         return False, False
     text = trim(element.text_content())
     # shortcut
@@ -223,7 +220,7 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
 
 def link_density_test_tables(element: HtmlElement) -> bool:
     "Remove tables which are rich in links (probably boilerplate)."
-    links_xpath = element.findall(".//ref")
+    links_xpath = list(element.iterdescendants("ref"))
 
     if not links_xpath:
         return False
