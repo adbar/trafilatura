@@ -22,6 +22,7 @@ from trafilatura.metadata import (
     normalize_tags,
 )
 from trafilatura.settings import Extractor, use_config
+from trafilatura.xml import build_json_output
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -500,6 +501,20 @@ def test_extract_meta_json_escaped_characters():
     assert metadata.title == "Why 3 < 5"
     # markup in the values is still stripped
     assert metadata.sitename == "Acme > News"
+
+
+def test_extract_meta_json_entities_and_surrogates():
+    "regression: parsed JSON-LD strings contain no backslash, entities and lone surrogates must be removed anyway."
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food &amp; Drink"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food & Drink"]
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food\\ud800"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food"]
+    # the JSON output can be encoded as UTF-8
+    assert b'"categories": "Food"' in build_json_output(metadata).encode("utf-8")
 
 
 def test_extract_json_multiple_blocks():
