@@ -287,8 +287,11 @@ class Document:
                 # length
                 if len(value) > 10000:
                     value = value[:9999] + "…"
-                # HTML entities, remove spaces and control characters
-                value = line_processing(unescape(value))
+                # URL fields are already decoded; entity-like query parameters must stay literal.
+                if slot not in {"url", "image", "hostname"}:
+                    value = unescape(value)
+                # remove spaces and control characters
+                value = line_processing(value)
                 setattr(self, slot, value)
 
     def as_dict(self) -> dict[str, Any]:
