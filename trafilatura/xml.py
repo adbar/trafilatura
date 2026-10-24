@@ -795,6 +795,8 @@ def process_element(
 
 def _unescape_text(text: str) -> str:
     "Decode complete entities without interpreting unknown names as entity prefixes."
+    if "&" not in text:
+        return text
     return _HTML_ENTITY_RE.sub(
         lambda match: unescape(match[0]) if match[1].startswith("#") else html5.get(match[1], match[0]), text
     )
