@@ -3014,7 +3014,7 @@ def test_comments_keep_inline_formatting_in_paragraph(output_format, fast):
             "Hyperlinked words stay connected in this reader comment.",
         ),
         (
-            "<p>I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.</p>",
+            "<p>  I really  <b>love</b>   this post, <i>thanks</i>  a lot for sharing it with everybody here.  </p>",
             "I really love this post, thanks a lot for sharing it with everybody here.",
         ),
     ],

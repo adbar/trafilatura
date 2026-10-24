@@ -29,7 +29,7 @@ from .settings import (
     Extractor,
 )
 from .utils import FORMATTING_PROTECTED, SPACING_PROTECTED, image_src, sanitize_tree, text_chars_test, trim
-from .xml import delete_element, separates_inline
+from .xml import _strip_block_whitespace, delete_element, separates_inline
 from .xpaths import (
     BODY_XPATH,
     COMMENTS_DISCARD_XPATH,
@@ -799,4 +799,5 @@ def extract_comments(tree: HtmlElement, options: Extractor) -> tuple[_Element, s
             delete_element(subtree, keep_tail=False)
             break
     comments_body = sanitize_tree(comments_body)
+    _strip_block_whitespace(comments_body)
     return comments_body, " ".join(comments_body.itertext()).strip(), tree
