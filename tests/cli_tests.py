@@ -729,3 +729,40 @@ def test_probing():
         assert f2.getvalue().strip() == url
     else:
         assert f.getvalue().strip() == url
+
+
+@pytest.mark.parametrize("relative_input", [False, True])
+@pytest.mark.parametrize("output_format", ["txt", "json"])
+def test_keep_dirs_local_batch(tmp_path, relative_input, output_format):
+    """Local batches preserve input-relative paths beneath the output directory."""
+    input_dir = tmp_path / "input"
+    output_dir = tmp_path / "output"
+    original = (
+        "<html><body><article><p>" + "A real article about local file extraction. " * 30 + "</p></article></body></html>"
+    )
+    sources = [input_dir / "article.html", input_dir / "nested" / "article.txt"]
+    for source in sources:
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(original, encoding="utf-8")
+    command = [
+        sys.executable,
+        "-c",
+        "from trafilatura.cli import main; main()",
+        "--input-dir",
+        "input" if relative_input else str(input_dir),
+        "--output-dir",
+        str(output_dir),
+        "--keep-dirs",
+        "--output-format",
+        output_format,
+        "--parallel",
+        "1",
+    ]
+    completed = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, timeout=30, check=False)
+    assert completed.returncode == 0, completed.stderr
+    for source in sources:
+        assert source.read_text(encoding="utf-8") == original
+    expected = [output_dir / f"article.{output_format}", output_dir / "nested" / f"article.{output_format}"]
+    assert sorted(output_dir.rglob("*.*")) == sorted(expected)
+    for output in expected:
+        assert "A real article about local file extraction." in output.read_text(encoding="utf-8")

@@ -58,7 +58,6 @@ LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
-STRIP_DIR = re.compile(r"[^/]+$")
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
 
 CLEAN_XML = re.compile(r"<[^<]+?>")
@@ -171,11 +170,9 @@ def determine_output_path(
     extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
 
     if args.keep_dirs:
-        # strip directory
-        original_dir = STRIP_DIR.sub("", orig_filename)
-        destination_dir = os.path.join(args.output_dir, original_dir)
-        # strip extension
-        filename = STRIP_EXTENSION.sub("", orig_filename)
+        relative_filename = Path(os.path.relpath(orig_filename, args.input_dir) if args.input_dir else orig_filename)
+        destination_dir = str(Path(args.output_dir) / relative_filename.parent)
+        filename = STRIP_EXTENSION.sub("", relative_filename.name)
     else:
         destination_dir = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
