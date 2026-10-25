@@ -211,9 +211,9 @@ def is_code_block_element(element: _Element) -> bool:
     # pip
     if element.get("lang") or element.tag == "code":
         return True
-    # GitHub
+    # GitHub, Pygments, and Python-Markdown's codehilite
     parent = element.getparent()
-    if parent is not None and "highlight" in parent.get("class", ""):
+    if parent is not None and any(name in parent.get("class", "") for name in ("highlight", "codehilite")):
         return True
     # highlightjs
     code = element.find("code")
