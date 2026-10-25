@@ -20,12 +20,22 @@ import traceback
 from base64 import urlsafe_b64encode
 from collections.abc import Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
+from contextlib import AbstractContextManager, nullcontext
 from datetime import datetime
 from functools import partial
 from hashlib import blake2b
 from pathlib import Path
 from threading import RLock
+from typing import Any
 from urllib.parse import unquote, urlsplit
+
+# optional progress bar for batch processing
+try:
+    from tqdm import tqdm
+
+    HAS_TQDM = True
+except ImportError:
+    HAS_TQDM = False
 
 from courlan import UrlStore, extract_domain, get_base_url  # validate_url
 
@@ -261,11 +271,22 @@ def process_result(htmlstring: str, args: argparse.Namespace, counter: int, opti
     return counter
 
 
+def _progress_bar(args: argparse.Namespace, total: int | None, unit: str) -> AbstractContextManager[Any]:
+    "Return a tqdm progress bar if one was requested, else a context yielding None."
+    if getattr(args, "progress", False):
+        if not HAS_TQDM:
+            raise ImportError("the progress bar requires the tqdm package: pip install tqdm")
+        bar: AbstractContextManager[Any] = tqdm(total=total, unit=unit)
+        return bar
+    return nullcontext()
+
+
 def download_queue_processing(
     url_store: UrlStore,
     args: argparse.Namespace,
     counter: int,
     options: Extractor,
+    progress: Any = None,
 ) -> tuple[list[str], int]:
     "Implement a download queue consumer, single- or multi-threaded."
     errors = []
@@ -282,6 +303,8 @@ def download_queue_processing(
             else:
                 LOGGER.warning("No result for URL: %s", url)
                 errors.append(url)
+            if progress is not None:
+                progress.update(1)
     return errors, counter
 
 
@@ -425,14 +448,16 @@ def url_processing_pipeline(args: argparse.Namespace, url_store: UrlStore) -> in
     counter = 0 if url_count > MAX_FILES_PER_DIRECTORY else -1
 
     # download strategy
-    errors, counter = download_queue_processing(url_store, args, counter, options)
+    with _progress_bar(args, url_count, "URL") as progress:
+        errors, counter = download_queue_processing(url_store, args, counter, options, progress)
     LOGGER.debug("%s / %s URLs could not be found", len(errors), url_count)
 
     if args.archived is True:
         url_store = UrlStore()
         url_store.add_urls(["https://web.archive.org/web/20/" + e for e in errors])
         if len(url_store.find_known_urls("https://web.archive.org")) > 0:
-            archived_errors, _ = download_queue_processing(url_store, args, counter, options)
+            with _progress_bar(args, url_store.total_url_number(), "URL") as progress:
+                archived_errors, _ = download_queue_processing(url_store, args, counter, options, progress)
             LOGGER.debug(
                 "%s archived URLs out of %s could not be found",
                 len(archived_errors),
@@ -458,9 +483,11 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     filecounter = -1
     exit_code = 0
     options = args_to_extractor(args)
+    # walking the tree twice is cheap next to extraction, only done for the progress bar
+    total = sum(1 for _ in generate_filelist(args.input_dir)) if getattr(args, "progress", False) else None
 
     # max_tasks_per_child available in Python >= 3.11
-    with ProcessPoolExecutor(max_workers=args.parallel) as executor:
+    with ProcessPoolExecutor(max_workers=args.parallel) as executor, _progress_bar(args, total, "file") as progress:
         # chunk input: https://github.com/python/cpython/issues/74028
         for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
@@ -470,6 +497,8 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
                 if error is not None:
                     LOGGER.error("Cannot process file %s", error)
                     exit_code = 1
+                if progress is not None:
+                    progress.update(1)
             # update counter
             if filecounter >= 0:
                 filecounter += len(filebatch)

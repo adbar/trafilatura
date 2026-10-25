@@ -206,7 +206,7 @@ strict = true
 
 # third-party packages without type stubs
 [[tool.mypy.overrides]]
-module = ["backports.*", "brotli", "py3langid", "cchardet", "justext.*"]
+module = ["backports.*", "brotli", "py3langid", "cchardet", "justext.*", "tqdm"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
