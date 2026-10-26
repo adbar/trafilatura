@@ -384,7 +384,7 @@ def test_sysoutput():
     testargs = ["", "-i", "myinputdir/", "-o", "test/", "--keep-dirs"]
     args = cli.parse_args(testargs[1:])
     filepath, destdir = cli_utils.determine_output_path(args, "testfile.txt", "")
-    assert filepath == "test/testfile.txt"
+    assert filepath == path.join("test", "testfile.txt")
     # test hash as output file name
     assert args.keep_dirs is True
     args.keep_dirs = False
