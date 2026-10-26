@@ -168,12 +168,8 @@ def test_frame_lead_text_kept(config, child):
 
 @pytest.mark.parametrize("config", [{}, {"fast": True}, {"favor_recall": True}, {"favor_precision": True}])
 @pytest.mark.parametrize("tag,cls", [("ol", "commentlist"), ("ul", "comment-list")])
-def test_short_article_comment_list_not_repeated(tag, cls, config, request):
+def test_short_article_comment_list_not_repeated(tag, cls, config):
     "Replies of a captured comment list appear once, even when the article is too short."
-    if "favor_precision" not in config:
-        request.applymarker(
-            pytest.mark.xfail(strict=True, raises=RepeatedWordsError, reason="the replies also land in the body")
-        )
     replies = "".join("<li><p>" + "@ " * 25 + "</p></li>" for _ in range(8))
     body = f"<article><p>@ @ @ @ @ @ @ @ @ @.</p></article><{tag} class='{cls}'>{replies}</{tag}>"
     result = extract(_number(body), **config)

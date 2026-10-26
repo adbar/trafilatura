@@ -18,6 +18,7 @@ from trafilatura.feeds import (
     find_feed_urls,
     find_links,
     handle_link_list,
+    has_rss_root,
     probe_gnews,
     try_homepage,
 )
@@ -142,6 +143,24 @@ def test_rss_extraction():
     assert extract_links(f"{XMLDECL}<link>/api/feed/themenglossar/Corona</link>", params) == [
         "https://www.dwds.de/api/feed/themenglossar/Corona"
     ]
+
+    # <link .../> tags in the HTML of an item do not make an RSS feed an Atom one
+    params = FeedParameters("https://example.org", "example.org", "")
+    for root in ('<rss version="2.0">', '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">'):
+        closing = "</rss>" if root.startswith("<rss") else "</rdf:RDF>"
+        feed = (
+            f"{XMLDECL}<!-- generator -->{root}<channel><item><link>https://example.org/article1</link>"
+            '<description><![CDATA[<p>Hi</p><link rel="stylesheet" href="https://example.org/style.css">]]></description>'
+            f"</item><item><link>https://example.org/article2</link></item></channel>{closing}"
+        )
+        assert extract_links(feed, params) == ["https://example.org/article1", "https://example.org/article2"]
+
+    # the root is found in linear time, whatever precedes it
+    assert has_rss_root("\ufeff <?xml version='1.0'?>\n<!-- c --><!DOCTYPE rss><rss>")
+    assert not has_rss_root("<?xml version='1.0'?><feed>")
+    assert not has_rss_root("<!-- unclosed <rss>")
+    assert not has_rss_root("<?" + "?><?" * 50_000 + "x")
+    assert not has_rss_root("<!--" + "--><!--" * 50_000 + "x")
 
     params = FeedParameters("https://example.org", "example.org", "")
     filepath = os.path.join(RESOURCES_DIR, "feed2.rss")

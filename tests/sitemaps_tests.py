@@ -31,6 +31,100 @@ def test_search():
     assert not sitemaps.sitemap_search("https://bogusdomain.net/")
 
 
+@pytest.mark.parametrize(("nested", "plain_text"), [(False, False), (True, False), (False, True)])
+def test_search_returns_sorted_unique_urls(monkeypatch, nested, plain_text):
+    root = "https://example.org/sitemap.xml" if nested or not plain_text else "https://example.org/sitemap"
+    first = ["https://example.org/b", "https://example.org/a", "https://example.org/b"]
+    second = ["https://example.org/b", "https://example.org/c"]
+
+    def content(urls):
+        if plain_text:
+            return "\n".join(urls)
+        return "<urlset>" + "".join(f"<url><loc>{url}</loc></url>" for url in urls) + "</urlset>"
+
+    pages = {root: content(first)}
+    expected = ["https://example.org/a", "https://example.org/b"]
+    if nested:
+        first_url = "https://example.org/sitemap-a.xml"
+        second_url = "https://example.org/sitemap-b.xml"
+        pages = {
+            root: (
+                "<sitemapindex>"
+                f"<sitemap><loc>{first_url}</loc></sitemap>"
+                f"<sitemap><loc>{second_url}</loc></sitemap>"
+                "</sitemapindex>"
+            ),
+            first_url: content(first),
+            second_url: content(second),
+        }
+        expected.append("https://example.org/c")
+    monkeypatch.setattr(sitemaps, "fetch_url", lambda url, **kwargs: pages.get(url))
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(root) == expected
+
+
+@pytest.mark.parametrize("namespace", ["", ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'])
+@pytest.mark.parametrize("index", [False, True])
+def test_location_kind_comes_from_xml_structure(monkeypatch, namespace, index):
+    root = "https://example.org/sitemap.xml"
+    page = "https://example.org/article.xml"
+    nested = "https://example.org/custom-map"
+    page_map = f"<urlset{namespace}><url><loc>{page}</loc></url></urlset>"
+    if index:
+        pages = {
+            root: f"<sitemapindex{namespace}><sitemap><loc>{nested}</loc></sitemap></sitemapindex>",
+            nested: page_map,
+        }
+    else:
+        pages = {root: page_map}
+    fetched = []
+
+    def fetch(url, **kwargs):
+        fetched.append(url)
+        return pages.get(url)
+
+    monkeypatch.setattr(sitemaps, "fetch_url", fetch)
+    monkeypatch.setattr(sitemaps, "is_live_page", lambda url, config: True)
+    monkeypatch.setattr(sitemaps, "sleep", lambda seconds: None)
+
+    assert sitemaps.sitemap_search(root) == [page]
+    assert fetched == ([root, nested] if index else [root])
+
+
+def test_parse_sitemap_without_fetching(monkeypatch):
+    def unexpected_request(*args, **kwargs):
+        pytest.fail("Parsing supplied sitemap text must not make network requests")
+
+    monkeypatch.setattr(sitemaps, "fetch_url", unexpected_request)
+    monkeypatch.setattr(sitemaps, "is_live_page", unexpected_request)
+    url = "https://example.org/sitemap.xml"
+    content = (
+        "\ufeff \n<urlset>"
+        "<url><loc>https://example.org/en/a</loc></url>"
+        "<url><loc>https://example.org/de/b</loc></url>"
+        "<url><loc>https://example.org/en/a</loc></url>"
+        "<url><loc>https://otherdomain.net/en/c</loc></url></urlset>"
+    )
+    assert sitemaps.parse_sitemap(content, url) == ["https://example.org/de/b", "https://example.org/en/a"]
+    assert sitemaps.parse_sitemap(content, url, target_lang="en", external=True) == [
+        "https://example.org/en/a",
+        "https://otherdomain.net/en/c",
+    ]
+    index = "<sitemapindex><sitemap><loc>https://example.org/part.xml</loc></sitemap></sitemapindex>"
+    assert sitemaps.parse_sitemap(index, url) == ["https://example.org/part.xml"]
+    assert sitemaps.parse_sitemap("https://example.org/a", "https://example.org/sitemap.txt") == ["https://example.org/a"]
+
+
+def test_parse_sitemap_invalid_input():
+    url = "https://example.org/sitemap.xml"
+    with pytest.raises(TypeError, match="content must be a string"):
+        sitemaps.parse_sitemap(b"<urlset/>", url)
+    assert sitemaps.parse_sitemap("<urlset><url><loc>https://example.org/a</loc></url></urlset>", "invalid-url") == []
+    assert sitemaps.parse_sitemap("<urlset>\ud800</urlset>", url) == []
+
+
 def test_extraction():
     """Test simple link extraction"""
     # link handling
@@ -347,6 +441,24 @@ def test_sitemap_locations_do_not_expand_entities(location):
     )
     sitemap.extract_sitemap_links()
     assert not sitemap.urls
+
+
+@pytest.mark.parametrize("index", [False, True])
+@pytest.mark.parametrize(
+    "location",
+    ["\n    {url}\n  ", " {url}", "{url}\t", "\n  <![CDATA[{url}]]>\n"],
+)
+def test_sitemap_locations_ignore_surrounding_whitespace(location, index):
+    """Pretty-printed locations are not dropped because of their indentation."""
+    root, child = ("sitemapindex", "sitemap") if index else ("urlset", "url")
+    url = "https://example.org/nested.xml" if index else "https://example.org/page"
+    sitemap = sitemaps.SitemapObject("https://example.org", "example.org", [])
+    sitemap.content = (
+        f'<{root} xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f"<{child}><loc>{location.format(url=url)}</loc></{child}></{root}>"
+    )
+    sitemap.extract_sitemap_links()
+    assert (sitemap.sitemap_urls, sitemap.urls) == (([url], []) if index else ([], [url]))
 
 
 def test_sitemap_namespace_link_limit(monkeypatch):

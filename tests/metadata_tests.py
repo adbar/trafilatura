@@ -22,6 +22,7 @@ from trafilatura.metadata import (
     normalize_tags,
 )
 from trafilatura.settings import Extractor, use_config
+from trafilatura.xml import build_json_output
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -142,6 +143,13 @@ def test_author_from_meta():
         (f'{begin}<meta name="author" content="Hank O&#39;Hop"/>{end}', "Hank O'Hop"),
         (f'{begin}<meta name="author" content="Jenny Smith ❤️"/>{end}', "Jenny Smith"),
         (f'{begin}<meta name="citation_author" content="Jenny Smith and John Smith"/>{end}', "Jenny Smith; John Smith"),
+        # one name per citation_author tag, often written as "Last, First"
+        (
+            f'{begin}<meta name="citation_author" content="Smith, Jenny"/><meta name="citation_author" content="Smith, John"/>{end}',
+            "Jenny Smith; John Smith",
+        ),
+        (f'{begin}<meta name="citation_author" content="van der Berg, Jan"/>{end}', "Jan van der Berg"),
+        (f'{begin}<meta name="citation_author" content="Jenny Smith, John Smith"/>{end}', "Jenny Smith; John Smith"),
         (
             f'{begin}<meta property="author" content="Jenny Smith"/><meta property="author" content="John Smith"/>{end}',
             "Jenny Smith; John Smith",
@@ -280,6 +288,13 @@ def test_url():
         '<html><head><link rel="canonical" href="//example.org/p"/><meta property="og:image" content="https://cdn.example.net/i.png"/></head><body></body></html>',
     ):
         assert extract_url(html.fromstring(doc)) == "https://example.org/p"
+
+
+def test_clean_and_trim_preserves_url_fields():
+    target = "https://example.org/?region=us&section=2&times=3&literal=&amp;copy;"
+    metadata = Document.from_dict({"url": f"  {target}\n", "image": target, "description": "  Tom &amp; Jerry\n"})
+    metadata.clean_and_trim()
+    assert (metadata.url, metadata.image, metadata.description) == (target, target, "Tom & Jerry")
 
 
 def test_description():
@@ -472,6 +487,41 @@ def test_extract_meta_json_control_char():
     metadata = extract_meta_json(html.fromstring(doc), Document())
     assert metadata.pagetype == "article"
     assert metadata.title == "Graph based headline"
+
+
+def test_extract_meta_json_escaped_characters():
+    "regression: JSON-LD escapes must be decoded by the parser, not in the raw text where an escaped \
+    quote would end the string and escaped angle brackets would be stripped as a tag spanning fields."
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", '
+        '"headline": "A \\u0022quoted\\u0022 title", "author": {"@type": "Person", "name": "Jane Doe"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == 'A "quoted" title'
+    payload = (
+        '{"@context": "https://schema.org", "@type": "NewsArticle", "headline": "Why 3 \\u003c 5", '
+        '"publisher": {"@type": "Organization", "name": "<b>Acme</b> \\u003e News"}}'
+    )
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.title == "Why 3 < 5"
+    # markup in the values is still stripped
+    assert metadata.sitename == "Acme > News"
+
+
+def test_extract_meta_json_entities_and_surrogates():
+    "regression: parsed JSON-LD strings contain no backslash, entities and lone surrogates must be removed anyway."
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food &amp; Drink"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food & Drink"]
+    payload = '{"@context": "https://schema.org", "@type": "NewsArticle", "articleSection": "Food\\ud800"}'
+    doc = f'<html><head><script type="application/ld+json">{payload}</script></head><body></body></html>'
+    metadata = extract_meta_json(html.fromstring(doc), Document())
+    assert metadata.categories == ["Food"]
+    # the JSON output can be encoded as UTF-8
+    assert b'"categories": "Food"' in build_json_output(metadata).encode("utf-8")
 
 
 def test_extract_json_multiple_blocks():

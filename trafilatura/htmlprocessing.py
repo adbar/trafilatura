@@ -6,7 +6,7 @@ Functions to process nodes in HTML code.
 import logging
 from copy import deepcopy
 
-from lxml.etree import Element, SubElement, XPath, _Element, strip_tags, tostring
+from lxml.etree import Element, SubElement, XPath, _Element, strip_elements, strip_tags, tostring
 from lxml.html import HtmlElement
 
 from .deduplication import duplicate_test
@@ -82,27 +82,37 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
     "Prune the tree by discarding unwanted elements."
     # salvage formulas before <math> is discarded along with its subtree
     recover_math(tree)
-    # determine cleaning strategy, use lists to keep it deterministic
-    cleaning_list, stripping_list = MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
+    # determine cleaning strategy
+    cleaning_list, stripping_list = set(MANUALLY_CLEANED), set(MANUALLY_STRIPPED)
     # forms are handled separately below, once the rest of the noise is gone. MANUALLY_CLEANED is
     # public API users mutate in place, so honour a removed "form" instead of assuming it is there.
     clean_forms = "form" in cleaning_list
-    if clean_forms:
-        cleaning_list.remove("form")
+    cleaning_list.discard("form")
     if not options.tables:
-        cleaning_list.extend(["table", "td", "th", "tr"])
+        cleaning_list |= {"table", "td", "th", "tr"}
     else:
         # figures holding a table (#301) and ARIA layout tables (role=presentation/none)
         for elem in tree.iter("figure", "table"):
             if elem.find(".//table") is not None if elem.tag == "figure" else elem.get("role") in ("presentation", "none"):
                 elem.tag = "div"
+        # a footer row group may come before the body in the markup but is shown below it, so it is
+        # moved last before <tfoot> is stripped: a "Total" row stays under the rows it sums
+        for tfoot in list(tree.iter("tfoot")):
+            parent = tfoot.getparent()
+            if parent is not None and parent.tag == "table":
+                parent.append(tfoot)
     if options.images:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
-        cleaning_list = [e for e in cleaning_list if e not in PRESERVE_IMG_CLEANING]
-        stripping_list.remove("img")
+        cleaning_list -= PRESERVE_IMG_CLEANING
+        stripping_list.discard("img")
+
+    # a <template> is inert markup a script may clone and is never shown as it is, unless it is a
+    # declarative shadow root, which the browser renders in place (and which stays stripped below)
+    for template in [t for t in tree.iter("template") if t.get("shadowrootmode", t.get("shadowroot")) is None]:
+        delete_element(template)
 
     # strip targeted elements
-    strip_tags(tree, stripping_list)
+    strip_tags(tree, *stripping_list)
 
     # recall: undo the deletions if they remove every paragraph (copy only if none can survive)
     tcopy = None
@@ -112,9 +122,7 @@ def tree_cleaning(tree: HtmlElement, options: Extractor) -> HtmlElement:
         and ("p" in cleaning_list or not any(next(p.iterancestors(cleaning_list), tree) is tree for p in tree.iter("p")))
     ):
         tcopy = deepcopy(tree)
-    for expression in cleaning_list:
-        for element in tree.iter(expression):
-            delete_element(element)
+    strip_elements(tree, *cleaning_list, with_tail=False)
     if tcopy is not None and tree.find(".//p") is None:
         tree = tcopy
 
@@ -165,18 +173,18 @@ def is_paragraph_listing(links_xpath: list[HtmlElement]) -> bool:
     "Tell a document listing (every link alone in its paragraph) from a farm (links running together)"
     for link in links_xpath:
         parent = link.getparent()
-        if parent is None or parent.tag != "p" or len(parent.findall(".//ref")) > 1:
+        if parent is None or parent.tag != "p" or len(list(parent.iterdescendants("ref"))) > 1:
             return False
     return True
 
 
 def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tuple[bool, bool]:
     "Remove sections which are rich in links (probably boilerplate), flag short linked ones."
-    links_xpath = element.findall(".//ref")
+    links_xpath = list(element.iterdescendants("ref"))
     if not links_xpath:
         return False, False
     # preserve image containers
-    if element.find(".//graphic") is not None:
+    if next(element.iterdescendants("graphic"), None) is not None:
         return False, False
     text = trim(element.text_content())
     # shortcut
@@ -217,7 +225,7 @@ def link_density_test(element: HtmlElement, favor_precision: bool = False) -> tu
 
 def link_density_test_tables(element: HtmlElement) -> bool:
     "Remove tables which are rich in links (probably boilerplate)."
-    links_xpath = element.findall(".//ref")
+    links_xpath = list(element.iterdescendants("ref"))
 
     if not links_xpath:
         return False
@@ -383,7 +391,7 @@ CONVERSIONS = {
     **dict.fromkeys(("dl", "ol", "ul"), convert_lists),
     **dict.fromkeys(("h1", "h2", "h3", "h4", "h5", "h6"), convert_headings),
     **dict.fromkeys(("br", "hr"), convert_line_breaks),
-    **dict.fromkeys(("blockquote", "pre", "q"), convert_quotes),
+    **dict.fromkeys(("blockquote", "pre"), convert_quotes),
     **dict.fromkeys(("del", "s", "strike"), convert_deletions),
     "details": convert_details,
 }
@@ -440,6 +448,9 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
     else:
         strip_tags(tree, *REND_TAG_MAPPING.keys())
 
+    # <q> is an inline quotation: unwrapped, it stays in its sentence
+    strip_tags(tree, "q")
+
     # iterate over all concerned elements
     for elem in tree.iter(CONVERSIONS.keys()):
         CONVERSIONS[elem.tag](elem)  # type: ignore[index]
@@ -451,9 +462,16 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
         if options.links:
             for ref in list(tree.iter("ref")):
                 graphics = list(ref.iter("graphic"))
-                # iterate in reverse so addnext preserves original order
-                for graphic in reversed(graphics):
-                    ref.addnext(graphic)
+                # addnext() would land after the tail text of the link
+                for graphic in graphics:
+                    if graphic.tail:  # keep the text where the image was
+                        prev, parent = graphic.getprevious(), graphic.getparent()
+                        if prev is not None:
+                            prev.tail = (prev.tail or "") + graphic.tail
+                        elif parent is not None:
+                            parent.text = (parent.text or "") + graphic.tail
+                        graphic.tail = None
+                    ref.addprevious(graphic)
                 # remove ref if it only contained images (no text),
                 # its leftover children (picture, source) would
                 # otherwise trigger justext fallback and lose images
@@ -464,7 +482,7 @@ def convert_tags(tree: HtmlElement, options: Extractor, url: str | None = None) 
 
 
 HTML_CONVERSIONS = {
-    "list": "ul",
+    "list": lambda elem: "ol" if elem.get("rend") == "ol" else "ul",
     "item": "li",
     "code": "pre",
     "quote": "blockquote",

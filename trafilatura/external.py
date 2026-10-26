@@ -4,10 +4,13 @@ Functions grounding on third-party software.
 """
 
 import logging
+from copy import copy
+from functools import cache
 
 # third-party
 from justext.core import ParagraphMaker, classify_paragraphs, revise_paragraph_classification
-from justext.utils import get_stoplist, get_stoplists
+from justext.utils import get_stoplist as _get_stoplist
+from justext.utils import get_stoplists
 from lxml.etree import Element, SubElement, _Element, strip_tags, tostring
 from lxml.html import HtmlElement
 
@@ -23,7 +26,8 @@ from .xpaths import OVERALL_DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
-JT_STOPLIST = None
+# justext re-reads the stoplist file on each call
+get_stoplist = cache(_get_stoplist)
 
 SANITIZED_XPATH = ".//aside|.//audio|.//button|.//fencedframe|.//fieldset|.//figure|.//footer|.//iframe|.//input|.//label|.//link|.//nav|.//noindex|.//noscript|.//object|.//option|.//select|.//source|.//svg|.//time"
 
@@ -82,20 +86,19 @@ def _prefer_readability(
 
 
 def compare_extraction(
-    cleaned_tree: HtmlElement,
-    raw_tree: HtmlElement,
+    tree: HtmlElement,
     body: _Element,
     text: str,
     options: Extractor,
 ) -> tuple[_Element, str]:
     """Decide whether to choose own or external extraction based on a series of heuristics.
-    ``raw_tree`` (uncleaned) feeds readability; ``cleaned_tree`` (tree_cleaning'd, unconverted)
-    feeds justext."""
+    Copies of the raw ``tree`` feed readability (uncleaned) and justext (tree_cleaning'd)."""
     len_text = len(text)
     # bypass for recall
     if options.focus == "recall" and len_text > options.min_extracted_size * 10:
         return body, text
 
+    raw_tree = copy(tree)
     # prior cleaning
     if options.focus == "precision":
         raw_tree = prune_unwanted_nodes(raw_tree, OVERALL_DISCARD_XPATH)
@@ -116,7 +119,7 @@ def compare_extraction(
     unclean = bool(body.xpath(SANITIZED_XPATH))
     if unclean or len_text < options.min_extracted_size:
         LOGGER.debug("unclean or short document triggering justext examination: %s", options.source)
-        body2, text2 = justext_rescue(cleaned_tree, options)
+        body2, text2 = justext_rescue(tree_cleaning(copy(tree), options), options)
         len_text2 = len(text2)
         # unclean: allow shorter (boilerplate dropped), guard image-heavy pages;
         # merely short: must add text, len_text2 > len_text is implied (#896)
@@ -138,11 +141,10 @@ def compare_extraction(
     return body, text
 
 
-def jt_stoplist_init() -> tuple[str]:
+@cache
+def jt_stoplist_init() -> frozenset[str]:
     "Retrieve and return the content of all JusText stoplists"
-    global JT_STOPLIST
-    JT_STOPLIST = tuple({word for language in get_stoplists() for word in get_stoplist(language)})
-    return JT_STOPLIST
+    return frozenset(word for language in get_stoplists() for word in _get_stoplist(language))
 
 
 def try_justext(tree: HtmlElement, url: str | None, target_language: str | None) -> _Element:
@@ -153,7 +155,7 @@ def try_justext(tree: HtmlElement, url: str | None, target_language: str | None)
     if target_language in JUSTEXT_LANGUAGES:
         justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
     else:
-        justext_stoplist = JT_STOPLIST or jt_stoplist_init()
+        justext_stoplist = jt_stoplist_init()
     # extract
     try:
         paragraphs = ParagraphMaker.make_paragraphs(tree)

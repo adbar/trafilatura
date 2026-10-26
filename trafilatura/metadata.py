@@ -26,6 +26,7 @@ from .json_metadata import (
     extract_json_parse_error,
     normalize_authors,
     normalize_json,
+    normalize_json_values,
 )
 from .settings import Document, set_date_params
 from .utils import HTML_STRIP_TAGS, line_processing, load_html, safe_base_url, trim
@@ -156,6 +157,15 @@ def normalize_tags(tags: str) -> str:
     return ", ".join(filter(None, tags.split(", ")))
 
 
+def invert_citation_name(name: str) -> str:
+    "citation_author holds one name per tag, often as 'Last, First': turn it into 'First Last'."
+    last, sep, first = (part.strip() for part in name.partition(","))
+    # leave lists of full names ("Jane Doe, John Roe") to the regular splitting
+    if sep and last and first and "," not in first and (" " not in last or " " not in first):
+        return f"{first} {last}"
+    return name
+
+
 def check_authors(authors: str, author_blacklist: set[str]) -> str | None:
     "Check if the authors string correspond to expected values."
     author_blacklist = {a.lower() for a in author_blacklist}
@@ -170,14 +180,21 @@ def extract_meta_json(tree: HtmlElement, metadata: Document) -> Document:
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
-        element_text = normalize_json(JSON_MINIFY.sub(r"\1", elem.text))
+        element_text = JSON_MINIFY.sub(r"\1", elem.text)
         try:
             # strict=False: trim() handles \n\r\t, but strict JSON rejects the full 0x00-0x1F
             # range; rarer control chars (from encoding issues) would otherwise raise here
-            schema = json.loads(element_text, strict=False)
-            metadata = extract_json(schema, metadata)
+            # parse before normalizing: decoding the escapes in the raw text would turn an escaped
+            # quote into a string delimiter and escaped angle brackets into tags spanning fields
+            schema = normalize_json_values(json.loads(element_text, strict=False))
         except json.JSONDecodeError:
-            metadata = extract_json_parse_error(element_text, metadata)
+            element_text = normalize_json(element_text)
+            try:
+                schema = json.loads(element_text, strict=False)
+            except json.JSONDecodeError:
+                metadata = extract_json_parse_error(element_text, metadata)
+                continue
+        metadata = extract_json(schema, metadata)
     return metadata
 
 
@@ -236,6 +253,8 @@ def examine_meta(tree: HtmlElement) -> Document:
             name_attr = elem.get("name", "").lower()
             # author
             if name_attr in METANAME_AUTHOR:
+                if name_attr == "citation_author":
+                    content_attr = invert_citation_name(content_attr)
                 metadata.author = normalize_authors(metadata.author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:

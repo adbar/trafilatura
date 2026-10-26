@@ -287,8 +287,11 @@ class Document:
                 # length
                 if len(value) > 10000:
                     value = value[:9999] + "…"
-                # HTML entities, remove spaces and control characters
-                value = line_processing(unescape(value))
+                # URL fields are already decoded; entity-like query parameters must stay literal.
+                if slot not in {"url", "image", "hostname"}:
+                    value = unescape(value)
+                # remove spaces and control characters
+                value = line_processing(value)
                 setattr(self, slot, value)
 
     def as_dict(self) -> dict[str, Any]:
@@ -438,7 +441,7 @@ _COOKIE_CONSENT_RE = (
 )
 BASIC_CLEAN_XPATH = XPath(
     ".//aside|.//div[contains(@class|@id, 'footer')]|.//fencedframe|.//footer|.//script|.//style|.//svg|.//template"
-    f"|.//*[re:test(@class, '{_COOKIE_CONSENT_RE}', 'i') or re:test(@id, '{_COOKIE_CONSENT_RE}', 'i')]",
+    f"|.//*[(@class and re:test(@class, '{_COOKIE_CONSENT_RE}', 'i')) or (@id and re:test(@id, '{_COOKIE_CONSENT_RE}', 'i'))]",
     namespaces={"re": "http://exslt.org/regular-expressions"},
 )
 

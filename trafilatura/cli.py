@@ -37,6 +37,7 @@ _LIST_IGNORED_OPTS = {
     "output_format",
     "archived",
     "backup_dir",
+    "name_from_url",
 }
 
 # fix output encoding on some systems
@@ -74,6 +75,7 @@ def add_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
     group2.add_argument("-o", "--output-dir", help="write results in a specified directory (relative path)", type=str)
     group2.add_argument("--backup-dir", help="preserve a copy of downloaded files in a backup directory", type=str)
     group2.add_argument("--keep-dirs", help="keep input directory structure and file names", action="store_true")
+    group2.add_argument("--name-from-url", help="name downloaded output files using their source URLs", action="store_true")
 
     group3_ex.add_argument(
         "--feed",
@@ -174,6 +176,17 @@ def _validate_args(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
     "Catch cross-group incompatibilities that argparse cannot express."
     if args.keep_dirs and not args.output_dir:
         parser.error("--keep-dirs requires an output directory (-o/--output-dir)")
+    if args.name_from_url:
+        if not args.output_dir:
+            parser.error("--name-from-url requires an output directory (-o/--output-dir)")
+        if (
+            args.keep_dirs
+            or args.input_dir
+            or args.crawl
+            or args.probe
+            or not any((args.URL, args.input_file, args.feed, args.sitemap, args.explore))
+        ):
+            parser.error("--name-from-url requires URL extraction input and cannot be combined with --keep-dirs")
     if args.list:
         ignored = sorted(o for o in _LIST_IGNORED_OPTS if getattr(args, o) != parser.get_default(o))
         if ignored:
@@ -232,7 +245,7 @@ def process_args(args: argparse.Namespace) -> None:
 
     # read files from an input directory
     elif args.input_dir:
-        file_processing_pipeline(args)
+        exit_code = file_processing_pipeline(args)
 
     # read url list from input file or process input URL
     elif args.input_file or args.URL:

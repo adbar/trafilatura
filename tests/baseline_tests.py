@@ -10,6 +10,7 @@ import pytest
 from lxml import html
 
 from trafilatura import baseline, html2txt
+from trafilatura.baseline import _HTML_MARKUP
 
 
 def jsonld_doc(payload: str, body: str = "") -> str:
@@ -525,3 +526,26 @@ def test_html2txt():
     # the control char is dropped (as load_html does for string input), joining the two words
     ctrl_tree = html.fromstring("<html><body><p>before\x01after visible text</p></body></html>")
     assert html2txt(ctrl_tree) == "beforeafter visible text"
+
+
+@pytest.mark.parametrize(
+    "text,expected",
+    [
+        ("<p>", True),
+        ("</div>", True),
+        ("<br/>", True),
+        ("<BR>", True),
+        ("<p class='x'>", True),
+        ("<img src=x/>", True),
+        ("<p\nid=x>", True),
+        ("a<p>b", True),
+        ("<p class>", False),
+        ("<pa>", False),
+        ("<custom>", False),
+        ("a < b and c > d", False),
+        ("x = <b", False),
+    ],
+)
+def test_html_markup_detection(text, expected):
+    "Known tags, bare or with an attribute value, count as markup, prose comparisons do not."
+    assert bool(_HTML_MARKUP.search(text)) is expected

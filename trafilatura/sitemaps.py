@@ -90,7 +90,7 @@ class SitemapObject:
         self.content = fetch_url(self.current_url, config=self.config) or ""
         self.seen.add(self.current_url)
 
-    def handle_link(self, link: str) -> None:
+    def handle_link(self, link: str, *, is_sitemap: bool | None = None) -> None:
         """Examine a link and determine if it's valid and if it leads to
         a sitemap or a web page."""
         if link == self.current_url:  # safety check
@@ -115,7 +115,9 @@ class SitemapObject:
             LOGGER.warning("link discarded, diverging domain names: %s %s", self.domain, newdomain)
             return
 
-        if DETECT_SITEMAP_LINK.search(link):
+        if is_sitemap is None:
+            is_sitemap = bool(DETECT_SITEMAP_LINK.search(link))
+        if is_sitemap:
             self.sitemap_urls.append(link)
         else:
             self.urls.append(link)
@@ -158,8 +160,16 @@ class SitemapObject:
             return
         for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
-            if len(element) == 0 and element.text and element.text.startswith("http"):
-                self.handle_link(element.text)
+            location = (element.text or "").strip()
+            if len(element) == 0 and location.startswith("http"):
+                parent = element.getparent()
+                parent_tag = parent.tag if parent is not None else None
+                is_sitemap = None
+                if parent_tag in ("sitemap", f"{{{SITEMAP_NAMESPACE}}}sitemap"):
+                    is_sitemap = True
+                elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
+                    is_sitemap = False
+                self.handle_link(location, is_sitemap=is_sitemap)
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."
@@ -179,6 +189,44 @@ class SitemapObject:
             if len(self.sitemap_urls) + len(self.urls) > found_before:
                 return
         self.extract_sitemap_links()
+
+
+def parse_sitemap(
+    content: str,
+    url: str,
+    target_lang: str | None = None,
+    external: bool = False,
+) -> list[str]:
+    """Extract links from caller-provided sitemap text without network requests.
+
+    Args:
+        content: Decoded XML or plain-text sitemap content.
+        url: The sitemap URL, used for domain filtering.
+        target_lang: Optional two-letter language code for URL filtering.
+        external: Include links from other domains.
+
+    Returns:
+        Sorted unique links. For an index, these are nested sitemap URLs;
+        their contents must be fetched and parsed separately by the caller.
+
+    Raises:
+        TypeError: If content is not a string.
+    """
+    if not isinstance(content, str):
+        raise TypeError("content must be a string")
+    domainname, baseurl = get_hostinfo(url)
+    if domainname is None:
+        LOGGER.warning("invalid URL: %s", url)
+        return []
+    sitemap = SitemapObject(baseurl, domainname, [], target_lang, external)
+    sitemap.current_url = url
+    sitemap.content = content.lstrip("\ufeff \t\r\n")
+    try:
+        sitemap.process()
+    except UnicodeEncodeError:
+        LOGGER.warning("invalid Unicode in sitemap: %s", url)
+        return []
+    return filter_urls(sitemap.urls + sitemap.sitemap_urls, None)
 
 
 def sitemap_search(
@@ -243,8 +291,7 @@ def sitemap_search(
         if sitemap.sitemap_urls and len(sitemap.seen) < max_sitemaps:
             sleep(sleep_time)
 
-    if urlfilter:
-        sitemap.urls = filter_urls(sitemap.urls, urlfilter)
+    sitemap.urls = filter_urls(sitemap.urls, urlfilter)
 
     LOGGER.debug("%s sitemap links found for %s", len(sitemap.urls), domainname)
     return sitemap.urls
