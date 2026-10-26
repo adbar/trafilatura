@@ -160,7 +160,8 @@ class SitemapObject:
             return
         for element in islice(tree.iter("loc", f"{{{SITEMAP_NAMESPACE}}}loc"), MAX_LINKS):
             # Entity references and nested markup are not part of a location URL.
-            if len(element) == 0 and element.text and element.text.startswith("http"):
+            location = (element.text or "").strip()
+            if len(element) == 0 and location.startswith("http"):
                 parent = element.getparent()
                 parent_tag = parent.tag if parent is not None else None
                 is_sitemap = None
@@ -168,7 +169,7 @@ class SitemapObject:
                     is_sitemap = True
                 elif parent_tag in ("url", f"{{{SITEMAP_NAMESPACE}}}url"):
                     is_sitemap = False
-                self.handle_link(element.text, is_sitemap=is_sitemap)
+                self.handle_link(location, is_sitemap=is_sitemap)
 
     def process(self) -> None:
         "Download a sitemap and extract the links it contains."

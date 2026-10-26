@@ -18,7 +18,7 @@ import string
 import sys
 import traceback
 from base64 import urlsafe_b64encode
-from collections.abc import Generator
+from collections.abc import Callable, Generator
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from contextlib import AbstractContextManager, nullcontext
 from datetime import datetime
@@ -68,7 +68,6 @@ LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 CHAR_CLASS = string.ascii_letters + string.digits
 
-STRIP_DIR = re.compile(r"[^/]+$")
 STRIP_EXTENSION = re.compile(r"\.[a-z]{2,5}$")
 
 CLEAN_XML = re.compile(r"<[^<]+?>")
@@ -181,11 +180,9 @@ def determine_output_path(
     extension = EXTENSION_MAPPING.get(args.output_format, ".txt")
 
     if args.keep_dirs:
-        # strip directory
-        original_dir = STRIP_DIR.sub("", orig_filename)
-        destination_dir = os.path.join(args.output_dir, original_dir)
-        # strip extension
-        filename = STRIP_EXTENSION.sub("", orig_filename)
+        relative_filename = Path(os.path.relpath(orig_filename, args.input_dir) if args.input_dir else orig_filename)
+        destination_dir = str(Path(args.output_dir) / relative_filename.parent)
+        filename = STRIP_EXTENSION.sub("", relative_filename.name)
     else:
         destination_dir = determine_counter_dir(args.output_dir, counter)
         # use cryptographic hash on file contents to define name
@@ -231,10 +228,16 @@ def write_result(
                 outputfile.write(result)
 
 
-def generate_filelist(inputdir: str) -> Generator[str, None, None]:
-    "Walk the directory tree and output all file names."
+def generate_filelist(inputdir: str, onerror: Callable[[OSError], None] | None = None) -> Generator[str, None, None]:
+    "Walk the directory tree and report errors without skipping readable paths."
+
+    def handle_error(error: OSError) -> None:
+        LOGGER.error("Cannot read input directory %s", error)
+        if onerror is not None:
+            onerror(error)
+
     # os.walk does not follow directory symlinks, unlike rglob on Python < 3.13
-    for root, _, files in os.walk(inputdir):
+    for root, _, files in os.walk(inputdir, onerror=handle_error):
         for filename in files:
             yield os.path.join(root, filename)
 
@@ -486,10 +489,14 @@ def file_processing_pipeline(args: argparse.Namespace) -> int:
     # walking the tree twice is cheap next to extraction, only done for the progress bar
     total = sum(1 for _ in generate_filelist(args.input_dir)) if getattr(args, "progress", False) else None
 
+    def handle_walk_error(_error: OSError) -> None:
+        nonlocal exit_code
+        exit_code = 1
+
     # max_tasks_per_child available in Python >= 3.11
     with ProcessPoolExecutor(max_workers=args.parallel) as executor, _progress_bar(args, total, "file") as progress:
         # chunk input: https://github.com/python/cpython/issues/74028
-        for filebatch in make_chunks(generate_filelist(args.input_dir), MAX_FILES_PER_DIRECTORY):
+        for filebatch in make_chunks(generate_filelist(args.input_dir, onerror=handle_walk_error), MAX_FILES_PER_DIRECTORY):
             if filecounter < 0 and len(filebatch) >= MAX_FILES_PER_DIRECTORY:
                 filecounter = 0
             worker = partial(_process_file, args=args, counter=filecounter, options=options)
